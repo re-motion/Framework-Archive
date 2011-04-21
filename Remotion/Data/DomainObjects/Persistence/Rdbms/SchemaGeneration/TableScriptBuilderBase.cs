@@ -24,13 +24,13 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration
   /// <summary>
   /// Contains database-independent code for generating tables for the persistence model.
   /// </summary>
-  public abstract class TableBuilderBase : IEntityDefinitionVisitor
+  public abstract class TableScriptBuilderBase : IScriptBuilder, IEntityDefinitionVisitor
   {
     private readonly StringBuilder _createTableStringBuilder;
     private readonly StringBuilder _dropTableStringBuilder;
     private readonly ISqlDialect _sqlDialect;
 
-    protected TableBuilderBase (ISqlDialect sqlDialect)
+    protected TableScriptBuilderBase (ISqlDialect sqlDialect)
     {
       ArgumentUtility.CheckNotNull ("sqlDialect", sqlDialect);
 
@@ -42,17 +42,17 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration
     public abstract void AddToCreateTableScript (TableDefinition tableDefinition, StringBuilder createTableStringBuilder);
     public abstract void AddToDropTableScript (TableDefinition tableDefinition, StringBuilder dropTableStringBuilder);
 
-    public string GetCreateTableScript ()
+    public string GetCreateScript ()
     {
       return _createTableStringBuilder.ToString();
     }
 
-    public string GetDropTableScript ()
+    public string GetDropScript ()
     {
       return _dropTableStringBuilder.ToString();
     }
 
-    public void AddTable (IEntityDefinition entityDefinition)
+    public void AddEntityDefinition (IEntityDefinition entityDefinition)
     {
       ArgumentUtility.CheckNotNull ("entityDefinition", entityDefinition);
 

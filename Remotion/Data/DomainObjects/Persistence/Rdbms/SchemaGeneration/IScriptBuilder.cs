@@ -16,22 +16,16 @@
 // 
 using System;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
-using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGeneration;
 
-namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.SqlServer.SchemaGeneration
+namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration
 {
-  public class TestableViewBuilder : SqlScriptViewBuilder
+  /// <summary>
+  /// Defines an interface for classes generating script files for several <see cref="IEntityDefinition"/>s.
+  /// </summary>
+  public interface IScriptBuilder
   {
-    private readonly bool _useSchemaBinding;
-
-    public TestableViewBuilder (bool useSchemaBinding)
-    {
-      _useSchemaBinding = useSchemaBinding;
-    }
-
-    protected override bool UseSchemaBinding (IEntityDefinition entityDefinition)
-    {
-      return _useSchemaBinding;
-    }
+    void AddEntityDefinition (IEntityDefinition entityDefinition);
+    string GetCreateScript ();
+    string GetDropScript ();
   }
 }

@@ -21,13 +21,13 @@ using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration
 {
-  public abstract class ConstraintBuilderBase : IEntityDefinitionVisitor
+  public abstract class ConstraintScriptBuilderBase : IScriptBuilder, IEntityDefinitionVisitor
   {
     private readonly StringBuilder _createConstraintStringBuilder;
     private readonly StringBuilder _dropConstraintStringBuilder;
     private readonly ISqlDialect _sqlDialect;
 
-    protected ConstraintBuilderBase (ISqlDialect sqlDialect)
+    protected ConstraintScriptBuilderBase (ISqlDialect sqlDialect)
     {
       ArgumentUtility.CheckNotNull ("sqlDialect", sqlDialect);
 
@@ -39,17 +39,17 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration
     public abstract void AddToCreateConstraintScript (TableDefinition tableDefinition, StringBuilder createConstraintStringBuilder);
     public abstract void AddToDropConstraintScript (TableDefinition tableDefinition, StringBuilder dropConstraintStringBuilder);
 
-    public string GetAddConstraintScript ()
+    public string GetCreateScript ()
     {
       return _createConstraintStringBuilder.ToString();
     }
 
-    public string GetDropConstraintScript ()
+    public string GetDropScript ()
     {
       return _dropConstraintStringBuilder.ToString();
     }
 
-    public void AddConstraint (IEntityDefinition entityDefinition)
+    public void AddEntityDefinition (IEntityDefinition entityDefinition)
     {
       ArgumentUtility.CheckNotNull ("entityDefinition", entityDefinition);
 
