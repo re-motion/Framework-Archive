@@ -25,7 +25,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
   /// <summary>
   /// Builds a command that allows retrieving a set of records where a certain column matches a given <see cref="ObjectID"/> value.
   /// </summary>
-  public class SingleIDLookupCommandBuilder: CommandBuilder
+  public class SingleIDLookupDbCommandBuilder: DbCommandBuilder
   {
     private readonly string _selectColumns;
     private readonly string _entityName;
@@ -33,7 +33,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
     private readonly ObjectID _expectedValue;
     private readonly SortExpressionDefinition _orderExpression;
 
-    public SingleIDLookupCommandBuilder (
+    public SingleIDLookupDbCommandBuilder (
         RdbmsProvider provider, 
         IStorageNameProvider storageNameProvider,
         string selectColumns, 

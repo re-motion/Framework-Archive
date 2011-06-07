@@ -25,13 +25,13 @@ using Remotion.Mixins;
 namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms
 {
   [TestFixture]
-  public class SingleIDLookupCommandBuilderTest : SqlProviderBaseTest
+  public class SingleIDLookupDbCommandBuilderTest : SqlProviderBaseTest
   {
     [Test]
     public void Create_WithOrderClause ()
     {
       Provider.Connect ();
-      var builder = new SingleIDLookupCommandBuilder (
+      var builder = new SingleIDLookupDbCommandBuilder (
           Provider,
           StorageNameProvider,
           "*", 
@@ -52,7 +52,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms
     public void Create_WithoutOrderClause ()
     {
       Provider.Connect ();
-      var builder = new SingleIDLookupCommandBuilder (
+      var builder = new SingleIDLookupDbCommandBuilder (
           Provider,
           StorageNameProvider,
           "*",
@@ -73,7 +73,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms
     [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Provider must be connected first.\r\nParameter name: provider")]
     public void ConstructorChecksForConnectedProvider ()
     {
-      new SingleIDLookupCommandBuilder (
+      new SingleIDLookupDbCommandBuilder (
           Provider,
           StorageNameProvider,
           "*",
@@ -89,7 +89,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms
       Provider.Connect ();
       using (MixinConfiguration.BuildFromActive().ForClass (typeof (WhereClauseBuilder)).Clear().AddMixins (typeof (WhereClauseBuilderMixin)).EnterScope())
       {
-        var builder = new SingleIDLookupCommandBuilder (
+        var builder = new SingleIDLookupDbCommandBuilder (
             Provider,
             StorageNameProvider,
             "*",

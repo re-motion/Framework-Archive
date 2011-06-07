@@ -24,13 +24,13 @@ using Remotion.Mixins;
 namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms
 {
   [TestFixture]
-  public class MultiIDLookupCommandBuilderTest : SqlProviderBaseTest
+  public class MultiIDLookupDbCommandBuilderTest : SqlProviderBaseTest
   {
     [Test]
     public void Create ()
     {
       Provider.Connect ();
-      var builder = new MultiIDLookupCommandBuilder (
+      var builder = new MultiIDLookupDbCommandBuilder (
           Provider, 
           StorageNameProvider,
           "*", 
@@ -55,7 +55,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms
     [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Provider must be connected first.\r\nParameter name: provider")]
     public void ConstructorChecksForConnectedProvider ()
     {
-      new MultiIDLookupCommandBuilder (
+      new MultiIDLookupDbCommandBuilder (
           Provider,
           StorageNameProvider,
           "*",
@@ -71,7 +71,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms
       Provider.Connect ();
       using (MixinConfiguration.BuildFromActive().ForClass (typeof (WhereClauseBuilder)).Clear().AddMixins (typeof (WhereClauseBuilderMixin)).EnterScope())
       {
-        var builder = new MultiIDLookupCommandBuilder (
+        var builder = new MultiIDLookupDbCommandBuilder (
           Provider,
           StorageNameProvider,
           "*",

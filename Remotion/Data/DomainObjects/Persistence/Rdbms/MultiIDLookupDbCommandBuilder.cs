@@ -24,7 +24,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
   /// <summary>
   /// Builds a command that allows retrieving a set of records whose ID column is contained in a range of <see cref="ObjectID"/> values.
   /// </summary>
-  public class MultiIDLookupCommandBuilder: CommandBuilder
+  public class MultiIDLookupDbCommandBuilder: DbCommandBuilder
   {
     private readonly string _selectColumns;
     private readonly string _entityName;
@@ -32,7 +32,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
     private readonly string _checkedColumnTypeName;
     private readonly ObjectID[] _expectedValues;
 
-    public MultiIDLookupCommandBuilder (
+    public MultiIDLookupDbCommandBuilder (
         RdbmsProvider provider,
         IStorageNameProvider storageNameProvider,
         string selectColumns, 
