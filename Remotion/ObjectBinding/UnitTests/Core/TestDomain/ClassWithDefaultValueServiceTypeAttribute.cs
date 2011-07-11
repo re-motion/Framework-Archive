@@ -18,10 +18,12 @@ using Remotion.ObjectBinding.BindableObject;
 
 namespace Remotion.ObjectBinding.UnitTests.Core.TestDomain
 {
-  public class BindableObjectProviderForCreateObjectServiceAttribute : BusinessObjectProviderAttribute
+  [BindableObjectProviderForDefaultValueService]
+  [BindableObjectBaseClass]
+  [DefaultValueServiceType (typeof (IDefaultValueServiceOnType))]
+  public class ClassWithDefaultValueServiceTypeAttribute : ManualBusinessObject
   {
-    public BindableObjectProviderForCreateObjectServiceAttribute ()
-        : base (typeof (BindableObjectProvider))
+    public ClassWithDefaultValueServiceTypeAttribute ()
     {
     }
   }

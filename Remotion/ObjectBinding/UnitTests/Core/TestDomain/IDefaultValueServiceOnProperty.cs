@@ -18,7 +18,7 @@ using Remotion.ObjectBinding.BindableObject;
 
 namespace Remotion.ObjectBinding.UnitTests.Core.TestDomain
 {
-  public interface ICreateObjectServiceOnType : ICreateObjectService
+  public interface IDefaultValueServiceOnProperty : IDefaultValueService
   {
   }
 }

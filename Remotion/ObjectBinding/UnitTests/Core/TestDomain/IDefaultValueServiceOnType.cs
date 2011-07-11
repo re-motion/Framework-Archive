@@ -14,26 +14,11 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System;
-using Remotion.Utilities;
+using Remotion.ObjectBinding.BindableObject;
 
-namespace Remotion.ObjectBinding.BindableObject
+namespace Remotion.ObjectBinding.UnitTests.Core.TestDomain
 {
-  //TODO: doc
-  [AttributeUsage (AttributeTargets.Class | AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
-  public sealed class CreateObjectServiceTypeAttribute : Attribute, IBusinessObjectServiceTypeAttribute
+  public interface IDefaultValueServiceOnType : IDefaultValueService
   {
-    private readonly Type _type;
-
-    public CreateObjectServiceTypeAttribute (Type type)
-    {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("type", type, typeof (ICreateObjectService));
-      _type = type;
-    }
-
-    public Type Type
-    {
-      get { return _type; }
-    }
   }
 }
