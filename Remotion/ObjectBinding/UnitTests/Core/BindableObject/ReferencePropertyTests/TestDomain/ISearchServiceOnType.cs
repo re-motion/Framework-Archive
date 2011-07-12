@@ -15,14 +15,11 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Remotion.ObjectBinding.BindableObject;
 
-namespace Remotion.ObjectBinding.UnitTests.Core.TestDomain
+namespace Remotion.ObjectBinding.UnitTests.Core.BindableObject.ReferencePropertyTests.TestDomain
 {
-  public class Stub2BusinessObjectProviderAttribute : BusinessObjectProviderAttribute
+  public interface ISearchServiceOnType : ISearchAvailableObjectsService
   {
-    public Stub2BusinessObjectProviderAttribute ()
-        : base (typeof (StubBusinessObjectProvider))
-    {
-    }
   }
 }

@@ -1,4 +1,4 @@
-// This file is part of the re-motion Core Framework (www.re-motion.org)
+﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (C) 2005-2009 rubicon informationstechnologie gmbh, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -14,21 +14,18 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System;
-using Remotion.Mixins;
 using Remotion.ObjectBinding.BindableObject;
+using Remotion.ObjectBinding.UnitTests.Core.TestDomain;
 
-namespace Remotion.ObjectBinding.UnitTests.Core.TestDomain
+namespace Remotion.ObjectBinding.UnitTests.Core.BindableObject.ReferencePropertyTests.TestDomain
 {
-  [BindableObjectWithIdentity]
-  [SearchAvailableObjectsServiceType (typeof (ISearchServiceOnType))]
-  public class ClassWithIdentityAndSearchServiceTypeAttribute
+  [BindableObjectProviderForDeleteObjectService]
+  [BindableObjectBaseClass]
+  [DeleteObjectServiceType (typeof (IDeleteObjectServiceOnType))]
+  public class ClassWithDeleteObjectServiceTypeAttribute : ManualBusinessObject
   {
-    public ClassWithIdentityAndSearchServiceTypeAttribute ()
+    public ClassWithDeleteObjectServiceTypeAttribute ()
     {
     }
-
-    [OverrideMixin]
-    public string UniqueIdentifier { get; private set; }
   }
 }

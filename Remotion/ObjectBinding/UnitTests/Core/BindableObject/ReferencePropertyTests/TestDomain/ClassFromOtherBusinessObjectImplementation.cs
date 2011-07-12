@@ -16,13 +16,20 @@
 // 
 using System;
 
-namespace Remotion.ObjectBinding.UnitTests.Core.TestDomain
+namespace Remotion.ObjectBinding.UnitTests.Core.BindableObject.ReferencePropertyTests.TestDomain
 {
-  public class Stub2BusinessObjectProviderAttribute : BusinessObjectProviderAttribute
+  public abstract class ClassFromOtherBusinessObjectImplementation : IBusinessObject
   {
-    public Stub2BusinessObjectProviderAttribute ()
-        : base (typeof (StubBusinessObjectProvider))
-    {
-    }
+    public abstract object GetProperty (IBusinessObjectProperty property);
+
+    public abstract void SetProperty (IBusinessObjectProperty property, object value);
+
+    public abstract string GetPropertyString (IBusinessObjectProperty property, string format);
+
+    public abstract string DisplayName { get; }
+
+    public abstract string DisplayNameSafe { get; }
+
+    public abstract IBusinessObjectClass BusinessObjectClass { get; }
   }
 }

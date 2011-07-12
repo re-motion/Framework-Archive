@@ -1,4 +1,4 @@
-// This file is part of the re-motion Core Framework (www.re-motion.org)
+﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (C) 2005-2009 rubicon informationstechnologie gmbh, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -15,21 +15,11 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Remotion.ObjectBinding.BindableObject;
 
-namespace Remotion.ObjectBinding.UnitTests.Core.TestDomain
+namespace Remotion.ObjectBinding.UnitTests.Core.BindableObject.ReferencePropertyTests.TestDomain
 {
-  public abstract class ClassFromOtherBusinessObjectImplementation : IBusinessObject
+  public interface IDeleteObjectServiceOnProperty : IDeleteObjectService
   {
-    public abstract object GetProperty (IBusinessObjectProperty property);
-
-    public abstract void SetProperty (IBusinessObjectProperty property, object value);
-
-    public abstract string GetPropertyString (IBusinessObjectProperty property, string format);
-
-    public abstract string DisplayName { get; }
-
-    public abstract string DisplayNameSafe { get; }
-
-    public abstract IBusinessObjectClass BusinessObjectClass { get; }
   }
 }

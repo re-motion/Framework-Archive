@@ -14,11 +14,13 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using Remotion.ObjectBinding.BindableObject;
+using System;
+using Remotion.ObjectBinding.UnitTests.Core.TestDomain;
 
-namespace Remotion.ObjectBinding.UnitTests.Core.TestDomain
+namespace Remotion.ObjectBinding.UnitTests.Core.BindableObject.ReferencePropertyTests.TestDomain
 {
-  public interface ISearchServiceOnProperty : ISearchAvailableObjectsService
+  public class ClassWithReferenceToClassDerivedFromBindableObjectBase : BindableObjectBase
   {
+    public ClassDerivedFromBindableObjectBase ScalarReference { get; set; }
   }
 }
