@@ -17,7 +17,7 @@
 using System.Collections.Generic;
 using System.Data;
 
-namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.DataReaders
+namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
 {
   /// <summary>
   /// Defines an interface for classes reading data from an <see cref="IDataReader"/> and converting it into <see cref="ObjectID"/> instances.
