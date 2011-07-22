@@ -14,16 +14,19 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System.Data;
+using System.Collections.Generic;
 using System.Text;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 
-namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders
+namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders.Specifications
 {
   /// <summary>
-  /// Provides an interface for classes defining a set of comparisons in a WHERE clause. Multiple comparisons are separated by "AND" operators.
+  /// <see cref="ISelectedColumnsSpecification"/> defines the API for all implementations that specify how to select columns in a relational
+  /// database.
   /// </summary>
-  public interface IComparedColumnsSpecification
+  public interface ISelectedColumnsSpecification
   {
-    void AppendComparisons (StringBuilder statement, IDbCommand command, ISqlDialect sqlDialect);
+    void AppendProjection (StringBuilder stringBuilder, ISqlDialect sqlDialect);
+    ISelectedColumnsSpecification Union (IEnumerable<ColumnDefinition> additionalColumns);
   }
 }
