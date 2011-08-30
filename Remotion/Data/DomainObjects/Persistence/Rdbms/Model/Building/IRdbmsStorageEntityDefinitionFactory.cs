@@ -15,26 +15,17 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System.Collections.Generic;
-using System.Linq;
 using Remotion.Data.DomainObjects.Mapping;
-using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
-using Remotion.Utilities;
 
-namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration
+namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
 {
   /// <summary>
-  /// <see cref="EntityDefinitionProvider"/> returns a sequence of <see cref="IEntityDefinition"/> for the given <see cref="ClassDefinition"/> 
-  /// instances.
+  /// <see cref="IRdbmsStorageEntityDefinitionFactory"/> defines the API for all entity definition factory implementations.
   /// </summary>
-  public class EntityDefinitionProvider : IEntityDefinitionProvider
+  public interface IRdbmsStorageEntityDefinitionFactory
   {
-    public IEnumerable<IEntityDefinition> GetEntityDefinitions (IEnumerable<ClassDefinition> classDefinitions)
-    {
-      ArgumentUtility.CheckNotNull ("classDefinitions", classDefinitions);
-
-      return classDefinitions
-          .Select (cd => cd.StorageEntityDefinition)
-          .OfType<IEntityDefinition> ();
-    }
+    IRdbmsStorageEntityDefinition CreateTableDefinition (ClassDefinition classDefinition);
+    IRdbmsStorageEntityDefinition CreateFilterViewDefinition (ClassDefinition classDefinition, IRdbmsStorageEntityDefinition baseEntity);
+    IRdbmsStorageEntityDefinition CreateUnionViewDefinition (ClassDefinition classDefinition, IEnumerable<IRdbmsStorageEntityDefinition> unionedEntities);
   }
 }

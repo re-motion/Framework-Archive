@@ -15,17 +15,26 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System.Collections.Generic;
+using System.Linq;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
+using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration
 {
   /// <summary>
-  /// <see cref="IEntityDefinitionProvider"/> provides a strategy to get all <see cref="IEntityDefinition"/> objects for a collection of 
-  /// <see cref="ClassDefinition"/> instances. Reimplement this interface to influence which entities are processed by <see cref="ScriptGenerator"/>.
+  /// <see cref="RdbmsStorageEntityDefinitionProvider"/> returns a sequence of <see cref="IRdbmsStorageEntityDefinition"/> for the given <see cref="ClassDefinition"/> 
+  /// instances.
   /// </summary>
-  public interface IEntityDefinitionProvider
+  public class RdbmsStorageEntityDefinitionProvider : IRdbmsStorageEntityDefinitionProvider
   {
-    IEnumerable<IEntityDefinition> GetEntityDefinitions (IEnumerable<ClassDefinition> classDefinitions);
+    public IEnumerable<IRdbmsStorageEntityDefinition> GetEntityDefinitions (IEnumerable<ClassDefinition> classDefinitions)
+    {
+      ArgumentUtility.CheckNotNull ("classDefinitions", classDefinitions);
+
+      return classDefinitions
+          .Select (cd => cd.StorageEntityDefinition)
+          .OfType<IRdbmsStorageEntityDefinition> ();
+    }
   }
 }

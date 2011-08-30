@@ -19,9 +19,9 @@ using System;
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 {
   /// <summary>
-  /// <see cref="IEntityDefinitionVisitor"/> defines the API for the entity definition visitor implementations.
+  /// <see cref="IRdbmsStorageEntityDefinitionVisitor"/> defines the API for the entity definition visitor implementations.
   /// </summary>
-  public interface IEntityDefinitionVisitor
+  public interface IRdbmsStorageEntityDefinitionVisitor
   {
     void VisitTableDefinition (TableDefinition tableDefinition);
     void VisitUnionViewDefinition (UnionViewDefinition unionViewDefinition);

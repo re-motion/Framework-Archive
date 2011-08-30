@@ -16,16 +16,16 @@
 // 
 using System.Collections.Generic;
 using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 
-namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
+namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration
 {
   /// <summary>
-  /// <see cref="IEntityDefinitionFactory"/> defines the API for all entity definition factory implementations.
+  /// <see cref="IRdbmsStorageEntityDefinitionProvider"/> provides a strategy to get all <see cref="IRdbmsStorageEntityDefinition"/> objects for a collection of 
+  /// <see cref="ClassDefinition"/> instances. Reimplement this interface to influence which entities are processed by <see cref="ScriptGenerator"/>.
   /// </summary>
-  public interface IEntityDefinitionFactory
+  public interface IRdbmsStorageEntityDefinitionProvider
   {
-    IEntityDefinition CreateTableDefinition (ClassDefinition classDefinition);
-    IEntityDefinition CreateFilterViewDefinition (ClassDefinition classDefinition, IEntityDefinition baseEntity);
-    IEntityDefinition CreateUnionViewDefinition (ClassDefinition classDefinition, IEnumerable<IEntityDefinition> unionedEntities);
+    IEnumerable<IRdbmsStorageEntityDefinition> GetEntityDefinitions (IEnumerable<ClassDefinition> classDefinitions);
   }
 }
