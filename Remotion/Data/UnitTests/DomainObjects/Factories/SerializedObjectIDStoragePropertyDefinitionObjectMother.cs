@@ -18,17 +18,11 @@ using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 
 namespace Remotion.Data.UnitTests.DomainObjects.Factories
 {
-  public static class ObjectIDStoragePropertyDefinitionObjectMother
+  public static class SerializedObjectIDStoragePropertyDefinitionObjectMother
   {
-    public static readonly ObjectIDStoragePropertyDefinition ObjectIDProperty = new ObjectIDStoragePropertyDefinition (
-        SimpleStoragePropertyDefinitionObjectMother.IDProperty, 
-        SimpleStoragePropertyDefinitionObjectMother.ClassIDProperty);
-
-    public static ObjectIDStoragePropertyDefinition Create (string columnName)
+    public static SerializedObjectIDStoragePropertyDefinition Create (string columnName)
     {
-      return new ObjectIDStoragePropertyDefinition (
-          SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty (columnName),
-          SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty (columnName + "ClassID"));
+      return new SerializedObjectIDStoragePropertyDefinition (SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty (columnName));
     }
   }
 }

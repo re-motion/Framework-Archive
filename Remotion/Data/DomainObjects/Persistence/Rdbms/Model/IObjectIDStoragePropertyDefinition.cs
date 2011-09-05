@@ -24,6 +24,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
   /// </summary>
   public interface IObjectIDStoragePropertyDefinition : IRdbmsStoragePropertyDefinition
   {
+    bool CanCreateForeignKeyConstraint { get; }
     ForeignKeyConstraintDefinition CreateForeignKeyConstraint (
         Func<IEnumerable<ColumnDefinition>, string> nameProvider,
         EntityNameDefinition referencedTableName,
