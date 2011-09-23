@@ -15,39 +15,32 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Utilities;
+using NUnit.Framework;
+using Remotion.Development.UnitTesting;
+using Remotion.Mixins.Definitions;
+using Remotion.Mixins.Validation;
 
-namespace Remotion.Mixins.Validation
+namespace Remotion.UnitTests.Mixins.Validation
 {
-  [Serializable]
-  public struct ValidationExceptionResultItem : IDefaultValidationResultItem
+  [TestFixture]
+  public class ValidationExceptionResultItemTest
   {
-    private readonly IValidationRule _rule;
-    private readonly Exception _exception;
-
-    public ValidationExceptionResultItem (IValidationRule rule, Exception exception)
+    // [Ignore ("TODO 4010")]
+    public void Serialization ()
     {
-      ArgumentUtility.CheckNotNull ("rule", rule);
-      ArgumentUtility.CheckNotNull ("exception", exception);
+      var rule = new DelegateValidationRule<TargetClassDefinition> (DummyRule);
+      var item = new ValidationExceptionResultItem (rule, new Exception ("Test"));
 
-      _rule = rule;
-      _exception = exception;
+      var deserializedItem = Serializer.SerializeAndDeserialize (item);
+
+      Assert.That (deserializedItem.Exception.Message, Is.EqualTo ("Test"));
+      Assert.That (deserializedItem.Message, Is.EqualTo (item.Message));
+      Assert.That (deserializedItem.Rule, Is.EqualTo (item.Rule));
     }
 
-    // TODO 4010: RuleName instead of Rule
-    public IValidationRule Rule
+    private void DummyRule (DelegateValidationRule<TargetClassDefinition>.Args args)
     {
-      get { return _rule; }
-    }
-
-    public string Message
-    {
-      get { return _exception.ToString (); }
-    }
-
-    public Exception Exception
-    {
-      get { return _exception; }
+      throw new NotImplementedException();
     }
   }
 }
