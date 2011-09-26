@@ -14,24 +14,28 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+using System;
 using NUnit.Framework;
-using Remotion.Mixins.Definitions;
+using Remotion.Development.UnitTesting;
 using Remotion.Mixins.Validation;
-using Remotion.UnitTests.Mixins.TestDomain;
-using Remotion.UnitTests.Mixins.Validation.ValidationTestDomain;
 
-namespace Remotion.UnitTests.Mixins.Validation.Rules
+namespace Remotion.UnitTests.Mixins.Validation
 {
   [TestFixture]
-  public class DefaultRequiredNextCallTypeRulesTest : ValidationTestBase
+  public class ValidationLogDataTest
   {
     [Test]
-    public void FailsIfRequiredBaseTypeNotVisible ()
+    public void Serialization ()
     {
-      TargetClassDefinition definition = DefinitionObjectMother.BuildUnvalidatedDefinition (typeof (BaseType1), typeof (MixinWithInvisibleNextCallDependency));
-      var log = Validator.Validate (definition);
+      var data = new ValidationLogData();
 
-      Assert.IsTrue (HasFailure ("Remotion.Mixins.Validation.Rules.DefaultRequiredNextCallTypeRules.RequiredNextCallTypeMustBePublic", log));
+      var result = new ValidationResult(new ValidatedDefinitionID ("a", "b", null));
+      result.Successes.Add (new ValidationResultItem("x", "y"));
+      data.Add (result);
+
+      var deserializedData = Serializer.SerializeAndDeserialize (data);
+
+      Assert.That (deserializedData.GetNumberOfSuccesses(), Is.EqualTo (1));
     }
   }
 }
