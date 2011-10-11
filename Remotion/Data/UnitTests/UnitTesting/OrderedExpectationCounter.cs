@@ -14,23 +14,35 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+using NUnit.Framework;
 using Rhino.Mocks;
-using Rhino.Mocks.Interfaces;
 
-namespace Remotion.Data.UnitTests
+namespace Remotion.Data.UnitTests.UnitTesting
 {
-  public static class MethodOptionsExtensions
+  /// <summary>
+  /// Provides support for ordered Rhino.Mocks expectations without dedicated <see cref="MockRepository"/> instance. 
+  /// See <see cref="MethodOptionsExtensions.Ordered{T}"/> for details.
+  /// </summary>
+  public class OrderedExpectationCounter
   {
-    /// <summary>
-    /// Provides support for ordered Rhino.Mocks expectations without dedicated <see cref="MockRepository"/> instance. Create an 
-    /// <see cref="OrderedExpectationCounter"/>, then call <see cref="Ordered{T}"/> with that counter for all expectations that should occur 
-    /// in the same order as declared.
-    /// Uses <see cref="IMethodOptions{T}.WhenCalled"/> internally.
-    /// </summary>
-    public static IMethodOptions<T> Ordered<T> (this IMethodOptions<T> options, OrderedExpectationCounter counter)
+    private int _nextExpectedPosition;
+    private int _currentPosition;
+
+    public int GetNextExpectedPosition ()
     {
-      var expectedPosition = counter.GetNextExpectedPosition();
-      return options.WhenCalled (mi => counter.CheckPosition (mi.Method.ToString(), expectedPosition));
+      return _nextExpectedPosition++;
+    }
+
+    public void CheckPosition (string operationName, int expectedPosition)
+    {
+      Assert.That (
+          _currentPosition,
+          Is.EqualTo (expectedPosition),
+          "Expected operation '{0}' at sequence number {1}, but was {2}.",
+          operationName,
+          expectedPosition,
+          _currentPosition);
+      ++_currentPosition;
     }
   }
 }
