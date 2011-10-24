@@ -25,10 +25,10 @@ using Rhino.Mocks;
 namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.ObjectPersistence
 {
   [TestFixture]
-  public class AlreadyExistingLoadedObjectTest : StandardMappingTest
+  public class AlreadyExistingLoadedObjectDataTest : StandardMappingTest
   {
     private DataContainer _dataContainer;
-    private AlreadyExistingLoadedObject _loadedObject;
+    private AlreadyExistingLoadedObjectData _loadedObjectData;
 
     public override void SetUp ()
     {
@@ -38,14 +38,14 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.ObjectPersis
       _dataContainer.SetDomainObject (DomainObjectMother.CreateFakeObject<Order> (_dataContainer.ID));
       ClientTransactionTestHelper.RegisterDataContainer (ClientTransaction.CreateRootTransaction (), _dataContainer);
 
-      _loadedObject = new AlreadyExistingLoadedObject (_dataContainer);
+      _loadedObjectData = new AlreadyExistingLoadedObjectData (_dataContainer);
     }
     
     [Test]
     public void Initialization ()
     {
-      Assert.That (_loadedObject.ExistingDataContainer, Is.SameAs (_dataContainer));
-      Assert.That (_loadedObject.ObjectID, Is.EqualTo (_dataContainer.ID));
+      Assert.That (_loadedObjectData.ExistingDataContainer, Is.SameAs (_dataContainer));
+      Assert.That (_loadedObjectData.ObjectID, Is.EqualTo (_dataContainer.ID));
     }
 
     [Test]
@@ -55,7 +55,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.ObjectPersis
       existingDataContainer.SetDomainObject (DomainObjectMother.CreateFakeObject<Order> (existingDataContainer.ID));
       
       Assert.That (
-          () => new AlreadyExistingLoadedObject (existingDataContainer),
+          () => new AlreadyExistingLoadedObjectData (existingDataContainer),
           Throws.ArgumentException.With.Message.EqualTo (
               "The DataContainer must have been registered with a ClientTransaction.\r\nParameter name: existingDataContainer"));
     }
@@ -64,10 +64,10 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.ObjectPersis
     public void Accept ()
     {
       var visitorMock = MockRepository.GenerateStrictMock<ILoadedObjectVisitor>();
-      visitorMock.Expect (mock => mock.VisitAlreadyExistingLoadedObject (_loadedObject));
+      visitorMock.Expect (mock => mock.VisitAlreadyExistingLoadedObject (_loadedObjectData));
       visitorMock.Replay();
 
-      _loadedObject.Accept (visitorMock);
+      _loadedObjectData.Accept (visitorMock);
 
       visitorMock.VerifyAllExpectations();
     }

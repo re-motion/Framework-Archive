@@ -15,38 +15,14 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Utilities;
+using System.Collections.Generic;
+using Remotion.Data.DomainObjects.DataManagement;
 
 namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 {
-  /// <summary>
-  /// Represents an object that already exists in the target <see cref="ClientTransaction"/> as an invalid object.
-  /// </summary>
-  public class InvalidLoadedObject : ILoadedObject
+  public interface ILoadedObjectDataRegistrationAgent
   {
-    private readonly DomainObject _invalidObjectReference;
-
-    public InvalidLoadedObject (DomainObject invalidObjectReference)
-    {
-      ArgumentUtility.CheckNotNull ("invalidObjectReference", invalidObjectReference);
-
-      _invalidObjectReference = invalidObjectReference;
-    }
-
-    public ObjectID ObjectID
-    {
-      get { return _invalidObjectReference.ID; }
-    }
-
-    public DomainObject InvalidObjectReference
-    {
-      get { return _invalidObjectReference; }
-    }
-
-    public void Accept (ILoadedObjectVisitor visitor)
-    {
-      ArgumentUtility.CheckNotNull ("visitor", visitor);
-      visitor.VisitInvalidLoadedObject (this);
-    }
+    DomainObject RegisterIfRequired (ILoadedObjectData loadedObjectData, IDataManager dataManager);
+    IEnumerable<DomainObject> RegisterIfRequired (IEnumerable<ILoadedObjectData> loadedObjects, IDataManager dataManager);
   }
 }

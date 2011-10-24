@@ -23,21 +23,21 @@ using Rhino.Mocks;
 namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.ObjectPersistence
 {
   [TestFixture]
-  public class InvalidLoadedObjectTest : StandardMappingTest
+  public class InvalidLoadedObjectDataTest : StandardMappingTest
   {
-    private InvalidLoadedObject _loadedObject;
+    private InvalidLoadedObjectData _loadedObjectData;
 
     public override void SetUp ()
     {
       base.SetUp ();
 
-      _loadedObject = new InvalidLoadedObject (DomainObjectMother.CreateFakeObject<Order>());
+      _loadedObjectData = new InvalidLoadedObjectData (DomainObjectMother.CreateFakeObject<Order>());
     }
 
     [Test]
     public void ObjectID ()
     {
-      Assert.That (_loadedObject.ObjectID, Is.EqualTo (_loadedObject.InvalidObjectReference.ID));
+      Assert.That (_loadedObjectData.ObjectID, Is.EqualTo (_loadedObjectData.InvalidObjectReference.ID));
     }
 
     [Test]
@@ -45,10 +45,10 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.ObjectPersis
     {
       var visitorMock = MockRepository.GenerateStrictMock<ILoadedObjectVisitor>();
 
-      visitorMock.Expect (mock => mock.VisitInvalidLoadedObject (_loadedObject));
+      visitorMock.Expect (mock => mock.VisitInvalidLoadedObject (_loadedObjectData));
       visitorMock.Replay();
 
-      _loadedObject.Accept (visitorMock);
+      _loadedObjectData.Accept (visitorMock);
 
       visitorMock.VerifyAllExpectations();
     }

@@ -25,24 +25,24 @@ using Rhino.Mocks;
 namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.ObjectPersistence
 {
   [TestFixture]
-  public class FreshlyLoadedObjectTest : StandardMappingTest
+  public class FreshlyLoadedObjectDataTest : StandardMappingTest
   {
     private DataContainer _dataContainer;
-    private FreshlyLoadedObject _loadedObject;
+    private FreshlyLoadedObjectData _loadedObjectData;
 
     public override void SetUp ()
     {
       base.SetUp ();
 
       _dataContainer = DataContainer.CreateNew (DomainObjectIDs.Order1);
-      _loadedObject = new FreshlyLoadedObject (_dataContainer);
+      _loadedObjectData = new FreshlyLoadedObjectData (_dataContainer);
     }
     
     [Test]
     public void Initialization ()
     {
-      Assert.That (_loadedObject.FreshlyLoadedDataContainer, Is.SameAs (_dataContainer));
-      Assert.That (_loadedObject.ObjectID, Is.EqualTo (_dataContainer.ID));
+      Assert.That (_loadedObjectData.FreshlyLoadedDataContainer, Is.SameAs (_dataContainer));
+      Assert.That (_loadedObjectData.ObjectID, Is.EqualTo (_dataContainer.ID));
     }
 
     [Test]
@@ -52,7 +52,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.ObjectPersis
       ClientTransactionTestHelper.RegisterDataContainer (ClientTransaction.CreateRootTransaction (), dataContainer);
 
       Assert.That (
-          () => new FreshlyLoadedObject (dataContainer),
+          () => new FreshlyLoadedObjectData (dataContainer),
           Throws.ArgumentException.With.Message.EqualTo (
               "The DataContainer must not have been registered with a ClientTransaction.\r\nParameter name: freshlyLoadedDataContainer"));
     }
@@ -64,7 +64,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.ObjectPersis
       dataContainer.SetDomainObject (DomainObjectMother.CreateFakeObject<Order> (dataContainer.ID));
 
       Assert.That (
-          () => new FreshlyLoadedObject (dataContainer),
+          () => new FreshlyLoadedObjectData (dataContainer),
           Throws.ArgumentException.With.Message.EqualTo (
               "The DataContainer must not have been registered with a DomainObject.\r\nParameter name: freshlyLoadedDataContainer"));
     }
@@ -73,10 +73,10 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.ObjectPersis
     public void Accept ()
     {
       var visitorMock = MockRepository.GenerateStrictMock<ILoadedObjectVisitor>();
-      visitorMock.Expect (mock => mock.VisitFreshlyLoadedObject (_loadedObject));
+      visitorMock.Expect (mock => mock.VisitFreshlyLoadedObject (_loadedObjectData));
       visitorMock.Replay();
 
-      _loadedObject.Accept (visitorMock);
+      _loadedObjectData.Accept (visitorMock);
 
       visitorMock.VerifyAllExpectations();
     }

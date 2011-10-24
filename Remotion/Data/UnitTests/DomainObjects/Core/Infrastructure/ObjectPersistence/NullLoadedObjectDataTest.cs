@@ -22,30 +22,30 @@ using Rhino.Mocks;
 namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.ObjectPersistence
 {
   [TestFixture]
-  public class NullLoadedObjectTest
+  public class NullLoadedObjectDataTest
   {
-    private NullLoadedObject _loadedObject;
+    private NullLoadedObjectData _loadedObjectData;
 
     [SetUp]
     public void SetUp ()
     {
-      _loadedObject = new NullLoadedObject();
+      _loadedObjectData = new NullLoadedObjectData();
     }
 
     [Test]
     public void ObjectID ()
     {
-      Assert.That (_loadedObject.ObjectID, Is.Null);
+      Assert.That (_loadedObjectData.ObjectID, Is.Null);
     }
 
     [Test]
     public void Accept ()
     {
       var visitorMock = MockRepository.GenerateStrictMock<ILoadedObjectVisitor>();
-      visitorMock.Expect (mock => mock.VisitNullLoadedObject (_loadedObject));
+      visitorMock.Expect (mock => mock.VisitNullLoadedObject (_loadedObjectData));
       visitorMock.Replay ();
 
-      _loadedObject.Accept (visitorMock);
+      _loadedObjectData.Accept (visitorMock);
 
       visitorMock.VerifyAllExpectations ();
     }
