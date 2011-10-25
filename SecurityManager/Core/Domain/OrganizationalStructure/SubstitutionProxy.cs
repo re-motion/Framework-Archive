@@ -23,19 +23,19 @@ using Remotion.Utilities;
 namespace Remotion.SecurityManager.Domain.OrganizationalStructure
 {
   [Serializable]
-  public sealed class UserProxy : OrganizationalStructureObjectProxy
+  public sealed class SubstitutionProxy : OrganizationalStructureObjectProxy
   {
-    public static UserProxy Create (User user)
+    public static SubstitutionProxy Create (Substitution substitution)
     {
-      ArgumentUtility.CheckNotNull ("user", user);
+      ArgumentUtility.CheckNotNull ("substitution", substitution);
 
-      return new UserProxy (
-          user.ID,
-          ((IBusinessObjectWithIdentity) user).UniqueIdentifier,
-          ((IBusinessObjectWithIdentity) user).DisplayName);
+      return new SubstitutionProxy (
+          substitution.ID,
+          ((IBusinessObjectWithIdentity) substitution).UniqueIdentifier,
+          ((IBusinessObjectWithIdentity) substitution).DisplayName);
     }
 
-    private UserProxy (ObjectID id, string uniqueIdentifier, string displayName)
+    private SubstitutionProxy (ObjectID id, string uniqueIdentifier, string displayName)
         : base (id, uniqueIdentifier, displayName)
     {
     }
