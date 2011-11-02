@@ -25,32 +25,25 @@ using Remotion.Utilities;
 namespace Remotion.SecurityManager.Domain.OrganizationalStructure
 {
   /// <summary>
-  /// Implementation of <see cref="ISearchAvailableObjectsService"/> for the <see cref="Group"/> type.
+  /// Implementation of <see cref="ISearchAvailableObjectsService"/> for properties referencing the <see cref="Group"/> type.
+  /// The <see cref="ISearchAvailableObjectsService.Search"/> method filters by <see cref="ITenantConstraint"/>, <see cref="IDisplayNameConstraint"/>,
+  /// and <see cref="IResultSizeConstraint"/>.
   /// </summary>
   /// <remarks>
-  /// The service is applied to the <see cref="Group.Parent"/> property via the <see cref="SearchAvailableObjectsServiceTypeAttribute"/>.
+  /// The service can be applied to any <see cref="Group"/>-typed property of a <see cref="BaseSecurityManagerObject"/> 
+  /// via the <see cref="SearchAvailableObjectsServiceTypeAttribute"/>.
   /// </remarks>
-  public sealed class GroupPropertiesSearchService : SecurityManagerPropertyBasedSearchServiceBase<Group>
+  public class GroupPropertyTypeSearchService : SecurityManagerPropertyTypeBasedSearchServiceBase<Group>
   {
-    public GroupPropertiesSearchService ()
-    {
-      RegisterQueryFactory ("Parent", SearchPossibleParentGroups);
-    }
-
-    private IQueryable<IBusinessObject> SearchPossibleParentGroups (
-        Group referencingObject,
+    protected override IQueryable<IBusinessObject> CreateQuery (
+        BaseSecurityManagerObject referencingObject,
         IBusinessObjectReferenceProperty property,
         SecurityManagerSearchArguments searchArguments)
     {
-       ArgumentUtility.CheckNotNull ("searchArguments", searchArguments);
+      ArgumentUtility.CheckNotNull ("searchArguments", searchArguments);
       var tenantFilter = (ITenantConstraint) searchArguments;
 
-      var query = Group.FindByTenantID (tenantFilter.Value);
-
-      if (referencingObject != null)
-        query = query.Where (g => g != referencingObject);
-
-      return query.Apply ((IDisplayNameConstraint) searchArguments).Cast<IBusinessObject>().AsQueryable();
+      return Group.FindByTenantID (tenantFilter.Value).Apply ((IDisplayNameConstraint) searchArguments).Cast<IBusinessObject>().AsQueryable();
     }
   }
 }
