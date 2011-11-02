@@ -16,12 +16,21 @@
 // Additional permissions are listed in the file re-motion_exceptions.txt.
 // 
 using System;
-using Remotion.ObjectBinding;
 
 namespace Remotion.SecurityManager.Domain.SearchInfrastructure
 {
-  public interface IDisplayNameConstraint : ISearchAvailableObjectsArguments
+  public class ResultSizeConstraint
   {
-    string Text { get; }
+    private readonly int _value;
+
+    public ResultSizeConstraint (int value)
+    {
+      _value = value;
+    }
+
+    public int Value
+    {
+      get { return _value; }
+    }
   }
 }
