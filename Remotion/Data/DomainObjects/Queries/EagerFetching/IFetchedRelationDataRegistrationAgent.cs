@@ -26,11 +26,6 @@ namespace Remotion.Data.DomainObjects.Queries.EagerFetching
   /// </summary>
   public interface IFetchedRelationDataRegistrationAgent
   {
-    void GroupAndRegisterRelatedObjects (
-        IRelationEndPointDefinition relationEndPointDefinition,
-        DomainObject[] originatingObjects,
-        DomainObject[] relatedObjects,
-        ILoadedDataContainerProvider loadedDataContainerProvider,
-        IRelationEndPointProvider relationEndPointProvider);
+    void GroupAndRegisterRelatedObjects (IRelationEndPointDefinition relationEndPointDefinition, DomainObject[] originatingObjects, DomainObject[] relatedObjects, ILoadedDataContainerProvider loadedDataContainerProvider, IVirtualEndPointProvider virtualEndPointProvider);
   }
 }

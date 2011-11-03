@@ -14,12 +14,29 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+using System;
+using System.Collections.Generic;
+using Remotion.Data.DomainObjects.DataManagement;
+using Remotion.Collections;
+using System.Linq;
+using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 
-namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
+namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.SerializableFakes
 {
-  public interface IRelationEndPointProvider : IVirtualEndPointProvider
+  [Serializable]
+  public class SerializableVirtualEndPointProviderFake : IVirtualEndPointProvider
   {
-    IRelationEndPoint GetRelationEndPointWithLazyLoad (RelationEndPointID endPointID);
-    IRelationEndPoint GetRelationEndPointWithoutLoading (RelationEndPointID endPointID);
+    [NonSerialized]
+    private readonly Dictionary<RelationEndPointID, IRelationEndPoint> _endPoints;
+
+    public SerializableVirtualEndPointProviderFake (params IRelationEndPoint[] endPoints)
+    {
+      _endPoints = endPoints.ToDictionary(ep => ep.ID);
+    }
+
+    public IVirtualEndPoint GetOrCreateVirtualEndPoint (RelationEndPointID endPointID)
+    {
+      throw new NotImplementedException();
+    }
   }
 }

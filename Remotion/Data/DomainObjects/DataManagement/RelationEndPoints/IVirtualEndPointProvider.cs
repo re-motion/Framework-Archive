@@ -14,12 +14,15 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+using System;
 
 namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 {
-  public interface IRelationEndPointProvider : IVirtualEndPointProvider
+  /// <summary>
+  /// Provides access to <see cref="IVirtualEndPoint"/> instances for a <see cref="ClientTransaction"/>.
+  /// </summary>
+  public interface IVirtualEndPointProvider
   {
-    IRelationEndPoint GetRelationEndPointWithLazyLoad (RelationEndPointID endPointID);
-    IRelationEndPoint GetRelationEndPointWithoutLoading (RelationEndPointID endPointID);
+    IVirtualEndPoint GetOrCreateVirtualEndPoint (RelationEndPointID endPointID);
   }
 }
