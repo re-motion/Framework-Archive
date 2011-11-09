@@ -15,14 +15,16 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
+using Remotion.Data.DomainObjects;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.Queries.EagerFetching;
 
 namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.SerializableFakes
 {
   [Serializable]
-  public class SerializableVirtualEndPointProviderFake : IVirtualEndPointProvider
+  public class SerializableFetchedRelationDataRegistrationAgentFake : IFetchedRelationDataRegistrationAgent
   {
-    public IVirtualEndPoint GetOrCreateVirtualEndPoint (RelationEndPointID endPointID)
+    public void GroupAndRegisterRelatedObjects (IRelationEndPointDefinition relationEndPointDefinition, DomainObject[] originatingObjects, DomainObject[] relatedObjects)
     {
       throw new NotImplementedException();
     }

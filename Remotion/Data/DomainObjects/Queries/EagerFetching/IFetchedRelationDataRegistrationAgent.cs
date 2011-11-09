@@ -14,8 +14,6 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using Remotion.Data.DomainObjects.DataManagement;
-using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.Mapping;
 
 namespace Remotion.Data.DomainObjects.Queries.EagerFetching
@@ -26,6 +24,6 @@ namespace Remotion.Data.DomainObjects.Queries.EagerFetching
   /// </summary>
   public interface IFetchedRelationDataRegistrationAgent
   {
-    void GroupAndRegisterRelatedObjects (IRelationEndPointDefinition relationEndPointDefinition, DomainObject[] originatingObjects, DomainObject[] relatedObjects, ILoadedDataContainerProvider loadedDataContainerProvider, IVirtualEndPointProvider virtualEndPointProvider);
+    void GroupAndRegisterRelatedObjects (IRelationEndPointDefinition relationEndPointDefinition, DomainObject[] originatingObjects, DomainObject[] relatedObjects);
   }
 }

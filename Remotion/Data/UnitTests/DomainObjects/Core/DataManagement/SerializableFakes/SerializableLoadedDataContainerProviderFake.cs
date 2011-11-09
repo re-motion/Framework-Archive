@@ -15,14 +15,15 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
+using Remotion.Data.DomainObjects;
+using Remotion.Data.DomainObjects.DataManagement;
 
 namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.SerializableFakes
 {
   [Serializable]
-  public class SerializableVirtualEndPointProviderFake : IVirtualEndPointProvider
+  public class SerializableLoadedDataContainerProviderFake : ILoadedDataContainerProvider
   {
-    public IVirtualEndPoint GetOrCreateVirtualEndPoint (RelationEndPointID endPointID)
+    public DataContainer GetDataContainerWithoutLoading (ObjectID objectID)
     {
       throw new NotImplementedException();
     }
