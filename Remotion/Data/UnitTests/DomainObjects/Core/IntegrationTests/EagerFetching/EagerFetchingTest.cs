@@ -14,19 +14,16 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
-using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.UnitTests.DomainObjects.TestDomain;
-using Rhino.Mocks;
 
-namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transaction
+namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.EagerFetching
 {
   [TestFixture]
-  public class SubTransactionEagerFetchingTest : ClientTransactionBaseTest
+  public class EagerFetchingTest : ClientTransactionBaseTest
   {
     [Test]
     public void EagerFetching ()
@@ -54,15 +51,8 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
       Assert.That (ClientTransactionMock.DataManager.GetRelationEndPointWithoutLoading (id1), Is.Null);
       Assert.That (ClientTransactionMock.DataManager.GetRelationEndPointWithoutLoading (id2), Is.Null);
 
-      using (ClientTransactionMock.CreateSubTransaction ().EnterDiscardingScope ())
-      {
-        var result = ClientTransaction.Current.QueryManager.GetCollection (ordersQuery);
-        Assert.That (result.ToArray (), Is.EquivalentTo (new[] { Order.GetObject (DomainObjectIDs.Order1), Order.GetObject (DomainObjectIDs.Order2) }));
-
-        var subDataManager = ClientTransactionTestHelper.GetIDataManager (ClientTransaction.Current);
-        Assert.That (subDataManager.GetRelationEndPointWithoutLoading (id1), Is.Null);
-        Assert.That (subDataManager.GetRelationEndPointWithoutLoading (id2), Is.Null);
-      }
+      var result = ClientTransactionMock.QueryManager.GetCollection (ordersQuery);
+      Assert.That (result.ToArray (), Is.EquivalentTo (new[] { Order.GetObject (DomainObjectIDs.Order1), Order.GetObject (DomainObjectIDs.Order2) }));
 
       Assert.That (ClientTransactionMock.DataManager.GetRelationEndPointWithoutLoading (id1), Is.Not.Null);
       Assert.That (ClientTransactionMock.DataManager.GetRelationEndPointWithoutLoading (id2), Is.Not.Null);
@@ -74,50 +64,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
     }
 
     [Test]
-    public void EagerFetching_OnlyExecutesQueryOnce ()
-    {
-      var outerQuery = QueryFactory.CreateCollectionQuery (
-          "test",
-          TestDomainStorageProviderDefinition,
-          "outerQuery",
-          new QueryParameterCollection (),
-          typeof (DomainObjectCollection));
-
-      var relationEndPointDefinition = GetEndPointDefinition (typeof (Customer), "Orders");
-
-      var fetchQuery = QueryFactory.CreateCollectionQuery (
-          "test fetch",
-          TestDomainStorageProviderDefinition,
-          "fetchQuery",
-          new QueryParameterCollection (),
-          typeof (DomainObjectCollection));
-      outerQuery.EagerFetchQueries.Add (relationEndPointDefinition, fetchQuery);
-
-      var persistenceStrategyMock = MockRepository.GenerateStrictMock<IPersistenceStrategy> ();
-      var customerDataContainer = TestDataContainerObjectMother.CreateCustomer1DataContainer ();
-      var orderDataContainer = TestDataContainerObjectMother.CreateOrder1DataContainer ();
-      persistenceStrategyMock
-          .Expect (mock => mock.ExecuteCollectionQuery (Arg.Is (outerQuery), Arg<ILoadedObjectDataProvider>.Is.Anything))
-          .Return (new[] { new FreshlyLoadedObjectData (customerDataContainer) });
-      persistenceStrategyMock
-          .Expect (mock => mock.ExecuteCollectionQuery (Arg.Is (fetchQuery), Arg<ILoadedObjectDataProvider>.Is.Anything))
-          .Return (new[] { new FreshlyLoadedObjectData (orderDataContainer) })
-          .Repeat.Once ();
-      persistenceStrategyMock.Replay ();
-
-      var clientTransaction = ClientTransactionObjectMother.CreateTransactionWithPersistenceStrategy<ClientTransaction> (persistenceStrategyMock);
-      using (clientTransaction.CreateSubTransaction ().EnterDiscardingScope ())
-      {
-        var result = ClientTransaction.Current.QueryManager.GetCollection<Customer> (outerQuery).ToArray ();
-        Assert.That (result, Is.EquivalentTo (new[] { Customer.GetObject (DomainObjectIDs.Customer1) }));
-        Assert.That (result[0].Orders, Is.EquivalentTo (new[] { Order.GetObject (DomainObjectIDs.Order1) }));
-      }
-
-      persistenceStrategyMock.VerifyAllExpectations ();
-    }
-
-    [Test]
-    public void EagerFetching_UsesRelationDataFromParent_InsteadOfFetching ()
+    public void EagerFetching_WithExistingRelationData ()
     {
       // Load - and change - relation data prior to executing the query
       var order = Order.GetObject (DomainObjectIDs.Order1);
@@ -143,15 +90,12 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
           typeof (DomainObjectCollection));
       ordersQuery.EagerFetchQueries.Add (relationEndPointDefinition, orderItemsFetchQuery);
 
-      using (ClientTransactionMock.CreateSubTransaction ().EnterDiscardingScope ())
-      {
-        // This executes the fetch query, but should discard the result (since the relation data already exists in the parent transaction)
-        ClientTransaction.Current.QueryManager.GetCollection (ordersQuery);
+      // This executes the fetch query, but should discard the result (since the relation data already exists)
+      ClientTransactionMock.QueryManager.GetCollection (ordersQuery);
 
-        Assert.That (
-            order.OrderItems,
-            Is.EquivalentTo (new[] { OrderItem.GetObject (DomainObjectIDs.OrderItem1), OrderItem.GetObject (DomainObjectIDs.OrderItem2) }));
-      }
+      Assert.That (
+          order.OrderItems,
+          Is.EquivalentTo (new[] { OrderItem.GetObject (DomainObjectIDs.OrderItem1), OrderItem.GetObject (DomainObjectIDs.OrderItem2) }));
     }
   }
 }
