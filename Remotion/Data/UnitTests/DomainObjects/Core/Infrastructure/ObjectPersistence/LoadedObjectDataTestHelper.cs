@@ -14,35 +14,20 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System;
-using Remotion.Utilities;
+using Remotion.Data.DomainObjects;
+using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
+using Rhino.Mocks;
 
-namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
+namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.ObjectPersistence
 {
-  /// <summary>
-  /// Represents a <see langword="null" /> reference that was loaded via <see cref="IPersistenceStrategy"/>.
-  /// </summary>
-  public class NullLoadedObjectData : ILoadedObjectData
+  public static class LoadedObjectDataTestHelper
   {
-    public ObjectID ObjectID
+    public static ILoadedObjectData CreateLoadedObjectDataStub (DomainObject domainObjectReference)
     {
-      get { return null; }
-    }
-
-    public DomainObject GetDomainObjectReference ()
-    {
-      return null;
-    }
-
-    public void Accept (ILoadedObjectVisitor visitor)
-    {
-      ArgumentUtility.CheckNotNull ("visitor", visitor);
-      visitor.VisitNullLoadedObject (this);
-    }
-
-    bool INullObject.IsNull
-    {
-      get { return true; }
+      var originatingDataStub = MockRepository.GenerateStub<ILoadedObjectData>();
+      originatingDataStub.Stub (stub => stub.ObjectID).Return (domainObjectReference.ID);
+      originatingDataStub.Stub (stub => stub.GetDomainObjectReference ()).Return (domainObjectReference);
+      return originatingDataStub;
     }
   }
 }
