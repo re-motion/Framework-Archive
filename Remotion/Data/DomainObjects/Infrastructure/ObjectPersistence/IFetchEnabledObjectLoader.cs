@@ -14,20 +14,16 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using Remotion.Data.DomainObjects;
-using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
-using Rhino.Mocks;
+using System.Collections.Generic;
+using Remotion.Data.DomainObjects.Queries;
 
-namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.ObjectPersistence
+namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 {
-  public static class LoadedObjectDataTestHelper
+  /// <summary>
+  /// Extends <see cref="IObjectLoader"/> with functionality for loading the objects returned by an eager fetch query.
+  /// </summary>
+  public interface IFetchEnabledObjectLoader : IObjectLoader
   {
-    public static ILoadedObjectData CreateLoadedObjectDataStub (DomainObject domainObjectReference)
-    {
-      var originatingDataStub = MockRepository.GenerateStub<ILoadedObjectData>();
-      originatingDataStub.Stub (stub => stub.ObjectID).Return (domainObjectReference.ID);
-      originatingDataStub.Stub (stub => stub.GetDomainObjectReference ()).Return (domainObjectReference);
-      return originatingDataStub;
-    }
+    ICollection<LoadedObjectDataWithDataSourceData> GetOrLoadFetchQueryResult (IQuery query);
   }
 }
