@@ -15,15 +15,18 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.Mapping.Validation;
 
-namespace Remotion.Data.DomainObjects.Persistence.Model
+namespace Remotion.Data.DomainObjects.ConfigurationLoader
 {
   /// <summary>
-  /// <see cref="IPersistenceModelLoader"/> defines the API for all persistence model loader implementations.
+  /// Provides an interface for classes creating validators for the elements contained in a mapping.
   /// </summary>
-  public interface IPersistenceModelLoader : IPersistenceModelValidatorFactory
+  public interface IMappingValidatorFactory
   {
-    void ApplyPersistenceModelToHierarchy (ClassDefinition classDefinition);
+    IClassDefinitionValidator CreateClassDefinitionValidator ();
+    IPropertyDefinitionValidator CreatePropertyDefinitionValidator ();
+    IRelationDefinitionValidator CreateRelationDefinitionValidator ();
+    ISortExpressionValidator CreateSortExpressionValidator ();
   }
 }

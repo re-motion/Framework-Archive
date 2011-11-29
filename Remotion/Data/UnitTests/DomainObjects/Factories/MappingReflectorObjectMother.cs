@@ -31,16 +31,5 @@ namespace Remotion.Data.UnitTests.DomainObjects.Factories
       return new MappingReflector (
           typeDiscoveryService, new ClassIDProvider(), new DomainModelConstraintProvider(), new ReflectionBasedNameResolver());
     }
-
-    public static MappingReflector CreateMappingReflector (
-        ITypeDiscoveryService typeDiscoveryService,
-        IClassIDProvider classIDProvider,
-        IDomainModelConstraintProvider domainModelConstraintProvider,
-        IMappingNameResolver nameResolver)
-    {
-      ArgumentUtility.CheckNotNull ("typeDiscoveryService", typeDiscoveryService);
-
-      return new MappingReflector (typeDiscoveryService, classIDProvider, domainModelConstraintProvider, nameResolver);
-    }
   }
 }

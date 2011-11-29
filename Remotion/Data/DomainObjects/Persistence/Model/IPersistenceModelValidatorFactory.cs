@@ -16,14 +16,15 @@
 // 
 using System;
 using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.Mapping.Validation;
 
 namespace Remotion.Data.DomainObjects.Persistence.Model
 {
   /// <summary>
-  /// <see cref="IPersistenceModelLoader"/> defines the API for all persistence model loader implementations.
+  /// Provides an interface for classes creating validators for the elements contained in a persistence model.
   /// </summary>
-  public interface IPersistenceModelLoader : IPersistenceModelValidatorFactory
+  public interface IPersistenceModelValidatorFactory
   {
-    void ApplyPersistenceModelToHierarchy (ClassDefinition classDefinition);
+    IPersistenceMappingValidator CreatePersistenceMappingValidator (ClassDefinition classDefinition);
   }
 }
