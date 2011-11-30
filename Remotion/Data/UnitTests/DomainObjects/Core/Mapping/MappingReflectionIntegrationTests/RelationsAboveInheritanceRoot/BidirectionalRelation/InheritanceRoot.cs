@@ -16,10 +16,12 @@
 // 
 using Remotion.Data.DomainObjects;
 
-namespace Remotion.Data.UnitTests.DomainObjects.Core.Mapping.MappingReflectionIntegrationTests.RelationsAboveInheritanceRoot
+namespace Remotion.Data.UnitTests.DomainObjects.Core.Mapping.MappingReflectionIntegrationTests.RelationsAboveInheritanceRoot.BidirectionalRelation
 {
-  public class AboveInheritanceRootClassWithRelation : DomainObject
+  [DBStorageGroup]
+  [DBTable]
+  public class InheritanceRoot : ClassAboveInheritanceRoot
   {
-    public virtual UnidirectionalRelationClass RelationClass { get; set; }
+
   }
 }

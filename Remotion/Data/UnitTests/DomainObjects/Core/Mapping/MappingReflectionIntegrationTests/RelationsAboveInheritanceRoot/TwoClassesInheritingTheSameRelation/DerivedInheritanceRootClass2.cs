@@ -14,16 +14,14 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System;
 using Remotion.Data.DomainObjects;
+using Remotion.Data.UnitTests.DomainObjects.TestDomain;
 
-namespace Remotion.Data.UnitTests.DomainObjects.Core.Mapping.TestDomain.RelationReflector.
-    RelatedTypeDoesNotMatchOverriddenOppositeProperty_BelowInheritanceRoot
+namespace Remotion.Data.UnitTests.DomainObjects.Core.Mapping.MappingReflectionIntegrationTests.RelationsAboveInheritanceRoot.TwoClassesInheritingTheSameRelation
 {
   [DBTable]
-  public class Class1 : DomainObject
+  [TestDomain]
+  public class DerivedInheritanceRootClass2 : AboveInheritanceRootClassWithRelation
   {
-    [DBBidirectionalRelation ("OverriddenProperty")]
-    public DerivedClass2 RelationProperty { get; set; }
   }
 }
