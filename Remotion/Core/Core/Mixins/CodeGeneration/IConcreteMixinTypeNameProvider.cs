@@ -15,12 +15,14 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Remotion.Implementation;
 
 namespace Remotion.Mixins.CodeGeneration
 {
   /// <summary>
   /// Defines an interface for classes providing a mechanism to retrieve a name for a generated concrete mixin type.
   /// </summary>
+  [ConcreteImplementation (typeof (GuidNameProvider), Lifetime = LifetimeKind.Singleton)]
   public interface IConcreteMixinTypeNameProvider
   {
     string GetNameForConcreteMixinType (ConcreteMixinTypeIdentifier identifier);

@@ -1,4 +1,4 @@
-// This file is part of the re-motion Core Framework (www.re-motion.org)
+﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -14,36 +14,9 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System;
-using Remotion.Utilities;
-
-namespace Remotion.Mixins.Utilities.Singleton
+namespace Remotion.UnitTests.Mixins.Utilities.Singleton.TestDomain
 {
-  public class ThreadSafeSingleton<T>
-      where T : class
+  public class ConcreteImplementationOfInterface : IInterfaceWithConcreteImplementation
   {
-    private DoubleCheckedLockingContainer<T> _instanceHolder;
-
-    public ThreadSafeSingleton (Func<T> creator)
-    {
-      ArgumentUtility.CheckNotNull ("creator", creator);
-
-      _instanceHolder = new DoubleCheckedLockingContainer<T> (creator);
-    }
-
-    public bool HasCurrent
-    {
-      get { return _instanceHolder.HasValue; }
-    }
-
-    public T Current
-    {
-      get { return _instanceHolder.Value; }
-    }
-
-    public void SetCurrent (T value)
-    {
-      _instanceHolder.Value = value;
-    }
   }
 }

@@ -14,17 +14,22 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using Remotion.Implementation;
-using Remotion.Mixins.Definitions;
+using Remotion.Mixins.CodeGeneration;
+using Remotion.Mixins.CodeGeneration.DynamicProxy;
 
-namespace Remotion.Mixins.CodeGeneration
+namespace Remotion.UnitTests.Mixins.CodeGeneration
 {
-  /// <summary>
-  /// Defines an interface for classes providing a mechanism to retrieve a name for a generated concrete mixed type.
-  /// </summary>
-  [ConcreteImplementation(typeof (GuidNameProvider), Lifetime = LifetimeKind.Singleton)]
-  public interface IConcreteMixedTypeNameProvider
+  public static class ConcreteTypeBuilderTestHelper
   {
-    string GetNameForConcreteMixedType (TargetClassDefinition configuration);
+    public static ModuleManager GetCurrentModuleManager ()
+    {
+      var concreteTypeBuilder = ConcreteTypeBuilder.Current;
+      return GetModuleManager(concreteTypeBuilder);
+    }
+
+    public static ModuleManager GetModuleManager (IConcreteTypeBuilder concreteTypeBuilder)
+    {
+      return (ModuleManager) ((ConcreteTypeBuilder) concreteTypeBuilder).Scope;
+    }
   }
 }

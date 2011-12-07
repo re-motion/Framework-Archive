@@ -15,16 +15,12 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using Remotion.Implementation;
-using Remotion.Mixins.Definitions;
 
-namespace Remotion.Mixins.CodeGeneration
+namespace Remotion.UnitTests.Mixins.Utilities.Singleton.TestDomain
 {
-  /// <summary>
-  /// Defines an interface for classes providing a mechanism to retrieve a name for a generated concrete mixed type.
-  /// </summary>
-  [ConcreteImplementation(typeof (GuidNameProvider), Lifetime = LifetimeKind.Singleton)]
-  public interface IConcreteMixedTypeNameProvider
+  [ConcreteImplementation(typeof (ConcreteImplementationOfInterface))]
+  public interface IInterfaceWithConcreteImplementation
   {
-    string GetNameForConcreteMixedType (TargetClassDefinition configuration);
+    
   }
 }
