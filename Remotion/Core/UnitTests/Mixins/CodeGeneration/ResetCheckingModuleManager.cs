@@ -1,4 +1,4 @@
-// This file is part of the re-motion Core Framework (www.re-motion.org)
+﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -14,30 +14,30 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using NUnit.Framework;
+using System;
+using Remotion.Mixins.CodeGeneration;
 using Remotion.Mixins.CodeGeneration.DynamicProxy;
 
-namespace Remotion.UnitTests.Mixins.CodeGeneration.DynamicProxy
+namespace Remotion.UnitTests.Mixins.CodeGeneration
 {
-  [TestFixture]
-  public class ModuleManagerFactoryTest
+  /// <summary>
+  /// Used by <see cref="SetUpFixture"/> to ensure the integration tests don't reset the shared scope.
+  /// </summary>
+  public class ResetCheckingModuleManager : ModuleManager, IModuleManager
   {
-    private ModuleManagerFactory _factory;
-
-    [SetUp]
-    public void SetUp ()
+    public ResetCheckingModuleManager (bool allowReset)
     {
-      _factory = new ModuleManagerFactory();
+      AllowReset = allowReset;
     }
 
-    [Test]
-    public void Create ()
-    {
-      var result = _factory.Create();
+    public bool AllowReset { get; set; }
 
-      Assert.That (result, Is.TypeOf<ModuleManager> ());
-      Assert.That (((ModuleManager) result).SignedAssemblyName, Is.StringMatching (@"Remotion\.Mixins\.Generated\.Signed\..*"));
-      Assert.That (((ModuleManager) result).UnsignedAssemblyName, Is.StringMatching (@"Remotion\.Mixins\.Generated\.Unsigned\..*"));
+    public new void Reset ()
+    {
+      if (!AllowReset)
+        throw new InvalidOperationException ("This IModuleManager cannot be reset.");
+
+      base.Reset ();
     }
   }
 }
