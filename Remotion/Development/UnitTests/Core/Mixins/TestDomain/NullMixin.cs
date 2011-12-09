@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-namespace Remotion.Development.UnitTests.Core.UnitTesting.Mixins.TestDomain
+namespace Remotion.Development.UnitTests.Core.Mixins.TestDomain
 {
   public class NullMixin
   {

@@ -16,11 +16,19 @@
 // 
 using Remotion.Mixins;
 
-namespace Remotion.Development.UnitTests.Core.UnitTesting.Mixins.TestDomain
+namespace Remotion.Development.UnitTests.Core.Mixins.TestDomain
 {
-  [Uses (typeof (NullMixin))]
-  public class MixedClass4
+  [Uses (typeof (MixinNeedingConcreteType))]
+  public class MixedClassWithMixinNeedingConcreteType
   {
-    
+    [OverrideMixin]
+    public new string ToString()
+    {
+      return "Overridden!";
+    }
+  }
+
+  public class MixinNeedingConcreteType : Mixin<object>
+  {
   }
 }

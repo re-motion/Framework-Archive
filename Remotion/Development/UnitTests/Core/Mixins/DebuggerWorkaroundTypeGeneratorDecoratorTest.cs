@@ -14,34 +14,31 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System;
-using System.Collections.Generic;
-using System.Reflection;
 using NUnit.Framework;
-using Remotion.Development.UnitTesting.Mixins;
+using Remotion.Development.Mixins;
 using Remotion.Diagnostics;
 using Remotion.Mixins.CodeGeneration;
 using Rhino.Mocks;
 
-namespace Remotion.Development.UnitTests.Core.UnitTesting.Mixins
+namespace Remotion.Development.UnitTests.Core.Mixins
 {
   [TestFixture]
-  public class DebuggerWorkaroundMixinTypeGeneratorDecoratorTest
+  public class DebuggerWorkaroundTypeGeneratorDecoratorTest
   {
-    private IMixinTypeGenerator _innerMixinTypeGeneratorMock;
+    private ITypeGenerator _innerTypeGeneratorMock;
     private DebuggerWorkaroundModuleManagerDecorator _moduleManager;
-    private DebuggerWorkaroundMixinTypeGeneratorDecorator _decorator;
+    private DebuggerWorkaroundTypeGeneratorDecorator _decorator;
 
     [SetUp]
     public void SetUp ()
     {
-      _innerMixinTypeGeneratorMock = MockRepository.GenerateStrictMock<IMixinTypeGenerator>();
+      _innerTypeGeneratorMock = MockRepository.GenerateStrictMock<ITypeGenerator>();
       
       var innerModuleManager = MockRepository.GenerateStub<IModuleManager>();
       var debuggerInterface = MockRepository.GenerateStub<IDebuggerInterface>();
       _moduleManager = new DebuggerWorkaroundModuleManagerDecorator (5, debuggerInterface, innerModuleManager);
       
-      _decorator = new DebuggerWorkaroundMixinTypeGeneratorDecorator (_innerMixinTypeGeneratorMock, _moduleManager);
+      _decorator = new DebuggerWorkaroundTypeGeneratorDecorator (_innerTypeGeneratorMock, _moduleManager);
     }
 
     [Test]
@@ -49,22 +46,16 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting.Mixins
     {
       Assert.That (_moduleManager.GeneratedTypeCountForCurrentScope, Is.EqualTo (0));
 
-      var fakeBuiltType =
-          new ConcreteMixinType (
-              new ConcreteMixinTypeIdentifier (typeof (string), new HashSet<MethodInfo>(), new HashSet<MethodInfo>()),
-              typeof (string),
-              typeof (string),
-              new Dictionary<MethodInfo, MethodInfo>(),
-              new Dictionary<MethodInfo, MethodInfo>());
-      _innerMixinTypeGeneratorMock
+      var fakeBuiltType = typeof (string);
+      _innerTypeGeneratorMock
           .Expect (mock => mock.GetBuiltType())
           .Return (fakeBuiltType)
           .WhenCalled (mi => Assert.That (_moduleManager.GeneratedTypeCountForCurrentScope, Is.EqualTo (0)));
-      _innerMixinTypeGeneratorMock.Replay();
+      _innerTypeGeneratorMock.Replay();
 
       var result = _decorator.GetBuiltType();
 
-      _innerMixinTypeGeneratorMock.VerifyAllExpectations();
+      _innerTypeGeneratorMock.VerifyAllExpectations();
       Assert.That (result, Is.SameAs (fakeBuiltType));
       Assert.That (_moduleManager.GeneratedTypeCountForCurrentScope, Is.EqualTo (1));
     }
