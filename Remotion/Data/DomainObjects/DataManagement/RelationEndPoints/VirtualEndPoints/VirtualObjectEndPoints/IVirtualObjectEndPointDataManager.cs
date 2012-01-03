@@ -14,19 +14,19 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System;
-using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
-using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints;
-using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints.CollectionEndPoints;
-
-namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.SerializableFakes
+namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints.VirtualObjectEndPoints
 {
-  [Serializable]
-  public class SerializableCollectionEndPointDataKeeperFactoryFake : IVirtualEndPointDataKeeperFactory<ICollectionEndPointDataKeeper>
+  /// <summary>
+  /// Defines an interface for classes storing the data for a <see cref="VirtualObjectEndPoint"/>.
+  /// </summary>
+  public interface IVirtualObjectEndPointDataManager : IVirtualEndPointDataManager
   {
-    public ICollectionEndPointDataKeeper Create (RelationEndPointID endPointID)
-    {
-      return new SerializableCollectionEndPointDataKeeperFake();
-    }
+    DomainObject CurrentOppositeObject { get; set; }
+    DomainObject OriginalOppositeObject { get; }
+
+    IRealObjectEndPoint CurrentOppositeEndPoint { get; }
+    IRealObjectEndPoint OriginalOppositeEndPoint { get; }
+    DomainObject OriginalItemWithoutEndPoint { get; }
+    void SetDataFromSubTransaction (IVirtualObjectEndPointDataManager sourceDataManager, IRelationEndPointProvider endPointProvider);
   }
 }

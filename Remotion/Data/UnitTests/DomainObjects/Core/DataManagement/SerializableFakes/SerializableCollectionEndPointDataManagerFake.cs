@@ -23,9 +23,9 @@ using Remotion.Data.DomainObjects.Infrastructure.Serialization;
 
 namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.SerializableFakes
 {
-  public class SerializableCollectionEndPointDataKeeperFake : ICollectionEndPointDataKeeper
+  public class SerializableCollectionEndPointDataManagerFake : ICollectionEndPointDataManager
   {
-    public SerializableCollectionEndPointDataKeeperFake ()
+    public SerializableCollectionEndPointDataManagerFake ()
     {
     }
 
@@ -114,7 +114,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.Serializable
       throw new NotImplementedException();
     }
 
-    public void SetDataFromSubTransaction (ICollectionEndPointDataKeeper sourceDataKeeper, IRelationEndPointProvider endPointProvider)
+    public void SetDataFromSubTransaction (ICollectionEndPointDataManager sourceDataManager, IRelationEndPointProvider endPointProvider)
     {
       throw new NotImplementedException();
     }
@@ -129,7 +129,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.Serializable
       throw new NotImplementedException();
     }
 
-    public SerializableCollectionEndPointDataKeeperFake (FlattenedDeserializationInfo info)
+    public SerializableCollectionEndPointDataManagerFake (FlattenedDeserializationInfo info)
     {
 
     }

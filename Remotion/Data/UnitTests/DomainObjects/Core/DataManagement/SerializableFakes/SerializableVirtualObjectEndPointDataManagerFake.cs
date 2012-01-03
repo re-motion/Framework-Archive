@@ -23,13 +23,13 @@ using Remotion.Data.DomainObjects.Infrastructure.Serialization;
 
 namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.SerializableFakes
 {
-  public class SerializableVirtualObjectEndPointDataKeeperFake : IVirtualObjectEndPointDataKeeper
+  public class SerializableVirtualObjectEndPointDataManagerFake : IVirtualObjectEndPointDataManager
   {
-    public SerializableVirtualObjectEndPointDataKeeperFake ()
+    public SerializableVirtualObjectEndPointDataManagerFake ()
     {
     }
 
-    public SerializableVirtualObjectEndPointDataKeeperFake (FlattenedDeserializationInfo info)
+    public SerializableVirtualObjectEndPointDataManagerFake (FlattenedDeserializationInfo info)
     {
     }
 
@@ -123,7 +123,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.Serializable
       get { throw new NotImplementedException(); }
     }
 
-    public void SetDataFromSubTransaction (IVirtualObjectEndPointDataKeeper sourceDataKeeper, IRelationEndPointProvider endPointProvider)
+    public void SetDataFromSubTransaction (IVirtualObjectEndPointDataManager sourceDataManager, IRelationEndPointProvider endPointProvider)
     {
       throw new NotImplementedException();
     }

@@ -22,13 +22,13 @@ using Remotion.Data.DomainObjects.Infrastructure.Serialization;
 
 namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.SerializableFakes
 {
-  public class SerializableVirtualEndPointDataKeeperFake : IVirtualEndPointDataKeeper
+  public class SerializableVirtualEndPointDataManagerFake : IVirtualEndPointDataManager
   {
-    public SerializableVirtualEndPointDataKeeperFake ()
+    public SerializableVirtualEndPointDataManagerFake ()
     {
     }
 
-    public SerializableVirtualEndPointDataKeeperFake (FlattenedDeserializationInfo info)
+    public SerializableVirtualEndPointDataManagerFake (FlattenedDeserializationInfo info)
     {
     }
 

@@ -15,20 +15,18 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Utilities;
+using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
+using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints;
+using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints.CollectionEndPoints;
 
-namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints.VirtualObjectEndPoints
+namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.SerializableFakes
 {
-  /// <summary>
-  /// The <see cref="VirtualObjectEndPointDataKeeperFactory"/> is responsible to create a new <see cref="IVirtualObjectEndPointDataKeeper"/> instance.
-  /// </summary>
   [Serializable]
-  public class VirtualObjectEndPointDataKeeperFactory : IVirtualEndPointDataKeeperFactory<IVirtualObjectEndPointDataKeeper>
+  public class SerializableCollectionEndPointDataManagerFactoryFake : IVirtualEndPointDataManagerFactory<ICollectionEndPointDataManager>
   {
-    public IVirtualObjectEndPointDataKeeper Create (RelationEndPointID endPointID)
+    public ICollectionEndPointDataManager Create (RelationEndPointID endPointID)
     {
-      ArgumentUtility.CheckNotNull ("endPointID", endPointID);
-      return new VirtualObjectEndPointDataKeeper (endPointID);
+      return new SerializableCollectionEndPointDataManagerFake();
     }
   }
 }

@@ -18,18 +18,15 @@ using System;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints;
-using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints.VirtualObjectEndPoints;
 
 namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.SerializableFakes
 {
   [Serializable]
-  public class SerializableVirtualObjectEndPointDataKeeperFactoryFake
-      : IVirtualEndPointDataKeeperFactory<IVirtualObjectEndPointDataKeeper>
-
+  public class SerializableVirtualEndPointDataManagerFactoryFake : IVirtualEndPointDataManagerFactory<IVirtualEndPointDataManager>
   {
-    public IVirtualObjectEndPointDataKeeper Create (RelationEndPointID endPointID)
+    public IVirtualEndPointDataManager Create (RelationEndPointID endPointID)
     {
-      return new SerializableVirtualObjectEndPointDataKeeperFake();
+      return new SerializableVirtualEndPointDataManagerFake ();
     }
   }
 }
