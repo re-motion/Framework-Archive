@@ -15,16 +15,14 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using Remotion.Data.DomainObjects;
+using Remotion.Mixins;
 
-namespace Remotion.Data.UnitTests.DomainObjects.Core.Mapping.TestDomain.Integration.ReflectionBasedMappingSample
+namespace Remotion.Data.UnitTests.DomainObjects.Core.Mapping.TestDomain.ReflectionBasedPropertyResolver
 {
+  [Uses (typeof (MixinWithPersistentProperty))]
   [DBTable]
-  [TestDomain]
-  [Instantiable]
-  public abstract class ClassWithInterfaceWithMissingAccessors : DomainObject, IInterfaceWithPropertiesWithMissingAccessors
+  public class ClassWithMixinWithPersistentProperty : DomainObject
   {
-    public abstract string PropertyWithGetAccessor { get; }
-
-    public abstract string PropertyWithSetAccessor { set; }
+    
   }
 }

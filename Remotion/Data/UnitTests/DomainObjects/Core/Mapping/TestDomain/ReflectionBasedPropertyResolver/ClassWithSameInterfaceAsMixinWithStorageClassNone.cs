@@ -16,23 +16,16 @@
 // 
 using System;
 using Remotion.Data.DomainObjects;
-using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
-using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Mixins;
 
-namespace Remotion.Data.UnitTests.DomainObjects.Core.Mapping.TestDomain.Integration.MixedMapping
+namespace Remotion.Data.UnitTests.DomainObjects.Core.Mapping.TestDomain.ReflectionBasedPropertyResolver
 {
-  [Extends(typeof(TargetClassForMixinAddingInterfaceWithProperties))]
-  public class MixinAddingInterfaceWithProperties : DomainObjectMixin<TargetClassForMixinAddingInterfaceWithProperties>, IInterfaceWithPropertiesAddedByMixin
+  [Uses (typeof (MixinWithPersistentProperty))]
+  [DBTable]
+  public class ClassWithSameInterfaceAsMixinWithStorageClassNone : DomainObject, IInterfaceWithProperty
   {
-    public string ImplicitProperty
-    {
-      get { throw new NotImplementedException(); }
-      set { throw new NotImplementedException(); }
-    }
-
-    [StorageClass(StorageClass.Persistent)]
-    string IInterfaceWithPropertiesAddedByMixin.ExplicitManagedProperty
+    [StorageClassNone]
+    public int Property
     {
       get { throw new NotImplementedException(); }
       set { throw new NotImplementedException(); }

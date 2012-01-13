@@ -14,20 +14,13 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System;
 using Remotion.Data.DomainObjects;
-using Remotion.Mixins;
 
 namespace Remotion.Data.UnitTests.DomainObjects.Core.Mapping.TestDomain.ReflectionBasedPropertyResolver
 {
-  [Uses (typeof (MixinImplementingInterfaceWithProperty_StorageClassPersistent))]
-  public class ClassImplementingInterfaceWithProperty_StorageClassNone : IInterfaceWithProperty
+  [DBTable]
+  public class ClassWithInterface : DomainObject, IInterfaceWithProperty
   {
-    [StorageClassNone]
-    public int Property
-    {
-      get { throw new NotImplementedException(); }
-      set { throw new NotImplementedException(); }
-    }
+    public virtual int Property { get; set; }
   }
 }

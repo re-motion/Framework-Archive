@@ -14,11 +14,16 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-namespace Remotion.Data.UnitTests.DomainObjects.Core.Mapping.TestDomain.Integration.MixedMapping
+using Remotion.Data.DomainObjects;
+
+namespace Remotion.Data.UnitTests.DomainObjects.Core.Mapping.TestDomain.ReflectionBasedPropertyResolver
 {
-  public interface IInterfaceWithPropertiesAddedByMixin
+  [DBTable]
+  public class ClassWithSimpleProperties : DomainObject
   {
-    string ImplicitProperty { get; set; }
-    string ExplicitManagedProperty { get; set; }
+    public virtual int StorageClassPersistentProperty { get; set; }
+
+    [StorageClassNone]
+    public virtual int StorageClassNoneProperty { get; set; }
   }
 }

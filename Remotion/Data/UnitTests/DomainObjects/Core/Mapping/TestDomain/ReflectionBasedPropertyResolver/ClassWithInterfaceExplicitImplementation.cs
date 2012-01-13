@@ -14,38 +14,16 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System;
-using NUnit.Framework;
+using Remotion.Data.DomainObjects;
 using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
-using Remotion.Data.UnitTests.DomainObjects.Core.Mapping.TestDomain.Integration.ReflectionBasedMappingSample;
+using Remotion.Data.DomainObjects.Mapping;
 
-namespace Remotion.Data.UnitTests.DomainObjects.Core.Mapping
+namespace Remotion.Data.UnitTests.DomainObjects.Core.Mapping.TestDomain.ReflectionBasedPropertyResolver
 {
-  [TestFixture]
-  public class ClassIDProviderTest
+  [DBTable]
+  public class ClassWithInterfaceExplicitImplementation : DomainObject, IInterfaceWithProperty
   {
-    private ClassIDProvider _classIDProvider;
-
-    [SetUp]
-    public void SetUp ()
-    {
-      _classIDProvider = new ClassIDProvider();
-    }
-
-    [Test]
-    public void GetClassID_ForClassWithoutClassIDAttribute ()
-    {
-      var result = _classIDProvider.GetClassID (typeof (ClassWithoutClassIDAttribute));
-
-      Assert.That (result, Is.EqualTo ("ClassWithoutClassIDAttribute"));
-    }
-
-    [Test]
-    public void GetClassID_ForClassHavingClassIDAttribute ()
-    {
-      var result = _classIDProvider.GetClassID (typeof (ClassHavingClassIDAttribute));
-
-      Assert.That (result, Is.EqualTo ("ClassIDForClassHavingClassIDAttribute"));
-    }
+    [StorageClass (StorageClass.Persistent)]
+    int IInterfaceWithProperty.Property { get; set; }
   }
 }

@@ -14,15 +14,11 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System;
-using Remotion.Data.DomainObjects;
-
-namespace Remotion.Data.UnitTests.DomainObjects.TestDomain.ReflectionBasedMappingSample
+namespace Remotion.Data.UnitTests.DomainObjects.Core.Mapping.TestDomain.ReflectionBasedPropertyResolver
 {
-  public interface IInterfaceWithProperties
+  public interface IInterfaceWithPropertiesWithSingleAccessors
   {
-    string ImplicitProperty { get; set; }
-    string ExplicitProperty { get; set; }
-    string ExplicitManagedProperty { get; set; }
+    int PropertyWithGetAccessorOnly { get; }
+    int PropertyWithSetAccessorOnly { set; }
   }
 }

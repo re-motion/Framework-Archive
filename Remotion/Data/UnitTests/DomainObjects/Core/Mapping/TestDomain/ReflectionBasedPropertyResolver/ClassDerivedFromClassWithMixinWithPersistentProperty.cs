@@ -14,15 +14,10 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using Remotion.Data.DomainObjects;
-
-namespace Remotion.Data.UnitTests.DomainObjects.Core.Mapping.TestDomain.Integration.ReflectionBasedMappingSample
+namespace Remotion.Data.UnitTests.DomainObjects.Core.Mapping.TestDomain.ReflectionBasedPropertyResolver
 {
-  [Instantiable]
-  public abstract class ClassDerivedFromClassWithInterface : ClassWithInterface
+  public class ClassDerivedFromClassWithMixinWithPersistentProperty : ClassWithMixinWithPersistentProperty
   {
-    protected ClassDerivedFromClassWithInterface()
-    {
-    }
+    
   }
 }
