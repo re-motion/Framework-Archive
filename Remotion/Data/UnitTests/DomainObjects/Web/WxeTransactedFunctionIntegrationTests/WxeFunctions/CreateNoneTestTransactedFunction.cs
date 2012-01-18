@@ -15,13 +15,14 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using NUnit.Framework;
 using Remotion.Data.DomainObjects;
 using Remotion.Web.ExecutionEngine;
 
-namespace Remotion.Data.UnitTests.DomainObjects.Web.WxeFunctions
+namespace Remotion.Data.UnitTests.DomainObjects.Web.WxeTransactedFunctionIntegrationTests.WxeFunctions
 {
   [Serializable]
-  public class RemoveCurrentTransactionScopeFunction : WxeFunction
+  public class CreateNoneTestTransactedFunction : WxeFunction
   {
     // types
 
@@ -31,16 +32,23 @@ namespace Remotion.Data.UnitTests.DomainObjects.Web.WxeFunctions
 
     // construction and disposing
 
-    public RemoveCurrentTransactionScopeFunction ()
-        : base (WxeTransactionMode<ClientTransactionFactory>.CreateRoot)
+    public CreateNoneTestTransactedFunction (ClientTransactionScope previousClientTransactionScope)
+        : base (WxeTransactionMode<ClientTransactionFactory>.None, previousClientTransactionScope)
     {
     }
 
     // methods and properties
 
+    [WxeParameter (1, true, WxeParameterDirection.In)]
+    public ClientTransactionScope PreviousClientTransactionScope
+    {
+      get { return (ClientTransactionScope) Variables["PreviousClientTransactionScope"]; }
+      set { Variables["PreviousClientTransactionScope"] = value; }
+    }
+
     private void Step1 ()
     {
-      ClientTransactionScope.ActiveScope.Leave();
+      Assert.AreSame (PreviousClientTransactionScope, ClientTransactionScope.ActiveScope);
     }
   }
 }
