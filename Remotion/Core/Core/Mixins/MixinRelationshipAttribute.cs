@@ -15,8 +15,8 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Implementation;
 using System.Linq;
+using Remotion.Utilities;
 
 namespace Remotion.Mixins
 {

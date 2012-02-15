@@ -14,29 +14,34 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System;
-using Remotion.Implementation;
+using Remotion.Utilities;
 
-namespace Remotion.Mixins
+namespace Remotion.Logging
 {
   /// <summary>
-  /// When applied to a mixin, specifies that this mixin does not introduce a specific interface or attribute to the target class.
+  /// Defines a <see cref="LogLevel"/> as the threshold for a logger.
   /// </summary>
-  /// <remarks>Use this attribute if a mixin should implement an interface or declare an attribute "just for itself" and the interface should not be
-  /// forwarded to the target class.</remarks>
-  [AttributeUsage (AttributeTargets.Class, AllowMultiple = true, Inherited = true)]
-  public class NonIntroducedAttribute : Attribute
+  public class LogThreshold
   {
-    private readonly Type _nonIntroducedType;
+    private readonly ILog _logger;
+    private readonly LogLevel _threshold;
 
-    public NonIntroducedAttribute (Type nonIntroducedType)
+    public LogThreshold (ILog logger, LogLevel threshold)
     {
-      _nonIntroducedType = ArgumentUtility.CheckNotNull ("nonIntroducedType", nonIntroducedType);
+      ArgumentUtility.CheckNotNull ("logger", logger);
+
+      _logger = logger;
+      _threshold = threshold;
     }
 
-    public Type NonIntroducedType
+    public ILog Logger
     {
-      get { return _nonIntroducedType; }
+      get { return _logger; }
+    }
+
+    public LogLevel Threshold
+    {
+      get { return _threshold; }
     }
   }
 }

@@ -17,7 +17,7 @@
 using System;
 using System.Collections;
 using System.Reflection;
-using Remotion.Implementation;
+using Remotion.Utilities;
 
 namespace Remotion.Mixins
 {

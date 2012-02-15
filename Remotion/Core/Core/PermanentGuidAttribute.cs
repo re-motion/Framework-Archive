@@ -15,35 +15,35 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Remotion.Utilities;
 
-namespace JetBrains.Annotations
+namespace Remotion
 {
   /// <summary>
-  /// Indicates the condition parameter of the assertion method. 
-  /// The method itself should be marked by <see cref="AssertionMethodAttribute"/> attribute.
-  /// The mandatory argument of the attribute is the assertion type.
+  ///   Supplies an identifier that should remain constant even accross refactorings. Can be applied to reference types, properties and fields.
   /// </summary>
-  /// <seealso cref="AssertionConditionType"/>
-  [AttributeUsage (AttributeTargets.Parameter, AllowMultiple = false, Inherited = true)]
-  internal sealed class AssertionConditionAttribute : Attribute
+  [AttributeUsage (AttributeTargets.Class | AttributeTargets.Property |AttributeTargets.Field, AllowMultiple = false, Inherited = false)]
+  public class PermanentGuidAttribute : Attribute
   {
-    private readonly AssertionConditionType myConditionType;
+    private readonly Guid _value;
 
     /// <summary>
-    /// Initializes new instance of AssertionConditionAttribute
+    ///   Initializes a new instance of the <see cref="PermanentGuidAttribute"/> class.
     /// </summary>
-    /// <param name="conditionType">Specifies condition type</param>
-    public AssertionConditionAttribute (AssertionConditionType conditionType)
+    /// <param name="value"> The <see cref="String"/> representation of a <see cref="Guid"/>. </param>
+    public PermanentGuidAttribute (string value)
     {
-      myConditionType = conditionType;
+      ArgumentUtility.CheckNotNullOrEmpty ("value", value);
+
+      _value = new Guid (value);
     }
 
     /// <summary>
-    /// Gets condition type
+    ///   Gets the <see cref="Guid"/> supplied during initialization.
     /// </summary>
-    public AssertionConditionType ConditionType
+    public Guid Value
     {
-      get { return myConditionType; }
+      get { return _value; }
     }
   }
 }

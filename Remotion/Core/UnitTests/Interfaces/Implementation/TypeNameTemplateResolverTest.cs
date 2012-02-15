@@ -63,8 +63,8 @@ namespace Remotion.UnitTests.Interfaces.Implementation
     }
 
     [Test]
-    [ExpectedException (typeof (TypeLoadException), ExpectedMessage = "Could not load type 'Badabing' from assembly 'Remotion.Interfaces, "
-       + "Version=.*, Culture=neutral, PublicKeyToken=.*'.", MatchType = MessageMatch.Regex)]
+    [ExpectedException (typeof (TypeLoadException), ExpectedMessage = "Could not load type 'Badabing' from assembly 'Remotion, "
+       + "Version=.*, Culture=neutral, PublicKeyToken=.*'\\.", MatchType = MessageMatch.Regex)]
     public void ResolveType_WithInvalidTypeName ()
     {
       FrameworkVersion.Value = typeof (ConcreteImplementationAttributeTest).Assembly.GetName ().Version;

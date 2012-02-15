@@ -82,9 +82,6 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.Interception
       Module domainObjectAssemblyModule = typeof (DomainObject).Assembly.ManifestModule;
       File.Copy (domainObjectAssemblyModule.FullyQualifiedName, Path.Combine (AssemblyDirectory, domainObjectAssemblyModule.Name));
 
-      Module mixinAssemblyModule = typeof (Mixin).Assembly.ManifestModule;
-      File.Copy (mixinAssemblyModule.FullyQualifiedName, Path.Combine (AssemblyDirectory, mixinAssemblyModule.Name));
-
       Module coreAssemblyModule = typeof (ArgumentUtility).Assembly.ManifestModule;
       File.Copy (coreAssemblyModule.FullyQualifiedName, Path.Combine (AssemblyDirectory, coreAssemblyModule.Name));
 

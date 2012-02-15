@@ -15,33 +15,28 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Remotion.Utilities;
 
-namespace JetBrains.Annotations
+namespace Remotion.Mixins
 {
   /// <summary>
-  /// Specifies assertion type. If the assertion method argument satisifes the condition, then the execution continues. 
-  /// Otherwise, execution is assumed to be halted
+  /// When applied to a mixin, specifies that this mixin does not introduce a specific interface or attribute to the target class.
   /// </summary>
-  internal enum AssertionConditionType
+  /// <remarks>Use this attribute if a mixin should implement an interface or declare an attribute "just for itself" and the interface should not be
+  /// forwarded to the target class.</remarks>
+  [AttributeUsage (AttributeTargets.Class, AllowMultiple = true, Inherited = true)]
+  public class NonIntroducedAttribute : Attribute
   {
-    /// <summary>
-    /// Indicates that the marked parameter should be evaluated to true
-    /// </summary>
-    IS_TRUE = 0,
+    private readonly Type _nonIntroducedType;
 
-    /// <summary>
-    /// Indicates that the marked parameter should be evaluated to false
-    /// </summary>
-    IS_FALSE = 1,
+    public NonIntroducedAttribute (Type nonIntroducedType)
+    {
+      _nonIntroducedType = ArgumentUtility.CheckNotNull ("nonIntroducedType", nonIntroducedType);
+    }
 
-    /// <summary>
-    /// Indicates that the marked parameter should be evaluated to null value
-    /// </summary>
-    IS_NULL = 2,
-
-    /// <summary>
-    /// Indicates that the marked parameter should be evaluated to not null value
-    /// </summary>
-    IS_NOT_NULL = 3,
+    public Type NonIntroducedType
+    {
+      get { return _nonIntroducedType; }
+    }
   }
 }

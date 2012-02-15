@@ -15,7 +15,9 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Remotion.Utilities;
 
+// TODO Interfaces: Find a better name for this namespace.
 namespace Remotion.Implementation
 {
   /// <summary>
