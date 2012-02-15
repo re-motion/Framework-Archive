@@ -22,7 +22,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using Remotion.Utilities;
 
-namespace Remotion.Implementation
+namespace Remotion.ServiceLocation
 {
   public class FrameworkVersionRetriever
   {

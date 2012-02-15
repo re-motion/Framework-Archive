@@ -17,7 +17,7 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace Remotion.Implementation
+namespace Remotion.ServiceLocation
 {
   /// <summary>
   /// Thrown by <see cref="FrameworkVersionRetriever"/> when the framework version cannot be determined automatically. Use 

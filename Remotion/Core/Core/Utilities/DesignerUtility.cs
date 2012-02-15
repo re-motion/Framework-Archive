@@ -17,7 +17,6 @@
 using System;
 using System.ComponentModel.Design;
 using Remotion.Design;
-using Remotion.Implementation;
 
 namespace Remotion.Utilities
 {

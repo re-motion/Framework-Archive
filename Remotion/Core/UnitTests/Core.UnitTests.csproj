@@ -217,7 +217,7 @@
     <Compile Include="Globalization\ResourceManagerCacheEntryTest.cs" />
     <Compile Include="BridgeInterfaces\IAdapterRegistryImplementationTest.cs" />
     <Compile Include="BridgeInterfaces\IParamListCreateImplementationTest.cs" />
-    <Compile Include="Implementation\TypeNameTemplateResolverTest.cs" />
+    <Compile Include="ServiceLocation\TypeNameTemplateResolverTest.cs" />
     <Compile Include="Logging\ILogManagerTest.cs" />
     <Compile Include="Logging\Log4NetLogTests\IsEnabledTest.cs" />
     <Compile Include="Logging\LogExtensionsTest.cs" />
@@ -638,9 +638,9 @@
     <Compile Include="Globalization\TestDomain\ClassWithoutMultiLingualResourcesAttributes.cs" />
     <Compile Include="Globalization\TestDomain\InheritedClassWithoutMultiLingualResourcesAttributes.cs" />
     <Compile Include="Globalization\TestDomain\InheritedClassWithMultiLingualResourcesAttributes.cs" />
-    <Compile Include="Implementation\ConcreteImplementationAttributeTest.cs" />
-    <Compile Include="Implementation\FrameworkVersionRetrieverTest.cs" />
-    <Compile Include="Implementation\FrameworkVersionTest.cs" />
+    <Compile Include="ServiceLocation\ConcreteImplementationAttributeTest.cs" />
+    <Compile Include="ServiceLocation\FrameworkVersionRetrieverTest.cs" />
+    <Compile Include="ServiceLocation\FrameworkVersionTest.cs" />
     <Compile Include="Logging\Log4NetLogManagerTest.cs" />
     <Compile Include="Logging\Log4NetLogTests\BaseTest.cs" />
     <Compile Include="Logging\Log4NetLogTests\ConvertTest.cs" />

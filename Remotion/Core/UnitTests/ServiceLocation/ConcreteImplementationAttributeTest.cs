@@ -14,12 +14,10 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System;
 using NUnit.Framework;
-using Remotion.Implementation;
-using Remotion.UnitTests.ServiceLocation.TestDomain;
+using Remotion.ServiceLocation;
 
-namespace Remotion.UnitTests.Interfaces.Implementation
+namespace Remotion.UnitTests.ServiceLocation
 {
   [TestFixture]
   public class ConcreteImplementationAttributeTest
@@ -30,7 +28,7 @@ namespace Remotion.UnitTests.Interfaces.Implementation
     [SetUp]
     public void SetUp ()
     {
-      _typeNameTemplate = "Remotion.UnitTests.Interfaces.Implementation.ConcreteImplementationAttributeTest, Remotion.UnitTests, Version = <version>";
+      _typeNameTemplate = "Remotion.UnitTests.ServiceLocation.ConcreteImplementationAttributeTest, Remotion.UnitTests, Version = <version>";
       _attribute = new ConcreteImplementationAttribute (_typeNameTemplate);
       _attribute.Lifetime = LifetimeKind.Singleton;
     }
@@ -48,7 +46,7 @@ namespace Remotion.UnitTests.Interfaces.Implementation
       _attribute = new ConcreteImplementationAttribute (typeof (ConcreteImplementationAttributeTest));
 
       Assert.That (
-        _attribute.TypeNameTemplate.StartsWith ("Remotion.UnitTests.Interfaces.Implementation.ConcreteImplementationAttributeTest, Remotion.UnitTests"), 
+        _attribute.TypeNameTemplate.StartsWith ("Remotion.UnitTests.ServiceLocation.ConcreteImplementationAttributeTest, Remotion.UnitTests"), 
         Is.True);
     }
   }

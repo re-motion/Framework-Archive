@@ -16,7 +16,6 @@
 // 
 using System;
 using Microsoft.Practices.ServiceLocation;
-using Remotion.Implementation;
 
 namespace Remotion.ServiceLocation
 {

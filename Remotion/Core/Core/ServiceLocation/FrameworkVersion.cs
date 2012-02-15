@@ -17,7 +17,7 @@
 using System;
 using Remotion.Utilities;
 
-namespace Remotion.Implementation
+namespace Remotion.ServiceLocation
 {
   /// <summary>
   /// Holds the <see cref="Version"/> object used by <see cref="TypeNameTemplateResolver"/> to retrieve types from

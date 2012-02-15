@@ -18,7 +18,7 @@ using System;
 using System.Diagnostics;
 using Remotion.Reflection.TypeDiscovery;
 
-namespace Remotion.Implementation
+namespace Remotion.ServiceLocation
 {
   /// <summary>
   /// Provides functionality to resolve type name templates to actual types. Type name templates are assembly-qualified type names that contain

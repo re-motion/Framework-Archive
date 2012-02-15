@@ -18,12 +18,12 @@ using System;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using NUnit.Framework;
-using Remotion.Implementation;
 using Remotion.Logging;
 using Remotion.Mixins.CodeGeneration;
+using Remotion.ServiceLocation;
 using Rhino.Mocks;
 
-namespace Remotion.UnitTests.Interfaces.Implementation
+namespace Remotion.UnitTests.ServiceLocation
 {
   [TestFixture]
   public class FrameworkVersionRetrieverTest

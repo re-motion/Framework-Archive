@@ -20,12 +20,11 @@ using System.Reflection;
 using Castle.DynamicProxy;
 using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
 using NUnit.Framework;
-using Remotion.Implementation;
 using Remotion.Reflection.CodeGeneration;
 using Remotion.Reflection.CodeGeneration.DPExtensions;
-using Remotion.Utilities;
+using Remotion.ServiceLocation;
 
-namespace Remotion.UnitTests.Interfaces.Implementation
+namespace Remotion.UnitTests.ServiceLocation
 {
   [TestFixture]
   public class FrameworkVersionTest

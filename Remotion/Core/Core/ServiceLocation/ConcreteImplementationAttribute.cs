@@ -18,7 +18,7 @@ using System;
 using Remotion.Utilities;
 
 // TODO Interfaces: Find a better name for this namespace.
-namespace Remotion.Implementation
+namespace Remotion.ServiceLocation
 {
   /// <summary>
   /// Defines the concrete implementation for a service type (usually an interface or abstract class) as well as its <see cref="LifetimeKind"/>.

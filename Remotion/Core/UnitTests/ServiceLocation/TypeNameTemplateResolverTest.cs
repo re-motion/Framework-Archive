@@ -17,10 +17,10 @@
 using System;
 using System.Linq;
 using NUnit.Framework;
-using Remotion.Implementation;
+using Remotion.ServiceLocation;
 using Remotion.Text;
 
-namespace Remotion.UnitTests.Interfaces.Implementation
+namespace Remotion.UnitTests.ServiceLocation
 {
   [TestFixture]
   public class TypeNameTemplateResolverTest
@@ -58,7 +58,7 @@ namespace Remotion.UnitTests.Interfaces.Implementation
     public void ResolveType ()
     {
       FrameworkVersion.Value = typeof (ConcreteImplementationAttributeTest).Assembly.GetName ().Version;
-      const string typeName = "Remotion.UnitTests.Interfaces.Implementation.ConcreteImplementationAttributeTest, Remotion.UnitTests, Version = <version>";
+      const string typeName = "Remotion.UnitTests.ServiceLocation.ConcreteImplementationAttributeTest, Remotion.UnitTests, Version = <version>";
       Assert.AreSame (typeof (ConcreteImplementationAttributeTest), TypeNameTemplateResolver.ResolveToType (typeName));
     }
 
