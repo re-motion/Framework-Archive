@@ -208,6 +208,10 @@
     <Compile Include="Mixins\Validation\ValidatedDefinitionDescription.cs" />
     <Compile Include="Mixins\Validation\ValidationLogData.cs" />
     <Compile Include="PermanentGuidAttribute.cs" />
+    <Compile Include="Reflection\ActionInvokerWrapper.generated.cs" />
+    <Compile Include="Reflection\ActionInvokerWrapper.template.cs" />
+    <Compile Include="Reflection\FuncInvokerWrapper.generated.cs" />
+    <Compile Include="Reflection\FuncInvokerWrapper.template.cs" />
     <Compile Include="Reflection\IActionInvoker.generated.cs" />
     <Compile Include="Reflection\IActionInvoker.template.cs" />
     <Compile Include="Reflection\IConstructorLookupInfo.cs" />
