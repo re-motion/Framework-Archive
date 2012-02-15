@@ -15,9 +15,8 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.BridgeInterfaces;
 using Remotion.Collections;
-using Remotion.Implementation;
+using Remotion.Security.BridgeInterfaces;
 using Remotion.ServiceLocation;
 
 namespace Remotion.Security

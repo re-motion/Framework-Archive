@@ -15,11 +15,9 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Mixins.BridgeInterfaces;
-using Remotion.Mixins.CodeGeneration;
 using Remotion.Utilities;
 
-namespace Remotion.Mixins.BridgeImplementations
+namespace Remotion.Mixins.CodeGeneration
 {
   public class TypeFactoryImplementation : ITypeFactoryImplementation
   {

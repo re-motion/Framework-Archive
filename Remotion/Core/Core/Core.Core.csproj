@@ -129,17 +129,11 @@
     </Compile>
     <Compile Include="AdapterRegistry.cs" />
     <Compile Include="BridgeImplementations\AdapterRegistryImplementation.cs" />
-    <Compile Include="BridgeImplementations\InterlockedCacheFactoryImplementation.cs" />
-    <Compile Include="BridgeImplementations\TypeDiscoveryServiceFactoryImplementation.cs" />
     <Compile Include="BridgeImplementations\ParamListCreateImplementation.generated.cs" />
     <Compile Include="BridgeImplementations\ParamListCreateImplementation.template.cs" />
     <Compile Include="BridgeInterfaces\IAdapterRegistryImplementation.cs" />
-    <Compile Include="BridgeInterfaces\IBoostrapStorageProvider.cs" />
-    <Compile Include="BridgeInterfaces\ICallContextStorageProvider.cs" />
-    <Compile Include="BridgeInterfaces\IInterlockedCacheFactoryImplementation.cs" />
     <Compile Include="BridgeInterfaces\IParamListCreateImplementation.generated.cs" />
     <Compile Include="BridgeInterfaces\IParamListCreateImplementation.template.cs" />
-    <Compile Include="BridgeInterfaces\ITypeDiscoveryServiceFactoryImplementation.cs" />
     <Compile Include="Collections\CacheFactory.cs" />
     <Compile Include="Collections\DataStoreFactory.cs" />
     <Compile Include="Collections\ExpiringDataStore.cs" />
@@ -175,9 +169,8 @@
     <Compile Include="Mixins\BindToConstraintsAttribute.cs" />
     <Compile Include="Mixins\BindToGenericTargetParameterAttribute.cs" />
     <Compile Include="Mixins\BindToTargetTypeAttribute.cs" />
-    <Compile Include="Mixins\BridgeInterfaces\IMixinImplementation.cs" />
-    <Compile Include="Mixins\BridgeInterfaces\IObjectFactoryImplementation.cs" />
-    <Compile Include="Mixins\BridgeInterfaces\ITypeFactoryImplementation.cs" />
+    <Compile Include="Mixins\CodeGeneration\IObjectFactoryImplementation.cs" />
+    <Compile Include="Mixins\CodeGeneration\ITypeFactoryImplementation.cs" />
     <Compile Include="Mixins\CodeGeneration\IConcreteMixinTypeProvider.cs" />
     <Compile Include="Mixins\CodeGeneration\IConcreteTypeProvider.cs" />
     <Compile Include="Mixins\CompleteInterfaceAttribute.cs" />
@@ -483,7 +476,7 @@
     <Compile Include="Mixins\CodeGeneration\IGeneratedTypeNameProvider.cs" />
     <Compile Include="Mixins\CodeGeneration\ITypeGenerator.cs" />
     <Compile Include="Mixins\CodeGeneration\NamespaceChangingNameProvider.cs" />
-    <Compile Include="Mixins\BridgeImplementations\TypeFactoryImplementation.cs" />
+    <Compile Include="Mixins\CodeGeneration\TypeFactoryImplementation.cs" />
     <Compile Include="Mixins\ConfigurationException.cs" />
     <Compile Include="Mixins\Context\ClassContext.cs" />
     <Compile Include="Mixins\Context\ClassContextCollection.cs" />
@@ -574,9 +567,8 @@
     <Compile Include="Mixins\Utilities\DependencySort\DependentObjectSorterAlgorithm.cs" />
     <Compile Include="Mixins\Utilities\DependencySort\IDependencyAnalyzer.cs" />
     <Compile Include="Mixins\Utilities\ConstraintBasedGenericParameterInstantiator.cs" />
-    <Compile Include="Mixins\BridgeImplementations\ObjectFactoryImplementation.cs" />
+    <Compile Include="Mixins\CodeGeneration\ObjectFactoryImplementation.cs" />
     <Compile Include="Mixins\Utilities\MixedTypeConstructorLookupInfo.cs" />
-    <Compile Include="Mixins\BridgeImplementations\MixinImplementation.cs" />
     <Compile Include="Mixins\Utilities\MixinReflector.cs" />
     <Compile Include="Mixins\Utilities\MixinTypeCloser.cs" />
     <Compile Include="Mixins\Utilities\MultiSet.cs" />

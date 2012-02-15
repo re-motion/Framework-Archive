@@ -14,16 +14,14 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System;
 using NUnit.Framework;
-using Remotion.BridgeInterfaces;
-using Remotion.Context;
+using Remotion.Mixins.CodeGeneration;
 using Remotion.ServiceLocation;
 
-namespace Remotion.UnitTests.Interfaces.BridgeInterfaces
+namespace Remotion.UnitTests.Mixins.CodeGeneration
 {
   [TestFixture]
-  public class IBootstrapStorageProviderTest
+  public class IObjectFactoryImplementationTest
   {
     private DefaultServiceLocator _serviceLocator;
 
@@ -36,17 +34,17 @@ namespace Remotion.UnitTests.Interfaces.BridgeInterfaces
     [Test]
     public void GetInstance_Once ()
     {
-      var factory = _serviceLocator.GetInstance<IBootstrapStorageProvider> ();
+      var factory = _serviceLocator.GetInstance<IObjectFactoryImplementation> ();
 
       Assert.That (factory, Is.Not.Null);
-      Assert.That (factory, Is.TypeOf (typeof (BootstrapStorageProvider)));
+      Assert.That (factory, Is.TypeOf (typeof (ObjectFactoryImplementation)));
     }
 
     [Test]
     public void GetInstance_Twice_ReturnsSameInstance ()
     {
-      var factory1 = _serviceLocator.GetInstance<IBootstrapStorageProvider> ();
-      var factory2 = _serviceLocator.GetInstance<IBootstrapStorageProvider> ();
+      var factory1 = _serviceLocator.GetInstance<IObjectFactoryImplementation> ();
+      var factory2 = _serviceLocator.GetInstance<IObjectFactoryImplementation> ();
 
       Assert.That (factory1, Is.SameAs (factory2));
     }

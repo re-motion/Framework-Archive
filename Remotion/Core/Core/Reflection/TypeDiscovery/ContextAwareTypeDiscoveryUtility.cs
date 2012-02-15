@@ -16,8 +16,7 @@
 // 
 using System;
 using System.ComponentModel.Design;
-using Remotion.BridgeInterfaces;
-using Remotion.ServiceLocation;
+using Remotion.Configuration.TypeDiscovery;
 using Remotion.Utilities;
 
 namespace Remotion.Reflection.TypeDiscovery
@@ -49,7 +48,7 @@ namespace Remotion.Reflection.TypeDiscovery
         {
           if (_defaultService == null)
           {
-            _defaultService = SafeServiceLocator.Current.GetInstance<ITypeDiscoveryServiceFactoryImplementation>().CreateTypeDiscoveryService ();
+            _defaultService = TypeDiscoveryConfiguration.Current.CreateTypeDiscoveryService();
           }
           return _defaultService;
         }

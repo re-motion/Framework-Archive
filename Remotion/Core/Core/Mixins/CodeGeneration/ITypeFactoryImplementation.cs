@@ -14,19 +14,16 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using Remotion.Collections;
+using System;
 using Remotion.Implementation;
 
-namespace Remotion.BridgeInterfaces
+namespace Remotion.Mixins.CodeGeneration
 {
-  /// <summary>
-  /// This interface is used to separate the <see cref="T:Remotion.BridgeImplementations.InterlockedCacheFactoryImplementation"/>
-  /// from it's instantiation in the current service locator.
-  /// </summary>
-  [ConcreteImplementation ("Remotion.BridgeImplementations.InterlockedCacheFactoryImplementation, Remotion, Version=<version>, Culture=neutral, PublicKeyToken=<publicKeyToken>",
+  [ConcreteImplementation ("Remotion.Mixins.CodeGeneration.TypeFactoryImplementation, Remotion, Version=<version>, Culture=neutral, PublicKeyToken=<publicKeyToken>",
     Lifetime = LifetimeKind.Singleton)]
-  public interface IInterlockedCacheFactoryImplementation
+  public interface ITypeFactoryImplementation
   {
-    ICache<TKey, TValue> CreateCache<TKey, TValue> ();
+    Type GetConcreteType (Type targetOrConcreteType, GenerationPolicy generationPolicy);
+    void InitializeUnconstructedInstance (object mixinTarget);
   }
 }

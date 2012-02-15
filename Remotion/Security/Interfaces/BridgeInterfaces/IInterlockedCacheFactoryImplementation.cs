@@ -14,16 +14,19 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System;
+using Remotion.Collections;
 using Remotion.Implementation;
 
-namespace Remotion.Mixins.BridgeInterfaces
+namespace Remotion.Security.BridgeInterfaces
 {
-  [ConcreteImplementation ("Remotion.Mixins.BridgeImplementations.MixinImplementation, Remotion, Version=<version>, Culture=neutral, PublicKeyToken=<publicKeyToken>",
+  /// <summary>
+  /// This interface is used to separate the <see cref="T:Remotion.Security.BridgeImplementations.InterlockedCacheFactoryImplementation"/>
+  /// from it's instantiation in the current service locator.
+  /// </summary>
+  [ConcreteImplementation ("Remotion.Security.BridgeImplementations.InterlockedCacheFactoryImplementation, Remotion, Version=<version>, Culture=neutral, PublicKeyToken=<publicKeyToken>",
     Lifetime = LifetimeKind.Singleton)]
-  public interface IMixinImplementation
+  public interface IInterlockedCacheFactoryImplementation
   {
-    TMixin Get<TMixin> (object mixinTarget) where TMixin : class;
-    object Get (Type mixinType, object mixinTarget);
+    ICache<TKey, TValue> CreateCache<TKey, TValue> ();
   }
 }

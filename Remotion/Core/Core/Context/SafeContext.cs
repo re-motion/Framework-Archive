@@ -55,8 +55,7 @@ namespace Remotion.Context
           if (s_instance == null)
           {
             // set temporary context so that mixins can be used
-            IBootstrapStorageProvider bootstrapStorageProvider = SafeServiceLocator.Current.GetInstance < IBootstrapStorageProvider>();
-            s_instance = bootstrapStorageProvider;
+            s_instance = new BootstrapStorageProvider();
             
             // then determine the actual context to be used
             s_instance = ObjectFactory.Create<SafeContext> (ParamList.Empty).GetDefaultInstance();
@@ -97,7 +96,7 @@ namespace Remotion.Context
 #pragma warning disable 168
       object bootstrapperInstance = Instance;
 #pragma warning restore 168
-      return SafeServiceLocator.Current.GetInstance <ICallContextStorageProvider>();
+      return new CallContextStorageProvider();
     }
   }
 }

@@ -15,23 +15,20 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.ComponentModel.Design;
-using Remotion.BridgeInterfaces;
-using Remotion.Configuration.TypeDiscovery;
-using Remotion.Reflection.TypeDiscovery;
+using Remotion.Collections;
+using Remotion.Security.BridgeInterfaces;
 
-namespace Remotion.BridgeImplementations
+namespace Remotion.Security.BridgeImplementations
 {
   /// <summary>
-  /// The <see cref="TypeDiscoveryServiceFactoryImplementation"/> is a factory class that creates instances of type 
-  /// <see cref="AssemblyFinderTypeDiscoveryService"/>.
+  /// The <see cref="InterlockedCacheFactoryImplementation"/> is a factory class that creates instances of type 
+  /// <see cref="LockingCacheDecorator{TKey,TValue}"/>.
   /// </summary>
-  /// <seealso cref="ContextAwareTypeDiscoveryUtility"/>
-  public class TypeDiscoveryServiceFactoryImplementation : ITypeDiscoveryServiceFactoryImplementation
+  public class InterlockedCacheFactoryImplementation : IInterlockedCacheFactoryImplementation
   {
-    public ITypeDiscoveryService CreateTypeDiscoveryService ()
+    public ICache<TKey, TValue> CreateCache<TKey, TValue> ()
     {
-      return TypeDiscoveryConfiguration.Current.CreateTypeDiscoveryService ();
+      return CacheFactory.CreateWithLocking<TKey, TValue>();
     }
   }
 }

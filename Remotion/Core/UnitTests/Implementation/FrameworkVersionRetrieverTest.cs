@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 using NUnit.Framework;
 using Remotion.Implementation;
 using Remotion.Logging;
-using Remotion.Mixins.BridgeImplementations;
+using Remotion.Mixins.CodeGeneration;
 using Rhino.Mocks;
 
 namespace Remotion.UnitTests.Interfaces.Implementation

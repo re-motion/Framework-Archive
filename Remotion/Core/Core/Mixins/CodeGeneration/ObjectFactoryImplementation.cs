@@ -15,13 +15,11 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Mixins.BridgeInterfaces;
-using Remotion.Mixins.CodeGeneration;
 using Remotion.Mixins.Utilities;
 using Remotion.Reflection;
 using Remotion.Utilities;
 
-namespace Remotion.Mixins.BridgeImplementations
+namespace Remotion.Mixins.CodeGeneration
 {
   public class ObjectFactoryImplementation : IObjectFactoryImplementation
   {

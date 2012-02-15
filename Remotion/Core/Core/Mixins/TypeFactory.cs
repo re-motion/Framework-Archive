@@ -16,7 +16,7 @@
 // 
 using System;
 using System.Runtime.Serialization;
-using Remotion.Mixins.BridgeInterfaces;
+using Remotion.Mixins.CodeGeneration;
 using Remotion.ServiceLocation;
 
 namespace Remotion.Mixins

@@ -16,8 +16,8 @@
 // 
 using System;
 using System.Diagnostics;
-using Remotion.Mixins.BridgeInterfaces;
-using Remotion.ServiceLocation;
+using System.Reflection;
+using Remotion.Utilities;
 
 namespace Remotion.Mixins
 {
@@ -31,8 +31,6 @@ namespace Remotion.Mixins
     // Singleton implementations with nested classes are documented here: http://csharpindepth.com/Articles/General/Singleton.aspx.
     static class LazyStaticFields
     {
-      public static readonly IMixinImplementation MixinImplementation = SafeServiceLocator.Current.GetInstance<IMixinImplementation> ();
-
       // ReSharper disable EmptyConstructor
       // Explicit static constructor to tell C# compiler not to mark type as beforefieldinit; this will make the static fields as lazy as possible.
       static LazyStaticFields ()
@@ -55,7 +53,8 @@ namespace Remotion.Mixins
     /// </remarks>
     public static TMixin Get<TMixin> (object mixinTarget) where TMixin : class
     {
-      return LazyStaticFields.MixinImplementation.Get<TMixin> (mixinTarget);
+      ArgumentUtility.CheckNotNull ("mixinTarget", mixinTarget);
+      return (TMixin) Get (typeof (TMixin), mixinTarget);
     }
 
     /// <summary>
@@ -73,7 +72,47 @@ namespace Remotion.Mixins
     /// </remarks>
     public static object Get (Type mixinType, object mixinTarget)
     {
-      return LazyStaticFields.MixinImplementation.Get (mixinType, mixinTarget);
+      ArgumentUtility.CheckNotNull ("mixinType", mixinType);
+      ArgumentUtility.CheckNotNull ("mixinTarget", mixinTarget);
+
+      var castMixinTarget = mixinTarget as IMixinTarget;
+      if (castMixinTarget != null)
+      {
+        return FindMixin (castMixinTarget, mixinType);
+      }
+      return null;
+    }
+
+    private static object FindMixin (IMixinTarget mixinTarget, Type mixinType)
+    {
+      object mixin = null;
+      foreach (var potentialMixin in mixinTarget.Mixins)
+      {
+        if (IsTypeMatch (potentialMixin.GetType (), mixinType))
+        {
+          if (mixin != null)
+          {
+            string message = string.Format (
+                "Both mixins '{0}' and '{1}' match the given type '{2}'.",
+                mixin.GetType ().FullName,
+                potentialMixin.GetType ().FullName,
+                mixinType.Name);
+            throw new AmbiguousMatchException (message);
+          }
+
+          mixin = potentialMixin;
+        }
+      }
+
+      return mixin;
+    }
+
+    private static bool IsTypeMatch (Type potentialMixinType, Type searchedMixinType)
+    {
+      return searchedMixinType.IsAssignableFrom (potentialMixinType)
+          || (searchedMixinType.IsGenericTypeDefinition
+              && potentialMixinType.IsGenericType
+              && potentialMixinType.GetGenericTypeDefinition () == searchedMixinType);
     }
   }
 

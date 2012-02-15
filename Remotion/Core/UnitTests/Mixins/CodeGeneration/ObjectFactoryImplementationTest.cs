@@ -17,11 +17,11 @@
 using System;
 using NUnit.Framework;
 using Remotion.Mixins;
-using Remotion.Mixins.BridgeImplementations;
+using Remotion.Mixins.CodeGeneration;
 using Remotion.Reflection;
 using Remotion.UnitTests.Mixins.TestDomain;
 
-namespace Remotion.UnitTests.Mixins.Utilities
+namespace Remotion.UnitTests.Mixins.CodeGeneration
 {
   [TestFixture]
   public class ObjectFactoryImplementationTest

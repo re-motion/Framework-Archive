@@ -16,14 +16,16 @@
 // 
 using System;
 using NUnit.Framework;
+using Remotion.BridgeImplementations;
 using Remotion.BridgeInterfaces;
-using Remotion.Context;
+using Remotion.Security.BridgeImplementations;
+using Remotion.Security.BridgeInterfaces;
 using Remotion.ServiceLocation;
 
-namespace Remotion.UnitTests.Interfaces.BridgeInterfaces
+namespace Remotion.Security.UnitTests.Core.BridgeInterfaces
 {
   [TestFixture]
-  public class ICallContextStorageProviderTest
+  public class IInterlockedCacheFactoryImplementationTest
   {
     private DefaultServiceLocator _serviceLocator;
 
@@ -36,17 +38,17 @@ namespace Remotion.UnitTests.Interfaces.BridgeInterfaces
     [Test]
     public void GetInstance_Once ()
     {
-      var factory = _serviceLocator.GetInstance<ICallContextStorageProvider> ();
+      var factory = _serviceLocator.GetInstance<IInterlockedCacheFactoryImplementation> ();
 
       Assert.That (factory, Is.Not.Null);
-      Assert.That (factory, Is.TypeOf (typeof (CallContextStorageProvider)));
+      Assert.That (factory, Is.TypeOf (typeof (InterlockedCacheFactoryImplementation)));
     }
 
     [Test]
     public void GetInstance_Twice_ReturnsSameInstance ()
     {
-      var factory1 = _serviceLocator.GetInstance<ICallContextStorageProvider> ();
-      var factory2 = _serviceLocator.GetInstance<ICallContextStorageProvider> ();
+      var factory1 = _serviceLocator.GetInstance<IInterlockedCacheFactoryImplementation> ();
+      var factory2 = _serviceLocator.GetInstance<IInterlockedCacheFactoryImplementation> ();
 
       Assert.That (factory1, Is.SameAs (factory2));
     }

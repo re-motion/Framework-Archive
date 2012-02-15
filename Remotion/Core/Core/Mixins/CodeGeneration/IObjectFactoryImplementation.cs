@@ -16,14 +16,14 @@
 // 
 using System;
 using Remotion.Implementation;
+using Remotion.Reflection;
 
-namespace Remotion.Mixins.BridgeInterfaces
+namespace Remotion.Mixins.CodeGeneration
 {
-  [ConcreteImplementation ("Remotion.Mixins.BridgeImplementations.TypeFactoryImplementation, Remotion, Version=<version>, Culture=neutral, PublicKeyToken=<publicKeyToken>",
+  [ConcreteImplementation ("Remotion.Mixins.CodeGeneration.ObjectFactoryImplementation, Remotion, Version=<version>, Culture=neutral, PublicKeyToken=<publicKeyToken>",
     Lifetime = LifetimeKind.Singleton)]
-  public interface ITypeFactoryImplementation
+  public interface IObjectFactoryImplementation
   {
-    Type GetConcreteType (Type targetOrConcreteType, GenerationPolicy generationPolicy);
-    void InitializeUnconstructedInstance (object mixinTarget);
+    object CreateInstance (bool allowNonPublicConstructors, Type targetOrConcreteType, ParamList constructorParameters, GenerationPolicy generationPolicy, params object[] preparedMixins);
   }
 }
