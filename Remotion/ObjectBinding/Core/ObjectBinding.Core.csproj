@@ -122,10 +122,6 @@
       <Project>{FBE0CBDD-82FF-4173-8536-47D3B5BC2E98}</Project>
       <Name>Security.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Interfaces\ObjectBinding.Interfaces.csproj">
-      <Project>{A1FCDC69-E8E3-4DC0-8EE7-A8FEA772EF5B}</Project>
-      <Name>ObjectBinding.Interfaces</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\AssemblyInfoShared.cs">
@@ -173,7 +169,20 @@
     <Compile Include="BindableObject\Properties\ExtensibleEnumerationProperty.cs" />
     <Compile Include="BusinessObjectExtensions.cs" />
     <Compile Include="DefaultSearchArguments.cs" />
+    <Compile Include="IBusinessObject.cs" />
+    <Compile Include="IBusinessObjectBooleanProperty.cs" />
+    <Compile Include="IBusinessObjectClass.cs" />
+    <Compile Include="IBusinessObjectClassService.cs" />
+    <Compile Include="IBusinessObjectClassWithIdentity.cs" />
+    <Compile Include="IBusinessObjectDateTimeProperty.cs" />
+    <Compile Include="IBusinessObjectEnumerationProperty.cs" />
+    <Compile Include="IBusinessObjectNumericProperty.cs" />
+    <Compile Include="IBusinessObjectProperty.cs" />
+    <Compile Include="IBusinessObjectPropertyPath.cs" />
+    <Compile Include="IBusinessObjectProvider.cs" />
     <Compile Include="IBusinessObjectProviderWithIdentity.cs" />
+    <Compile Include="IBusinessObjectReferenceProperty.cs" />
+    <Compile Include="IBusinessObjectService.cs" />
     <Compile Include="IBusinessObjectServiceFactory.cs" />
     <Compile Include="BindableObject\IClassReflector.cs" />
     <Compile Include="BindableObject\IMetadataFactory.cs" />
@@ -243,7 +252,13 @@
     <Compile Include="IBusinessObjectBoundEditableControl.cs" />
     <Compile Include="IBusinessObjectDataSource.cs" />
     <Compile Include="IBusinessObjectReferenceDataSource.cs" />
+    <Compile Include="IBusinessObjectStringFormatterService.cs" />
+    <Compile Include="IBusinessObjectStringProperty.cs" />
+    <Compile Include="IBusinessObjectWithIdentity.cs" />
     <Compile Include="IDisableEnumValuesAttribute.cs" />
+    <Compile Include="IEnumerationValueInfo.cs" />
+    <Compile Include="IListInfo.cs" />
+    <Compile Include="ISearchAvailableObjectsArguments.cs" />
     <Compile Include="ListUtility.cs" />
     <Compile Include="ObjectBindingAttribute.cs" />
     <Compile Include="ItemTypeAttribute.cs" />
