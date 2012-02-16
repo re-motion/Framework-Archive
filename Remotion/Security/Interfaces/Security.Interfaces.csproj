@@ -70,7 +70,6 @@
     <Compile Include="AccessTypeAttribute.cs" />
     <Compile Include="ArgumentUtility.cs" />
     <Compile Include="EnumWrapper.cs" />
-    <Compile Include="BridgeInterfaces\IInterlockedCacheFactoryImplementation.cs" />
     <Compile Include="IObjectSecurityAdapter.cs" />
     <Compile Include="IObjectSecurityStrategy.cs" />
     <Compile Include="ISecurableObject.cs" />

@@ -16,8 +16,6 @@
 // 
 using System;
 using Remotion.Collections;
-using Remotion.Security.BridgeInterfaces;
-using Remotion.ServiceLocation;
 
 namespace Remotion.Security
 {
@@ -29,8 +27,7 @@ namespace Remotion.Security
   [Serializable]
   public struct AccessType : IEquatable<AccessType>
   {
-    private static readonly ICache<Enum, AccessType> s_accessTypeByEnumCache = SafeServiceLocator.Current
-       .GetInstance<IInterlockedCacheFactoryImplementation>().CreateCache<Enum, AccessType>();
+    private static readonly ICache<Enum, AccessType> s_accessTypeByEnumCache = CacheFactory.CreateWithLocking<Enum, AccessType>();
 
     public static AccessType Get (Enum accessType)
     {

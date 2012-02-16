@@ -88,7 +88,6 @@
     <Compile Include="GlobalAccessTypeCacheProviderObjectReference.cs" />
     <Compile Include="IFunctionalSecurityStrategy.cs" />
     <Compile Include="IGlobalAccessTypeCacheProvider.cs" />
-    <Compile Include="BridgeImplementations\InterlockedCacheFactoryImplementation.cs" />
     <Compile Include="IRevisionBasedSecurityProvider.cs" />
     <Compile Include="Metadata\MemberAffiliation.cs" />
     <Compile Include="Metadata\IMemberResolver.cs" />

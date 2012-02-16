@@ -79,7 +79,6 @@
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
     <Compile Include="Core\AccessTypeTest.cs" />
-    <Compile Include="Core\BridgeInterfaces\IInterlockedCacheFactoryImplementationTest.cs" />
     <Compile Include="Core\Configuration\GlobalAccessTypeCacheProviderMock.cs" />
     <Compile Include="Core\Configuration\FunctionalSecurityStrategyMock.cs" />
     <Compile Include="Core\Configuration\MemberResolverMock.cs" />
