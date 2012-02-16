@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{51F58AF1-F925-4000-A0C3-7C88E290DFB8}</ProjectGuid>
+    <ProjectGuid>{D641E4E2-23F3-4454-8074-1327EF07BAA1}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Remotion.Mixins.UnitTests</RootNamespace>
-    <AssemblyName>Remotion.Mixins.UnitTests</AssemblyName>
+    <RootNamespace>Mixins.Core</RootNamespace>
+    <AssemblyName>Mixins.Core</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -47,12 +47,6 @@
     <None Include="..\..\Remotion LGPL.licenseheader">
       <Link>Remotion LGPL.licenseheader</Link>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Core\Mixins.Core.csproj">
-      <Project>{D641E4E2-23F3-4454-8074-1327EF07BAA1}</Project>
-      <Name>Mixins.Core</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

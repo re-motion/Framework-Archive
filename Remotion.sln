@@ -210,6 +210,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Mixins", "Mixins", "{5D41A2
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mixins.UnitTests", "Remotion\Mixins\UnitTests\Mixins.UnitTests.csproj", "{51F58AF1-F925-4000-A0C3-7C88E290DFB8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mixins.Core", "Remotion\Mixins\Core\Mixins.Core.csproj", "{D641E4E2-23F3-4454-8074-1327EF07BAA1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -598,6 +600,12 @@ Global
 		{51F58AF1-F925-4000-A0C3-7C88E290DFB8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{51F58AF1-F925-4000-A0C3-7C88E290DFB8}.Release|Any CPU.Build.0 = Release|Any CPU
 		{51F58AF1-F925-4000-A0C3-7C88E290DFB8}.Release|x86.ActiveCfg = Release|Any CPU
+		{D641E4E2-23F3-4454-8074-1327EF07BAA1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D641E4E2-23F3-4454-8074-1327EF07BAA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D641E4E2-23F3-4454-8074-1327EF07BAA1}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D641E4E2-23F3-4454-8074-1327EF07BAA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D641E4E2-23F3-4454-8074-1327EF07BAA1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D641E4E2-23F3-4454-8074-1327EF07BAA1}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -666,6 +674,7 @@ Global
 		{58B51BBB-23D9-4B96-9F1F-8696B71F73C8} = {988D8C19-2325-4EBC-B74F-1EFC0E620587}
 		{4A626E26-F384-451A-A966-C90B961D9C8D} = {988D8C19-2325-4EBC-B74F-1EFC0E620587}
 		{51F58AF1-F925-4000-A0C3-7C88E290DFB8} = {5D41A27E-2DB6-4BFB-B65E-CE4344369B88}
+		{D641E4E2-23F3-4454-8074-1327EF07BAA1} = {5D41A27E-2DB6-4BFB-B65E-CE4344369B88}
 	EndGlobalSection
 	GlobalSection(TextTemplating) = postSolution
 		TextTemplating = 1
