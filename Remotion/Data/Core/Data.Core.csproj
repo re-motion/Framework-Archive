@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Remotion.Data</RootNamespace>
-    <AssemblyName>Remotion.Data.Interfaces</AssemblyName>
+    <AssemblyName>Remotion.Data</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>3.5</OldToolsVersion>
@@ -42,7 +42,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\Remotion.Data.Interfaces.XML</DocumentationFile>
+    <DocumentationFile>bin\Debug\Remotion.Data.xml</DocumentationFile>
     <NoWarn>1591;419</NoWarn>
     <WarningsAsErrors>
     </WarningsAsErrors>
@@ -59,7 +59,7 @@
     <NoWarn>1591;419</NoWarn>
     <WarningsAsErrors>
     </WarningsAsErrors>
-    <DocumentationFile>bin\Release\Remotion.Data.Interfaces.XML</DocumentationFile>
+    <DocumentationFile>bin\Release\Remotion.Data.xml</DocumentationFile>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
