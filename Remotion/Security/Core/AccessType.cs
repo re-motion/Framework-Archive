@@ -16,6 +16,7 @@
 // 
 using System;
 using Remotion.Collections;
+using Remotion.Utilities;
 
 namespace Remotion.Security
 {

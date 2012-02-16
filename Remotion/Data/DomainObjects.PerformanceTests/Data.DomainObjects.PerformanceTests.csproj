@@ -149,10 +149,6 @@
       <Project>{FBE0CBDD-82FF-4173-8536-47D3B5BC2E98}</Project>
       <Name>Security.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Security\Interfaces\Security.Interfaces.csproj">
-      <Project>{6B243694-318E-4C20-A2EA-B910EFE5F2F6}</Project>
-      <Name>Security.Interfaces</Name>
-    </ProjectReference>
     <ProjectReference Include="..\DomainObjects.Security\Data.DomainObjects.Security.csproj">
       <Project>{2C87FB62-CC00-4297-A3EA-35F4FC6649F0}</Project>
       <Name>Data.DomainObjects.Security</Name>

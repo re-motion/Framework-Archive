@@ -140,10 +140,6 @@
       <Project>{FBE0CBDD-82FF-4173-8536-47D3B5BC2E98}</Project>
       <Name>Security.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Security\Interfaces\Security.Interfaces.csproj">
-      <Project>{6B243694-318E-4C20-A2EA-B910EFE5F2F6}</Project>
-      <Name>Security.Interfaces</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Web\Security\Web.Security.csproj">
       <Project>{9B6F6D1A-A7EA-4EE8-B36E-E31CF7E518E3}</Project>
       <Name>Web.Security</Name>
