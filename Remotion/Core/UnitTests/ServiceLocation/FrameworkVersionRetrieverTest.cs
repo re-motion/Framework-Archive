@@ -18,7 +18,6 @@ using System;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using NUnit.Framework;
-using Remotion.Logging;
 using Remotion.Mixins.CodeGeneration;
 using Remotion.ServiceLocation;
 using Rhino.Mocks;
@@ -28,12 +27,6 @@ namespace Remotion.UnitTests.ServiceLocation
   [TestFixture]
   public class FrameworkVersionRetrieverTest
   {
-    [SetUp]
-    public void SetUp ()
-    {
-      LogManager.InitializeConsole ();
-    }
-
     [Test]
     [ExpectedException (typeof (FrameworkVersionNotFoundException), 
         ExpectedMessage = "NonExistent is neither loaded nor referenced, and trying to load it by name ('NonExistent') didn't work either.")]
