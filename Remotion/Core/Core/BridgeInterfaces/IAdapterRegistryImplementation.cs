@@ -19,6 +19,7 @@ using Remotion.ServiceLocation;
 
 namespace Remotion.BridgeInterfaces
 {
+  // TODO 4614: Will be removed when AdapterRegistry is replaced with ServiceLocator.
   [ConcreteImplementation ("Remotion.BridgeImplementations.AdapterRegistryImplementation, Remotion, Version=<version>, Culture=neutral, PublicKeyToken=<publicKeyToken>",
     Lifetime = LifetimeKind.Singleton)]
   public interface IAdapterRegistryImplementation
