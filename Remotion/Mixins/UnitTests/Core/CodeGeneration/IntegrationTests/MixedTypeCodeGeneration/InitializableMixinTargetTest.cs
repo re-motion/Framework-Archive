@@ -17,15 +17,14 @@
 using System;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
-using Remotion.Mixins;
 using Remotion.Mixins.CodeGeneration.DynamicProxy;
+using Remotion.Mixins.UnitTests.Core.CodeGeneration.TestDomain;
+using Remotion.Mixins.UnitTests.Core.TestDomain;
 using Remotion.Mixins.Utilities;
-using Remotion.UnitTests.Mixins.CodeGeneration.TestDomain;
 using Remotion.Reflection;
 using System.Linq;
-using Remotion.UnitTests.Mixins.TestDomain;
 
-namespace Remotion.UnitTests.Mixins.CodeGeneration.IntegrationTests.MixedTypeCodeGeneration
+namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTypeCodeGeneration
 {
   [TestFixture]
   public class InitializableMixinTargetTest : CodeGenerationBaseTest

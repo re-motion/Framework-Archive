@@ -17,12 +17,11 @@
 using System;
 using System.Collections.Generic;
 using NUnit.Framework;
-using Remotion.Mixins;
 using Remotion.Mixins.Context;
 using Remotion.Mixins.Context.Suppression;
-using Remotion.UnitTests.Mixins.TestDomain;
+using Remotion.Mixins.UnitTests.Core.TestDomain;
 
-namespace Remotion.UnitTests.Mixins.Context.Suppression
+namespace Remotion.Mixins.UnitTests.Core.Context.Suppression
 {
   [TestFixture]
   public class MixinTreeReplacementSuppressionRuleTest

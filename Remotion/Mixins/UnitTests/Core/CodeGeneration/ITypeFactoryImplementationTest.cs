@@ -18,7 +18,7 @@ using NUnit.Framework;
 using Remotion.Mixins.CodeGeneration;
 using Remotion.ServiceLocation;
 
-namespace Remotion.UnitTests.Mixins.CodeGeneration
+namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
 {
   [TestFixture]
   public class ITypeFactoryImplementationTest

@@ -17,13 +17,12 @@
 using System;
 using System.Reflection;
 using NUnit.Framework;
-using Remotion.Mixins;
 using Remotion.Mixins.Definitions;
+using Remotion.Mixins.UnitTests.Core.CodeGeneration.TestDomain;
+using Remotion.Mixins.UnitTests.Core.TestDomain;
 using Remotion.Reflection;
-using Remotion.UnitTests.Mixins.CodeGeneration.TestDomain;
-using Remotion.UnitTests.Mixins.TestDomain;
 
-namespace Remotion.UnitTests.Mixins.CodeGeneration.IntegrationTests.NextCallProxyCodeGeneration
+namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.NextCallProxyCodeGeneration
 {
   [TestFixture]
   public class NextCallTest : CodeGenerationBaseTest

@@ -18,10 +18,10 @@ using System;
 using NUnit.Framework;
 using Remotion.Mixins.Context;
 using Remotion.Mixins.Definitions;
+using Remotion.Mixins.UnitTests.Core.TestDomain;
 using Remotion.Mixins.Validation;
-using Remotion.UnitTests.Mixins.TestDomain;
 
-namespace Remotion.UnitTests.Mixins.Definitions
+namespace Remotion.Mixins.UnitTests.Core.Definitions
 {
   [TestFixture]
   public class TargetClassDefinitionFactoryTest

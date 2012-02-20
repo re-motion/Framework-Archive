@@ -14,19 +14,17 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
-using Remotion.Mixins;
 using Remotion.Mixins.CodeGeneration;
 using Remotion.Mixins.Context;
 using Remotion.Mixins.Context.FluentBuilders;
 using Remotion.Mixins.Context.Serialization;
-using Remotion.UnitTests.Mixins.CodeGeneration.TestDomain;
-using Remotion.UnitTests.Mixins.TestDomain;
+using Remotion.Mixins.UnitTests.Core.CodeGeneration.TestDomain;
+using Remotion.Mixins.UnitTests.Core.TestDomain;
 
-namespace Remotion.UnitTests.Mixins.CodeGeneration
+namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
 {
   [TestFixture]
   public class ConcreteMixedTypeAttributeTest

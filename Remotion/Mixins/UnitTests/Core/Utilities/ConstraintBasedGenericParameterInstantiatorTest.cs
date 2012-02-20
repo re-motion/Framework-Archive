@@ -17,10 +17,10 @@
 using System;
 using System.Collections.Generic;
 using NUnit.Framework;
+using Remotion.Mixins.UnitTests.Core.Utilities.TestDomain;
 using Remotion.Mixins.Utilities;
-using Remotion.UnitTests.Mixins.Utilities.TestDomain;
 
-namespace Remotion.UnitTests.Mixins.Utilities
+namespace Remotion.Mixins.UnitTests.Core.Utilities
 {
   [TestFixture]
   public class ConstraintBasedGenericParameterInstantiatorTest

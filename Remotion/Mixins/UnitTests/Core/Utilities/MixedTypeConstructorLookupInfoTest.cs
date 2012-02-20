@@ -20,7 +20,7 @@ using NUnit.Framework;
 using Remotion.Development.UnitTesting;
 using Remotion.Mixins.Utilities;
 
-namespace Remotion.UnitTests.Mixins.Utilities
+namespace Remotion.Mixins.UnitTests.Core.Utilities
 {
   [TestFixture]
   public class MixedTypeConstructorLookupInfoTest

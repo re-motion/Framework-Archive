@@ -15,10 +15,9 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Mixins;
 using Remotion.Mixins.Context;
 
-namespace Remotion.UnitTests.Mixins.Validation.ValidationTestDomain
+namespace Remotion.Mixins.UnitTests.Core.Validation.ValidationTestDomain
 {
   public class MixinImplementingIMixinTarget : IMixinTarget
   {

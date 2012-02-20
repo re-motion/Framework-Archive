@@ -21,7 +21,7 @@ using Remotion.Development.UnitTesting;
 using Remotion.Mixins.CodeGeneration;
 using Remotion.Mixins.MixerTools;
 
-namespace Remotion.UnitTests.Mixins.MixerTools
+namespace Remotion.Mixins.UnitTests.Core.MixerTools
 {
   [TestFixture]
   public class MixerRunnerTest

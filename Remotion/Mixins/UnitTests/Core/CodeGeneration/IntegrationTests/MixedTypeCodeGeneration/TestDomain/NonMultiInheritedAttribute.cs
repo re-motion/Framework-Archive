@@ -16,7 +16,7 @@
 // 
 using System;
 
-namespace Remotion.UnitTests.Mixins.CodeGeneration.IntegrationTests.MixedTypeCodeGeneration.TestDomain
+namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTypeCodeGeneration.TestDomain
 {
   [AttributeUsage (AttributeTargets.All, AllowMultiple = false, Inherited = true)]
   public class NonMultiInheritedAttribute : Attribute { }

@@ -20,7 +20,7 @@ using Remotion.Globalization;
 using Remotion.Mixins.Globalization;
 using Rhino.Mocks;
 
-namespace Remotion.UnitTests.Mixins.Globalization.MixedMultiLingualResourcesTests
+namespace Remotion.Mixins.UnitTests.Core.Globalization.MixedMultiLingualResourcesTests
 {
 	[TestFixture]
 	public class GeneralTest

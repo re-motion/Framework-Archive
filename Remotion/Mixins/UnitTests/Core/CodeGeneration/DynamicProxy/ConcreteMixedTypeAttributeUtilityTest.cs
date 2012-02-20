@@ -17,13 +17,12 @@
 using System;
 using System.Reflection.Emit;
 using NUnit.Framework;
-using Remotion.Mixins;
 using Remotion.Mixins.CodeGeneration;
 using Remotion.Mixins.CodeGeneration.DynamicProxy;
 using Remotion.Mixins.Context.FluentBuilders;
 using Remotion.Utilities;
 
-namespace Remotion.UnitTests.Mixins.CodeGeneration.DynamicProxy
+namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.DynamicProxy
 {
   [TestFixture]
   public class ConcreteMixedTypeAttributeUtilityTest

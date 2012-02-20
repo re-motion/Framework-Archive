@@ -16,10 +16,9 @@
 // 
 using System;
 using System.Runtime.Serialization;
-using Remotion.Mixins;
-using Remotion.UnitTests.Mixins.TestDomain;
+using Remotion.Mixins.UnitTests.Core.TestDomain;
 
-namespace Remotion.UnitTests.Mixins.CodeGeneration.IntegrationTests.Serialization.TestDomain
+namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.Serialization.TestDomain
 {
   [Serializable]
   [Uses(typeof(NullMixin))]

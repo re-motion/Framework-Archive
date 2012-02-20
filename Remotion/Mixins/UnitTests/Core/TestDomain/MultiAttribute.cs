@@ -16,7 +16,7 @@
 // 
 using System;
 
-namespace Remotion.UnitTests.Mixins.TestDomain
+namespace Remotion.Mixins.UnitTests.Core.TestDomain
 {
   [AttributeUsage (AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true)]
   public class MultiAttribute : Attribute { }

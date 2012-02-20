@@ -16,13 +16,12 @@
 // 
 using System;
 using NUnit.Framework;
-using Remotion.Mixins;
 using Remotion.Mixins.Context.DeclarativeAnalyzers;
 using Remotion.Mixins.Context.FluentBuilders;
 using Rhino.Mocks;
 using Rhino.Mocks.Interfaces;
 
-namespace Remotion.UnitTests.Mixins.Context.DeclarativeAnalyzers
+namespace Remotion.Mixins.UnitTests.Core.Context.DeclarativeAnalyzers
 {
   [TestFixture]
   public class IgnoresAnalyzerTest

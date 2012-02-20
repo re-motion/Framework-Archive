@@ -14,12 +14,11 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
 using Remotion.Mixins.Validation;
 
-namespace Remotion.UnitTests.Mixins.Validation
+namespace Remotion.Mixins.UnitTests.Core.Validation
 {
   [TestFixture]
   public class ValidatedDefinitionDescriptionTest

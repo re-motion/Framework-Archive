@@ -19,12 +19,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using NUnit.Framework;
-using Remotion.Mixins;
+using Remotion.Mixins.UnitTests.Core.TestDomain;
 using Remotion.Reflection.CodeGeneration;
-using Remotion.UnitTests.Mixins.TestDomain;
 using Remotion.Utilities;
 
-namespace Remotion.UnitTests.Mixins.CodeGeneration.IntegrationTests.MixinTypeCodeGeneration
+namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixinTypeCodeGeneration
 {
   [TestFixture]
   public class PublicWrapperTest : CodeGenerationBaseTest

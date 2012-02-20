@@ -16,7 +16,7 @@
 // 
 using System;
 
-namespace Remotion.UnitTests.Mixins.Definitions.TestDomain.RequiredMethodDefinitionBuilding
+namespace Remotion.Mixins.UnitTests.Core.Definitions.TestDomain.RequiredMethodDefinitionBuilding
 {
   public class ClassFulfillingProtectedly
   {

@@ -14,11 +14,9 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System;
 using System.Diagnostics;
-using Remotion.Mixins;
 
-namespace Remotion.UnitTests.Mixins.CodeGeneration.TestDomain
+namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TestDomain
 {
   [CopyCustomAttributes(typeof (AttributeSource))]
   public class MixinAddingDebuggerDisplay

@@ -19,14 +19,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using NUnit.Framework;
-using Remotion.Mixins;
 using Remotion.Mixins.Context;
 using Remotion.Mixins.Context.FluentBuilders;
 using Remotion.Mixins.Samples.UsesAndExtends.Core;
 using Remotion.Mixins.Samples.UsesAndExtends.UnitTests;
-using Remotion.UnitTests.Mixins.TestDomain;
+using Remotion.Mixins.UnitTests.Core.TestDomain;
 
-namespace Remotion.UnitTests.Mixins.Context
+namespace Remotion.Mixins.UnitTests.Core.Context
 {
   [TestFixture]
   public class DeclarativeConfigurationBuilderTest

@@ -19,12 +19,11 @@ using System.Reflection;
 using System.Reflection.Emit;
 using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
 using NUnit.Framework;
-using Remotion.Mixins;
+using Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixinTypeCodeGeneration.TestDomain;
 using Remotion.Reflection;
 using Remotion.Reflection.CodeGeneration;
-using Remotion.UnitTests.Mixins.CodeGeneration.IntegrationTests.MixinTypeCodeGeneration.TestDomain;
 
-namespace Remotion.UnitTests.Mixins.CodeGeneration.IntegrationTests.MixinTypeCodeGeneration
+namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixinTypeCodeGeneration
 {
   [TestFixture]
   public class GeneratedTypeInConfigurationTest : CodeGenerationBaseTest

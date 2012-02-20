@@ -17,7 +17,7 @@
 using System;
 using Remotion.Development.UnitTesting;
 
-namespace Remotion.UnitTests.Mixins.Validation.ValidationTestDomain
+namespace Remotion.Mixins.UnitTests.Core.Validation.ValidationTestDomain
 {
   public class TargetClassWithSameNamesAsIntroducedMembers
   {

@@ -16,7 +16,7 @@
 // 
 using Remotion.Globalization;
 
-namespace Remotion.UnitTests.Mixins.Globalization.TestDomain
+namespace Remotion.Mixins.UnitTests.Core.Globalization.TestDomain
 {
   [MultiLingualResources ("OnTarget")]
   public class ClassWithMultiLingualResourcesAttributes

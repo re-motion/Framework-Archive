@@ -15,11 +15,10 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Mixins;
 using Remotion.Mixins.CodeGeneration;
-using Remotion.UnitTests.Mixins.TestDomain;
+using Remotion.Mixins.UnitTests.Core.TestDomain;
 
-namespace Remotion.UnitTests.Mixins.CodeGeneration.TestDomain
+namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TestDomain
 {
   [ConcreteMixedType (new object[] { typeof (BaseType1), new object[] { new object[] { typeof (BT1Mixin1), MixinKind.Used, MemberVisibility.Private, new Type[0] } }, new Type[0] }, new[] { typeof (BT1Mixin1) })]
   public class LoadableConcreteMixedTypeForBaseType1

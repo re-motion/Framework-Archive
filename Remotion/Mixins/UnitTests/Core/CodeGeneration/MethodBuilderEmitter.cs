@@ -22,7 +22,7 @@ using System.Reflection.Emit;
 using Remotion.Development.UnitTesting;
 using Remotion.Utilities;
 
-namespace Remotion.UnitTests.Mixins.CodeGeneration
+namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
 {
   public class MethodBuilderEmitter : IMemberEmitter
   {

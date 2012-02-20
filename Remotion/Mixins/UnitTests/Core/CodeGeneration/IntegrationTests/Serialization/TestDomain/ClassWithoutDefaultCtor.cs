@@ -15,10 +15,9 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Mixins;
-using Remotion.UnitTests.Mixins.TestDomain;
+using Remotion.Mixins.UnitTests.Core.TestDomain;
 
-namespace Remotion.UnitTests.Mixins.CodeGeneration.IntegrationTests.Serialization.TestDomain
+namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.Serialization.TestDomain
 {
   [Serializable]
   [Uses (typeof (NullMixin))]

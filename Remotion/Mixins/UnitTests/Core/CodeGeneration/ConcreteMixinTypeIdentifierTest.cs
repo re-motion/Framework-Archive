@@ -14,16 +14,15 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System;
 using System.Collections.Generic;
 using System.Reflection;
 using NUnit.Framework;
 using Remotion.Mixins.CodeGeneration;
 using Remotion.Mixins.CodeGeneration.Serialization;
-using Remotion.UnitTests.Mixins.TestDomain;
+using Remotion.Mixins.UnitTests.Core.TestDomain;
 using Rhino.Mocks;
 
-namespace Remotion.UnitTests.Mixins.CodeGeneration
+namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
 {
   [TestFixture]
   public class ConcreteMixinTypeIdentifierTest

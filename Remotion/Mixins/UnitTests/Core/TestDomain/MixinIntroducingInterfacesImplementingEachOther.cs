@@ -17,9 +17,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Remotion.Mixins;
 
-namespace Remotion.UnitTests.Mixins.TestDomain
+namespace Remotion.Mixins.UnitTests.Core.TestDomain
 {
   public class MixinIntroducingInterfacesImplementingEachOther<[BindToTargetType]T> : IList<T>, IEnumerable<T>, IList, IEnumerable
   {

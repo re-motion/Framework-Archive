@@ -17,11 +17,10 @@
 using System;
 using System.Collections.Generic;
 using NUnit.Framework;
-using Remotion.Mixins;
 using Remotion.Mixins.Definitions;
-using Remotion.UnitTests.Mixins.TestDomain;
+using Remotion.Mixins.UnitTests.Core.TestDomain;
 
-namespace Remotion.UnitTests.Mixins.Definitions.Building
+namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
 {
   [TestFixture]
   public class DependencyDefinitionBuilderTest

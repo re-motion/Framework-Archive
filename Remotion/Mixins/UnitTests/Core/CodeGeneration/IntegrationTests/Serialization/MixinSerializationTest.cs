@@ -18,12 +18,11 @@ using System.Reflection;
 using System.Runtime.Serialization;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
-using Remotion.Mixins;
+using Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.Serialization.TestDomain;
+using Remotion.Mixins.UnitTests.Core.TestDomain;
 using Remotion.Mixins.Utilities;
-using Remotion.UnitTests.Mixins.CodeGeneration.IntegrationTests.Serialization.TestDomain;
-using Remotion.UnitTests.Mixins.TestDomain;
 
-namespace Remotion.UnitTests.Mixins.CodeGeneration.IntegrationTests.Serialization
+namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.Serialization
 {
   [TestFixture]
   public class MixinSerializationTest : CodeGenerationBaseTest

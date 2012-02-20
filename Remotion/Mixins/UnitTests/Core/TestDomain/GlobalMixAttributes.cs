@@ -16,7 +16,7 @@
 // 
 using System;
 using Remotion.Mixins;
-using Remotion.UnitTests.Mixins.TestDomain;
+using Remotion.Mixins.UnitTests.Core.TestDomain;
 
 [assembly: Mix (typeof (TargetClassForGlobalMix), typeof (MixinForGlobalMix),
     AdditionalDependencies = new Type[] {typeof (AdditionalDependencyForGlobalMix)},

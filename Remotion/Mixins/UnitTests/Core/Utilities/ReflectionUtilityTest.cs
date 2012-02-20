@@ -17,16 +17,12 @@
 using System;
 using System.Reflection;
 using NUnit.Framework;
-using Remotion.Collections;
-using Remotion.Mixins;
-using Remotion.Mixins.Samples;
 using Remotion.Mixins.Samples.UsesAndExtends.Core;
+using Remotion.Mixins.UnitTests.Core.TestDomain;
+using Remotion.Mixins.UnitTests.Core.Utilities.TestDomain.AssociatedMethods;
 using Remotion.Mixins.Utilities;
-using Remotion.UnitTests.Mixins.TestDomain;
-using Remotion.UnitTests.Mixins.Utilities.TestDomain.AssociatedMethods;
-using Rhino.Mocks;
 
-namespace Remotion.UnitTests.Mixins.Utilities
+namespace Remotion.Mixins.UnitTests.Core.Utilities
 {
   [TestFixture]
   public class ReflectionUtilityTest

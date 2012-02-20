@@ -17,10 +17,9 @@
 using System;
 using System.Runtime.Serialization;
 using NUnit.Framework;
-using Remotion.Mixins;
 using Remotion.Mixins.Context.Serialization;
 
-namespace Remotion.UnitTests.Mixins.Context.Serialization
+namespace Remotion.Mixins.UnitTests.Core.Context.Serialization
 {
   [TestFixture]
   public class AttributeMixinContextSerializationTest

@@ -17,16 +17,15 @@
 using System;
 using System.ComponentModel.Design;
 using NUnit.Framework;
-using Remotion.Mixins;
 using Remotion.Mixins.CodeGeneration;
 using Remotion.Mixins.Context;
 using Remotion.Mixins.MixerTools;
 using System.Linq;
-using Remotion.UnitTests.Mixins.MixerTools.TestDomain;
-using Remotion.UnitTests.Mixins.TestDomain;
+using Remotion.Mixins.UnitTests.Core.MixerTools.TestDomain;
+using Remotion.Mixins.UnitTests.Core.TestDomain;
 using Rhino.Mocks;
 
-namespace Remotion.UnitTests.Mixins.MixerTools
+namespace Remotion.Mixins.UnitTests.Core.MixerTools
 {
   [TestFixture]
   public class ClassContextFinderTest

@@ -18,16 +18,15 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using NUnit.Framework;
-using Remotion.Mixins;
 using Remotion.Mixins.Context;
 using Remotion.Mixins.Context.FluentBuilders;
 using Remotion.Mixins.Context.Serialization;
 using Remotion.Mixins.Context.Suppression;
-using Remotion.UnitTests.Mixins.TestDomain;
+using Remotion.Mixins.UnitTests.Core.TestDomain;
 using Rhino.Mocks;
 using System.Linq;
 
-namespace Remotion.UnitTests.Mixins.Context
+namespace Remotion.Mixins.UnitTests.Core.Context
 {
   [TestFixture]
   public class ClassContextTest

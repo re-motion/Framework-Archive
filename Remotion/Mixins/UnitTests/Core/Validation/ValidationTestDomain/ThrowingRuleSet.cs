@@ -19,7 +19,7 @@ using Remotion.Mixins.Definitions;
 using Remotion.Mixins.Validation;
 using Remotion.Mixins.Validation.Rules;
 
-namespace Remotion.UnitTests.Mixins.Validation.ValidationTestDomain
+namespace Remotion.Mixins.UnitTests.Core.Validation.ValidationTestDomain
 {
   public class ThrowingRuleSet : IRuleSet
   {

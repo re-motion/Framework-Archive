@@ -14,15 +14,14 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System;
 using Microsoft.Practices.ServiceLocation;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
+using Remotion.Mixins.UnitTests.Core.Utilities.Singleton.TestDomain;
 using Remotion.Mixins.Utilities.Singleton;
-using Remotion.UnitTests.Mixins.Utilities.Singleton.TestDomain;
 using Rhino.Mocks;
 
-namespace Remotion.UnitTests.Mixins.Utilities.Singleton
+namespace Remotion.Mixins.UnitTests.Core.Utilities.Singleton
 {
   [TestFixture]
   public class ServiceLocatorInstanceCreatorTest

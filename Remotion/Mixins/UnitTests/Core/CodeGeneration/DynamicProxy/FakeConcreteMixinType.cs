@@ -16,10 +16,9 @@
 // 
 using System;
 using System.Runtime.Serialization;
-using Remotion.Mixins;
-using Remotion.UnitTests.Mixins.TestDomain;
+using Remotion.Mixins.UnitTests.Core.TestDomain;
 
-namespace Remotion.UnitTests.Mixins.CodeGeneration.DynamicProxy
+namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.DynamicProxy
 {
   [IgnoreForMixinConfiguration]
   public class FakeConcreteMixinType : MixinWithAbstractMembers, ISerializable, IDeserializationCallback

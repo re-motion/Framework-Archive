@@ -16,9 +16,8 @@
 // 
 using System;
 using System.Collections.Generic;
-using Remotion.Mixins;
 
-namespace Remotion.UnitTests.Mixins.Context.Suppression.TestDomain
+namespace Remotion.Mixins.UnitTests.Core.Context.Suppression.TestDomain
 {
   [Extends (typeof (ClassWithMixins), MixinTypeArguments = new Type[] { typeof (List<int>), typeof (IList<int>) })]
   [IgnoreForMixinConfiguration]

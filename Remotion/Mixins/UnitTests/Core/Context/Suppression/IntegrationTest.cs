@@ -16,12 +16,11 @@
 // 
 using System.Collections.Generic;
 using NUnit.Framework;
-using Remotion.Mixins;
 using Remotion.Mixins.Context;
-using Remotion.UnitTests.Mixins.Context.Suppression.TestDomain;
 using System.Linq;
+using Remotion.Mixins.UnitTests.Core.Context.Suppression.TestDomain;
 
-namespace Remotion.UnitTests.Mixins.Context.Suppression
+namespace Remotion.Mixins.UnitTests.Core.Context.Suppression
 {
   [TestFixture]
   public class IntegrationTest

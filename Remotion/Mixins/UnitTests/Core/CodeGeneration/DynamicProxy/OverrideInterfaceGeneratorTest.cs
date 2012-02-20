@@ -21,12 +21,12 @@ using System.Runtime.Serialization;
 using NUnit.Framework;
 using Remotion.Mixins.CodeGeneration;
 using Remotion.Mixins.CodeGeneration.DynamicProxy;
+using Remotion.Mixins.UnitTests.Core.TestDomain;
 using Remotion.Reflection.CodeGeneration;
-using Remotion.UnitTests.Mixins.TestDomain;
 using Rhino.Mocks;
 using Remotion.Development.UnitTesting;
 
-namespace Remotion.UnitTests.Mixins.CodeGeneration.DynamicProxy
+namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.DynamicProxy
 {
   [TestFixture]
   public class OverrideInterfaceGeneratorTest

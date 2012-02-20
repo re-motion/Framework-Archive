@@ -18,12 +18,12 @@ using System;
 using System.Reflection;
 using NUnit.Framework;
 using Remotion.Mixins.Definitions;
-using Remotion.UnitTests.Mixins.Definitions.TestDomain;
 using System.Linq;
-using Remotion.UnitTests.Mixins.TestDomain;
+using Remotion.Mixins.UnitTests.Core.Definitions.TestDomain;
+using Remotion.Mixins.UnitTests.Core.TestDomain;
 using Rhino.Mocks;
 
-namespace Remotion.UnitTests.Mixins.Definitions
+namespace Remotion.Mixins.UnitTests.Core.Definitions
 {
   [TestFixture]
   public class ClassDefinitionBaseTest

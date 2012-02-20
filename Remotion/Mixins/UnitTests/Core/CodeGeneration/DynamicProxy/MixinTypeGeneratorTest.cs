@@ -21,13 +21,13 @@ using NUnit.Framework;
 using Remotion.Development.UnitTesting;
 using Remotion.Mixins.CodeGeneration;
 using Remotion.Mixins.CodeGeneration.DynamicProxy;
+using Remotion.Mixins.UnitTests.Core.Definitions.TestDomain;
+using Remotion.Mixins.UnitTests.Core.TestDomain;
 using Remotion.Mixins.Utilities;
 using Remotion.Reflection.CodeGeneration;
-using Remotion.UnitTests.Mixins.Definitions.TestDomain;
-using Remotion.UnitTests.Mixins.TestDomain;
 using Rhino.Mocks;
 
-namespace Remotion.UnitTests.Mixins.CodeGeneration.DynamicProxy
+namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.DynamicProxy
 {
   [TestFixture]
   public class MixinTypeGeneratorTest

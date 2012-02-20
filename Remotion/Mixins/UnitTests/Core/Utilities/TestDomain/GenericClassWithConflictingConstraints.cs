@@ -17,7 +17,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Remotion.UnitTests.Mixins.Utilities.TestDomain
+namespace Remotion.Mixins.UnitTests.Core.Utilities.TestDomain
 {
 // ReSharper disable UnusedTypeParameter
   public class GenericClassWithConflictingConstraints<T>

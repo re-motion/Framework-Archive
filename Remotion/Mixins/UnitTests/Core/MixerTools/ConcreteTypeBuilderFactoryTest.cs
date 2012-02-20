@@ -19,7 +19,7 @@ using Remotion.Mixins.CodeGeneration;
 using Remotion.Mixins.MixerTools;
 using Rhino.Mocks;
 
-namespace Remotion.UnitTests.Mixins.MixerTools
+namespace Remotion.Mixins.UnitTests.Core.MixerTools
 {
   [TestFixture]
   public class ConcreteTypeBuilderFactoryTest

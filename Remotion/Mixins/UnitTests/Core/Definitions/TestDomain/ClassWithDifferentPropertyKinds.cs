@@ -16,7 +16,7 @@
 // 
 using Remotion.Development.UnitTesting;
 
-namespace Remotion.UnitTests.Mixins.Definitions.TestDomain
+namespace Remotion.Mixins.UnitTests.Core.Definitions.TestDomain
 {
   public class ClassWithDifferentPropertyKinds
   {

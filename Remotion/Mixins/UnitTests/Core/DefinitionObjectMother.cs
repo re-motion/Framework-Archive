@@ -19,15 +19,14 @@ using System.Linq;
 using System.Reflection;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
-using Remotion.Mixins;
 using Remotion.Mixins.Context;
 using Remotion.Mixins.Definitions;
 using Remotion.Mixins.Definitions.Building;
-using Remotion.UnitTests.Mixins.TestDomain;
+using Remotion.Mixins.UnitTests.Core.TestDomain;
 using Remotion.Utilities;
 using Rhino.Mocks;
 
-namespace Remotion.UnitTests.Mixins
+namespace Remotion.Mixins.UnitTests.Core
 {
   /// <summary>
   /// Contains utility methods to retrieve and instantiate <see cref="TargetClassDefinition"/> and related objects.

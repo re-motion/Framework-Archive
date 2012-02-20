@@ -17,10 +17,9 @@
 using System;
 using System.Runtime.Serialization;
 using NUnit.Framework;
-using Remotion.Mixins;
-using Remotion.UnitTests.Mixins.TestDomain;
+using Remotion.Mixins.UnitTests.Core.TestDomain;
 
-namespace Remotion.UnitTests.Mixins
+namespace Remotion.Mixins.UnitTests.Core
 {
   [TestFixture]
   public class TypeFactoryTest

@@ -14,14 +14,11 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System;
 using NUnit.Framework;
-using Remotion.Mixins;
-using Remotion.Mixins.Context;
 using Remotion.Mixins.Context.FluentBuilders;
-using Remotion.UnitTests.Mixins.TestDomain;
+using Remotion.Mixins.UnitTests.Core.TestDomain;
 
-namespace Remotion.UnitTests.Mixins.MixinConfigurationTests
+namespace Remotion.Mixins.UnitTests.Core.MixinConfigurationTests
 {
   [TestFixture]
   public class MixinConfigurationBuildTest

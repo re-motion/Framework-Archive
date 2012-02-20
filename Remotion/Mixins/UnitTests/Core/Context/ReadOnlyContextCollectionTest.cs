@@ -20,9 +20,8 @@ using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
 using Remotion.Mixins.Context;
-using Remotion.Utilities;
 
-namespace Remotion.UnitTests.Mixins.Context
+namespace Remotion.Mixins.UnitTests.Core.Context
 {
   [TestFixture]
   public class ReadOnlyContextCollectionTest

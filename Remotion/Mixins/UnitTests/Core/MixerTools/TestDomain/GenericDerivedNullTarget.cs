@@ -14,9 +14,9 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using Remotion.UnitTests.Mixins.TestDomain;
+using Remotion.Mixins.UnitTests.Core.TestDomain;
 
-namespace Remotion.UnitTests.Mixins.MixerTools.TestDomain
+namespace Remotion.Mixins.UnitTests.Core.MixerTools.TestDomain
 {
   // ReSharper disable UnusedTypeParameter
   public class GenericDerivedNullTarget<T> : NullTarget

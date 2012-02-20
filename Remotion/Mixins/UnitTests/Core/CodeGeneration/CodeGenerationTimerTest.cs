@@ -19,7 +19,7 @@ using System.Diagnostics;
 using NUnit.Framework;
 using Remotion.Mixins.CodeGeneration;
 
-namespace Remotion.UnitTests.Mixins.CodeGeneration
+namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
 {
   [TestFixture]
   public class CodeGenerationTimerTest

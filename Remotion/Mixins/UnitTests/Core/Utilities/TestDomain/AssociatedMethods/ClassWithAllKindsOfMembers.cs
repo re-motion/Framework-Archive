@@ -16,7 +16,7 @@
 // 
 using System;
 
-namespace Remotion.UnitTests.Mixins.Utilities.TestDomain.AssociatedMethods
+namespace Remotion.Mixins.UnitTests.Core.Utilities.TestDomain.AssociatedMethods
 {
   public class ClassWithAllKindsOfMembers
   {

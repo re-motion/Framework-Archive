@@ -17,7 +17,7 @@
 using System;
 using Remotion.Mixins.Definitions;
 
-namespace Remotion.UnitTests.Mixins.Definitions.TestDomain
+namespace Remotion.Mixins.UnitTests.Core.Definitions.TestDomain
 {
   public class TestClassDefinition : ClassDefinitionBase
   {

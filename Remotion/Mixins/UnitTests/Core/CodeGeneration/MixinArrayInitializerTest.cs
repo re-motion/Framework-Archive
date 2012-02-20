@@ -16,11 +16,10 @@
 // 
 using System;
 using NUnit.Framework;
-using Remotion.Mixins;
 using Remotion.Mixins.CodeGeneration;
-using Remotion.UnitTests.Mixins.TestDomain;
+using Remotion.Mixins.UnitTests.Core.TestDomain;
 
-namespace Remotion.UnitTests.Mixins.CodeGeneration
+namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
 {
   [TestFixture]
   public class MixinArrayInitializerTest

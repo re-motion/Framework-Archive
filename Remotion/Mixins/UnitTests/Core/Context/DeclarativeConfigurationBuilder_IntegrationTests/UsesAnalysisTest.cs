@@ -16,12 +16,11 @@
 // 
 using System;
 using NUnit.Framework;
-using Remotion.Mixins;
 using Remotion.Mixins.Context;
 using System.Linq;
-using Remotion.UnitTests.Mixins.TestDomain;
+using Remotion.Mixins.UnitTests.Core.TestDomain;
 
-namespace Remotion.UnitTests.Mixins.Context.DeclarativeConfigurationBuilder_IntegrationTests
+namespace Remotion.Mixins.UnitTests.Core.Context.DeclarativeConfigurationBuilder_IntegrationTests
 {
   [TestFixture]
   public class UsesAnalysisTest

@@ -16,7 +16,7 @@
 // 
 using System;
 
-namespace Remotion.UnitTests.Mixins.Validation.ValidationTestDomain
+namespace Remotion.Mixins.UnitTests.Core.Validation.ValidationTestDomain
 {
   public class MixinWithEvent
   {

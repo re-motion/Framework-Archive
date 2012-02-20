@@ -16,12 +16,11 @@
 // 
 using System;
 using NUnit.Framework;
-using Remotion.Mixins;
 using Remotion.Mixins.Definitions.Building.RequiredMethodDefinitionBuilding;
-using Remotion.UnitTests.Mixins.Definitions.Building.RequiredMethodDefinitionBuilding.TestDomain;
 using System.Linq;
+using Remotion.Mixins.UnitTests.Core.Definitions.Building.RequiredMethodDefinitionBuilding.TestDomain;
 
-namespace Remotion.UnitTests.Mixins.Definitions.Building.RequiredMethodDefinitionBuilding
+namespace Remotion.Mixins.UnitTests.Core.Definitions.Building.RequiredMethodDefinitionBuilding
 {
   [TestFixture]
   public class DuckTypingRequiredMethodDefinitionCollectorTest

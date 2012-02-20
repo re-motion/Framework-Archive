@@ -16,11 +16,11 @@
 // 
 using NUnit.Framework;
 using Remotion.Mixins.Definitions;
+using Remotion.Mixins.UnitTests.Core.TestDomain;
+using Remotion.Mixins.UnitTests.Core.Validation.ValidationTestDomain;
 using Remotion.Mixins.Validation;
-using Remotion.UnitTests.Mixins.TestDomain;
-using Remotion.UnitTests.Mixins.Validation.ValidationTestDomain;
 
-namespace Remotion.UnitTests.Mixins.Validation.Rules
+namespace Remotion.Mixins.UnitTests.Core.Validation.Rules
 {
   [TestFixture]
   public class DefaultAttributeIntroductionRulesTest : ValidationTestBase

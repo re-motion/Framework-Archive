@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-namespace Remotion.UnitTests.Mixins.TestDomain
+namespace Remotion.Mixins.UnitTests.Core.TestDomain
 {
   [SuppressAttributes(typeof (BT1Attribute))]
   public class MixinSuppressingBT1Attribute

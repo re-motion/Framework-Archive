@@ -14,17 +14,14 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System;
 using System.Collections.Generic;
 using NUnit.Framework;
-using Remotion.Mixins;
 using Remotion.Mixins.Definitions;
 using Remotion.Mixins.Definitions.Building.DependencySorting;
-using Remotion.UnitTests.Mixins.Definitions.DependencySorting.TestDomain;
-using Remotion.Utilities;
+using Remotion.Mixins.UnitTests.Core.Definitions.DependencySorting.TestDomain;
 using System.Linq;
 
-namespace Remotion.UnitTests.Mixins.Definitions.DependencySorting
+namespace Remotion.Mixins.UnitTests.Core.Definitions.DependencySorting
 {
   [TestFixture]
   public class DependentMixinGrouperTest

@@ -20,7 +20,7 @@ using NUnit.Framework;
 using Remotion.Mixins.CodeGeneration;
 using System.Reflection;
 
-namespace Remotion.UnitTests.Mixins.CodeGeneration
+namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
 {
   [TestFixture]
   public class ConcreteMixinTypeTest

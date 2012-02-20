@@ -16,7 +16,7 @@
 // 
 using System;
 
-namespace Remotion.UnitTests.Mixins.TestDomain
+namespace Remotion.Mixins.UnitTests.Core.TestDomain
 {
   [AttributeUsage (AttributeTargets.All, AllowMultiple = true)]
   public class AttributeWithParameters2 : Attribute

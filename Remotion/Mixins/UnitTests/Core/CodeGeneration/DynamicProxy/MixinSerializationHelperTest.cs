@@ -21,9 +21,9 @@ using Remotion.Mixins.CodeGeneration;
 using Remotion.Mixins.CodeGeneration.DynamicProxy;
 using Remotion.Mixins.CodeGeneration.Serialization;
 using Remotion.Mixins.Context;
-using Remotion.UnitTests.Mixins.TestDomain;
+using Remotion.Mixins.UnitTests.Core.TestDomain;
 
-namespace Remotion.UnitTests.Mixins.CodeGeneration.DynamicProxy
+namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.DynamicProxy
 {
   [TestFixture]
   public class MixinSerializationHelperTest

@@ -19,13 +19,13 @@ using System.Collections.Generic;
 using NUnit.Framework;
 using Remotion.Mixins.CodeGeneration;
 using Remotion.Mixins.Definitions;
+using Remotion.Mixins.UnitTests.Core.TestDomain;
 using Remotion.Mixins.Utilities;
-using Remotion.UnitTests.Mixins.TestDomain;
 using Rhino.Mocks;
 using System.Reflection;
 using Remotion.Mixins.Context;
 
-namespace Remotion.UnitTests.Mixins.CodeGeneration
+namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
 {
   [TestFixture]
   public class CodeGenerationCacheTest

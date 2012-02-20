@@ -16,7 +16,7 @@
 // 
 using Remotion.Development.UnitTesting;
 
-namespace Remotion.UnitTests.Mixins.Definitions.TestDomain.MemberFiltering
+namespace Remotion.Mixins.UnitTests.Core.Definitions.TestDomain.MemberFiltering
 {
   public class DerivedDerivedDerivedWithSetOnlyOverride : DerivedDerivedWithGetOnlyOverride
   {

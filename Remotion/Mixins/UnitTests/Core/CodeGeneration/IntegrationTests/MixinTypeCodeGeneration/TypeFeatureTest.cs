@@ -16,13 +16,12 @@
 // 
 using System;
 using NUnit.Framework;
-using Remotion.Mixins;
 using Remotion.Mixins.CodeGeneration;
 using Remotion.Mixins.Definitions;
-using Remotion.UnitTests.Mixins.TestDomain;
+using Remotion.Mixins.UnitTests.Core.TestDomain;
 using Rhino.Mocks;
 
-namespace Remotion.UnitTests.Mixins.CodeGeneration.IntegrationTests.MixinTypeCodeGeneration
+namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixinTypeCodeGeneration
 {
   [TestFixture]
   public class TypeFeatureTest : CodeGenerationBaseTest

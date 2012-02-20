@@ -16,9 +16,8 @@
 // 
 using System;
 using Remotion.Development.UnitTesting;
-using Remotion.Mixins;
 
-namespace Remotion.UnitTests.Mixins.Validation.ValidationTestDomain
+namespace Remotion.Mixins.UnitTests.Core.Validation.ValidationTestDomain
 {
   public interface IOtherMixinIntroducingMembersWithDifferentVisibilities
   {

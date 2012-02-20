@@ -14,14 +14,13 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System;
 using System.Runtime.Remoting.Messaging;
 using NUnit.Framework;
 using Remotion.Context;
 
 // TODO (RM-4633) : Move to 'Common' unit test assembly
 // ReSharper disable CheckNamespace
-namespace Remotion.UnitTests.Context
+namespace Remotion.Mixins.UnitTests.Core
 // ReSharper restore CheckNamespace
 {
   [TestFixture]

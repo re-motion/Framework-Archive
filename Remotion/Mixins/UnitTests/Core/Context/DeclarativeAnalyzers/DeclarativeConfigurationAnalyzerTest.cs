@@ -16,12 +16,11 @@
 // 
 using System;
 using NUnit.Framework;
-using Remotion.Mixins;
 using Remotion.Mixins.Context.DeclarativeAnalyzers;
 using Remotion.Mixins.Context.FluentBuilders;
 using Rhino.Mocks;
 
-namespace Remotion.UnitTests.Mixins.Context.DeclarativeAnalyzers
+namespace Remotion.Mixins.UnitTests.Core.Context.DeclarativeAnalyzers
 {
   [TestFixture]
   public class DeclarativeConfigurationAnalyzerTest

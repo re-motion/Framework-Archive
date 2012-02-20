@@ -18,10 +18,10 @@ using NUnit.Framework;
 using Remotion.Mixins.Context;
 using Remotion.Mixins.Context.FluentBuilders;
 using Remotion.Mixins.Definitions;
+using Remotion.Mixins.UnitTests.Core.TestDomain;
 using Remotion.Mixins.Validation;
-using Remotion.UnitTests.Mixins.TestDomain;
 
-namespace Remotion.UnitTests.Mixins.Validation.Rules
+namespace Remotion.Mixins.UnitTests.Core.Validation.Rules
 {
   [TestFixture]
   public class DefaultMixinDependencyRulesTest : ValidationTestBase

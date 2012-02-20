@@ -16,9 +16,8 @@
 // 
 using System;
 using Remotion.Development.UnitTesting;
-using Remotion.Mixins;
 
-namespace Remotion.UnitTests.Mixins.TestDomain
+namespace Remotion.Mixins.UnitTests.Core.TestDomain
 {
   public interface IMixinIntroducingMembersWithDifferentVisibilities
   {

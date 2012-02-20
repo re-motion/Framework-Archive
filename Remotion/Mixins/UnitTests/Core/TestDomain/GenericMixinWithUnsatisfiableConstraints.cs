@@ -16,9 +16,8 @@
 // 
 using System;
 using System.Runtime.Serialization;
-using Remotion.Mixins;
 
-namespace Remotion.UnitTests.Mixins.TestDomain
+namespace Remotion.Mixins.UnitTests.Core.TestDomain
 {
   public class GenericMixinWithUnsatisfiableConstraints<[BindToConstraints]T>
       where T : ICloneable, ISerializable

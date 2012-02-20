@@ -19,17 +19,16 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Runtime.Serialization;
 using NUnit.Framework;
-using Remotion.Mixins;
 using Remotion.Mixins.CodeGeneration;
 using Remotion.Mixins.Context;
 using Remotion.Mixins.Definitions;
+using Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTypeCodeGeneration.TestDomain;
+using Remotion.Mixins.UnitTests.Core.CodeGeneration.TestDomain;
+using Remotion.Mixins.UnitTests.Core.TestDomain;
 using Remotion.Reflection;
-using Remotion.UnitTests.Mixins.CodeGeneration.IntegrationTests.MixedTypeCodeGeneration.TestDomain;
-using Remotion.UnitTests.Mixins.CodeGeneration.TestDomain;
-using Remotion.UnitTests.Mixins.TestDomain;
 using Rhino.Mocks;
 
-namespace Remotion.UnitTests.Mixins.CodeGeneration.IntegrationTests.MixedTypeCodeGeneration
+namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTypeCodeGeneration
 {
   [TestFixture]
   public class TypeFeatureTest : CodeGenerationBaseTest

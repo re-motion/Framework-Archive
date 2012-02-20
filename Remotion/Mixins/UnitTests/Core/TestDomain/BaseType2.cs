@@ -17,7 +17,7 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace Remotion.UnitTests.Mixins.TestDomain
+namespace Remotion.Mixins.UnitTests.Core.TestDomain
 {
   public interface IBaseType2
   {

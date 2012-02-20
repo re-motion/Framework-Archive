@@ -19,13 +19,12 @@ using Castle.DynamicProxy;
 using NUnit.Framework;
 using Remotion.Collections;
 using Remotion.Development.UnitTesting;
-using Remotion.Mixins;
 using Remotion.Mixins.CodeGeneration;
-using Remotion.UnitTests.Mixins.CodeGeneration;
-using Remotion.UnitTests.Mixins.TestDomain;
+using Remotion.Mixins.UnitTests.Core.CodeGeneration;
+using Remotion.Mixins.UnitTests.Core.TestDomain;
 using Rhino.Mocks;
 
-namespace Remotion.UnitTests.Mixins
+namespace Remotion.Mixins.UnitTests.Core
 {
   [TestFixture]
   public class MixinTargetMockUtilityTest

@@ -14,10 +14,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System;
-using Remotion.Mixins;
-
-namespace Remotion.UnitTests.Mixins.Definitions.TestDomain.RequiredMethodDefinitionBuilding
+namespace Remotion.Mixins.UnitTests.Core.Definitions.TestDomain.RequiredMethodDefinitionBuilding
 {
   public class MixinRequiringSingleMethod : Mixin<MixinRequiringSingleMethod.IRequirement>
   {

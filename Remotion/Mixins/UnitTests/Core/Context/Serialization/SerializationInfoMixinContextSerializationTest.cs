@@ -19,10 +19,9 @@ using NUnit.Framework;
 using System.Runtime.Serialization;
 using Remotion.Mixins.Context;
 using Remotion.Mixins.Context.Serialization;
-using Remotion.Mixins;
 using System.Linq;
 
-namespace Remotion.UnitTests.Mixins.Context.Serialization
+namespace Remotion.Mixins.UnitTests.Core.Context.Serialization
 {
   [TestFixture]
   public class SerializationInfoMixinContextSerializationTest

@@ -16,7 +16,7 @@
 // 
 using System.Runtime.Serialization;
 
-namespace Remotion.UnitTests.Mixins.CodeGeneration.IntegrationTests.Serialization.TestDomain
+namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.Serialization.TestDomain
 {
   public class NotSerializableClassWithISerializable : ISerializable
   {

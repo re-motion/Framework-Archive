@@ -14,13 +14,11 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System;
 using NUnit.Framework;
-using Remotion.Mixins;
 using Remotion.Mixins.Globalization;
-using Remotion.UnitTests.Mixins.Globalization.TestDomain;
+using Remotion.Mixins.UnitTests.Core.Globalization.TestDomain;
 
-namespace Remotion.UnitTests.Mixins.Globalization.MixedMultiLingualResourcesTests
+namespace Remotion.Mixins.UnitTests.Core.Globalization.MixedMultiLingualResourcesTests
 {
   [TestFixture]
   public class ExistsResourceTest

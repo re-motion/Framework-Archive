@@ -16,7 +16,7 @@
 // 
 using System;
 
-namespace Remotion.UnitTests.Mixins.TestDomain
+namespace Remotion.Mixins.UnitTests.Core.TestDomain
 {
   [AttributeUsage (AttributeTargets.All, AllowMultiple = true, Inherited = true)]
   public class SimpleAttribute : Attribute

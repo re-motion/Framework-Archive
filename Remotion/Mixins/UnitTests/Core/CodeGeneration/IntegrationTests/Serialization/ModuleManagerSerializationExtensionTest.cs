@@ -17,13 +17,12 @@
 using System;
 using System.Runtime.Serialization;
 using NUnit.Framework;
-using Remotion.Mixins;
 using Remotion.Mixins.CodeGeneration;
+using Remotion.Mixins.UnitTests.Core.TestDomain;
 using Remotion.Reflection;
-using Remotion.UnitTests.Mixins.TestDomain;
 using Remotion.Utilities;
 
-namespace Remotion.UnitTests.Mixins.CodeGeneration.IntegrationTests.Serialization
+namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.Serialization
 {
   [TestFixture]
   public class ModuleManagerSerializationExtensionTest

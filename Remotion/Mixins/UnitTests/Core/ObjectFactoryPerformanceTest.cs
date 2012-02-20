@@ -17,12 +17,11 @@
 using System;
 using System.Diagnostics;
 using NUnit.Framework;
-using Remotion.Mixins;
+using Remotion.Mixins.UnitTests.Core.TestDomain;
+using Remotion.Mixins.UnitTests.Core.TestDomain.GeneratedTypes;
 using Remotion.Reflection;
-using Remotion.UnitTests.Mixins.TestDomain;
-using Remotion.UnitTests.Mixins.TestDomain.GeneratedTypes;
 
-namespace Remotion.UnitTests.Mixins
+namespace Remotion.Mixins.UnitTests.Core
 {
   [TestFixture]
   [Explicit ("Performance tests")]

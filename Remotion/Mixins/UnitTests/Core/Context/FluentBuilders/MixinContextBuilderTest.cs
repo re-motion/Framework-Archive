@@ -17,14 +17,13 @@
 using System;
 using System.Collections.Generic;
 using NUnit.Framework;
-using Remotion.Mixins;
 using Remotion.Mixins.Context;
 using Remotion.Mixins.Context.FluentBuilders;
 using Remotion.Mixins.Context.Suppression;
-using Remotion.UnitTests.Mixins.TestDomain;
+using Remotion.Mixins.UnitTests.Core.TestDomain;
 using Rhino.Mocks;
 
-namespace Remotion.UnitTests.Mixins.Context.FluentBuilders
+namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
 {
   [TestFixture]
   public class MixinContextBuilderTest

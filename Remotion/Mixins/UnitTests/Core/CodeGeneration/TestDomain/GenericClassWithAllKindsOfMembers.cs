@@ -16,7 +16,7 @@
 // 
 using System;
 
-namespace Remotion.UnitTests.Mixins.CodeGeneration.TestDomain
+namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TestDomain
 {
   public class GenericClassWithAllKindsOfMembers<T>
   {

@@ -14,14 +14,12 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System;
 using System.Reflection;
 using NUnit.Framework;
-using Remotion.Mixins;
 using Remotion.Mixins.Definitions;
-using Remotion.UnitTests.Mixins.TestDomain;
+using Remotion.Mixins.UnitTests.Core.TestDomain;
 
-namespace Remotion.UnitTests.Mixins.Definitions.Building
+namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
 {
   [TestFixture]
   public class OverrideAttributeHierarchyIntegrationTest

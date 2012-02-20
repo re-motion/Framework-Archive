@@ -20,11 +20,11 @@ using NUnit.Framework;
 using Remotion.Collections;
 using Remotion.Mixins.Context;
 using Remotion.Mixins.Context.FluentBuilders;
-using Remotion.UnitTests.Mixins.TestDomain;
+using Remotion.Mixins.UnitTests.Core.TestDomain;
 using Rhino.Mocks;
 using System.Linq;
 
-namespace Remotion.UnitTests.Mixins.Context.FluentBuilders
+namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
 {
   [TestFixture]
   public class InheritanceResolvingClassContextBuilderTest

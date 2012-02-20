@@ -19,7 +19,7 @@ using NUnit.Framework;
 using Remotion.Collections;
 using Remotion.Mixins.Context;
 
-namespace Remotion.UnitTests.Mixins.Context
+namespace Remotion.Mixins.UnitTests.Core.Context
 {
   [TestFixture]
   public class ClassContextCombinerTest

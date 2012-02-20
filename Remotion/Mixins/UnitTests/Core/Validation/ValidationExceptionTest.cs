@@ -20,7 +20,7 @@ using Remotion.Development.UnitTesting;
 using Remotion.Mixins.Definitions;
 using Remotion.Mixins.Validation;
 
-namespace Remotion.UnitTests.Mixins.Validation
+namespace Remotion.Mixins.UnitTests.Core.Validation
 {
   [TestFixture]
   public class ValidationExceptionTest

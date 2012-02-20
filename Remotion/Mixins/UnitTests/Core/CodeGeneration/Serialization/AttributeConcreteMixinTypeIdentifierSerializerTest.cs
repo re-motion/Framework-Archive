@@ -19,9 +19,9 @@ using System.Collections.Generic;
 using System.Reflection;
 using NUnit.Framework;
 using Remotion.Mixins.CodeGeneration.Serialization;
-using Remotion.UnitTests.Mixins.TestDomain;
+using Remotion.Mixins.UnitTests.Core.TestDomain;
 
-namespace Remotion.UnitTests.Mixins.CodeGeneration.Serialization
+namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.Serialization
 {
   [TestFixture]
   public class AttributeConcreteMixinTypeIdentifierSerializerTest

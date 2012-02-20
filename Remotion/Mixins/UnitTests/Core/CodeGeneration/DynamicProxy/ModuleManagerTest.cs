@@ -20,18 +20,17 @@ using System.Reflection;
 using NUnit.Framework;
 using Remotion.Collections;
 using Remotion.Development.UnitTesting;
-using Remotion.Mixins;
 using Remotion.Mixins.CodeGeneration;
 using Remotion.Mixins.CodeGeneration.DynamicProxy;
 using Remotion.Mixins.Context;
 using Remotion.Mixins.Definitions;
+using Remotion.Mixins.UnitTests.Core.TestDomain;
 using Remotion.Mixins.Utilities;
 using Remotion.Reflection.TypeDiscovery;
 using Remotion.Reflection.CodeGeneration;
 using Remotion.ServiceLocation;
-using Remotion.UnitTests.Mixins.TestDomain;
 
-namespace Remotion.UnitTests.Mixins.CodeGeneration.DynamicProxy
+namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.DynamicProxy
 {
   [TestFixture]
   public class ModuleManagerTest : CodeGenerationBaseTest

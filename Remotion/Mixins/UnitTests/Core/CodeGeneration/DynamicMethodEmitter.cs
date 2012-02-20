@@ -20,7 +20,7 @@ using System.Reflection.Emit;
 using Castle.DynamicProxy.Generators.Emitters;
 using Remotion.Development.UnitTesting;
 
-namespace Remotion.UnitTests.Mixins.CodeGeneration
+namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
 {
   public class DynamicMethodEmitter : IMemberEmitter
   {

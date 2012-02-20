@@ -14,10 +14,9 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using Remotion.Mixins;
-using Remotion.UnitTests.Mixins.TestDomain;
+using Remotion.Mixins.UnitTests.Core.TestDomain;
 
-namespace Remotion.UnitTests.Mixins.Definitions.TestDomain
+namespace Remotion.Mixins.UnitTests.Core.Definitions.TestDomain
 {
   public class GenericMixinWithSameRequirementTwice<T> : Mixin<T>
     where T : class, IBaseType33, IBaseType34

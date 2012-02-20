@@ -17,13 +17,12 @@
 using System;
 using System.Runtime.Serialization;
 using NUnit.Framework;
-using Remotion.Mixins;
 using Remotion.Mixins.Context;
 using Remotion.Mixins.Context.Serialization;
 using System.Linq;
-using Remotion.UnitTests.Mixins.TestDomain;
+using Remotion.Mixins.UnitTests.Core.TestDomain;
 
-namespace Remotion.UnitTests.Mixins.Context.Serialization
+namespace Remotion.Mixins.UnitTests.Core.Context.Serialization
 {
   [TestFixture]
   public class AttributeClassContextSerializationTest

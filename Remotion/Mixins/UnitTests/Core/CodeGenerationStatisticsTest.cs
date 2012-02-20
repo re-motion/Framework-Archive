@@ -18,14 +18,13 @@ using System;
 using System.Collections.Generic;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
-using Remotion.Mixins;
 using Remotion.Mixins.CodeGeneration;
+using Remotion.Mixins.UnitTests.Core.CodeGeneration;
+using Remotion.Mixins.UnitTests.Core.TestDomain;
 using Remotion.Mixins.Utilities;
 using Remotion.Reflection;
-using Remotion.UnitTests.Mixins.CodeGeneration;
-using Remotion.UnitTests.Mixins.TestDomain;
 
-namespace Remotion.UnitTests.Mixins
+namespace Remotion.Mixins.UnitTests.Core
 {
   [TestFixture]
   public class CodeGenerationStatisticsTest

@@ -16,9 +16,8 @@
 // 
 using System;
 using System.Runtime.CompilerServices;
-using Remotion.Mixins;
 
-namespace Remotion.UnitTests.Mixins.TestDomain
+namespace Remotion.Mixins.UnitTests.Core.TestDomain
 {
   public interface IMixinAddingSpecialNameMethod
   {

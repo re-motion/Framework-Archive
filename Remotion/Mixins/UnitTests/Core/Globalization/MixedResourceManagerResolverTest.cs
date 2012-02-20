@@ -15,19 +15,17 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Resources;
 using NUnit.Framework;
 using Remotion.Collections;
 using Remotion.Globalization;
-using Remotion.Mixins;
 using Remotion.Mixins.Globalization;
-using Remotion.UnitTests.Mixins.Globalization.TestDomain;
-using Remotion.UnitTests.Mixins.TestDomain;
+using Remotion.Mixins.UnitTests.Core.Globalization.TestDomain;
+using Remotion.Mixins.UnitTests.Core.TestDomain;
 using Remotion.Utilities;
 
-namespace Remotion.UnitTests.Mixins.Globalization
+namespace Remotion.Mixins.UnitTests.Core.Globalization
 {
   [TestFixture]
   public class MixedResourceManagerResolverTest

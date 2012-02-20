@@ -18,9 +18,8 @@ using System;
 using System.Linq;
 using System.Reflection;
 using NUnit.Framework;
-using Remotion.Mixins;
 
-namespace Remotion.UnitTests.Mixins
+namespace Remotion.Mixins.UnitTests.Core
 {
   [TestFixture]
   public class MixAttributeTest

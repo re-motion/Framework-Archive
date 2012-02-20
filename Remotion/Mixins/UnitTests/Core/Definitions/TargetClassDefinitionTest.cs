@@ -14,13 +14,12 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System;
 using NUnit.Framework;
 using Remotion.Mixins.Definitions;
-using Remotion.UnitTests.Mixins.TestDomain;
+using Remotion.Mixins.UnitTests.Core.TestDomain;
 using Rhino.Mocks;
 
-namespace Remotion.UnitTests.Mixins.Definitions
+namespace Remotion.Mixins.UnitTests.Core.Definitions
 {
   [TestFixture]
   public class TargetClassDefinitionTest

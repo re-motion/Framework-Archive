@@ -21,20 +21,19 @@ using System.Runtime.Serialization;
 using System.Threading;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
-using Remotion.Mixins;
 using Remotion.Mixins.CodeGeneration;
 using Remotion.Mixins.CodeGeneration.DynamicProxy;
 using Remotion.Mixins.Context;
 using Remotion.Mixins.Definitions;
+using Remotion.Mixins.UnitTests.Core.CodeGeneration.TestDomain;
+using Remotion.Mixins.UnitTests.Core.TestDomain;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
-using Remotion.UnitTests.Mixins.CodeGeneration.TestDomain;
-using Remotion.UnitTests.Mixins.TestDomain;
 using Remotion.Utilities;
 using Rhino.Mocks;
-using ClassOverridingSingleMixinMethod = Remotion.UnitTests.Mixins.CodeGeneration.TestDomain.ClassOverridingSingleMixinMethod;
+using ClassOverridingSingleMixinMethod = Remotion.Mixins.UnitTests.Core.CodeGeneration.TestDomain.ClassOverridingSingleMixinMethod;
 
-namespace Remotion.UnitTests.Mixins.CodeGeneration
+namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
 {
   [TestFixture]
   public class ConcreteTypeBuilderTest : CodeGenerationBaseTest

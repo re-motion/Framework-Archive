@@ -16,12 +16,11 @@
 // 
 using System;
 using System.Runtime.Serialization;
-using Remotion.Mixins;
 using Remotion.Mixins.CodeGeneration.DynamicProxy;
 using Remotion.Mixins.Context;
-using Remotion.UnitTests.Mixins.TestDomain;
+using Remotion.Mixins.UnitTests.Core.TestDomain;
 
-namespace Remotion.UnitTests.Mixins.CodeGeneration.DynamicProxy
+namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.DynamicProxy
 {
   [IgnoreForMixinConfiguration]
   public class FakeConcreteMixedType : BaseType1, IInitializableMixinTarget, ISerializable, IDeserializationCallback

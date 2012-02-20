@@ -19,14 +19,13 @@ using System.Collections.Generic;
 using System.Reflection;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
-using Remotion.Mixins;
 using Remotion.Mixins.CodeGeneration;
 using Remotion.Mixins.Definitions;
 using System.Linq;
-using Remotion.UnitTests.Mixins.TestDomain;
+using Remotion.Mixins.UnitTests.Core.TestDomain;
 using Rhino.Mocks;
 
-namespace Remotion.UnitTests.Mixins.Definitions
+namespace Remotion.Mixins.UnitTests.Core.Definitions
 {
   [TestFixture]
   public class MixinDefinitionTest

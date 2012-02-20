@@ -17,10 +17,9 @@
 using System;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
-using Remotion.Mixins;
 using Remotion.Reflection;
 
-namespace Remotion.UnitTests.Mixins.CodeGeneration.IntegrationTests.Serialization
+namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.Serialization
 {
   [TestFixture]
   public class SerializationCallbackTest

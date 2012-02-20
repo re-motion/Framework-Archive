@@ -16,7 +16,7 @@
 // 
 using System;
 
-namespace Remotion.UnitTests.Mixins.Definitions.Building.RequiredMethodDefinitionBuilding.TestDomain
+namespace Remotion.Mixins.UnitTests.Core.Definitions.Building.RequiredMethodDefinitionBuilding.TestDomain
 {
   public class ClassImplementingInterfaceWithDuckTypingWithBaseWithSameMembers : ClassImplementingInterfaceWithDuckTyping
   {

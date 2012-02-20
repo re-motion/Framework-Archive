@@ -17,11 +17,10 @@
 using System;
 using System.Reflection;
 using NUnit.Framework;
-using Remotion.Mixins;
+using Remotion.Mixins.UnitTests.Core.TestDomain;
 using Remotion.Reflection;
-using Remotion.UnitTests.Mixins.TestDomain;
 
-namespace Remotion.UnitTests.Mixins.CodeGeneration.IntegrationTests.MixedTypeCodeGeneration
+namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTypeCodeGeneration
 {
   [TestFixture]
   public class OverrideTest : CodeGenerationBaseTest

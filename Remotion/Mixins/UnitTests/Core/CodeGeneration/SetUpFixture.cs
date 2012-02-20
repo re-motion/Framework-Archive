@@ -24,7 +24,7 @@ using Remotion.Mixins.CodeGeneration;
 using Remotion.Text;
 using Remotion.Utilities;
 
-namespace Remotion.UnitTests.Mixins.CodeGeneration
+namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
 {
   [SetUpFixture]
   public class SetUpFixture

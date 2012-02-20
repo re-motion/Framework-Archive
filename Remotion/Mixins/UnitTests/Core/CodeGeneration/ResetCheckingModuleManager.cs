@@ -18,7 +18,7 @@ using System;
 using Remotion.Mixins.CodeGeneration;
 using Remotion.Mixins.CodeGeneration.DynamicProxy;
 
-namespace Remotion.UnitTests.Mixins.CodeGeneration
+namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
 {
   /// <summary>
   /// Used by <see cref="SetUpFixture"/> to ensure the integration tests don't reset the shared scope.

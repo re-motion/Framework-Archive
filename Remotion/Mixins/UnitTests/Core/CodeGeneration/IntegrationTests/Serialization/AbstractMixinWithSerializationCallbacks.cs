@@ -16,9 +16,8 @@
 // 
 using System;
 using Remotion.Development.UnitTesting;
-using Remotion.Mixins;
 
-namespace Remotion.UnitTests.Mixins.CodeGeneration.IntegrationTests.Serialization
+namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.Serialization
 {
   [Serializable]
   public abstract class AbstractMixinWithSerializationCallbacks : MixinWithSerializationCallbacks

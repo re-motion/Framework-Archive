@@ -15,12 +15,11 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using NUnit.Framework;
-using Remotion.Mixins;
 using Remotion.Mixins.Definitions;
+using Remotion.Mixins.UnitTests.Core.TestDomain;
 using Remotion.Mixins.Validation;
-using Remotion.UnitTests.Mixins.TestDomain;
 
-namespace Remotion.UnitTests.Mixins.Validation.Rules
+namespace Remotion.Mixins.UnitTests.Core.Validation.Rules
 {
   [TestFixture]
   public class DefaultRequiredMethodRulesTest : ValidationTestBase

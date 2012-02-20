@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Runtime.Serialization;
-using Remotion.Mixins;
 using Remotion.Mixins.CodeGeneration;
 using Remotion.Mixins.CodeGeneration.DynamicProxy;
 using Remotion.Mixins.Context;
 
-namespace Remotion.UnitTests.Mixins.TestDomain.GeneratedTypes
+namespace Remotion.Mixins.UnitTests.Core.TestDomain.GeneratedTypes
 {
   [Serializable, ConcreteMixedType(new object[] { typeof(MixinMixingClass), new object[] { new object[] { typeof(MixinMixingMixin), 0, 0, new Type[] {  } } }, new Type[] {  } }, new Type[] { typeof(MixinMixingMixin) }), DebuggerDisplay("Mix of Remotion.UnitTests.Mixins.TestDomain.MixinMixingClass + Remotion.UnitTests.Mixins.TestDomain.MixinMixingMixin")]
   [IgnoreForMixinConfiguration]
