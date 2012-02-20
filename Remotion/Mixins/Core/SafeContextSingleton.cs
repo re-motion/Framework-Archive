@@ -18,7 +18,10 @@ using System;
 using Remotion.Context;
 using Remotion.Utilities;
 
+// TODO (RM-4633) : Move SafeContextSingleton into new 'Commons' assembly
+// ReSharper disable CheckNamespace
 namespace Remotion
+// ReSharper restore CheckNamespace
 {
   /// <summary>
   /// Provides automatic "Singleton" behavior based on the <see cref="SafeContext"/> class.

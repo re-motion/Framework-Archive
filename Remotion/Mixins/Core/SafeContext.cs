@@ -16,12 +16,13 @@
 // 
 using System;
 using System.Runtime.Remoting.Messaging;
-using Remotion.BridgeInterfaces;
 using Remotion.Mixins;
 using Remotion.Reflection;
-using Remotion.ServiceLocation;
 
+// TODO (RM-4633) : Move SafeContext into new 'Commons' assembly
+// ReSharper disable CheckNamespace
 namespace Remotion.Context
+// ReSharper restore CheckNamespace
 {
   /// <summary>
   /// Superior alternative to the <see cref="ThreadStaticAttribute"/> and <see cref="CallContext"/> for making member variables thread safe that 

@@ -15,20 +15,23 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using NUnit.Framework;
-using Remotion.Context;
-using Remotion.Web.Context;
 
-namespace Remotion.Web.UnitTests.Core.Context
+namespace Remotion.UnitTests.Mixins.CodeGeneration.TestDomain
 {
-  [TestFixture]
-  public class WebSafeContextMixinTest
+  public class GenericClassWithAllKindsOfMembers<T>
   {
-    [Test]
-    public void StorageProvider_IsHttpProvider_InWebProject ()
+    public virtual string Method (T t)
     {
-      // TODO (RM-4633) : When SafeContext is moved to 'Common' remove reference to Mixins.Core
-      Assert.That (SafeContext.Instance, Is.InstanceOf (typeof (HttpContextStorageProvider)));
+      if (Event != null)
+        Event ();
+      return t.ToString ();
     }
+
+    public virtual T Property
+    {
+      get { return default (T); }
+    }
+
+    public virtual event Func<T> Event;
   }
 }

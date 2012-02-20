@@ -21,7 +21,10 @@ using Remotion.Development.UnitTesting;
 using Remotion.Mixins;
 using Remotion.Reflection;
 
+// TODO (RM-4633) : Move to 'Common' unit test assembly
+// ReSharper disable CheckNamespace
 namespace Remotion.UnitTests.Context
+// ReSharper restore CheckNamespace
 {
   [TestFixture]
   public class SafeContextTest

@@ -22,8 +22,8 @@ using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
 using NUnit.Framework;
 using Remotion.Mixins.CodeGeneration;
 using Remotion.Mixins.CodeGeneration.DynamicProxy;
+using Remotion.UnitTests.Mixins.CodeGeneration.TestDomain;
 using Remotion.UnitTests.Mixins.TestDomain;
-using Remotion.UnitTests.Reflection.CodeGeneration.TestDomain;
 
 namespace Remotion.UnitTests.Mixins.CodeGeneration.DynamicProxy
 {

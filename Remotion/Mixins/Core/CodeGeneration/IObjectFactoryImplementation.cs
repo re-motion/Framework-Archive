@@ -15,15 +15,15 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Remotion.Reflection;
 using Remotion.ServiceLocation;
 
 namespace Remotion.Mixins.CodeGeneration
 {
-  [ConcreteImplementation ("Remotion.Mixins.CodeGeneration.TypeFactoryImplementation, Remotion, Version=<version>, Culture=neutral, PublicKeyToken=<publicKeyToken>",
+  [ConcreteImplementation ("Remotion.Mixins.CodeGeneration.ObjectFactoryImplementation, Remotion.Mixins, Version=<version>, Culture=neutral, PublicKeyToken=<publicKeyToken>",
     Lifetime = LifetimeKind.Singleton)]
-  public interface ITypeFactoryImplementation
+  public interface IObjectFactoryImplementation
   {
-    Type GetConcreteType (Type targetOrConcreteType, GenerationPolicy generationPolicy);
-    void InitializeUnconstructedInstance (object mixinTarget);
+    object CreateInstance (bool allowNonPublicConstructors, Type targetOrConcreteType, ParamList constructorParameters, GenerationPolicy generationPolicy, params object[] preparedMixins);
   }
 }

@@ -17,24 +17,27 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Runtime.Serialization;
 using NUnit.Framework;
+using Remotion.Mixins.CodeGeneration;
 using Remotion.Mixins.CodeGeneration.Serialization;
+using Remotion.UnitTests.Mixins.CodeGeneration.TestDomain;
 using Remotion.UnitTests.Mixins.TestDomain;
 using System.Linq;
-using Remotion.UnitTests.Reflection.CodeGeneration.TestDomain;
 
 namespace Remotion.UnitTests.Mixins.CodeGeneration.Serialization
 {
   [TestFixture]
-  public class AttributeConcreteMixinTypeIdentifierDeserializerTest
+  public class SerializationInfoConcreteMixinTypeIdentifierDeserializerTest
   {
     private MethodInfo _simpleMethod;
     private MethodInfo _genericMethod;
     private MethodInfo _methodOnGenericClosedWithReferenceType;
     private MethodInfo _methodOnGenericClosedWithValueType;
 
-    private AttributeConcreteMixinTypeIdentifierSerializer _serializer;
-    private AttributeConcreteMixinTypeIdentifierDeserializer _deserializer;
+    private SerializationInfoConcreteMixinTypeIdentifierSerializer _serializer;
+    private SerializationInfoConcreteMixinTypeIdentifierDeserializer _deserializer;
+    private SerializationInfo _serializationInfo;
 
     [SetUp]
     public void SetUp ()
@@ -44,8 +47,9 @@ namespace Remotion.UnitTests.Mixins.CodeGeneration.Serialization
       _methodOnGenericClosedWithReferenceType = typeof (GenericClassWithAllKindsOfMembers<string>).GetMethod ("Method");
       _methodOnGenericClosedWithValueType = typeof (GenericClassWithAllKindsOfMembers<int>).GetMethod ("Method");
 
-      _serializer = new AttributeConcreteMixinTypeIdentifierSerializer ();
-      _deserializer = new AttributeConcreteMixinTypeIdentifierDeserializer (_serializer.Values);
+      _serializationInfo = new SerializationInfo (typeof (ConcreteMixinTypeIdentifier), new FormatterConverter ());
+      _serializer = new SerializationInfoConcreteMixinTypeIdentifierSerializer (_serializationInfo, "identifier");
+      _deserializer = new SerializationInfoConcreteMixinTypeIdentifierDeserializer (_serializationInfo, "identifier");
     }
 
     [Test]
