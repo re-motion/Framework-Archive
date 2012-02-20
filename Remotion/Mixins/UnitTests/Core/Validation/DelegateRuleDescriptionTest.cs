@@ -41,7 +41,7 @@ namespace Remotion.Mixins.UnitTests.Core.Validation
     public void DefaultDescription ()
     {
       IValidationRule rule = new DelegateValidationRule<TargetClassDefinition> (NonDescribedSampleRule);
-      Assert.AreEqual ("Remotion.UnitTests.Mixins.Validation.DelegateRuleDescriptionTest.NonDescribedSampleRule", rule.RuleName);
+      Assert.AreEqual ("Remotion.Mixins.UnitTests.Core.Validation.DelegateRuleDescriptionTest.NonDescribedSampleRule", rule.RuleName);
       Assert.AreEqual ("Non described sample rule", rule.Message);
     }
 
@@ -49,7 +49,7 @@ namespace Remotion.Mixins.UnitTests.Core.Validation
     public void DescriptionAttribute_NoChanges ()
     {
       IValidationRule rule = new DelegateValidationRule<TargetClassDefinition> (DescribedSampleRule_NoChanges);
-      Assert.AreEqual ("Remotion.UnitTests.Mixins.Validation.DelegateRuleDescriptionTest.DescribedSampleRule_NoChanges", rule.RuleName);
+      Assert.AreEqual ("Remotion.Mixins.UnitTests.Core.Validation.DelegateRuleDescriptionTest.DescribedSampleRule_NoChanges", rule.RuleName);
       Assert.AreEqual ("Described sample rule_ no changes", rule.Message);
     }
 

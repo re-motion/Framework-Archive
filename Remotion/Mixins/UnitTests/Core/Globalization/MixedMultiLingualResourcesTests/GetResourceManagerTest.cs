@@ -26,7 +26,7 @@ namespace Remotion.Mixins.UnitTests.Core.Globalization.MixedMultiLingualResource
   public class GetResourceManagerTest
   {
     [Test]
-    [ExpectedException (typeof (ResourceException), ExpectedMessage = "Type Remotion.UnitTests.Mixins.Globalization.TestDomain."
+    [ExpectedException (typeof (ResourceException), ExpectedMessage = "Type Remotion.Mixins.UnitTests.Core.Globalization.TestDomain."
         + "ClassWithoutMultiLingualResourcesAttributes and its base classes do not define the attribute MultiLingualResourcesAttribute.")]
     public void NoAttributes_NoInheritance ()
     {
@@ -34,7 +34,7 @@ namespace Remotion.Mixins.UnitTests.Core.Globalization.MixedMultiLingualResource
     }
 
     [Test]
-    [ExpectedException (typeof (ResourceException), ExpectedMessage = "Type Remotion.UnitTests.Mixins.Globalization.TestDomain."
+    [ExpectedException (typeof (ResourceException), ExpectedMessage = "Type Remotion.Mixins.UnitTests.Core.Globalization.TestDomain."
         + "ClassWithoutMultiLingualResourcesAttributes and its base classes do not define the attribute MultiLingualResourcesAttribute.")]
     public void NoAttributes_Inheritance ()
     {

@@ -85,7 +85,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.DynamicProxy
 
     [Test]
     [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "TypeTransformer returned type 'System.Object', which is not compatible "
-        + "with the serialized mixin configuration. The configuration requires a type assignable to 'Remotion.UnitTests.Mixins.TestDomain.BaseType1'.")]
+        + "with the serialized mixin configuration. The configuration requires a type assignable to 'Remotion.Mixins.UnitTests.Core.TestDomain.BaseType1'.")]
     public void Initialization_WithTypeTransformer_InvalidTransformedType_NonAssignable ()
     {
       SerializationHelper.GetObjectDataForGeneratedTypes (_serializationInfo, _context, _concreteObject, _classContext, _extensions, true);
@@ -95,7 +95,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.DynamicProxy
 
     [Test]
     [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "TypeTransformer returned type "
-        + "'Remotion.UnitTests.Mixins.TestDomain.BaseType1', which does not implement IMixinTarget.")]
+        + "'Remotion.Mixins.UnitTests.Core.TestDomain.BaseType1', which does not implement IMixinTarget.")]
     public void Initialization_WithTypeTransformer_InvalidTransformedType_NonIMixinTarget ()
     {
       SerializationHelper.GetObjectDataForGeneratedTypes (_serializationInfo, _context, _concreteObject, _classContext, _extensions, true);

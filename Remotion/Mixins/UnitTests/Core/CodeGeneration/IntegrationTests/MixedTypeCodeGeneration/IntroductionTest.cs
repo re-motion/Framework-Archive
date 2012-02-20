@@ -79,11 +79,11 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
         var bt1 = ObjectFactory.Create<BaseType1> (ParamList.Empty);
         MethodInfo[] allMethods = bt1.GetType ().GetMethods (c_nonPublicFlags | BindingFlags.DeclaredOnly);
         string[] allMethodNames = Array.ConvertAll (allMethods, mi => mi.Name);
-        Assert.That (allMethodNames, Has.Member("Remotion.UnitTests.Mixins.TestDomain.InterfaceWithPartialProperties.get_Prop1"));
-        Assert.That (allMethodNames, Has.Member("Remotion.UnitTests.Mixins.TestDomain.InterfaceWithPartialProperties.set_Prop2"));
+        Assert.That (allMethodNames, Has.Member("Remotion.Mixins.UnitTests.Core.TestDomain.InterfaceWithPartialProperties.get_Prop1"));
+        Assert.That (allMethodNames, Has.Member("Remotion.Mixins.UnitTests.Core.TestDomain.InterfaceWithPartialProperties.set_Prop2"));
 
-        Assert.That (allMethodNames, Has.No.Member("Remotion.UnitTests.Mixins.TestDomain.InterfaceWithPartialProperties.set_Prop1"));
-        Assert.That (allMethodNames, Has.No.Member("Remotion.UnitTests.Mixins.TestDomain.InterfaceWithPartialProperties.get_Prop2"));
+        Assert.That (allMethodNames, Has.No.Member("Remotion.Mixins.UnitTests.Core.TestDomain.InterfaceWithPartialProperties.set_Prop1"));
+        Assert.That (allMethodNames, Has.No.Member("Remotion.Mixins.UnitTests.Core.TestDomain.InterfaceWithPartialProperties.get_Prop2"));
       }
     }
 

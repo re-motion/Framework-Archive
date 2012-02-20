@@ -233,7 +233,7 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
         Assert.IsTrue (bt1.ReceivedInterfaces.ContainsKey (typeof (IExplicit)));
 
         MethodInfo explicitMethod = typeof (MixinWithExplicitImplementation).GetMethod (
-            "Remotion.UnitTests.Mixins.TestDomain.IExplicit.Explicit", BindingFlags.Instance | BindingFlags.NonPublic);
+            "Remotion.Mixins.UnitTests.Core.TestDomain.IExplicit.Explicit", BindingFlags.Instance | BindingFlags.NonPublic);
         Assert.IsNotNull (explicitMethod);
 
         MixinDefinition m1 = bt1.Mixins[typeof (MixinWithExplicitImplementation)];

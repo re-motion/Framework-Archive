@@ -7,7 +7,7 @@ using Remotion.Mixins.Context;
 
 namespace Remotion.Mixins.UnitTests.Core.TestDomain.GeneratedTypes
 {
-  [Serializable, ConcreteMixedType(new object[] { typeof(MixinMixingClass), new object[] { new object[] { typeof(MixinMixingMixin), 0, 0, new Type[] {  } } }, new Type[] {  } }, new Type[] { typeof(MixinMixingMixin) }), DebuggerDisplay("Mix of Remotion.UnitTests.Mixins.TestDomain.MixinMixingClass + Remotion.UnitTests.Mixins.TestDomain.MixinMixingMixin")]
+  [Serializable, ConcreteMixedType(new object[] { typeof(MixinMixingClass), new object[] { new object[] { typeof(MixinMixingMixin), 0, 0, new Type[] {  } } }, new Type[] {  } }, new Type[] { typeof(MixinMixingMixin) }), DebuggerDisplay("Mix of Remotion.Mixins.UnitTests.Core.TestDomain.MixinMixingClass + Remotion.Mixins.UnitTests.Core.TestDomain.MixinMixingMixin")]
   [IgnoreForMixinConfiguration]
   public class MixinMixingClass_Mixed_Generated_WithEfficientMixinCreation : MixinMixingClass, IMixinTarget, IInitializableMixinTarget, ISerializable
   {

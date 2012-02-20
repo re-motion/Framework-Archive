@@ -80,7 +80,7 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.DependencySorting
 
     [Test]
     [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "The following group of mixins contains circular dependencies: "
-        + "Remotion.UnitTests.Mixins.TestDomain.NullMixin, Remotion.UnitTests.Mixins.TestDomain.NullMixin4.")]
+        + "Remotion.Mixins.UnitTests.Core.TestDomain.NullMixin, Remotion.Mixins.UnitTests.Core.TestDomain.NullMixin4.")]
     public void SortMixins_CircularDependencies ()
     {
       var mockRepository = new MockRepository ();

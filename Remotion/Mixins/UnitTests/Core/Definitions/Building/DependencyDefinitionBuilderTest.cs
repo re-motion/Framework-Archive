@@ -75,8 +75,8 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
 
     [Test]
     [ExpectedException (typeof (ConfigurationException),
-        ExpectedMessage = "The dependency 'IBT3Mixin4' (required by mixin(s) 'Remotion.UnitTests.Mixins.TestDomain.Bt3Mixin7TargetCall' applied to class "
-                          + "'Remotion.UnitTests.Mixins.TestDomain.BaseType3') is not fulfilled - public or protected method 'System.String Foo()' "
+        ExpectedMessage = "The dependency 'IBT3Mixin4' (required by mixin(s) 'Remotion.Mixins.UnitTests.Core.TestDomain.Bt3Mixin7TargetCall' applied to class "
+                          + "'Remotion.Mixins.UnitTests.Core.TestDomain.BaseType3') is not fulfilled - public or protected method 'System.String Foo()' "
                           + "could not be found on the target class.")]
     public void ThrowsIfAggregateTargetCallDependencyIsNotFullyImplemented ()
     {
@@ -85,8 +85,8 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
 
     [Test]
     [ExpectedException (typeof (ConfigurationException),
-        ExpectedMessage = "The dependency 'IBT3Mixin4' (required by mixin(s) 'Remotion.UnitTests.Mixins.TestDomain.BT3Mixin7Base' applied to class "
-                          + "'Remotion.UnitTests.Mixins.TestDomain.BaseType3') is not fulfilled - public or protected method 'System.String Foo()' "
+        ExpectedMessage = "The dependency 'IBT3Mixin4' (required by mixin(s) 'Remotion.Mixins.UnitTests.Core.TestDomain.BT3Mixin7Base' applied to class "
+                          + "'Remotion.Mixins.UnitTests.Core.TestDomain.BaseType3') is not fulfilled - public or protected method 'System.String Foo()' "
                           + "could not be found on the target class.")]
     public void ThrowsIfAggregateNextCallDependencyIsNotFullyImplemented ()
     {
@@ -118,7 +118,7 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
       Assert.AreEqual (typeof (IBaseType31).GetMembers().Length, req1.Methods.Count);
 
       RequiredMethodDefinition member1 = req1.Methods[typeof (IBaseType31).GetMethod ("IfcMethod")];
-      Assert.AreEqual ("Remotion.UnitTests.Mixins.TestDomain.IBaseType31.IfcMethod", member1.FullName);
+      Assert.AreEqual ("Remotion.Mixins.UnitTests.Core.TestDomain.IBaseType31.IfcMethod", member1.FullName);
       Assert.AreSame (req1, member1.DeclaringRequirement);
       Assert.AreSame (req1, member1.Parent);
 
@@ -129,7 +129,7 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
       Assert.AreEqual (typeof (IBT3Mixin4).GetMembers().Length, req2.Methods.Count);
 
       RequiredMethodDefinition member2 = req2.Methods[typeof (IBT3Mixin4).GetMethod ("Foo")];
-      Assert.AreEqual ("Remotion.UnitTests.Mixins.TestDomain.IBT3Mixin4.Foo", member2.FullName);
+      Assert.AreEqual ("Remotion.Mixins.UnitTests.Core.TestDomain.IBT3Mixin4.Foo", member2.FullName);
       Assert.AreSame (req2, member2.DeclaringRequirement);
       Assert.AreSame (req2, member2.Parent);
 
@@ -336,7 +336,7 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
 
       TargetCallDependencyDefinition d1 = m7.TargetCallDependencies[typeof (ICBaseType3BT3Mixin4)];
       Assert.IsNull (d1.GetImplementer ());
-      Assert.AreEqual ("Remotion.UnitTests.Mixins.TestDomain.ICBaseType3BT3Mixin4", d1.FullName);
+      Assert.AreEqual ("Remotion.Mixins.UnitTests.Core.TestDomain.ICBaseType3BT3Mixin4", d1.FullName);
       Assert.AreSame (m7, d1.Parent);
 
       Assert.IsTrue (d1.IsAggregate);

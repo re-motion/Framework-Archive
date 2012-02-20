@@ -350,7 +350,7 @@ namespace Remotion.Mixins.UnitTests.Core.Globalization
     }
 
     [Test]
-    [ExpectedException (typeof (ResourceException), ExpectedMessage = "Type Remotion.UnitTests.Mixins.Globalization.TestDomain."
+    [ExpectedException (typeof (ResourceException), ExpectedMessage = "Type Remotion.Mixins.UnitTests.Core.Globalization.TestDomain."
         + "ClassWithoutMultiLingualResourcesAttributes and its base classes do not define the attribute MultiLingualResourcesAttribute.")]
 		public void GetResourceManager_NoSuccess ()
     {
@@ -360,7 +360,7 @@ namespace Remotion.Mixins.UnitTests.Core.Globalization
     [Test]
     [ExpectedException (typeof (MissingManifestResourceException), ExpectedMessage = "Could not find any resources appropriate for the specified "
         + "culture or the neutral culture.  Make sure \"OnTarget.resources\" was correctly embedded or linked into assembly "
-        + "\"Remotion.UnitTests\" at compile time, or that all the satellite assemblies required are loadable and fully signed.")]
+        + "\"Remotion.Mixins.UnitTests\" at compile time, or that all the satellite assemblies required are loadable and fully signed.")]
     public void GetResourceManager_ForGeneratedType_GetString ()
     {
       using (MixinConfiguration.BuildNew ().ForClass<ClassWithMultiLingualResourcesAttributes> ().AddMixin<NullMixin>().EnterScope ())

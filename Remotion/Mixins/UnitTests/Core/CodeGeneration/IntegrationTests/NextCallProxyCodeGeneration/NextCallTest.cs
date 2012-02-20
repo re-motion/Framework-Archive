@@ -57,15 +57,15 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.NextCal
           Assert.IsTrue (req.Type.IsAssignableFrom (proxyType));
 
         MethodInfo methodImplementdByMixin =
-            proxyType.GetMethod ("Remotion.UnitTests.Mixins.TestDomain.IBT3Mixin4.Foo", BindingFlags.NonPublic | BindingFlags.Instance);
+            proxyType.GetMethod ("Remotion.Mixins.UnitTests.Core.TestDomain.IBT3Mixin4.Foo", BindingFlags.NonPublic | BindingFlags.Instance);
         Assert.IsNotNull (methodImplementdByMixin);
 
         MethodInfo methodImplementdByBCOverridden =
-            proxyType.GetMethod ("Remotion.UnitTests.Mixins.TestDomain.IBaseType31.IfcMethod", BindingFlags.NonPublic | BindingFlags.Instance);
+            proxyType.GetMethod ("Remotion.Mixins.UnitTests.Core.TestDomain.IBaseType31.IfcMethod", BindingFlags.NonPublic | BindingFlags.Instance);
         Assert.IsNotNull (methodImplementdByBCOverridden);
 
         MethodInfo methodImplementdByBCNotOverridden =
-            proxyType.GetMethod ("Remotion.UnitTests.Mixins.TestDomain.IBaseType35.IfcMethod2", BindingFlags.NonPublic | BindingFlags.Instance);
+            proxyType.GetMethod ("Remotion.Mixins.UnitTests.Core.TestDomain.IBaseType35.IfcMethod2", BindingFlags.NonPublic | BindingFlags.Instance);
         Assert.IsNotNull (methodImplementdByBCNotOverridden);
       }
     }

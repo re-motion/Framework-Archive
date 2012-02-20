@@ -52,8 +52,8 @@ namespace Remotion.Mixins.UnitTests.Core.Context.Suppression
 
     [Test]
     [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "Mixin type "
-        + "'Remotion.UnitTests.Mixins.Context.Suppression.TestDomain.MixinSuppressingItself' applied to target class "
-        + "'Remotion.UnitTests.Mixins.Context.Suppression.TestDomain.ClassWithMixins' suppresses itself.")]
+        + "'Remotion.Mixins.UnitTests.Core.Context.Suppression.TestDomain.MixinSuppressingItself' applied to target class "
+        + "'Remotion.Mixins.UnitTests.Core.Context.Suppression.TestDomain.ClassWithMixins' suppresses itself.")]
     public void SelfSuppressingMixin ()
     {
       new DeclarativeConfigurationBuilder (null).AddType (typeof (MixinSuppressingItself)).BuildConfiguration ();

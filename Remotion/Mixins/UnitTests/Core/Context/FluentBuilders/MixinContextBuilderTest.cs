@@ -72,8 +72,8 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The mixin Remotion.UnitTests.Mixins.TestDomain.BT2Mixin1 already has a "
-        + "dependency on type Remotion.UnitTests.Mixins.TestDomain.BT1Mixin1.", MatchType = MessageMatch.Contains)]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The mixin Remotion.Mixins.UnitTests.Core.TestDomain.BT2Mixin1 already has a "
+        + "dependency on type Remotion.Mixins.UnitTests.Core.TestDomain.BT1Mixin1.", MatchType = MessageMatch.Contains)]
     public void WithDependency_Twice ()
     {
       _mixinBuilder.WithDependency (typeof (BT1Mixin1)).WithDependency (typeof (BT1Mixin1));
@@ -205,7 +205,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "Mixin type 'Remotion.UnitTests.Mixins.TestDomain.BT2Mixin1' applied "
+    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "Mixin type 'Remotion.Mixins.UnitTests.Core.TestDomain.BT2Mixin1' applied "
         + "to target class 'System.Object' suppresses itself.")]
     public void ReplaceMixin_SelfSuppressor ()
     {
@@ -214,7 +214,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
 
     [Test]
     [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "Mixin type "
-        + "'Remotion.UnitTests.Mixins.TestDomain.GenericMixin`1[System.Object]' applied "
+        + "'Remotion.Mixins.UnitTests.Core.TestDomain.GenericMixin`1[System.Object]' applied "
         + "to target class 'System.Object' suppresses itself.")]
     public void ReplaceMixin_SelfSuppressor_GenericDefinition ()
     {

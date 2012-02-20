@@ -151,7 +151,7 @@ namespace Remotion.Mixins.UnitTests.Core
 
     [Test]
     [ExpectedException (typeof (ArgumentException), ExpectedMessage =
-        "Cannot instantiate type 'Remotion.UnitTests.Mixins.TestDomain.IBaseType2', it's an interface.\r\nParameter name: targetOrConcreteType")]
+        "Cannot instantiate type 'Remotion.Mixins.UnitTests.Core.TestDomain.IBaseType2', it's an interface.\r\nParameter name: targetOrConcreteType")]
     public void InterfaceAsTypeArgument ()
     {
       ObjectFactory.Create<IBaseType2> (ParamList.Empty);
@@ -262,7 +262,7 @@ namespace Remotion.Mixins.UnitTests.Core
     }
 
     [Test]
-    [ExpectedException (typeof (MissingMethodException), ExpectedMessage = "Type Remotion.UnitTests.Mixins.ObjectFactoryTest+"
+    [ExpectedException (typeof (MissingMethodException), ExpectedMessage = "Type Remotion.Mixins.UnitTests.Core.ObjectFactoryTest+"
        + "TargetClassWithProtectedCtors contains a constructor with the required signature, but it is not public (and the allowNonPublic flag is "
        + "not set).")]
     public void ProtectedDefaultConstructor_Mixed ()
@@ -283,7 +283,7 @@ namespace Remotion.Mixins.UnitTests.Core
     }
 
     [Test]
-    [ExpectedException (typeof (MissingMethodException), ExpectedMessage = "Type Remotion.UnitTests.Mixins.ObjectFactoryTest+"
+    [ExpectedException (typeof (MissingMethodException), ExpectedMessage = "Type Remotion.Mixins.UnitTests.Core.ObjectFactoryTest+"
        + "TargetClassWithProtectedCtors contains a constructor with the required signature, but it is not public (and the allowNonPublic flag is "
        + "not set).")]
     public void ProtectedDefaultConstructor_NonMixed ()
@@ -304,7 +304,7 @@ namespace Remotion.Mixins.UnitTests.Core
     }
 
     [Test]
-    [ExpectedException (typeof (MissingMethodException), ExpectedMessage = "Type Remotion.UnitTests.Mixins.ObjectFactoryTest+"
+    [ExpectedException (typeof (MissingMethodException), ExpectedMessage = "Type Remotion.Mixins.UnitTests.Core.ObjectFactoryTest+"
        + "TargetClassWithProtectedCtors contains a constructor with the required signature, but it is not public (and the allowNonPublic flag is "
        + "not set).")]
     public void ProtectedNonDefaultConstructor_Mixed ()
@@ -325,7 +325,7 @@ namespace Remotion.Mixins.UnitTests.Core
     }
 
     [Test]
-    [ExpectedException (typeof (MissingMethodException), ExpectedMessage = "Type Remotion.UnitTests.Mixins.ObjectFactoryTest+"
+    [ExpectedException (typeof (MissingMethodException), ExpectedMessage = "Type Remotion.Mixins.UnitTests.Core.ObjectFactoryTest+"
        + "TargetClassWithProtectedCtors contains a constructor with the required signature, but it is not public (and the allowNonPublic flag is "
        + "not set).")]
     public void ProtectedNonDefaultConstructor_NonMixed ()
@@ -365,7 +365,7 @@ namespace Remotion.Mixins.UnitTests.Core
 
     [Test]
     [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "The supplied mixin of type "
-        + "'Remotion.UnitTests.Mixins.TestDomain.BT2Mixin1' is not valid for target type 'Remotion.UnitTests.Mixins.TestDomain.BaseType3' in the "
+        + "'Remotion.Mixins.UnitTests.Core.TestDomain.BT2Mixin1' is not valid for target type 'Remotion.Mixins.UnitTests.Core.TestDomain.BaseType3' in the "
         + "current configuration.")]
     public void ThrowsOnWrongMixinInstances ()
     {
@@ -375,8 +375,8 @@ namespace Remotion.Mixins.UnitTests.Core
 
     [Test]
     [ExpectedException (typeof (MissingMethodException), ExpectedMessage = "Cannot instantiate mixin "
-       + "'Remotion.UnitTests.Mixins.Validation.ValidationTestDomain.MixinWithPrivateCtorAndVirtualMethod' applied to class "
-       + "'Remotion.UnitTests.Mixins.TestDomain.NullTarget', there is no visible default constructor.")]
+       + "'Remotion.Mixins.UnitTests.Core.Validation.ValidationTestDomain.MixinWithPrivateCtorAndVirtualMethod' applied to class "
+       + "'Remotion.Mixins.UnitTests.Core.TestDomain.NullTarget', there is no visible default constructor.")]
     public void ThrowsWhenMixinWithoutPublicDefaultCtorShouldBeInstantiated ()
     {
       using (

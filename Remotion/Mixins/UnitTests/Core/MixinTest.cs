@@ -57,8 +57,8 @@ namespace Remotion.Mixins.UnitTests.Core
     }
 
     [Test]
-    [ExpectedException (typeof (AmbiguousMatchException), ExpectedMessage = "Both mixins 'Remotion.UnitTests.Mixins.TestDomain."
-        + "DerivedDerivedNullMixin' and 'Remotion.UnitTests.Mixins.TestDomain.DerivedNullMixin' match the given type 'NullMixin'.")]
+    [ExpectedException (typeof (AmbiguousMatchException), ExpectedMessage = "Both mixins 'Remotion.Mixins.UnitTests.Core.TestDomain."
+        + "DerivedDerivedNullMixin' and 'Remotion.Mixins.UnitTests.Core.TestDomain.DerivedNullMixin' match the given type 'NullMixin'.")]
     public void MixinGet_AssignableMatchAmbiguity ()
     {
       using (MixinConfiguration.BuildNew().ForClass<NullTarget>().AddMixin<DerivedNullMixin>().AddMixin<DerivedDerivedNullMixin>().EnterScope())

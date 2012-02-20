@@ -194,7 +194,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.Seriali
 
     [Test]
     [ExpectedException (typeof (ArgumentTypeException), ExpectedMessage = "Argument objectReference is a "
-        + "Remotion.UnitTests.Mixins.CodeGeneration.IntegrationTests.Serialization.ModuleManagerSerializationExtensionTest+DummyReference, which cannot be assigned to type "
+        + "Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.Serialization.ModuleManagerSerializationExtensionTest+DummyReference, which cannot be assigned to type "
             + "System.Runtime.Serialization.IDeserializationCallback.\r\nParameter name: objectReference")]
     public void FinishDeserialization_ThrowsOnUnmixedObjects ()
     {

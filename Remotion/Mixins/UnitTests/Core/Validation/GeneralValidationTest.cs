@@ -252,8 +252,8 @@ namespace Remotion.Mixins.UnitTests.Core.Validation
           Is.EqualTo (
               "Some parts of the mixin configuration could not be validated."
               + Environment.NewLine
-              + "Remotion.UnitTests.Mixins.Validation.ValidationTestDomain.AbstractMixinWithoutBase.AbstractMethod (Remotion.UnitTests.Mixins."
-              + "Validation.ValidationTestDomain.AbstractMixinWithoutBase -> Remotion.UnitTests.Mixins.TestDomain.ClassOverridingSingleMixinMethod):"
+              + "Remotion.Mixins.UnitTests.Core.Validation.ValidationTestDomain.AbstractMixinWithoutBase.AbstractMethod (Remotion.Mixins.UnitTests.Core."
+              + "Validation.ValidationTestDomain.AbstractMixinWithoutBase -> Remotion.Mixins.UnitTests.Core.TestDomain.ClassOverridingSingleMixinMethod):"
               + Environment.NewLine
               +
               "Error: A target class overrides a method from one of its mixins, but the mixin is not derived from one of the Mixin<...> base classes."

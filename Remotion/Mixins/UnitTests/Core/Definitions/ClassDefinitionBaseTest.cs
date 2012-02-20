@@ -66,7 +66,7 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The type Remotion.UnitTests.Mixins.TestDomain.GenericTargetClass`1[T] "
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The type Remotion.Mixins.UnitTests.Core.TestDomain.GenericTargetClass`1[T] "
         + "contains generic parameters, which is not allowed.\r\nParameter name: type")]
     public void Initialization_WithGenericParameters ()
     {
