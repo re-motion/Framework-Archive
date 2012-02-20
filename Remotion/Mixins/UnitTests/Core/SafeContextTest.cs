@@ -89,6 +89,9 @@ namespace Remotion.Mixins.UnitTests.Core
     [Test]
     public void AutoInitialization_LeavesMixinConfigurationEmpty ()
     {
+      MixinConfiguration.SetActiveConfiguration (null);
+
+      Assert.That (MixinConfiguration.HasActiveConfiguration, Is.False);
       Dev.Null = SafeContext.Instance;
       Assert.That (MixinConfiguration.HasActiveConfiguration, Is.False);
     }
