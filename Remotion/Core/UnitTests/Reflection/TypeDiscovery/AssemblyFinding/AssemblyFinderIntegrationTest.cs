@@ -33,10 +33,10 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
   public class AssemblyFinderIntegrationTest
   {
     private const string c_testAssemblySourceDirectoryRoot = @"Reflection\TypeDiscovery\TestAssemblies";
-    private AssemblyCompilerTestHelper _baseDirectoryHelper;
-    private AssemblyCompilerTestHelper _dynamicDirectoryHelper;
-    private AssemblyCompilerTestHelper _searchPathForDllsHelper;
-    private AssemblyCompilerTestHelper _searchPathForExesHelper;
+    private AssemblyCompilerBuildOutputManager _baseDirectoryBuildOutputManager;
+    private AssemblyCompilerBuildOutputManager _dynamicDirectoryBuildOutputManager;
+    private AssemblyCompilerBuildOutputManager _searchPathForDllsBuildOutputManager;
+    private AssemblyCompilerBuildOutputManager _searchPathForExesBuildOutputManager;
 
     private string _markedAssemblyPath;
     private string _markedExeAssemblyPath;
@@ -57,37 +57,38 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
       var searchPathForExes = Path.Combine (AppDomain.CurrentDomain.BaseDirectory, "Reflection.AssemblyFinderIntegrationTest.Exes");
       var dynamicBase = Path.Combine (AppDomain.CurrentDomain.BaseDirectory, "Reflection.AssemblyFinderIntegrationTest.Dynamic");
 
-      _baseDirectoryHelper = CreateAssemblyCompilerTestHelper (AppDomain.CurrentDomain.BaseDirectory);
-      _dynamicDirectoryHelper = CreateAssemblyCompilerTestHelper (dynamicBase);
-      _searchPathForDllsHelper = CreateAssemblyCompilerTestHelper (searchPathForDlls);
-      _searchPathForExesHelper = CreateAssemblyCompilerTestHelper (searchPathForExes);
+      _baseDirectoryBuildOutputManager = CreateAssemblyCompilerTestHelper (AppDomain.CurrentDomain.BaseDirectory);
+      _dynamicDirectoryBuildOutputManager = CreateAssemblyCompilerTestHelper (dynamicBase);
+      _searchPathForDllsBuildOutputManager = CreateAssemblyCompilerTestHelper (searchPathForDlls);
+      _searchPathForExesBuildOutputManager = CreateAssemblyCompilerTestHelper (searchPathForExes);
 
-      _markedReferencedAssemblyPath = _baseDirectoryHelper.CompileAssemblyInSeparateAppDomain ("MarkedReferencedAssembly.dll");
-      _markedAssemblyPath = _baseDirectoryHelper.CompileAssemblyInSeparateAppDomain ("MarkedAssembly.dll", _markedReferencedAssemblyPath);
-      _markedExeAssemblyPath = _baseDirectoryHelper.CompileAssemblyInSeparateAppDomain ("MarkedExeAssembly.dll");
-      _markedAssemblyWithDerivedAttributePath = _baseDirectoryHelper.CompileAssemblyInSeparateAppDomain ("MarkedAssemblyWithDerivedAttribute.dll");
-      _baseDirectoryHelper.CompileAssemblyInSeparateAppDomain ("UnmarkedAssembly.dll");
+      _markedReferencedAssemblyPath = _baseDirectoryBuildOutputManager.CompileInSeparateAppDomain ("MarkedReferencedAssembly.dll");
+      _markedAssemblyPath = _baseDirectoryBuildOutputManager.CompileInSeparateAppDomain ("MarkedAssembly.dll", _markedReferencedAssemblyPath);
+      _markedExeAssemblyPath = _baseDirectoryBuildOutputManager.CompileInSeparateAppDomain ("MarkedExeAssembly.dll");
+      _markedAssemblyWithDerivedAttributePath = _baseDirectoryBuildOutputManager.CompileInSeparateAppDomain ("MarkedAssemblyWithDerivedAttribute.dll");
+      _baseDirectoryBuildOutputManager.CompileInSeparateAppDomain ("UnmarkedAssembly.dll");
 
-      _markedAssemblyInSearchPathPath = _searchPathForDllsHelper.CompileAssemblyInSeparateAppDomain ("MarkedAssemblyInRelativeSearchPath.dll");
-      _markedExeAssemblyInSearchPathPath = _searchPathForExesHelper.CompileAssemblyInSeparateAppDomain ("MarkedExeAssemblyInRelativeSearchPath.exe");
+      _markedAssemblyInSearchPathPath = _searchPathForDllsBuildOutputManager.CompileInSeparateAppDomain ("MarkedAssemblyInRelativeSearchPath.dll");
+      _markedExeAssemblyInSearchPathPath =
+          _searchPathForExesBuildOutputManager.CompileInSeparateAppDomain ("MarkedExeAssemblyInRelativeSearchPath.exe");
 
       _markedAssemblyInSearchPathWithNameMismatchPath =
-          _searchPathForDllsHelper.CompileAssemblyInSeparateAppDomain ("MarkedAssemblyWithOtherFilenameInRelativeSearchPath.dll");
-      _markedAssemblyInSearchPathWithNameMismatchPath = _searchPathForDllsHelper.RenameGeneratedAssembly (
+          _searchPathForDllsBuildOutputManager.CompileInSeparateAppDomain ("MarkedAssemblyWithOtherFilenameInRelativeSearchPath.dll");
+      _markedAssemblyInSearchPathWithNameMismatchPath = _searchPathForDllsBuildOutputManager.RenameGeneratedAssembly (
           "MarkedAssemblyWithOtherFilenameInRelativeSearchPath.dll", "_MarkedAssemblyWithOtherFilenameInRelativeSearchPath.dll");
 
-      _markedAssemblyInDynamicDirectoryPath = _dynamicDirectoryHelper.CompileAssemblyInSeparateAppDomain ("MarkedAssemblyInDynamicDirectory.dll");
-      _markedExeAssemblyInDynamicDirectoryPath = _dynamicDirectoryHelper.CompileAssemblyInSeparateAppDomain (
+      _markedAssemblyInDynamicDirectoryPath = _dynamicDirectoryBuildOutputManager.CompileInSeparateAppDomain ("MarkedAssemblyInDynamicDirectory.dll");
+      _markedExeAssemblyInDynamicDirectoryPath = _dynamicDirectoryBuildOutputManager.CompileInSeparateAppDomain (
           "MarkedExeAssemblyInDynamicDirectory.exe");
     }
 
     [TestFixtureTearDown]
     public void TeastFixtureTearDown ()
     {
-      _baseDirectoryHelper.Dispose();
-      _dynamicDirectoryHelper.Dispose();
-      _searchPathForDllsHelper.Dispose ();
-      _searchPathForExesHelper.Dispose ();
+      _baseDirectoryBuildOutputManager.Dispose();
+      _dynamicDirectoryBuildOutputManager.Dispose();
+      _searchPathForDllsBuildOutputManager.Dispose ();
+      _searchPathForExesBuildOutputManager.Dispose ();
     }
 
     [Test]
@@ -233,8 +234,8 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
         var appDomainSetup = new AppDomainSetup ();
         appDomainSetup.ApplicationName = "Test";
         appDomainSetup.ApplicationBase = AppDomain.CurrentDomain.SetupInformation.ApplicationBase;
-        appDomainSetup.PrivateBinPath = _searchPathForDllsHelper.BuildOutputDirectory + ";" + _searchPathForExesHelper.BuildOutputDirectory;
-        appDomainSetup.DynamicBase = _dynamicDirectoryHelper.BuildOutputDirectory;
+        appDomainSetup.PrivateBinPath = _searchPathForDllsBuildOutputManager.BuildOutputDirectory + ";" + _searchPathForExesBuildOutputManager.BuildOutputDirectory;
+        appDomainSetup.DynamicBase = _dynamicDirectoryBuildOutputManager.BuildOutputDirectory;
         appDomainSetup.ShadowCopyFiles = AppDomain.CurrentDomain.SetupInformation.ShadowCopyFiles;
 
         appDomain = AppDomain.CreateDomain ("Test", null, appDomainSetup);
@@ -250,7 +251,7 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
 
     private void InitializeDynamicDirectory ()
     {
-      _dynamicDirectoryHelper.CopyAllGeneratedAssembliesToNewDirectory (AppDomain.CurrentDomain.DynamicDirectory);
+      _dynamicDirectoryBuildOutputManager.CopyAllGeneratedAssembliesToNewDirectory (AppDomain.CurrentDomain.DynamicDirectory);
     }
 
     private Assembly CompileTestAssemblyInMemory (string assemblyName, params string[] referencedAssemblies)
@@ -263,10 +264,10 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
       return assemblyCompiler.CompiledAssembly;
     }
 
-    private AssemblyCompilerTestHelper CreateAssemblyCompilerTestHelper (string buildOutputDirectory)
+    private AssemblyCompilerBuildOutputManager CreateAssemblyCompilerTestHelper (string buildOutputDirectory)
     {
       var createBuildOutputDirectory = buildOutputDirectory != AppDomain.CurrentDomain.BaseDirectory;
-      return new AssemblyCompilerTestHelper (
+      return new AssemblyCompilerBuildOutputManager (
           buildOutputDirectory, createBuildOutputDirectory, c_testAssemblySourceDirectoryRoot, typeof (MarkerAttribute).Module.Name);
     }
 

@@ -24,7 +24,7 @@ using System.Linq;
 namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
 {
   [Serializable]
-  public class AssemblyCompilerTestHelper : IDisposable
+  public class AssemblyCompilerBuildOutputManager : IDisposable
   {
     private readonly string _buildOutputDirectory;
     private readonly string _sourceDirectoryRoot;
@@ -35,7 +35,7 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
 
     private bool _isDisposed = false;
 
-    public AssemblyCompilerTestHelper (
+    public AssemblyCompilerBuildOutputManager (
         string buildOutputDirectory,
         bool createBuildOutputDirectory,
         string sourceDirectoryRoot,
@@ -73,7 +73,7 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
         Directory.Delete (generatedDirectory, true);
     }
 
-    public string CompileAssemblyInSeparateAppDomain (string outputAssemblyFileName, params string[] referencedAssemblies)
+    public string CompileInSeparateAppDomain (string outputAssemblyFileName, params string[] referencedAssemblies)
     {
       var outputAssemblyPath = Path.Combine (_buildOutputDirectory, outputAssemblyFileName);
       var allReferencedAssemblies = _alwaysReferencedAssemblies.Concat (referencedAssemblies).ToArray();
