@@ -210,6 +210,7 @@
     <Compile Include="BridgeInterfaces\IAdapterRegistryImplementationTest.cs" />
     <Compile Include="BridgeInterfaces\IParamListCreateImplementationTest.cs" />
     <Compile Include="Reflection\TestDomain\AbstractClass.cs" />
+    <Compile Include="Reflection\TypeDiscovery\AssemblyFinding\AssemblyCompilerTestHelper.cs" />
     <Compile Include="ServiceLocation\TypeNameTemplateResolverTest.cs" />
     <Compile Include="Logging\ILogManagerTest.cs" />
     <Compile Include="Logging\Log4NetLogTests\IsEnabledTest.cs" />
