@@ -55,6 +55,18 @@
     <Compile Include="..\..\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
+    <Compile Include="CoreComponentIntegration\AttributeUtilityMixinIntegrationTest.cs" />
+    <Compile Include="CoreComponentIntegration\TestDomain\BaseInheritedAttribute.cs" />
+    <Compile Include="CoreComponentIntegration\TestDomain\BaseNonInheritedAttribute.cs" />
+    <Compile Include="CoreComponentIntegration\TestDomain\BaseWithAttributesForSuppressed.cs" />
+    <Compile Include="CoreComponentIntegration\TestDomain\ClassWithNonInheritedAttribute.cs" />
+    <Compile Include="CoreComponentIntegration\TestDomain\ClassWithoutAttributes.cs" />
+    <Compile Include="CoreComponentIntegration\TestDomain\DerivedInheritedAttribute.cs" />
+    <Compile Include="CoreComponentIntegration\TestDomain\DerivedWithAttributesAndSuppressed.cs" />
+    <Compile Include="CoreComponentIntegration\TestDomain\ICustomAttribute.cs" />
+    <Compile Include="CoreComponentIntegration\TestDomain\MixinAddingInheritedAttribute.cs" />
+    <Compile Include="CoreComponentIntegration\TestDomain\MixinAddingSuppressAttribute.cs" />
+    <Compile Include="CoreComponentIntegration\TestDomain\MixinSuppressingNonInheritedAttribute.cs" />
     <Compile Include="Core\CodeGenerationStatisticsTest.cs" />
     <Compile Include="Core\CodeGenerationTypeMother.cs" />
     <Compile Include="Core\CodeGeneration\AttributeBasedMetadataImporterTest.cs" />
@@ -622,9 +634,7 @@
       <Name>Mixins.Samples</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="CoreComponentIntegration\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -14,10 +14,10 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-namespace Remotion.UnitTests.Utilities.AttributeUtilityTests.TestDomain
+namespace Remotion.Mixins.UnitTests.CoreComponentIntegration.TestDomain
 {
-  [SuppressAttributes (typeof (BaseNonInheritedAttribute))]
-  public class MixinSuppressingNonInheritedAttribute
+  [BaseNonInherited ("ClassWithNonInheritedAttribute")]
+  public class ClassWithNonInheritedAttribute
   {
     
   }

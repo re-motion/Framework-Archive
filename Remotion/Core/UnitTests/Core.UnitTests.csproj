@@ -310,7 +310,6 @@
     <Compile Include="Reflection\ParamListTest.cs" />
     <Compile Include="Reflection\TestDomain\ClassWithManyConstructorArguments.cs" />
     <Compile Include="Utilities\ArgumentTypeExceptionTest.cs" />
-    <Compile Include="Utilities\AttributeUtilityTests\GetCustomAttributesForMixedTypes_WithSuppressTest.cs" />
     <Compile Include="Utilities\CompoundComparerTest.cs" />
     <Compile Include="Utilities\DefaultConverterTest.cs" />
     <Compile Include="Utilities\DelegateBasedComparerTest.cs" />
@@ -529,9 +528,6 @@
     <Compile Include="Utilities\AttributeUtilityTests\TestDomain\DerivedClassWithAttribute.cs" />
     <Compile Include="Utilities\AttributeUtilityTests\TestDomain\DerivedInheritedAttribute.cs" />
     <Compile Include="Utilities\AttributeUtilityTests\TestDomain\DerivedWithAttributesAndSuppressed.cs" />
-    <Compile Include="Utilities\AttributeUtilityTests\TestDomain\MixinAddingInheritedAttribute.cs" />
-    <Compile Include="Utilities\AttributeUtilityTests\TestDomain\MixinAddingSuppressAttribute.cs" />
-    <Compile Include="Utilities\AttributeUtilityTests\TestDomain\MixinSuppressingNonInheritedAttribute.cs" />
     <Compile Include="Utilities\AttributeUtilityTests\TestDomain\NotInheritedNotMultipleAttribute.cs" />
     <Compile Include="Utilities\AttributeUtilityTests\TestDomain\ImplicitUsageAttribute.cs" />
     <Compile Include="Utilities\AttributeUtilityTests\IsDefinedFromMemberInfoTest.cs" />
