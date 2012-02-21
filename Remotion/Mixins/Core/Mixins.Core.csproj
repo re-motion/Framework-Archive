@@ -18,9 +18,12 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;NET_3_5</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\Remotion.Mixins.XML</DocumentationFile>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <NoWarn>1591</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -330,6 +333,7 @@
       <Link>Remotion LGPL.licenseheader</Link>
     </None>
     <None Include="Context\Context.cd" />
+    <None Include="doc\include\GettingStartedWithRemix.aml" />
     <None Include="Validation\Validation.cd" />
   </ItemGroup>
   <ItemGroup>

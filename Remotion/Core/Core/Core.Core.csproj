@@ -541,7 +541,6 @@
       <Link>remotion.snk</Link>
     </None>
     <EmbeddedResource Include="Configuration\TypeDiscovery\TypeDiscoveryConfiguration.xsd" />
-    <None Include="doc\include\GettingStartedWithRemix.aml" />
     <None Include="doc\include\GettingStartedWithRemotion.aml" />
     <Content Include="doc\include\Globalization\MultiLingualResourcesAttribute.xml" />
     <Content Include="doc\include\Globalization\ResourceManagerWrapper.xml" />

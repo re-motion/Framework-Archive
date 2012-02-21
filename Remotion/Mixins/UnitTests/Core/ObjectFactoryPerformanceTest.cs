@@ -68,12 +68,5 @@ namespace Remotion.Mixins.UnitTests.Core
       var elapsed = stopwatch.Elapsed;
       Console.WriteLine ("ObjectFactoryCreate_WithMixedMixin: {0} µs", elapsed.TotalMilliseconds * 1000.0 / iterations);
     }
-
-    public static void Main ()
-    {
-      var test = new ObjectFactoryPerformanceTest ();
-      // test.New_WithMixedMixin();
-      test.ObjectFactoryCreate_WithMixedMixin ();
-    }
   }
 }

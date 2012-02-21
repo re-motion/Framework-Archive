@@ -34,7 +34,7 @@ namespace Remotion.Mixins.MixerTools
 {
   /// <summary>
   /// Provides functionality for pre-generating mixed types and saving them to disk to be later loaded via 
-  /// <see cref="ConcreteTypeBuilder.LoadConcreteTypes"/>.
+  /// <see cref="ConcreteTypeBuilder.LoadConcreteTypes(System.Reflection.Assembly)"/>.
   /// </summary>
   public class Mixer
   {
