@@ -140,6 +140,7 @@
     <Compile Include="Core\CodeGeneration\IntegrationTests\MixinTypeCodeGeneration\TypeFeatureTest.cs" />
     <Compile Include="Core\CodeGeneration\IntegrationTests\NextCallProxyCodeGeneration\InstantiationTest.cs" />
     <Compile Include="Core\CodeGeneration\IntegrationTests\NextCallProxyCodeGeneration\NextCallTest.cs" />
+    <Compile Include="Core\CodeGeneration\IntegrationTests\NextCallProxyCodeGeneration\TestDomain\MixinOverridingMethodWithArgument.cs" />
     <Compile Include="Core\CodeGeneration\IntegrationTests\NextCallProxyCodeGeneration\TypeFeatureTest.cs" />
     <Compile Include="Core\CodeGeneration\IntegrationTests\Serialization\AbstractMixinWithSerializationCallbacks.cs" />
     <Compile Include="Core\CodeGeneration\IntegrationTests\Serialization\MixinSerializationTest.cs" />

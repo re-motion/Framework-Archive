@@ -123,6 +123,26 @@ namespace Remotion.Data.DomainObjects.Linq
       get { return _generationStage; }
     }
 
+    public IMappingResolutionContext MappingResolutionContext
+    {
+      get { return _mappingResolutionContext; }
+    }
+
+    public ClassDefinition StartingClassDefinition
+    {
+      get { return _startingClassDefinition; }
+    }
+
+    public IStorageTypeInformationProvider StorageTypeInformationProvider
+    {
+      get { return _storageTypeInformationProvider; }
+    }
+
+    public TypeConversionProvider TypeConversionProvider
+    {
+      get { return _typeConversionProvider; }
+    }
+
     /// <summary>
     /// Creates and executes a given <see cref="QueryModel"/> as an <see cref="IQuery"/> using the current <see cref="ClientTransaction"/>'s
     /// <see cref="ClientTransaction.QueryManager"/>. The query is executed as a scalar query.
@@ -265,7 +285,7 @@ namespace Remotion.Data.DomainObjects.Linq
     /// The <see cref="QueryModel"/> a sql query is generated for. The query must not contain any eager fetch result operators.
     /// </param>
     /// <param name="checkResultIsDomainObject">If <see langword="true" />, the method will check whether the query returns <see cref="DomainObject"/>
-    /// instances and throw an exception if yes. If <see langword="false" />, no such check will be made.</param>
+    /// instances and throw an exception if not. If <see langword="false" />, no such check will be made.</param>
     /// <returns>A <see cref="SqlCommandData"/> instance containing the SQL text, parameters, and an in-memory projection for the given query model.</returns>
     public virtual SqlCommandData CreateSqlCommand (QueryModel queryModel, bool checkResultIsDomainObject)
     {

@@ -15,16 +15,17 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Reflection;
+using Remotion.Data.DomainObjects;
+using Remotion.Data.DomainObjects.DataManagement;
+using Remotion.Data.UnitTests.DomainObjects.TestDomain;
 
-//
-// General Information about an assembly is controlled through the following 
-// set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
-//
-
-[assembly: AssemblyTitle("Remotion Data Library")]
-[assembly: AssemblyDescription("Common API for data management used by the Remotion library")]
-[assembly: AssemblyCulture("")]
-[assembly: CLSCompliant(true)]
-
+namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement
+{
+  public static class DataContainerObjectMother
+  {
+    public static DataContainer CreateDataContainer()
+    {
+      return DataContainer.CreateNew (new ObjectID (typeof (Order), Guid.NewGuid()));
+    }
+  }
+}
