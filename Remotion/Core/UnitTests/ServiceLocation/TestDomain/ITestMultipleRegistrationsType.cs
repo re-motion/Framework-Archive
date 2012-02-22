@@ -18,14 +18,15 @@ using System;
 
 namespace Remotion.UnitTests.ServiceLocation.TestDomain
 {
-  internal class TestTypeWithNotExactOnePublicConstructor : ITestTypeWithNotExactOnePublicConstructor
+  internal interface ITestMultipleRegistrationsType
   {
-    public TestTypeWithNotExactOnePublicConstructor ()
-    {
-    }
+  }
 
-    public TestTypeWithNotExactOnePublicConstructor (ITestSingletonConcreteImplementationAttributeType param)
-    {
-    }
+  class TestMultipleRegistrationType1 : ITestMultipleRegistrationsType
+  { 
+  }
+
+  class TestMultipleRegistrationType2 : ITestMultipleRegistrationsType
+  {
   }
 }
