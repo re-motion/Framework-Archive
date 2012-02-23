@@ -22,7 +22,7 @@ using Remotion.Web.Context;
 namespace Remotion.Web.UnitTests.Core.Context
 {
   [TestFixture]
-  public class WebSafeContextMixinTest
+  public class SafeContextWebIntegrationTest
   {
     [Test]
     public void StorageProvider_IsHttpProvider_InWebProject ()
