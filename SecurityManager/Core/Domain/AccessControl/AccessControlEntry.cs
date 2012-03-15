@@ -126,13 +126,29 @@ namespace Remotion.SecurityManager.Domain.AccessControl
       }
     }
 
-    [DBBidirectionalRelation ("AccessControlEntry", SortExpression = "Index ASC")]
+    [DBBidirectionalRelation ("AccessControlEntry")]
     protected abstract ObjectList<Permission> PermissionsInternal { get; }
 
-    [StorageClassNone]
-    public ReadOnlyCollection<Permission> Permissions
+    public ReadOnlyCollection<Permission> GetPermissions ()
     {
-      get { return PermissionsInternal.AsReadOnlyCollection(); }
+      if (Class.AccessTypes.Count != PermissionsInternal.Count)
+      {
+        throw new InvalidOperationException (
+            string.Format ("Inconsistent access type definition found for securable class definition '{0}'.", Class.Name));
+      }
+
+      var permissions = (from accessType in Class.AccessTypes
+                         // LiNQ join preserves order of OUTER
+                         join permission in PermissionsInternal on accessType equals permission.AccessType
+                         select permission).ToList().AsReadOnly();
+
+      if (Class.AccessTypes.Count != permissions.Count)
+      {
+        throw new InvalidOperationException (
+            string.Format ("Inconsistent access type definition found for securable class definition '{0}'.", Class.Name));
+      }
+
+      return permissions;
     }
 
     public AccessTypeDefinition[] GetAllowedAccessTypes ()
@@ -145,24 +161,34 @@ namespace Remotion.SecurityManager.Domain.AccessControl
       return PermissionsInternal.Where (p => (p.Allowed.HasValue && !p.Allowed.Value)).Select (p => p.AccessType).ToArray ();
     }
 
-    public void AttachAccessType (AccessTypeDefinition accessType)
+    public void AddAccessType (AccessTypeDefinition accessType)
     {
       ArgumentUtility.CheckNotNull ("accessType", accessType);
 
       if (FindPermission (accessType) != null)
       {
         throw new ArgumentException (
-            string.Format ("The access type '{0}' has already been attached to this access control entry.", accessType.Name), "accessType");
+            string.Format ("The access type '{0}' has already been added to this access control entry.", accessType.Name), "accessType");
       }
 
       var permission = Permission.NewObject();
       permission.AccessType = accessType;
       permission.Allowed = null;
       PermissionsInternal.Add (permission);
-      if (PermissionsInternal.Count == 1)
-        permission.Index = 0;
-      else
-        permission.Index = PermissionsInternal[PermissionsInternal.Count - 2].Index + 1;
+    }
+
+    public void RemoveAccessType (AccessTypeDefinition accessType)
+    {
+      ArgumentUtility.CheckNotNull ("accessType", accessType);
+
+      var permission = FindPermission (accessType);
+      if (permission == null)
+      {
+        throw new ArgumentException (
+            string.Format ("The access type '{0}' is not associated with the access control entry.", accessType.Name), "accessType");
+      }
+
+      permission.Delete();
     }
 
     public void AllowAccess (AccessTypeDefinition accessType)
@@ -210,7 +236,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl
 
     private Permission FindPermission (AccessTypeDefinition accessType)
     {
-      return Permissions.Where (p => p.AccessType.ID == accessType.ID).SingleOrDefault();
+      return PermissionsInternal.Where (p => p.AccessType.ID == accessType.ID).SingleOrDefault();
     }
 
     //TODO: Rewrite with test
@@ -219,7 +245,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl
     {
       base.OnDeleting (args);
 
-      _deleteHandler = new DomainObjectDeleteHandler (Permissions);
+      _deleteHandler = new DomainObjectDeleteHandler (PermissionsInternal);
     }
 
     protected override void OnDeleted (EventArgs args)

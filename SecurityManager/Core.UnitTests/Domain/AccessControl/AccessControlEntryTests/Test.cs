@@ -16,12 +16,12 @@
 // Additional permissions are listed in the file re-motion_exceptions.txt.
 // 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects;
-using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.SecurityManager.Domain.AccessControl;
 using Remotion.SecurityManager.Domain.Metadata;
-using Remotion.SecurityManager.Domain.OrganizationalStructure;
 
 namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessControlEntryTests
 {
@@ -118,53 +118,90 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessControlE
     }
 
     [Test]
-    public void AttachAccessType_TwoNewAccessType ()
+    public void AddAccessType()
     {
-      AccessControlEntry ace = AccessControlEntry.NewObject();
-      AccessTypeDefinition accessType0 = AccessTypeDefinition.NewObject (Guid.NewGuid(), "Access Type 0", 0);
-      AccessTypeDefinition accessType1 = AccessTypeDefinition.NewObject (Guid.NewGuid(), "Access Type 1", 1);
-      using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
-      {
-        ace.EnsureDataAvailable ();
-        Assert.AreEqual (StateType.Unchanged, ace.State);
+      var accessType = AccessTypeDefinition.NewObject (Guid.NewGuid(), "Access Type 0", 0);
+      var securableClassDefinition = SecurableClassDefinition.NewObject();
+      securableClassDefinition.CreateStatelessAccessControlList();
+      securableClassDefinition.AddAccessType (accessType);
+      var ace = AccessControlEntry.NewObject();
+      securableClassDefinition.StatelessAccessControlList.AccessControlEntries.Add (ace);
 
-        ace.AttachAccessType (accessType0);
-        ace.AttachAccessType (accessType1);
+      ace.AddAccessType (accessType);
 
-        Assert.AreEqual (2, ace.Permissions.Count);
-        Permission permission0 = ace.Permissions[0];
-        Assert.AreSame (accessType0, permission0.AccessType);
-        Assert.AreEqual (0, permission0.Index);
-        Permission permission1 = ace.Permissions[1];
-        Assert.AreSame (accessType1, permission1.AccessType);
-        Assert.AreEqual (1, permission1.Index);
-        Assert.AreEqual (StateType.Changed, ace.State);
-      }
+      Assert.AreEqual (1, ace.GetPermissions().Count);
+      Assert.AreSame (accessType, ace.GetPermissions()[0].AccessType);
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage =
-        "The access type 'Test' has already been attached to this access control entry.\r\nParameter name: accessType")]
-    public void AttachAccessType_ExistingAccessType ()
+    public void AddAccessType_ExistingAccessType ()
     {
       AccessControlEntry ace = AccessControlEntry.NewObject();
       AccessTypeDefinition accessType = AccessTypeDefinition.NewObject (Guid.NewGuid(), "Test", 42);
 
-      ace.AttachAccessType (accessType);
-      ace.AttachAccessType (accessType);
+      ace.AddAccessType (accessType);
+      Assert.That (
+          () => ace.AddAccessType (accessType),
+          Throws.ArgumentException.And.Message.StartsWith ("The access type 'Test' has already been added to this access control entry."));
     }
 
     [Test]
-    public void Get_PermissionsFromDatabase ()
+    public void RemoveAccessType()
     {
-      DatabaseFixtures dbFixtures = new DatabaseFixtures();
-      ObjectID aceID = dbFixtures.CreateAndCommitAccessControlEntryWithPermissions (10, ClientTransaction.CreateRootTransaction());
+      var accessType0 = AccessTypeDefinition.NewObject (Guid.NewGuid(), "Access Type 0", 0);
+      var accessType1 = AccessTypeDefinition.NewObject (Guid.NewGuid(), "Access Type 1", 1);
+      var accessType2 = AccessTypeDefinition.NewObject (Guid.NewGuid(), "Access Type 2", 2);
+      var securableClassDefinition = SecurableClassDefinition.NewObject();
+      securableClassDefinition.CreateStatelessAccessControlList();
+      securableClassDefinition.AddAccessType (accessType0);
+      securableClassDefinition.AddAccessType (accessType2);
+      var ace = AccessControlEntry.NewObject();
+      securableClassDefinition.StatelessAccessControlList.AccessControlEntries.Add (ace);
 
-      AccessControlEntry ace = AccessControlEntry.GetObject (aceID);
+      ace.AddAccessType (accessType0);
+      ace.AddAccessType (accessType1);
+      ace.AddAccessType (accessType2);
+      
+      ace.RemoveAccessType (accessType1);
 
-      Assert.AreEqual (10, ace.Permissions.Count);
+      var permissions = ace.GetPermissions();
+      Assert.AreEqual (2, permissions.Count);
+      Assert.AreSame (accessType0, permissions[0].AccessType);
+      Assert.AreSame (accessType2, permissions[1].AccessType);
+    }
+
+    [Test]
+    public void RemoveAccessType_AccessTypeDoesNotExist ()
+    {
+      var ace = AccessControlEntry.NewObject();
+
+      ace.AddAccessType (AccessTypeDefinition.NewObject());
+      Assert.That (
+          () => ace.RemoveAccessType (AccessTypeDefinition.NewObject (Guid.NewGuid(), "Test", 42)),
+          Throws.ArgumentException.And.Message.StartsWith ("The access type 'Test' is not associated with the access control entry."));
+    }
+
+    [Test]
+    public void GetPermissions_SortedByAccessTypeFromSecurableClassDefinition ()
+    {
+      var accessTypes = new List<AccessTypeDefinition>();
       for (int i = 0; i < 10; i++)
-        Assert.AreEqual (string.Format ("Access Type {0}", i), (ace.Permissions[i]).AccessType.Name);
+        accessTypes.Add (AccessTypeDefinition.NewObject (Guid.NewGuid(), string.Format ("Access Type {0}", i), i));
+
+      var securableClassDefinition = SecurableClassDefinition.NewObject();
+      securableClassDefinition.CreateStatelessAccessControlList();
+
+      foreach (var accessType in accessTypes)
+        securableClassDefinition.AddAccessType (accessType);
+
+      var ace = AccessControlEntry.NewObject();
+      securableClassDefinition.StatelessAccessControlList.AccessControlEntries.Add (ace);
+      foreach (var accessType in accessTypes.AsEnumerable().Reverse())
+        ace.AddAccessType (accessType);
+
+      var permissions = ace.GetPermissions();
+      for (int i = 0; i < accessTypes.Count; i++)
+        Assert.That (permissions[i].AccessType, Is.SameAs (accessTypes[i]));
     }
 
     [Test]

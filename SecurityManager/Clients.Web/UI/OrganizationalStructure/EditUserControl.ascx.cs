@@ -62,7 +62,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure
 
       var bocListInlineEditingConfigurator = ServiceLocator.GetInstance<BocListInlineEditingConfigurator>();
 
-      SubstitutedByList.EditModeControlFactory = ServiceLocator.GetInstance<EditableRowAutoCompleteControlFactory>();
+      SubstitutedByList.EditModeControlFactory = ServiceLocator.GetInstance<UserSubstitedByListEditableRowControlFactory>();
       bocListInlineEditingConfigurator.Configure (SubstitutedByList, Substitution.NewObject);
 
       RolesList.EditModeControlFactory = ServiceLocator.GetInstance<UserRolesListEditableRowControlFactory>();
@@ -87,9 +87,6 @@ namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure
     protected override void OnPreRender (EventArgs e)
     {
       base.OnPreRender (e);
-       
-      if (CurrentFunction.TenantID == null)
-        throw new InvalidOperationException ("No current tenant has been set. Possible reason: session timeout");
 
       _owningGroupField.Args = CurrentFunction.TenantID.ToString();
     }

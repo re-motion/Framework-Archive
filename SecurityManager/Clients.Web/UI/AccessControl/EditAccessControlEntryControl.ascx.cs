@@ -264,8 +264,6 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
       if (resetValue)
         SpecificGroupField.Value = null;
 
-      if (CurrentFunction.TenantID == null)
-        throw new InvalidOperationException ("No current tenant has been set. Possible reason: session timeout");
       SpecificGroupField.Args = SpecificTenantField.BusinessObjectUniqueIdentifier ?? CurrentFunction.TenantID.ToString();
 
       SpecificGroupField.Visible = (GroupCondition?) GroupConditionField.Value == GroupCondition.SpecificGroup;
@@ -299,8 +297,6 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
       if (resetValue)
         SpecificUserField.Value = null;
 
-      if (CurrentFunction.TenantID == null)
-        throw new InvalidOperationException ("No current tenant has been set. Possible reason: session timeout");
       SpecificUserField.Args = SpecificTenantField.BusinessObjectUniqueIdentifier ?? CurrentFunction.TenantID.ToString();
 
       SpecificUserField.Visible = (UserCondition?) UserConditionField.Value == UserCondition.SpecificUser;
@@ -319,7 +315,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
 
     private void LoadPermissions (bool interim)
     {
-      CreateEditPermissionControls (CurrentAccessControlEntry.Permissions);
+      CreateEditPermissionControls (CurrentAccessControlEntry.GetPermissions());
       foreach (var control in _editPermissionControls)
         control.LoadValues (interim);
     }
