@@ -33,21 +33,6 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata.SecurableClassDefin
   public class Common : DomainTest
   {
     [Test]
-    public void AddStateProperty ()
-    {
-      using (ClientTransaction.CreateRootTransaction ().EnterNonDiscardingScope ())
-      {
-        StatePropertyDefinition stateProperty = StatePropertyDefinition.NewObject ();
-        SecurableClassDefinition classDefinition = SecurableClassDefinition.NewObject ();
-
-        classDefinition.AddStateProperty (stateProperty);
-
-        Assert.AreEqual (1, classDefinition.StateProperties.Count);
-        Assert.AreSame (stateProperty, classDefinition.StateProperties[0]);
-      }
-    }
-
-    [Test]
     public void FindStateCombination_ValidStates ()
     {
       AccessControlTestHelper testHelper = new AccessControlTestHelper ();
@@ -87,7 +72,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata.SecurableClassDefin
     }
 
     [Test]
-    public void StateProperties_IsCached ()
+    public void StateProperties_IsNotCached ()
     {
       AccessControlTestHelper testHelper = new AccessControlTestHelper ();
       using (testHelper.Transaction.EnterNonDiscardingScope ())
@@ -97,7 +82,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata.SecurableClassDefin
         var firstCollection = orderClass.StateProperties;
         var secondCollection = orderClass.StateProperties;
 
-        Assert.AreSame (firstCollection, secondCollection);
+        Assert.AreNotSame (firstCollection, secondCollection);
       }
     }
 
@@ -110,22 +95,6 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata.SecurableClassDefin
         SecurableClassDefinition orderClass = testHelper.CreateOrderClassDefinitionWithProperties ();
 
         Assert.IsTrue (((ICollection<StatePropertyDefinition>)orderClass.StateProperties).IsReadOnly);
-      }
-    }
-
-    [Test]
-    public void StateProperties_IsResetByAddStateProperty ()
-    {
-      AccessControlTestHelper testHelper = new AccessControlTestHelper ();
-      using (testHelper.Transaction.EnterNonDiscardingScope ())
-      {
-        SecurableClassDefinition orderClass = testHelper.CreateOrderClassDefinitionWithProperties ();
-
-        var firstCollection = orderClass.StateProperties;
-        orderClass.AddStateProperty (testHelper.CreateTestProperty ());
-        var secondCollection = orderClass.StateProperties;
-
-        Assert.AreNotSame (firstCollection, secondCollection);
       }
     }
 
@@ -155,7 +124,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata.SecurableClassDefin
     }
 
     [Test]
-    public void AccessTypes_IsCached ()
+    public void AccessTypes_IsNotCached ()
     {
       AccessControlTestHelper testHelper = new AccessControlTestHelper ();
       using (testHelper.Transaction.EnterNonDiscardingScope ())
@@ -166,7 +135,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata.SecurableClassDefin
         var firstCollection = orderClass.AccessTypes;
         var secondCollection = orderClass.AccessTypes;
 
-        Assert.AreSame (firstCollection, secondCollection);
+        Assert.AreNotSame (firstCollection, secondCollection);
       }
     }
 
@@ -180,22 +149,6 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata.SecurableClassDefin
         testHelper.AttachJournalizeAccessType (orderClass);
 
         Assert.IsTrue (((ICollection<AccessTypeDefinition>)orderClass.AccessTypes).IsReadOnly);
-      }
-    }
-
-    [Test]
-    public void AccessTypes_IsResetByAddAccessType ()
-    {
-      AccessControlTestHelper testHelper = new AccessControlTestHelper ();
-      using (testHelper.Transaction.EnterNonDiscardingScope ())
-      {
-        SecurableClassDefinition orderClass = testHelper.CreateOrderClassDefinition ();
-
-        var firstCollection = orderClass.AccessTypes;
-        orderClass.AddAccessType (testHelper.CreateJournalizeAccessType ());
-        var secondCollection = orderClass.AccessTypes;
-
-        Assert.AreNotSame (firstCollection, secondCollection);
       }
     }
 
@@ -519,8 +472,9 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata.SecurableClassDefin
       {
         SecurableClassDefinition orderClass = testHelper.CreateOrderClassDefinition ();
         List<StateCombination> stateCombinations = testHelper.CreateOrderStateAndPaymentStateCombinations (orderClass);
-        StatePropertyDefinition orderStateProperty = stateCombinations[0].StateUsages[0].StateDefinition.StateProperty;
-        StatePropertyDefinition paymentProperty = stateCombinations[0].StateUsages[1].StateDefinition.StateProperty;
+        var states = stateCombinations[0].GetStates();
+        StatePropertyDefinition orderStateProperty = states[0].StateProperty;
+        StatePropertyDefinition paymentProperty = states[1].StateProperty;
         testHelper.CreateStateCombination (
             orderClass, orderStateProperty[EnumWrapper.Get (OrderState.Received).Name], paymentProperty[EnumWrapper.Get (PaymentState.Paid).Name]);
 
@@ -613,8 +567,9 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata.SecurableClassDefin
       {
         SecurableClassDefinition orderClass = testHelper.CreateOrderClassDefinition ();
         List<StateCombination> stateCombinations = testHelper.CreateOrderStateAndPaymentStateCombinations (orderClass);
-        StatePropertyDefinition orderStateProperty = stateCombinations[0].StateUsages[0].StateDefinition.StateProperty;
-        StatePropertyDefinition paymentProperty = stateCombinations[0].StateUsages[1].StateDefinition.StateProperty;
+        var states = stateCombinations[0].GetStates();
+        StatePropertyDefinition orderStateProperty = states[0].StateProperty;
+        StatePropertyDefinition paymentProperty = states[1].StateProperty;
 
         using (ClientTransaction.Current.CreateSubTransaction ().EnterDiscardingScope ())
         {
@@ -673,13 +628,14 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata.SecurableClassDefin
     [Test]
     public void GetStatePropertyTest_ValidName ()
     {
-      AccessControlTestHelper testHelper = new AccessControlTestHelper ();
-      using (testHelper.Transaction.EnterNonDiscardingScope ())
+      AccessControlTestHelper testHelper = new AccessControlTestHelper();
+      using (testHelper.Transaction.EnterNonDiscardingScope())
       {
-        SecurableClassDefinition orderClass = testHelper.CreateOrderClassDefinition ();
+        SecurableClassDefinition orderClass = testHelper.CreateOrderClassDefinition();
         List<StateCombination> stateCombinations = testHelper.CreateOrderStateAndPaymentStateCombinations (orderClass);
-        StatePropertyDefinition orderStateProperty = stateCombinations[0].StateUsages[0].StateDefinition.StateProperty;
-        StatePropertyDefinition paymentProperty = stateCombinations[0].StateUsages[1].StateDefinition.StateProperty;
+        var states = stateCombinations[0].GetStates();
+        StatePropertyDefinition orderStateProperty = states[0].StateProperty;
+        StatePropertyDefinition paymentProperty = states[1].StateProperty;
 
         Assert.That (orderClass.GetStateProperty (orderStateProperty.Name), Is.EqualTo (orderStateProperty));
         Assert.That (orderClass.GetStateProperty (paymentProperty.Name), Is.EqualTo (paymentProperty));

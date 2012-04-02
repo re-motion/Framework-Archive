@@ -54,7 +54,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl
     public abstract int Index { get; set; }
 
     [DBBidirectionalRelation ("StateCombination")]
-    public abstract ObjectList<StateUsage> StateUsages { get; }
+    protected abstract ObjectList<StateUsage> StateUsages { get; }
 
     [StorageClassNone]
     public SecurableClassDefinition Class
@@ -62,9 +62,9 @@ namespace Remotion.SecurityManager.Domain.AccessControl
       get { return AccessControlList != null ? AccessControlList.Class : null; }
     }
 
-    [DBBidirectionalRelation ("StateCombinations")]
+    [DBBidirectionalRelation ("StateCombinationsInternal")]
     [Mandatory]
-    public abstract StatefulAccessControlList AccessControlList { get; set; }
+    public abstract StatefulAccessControlList AccessControlList { get; }
 
     public bool MatchesStates (IList<StateDefinition> states)
     {
@@ -73,20 +73,21 @@ namespace Remotion.SecurityManager.Domain.AccessControl
       if (StateUsages.Count == 0 && states.Count > 0)
         return false;
 
-      foreach (StateUsage stateUsage in StateUsages)
-      {
-        if (!states.Contains (stateUsage.StateDefinition))
-          return false;
-      }
-
-      return true;
+      return StateUsages.Select (stateUsage => stateUsage.StateDefinition).All (usedState => states.Contains (usedState));
     }
 
     public void AttachState (StateDefinition state)
     {
+      ArgumentUtility.CheckNotNull ("state", state);
       StateUsage stateUsage = StateUsage.NewObject ();
       stateUsage.StateDefinition = state;
       StateUsages.Add (stateUsage);
+    }
+
+    public void ClearStates()
+    {
+      foreach (var stateUsage in StateUsages.ToList())
+        stateUsage.Delete();
     }
 
     public StateDefinition[] GetStates ()

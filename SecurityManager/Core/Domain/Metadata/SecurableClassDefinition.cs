@@ -81,9 +81,6 @@ namespace Remotion.SecurityManager.Domain.Metadata
 
     // member fields
 
-    private ReadOnlyCollection<StatePropertyDefinition> _stateProperties;
-    private ReadOnlyCollection<AccessTypeDefinition> _accessTypes;
-
     // construction and disposing
 
     protected SecurableClassDefinition ()
@@ -135,20 +132,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
     [StorageClassNone]
     public ReadOnlyCollection<StatePropertyDefinition> StateProperties
     {
-      get
-      {
-        if (_stateProperties == null)
-        {
-          var stateProperties = new List<StatePropertyDefinition>();
-
-          foreach (var propertyReference in StatePropertyReferences)
-            stateProperties.Add (propertyReference.StateProperty);
-
-          _stateProperties = stateProperties.AsReadOnly();
-        }
-
-        return _stateProperties;
-      }
+      get { return StatePropertyReferences.Select (propertyReference => propertyReference.StateProperty).ToList().AsReadOnly(); }
     }
 
     [EditorBrowsable (EditorBrowsableState.Never)]
@@ -158,26 +142,14 @@ namespace Remotion.SecurityManager.Domain.Metadata
     [StorageClassNone]
     public ReadOnlyCollection<AccessTypeDefinition> AccessTypes
     {
-      get
-      {
-        if (_accessTypes == null)
-          _accessTypes = AccessTypeReferences.Select (accessTypeReference => accessTypeReference.AccessType).ToList().AsReadOnly();
-
-        return _accessTypes;
-      }
+      get { return AccessTypeReferences.Select (accessTypeReference => accessTypeReference.AccessType).ToList().AsReadOnly(); }
     }
 
     [StorageClassNone]
     [ObjectBinding (ReadOnly = true)]
-    public IList<StateCombination> StateCombinations
+    public ReadOnlyCollection<StateCombination> StateCombinations
     {
-      get
-      {
-        var result = from acl in StatefulAccessControlLists 
-                     from sc in acl.StateCombinations 
-                     select sc;
-        return result.ToArray();
-      }
+      get { return StatefulAccessControlLists.SelectMany (acl => acl.StateCombinations).ToList().AsReadOnly(); }
     }
 
     [DBBidirectionalRelation ("MyClass")]
@@ -225,16 +197,14 @@ namespace Remotion.SecurityManager.Domain.Metadata
       if (index < 0 || index > AccessTypeReferences.Count)
       {
         throw CreateArgumentOutOfRangeException (
-            "index", index, "The index must not be less than 0 or greater than the total number of access types for this securable class definition.");
+            "index", index, "The index must not be less than 0 or greater than the total number of access types for the securable class definition.");
       }
 
       if (AccessTypeReferences.Where (r => r.AccessType == accessType).Any())
       {
         throw CreateArgumentException (
-            "accessType", "The access type '{0}' has already been added to this securable class definition.", accessType.Name);
+            "accessType", "The access type '{0}' has already been added to the securable class definition.", accessType.Name);
       }
-
-      _accessTypes = null;
 
       var reference = AccessTypeReference.NewObject();
       reference.AccessType = accessType;
@@ -249,7 +219,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
     }
 
     /// <summary>
-    /// Removes an <see cref="AccessTypeDefinition"/> at from of the <see cref="AccessTypes"/> list.
+    /// Removes an <see cref="AccessTypeDefinition"/> from of the <see cref="AccessTypes"/> list.
     /// </summary>
     /// <param name="accessType">The <see cref="AccessTypeDefinition"/> to be removed. Must not be <see langword="null" />.</param>
     /// <remarks> Also updates all <see cref="AccessControlEntry"/> objects associated with the <see cref="SecurableClassDefinition"/> 
@@ -262,13 +232,11 @@ namespace Remotion.SecurityManager.Domain.Metadata
     {
       ArgumentUtility.CheckNotNull ("accessType", accessType);
 
-      _accessTypes = null;
-
       var accessTypeReference = AccessTypeReferences.SingleOrDefault (r => r.AccessType == accessType);
       if (accessTypeReference == null)
       {
         throw CreateArgumentException (
-            "accessType", "The access type '{0}' is not associated with this securable class definition.", accessType.Name);
+            "accessType", "The access type '{0}' is not associated with the securable class definition.", accessType.Name);
       }
 
       accessTypeReference.Delete();
@@ -303,17 +271,15 @@ namespace Remotion.SecurityManager.Domain.Metadata
       if (index < 0 || index >= AccessTypeReferences.Count)
       {
         throw CreateArgumentOutOfRangeException (
-            "index", index, "The index must not be less than 0 or greater than the top index of the access types for this securable class definition.");
+            "index", index, "The index must not be less than 0 or greater than the top index of the access types for the securable class definition.");
       }
 
       var accessTypeReference = AccessTypeReferences.SingleOrDefault (r => r.AccessType == accessType);
       if (accessTypeReference == null)
       {
         throw CreateArgumentException (
-            "accessType", "The access type '{0}' is not associated with this securable class definition.", accessType.Name);
+            "accessType", "The access type '{0}' is not associated with the securable class definition.", accessType.Name);
       }
-
-      _accessTypes = null;
 
       AccessTypeReferences.Remove (accessTypeReference);
       AccessTypeReferences.Insert (index, accessTypeReference);
@@ -323,13 +289,68 @@ namespace Remotion.SecurityManager.Domain.Metadata
       Touch();
     }
 
+    /// <summary>
+    /// Adds a <see cref="StatePropertyDefinition"/> to the <see cref="StateProperties"/> list.
+    /// </summary>
+    /// <param name="stateProperty">The <see cref="StatePropertyDefinition"/> to be added. Must not be <see langword="null" />.</param>
+    /// <exception cref="ArgumentException">
+    /// The <paramref name="stateProperty"/> already exists on the <see cref="SecurableClassDefinition"/>.
+    /// </exception>
     public void AddStateProperty (StatePropertyDefinition stateProperty)
     {
+      ArgumentUtility.CheckNotNull ("stateProperty", stateProperty);
+
+      if (StatePropertyReferences.Where (r => r.StateProperty == stateProperty).Any())
+      {
+        throw CreateArgumentException (
+            "stateProperty", "The property '{0}' has already been added to the securable class definition.", stateProperty.Name);
+      }
+
       var reference = StatePropertyReference.NewObject();
       reference.StateProperty = stateProperty;
 
       StatePropertyReferences.Add (reference);
-      _stateProperties = null;
+
+      Touch();
+    }
+
+    /// <summary>
+    /// Removes a <see cref="StatePropertyDefinition"/> from of the <see cref="StateProperties"/> list.
+    /// </summary>
+    /// <param name="stateProperty">The <see cref="StatePropertyDefinition"/> to be removed. Must not be <see langword="null" />.</param>
+    /// <remarks> 
+    /// Also deletes all entries from the <see cref="StatefulAccessControlLists"/> list that use only the removed <see cref="StatePropertyDefinition"/>
+    /// as a selection criteria.
+    /// </remarks>
+    /// <exception cref="ArgumentException">
+    /// The <paramref name="stateProperty"/> does not exist on the <see cref="SecurableClassDefinition"/>.
+    /// </exception>
+    public void RemoveStateProperty (StatePropertyDefinition stateProperty)
+    {
+      ArgumentUtility.CheckNotNull ("stateProperty", stateProperty);
+
+      var statePropertyReference = StatePropertyReferences.SingleOrDefault (r => r.StateProperty == stateProperty);
+      if (statePropertyReference == null)
+      {
+        throw CreateArgumentException (
+            "stateProperty", "The property '{0}' does not exist on the securable class definition.", stateProperty.Name);
+      }
+
+      statePropertyReference.Delete();
+
+      foreach (var acl in StatefulAccessControlLists.ToList())
+      {
+        var stateCombinationsContainingRemovedStateProperty
+            = acl.StateCombinations.Where (sc => sc.GetStates().Any (sd => sd.StateProperty == stateProperty)).ToList();
+        foreach (var stateCombination in stateCombinationsContainingRemovedStateProperty)
+        {
+          stateCombination.Delete();
+          if (!acl.StateCombinations.Any())
+            acl.Delete();
+        }
+      }
+
+      Touch();
     }
 
     /// <summary>Retrieves the <see cref="StatePropertyDefinition"/> with the passed name.</summary>
@@ -359,7 +380,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
         throw new InvalidOperationException ("A SecurableClassDefinition only supports a single StatelessAccessControlList at a time.");
 
       var accessControlList = StatelessAccessControlList.NewObject();
-      accessControlList.Class = this;
+      StatelessAccessControlList = accessControlList;
       accessControlList.CreateAccessControlEntry ();
 
       return accessControlList;
@@ -368,7 +389,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
     public StatefulAccessControlList CreateStatefulAccessControlList ()
     {
       var accessControlList = StatefulAccessControlList.NewObject ();
-      accessControlList.Class = this;
+      StatefulAccessControlLists.Add (accessControlList);
       accessControlList.CreateStateCombination();
       accessControlList.CreateAccessControlEntry();
 
@@ -405,7 +426,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
       Assertion.IsTrue (
           State != StateType.Deleted || StateCombinations.Count == 0, "StateCombinations of object '{0}' are not empty but the object is deleted.", ID);
 
-      foreach (var stateCombination in StateCombinations.Where (sc => sc.StateUsages.Count != StateProperties.Count))
+      foreach (var stateCombination in StateCombinations.Where (sc => sc.GetStates().Length != StateProperties.Count))
         result.AddInvalidStateCombination (stateCombination);
     }
 

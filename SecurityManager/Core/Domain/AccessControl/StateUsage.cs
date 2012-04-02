@@ -36,13 +36,12 @@ namespace Remotion.SecurityManager.Domain.AccessControl
     {
     }
 
-    [DBBidirectionalRelation ("Usages")]
     [Mandatory]
     public abstract StateDefinition StateDefinition { get; set; }
 
     [DBBidirectionalRelation ("StateUsages")]
     [Mandatory]
-    public abstract StateCombination StateCombination { get; set; }
+    protected abstract StateCombination StateCombination { get; }
     
     [StorageClassNone]
     public SecurableClassDefinition Class

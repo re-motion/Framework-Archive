@@ -29,9 +29,9 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
-      _testHelper = new MetadataTestHelper ();
+      _testHelper = new MetadataTestHelper();
       _testHelper.Transaction.EnterNonDiscardingScope();
     }
 
@@ -42,17 +42,18 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
 
       StateDefinition actualState = stateProperty.GetState (MetadataTestHelper.Confidentiality_ConfidentialName);
 
-      StateDefinition expectedState = _testHelper.CreateConfidentialState ();
+      StateDefinition expectedState = _testHelper.CreateConfidentialState();
       MetadataObjectAssert.AreEqual (expectedState, actualState, "Confidential state");
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The state 'New' is not defined for the property 'Confidentiality'.\r\nParameter name: name")]
     public void GetState_InvalidName ()
     {
       StatePropertyDefinition stateProperty = _testHelper.CreateConfidentialityProperty (0);
 
-      StateDefinition actualState = stateProperty.GetState ("New");
+      Assert.That (
+          () => stateProperty.GetState ("New"),
+          Throws.ArgumentException.And.Message.StartsWith ("The state 'New' is not defined for the property 'Confidentiality'."));
     }
 
     [Test]
@@ -76,17 +77,18 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
 
       StateDefinition actualState = stateProperty.GetState (MetadataTestHelper.Confidentiality_PrivateValue);
 
-      StateDefinition expectedState = _testHelper.CreatePrivateState ();
+      StateDefinition expectedState = _testHelper.CreatePrivateState();
       MetadataObjectAssert.AreEqual (expectedState, actualState, "Private state");
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "A state with the value 42 is not defined for the property 'Confidentiality'.\r\nParameter name: stateValue")]
     public void GetState_InvalidValue ()
     {
       StatePropertyDefinition stateProperty = _testHelper.CreateConfidentialityProperty (0);
 
-      StateDefinition actualState = stateProperty.GetState (42);
+      Assert.That (
+          () => stateProperty.GetState (42),
+          Throws.ArgumentException.And.Message.StartsWith ("A state with the value 42 is not defined for the property 'Confidentiality'."));
     }
 
     [Test]
@@ -110,51 +112,161 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
 
       StateDefinition actualState = stateProperty[MetadataTestHelper.Confidentiality_ConfidentialName];
 
-      StateDefinition expectedState = _testHelper.CreateConfidentialState ();
+      StateDefinition expectedState = _testHelper.CreateConfidentialState();
       MetadataObjectAssert.AreEqual (expectedState, actualState, "Confidential state");
-    }
-
-    [Test]
-    public void AddState_WithNameAndValueAndImpliedIndex ()
-    {
-      StatePropertyDefinition stateProperty = _testHelper.CreateNewStateProperty ("NewProperty");
-
-      stateProperty.AddState ("NewState", 42);
-
-      Assert.AreEqual (1, stateProperty.DefinedStates.Count);
-      StateDefinition expectedState = _testHelper.CreateState ("NewState", 42);
-      MetadataObjectAssert.AreEqual (expectedState, stateProperty.GetState ("NewState"));
-    }
-
-    [Test]
-    public void AddState_AsStateDefinition ()
-    {
-      StatePropertyDefinition stateProperty = _testHelper.CreateNewStateProperty ("NewProperty");
-      StateDefinition newState = _testHelper.CreateState ("NewState", 42);
-
-      stateProperty.AddState (newState);
-
-      Assert.AreEqual (1, stateProperty.DefinedStates.Count);
-      MetadataObjectAssert.AreEqual (newState, stateProperty.GetState ("NewState"));
     }
 
     [Test]
     public void GetDefinedStates ()
     {
-      DatabaseFixtures dbFixtures = new DatabaseFixtures();
-      dbFixtures.CreateEmptyDomain();
-      StatePropertyDefinition expectdPropertyDefinition = _testHelper.CreateConfidentialityProperty (0);
-      ObjectList<StateDefinition> expectedStateDefinitions = expectdPropertyDefinition.DefinedStates;
-      _testHelper.Transaction.Commit();
+      var state1 = _testHelper.CreateState ("State 1", 1);
+      var state2 = _testHelper.CreateState ("State 2", 2);
+      var state3 = _testHelper.CreateState ("State 3", 3);
+      StatePropertyDefinition stateProperty = _testHelper.CreateNewStateProperty ("NewProperty");
+      stateProperty.AddState (state1);
+      stateProperty.AddState (state3);
+      stateProperty.AddState (state2);
 
-      using (ClientTransaction.CreateRootTransaction ().EnterNonDiscardingScope ())
-      {
-        StatePropertyDefinition actualStatePropertyDefinition = StatePropertyDefinition.GetObject (expectdPropertyDefinition.ID);
+      Assert.That (stateProperty.DefinedStates, Is.EqualTo (new[] { state1, state2, state3 }));
+    }
 
-        Assert.AreEqual (3, actualStatePropertyDefinition.DefinedStates.Count);
-        for (int i = 0; i < actualStatePropertyDefinition.DefinedStates.Count; i++)
-          Assert.AreEqual (expectedStateDefinitions[i].ID, actualStatePropertyDefinition.DefinedStates[i].ID);
-      }
+    [Test]
+    public void AddState ()
+    {
+      var state1 = _testHelper.CreateState ("State 1", 1);
+      var state2 = _testHelper.CreateState ("State 2", 2);
+      StatePropertyDefinition stateProperty = _testHelper.CreateNewStateProperty ("NewProperty");
+      stateProperty.AddState (state1);
+      stateProperty.AddState (state2);
+
+      Assert.That (stateProperty.DefinedStates, Is.EqualTo (new[] { state1, state2 }));
+    }
+
+    [Test]
+    public void AddState_DuplicateName ()
+    {
+      StatePropertyDefinition stateProperty = _testHelper.CreateNewStateProperty ("NewProperty");
+      stateProperty.AddState (_testHelper.CreateState ("State 1", 1));
+
+      Assert.That (
+          () => stateProperty.AddState (_testHelper.CreateState ("State 1", 2)),
+          Throws.ArgumentException.And.Message.StartsWith ("A state with the name 'State 1' was already added to the property 'NewProperty'."));
+    }
+
+    [Test]
+    public void AddState_DuplicateValue ()
+    {
+      StatePropertyDefinition stateProperty = _testHelper.CreateNewStateProperty ("NewProperty");
+      stateProperty.AddState (_testHelper.CreateState ("State 1", 1));
+
+      Assert.That (
+          () => stateProperty.AddState (_testHelper.CreateState ("State 2", 1)),
+          Throws.ArgumentException.And.Message.StartsWith ("A state with the value 1 was already added to the property 'NewProperty'."));
+    }
+
+    [Test]
+    public void RemoveState ()
+    {
+      var state1 = _testHelper.CreateState ("State 1", 1);
+      var state2 = _testHelper.CreateState ("State 2", 2);
+      var state3 = _testHelper.CreateState ("State 3", 3);
+      StatePropertyDefinition stateProperty = _testHelper.CreateNewStateProperty ("NewProperty");
+      stateProperty.AddState (state1);
+      stateProperty.AddState (state2);
+      stateProperty.AddState (state3);
+
+      stateProperty.RemoveState (state2);
+
+      Assert.That (stateProperty.DefinedStates, Is.EqualTo (new[] { state1, state3 }));
+    }
+
+    [Test]
+    public void RemoveState_DeletesAssociatedStateCombinations ()
+    {
+      var state1 = _testHelper.CreateState ("State 1", 1);
+      var state2 = _testHelper.CreateState ("State 2", 2);
+      var state3 = _testHelper.CreateState ("State 3", 3);
+      StatePropertyDefinition stateProperty = _testHelper.CreateNewStateProperty ("NewProperty");
+      stateProperty.AddState (state1);
+      stateProperty.AddState (state2);
+      stateProperty.AddState (state3);
+
+      var securableClassDefinition1 = SecurableClassDefinition.NewObject();
+      securableClassDefinition1.AddStateProperty (stateProperty);
+      var acl1 = securableClassDefinition1.CreateStatefulAccessControlList();
+      acl1.StateCombinations[0].AttachState (state1);
+      acl1.CreateStateCombination().AttachState (state2);
+
+      var securableClassDefinition2 = SecurableClassDefinition.NewObject();
+      securableClassDefinition2.AddStateProperty (stateProperty);
+
+      var acl2 = securableClassDefinition2.CreateStatefulAccessControlList();
+      acl2.StateCombinations[0].AttachState (state2);
+      acl2.CreateStateCombination().AttachState (state3);
+
+      stateProperty.RemoveState (state2);
+
+      Assert.That (acl1.StateCombinations.Count, Is.EqualTo (1));
+      Assert.That (acl1.StateCombinations[0].GetStates(), Is.EqualTo (new[] { state1 }));
+
+      Assert.That (acl2.StateCombinations.Count, Is.EqualTo (1));
+      Assert.That (acl2.StateCombinations[0].GetStates(), Is.EqualTo (new[] { state3 }));
+    }
+
+    [Test]
+    public void RemoveState_DeletesAssociatedAccessControlListIfDeletedStateCombinationWasLastStateCombination()
+    {
+      var state1 = _testHelper.CreateState ("State 1", 1);
+      var state2 = _testHelper.CreateState ("State 2", 2);
+      var state3 = _testHelper.CreateState ("State 3", 3);
+      StatePropertyDefinition stateProperty = _testHelper.CreateNewStateProperty ("NewProperty");
+      stateProperty.AddState (state1);
+      stateProperty.AddState (state2);
+      stateProperty.AddState (state3);
+
+      var securableClassDefinition1 = SecurableClassDefinition.NewObject();
+      securableClassDefinition1.AddStateProperty (stateProperty);
+      var acl1 = securableClassDefinition1.CreateStatefulAccessControlList();
+      acl1.StateCombinations[0].AttachState (state2);
+
+      var acl2 = securableClassDefinition1.CreateStatefulAccessControlList();
+      Assert.That (acl2.StateCombinations, Is.Not.Empty);
+
+      var acl3 = securableClassDefinition1.CreateStatefulAccessControlList();
+      acl3.StateCombinations[0].Delete();
+
+      stateProperty.RemoveState (state2);
+
+      Assert.That (acl1.State, Is.EqualTo (StateType.Invalid));
+
+      Assert.That (acl2.State, Is.EqualTo (StateType.New));
+      Assert.That (acl2.StateCombinations.Count, Is.EqualTo (1));
+      Assert.That (acl2.StateCombinations[0].GetStates(), Is.Empty);
+
+      Assert.That (acl3.State, Is.EqualTo (StateType.New));
+      Assert.That (acl3.StateCombinations, Is.Empty);
+    }
+
+    [Test]
+    public void RemoveState_StateNotFound ()
+    {
+      StatePropertyDefinition stateProperty = _testHelper.CreateNewStateProperty ("NewProperty");
+      stateProperty.AddState (_testHelper.CreateState ("State 1", 1));
+
+      Assert.That (
+          () => stateProperty.RemoveState (_testHelper.CreateState ("State 2", 2)),
+          Throws.ArgumentException.And.Message.StartsWith ("The state 'State 2' does not exist on the property 'NewProperty'."));
+    }
+
+    [Test]
+    public void DeleteFailsIfStatePropertyDefinitionIsAssociatedWithSecurableClassDefinition ()
+    {
+      var securableClassDefinition = SecurableClassDefinition.NewObject();
+      var property =  _testHelper.CreateNewStateProperty ("NewProperty");
+      securableClassDefinition.AddStateProperty (property);
+
+      var messge = "State property 'NewProperty' cannot be deleted because it is associated with at least one securable class definition.";
+      Assert.That (() => property.Delete(), Throws.InvalidOperationException.And.Message.EqualTo (messge));
     }
   }
 }

@@ -16,10 +16,12 @@
 // Additional permissions are listed in the file re-motion_exceptions.txt.
 // 
 using System;
+using System.Collections.ObjectModel;
 using System.Linq;
 using Remotion.Data.DomainObjects;
 using Remotion.FunctionalProgramming;
 using Remotion.Reflection;
+using Remotion.SecurityManager.Domain.AccessControl;
 using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.Domain.Metadata
@@ -36,12 +38,12 @@ namespace Remotion.SecurityManager.Domain.Metadata
 
     public static StatePropertyDefinition NewObject (Guid metadataItemID, string name)
     {
-      return NewObject<StatePropertyDefinition>(ParamList.Create (metadataItemID, name));
+      return NewObject<StatePropertyDefinition> (ParamList.Create (metadataItemID, name));
     }
 
     public new static StatePropertyDefinition GetObject (ObjectID id)
     {
-      return DomainObject.GetObject<StatePropertyDefinition> (id);
+      return GetObject<StatePropertyDefinition> (id);
     }
 
     protected StatePropertyDefinition ()
@@ -54,19 +56,24 @@ namespace Remotion.SecurityManager.Domain.Metadata
       Name = name;
     }
 
-    //TODO: Rename to StatePropertyReferences
     [DBBidirectionalRelation ("StateProperty")]
-    public abstract ObjectList<StatePropertyReference> References { get; }
+    protected abstract ObjectList<StatePropertyReference> StatePropertyReferences { get; }
 
-    [DBBidirectionalRelation ("StateProperty", SortExpression = "Index ASC")]
+    [DBBidirectionalRelation ("StateProperty")]
     [Mandatory]
-    public abstract ObjectList<StateDefinition> DefinedStates { get; }
+    protected abstract ObjectList<StateDefinition> DefinedStatesInternal { get; }
+
+    [StorageClassNone]
+    public ReadOnlyCollection<StateDefinition> DefinedStates
+    {
+      get { return DefinedStatesInternal.OrderBy (s => s.Index).ToList().AsReadOnly(); }
+    }
 
     public StateDefinition GetState (string name)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("name", name);
 
-      return DefinedStates.Single (
+      return DefinedStatesInternal.Single (
           s => s.Name == name,
           () => CreateArgumentException ("name", "The state '{0}' is not defined for the property '{1}'.", name, Name));
     }
@@ -75,19 +82,19 @@ namespace Remotion.SecurityManager.Domain.Metadata
     {
       ArgumentUtility.CheckNotNullOrEmpty ("name", name);
 
-      return DefinedStates.Any (s => s.Name == name);
+      return DefinedStatesInternal.Any (s => s.Name == name);
     }
 
     public StateDefinition GetState (int stateValue)
     {
-      return DefinedStates.Single (
+      return DefinedStatesInternal.Single (
           s => s.Value == stateValue,
           () => CreateArgumentException ("stateValue", "A state with the value {0} is not defined for the property '{1}'.", stateValue, Name));
     }
 
     public bool ContainsState (int stateValue)
     {
-      return DefinedStates.Any (s => s.Value == stateValue);
+      return DefinedStatesInternal.Any (s => s.Value == stateValue);
     }
 
     [StorageClassNone]
@@ -96,22 +103,64 @@ namespace Remotion.SecurityManager.Domain.Metadata
       get { return GetState (stateName); }
     }
 
-    public void AddState (string stateName, int value)
+    /// <summary>
+    /// Adds a <see cref="StateDefinition"/> to the <see cref="DefinedStates"/> list.
+    /// </summary>
+    /// <param name="state">The <see cref="StateDefinition"/> to be added. Must not be <see langword="null" />.</param>
+    /// <exception cref="ArgumentException">
+    /// The <paramref name="state"/> already exists on the <see cref="StatePropertyDefinition"/>.
+    /// </exception>
+    public void AddState (StateDefinition state)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("stateName", stateName);
+      ArgumentUtility.CheckNotNull ("state", state);
+      if (ContainsState (state.Name))
+        throw CreateArgumentException ("state", "A state with the name '{0}' was already added to the property '{1}'.", state.Name, Name);
+      if (ContainsState (state.Value))
+        throw CreateArgumentException ("state", "A state with the value {0} was already added to the property '{1}'.", state.Value, Name);
 
-      StateDefinition newStateDefinition = StateDefinition.NewObject();
-      newStateDefinition.Name = stateName;
-      newStateDefinition.Value = value;
-      newStateDefinition.Index = value;
-
-      AddState (newStateDefinition);
+      DefinedStatesInternal.Add (state);
     }
 
-    public void AddState (StateDefinition newState)
+    /// <summary>
+    /// Removes a <see cref="StateDefinition"/> from of the <see cref="DefinedStates"/> list.
+    /// </summary>
+    /// <param name="state">The <see cref="StateDefinition"/> to be removed. Must not be <see langword="null" />.</param>
+    /// <remarks> 
+    /// Also deletes all <see cref="StatefulAccessControlList"/> objects that use only the removed <see cref="StateDefinition"/>
+    /// as a selection criteria.
+    /// </remarks>
+    /// <exception cref="ArgumentException">
+    /// The <paramref name="state"/> does not exist on the <see cref="StatePropertyDefinition"/>.
+    /// </exception>
+    public void RemoveState (StateDefinition state)
     {
-      ArgumentUtility.CheckNotNull ("newState", newState);
-      DefinedStates.Add (newState);
+      ArgumentUtility.CheckNotNull ("state", state);
+
+      if (!DefinedStatesInternal.Contains (state.ID))
+          throw CreateArgumentException ("state", "The state '{0}' does not exist on the property '{1}'.", state.Name, Name);
+
+      DefinedStatesInternal.Remove (state);
+
+      foreach (var acl in StatePropertyReferences.SelectMany (r=> r.Class.StatefulAccessControlLists).ToList())
+      {
+        var stateCombinationsContainingRemovedState = acl.StateCombinations.Where (sc => sc.GetStates().Contains (state)).ToList();
+        foreach (var stateCombination in stateCombinationsContainingRemovedState)
+        {
+          stateCombination.Delete();
+          if (!acl.StateCombinations.Any())
+            acl.Delete();
+        }
+      }
+    }
+
+    protected override void OnDeleting (EventArgs args)
+    {
+      if (StatePropertyReferences.Any())
+      {
+        throw new InvalidOperationException (
+            string.Format ("State property '{0}' cannot be deleted because it is associated with at least one securable class definition.", Name));
+      }
+      base.OnDeleting (args);
     }
 
     private ArgumentException CreateArgumentException (string argumentName, string format, params object[] args)

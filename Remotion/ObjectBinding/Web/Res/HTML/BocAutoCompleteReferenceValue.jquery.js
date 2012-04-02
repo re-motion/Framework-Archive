@@ -142,6 +142,7 @@
                     // re-motion: block event bubbling
                     event.stopPropagation();
                     if (select.visible()) {
+                        options.clearRequestError();
                         select.prev();
                     } else {
                         onChange(0, true, $input.val());
@@ -153,6 +154,7 @@
                     // re-motion: block event bubbling
                     event.stopPropagation();
                     if (select.visible()) {
+                        options.clearRequestError();
                         select.next();
                     } else {
                         onChange(0, true, $input.val());
@@ -164,6 +166,7 @@
                     // re-motion: block event bubbling
                     event.stopPropagation();
                     if (select.visible()) {
+                        options.clearRequestError();
                         select.pageUp();
                     } else {
                         onChange(0, true, $input.val());
@@ -175,6 +178,7 @@
                     // re-motion: block event bubbling
                     event.stopPropagation();
                     if (select.visible()) {
+                        options.clearRequestError();
                         select.pageDown();
                     } else {
                         onChange(0, true, $input.val());
@@ -188,6 +192,7 @@
                 case KEY.ESC:
                     // re-motion: block event bubbling
                     event.stopPropagation();
+                    clearTimeout(timeout);
                     var wasVisible = select.visible();
                     config.mouseDownOnSelect = false;
 
@@ -216,6 +221,7 @@
                     return;
             }
         }).bind ('keyup paste', function(event) { // re-motion
+            clearTimeout(timeout);
             var handleInput = function() {
                 var currentValue = $input.val();
                 var dropDownDelay = select.visible() ? options.dropDownRefreshDelay : options.dropDownDisplayDelay;
@@ -266,9 +272,12 @@
             hasFocus = true;
         }).blur(function() {
             hasFocus = false;
-            if (select.visible() && !config.mouseDownOnSelect) {
-                var value = $input.val();
+            if (!select.visible()) {
                 clearTimeout(timeout);
+                if ($input.val() == '')  {
+                    options.clearRequestError();
+                }
+            } else if (!config.mouseDownOnSelect) {
                 timeout = setTimeout(
                     function() {
                         acceptInput (lastKeyPressCode);
@@ -277,7 +286,7 @@
             }
         }).click(function() {
 
-        }).bind("search", function() {
+        }).bind("search", function () {
             // TODO why not just specifying both arguments?
             var fn = (arguments.length > 1) ? arguments[1] : null;
             function findValueCallback(q, data) {
@@ -323,7 +332,7 @@
             dropdownButton.click(function(event) {
                 // re-motion: block event bubbling
                 event.stopPropagation();
-                
+
                 if (select.visible()) {
                     acceptInput (lastKeyPressCode);
                 } else {
@@ -348,10 +357,11 @@
                     break;
             }
 
+            var term = $input.val();
             if (isLastKeyPressedNavigationKey) {
                 var index = -1;
-                if ($input.val() != '')
-                    index = select.findItem ($input.val());
+                if (term != '')
+                    index = select.findItem(term);
                         
                 select.selectItem (index);
             }
@@ -372,7 +382,6 @@
             if (confirmValue && term != '' && select.visible())
             {
               var itemIndex = select.findItem (term);
-              var item = null;
               if (itemIndex != -1)
               {
                 select.selectItem (itemIndex);
@@ -386,6 +395,10 @@
             } else {
               previousValue = term;
               previousValidValue = term;
+            }
+
+            if (selectedItem == null) {
+              options.clearRequestError();
             }
 
             if (selectedItem != null) {
@@ -618,6 +631,8 @@
                 return;
             }
 
+            options.clearRequestError();
+
             var data = cache.load(term);
             // recieve the cached data
             if (data && data.length) {
@@ -647,7 +662,9 @@
                                               success(term, parsed);
                                           },
                                           function(err, context, methodName) {
-                                              executingRequest = null;
+                                            executingRequest = null;
+                                            stopLoading();
+                                            options.handleRequestError (err);
                                           });
             } else {
                 // if we have a failure, we need to empty the list -- this prevents the the [TAB] key from selecting the last successful match
@@ -671,6 +688,8 @@
               return;
             }
 
+            options.clearRequestError();
+
             var params = {
               prefixText: lastWord(term)
             };
@@ -690,6 +709,8 @@
                                                   },
                                                   function (err, context, methodName) {
                                                     executingRequest = null;
+                                                    stopLoading();
+                                                    options.handleRequestError(err);
                                                   });
         };
 
@@ -763,7 +784,9 @@
         },
         scroll: true,
         scrollHeight: 180,
-        repositionInterval: 200
+        repositionInterval: 200,
+        handleRequestError: function (err) { },
+        clearRequestError: function (err) { }
     };
 
     $.Autocompleter.Cache = function(options) {

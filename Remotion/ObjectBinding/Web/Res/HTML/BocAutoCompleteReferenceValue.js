@@ -74,10 +74,10 @@ BocAutoCompleteReferenceValue.Initialize = function (
             return $.map(data, function (row)
             {
               return {
-                data: row,
-                value: row.UniqueIdentifier,
-                result: row.DisplayName
-              }
+                data : row,
+                value : row.UniqueIdentifier,
+                result : row.DisplayName
+              };
             });
           },
           formatItem: function (item) //What we display on input box
@@ -98,6 +98,15 @@ BocAutoCompleteReferenceValue.Initialize = function (
           formatMatch: function (item) //The value used by the cache
           {
             return item.DisplayName;
+          },
+          handleRequestError: function (err)
+          {
+            var message = err.get_message();
+            SetError (message);
+          },
+          clearRequestError: function ()
+          {
+            ClearError();
           }
         }
     ).invalidateResult(function (e, item)
@@ -119,7 +128,7 @@ BocAutoCompleteReferenceValue.Initialize = function (
 
     if (isAutoPostBackEnabled)
     {
-      command = BocReferenceValueBase.UpdateCommand(command, null, null, null, null);
+      command = BocReferenceValueBase.UpdateCommand(command, null, null, null, null, function () { });
     }
     else
     {
@@ -127,9 +136,39 @@ BocAutoCompleteReferenceValue.Initialize = function (
       if (selectedValue != nullValueString)
         businessObject = selectedValue;
 
-      command = BocReferenceValueBase.UpdateCommand(command, businessObject, iconServiceUrl, iconContext, commandInfo);
+      var errorHandler = function (error)
+      {
+        var message = error.get_message();
+        SetError (message);
+      };
+
+      command = BocReferenceValueBase.UpdateCommand(command, businessObject, iconServiceUrl, iconContext, commandInfo, errorHandler);
     } 
   }
+
+  function ClearError()
+  {
+    if (textbox.hasClass('error'))
+    {
+      textbox.attr ('title', textbox.data ('title-backup'));
+      textbox.removeData ('title-backup');
+      textbox.removeClass ('error');
+    }
+  };
+
+  function SetError(message)
+  {
+    if (!textbox.hasClass('error'))
+    {
+      var oldTitle = textbox.attr ('title');
+      if (TypeUtility.IsUndefined (oldTitle))
+        oldTitle = null;
+
+      textbox.data ('title-backup', oldTitle);
+    }
+    textbox.attr ('title', message);
+    textbox.addClass ('error');
+  };
 };
 
 //  Returns the number of rows selected for the specified ReferenceValue

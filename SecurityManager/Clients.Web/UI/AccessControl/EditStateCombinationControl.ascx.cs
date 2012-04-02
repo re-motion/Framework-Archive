@@ -17,6 +17,7 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.UI.WebControls;
 using Remotion.Data.DomainObjects;
 using Remotion.ObjectBinding.Web.UI.Controls;
@@ -91,23 +92,13 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
 
       var possibleStateDefinitions = new List<StateDefinition> ();
       if (stateProperties.Count > 0)
-      {
-        var statePropertyDefinition = stateProperties[0];
-        foreach (var stateDefinition in statePropertyDefinition.DefinedStates)
-        {
-          possibleStateDefinitions.Add (stateDefinition);
-        }
-      }
+        possibleStateDefinitions.AddRange (stateProperties[0].DefinedStates);
       StateDefinitionField.SetBusinessObjectList (possibleStateDefinitions);
     }
 
     private StateDefinition GetStateDefinition (StateCombination stateCombination)
     {
-      if (stateCombination.StateUsages.Count == 0)
-        return null;
-
-      StateUsage stateUsage = stateCombination.StateUsages[0];
-      return stateUsage.StateDefinition;
+      return stateCombination.GetStates().SingleOrDefault();
     }
 
     public override bool Validate ()
@@ -138,18 +129,8 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
       {
         string id = StateDefinitionField.BusinessObjectUniqueIdentifier;
         StateDefinition stateDefinition = StateDefinition.GetObject (ObjectID.Parse (id));
-        StateUsage stateUsage;
-        if (CurrentStateCombination.StateUsages.Count == 0)
-        {
-          stateUsage = StateUsage.NewObject();
-          stateUsage.StateCombination = CurrentStateCombination;
-        }
-        else
-        {
-          stateUsage = CurrentStateCombination.StateUsages[0];
-        }
-        if (stateUsage.StateDefinition != stateDefinition)
-          stateUsage.StateDefinition = stateDefinition;
+        CurrentStateCombination.ClearStates();
+          CurrentStateCombination.AttachState (stateDefinition);
       }
     }
 

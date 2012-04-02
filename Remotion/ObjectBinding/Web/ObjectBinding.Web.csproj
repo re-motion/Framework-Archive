@@ -482,6 +482,7 @@
     <Content Include="Res\HTML\BocAutoCompleteReferenceValue.jquery.js" />
     <Content Include="Res\Themes\ClassicBlue\Image\AutoCompleteReferenceValueDropDownArrowDisabled.gif" />
     <Content Include="Res\Themes\ClassicBlue\Image\AutoCompleteReferenceValueRequestInProgressIndicator.gif" />
+    <Content Include="Res\Themes\ClassicBlue\Image\ReferenceValueErrorIndicator.gif" />
     <Content Include="Res\Themes\NovaBlue\Html\BocAutoCompleteReferenceValue.css" />
     <Content Include="Res\Themes\NovaBlue\Html\BocAutoCompleteReferenceValue.jquery.css" />
     <Content Include="Res\Themes\NovaBlue\Html\BocBooleanValue.css" />
@@ -522,6 +523,7 @@
     <Content Include="Res\Themes\NovaBlue\Image\MovePrevious.gif" />
     <Content Include="Res\Themes\NovaBlue\Image\MovePreviousInactive.gif" />
     <Content Include="Res\Themes\NovaBlue\Image\AutoCompleteReferenceValueRequestInProgressIndicator.gif" />
+    <Content Include="Res\Themes\NovaBlue\Image\ReferenceValueErrorIndicator.gif" />
     <Content Include="Res\Themes\NovaBlue\Image\SortAscending.gif" />
     <Content Include="Res\Themes\NovaBlue\Image\SortDescending.gif" />
     <EmbeddedResource Include="Globalization\BocBooleanValue.de.resx">
