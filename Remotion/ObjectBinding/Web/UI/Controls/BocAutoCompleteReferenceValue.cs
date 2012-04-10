@@ -95,7 +95,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private string _invalidItemErrorMessage;
 
     private string _searchServicePath = string.Empty;
-    private string _args = string.Empty;
+    private string _args;
+    private string _validSearchStringRegex;
     private int _completionSetCount = 10;
     private int _dropDownDisplayDelay = 1000;
     private int _dropDownRefreshDelay = 2000;
@@ -365,6 +366,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       return GetResourceManager (typeof (ResourceIdentifier));
     }
 
+    IResourceManager IBocReferenceValueBase.GetResourceManager ()
+    {
+      return GetResourceManager();
+    }
+
     string IBocReferenceValueBase.GetLabelText ()
     {
       if (IsDesignMode)
@@ -593,7 +599,25 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     public string Args
     {
       get { return _args; }
-      set { _args = value; }
+      set { _args = StringUtility.EmptyToNull (value); }
+    }
+
+    /// <summary>
+    /// A Javascript regular expression the user input must match in order for the search to performed upon input.
+    /// </summary>
+    /// <remarks>
+    /// <para>If the expression is <see langword="null" /> or empty, the <see cref="BocAutoCompleteReferenceValue"/> defaults to matching all input. </para>
+    /// <para>The expression does not constrain the search for an exact match via <see cref="ISearchAvailableObjectWebService.SearchExact"/>.</para>
+    /// </remarks>
+    [Category ("AutoComplete")]
+    [DefaultValue ("")]
+    [Description ("A Javascript regular expression the user input must match in order for the search to performed upon input. "
+                  + "If the expression is empty, the control defaults to matching all input. "
+                  + "Note: The expression does not constrain the search for an exact match.")]
+    public string ValidSearchStringRegex
+    {
+      get { return _validSearchStringRegex; }
+      set { _validSearchStringRegex = StringUtility.EmptyToNull (value); }
     }
 
     public override string ValidationValue

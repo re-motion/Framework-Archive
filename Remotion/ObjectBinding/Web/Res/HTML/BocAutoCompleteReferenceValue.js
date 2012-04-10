@@ -21,12 +21,14 @@ function BocAutoCompleteReferenceValue()
 BocAutoCompleteReferenceValue.Initialize = function (
     textbox, hiddenField, button, command, searchServiceUrl,
     completionSetCount, dropDownDisplayDelay, dropDownRefreshDelay, selectionUpdateDelay,
+    validSearchStringRegex,
     nullValueString,
     isAutoPostBackEnabled,
     searchContext,
     iconServiceUrl,
     iconContext,
-    commandInfo)
+    commandInfo,
+    resources)
 {
   ArgumentUtility.CheckNotNullAndTypeIsObject('textbox', textbox);
   ArgumentUtility.CheckNotNullAndTypeIsObject('hiddenField', hiddenField);
@@ -37,19 +39,21 @@ BocAutoCompleteReferenceValue.Initialize = function (
   ArgumentUtility.CheckNotNullAndTypeIsNumber('dropDownDisplayDelay', dropDownDisplayDelay);
   ArgumentUtility.CheckNotNullAndTypeIsNumber('dropDownRefreshDelay', dropDownRefreshDelay);
   ArgumentUtility.CheckNotNullAndTypeIsNumber('selectionUpdateDelay', selectionUpdateDelay);
+  ArgumentUtility.CheckNotNullAndTypeIsString('validSearchStringRegex', validSearchStringRegex);
   ArgumentUtility.CheckNotNullAndTypeIsString('nullValueString', nullValueString);
-  ArgumentUtility.CheckTypeIsBoolean('isAutoPostBackEnabled', isAutoPostBackEnabled);
+  ArgumentUtility.CheckNotNullAndTypeIsBoolean('isAutoPostBackEnabled', isAutoPostBackEnabled);
   ArgumentUtility.CheckNotNullAndTypeIsObject('searchContext', searchContext);
   ArgumentUtility.CheckTypeIsString('iconServiceUrl', iconServiceUrl);
   ArgumentUtility.CheckTypeIsObject('iconContext', iconContext);
   ArgumentUtility.CheckTypeIsObject('commandInfo', commandInfo);
+  ArgumentUtility.CheckNotNullAndTypeIsObject('resources', resources);
 
   textbox.autocomplete(searchServiceUrl, 'Search', 'SearchExact',
         {
           extraParams: searchContext,
           isAutoPostBackEnabled: isAutoPostBackEnabled,
           nullValue: nullValueString, // the hidden field value indicating that no value has been selected
-          minChars: 0,
+          validSearchStringRegex: new RegExp (validSearchStringRegex),
           max: completionSetCount, // Set query limit
 
           dropDownDisplayDelay: dropDownDisplayDelay,
@@ -58,7 +62,6 @@ BocAutoCompleteReferenceValue.Initialize = function (
 
           autoFill: true,
           mustMatch: false, // set true if should clear input on no results
-          matchSubset: false, // set false to disable partial cache hits
           matchContains: true,
           multiple: false, // not supprted
           scrollHeight: 220,
@@ -101,8 +104,7 @@ BocAutoCompleteReferenceValue.Initialize = function (
           },
           handleRequestError: function (err)
           {
-            var message = err.get_message();
-            SetError (message);
+            SetError (resources.LoadDataFailedErrorMessage);
           },
           clearRequestError: function ()
           {
@@ -138,8 +140,7 @@ BocAutoCompleteReferenceValue.Initialize = function (
 
       var errorHandler = function (error)
       {
-        var message = error.get_message();
-        SetError (message);
+        SetError (resources.LoadIconFailedErrorMessage);
       };
 
       command = BocReferenceValueBase.UpdateCommand(command, businessObject, iconServiceUrl, iconContext, commandInfo, errorHandler);
@@ -182,4 +183,5 @@ BocAutoCompleteReferenceValue.GetSelectionCount = function (referenceValueHidden
     return 0;
 
   return 1;
-}
+};
+
