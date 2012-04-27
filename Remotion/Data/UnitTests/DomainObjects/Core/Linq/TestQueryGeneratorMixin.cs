@@ -15,41 +15,56 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
+using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.DomainObjects.Queries.Configuration;
+using Remotion.Linq;
+using Remotion.Linq.EagerFetching;
 using Remotion.Linq.SqlBackend.SqlGeneration;
 using Remotion.Mixins;
-using Remotion.Utilities;
 
-namespace Remotion.Development.Data.UnitTesting.DomainObjects.Linq
+namespace Remotion.Data.UnitTests.DomainObjects.Core.Linq
 {
-  /// <summary>
-  /// This mixin writes the generated Linq statements to the console. 
-  /// Use the <see cref="ApplyQueryExecutorMixinAttribute"/> to your assembly to actually apply the mixin.
-  /// </summary>
-  public class QueryExecutorMixin : Mixin<object, QueryExecutorMixin.IBaseCallRequirements>
+  public class TestQueryGeneratorMixin : Mixin<object, TestQueryGeneratorMixin.IBaseCallRequirements>
   {
     public interface IBaseCallRequirements
     {
+      IQuery CreateQuery (
+          string id,
+          ClassDefinition classDefinition,
+          QueryModel queryModel,
+          IEnumerable<FetchQueryModelBuilder> fetchQueryModelBuilders,
+          QueryType queryType);
       IQuery CreateQuery (string id, StorageProviderDefinition storageProviderDefinition, string statement, CommandParameter[] commandParameters, QueryType queryType);
     }
 
+    public bool CreateQueryCalled;
+    public bool CreateQueryFromModelCalled;
+
     [OverrideTarget]
-    public IQuery CreateQuery (string id, StorageProviderDefinition storageProviderDefinition, string statement, CommandParameter[] commandParameters, QueryType queryType)
+    public IQuery CreateQuery (
+        string id,
+        ClassDefinition classDefinition,
+        QueryModel queryModel,
+        IEnumerable<FetchQueryModelBuilder> fetchQueryModelBuilders,
+        QueryType queryType)
     {
-      IQuery query = Next.CreateQuery (id, storageProviderDefinition, statement, commandParameters, queryType);
-      QueryConstructed (query);
-      return query;
+      CreateQueryFromModelCalled = true;
+      return Next.CreateQuery (id, classDefinition, queryModel, fetchQueryModelBuilders, queryType);
     }
 
-    private void QueryConstructed (IQuery query)
+    [OverrideTarget]
+    public IQuery CreateQuery (
+        string id,
+        StorageProviderDefinition storageProviderDefinition,
+        string statement,
+        CommandParameter[] commandParameters,
+        QueryType queryType)
     {
-      ArgumentUtility.CheckNotNull ("query", query);
-
-      Console.WriteLine (query.Statement);
-      foreach (QueryParameter parameter in query.Parameters)
-        Console.WriteLine ("{0} = {1}", parameter.Name, parameter.Value);
+      CreateQueryCalled = true;
+      return Next.CreateQuery (id, storageProviderDefinition, statement, commandParameters, queryType);
     }
   }
 }
