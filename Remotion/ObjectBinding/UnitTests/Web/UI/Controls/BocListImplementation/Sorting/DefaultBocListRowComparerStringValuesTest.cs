@@ -14,17 +14,16 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System;
 using NUnit.Framework;
 using Remotion.ObjectBinding.BindableObject;
 using Remotion.ObjectBinding.UnitTests.Core.BindableObject;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.UnitTests.Web.Domain;
 
-namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls
+namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocListImplementation.Sorting
 {
   [TestFixture]
-  public class BocListRowsCompareReferenceValuesTest : BaseBocListRowCompareValuesTest
+  public class DefaultBocListRowComparerStringValuesTest : DefaultBocListRowComparerTestBase
   {
     private IBusinessObject _valueAA;
     private IBusinessObject _valueAB;
@@ -51,16 +50,15 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls
     [SetUp]
     public virtual void SetUp ()
     {
-      _valueAA = (IBusinessObject) TypeWithReference.Create (TypeWithReference.Create ("A"), TypeWithReference.Create ("A"));
-      _valueAB = (IBusinessObject) TypeWithReference.Create (TypeWithReference.Create ("A"), TypeWithReference.Create ("B"));
-      _valueBA = (IBusinessObject) TypeWithReference.Create (TypeWithReference.Create ("B"), TypeWithReference.Create ("A"));
+      _valueAA = (IBusinessObject) TypeWithString.Create ("A", "A");
+      _valueAB = (IBusinessObject) TypeWithString.Create ("A", "B");
+      _valueBA = (IBusinessObject) TypeWithString.Create ("B", "A");
 
-      _valueNullA = (IBusinessObject) TypeWithReference.Create (null, TypeWithReference.Create ("A"));
-      _valueNullB = (IBusinessObject) TypeWithReference.Create (null, TypeWithReference.Create ("B"));
-      _valueBNull = (IBusinessObject) TypeWithReference.Create (TypeWithReference.Create ("B"), null);
+      _valueNullA = (IBusinessObject) TypeWithString.Create (null, "A");
+      _valueNullB = (IBusinessObject) TypeWithString.Create (null, "B");
+      _valueBNull = (IBusinessObject) TypeWithString.Create ("B", null);
 
-
-      _class = BindableObjectProviderTestHelper.GetBindableObjectClass(typeof (TypeWithReference));
+      _class = BindableObjectProviderTestHelper.GetBindableObjectClass(typeof (TypeWithString));
 
 
       _firstValuePath = BusinessObjectPropertyPath.Parse (_class, "FirstValue");
@@ -93,7 +91,6 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls
       _secondValueCustomColumn.SetPropertyPath (_secondValuePath);
       _secondValueCustomColumn.IsSortable = true;
     }
-
 
     [Test]
     public void CompareRowsWithSimpleColumns ()
