@@ -16,7 +16,7 @@
 // 
 using Remotion.Data.DomainObjects.Queries;
 
-namespace Remotion.Data.DomainObjects.Linq
+namespace Remotion.Data.DomainObjects.Linq.ExecutableQueries
 {
   /// <summary>
   /// Represents a query that can be executed using an <see cref="IQueryManager"/>.
