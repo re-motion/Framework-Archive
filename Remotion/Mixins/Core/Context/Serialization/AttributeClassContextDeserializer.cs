@@ -16,24 +16,17 @@
 // 
 using System;
 using System.Collections.Generic;
-using System.Runtime.Serialization;
-using Remotion.Utilities;
 using System.Linq;
 
 namespace Remotion.Mixins.Context.Serialization
 {
-  public class AttributeClassContextDeserializer : IClassContextDeserializer
+  /// <summary>
+  /// Deserializes the data serialized by a <see cref="AttributeClassContextSerializer"/> into a <see cref="ClassContext"/> instance.
+  /// </summary>
+  public class AttributeClassContextDeserializer : AttributeDeserializerBase, IClassContextDeserializer
   {
-    private readonly object[] _values;
-
-    public AttributeClassContextDeserializer (object[] values)
+    public AttributeClassContextDeserializer (object[] values) : base (values, 3)
     {
-      ArgumentUtility.CheckNotNull ("values", values);
-      
-      if (values.Length != 3)
-        throw new ArgumentException ("Expected an array with 3 elements.", "values");
-      
-      _values = values;
     }
 
     public Type GetClassType ()
@@ -50,20 +43,6 @@ namespace Remotion.Mixins.Context.Serialization
     public IEnumerable<Type> GetCompleteInterfaces()
     {
       return GetValue<Type[]> (2);
-    }
-
-    private T GetValue<T> (int index)
-    {
-      var value = _values[index];
-
-      if (!(value is T))
-      {
-        var message = string.Format ("Expected value of type '{0}' at index {1} in the values array, but found '{2}'.",
-            typeof (T).FullName, index, value != null ? value.GetType ().FullName : "null");
-        throw new SerializationException (message);
-      }
-
-      return (T) value;
     }
   }
 }

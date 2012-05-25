@@ -14,17 +14,33 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+using System;
 using System.Reflection;
 
 namespace Remotion.Mixins.Context.Serialization
 {
   /// <summary>
-  /// Provides an interface for classes deserializing the data of a <see cref="MixinContextOrigin"/> object.
+  /// Deserializes the data produced by <see cref="AttributeMixinContextOriginSerializer"/> into a <see cref="MixinContextOrigin"/> object.
   /// </summary>
-  public interface IMixinContextOriginDeserializer
+  public class AttributeMixinContextOriginDeserializer : AttributeDeserializerBase, IMixinContextOriginDeserializer
   {
-    string GetKind ();
-    Assembly GetAssembly ();
-    string GetLocation ();
+    public AttributeMixinContextOriginDeserializer(object[] values) : base (values, 3)
+    {
+    }
+
+    public string GetKind ()
+    {
+      return GetValue<string> (0);
+    }
+
+    public Assembly GetAssembly ()
+    {
+      return Assembly.Load (GetValue<string> (1));
+    }
+
+    public string GetLocation ()
+    {
+      return GetValue<string> (2);
+    }
   }
 }
