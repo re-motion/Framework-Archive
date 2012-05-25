@@ -20,7 +20,7 @@ using System.Collections.Generic;
 namespace Remotion.Mixins.Context.Serialization
 {
   /// <summary>
-  /// Deserializes the data serialized by a <see cref="AttributeMixinContextSerializer"/> into a <see cref="MixinContext"/> instance.
+  /// Deserializes the data serialized by a <see cref="AttributeMixinContextSerializer"/>.
   /// </summary>
   public class AttributeMixinContextDeserializer : AttributeDeserializerBase, IMixinContextDeserializer
   {

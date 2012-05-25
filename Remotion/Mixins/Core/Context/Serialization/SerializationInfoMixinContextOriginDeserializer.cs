@@ -16,31 +16,34 @@
 // 
 using System;
 using System.Reflection;
+using System.Runtime.Serialization;
 
 namespace Remotion.Mixins.Context.Serialization
 {
   /// <summary>
-  /// Deserializes the data produced by <see cref="AttributeMixinContextOriginSerializer"/>.
+  /// Deserializes the data serialized by a <see cref="SerializationInfoMixinContextOriginSerializer"/>.
   /// </summary>
-  public class AttributeMixinContextOriginDeserializer : AttributeDeserializerBase, IMixinContextOriginDeserializer
+  public class SerializationInfoMixinContextOriginDeserializer : SerializationInfoDeserializerBase, IMixinContextOriginDeserializer
   {
-    public AttributeMixinContextOriginDeserializer(object[] values) : base (values, 3)
+    public SerializationInfoMixinContextOriginDeserializer (SerializationInfo info, string prefix)
+        : base (info, prefix)
     {
     }
 
     public string GetKind ()
     {
-      return GetValue<string> (0);
+      return GetValue<string> ("Kind");
     }
 
     public Assembly GetAssembly ()
     {
-      return Assembly.Load (GetValue<string> (1));
+      var assemblyName = GetValue<string> ("Assembly.FullName");
+      return Assembly.Load (assemblyName);
     }
 
     public string GetLocation ()
     {
-      return GetValue<string> (2);
+      return GetValue<string> ("Location");
     }
   }
 }
