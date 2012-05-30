@@ -14,17 +14,16 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System;
-using System.Collections.Generic;
+using System.Reflection;
+using Remotion.Mixins.Context;
 
-namespace Remotion.Mixins.Context.Serialization
+namespace Remotion.Mixins.UnitTests.Core
 {
-  public interface IMixinContextDeserializer
+  public static class MixinContextOriginObjectMother
   {
-    Type GetMixinType ();
-    MixinKind GetMixinKind ();
-    MemberVisibility GetIntroducedMemberVisibility ();
-    IEnumerable<Type> GetExplicitDependencies ();
-    MixinContextOrigin GetOrigin ();
+    public static MixinContextOrigin Create (string kind = "some kind", Assembly assembly = null, string location = "some location")
+    {
+      return new MixinContextOrigin (kind, assembly ?? typeof (MixinContextOriginObjectMother).Assembly, location);
+    }
   }
 }
