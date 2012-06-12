@@ -15,40 +15,24 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Linq.Utilities;
+using Remotion.Data.DomainObjects.Persistence.Configuration;
+using Remotion.Utilities;
 
-namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer
+namespace Remotion.Data.UnitTests.DomainObjects.Core
 {
-  /// <summary>
-  /// Defines the <see cref="ISqlDialect"/> for MS SQL Server.
-  /// </summary>
-  public class SqlDialect : ISqlDialect
+  public class NoRdbmsUnitTestStorageProviderStubDefinition : StorageProviderDefinition
   {
-    public SqlDialect ()
+    public NoRdbmsUnitTestStorageProviderStubDefinition (string storageProviderID)
+        : base (storageProviderID, new UnitTestStorageObjectFactoryStub())
     {
     }
 
-    public virtual string StatementDelimiter
+    public override bool IsIdentityTypeSupported (Type identityType)
     {
-      get { return ";"; }
+      ArgumentUtility.CheckNotNull ("identityType", identityType);
+
+      // UnitTestStorageProviderStubDefinition supports all identity types for testing purposes.
+      return true;
     }
-
-    public virtual string GetParameterName (string name)
-    {
-      ArgumentUtility.CheckNotNullOrEmpty ("name", name);
-
-      if (name.StartsWith ("@"))
-        return name;
-      else
-        return "@" + name;
-    }
-
-    public virtual string DelimitIdentifier (string identifier)
-    {
-      ArgumentUtility.CheckNotNullOrEmpty ("identifier", identifier);
-
-      return "[" + identifier + "]";
-    }
-    
   }
 }
