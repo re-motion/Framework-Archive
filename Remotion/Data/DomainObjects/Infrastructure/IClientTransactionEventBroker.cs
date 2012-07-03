@@ -22,7 +22,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
   /// Defines an interface for classes managing the <see cref="IClientTransactionListener"/> instances attached to a 
   /// <see cref="DomainObjects.ClientTransaction"/> instance and allowing clients to raise events for the <see cref="ClientTransaction"/>.
   /// </summary>
-  public interface IClientTransactionListenerManager : IClientTransactionEventSink
+  public interface IClientTransactionEventBroker : IClientTransactionEventSink
   {
     IEnumerable<IClientTransactionListener> Listeners { get; }
     void AddListener (IClientTransactionListener listener);

@@ -21,7 +21,7 @@ using Remotion.Data.DomainObjects.Infrastructure;
 namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.SerializableFakes
 {
   [Serializable]
-  public class SerializableTopClientTransactionListenerFake : ClientTransactionListenerBase, ITopClientTransactionListener
+  public class SerializableClientTransactionEventDistributorFake : ClientTransactionListenerBase, IClientTransactionEventDistributor
   {
     public IEnumerable<IClientTransactionListener> Listeners
     {
