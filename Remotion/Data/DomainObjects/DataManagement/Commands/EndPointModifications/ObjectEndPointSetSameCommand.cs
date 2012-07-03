@@ -47,16 +47,6 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
       // do not issue any change notifications, a same-set is not a change
     }
 
-    protected override void ScopedNotifyClientTransactionOfBegin ()
-    {
-      // do not issue any change notifications, a same-set is not a change
-    }
-
-    protected override void ScopedNotifyClientTransactionOfEnd ()
-    {
-      // do not issue any change notifications, a same-set is not a change
-    }
-
     public override void Perform ()
     {
       ModifiedEndPoint.Touch();

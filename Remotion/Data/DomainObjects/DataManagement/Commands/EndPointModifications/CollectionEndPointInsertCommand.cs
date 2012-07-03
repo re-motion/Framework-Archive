@@ -92,7 +92,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
 
     protected override void ScopedEnd ()
     {
-      base.ScopedEnd();
+      base.ScopedEnd ();
       ((IDomainObjectCollectionEventRaiser) ModifiedCollection).EndAdd (Index, NewRelatedObject);
     }
 

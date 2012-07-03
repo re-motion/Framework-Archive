@@ -50,12 +50,12 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
 
       //RunLoadObjectsTest();
 
-      //RunSerializationTest();
+      RunSerializationTest();
 
       //RunHasRelationChangedTest();
       //RunCommitTest ();
 
-      BindableObjectWithSecurityTest();
+      //BindableObjectWithSecurityTest();
       BindableObjectWithoutSecurityTest();
 
       //LinqTest();
@@ -178,17 +178,6 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
       var test = new InstantiationTest ();
       test.SetUp ();
       test.GetObjectReference();
-      test.TearDown ();
-    }
-
-    private static void RelationQuerySyncSpike ()
-    {
-      var test = new RelationQuerySyncSpike ();
-      test.SetUp ();
-      test.LinearSearch_100 ();
-      test.LinearSearch_500 ();
-      test.LinearSearch_10000 ();
-      test.LinearSearch_20000 ();
       test.TearDown ();
     }
 

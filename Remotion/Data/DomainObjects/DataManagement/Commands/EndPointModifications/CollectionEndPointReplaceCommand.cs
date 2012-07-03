@@ -66,6 +66,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
     {
       ((IDomainObjectCollectionEventRaiser) ModifiedCollection).BeginRemove (_index, OldRelatedObject);
       ((IDomainObjectCollectionEventRaiser) ModifiedCollection).BeginAdd (_index, NewRelatedObject);
+
       base.ScopedBegin ();
     }
 
@@ -78,6 +79,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
     protected override void ScopedEnd ()
     {
       base.ScopedEnd ();
+
       ((IDomainObjectCollectionEventRaiser) ModifiedCollection).EndAdd (_index, NewRelatedObject);
       ((IDomainObjectCollectionEventRaiser) ModifiedCollection).EndRemove (_index, OldRelatedObject);
     }

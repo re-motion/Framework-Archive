@@ -23,6 +23,7 @@ using Remotion.Data.DomainObjects.Infrastructure.Enlistment;
 using Remotion.Data.DomainObjects.Infrastructure.InvalidObjects;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
 using Remotion.Development.UnitTesting;
+using Remotion.Reflection;
 using Rhino.Mocks;
 using System.Linq;
 
@@ -90,6 +91,11 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
       return (DomainObjectCollection) PrivateInvoke.InvokeNonPublicMethod (clientTransaction, "GetOriginalRelatedObjects", relationEndPointID);
     }
 
+    public static DomainObject CallNewObject (ClientTransaction clientTransaction, Type domainObjectType, ParamList constructorParameters)
+    {
+      return (DomainObject) PrivateInvoke.InvokeNonPublicMethod (clientTransaction, "NewObject", domainObjectType, constructorParameters);
+    }
+
     public static void AddListener (ClientTransaction clientTransaction, IClientTransactionListener listener)
     {
       PrivateInvoke.InvokeNonPublicMethod (clientTransaction, "AddListener", listener);
@@ -124,7 +130,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
 
     public static IClientTransactionListenerManager GetListenerManager (ClientTransaction clientTransaction)
     {
-      return (IClientTransactionListenerManager) PrivateInvoke.GetNonPublicProperty (clientTransaction, "ListenerManager");
+      return (IClientTransactionListenerManager) PrivateInvoke.GetNonPublicField (clientTransaction, "_listenerManager");
     }
 
     public static void RegisterDataContainer (ClientTransaction clientTransaction, DataContainer dataContainer)

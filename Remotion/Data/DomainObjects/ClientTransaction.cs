@@ -176,11 +176,11 @@ public class ClientTransaction
     _queryManager = componentFactory.CreateQueryManager (this, _listenerManager, _invalidDomainObjectManager, _persistenceStrategy, _dataManager);
 
     _extensions = componentFactory.CreateExtensionCollection (this);
-    _listenerManager.AddListener (new ExtensionClientTransactionListener (_extensions));
+    AddListener (new ExtensionClientTransactionListener (_extensions));
 
     if (_parentTransaction != null)
-      _parentTransaction.ListenerManager.RaiseEvent ((tx, l) => l.SubTransactionInitialize (tx, this));
-    ListenerManager.RaiseEvent ((tx, l) => l.TransactionInitialize (tx));
+      _parentTransaction.RaiseListenerEvent ((tx, l) => l.SubTransactionInitialize (tx, this));
+    RaiseListenerEvent ((tx, l) => l.TransactionInitialize (tx));
   }
 
   /// <summary>
@@ -325,27 +325,22 @@ public class ClientTransaction
     return emptyTransactionOfSameType;
   }
 
-  /// <summary>
-  /// Gets the transaction event sink for this transaction.
-  /// </summary>
-  /// <value>The transaction event sink for this transaction.</value>
-  /// <remarks>
-  /// Objects such as <see cref="DataManager"/>, changes to which logically represent changes to the transaction, can use the object returned by
-  /// this property in order to inform the <see cref="ClientTransaction"/> and its listeners of events.
-  /// </remarks>
-  internal IClientTransactionListenerManager ListenerManager
-  {
-    get { return _listenerManager; }
-  }
-
   protected internal void AddListener (IClientTransactionListener listener)
   {
+    ArgumentUtility.CheckNotNull ("listener", listener);
     _listenerManager.AddListener (listener);
   }
 
   protected internal void RemoveListener (IClientTransactionListener listener)
   {
+    ArgumentUtility.CheckNotNull ("listener", listener);
     _listenerManager.RemoveListener (listener);
+  }
+
+  protected void RaiseListenerEvent (Action<ClientTransaction, IClientTransactionListener> eventRaiser)
+  {
+    ArgumentUtility.CheckNotNull ("eventRaiser", eventRaiser);
+    _listenerManager.RaiseEvent (eventRaiser);
   }
 
   /// <summary>
@@ -370,7 +365,7 @@ public class ClientTransaction
   {
     if (!_isDiscarded)
     {
-      ListenerManager.RaiseEvent ((tx, l) => l.TransactionDiscard (tx));
+      RaiseListenerEvent ((tx, l) => l.TransactionDiscard (tx));
 
       if (ParentTransaction != null)
       {
@@ -758,7 +753,7 @@ public class ClientTransaction
   {
     ArgumentUtility.CheckNotNull ("subTransactionFactory", subTransactionFactory);
 
-    ListenerManager.RaiseEvent ((tx, l) => l.SubTransactionCreating (tx));
+    RaiseListenerEvent ((tx, l) => l.SubTransactionCreating (tx));
 
     IsReadOnly = true;
 
@@ -775,8 +770,9 @@ public class ClientTransaction
       throw;
     }
 
-    OnSubTransactionCreated (new SubTransactionCreatedEventArgs (subTransaction));
+    _subTransaction = subTransaction;
 
+    RaiseListenerEvent ((tx, l) => l.SubTransactionCreated (tx, subTransaction));
     return subTransaction;
   }
 
@@ -801,7 +797,7 @@ public class ClientTransaction
       BeginCommit();
 
       var persistableDataItems = _dataManager.GetNewChangedDeletedData().ToList().AsReadOnly();
-      ListenerManager.RaiseEvent ((tx, l) => l.TransactionCommitValidate (tx, persistableDataItems));
+      RaiseListenerEvent ((tx, l) => l.TransactionCommitValidate (tx, persistableDataItems));
       
       _persistenceStrategy.PersistData (persistableDataItems);
 
@@ -825,7 +821,11 @@ public class ClientTransaction
     {
       BeginRollback();
 
-      var changedButNotNewItems = _dataManager.GetLoadedDataByObjectState (StateType.Changed, StateType.Deleted).Select (item => item.DomainObject).ToArray();
+      var changedButNotNewItems =
+          _dataManager.GetLoadedDataByObjectState (StateType.Changed, StateType.Deleted)
+          .Select (item => item.DomainObject)
+          .ToList()
+          .AsReadOnly();
 
       _dataManager.Rollback ();
 
@@ -936,6 +936,8 @@ public class ClientTransaction
 
     using (EnterNonDiscardingScope ())
     {
+      RaiseListenerEvent ((tx, l) => l.NewObjectCreating (tx, domainObjectType));
+
       var creator = MappingConfiguration.Current.GetTypeDefinition (domainObjectType).GetDomainObjectCreator ();
       var ctorInfo = creator.GetConstructorLookupInfo (domainObjectType);
 
@@ -1047,11 +1049,11 @@ public class ClientTransaction
     {
       DomainObject domainObject = GetObject (relationEndPointID.ObjectID, true);
 
-      ListenerManager.RaiseEvent ((tx, l) => l.RelationReading (tx, domainObject, relationEndPointID.Definition, ValueAccess.Current));
+      RaiseListenerEvent ((tx, l) => l.RelationReading (tx, domainObject, relationEndPointID.Definition, ValueAccess.Current));
 
       var objectEndPoint = (IObjectEndPoint) DataManager.GetRelationEndPointWithLazyLoad (relationEndPointID);
       DomainObject relatedObject = objectEndPoint.GetOppositeObject ();
-      ListenerManager.RaiseEvent ((tx, l) => l.RelationRead (tx, domainObject, relationEndPointID.Definition, relatedObject, ValueAccess.Current));
+      RaiseListenerEvent ((tx, l) => l.RelationRead (tx, domainObject, relationEndPointID.Definition, relatedObject, ValueAccess.Current));
 
       return relatedObject;
     }
@@ -1075,10 +1077,10 @@ public class ClientTransaction
     {
       DomainObject domainObject = GetObject (relationEndPointID.ObjectID, true);
 
-      ListenerManager.RaiseEvent ((tx, l) => l.RelationReading (tx, domainObject, relationEndPointID.Definition, ValueAccess.Original));
+      RaiseListenerEvent ((tx, l) => l.RelationReading (tx, domainObject, relationEndPointID.Definition, ValueAccess.Original));
       var objectEndPoint = (IObjectEndPoint) _dataManager.GetRelationEndPointWithLazyLoad (relationEndPointID);
       DomainObject relatedObject = objectEndPoint.GetOriginalOppositeObject ();
-      ListenerManager.RaiseEvent ((tx, l) => l.RelationRead (tx, domainObject, relationEndPointID.Definition, relatedObject, ValueAccess.Original));
+      RaiseListenerEvent ((tx, l) => l.RelationRead (tx, domainObject, relationEndPointID.Definition, relatedObject, ValueAccess.Original));
 
       return relatedObject;
     }
@@ -1102,12 +1104,12 @@ public class ClientTransaction
     {
       DomainObject domainObject = GetObject (relationEndPointID.ObjectID, true);
 
-      ListenerManager.RaiseEvent ((tx, l) => l.RelationReading (tx, domainObject, relationEndPointID.Definition, ValueAccess.Current));
+      RaiseListenerEvent ((tx, l) => l.RelationReading (tx, domainObject, relationEndPointID.Definition, ValueAccess.Current));
 
       var collectionEndPoint = (ICollectionEndPoint) _dataManager.GetRelationEndPointWithLazyLoad (relationEndPointID);
       var relatedObjects = collectionEndPoint.Collection;
       var readOnlyRelatedObjects = new ReadOnlyDomainObjectCollectionAdapter<DomainObject> (relatedObjects);
-      ListenerManager.RaiseEvent ((tx, l) => l.RelationRead (tx, domainObject, relationEndPointID.Definition, readOnlyRelatedObjects, ValueAccess.Current));
+      RaiseListenerEvent ((tx, l) => l.RelationRead (tx, domainObject, relationEndPointID.Definition, readOnlyRelatedObjects, ValueAccess.Current));
 
       return relatedObjects;
     }
@@ -1131,11 +1133,11 @@ public class ClientTransaction
     {
       DomainObject domainObject = GetObject (relationEndPointID.ObjectID, true);
 
-      ListenerManager.RaiseEvent ((tx, l) => l.RelationReading (tx, domainObject, relationEndPointID.Definition, ValueAccess.Original));
+      RaiseListenerEvent ((tx, l) => l.RelationReading (tx, domainObject, relationEndPointID.Definition, ValueAccess.Original));
       var collectionEndPoint = (ICollectionEndPoint) _dataManager.GetRelationEndPointWithLazyLoad (relationEndPointID);
       var relatedObjects = collectionEndPoint.GetCollectionWithOriginalData();
       var readOnlyRelatedObjects = new ReadOnlyDomainObjectCollectionAdapter<DomainObject> (relatedObjects);
-      ListenerManager.RaiseEvent ((tx, l) => l.RelationRead (tx, domainObject, relationEndPointID.Definition, readOnlyRelatedObjects, ValueAccess.Original));
+      RaiseListenerEvent ((tx, l) => l.RelationRead (tx, domainObject, relationEndPointID.Definition, readOnlyRelatedObjects, ValueAccess.Original));
 
       return relatedObjects;
     }
@@ -1176,13 +1178,10 @@ public class ClientTransaction
   /// <param name="args">A <see cref="ClientTransactionEventArgs"/> object that contains the event data.</param>
   protected virtual void OnCommitting (ClientTransactionEventArgs args)
   {
-    using (EnterNonDiscardingScope ())
-    {
-      ListenerManager.RaiseEvent ((tx, l) => l.TransactionCommitting (tx, args.DomainObjects));
+    ArgumentUtility.CheckNotNull ("args", args);
 
-      if (Committing != null)
-        Committing (this, args);
-    }
+    if (Committing != null)
+      Committing (this, args);
   }
 
 
@@ -1192,13 +1191,10 @@ public class ClientTransaction
   /// <param name="args">A <see cref="ClientTransactionEventArgs"/> object that contains the event data.</param>
   protected virtual void OnCommitted (ClientTransactionEventArgs args)
   {
-    using (EnterNonDiscardingScope ())
-    {
-      if (Committed != null)
-        Committed (this, args);
+    ArgumentUtility.CheckNotNull ("args", args);
 
-      ListenerManager.RaiseEvent ((tx, l) => l.TransactionCommitted (tx, args.DomainObjects));
-    }
+    if (Committed != null)
+      Committed (this, args);
   }
 
   /// <summary>
@@ -1207,13 +1203,10 @@ public class ClientTransaction
   /// <param name="args">A <see cref="ClientTransactionEventArgs"/> object that contains the event data.</param>
   protected virtual void OnRollingBack (ClientTransactionEventArgs args)
   {
-    using (EnterNonDiscardingScope ())
-    {
-      ListenerManager.RaiseEvent ((tx, l) => l.TransactionRollingBack (tx, args.DomainObjects));
+    ArgumentUtility.CheckNotNull ("args", args);
 
-      if (RollingBack != null)
-        RollingBack (this, args);
-    }
+    if (RollingBack != null)
+      RollingBack (this, args);
   }
 
   /// <summary>
@@ -1222,32 +1215,22 @@ public class ClientTransaction
   /// <param name="args">A <see cref="ClientTransactionEventArgs"/> object that contains the event data.</param>
   protected virtual void OnRolledBack (ClientTransactionEventArgs args)
   {
-    using (EnterNonDiscardingScope ())
-    {
-      if (RolledBack != null)
-        RolledBack (this, args);
+    ArgumentUtility.CheckNotNull ("args", args);
 
-      ListenerManager.RaiseEvent ((tx, l) => l.TransactionRolledBack (tx, args.DomainObjects));
-    }
+    if (RolledBack != null)
+      RolledBack (this, args);
   }
 
   /// <summary>
   /// Raises the <see cref="SubTransactionCreated"/> event.
   /// </summary>
   /// <param name="eventArgs">A <see cref="Remotion.Data.DomainObjects.SubTransactionCreatedEventArgs"/> instance containing the event data.</param>
-  protected virtual void OnSubTransactionCreated (SubTransactionCreatedEventArgs eventArgs)
+  protected internal virtual void OnSubTransactionCreated (SubTransactionCreatedEventArgs eventArgs)
   {
     ArgumentUtility.CheckNotNull ("eventArgs", eventArgs);
-
-    _subTransaction = eventArgs.SubTransaction;
-
-    using (EnterNonDiscardingScope ())
-    {
-      if (SubTransactionCreated != null)
-        SubTransactionCreated (this, eventArgs);
-
-      ListenerManager.RaiseEvent ((tx, l) => l.SubTransactionCreated (tx, eventArgs.SubTransaction));
-    }
+    
+    if (SubTransactionCreated != null)
+      SubTransactionCreated (this, eventArgs);
   }
 
   /// <summary>
@@ -1279,21 +1262,21 @@ public class ClientTransaction
   private void BeginCommit ()
   {
     // TODO Doc: ES
-    
+
     // Note regarding to Committing: 
     // Every object raises a Committing event even if another object's Committing event changes the first object's state back to original 
     // during its own Committing event. Because the event order of .NET is not deterministic, this behavior is desired to ensure consistency: 
     // Every object changed during a ClientTransaction raises a Committing event regardless of the Committing event order of specific objects.  
     // But: The same object is not included in the ClientTransaction's Committing event, because this order (DomainObject Committing events are raised
     // before the ClientTransaction Committing events) IS deterministic.
-    
+
     // Note regarding to Committed: 
     // If an object is changed back to its original state during the Committing phase, no Committed event will be raised,
     // because in this case the object won't be committed to the underlying backend (e.g. database).
 
     var changedDomainObjects = GetChangedDomainObjects().ToObjectList();
-    var domainObjectComittingEventRaised = new DomainObjectCollection ();
-    var clientTransactionCommittingEventRaised = new DomainObjectCollection ();
+    var domainObjectComittingEventRaised = new DomainObjectCollection();
+    var clientTransactionCommittingEventRaised = new DomainObjectCollection();
 
     List<DomainObject> clientTransactionCommittingEventNotRaised;
     do
@@ -1312,20 +1295,23 @@ public class ClientTransaction
           }
         }
 
-        changedDomainObjects = GetChangedDomainObjects ().ToObjectList ();
+        changedDomainObjects = GetChangedDomainObjects().ToObjectList();
         domainObjectCommittingEventNotRaised = changedDomainObjects.GetItemsExcept (domainObjectComittingEventRaised).ToList();
       }
 
       clientTransactionCommittingEventNotRaised = changedDomainObjects.GetItemsExcept (clientTransactionCommittingEventRaised).ToList();
-      
-      OnCommitting (new ClientTransactionEventArgs (clientTransactionCommittingEventNotRaised.AsReadOnly()));
+
+      var eventArgReadOnlyCollection = clientTransactionCommittingEventNotRaised.AsReadOnly ();
+      RaiseListenerEvent ((tx, l) => l.TransactionCommitting (tx, eventArgReadOnlyCollection));
+      OnCommitting (new ClientTransactionEventArgs (eventArgReadOnlyCollection));
+
       foreach (DomainObject domainObject in clientTransactionCommittingEventNotRaised)
       {
         if (!domainObject.IsInvalid)
           clientTransactionCommittingEventRaised.Add (domainObject);
       }
 
-      changedDomainObjects = GetChangedDomainObjects ().ToObjectList ();
+      changedDomainObjects = GetChangedDomainObjects().ToObjectList();
       clientTransactionCommittingEventNotRaised = changedDomainObjects.GetItemsExcept (clientTransactionCommittingEventRaised).ToList();
     } while (clientTransactionCommittingEventNotRaised.Any());
   }
@@ -1336,6 +1322,7 @@ public class ClientTransaction
       changedDomainObject.OnCommitted (EventArgs.Empty);
 
     OnCommitted (new ClientTransactionEventArgs (changedDomainObjects));
+    RaiseListenerEvent ((tx, l) => l.TransactionCommitted (tx, changedDomainObjects));
   }
 
   private void BeginRollback ()
@@ -1353,9 +1340,9 @@ public class ClientTransaction
     // If an object is changed back to its original state during the RollingBack phase, no RolledBack event will be raised,
     // because the object actually has never been changed from a ClientTransaction's perspective.
 
-    var changedDomainObjects = GetChangedDomainObjects ().ToObjectList ();
-    var domainObjectRollingBackEventRaised = new DomainObjectCollection ();
-    var clientTransactionRollingBackEventRaised = new DomainObjectCollection ();
+    var changedDomainObjects = GetChangedDomainObjects().ToObjectList();
+    var domainObjectRollingBackEventRaised = new DomainObjectCollection();
+    var clientTransactionRollingBackEventRaised = new DomainObjectCollection();
 
     List<DomainObject> clientTransactionRollingBackEventNotRaised;
     do
@@ -1374,30 +1361,34 @@ public class ClientTransaction
           }
         }
 
-        changedDomainObjects = GetChangedDomainObjects ().ToObjectList ();
-        domainObjectRollingBackEventNotRaised = changedDomainObjects.GetItemsExcept (domainObjectRollingBackEventRaised).ToList ();
+        changedDomainObjects = GetChangedDomainObjects().ToObjectList();
+        domainObjectRollingBackEventNotRaised = changedDomainObjects.GetItemsExcept (domainObjectRollingBackEventRaised).ToList();
       }
 
-      clientTransactionRollingBackEventNotRaised = changedDomainObjects.GetItemsExcept (clientTransactionRollingBackEventRaised).ToList ();
+      clientTransactionRollingBackEventNotRaised = changedDomainObjects.GetItemsExcept (clientTransactionRollingBackEventRaised).ToList();
 
-      OnRollingBack (new ClientTransactionEventArgs (clientTransactionRollingBackEventNotRaised.AsReadOnly()));
+      var eventArgReadOnlyCollection = clientTransactionRollingBackEventNotRaised.AsReadOnly ();
+      RaiseListenerEvent ((tx, l) => l.TransactionRollingBack (tx, eventArgReadOnlyCollection));
+      OnRollingBack (new ClientTransactionEventArgs (eventArgReadOnlyCollection));
+
       foreach (DomainObject domainObject in clientTransactionRollingBackEventNotRaised)
       {
         if (!domainObject.IsInvalid)
           clientTransactionRollingBackEventRaised.Add (domainObject);
       }
 
-      changedDomainObjects = GetChangedDomainObjects ().ToObjectList ();
-      clientTransactionRollingBackEventNotRaised = changedDomainObjects.GetItemsExcept (clientTransactionRollingBackEventRaised).ToList ();
+      changedDomainObjects = GetChangedDomainObjects().ToObjectList();
+      clientTransactionRollingBackEventNotRaised = changedDomainObjects.GetItemsExcept (clientTransactionRollingBackEventRaised).ToList();
     } while (clientTransactionRollingBackEventNotRaised.Any());
   }
 
-  private void EndRollback (DomainObject[] changedDomainObjects)
+  private void EndRollback (ReadOnlyCollection<DomainObject> changedDomainObjects)
   {
     foreach (DomainObject changedDomainObject in changedDomainObjects)
       changedDomainObject.OnRolledBack (EventArgs.Empty);
 
-    OnRolledBack (new ClientTransactionEventArgs (Array.AsReadOnly (changedDomainObjects)));
+    OnRolledBack (new ClientTransactionEventArgs (changedDomainObjects));
+    RaiseListenerEvent ((tx, l) => l.TransactionRolledBack (tx, changedDomainObjects));
   }
 
   private IEnumerable<DomainObject> GetChangedDomainObjects ()

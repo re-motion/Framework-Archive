@@ -73,20 +73,11 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands
       return Enumerable.Empty<Exception> ();
     }
 
-    public void NotifyClientTransactionOfBegin ()
-    {
-      _clientTransaction.Execute (delegate
-      {
-        _transactionEventSink.RaiseEvent ((tx, l) => l.ObjectDeleting (tx, _deletedObject));
-        _endPointDeleteCommands.NotifyClientTransactionOfBegin ();
-      });
-    }
-
     public void Begin ()
     {
       _clientTransaction.Execute (delegate
       {
-        _deletedObject.OnDeleting (EventArgs.Empty);
+        _transactionEventSink.RaiseEvent ((tx, l) => l.ObjectDeleting (tx, _deletedObject));
         _endPointDeleteCommands.Begin ();
       });
     }
@@ -106,15 +97,6 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands
       _clientTransaction.Execute (delegate
       {
         _endPointDeleteCommands.End ();
-        _deletedObject.OnDeleted (EventArgs.Empty);
-      });
-    }
-
-    public void NotifyClientTransactionOfEnd ()
-    {
-      _clientTransaction.Execute (delegate
-      {
-        _endPointDeleteCommands.NotifyClientTransactionOfEnd ();
         _transactionEventSink.RaiseEvent ((tx, l) => l.ObjectDeleted (tx, _deletedObject));
       });
     }

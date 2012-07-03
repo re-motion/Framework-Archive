@@ -47,7 +47,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.Commands
 
       _transaction = new TestableClientTransaction();
       _order1 = (Order) LifetimeService.GetObject (_transaction, DomainObjectIDs.Order1, false);
-      _transactionEventSinkWithMock = new ClientTransactionEventSinkWithMock (_transaction);
+      _transactionEventSinkWithMock = ClientTransactionEventSinkWithMock.CreateWithStrictMock(_transaction);
     
       _deleteOrder1Command = new DeleteCommand (_transaction, _order1, _transactionEventSinkWithMock);
       
@@ -61,20 +61,20 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.Commands
     }
 
     [Test]
-    public void NotifyClientTransactionOfBegin ()
+    public void Begin ()
     {
       _transactionEventSinkWithMock
           .ExpectMock (mock => mock.ObjectDeleting (_transaction, _order1))
           .WhenCalled (mi => Assert.That (ClientTransaction.Current, Is.SameAs (_transaction)));
       _transactionEventSinkWithMock.ReplayMock();
       
-      _deleteOrder1Command.NotifyClientTransactionOfBegin ();
+      _deleteOrder1Command.Begin ();
 
       _transactionEventSinkWithMock.VerifyMock();
     }
 
     [Test]
-    public void NotifyClientTransactionOfBegin_TriggersEndPointModifications ()
+    public void Begin_TriggersEndPointModifications ()
     {
       var mockRepository = _transactionEventSinkWithMock.GetMockRepository();
 
@@ -84,7 +84,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.Commands
       using (mockRepository.Ordered ())
       {
         _transactionEventSinkWithMock.ExpectMock (mock => mock.ObjectDeleting (_transaction, _order1));
-        endPointCommandMock.Expect (mock => mock.NotifyClientTransactionOfBegin());
+        endPointCommandMock.Expect (mock => mock.Begin());
       }
 
       mockRepository.ReplayAll ();
@@ -93,27 +93,27 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.Commands
       var compositeCommandWithMockStep = compositeCommand.CombineWith (endPointCommandMock);
       PrivateInvoke.SetNonPublicField (_deleteOrder1Command, "_endPointDeleteCommands", compositeCommandWithMockStep);
 
-      _deleteOrder1Command.NotifyClientTransactionOfBegin ();
+      _deleteOrder1Command.Begin ();
 
       mockRepository.VerifyAll ();
       mockRepository.BackToRecordAll (); // For Discard
     }
 
     [Test]
-    public void NotifyClientTransactionOfEnd ()
+    public void End ()
     {
       _transactionEventSinkWithMock
           .ExpectMock (mock => mock.ObjectDeleted (_transaction, _order1))
           .WhenCalled (mi => Assert.That (ClientTransaction.Current, Is.SameAs (_transaction)));
       _transactionEventSinkWithMock.ReplayMock ();
 
-      _deleteOrder1Command.NotifyClientTransactionOfEnd ();
+      _deleteOrder1Command.End ();
 
       _transactionEventSinkWithMock.VerifyMock ();
     }
 
     [Test]
-    public void NotifyClientTransactionOfEnd_TriggersEndPointModifications ()
+    public void End_TriggersEndPointModifications ()
     {
       var mockRepository = _transactionEventSinkWithMock.GetMockRepository();
 
@@ -122,7 +122,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.Commands
 
       using (mockRepository.Ordered ())
       {
-        endPointCommandMock.Expect (mock => mock.NotifyClientTransactionOfEnd ());
+        endPointCommandMock.Expect (mock => mock.End ());
         _transactionEventSinkWithMock.ExpectMock (mock => mock.ObjectDeleted (_transaction, _order1));
       }
 
@@ -132,82 +132,10 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.Commands
       var compositeCommandWithMockStep = compositeCommand.CombineWith (endPointCommandMock);
       PrivateInvoke.SetNonPublicField (_deleteOrder1Command, "_endPointDeleteCommands", compositeCommandWithMockStep);
 
-      _deleteOrder1Command.NotifyClientTransactionOfEnd ();
+      _deleteOrder1Command.End ();
 
       mockRepository.VerifyAll ();
       mockRepository.BackToRecordAll (); // For Discard
-    }
-
-    [Test]
-    public void Begin_CallsOnDeleting ()
-    {
-      var eventReceiver = new DomainObjectEventReceiver (_order1, false, _transaction);
-      Assert.That (eventReceiver.HasDeletingEventBeenCalled, Is.False);
-
-      _deleteOrder1Command.Begin ();
-
-      Assert.That (eventReceiver.HasDeletingEventBeenCalled, Is.True);
-      Assert.That (eventReceiver.HasDeletedEventBeenCalled, Is.False);
-    }
-
-    [Test]
-    public void Begin_TriggersEndPointDeleting ()
-    {
-      var eventReceiver = new DomainObjectCollectionEventReceiver (_orderItemsCollection);
-      Assert.That (eventReceiver.HasDeletingEventBeenCalled, Is.False);
-
-      _deleteOrder1Command.Begin ();
-
-      Assert.That (eventReceiver.HasDeletingEventBeenCalled, Is.True);
-      Assert.That (eventReceiver.HasDeletedEventBeenCalled, Is.False);
-    }
-
-    [Test]
-    public void Begin_Sequence ()
-    {
-      var eventReceiver = new SequenceEventReceiver (new[] { _order1 }, new[] { _orderItemsCollection });
-      _deleteOrder1Command.Begin ();
-
-      eventReceiver.Check (new ChangeState[] { 
-          new ObjectDeletionState (_order1, "1. _order1.OnDeleting"),
-          new CollectionDeletionState (_orderItemsCollection, "2. _order1.OrderItems.OnDeleting")
-      });
-    }
-
-    [Test]
-    public void End_CallsOnDeleted ()
-    {
-      var eventReceiver = new DomainObjectEventReceiver (_order1, false, _transaction);
-      Assert.That (eventReceiver.HasDeletedEventBeenCalled, Is.False);
-
-      _deleteOrder1Command.End ();
-
-      Assert.That (eventReceiver.HasDeletedEventBeenCalled, Is.True);
-      Assert.That (eventReceiver.HasDeletingEventBeenCalled, Is.False);
-    }
-
-    [Test]
-    public void End_TriggersEndPointDeleted ()
-    {
-      var eventReceiver = new DomainObjectCollectionEventReceiver (_orderItemsCollection);
-      Assert.That (eventReceiver.HasDeletedEventBeenCalled, Is.False);
-
-      _deleteOrder1Command.End ();
-
-      Assert.That (eventReceiver.HasDeletedEventBeenCalled, Is.True);
-      Assert.That (eventReceiver.HasDeletingEventBeenCalled, Is.False);
-    }
-
-    [Test]
-    public void End_Sequence ()
-    {
-      var eventReceiver = new SequenceEventReceiver (new[] { _order1 }, new[] { _orderItemsCollection });
-      _deleteOrder1Command.End ();
-
-      eventReceiver.Check (new ChangeState[] { 
-          new CollectionDeletionState (_orderItemsCollection, "1. _order1.OrderItems.OnDeleted"),
-          new ObjectDeletionState (_order1, "2. _order1.OnDeleted")
-      });
     }
 
     [Test]

@@ -111,34 +111,12 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
       _modifiedEndPoint.ClientTransaction.Execute (ScopedEnd);
     }
 
-    public void NotifyClientTransactionOfBegin ()
-    {
-      _modifiedEndPoint.ClientTransaction.Execute (ScopedNotifyClientTransactionOfBegin);
-    }
-
-    public void NotifyClientTransactionOfEnd ()
-    {
-      _modifiedEndPoint.ClientTransaction.Execute (ScopedNotifyClientTransactionOfEnd);
-    }
-
     protected virtual void ScopedBegin ()
-    {
-      DomainObject domainObject = _modifiedEndPoint.GetDomainObject ();
-      domainObject.OnRelationChanging (new RelationChangingEventArgs (_modifiedEndPoint.Definition, _oldRelatedObject, _newRelatedObject));
-    }
-
-    protected virtual void ScopedEnd ()
-    {
-      DomainObject domainObject = _modifiedEndPoint.GetDomainObject ();
-      domainObject.OnRelationChanged (new RelationChangedEventArgs (_modifiedEndPoint.Definition, _oldRelatedObject, _newRelatedObject));
-    }
-
-    protected virtual void ScopedNotifyClientTransactionOfBegin ()
     {
       RaiseClientTransactionBeginNotification (_oldRelatedObject, _newRelatedObject);
     }
 
-    protected virtual void ScopedNotifyClientTransactionOfEnd ()
+    protected virtual void ScopedEnd ()
     {
       RaiseClientTransactionEndNotification (_oldRelatedObject, _newRelatedObject);
     }

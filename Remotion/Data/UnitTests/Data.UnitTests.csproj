@@ -198,7 +198,11 @@
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
     <Compile Include="DomainObjects\Core\ClientTransactionEventSinkWithMock.cs" />
+    <Compile Include="DomainObjects\Core\DataManagement\DataContainerIntegrationTest.cs" />
+    <Compile Include="DomainObjects\Core\DataManagement\ForwardingEventListenerTestBase.cs" />
+    <Compile Include="DomainObjects\Core\EventReceiver\ILoadEventReceiver.cs" />
     <Compile Include="DomainObjects\Core\Linq\ExecutableQueries\TestableQueryAdapterBase.cs" />
+    <Compile Include="DomainObjects\Core\NoRdbmsUnitTestStorageProviderStubDefinition.cs" />
     <Compile Include="DomainObjects\Core\Persistence\Rdbms\SqlServer\IntegrationTests\EnablingClassIDsInAllForeignKeys\ClassIDsInAllForeignKeysBehaviorTest.cs" />
     <Compile Include="DomainObjects\Core\Persistence\Rdbms\SqlServer\IntegrationTests\EnablingClassIDsInAllForeignKeys\TestDomain\ClassWithRelations.cs" />
     <Compile Include="DomainObjects\Core\Persistence\Rdbms\SqlServer\IntegrationTests\EnablingClassIDsInAllForeignKeys\DefaultBehaviorTest.cs" />
@@ -1434,9 +1438,6 @@
     <Compile Include="DomainObjects\Core\DataManagement\RelationEndPoints\ObjectEndPointTest.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DomainObjects\Core\DataManagement\PropertyValueCollectionTest.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="DomainObjects\Core\DataManagement\PropertyValueTest.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -1591,7 +1592,7 @@
     <Compile Include="DomainObjects\Core\Persistence\Rdbms\SqlServer\IntegrationTests\SqlProviderBaseTest.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DomainObjects\Core\Persistence\Rdbms\SqlServer\IntegrationTests\SqlProviderCreateNewDataContainerTest.cs">
+    <Compile Include="DomainObjects\Core\Persistence\Rdbms\SqlServer\IntegrationTests\SqlProviderCreateNewObjectIDTest.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DomainObjects\Core\Persistence\Rdbms\SqlServer\IntegrationTests\SqlProviderDeleteTest.cs">
@@ -1877,7 +1878,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DomainObjects\Core\EventReceiver\DomainObjectMockEventReceiver.cs" />
-    <Compile Include="DomainObjects\Core\EventReceiver\PropertyValueCollectionMockEventReceiver.cs" />
     <Compile Include="DomainObjects\Core\IntegrationTests\Transaction\ClientTransactionScopeTest.cs" />
     <Compile Include="DomainObjects\Core\IntegrationTests\Transaction\CompoundClientTransactionListenerTest.cs" />
     <Compile Include="DomainObjects\Core\IntegrationTests\Transaction\ClientTransactionStateTransitionBaseTest.cs" />

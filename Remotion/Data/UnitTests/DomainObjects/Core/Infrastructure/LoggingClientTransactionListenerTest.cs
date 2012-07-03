@@ -48,7 +48,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure
     private Client _domainObject2;
     private Client _domainObject3;
     private DataContainer _dataContainer;
-    private PropertyValue _propertyValue;
+    private PropertyDefinition _propertyDefinition;
 
     public override void SetUp ()
     {
@@ -63,7 +63,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure
 
       _domainObject = DomainObjectMother.CreateObjectInTransaction<Client> (_clientTransaction);
       _dataContainer = _domainObject.GetInternalDataContainerForTransaction (_clientTransaction);
-      _propertyValue = _dataContainer.PropertyValues[0];
+      _propertyDefinition = GetPropertyDefinition (typeof (Client), "ParentClient");
 
       _domainObject2 = DomainObjectMother.CreateObjectInTransaction<Client> (_clientTransaction);
       _domainObject3 = DomainObjectMother.CreateObjectInTransaction<Client> (_clientTransaction);
@@ -123,7 +123,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure
     public void NewObjectCreating ()
     {
       CheckLoggingMethod (
-          () => _listener.NewObjectCreating (_clientTransaction, typeof (string), _domainObject),
+          () => _listener.NewObjectCreating (_clientTransaction, typeof (string)),
           string.Format ("{0} NewObjectCreating: {1}", _clientTransaction.ID, typeof (string).FullName));
     }
 
@@ -179,25 +179,25 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure
     public void PropertyValueReading ()
     {
       CheckLoggingMethod (
-          () => _listener.PropertyValueReading (_clientTransaction, _dataContainer, _propertyValue, ValueAccess.Current),
+          () => _listener.PropertyValueReading (_clientTransaction, _domainObject, _propertyDefinition, ValueAccess.Current),
           string.Format (
-              "{0} PropertyValueReading: {1} ({2}, {3})", _clientTransaction.ID, _propertyValue.Name, ValueAccess.Current, _dataContainer.ID));
+              "{0} PropertyValueReading: {1} ({2}, {3})", _clientTransaction.ID, _propertyDefinition.PropertyName, ValueAccess.Current, _dataContainer.ID));
     }
 
     [Test]
     public void PropertyValueChanging ()
     {
       CheckLoggingMethod (
-          () => _listener.PropertyValueChanging (_clientTransaction, _dataContainer, _propertyValue, 1, 2),
-          string.Format ("{0} PropertyValueChanging: {1} {2}->{3} ({4})", _clientTransaction.ID, _propertyValue.Name, 1, 2, _dataContainer.ID));
+          () => _listener.PropertyValueChanging (_clientTransaction, _domainObject, _propertyDefinition, 1, 2),
+          string.Format ("{0} PropertyValueChanging: {1} {2}->{3} ({4})", _clientTransaction.ID, _propertyDefinition.PropertyName, 1, 2, _dataContainer.ID));
     }
 
     [Test]
     public void PropertyValueChanged ()
     {
       CheckLoggingMethod (
-          () => _listener.PropertyValueChanged (_clientTransaction, _dataContainer, _propertyValue, 1, 2),
-          string.Format ("{0} PropertyValueChanged: {1} {2}->{3} ({4})", _clientTransaction.ID, _propertyValue.Name, 1, 2, _dataContainer.ID));
+          () => _listener.PropertyValueChanged (_clientTransaction, _domainObject, _propertyDefinition, 1, 2),
+          string.Format ("{0} PropertyValueChanged: {1} {2}->{3} ({4})", _clientTransaction.ID, _propertyDefinition.PropertyName, 1, 2, _dataContainer.ID));
     }
 
     [Test]

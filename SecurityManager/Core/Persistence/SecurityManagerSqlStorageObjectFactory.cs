@@ -34,20 +34,19 @@ namespace Remotion.SecurityManager.Persistence
   {
     protected override StorageProvider CreateStorageProvider (
         IPersistenceExtension persistenceExtension,
-        RdbmsProviderDefinition rdbmsProviderDefinition,
+        RdbmsProviderDefinition storageProviderDefinition,
         IStorageProviderCommandFactory<IRdbmsProviderCommandExecutionContext> commandFactory)
     {
       ArgumentUtility.CheckNotNull ("persistenceExtension", persistenceExtension);
-      ArgumentUtility.CheckNotNull ("rdbmsProviderDefinition", rdbmsProviderDefinition);
+      ArgumentUtility.CheckNotNull ("storageProviderDefinition", storageProviderDefinition);
       ArgumentUtility.CheckNotNull ("commandFactory", commandFactory);
 
-      return
-          ObjectFactory.Create<SecurityManagerRdbmsProvider> (
-              ParamList.Create (
-                  rdbmsProviderDefinition,
-                  persistenceExtension,
-                  commandFactory,
-                  (Func<IDbConnection>) (() => new SqlConnection())));
+      return ObjectFactory.Create<SecurityManagerRdbmsProvider> (
+          ParamList.Create (
+              storageProviderDefinition,
+              persistenceExtension,
+              commandFactory,
+              (Func<IDbConnection>) (() => new SqlConnection())));
     }
   }
 }

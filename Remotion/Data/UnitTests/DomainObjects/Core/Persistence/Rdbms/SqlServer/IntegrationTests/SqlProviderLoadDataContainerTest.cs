@@ -164,24 +164,23 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.SqlServer
 
       DataContainer container = Provider.LoadDataContainer (id).LocatedObject;
 
-      PropertyValue actualPropertyValue = container.PropertyValues["Remotion.Data.UnitTests.DomainObjects.TestDomain.ClassWithValidRelations.ClassWithGuidKeyOptional"];
-
-      Assert.IsNotNull (actualPropertyValue, "PropertyValue");
-      Assert.IsNull (actualPropertyValue.Value, "PropertyValue.Value");
+      Assert.IsNull (container.GetValue (GetPropertyDefinition (typeof (ClassWithValidRelations), "ClassWithGuidKeyOptional")), "PropertyValue.Value");
     }
 
     [Test]
     public void LoadDataContainerWithRelation ()
     {
       DataContainer orderTicketContainer = Provider.LoadDataContainer (DomainObjectIDs.OrderTicket1).LocatedObject;
-      Assert.AreEqual (DomainObjectIDs.Order1, orderTicketContainer.GetValue ("Remotion.Data.UnitTests.DomainObjects.TestDomain.OrderTicket.Order"));
+      var propertyDefinition = GetPropertyDefinition (typeof (OrderTicket), "Order");
+      Assert.AreEqual (DomainObjectIDs.Order1, orderTicketContainer.GetValue (propertyDefinition));
     }
 
     [Test]
     public void LoadDataContainerWithRelationAndInheritance ()
     {
       DataContainer ceoContainer = Provider.LoadDataContainer (DomainObjectIDs.Ceo7).LocatedObject;
-      Assert.AreEqual (DomainObjectIDs.Partner2, ceoContainer.GetValue ("Remotion.Data.UnitTests.DomainObjects.TestDomain.Ceo.Company"));
+      var propertyDefinition = GetPropertyDefinition (typeof (Ceo), "Company");
+      Assert.AreEqual (DomainObjectIDs.Partner2, ceoContainer.GetValue (propertyDefinition));
     }
 
     [Test]

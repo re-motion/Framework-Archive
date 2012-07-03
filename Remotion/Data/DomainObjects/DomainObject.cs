@@ -234,11 +234,9 @@ namespace Remotion.Data.DomainObjects
 // ReSharper restore DoNotCallOverridableMethodsInConstructor
 
       var publicDomainObjectType = GetPublicDomainObjectType ();
+      var classDefinition = MappingConfiguration.Current.GetTypeDefinition (publicDomainObjectType);
 
       var clientTransaction = ClientTransaction.Current;
-      clientTransaction.ListenerManager.RaiseEvent ((tx, l) => l.NewObjectCreating (clientTransaction, publicDomainObjectType, this));
-
-      var classDefinition = MappingConfiguration.Current.GetTypeDefinition (publicDomainObjectType);
       var objectID = clientTransaction.CreateNewObjectID (classDefinition);
 
       Initialize (objectID, clientTransaction as BindingClientTransaction);
@@ -450,7 +448,9 @@ namespace Remotion.Data.DomainObjects
     /// <param name="context">The <see cref="StreamingContext"/> coming from the .NET serialization infrastructure.</param>
     /// <remarks>Be sure to call this method from the <see cref="ISerializable.GetObjectData"/> implementation of any concrete
     /// <see cref="DomainObject"/> type implementing the <see cref="ISerializable"/> interface.</remarks>
+// ReSharper disable UnusedParameter.Global
     protected void BaseGetObjectData (SerializationInfo info, StreamingContext context)
+// ReSharper restore UnusedParameter.Global
     {
       ArgumentUtility.CheckNotNull ("info", info);
 

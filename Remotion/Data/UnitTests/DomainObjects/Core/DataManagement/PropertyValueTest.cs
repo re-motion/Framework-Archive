@@ -41,6 +41,26 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement
     }
 
     [Test]
+    public void AreValuesDifferent_False ()
+    {
+      Assert.That (PropertyValue.AreValuesDifferent (10, 10), Is.False);
+      Assert.That (PropertyValue.AreValuesDifferent (null, null), Is.False);
+      Assert.That (PropertyValue.AreValuesDifferent ("test", "test"), Is.False);
+      
+      var array = new byte[] { 1, 2, 3 };
+      Assert.That (PropertyValue.AreValuesDifferent (array, array), Is.False);
+    }
+
+    [Test]
+    public void AreValuesDifferent_True ()
+    {
+      Assert.That (PropertyValue.AreValuesDifferent (10, 11), Is.True);
+      Assert.That (PropertyValue.AreValuesDifferent ("test", "other"), Is.True);
+
+      Assert.That (PropertyValue.AreValuesDifferent (new byte[] { 1, 2, 3 }, new byte[] { 1, 2, 3 }), Is.True);
+    }
+
+    [Test]
     [ExpectedException (typeof (NotSupportedException), ExpectedMessage =
         @"The property 'test' \(declared on class 'ClassName'\) is invalid because its values cannot be copied\. "
         + @"Only value types, strings, the Type type, byte arrays, and ObjectIDs are currently supported, but the property's type is "
@@ -502,20 +522,6 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement
     }
 
     [Test]
-    public void SetDataFromSubTransaction_SetsDiscardedFlag ()
-    {
-      var source = new PropertyValue (_orderNumberPropertyDefinition, 1);
-      PrivateInvoke.InvokeNonPublicMethod (source, "Discard");
-
-      var target = new PropertyValue (_orderNumberPropertyDefinition, 2);
-      Assert.That (target.IsDiscarded, Is.False);
-
-      target.SetDataFromSubTransaction (source);
-
-      Assert.That (target.IsDiscarded, Is.True);
-    }
-
-    [Test]
     public void SetDataFromSubTransaction_HasBeenTouched_TrueIfPropertyWasTouched ()
     {
       var source = new PropertyValue (_orderNumberPropertyDefinition, 1);
@@ -624,34 +630,17 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement
     }
 
     [Test]
-    public void GetValueWithoutEvents_Current ()
-    {
-      var propertyValue = new PropertyValue (_orderNumberPropertyDefinition, 11);
-
-      propertyValue.Value = 10;
-      Assert.That (propertyValue.GetValueWithoutEvents (ValueAccess.Current), Is.EqualTo (10));
-    }
-
-    [Test]
-    public void GetValueWithoutEvents_Original ()
-    {
-      var propertyValue = new PropertyValue (_orderNumberPropertyDefinition, 11);
-
-      propertyValue.Value = 10;
-      Assert.That (propertyValue.GetValueWithoutEvents (ValueAccess.Original), Is.EqualTo (11));
-    }
-
-    [Test]
     public void GetValueWithoutEvents_NoEvents ()
     {
-      var clientTransactionMock = new TestableClientTransaction();
+      var clientTransactionMock = new TestableClientTransaction ();
       using (clientTransactionMock.EnterDiscardingScope())
       {
-        PropertyValue propertyValue = Order.NewObject().InternalDataContainer.PropertyValues[typeof (Order).FullName + ".OrderNumber"];
+        var dataContainer = Order.NewObject ().InternalDataContainer;
+        var propertyDefinition = GetPropertyDefinition (typeof (Order), "OrderNumber");
 
         ClientTransactionTestHelper.EnsureTransactionThrowsOnEvents (clientTransactionMock);
 
-        Dev.Null = propertyValue.GetValueWithoutEvents (ValueAccess.Current);
+        dataContainer.GetValueWithoutEvents (propertyDefinition, ValueAccess.Current);
       }
     }
 

@@ -19,7 +19,6 @@ using System.Runtime.Serialization;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects;
 using Remotion.Data.DomainObjects.DataManagement;
-using Remotion.Data.UnitTests.DomainObjects.Factories;
 using Remotion.Data.UnitTests.DomainObjects.TestDomain;
 using Remotion.Development.UnitTesting;
 
@@ -67,8 +66,8 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Serialization
       Assert.IsNotNull (deserializedDataContainer.DomainObject);
       Assert.AreEqual (dataContainer.DomainObject.ID, deserializedDataContainer.DomainObject.ID);
       Assert.AreEqual (StateType.Changed, deserializedDataContainer.State);
-      Assert.AreEqual ("abc", deserializedDataContainer.PropertyValues[ReflectionMappingHelper.GetPropertyName (typeof (Computer), "SerialNumber")].Value);
-      Assert.AreEqual (employee.ID, deserializedDataContainer.PropertyValues[ReflectionMappingHelper.GetPropertyName (typeof (Computer), "Employee")].Value);
+      Assert.AreEqual ("abc", GetPropertyValue (deserializedDataContainer, typeof (Computer), "SerialNumber"));
+      Assert.AreEqual (employee.ID, GetPropertyValue (deserializedDataContainer, typeof (Computer), "Employee"));
     }
 
     [Test]
@@ -94,7 +93,6 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Serialization
       DataContainer deserializedDataContainer = FlattenedSerializer.SerializeAndDeserialize (dataContainer);
 
       Assert.AreEqual (dataContainer.ID, deserializedDataContainer.ID);
-      Assert.IsEmpty (deserializedDataContainer.PropertyValues);
     }
 
     [Test]

@@ -16,6 +16,7 @@
 // 
 using System;
 using Remotion.Data.DomainObjects.Infrastructure;
+using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.DataManagement
@@ -39,28 +40,45 @@ namespace Remotion.Data.DomainObjects.DataManagement
       get { return _eventSink; }
     }
 
-    public void PropertyValueReading (DataContainer dataContainer, PropertyValue propertyValue, ValueAccess valueAccess)
+    public void PropertyValueReading (DataContainer dataContainer, PropertyDefinition propertyDefinition, ValueAccess valueAccess)
     {
-      _eventSink.RaiseEvent ((tx, l) => l.PropertyValueReading (tx, dataContainer, propertyValue, valueAccess));
+      ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
+      ArgumentUtility.CheckNotNull ("propertyDefinition", propertyDefinition);
+
+      Assertion.DebugAssert (dataContainer.HasDomainObject, "DataContainerEventListener is only used for registered DataContainers.");
+      _eventSink.RaiseEvent ((tx, l) => l.PropertyValueReading (tx, dataContainer.DomainObject, propertyDefinition, valueAccess));
     }
 
-    public void PropertyValueRead (DataContainer dataContainer, PropertyValue propertyValue, object value, ValueAccess valueAccess)
+    public void PropertyValueRead (DataContainer dataContainer, PropertyDefinition propertyDefinition, object value, ValueAccess valueAccess)
     {
-      _eventSink.RaiseEvent ((tx, l) => l.PropertyValueRead (tx, dataContainer, propertyValue, value, valueAccess));
+      ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
+      ArgumentUtility.CheckNotNull ("propertyDefinition", propertyDefinition);
+
+      Assertion.DebugAssert (dataContainer.HasDomainObject, "DataContainerEventListener is only used for registered DataContainers.");
+      _eventSink.RaiseEvent ((tx, l) => l.PropertyValueRead (tx, dataContainer.DomainObject, propertyDefinition, value, valueAccess));
     }
 
-    public void PropertyValueChanging (DataContainer dataContainer, PropertyValue propertyValue, object oldValue, object newValue)
+    public void PropertyValueChanging (DataContainer dataContainer, PropertyDefinition propertyDefinition, object oldValue, object newValue)
     {
-      _eventSink.RaiseEvent ((tx, l) => l.PropertyValueChanging (tx, dataContainer, propertyValue, oldValue, newValue));
+      ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
+      ArgumentUtility.CheckNotNull ("propertyDefinition", propertyDefinition);
+
+      Assertion.DebugAssert (dataContainer.HasDomainObject, "DataContainerEventListener is only used for registered DataContainers.");
+      _eventSink.RaiseEvent ((tx, l) => l.PropertyValueChanging (tx, dataContainer.DomainObject, propertyDefinition, oldValue, newValue));
     }
 
-    public void PropertyValueChanged (DataContainer dataContainer, PropertyValue propertyValue, object oldValue, object newValue)
+    public void PropertyValueChanged (DataContainer dataContainer, PropertyDefinition propertyDefinition, object oldValue, object newValue)
     {
-      _eventSink.RaiseEvent ((tx, l) => l.PropertyValueChanged (tx, dataContainer, propertyValue, oldValue, newValue));
+      ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
+      ArgumentUtility.CheckNotNull ("propertyDefinition", propertyDefinition);
+
+      Assertion.DebugAssert (dataContainer.HasDomainObject, "DataContainerEventListener is only used for registered DataContainers.");
+      _eventSink.RaiseEvent ((tx, l) => l.PropertyValueChanged (tx, dataContainer.DomainObject, propertyDefinition, oldValue, newValue));
     }
 
     public void StateUpdated (DataContainer dataContainer, StateType state)
     {
+      ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
       _eventSink.RaiseEvent ((tx, l) => l.DataContainerStateUpdated (tx, dataContainer, state));
     }
   }

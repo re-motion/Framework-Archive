@@ -66,7 +66,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
         s_log.DebugFormat ("{0} SubTransactionCreated: {1}", clientTransaction.ID, subTransaction.ID);
     }
 
-    public void NewObjectCreating (ClientTransaction clientTransaction, Type type, DomainObject instance)
+    public void NewObjectCreating (ClientTransaction clientTransaction, Type type)
     {
       if (s_log.IsDebugEnabled)
         s_log.DebugFormat ("{0} NewObjectCreating: {1}", clientTransaction.ID, type.FullName);
@@ -108,77 +108,58 @@ namespace Remotion.Data.DomainObjects.Infrastructure
         s_log.DebugFormat ("{0} ObjectDeleted: {1}", clientTransaction.ID, GetDomainObjectString (domainObject));
     }
 
-    public void PropertyValueReading (
-        ClientTransaction clientTransaction,
-        DataContainer dataContainer,
-        PropertyValue propertyValue,
-        ValueAccess valueAccess)
+    public void PropertyValueReading (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, ValueAccess valueAccess)
     {
       if (s_log.IsDebugEnabled)
       {
         s_log.DebugFormat (
             "{0} PropertyValueReading: {1} ({2}, {3})",
             clientTransaction.ID,
-            propertyValue.Name,
+            propertyDefinition.PropertyName,
             valueAccess,
-            dataContainer.ID);
+            domainObject.ID);
       }
     }
 
-    public void PropertyValueRead (
-        ClientTransaction clientTransaction,
-        DataContainer dataContainer,
-        PropertyValue propertyValue,
-        object value,
-        ValueAccess valueAccess)
+    public void PropertyValueRead (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object value, ValueAccess valueAccess)
     {
       if (s_log.IsDebugEnabled)
       {
         s_log.DebugFormat (
             "{0} PropertyValueRead: {1}=={2} ({3}, {4})",
             clientTransaction.ID,
-            propertyValue.Name,
+            propertyDefinition.PropertyName,
             value ?? "<null>",
             valueAccess,
-            dataContainer.ID);
+            domainObject.ID);
       }
     }
 
-    public void PropertyValueChanging (
-        ClientTransaction clientTransaction,
-        DataContainer dataContainer,
-        PropertyValue propertyValue,
-        object oldValue,
-        object newValue)
+    public void PropertyValueChanging (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object oldValue, object newValue)
     {
       if (s_log.IsDebugEnabled)
       {
         s_log.DebugFormat (
             "{0} PropertyValueChanging: {1} {2}->{3} ({4})",
             clientTransaction.ID,
-            propertyValue.Name,
+            propertyDefinition.PropertyName,
             oldValue ?? "<null>",
             newValue ?? "<null>",
-            dataContainer.ID);
+            domainObject.ID);
       }
     }
 
-    public void PropertyValueChanged (
-        ClientTransaction clientTransaction,
-        DataContainer dataContainer,
-        PropertyValue propertyValue,
-        object oldValue,
-        object newValue)
+    public void PropertyValueChanged (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object oldValue, object newValue)
     {
       if (s_log.IsDebugEnabled)
       {
         s_log.DebugFormat (
             "{0} PropertyValueChanged: {1} {2}->{3} ({4})",
             clientTransaction.ID,
-            propertyValue.Name,
+            propertyDefinition.PropertyName,
             oldValue ?? "<null>",
             newValue ?? "<null>",
-            dataContainer.ID);
+            domainObject.ID);
       }
     }
 

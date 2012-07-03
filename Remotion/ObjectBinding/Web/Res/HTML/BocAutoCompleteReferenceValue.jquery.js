@@ -81,7 +81,10 @@
     $.Autocompleter = function(input, options) {
 
       var KEY = {
-            SPACE: 32,
+            SHIFT: 16,
+            CAPSLOCK: 20,
+            CTRL: 17,
+            ALT: 18,
             UP: 38,
             DOWN: 40,
             DEL: 46,
@@ -92,6 +95,7 @@
             PAGEUP: 33,
             PAGEDOWN: 34,
             BACKSPACE: 8,
+            SPACE: 32,
             FIRSTTEXTCHARACTER: 48 // 0
         };
 
@@ -228,9 +232,8 @@
                 var currentValue = $input.val();
                 var dropDownDelay = select.visible() ? options.dropDownRefreshDelay : options.dropDownDisplayDelay;
 
-                informationPopUp.hide();
                 if (currentValue.toLowerCase() != previousValue.toLowerCase())
-                  $input.trigger("invalidateResult");
+                    $input.trigger("invalidateResult");
 
                 timeout = setTimeout(
                     function () { 

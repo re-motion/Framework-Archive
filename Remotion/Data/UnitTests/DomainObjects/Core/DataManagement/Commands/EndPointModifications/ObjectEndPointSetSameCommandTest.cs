@@ -48,7 +48,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.Commands.End
 
       _endPointID = RelationEndPointID.Resolve (_domainObject, c => c.Employee);
       _endPoint = RelationEndPointObjectMother.CreateObjectEndPoint (_endPointID, _relatedObject.ID);
-      _transactionEventSinkWithMock = new ClientTransactionEventSinkWithMock (TestableClientTransaction);
+      _transactionEventSinkWithMock = ClientTransactionEventSinkWithMock.CreateWithStrictMock(TestableClientTransaction);
 
       _command = new ObjectEndPointSetSameCommand (_endPoint, _transactionEventSinkWithMock);
     }
@@ -62,28 +62,6 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.Commands.End
     }
 
     [Test]
-    public void Begin ()
-    {
-      var eventReceiver = new DomainObjectEventReceiver (_domainObject);
-
-      _command.Begin();
-
-      Assert.IsFalse (eventReceiver.HasRelationChangingEventBeenCalled);
-      Assert.IsFalse (eventReceiver.HasRelationChangedEventBeenCalled);
-    }
-
-    [Test]
-    public void End ()
-    {
-      var eventReceiver = new DomainObjectEventReceiver (_domainObject);
-
-      _command.End();
-
-      Assert.IsFalse (eventReceiver.HasRelationChangingEventBeenCalled);
-      Assert.IsFalse (eventReceiver.HasRelationChangedEventBeenCalled);
-    }
-
-    [Test]
     public void Perform_TouchesEndPoint ()
     {
       Assert.That (_endPoint.HasBeenTouched, Is.False);
@@ -92,11 +70,11 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.Commands.End
     }
 
     [Test]
-    public void NotifyClientTransactionOfBegin ()
+    public void Begin ()
     {
       _transactionEventSinkWithMock.ReplayMock();
 
-      _command.NotifyClientTransactionOfBegin();
+      _command.Begin();
 
       _transactionEventSinkWithMock.AssertWasNotCalledMock (
           mock => mock.RelationChanging (
@@ -108,11 +86,11 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.Commands.End
     }
 
     [Test]
-    public void NotifyClientTransactionOfEnd ()
+    public void End ()
     {
       _transactionEventSinkWithMock.ReplayMock ();
 
-      _command.NotifyClientTransactionOfBegin();
+      _command.Begin();
 
       _transactionEventSinkWithMock.AssertWasNotCalledMock (
           mock => mock.RelationChanged (

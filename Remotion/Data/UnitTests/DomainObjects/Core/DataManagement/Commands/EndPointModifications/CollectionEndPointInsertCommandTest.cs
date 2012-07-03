@@ -64,62 +64,37 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.Commands.End
     [Test]
     public void Begin ()
     {
-      bool relationChangingCalled = false;
-      bool relationChangedCalled = false;
-
-      DomainObject.RelationChanging += (sender, args) =>
-      {
-        relationChangingCalled = true;
-
-        Assert.That (args.RelationEndPointDefinition, Is.EqualTo (CollectionEndPoint.Definition));
-        Assert.That (args.NewRelatedObject, Is.SameAs (_insertedRelatedObject));
-        Assert.That (args.OldRelatedObject, Is.Null);
-
-        Assert.That (CollectionEventReceiver.AddingDomainObject, Is.SameAs (_insertedRelatedObject)); // collection got event first
-      };
-      DomainObject.RelationChanged += (sender, args) => relationChangedCalled = true;
+      TransactionEventSinkWithMock
+          .ExpectMock (
+              mock => mock.RelationChanging (TestableClientTransaction, DomainObject, CollectionEndPoint.Definition, null, _insertedRelatedObject))
+          .WhenCalled (
+              mock => Assert.That (CollectionEventReceiver.AddingDomainObject, Is.SameAs (_insertedRelatedObject))); // collection got event first
 
       _command.Begin ();
 
-      Assert.That (relationChangingCalled, Is.True); // operation was started
-      Assert.That (relationChangedCalled, Is.False); // operation was not finished
+      TransactionEventSinkWithMock.VerifyMock ();
       Assert.That (CollectionEventReceiver.AddedDomainObject, Is.Null); // operation was not finished
     }
 
     [Test]
     public void End ()
     {
-      bool relationChangingCalled = false;
-      bool relationChangedCalled = false;
-
-      DomainObject.RelationChanging += (sender, args) => relationChangingCalled = true;
-      DomainObject.RelationChanged += (sender, args) =>
-      {
-        relationChangedCalled = true;
-
-        Assert.That (args.RelationEndPointDefinition, Is.EqualTo (CollectionEndPoint.Definition));
-        Assert.That (args.NewRelatedObject, Is.SameAs (_insertedRelatedObject));
-        Assert.That (args.OldRelatedObject, Is.Null);
-        Assert.That (CollectionEventReceiver.AddedDomainObject, Is.Null); // collection gets event later
-      };
+      TransactionEventSinkWithMock
+          .ExpectMock (
+              mock => mock.RelationChanged (TestableClientTransaction, DomainObject, CollectionEndPoint.Definition, null, _insertedRelatedObject))
+          .WhenCalled (
+              mock => Assert.That (CollectionEventReceiver.AddedDomainObject, Is.Null)); // collection gets event later
 
       _command.End ();
 
+      TransactionEventSinkWithMock.VerifyMock ();
       Assert.That (CollectionEventReceiver.AddedDomainObject, Is.SameAs (_insertedRelatedObject)); // collection got event later
-      Assert.That (relationChangingCalled, Is.False); // operation was not started
-      Assert.That (relationChangedCalled, Is.True); // operation was finished
-      Assert.That (CollectionEventReceiver.RemovingDomainObjects, Is.Empty); // operation was not started
+      Assert.That (CollectionEventReceiver.AddingDomainObject, Is.Null); // operation was not started
     }
 
     [Test]
     public void Perform ()
     {
-      bool relationChangingCalled = false;
-      bool relationChangedCalled = false;
-
-      DomainObject.RelationChanging += (sender, args) => relationChangingCalled = true;
-      DomainObject.RelationChanged += (sender, args) => relationChangedCalled = true;
-
       CollectionDataMock.BackToRecord ();
       CollectionDataMock.Expect (mock => mock.Insert (12, _insertedRelatedObject));
       CollectionDataMock.Replay ();
@@ -128,8 +103,6 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.Commands.End
 
       CollectionDataMock.VerifyAllExpectations ();
 
-      Assert.That (relationChangingCalled, Is.False); // operation was not started
-      Assert.That (relationChangedCalled, Is.False); // operation was not finished
       Assert.That (CollectionEventReceiver.AddingDomainObject, Is.Null); // operation was not started
       Assert.That (CollectionEventReceiver.AddedDomainObject, Is.Null); // operation was not finished
       Assert.That (CollectionEndPoint.HasBeenTouched, Is.True);

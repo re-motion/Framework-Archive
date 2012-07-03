@@ -45,19 +45,23 @@ namespace Remotion.Data.DomainObjects.Linq
     private readonly ISqlQueryGenerator _sqlQueryGenerator;
     private readonly TypeConversionProvider _typeConversionProvider;
     private readonly IStorageTypeInformationProvider _storageTypeInformationProvider;
+    private readonly IMappingConfiguration _mappingConfiguration;
 
     public DomainObjectQueryGenerator (
         ISqlQueryGenerator sqlQueryGenerator,
         TypeConversionProvider typeConversionProvider,
-        IStorageTypeInformationProvider storageTypeInformationProvider)
+        IStorageTypeInformationProvider storageTypeInformationProvider, 
+        IMappingConfiguration mappingConfiguration)
     {
       ArgumentUtility.CheckNotNull ("sqlQueryGenerator", sqlQueryGenerator);
       ArgumentUtility.CheckNotNull ("typeConversionProvider", typeConversionProvider);
       ArgumentUtility.CheckNotNull ("storageTypeInformationProvider", storageTypeInformationProvider);
+      ArgumentUtility.CheckNotNull ("mappingConfiguration", mappingConfiguration);
 
       _sqlQueryGenerator = sqlQueryGenerator;
       _typeConversionProvider = typeConversionProvider;
       _storageTypeInformationProvider = storageTypeInformationProvider;
+      _mappingConfiguration = mappingConfiguration;
     }
 
     public ISqlQueryGenerator SqlQueryGenerator
@@ -73,6 +77,11 @@ namespace Remotion.Data.DomainObjects.Linq
     public IStorageTypeInformationProvider StorageTypeInformationProvider
     {
       get { return _storageTypeInformationProvider; }
+    }
+
+    public IMappingConfiguration MappingConfiguration
+    {
+      get { return _mappingConfiguration; }
     }
 
     public virtual IExecutableQuery<T> CreateScalarQuery<T> (string id, StorageProviderDefinition storageProviderDefinition, QueryModel queryModel)
@@ -92,24 +101,27 @@ namespace Remotion.Data.DomainObjects.Linq
 
     public virtual IExecutableQuery<IEnumerable<T>> CreateSequenceQuery<T> (
         string id,
-        ClassDefinition classDefinition,
+        StorageProviderDefinition storageProviderDefinition,
         QueryModel queryModel,
         IEnumerable<FetchQueryModelBuilder> fetchQueryModelBuilders)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("id", id);
+      ArgumentUtility.CheckNotNull ("storageProviderDefinition", storageProviderDefinition);
       ArgumentUtility.CheckNotNull ("queryModel", queryModel);
       ArgumentUtility.CheckNotNull ("fetchQueryModelBuilders", fetchQueryModelBuilders);
-      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
 
       var sqlQuery = _sqlQueryGenerator.CreateSqlQuery (queryModel);
       var command = sqlQuery.SqlCommand;
 
-      var queryType = sqlQuery.Kind == SqlQueryGeneratorResult.QueryKind.EntityQuery ? QueryType.Collection : QueryType.Custom;
-      var query = CreateQuery (id, classDefinition.StorageEntityDefinition.StorageProviderDefinition, command.CommandText, command.Parameters, queryType);
+      var queryType = sqlQuery.SelectedEntityType != null ? QueryType.Collection : QueryType.Custom;
+      var query = CreateQuery (id, storageProviderDefinition, command.CommandText, command.Parameters, queryType);
       
       if (queryType == QueryType.Collection)
       {
-        var fetchQueries = CreateEagerFetchQueries<T> (classDefinition, fetchQueryModelBuilders);
+        var selectedEntityClassDefinition = _mappingConfiguration.GetTypeDefinition (sqlQuery.SelectedEntityType);
+        Assertion.IsNotNull (selectedEntityClassDefinition, "We assume that in a re-store LINQ query, entities always have a mapping.");
+
+        var fetchQueries = CreateEagerFetchQueries<T> (selectedEntityClassDefinition, fetchQueryModelBuilders);
         foreach (var fetchQuery in fetchQueries)
           query.EagerFetchQueries.Add (fetchQuery.Item1, fetchQuery.Item2);
 
@@ -146,11 +158,12 @@ namespace Remotion.Data.DomainObjects.Linq
     }
 
     private IEnumerable<Tuple<IRelationEndPointDefinition, IQuery>> CreateEagerFetchQueries<T> (
-        ClassDefinition classDefinition, IEnumerable<FetchQueryModelBuilder> fetchQueryModelBuilders)
+        ClassDefinition previousClassDefinition,
+        IEnumerable<FetchQueryModelBuilder> fetchQueryModelBuilders)
     {
       foreach (var fetchQueryModelBuilder in fetchQueryModelBuilders)
       {
-        var relationEndPointDefinition = GetEagerFetchRelationEndPointDefinition (fetchQueryModelBuilder.FetchRequest, classDefinition);
+        var relationEndPointDefinition = GetEagerFetchRelationEndPointDefinition (fetchQueryModelBuilder.FetchRequest, previousClassDefinition);
 
         // clone the fetch query model because we don't want to modify the source model of all inner requests
         var fetchQueryModel = fetchQueryModelBuilder.GetOrCreateFetchQueryModel().Clone();
@@ -176,7 +189,7 @@ namespace Remotion.Data.DomainObjects.Linq
 
         var fetchQuery = CreateSequenceQuery<T> (
             "<fetch query for " + fetchQueryModelBuilder.FetchRequest.RelationMember.Name + ">",
-            relationEndPointDefinition.GetOppositeClassDefinition(),
+            previousClassDefinition.StorageEntityDefinition.StorageProviderDefinition,
             fetchQueryModel,
             fetchQueryModelBuilder.CreateInnerBuilders()
            );
@@ -206,7 +219,7 @@ namespace Remotion.Data.DomainObjects.Linq
         throw new NotSupportedException (message);
       }
 
-      var propertyName = MappingConfiguration.Current.NameResolver.GetPropertyName (PropertyInfoAdapter.Create (propertyInfo));
+      var propertyName = MappingConfiguration.NameResolver.GetPropertyName (PropertyInfoAdapter.Create (propertyInfo));
       try
       {
         return classDefinition.GetMandatoryRelationEndPointDefinition (propertyName);

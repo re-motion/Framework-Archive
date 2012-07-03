@@ -16,6 +16,9 @@
 // 
 using System;
 using System.Collections.ObjectModel;
+using Remotion.Data.DomainObjects.DataManagement;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Infrastructure
 {
@@ -28,21 +31,42 @@ namespace Remotion.Data.DomainObjects.Infrastructure
   {
     public override void SubTransactionCreated (ClientTransaction clientTransaction, ClientTransaction subTransaction)
     {
+      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
+      ArgumentUtility.CheckNotNull ("subTransaction", subTransaction);
+
+      clientTransaction.Execute (() => clientTransaction.OnSubTransactionCreated (new SubTransactionCreatedEventArgs (subTransaction)));
       base.SubTransactionCreated (clientTransaction, subTransaction);
     }
 
     public override void ObjectsLoaded (ClientTransaction clientTransaction, System.Collections.ObjectModel.ReadOnlyCollection<DomainObject> domainObjects)
     {
-      base.ObjectsLoaded (clientTransaction, domainObjects);
+      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
+      ArgumentUtility.CheckNotNull ("domainObjects", domainObjects);
+
+      using (clientTransaction.EnterNonDiscardingScope ())
+      {
+        foreach (var domainObject in domainObjects)
+          domainObject.OnLoaded();
+
+        base.ObjectsLoaded (clientTransaction, domainObjects);
+
+        clientTransaction.OnLoaded (new ClientTransactionEventArgs (domainObjects));
+      }
     }
 
     public override void ObjectsUnloading (ClientTransaction clientTransaction, ReadOnlyCollection<DomainObject> unloadedDomainObjects)
     {
+      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
+      ArgumentUtility.CheckNotNull ("unloadedDomainObjects", unloadedDomainObjects);
+
       base.ObjectsUnloading (clientTransaction, unloadedDomainObjects);
       clientTransaction.Execute (
           () =>
           {
+            // This is a for loop for symmetry with ObjectsUnloaded
+            // ReSharper disable ForCanBeConvertedToForeach
             for (int i = 0; i < unloadedDomainObjects.Count; i++)
+            // ReSharper restore ForCanBeConvertedToForeach
             {
               var domainObject = unloadedDomainObjects[i];
               domainObject.OnUnloading();
@@ -52,6 +76,9 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
     public override void ObjectsUnloaded (ClientTransaction clientTransaction, ReadOnlyCollection<DomainObject> unloadedDomainObjects)
     {
+      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
+      ArgumentUtility.CheckNotNull ("unloadedDomainObjects", unloadedDomainObjects);
+
       clientTransaction.Execute (
          () =>
          {
@@ -66,56 +93,79 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
     public override void ObjectDeleting (ClientTransaction clientTransaction, DomainObject domainObject)
     {
+      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
+      ArgumentUtility.CheckNotNull ("domainObject", domainObject);
+
       base.ObjectDeleting (clientTransaction, domainObject);
+      clientTransaction.Execute (() => domainObject.OnDeleting (EventArgs.Empty));
     }
 
     public override void ObjectDeleted (ClientTransaction clientTransaction, DomainObject domainObject)
     {
+      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
+      ArgumentUtility.CheckNotNull ("domainObject", domainObject);
+
+      clientTransaction.Execute (() => domainObject.OnDeleted (EventArgs.Empty));
       base.ObjectDeleted (clientTransaction, domainObject);
     }
 
-    public override void PropertyValueReading (ClientTransaction clientTransaction, DataManagement.DataContainer dataContainer, DataManagement.PropertyValue propertyValue, DataManagement.ValueAccess valueAccess)
+    public override void PropertyValueChanging (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object oldValue, object newValue)
     {
-      base.PropertyValueReading (clientTransaction, dataContainer, propertyValue, valueAccess);
+      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
+      ArgumentUtility.CheckNotNull ("domainObject", domainObject);
+      ArgumentUtility.CheckNotNull ("propertyDefinition", propertyDefinition);
+
+      base.PropertyValueChanging (clientTransaction, domainObject, propertyDefinition, oldValue, newValue);
+
+      if (!propertyDefinition.IsObjectID)
+      {
+        clientTransaction.Execute (() => domainObject.OnPropertyChanging (new PropertyChangeEventArgs (propertyDefinition, oldValue, newValue)));
+      }
     }
 
-    public override void PropertyValueRead (ClientTransaction clientTransaction, DataManagement.DataContainer dataContainer, DataManagement.PropertyValue propertyValue, object value, DataManagement.ValueAccess valueAccess)
+    public override void PropertyValueChanged (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object oldValue, object newValue)
     {
-      base.PropertyValueRead (clientTransaction, dataContainer, propertyValue, value, valueAccess);
+      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
+      ArgumentUtility.CheckNotNull ("domainObject", domainObject);
+      ArgumentUtility.CheckNotNull ("propertyDefinition", propertyDefinition);
+
+      if (!propertyDefinition.IsObjectID)
+      {
+        clientTransaction.Execute (() => domainObject.OnPropertyChanged (new PropertyChangeEventArgs (propertyDefinition, oldValue, newValue)));
+      }
+      
+      base.PropertyValueChanged (clientTransaction, domainObject, propertyDefinition, oldValue, newValue);
     }
 
-    public override void PropertyValueChanging (ClientTransaction clientTransaction, DataManagement.DataContainer dataContainer, DataManagement.PropertyValue propertyValue, object oldValue, object newValue)
+    public override void RelationChanging (
+        ClientTransaction clientTransaction,
+        DomainObject domainObject,
+        IRelationEndPointDefinition relationEndPointDefinition,
+        DomainObject oldRelatedObject,
+        DomainObject newRelatedObject)
     {
-      base.PropertyValueChanging (clientTransaction, dataContainer, propertyValue, oldValue, newValue);
-    }
+      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
+      ArgumentUtility.CheckNotNull ("domainObject", domainObject);
+      ArgumentUtility.CheckNotNull ("relationEndPointDefinition", relationEndPointDefinition);
 
-    public override void PropertyValueChanged (ClientTransaction clientTransaction, DataManagement.DataContainer dataContainer, DataManagement.PropertyValue propertyValue, object oldValue, object newValue)
-    {
-      base.PropertyValueChanged (clientTransaction, dataContainer, propertyValue, oldValue, newValue);
-    }
-
-    public override void RelationReading (ClientTransaction clientTransaction, DomainObject domainObject, Mapping.IRelationEndPointDefinition relationEndPointDefinition, DataManagement.ValueAccess valueAccess)
-    {
-      base.RelationReading (clientTransaction, domainObject, relationEndPointDefinition, valueAccess);
-    }
-
-    public override void RelationRead (ClientTransaction clientTransaction, DomainObject domainObject, Mapping.IRelationEndPointDefinition relationEndPointDefinition, DomainObject relatedObject, DataManagement.ValueAccess valueAccess)
-    {
-      base.RelationRead (clientTransaction, domainObject, relationEndPointDefinition, relatedObject, valueAccess);
-    }
-
-    public override void RelationRead (ClientTransaction clientTransaction, DomainObject domainObject, Mapping.IRelationEndPointDefinition relationEndPointDefinition, ReadOnlyDomainObjectCollectionAdapter<DomainObject> relatedObjects, DataManagement.ValueAccess valueAccess)
-    {
-      base.RelationRead (clientTransaction, domainObject, relationEndPointDefinition, relatedObjects, valueAccess);
-    }
-
-    public override void RelationChanging (ClientTransaction clientTransaction, DomainObject domainObject, Mapping.IRelationEndPointDefinition relationEndPointDefinition, DomainObject oldRelatedObject, DomainObject newRelatedObject)
-    {
       base.RelationChanging (clientTransaction, domainObject, relationEndPointDefinition, oldRelatedObject, newRelatedObject);
+      clientTransaction.Execute (
+          () => domainObject.OnRelationChanging (new RelationChangingEventArgs (relationEndPointDefinition, oldRelatedObject, newRelatedObject)));
     }
 
-    public override void RelationChanged (ClientTransaction clientTransaction, DomainObject domainObject, Mapping.IRelationEndPointDefinition relationEndPointDefinition, DomainObject oldRelatedObject, DomainObject newRelatedObject)
+    public override void RelationChanged (
+        ClientTransaction clientTransaction,
+        DomainObject domainObject,
+        IRelationEndPointDefinition relationEndPointDefinition,
+        DomainObject oldRelatedObject,
+        DomainObject newRelatedObject)
     {
+      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
+      ArgumentUtility.CheckNotNull ("domainObject", domainObject);
+      ArgumentUtility.CheckNotNull ("relationEndPointDefinition", relationEndPointDefinition);
+
+      clientTransaction.Execute (
+            () => domainObject.OnRelationChanged (new RelationChangedEventArgs (relationEndPointDefinition, oldRelatedObject, newRelatedObject)));
       base.RelationChanged (clientTransaction, domainObject, relationEndPointDefinition, oldRelatedObject, newRelatedObject);
     }
 

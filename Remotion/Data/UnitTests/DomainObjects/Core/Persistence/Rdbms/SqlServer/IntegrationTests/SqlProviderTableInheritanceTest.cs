@@ -48,13 +48,12 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.SqlServer
       DataContainer customerContainer = _provider.LoadDataContainer (DomainObjectIDs.Customer).LocatedObject;
       Assert.IsNotNull (customerContainer);
       Assert.AreEqual (DomainObjectIDs.Customer, customerContainer.ID);
+      Assert.AreEqual ("UnitTests", customerContainer.GetValue (GetPropertyDefinition (typeof (TIDomainBase), "CreatedBy")));
       Assert.AreEqual (
-          "UnitTests", customerContainer.GetValue ("Remotion.Data.UnitTests.DomainObjects.TestDomain.TableInheritance.TIDomainBase.CreatedBy"));
-      Assert.AreEqual (
-          "Zaphod", customerContainer.GetValue ("Remotion.Data.UnitTests.DomainObjects.TestDomain.TableInheritance.TIPerson.FirstName"));
+          "Zaphod", customerContainer.GetValue (GetPropertyDefinition (typeof (TIPerson), "FirstName")));
       Assert.AreEqual (
           CustomerType.Premium,
-          customerContainer.GetValue ("Remotion.Data.UnitTests.DomainObjects.TestDomain.TableInheritance.TICustomer.CustomerType"));
+          customerContainer.GetValue (GetPropertyDefinition (typeof (TICustomer), "CustomerType")));
     }
 
     [Test]

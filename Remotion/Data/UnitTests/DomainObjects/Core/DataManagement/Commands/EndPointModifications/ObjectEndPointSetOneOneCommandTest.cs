@@ -16,13 +16,11 @@
 // 
 using System;
 using NUnit.Framework;
-using Remotion.Data.DomainObjects;
 using Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModifications;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints.VirtualObjectEndPoints;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.RelationEndPoints;
-using Remotion.Data.UnitTests.DomainObjects.Core.EventReceiver;
 using Remotion.Data.UnitTests.DomainObjects.TestDomain;
 
 namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.Commands.EndPointModifications
@@ -56,9 +54,9 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.Commands.End
     [Test]
     public void Initialization ()
     {
-      Assert.AreSame (_endPoint, _command.ModifiedEndPoint);
-      Assert.AreSame (_oldRelatedObject, _command.OldRelatedObject);
-      Assert.AreSame (_newRelatedObject, _command.NewRelatedObject);
+      Assert.That (_command.ModifiedEndPoint, Is.SameAs (_endPoint));
+      Assert.That (_command.OldRelatedObject, Is.SameAs (_oldRelatedObject));
+      Assert.That (_command.NewRelatedObject, Is.SameAs (_newRelatedObject));
     }
 
     [Test]
@@ -108,18 +106,6 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.Commands.End
     }
 
     [Test]
-    public virtual void Begin ()
-    {
-      DomainObject domainObject = ((IObjectEndPoint) _endPoint).GetDomainObject ();
-      var eventReceiver = new DomainObjectEventReceiver (domainObject);
-
-      _command.Begin();
-
-      Assert.IsTrue (eventReceiver.HasRelationChangingEventBeenCalled);
-      Assert.IsFalse (eventReceiver.HasRelationChangedEventBeenCalled);
-    }
-
-    [Test]
     public void Perform_InvokesPerformRelationChange ()
     {
       Assert.That (OppositeObjectSetterCalled, Is.False);
@@ -141,19 +127,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.Commands.End
     }
 
     [Test]
-    public virtual void End ()
-    {
-      DomainObject domainObject = ((IObjectEndPoint) _endPoint).GetDomainObject ();
-      var eventReceiver = new DomainObjectEventReceiver (domainObject);
-
-      _command.End();
-
-      Assert.IsFalse (eventReceiver.HasRelationChangingEventBeenCalled);
-      Assert.IsTrue (eventReceiver.HasRelationChangedEventBeenCalled);
-    }
-
-    [Test]
-    public virtual void NotifyClientTransactionOfBegin ()
+    public virtual void Begin ()
     {
       TransactionEventSinkWithMock.ExpectMock (
           mock => mock.RelationChanging (
@@ -164,13 +138,13 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.Commands.End
               _newRelatedObject));
       TransactionEventSinkWithMock.ReplayMock ();
 
-      _command.NotifyClientTransactionOfBegin ();
+      _command.Begin ();
 
       TransactionEventSinkWithMock.VerifyMock ();
     }
 
     [Test]
-    public virtual void NotifyClientTransactionOfEnd ()
+    public virtual void End ()
     {
       TransactionEventSinkWithMock.ExpectMock (
           mock => mock.RelationChanged (
@@ -181,7 +155,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.Commands.End
               _newRelatedObject));
       TransactionEventSinkWithMock.ReplayMock ();
 
-      _command.NotifyClientTransactionOfEnd ();
+      _command.End ();
 
       TransactionEventSinkWithMock.VerifyMock ();
     }

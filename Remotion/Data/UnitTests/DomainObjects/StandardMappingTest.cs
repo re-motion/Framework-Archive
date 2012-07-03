@@ -21,9 +21,9 @@ using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.UnitTests.DomainObjects.Core;
-using Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.TestDomain;
 using Remotion.Data.UnitTests.DomainObjects.Database;
 using Remotion.Data.UnitTests.DomainObjects.Factories;
+using Remotion.Data.UnitTests.DomainObjects.TestDomain;
 using Remotion.Utilities;
 using DomainObjectIDs = Remotion.Data.UnitTests.DomainObjects.Factories.DomainObjectIDs;
 
@@ -114,6 +114,11 @@ namespace Remotion.Data.UnitTests.DomainObjects
       return propertyDefinition;
     }
 
+    protected IRelationEndPointDefinition GetSomeEndPointDefinition ()
+    {
+      return GetEndPointDefinition (typeof (Order), "OrderItems");
+    }
+
     protected IRelationEndPointDefinition GetEndPointDefinition (Type declaringType, string shortPropertyName)
     {
       var endPointDefinition = GetTypeDefinition (declaringType)
@@ -137,12 +142,12 @@ namespace Remotion.Data.UnitTests.DomainObjects
 
     protected object GetPropertyValue (DataContainer dataContainer, Type declaringType, string shortPropertyName)
     {
-      return dataContainer[GetPropertyIdentifier (declaringType, shortPropertyName)];
+      return dataContainer.GetValue (GetPropertyDefinition (declaringType, shortPropertyName));
     }
 
     protected void SetPropertyValue (DataContainer dataContainer, Type declaringType, string shortPropertyName, object value)
     {
-      dataContainer.SetValue (GetPropertyIdentifier (declaringType, shortPropertyName), value);
+      dataContainer.SetValue (GetPropertyDefinition (declaringType, shortPropertyName), value);
     }
 
     protected string GetPropertyIdentifier (Type declaringType, string shortPropertyName)

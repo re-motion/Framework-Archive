@@ -14,36 +14,12 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System;
 using Remotion.Data.DomainObjects;
-using Remotion.Data.DomainObjects.DataManagement;
-using Remotion.Utilities;
 
 namespace Remotion.Data.UnitTests.DomainObjects.Core.EventReceiver
 {
-  public abstract class PropertyValueCollectionMockEventReceiver
+  public interface ILoadEventReceiver
   {
-    // types
-
-    // static members and constants
-
-    // member fields
-
-    // construction and disposing
-
-    public PropertyValueCollectionMockEventReceiver (PropertyValueCollection PropertyValueCollection)
-    {
-      ArgumentUtility.CheckNotNull ("propertyValueCollection", PropertyValueCollection);
-
-      PropertyValueCollection.PropertyChanged += PropertyChanged;
-      PropertyValueCollection.PropertyChanging += PropertyChanging;
-
-    }
-
-    // abstract methods and properties
-
-    public abstract void PropertyChanging (object sender, PropertyChangeEventArgs args);
-    public abstract void PropertyChanged (object sender, PropertyChangeEventArgs args);
-
+    void OnLoaded (DomainObject domainObject);
   }
 }

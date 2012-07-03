@@ -57,14 +57,11 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
       get { return _modifiedCollectionData; }
     }
 
-    protected override void ScopedNotifyClientTransactionOfBegin ()
-    {
-      // no notification
-    }
-
     protected override void ScopedBegin ()
     {
-      ((IDomainObjectCollectionEventRaiser) ModifiedCollection).BeginDelete();
+      // do not call base - no transaction notification
+
+      ((IDomainObjectCollectionEventRaiser) ModifiedCollection).BeginDelete ();
     }
 
     public override void Perform ()
@@ -75,12 +72,9 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
 
     protected override void ScopedEnd ()
     {
-      ((IDomainObjectCollectionEventRaiser) ModifiedCollection).EndDelete();
-    }
+      // do not call base - no transaction notification
 
-    protected override void ScopedNotifyClientTransactionOfEnd ()
-    {
-      // no notification
+      ((IDomainObjectCollectionEventRaiser) ModifiedCollection).EndDelete ();
     }
 
     public override ExpandedCommand ExpandToAllRelatedObjects ()

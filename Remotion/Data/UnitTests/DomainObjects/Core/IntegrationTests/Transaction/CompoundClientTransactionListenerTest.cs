@@ -25,6 +25,7 @@ using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.RelationEndPoints;
+using Remotion.Data.UnitTests.DomainObjects.Core.Mapping;
 using Remotion.Data.UnitTests.DomainObjects.TestDomain;
 using Rhino.Mocks;
 
@@ -104,7 +105,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
       CheckNotification (listener => listener.SubTransactionInitialize (TestableClientTransaction, clientTransaction2));
       CheckNotification (listener => listener.SubTransactionCreated (TestableClientTransaction, clientTransaction2));
 
-      CheckNotification (listener => listener.NewObjectCreating (TestableClientTransaction, typeof (string), null));
+      CheckNotification (listener => listener.NewObjectCreating (TestableClientTransaction, typeof (string)));
 
       CheckNotification (listener => listener.ObjectsLoading (TestableClientTransaction, new ReadOnlyCollection<ObjectID> (new ObjectID[0])));
       CheckNotification (listener => listener.ObjectsLoaded (TestableClientTransaction, domainObjects));
@@ -115,28 +116,29 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
       CheckNotification (listener => listener.ObjectDeleting (TestableClientTransaction, order));
       CheckNotification (listener => listener.ObjectDeleted (TestableClientTransaction, order));
 
+      var propertyDefinition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo ();
       CheckNotification (listener => listener.PropertyValueReading (
           TestableClientTransaction, 
-          order.InternalDataContainer, 
-          order.InternalDataContainer.PropertyValues[0], 
+          order, 
+          propertyDefinition, 
           ValueAccess.Original));
       CheckNotification (listener => listener.PropertyValueRead (
         TestableClientTransaction, 
-        order.InternalDataContainer,
-        order.InternalDataContainer.PropertyValues[0],
+        order,
+        propertyDefinition,
         "Foo", 
         ValueAccess.Original));
 
       CheckNotification (listener => listener.PropertyValueChanging (
           TestableClientTransaction, 
-          order.InternalDataContainer,
-          order.InternalDataContainer.PropertyValues[0], 
+          order,
+          propertyDefinition, 
           "Foo", 
           "Bar"));
       CheckNotification (listener => listener.PropertyValueChanged (
           TestableClientTransaction, 
-          order.InternalDataContainer,
-          order.InternalDataContainer.PropertyValues[0], 
+          order,
+          propertyDefinition, 
           "Foo", 
           "Bar"));
 
