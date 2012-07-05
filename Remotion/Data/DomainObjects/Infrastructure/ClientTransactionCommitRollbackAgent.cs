@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -30,6 +31,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
   /// <see cref="IDataManager"/>, raising events via the <see cref="IClientTransactionEventSink"/>, and persisting the commit set via the 
   /// <see cref="IPersistenceStrategy"/>.
   /// </summary>
+  [Serializable]
   public class ClientTransactionCommitRollbackAgent
   {
     private readonly IDataManager _dataManager;
