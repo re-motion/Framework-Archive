@@ -63,7 +63,12 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       get { return _eventSink; }
     }
 
-    public void Commit ()
+    public bool HasDataChanged ()
+    {
+      return _dataManager.GetNewChangedDeletedData ().Any ();
+    }
+
+    public void CommitData ()
     {
       BeginCommit ();
 
@@ -82,7 +87,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       EndCommit (changedButNotDeletedDomainObjects);
     }
 
-    public void Rollback ()
+    public void RollbackData ()
     {
       BeginRollback ();
 

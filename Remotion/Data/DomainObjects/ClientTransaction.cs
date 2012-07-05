@@ -787,7 +787,7 @@ public class ClientTransaction
   /// <returns><see langword="true"/> if at least one <see cref="DomainObject"/> in this <b>ClientTransaction</b> has been changed; otherwise, <see langword="false"/>.</returns>
   public virtual bool HasChanged ()
   {
-    return _dataManager.GetNewChangedDeletedData().Any();
+    return new ClientTransactionCommitRollbackAgent (_dataManager, _persistenceStrategy, _eventBroker).HasDataChanged();
   }
 
   /// <summary>
@@ -799,7 +799,7 @@ public class ClientTransaction
   {
     using (EnterNonDiscardingScope ())
     {
-      new ClientTransactionCommitRollbackAgent (_dataManager, _persistenceStrategy, _eventBroker).Commit();
+      new ClientTransactionCommitRollbackAgent (_dataManager, _persistenceStrategy, _eventBroker).CommitData();
     }
   }
 
@@ -810,7 +810,7 @@ public class ClientTransaction
   {
     using (EnterNonDiscardingScope ())
     {
-      new ClientTransactionCommitRollbackAgent (_dataManager, _persistenceStrategy, _eventBroker).Rollback();
+      new ClientTransactionCommitRollbackAgent (_dataManager, _persistenceStrategy, _eventBroker).RollbackData();
     }
   }
 
