@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
@@ -31,7 +30,6 @@ using Remotion.Mixins;
 using Remotion.Reflection;
 using Remotion.Utilities;
 using Remotion.FunctionalProgramming;
-using Remotion.Data.DomainObjects.Linq;
 
 namespace Remotion.Data.DomainObjects
 {
@@ -801,21 +799,7 @@ public class ClientTransaction
   {
     using (EnterNonDiscardingScope ())
     {
-      BeginCommit();
-
-      var persistableDataItems = _dataManager.GetNewChangedDeletedData().ToList().AsReadOnly();
-      RaiseListenerEvent ((tx, l) => l.TransactionCommitValidate (tx, persistableDataItems));
-      
-      _persistenceStrategy.PersistData (persistableDataItems);
-
-      _dataManager.Commit ();
-      
-      var changedButNotDeletedDomainObjects = persistableDataItems
-          .Where (item => item.DomainObjectState != StateType.Deleted)
-          .Select (item => item.DomainObject)
-          .ToList()
-          .AsReadOnly();
-      EndCommit (changedButNotDeletedDomainObjects);
+      new ClientTransactionCommitRollbackAgent (_dataManager, _persistenceStrategy, _eventBroker).Commit();
     }
   }
 
@@ -826,17 +810,7 @@ public class ClientTransaction
   {
     using (EnterNonDiscardingScope ())
     {
-      BeginRollback();
-
-      var changedButNotNewItems =
-          _dataManager.GetLoadedDataByObjectState (StateType.Changed, StateType.Deleted)
-          .Select (item => item.DomainObject)
-          .ToList()
-          .AsReadOnly();
-
-      _dataManager.Rollback ();
-
-      EndRollback (changedButNotNewItems);
+      new ClientTransactionCommitRollbackAgent (_dataManager, _persistenceStrategy, _eventBroker).Rollback();
     }
   }
 
@@ -1266,91 +1240,6 @@ public class ClientTransaction
     get { return _applicationData; }
   }
 
-  private void BeginCommit ()
-  {
-    // TODO Doc: ES
-
-    // Note regarding to Committing: 
-    // Every object raises a Committing event even if another object's Committing event changes the first object's state back to original 
-    // during its own Committing event. Because the event order of .NET is not deterministic, this behavior is desired to ensure consistency: 
-    // Every object changed during a ClientTransaction raises a Committing event regardless of the Committing event order of specific objects.  
-
-    // Note regarding to Committed: 
-    // If an object is changed back to its original state during the Committing phase, no Committed event will be raised,
-    // because in this case the object won't be committed to the underlying backend (e.g. database).
-
-    var changedDomainObjects = GetChangedDomainObjects().ToObjectList();
-    var clientTransactionCommittingEventRaised = new DomainObjectCollection();
-
-    List<DomainObject> clientTransactionCommittingEventNotRaised;
-    do
-    {
-      clientTransactionCommittingEventNotRaised = changedDomainObjects.GetItemsExcept (clientTransactionCommittingEventRaised).ToList();
-
-      var eventArgReadOnlyCollection = clientTransactionCommittingEventNotRaised.AsReadOnly ();
-      RaiseListenerEvent ((tx, l) => l.TransactionCommitting (tx, eventArgReadOnlyCollection));
-
-      foreach (DomainObject domainObject in clientTransactionCommittingEventNotRaised)
-      {
-        if (!domainObject.IsInvalid)
-          clientTransactionCommittingEventRaised.Add (domainObject);
-      }
-
-      changedDomainObjects = GetChangedDomainObjects().ToObjectList();
-      clientTransactionCommittingEventNotRaised = changedDomainObjects.GetItemsExcept (clientTransactionCommittingEventRaised).ToList();
-    } while (clientTransactionCommittingEventNotRaised.Any());
-  }
-
-  private void EndCommit (ReadOnlyCollection<DomainObject> changedDomainObjects)
-  {
-    RaiseListenerEvent ((tx, l) => l.TransactionCommitted (tx, changedDomainObjects));
-  }
-
-  private void BeginRollback ()
-  {
-    // TODO Doc: ES
-
-    // Note regarding to RollingBack: 
-    // Every object raises a RollingBack event even if another object's RollingBack event changes the first object's state back to original 
-    // during its own RollingBack event. Because the event order of .NET is not deterministic, this behavior is desired to ensure consistency: 
-    // Every object changed during a ClientTransaction raises a RollingBack event regardless of the RollingBack event order of specific objects.  
-
-    // Note regarding to RolledBack: 
-    // If an object is changed back to its original state during the RollingBack phase, no RolledBack event will be raised,
-    // because the object actually has never been changed from a ClientTransaction's perspective.
-
-    var changedDomainObjects = GetChangedDomainObjects().ToObjectList();
-    var clientTransactionRollingBackEventRaised = new DomainObjectCollection();
-
-    List<DomainObject> clientTransactionRollingBackEventNotRaised;
-    do
-    {
-      clientTransactionRollingBackEventNotRaised = changedDomainObjects.GetItemsExcept (clientTransactionRollingBackEventRaised).ToList();
-
-      var eventArgReadOnlyCollection = clientTransactionRollingBackEventNotRaised.AsReadOnly ();
-      RaiseListenerEvent ((tx, l) => l.TransactionRollingBack (tx, eventArgReadOnlyCollection));
-
-      foreach (DomainObject domainObject in clientTransactionRollingBackEventNotRaised)
-      {
-        if (!domainObject.IsInvalid)
-          clientTransactionRollingBackEventRaised.Add (domainObject);
-      }
-
-      changedDomainObjects = GetChangedDomainObjects().ToObjectList();
-      clientTransactionRollingBackEventNotRaised = changedDomainObjects.GetItemsExcept (clientTransactionRollingBackEventRaised).ToList();
-    } while (clientTransactionRollingBackEventNotRaised.Any());
-  }
-
-  private void EndRollback (ReadOnlyCollection<DomainObject> changedDomainObjects)
-  {
-    RaiseListenerEvent ((tx, l) => l.TransactionRolledBack (tx, changedDomainObjects));
-  }
-
-  private IEnumerable<DomainObject> GetChangedDomainObjects ()
-  {
-    return _dataManager.GetNewChangedDeletedData ().Select (item => item.DomainObject);
-  }
-
   public virtual ITransaction ToITransation ()
   {
     return new ClientTransactionWrapper (this);
@@ -1369,6 +1258,7 @@ public class ClientTransaction
     return Maybe.ForValue (DataManager.GetDataContainerWithoutLoading (objectID)).Select (dc => dc.DomainObject).ValueOrDefault ();
   }
 
+  // ReSharper disable UnusedParameter.Global
   [Obsolete ("This method has been removed. Please implement the desired behavior yourself, using GetEnlistedDomainObjects(), EnlistDomainObject(), "
              + "and CopyCollectionEventHandlers(). (1.13.41)", false)]
   public void EnlistSameDomainObjects (ClientTransaction sourceTransaction, bool copyCollectionEventHandlers)
@@ -1417,5 +1307,6 @@ public class ClientTransaction
   {
     throw new NotImplementedException ();
   }
+  // ReSharper restore UnusedParameter.Global
 }
 }
