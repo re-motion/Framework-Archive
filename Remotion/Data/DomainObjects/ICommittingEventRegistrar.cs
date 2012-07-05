@@ -15,8 +15,9 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Remotion.Data.DomainObjects.Infrastructure;
 
-namespace Remotion.Data.DomainObjects.Infrastructure
+namespace Remotion.Data.DomainObjects
 {
   /// <summary>
   /// Provides an interface allowing event handlers to register objects for additional events to be raised before a <see cref="ClientTransaction.Commit"/> 
