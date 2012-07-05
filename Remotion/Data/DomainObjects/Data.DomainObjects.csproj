@@ -207,6 +207,7 @@
     <Compile Include="Infrastructure\IClientTransactionEventSink.cs" />
     <Compile Include="Infrastructure\IClientTransactionEventBroker.cs" />
     <Compile Include="Infrastructure\IClientTransactionEventDistributor.cs" />
+    <Compile Include="Infrastructure\ICommittingEventRegistrar.cs" />
     <Compile Include="Infrastructure\ObjectPersistence\AlreadyExistingLoadedObjectData.cs" />
     <Compile Include="Infrastructure\ObjectPersistence\FetchEnabledObjectLoader.cs" />
     <Compile Include="Infrastructure\ObjectPersistence\IFetchEnabledPersistenceStrategy.cs" />
