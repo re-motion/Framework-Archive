@@ -150,13 +150,14 @@ public class ClientTransaction
   private readonly IDataManager _dataManager;
   private readonly IPersistenceStrategy _persistenceStrategy;
   private readonly IQueryManager _queryManager;
+  private readonly IClientTransactionCommitRollbackAgent _commitRollbackAgent;
 
   private ClientTransaction _subTransaction;
 
   private bool _isDiscarded;
 
   private readonly Guid _id = Guid.NewGuid ();
-  
+
   protected ClientTransaction (IClientTransactionComponentFactory componentFactory)
   {
     ArgumentUtility.CheckNotNull ("componentFactory", componentFactory);
@@ -172,6 +173,7 @@ public class ClientTransaction
     _persistenceStrategy = componentFactory.CreatePersistenceStrategy (this);
     _dataManager = componentFactory.CreateDataManager (this, _eventBroker, _invalidDomainObjectManager, _persistenceStrategy);
     _queryManager = componentFactory.CreateQueryManager (this, _eventBroker, _invalidDomainObjectManager, _persistenceStrategy, _dataManager);
+    _commitRollbackAgent = new ClientTransactionCommitRollbackAgent (_dataManager, _persistenceStrategy, _eventBroker);
 
     _extensions = componentFactory.CreateExtensionCollection (this);
     AddListener (new ExtensionClientTransactionListener (_extensions));
@@ -787,7 +789,7 @@ public class ClientTransaction
   /// <returns><see langword="true"/> if at least one <see cref="DomainObject"/> in this <b>ClientTransaction</b> has been changed; otherwise, <see langword="false"/>.</returns>
   public virtual bool HasChanged ()
   {
-    return new ClientTransactionCommitRollbackAgent (_dataManager, _persistenceStrategy, _eventBroker).HasDataChanged();
+    return _commitRollbackAgent.HasDataChanged();
   }
 
   /// <summary>
@@ -799,7 +801,7 @@ public class ClientTransaction
   {
     using (EnterNonDiscardingScope ())
     {
-      new ClientTransactionCommitRollbackAgent (_dataManager, _persistenceStrategy, _eventBroker).CommitData();
+      _commitRollbackAgent.CommitData();
     }
   }
 
@@ -810,7 +812,7 @@ public class ClientTransaction
   {
     using (EnterNonDiscardingScope ())
     {
-      new ClientTransactionCommitRollbackAgent (_dataManager, _persistenceStrategy, _eventBroker).RollbackData();
+      _commitRollbackAgent.RollbackData();
     }
   }
 

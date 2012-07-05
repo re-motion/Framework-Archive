@@ -1650,9 +1650,6 @@
     <Compile Include="DomainObjects\Core\SerializationBaseTest.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DomainObjects\Core\Serialization\ClientTransactionTest.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="DomainObjects\Core\Serialization\QueriesTest.cs">
       <SubType>Code</SubType>
     </Compile>

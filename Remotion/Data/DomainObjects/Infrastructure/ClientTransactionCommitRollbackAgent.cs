@@ -32,7 +32,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
   /// <see cref="IPersistenceStrategy"/>.
   /// </summary>
   [Serializable]
-  public class ClientTransactionCommitRollbackAgent
+  public class ClientTransactionCommitRollbackAgent : IClientTransactionCommitRollbackAgent
   {
     private readonly IDataManager _dataManager;
     private readonly IPersistenceStrategy _persistenceStrategy;
