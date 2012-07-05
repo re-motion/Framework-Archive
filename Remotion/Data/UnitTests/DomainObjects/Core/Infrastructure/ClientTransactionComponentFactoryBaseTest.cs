@@ -168,6 +168,21 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure
     }
 
     [Test]
+    public void CreateCommitRollbackAgent ()
+    {
+      var eventSink = MockRepository.GenerateStub<IClientTransactionEventSink> ();
+      var persistenceStrategy = MockRepository.GenerateStub<IPersistenceStrategy> ();
+      var dataManager = MockRepository.GenerateStub<IDataManager> ();
+      
+      var result = _factory.CreateCommitRollbackAgent (_fakeConstructedTransaction, eventSink, persistenceStrategy, dataManager);
+
+      Assert.That (result, Is.TypeOf<CommitRollbackAgent>());
+      Assert.That (((CommitRollbackAgent) result).EventSink, Is.SameAs (eventSink));
+      Assert.That (((CommitRollbackAgent) result).PersistenceStrategy, Is.SameAs (persistenceStrategy));
+      Assert.That (((CommitRollbackAgent) result).DataManager, Is.SameAs (dataManager));
+    }
+
+    [Test]
     public void CreateExtensionCollection ()
     {
       var extensionFactoryMock = MockRepository.GenerateStrictMock<IClientTransactionExtensionFactory> ();

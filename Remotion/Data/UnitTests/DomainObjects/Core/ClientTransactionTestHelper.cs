@@ -67,9 +67,9 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
       return (IClientTransactionEventBroker) PrivateInvoke.GetNonPublicField (clientTransaction, "_eventBroker");
     }
 
-    public static IClientTransactionCommitRollbackAgent GetCommitRollbackAgent (ClientTransaction clientTransaction)
+    public static ICommitRollbackAgent GetCommitRollbackAgent (ClientTransaction clientTransaction)
     {
-      return (IClientTransactionCommitRollbackAgent) PrivateInvoke.GetNonPublicField (clientTransaction, "_commitRollbackAgent");
+      return (ICommitRollbackAgent) PrivateInvoke.GetNonPublicField (clientTransaction, "_commitRollbackAgent");
     }
     public static DomainObject CallGetObject (ClientTransaction clientTransaction, ObjectID objectID, bool includeDeleted)
     {

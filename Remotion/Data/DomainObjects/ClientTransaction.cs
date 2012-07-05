@@ -150,7 +150,7 @@ public class ClientTransaction
   private readonly IDataManager _dataManager;
   private readonly IPersistenceStrategy _persistenceStrategy;
   private readonly IQueryManager _queryManager;
-  private readonly IClientTransactionCommitRollbackAgent _commitRollbackAgent;
+  private readonly ICommitRollbackAgent _commitRollbackAgent;
 
   private ClientTransaction _subTransaction;
 
@@ -173,7 +173,7 @@ public class ClientTransaction
     _persistenceStrategy = componentFactory.CreatePersistenceStrategy (this);
     _dataManager = componentFactory.CreateDataManager (this, _eventBroker, _invalidDomainObjectManager, _persistenceStrategy);
     _queryManager = componentFactory.CreateQueryManager (this, _eventBroker, _invalidDomainObjectManager, _persistenceStrategy, _dataManager);
-    _commitRollbackAgent = new ClientTransactionCommitRollbackAgent (_dataManager, _persistenceStrategy, _eventBroker);
+    _commitRollbackAgent = componentFactory.CreateCommitRollbackAgent (this, _eventBroker, _persistenceStrategy, _dataManager);
 
     _extensions = componentFactory.CreateExtensionCollection (this);
     AddListener (new ExtensionClientTransactionListener (_extensions));

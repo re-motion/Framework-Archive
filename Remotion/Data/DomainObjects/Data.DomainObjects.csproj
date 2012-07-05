@@ -202,10 +202,10 @@
     <Compile Include="DataManagement\RelationEndPoints\VirtualEndPoints\CollectionEndPoints\StateUpdateRaisingCollectionEndPointDecorator.cs" />
     <Compile Include="DataManagement\RelationEndPoints\VirtualEndPoints\VirtualObjectEndPoints\IVirtualObjectEndPointDataManagerFactory.cs" />
     <Compile Include="DataManagement\RelationEndPoints\VirtualEndPoints\VirtualObjectEndPoints\StateUpdateRaisingCollectionEndPointDecorator.cs" />
-    <Compile Include="Infrastructure\ClientTransactionCommitRollbackAgent.cs" />
+    <Compile Include="Infrastructure\CommitRollbackAgent.cs" />
     <Compile Include="Infrastructure\ClientTransactionComponentFactoryBase.cs" />
     <Compile Include="Infrastructure\ClientTransactionEventBroker.cs" />
-    <Compile Include="Infrastructure\IClientTransactionCommitRollbackAgent.cs" />
+    <Compile Include="Infrastructure\ICommitRollbackAgent.cs" />
     <Compile Include="Infrastructure\IClientTransactionEventSink.cs" />
     <Compile Include="Infrastructure\IClientTransactionEventBroker.cs" />
     <Compile Include="Infrastructure\IClientTransactionEventDistributor.cs" />

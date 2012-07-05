@@ -22,7 +22,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
   /// Provides an interface for classes implementing the <see cref="ClientTransaction.Commit"/> and <see cref="ClientTransaction.Rollback"/> 
   /// operations.
   /// </summary>
-  public interface IClientTransactionCommitRollbackAgent
+  public interface ICommitRollbackAgent
   {
     bool HasDataChanged ();
     void CommitData ();

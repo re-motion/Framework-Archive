@@ -32,27 +32,26 @@ namespace Remotion.Data.DomainObjects.Infrastructure
   /// <see cref="IPersistenceStrategy"/>.
   /// </summary>
   [Serializable]
-  public class ClientTransactionCommitRollbackAgent : IClientTransactionCommitRollbackAgent
+  public class CommitRollbackAgent : ICommitRollbackAgent
   {
-    private readonly IDataManager _dataManager;
-    private readonly IPersistenceStrategy _persistenceStrategy;
     private readonly IClientTransactionEventSink _eventSink;
+    private readonly IPersistenceStrategy _persistenceStrategy;
+    private readonly IDataManager _dataManager;
 
-    public ClientTransactionCommitRollbackAgent (
-        IDataManager dataManager, IPersistenceStrategy persistenceStrategy, IClientTransactionEventSink eventSink)
+    public CommitRollbackAgent (IClientTransactionEventSink eventSink, IPersistenceStrategy persistenceStrategy, IDataManager dataManager)
     {
-      ArgumentUtility.CheckNotNull ("dataManager", dataManager);
-      ArgumentUtility.CheckNotNull ("persistenceStrategy", persistenceStrategy);
       ArgumentUtility.CheckNotNull ("eventSink", eventSink);
+      ArgumentUtility.CheckNotNull ("persistenceStrategy", persistenceStrategy);
+      ArgumentUtility.CheckNotNull ("dataManager", dataManager);
 
-      _dataManager = dataManager;
-      _persistenceStrategy = persistenceStrategy;
       _eventSink = eventSink;
+      _persistenceStrategy = persistenceStrategy;
+      _dataManager = dataManager;
     }
 
-    public IDataManager DataManager
+    public IClientTransactionEventSink EventSink
     {
-      get { return _dataManager; }
+      get { return _eventSink; }
     }
 
     public IPersistenceStrategy PersistenceStrategy
@@ -60,9 +59,9 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       get { return _persistenceStrategy; }
     }
 
-    public IClientTransactionEventSink EventSink
+    public IDataManager DataManager
     {
-      get { return _eventSink; }
+      get { return _dataManager; }
     }
 
     public bool HasDataChanged ()
@@ -118,7 +117,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       // because in this case the object won't be committed to the underlying backend (e.g. database).
 
       var changedDomainObjects = GetChangedDomainObjects ().ToObjectList ();
-      var clientTransactionCommittingEventRaised = new DomainObjectCollection ();
+      var clientTransactionCommittingEventRaised = new HashSet<DomainObject>();
 
       List<DomainObject> clientTransactionCommittingEventNotRaised;
       do
@@ -128,11 +127,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure
         var eventArgReadOnlyCollection = clientTransactionCommittingEventNotRaised.AsReadOnly ();
         _eventSink.RaiseEvent ((tx, l) => l.TransactionCommitting (tx, eventArgReadOnlyCollection));
 
-        foreach (DomainObject domainObject in clientTransactionCommittingEventNotRaised)
-        {
-          if (!domainObject.IsInvalid)
-            clientTransactionCommittingEventRaised.Add (domainObject);
-        }
+        foreach (var domainObject in clientTransactionCommittingEventNotRaised)
+          clientTransactionCommittingEventRaised.Add (domainObject);
 
         changedDomainObjects = GetChangedDomainObjects ().ToObjectList ();
         clientTransactionCommittingEventNotRaised = changedDomainObjects.GetItemsExcept (clientTransactionCommittingEventRaised).ToList ();
@@ -158,7 +154,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       // because the object actually has never been changed from a ClientTransaction's perspective.
 
       var changedDomainObjects = GetChangedDomainObjects ().ToObjectList ();
-      var clientTransactionRollingBackEventRaised = new DomainObjectCollection ();
+      var clientTransactionRollingBackEventRaised = new HashSet<DomainObject> ();
 
       List<DomainObject> clientTransactionRollingBackEventNotRaised;
       do
@@ -168,11 +164,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure
         var eventArgReadOnlyCollection = clientTransactionRollingBackEventNotRaised.AsReadOnly ();
         _eventSink.RaiseEvent ((tx, l) => l.TransactionRollingBack (tx, eventArgReadOnlyCollection));
 
-        foreach (DomainObject domainObject in clientTransactionRollingBackEventNotRaised)
-        {
-          if (!domainObject.IsInvalid)
-            clientTransactionRollingBackEventRaised.Add (domainObject);
-        }
+        foreach (var domainObject in clientTransactionRollingBackEventNotRaised)
+          clientTransactionRollingBackEventRaised.Add (domainObject);
 
         changedDomainObjects = GetChangedDomainObjects ().ToObjectList ();
         clientTransactionRollingBackEventNotRaised = changedDomainObjects.GetItemsExcept (clientTransactionRollingBackEventRaised).ToList ();
