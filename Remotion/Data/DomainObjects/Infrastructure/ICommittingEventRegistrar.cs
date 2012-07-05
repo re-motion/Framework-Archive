@@ -38,7 +38,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     /// <see cref="ClientTransaction"/>.<see cref="ClientTransaction.Committing"/>, and
     /// <see cref="DomainObject"/>.<see cref="DomainObject.Committing"/>.
     /// Usually, every event handler in the committing event chain receives each object in the commit set exactly once (with the order in which
-    /// the <see cref="DomainObject"/>'s <see cref="DomainObject.Committing"/> event is raised being undefined). 
+    /// the <see cref="DomainObject"/>.<see cref="DomainObject.Committing"/> event is raised being undefined). 
     /// For example, when a set of objects (a, b) is in the commit set, the events are raised as follows:
     /// <list type="number">
     /// <item><description>
@@ -52,8 +52,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     /// <para>
     /// If a handler changes one of the objects already in the commit set (i.e., a or b), the chain just proceeds and is not reexecuted. This means 
     /// that it is possible that the state of an object changes after the committing event handlers for it have executed. The purpose of 
-    /// <see cref="RegisterForAdditionalCommittingEvents"/> is to force the chain to run again for a given object, allowing the handlers to operate on 
-    /// a more recent state than before.
+    /// <see cref="RegisterForAdditionalCommittingEvents"/> is to force the chain to run again for a given set of objects, allowing the handlers to 
+    /// operate on a more recent state than before.
     /// </para>
     /// <para>
     /// If <see cref="RegisterForAdditionalCommittingEvents"/> is called for multiple objects or multiple times (for the same or different objects) 
