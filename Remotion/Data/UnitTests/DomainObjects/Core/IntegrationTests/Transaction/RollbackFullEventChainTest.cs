@@ -18,12 +18,15 @@
 using System;
 using System.Collections.ObjectModel;
 using NUnit.Framework;
+using Remotion.Collections;
 using Remotion.Data.DomainObjects;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.UnitTests.DomainObjects.Core.EventReceiver;
 using Remotion.Data.UnitTests.DomainObjects.TestDomain;
 using Remotion.Data.UnitTests.UnitTesting;
 using Rhino.Mocks;
+using System.Linq;
+using Rhino.Mocks.Interfaces;
 
 namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transaction
 {
@@ -32,193 +35,130 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
   {
     private ClientTransaction _transaction;
 
+    private DomainObject _unchangedObject;
+    private DomainObject _changedObject;
+    private DomainObject _newObject;
+    private DomainObject _deletedObject;
+
+    private MockRepository _mockRepository;
+
+    private IClientTransactionListener _listenerMock;
+    private IClientTransactionExtension _extensionMock;
+    private ClientTransactionMockEventReceiver _transactionMockEventReceiver;
+
+    private DomainObjectMockEventReceiver _changedObjectEventReceiverMock;
+    private DomainObjectMockEventReceiver _newObjectEventReceiverMock;
+    private DomainObjectMockEventReceiver _deletedObjectEventReceiverMock;
+    private DomainObjectMockEventReceiver _unchangedObjectEventReceiverMock;
+
     public override void SetUp ()
     {
       base.SetUp ();
 
-      _transaction = ClientTransaction.CreateRootTransaction().CreateSubTransaction();
+      _transaction = ClientTransaction.CreateRootTransaction ().CreateSubTransaction ();
+
+      _unchangedObject = GetUnchangedObject ();
+      _changedObject = GetChangedObject ();
+      _newObject = GetNewObject ();
+      _deletedObject = GetDeletedObject ();
+
+      _mockRepository = new MockRepository ();
+
+      // Listener is a dynamic mock so that we don't have to expect all the internal events of RollingBack
+      _listenerMock = _mockRepository.DynamicMock<IClientTransactionListener> ();
+      _extensionMock = _mockRepository.StrictMock<ClientTransactionExtensionBase> ("test");
+      _transactionMockEventReceiver = _mockRepository.StrictMock<ClientTransactionMockEventReceiver> (_transaction);
+
+      _changedObjectEventReceiverMock = CreateDomainObjectMockEventReceiver (_changedObject);
+      _newObjectEventReceiverMock = CreateDomainObjectMockEventReceiver (_newObject);
+      _deletedObjectEventReceiverMock = CreateDomainObjectMockEventReceiver (_deletedObject);
+      _unchangedObjectEventReceiverMock = CreateDomainObjectMockEventReceiver (_unchangedObject);
+
+      ClientTransactionTestHelper.AddListener (_transaction, _listenerMock);
+      _transaction.Extensions.Add (_extensionMock);
     }
 
     [Test]
     public void FullEventChain ()
     {
-      var unchangedObject = GetUnchangedObject();
-      var changedObject = GetChangedObject();
-      var newObject = GetNewObject();
-      var deletedObject = GetDeletedObject();
-
-      var mockRepository = new MockRepository ();
-
-      // Listener is a dynamic mock so that we don't have to expect all internal events
-      var clientTransactionListenerMock = mockRepository.DynamicMock<IClientTransactionListener> ();
-      var clientTransactionExtensionMock = mockRepository.StrictMock<IClientTransactionExtension> ();
-      clientTransactionExtensionMock.Stub (stub => stub.Key).Return ("test");
-      var clientTransactionEventReceiverMock = mockRepository.StrictMock<ClientTransactionMockEventReceiver> (_transaction);
-      var changedObjectEventReceiverMock = mockRepository.StrictMock<DomainObjectMockEventReceiver> (changedObject);
-      var newObjectEventReceiverMock = mockRepository.StrictMock<DomainObjectMockEventReceiver> (newObject);
-      var deletedObjectEventReceiverMock = mockRepository.StrictMock<DomainObjectMockEventReceiver> (deletedObject);
-
-      // This mock is to ensure the unchanged object doesn't get any events
-      mockRepository.StrictMock<DomainObjectMockEventReceiver> (unchangedObject);
-
-      using (mockRepository.Ordered ())
+      using (_mockRepository.Ordered ())
       {
-        // RollingBack events
-        clientTransactionExtensionMock
-            .Expect (mock => mock.RollingBack (Arg.Is (_transaction), ArgIsRollbackSet (changedObject, newObject, deletedObject)));
-        clientTransactionListenerMock
-            .Expect (mock => mock.TransactionRollingBack (Arg.Is (_transaction), ArgIsRollbackSet (changedObject, newObject, deletedObject)));
-        clientTransactionEventReceiverMock
-            .Expect (mock => mock.RollingBack (_transaction, changedObject, newObject, deletedObject))
-            .WithCurrentTransaction (_transaction);
-        using (mockRepository.Unordered ())
-        {
-          changedObjectEventReceiverMock.Expect (mock => mock.RollingBack (changedObject)).WithCurrentTransaction (_transaction);
-          newObjectEventReceiverMock.Expect (mock => mock.RollingBack (newObject)).WithCurrentTransaction (_transaction);
-          deletedObjectEventReceiverMock.Expect (mock => mock.RollingBack (deletedObject)).WithCurrentTransaction (_transaction);
-        }
+        ExpectRollingBackEvents (
+            Tuple.Create (_changedObject, _changedObjectEventReceiverMock),
+            Tuple.Create (_newObject, _newObjectEventReceiverMock),
+            Tuple.Create (_deletedObject, _deletedObjectEventReceiverMock));
 
-        // RolledBack events
-        using (mockRepository.Unordered ())
-        {
-          changedObjectEventReceiverMock
-              .Expect (mock => mock.RolledBack (changedObject))
-              .WhenCalledWithCurrentTransaction (
-                  _transaction,
-                  mi => Assert.That (_transaction.HasChanged(), Is.False, "RolledBack: first event after actual Rollback."));
-          deletedObjectEventReceiverMock.Expect (mock => mock.RolledBack (deletedObject)).WithCurrentTransaction (_transaction);
-        }
-        clientTransactionEventReceiverMock
-            .Expect (mock => mock.RolledBack (_transaction, changedObject, deletedObject))
-            .WithCurrentTransaction (_transaction);
-        clientTransactionExtensionMock.Expect (mock => mock.RolledBack (Arg.Is (_transaction), ArgIsRollbackSet (changedObject, deletedObject)));
-        clientTransactionListenerMock.Expect (mock => mock.TransactionRolledBack (Arg.Is (_transaction), ArgIsRollbackSet (changedObject, deletedObject)));
+        ExpectRolledBackEvents (
+            Tuple.Create (_changedObject, _changedObjectEventReceiverMock),
+            Tuple.Create (_deletedObject, _deletedObjectEventReceiverMock));
       }
-      mockRepository.ReplayAll ();
-
-      ClientTransactionTestHelper.AddListener (_transaction, clientTransactionListenerMock);
-      _transaction.Extensions.Add (clientTransactionExtensionMock);
+      _mockRepository.ReplayAll ();
 
       Assert.That (ClientTransaction.Current, Is.Not.SameAs (_transaction));
-      try
-      {
-        _transaction.Rollback();
-      }
-      finally
-      {
-        _transaction.Extensions.Remove (clientTransactionExtensionMock.Key);
-        ClientTransactionTestHelper.RemoveListener (_transaction, clientTransactionListenerMock);
-      }
-      Assert.That (ClientTransaction.Current, Is.Not.SameAs (_transaction));
 
-      mockRepository.VerifyAll ();
+      _transaction.Rollback ();
+
+      Assert.That (ClientTransaction.Current, Is.Not.SameAs (_transaction));
+      _mockRepository.VerifyAll ();
     }
 
     [Test]
     public void FullEventChain_WithReiterationDueToAddedObject ()
     {
-      var changedObject = GetChangedObject ();
-      var additionalObject = GetUnchangedObject ();
-
-      var mockRepository = new MockRepository ();
-
-      // Listener is a dynamic mock so that we don't have to expect all internal events
-      var clientTransactionListenerMock = mockRepository.DynamicMock<IClientTransactionListener> ();
-      var clientTransactionExtensionMock = mockRepository.StrictMock<IClientTransactionExtension> ();
-      clientTransactionExtensionMock.Stub (stub => stub.Key).Return ("test");
-      var clientTransactionEventReceiverMock = mockRepository.StrictMock<ClientTransactionMockEventReceiver> (_transaction);
-      var changedObjectEventReceiverMock = mockRepository.StrictMock<DomainObjectMockEventReceiver> (changedObject);
-      var additionalObjectEventReceiverMock = mockRepository.StrictMock<DomainObjectMockEventReceiver> (additionalObject);
-
-      using (mockRepository.Ordered ())
+      using (_mockRepository.Ordered ())
       {
-        // RollingBack events
-        clientTransactionExtensionMock
-            .Expect (mock => mock.RollingBack (Arg.Is (_transaction), ArgIsRollbackSet (changedObject)))
-            .WhenCalled (mi => _transaction.Execute (additionalObject.MarkAsChanged));
-        clientTransactionListenerMock
-            .Expect (mock => mock.TransactionRollingBack (Arg.Is (_transaction), ArgIsRollbackSet (changedObject)));
-        clientTransactionEventReceiverMock
-            .Expect (mock => mock.RollingBack (_transaction, changedObject))
-            .WithCurrentTransaction (_transaction);
-        changedObjectEventReceiverMock.Expect (mock => mock.RollingBack (changedObject)).WithCurrentTransaction (_transaction);
+        ExpectRollingBackEvents (
+            Tuple.Create (_changedObject, _changedObjectEventReceiverMock),
+            Tuple.Create (_newObject, _newObjectEventReceiverMock),
+            Tuple.Create (_deletedObject, _deletedObjectEventReceiverMock))
+          // This triggers one additional run
+            .WhenCalled (mi => _transaction.Execute (() => _unchangedObject.MarkAsChanged ()));
 
-        // RollingBack events - second iteration for additionalObject
-        clientTransactionExtensionMock
-            .Expect (mock => mock.RollingBack (Arg.Is (_transaction), ArgIsRollbackSet (additionalObject)))
-            // this will _not_ trigger an additional run
-            .WhenCalled (mi => _transaction.Execute (changedObject.MarkAsChanged));
-        clientTransactionListenerMock
-            .Expect (mock => mock.TransactionRollingBack (Arg.Is (_transaction), ArgIsRollbackSet (additionalObject)));
-        clientTransactionEventReceiverMock
-            .Expect (mock => mock.RollingBack (_transaction, additionalObject))
-            .WithCurrentTransaction (_transaction);
-        additionalObjectEventReceiverMock.Expect (mock => mock.RollingBack (additionalObject)).WithCurrentTransaction (_transaction);
+        ExpectRollingBackEvents (
+            Tuple.Create (_unchangedObject, _unchangedObjectEventReceiverMock))
+          // This does not trigger an additional run because the object is no longer new to the Rollback set
+            .WhenCalled (mi => _transaction.Execute (() => _unchangedObject.MarkAsChanged ()));
 
-        // RolledBack events
-        using (mockRepository.Unordered ())
-        {
-          changedObjectEventReceiverMock
-              .Expect (mock => mock.RolledBack (changedObject))
-              .WhenCalledWithCurrentTransaction (
-                  _transaction,
-                  mi => Assert.That (_transaction.HasChanged (), Is.False, "RolledBack: first event after actual Rollback."));
-          additionalObjectEventReceiverMock.Expect (mock => mock.RolledBack (additionalObject)).WithCurrentTransaction (_transaction);
-        }
-        clientTransactionEventReceiverMock
-            .Expect (mock => mock.RolledBack (_transaction, changedObject, additionalObject))
-            .WithCurrentTransaction (_transaction);
-        clientTransactionExtensionMock.Expect (mock => mock.RolledBack (Arg.Is (_transaction), ArgIsRollbackSet (changedObject, additionalObject)));
-        clientTransactionListenerMock.Expect (mock => mock.TransactionRolledBack (Arg.Is (_transaction), ArgIsRollbackSet (changedObject, additionalObject)));
+        ExpectRolledBackEvents (
+            Tuple.Create (_changedObject, _changedObjectEventReceiverMock),
+            Tuple.Create (_deletedObject, _deletedObjectEventReceiverMock),
+            Tuple.Create (_unchangedObject, _unchangedObjectEventReceiverMock));
       }
-      mockRepository.ReplayAll ();
+      _mockRepository.ReplayAll ();
 
-      ClientTransactionTestHelper.AddListener (_transaction, clientTransactionListenerMock);
-      _transaction.Extensions.Add (clientTransactionExtensionMock);
+      _transaction.Rollback ();
 
-      Assert.That (ClientTransaction.Current, Is.Not.SameAs (_transaction));
-      try
-      {
-        _transaction.Rollback ();
-      }
-      finally
-      {
-        _transaction.Extensions.Remove (clientTransactionExtensionMock.Key);
-        ClientTransactionTestHelper.RemoveListener (_transaction, clientTransactionListenerMock);
-      }
-      Assert.That (ClientTransaction.Current, Is.Not.SameAs (_transaction));
-
-      mockRepository.VerifyAll ();
+      _mockRepository.VerifyAll ();
     }
-
-    private ClassWithAllDataTypes GetDeletedObject ()
+    
+    private DomainObject GetDeletedObject ()
     {
       return _transaction.Execute (
           () =>
           {
             var instance = ClassWithAllDataTypes.GetObject (DomainObjectIDs.ClassWithAllDataTypes1);
-            instance.Delete();
+            instance.Delete ();
             return instance;
           });
     }
 
-    private ClassWithAllDataTypes GetNewObject ()
+    private DomainObject GetNewObject ()
     {
-      return _transaction.Execute (() => ClassWithAllDataTypes.NewObject());
+      return _transaction.Execute (() => ClassWithAllDataTypes.NewObject ());
     }
 
-    private Order GetChangedObject ()
+    private DomainObject GetChangedObject ()
     {
       return _transaction.Execute (
           () =>
           {
             var instance = Order.GetObject (DomainObjectIDs.Order1);
-            instance.MarkAsChanged();
+            instance.MarkAsChanged ();
             return instance;
           });
     }
 
-    private Customer GetUnchangedObject ()
+    private DomainObject GetUnchangedObject ()
     {
       return _transaction.Execute (() => Customer.GetObject (DomainObjectIDs.Customer1));
     }
@@ -226,6 +166,61 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
     private ReadOnlyCollection<DomainObject> ArgIsRollbackSet (params DomainObject[] domainObjects)
     {
       return Arg<ReadOnlyCollection<DomainObject>>.List.Equivalent (domainObjects);
+    }
+
+    private DomainObjectMockEventReceiver CreateDomainObjectMockEventReceiver (DomainObject changedObject)
+    {
+      return _mockRepository.StrictMock<DomainObjectMockEventReceiver> (changedObject);
+    }
+
+    private IMethodOptions<RhinoMocksExtensions.VoidType> ExpectRollingBackEvents (params Tuple<DomainObject, DomainObjectMockEventReceiver>[] domainObjectsAndMocks)
+    {
+      using (_mockRepository.Ordered ())
+      {
+        var domainObjects = domainObjectsAndMocks.Select (t => t.Item1).ToArray ();
+        var methodOptions = _extensionMock
+            .Expect (mock => mock.RollingBack (Arg.Is (_transaction), ArgIsRollbackSet (domainObjects)));
+        _listenerMock
+            .Expect (mock => mock.TransactionRollingBack (Arg.Is (_transaction), ArgIsRollbackSet (domainObjects)));
+        _transactionMockEventReceiver
+            .Expect (mock => mock.RollingBack (_transaction, domainObjects))
+            .WithCurrentTransaction (_transaction);
+
+        using (_mockRepository.Unordered ())
+        {
+          foreach (var domainObjectAndMock in domainObjectsAndMocks)
+          {
+            var copy = domainObjectAndMock;
+            domainObjectAndMock.Item2.Expect (mock => mock.RollingBack (copy.Item1)).WithCurrentTransaction (_transaction);
+          }
+        }
+        return methodOptions;
+      }
+    }
+
+    private void ExpectRolledBackEvents (params Tuple<DomainObject, DomainObjectMockEventReceiver>[] domainObjectsAndMocks)
+    {
+      using (_mockRepository.Ordered ())
+      {
+        using (_mockRepository.Unordered ())
+        {
+          foreach (var domainObjectAndMock in domainObjectsAndMocks)
+          {
+            var copy = domainObjectAndMock;
+            domainObjectAndMock.Item2.Expect (mock => mock.RolledBack (copy.Item1)).WithCurrentTransaction (_transaction);
+          }
+        }
+
+        var domainObjects = domainObjectsAndMocks.Select (t => t.Item1).ToArray ();
+
+        _transactionMockEventReceiver
+            .Expect (mock => mock.RolledBack (_transaction, domainObjects))
+            .WithCurrentTransaction (_transaction);
+        _extensionMock
+            .Expect (mock => mock.RolledBack (Arg.Is (_transaction), ArgIsRollbackSet (domainObjects)));
+        _listenerMock
+            .Expect (mock => mock.TransactionRolledBack (Arg.Is (_transaction), ArgIsRollbackSet (domainObjects)));
+      }
     }
   }
 }
