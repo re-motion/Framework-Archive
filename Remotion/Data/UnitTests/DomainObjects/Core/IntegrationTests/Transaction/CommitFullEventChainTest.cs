@@ -208,6 +208,196 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
       mockRepository.VerifyAll ();
     }
 
+    [Test]
+    [Ignore ("TODO 1807")]
+    public void FullEventChain_WithReiterationDueToRegisterForAdditionalCommittingEvents ()
+    {
+      var changedObject = GetChangedObject ();
+
+      var mockRepository = new MockRepository ();
+
+      // Listener is a dynamic mock so that we don't have to expect all internal events
+      var clientTransactionListenerMock = mockRepository.DynamicMock<IClientTransactionListener> ();
+      var clientTransactionExtensionMock = mockRepository.StrictMock<IClientTransactionExtension> ();
+      clientTransactionExtensionMock.Stub (stub => stub.Key).Return ("test");
+      var clientTransactionEventReceiverMock = mockRepository.StrictMock<ClientTransactionMockEventReceiver> (_transaction);
+      var changedObjectEventReceiverMock = mockRepository.StrictMock<DomainObjectMockEventReceiver> (changedObject);
+
+      using (mockRepository.Ordered ())
+      {
+        // Committing events
+        clientTransactionExtensionMock
+            .Expect (mock => mock.Committing (Arg.Is (_transaction), ArgIsCommitSet (changedObject)))
+            .WhenCalled (mi => /*TODO 1807: mi.Arguments[2].RegisterForAdditionalCommittingEvents (changedObject) */ { });
+        clientTransactionListenerMock
+            .Expect (mock => mock.TransactionCommitting (Arg.Is (_transaction), ArgIsCommitSet (changedObject)));
+        clientTransactionEventReceiverMock
+            .Expect (mock => mock.Committing (_transaction, changedObject))
+            .WithCurrentTransaction (_transaction);
+        changedObjectEventReceiverMock.Expect (mock => mock.Committing (changedObject)).WithCurrentTransaction (_transaction);
+
+        // Committing events - second iteration for changedObject
+        clientTransactionExtensionMock
+            .Expect (mock => mock.Committing (Arg.Is (_transaction), ArgIsCommitSet (changedObject)))
+          // this will trigger just one additional run
+            .WhenCalled (
+                mi =>
+                {
+                  /*TODO 1807: mi.Arguments[2].RegisterForAdditionalCommittingEvents (changedObject); */
+                  /*TODO 1807: mi.Arguments[2].RegisterForAdditionalCommittingEvents (changedObject); */
+                });
+        clientTransactionListenerMock
+            .Expect (mock => mock.TransactionCommitting (Arg.Is (_transaction), ArgIsCommitSet (changedObject)));
+        clientTransactionEventReceiverMock
+            .Expect (mock => mock.Committing (_transaction, changedObject))
+            .WithCurrentTransaction (_transaction);
+        changedObjectEventReceiverMock.Expect (mock => mock.Committing (changedObject)).WithCurrentTransaction (_transaction);
+
+        // Committing events - third iteration for changedObject
+        clientTransactionExtensionMock.Expect (mock => mock.Committing (Arg.Is (_transaction), ArgIsCommitSet (changedObject)));
+        clientTransactionListenerMock
+            .Expect (mock => mock.TransactionCommitting (Arg.Is (_transaction), ArgIsCommitSet (changedObject)));
+        clientTransactionEventReceiverMock
+            .Expect (mock => mock.Committing (_transaction, changedObject))
+            .WithCurrentTransaction (_transaction);
+        changedObjectEventReceiverMock.Expect (mock => mock.Committing (changedObject)).WithCurrentTransaction (_transaction);
+
+        // CommitValidate events
+        clientTransactionExtensionMock
+            .Expect (mock => mock.CommitValidate (Arg.Is (_transaction), ArgIsPersistableDataSet (changedObject)));
+        clientTransactionListenerMock
+            .Expect (mock => mock.TransactionCommitValidate (Arg.Is (_transaction), ArgIsPersistableDataSet (changedObject)))
+            .WhenCalled (mi => Assert.That (_transaction.HasChanged (), Is.True, "CommitValidate: last event before actual commit."));
+
+        // Committed events
+        using (mockRepository.Unordered ())
+        {
+          changedObjectEventReceiverMock
+              .Expect (mock => mock.Committed (changedObject))
+              .WhenCalledWithCurrentTransaction (
+                  _transaction,
+                  mi => Assert.That (_transaction.HasChanged (), Is.False, "Committed: first event after actual commit."));
+        }
+        clientTransactionEventReceiverMock
+            .Expect (mock => mock.Committed (_transaction, changedObject))
+            .WithCurrentTransaction (_transaction);
+        clientTransactionExtensionMock.Expect (mock => mock.Committed (Arg.Is (_transaction), ArgIsCommitSet (changedObject)));
+        clientTransactionListenerMock.Expect (mock => mock.TransactionCommitted (Arg.Is (_transaction), ArgIsCommitSet (changedObject)));
+      }
+      mockRepository.ReplayAll ();
+
+      ClientTransactionTestHelper.AddListener (_transaction, clientTransactionListenerMock);
+      _transaction.Extensions.Add (clientTransactionExtensionMock);
+
+      Assert.That (ClientTransaction.Current, Is.Not.SameAs (_transaction));
+      try
+      {
+        _transaction.Commit ();
+      }
+      finally
+      {
+        _transaction.Extensions.Remove (clientTransactionExtensionMock.Key);
+        ClientTransactionTestHelper.RemoveListener (_transaction, clientTransactionListenerMock);
+      }
+      Assert.That (ClientTransaction.Current, Is.Not.SameAs (_transaction));
+
+      mockRepository.VerifyAll ();
+    }
+
+    [Test]
+    [Ignore ("TODO 1807")]
+    public void FullEventChain_WithReiterationDueToAddedObjectAndRegisterForAdditionalCommittingEvents ()
+    {
+      var changedObject = GetChangedObject ();
+      var additionalObject = GetUnchangedObject ();
+
+      var mockRepository = new MockRepository ();
+
+      // Listener is a dynamic mock so that we don't have to expect all internal events
+      var clientTransactionListenerMock = mockRepository.DynamicMock<IClientTransactionListener> ();
+      var clientTransactionExtensionMock = mockRepository.DynamicMock<IClientTransactionExtension> ();
+      clientTransactionExtensionMock.Stub (stub => stub.Key).Return ("test");
+      var clientTransactionEventReceiverMock = mockRepository.StrictMock<ClientTransactionMockEventReceiver> (_transaction);
+      var changedObjectEventReceiverMock = mockRepository.StrictMock<DomainObjectMockEventReceiver> (changedObject);
+      var additionalObjectEventReceiverMock = mockRepository.StrictMock<DomainObjectMockEventReceiver> (additionalObject);
+
+      using (mockRepository.Ordered ())
+      {
+        // Committing events
+        clientTransactionExtensionMock
+            .Expect (mock => mock.Committing (Arg.Is (_transaction), ArgIsCommitSet (changedObject)))
+          // This will trigger just one additional run, not two
+            .WhenCalled (
+                mi =>
+                {
+                  /* TODO 1807: Assert.That (
+                   *    () => mi.Arguments[2].RegisterForAdditionalCommittingEvents (additionalObject), 
+                   *    Throws.TypeOf<ArgumentException>.With.Message.EqualTo (...)); */
+                  _transaction.Execute (additionalObject.MarkAsChanged);
+                  /* TODO 1807: mi.Arguments[2].RegisterForAdditionalCommittingEvents (additionalObject); */
+                });
+        clientTransactionListenerMock
+            .Expect (mock => mock.TransactionCommitting (Arg.Is (_transaction), ArgIsCommitSet (changedObject)));
+        clientTransactionEventReceiverMock
+            .Expect (mock => mock.Committing (_transaction, changedObject))
+            .WithCurrentTransaction (_transaction);
+        changedObjectEventReceiverMock.Expect (mock => mock.Committing (changedObject)).WithCurrentTransaction (_transaction);
+
+        // Committing events - second iteration for additionalObject
+        clientTransactionExtensionMock
+            .Expect (mock => mock.Committing (Arg.Is (_transaction), ArgIsCommitSet (additionalObject)))
+          // this will _not_ trigger an additional run
+            .WhenCalled (mi => _transaction.Execute (changedObject.MarkAsChanged));
+        clientTransactionListenerMock
+            .Expect (mock => mock.TransactionCommitting (Arg.Is (_transaction), ArgIsCommitSet (additionalObject)));
+        clientTransactionEventReceiverMock
+            .Expect (mock => mock.Committing (_transaction, additionalObject))
+            .WithCurrentTransaction (_transaction);
+        additionalObjectEventReceiverMock.Expect (mock => mock.Committing (additionalObject)).WithCurrentTransaction (_transaction);
+
+        // CommitValidate events
+        clientTransactionExtensionMock
+            .Expect (mock => mock.CommitValidate (Arg.Is (_transaction), ArgIsPersistableDataSet (changedObject, additionalObject)));
+        clientTransactionListenerMock
+            .Expect (mock => mock.TransactionCommitValidate (Arg.Is (_transaction), ArgIsPersistableDataSet (changedObject, additionalObject)))
+            .WhenCalled (mi => Assert.That (_transaction.HasChanged (), Is.True, "CommitValidate: last event before actual commit."));
+
+        // Committed events
+        using (mockRepository.Unordered ())
+        {
+          changedObjectEventReceiverMock
+              .Expect (mock => mock.Committed (changedObject))
+              .WhenCalledWithCurrentTransaction (
+                  _transaction,
+                  mi => Assert.That (_transaction.HasChanged (), Is.False, "Committed: first event after actual commit."));
+          additionalObjectEventReceiverMock.Expect (mock => mock.Committed (additionalObject)).WithCurrentTransaction (_transaction);
+        }
+        clientTransactionEventReceiverMock
+            .Expect (mock => mock.Committed (_transaction, changedObject, additionalObject))
+            .WithCurrentTransaction (_transaction);
+        clientTransactionExtensionMock.Expect (mock => mock.Committed (Arg.Is (_transaction), ArgIsCommitSet (changedObject, additionalObject)));
+        clientTransactionListenerMock.Expect (mock => mock.TransactionCommitted (Arg.Is (_transaction), ArgIsCommitSet (changedObject, additionalObject)));
+      }
+      mockRepository.ReplayAll ();
+
+      ClientTransactionTestHelper.AddListener (_transaction, clientTransactionListenerMock);
+      _transaction.Extensions.Add (clientTransactionExtensionMock);
+
+      Assert.That (ClientTransaction.Current, Is.Not.SameAs (_transaction));
+      try
+      {
+        _transaction.Commit ();
+      }
+      finally
+      {
+        _transaction.Extensions.Remove (clientTransactionExtensionMock.Key);
+        ClientTransactionTestHelper.RemoveListener (_transaction, clientTransactionListenerMock);
+      }
+      Assert.That (ClientTransaction.Current, Is.Not.SameAs (_transaction));
+
+      mockRepository.VerifyAll ();
+    }
+
     private ClassWithAllDataTypes GetDeletedObject ()
     {
       return _transaction.Execute (
