@@ -180,7 +180,6 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
     }
 
     [Test]
-    [Ignore ("TODO 1807")]
     public void FullEventChain_WithReiterationDueToAddedObjectAndRegisterForAdditionalCommittingEvents ()
     {
       using (_mockRepository.Ordered ())
@@ -189,14 +188,18 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
             Tuple.Create (_changedObject, _changedObjectEventReceiverMock),
             Tuple.Create (_newObject, _newObjectEventReceiverMock),
             Tuple.Create (_deletedObject, _deletedObjectEventReceiverMock))
-          // This triggers _one_ (not two) additional run for _unchangedObject
+            // This triggers _one_ (not two) additional run for _unchangedObject
             .WhenCalled (mi => _transaction.Execute (() =>
             {
-              /* Assert.That (
-               *     () => ((ICommittingEventRegistrar) mi.Arguments[2]).RegisterForAdditionalCommittingEvents (_unchangedObject),
-               *     Throws.ArgumentException.With.Message.EqualTo ("..."));
-               * _unchangedObject.MarkAsChanged();
-              /* ((ICommittingEventRegistrar) mi.Arguments[2]).RegisterForAdditionalCommittingEvents (_unchangedObject); */
+              Assert.That (
+                  () => ((ICommittingEventRegistrar) mi.Arguments[2]).RegisterForAdditionalCommittingEvents (_unchangedObject),
+                  Throws.ArgumentException.With.Message.EqualTo (
+                      string.Format (
+                          "The given DomainObject '{0}' cannot be registered due to its state (Unchanged). Only objects that are part of the commit set "
+                          + "can be registered. Use MarkAsChanged to add an unchanged object to the commit set.\r\nParameter name: domainObjects",
+                          _unchangedObject.ID)));
+               _unchangedObject.MarkAsChanged();
+               ((ICommittingEventRegistrar) mi.Arguments[2]).RegisterForAdditionalCommittingEvents (_unchangedObject);
             }));
 
         ExpectCommittingEvents (Tuple.Create (_unchangedObject, _unchangedObjectEventReceiverMock));

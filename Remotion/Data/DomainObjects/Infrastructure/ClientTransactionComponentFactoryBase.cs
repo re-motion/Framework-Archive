@@ -125,7 +125,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       ArgumentUtility.CheckNotNull ("persistenceStrategy", persistenceStrategy);
       ArgumentUtility.CheckNotNull ("dataManager", dataManager);
 
-      return new CommitRollbackAgent (eventSink, persistenceStrategy, dataManager);
+      return new CommitRollbackAgent (constructedTransaction, eventSink, persistenceStrategy, dataManager);
     }
 
     public virtual ClientTransactionExtensionCollection CreateExtensionCollection (ClientTransaction constructedTransaction)

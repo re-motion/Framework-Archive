@@ -44,7 +44,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
     {
       ArgumentUtility.CheckNotNull ("mock", mock);
 
-      _clientTransaction = clientTransaction ?? ClientTransactionObjectMother.CreateWithComponents();
+      _clientTransaction = clientTransaction ?? ClientTransactionObjectMother.Create();
       _mock = mock;
     }
 

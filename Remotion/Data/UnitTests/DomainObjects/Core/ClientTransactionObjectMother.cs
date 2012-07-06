@@ -60,7 +60,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
       return CreateWithComponents<T> (componentFactory);
     }
 
-    public static ClientTransaction CreateWithComponents ()
+    public static ClientTransaction Create ()
     {
       return ClientTransaction.CreateRootTransaction();
     }

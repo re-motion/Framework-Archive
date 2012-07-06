@@ -21,6 +21,7 @@ using NUnit.Framework;
 using Remotion.Data.DomainObjects;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
+using Remotion.Data.DomainObjects.DomainImplementation;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
 using Remotion.Data.UnitTests.DomainObjects.Core.DataManagement;
@@ -28,6 +29,7 @@ using Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.SerializableFake
 using Remotion.Data.UnitTests.DomainObjects.TestDomain;
 using Remotion.Data.UnitTests.UnitTesting;
 using Remotion.Development.UnitTesting;
+using Remotion.Reflection;
 using Rhino.Mocks;
 using Rhino.Mocks.Interfaces;
 
@@ -41,6 +43,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure
     private ClientTransactionEventSinkWithMock _eventSinkWithMock;
     private IPersistenceStrategy _persistenceStrategyMock;
     private IDataManager _dataManagerMock;
+    private ClientTransaction _clientTransaction;
 
     private CommitRollbackAgent _agent;
 
@@ -61,12 +64,13 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure
       _eventSinkWithMock = ClientTransactionEventSinkWithMock.CreateWithStrictMock (mockRepository: _mockRepository);
       _persistenceStrategyMock = _mockRepository.StrictMock<IPersistenceStrategy> ();
       _dataManagerMock = _mockRepository.StrictMock<IDataManager> ();
+      _clientTransaction = ClientTransactionObjectMother.Create();
 
-      _agent = new CommitRollbackAgent (_eventSinkWithMock, _persistenceStrategyMock, _dataManagerMock);
+      _agent = new CommitRollbackAgent (_clientTransaction, _eventSinkWithMock, _persistenceStrategyMock, _dataManagerMock);
 
-      _fakeChangedDomainObject = DomainObjectMother.CreateFakeObject ();
-      _fakeNewDomainObject = DomainObjectMother.CreateFakeObject ();
-      _fakeDeletedDomainObject = DomainObjectMother.CreateFakeObject ();
+      _fakeChangedDomainObject = LifetimeService.NewObject (_clientTransaction, typeof (Order), ParamList.Empty);
+      _fakeNewDomainObject = LifetimeService.NewObject (_clientTransaction, typeof (Order), ParamList.Empty);
+      _fakeDeletedDomainObject = LifetimeService.NewObject (_clientTransaction, typeof (Order), ParamList.Empty);
 
       var fakeDataContainer1 = DataContainerObjectMother.CreateDataContainer();
       var fakeDataContainer2 = DataContainerObjectMother.CreateDataContainer();
@@ -225,10 +229,14 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure
     public void Serializable ()
     {
       var instance = new CommitRollbackAgent (
-          new SerializableClientTransactionEventSinkFake(), new SerializablePersistenceStrategyFake(), new SerializableDataManagerFake());
+          _clientTransaction,
+          new SerializableClientTransactionEventSinkFake(),
+          new SerializablePersistenceStrategyFake(),
+          new SerializableDataManagerFake());
 
       var deserializedInstance = Serializer.SerializeAndDeserialize (instance);
 
+      Assert.That (deserializedInstance.ClientTransaction, Is.Not.Null);
       Assert.That (deserializedInstance.EventSink, Is.Not.Null);
       Assert.That (deserializedInstance.PersistenceStrategy, Is.Not.Null);
       Assert.That (deserializedInstance.DataManager, Is.Not.Null);
@@ -241,7 +249,8 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure
               mock => mock.TransactionCommitting (
                   Arg.Is (_eventSinkWithMock.ClientTransaction),
                   Arg<ReadOnlyCollection<DomainObject>>.List.Equivalent (domainObjects),
-                  Arg<CommittingEventRegistrar>.Is.TypeOf));
+                  Arg<CommittingEventRegistrar>.Is.TypeOf))
+          .WhenCalled (mi => Assert.That (((CommittingEventRegistrar) mi.Arguments[2]).ClientTransaction, Is.SameAs (_clientTransaction)));
     }
 
     private void ExpectTransactionCommitValidate (params PersistableData[] persistableData)

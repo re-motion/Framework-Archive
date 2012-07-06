@@ -17,16 +17,23 @@
 using System;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects;
+using Remotion.Data.DomainObjects.DomainImplementation;
 using Remotion.Data.DomainObjects.Infrastructure;
+using Remotion.Data.UnitTests.DomainObjects.TestDomain;
 
 namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure
 {
   [TestFixture]
   public class CommittingEventRegistrarTest : StandardMappingTest
   {
-    private DomainObject _domainObject1;
-    private DomainObject _domainObject2;
-    private DomainObject _domainObject3;
+    private ClientTransaction _clientTransaction;
+
+    private DomainObject _newDomainObject;
+    private DomainObject _changedObject;
+    private DomainObject _deletedObject;
+    private DomainObject _invalidObject;
+    private DomainObject _unchangedObject;
+    private DomainObject _notLoadedYetObject;
 
     private CommittingEventRegistrar _registrar;
 
@@ -34,11 +41,31 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure
     {
       base.SetUp ();
 
-      _domainObject1 = DomainObjectMother.CreateFakeObject ();
-      _domainObject2 = DomainObjectMother.CreateFakeObject ();
-      _domainObject3 = DomainObjectMother.CreateFakeObject ();
+      _clientTransaction = ClientTransaction.CreateRootTransaction();
 
-      _registrar = new CommittingEventRegistrar();
+      _newDomainObject = _clientTransaction.Execute (() => Order.NewObject ());
+      _changedObject = _clientTransaction.Execute (() =>
+      {
+        var instance = Order.GetObject (DomainObjectIDs.Order1);
+        instance.MarkAsChanged();
+        return instance;
+      });
+      _deletedObject = _clientTransaction.Execute (() =>
+      {
+        var instance = ClassWithAllDataTypes.GetObject (DomainObjectIDs.ClassWithAllDataTypes1);
+        instance.Delete();
+        return instance;
+      });
+      _invalidObject = _clientTransaction.Execute (() =>
+      {
+        var instance = Order.NewObject ();
+        instance.Delete ();
+        return instance;
+      });
+      _unchangedObject = _clientTransaction.Execute (() => Order.GetObject (DomainObjectIDs.Order3));
+      _notLoadedYetObject = LifetimeService.GetObjectReference (_clientTransaction, DomainObjectIDs.Order4);
+
+      _registrar = new CommittingEventRegistrar (_clientTransaction);
     }
 
     [Test]
@@ -52,13 +79,41 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure
     {
       Assert.That (_registrar.RegisteredObjects, Is.Empty);
 
-      _registrar.RegisterForAdditionalCommittingEvents (_domainObject1, _domainObject2, _domainObject1);
+      _registrar.RegisterForAdditionalCommittingEvents (_newDomainObject, _changedObject, _newDomainObject);
 
-      Assert.That (_registrar.RegisteredObjects, Is.EquivalentTo (new[] { _domainObject1, _domainObject2 }));
+      Assert.That (_registrar.RegisteredObjects, Is.EquivalentTo (new[] { _newDomainObject, _changedObject }));
 
-      _registrar.RegisterForAdditionalCommittingEvents (_domainObject2, _domainObject3);
+      _registrar.RegisterForAdditionalCommittingEvents (_changedObject, _deletedObject);
 
-      Assert.That (_registrar.RegisteredObjects, Is.EquivalentTo (new[] { _domainObject1, _domainObject2, _domainObject3 }));
+      Assert.That (_registrar.RegisteredObjects, Is.EquivalentTo (new[] { _newDomainObject, _changedObject, _deletedObject }));
+    }
+
+    [Test]
+    public void RegisterForAdditionalCommittingEvents_NonRegisterableObjects ()
+    {
+      Assert.That (
+          () => _registrar.RegisterForAdditionalCommittingEvents (_invalidObject), 
+          Throws.ArgumentException.With.Message.EqualTo (
+              string.Format (
+                  "The given DomainObject '{0}' cannot be registered due to its state (Invalid). Only objects that are part of the commit "
+                  + "set can be registered. Use MarkAsChanged to add an unchanged object to the commit set.\r\nParameter name: domainObjects",
+                  _invalidObject.ID)));
+
+      Assert.That (
+          () => _registrar.RegisterForAdditionalCommittingEvents (_unchangedObject),
+          Throws.ArgumentException.With.Message.EqualTo (
+            string.Format (
+                  "The given DomainObject '{0}' cannot be registered due to its state (Unchanged). Only objects that are part of the commit "
+                  + "set can be registered. Use MarkAsChanged to add an unchanged object to the commit set.\r\nParameter name: domainObjects", 
+                  _unchangedObject.ID)));
+
+      Assert.That (
+          () => _registrar.RegisterForAdditionalCommittingEvents (_notLoadedYetObject),
+          Throws.ArgumentException.With.Message.EqualTo (
+            string.Format (
+                  "The given DomainObject '{0}' cannot be registered due to its state (NotLoadedYet). Only objects that are part of the commit "
+                  + "set can be registered. Use MarkAsChanged to add an unchanged object to the commit set.\r\nParameter name: domainObjects", 
+                  _notLoadedYetObject.ID)));
     }
   }
 }

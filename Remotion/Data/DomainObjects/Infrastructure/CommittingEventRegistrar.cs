@@ -18,17 +18,30 @@
 using System;
 using System.Collections.Generic;
 using Remotion.Collections;
+using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Infrastructure
 {
   /// <summary>
-  /// Allows event handlers to register objects for additional events to be raised before a <see cref="ClientTransaction.Commit"/> 
+  /// Allows event handlers to register objects for additional events to be raised before a <see cref="DomainObjects.ClientTransaction.Commit"/> 
   /// operation is performed.
   /// </summary>
   public class CommittingEventRegistrar : ICommittingEventRegistrar
   {
+    private readonly ClientTransaction _clientTransaction;
     private readonly HashSet<DomainObject> _registeredObjects = new HashSet<DomainObject>();
+
+    public CommittingEventRegistrar (ClientTransaction clientTransaction)
+    {
+      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
+      _clientTransaction = clientTransaction;
+    }
+
+    public ClientTransaction ClientTransaction
+    {
+      get { return _clientTransaction; }
+    }
 
     public ReadOnlyCollectionDecorator<DomainObject> RegisteredObjects
     {
@@ -38,6 +51,22 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     public void RegisterForAdditionalCommittingEvents (params DomainObject[] domainObjects)
     {
       ArgumentUtility.CheckNotNull ("domainObjects", domainObjects);
+
+      var stateSet = new StateValueSet (StateType.New, StateType.Changed, StateType.Deleted);
+
+      foreach (var domainObject in domainObjects)
+      {
+        var state = domainObject.TransactionContext[_clientTransaction].State;
+        if (!stateSet.Matches (state))
+        {
+          var message = string.Format (
+              "The given DomainObject '{0}' cannot be registered due to its state ({1}). Only objects that are part of the commit set can be "
+              + "registered. Use MarkAsChanged to add an unchanged object to the commit set.",
+              domainObject.ID,
+              state);
+          throw new ArgumentException (message, "domainObjects");
+        }
+      }
 
       _registeredObjects.UnionWith (domainObjects);
     }

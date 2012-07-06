@@ -27,26 +27,35 @@ using Remotion.Utilities;
 namespace Remotion.Data.DomainObjects.Infrastructure
 {
   /// <summary>
-  /// Performs the <see cref="ClientTransaction.Commit"/> and <see cref="ClientTransaction.Rollback"/> operations by gathering the commit set from the 
-  /// <see cref="IDataManager"/>, raising events via the <see cref="IClientTransactionEventSink"/>, and persisting the commit set via the 
-  /// <see cref="IPersistenceStrategy"/>.
+  /// Performs the <see cref="DomainObjects.ClientTransaction.Commit"/> and <see cref="DomainObjects.ClientTransaction.Rollback"/> operations by 
+  /// gathering the commit set from the  <see cref="IDataManager"/>, raising events via the <see cref="IClientTransactionEventSink"/>, and persisting 
+  /// the commit set via the  <see cref="IPersistenceStrategy"/>.
   /// </summary>
   [Serializable]
   public class CommitRollbackAgent : ICommitRollbackAgent
   {
+    private readonly ClientTransaction _clientTransaction;
     private readonly IClientTransactionEventSink _eventSink;
     private readonly IPersistenceStrategy _persistenceStrategy;
     private readonly IDataManager _dataManager;
 
-    public CommitRollbackAgent (IClientTransactionEventSink eventSink, IPersistenceStrategy persistenceStrategy, IDataManager dataManager)
+    public CommitRollbackAgent (
+        ClientTransaction clientTransaction, IClientTransactionEventSink eventSink, IPersistenceStrategy persistenceStrategy, IDataManager dataManager)
     {
+      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
       ArgumentUtility.CheckNotNull ("eventSink", eventSink);
       ArgumentUtility.CheckNotNull ("persistenceStrategy", persistenceStrategy);
       ArgumentUtility.CheckNotNull ("dataManager", dataManager);
 
+      _clientTransaction = clientTransaction;
       _eventSink = eventSink;
       _persistenceStrategy = persistenceStrategy;
       _dataManager = dataManager;
+    }
+
+    public ClientTransaction ClientTransaction
+    {
+      get { return _clientTransaction; }
     }
 
     public IClientTransactionEventSink EventSink
@@ -118,7 +127,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       while (true)
       {
         var eventArgReadOnlyCollection = ListAdapter.AdaptReadOnly (committingEventNotRaised, item => item.DomainObject);
-        var committingEventRegistrar = new CommittingEventRegistrar();
+        var committingEventRegistrar = new CommittingEventRegistrar (_clientTransaction);
         _eventSink.RaiseEvent ((tx, l) => l.TransactionCommitting (tx, eventArgReadOnlyCollection, committingEventRegistrar));
 
         committingEventRaised.UnionWith (committingEventNotRaised.Select (item => item.DomainObject.ID));

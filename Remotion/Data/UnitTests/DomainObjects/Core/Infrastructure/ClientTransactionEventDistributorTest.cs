@@ -91,7 +91,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure
     [Test]
     public void SubTransactionCreated ()
     {
-      var subTransaction = ClientTransactionObjectMother.CreateWithComponents();
+      var subTransaction = ClientTransactionObjectMother.Create();
 
       CheckEventWithListenersLast (
           l => l.SubTransactionCreated (_clientTransaction, subTransaction),

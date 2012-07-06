@@ -177,6 +177,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure
       var result = _factory.CreateCommitRollbackAgent (_fakeConstructedTransaction, eventSink, persistenceStrategy, dataManager);
 
       Assert.That (result, Is.TypeOf<CommitRollbackAgent>());
+      Assert.That (((CommitRollbackAgent) result).ClientTransaction, Is.SameAs (_fakeConstructedTransaction));
       Assert.That (((CommitRollbackAgent) result).EventSink, Is.SameAs (eventSink));
       Assert.That (((CommitRollbackAgent) result).PersistenceStrategy, Is.SameAs (persistenceStrategy));
       Assert.That (((CommitRollbackAgent) result).DataManager, Is.SameAs (dataManager));
