@@ -22,10 +22,10 @@ using Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.SerializableFake
 using Remotion.Data.UnitTests.DomainObjects.Core.EventReceiver;
 using Remotion.Data.UnitTests.DomainObjects.Core.Mapping;
 using Remotion.Data.UnitTests.DomainObjects.TestDomain;
+using Remotion.Data.UnitTests.UnitTesting;
 using Remotion.Development.UnitTesting;
 using Rhino.Mocks;
 using System.Linq;
-using Rhino.Mocks.Interfaces;
 
 namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure
 {
@@ -474,14 +474,6 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure
       triggeringEvent (_listener);
 
       _mockRepository.VerifyAll ();
-    }
-  }
-
-  static class TestHelper
-  {
-    public static IMethodOptions<T> WithCurrentTransaction<T> (this IMethodOptions<T> options, ClientTransaction expectedTransaction)
-    {
-      return options.WhenCalled (mi => Assert.That (ClientTransaction.Current, Is.SameAs (expectedTransaction)));
     }
   }
 }

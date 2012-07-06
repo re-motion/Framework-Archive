@@ -111,5 +111,25 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.EventReceiver
                           && args.OldValue == oldValue
                           && args.NewValue == newValue)));
     }
+
+    public void Committing (object sender)
+    {
+      this.Expect (mock => mock.Committing (Arg.Is (sender), Arg<EventArgs>.Is.Anything));
+    }
+
+    public void Committed (object sender)
+    {
+      this.Expect (mock => mock.Committed (Arg.Is (sender), Arg<EventArgs>.Is.Anything));
+    }
+
+    public void RollingBack (object sender)
+    {
+      this.Expect (mock => mock.RollingBack (Arg.Is (sender), Arg<EventArgs>.Is.Anything));
+    }
+
+    public void RolledBack (object sender)
+    {
+      this.Expect (mock => mock.RolledBack (Arg.Is (sender), Arg<EventArgs>.Is.Anything));
+    }
   }
 }
