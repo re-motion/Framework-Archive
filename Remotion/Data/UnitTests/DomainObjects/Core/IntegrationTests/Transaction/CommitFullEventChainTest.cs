@@ -138,7 +138,6 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
     }
 
     [Test]
-    [Ignore ("TODO 1807")]
     public void FullEventChain_WithReiterationDueToRegisterForAdditionalCommittingEvents ()
     {
       using (_mockRepository.Ordered ())
@@ -150,23 +149,19 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
             // This triggers _one_ (not two) additional run for _changedObject
             .WhenCalled (mi => _transaction.Execute (() =>
             {
-              /* ((ICommittingEventRegistrar) mi.Arguments[2]).RegisterForAdditionalCommittingEvents (_changedObject); */
-              /* ((ICommittingEventRegistrar) mi.Arguments[2]).RegisterForAdditionalCommittingEvents (_changedObject); */
+              ((ICommittingEventRegistrar) mi.Arguments[2]).RegisterForAdditionalCommittingEvents (_changedObject);
+              ((ICommittingEventRegistrar) mi.Arguments[2]).RegisterForAdditionalCommittingEvents (_changedObject);
             }));
 
         ExpectCommittingEvents (Tuple.Create (_changedObject, _changedObjectEventReceiverMock))
             // This triggers one additional run for _newObject
-            .WhenCalled (mi => _transaction.Execute (() =>
-            {
-              /* ((ICommittingEventRegistrar) mi.Arguments[2]).RegisterForAdditionalCommittingEvents (_newObject); */
-            }));
+            .WhenCalled (
+                mi => _transaction.Execute (() => ((ICommittingEventRegistrar) mi.Arguments[2]).RegisterForAdditionalCommittingEvents (_newObject)));
 
         ExpectCommittingEvents (Tuple.Create (_newObject, _newObjectEventReceiverMock))
-          // This triggers one additional run for _newObject
-            .WhenCalled (mi => _transaction.Execute (() =>
-            {
-              /* ((ICommittingEventRegistrar) mi.Arguments[2]).RegisterForAdditionalCommittingEvents (_newObject); */
-            }));
+            // This triggers one additional run for _newObject
+            .WhenCalled (
+                mi => _transaction.Execute (() => ((ICommittingEventRegistrar) mi.Arguments[2]).RegisterForAdditionalCommittingEvents (_newObject)));
 
         ExpectCommittingEvents (Tuple.Create (_newObject, _newObjectEventReceiverMock));
 

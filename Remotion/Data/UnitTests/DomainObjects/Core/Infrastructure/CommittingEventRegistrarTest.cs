@@ -60,19 +60,5 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure
 
       Assert.That (_registrar.RegisteredObjects, Is.EquivalentTo (new[] { _domainObject1, _domainObject2, _domainObject3 }));
     }
-
-    [Test]
-    public void ClearRegisteredObjects ()
-    {
-      Assert.That (_registrar.RegisteredObjects, Is.Empty);
-
-      _registrar.RegisterForAdditionalCommittingEvents (_domainObject1, _domainObject2);
-
-      Assert.That (_registrar.RegisteredObjects, Is.EquivalentTo (new[] { _domainObject1, _domainObject2 }));
-
-      _registrar.ClearRegisteredObjects();
-
-      Assert.That (_registrar.RegisteredObjects, Is.Empty);
-    }
   }
 }

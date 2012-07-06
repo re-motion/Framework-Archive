@@ -41,10 +41,5 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
       _registeredObjects.UnionWith (domainObjects);
     }
-
-    public void ClearRegisteredObjects ()
-    {
-      _registeredObjects.Clear();
-    }
   }
 }

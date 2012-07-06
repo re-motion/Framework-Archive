@@ -122,6 +122,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
         _eventSink.RaiseEvent ((tx, l) => l.TransactionCommitting (tx, eventArgReadOnlyCollection, committingEventRegistrar));
 
         committingEventRaised.UnionWith (committingEventNotRaised.Select (item => item.DomainObject.ID));
+        committingEventRaised.ExceptWith (committingEventRegistrar.RegisteredObjects.Select (obj => obj.ID));
 
         var changedItems = _dataManager.GetNewChangedDeletedData ().ToList();
         committingEventNotRaised = changedItems.Where (item => !committingEventRaised.Contains (item.DomainObject.ID)).ToList ();
