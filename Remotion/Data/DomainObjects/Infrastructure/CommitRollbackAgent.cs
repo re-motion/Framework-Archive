@@ -19,9 +19,9 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using Remotion.Collections;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
-using Remotion.Data.DomainObjects.Linq;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Infrastructure
@@ -71,13 +71,10 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
     public void CommitData ()
     {
-      BeginCommit ();
-
-      var persistableDataItems = _dataManager.GetNewChangedDeletedData ().ToList ().AsReadOnly ();
-      _eventSink.RaiseEvent ((tx, l) => l.TransactionCommitValidate (tx, persistableDataItems));
+      var persistableDataItems = BeginCommit ();
+      _eventSink.RaiseEvent ((tx, l) => l.TransactionCommitValidate (tx, new ReadOnlyCollection<PersistableData> (persistableDataItems)));
 
       _persistenceStrategy.PersistData (persistableDataItems);
-
       _dataManager.Commit ();
 
       var changedButNotDeletedDomainObjects = persistableDataItems
@@ -90,20 +87,19 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
     public void RollbackData ()
     {
-      BeginRollback ();
-
-      var changedButNotNewItems =
-          _dataManager.GetLoadedDataByObjectState (StateType.Changed, StateType.Deleted)
-          .Select (item => item.DomainObject)
-          .ToList ()
-          .AsReadOnly ();
+      var persistableDataItems = BeginRollback ();
 
       _dataManager.Rollback ();
 
+      var changedButNotNewItems =
+          persistableDataItems.Where (item => item.DomainObjectState != StateType.New)
+              .Select (item => item.DomainObject)
+              .ToList()
+              .AsReadOnly();
       EndRollback (changedButNotNewItems);
     }
 
-    private void BeginCommit ()
+    private IList<PersistableData> BeginCommit ()
     {
       // TODO Doc: ES
 
@@ -116,23 +112,22 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       // If an object is changed back to its original state during the Committing phase, no Committed event will be raised,
       // because in this case the object won't be committed to the underlying backend (e.g. database).
 
-      var changedDomainObjects = GetChangedDomainObjects ().ToObjectList ();
-      var clientTransactionCommittingEventRaised = new HashSet<DomainObject>();
+      var committingEventNotRaised = _dataManager.GetNewChangedDeletedData ().ToList ();
+      var committingEventRaised = new HashSet<ObjectID>();
 
-      List<DomainObject> clientTransactionCommittingEventNotRaised;
-      do
+      while (true)
       {
-        clientTransactionCommittingEventNotRaised = changedDomainObjects.GetItemsExcept (clientTransactionCommittingEventRaised).ToList ();
-
-        var eventArgReadOnlyCollection = clientTransactionCommittingEventNotRaised.AsReadOnly ();
+        var eventArgReadOnlyCollection = ListAdapter.AdaptReadOnly (committingEventNotRaised, item => item.DomainObject);
         _eventSink.RaiseEvent ((tx, l) => l.TransactionCommitting (tx, eventArgReadOnlyCollection));
 
-        foreach (var domainObject in clientTransactionCommittingEventNotRaised)
-          clientTransactionCommittingEventRaised.Add (domainObject);
+        committingEventRaised.UnionWith (committingEventNotRaised.Select (item => item.DomainObject.ID));
 
-        changedDomainObjects = GetChangedDomainObjects ().ToObjectList ();
-        clientTransactionCommittingEventNotRaised = changedDomainObjects.GetItemsExcept (clientTransactionCommittingEventRaised).ToList ();
-      } while (clientTransactionCommittingEventNotRaised.Any ());
+        var changedItems = _dataManager.GetNewChangedDeletedData ().ToList();
+        committingEventNotRaised = changedItems.Where (item => !committingEventRaised.Contains (item.DomainObject.ID)).ToList ();
+       
+        if (!committingEventNotRaised.Any ())
+          return changedItems;
+      }
     }
 
     private void EndCommit (ReadOnlyCollection<DomainObject> changedDomainObjects)
@@ -140,7 +135,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       _eventSink.RaiseEvent ((tx, l) => l.TransactionCommitted (tx, changedDomainObjects));
     }
 
-    private void BeginRollback ()
+    private IList<PersistableData> BeginRollback ()
     {
       // TODO Doc: ES
 
@@ -153,33 +148,27 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       // If an object is changed back to its original state during the RollingBack phase, no RolledBack event will be raised,
       // because the object actually has never been changed from a ClientTransaction's perspective.
 
-      var changedDomainObjects = GetChangedDomainObjects ().ToObjectList ();
-      var clientTransactionRollingBackEventRaised = new HashSet<DomainObject> ();
+      var rollingBackEventNotRaised = _dataManager.GetNewChangedDeletedData ().ToList ();
+      var rollingBackEventRaised = new HashSet<ObjectID> ();
 
-      List<DomainObject> clientTransactionRollingBackEventNotRaised;
-      do
+      while (true)
       {
-        clientTransactionRollingBackEventNotRaised = changedDomainObjects.GetItemsExcept (clientTransactionRollingBackEventRaised).ToList ();
-
-        var eventArgReadOnlyCollection = clientTransactionRollingBackEventNotRaised.AsReadOnly ();
+        var eventArgReadOnlyCollection = ListAdapter.AdaptReadOnly (rollingBackEventNotRaised, item => item.DomainObject);
         _eventSink.RaiseEvent ((tx, l) => l.TransactionRollingBack (tx, eventArgReadOnlyCollection));
 
-        foreach (var domainObject in clientTransactionRollingBackEventNotRaised)
-          clientTransactionRollingBackEventRaised.Add (domainObject);
+        rollingBackEventRaised.UnionWith (rollingBackEventNotRaised.Select (item => item.DomainObject.ID));
 
-        changedDomainObjects = GetChangedDomainObjects ().ToObjectList ();
-        clientTransactionRollingBackEventNotRaised = changedDomainObjects.GetItemsExcept (clientTransactionRollingBackEventRaised).ToList ();
-      } while (clientTransactionRollingBackEventNotRaised.Any ());
+        var changedItems = _dataManager.GetNewChangedDeletedData ().ToList ();
+        rollingBackEventNotRaised = changedItems.Where (item => !rollingBackEventRaised.Contains (item.DomainObject.ID)).ToList ();
+
+        if (!rollingBackEventNotRaised.Any ())
+          return changedItems;
+      }
     }
 
     private void EndRollback (ReadOnlyCollection<DomainObject> changedDomainObjects)
     {
       _eventSink.RaiseEvent ((tx, l) => l.TransactionRolledBack (tx, changedDomainObjects));
-    }
-
-    private IEnumerable<DomainObject> GetChangedDomainObjects ()
-    {
-      return _dataManager.GetNewChangedDeletedData ().Select (item => item.DomainObject);
     }
   }
 }
