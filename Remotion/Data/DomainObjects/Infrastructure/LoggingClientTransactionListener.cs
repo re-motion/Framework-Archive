@@ -285,7 +285,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       return results;
     }
 
-    public void TransactionCommitting (ClientTransaction clientTransaction, ReadOnlyCollection<DomainObject> domainObjects)
+    public void TransactionCommitting (ClientTransaction clientTransaction, ReadOnlyCollection<DomainObject> domainObjects, ICommittingEventRegistrar eventRegistrar)
     {
       if (s_log.IsDebugEnabled)
         s_log.DebugFormat ("{0} TransactionCommitting: {1}", clientTransaction.ID, GetDomainObjectsString (domainObjects));

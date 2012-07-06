@@ -169,12 +169,12 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       base.RelationChanged (clientTransaction, domainObject, relationEndPointDefinition, oldRelatedObject, newRelatedObject);
     }
 
-    public override void TransactionCommitting (ClientTransaction clientTransaction, ReadOnlyCollection<DomainObject> domainObjects)
+    public override void TransactionCommitting (ClientTransaction clientTransaction, ReadOnlyCollection<DomainObject> domainObjects, ICommittingEventRegistrar eventRegistrar)
     {
       ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
       ArgumentUtility.CheckNotNull ("domainObjects", domainObjects);
 
-      base.TransactionCommitting (clientTransaction, domainObjects);
+      base.TransactionCommitting (clientTransaction, domainObjects, eventRegistrar);
       clientTransaction.Execute (
           () =>
           {

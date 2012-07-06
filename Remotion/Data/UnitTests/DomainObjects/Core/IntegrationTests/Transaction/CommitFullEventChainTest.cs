@@ -274,9 +274,9 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
       {
         var domainObjects = domainObjectsAndMocks.Select (t => t.Item1).ToArray();
         var methodOptions = _extensionMock
-            .Expect (mock => mock.Committing (Arg.Is (_transaction), ArgIsCommitSet (domainObjects)));
+            .Expect (mock => mock.Committing (Arg.Is (_transaction), ArgIsCommitSet (domainObjects), Arg<CommittingEventRegistrar>.Is.TypeOf));
         _listenerMock
-            .Expect (mock => mock.TransactionCommitting (Arg.Is (_transaction), ArgIsCommitSet (domainObjects)));
+            .Expect (mock => mock.TransactionCommitting (Arg.Is (_transaction), ArgIsCommitSet (domainObjects), Arg<CommittingEventRegistrar>.Is.TypeOf));
         _transactionMockEventReceiver
             .Expect (mock => mock.Committing (_transaction, domainObjects))
             .WithCurrentTransaction (_transaction);

@@ -118,7 +118,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       while (true)
       {
         var eventArgReadOnlyCollection = ListAdapter.AdaptReadOnly (committingEventNotRaised, item => item.DomainObject);
-        _eventSink.RaiseEvent ((tx, l) => l.TransactionCommitting (tx, eventArgReadOnlyCollection));
+        var committingEventRegistrar = new CommittingEventRegistrar();
+        _eventSink.RaiseEvent ((tx, l) => l.TransactionCommitting (tx, eventArgReadOnlyCollection, committingEventRegistrar));
 
         committingEventRaised.UnionWith (committingEventNotRaised.Select (item => item.DomainObject.ID));
 

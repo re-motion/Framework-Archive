@@ -165,9 +165,10 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       return _extension.FilterCustomQueryResult (clientTransaction, query, results);
     }
 
-    public void TransactionCommitting (ClientTransaction clientTransaction, ReadOnlyCollection<DomainObject> domainObjects)
+    public void TransactionCommitting (
+        ClientTransaction clientTransaction, ReadOnlyCollection<DomainObject> domainObjects, ICommittingEventRegistrar eventRegistrar)
     {
-      _extension.Committing (clientTransaction, domainObjects);
+      _extension.Committing (clientTransaction, domainObjects, eventRegistrar);
     }
 
     public void TransactionCommitValidate (ClientTransaction clientTransaction, ReadOnlyCollection<PersistableData> committedData)

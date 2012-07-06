@@ -113,7 +113,8 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure
         _eventSinkWithMock.ExpectMock (
             mock => mock.TransactionCommitting (
                 Arg.Is (_eventSinkWithMock.ClientTransaction),
-                Arg<ReadOnlyCollection<DomainObject>>.List.Equivalent (new[] { _fakeChangedDomainObject, _fakeNewDomainObject })));
+                Arg<ReadOnlyCollection<DomainObject>>.List.Equivalent (new[] { _fakeChangedDomainObject, _fakeNewDomainObject }),
+                Arg<CommittingEventRegistrar>.Is.TypeOf));
 
         // Second run of BeginCommit: _fakeChangedPersistableItem, _fakeNewPersistableItem, _fakeDeletedPersistableItem in commit set 
         // Event is raised just for _fakeDeletedPersistableItem - the others have already got their event
@@ -123,7 +124,8 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure
         _eventSinkWithMock.ExpectMock (
             mock => mock.TransactionCommitting (
                 Arg.Is (_eventSinkWithMock.ClientTransaction),
-                Arg<ReadOnlyCollection<DomainObject>>.List.Equivalent (new[] { _fakeDeletedDomainObject })));
+                Arg<ReadOnlyCollection<DomainObject>>.List.Equivalent (new[] { _fakeDeletedDomainObject }),
+                Arg<CommittingEventRegistrar>.Is.TypeOf));
 
         // End of BeginCommit: _fakeNewPersistableItem, _fakeDeletedPersistableItem in commit set - events already raised for all of those
         _dataManagerMock.Expect (mock => mock.GetNewChangedDeletedData ()).Return (new[] { _fakeNewPersistableItem, _fakeDeletedPersistableItem });

@@ -123,7 +123,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       return results;
     }
 
-    public virtual void TransactionCommitting (ClientTransaction clientTransaction, ReadOnlyCollection<DomainObject> domainObjects)
+    public virtual void TransactionCommitting (ClientTransaction clientTransaction, ReadOnlyCollection<DomainObject> domainObjects, ICommittingEventRegistrar eventRegistrar)
     {
     }
 

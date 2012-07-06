@@ -333,8 +333,9 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure
     [Test]
     public void TransactionCommitting ()
     {
+      var eventRegistrar = MockRepository.GenerateStub<ICommittingEventRegistrar>();
       CheckEventWithListenersFirst (
-          l => l.TransactionCommitting (_clientTransaction, Array.AsReadOnly (new DomainObject[] { _order1, _order2 })),
+          l => l.TransactionCommitting (_clientTransaction, Array.AsReadOnly (new DomainObject[] { _order1, _order2 }), eventRegistrar),
           () =>
           {
             _transactionEventReceiverMock
@@ -352,8 +353,9 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure
     [Test]
     public void TransactionCommitting_InvalidObject ()
     {
+      var eventRegistrar = MockRepository.GenerateStub<ICommittingEventRegistrar> ();
       CheckEventWithListenersFirst (
-          l => l.TransactionCommitting (_clientTransaction, Array.AsReadOnly (new DomainObject[] { _invalidObject })),
+          l => l.TransactionCommitting (_clientTransaction, Array.AsReadOnly (new DomainObject[] { _invalidObject }), eventRegistrar),
           () =>
           {
             _transactionEventReceiverMock

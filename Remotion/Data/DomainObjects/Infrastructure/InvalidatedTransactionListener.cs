@@ -149,7 +149,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       throw CreateException ();
     }
 
-    public void TransactionCommitting (ClientTransaction clientTransaction, ReadOnlyCollection<DomainObject> domainObjects)
+    public void TransactionCommitting (ClientTransaction clientTransaction, ReadOnlyCollection<DomainObject> domainObjects, ICommittingEventRegistrar eventRegistrar)
     {
       throw CreateException();
     }

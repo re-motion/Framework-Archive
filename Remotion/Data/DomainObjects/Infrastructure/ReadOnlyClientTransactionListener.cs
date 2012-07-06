@@ -161,7 +161,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       return results;
     }
 
-    public void TransactionCommitting (ClientTransaction clientTransaction, ReadOnlyCollection<DomainObject> domainObjects)
+    public void TransactionCommitting (ClientTransaction clientTransaction, ReadOnlyCollection<DomainObject> domainObjects, ICommittingEventRegistrar eventRegistrar)
     {
       EnsureWriteable (clientTransaction, "TransactionCommitting");
     }
