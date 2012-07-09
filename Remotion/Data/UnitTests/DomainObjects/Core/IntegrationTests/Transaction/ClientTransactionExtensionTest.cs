@@ -1338,13 +1338,13 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
                 Arg<ReadOnlyCollection<DomainObject>>.List.Equal (new[] { computer }),
                 Arg<CommittingEventRegistrar>.Is.TypeOf));
         clientTransactionMockEventReceiver.Expect (mock =>mock.Committing (_newTransaction, computer));
-        computerEventReveiver.Expect (mock => mock.Committing (computer, EventArgs.Empty));
+        computerEventReveiver.Expect (mock => mock.Committing (computer));
 
         _extensionMock.Expect (mock => mock.CommitValidate (
             Arg.Is (_newTransaction), 
             Arg<ReadOnlyCollection<PersistableData>>.Matches (c => c.Select (d => d.DomainObject).SetEquals (new DomainObject[] { computer }))));
 
-        computerEventReveiver.Expect (mock => mock.Committed (computer, EventArgs.Empty));
+        computerEventReveiver.Expect (mock => mock.Committed (computer));
         clientTransactionMockEventReceiver.Expect (mock => mock.Committed (_newTransaction, computer));
         _extensionMock.Expect (mock => mock.Committed (Arg.Is (_newTransaction), Arg<ReadOnlyCollection<DomainObject>>.List.Equal (new[] { computer })));
       }

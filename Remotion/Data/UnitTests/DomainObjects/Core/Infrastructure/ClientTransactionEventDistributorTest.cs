@@ -348,10 +348,14 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure
                             args => args.DomainObjects.SetEquals (new[] { _order1, _order2 }) && args.EventRegistrar == eventRegistrar)))
                 .WithCurrentTransaction (_clientTransaction);
             _order1EventReceiverMock
-                .Expect (mock => mock.Committing (_order1, EventArgs.Empty))
+                .Expect (mock => mock.Committing (
+                    Arg.Is (_order1), 
+                    Arg<DomainObjectCommittingEventArgs>.Matches (args => args.EventRegistrar == eventRegistrar)))
                 .WithCurrentTransaction (_clientTransaction);
             _order2EventReceiverMock
-                .Expect (mock => mock.Committing (_order2, EventArgs.Empty))
+                .Expect (mock => mock.Committing (
+                    Arg.Is (_order2),
+                    Arg<DomainObjectCommittingEventArgs>.Matches (args => args.EventRegistrar == eventRegistrar)))
                 .WithCurrentTransaction (_clientTransaction);
           });
     }
@@ -368,7 +372,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure
                 .Expect (mock => mock.Committing (_clientTransaction, _invalidObject))
                 .WithCurrentTransaction (_clientTransaction);
             _invalidObjectEventReceiverMock
-                .Expect (mock => mock.Committing (Arg<object>.Is.Anything, Arg<EventArgs>.Is.Anything))
+                .Expect (mock => mock.Committing (Arg<object>.Is.Anything, Arg<DomainObjectCommittingEventArgs>.Is.Anything))
                 .Repeat.Never()
                 .Message ("DomainObject event should not be raised if object is made invalid.");
           });

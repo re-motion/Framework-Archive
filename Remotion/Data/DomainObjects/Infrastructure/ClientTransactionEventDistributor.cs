@@ -186,7 +186,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
             {
               var domainObject = domainObjects[i];
               if (!domainObject.IsInvalid)
-                domainObject.OnCommitting (EventArgs.Empty);
+                domainObject.OnCommitting (new DomainObjectCommittingEventArgs (eventRegistrar));
             }
             // ReSharper restore ForCanBeConvertedToForeach
           });
