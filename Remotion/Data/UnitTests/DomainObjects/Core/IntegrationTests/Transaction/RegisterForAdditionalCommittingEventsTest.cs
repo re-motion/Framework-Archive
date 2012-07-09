@@ -23,65 +23,8 @@ using Remotion.Data.DomainObjects;
 namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transaction
 {
   [TestFixture]
-  public class CommitFullEventChainTest : CommitFullEventChainTestBase
+  public class RegisterForAdditionalCommittingEventsTest : CommitFullEventChainTestBase
   {
-    [Test]
-    public void FullEventChain ()
-    {
-      using (MockRepository.Ordered ())
-      {
-        ExpectCommittingEvents (
-            Tuple.Create (ChangedObject, ChangedObjectEventReceiverMock),
-            Tuple.Create (NewObject, NewObjectEventReceiverMock),
-            Tuple.Create (DeletedObject, DeletedObjectEventReceiverMock));
-
-        ExpectCommitValidateEvents (ChangedObject, NewObject, DeletedObject);
-
-        ExpectCommittedEvents (
-            Tuple.Create (ChangedObject, ChangedObjectEventReceiverMock),
-            Tuple.Create (NewObject, NewObjectEventReceiverMock));
-      }
-      MockRepository.ReplayAll ();
-
-      Assert.That (ClientTransaction.Current, Is.Not.SameAs (Transaction));
-
-      Transaction.Commit ();
-      
-      Assert.That (ClientTransaction.Current, Is.Not.SameAs (Transaction));
-      MockRepository.VerifyAll ();
-    }
-
-    [Test]
-    public void FullEventChain_WithReiterationDueToAddedObject ()
-    {
-      using (MockRepository.Ordered ())
-      {
-        ExpectCommittingEvents (
-            Tuple.Create (ChangedObject, ChangedObjectEventReceiverMock),
-            Tuple.Create (NewObject, NewObjectEventReceiverMock),
-            Tuple.Create (DeletedObject, DeletedObjectEventReceiverMock))
-            // This triggers one additional run
-            .WhenCalled (mi => Transaction.Execute (() => UnchangedObject.MarkAsChanged()));
-
-        ExpectCommittingEvents (
-            Tuple.Create (UnchangedObject, UnchangedObjectEventReceiverMock))
-            // This does not trigger an additional run because the object is no longer new to the commit set
-            .WhenCalled (mi => Transaction.Execute (() => UnchangedObject.MarkAsChanged ()));
-
-        ExpectCommitValidateEvents (ChangedObject, NewObject, DeletedObject, UnchangedObject);
-
-        ExpectCommittedEvents (
-            Tuple.Create (ChangedObject, ChangedObjectEventReceiverMock),
-            Tuple.Create (NewObject, NewObjectEventReceiverMock),
-            Tuple.Create (UnchangedObject, UnchangedObjectEventReceiverMock));
-      }
-      MockRepository.ReplayAll ();
-
-      Transaction.Commit ();
-
-      MockRepository.VerifyAll ();
-    }
-
     [Test]
     public void FullEventChain_WithReiterationDueToRegisterForAdditionalCommittingEvents ()
     {
