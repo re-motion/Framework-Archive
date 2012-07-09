@@ -16,14 +16,19 @@
 // 
 
 using System;
+using System.Linq;
 using NUnit.Framework;
 using Remotion.Collections;
 using Remotion.Data.DomainObjects;
+using Remotion.Data.DomainObjects.Infrastructure;
+using Remotion.Data.UnitTests.DomainObjects.Core.EventReceiver;
+using Rhino.Mocks;
+using Rhino.Mocks.Interfaces;
 
 namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transaction
 {
   [TestFixture]
-  public class CommitFullEventChainTest : CommitFullEventChainTestBase
+  public class CommitFullEventChainTest : CommitRollbackFullEventChainTestBase
   {
     [Test]
     public void FullEventChain ()
@@ -52,20 +57,21 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
     }
 
     [Test]
-    public void FullEventChain_WithReiterationDueToAddedObject ()
+    public void FullEventChain_WithReiterationDueToAddedObject_InExtension ()
     {
       using (MockRepository.Ordered ())
       {
-        ExpectCommittingEvents (
+        ExpectCommittingEventsWithCustomOptions (
             Tuple.Create (ChangedObject, ChangedObjectEventReceiverMock),
             Tuple.Create (NewObject, NewObjectEventReceiverMock),
             Tuple.Create (DeletedObject, DeletedObjectEventReceiverMock))
             // This triggers one additional run
+            .ExtensionOptions
             .WhenCalled (mi => Transaction.Execute (() => UnchangedObject.MarkAsChanged()));
 
-        ExpectCommittingEvents (
-            Tuple.Create (UnchangedObject, UnchangedObjectEventReceiverMock))
+        ExpectCommittingEventsWithCustomOptions (Tuple.Create (UnchangedObject, UnchangedObjectEventReceiverMock))
             // This does not trigger an additional run because the object is no longer new to the commit set
+            .ExtensionOptions
             .WhenCalled (mi => Transaction.Execute (() => UnchangedObject.MarkAsChanged ()));
 
         ExpectCommitValidateEvents (ChangedObject, NewObject, DeletedObject, UnchangedObject);
@@ -83,39 +89,29 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
     }
 
     [Test]
-    public void FullEventChain_WithReiterationDueToRegisterForAdditionalCommittingEvents ()
+    public void FullEventChain_WithReiterationDueToAddedObject_InTransaction ()
     {
       using (MockRepository.Ordered ())
       {
-        ExpectCommittingEvents (
+        ExpectCommittingEventsWithCustomOptions (
             Tuple.Create (ChangedObject, ChangedObjectEventReceiverMock),
             Tuple.Create (NewObject, NewObjectEventReceiverMock),
             Tuple.Create (DeletedObject, DeletedObjectEventReceiverMock))
-            // This triggers _one_ (not two) additional run for _changedObject
-            .WhenCalled (mi => Transaction.Execute (() =>
-            {
-              ((ICommittingEventRegistrar) mi.Arguments[2]).RegisterForAdditionalCommittingEvents (ChangedObject);
-              ((ICommittingEventRegistrar) mi.Arguments[2]).RegisterForAdditionalCommittingEvents (ChangedObject);
-            }));
+          // This triggers one additional run
+            .TransactionOptions
+            .WhenCalled (mi => MarkAsChangedWithDisabledListener(UnchangedObject));
 
-        ExpectCommittingEvents (Tuple.Create (ChangedObject, ChangedObjectEventReceiverMock))
-            // This triggers one additional run for _newObject
-            .WhenCalled (
-                mi => Transaction.Execute (() => ((ICommittingEventRegistrar) mi.Arguments[2]).RegisterForAdditionalCommittingEvents (NewObject)));
+        ExpectCommittingEventsWithCustomOptions (Tuple.Create (UnchangedObject, UnchangedObjectEventReceiverMock))
+          // This does not trigger an additional run because the object is no longer new to the commit set
+            .TransactionOptions
+            .WhenCalled (mi => MarkAsChangedWithDisabledListener(UnchangedObject));
 
-        ExpectCommittingEvents (Tuple.Create (NewObject, NewObjectEventReceiverMock))
-            // This triggers one additional run for _newObject
-            .WhenCalled (
-                mi => Transaction.Execute (() => ((ICommittingEventRegistrar) mi.Arguments[2]).RegisterForAdditionalCommittingEvents (NewObject)));
+        ExpectCommitValidateEvents (ChangedObject, NewObject, DeletedObject, UnchangedObject);
 
-        ExpectCommittingEvents (Tuple.Create (NewObject, NewObjectEventReceiverMock));
-
-        ExpectCommitValidateEvents (ChangedObject, NewObject, DeletedObject);
-
-        // Committed events
         ExpectCommittedEvents (
             Tuple.Create (ChangedObject, ChangedObjectEventReceiverMock),
-            Tuple.Create (NewObject, NewObjectEventReceiverMock));
+            Tuple.Create (NewObject, NewObjectEventReceiverMock),
+            Tuple.Create (UnchangedObject, UnchangedObjectEventReceiverMock));
       }
       MockRepository.ReplayAll ();
 
@@ -125,33 +121,25 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
     }
 
     [Test]
-    public void FullEventChain_WithReiterationDueToAddedObjectAndRegisterForAdditionalCommittingEvents ()
+    public void FullEventChain_WithReiterationDueToAddedObject_InDomainObject ()
     {
       using (MockRepository.Ordered ())
       {
-        ExpectCommittingEvents (
+        ExpectCommittingEventsWithCustomOptions (
             Tuple.Create (ChangedObject, ChangedObjectEventReceiverMock),
             Tuple.Create (NewObject, NewObjectEventReceiverMock),
             Tuple.Create (DeletedObject, DeletedObjectEventReceiverMock))
-            // This triggers _one_ (not two) additional run for _unchangedObject
-            .WhenCalled (mi => Transaction.Execute (() =>
-            {
-              Assert.That (
-                  () => ((ICommittingEventRegistrar) mi.Arguments[2]).RegisterForAdditionalCommittingEvents (UnchangedObject),
-                  Throws.ArgumentException.With.Message.EqualTo (
-                      string.Format (
-                          "The given DomainObject '{0}' cannot be registered due to its state (Unchanged). Only objects that are part of the commit set "
-                          + "can be registered. Use MarkAsChanged to add an unchanged object to the commit set.\r\nParameter name: domainObjects",
-                          UnchangedObject.ID)));
-               UnchangedObject.MarkAsChanged();
-               ((ICommittingEventRegistrar) mi.Arguments[2]).RegisterForAdditionalCommittingEvents (UnchangedObject);
-            }));
+          // This triggers one additional run
+            .DomainObjectOptions[1]
+            .WhenCalled (mi => Transaction.Execute (() => UnchangedObject.MarkAsChanged ()));
 
-        ExpectCommittingEvents (Tuple.Create (UnchangedObject, UnchangedObjectEventReceiverMock));
-        
+        ExpectCommittingEventsWithCustomOptions (Tuple.Create (UnchangedObject, UnchangedObjectEventReceiverMock))
+          // This does not trigger an additional run because the object is no longer new to the commit set
+            .DomainObjectOptions[0]
+            .WhenCalled (mi => Transaction.Execute (() => UnchangedObject.MarkAsChanged ()));
+
         ExpectCommitValidateEvents (ChangedObject, NewObject, DeletedObject, UnchangedObject);
 
-        // Committed events
         ExpectCommittedEvents (
             Tuple.Create (ChangedObject, ChangedObjectEventReceiverMock),
             Tuple.Create (NewObject, NewObjectEventReceiverMock),
