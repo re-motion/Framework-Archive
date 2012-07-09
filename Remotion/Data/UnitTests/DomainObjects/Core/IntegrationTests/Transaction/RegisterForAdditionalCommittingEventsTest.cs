@@ -70,7 +70,6 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
     }
 
     [Test]
-    [Ignore ("TODO 1807")]
     public void FullEventChain_WithReiterationDueToRegisterForAdditionalCommittingEvents_InClientTransaction ()
     {
       using (MockRepository.Ordered ())
@@ -84,8 +83,8 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
             .WhenCalled (
                 mi =>
                 {
-                  /* TODO 1807 Transaction.Execute (
-                    () => ((ClientTransactionEventArgs) mi.Arguments[1]).EventRegistrar.RegisterForAdditionalCommittingEvents (ChangedObject)*/
+                  var args = ((ClientTransactionCommittingEventArgs) mi.Arguments[1]);
+                  Transaction.Execute (() => args.EventRegistrar.RegisterForAdditionalCommittingEvents (ChangedObject));
                 });
 
         // No more additional runs
