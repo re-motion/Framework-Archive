@@ -26,6 +26,7 @@ using Remotion.Data.UnitTests.UnitTesting;
 using Remotion.Development.UnitTesting;
 using Rhino.Mocks;
 using System.Linq;
+using Remotion.FunctionalProgramming;
 
 namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure
 {
@@ -339,7 +340,12 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure
           () =>
           {
             _transactionEventReceiverMock
-                .Expect (mock => mock.Committing (_clientTransaction, _order1, _order2))
+                .Expect (
+                    mock =>
+                    mock.Committing (
+                        Arg.Is (_clientTransaction),
+                        Arg<ClientTransactionCommittingEventArgs>.Matches (
+                            args => args.DomainObjects.SetEquals (new[] { _order1, _order2 }) && args.EventRegistrar == eventRegistrar)))
                 .WithCurrentTransaction (_clientTransaction);
             _order1EventReceiverMock
                 .Expect (mock => mock.Committing (_order1, EventArgs.Empty))

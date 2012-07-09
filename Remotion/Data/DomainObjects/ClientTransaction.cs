@@ -120,7 +120,7 @@ public class ClientTransaction
   /// <summary>
   /// Occurs immediately before the <b>ClientTransaction</b> performs a <see cref="Commit"/> operation.
   /// </summary>
-  public event EventHandler<ClientTransactionEventArgs> Committing;
+  public event EventHandler<ClientTransactionCommittingEventArgs> Committing;
 
   /// <summary>
   /// Occurs immediately after the <b>ClientTransaction</b> has successfully performed a <see cref="Commit"/> operation.
@@ -1159,7 +1159,7 @@ public class ClientTransaction
   /// Raises the <see cref="Committing"/> event.
   /// </summary>
   /// <param name="args">A <see cref="ClientTransactionEventArgs"/> object that contains the event data.</param>
-  protected internal virtual void OnCommitting (ClientTransactionEventArgs args)
+  protected internal virtual void OnCommitting (ClientTransactionCommittingEventArgs args)
   {
     ArgumentUtility.CheckNotNull ("args", args);
 

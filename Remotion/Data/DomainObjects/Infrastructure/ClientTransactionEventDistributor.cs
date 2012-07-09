@@ -169,16 +169,18 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       base.RelationChanged (clientTransaction, domainObject, relationEndPointDefinition, oldRelatedObject, newRelatedObject);
     }
 
-    public override void TransactionCommitting (ClientTransaction clientTransaction, ReadOnlyCollection<DomainObject> domainObjects, ICommittingEventRegistrar eventRegistrar)
+    public override void TransactionCommitting (
+        ClientTransaction clientTransaction, ReadOnlyCollection<DomainObject> domainObjects, ICommittingEventRegistrar eventRegistrar)
     {
       ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
       ArgumentUtility.CheckNotNull ("domainObjects", domainObjects);
+      ArgumentUtility.CheckNotNull ("eventRegistrar", eventRegistrar);
 
       base.TransactionCommitting (clientTransaction, domainObjects, eventRegistrar);
       clientTransaction.Execute (
           () =>
           {
-            clientTransaction.OnCommitting (new ClientTransactionEventArgs (domainObjects));
+            clientTransaction.OnCommitting (new ClientTransactionCommittingEventArgs (domainObjects, eventRegistrar));
             // ReSharper disable ForCanBeConvertedToForeach
             for (int i = 0; i < domainObjects.Count; i++)
             {
