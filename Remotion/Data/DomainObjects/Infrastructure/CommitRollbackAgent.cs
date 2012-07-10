@@ -110,8 +110,6 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
     private IList<PersistableData> BeginCommit ()
     {
-      // TODO Doc: ES
-
       // Note regarding to Committing: 
       // Every object raises a Committing event even if another object's Committing event changes the first object's state back to original 
       // during its own Committing event. Because the event order of .NET is not deterministic, this behavior is desired to ensure consistency: 
@@ -124,15 +122,20 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       var committingEventNotRaised = _dataManager.GetNewChangedDeletedData ().ToList ();
       var committingEventRaised = new HashSet<ObjectID>();
 
+      // Repeat this until all objects in the commit set have got the event. The commit set can change while this loop is iterated.
       while (true)
       {
         var eventArgReadOnlyCollection = ListAdapter.AdaptReadOnly (committingEventNotRaised, item => item.DomainObject);
         var committingEventRegistrar = new CommittingEventRegistrar (_clientTransaction);
         _eventSink.RaiseEvent ((tx, l) => l.TransactionCommitting (tx, eventArgReadOnlyCollection, committingEventRegistrar));
 
+        // Remember which objects have got the event right now.
         committingEventRaised.UnionWith (committingEventNotRaised.Select (item => item.DomainObject.ID));
+
+        // Remove objects registered for repeated Committing events so that they'll get the event again.
         committingEventRaised.ExceptWith (committingEventRegistrar.RegisteredObjects.Select (obj => obj.ID));
 
+        // Reevaluate the commit set - it might have changed. Have all objects in it got the event? If yes, return the commit set.
         var changedItems = _dataManager.GetNewChangedDeletedData ().ToList();
         committingEventNotRaised = changedItems.Where (item => !committingEventRaised.Contains (item.DomainObject.ID)).ToList ();
        
@@ -148,8 +151,6 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
     private IList<PersistableData> BeginRollback ()
     {
-      // TODO Doc: ES
-
       // Note regarding to RollingBack: 
       // Every object raises a RollingBack event even if another object's RollingBack event changes the first object's state back to original 
       // during its own RollingBack event. Because the event order of .NET is not deterministic, this behavior is desired to ensure consistency: 
@@ -162,13 +163,16 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       var rollingBackEventNotRaised = _dataManager.GetNewChangedDeletedData ().ToList ();
       var rollingBackEventRaised = new HashSet<ObjectID> ();
 
+      // Repeat this until all objects in the rollback set have got the event. The rollback set can change while this loop is iterated.
       while (true)
       {
         var eventArgReadOnlyCollection = ListAdapter.AdaptReadOnly (rollingBackEventNotRaised, item => item.DomainObject);
         _eventSink.RaiseEvent ((tx, l) => l.TransactionRollingBack (tx, eventArgReadOnlyCollection));
 
+        // Remember which objects have got the event right now.
         rollingBackEventRaised.UnionWith (rollingBackEventNotRaised.Select (item => item.DomainObject.ID));
 
+        // Reevaluate the rollback set - it might have changed. Have all objects in it got the event? If yes, return the rollback set.
         var changedItems = _dataManager.GetNewChangedDeletedData ().ToList ();
         rollingBackEventNotRaised = changedItems.Where (item => !rollingBackEventRaised.Contains (item.DomainObject.ID)).ToList ();
 

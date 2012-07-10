@@ -797,6 +797,54 @@ public class ClientTransaction
   /// </summary>
   /// <exception cref="Persistence.PersistenceException">Changes to objects from multiple storage providers were made.</exception>
   /// <exception cref="Persistence.StorageProviderException">An error occurred while committing the changes to the data source.</exception>
+  /// <remarks>
+  /// <para>
+  /// Committing a <see cref="ClientTransaction"/> raises a number of events:
+  /// <list type="number">
+  /// <item><description>
+  /// First, a chain of Commtting events is raised. Each Committing event can cancel the <see cref="Commit"/> operation by throwing an exception 
+  /// (which, after canceling the operation, will be propagated to the caller). Committing event handlers can also modify each 
+  /// <see cref="DomainObject"/> being committed, and they can add or remove objects to or from the commit set. For example, if a Committing event
+  /// handler modifies a changed object so that it becomes <see cref="StateType.Unchanged"/>, that object will be removed from the commit set.
+  /// Or, if a handler modifies an unchanged object so that it becomes <see cref="StateType.Changed"/>, it will become part of the commit set.
+  /// When a set of objects (a, b) is committed, the Committing event chain consists of the following events, raised in order:
+  /// <list type="number">
+  /// <item><description>
+  /// <see cref="IClientTransactionListener"/>.<see cref="IClientTransactionListener.TransactionCommitting"/> and 
+  /// <see cref="IClientTransactionExtension"/>.<see cref="IClientTransactionExtension.Committing"/> for (a, b)</description></item>
+  /// <item><description><see cref="ClientTransaction"/>.<see cref="ClientTransaction.Committing"/> for (a, b)</description></item>
+  /// <item><description>a.<see cref="DomainObject.Committing"/>, b.<see cref="DomainObject.Committing"/> (order undefined)</description></item>
+  /// </list>
+  /// Usually, every event handler in the Committing event chain receives each object in the commit set exactly once. (See 
+  /// <see cref="ICommittingEventRegistrar.RegisterForAdditionalCommittingEvents"/> in order to repeat the Committing events for an object.)
+  /// If any event handler adds an object c to the commit set (e.g., by changing or creating it), the whole chain is repeated, but only for c.
+  /// </description></item>
+  /// <item><description>
+  /// Then, <see cref="IClientTransactionListener"/>.<see cref="IClientTransactionListener.TransactionCommitValidate"/> and 
+  /// <see cref="IClientTransactionExtension"/>.<see cref="IClientTransactionExtension.CommitValidate"/> are raised for the commit set.
+  /// The event handlers for those events get the commit set exactly as it is saved to the underlying data store (or parent transaction) and are 
+  /// allowed to cancel the operation by throwing an exception, e.g., if a validation rule fails. The event handlers must not modify the 
+  /// <see cref="ClientTransaction"/>'s state (including that of any <see cref="DomainObject"/> in the transaction) in any way.
+  /// </description></item>
+  /// <item><description>
+  /// Then, the data is saved to the underlying data store or parent transaction. The data store or parent transaction may cancel the operation
+  /// by throwing an exception (e.g., a <see cref="ConcurrencyViolationException"/> or a database-level exception).
+  /// </description></item>
+  /// <item><description>
+  /// Finally, if the <see cref="Commit"/> operation was completed successfully, a chain of Committed events is raised. Committed event handlers must
+  /// not throw an exception. When a set of objects (a, b) was committed, the Committed event chain consists of the following events, raised in order:
+  /// <list type="number">
+  /// <item><description>a.<see cref="DomainObject.Committed"/>, b.<see cref="DomainObject.Committed"/> (order undefined)</description></item>
+  /// <item><description><see cref="ClientTransaction"/>.<see cref="ClientTransaction.Committed"/> for (a, b)</description></item>
+  /// <item><description>
+  /// <see cref="IClientTransactionListener"/>.<see cref="IClientTransactionListener.TransactionCommitted"/> and 
+  /// <see cref="IClientTransactionExtension"/>.<see cref="IClientTransactionExtension.Committed"/> for (a, b)
+  /// </description></item>
+  /// </list>
+  /// </description></item>
+  /// </list>
+  /// </para>
+  /// </remarks>
   public virtual void Commit ()
   {
     using (EnterNonDiscardingScope ())
@@ -808,6 +856,45 @@ public class ClientTransaction
   /// <summary>
   /// Performs a rollback of all changes within the <b>ClientTransaction</b>.
   /// </summary>
+  /// <remarks>
+  /// <para>
+  /// Rolling back a <see cref="ClientTransaction"/> raises a number of events:
+  /// <list type="number">
+  /// <item><description>
+  /// First, a chain of RollingBack events is raised. Each RollingBack event can cancel the <see cref="Rollback"/> operation by throwing an exception 
+  /// (which, after canceling the operation, will be propagated to the caller). RollingBack event handlers can also modify each 
+  /// <see cref="DomainObject"/> being rolled back, and they can add or remove objects to or from the rollback set. For example, if a RollingBack event
+  /// handler modifies a changed object so that it becomes <see cref="StateType.Unchanged"/>, that object will no longer need to be rolled back.
+  /// Or, if a handler modifies an unchanged object so that it becomes <see cref="StateType.Changed"/>, it will become part of the rollback set.
+  /// When a set of objects (a, b) is rolled back, the RollingBack event chain consists of the following events, raised in order:
+  /// <list type="number">
+  /// <item><description>
+  /// <see cref="IClientTransactionListener"/>.<see cref="IClientTransactionListener.TransactionRollingBack"/> and 
+  /// <see cref="IClientTransactionExtension"/>.<see cref="IClientTransactionExtension.RollingBack"/> for (a, b)</description></item>
+  /// <item><description><see cref="ClientTransaction"/>.<see cref="ClientTransaction.RollingBack"/> for (a, b)</description></item>
+  /// <item><description>a.<see cref="DomainObject.RollingBack"/>, b.<see cref="DomainObject.RollingBack"/> (order undefined)</description></item>
+  /// </list>
+  /// Every event handler in the RollingBack event chain receives each object in the rollback set exactly once.
+  /// If any event handler adds an object c to the rollback set (e.g., by changing or creating it), the whole chain is repeated, but only for c.
+  /// </description></item>
+  /// <item><description>
+  /// Then, the data is rolled back.
+  /// </description></item>
+  /// <item><description>
+  /// Finally, if the <see cref="Rollback"/> operation was completed successfully, a chain of RolledBack events is raised. RolledBack event handlers must
+  /// not throw an exception. When a set of objects (a, b) was rolled back, the RolledBack event chain consists of the following events, raised in order:
+  /// <list type="number">
+  /// <item><description>a.<see cref="DomainObject.RolledBack"/>, b.<see cref="DomainObject.RolledBack"/> (order undefined)</description></item>
+  /// <item><description><see cref="ClientTransaction"/>.<see cref="ClientTransaction.RolledBack"/> for (a, b)</description></item>
+  /// <item><description>
+  /// <see cref="IClientTransactionListener"/>.<see cref="IClientTransactionListener.TransactionRolledBack"/> and 
+  /// <see cref="IClientTransactionExtension"/>.<see cref="IClientTransactionExtension.RolledBack"/> for (a, b)
+  /// </description></item>
+  /// </list>
+  /// </description></item>
+  /// </list>
+  /// </para>
+  /// </remarks>
   public virtual void Rollback ()
   {
     using (EnterNonDiscardingScope ())
