@@ -128,6 +128,9 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.ObjectPersis
     {
       var notFoundLoadedObject = GetNotFoundLoadedObject ();
 
+      _dataManagerMock
+            .Expect (mock => mock.MarkInvalid (Arg<DomainObject>.Matches (obj => obj.ID == notFoundLoadedObject.ObjectID)))
+            .WhenCalled (mi => CheckObjectNotLoadedInTransaction (((DomainObject) mi.Arguments[0]), _clientTransaction));
       _mockRepository.ReplayAll ();
 
       Assert.That (() => _agent.RegisterIfRequired (notFoundLoadedObject, false), Throws.Nothing);
@@ -135,6 +138,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.ObjectPersis
       _eventSinkWithMock.AssertWasNotCalledMock (
           mock => mock.ObjectsLoading (Arg<ClientTransaction>.Is.Anything, Arg<ReadOnlyCollection<ObjectID>>.Is.Anything));
       _dataManagerMock.AssertWasNotCalled (mock => mock.RegisterDataContainer (Arg<DataContainer>.Is.Anything));
+      _dataManagerMock.VerifyAllExpectations();
     }
 
     [Test]
@@ -142,6 +146,9 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.ObjectPersis
     {
       var notFoundLoadedObject = GetNotFoundLoadedObject ();
 
+      _dataManagerMock
+            .Expect (mock => mock.MarkInvalid (Arg<DomainObject>.Matches (obj => obj.ID == notFoundLoadedObject.ObjectID)))
+            .WhenCalled (mi => CheckObjectNotLoadedInTransaction (((DomainObject) mi.Arguments[0]), _clientTransaction));
       _mockRepository.ReplayAll ();
 
       Assert.That (
@@ -152,6 +159,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.ObjectPersis
       _eventSinkWithMock.AssertWasNotCalledMock (
           mock => mock.ObjectsLoading (Arg<ClientTransaction>.Is.Anything, Arg<ReadOnlyCollection<ObjectID>>.Is.Anything));
       _dataManagerMock.AssertWasNotCalled (mock => mock.RegisterDataContainer (Arg<DataContainer>.Is.Anything));
+      _dataManagerMock.VerifyAllExpectations();
     }
 
     [Test]
@@ -173,6 +181,12 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.ObjectPersis
 
       using (_mockRepository.Ordered ())
       {
+        _dataManagerMock
+            .Expect (mock => mock.MarkInvalid (Arg<DomainObject>.Matches (obj => obj.ID == notFoundLoadedObject1.ObjectID)))
+            .WhenCalled (mi => CheckObjectNotLoadedInTransaction(((DomainObject) mi.Arguments[0]), _clientTransaction));
+        _dataManagerMock
+            .Expect (mock => mock.MarkInvalid (Arg<DomainObject>.Matches (obj => obj.ID == notFoundLoadedObject2.ObjectID)))
+            .WhenCalled (mi => CheckObjectNotLoadedInTransaction (((DomainObject) mi.Arguments[0]), _clientTransaction));
         _eventSinkWithMock.ExpectMock (mock => mock.ObjectsLoading (
             Arg.Is (_clientTransaction), 
             Arg<ReadOnlyCollection<ObjectID>>.Is.Equal (new[] { registerableDataContainer1.ID, registerableDataContainer2.ID })));
@@ -225,6 +239,12 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.ObjectPersis
       var notFoundLoadedObject1 = GetNotFoundLoadedObject ();
       var notFoundLoadedObject2 = GetNotFoundLoadedObject ();
 
+      _dataManagerMock
+            .Expect (mock => mock.MarkInvalid (Arg<DomainObject>.Matches (obj => obj.ID == notFoundLoadedObject1.ObjectID)))
+            .WhenCalled (mi => CheckObjectNotLoadedInTransaction (((DomainObject) mi.Arguments[0]), _clientTransaction));
+      _dataManagerMock
+          .Expect (mock => mock.MarkInvalid (Arg<DomainObject>.Matches (obj => obj.ID == notFoundLoadedObject2.ObjectID)))
+          .WhenCalled (mi => CheckObjectNotLoadedInTransaction (((DomainObject) mi.Arguments[0]), _clientTransaction));
       _mockRepository.ReplayAll ();
 
       var allObjects =
@@ -380,6 +400,11 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.ObjectPersis
     {
       Assert.That (dataContainer.HasDomainObject, Is.True);
       Assert.That (dataContainer.DomainObject, Is.SameAs (_clientTransaction.GetEnlistedDomainObject (dataContainer.ID)));
+    }
+
+    private void CheckObjectNotLoadedInTransaction (DomainObject domainObject, ClientTransaction clientTransaction)
+    {
+      Assert.That (domainObject.TransactionContext[clientTransaction].State, Is.EqualTo (StateType.NotLoadedYet));
     }
   }
 }

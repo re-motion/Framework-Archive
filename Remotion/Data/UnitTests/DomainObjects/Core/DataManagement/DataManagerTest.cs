@@ -384,26 +384,6 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement
     }
 
     [Test]
-    public void MarkObjectInvalid_EndPointRegistered_Throws ()
-    {
-      var domainObject = DomainObjectMother.CreateObjectInTransaction<Order> (_dataManagerWithMocks.ClientTransaction);
-      Assert.That (_dataManagerWithMocks.ClientTransaction.IsEnlisted (domainObject), Is.True);
-      Assert.That (_dataManagerWithMocks.GetDataContainerWithoutLoading (domainObject.ID), Is.Null);
-
-      _endPointManagerMock
-          .Stub (stub => stub.GetRelationEndPointWithoutLoading (RelationEndPointID.Create (domainObject.ID, typeof (Order), "OrderTicket")))
-          .Return (MockRepository.GenerateStub<IRelationEndPoint>());
-      _endPointManagerMock
-          .Stub (stub => stub.GetRelationEndPointWithoutLoading (Arg<RelationEndPointID>.Is.Anything))
-          .Return (null);
-
-      Assert.That (() => _dataManagerWithMocks.MarkInvalid (domainObject), Throws.InvalidOperationException.With.Message.EqualTo (
-          "Cannot mark DomainObject '" + domainObject.ID + "' invalid because there are relation end-points registered for the object."));
-
-      _invalidDomainObjectManagerMock.AssertWasNotCalled (mock => mock.MarkInvalid (Arg<DomainObject>.Is.Anything));
-    }
-
-    [Test]
     public void Commit_CommitsRelationEndPoints ()
     {
       _endPointManagerMock.Expect (mock => mock.CommitAllEndPoints());
@@ -937,7 +917,8 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement
           .Expect (mock => mock.LoadObjects (
               Arg<IEnumerable<ObjectID>>.List.Equal (new[] { DomainObjectIDs.Order1 }),
               Arg.Is (false)))
-          .Return (new[] { new NullLoadedObjectData() });
+          .Return (new[] { new NullLoadedObjectData() })
+          .WhenCalled (mi => _invalidDomainObjectManagerMock.Stub (stub => stub.IsInvalid (DomainObjectIDs.Order1)).Return (true));
       _objectLoaderMock.Replay ();
 
       var result = _dataManagerWithMocks.GetDataContainersWithLazyLoad (new[] { DomainObjectIDs.Order1 }, false);

@@ -72,7 +72,11 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
         if (_notFoundObjectIDs.Any ())
         {
-          // TODO 4920: Mark not found objects invalid.
+          foreach (var notFoundObjectID in _notFoundObjectIDs)
+          {
+            var objectReference = clientTransaction.GetObjectReference (notFoundObjectID);
+            dataManager.MarkInvalid (objectReference);
+          }
 
           if (throwOnNotFound)
             throw new ObjectsNotFoundException (_notFoundObjectIDs);

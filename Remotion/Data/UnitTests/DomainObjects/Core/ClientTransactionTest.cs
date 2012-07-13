@@ -1194,9 +1194,6 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
           .Return (new[] { dataContainer1, dataContainer2 })
           .Ordered (counter);
 
-      _dataManagerMock.Expect (mock => mock.GetDataContainerWithoutLoading (DomainObjectIDs.Order1)).Return (dataContainer1).Ordered (counter);
-      _dataManagerMock.Expect (mock => mock.GetDataContainerWithoutLoading (DomainObjectIDs.Order2)).Return (dataContainer2).Ordered (counter);
-
       _mockRepository.ReplayAll();
 
       var result = _transactionWithMocks.TryGetObjects<Order> (DomainObjectIDs.Order1, DomainObjectIDs.Order2);
@@ -1225,9 +1222,6 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
           .Return (new[] { null, dataContainer })
           .Ordered (counter);
 
-      _dataManagerMock.Expect (mock => mock.GetDataContainerWithoutLoading (DomainObjectIDs.Order1)).Return (null).Ordered (counter);
-      _dataManagerMock.Expect (mock => mock.GetDataContainerWithoutLoading (DomainObjectIDs.Order2)).Return (dataContainer).Ordered (counter);
-
       _mockRepository.ReplayAll ();
 
       var result = _transactionWithMocks.TryGetObjects<Order> (DomainObjectIDs.Order1, DomainObjectIDs.Order2);
@@ -1254,13 +1248,10 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
                 Arg<ICollection<ObjectID>>.List.Equal (new[] { DomainObjectIDs.Order2 }),
                 Arg.Is (false)))
             .Return (new[] { dataContainer });
-      _dataManagerMock.Stub (mock => mock.GetDataContainerWithoutLoading (DomainObjectIDs.Order2)).Return (dataContainer);
 
       _mockRepository.ReplayAll ();
 
       var result = _transactionWithMocks.TryGetObjects<Order> (DomainObjectIDs.Order1, DomainObjectIDs.Order2);
-
-      _dataManagerMock.AssertWasNotCalled (mock => mock.GetDataContainerWithoutLoading (DomainObjectIDs.Order1));
       Assert.That (result, Is.EqualTo (new[] { fakeOrder1, fakeOrder2 }));
     }
 

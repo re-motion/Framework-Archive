@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Runtime.Serialization;
 using Remotion.Data.DomainObjects.DataManagement.Commands;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
@@ -208,13 +209,6 @@ namespace Remotion.Data.DomainObjects.DataManagement
         throw new InvalidOperationException (message);
       }
 
-      if (RelationEndPointID.GetAllRelationEndPointIDs (domainObject.ID).Any (id => _relationEndPointManager.GetRelationEndPointWithoutLoading (id) != null))
-      {
-        var message = string.Format (
-            "Cannot mark DomainObject '{0}' invalid because there are relation end-points registered for the object.", domainObject.ID);
-        throw new InvalidOperationException (message);
-      }
-
       _invalidDomainObjectManager.MarkInvalid (domainObject);
     }
 
@@ -258,11 +252,14 @@ namespace Remotion.Data.DomainObjects.DataManagement
     {
       ArgumentUtility.CheckNotNull ("objectID", objectID);
 
+      // GetDataContainerWithoutLoading guards against invalid IDs.
       var dataContainer = GetDataContainerWithoutLoading (objectID);
       if (dataContainer != null)
         return dataContainer;
 
       _objectLoader.LoadObject (objectID);
+
+      // LoadObject has either thrown an exception or registered a DataCOntainer.
       dataContainer = GetDataContainerWithoutLoading (objectID);
       Assertion.IsNotNull (dataContainer);
       return dataContainer;
@@ -272,6 +269,8 @@ namespace Remotion.Data.DomainObjects.DataManagement
     {
       ArgumentUtility.CheckNotNull ("objectIDs", objectIDs);
 
+      // GetDataContainerWithoutLoading below guards against invalid IDs.
+
       var objectIDsAsCollection = objectIDs.ConvertToCollection();
       // Note that the empty list check is just an "optimization": IObjectLoader works well with empty ObjectID lists, but it seems waste to go 
       // through that whole call chain even if no IDs are to be loaded.
@@ -279,7 +278,8 @@ namespace Remotion.Data.DomainObjects.DataManagement
       if (idsToBeLoaded.Any())
         _objectLoader.LoadObjects (idsToBeLoaded, throwOnNotFound);
 
-      return objectIDsAsCollection.Select (GetDataContainerWithoutLoading);
+      // Since LoadObjects might have marked IDs as invalid, we need to use DataContainers[...] instead of GetDataContainerWithoutLoading here.
+      return objectIDsAsCollection.Select (id => DataContainers[id]);
     }
 
     public void LoadLazyCollectionEndPoint (RelationEndPointID endPointID)

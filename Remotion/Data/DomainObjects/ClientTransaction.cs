@@ -1133,11 +1133,25 @@ public class ClientTransaction
     ArgumentUtility.CheckNotNull ("objectIDs", objectIDs);
 
     var objectIDsAsCollection = objectIDs.ConvertToCollection();
-
+    
+    var validObjectIDs = objectIDsAsCollection.Where (id => !IsInvalid (id)).ConvertToCollection ();
+    
     // this performs a bulk load operation
-    EnsureDataAvailable (objectIDsAsCollection.Where (id => !IsInvalid (id)), false);
+    var dataContainersByID = validObjectIDs.Zip (EnsureDataAvailable (validObjectIDs, false)).ToDictionary (t => t.Item1, t => t.Item2);
 
-    var result = objectIDsAsCollection.Select (GetInvalidOrLoadedObjectReferenceOrNull).Cast<T> ();
+    var result = objectIDsAsCollection.Select (
+        id =>
+        {
+          DataContainer loadResult;
+          if (dataContainersByID.TryGetValue (id, out loadResult))
+            return loadResult == null ? null : (T) loadResult.DomainObject;
+          else
+          {
+            Assertion.IsTrue (
+                IsInvalid (id), "All valid IDs have been passed to EnsureDataAvailable, so if its not in the loadResult, it must be invalid.");
+            return (T) GetInvalidObjectReference (id);
+          }
+    });
     return result.ToArray ();
   }
 
@@ -1372,19 +1386,6 @@ public class ClientTransaction
   public virtual ITransaction ToITransation ()
   {
     return new ClientTransactionWrapper (this);
-  }
-
-  private DomainObject GetInvalidOrLoadedObjectReferenceOrNull (ObjectID objectID)
-  {
-    if (IsInvalid (objectID))
-      return GetInvalidObjectReference (objectID);
-    else
-      return GetLoadedObjectOrNull(objectID);
-  }
-
-  private DomainObject GetLoadedObjectOrNull (ObjectID objectID)
-  {
-    return Maybe.ForValue (DataManager.GetDataContainerWithoutLoading (objectID)).Select (dc => dc.DomainObject).ValueOrDefault ();
   }
 
   // ReSharper disable UnusedParameter.Global

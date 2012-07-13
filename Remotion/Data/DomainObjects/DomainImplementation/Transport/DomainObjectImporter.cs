@@ -94,8 +94,8 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
       {
         var id = transportItem.ID;
 
-        var creator = id.ClassDefinition.GetDomainObjectCreator ();
-        var instance = creator.CreateObjectReference (id, bindingTargetTransaction);
+        var instance = bindingTargetTransaction.GetInvalidObjectReference (id);
+        // TODO 4534: Resurrect object
 
         var newDataContainer = DataContainer.CreateNew (id);
         newDataContainer.SetDomainObject (instance);

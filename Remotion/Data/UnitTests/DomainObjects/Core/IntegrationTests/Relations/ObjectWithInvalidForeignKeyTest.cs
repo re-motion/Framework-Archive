@@ -30,10 +30,29 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Relations
     public void AccessInvalidForeignKeyRelation ()
     {
       var id = new ObjectID (typeof (ClassWithInvalidRelation), new Guid ("{AFA9CF46-8E77-4da8-9793-53CAA86A277C}"));
+      var objectWithInvalidRelation = (ClassWithInvalidRelation) ClassWithInvalidRelation.GetObject (id);
 
-      var instance = (ClassWithInvalidRelation) ClassWithInvalidRelation.GetObject (id);
+      // TODO 4920: Remove this line
+      Assert.That (() => objectWithInvalidRelation.ClassWithGuidKey, Throws.TypeOf<ObjectsNotFoundException> ());
 
-      Assert.That (() => instance.ClassWithGuidKey, Throws.TypeOf <ObjectsNotFoundException>());
+      Assert.That (objectWithInvalidRelation.ClassWithGuidKey.IsInvalid, Is.True);
+
+      // Overwriting the invalid ID is possible!
+      var classWithGuidKey = ClassWithGuidKey.NewObject ();
+      classWithGuidKey.ClassWithValidRelationsNonOptional = ClassWithValidRelations.NewObject ();
+      objectWithInvalidRelation.ClassWithGuidKey = classWithGuidKey;
+
+      SetDatabaseModifyable ();
+      TestableClientTransaction.Commit ();
+
+      using (ClientTransaction.CreateRootTransaction ().EnterDiscardingScope ())
+      {
+        var reloadedObject = (ClassWithInvalidRelation) ClassWithInvalidRelation.GetObject (id);
+        reloadedObject.ClassWithGuidKey.EnsureDataAvailable ();
+        Assert.That (reloadedObject.ClassWithGuidKey.IsInvalid, Is.False);
+      }
+
+      // Note: See also NotFoundObjectsTest
     }
   }
 }
