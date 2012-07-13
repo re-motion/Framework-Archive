@@ -19,7 +19,6 @@ using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 {
-  // TODO 4920: Test
   /// <summary>
   /// Represents an object that couldn't be found by an <see cref="IPersistenceStrategy"/>.
   /// </summary>
