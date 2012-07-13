@@ -48,11 +48,6 @@ namespace Remotion.Data.DomainObjects.DataManagement
   {
     private readonly ObjectID _id;
 
-    public ObjectInvalidException ()
-        : this ("Object is invalid in this transaction.")
-    {
-    }
-
     public ObjectInvalidException (string message)
         : base (message)
     {
