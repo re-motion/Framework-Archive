@@ -606,7 +606,6 @@
     <Compile Include="DomainObjects\Core\Infrastructure\NewObjectHierarchyInvalidationClientTransactionListenerTest.cs" />
     <Compile Include="DomainObjects\Core\IntegrationTests\Relations\BigRelationsTest.cs" />
     <Compile Include="DomainObjects\Core\IntegrationTests\Synchronization\CollectionRelationInconsistenciesTest.cs" />
-    <Compile Include="DomainObjects\Core\IntegrationTests\GetObjectsTest.cs" />
     <Compile Include="DomainObjects\Core\LinqCastMethodAttributeTest.cs" />
     <Compile Include="DomainObjects\Core\Linq\IntegrationTests\MethodCallsIntegrationTest.cs" />
     <Compile Include="DomainObjects\Core\Linq\StorageSpecificExpressionResolverTest.cs" />

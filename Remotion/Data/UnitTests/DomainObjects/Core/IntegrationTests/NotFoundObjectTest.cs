@@ -88,6 +88,38 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests
       CheckObjectIsNotMarkedInvalid (_nonExistingObjectIDForSubtransaction);
     }
 
+    // TODO 4920
+    //[Test]
+    //public void TryGetObject_ShouldReturnNull_AndMarkObjectNotFound ()
+    //{
+    //  DomainObject instance = null;
+    //  Assert.That (() => instance = LifetimeService.TryGetObject (ClientTransaction.Current, _nonExistingObjectID), Throws.Nothing);
+
+    //  Assert.That (instance, Is.Null);
+    //  CheckObjectIsMarkedInvalid (_nonExistingObjectID);
+    //}
+
+    //[Test]
+    //public void TryGetObject_Subtransaction ()
+    //{
+    //  using (TestableClientTransaction.CreateSubTransaction ().EnterDiscardingScope ())
+    //  {
+    //    DomainObject instance = null;
+    //    Assert.That (() => instance = LifetimeService.TryGetObject (ClientTransaction.Current, _nonExistingObjectIDForSubtransaction), Throws.Nothing);
+
+    //    Assert.That (instance, Is.Null);
+    //    CheckObjectIsMarkedInvalid (_nonExistingObjectIDForSubtransaction);
+
+    //    Assert.That (() => instance = LifetimeService.TryGetObject (ClientTransaction.Current, _nonExistingObjectID), Throws.Nothing);
+
+    //    Assert.That (instance, Is.Null);
+    //    CheckObjectIsMarkedInvalid (_nonExistingObjectID);
+    //  }
+
+    //  CheckObjectIsMarkedInvalid (_nonExistingObjectID);
+    //  CheckObjectIsNotMarkedInvalid (_nonExistingObjectIDForSubtransaction);
+    //}
+
     [Test]
     public void GetObjectReference_ShouldGiveNotLoadedYetObject ()
     {
