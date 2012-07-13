@@ -299,7 +299,6 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests
     }
 
     [Test]
-    [Ignore ("TODO 4920")]
     public void UnidirectionalRelationProperty_ShouldReturnInvalidObject ()
     {
       SetDatabaseModifyable ();
@@ -321,7 +320,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests
       finally
       {
         if (clientID != null)
-          CleanupClientWithNonExistingParentClient(clientID);
+          CleanupClientWithNonExistingParentClient (clientID);
 
         EnableConstraints (clientTable);
       }
@@ -354,9 +353,6 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests
 
       DomainObject instance = null;
       
-      // TODO 4920: Remove this line
-      Assert.That (() => objectWithInvalidRelation.ClassWithGuidKey, Throws.TypeOf<ObjectsNotFoundException> ());
-      
       Assert.That (() => instance = objectWithInvalidRelation.ClassWithGuidKey, Throws.Nothing);
       CheckObjectIsMarkedInvalid (instance.ID);
 
@@ -372,9 +368,6 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests
         var id = new ObjectID (typeof (ClassWithInvalidRelation), new Guid ("{AFA9CF46-8E77-4da8-9793-53CAA86A277C}"));
 
         var objectWithInvalidRelation = (ClassWithInvalidRelation) ClassWithInvalidRelation.GetObject (id);
-
-        // TODO 4920: Remove this line
-        Assert.That (() => objectWithInvalidRelation.ClassWithGuidKey, Throws.TypeOf<ObjectsNotFoundException>());
 
         Assert.That (() => instance = objectWithInvalidRelation.ClassWithGuidKey, Throws.Nothing);
         CheckObjectIsMarkedInvalid (instance.ID);

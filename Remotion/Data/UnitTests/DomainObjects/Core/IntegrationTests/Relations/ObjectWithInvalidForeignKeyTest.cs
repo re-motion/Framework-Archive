@@ -17,7 +17,6 @@
 using System;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects;
-using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Data.UnitTests.DomainObjects.TestDomain;
 
 
@@ -31,9 +30,6 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Relations
     {
       var id = new ObjectID (typeof (ClassWithInvalidRelation), new Guid ("{AFA9CF46-8E77-4da8-9793-53CAA86A277C}"));
       var objectWithInvalidRelation = (ClassWithInvalidRelation) ClassWithInvalidRelation.GetObject (id);
-
-      // TODO 4920: Remove this line
-      Assert.That (() => objectWithInvalidRelation.ClassWithGuidKey, Throws.TypeOf<ObjectsNotFoundException> ());
 
       Assert.That (objectWithInvalidRelation.ClassWithGuidKey.IsInvalid, Is.True);
 
