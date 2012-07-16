@@ -637,7 +637,7 @@ public class ClientTransaction
   {
     ArgumentUtility.CheckNotNull ("objectIDs", objectIDs);
 
-    EnsureDataAvailable (objectIDs, true);
+    DataManager.GetDataContainersWithLazyLoad (objectIDs, true);
   }
 
   /// <summary>
@@ -656,7 +656,7 @@ public class ClientTransaction
     ArgumentUtility.CheckNotNull ("objectID", objectID);
 
     // TODO 4920: Maybe add optional throwOnNotFound parameter to GetDataContainerWithLazyLoad() and use that instead
-    var dataContainers = EnsureDataAvailable (new[] { objectID }, false);
+    var dataContainers = DataManager.GetDataContainersWithLazyLoad (new[] { objectID }, false);
     return dataContainers.Single() != null;
   }
 
@@ -677,13 +677,8 @@ public class ClientTransaction
   {
     ArgumentUtility.CheckNotNull ("objectIDs", objectIDs);
 
-    var dataContainers = EnsureDataAvailable (objectIDs, false);
+    var dataContainers = DataManager.GetDataContainersWithLazyLoad (objectIDs, false);
     return dataContainers.All (dc => dc != null);
-  }
-
-  private IEnumerable<DataContainer> EnsureDataAvailable (IEnumerable<ObjectID> objectIDs, bool throwOnNotFound)
-  {
-    return DataManager.GetDataContainersWithLazyLoad (objectIDs, throwOnNotFound);
   }
 
   /// <summary>
@@ -1148,7 +1143,7 @@ public class ClientTransaction
     ArgumentUtility.CheckNotNull ("objectIDs", objectIDs);
 
     // this performs a bulk load operation, throwing on invalid IDs and unknown objects
-    return EnsureDataAvailable (objectIDs, true)
+    return DataManager.GetDataContainersWithLazyLoad (objectIDs, true)
         .Select (dc => dc.DomainObject)
         .Cast<T> ()
         .ToArray ();
@@ -1192,7 +1187,7 @@ public class ClientTransaction
     var validObjectIDs = objectIDsAsCollection.Where (id => !IsInvalid (id)).ConvertToCollection ();
     
     // this performs a bulk load operation
-    var dataContainersByID = validObjectIDs.Zip (EnsureDataAvailable (validObjectIDs, false)).ToDictionary (t => t.Item1, t => t.Item2);
+    var dataContainersByID = validObjectIDs.Zip (DataManager.GetDataContainersWithLazyLoad (validObjectIDs, false)).ToDictionary (t => t.Item1, t => t.Item2);
 
     var result = objectIDsAsCollection.Select (
         id =>
