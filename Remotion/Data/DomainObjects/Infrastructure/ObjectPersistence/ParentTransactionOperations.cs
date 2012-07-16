@@ -19,7 +19,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
     private readonly IInvalidDomainObjectManager _parentInvalidDomainObjectManager;
     private readonly IDisposable _scope;
 
-    private bool _disposed = false;
+    private bool _disposed;
 
     public ParentTransactionOperations (
         ClientTransaction parentTransaction,
@@ -67,6 +67,14 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
       CheckDisposed ();
       
       return _parentTransaction.GetObjects<DomainObject> (objectIDs);
+    }
+
+    public DomainObject TryGetObject (ObjectID objectID)
+    {
+      ArgumentUtility.CheckNotNull ("objectID", objectID);
+      CheckDisposed();
+
+      return _parentTransaction.TryGetObject (objectID);
     }
 
     public DomainObject[] TryGetObjects (IEnumerable<ObjectID> objectIDs)

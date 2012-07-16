@@ -60,17 +60,15 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
     {
       ArgumentUtility.CheckNotNull ("id", id);
 
-      return LoadObjectData (new[] { id }).Single();
+      using (var parentTransactionOperations = _parentTransactionContext.AccessParentTransaction ())
+      {
+        // In theory, this might return invalid objects (in practice we won't be called with invalid IDs). 
+        // TransferParentObject called by GetLoadedObjectDataForParentObject below will throw on invalid IDs.
+        var parentObject = Tuple.Create (id, parentTransactionOperations.TryGetObject (id));
 
-      // TODO 4920: Consider adding a TryGetObject API or using GetObjectReference + TryEnsureDataAvailable here.
-      //using (var parentTransactionOperations = _parentTransactionContext.AccessParentTransaction())
-      //{
-      //  // In theory, this might return invalid objects (in practice we won't be called with invalid IDs). 
-      //  // TransferParentObject called by GetLoadedObjectDataForParentObject below will throw on invalid IDs.
-
-      //  var parentObject = Tuple.Create (id, parentTransactionOperations.TryGetObject (id));
-      //  return GetLoadedObjectDataForParentObject (parentObject, parentTransactionOperations);
-      //}
+        // Eager evaluation of sequence to keep parent transaction writeable as shortly as possible
+        return GetLoadedObjectDataForParentObject (parentObject, parentTransactionOperations);
+      }
     }
 
     public virtual IEnumerable<ILoadedObjectData> LoadObjectData (IEnumerable<ObjectID> objectIDs)
