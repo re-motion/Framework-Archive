@@ -122,9 +122,9 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
         return null;
       else
       {
-        // TODO 4920: Consider adding a TryGetObject API
-        
         // Try to load the object, but do not throw if it doesn't work
+        // Note: TryGetObject would return null if the object isn't found, but we want to return the invalid reference instead.
+        // Therefore, use TryEnsureDataAvailable and GetObjectReference instead.
         if (!ClientTransaction.IsInvalid (OppositeObjectID))
           ClientTransaction.TryEnsureDataAvailable (OppositeObjectID);
         
