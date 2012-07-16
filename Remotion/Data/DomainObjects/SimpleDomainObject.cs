@@ -157,6 +157,28 @@ namespace Remotion.Data.DomainObjects
       return DomainObject.GetObject<TDomainObject> (id, includeDeleted);
     }
 
+    /// <summary>
+    /// Gets a <see cref="DomainObject"/> that already exists or attempts to load it from the data source. 
+    /// If an object cannot be found, it will be marked <see cref="StateType.Invalid"/> in the <see cref="ClientTransaction"/>, and the method will
+    /// return a <see langword="null" /> reference in its place.
+    /// </summary>
+    /// <param name="id">The <see cref="ObjectID"/> of the <see cref="DomainObject"/> that should be loaded. Must not be <see langword="null"/>.</param>
+    /// <returns>
+    /// The <see cref="DomainObject"/> with the specified <paramref name="id"/>, or <see langword="null" /> if it couldn't be found.
+    /// </returns>
+    /// <exception cref="System.ArgumentNullException"><paramref name="id"/> is <see langword="null"/>.</exception>
+    /// <exception cref="Persistence.StorageProviderException">
+    ///   The Mapping does not contain a class definition for the given <paramref name="id"/>.<br /> -or- <br />
+    ///   An error occurred while reading a <see cref="PropertyValue"/>.<br /> -or- <br />
+    ///   An error occurred while accessing the data source.
+    /// </exception>
+    /// <exception cref="InvalidCastException">The loaded <see cref="DomainObject"/> is not of the expected type <typeparamref name="TDomainObject"/>.</exception>
+    public static TDomainObject TryGetObject (ObjectID id)
+    {
+      ArgumentUtility.CheckNotNull ("id", id);
+      return DomainObject.TryGetObject<TDomainObject> (id);
+    }
+
     protected SimpleDomainObject ()
     {
     }

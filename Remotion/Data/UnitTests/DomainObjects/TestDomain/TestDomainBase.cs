@@ -41,6 +41,11 @@ namespace Remotion.Data.UnitTests.DomainObjects.TestDomain
       return GetObject<TestDomainBase> (id, includeDeleted);
     }
 
+    public static TestDomainBase TryGetObject (ObjectID id)
+    {
+      return TryGetObject<TestDomainBase> (id);
+    }
+
     [NonSerialized]
     private IUnloadEventReceiver _unloadEventReceiver;
     [NonSerialized]

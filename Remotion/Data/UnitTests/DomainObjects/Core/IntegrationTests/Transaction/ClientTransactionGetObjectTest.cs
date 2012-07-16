@@ -130,6 +130,55 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
     }
 
     [Test]
+    public void TryGetObject_Twice ()
+    {
+      DomainObject domainObject1 = TestableClientTransaction.TryGetObject (DomainObjectIDs.ClassWithAllDataTypes1);
+      Assert.That (_eventReceiver.LoadedDomainObjectLists.Count, Is.EqualTo (1));
+
+      var domainObjects = _eventReceiver.LoadedDomainObjectLists[0];
+      Assert.That (domainObjects.Count, Is.EqualTo (1));
+      Assert.That (domainObjects[0], Is.SameAs (domainObject1));
+      _eventReceiver.Clear ();
+
+      DomainObject domainObject2 = TestableClientTransaction.TryGetObject (DomainObjectIDs.ClassWithAllDataTypes1);
+      Assert.That (_eventReceiver.LoadedDomainObjectLists.Count, Is.EqualTo (0));
+
+      Assert.That (domainObject2, Is.SameAs (domainObject1));
+    }
+
+    [Test]
+    public void TryGetObject_NotFound ()
+    {
+      var notFoundID = new ObjectID (typeof (Order), Guid.NewGuid ());
+
+      var domainObject = TestableClientTransaction.TryGetObject (notFoundID);
+      Assert.That (domainObject, Is.Null);
+
+      domainObject = TestableClientTransaction.TryGetObject (notFoundID);
+      Assert.That (domainObject, Is.Not.Null);
+      Assert.That (domainObject.IsInvalid, Is.True);
+    }
+
+    [Test]
+    public void TryGetObject_Deleted ()
+    {
+      var domainObject = TestableClientTransaction.GetObject (DomainObjectIDs.ClassWithAllDataTypes1, false);
+      LifetimeService.DeleteObject (TestableClientTransaction, domainObject);
+
+      Assert.That (TestableClientTransaction.TryGetObject (domainObject.ID), Is.SameAs (domainObject));
+    }
+
+    [Test]
+    public void TryGetObject_Invalid ()
+    {
+      var domainObject = ClassWithAllDataTypes.NewObject ();
+      domainObject.Delete ();
+      Assert.That (domainObject.IsInvalid, Is.True);
+
+      Assert.That (TestableClientTransaction.TryGetObject (domainObject.ID), Is.SameAs (domainObject));
+    }
+
+    [Test]
     public void GetObjects_UnloadedObjects ()
     {
       DomainObject[] objects = TestableClientTransaction.GetObjects<DomainObject> (

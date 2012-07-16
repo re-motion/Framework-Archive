@@ -961,7 +961,6 @@ public class ClientTransaction
   /// <param name="includeDeleted">Indicates if the method should return <see cref="DomainObject"/>s that are already deleted.</param>
   /// <returns>The <see cref="DomainObject"/> with the specified <paramref name="id"/>.</returns>
   /// <exception cref="System.ArgumentNullException"><paramref name="id"/> is <see langword="null"/>.</exception>
-  /// <exception cref="ObjectDeletedException"><paramref name="includeDeleted"/> is false and the DomainObject with <paramref name="id"/> has been deleted.</exception>
   /// <exception cref="ObjectsNotFoundException">
   /// The object could not be found in the data source. Note that the <see cref="ClientTransaction"/> marks
   /// not found objects as <see cref="StateType.Invalid"/>, so calling this API again witht he same <see cref="ObjectID"/> results in a 
@@ -973,6 +972,8 @@ public class ClientTransaction
   ///   An error occurred while reading a <see cref="PropertyValue"/>.<br /> -or- <br />
   ///   An error occurred while accessing the data source.
   /// </exception>
+  /// <exception cref="ObjectDeletedException">The object has already been deleted and the <paramref name="includeDeleted"/> flag is 
+  /// <see langword="false" />.</exception>
   protected internal virtual DomainObject GetObject (ObjectID id, bool includeDeleted)
   {
     ArgumentUtility.CheckNotNull ("id", id);
@@ -987,6 +988,28 @@ public class ClientTransaction
       throw new ObjectDeletedException (id);
 
     return objectReference;
+  }
+
+  /// <summary>
+  /// Gets an object that is already loaded (even if its marked <see cref="StateType.Invalid"/>) or attempts to load them from the data source. 
+  /// If an object cannot be found, it will be marked <see cref="StateType.Invalid"/> in the <see cref="ClientTransaction"/>, and the method will
+  /// return a <see langword="null" /> reference in its place.
+  /// </summary>
+  /// <param name="objectID">The ID of the object to be retrieved.</param>
+  /// <returns>
+  /// The <see cref="DomainObject"/> with the specified <paramref name="objectID"/>, or <see langword="null" /> if it couldn't be found.
+  /// </returns>
+  /// <exception cref="ArgumentNullException">The <paramref name="objectID"/> parameter is <see langword="null"/>.</exception>
+  /// <exception cref="Persistence.StorageProviderException">
+  ///   The Mapping does not contain a class definition for the given <paramref name="objectID"/>.<br /> -or- <br />
+  ///   An error occurred while reading a <see cref="PropertyValue"/>.<br /> -or- <br />
+  ///   An error occurred while accessing the data source.
+  /// </exception>
+  protected internal virtual DomainObject TryGetObject (ObjectID objectID)
+  {
+    ArgumentUtility.CheckNotNull ("objectID", objectID);
+
+    return TryGetObjects<DomainObject> (objectID).Single();
   }
 
   /// <summary>
@@ -1177,7 +1200,7 @@ public class ClientTransaction
                 IsInvalid (id), "All valid IDs have been passed to EnsureDataAvailable, so if its not in the loadResult, it must be invalid.");
             return (T) GetInvalidObjectReference (id);
           }
-    });
+        });
     return result.ToArray ();
   }
 

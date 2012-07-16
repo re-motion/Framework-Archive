@@ -88,37 +88,43 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests
       CheckObjectIsNotMarkedInvalid (_nonExistingObjectIDForSubtransaction);
     }
 
-    // TODO 4920
-    //[Test]
-    //public void TryGetObject_ShouldReturnNull_AndMarkObjectNotFound ()
-    //{
-    //  DomainObject instance = null;
-    //  Assert.That (() => instance = LifetimeService.TryGetObject (ClientTransaction.Current, _nonExistingObjectID), Throws.Nothing);
+    [Test]
+    public void TryGetObject_ShouldReturnNull_AndMarkObjectNotFound ()
+    {
+      DomainObject instance = null;
+      Assert.That (() => instance = Order.TryGetObject (_nonExistingObjectID), Throws.Nothing);
 
-    //  Assert.That (instance, Is.Null);
-    //  CheckObjectIsMarkedInvalid (_nonExistingObjectID);
-    //}
+      Assert.That (instance, Is.Null);
+      CheckObjectIsMarkedInvalid (_nonExistingObjectID);
 
-    //[Test]
-    //public void TryGetObject_Subtransaction ()
-    //{
-    //  using (TestableClientTransaction.CreateSubTransaction ().EnterDiscardingScope ())
-    //  {
-    //    DomainObject instance = null;
-    //    Assert.That (() => instance = LifetimeService.TryGetObject (ClientTransaction.Current, _nonExistingObjectIDForSubtransaction), Throws.Nothing);
+      // After the object has been marked invalid
+      Assert.That (() => instance = Order.TryGetObject (_nonExistingObjectID), Throws.Nothing);
+      Assert.That (instance, Is.Not.Null);
+      Assert.That (instance.IsInvalid, Is.True);
+    }
 
-    //    Assert.That (instance, Is.Null);
-    //    CheckObjectIsMarkedInvalid (_nonExistingObjectIDForSubtransaction);
+    [Test]
+    public void TryGetObject_Subtransaction ()
+    {
+      using (TestableClientTransaction.CreateSubTransaction ().EnterDiscardingScope ())
+      {
+        DomainObject instance = null;
+        CheckObjectIsMarkedInvalid (_nonExistingObjectIDForSubtransaction);
 
-    //    Assert.That (() => instance = LifetimeService.TryGetObject (ClientTransaction.Current, _nonExistingObjectID), Throws.Nothing);
+        Assert.That (() => instance = Order.TryGetObject (_nonExistingObjectIDForSubtransaction), Throws.Nothing);
 
-    //    Assert.That (instance, Is.Null);
-    //    CheckObjectIsMarkedInvalid (_nonExistingObjectID);
-    //  }
+        Assert.That (instance, Is.Not.Null);
+        Assert.That (instance.IsInvalid, Is.True);
 
-    //  CheckObjectIsMarkedInvalid (_nonExistingObjectID);
-    //  CheckObjectIsNotMarkedInvalid (_nonExistingObjectIDForSubtransaction);
-    //}
+        Assert.That (() => instance = Order.TryGetObject (_nonExistingObjectID), Throws.Nothing);
+
+        Assert.That (instance, Is.Null);
+        CheckObjectIsMarkedInvalid (_nonExistingObjectID);
+      }
+
+      CheckObjectIsMarkedInvalid (_nonExistingObjectID);
+      CheckObjectIsNotMarkedInvalid (_nonExistingObjectIDForSubtransaction);
+    }
 
     [Test]
     public void GetObjectReference_ShouldGiveNotLoadedYetObject ()
