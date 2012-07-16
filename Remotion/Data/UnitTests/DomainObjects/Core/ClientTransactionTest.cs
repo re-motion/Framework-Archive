@@ -457,6 +457,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
       var counter = new OrderedExpectationCounter ();
 
       _invalidDomainObjectManagerMock.Stub (stub => stub.IsInvalid (DomainObjectIDs.Order1)).Return (false);
+      _enlistedObjectManagerMock.Stub (stub => stub.GetEnlistedDomainObject (DomainObjectIDs.Order1)).Return (fakeOrder);
 
       _dataManagerMock
           .Expect (
@@ -477,9 +478,12 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
     [Test]
     public void TryGetObject_WithNotFoundObject ()
     {
+      var fakeOrder = DomainObjectMother.CreateFakeObject<Order> (DomainObjectIDs.Order1);
+
       var counter = new OrderedExpectationCounter ();
 
       _invalidDomainObjectManagerMock.Stub (stub => stub.IsInvalid (DomainObjectIDs.Order1)).Return (false);
+      _enlistedObjectManagerMock.Stub (stub => stub.GetEnlistedDomainObject (DomainObjectIDs.Order1)).Return (fakeOrder);
 
       _dataManagerMock
           .Expect (mock => mock.GetDataContainersWithLazyLoad (

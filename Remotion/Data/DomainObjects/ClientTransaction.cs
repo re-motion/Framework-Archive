@@ -1009,7 +1009,13 @@ public class ClientTransaction
   {
     ArgumentUtility.CheckNotNull ("objectID", objectID);
 
-    return TryGetObjects<DomainObject> (objectID).Single();
+    var objectReference = GetObjectReference (objectID);
+
+    if (IsInvalid (objectID) || TryEnsureDataAvailable (objectID))
+      return objectReference;
+    else
+      return null;
+
   }
 
   /// <summary>
