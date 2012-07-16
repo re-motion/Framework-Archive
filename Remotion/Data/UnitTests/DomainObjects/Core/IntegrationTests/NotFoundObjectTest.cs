@@ -45,9 +45,9 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests
     }
 
     [Test]
-    public void GetObject_True_ShouldThrowObjectInvalidException_AndMarkObjectNotFound ()
+    public void GetObject_True_ShouldThrow_AndMarkObjectNotFound ()
     {
-      Assert.That (() => Order.GetObject (_nonExistingObjectID, true), ThrowsObjectInvalidExceptionForNotFoundObject (_nonExistingObjectID));
+      Assert.That (() => Order.GetObject (_nonExistingObjectID, true), ThrowsObjectNotFoundException (_nonExistingObjectID));
 
       CheckObjectIsMarkedInvalid (_nonExistingObjectID);
 
@@ -56,9 +56,9 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests
     }
 
     [Test]
-    public void GetObject_False_ShouldThrowObjectInvalidException_AndMarkObjectNotFound ()
+    public void GetObject_False_ShouldThrow_AndMarkObjectNotFound ()
     {
-      Assert.That (() => Order.GetObject (_nonExistingObjectID, false), ThrowsObjectInvalidExceptionForNotFoundObject (_nonExistingObjectID));
+      Assert.That (() => Order.GetObject (_nonExistingObjectID, false), ThrowsObjectNotFoundException (_nonExistingObjectID));
 
       CheckObjectIsMarkedInvalid (_nonExistingObjectID);
 
@@ -79,7 +79,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests
 
         Assert.That (
             () => Order.GetObject (_nonExistingObjectID, true),
-            ThrowsObjectInvalidExceptionForNotFoundObject (_nonExistingObjectID));
+            ThrowsObjectNotFoundException (_nonExistingObjectID));
 
         CheckObjectIsMarkedInvalid (_nonExistingObjectID);
       }
@@ -133,7 +133,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests
       var instance = LifetimeService.GetObjectReference (TestableClientTransaction, _nonExistingObjectID);
       Assert.That (instance.State, Is.EqualTo (StateType.NotLoadedYet));
 
-      Assert.That (() => instance.EnsureDataAvailable(), ThrowsObjectInvalidExceptionForNotFoundObject (_nonExistingObjectID));
+      Assert.That (() => instance.EnsureDataAvailable(), ThrowsObjectNotFoundException (_nonExistingObjectID));
 
       CheckObjectIsMarkedInvalid (instance.ID);
 
@@ -152,7 +152,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests
         Assert.That (() => instance.EnsureDataAvailable (), ThrowsObjectInvalidException (_nonExistingObjectIDForSubtransaction));
 
         var instance2 = LifetimeService.GetObjectReference (ClientTransaction.Current, _nonExistingObjectID);
-        Assert.That (() => instance2.EnsureDataAvailable (), ThrowsObjectInvalidExceptionForNotFoundObject (_nonExistingObjectID));
+        Assert.That (() => instance2.EnsureDataAvailable (), ThrowsObjectNotFoundException (_nonExistingObjectID));
         CheckObjectIsMarkedInvalid (_nonExistingObjectID);
       }
 
@@ -165,7 +165,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests
     {
       Assert.That (
           () => TestableClientTransaction.EnsureDataAvailable (new[] { _nonExistingObjectID, DomainObjectIDs.Order1 }),
-          ThrowsObjectInvalidExceptionForNotFoundObject (_nonExistingObjectID));
+          ThrowsObjectNotFoundException (_nonExistingObjectID));
 
       CheckObjectIsMarkedInvalid (_nonExistingObjectID);
 
@@ -187,7 +187,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests
 
         Assert.That (
             () => ClientTransaction.Current.EnsureDataAvailable (new[] { _nonExistingObjectID, DomainObjectIDs.Order2 }),
-            ThrowsObjectInvalidExceptionForNotFoundObject (_nonExistingObjectID));
+            ThrowsObjectNotFoundException (_nonExistingObjectID));
         CheckObjectIsMarkedInvalid (_nonExistingObjectID);
       }
 
@@ -265,11 +265,11 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests
     }
 
     [Test]
-    public void PropertyAccess_ShouldThrowObjectInvalidException_ValueProperty ()
+    public void PropertyAccess_ShouldThrow_ValueProperty ()
     {
       var instance = (Order) LifetimeService.GetObjectReference (TestableClientTransaction, _nonExistingObjectID);
       Assert.That (instance.State, Is.EqualTo (StateType.NotLoadedYet));
-      Assert.That (() => instance.OrderNumber, ThrowsObjectInvalidExceptionForNotFoundObject (_nonExistingObjectID));
+      Assert.That (() => instance.OrderNumber, ThrowsObjectNotFoundException (_nonExistingObjectID));
       CheckObjectIsMarkedInvalid (instance.ID);
 
       // After the object has been marked invalid
@@ -277,11 +277,11 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests
     }
 
     [Test]
-    public void PropertyAccess_ShouldThrowObjectInvalidException_VirtualRelationProperty ()
+    public void PropertyAccess_ShouldThrow_VirtualRelationProperty ()
     {
       var instance = (Order) LifetimeService.GetObjectReference (TestableClientTransaction, _nonExistingObjectID);
       Assert.That (instance.State, Is.EqualTo (StateType.NotLoadedYet));
-      Assert.That (() => instance.OrderTicket, ThrowsObjectInvalidExceptionForNotFoundObject (_nonExistingObjectID));
+      Assert.That (() => instance.OrderTicket, ThrowsObjectNotFoundException (_nonExistingObjectID));
       CheckObjectIsMarkedInvalid (instance.ID);
 
       // After the object has been marked invalid
@@ -289,11 +289,11 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests
     }
 
     [Test]
-    public void PropertyAccess_ShouldThrowObjectInvalidException_ForeignKeyRelationProperty ()
+    public void PropertyAccess_ShouldThrow_ForeignKeyRelationProperty ()
     {
       var instance = (Order) LifetimeService.GetObjectReference (TestableClientTransaction, _nonExistingObjectID);
       Assert.That (instance.State, Is.EqualTo (StateType.NotLoadedYet));
-      Assert.That (() => instance.Customer, ThrowsObjectInvalidExceptionForNotFoundObject (_nonExistingObjectID));
+      Assert.That (() => instance.Customer, ThrowsObjectNotFoundException (_nonExistingObjectID));
       CheckObjectIsMarkedInvalid (instance.ID);
 
       // After the object has been marked invalid
@@ -301,11 +301,11 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests
     }
 
     [Test]
-    public void PropertyAccess_ShouldThrowObjectInvalidException_CollectionRelationProperty ()
+    public void PropertyAccess_ShouldThrow_CollectionRelationProperty ()
     {
       var instance = (Order) LifetimeService.GetObjectReference (TestableClientTransaction, _nonExistingObjectID);
       Assert.That (instance.State, Is.EqualTo (StateType.NotLoadedYet));
-      Assert.That (() => instance.OrderItems, ThrowsObjectInvalidExceptionForNotFoundObject (_nonExistingObjectID));
+      Assert.That (() => instance.OrderItems, ThrowsObjectNotFoundException (_nonExistingObjectID));
       CheckObjectIsMarkedInvalid (instance.ID);
 
       // After the object has been marked invalid
@@ -323,7 +323,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests
         Assert.That (() => instance.StringProperty, ThrowsObjectInvalidException (_nonExistingObjectIDForSubtransaction));
 
         var instance2 = (Order) LifetimeService.GetObjectReference (ClientTransaction.Current, _nonExistingObjectID);
-        Assert.That (() => instance2.OrderNumber, ThrowsObjectInvalidExceptionForNotFoundObject (_nonExistingObjectID));
+        Assert.That (() => instance2.OrderNumber, ThrowsObjectNotFoundException (_nonExistingObjectID));
         CheckObjectIsMarkedInvalid (_nonExistingObjectID);
       }
       CheckObjectIsMarkedInvalid (_nonExistingObjectID);
@@ -431,10 +431,9 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests
       Assert.That (instance.State, Is.Not.EqualTo (StateType.Invalid));
     }
 
-    private IResolveConstraint ThrowsObjectInvalidExceptionForNotFoundObject (ObjectID objectID)
+    private IResolveConstraint ThrowsObjectNotFoundException (ObjectID objectID)
     {
       var expected = string.Format ("Object(s) could not be found: '{0}'.", objectID);
-      // TODO 4920: Should be replaced with ObjectInvalidExcaption
       return Throws.TypeOf<ObjectsNotFoundException> ().With.Message.EqualTo (expected);
     }
 

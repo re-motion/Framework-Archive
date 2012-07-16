@@ -599,13 +599,17 @@ public class ClientTransaction
 
   /// <summary>
   /// Ensures that the data of the <see cref="DomainObject"/> with the given <see cref="ObjectID"/> has been loaded into this 
-  /// <see cref="ClientTransaction"/>. If it hasn't, this method loads the object's data. If the object's data can't be found, an exception is thrown.
+  /// <see cref="ClientTransaction"/>. If it hasn't, this method loads the object's data. If the object's data can't be found, an exception is thrown
+  /// and the object is marked <see cref="StateType.Invalid"/> in the <see cref="ClientTransaction"/>.
   /// </summary>
   /// <param name="objectID">The domain object whose data must be loaded.</param>
   /// <exception cref="ArgumentNullException">The <paramref name="objectID"/> parameter is <see langword="null" />.</exception>
   /// <exception cref="ObjectInvalidException">The given <paramref name="objectID"/> is invalid in this transaction.</exception>
-  /// <exception cref="ObjectsNotFoundException">No data could be loaded for the given <paramref name="objectID"/> because the object was not
-  /// found in the underlying data source.</exception>
+  /// <exception cref="ObjectsNotFoundException">
+  /// The object could not be found in the data source. Note that the <see cref="ClientTransaction"/> marks
+  /// not found objects as <see cref="StateType.Invalid"/>, so calling this API again witht he same <see cref="ObjectID"/> results in a 
+  /// <see cref="ObjectInvalidException"/> being thrown.
+  /// </exception>
   public void EnsureDataAvailable (ObjectID objectID)
   {
     ArgumentUtility.CheckNotNull ("objectID", objectID);
@@ -616,15 +620,19 @@ public class ClientTransaction
   /// <summary>
   /// Ensures that the data for the <see cref="DomainObject"/>s with the given <see cref="ObjectID"/> values has been loaded into this 
   /// <see cref="ClientTransaction"/>. If it hasn't, this method loads the objects' data, performing a bulk load operation.
-  /// If any object's data can't be found, an exception is thrown.
+  /// If an object's data can't be found, an exception is thrown, and the object is marked <see cref="StateType.Invalid"/> in the 
+  /// <see cref="ClientTransaction"/>.
   /// </summary>
   /// <param name="objectIDs">The <see cref="ObjectID"/> values whose data must be loaded.</param>
   /// <exception cref="ArgumentNullException">The <paramref name="objectIDs"/> parameter is <see langword="null" />.</exception>
   /// <exception cref="ClientTransactionsDifferException">One of the given <paramref name="objectIDs"/> cannot be used in this 
   /// <see cref="ClientTransaction"/>.</exception>
   /// <exception cref="ObjectInvalidException">One of the given <paramref name="objectIDs"/> is invalid in this transaction.</exception>
-  /// <exception cref="ObjectsNotFoundException">No data could be loaded for one or more of the given <paramref name="objectIDs"/> because the object 
-  /// was not found in the underlying data source.</exception>
+  /// <exception cref="ObjectsNotFoundException">
+  /// One or more objects could not be found in the data source. Note that the <see cref="ClientTransaction"/> marks
+  /// not found objects as <see cref="StateType.Invalid"/>, so calling this API again witht he same <see cref="ObjectID"/> results in a 
+  /// <see cref="ObjectInvalidException"/> being thrown.
+  /// </exception>
   public void EnsureDataAvailable (IEnumerable<ObjectID> objectIDs)
   {
     ArgumentUtility.CheckNotNull ("objectIDs", objectIDs);
@@ -635,7 +643,8 @@ public class ClientTransaction
   /// <summary>
   /// Ensures that the data of the <see cref="DomainObject"/> with the given <see cref="ObjectID"/> has been loaded into this
   /// <see cref="ClientTransaction"/>. If it hasn't, this method loads the object's data. The method returns a value indicating whether the
-  /// object's data was found.
+  /// object's data was found. If an object's data can't be found, the object is marked <see cref="StateType.Invalid"/> in the 
+  /// <see cref="ClientTransaction"/>.
   /// </summary>
   /// <param name="objectID">The domain object whose data must be loaded.</param>
   /// <returns><see langword="true" /> if the object's data is now available in the <see cref="ClientTransaction"/>, <see langword="false" /> if the 
@@ -655,6 +664,7 @@ public class ClientTransaction
   /// Ensures that the data for the <see cref="DomainObject"/>s with the given <see cref="ObjectID"/> values has been loaded into this 
   /// <see cref="ClientTransaction"/>. If it hasn't, this method loads the objects' data, performing a bulk load operation.
   /// The method returns a value indicating whether the data of all the objects was found.
+  /// If an object's data can't be found, the object is marked <see cref="StateType.Invalid"/> in the <see cref="ClientTransaction"/>.
   /// </summary>
   /// <param name="objectIDs">The <see cref="ObjectID"/> values whose data must be loaded.</param>
   /// <returns><see langword="true" /> if the data is now available in the <see cref="ClientTransaction"/> for all objects, <see langword="false" /> 
@@ -944,14 +954,19 @@ public class ClientTransaction
   }
 
   /// <summary>
-  /// Gets a <see cref="DomainObject"/> that is already loaded or attempts to load it from the data source.
+  /// Gets a <see cref="DomainObject"/> that is already loaded or attempts to load it from the data source. If the object's data can't be found, an 
+  /// exception is thrown, and the object is marked <see cref="StateType.Invalid"/> in the <see cref="ClientTransaction"/>.
   /// </summary>
   /// <param name="id">The <see cref="ObjectID"/> of the <see cref="DomainObject"/> that should be loaded. Must not be <see langword="null"/>.</param>
   /// <param name="includeDeleted">Indicates if the method should return <see cref="DomainObject"/>s that are already deleted.</param>
   /// <returns>The <see cref="DomainObject"/> with the specified <paramref name="id"/>.</returns>
   /// <exception cref="System.ArgumentNullException"><paramref name="id"/> is <see langword="null"/>.</exception>
   /// <exception cref="ObjectDeletedException"><paramref name="includeDeleted"/> is false and the DomainObject with <paramref name="id"/> has been deleted.</exception>
-  /// <exception cref="ObjectsNotFoundException">The object could not be found in the database.</exception>
+  /// <exception cref="ObjectsNotFoundException">
+  /// The object could not be found in the data source. Note that the <see cref="ClientTransaction"/> marks
+  /// not found objects as <see cref="StateType.Invalid"/>, so calling this API again witht he same <see cref="ObjectID"/> results in a 
+  /// <see cref="ObjectInvalidException"/> being thrown.
+  /// </exception>
   /// <exception cref="ObjectInvalidException">The object is invalid in this transaction.</exception>
   /// <exception cref="Persistence.StorageProviderException">
   ///   The Mapping does not contain a class definition for the given <paramref name="id"/>.<br /> -or- <br />
@@ -1059,7 +1074,8 @@ public class ClientTransaction
 
   /// <summary>
   /// Gets a number of objects that are already loaded or attempts to load them from the data source.
-  /// If an object cannot be found, an exception is thrown.
+  /// If an object's data can't be found, an exception is thrown, and the object is marked <see cref="StateType.Invalid"/> in the 
+  /// <see cref="ClientTransaction"/>.
   /// </summary>
   /// <typeparam name="T">The type of objects expected to be returned. Specify <see cref="DomainObject"/> if no specific type is expected.</typeparam>
   /// <param name="objectIDs">The IDs of the objects to be retrieved.</param>
@@ -1068,8 +1084,11 @@ public class ClientTransaction
   /// <exception cref="ArgumentNullException">The <paramref name="objectIDs"/> parameter is <see langword="null"/>.</exception>
   /// <exception cref="InvalidCastException">One of the retrieved objects doesn't fit the expected type <typeparamref name="T"/>.</exception>
   /// <exception cref="ObjectInvalidException">One of the retrieved objects is invalid in this transaction.</exception>
-  /// <exception cref="ObjectsNotFoundException">No data could be loaded for one or more of the given <paramref name="objectIDs"/> because the object 
-  /// was not found in the underlying data source.</exception>
+  /// <exception cref="ObjectsNotFoundException">
+  /// One or more objects could not be found in the data source. Note that the <see cref="ClientTransaction"/> marks
+  /// not found objects as <see cref="StateType.Invalid"/>, so calling this API again witht he same <see cref="ObjectID"/> results in a 
+  /// <see cref="ObjectInvalidException"/> being thrown.
+  /// </exception>
   public T[] GetObjects<T> (params ObjectID[] objectIDs) 
       where T : DomainObject
   {
@@ -1078,7 +1097,8 @@ public class ClientTransaction
 
   /// <summary>
   /// Gets a number of objects that are already loaded or attempts to load them from the data source.
-  /// If an object cannot be found, an exception is thrown.
+  /// If an object's data can't be found, an exception is thrown, and the object is marked <see cref="StateType.Invalid"/> in the 
+  /// <see cref="ClientTransaction"/>.
   /// </summary>
   /// <typeparam name="T">The type of objects expected to be returned. Specify <see cref="DomainObject"/> if no specific type is expected.</typeparam>
   /// <param name="objectIDs">The IDs of the objects to be retrieved.</param>
@@ -1087,8 +1107,12 @@ public class ClientTransaction
   /// <exception cref="ArgumentNullException">The <paramref name="objectIDs"/> parameter is <see langword="null"/>.</exception>
   /// <exception cref="InvalidCastException">One of the retrieved objects doesn't fit the expected type <typeparamref name="T"/>.</exception>
   /// <exception cref="ObjectInvalidException">One of the retrieved objects is invalid in this transaction.</exception>
-  /// <exception cref="ObjectsNotFoundException">No data could be loaded for one or more of the given <paramref name="objectIDs"/> because the object 
-  /// was not found in the underlying data source.</exception>
+  /// <exception cref="ObjectsNotFoundException">
+  /// One or more objects could not be found in the data source. Note that the <see cref="ClientTransaction"/> marks
+  /// not found objects as <see cref="StateType.Invalid"/>, so calling this API again witht he same <see cref="ObjectID"/> results in a 
+  /// <see cref="ObjectInvalidException"/> being thrown.
+  /// </exception>
+
   public T[] GetObjects<T> (IEnumerable<ObjectID> objectIDs)
       where T : DomainObject
   {
@@ -1103,7 +1127,8 @@ public class ClientTransaction
 
   /// <summary>
   /// Gets a number of objects that are already loaded (including invalid objects) or attempts to load them from the data source. 
-  /// If an object is not found, the result array will contain a <see langword="null" /> reference in its place.
+  /// If an object cannot be found, it will be marked <see cref="StateType.Invalid"/> in the <see cref="ClientTransaction"/>, and the result array will 
+  /// contain a <see langword="null" /> reference in its place.
   /// </summary>
   /// <typeparam name="T">The type of objects expected to be returned. Specify <see cref="DomainObject"/> if no specific type is expected.</typeparam>
   /// <param name="objectIDs">The IDs of the objects to be retrieved.</param>
@@ -1119,7 +1144,8 @@ public class ClientTransaction
 
   /// <summary>
   /// Gets a number of objects that are already loaded (including invalid objects) or attempts to load them from the data source. 
-  /// If an object is not found, the result array will contain a <see langword="null" /> reference in its place.
+  /// If an object cannot be found, it will be marked <see cref="StateType.Invalid"/> in the <see cref="ClientTransaction"/>, and the result array will 
+  /// contain a <see langword="null" /> reference in its place.
   /// </summary>
   /// <typeparam name="T">The type of objects expected to be returned. Specify <see cref="DomainObject"/> if no specific type is expected.</typeparam>
   /// <param name="objectIDs">The IDs of the objects to be retrieved.</param>

@@ -63,7 +63,9 @@ namespace Remotion.Data.DomainObjects.DomainImplementation
     }
 
     /// <summary>
-    /// Gets a <see cref="DomainObject"/> that already exists or attempts to load it from the data source.
+    /// Gets a <see cref="DomainObject"/> that already exists or attempts to load it from the data source. If the object's data can't be found, an 
+    /// exception is thrown, and the object is marked <see cref="StateType.Invalid"/> in the <see cref="ClientTransaction"/>.
+    /// <paramref name="clientTransaction"/>.
     /// </summary>
     /// <param name="clientTransaction">The <see cref="ClientTransaction"/>.</param>
     /// <param name="objectID">The <see cref="ObjectID"/> of the <see cref="DomainObject"/> that should be loaded. Must not be <see langword="null"/>.</param>
@@ -72,8 +74,12 @@ namespace Remotion.Data.DomainObjects.DomainImplementation
     /// The <see cref="DomainObject"/> with the specified <paramref name="objectID"/>.
     /// </returns>
     /// <exception cref="System.ArgumentNullException"><paramref name="clientTransaction"/> or <paramref name="objectID"/> are <see langword="null"/>.</exception>
-    /// <exception cref="ObjectsNotFoundException">The object could not be found in the data source.</exception>
-    /// <exception cref="ObjectInvalidException">The object is invalid in this transaction.</exception>
+    /// <exception cref="ObjectsNotFoundException">
+    /// The object could not be found in the data source. Note that the <see cref="ClientTransaction"/> marks
+    /// not found objects as <see cref="StateType.Invalid"/>, so calling this API again witht he same <see cref="ObjectID"/> results in a 
+    /// <see cref="ObjectInvalidException"/> being thrown.
+    /// </exception>
+    /// <exception cref="ObjectInvalidException">The object is invalid in the <paramref name="clientTransaction"/>.</exception>
     /// <exception cref="Persistence.StorageProviderException">
     /// The Mapping does not contain a class definition for the given <paramref name="objectID"/>.<br/> -or- <br/>
     /// An error occurred while reading a <see cref="PropertyValue"/>.<br/> -or- <br/>
