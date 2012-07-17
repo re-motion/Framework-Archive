@@ -14,27 +14,25 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-
 using System;
+using System.Collections.Generic;
 
-namespace Remotion.Development.UnitTesting.ObjectMothers
+namespace Remotion.Development.UnitTesting.ObjectMother
 {
   /// <summary>
-  /// Provides boolean values for unit tests.
+  /// Supplies factories to easily create <see cref="Queue{T}"/> instances.
   /// </summary>
-  public static class BooleanObjectMother
+  /// <example><code>
+  /// <![CDATA[  
+  /// var queue = QueueMother.New("process","emit0","wait");
+  /// ]]>
+  /// </code></example>
+  public class QueueMother
   {
-    private static readonly Random s_random = new Random ();
-
-    /// <summary>
-    /// Gets a random <see cref="bool"/> value. This is used by unit tests when they need code to work with arbitrary boolean values. Rather than
-    /// duplicating the test, once for <see langword="true" /> and once for <see langword="false" />, the test is written once and is executed 
-    /// with both <see langword="true" /> and <see langword="false" /> values chosen at random.
-    /// </summary>
-    /// <returns>A random <see cref="bool"/> value.</returns>
-    public static bool GetRandomBoolean ()
+    public static System.Collections.Generic.Queue<T> New<T> (params T[] values)
     {
-      return s_random.Next (2) == 1;
+      var container = new System.Collections.Generic.Queue<T> (values);
+      return container;
     }
   }
 }
