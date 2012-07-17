@@ -257,7 +257,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
       if (dataContainer != null)
         return dataContainer;
 
-      _objectLoader.LoadObject (objectID);
+      _objectLoader.LoadObject (objectID, true);
 
       // LoadObject has either thrown an exception or registered a DataCOntainer.
       dataContainer = GetDataContainerWithoutLoading (objectID);

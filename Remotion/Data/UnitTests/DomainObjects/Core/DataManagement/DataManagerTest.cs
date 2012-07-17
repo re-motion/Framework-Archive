@@ -861,7 +861,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement
       var dataContainer = PrepareNonLoadedDataContainer ();
 
       _objectLoaderMock
-          .Expect (mock => mock.LoadObject (dataContainer.ID))
+          .Expect (mock => mock.LoadObject (dataContainer.ID, true))
           .WhenCalled (mi => DataManagerTestHelper.AddDataContainer (_dataManagerWithMocks, dataContainer))
           .Return (new FreshlyLoadedObjectData (dataContainer));
       _objectLoaderMock.Replay ();
@@ -1124,7 +1124,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement
       var fakeDataContainer = PrepareNonLoadedDataContainer ();
 
       _objectLoaderMock
-          .Expect (mock => mock.LoadObject (fakeDataContainer.ID))
+          .Expect (mock => mock.LoadObject (fakeDataContainer.ID, true))
           .Return (new FreshlyLoadedObjectData (fakeDataContainer))
           .WhenCalled (mi => DataManagerTestHelper.AddDataContainer (_dataManagerWithMocks, fakeDataContainer));
       _objectLoaderMock.Replay();
