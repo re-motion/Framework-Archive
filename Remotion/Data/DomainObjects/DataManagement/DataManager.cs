@@ -258,10 +258,8 @@ namespace Remotion.Data.DomainObjects.DataManagement
 
       _objectLoader.LoadObject (objectID, throwOnNotFound);
 
-      // LoadObject has either thrown an exception or registered a DataCOntainer.
-      dataContainer = GetDataContainerWithoutLoading (objectID);
-      Assertion.IsNotNull (dataContainer);
-      return dataContainer;
+      // Since LoadObjects might have marked IDs as invalid, we need to use DataContainers[...] instead of GetDataContainerWithoutLoading here.
+      return DataContainers[objectID];
     }
 
     public IEnumerable<DataContainer> GetDataContainersWithLazyLoad (IEnumerable<ObjectID> objectIDs, bool throwOnNotFound)

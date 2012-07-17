@@ -876,6 +876,25 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement
     }
 
     [Test]
+    public void GetDataContainerWithLazyLoad_NotFound ()
+    {
+      var notFoundID = new ObjectID (typeof (Order), Guid.NewGuid ());
+
+      var throwOnNotFound = BooleanObjectMother.GetRandomBoolean ();
+
+      _objectLoaderMock
+          .Expect (mock => mock.LoadObject (notFoundID, throwOnNotFound))
+          .WhenCalled (mi => _invalidDomainObjectManagerMock.Stub (stub => stub.IsInvalid (notFoundID)).Return (true))
+          .Return (new NotFoundLoadedObjectData (notFoundID));
+      _objectLoaderMock.Replay ();
+
+      var result = _dataManagerWithMocks.GetDataContainerWithLazyLoad (notFoundID, throwOnNotFound);
+
+      _objectLoaderMock.VerifyAllExpectations ();
+      Assert.That (result, Is.Null);
+    }
+
+    [Test]
     [ExpectedException (typeof (ObjectInvalidException))]
     public void GetDataContainerWithLazyLoad_Invalid ()
     {
@@ -932,6 +951,37 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement
           _dataManagerWithMocks.GetDataContainersWithLazyLoad (
               new[] { DomainObjectIDs.Order1, DomainObjectIDs.Order2 }, BooleanObjectMother.GetRandomBoolean()),
           Throws.TypeOf<ObjectInvalidException>());
+    }
+
+    [Test]
+    public void GetDataContainersWithLazyLoad_NotFound ()
+    {
+      var loadedDataContainer = PrepareLoadedDataContainer (_dataManagerWithMocks);
+      var nonLoadedDataContainer = PrepareNonLoadedDataContainer();
+
+      var notFoundID = new ObjectID (typeof (Order), Guid.NewGuid());
+
+      var throwOnNotFound = BooleanObjectMother.GetRandomBoolean ();
+
+      _objectLoaderMock
+          .Expect (mock => mock.LoadObjects (
+              Arg<IEnumerable<ObjectID>>.List.Equal (new[] { nonLoadedDataContainer.ID, notFoundID }),
+              Arg.Is (throwOnNotFound)))
+          .WhenCalled (
+              mi =>
+              {
+                DataManagerTestHelper.AddDataContainer (_dataManagerWithMocks, nonLoadedDataContainer);
+                _invalidDomainObjectManagerMock.Stub (stub => stub.IsInvalid (notFoundID)).Return (true);
+              })
+          .Return (new ILoadedObjectData[] { new FreshlyLoadedObjectData (nonLoadedDataContainer), new NotFoundLoadedObjectData (notFoundID) });
+      _objectLoaderMock.Replay ();
+
+      var result = _dataManagerWithMocks.GetDataContainersWithLazyLoad (
+          new[] { nonLoadedDataContainer.ID, loadedDataContainer.ID, notFoundID },
+          throwOnNotFound);
+
+      _objectLoaderMock.VerifyAllExpectations ();
+      Assert.That (result, Is.EqualTo (new[] { nonLoadedDataContainer, loadedDataContainer, null}));
     }
 
     [Test]

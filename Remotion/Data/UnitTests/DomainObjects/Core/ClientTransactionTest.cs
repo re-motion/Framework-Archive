@@ -460,11 +460,8 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
       _enlistedObjectManagerMock.Stub (stub => stub.GetEnlistedDomainObject (DomainObjectIDs.Order1)).Return (fakeOrder);
 
       _dataManagerMock
-          .Expect (
-              mock => mock.GetDataContainersWithLazyLoad (
-                  Arg<IEnumerable<ObjectID>>.List.Equal (new[] { DomainObjectIDs.Order1 }),
-                  Arg.Is (false)))
-          .Return (new[] { dataContainer })
+          .Expect (mock => mock.GetDataContainerWithLazyLoad (DomainObjectIDs.Order1, false))
+          .Return (dataContainer)
           .Ordered (counter);
 
       _mockRepository.ReplayAll ();
@@ -486,10 +483,8 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
       _enlistedObjectManagerMock.Stub (stub => stub.GetEnlistedDomainObject (DomainObjectIDs.Order1)).Return (fakeOrder);
 
       _dataManagerMock
-          .Expect (mock => mock.GetDataContainersWithLazyLoad (
-              Arg<ICollection<ObjectID>>.List.Equal (new[] { DomainObjectIDs.Order1 }),
-              Arg.Is (false)))
-          .Return (new DataContainer[] { null })
+          .Expect (mock => mock.GetDataContainerWithLazyLoad (DomainObjectIDs.Order1, false))
+          .Return (null)
           .Ordered (counter);
 
       _mockRepository.ReplayAll ();
@@ -678,8 +673,8 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
     public void TryEnsureDataAvailable_True ()
     {
       _dataManagerMock
-          .Expect (mock => mock.GetDataContainersWithLazyLoad (new[] { DomainObjectIDs.Order1 }, false))
-          .Return (new[] { DataContainerObjectMother.CreateDataContainer () });
+          .Expect (mock => mock.GetDataContainerWithLazyLoad (DomainObjectIDs.Order1, false))
+          .Return (DataContainerObjectMother.CreateDataContainer ());
       _mockRepository.ReplayAll ();
 
       var result = _transactionWithMocks.TryEnsureDataAvailable (DomainObjectIDs.Order1);
@@ -692,8 +687,8 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
     public void TryEnsureDataAvailable_False ()
     {
       _dataManagerMock
-          .Expect (mock => mock.GetDataContainersWithLazyLoad (new[] { DomainObjectIDs.Order1 }, false))
-          .Return (new DataContainer[] { null });
+          .Expect (mock => mock.GetDataContainerWithLazyLoad (DomainObjectIDs.Order1, false))
+          .Return (null);
       _mockRepository.ReplayAll ();
 
       var result = _transactionWithMocks.TryEnsureDataAvailable (DomainObjectIDs.Order1);

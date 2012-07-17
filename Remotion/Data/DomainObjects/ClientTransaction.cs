@@ -655,9 +655,8 @@ public class ClientTransaction
   {
     ArgumentUtility.CheckNotNull ("objectID", objectID);
 
-    // TODO 4920: Maybe add optional throwOnNotFound parameter to GetDataContainerWithLazyLoad() and use that instead
-    var dataContainers = DataManager.GetDataContainersWithLazyLoad (new[] { objectID }, false);
-    return dataContainers.Single() != null;
+    var dataContainer = DataManager.GetDataContainerWithLazyLoad (objectID, throwOnNotFound: false);
+    return dataContainer != null;
   }
 
   /// <summary>
@@ -976,13 +975,12 @@ public class ClientTransaction
     if (IsInvalid (id))
       throw new ObjectInvalidException (id);
 
-    var objectReference = GetObjectReference (id);
-    EnsureDataAvailable (id);
-
-    if (DataManager.DataContainers[id].State == StateType.Deleted && !includeDeleted)
+    var dataContainer = _dataManager.GetDataContainerWithLazyLoad (id, throwOnNotFound: true);
+    
+    if (dataContainer.State == StateType.Deleted && !includeDeleted)
       throw new ObjectDeletedException (id);
 
-    return objectReference;
+    return dataContainer.DomainObject;
   }
 
   /// <summary>
@@ -1004,13 +1002,14 @@ public class ClientTransaction
   {
     ArgumentUtility.CheckNotNull ("objectID", objectID);
 
-    var objectReference = GetObjectReference (objectID);
+    if (IsInvalid (objectID))
+      return GetInvalidObjectReference (objectID);
 
-    if (IsInvalid (objectID) || TryEnsureDataAvailable (objectID))
-      return objectReference;
-    else
+    var dataContainer = _dataManager.GetDataContainerWithLazyLoad (objectID, throwOnNotFound: false);
+    if (dataContainer == null)
       return null;
 
+    return dataContainer.DomainObject;
   }
 
   /// <summary>
