@@ -652,7 +652,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
     public void EnsureDataAvailable ()
     {
       _dataManagerMock
-          .Expect (mock => mock.GetDataContainerWithLazyLoad (DomainObjectIDs.Order1))
+          .Expect (mock => mock.GetDataContainerWithLazyLoad (DomainObjectIDs.Order1, true))
           .Return (DataContainerObjectMother.CreateDataContainer());
       _mockRepository.ReplayAll();
       

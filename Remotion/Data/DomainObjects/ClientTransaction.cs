@@ -614,7 +614,7 @@ public class ClientTransaction
   {
     ArgumentUtility.CheckNotNull ("objectID", objectID);
 
-    _dataManager.GetDataContainerWithLazyLoad (objectID);
+    _dataManager.GetDataContainerWithLazyLoad (objectID, throwOnNotFound: true);
   }
 
   /// <summary>
@@ -637,7 +637,7 @@ public class ClientTransaction
   {
     ArgumentUtility.CheckNotNull ("objectIDs", objectIDs);
 
-    DataManager.GetDataContainersWithLazyLoad (objectIDs, true);
+    DataManager.GetDataContainersWithLazyLoad (objectIDs, throwOnNotFound: true);
   }
 
   /// <summary>
@@ -1143,7 +1143,7 @@ public class ClientTransaction
     ArgumentUtility.CheckNotNull ("objectIDs", objectIDs);
 
     // this performs a bulk load operation, throwing on invalid IDs and unknown objects
-    return DataManager.GetDataContainersWithLazyLoad (objectIDs, true)
+    return DataManager.GetDataContainersWithLazyLoad (objectIDs, throwOnNotFound: true)
         .Select (dc => dc.DomainObject)
         .Cast<T> ()
         .ToArray ();

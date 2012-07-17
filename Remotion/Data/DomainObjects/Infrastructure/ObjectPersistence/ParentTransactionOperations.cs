@@ -133,12 +133,12 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
       return _parentTransaction.DataManager.GetDataContainerWithoutLoading (objectID);
     }
 
-    public DataContainer GetDataContainerWithLazyLoad (ObjectID objectID)
+    public DataContainer GetDataContainerWithLazyLoad (ObjectID objectID, bool throwOnNotFound)
     {
       ArgumentUtility.CheckNotNull ("objectID", objectID);
       CheckDisposed ();
       
-      return _parentTransaction.DataManager.GetDataContainerWithLazyLoad (objectID);
+      return _parentTransaction.DataManager.GetDataContainerWithLazyLoad (objectID, throwOnNotFound);
     }
 
     public IRelationEndPoint GetRelationEndPointWithoutLoading (RelationEndPointID relationEndPointID)

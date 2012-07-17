@@ -23,6 +23,7 @@ using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
 using Remotion.Data.UnitTests.DomainObjects.TestDomain;
 using Remotion.Data.UnitTests.UnitTesting;
+using Remotion.Development.UnitTesting.ObjectMothers;
 using Rhino.Mocks;
 
 namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement
@@ -40,6 +41,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement
       var domainObject = DomainObjectMother.CreateFakeObject<Order>();
       var persistableData = new PersistableData (domainObject, StateType.Unchanged, dataContainer, new IRelationEndPoint[0]);
       var dataManagementCommand = MockRepository.GenerateStub<IDataManagementCommand> ();
+      var randomBoolean = BooleanObjectMother.GetRandomBoolean ();
 
       CheckDelegation (dm => dm.GetOrCreateVirtualEndPoint (relationEndPointID), virtualEndPoint);
       CheckDelegation (dm => dm.GetRelationEndPointWithLazyLoad (relationEndPointID), virtualEndPoint);
@@ -50,7 +52,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement
       CheckDelegation (dm => dm.DataContainers, MockRepository.GenerateStub<IDataContainerMapReadOnlyView> ());
       CheckDelegation (dm => dm.RelationEndPoints, MockRepository.GenerateStub<IRelationEndPointMapReadOnlyView> ());
       CheckDelegation (dm => dm.DomainObjectStateCache, new DomainObjectStateCache (ClientTransaction.CreateRootTransaction()));
-      CheckDelegation (dm => dm.GetDataContainerWithLazyLoad (objectID), dataContainer);
+      CheckDelegation (dm => dm.GetDataContainerWithLazyLoad (objectID, randomBoolean), dataContainer);
       CheckDelegation (dm => dm.GetDataContainersWithLazyLoad (new[] { objectID }, true), new[] { dataContainer });
       CheckDelegation (dm => dm.GetLoadedDataByObjectState (StateType.Unchanged), new[] { persistableData });
       CheckDelegation (dm => dm.GetNewChangedDeletedData (), new[] { persistableData });

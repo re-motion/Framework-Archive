@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Runtime.Serialization;
 using Remotion.Data.DomainObjects.DataManagement.Commands;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
@@ -248,7 +247,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
       return DataContainers[objectID];
     }
 
-    public DataContainer GetDataContainerWithLazyLoad (ObjectID objectID)
+    public DataContainer GetDataContainerWithLazyLoad (ObjectID objectID, bool throwOnNotFound)
     {
       ArgumentUtility.CheckNotNull ("objectID", objectID);
 
@@ -257,7 +256,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
       if (dataContainer != null)
         return dataContainer;
 
-      _objectLoader.LoadObject (objectID, true);
+      _objectLoader.LoadObject (objectID, throwOnNotFound);
 
       // LoadObject has either thrown an exception or registered a DataCOntainer.
       dataContainer = GetDataContainerWithoutLoading (objectID);
@@ -327,7 +326,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
       if (_dataContainerMap[objectID] != null)
         throw new InvalidOperationException ("The given DataContainer cannot be loaded, its data is already available.");
 
-      return GetDataContainerWithLazyLoad (objectID);
+      return GetDataContainerWithLazyLoad (objectID, throwOnNotFound: true);
     }
 
     public IRelationEndPoint GetRelationEndPointWithLazyLoad (RelationEndPointID endPointID)

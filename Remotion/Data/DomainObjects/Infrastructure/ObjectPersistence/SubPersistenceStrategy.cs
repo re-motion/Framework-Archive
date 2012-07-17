@@ -183,7 +183,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
     private FreshlyLoadedObjectData TransferParentObject (ObjectID objectID, IParentTransactionOperations parentTransactionOperations)
     {
-      var parentDataContainer = parentTransactionOperations.GetDataContainerWithLazyLoad (objectID);
+      var parentDataContainer = parentTransactionOperations.GetDataContainerWithLazyLoad (objectID, throwOnNotFound: true);
       var dataContainer = TransferParentContainer (parentDataContainer);
       return new FreshlyLoadedObjectData (dataContainer);
     }
