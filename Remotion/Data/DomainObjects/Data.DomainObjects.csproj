@@ -212,6 +212,7 @@
     <Compile Include="Infrastructure\IClientTransactionEventBroker.cs" />
     <Compile Include="Infrastructure\IClientTransactionEventDistributor.cs" />
     <Compile Include="ICommittingEventRegistrar.cs" />
+    <Compile Include="Infrastructure\NotFoundObjectsClientTransactionListener.cs" />
     <Compile Include="Infrastructure\ObjectPersistence\AlreadyExistingLoadedObjectData.cs" />
     <Compile Include="Infrastructure\ObjectPersistence\NotFoundLoadedObjectData.cs" />
     <Compile Include="Infrastructure\ObjectPersistence\FetchEnabledObjectLoader.cs" />

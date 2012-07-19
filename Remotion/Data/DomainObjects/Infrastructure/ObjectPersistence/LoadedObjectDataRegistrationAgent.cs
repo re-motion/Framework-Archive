@@ -72,11 +72,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
         if (_notFoundObjectIDs.Any ())
         {
-          foreach (var notFoundObjectID in _notFoundObjectIDs)
-          {
-            var objectReference = clientTransaction.GetObjectReference (notFoundObjectID);
-            dataManager.MarkInvalid (objectReference);
-          }
+          transactionEventSink.RaiseEvent ((tx, l) => l.ObjectsNotFound (tx, _notFoundObjectIDs.AsReadOnly()));
 
           if (throwOnNotFound)
             throw new ObjectsNotFoundException (_notFoundObjectIDs);
