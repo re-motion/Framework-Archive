@@ -413,6 +413,35 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests
       CheckObjectIsMarkedInvalid (instance.ID);
     }
 
+    [Test]
+    [Ignore ("TODO 4534")]
+    public void Invalidity_IsPropagated_ToSubtransaction_EvenIfLoadedOnlyIntoParentTransaction ()
+    {
+      // When a subtransaction is active and a non-existing object is tried to be loaded into the parent transaction, the non-existing object should
+      // be marked invalid in both transactions.
+
+      DomainObject notFoundInstance = null;
+      
+      // The only way to test this ATM is to trigger the loading of the non-existing object from a load event handler (which is triggered while the
+      // parent transaction is temporarily writeable).
+      var triggeringObjectReference = (TestDomainBase) LifetimeService.GetObjectReference (TestableClientTransaction, DomainObjectIDs.Order1);
+      triggeringObjectReference.ProtectedLoaded += (sender, args) =>
+      {
+        if (ClientTransaction.Current == TestableClientTransaction)
+          notFoundInstance = Order.TryGetObject (_nonExistingObjectID);
+      };
+
+      using (TestableClientTransaction.CreateSubTransaction ().EnterDiscardingScope ())
+      {
+        // Trigger the load event
+        triggeringObjectReference.EnsureDataAvailable();
+        
+        CheckObjectIsMarkedInvalid (_nonExistingObjectID);
+      }
+
+      CheckObjectIsMarkedInvalid (_nonExistingObjectID);
+    }
+
     private void EnableConstraints (TableDefinition tableDefinition)
     {
       var commandText = string.Format ("ALTER TABLE [{0}] WITH CHECK CHECK CONSTRAINT all", tableDefinition.TableName.EntityName);
