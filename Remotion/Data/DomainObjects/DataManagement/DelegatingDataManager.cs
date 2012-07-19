@@ -117,6 +117,11 @@ namespace Remotion.Data.DomainObjects.DataManagement
       SafeInnerDataManager.MarkInvalid (domainObject);
     }
 
+    public void MarkNotInvalid (ObjectID objectID)
+    {
+      SafeInnerDataManager.MarkNotInvalid (objectID);
+    }
+
     public void Commit ()
     {
       SafeInnerDataManager.Commit();

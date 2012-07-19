@@ -211,6 +211,17 @@ namespace Remotion.Data.DomainObjects.DataManagement
       _invalidDomainObjectManager.MarkInvalid (domainObject);
     }
 
+    public void MarkNotInvalid (ObjectID objectID)
+    {
+      ArgumentUtility.CheckNotNull ("objectID", objectID);
+
+      if (!_invalidDomainObjectManager.MarkNotInvalid (objectID))
+      {
+        var message = string.Format ("Cannot clear the invalid state from object '{0}' - it wasn't marked invalid in the first place.", objectID);
+        throw new InvalidOperationException (message);
+      }
+    }
+
     public void Commit ()
     {
       var deletedDataContainers = _dataContainerMap.Where (dc => dc.State == StateType.Deleted).ToList();

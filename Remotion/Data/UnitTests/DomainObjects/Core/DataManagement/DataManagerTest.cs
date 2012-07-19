@@ -342,7 +342,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement
     }
     
     [Test]
-    public void MarkObjectInvalid ()
+    public void MarkInvalid ()
     {
       var domainObject = DomainObjectMother.CreateObjectInTransaction<Order> (_dataManagerWithMocks.ClientTransaction);
       _invalidDomainObjectManagerMock.Expect (mock => mock.MarkInvalid (domainObject)).Return (true);
@@ -360,7 +360,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement
     }
 
     [Test]
-    public void MarkObjectInvalid_NotEnlisted_Throws ()
+    public void MarkInvalid_NotEnlisted_Throws ()
     {
       var domainObject = DomainObjectMother.CreateObjectInOtherTransaction<Order>();
       Assert.That (_dataManagerWithMocks.ClientTransaction.IsEnlisted (domainObject), Is.False);
@@ -371,7 +371,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement
     }
 
     [Test]
-    public void MarkObjectInvalid_DataContainerRegistered_Throws ()
+    public void MarkInvalid_DataContainerRegistered_Throws ()
     {
       var domainObject = DomainObjectMother.CreateObjectInTransaction<Order> (_dataManagerWithMocks.ClientTransaction);
       PrepareLoadedDataContainer (_dataManagerWithMocks, domainObject.ID);
@@ -382,6 +382,31 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement
           "Cannot mark DomainObject '" + domainObject.ID + "' invalid because there is data registered for the object."));
 
       _invalidDomainObjectManagerMock.AssertWasNotCalled (mock => mock.MarkInvalid (Arg<DomainObject>.Is.Anything));
+    }
+
+    [Test]
+    public void MarkNotInvalid ()
+    {
+      _invalidDomainObjectManagerMock.Expect (mock => mock.MarkNotInvalid (DomainObjectIDs.Order1)).Return (true);
+      _invalidDomainObjectManagerMock.Replay ();
+
+      _dataManagerWithMocks.MarkNotInvalid (DomainObjectIDs.Order1);
+
+      _invalidDomainObjectManagerMock.VerifyAllExpectations ();
+    }
+
+    [Test]
+    public void MarkNotInvalid_NotInvalid ()
+    {
+      _invalidDomainObjectManagerMock.Expect (mock => mock.MarkNotInvalid (DomainObjectIDs.Order1)).Return (false);
+      _invalidDomainObjectManagerMock.Replay ();
+
+      Assert.That (
+          () => _dataManagerWithMocks.MarkNotInvalid (DomainObjectIDs.Order1), 
+          Throws.InvalidOperationException.With.Message.EqualTo (
+              "Cannot clear the invalid state from object '" + DomainObjectIDs.Order1 + "' - it wasn't marked invalid in the first place."));
+
+      _invalidDomainObjectManagerMock.VerifyAllExpectations ();
     }
 
     [Test]

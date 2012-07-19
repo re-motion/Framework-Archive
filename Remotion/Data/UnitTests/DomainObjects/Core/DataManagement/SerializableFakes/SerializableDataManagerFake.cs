@@ -123,6 +123,11 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.Serializable
       throw new NotImplementedException();
     }
 
+    public void MarkNotInvalid (ObjectID objectID)
+    {
+      throw new NotImplementedException();
+    }
+
     public void Commit ()
     {
       throw new NotImplementedException();

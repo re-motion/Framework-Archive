@@ -49,6 +49,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
     void Discard (DataContainer dataContainer);
 
     void MarkInvalid (DomainObject domainObject);
+    void MarkNotInvalid (ObjectID objectID);
 
     void Commit ();
     void Rollback ();
