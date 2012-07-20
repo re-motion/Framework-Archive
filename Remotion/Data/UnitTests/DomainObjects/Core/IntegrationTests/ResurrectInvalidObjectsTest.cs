@@ -282,18 +282,4 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests
       Assert.That (domainObject.TransactionContext[clientTransaction].IsInvalid, Is.True);
     }
   }
-
-  public static class ResurrectionService
-  {
-    public static void ResurrectInvalidObject (ClientTransaction clientTransaction, ObjectID objectID)
-    {
-      // TODO 4534
-    }
-
-    public static bool TryResurrectInvalidObject (ClientTransaction clientTransaction, ObjectID objectID)
-    {
-      // TODO 4534
-      return false;
-    }
-  }
 }
