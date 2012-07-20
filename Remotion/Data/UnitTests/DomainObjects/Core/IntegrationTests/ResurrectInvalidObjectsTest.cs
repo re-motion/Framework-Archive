@@ -24,7 +24,6 @@ using Remotion.Data.UnitTests.DomainObjects.TestDomain;
 namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests
 {
   [TestFixture]
-  [Ignore ("TODO 4534")]
   public class ResurrectInvalidObjectsTest : ClientTransactionBaseTest
   {
     [Test]

@@ -16,7 +16,10 @@
 // 
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Remotion.Utilities;
+using Remotion.FunctionalProgramming;
 
 namespace Remotion.Data.DomainObjects.DomainImplementation
 {
@@ -75,7 +78,20 @@ namespace Remotion.Data.DomainObjects.DomainImplementation
       ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
       ArgumentUtility.CheckNotNull ("objectID", objectID);
 
-      // TODO 4534
+      var allTransactions = GetAllTransactions (clientTransaction);
+      var blockingTransaction = GetFirstBlockingTransaction (objectID, allTransactions);
+      if (blockingTransaction != null)
+      {
+        var message = string.Format (
+            "Cannot resurrect object '{0}' because it is not invalid within the whole transaction hierarchy. In transaction '{1}', the object has "
+            + "state '{2}'.",
+                objectID,
+                blockingTransaction,
+                blockingTransaction.GetObjectReference (objectID).TransactionContext[blockingTransaction].State);
+        throw new InvalidOperationException (message);
+      }
+
+      MarkNotInvalidInAllTransactions (objectID, allTransactions);
     }
 
     /// <summary>
@@ -94,8 +110,29 @@ namespace Remotion.Data.DomainObjects.DomainImplementation
       ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
       ArgumentUtility.CheckNotNull ("objectID", objectID);
 
-      // TODO 4534
-      return false;
+      var allTransactions = GetAllTransactions (clientTransaction);
+      var blockingTransaction = GetFirstBlockingTransaction (objectID, allTransactions);
+      if (blockingTransaction != null)
+        return false;
+
+      MarkNotInvalidInAllTransactions (objectID, allTransactions);
+      return true;
+    }
+
+    private static IEnumerable<ClientTransaction> GetAllTransactions (ClientTransaction clientTransaction)
+    {
+      return clientTransaction.RootTransaction.CreateSequence (tx => tx.SubTransaction);
+    }
+
+    private static ClientTransaction GetFirstBlockingTransaction (ObjectID objectID, IEnumerable<ClientTransaction> allTransactions)
+    {
+      return allTransactions.FirstOrDefault (tx => !tx.IsInvalid (objectID));
+    }
+
+    private static void MarkNotInvalidInAllTransactions (ObjectID objectID, IEnumerable<ClientTransaction> allTransactions)
+    {
+      foreach (var transaction in allTransactions)
+        transaction.DataManager.MarkNotInvalid (objectID);
     }
   }
 }
