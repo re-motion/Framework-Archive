@@ -14,42 +14,24 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System;
-using Remotion.Utilities;
+using System.Collections.Generic;
 
-namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
+namespace Remotion.Development.UnitTesting.ObjectMothers
 {
   /// <summary>
-  /// Represents an object that couldn't be found by an <see cref="IPersistenceStrategy"/>.
+  /// Supplies factories to easily create <see cref="List{T}"/> instances.
   /// </summary>
-  public class NotFoundLoadedObjectData : ILoadedObjectData
+  /// <example><code>
+  /// <![CDATA[  
+  /// var listList = ListObjectMother.New( List.New(1,2), List.New(3,4) );
+  /// ]]>
+  /// </code></example>
+  public class ListObjectMother
   {
-    private readonly ObjectID _objectID;
-
-    public NotFoundLoadedObjectData (ObjectID objectID)
+    public static System.Collections.Generic.List<T> New<T> (params T[] values)
     {
-      _objectID = objectID;
-    }
-
-    public ObjectID ObjectID
-    {
-      get { return _objectID; }
-    }
-
-    public DomainObject GetDomainObjectReference ()
-    {
-      return null;
-    }
-
-    public void Accept (ILoadedObjectVisitor visitor)
-    {
-      ArgumentUtility.CheckNotNull ("visitor", visitor);
-      visitor.VisitNotFoundLoadedObject (this);
-    }
-
-    bool INullObject.IsNull
-    {
-      get { return true; }
+      var container = new System.Collections.Generic.List<T> (values);
+      return container;
     }
   }
 }
