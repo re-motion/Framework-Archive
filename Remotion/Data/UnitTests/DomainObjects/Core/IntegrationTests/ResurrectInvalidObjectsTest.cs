@@ -269,17 +269,17 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests
       }
     }
 
-    private void CheckStateIsNotInvalid (DomainObject notFoundObject, ClientTransaction clientTransaction, StateType expectedState)
+    private void CheckStateIsNotInvalid (DomainObject domainObject, ClientTransaction clientTransaction, StateType expectedState)
     {
-      Assert.That (clientTransaction.IsInvalid (notFoundObject.ID), Is.False);
-      Assert.That (notFoundObject.TransactionContext[clientTransaction].IsInvalid, Is.False);
-      Assert.That (notFoundObject.TransactionContext[clientTransaction].State, Is.EqualTo (expectedState));
+      Assert.That (clientTransaction.IsInvalid (domainObject.ID), Is.False);
+      Assert.That (domainObject.TransactionContext[clientTransaction].IsInvalid, Is.False);
+      Assert.That (domainObject.TransactionContext[clientTransaction].State, Is.EqualTo (expectedState));
     }
 
-    private void CheckStateIsInvalid (DomainObject notFoundObject, ClientTransaction clientTransaction)
+    private void CheckStateIsInvalid (DomainObject domainObject, ClientTransaction clientTransaction)
     {
-      Assert.That (clientTransaction.IsInvalid (notFoundObject.ID), Is.True);
-      Assert.That (notFoundObject.TransactionContext[clientTransaction].IsInvalid, Is.True);
+      Assert.That (clientTransaction.IsInvalid (domainObject.ID), Is.True);
+      Assert.That (domainObject.TransactionContext[clientTransaction].IsInvalid, Is.True);
     }
   }
 
