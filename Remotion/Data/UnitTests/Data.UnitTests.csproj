@@ -210,6 +210,7 @@
     <Compile Include="DomainObjects\Core\Infrastructure\NotFoundObjectsClientTransactionListenerTest.cs" />
     <Compile Include="DomainObjects\Core\Infrastructure\ObjectPersistence\NotFoundLoadedObjectDataTest.cs" />
     <Compile Include="DomainObjects\Core\IntegrationTests\NotFoundObjectTest.cs" />
+    <Compile Include="DomainObjects\Core\IntegrationTests\ResurrectInvalidObjectsTest.cs" />
     <Compile Include="DomainObjects\Core\IntegrationTests\Synchronization\RelationInconcsistenciesTestHelper.cs" />
     <Compile Include="DomainObjects\Core\IntegrationTests\Transaction\CommitFullEventChainTest.cs" />
     <Compile Include="DomainObjects\Core\IntegrationTests\Transaction\CommitRollbackFullEventChainTestBase.cs" />
