@@ -34,7 +34,6 @@ using Rhino.Mocks;
 namespace Remotion.Data.UnitTests.DomainObjects.Core.DomainImplementation.Transport
 {
   [TestFixture]
-  [Ignore ("TODO 4534")]
   public class TransportedDomainObjectsTest : StandardMappingTest
   {
     [Test]
