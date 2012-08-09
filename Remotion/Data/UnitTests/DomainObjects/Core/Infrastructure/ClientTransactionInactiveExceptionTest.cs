@@ -15,22 +15,22 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using NUnit.Framework;
+using Remotion.Data.DomainObjects.Infrastructure;
+using Remotion.Development.UnitTesting;
 
-namespace Remotion.Data.DomainObjects.Infrastructure
+namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure
 {
-  /// <summary>
-  /// Thrown when a client transaction's state is tried to be modified and the ClientTransaction's internal state is set to read-only,
-  /// usually because there is an active nested transaction.
-  /// </summary>
-  public class ClientTransactionReadOnlyException : DomainObjectException
+  [TestFixture]
+  public class ClientTransactionInactiveExceptionTest
   {
-    /// <summary>
-    /// Initializes a new instance of the <see cref="ClientTransactionReadOnlyException"/> class, specifying an exception message.
-    /// </summary>
-    /// <param name="message">The exception message.</param>
-    public ClientTransactionReadOnlyException (string message)
-        : base (message)
+    [Test]
+    public void Serializable ()
     {
+      var instance = new ClientTransactionInactiveException ("Test");
+      var deserializedInstance = Serializer.SerializeAndDeserialize (instance);
+
+      Assert.That (deserializedInstance.Message, Is.EqualTo ("Test"));
     }
   }
 }
