@@ -16,6 +16,7 @@
 // 
 
 using System;
+using System.Collections.Generic;
 using Remotion.Data.DomainObjects;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement;
@@ -50,6 +51,11 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.Serializable
       throw new NotImplementedException();
     }
 
+    public void OnBeforeSubTransactionObjectRegistration (ICollection<ObjectID> loadedObjectIDs)
+    {
+      throw new NotImplementedException();
+    }
+
     public ClientTransaction CreateSubTransaction (Func<ClientTransaction, ClientTransaction> subTransactionFactory)
     {
       throw new NotImplementedException();
@@ -71,6 +77,16 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.Serializable
     }
 
     public void InstallListeners (IClientTransactionEventBroker eventBroker)
+    {
+      throw new NotImplementedException();
+    }
+
+    public void OnBeforeObjectRegistration (ICollection<ObjectID> loadedObjectIDs)
+    {
+      throw new NotImplementedException();
+    }
+
+    public void OnAfterObjectRegistration (ICollection<ObjectID> loadedObjectIDs)
     {
       throw new NotImplementedException();
     }
