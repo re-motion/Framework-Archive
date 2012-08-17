@@ -17,6 +17,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using Remotion.Data.DomainObjects;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement;
@@ -81,12 +82,12 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.Serializable
       throw new NotImplementedException();
     }
 
-    public void OnBeforeObjectRegistration (ICollection<ObjectID> loadedObjectIDs)
+    public void OnBeforeObjectRegistration (ReadOnlyCollection<ObjectID> loadedObjectIDs)
     {
       throw new NotImplementedException();
     }
 
-    public void OnAfterObjectRegistration (ICollection<ObjectID> loadedObjectIDs)
+    public void OnAfterObjectRegistration (ReadOnlyCollection<ObjectID> objectIDsToBeLoaded)
     {
       throw new NotImplementedException();
     }

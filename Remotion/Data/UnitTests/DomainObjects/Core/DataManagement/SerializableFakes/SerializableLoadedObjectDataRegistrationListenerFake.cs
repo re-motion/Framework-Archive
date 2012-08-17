@@ -15,18 +15,29 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 
+using System;
 using System.Collections.ObjectModel;
+using Remotion.Data.DomainObjects;
+using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
 
-namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
+namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.SerializableFakes
 {
-  /// <summary>
-  /// Defines an interface for objects reacting on objects being registered within a <see cref="ClientTransaction"/>.
-  /// </summary>
-  public interface ILoadedObjectDataRegistrationListener
+  [Serializable]
+  public class SerializableLoadedObjectDataRegistrationListenerFake : ILoadedObjectDataRegistrationListener
   {
-    void OnBeforeObjectRegistration (ReadOnlyCollection<ObjectID> loadedObjectIDs);
-    // Calls to OnAfterObjectRegistration must be exactly matched with OnBeforeObjectRegistration; they must not be swallowed in case of exceptions.
-    void OnAfterObjectRegistration (ReadOnlyCollection<ObjectID> objectIDsToBeLoaded, ReadOnlyCollection<DomainObject> actuallyLoadedDomainObjects);
-    void OnObjectsNotFound (ReadOnlyCollection<ObjectID> notFoundObjectIDs);
+    public void OnBeforeObjectRegistration (ReadOnlyCollection<ObjectID> loadedObjectIDs)
+    {
+      throw new NotImplementedException();
+    }
+
+    public void OnAfterObjectRegistration (ReadOnlyCollection<ObjectID> objectIDsToBeLoaded, ReadOnlyCollection<DomainObject> actuallyLoadedDomainObjects)
+    {
+      throw new NotImplementedException();
+    }
+
+    public void OnObjectsNotFound (ReadOnlyCollection<ObjectID> notFoundObjectIDs)
+    {
+      throw new NotImplementedException();
+    }
   }
 }

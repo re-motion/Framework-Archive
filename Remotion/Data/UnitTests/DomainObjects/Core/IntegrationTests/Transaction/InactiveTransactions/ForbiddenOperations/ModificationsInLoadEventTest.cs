@@ -29,7 +29,6 @@ using Rhino.Mocks;
 namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transaction.InactiveTransactions.ForbiddenOperations
 {
   [TestFixture]
-  [Ignore ("TODO 4994")]
   public class LoadEventsTest : InactiveTransactionsTestBase
   {
     private Order _order;

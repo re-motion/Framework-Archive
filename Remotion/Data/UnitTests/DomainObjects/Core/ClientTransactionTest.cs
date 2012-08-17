@@ -153,7 +153,8 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
                     Arg<ClientTransaction>.Matches (tx => tx == constructedTransaction), 
                     Arg<IClientTransactionEventSink>.Matches (eventSink => eventSink == _eventBrokerMock),
                     Arg.Is (_invalidDomainObjectManagerMock), 
-                    Arg.Is (_persistenceStrategyMock)))
+                    Arg.Is (_persistenceStrategyMock),
+                    Arg.Is (_hierarchyManagerMock)))
             .Return (_dataManagerMock)
             .WhenCalled (
                 mi => Assert.That (ClientTransactionTestHelper.GetPersistenceStrategy (constructedTransaction), Is.SameAs (_persistenceStrategyMock)));
@@ -165,7 +166,8 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
                     Arg<IClientTransactionEventSink>.Matches (eventSink => eventSink == _eventBrokerMock), 
                     Arg.Is (_invalidDomainObjectManagerMock), 
                     Arg.Is (_persistenceStrategyMock), 
-                    Arg.Is (_dataManagerMock)))
+                    Arg.Is (_dataManagerMock),
+                    Arg.Is (_hierarchyManagerMock)))
             .Return (_queryManagerMock)
             .WhenCalled (mi => Assert.That (ClientTransactionTestHelper.GetIDataManager (constructedTransaction), Is.SameAs (_dataManagerMock)));
         componentFactoryMock

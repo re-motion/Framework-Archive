@@ -16,14 +16,14 @@
 // 
 using System;
 using System.Collections.Generic;
-using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
+using System.Collections.ObjectModel;
 
 namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
 {
   /// <summary>
   /// Defines an interface for classes managing the position and state of a <see cref="ClientTransaction"/> in a transaction hierarchy.
   /// </summary>
-  public interface ITransactionHierarchyManager : ILoadedObjectDataRegistrationListener
+  public interface ITransactionHierarchyManager
   {
     ClientTransaction ParentTransaction { get; }
     bool IsActive { get; }
@@ -31,6 +31,9 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
     
     void OnBeforeTransactionInitialize ();
     void OnTransactionDiscard ();
+    void OnBeforeObjectRegistration (ReadOnlyCollection<ObjectID> loadedObjectIDs);
+    // Calls to OnAfterObjectRegistration must be exactly matched with OnBeforeObjectRegistration; they must not be swallowed in case of exceptions.
+    void OnAfterObjectRegistration (ReadOnlyCollection<ObjectID> objectIDsToBeLoaded);
     void OnBeforeSubTransactionObjectRegistration (ICollection<ObjectID> loadedObjectIDs);
 
     ClientTransaction CreateSubTransaction (Func<ClientTransaction, ClientTransaction> subTransactionFactory);
