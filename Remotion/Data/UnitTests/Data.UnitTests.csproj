@@ -239,6 +239,7 @@
     <Compile Include="DomainObjects\Core\IntegrationTests\Transaction\InactiveTransactions\AllowedOperations\ScalarQueryTest.cs" />
     <Compile Include="DomainObjects\Core\IntegrationTests\Transaction\InactiveTransactions\AllowedOperations\CustomQueryTest.cs" />
     <Compile Include="DomainObjects\Core\IntegrationTests\Transaction\InactiveTransactions\AllowedOperations\GetObjectTest.cs" />
+    <Compile Include="DomainObjects\Core\IntegrationTests\Transaction\InactiveTransactions\LoadEventsTest.cs" />
     <Compile Include="DomainObjects\Core\IntegrationTests\Transaction\InactiveTransactions\ForbiddenOperations\CommitTest.cs" />
     <Compile Include="DomainObjects\Core\IntegrationTests\Transaction\InactiveTransactions\AllowedOperations\DiscardTest.cs" />
     <Compile Include="DomainObjects\Core\IntegrationTests\Transaction\InactiveTransactions\ForbiddenOperations\ModificationsInLoadEventTest.cs" />
@@ -252,6 +253,7 @@
     <Compile Include="DomainObjects\Core\IntegrationTests\Transaction\InactiveTransactions\ForbiddenOperations\NewObjectTest.cs" />
     <Compile Include="DomainObjects\Core\IntegrationTests\Transaction\InactiveTransactions\InactiveTransactionsTestBase.cs" />
     <Compile Include="DomainObjects\Core\IntegrationTests\Transaction\InactiveTransactions\RelationReadEventsTest.cs" />
+    <Compile Include="DomainObjects\Core\IntegrationTests\Transaction\InactiveTransactions\FilterQueryResultEventsTest.cs" />
     <Compile Include="DomainObjects\Core\IntegrationTests\Transaction\TryEnsureDataAvailableTest.cs" />
     <Compile Include="DomainObjects\Core\IntegrationTests\Transaction\EnsureDataAvailableTest.cs" />
     <Compile Include="DomainObjects\Core\IntegrationTests\Transaction\EnsureDataAvailableTestBase.cs" />
