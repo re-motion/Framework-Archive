@@ -23,6 +23,7 @@ using Remotion.Data.DomainObjects.DomainImplementation;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement;
 using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.UnitTests.DomainObjects.Core.DataManagement;
 using Remotion.Data.UnitTests.DomainObjects.TestDomain;
 using Remotion.Development.UnitTesting;
 
@@ -98,7 +99,9 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.HierarchyMan
     [Test]
     public void NewObjectCreating_ForbiddenInLoadMode ()
     {
-      CheckForbiddenOperationWithLoadMode(() => _listener.NewObjectCreating (_transaction, typeof (Order)), "An object of type 'Order' cannot be created.");
+      ClientTransactionTestHelper.SetIsActive (_transaction, false);
+
+      CheckForbiddenOperationWithLoadMode (() => _listener.NewObjectCreating (_transaction, typeof (Order)), "An object of type 'Order' cannot be created.");
     }
 
     [Test]
@@ -118,6 +121,8 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.HierarchyMan
     [Test]
     public void ObjectDeleting_ForbiddenInLoadMode ()
     {
+      ClientTransactionTestHelper.SetIsActive (_transaction, false);
+
       CheckForbiddenOperationWithLoadMode (
           () => _listener.ObjectDeleting (_transaction, _client1),
           "Object 'Client|1627ade8-125f-4819-8e33-ce567c42b00c|System.Guid' cannot be deleted.");
@@ -140,6 +145,8 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.HierarchyMan
     [Test]
     public void PropertyValueChanging_SomeObject_ForbiddenInLoadMode ()
     {
+      ClientTransactionTestHelper.SetIsActive (_transaction, false);
+
       CheckForbiddenOperationWithLoadMode (
           () => _listener.PropertyValueChanging (_transaction, _order1, _orderNumberPropertyDefinition, null, null),
           "The object 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' cannot be modified. " 
@@ -149,6 +156,8 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.HierarchyMan
     [Test]
     public void PropertyValueChanging_LoadedObject_AllowedInLoadMode ()
     {
+      ClientTransactionTestHelper.SetIsActive (_transaction, false);
+
       _listener.AddCurrentlyLoadingObjectIDs (new[] { DomainObjectIDs.Client1 });
       Assert.That (_listener.IsInLoadMode, Is.True);
 
@@ -166,6 +175,8 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.HierarchyMan
     [Test]
     public void PropertyValueChanging_LoadedObject_ForbiddenWhenDataExistsInSubTransaction ()
     {
+      ClientTransactionTestHelper.SetIsActive (_transaction, false);
+
       _listener.AddCurrentlyLoadingObjectIDs (new[] { DomainObjectIDs.Order1 });
       Assert.That (_listener.IsInLoadMode, Is.True);
 
@@ -192,10 +203,8 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.HierarchyMan
     [Test]
     public void PropertyValueChanging_ForbiddenWhenTransactionInactive ()
     {
-      Assert.That (_listener.IsInLoadMode, Is.False);
-      Assert.That (() => _listener.PropertyValueChanging (_transaction, _order1, _orderNumberPropertyDefinition, null, null), Throws.Nothing);
-
       ClientTransactionTestHelper.SetIsActive (_transaction, false);
+      Assert.That (_listener.IsInLoadMode, Is.False);
 
       Assert.That (
           () => _listener.PropertyValueChanging (_transaction, _order1, _orderNumberPropertyDefinition, null, null),
@@ -205,6 +214,8 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.HierarchyMan
     [Test]
     public void RelationChanging_SomeObject_ForbiddenInLoadMode ()
     {
+      ClientTransactionTestHelper.SetIsActive (_transaction, false);
+
       CheckForbiddenOperationWithLoadMode (
           () => _listener.RelationChanging (_transaction, _order1, _orderTicketEndPointDefinition, null, null),
           "The object 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' cannot be modified. "
@@ -214,6 +225,8 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.HierarchyMan
     [Test]
     public void RelationChanging_LoadedObject_AllowedInLoadMode ()
     {
+      ClientTransactionTestHelper.SetIsActive (_transaction, false);
+
       _listener.AddCurrentlyLoadingObjectIDs (new[] { DomainObjectIDs.Client1 });
       Assert.That (_listener.IsInLoadMode, Is.True);
 
@@ -231,6 +244,8 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.HierarchyMan
     [Test]
     public void RelationChanging_LoadedObject_ForbiddenWhenEndPointCompleteInSubTransaction ()
     {
+      ClientTransactionTestHelper.SetIsActive (_transaction, false);
+
       _listener.AddCurrentlyLoadingObjectIDs (new[] { DomainObjectIDs.Order1 });
       Assert.That (_listener.IsInLoadMode, Is.True);
 
@@ -271,13 +286,60 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.HierarchyMan
     [Test]
     public void RelationChanging_ForbiddenWhenTransactionInactive ()
     {
-      Assert.That (_listener.IsInLoadMode, Is.False);
-      Assert.That (() => _listener.RelationChanging (_transaction, _order1, _orderTicketEndPointDefinition, null, null), Throws.Nothing);
-
       ClientTransactionTestHelper.SetIsActive (_transaction, false);
+      Assert.That (_listener.IsInLoadMode, Is.False);
 
       Assert.That (
           () => _listener.RelationChanging (_transaction, _order1, _orderTicketEndPointDefinition, null, null),
+          Throws.TypeOf<ClientTransactionInactiveException> ());
+    }
+
+    [Test]
+    public void DataContainerStateUpdated_SomeObject_ForbiddenInLoadMode ()
+    {
+      ClientTransactionTestHelper.SetIsActive (_transaction, false);
+
+      _listener.AddCurrentlyLoadingObjectIDs (new[] { DomainObjectIDs.Client1 });
+      Assert.That (_listener.IsInLoadMode, Is.True);
+
+      var someDataContainer = DataContainerObjectMother.CreateDataContainer (DomainObjectIDs.Client2);
+
+      Assert.That (
+          () => _listener.DataContainerStateUpdated (_transaction, someDataContainer, StateType.Changed),
+          Throws.TypeOf<ClientTransactionInactiveException>());
+    }
+
+    [Test]
+    public void DataContainerStateUpdated_LoadedObject_AllowedInLoadMode ()
+    {
+      ClientTransactionTestHelper.SetIsActive (_transaction, false);
+
+      _listener.AddCurrentlyLoadingObjectIDs (new[] { DomainObjectIDs.Client1 });
+      Assert.That (_listener.IsInLoadMode, Is.True);
+
+      var someDataContainer = DataContainerObjectMother.CreateDataContainer (DomainObjectIDs.Client1);
+
+      Assert.That (() => _listener.DataContainerStateUpdated (_transaction, someDataContainer, StateType.Changed), Throws.Nothing);
+    }
+
+    [Test]
+    public void DataContainerStateUpdated_AllowedForActiveTransaction_NotInLoadMode ()
+    {
+      Assert.That (_listener.IsInLoadMode, Is.False);
+      var someDataContainer = DataContainerObjectMother.CreateDataContainer (DomainObjectIDs.Client1);
+
+      Assert.That (() => _listener.DataContainerStateUpdated (_transaction, someDataContainer, StateType.Changed), Throws.Nothing);
+    }
+
+    [Test]
+    public void DataContainerStateUpdated_ForbiddenWhenTransactionInactive ()
+    {
+      ClientTransactionTestHelper.SetIsActive (_transaction, false);
+      Assert.That (_listener.IsInLoadMode, Is.False);
+      var someDataContainer = DataContainerObjectMother.CreateDataContainer (DomainObjectIDs.Client1);
+
+      Assert.That (
+          () => _listener.DataContainerStateUpdated (_transaction, someDataContainer, StateType.Changed), 
           Throws.TypeOf<ClientTransactionInactiveException> ());
     }
 

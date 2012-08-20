@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Remotion.Collections;
+using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Text;
@@ -99,7 +100,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
         CheckModifiedObjectID (domainObject.ID, propertyDefinition.PropertyName);
         // This check is here only for defensiveness purposes; it's not actually possible to write an integration test for this scenario without
         // manually injecting DataContainers (because we guard against subtransactions loading the objects currently loaded in the parent transaction).
-        if (clientTransaction.SubTransaction != null && clientTransaction.SubTransaction.DataManager.DataContainers[domainObject.ID] != null)
+        if (DataContainerExistsInSubTransaction (clientTransaction, domainObject.ID))
         {
           var message = string.Format (
               "Object '{0}' can no longer be modified because its data has already been loaded into the subtransaction.", domainObject.ID);
@@ -144,6 +145,19 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
         base.RelationChanging (clientTransaction, domainObject, relationEndPointDefinition, oldRelatedObject, newRelatedObject);
     }
 
+    public override void DataContainerStateUpdated (ClientTransaction clientTransaction, DataContainer container, StateType newDataContainerState)
+    {
+      if (IsInLoadMode && _currentlyLoadingObjectIDs.Contains (container.ID))
+      {
+        Assertion.DebugAssert (
+            !DataContainerExistsInSubTransaction (clientTransaction, container.ID),
+            "Data existing in subtransaction should have been prevented by PropertyValueChanging event.");
+        return;
+      }
+
+      base.DataContainerStateUpdated (clientTransaction, container, newDataContainerState);
+    }
+
     private void CheckModifiedObjectID (ObjectID objectID, string modifiedPropertyIdentifier)
     {
       if (!_currentlyLoadingObjectIDs.Contains (objectID))
@@ -169,6 +183,11 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
       }
       var message = mainMessage + " " + specificErrorMessage;
       return new InvalidOperationException (message);
+    }
+
+    private bool DataContainerExistsInSubTransaction (ClientTransaction clientTransaction, ObjectID objectID)
+    {
+      return clientTransaction.SubTransaction != null && clientTransaction.SubTransaction.DataManager.DataContainers[objectID] != null;
     }
   }
 }

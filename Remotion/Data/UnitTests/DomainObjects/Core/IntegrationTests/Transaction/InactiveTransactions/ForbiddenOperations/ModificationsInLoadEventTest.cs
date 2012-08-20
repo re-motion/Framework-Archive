@@ -205,7 +205,6 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
     }
 
     [Test]
-    [Ignore ("TODO 5003")]
     public void OnLoaded_CannotCauseSameObjectToBeLoadedInSubTx_WhileItIsLoadedIntoParent_InitiatedFromParent ()
     {
       using (_loadEventReceiverMock.GetMockRepository ().Ordered ())
@@ -223,7 +222,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
                           + "'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid'."));
                 });
 
-        ActiveSubTransaction.EnsureDataAvailable (_order.ID);
+        InactiveRootTransaction.EnsureDataAvailable (_order.ID);
 
         _loadEventReceiverMock.VerifyAllExpectations ();
 
@@ -234,7 +233,6 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
     }
 
     [Test]
-    [Ignore ("TODO 5003")]
     public void OnLoaded_CannotCauseSameObjectToBeLoadedInSubTx_WhileItIsLoadedIntoParent_InitiatedFromSub ()
     {
       using (_loadEventReceiverMock.GetMockRepository ().Ordered ())

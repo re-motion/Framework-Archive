@@ -29,18 +29,18 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.ObjectPersis
   [TestFixture]
   public class SubPersistenceStrategyTest : ClientTransactionBaseTest
   {
-    private IParentTransactionOperations _parentTransactionOperationsMock;
+    private IUnlockedParentTransactionContext _unlockedParentTransactionContextMock;
     private SubPersistenceStrategy _persistenceStrategy;
     private IQuery _queryStub;
+    private IParentTransactionContext _parentTransactionContextMock;
 
     public override void SetUp ()
     {
       base.SetUp ();
 
-      _parentTransactionOperationsMock = MockRepository.GenerateStrictMock<IParentTransactionOperations> ();
-      var parentTransactionContextStub = MockRepository.GenerateStub<IParentTransactionContext> ();
-      parentTransactionContextStub.Stub (stub => stub.AccessParentTransaction()).Return (_parentTransactionOperationsMock);
-      _persistenceStrategy = new SubPersistenceStrategy (parentTransactionContextStub);
+      _parentTransactionContextMock = MockRepository.GenerateStrictMock<IParentTransactionContext> ();
+      _unlockedParentTransactionContextMock = MockRepository.GenerateStrictMock<IUnlockedParentTransactionContext> ();
+      _persistenceStrategy = new SubPersistenceStrategy (_parentTransactionContextMock);
 
       _queryStub = MockRepository.GenerateStub<IQuery>();
     }
@@ -50,14 +50,13 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.ObjectPersis
     {
       var fakeResult = new IQueryResultRow[0];
       
-      _parentTransactionOperationsMock
+      _parentTransactionContextMock
           .Expect (mock => mock.ExecuteCustomQuery (_queryStub))
           .Return (fakeResult);
-      _parentTransactionOperationsMock.Expect (mock => mock.Dispose ());
 
       var result = _persistenceStrategy.ExecuteCustomQuery (_queryStub);
 
-      _parentTransactionOperationsMock.VerifyAllExpectations();
+      _parentTransactionContextMock.VerifyAllExpectations ();
       Assert.That (result, Is.SameAs (fakeResult));
     }
 
@@ -66,14 +65,13 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.ObjectPersis
     {
       var fakeResult = new object();
 
-      _parentTransactionOperationsMock
+      _parentTransactionContextMock
           .Expect (mock => mock.ExecuteScalarQuery (_queryStub))
           .Return (fakeResult);
-      _parentTransactionOperationsMock.Expect (mock => mock.Dispose ());
 
       var result = _persistenceStrategy.ExecuteScalarQuery (_queryStub);
 
-      _parentTransactionOperationsMock.VerifyAllExpectations();
+      _parentTransactionContextMock.VerifyAllExpectations ();
       Assert.That (result, Is.SameAs (fakeResult));
     }
 
@@ -87,12 +85,14 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.ObjectPersis
 
       var persistableData = new PersistableData (instance, StateType.New, dataContainer, new IRelationEndPoint[0]);
 
-      using (_parentTransactionOperationsMock.GetMockRepository ().Ordered ())
+      _parentTransactionContextMock.Stub (mock => mock.IsInvalid (instance.ID)).Return (true);
+      _parentTransactionContextMock.Expect (mock => mock.UnlockParentTransaction ()).Return (_unlockedParentTransactionContextMock);
+      _parentTransactionContextMock.Stub (stub => stub.GetDataContainerWithoutLoading (instance.ID)).Return (null);
+
+      using (_unlockedParentTransactionContextMock.GetMockRepository ().Ordered ())
       {
-        _parentTransactionOperationsMock.Stub (mock => mock.IsInvalid (instance.ID)).Return (true);
-        _parentTransactionOperationsMock.Expect (mock => mock.MarkNotInvalid (instance.ID));
-        _parentTransactionOperationsMock.Stub (stub => stub.GetDataContainerWithoutLoading (instance.ID)).Return (null);
-        _parentTransactionOperationsMock
+        _unlockedParentTransactionContextMock.Expect (mock => mock.MarkNotInvalid (instance.ID));
+        _unlockedParentTransactionContextMock
             .Expect (mock => mock.RegisterDataContainer (Arg<DataContainer>.Is.Anything))
             .WhenCalled (
                 mi =>
@@ -105,14 +105,13 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.ObjectPersis
                   Assert.That (GetPropertyValue (dc, typeof (Order), "OrderNumber"), Is.EqualTo (12));
                 }
             );
-        _parentTransactionOperationsMock.Expect (mock => mock.Dispose());
+        _unlockedParentTransactionContextMock.Expect (mock => mock.Dispose());
       }
-
-      _parentTransactionOperationsMock.Replay();
 
       _persistenceStrategy.PersistData (Array.AsReadOnly (new[] { persistableData }));
 
-      _parentTransactionOperationsMock.VerifyAllExpectations();
+      _parentTransactionContextMock.VerifyAllExpectations ();
+      _unlockedParentTransactionContextMock.VerifyAllExpectations ();
     }
   }
 }

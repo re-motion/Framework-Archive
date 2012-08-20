@@ -25,7 +25,6 @@ using Rhino.Mocks;
 namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transaction.InactiveTransactions
 {
   [TestFixture]
-  [Ignore ("TODO 5003")]
   public class LoadEventsTest : InactiveTransactionsTestBase
   {
     private Order _order;

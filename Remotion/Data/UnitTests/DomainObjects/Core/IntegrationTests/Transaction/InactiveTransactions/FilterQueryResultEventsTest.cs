@@ -26,7 +26,6 @@ using System.Linq;
 namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transaction.InactiveTransactions
 {
   [TestFixture]
-  [Ignore ("TODO 5003")]
   public class FilterQueryResultEventsTest : InactiveTransactionsTestBase
   {
     private Order _order1;

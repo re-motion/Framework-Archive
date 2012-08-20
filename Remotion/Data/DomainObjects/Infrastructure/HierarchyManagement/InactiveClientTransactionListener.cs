@@ -51,12 +51,12 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
 
     public virtual void SubTransactionInitialize (ClientTransaction clientTransaction, ClientTransaction subTransaction)
     {
-      Assertion.IsFalse (clientTransaction.IsActive); // while a subtransaction is being created, the parent must already be inactive
+      // Handled by Begin event
     }
 
     public virtual void SubTransactionCreated (ClientTransaction clientTransaction, ClientTransaction subTransaction)
     {
-      Assertion.IsFalse (clientTransaction.IsActive); // after a subtransaction has been created, the parent must already be inactive
+      // Handled by Begin event
     }
 
     public virtual void NewObjectCreating (ClientTransaction clientTransaction, Type type)
@@ -74,12 +74,12 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
 
     public virtual void ObjectsLoaded (ClientTransaction clientTransaction, ReadOnlyCollection<DomainObject> domainObjects)
     {
-      // Allowed
+      // Handled by Begin event
     }
 
     public virtual void ObjectsNotFound (ClientTransaction clientTransaction, ReadOnlyCollection<ObjectID> objectIDs)
     {
-      // Allowed
+      // Handled by Begin event
     }
 
     public virtual void ObjectsUnloading (ClientTransaction clientTransaction, ReadOnlyCollection<DomainObject> unloadedDomainObjects)
@@ -90,8 +90,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
 
     public virtual void ObjectsUnloaded (ClientTransaction clientTransaction, ReadOnlyCollection<DomainObject> unloadedDomainObjects)
     {
-      // Allowed for read-only transactions, as the end-user API always affects the whole hierarchy
-      // (DataContainerUnregistering and RelationEndPointUnregistering assert on the actual modification, though)
+      // Handled by Begin event
     }
 
     public virtual void ObjectDeleting (ClientTransaction clientTransaction, DomainObject domainObject)
@@ -101,7 +100,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
 
     public virtual void ObjectDeleted (ClientTransaction clientTransaction, DomainObject domainObject)
     {
-      EnsureWriteable (clientTransaction, "ObjectDeleted");
+      // Handled by Begin event
     }
 
     public virtual void PropertyValueReading (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, ValueAccess valueAccess)
@@ -111,7 +110,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
 
     public virtual void PropertyValueRead (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object value, ValueAccess valueAccess)
     {
-      // Allowed
+      // Handled by Begin event
     }
 
     public virtual void PropertyValueChanging (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object oldValue, object newValue)
@@ -121,7 +120,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
 
     public virtual void PropertyValueChanged (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object oldValue, object newValue)
     {
-      EnsureWriteable (clientTransaction, "PropertyValueChanged");
+      // Handled by Begin event
     }
 
     public virtual void RelationReading (ClientTransaction clientTransaction, DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, ValueAccess valueAccess)
@@ -136,7 +135,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
         DomainObject relatedObject,
         ValueAccess valueAccess)
     {
-      // Allowed
+      // Handled by Begin event
     }
 
     public virtual void RelationRead (
@@ -146,7 +145,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
         ReadOnlyDomainObjectCollectionAdapter<DomainObject> relatedObjects,
         ValueAccess valueAccess)
     {
-      // Allowed
+      // Handled by Begin event
     }
 
     public virtual void RelationChanging (
@@ -159,9 +158,14 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
       EnsureWriteable (clientTransaction, "RelationChanging");
     }
 
-    public virtual void RelationChanged (ClientTransaction clientTransaction, DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, DomainObject oldRelatedObject, DomainObject newRelatedObject)
+    public virtual void RelationChanged (
+        ClientTransaction clientTransaction,
+        DomainObject domainObject,
+        IRelationEndPointDefinition relationEndPointDefinition,
+        DomainObject oldRelatedObject,
+        DomainObject newRelatedObject)
     {
-      EnsureWriteable (clientTransaction, "RelationChanged");
+      // Handled by Begin event
     }
 
     public QueryResult<T> FilterQueryResult<T> (ClientTransaction clientTransaction, QueryResult<T> queryResult) where T: DomainObject
@@ -183,12 +187,12 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
 
     public virtual void TransactionCommitValidate (ClientTransaction clientTransaction, ReadOnlyCollection<PersistableData> committedData)
     {
-      EnsureWriteable (clientTransaction, "TransactionCommitValidate");
+      // Handled by Begin event
     }
 
     public virtual void TransactionCommitted (ClientTransaction clientTransaction, ReadOnlyCollection<DomainObject> domainObjects)
     {
-      EnsureWriteable (clientTransaction, "TransactionCommitted");
+      // Handled by Begin event
     }
 
     public virtual void TransactionRollingBack (ClientTransaction clientTransaction, ReadOnlyCollection<DomainObject> domainObjects)
@@ -198,7 +202,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
 
     public virtual void TransactionRolledBack (ClientTransaction clientTransaction, ReadOnlyCollection<DomainObject> domainObjects)
     {
-      EnsureWriteable (clientTransaction, "TransactionRolledBack");
+      // Handled by Begin event
     }
 
     public virtual void RelationEndPointMapRegistering (ClientTransaction clientTransaction, IRelationEndPoint endPoint)
