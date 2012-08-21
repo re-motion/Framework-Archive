@@ -138,7 +138,6 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
       return _parentTransactionContext.ExecuteScalarQuery (query);
     }
 
-    // Note: This method is not covered by unit tests, write tests before modifying it for the next time.
     public virtual void PersistData (IEnumerable<PersistableData> data)
     {
       ArgumentUtility.CheckNotNull ("data", data);
@@ -282,7 +281,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
     private void PersistDeletedDataContainer (DataContainer dataContainer, IUnlockedParentTransactionContext unlockedParentTransactionContext)
     {
-      DataContainer parentDataContainer = _parentTransactionContext.GetDataContainerWithoutLoading (dataContainer.ID);
+      var parentDataContainer = _parentTransactionContext.GetDataContainerWithoutLoading (dataContainer.ID);
       Assertion.IsNotNull (
           parentDataContainer,
           "a deleted DataContainer must have been loaded through ParentTransaction, so the ParentTransaction must know it");

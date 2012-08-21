@@ -302,7 +302,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.HierarchyMan
       _listener.AddCurrentlyLoadingObjectIDs (new[] { DomainObjectIDs.Client1 });
       Assert.That (_listener.IsInLoadMode, Is.True);
 
-      var someDataContainer = DataContainerObjectMother.CreateDataContainer (DomainObjectIDs.Client2);
+      var someDataContainer = DataContainerObjectMother.Create (DomainObjectIDs.Client2);
 
       Assert.That (
           () => _listener.DataContainerStateUpdated (_transaction, someDataContainer, StateType.Changed),
@@ -317,7 +317,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.HierarchyMan
       _listener.AddCurrentlyLoadingObjectIDs (new[] { DomainObjectIDs.Client1 });
       Assert.That (_listener.IsInLoadMode, Is.True);
 
-      var someDataContainer = DataContainerObjectMother.CreateDataContainer (DomainObjectIDs.Client1);
+      var someDataContainer = DataContainerObjectMother.Create (DomainObjectIDs.Client1);
 
       Assert.That (() => _listener.DataContainerStateUpdated (_transaction, someDataContainer, StateType.Changed), Throws.Nothing);
     }
@@ -326,7 +326,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.HierarchyMan
     public void DataContainerStateUpdated_AllowedForActiveTransaction_NotInLoadMode ()
     {
       Assert.That (_listener.IsInLoadMode, Is.False);
-      var someDataContainer = DataContainerObjectMother.CreateDataContainer (DomainObjectIDs.Client1);
+      var someDataContainer = DataContainerObjectMother.Create (DomainObjectIDs.Client1);
 
       Assert.That (() => _listener.DataContainerStateUpdated (_transaction, someDataContainer, StateType.Changed), Throws.Nothing);
     }
@@ -336,7 +336,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.HierarchyMan
     {
       ClientTransactionTestHelper.SetIsActive (_transaction, false);
       Assert.That (_listener.IsInLoadMode, Is.False);
-      var someDataContainer = DataContainerObjectMother.CreateDataContainer (DomainObjectIDs.Client1);
+      var someDataContainer = DataContainerObjectMother.Create (DomainObjectIDs.Client1);
 
       Assert.That (
           () => _listener.DataContainerStateUpdated (_transaction, someDataContainer, StateType.Changed), 

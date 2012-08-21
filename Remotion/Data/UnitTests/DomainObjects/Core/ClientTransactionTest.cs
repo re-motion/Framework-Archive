@@ -654,7 +654,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
     {
       _dataManagerMock
           .Expect (mock => mock.GetDataContainerWithLazyLoad (DomainObjectIDs.Order1, true))
-          .Return (DataContainerObjectMother.CreateDataContainer());
+          .Return (DataContainerObjectMother.Create());
       _mockRepository.ReplayAll();
       
       _transactionWithMocks.EnsureDataAvailable (DomainObjectIDs.Order1);
@@ -680,7 +680,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
     {
       _dataManagerMock
           .Expect (mock => mock.GetDataContainerWithLazyLoad (DomainObjectIDs.Order1, false))
-          .Return (DataContainerObjectMother.CreateDataContainer ());
+          .Return (DataContainerObjectMother.Create ());
       _mockRepository.ReplayAll ();
 
       var result = _transactionWithMocks.TryEnsureDataAvailable (DomainObjectIDs.Order1);
@@ -708,7 +708,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
     {
       _dataManagerMock
           .Expect (mock => mock.GetDataContainersWithLazyLoad (new[] { DomainObjectIDs.Order1, DomainObjectIDs.Order2 }, false))
-          .Return (new[] { DataContainerObjectMother.CreateDataContainer(), DataContainerObjectMother.CreateDataContainer() });
+          .Return (new[] { DataContainerObjectMother.Create(), DataContainerObjectMother.Create() });
       _mockRepository.ReplayAll ();
 
       var result = _transactionWithMocks.TryEnsureDataAvailable (new[] { DomainObjectIDs.Order1, DomainObjectIDs.Order2 });
@@ -722,7 +722,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
     {
       _dataManagerMock
           .Expect (mock => mock.GetDataContainersWithLazyLoad (new[] { DomainObjectIDs.Order1, DomainObjectIDs.Order2 }, false))
-          .Return (new[] { DataContainerObjectMother.CreateDataContainer (), null });
+          .Return (new[] { DataContainerObjectMother.Create (), null });
       _mockRepository.ReplayAll ();
 
       var result = _transactionWithMocks.TryEnsureDataAvailable (new[] { DomainObjectIDs.Order1, DomainObjectIDs.Order2 });

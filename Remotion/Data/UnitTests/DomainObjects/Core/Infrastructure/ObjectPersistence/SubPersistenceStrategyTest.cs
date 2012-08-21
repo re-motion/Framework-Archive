@@ -23,10 +23,12 @@ using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.UnitTests.DomainObjects.Core.DataManagement;
+using Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.RelationEndPoints;
 using Remotion.Data.UnitTests.DomainObjects.TestDomain;
 using Remotion.Data.DomainObjects;
 using Rhino.Mocks;
 using Remotion.Development.UnitTesting.Enumerables;
+using Remotion.Data.UnitTests.UnitTesting;
 
 namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.ObjectPersistence
 {
@@ -432,48 +434,297 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.ObjectPersis
     }
 
     [Test]
-    public void PersistData_NewDataContainer ()
+    public void PersistData_UnchangedDataContainer ()
     {
-      var instance = DomainObjectMother.CreateFakeObject<Order> ();
-      var dataContainer = DataContainer.CreateNew (instance.ID);
-      SetPropertyValue (dataContainer, typeof (Order), "OrderNumber", 12);
-      dataContainer.SetDomainObject (instance);
+      var persistableData = CreatePersistableDataForExistingOrder ();
+      Assert.That (persistableData.DataContainer.State, Is.EqualTo (StateType.Unchanged));
 
-      var persistableData = new PersistableData (instance, StateType.New, dataContainer, new IRelationEndPoint[0]);
-
-      _parentTransactionContextMock.Stub (mock => mock.IsInvalid (instance.ID)).Return (true);
       _parentTransactionContextMock.Expect (mock => mock.UnlockParentTransaction ()).Return (_unlockedParentTransactionContextMock);
-      _parentTransactionContextMock.Stub (stub => stub.GetDataContainerWithoutLoading (instance.ID)).Return (null);
+      _unlockedParentTransactionContextMock.Expect (mock => mock.Dispose ());
 
-      using (_unlockedParentTransactionContextMock.GetMockRepository ().Ordered ())
-      {
-        _unlockedParentTransactionContextMock.Expect (mock => mock.MarkNotInvalid (instance.ID));
-        _unlockedParentTransactionContextMock
-            .Expect (mock => mock.RegisterDataContainer (Arg<DataContainer>.Is.Anything))
-            .WhenCalled (
-                mi =>
-                {
-                  var dc = (DataContainer) mi.Arguments[0];
-                  Assert.That (dc.ID, Is.EqualTo (instance.ID));
-                  Assert.That (dc.State, Is.EqualTo (StateType.New));
-                  Assert.That (dc.HasDomainObject, Is.True);
-                  Assert.That (dc.DomainObject, Is.SameAs (instance));
-                  Assert.That (GetPropertyValue (dc, typeof (Order), "OrderNumber"), Is.EqualTo (12));
-                }
-            );
-        _unlockedParentTransactionContextMock.Expect (mock => mock.Dispose());
-      }
-
-      _persistenceStrategy.PersistData (Array.AsReadOnly (new[] { persistableData }));
+      _persistenceStrategy.PersistData (new[] { persistableData }.AsOneTime ());
 
       _parentTransactionContextMock.VerifyAllExpectations ();
       _unlockedParentTransactionContextMock.VerifyAllExpectations ();
     }
 
+    [Test]
+    public void PersistData_ChangedDataContainer ()
+    {
+      var persistableData = CreatePersistableDataForExistingOrder ();
+      persistableData.DataContainer.SetTimestamp (1676);
+      SetPropertyValue (persistableData.DataContainer, typeof (Order), "OrderNumber", 12);
+      Assert.That (persistableData.DataContainer.State, Is.EqualTo (StateType.Changed));
+
+      _parentTransactionContextMock.Expect (mock => mock.UnlockParentTransaction ()).Return (_unlockedParentTransactionContextMock);
+
+      var parentDataContainer = DataContainerObjectMother.CreateExisting (persistableData.DomainObject);
+      parentDataContainer.SetTimestamp (4711);
+      Assert.That (parentDataContainer.State, Is.EqualTo (StateType.Unchanged));
+      _parentTransactionContextMock
+          .Expect (mock => mock.GetDataContainerWithoutLoading (persistableData.DomainObject.ID))
+          .Return (parentDataContainer);
+
+      _unlockedParentTransactionContextMock
+          .Expect (mock => mock.Dispose ())
+          .WhenCalled (mi => 
+          {
+            Assert.That (parentDataContainer.Timestamp, Is.EqualTo (1676), "ParentDataContainer must be changed prior to Dispose.");
+            Assert.That (GetPropertyValue (parentDataContainer, typeof (Order), "OrderNumber"), Is.EqualTo (12));
+            Assert.That (parentDataContainer.State, Is.EqualTo (StateType.Changed));
+            Assert.That (parentDataContainer.HasBeenMarkedChanged, Is.False); 
+          });
+
+      _persistenceStrategy.PersistData (new[] { persistableData }.AsOneTime());
+
+      _parentTransactionContextMock.VerifyAllExpectations ();
+      _unlockedParentTransactionContextMock.VerifyAllExpectations ();
+    }
+
+    [Test]
+    public void PersistData_MarkedAsChangedDataContainer ()
+    {
+      var persistableData1 = CreateMarkAsChangedPersistableDataForOrder ();
+      var persistableData2 = CreateMarkAsChangedPersistableDataForOrder ();
+      var persistableData3 = CreateMarkAsChangedPersistableDataForOrder ();
+
+      _parentTransactionContextMock.Expect (mock => mock.UnlockParentTransaction ()).Return (_unlockedParentTransactionContextMock);
+
+      var unchangedParentDataContainer = DataContainerObjectMother.CreateExisting (persistableData1.DomainObject);
+      _parentTransactionContextMock
+          .Expect (mock => mock.GetDataContainerWithoutLoading (persistableData1.DomainObject.ID))
+          .Return (unchangedParentDataContainer);
+
+      var changedParentDataContainer = DataContainerObjectMother.CreateExisting (persistableData2.DomainObject);
+      SetPropertyValue (changedParentDataContainer, typeof (Order), "OrderNumber", 23);
+      _parentTransactionContextMock
+          .Expect (mock => mock.GetDataContainerWithoutLoading (persistableData2.DomainObject.ID))
+          .Return (changedParentDataContainer);
+
+      var newParentDataContainer = DataContainerObjectMother.CreateNew (persistableData3.DomainObject);
+      _parentTransactionContextMock
+          .Expect (mock => mock.GetDataContainerWithoutLoading (persistableData3.DomainObject.ID))
+          .Return (newParentDataContainer);
+
+      _unlockedParentTransactionContextMock
+          .Expect (mock => mock.Dispose ())
+          .WhenCalled (mi =>
+          {
+            Assert.That (unchangedParentDataContainer.HasBeenMarkedChanged, Is.True);
+            Assert.That (changedParentDataContainer.HasBeenMarkedChanged, Is.True);
+            Assert.That (newParentDataContainer.HasBeenMarkedChanged, Is.False);
+          });
+
+      _persistenceStrategy.PersistData (new[] { persistableData1, persistableData2, persistableData3 }.AsOneTime());
+
+      _parentTransactionContextMock.VerifyAllExpectations ();
+      _unlockedParentTransactionContextMock.VerifyAllExpectations ();
+    }
+
+    [Test]
+    public void PersistData_EndPoints ()
+    {
+      var domainObject = DomainObjectMother.CreateFakeObject<Order> ();
+      var persistedDataContainer = DataContainerObjectMother.CreateExisting (domainObject);
+      var persistedEndPoint1 = RelationEndPointObjectMother.CreateStub ();
+      persistedEndPoint1.Stub (stub => stub.HasChanged).Return (true);
+      var persistedEndPoint2 = RelationEndPointObjectMother.CreateStub ();
+      persistedEndPoint2.Stub (stub => stub.HasChanged).Return (false);
+      var persistedEndPoint3 = RelationEndPointObjectMother.CreateStub ();
+      persistedEndPoint3.Stub (stub => stub.HasChanged).Return (true);
+      var persistableData = new PersistableData (
+          domainObject, StateType.Changed, persistedDataContainer, new[] { persistedEndPoint1, persistedEndPoint2, persistedEndPoint3 });
+
+      var counter = new OrderedExpectationCounter ();
+
+      _parentTransactionContextMock.Expect (mock => mock.UnlockParentTransaction ()).Return (_unlockedParentTransactionContextMock);
+
+      var parentEndPointMock1 = MockRepository.GenerateStrictMock<IRelationEndPoint> ();
+      _parentTransactionContextMock
+          .Expect (mock => mock.GetRelationEndPointWithoutLoading (persistedEndPoint1.ID))
+          .Return (parentEndPointMock1);
+      parentEndPointMock1
+          .Expect (mock => mock.SetDataFromSubTransaction (persistedEndPoint1))
+          .Ordered (counter, "SetDataFromSubTransaction must occur prior to Dispose.");
+
+      var parentEndPointMock3 = MockRepository.GenerateStrictMock<IRelationEndPoint> ();
+      _parentTransactionContextMock
+          .Expect (mock => mock.GetRelationEndPointWithoutLoading (persistedEndPoint3.ID))
+          .Return (parentEndPointMock3);
+      parentEndPointMock3
+          .Expect (mock => mock.SetDataFromSubTransaction (persistedEndPoint3))
+          .Ordered (counter, "SetDataFromSubTransaction must occur prior to Dispose.");
+
+      _unlockedParentTransactionContextMock.Expect (mock => mock.Dispose ()).Ordered (counter, "Dispose should come at the end.");
+
+      _persistenceStrategy.PersistData (new[] { persistableData }.AsOneTime ());
+
+      _parentTransactionContextMock.VerifyAllExpectations ();
+      _unlockedParentTransactionContextMock.VerifyAllExpectations ();
+      parentEndPointMock1.VerifyAllExpectations ();
+      parentEndPointMock3.VerifyAllExpectations ();
+    }
+
+    [Test]
+    public void PersistData_NewDataContainer_WithEndPoint ()
+    {
+      var domainObject = DomainObjectMother.CreateFakeObject<Order> ();
+      var persistedDataContainer = DataContainerObjectMother.CreateNew (domainObject);
+      SetPropertyValue (persistedDataContainer, typeof (Order), "OrderNumber", 12);
+      var persistedEndPoint = RelationEndPointObjectMother.CreateStub();
+      persistedEndPoint.Stub (stub => stub.HasChanged).Return (true);
+      var persistableData = new PersistableData (domainObject, StateType.New, persistedDataContainer, new[] { persistedEndPoint });
+
+      var counter = new OrderedExpectationCounter ();
+
+      _parentTransactionContextMock.Expect (mock => mock.UnlockParentTransaction ()).Return (_unlockedParentTransactionContextMock);
+
+      _parentTransactionContextMock.Stub (stub => stub.IsInvalid (domainObject.ID)).Return (true);
+      _parentTransactionContextMock.Stub (stub => stub.GetDataContainerWithoutLoading (domainObject.ID)).Return (null);
+      _unlockedParentTransactionContextMock
+          .Expect (mock => mock.MarkNotInvalid (domainObject.ID))
+          .Ordered (counter);
+      _unlockedParentTransactionContextMock
+          .Expect (mock => mock.RegisterDataContainer (Arg<DataContainer>.Is.Anything))
+          .WhenCalledOrdered (
+              counter,
+              mi => CheckDataContainer ((DataContainer) mi.Arguments[0], domainObject, null, StateType.New, _orderNumberPropertyDefinition, 12, 0, true),
+              "New DataContainers must be registered before the parent relation end-points are retrieved for persistence (and prior to Dispose)."
+          );
+
+      var parentEndPointMock = MockRepository.GenerateStrictMock<IRelationEndPoint>();
+      _parentTransactionContextMock
+          .Expect (mock => mock.GetRelationEndPointWithoutLoading (persistedEndPoint.ID))
+          .Return (parentEndPointMock)
+          .Ordered (counter, "New DataContainers must be registered before the parent relation end-points are retrieved for persistence.");
+      parentEndPointMock
+          .Expect (mock => mock.SetDataFromSubTransaction (persistedEndPoint))
+          .Ordered (counter, "SetDataFromSubTransaction must occur prior to Dispose.");
+
+      _unlockedParentTransactionContextMock.Expect (mock => mock.Dispose ()).Ordered (counter, "Dispose should come at the end.");
+
+      _persistenceStrategy.PersistData (new[] { persistableData }.AsOneTime());
+
+      _parentTransactionContextMock.VerifyAllExpectations ();
+      _unlockedParentTransactionContextMock.VerifyAllExpectations ();
+      parentEndPointMock.VerifyAllExpectations();
+    }
+
+    [Test]
+    public void PersistData_DeletedDataContainer_WithEndPoint_NewInParent ()
+    {
+      var domainObject = DomainObjectMother.CreateFakeObject<Order> ();
+      var persistedDataContainer = DataContainerObjectMother.CreateDeleted (domainObject);
+      var persistedEndPoint = RelationEndPointObjectMother.CreateStub ();
+      persistedEndPoint.Stub (stub => stub.HasChanged).Return (true);
+      var persistableData = new PersistableData (domainObject, StateType.Deleted, persistedDataContainer, new[] { persistedEndPoint });
+
+      var counter = new OrderedExpectationCounter ();
+
+      _parentTransactionContextMock.Expect (mock => mock.UnlockParentTransaction ()).Return (_unlockedParentTransactionContextMock);
+
+      var parentEndPointMock = MockRepository.GenerateStrictMock<IRelationEndPoint> ();
+      _parentTransactionContextMock
+          .Expect (mock => mock.GetRelationEndPointWithoutLoading (persistedEndPoint.ID))
+          .Return (parentEndPointMock)
+          .Ordered (counter, "Deleted DataContainers must be persisted after the parent relation end-points are retrieved for persistence.");
+      parentEndPointMock
+          .Expect (mock => mock.SetDataFromSubTransaction (persistedEndPoint))
+          .Ordered (counter, "SetDataFromSubTransaction must occur prior to Dispose.");
+
+      var parentDataContainer = DataContainerObjectMother.CreateNew (persistedDataContainer.ID);
+      parentDataContainer.SetDomainObject (domainObject);
+      _parentTransactionContextMock
+          .Stub (stub => stub.GetDataContainerWithoutLoading (domainObject.ID))
+          .Return (parentDataContainer);
+      
+      _unlockedParentTransactionContextMock
+          .Expect (mock => mock.Discard (parentDataContainer))
+          .Ordered (counter, "Deleted DataContainers must be persisted after the parent relation end-points are retrieved for persistence.");
+
+      _unlockedParentTransactionContextMock
+          .Expect (mock => mock.Dispose ())
+          .Ordered (counter, "Dispose should come at the end.");
+
+      _persistenceStrategy.PersistData (new[] { persistableData }.AsOneTime());
+
+      _parentTransactionContextMock.VerifyAllExpectations ();
+      _unlockedParentTransactionContextMock.VerifyAllExpectations ();
+      parentEndPointMock.VerifyAllExpectations ();
+    }
+
+    [Test]
+    public void PersistData_DeletedDataContainer_WithEndPoint_ExistingInParent ()
+    {
+      var domainObject = DomainObjectMother.CreateFakeObject<Order> ();
+      var persistedDataContainer = DataContainerObjectMother.CreateDeleted (domainObject);
+      var persistedEndPoint = RelationEndPointObjectMother.CreateStub ();
+      persistedEndPoint.Stub (stub => stub.HasChanged).Return (true);
+      var persistableData = new PersistableData (domainObject, StateType.Deleted, persistedDataContainer, new[] { persistedEndPoint });
+
+      _parentTransactionContextMock.Expect (mock => mock.UnlockParentTransaction ()).Return (_unlockedParentTransactionContextMock);
+
+      var counter = new OrderedExpectationCounter ();
+
+      var parentEndPointMock = MockRepository.GenerateStrictMock<IRelationEndPoint> ();
+      _parentTransactionContextMock
+          .Expect (mock => mock.GetRelationEndPointWithoutLoading (persistedEndPoint.ID))
+          .Return (parentEndPointMock);
+      parentEndPointMock
+          .Expect (mock => mock.SetDataFromSubTransaction (persistedEndPoint))
+          .Ordered (counter, "SetDataFromSubTransaction must occur prior to Dispose.");
+
+      var parentDataContainer = DataContainerObjectMother.CreateExisting (persistedDataContainer.ID);
+      parentDataContainer.SetDomainObject (domainObject);
+      _parentTransactionContextMock
+          .Stub (stub => stub.GetDataContainerWithoutLoading (domainObject.ID))
+          .Return (parentDataContainer);
+
+      _unlockedParentTransactionContextMock
+          .Expect (mock => mock.Dispose ())
+          .WhenCalledOrdered (
+              counter,
+              mi => Assert.That (
+                  parentDataContainer.State, 
+                  Is.EqualTo (StateType.Deleted), 
+                  "Parent DataContainer must be deleted before parent transaction is locked again."),
+              "Dispose should come at the end.");
+
+      _persistenceStrategy.PersistData (new[] { persistableData }.AsOneTime());
+
+      _parentTransactionContextMock.VerifyAllExpectations ();
+      _unlockedParentTransactionContextMock.VerifyAllExpectations ();
+      parentEndPointMock.VerifyAllExpectations ();
+    }
+
+    private void CheckDataContainer (
+        DataContainer dataContainer,
+        DomainObject expectedDomainObject,
+        object expectedTimestamp,
+        StateType expectedState,
+        PropertyDefinition propertyDefinition,
+        object expectedCurrentPropertyValue,
+        object expectedOriginalPropertyValue, 
+      bool expectedHasPropertyValueBeenTouched)
+    {
+      Assert.That (dataContainer.HasDomainObject, Is.True);
+      Assert.That (dataContainer.DomainObject, Is.SameAs (expectedDomainObject));
+
+      CheckDataContainer (
+          dataContainer,
+          expectedDomainObject.ID,
+          expectedTimestamp,
+          expectedState,
+          propertyDefinition,
+          expectedCurrentPropertyValue,
+          expectedOriginalPropertyValue,
+          expectedHasPropertyValueBeenTouched);
+    }
+
     private void CheckDataContainer (
         DataContainer dataContainer,
         ObjectID expectedID,
-        int expectedTimestamp,
+        object expectedTimestamp,
         StateType expectedState,
         PropertyDefinition propertyDefinition,
         object expectedCurrentPropertyValue,
@@ -495,6 +746,21 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.ObjectPersis
       parentDataContainer.SetTimestamp (timestamp);
       parentDataContainer.SetValue (propertyDefinition, currentPropertyValue);
       return parentDataContainer;
+    }
+
+    private PersistableData CreatePersistableDataForExistingOrder ()
+    {
+      var domainObject = DomainObjectMother.CreateFakeObject<Order> ();
+      var dataContainer = DataContainerObjectMother.CreateExisting (domainObject.ID);
+      dataContainer.SetDomainObject (domainObject);
+      return new PersistableData (domainObject, StateType.Changed, dataContainer, new IRelationEndPoint[0]);
+    }
+
+    private PersistableData CreateMarkAsChangedPersistableDataForOrder ()
+    {
+      var persistableData = CreatePersistableDataForExistingOrder ();
+      persistableData.DataContainer.MarkAsChanged ();
+      return persistableData;
     }
   }
 }
