@@ -35,7 +35,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
     DomainObject[] TryGetObjects (IEnumerable<ObjectID> objectIDs);
 
     DomainObject ResolveRelatedObject (RelationEndPointID relationEndPointID);
-    IEnumerable<DomainObject> GetRelatedObjects (RelationEndPointID relationEndPointID);
+    IEnumerable<DomainObject> ResolveRelatedObjects (RelationEndPointID relationEndPointID);
 
     QueryResult<DomainObject> ExecuteCollectionQuery (IQuery query);
     IEnumerable<IQueryResultRow> ExecuteCustomQuery (IQuery query);

@@ -26,7 +26,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement
   {
     public static DataContainer CreateDataContainer (ObjectID objectID = null)
     {
-      return DataContainer.CreateNew (objectID ?? new ObjectID (typeof (Order), Guid.NewGuid()));
+      return CreateNew(objectID);
     }
 
     public static DataContainer CreateWithDomainObject (DomainObject domainObject)
@@ -35,6 +35,23 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement
 
       var dataContainer = CreateDataContainer (domainObject.ID);
       dataContainer.SetDomainObject (domainObject);
+      return dataContainer;
+    }
+
+    public static DataContainer CreateNew (ObjectID objectID = null)
+    {
+      return DataContainer.CreateNew (objectID ?? new ObjectID (typeof (Order), Guid.NewGuid()));
+    }
+
+    public static DataContainer CreateExisting (ObjectID objectID = null)
+    {
+      return DataContainer.CreateForExisting (objectID ?? new ObjectID (typeof (Order), Guid.NewGuid ()), 4711, pd => pd.DefaultValue);
+    }
+
+    public static DataContainer CreateDeleted (ObjectID objectID = null)
+    {
+      var dataContainer = CreateExisting (objectID);
+      dataContainer.Delete();
       return dataContainer;
     }
   }

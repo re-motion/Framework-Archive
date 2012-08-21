@@ -101,7 +101,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
       return endPoint.GetData ();
     }
 
-    public IEnumerable<DomainObject> GetRelatedObjects (RelationEndPointID relationEndPointID)
+    public IEnumerable<DomainObject> ResolveRelatedObjects (RelationEndPointID relationEndPointID)
     {
       ArgumentUtility.CheckNotNull ("relationEndPointID", relationEndPointID);
       if (!relationEndPointID.Definition.IsVirtual || relationEndPointID.Definition.Cardinality != CardinalityType.Many)
