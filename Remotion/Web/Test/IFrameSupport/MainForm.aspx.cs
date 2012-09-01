@@ -16,10 +16,11 @@
 // 
 using System;
 using System.Web.UI;
+using Remotion.Web.ExecutionEngine;
 
 namespace Remotion.Web.Test.IFrameSupport
 {
-  public partial class MainForm : Page
+  public partial class MainForm : WxePage
   {
   }
 }

@@ -1,4 +1,4 @@
-﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
+// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -16,16 +16,20 @@
 // 
 
 using System;
-using System.Web.UI;
+using JetBrains.Annotations;
 using Remotion.Web.ExecutionEngine;
 
 namespace Remotion.Web.Test.IFrameSupport
 {
-  public partial class FrameContent : WxePage
+  [Serializable]
+  public class FrameContentFunction : WxeFunction
   {
-    protected void Button_Click (object sender, EventArgs e)
+    public FrameContentFunction ()
+        : base (WxeTransactionMode<NullTransactionFactory>.None)
     {
-      ScriptManager.RegisterStartupScript (this, typeof (Page), "StartUp", "UpdateMain();", true);
     }
+
+    [UsedImplicitly]
+    private WxeStep Step1 = new WxePageStep ("~/IFrameSupport/FrameContent.aspx");
   }
 }

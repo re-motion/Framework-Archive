@@ -16,16 +16,20 @@
 // 
 
 using System;
-using System.Web.UI;
+using JetBrains.Annotations;
 using Remotion.Web.ExecutionEngine;
 
 namespace Remotion.Web.Test.IFrameSupport
 {
-  public partial class FrameContent : WxePage
+  [Serializable]
+  public class MainFunction : WxeFunction
   {
-    protected void Button_Click (object sender, EventArgs e)
+    public MainFunction ()
+        : base (WxeTransactionMode<NullTransactionFactory>.None)
     {
-      ScriptManager.RegisterStartupScript (this, typeof (Page), "StartUp", "UpdateMain();", true);
     }
+
+    [UsedImplicitly]
+    private WxeStep Step1 = new WxePageStep ("~/IFrameSupport/MainForm.aspx");
   }
 }
