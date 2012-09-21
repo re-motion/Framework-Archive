@@ -114,6 +114,15 @@ BocReferenceValueBase.CreateCommand = function (oldCommand, commandInfo, busines
       newCommand.attr(property, value);
   }
 
+  if (newCommand.attr('href'))
+  {
+    newCommand.addClass('hasIcon');
+  }
+  else
+  {
+    newCommand.removeClass('hasIcon');
+  }
+
   return newCommand;
 };
 

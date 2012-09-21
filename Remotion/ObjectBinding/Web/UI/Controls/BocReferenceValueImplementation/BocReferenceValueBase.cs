@@ -95,6 +95,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       _command.OwnerControl = this;
       _commonStyle = new Style();
       _labelStyle = new Style();
+
+      EnableIcon = true;
     }
 
     protected abstract string ValueContainingControlID { get; }
@@ -367,21 +369,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     public override Control TargetControl
     {
       get { return this; }
-    }
-
-    private bool ShowIcon
-    {
-      get
-      {
-        if (!EnableIcon)
-          return false;
-        if (Property == null)
-          return false;
-        if (GetIcon (Value, Property.ReferenceClass.BusinessObjectProvider) == null)
-          return false;
-
-        return true;
-      }
     }
 
     /// <summary> 
@@ -981,7 +968,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       return businessObject.DisplayNameSafe;
     }
 
-    protected bool IsCommandEnabled (bool isReadOnly)
+    protected bool IsCommandEnabled ()
     {
       if (WcagHelper.Instance.IsWaiConformanceLevelARequired())
         return false;
@@ -989,10 +976,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       bool isCommandEnabled = false;
       if (Command != null)
       {
+        var isReadOnly = IsReadOnly;
+
         bool isActive = Command.Show == CommandShow.Always
                         || isReadOnly && Command.Show == CommandShow.ReadOnly
                         || ! isReadOnly && Command.Show == CommandShow.EditMode;
-        bool isCommandLinkPossible = (IsReadOnly || ShowIcon) && InternalValue != null;
+
+        bool isCommandLinkPossible = isReadOnly && InternalValue != null;
+
         if (isActive
             && Command.Type != CommandType.None
             && isCommandLinkPossible)
@@ -1033,9 +1024,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       get { return HasOptionsMenu; }
     }
 
-    bool IBocReferenceValueBase.IsCommandEnabled (bool readOnly)
+    bool IBocReferenceValueBase.IsCommandEnabled ()
     {
-      return IsCommandEnabled (readOnly);
+      return IsCommandEnabled ();
     }
 
     DropDownMenu IBocReferenceValueBase.OptionsMenu

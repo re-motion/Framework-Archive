@@ -459,7 +459,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocReferenceValueImpl
 
     protected void AssertIcon (XmlNode parent, bool wrapNonCommandIcon)
     {
-      if (Control.IsCommandEnabled (Control.IsReadOnly))
+      if (Control.IsCommandEnabled ())
       {
         var link = parent.GetAssertedChildElement ("a", 0);
         link.AssertAttributeValueEquals ("id", Control.ClientID + "_Command");

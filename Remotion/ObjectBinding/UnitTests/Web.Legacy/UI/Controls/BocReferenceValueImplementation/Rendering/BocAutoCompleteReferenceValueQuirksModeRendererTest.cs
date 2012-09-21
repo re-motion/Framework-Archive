@@ -545,7 +545,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.Legacy.UI.Controls.BocReferenceVa
       iconCell.AssertChildElementCount (1);
 
       XmlNode iconParent;
-      if (Control.IsCommandEnabled (Control.IsReadOnly))
+      if (Control.IsCommandEnabled ())
         iconParent = iconCell.GetAssertedChildElement ("a", 0);
       else
         iconParent = iconCell.GetAssertedChildElement ("span", 0);
@@ -565,7 +565,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.Legacy.UI.Controls.BocReferenceVa
       valueCell.AssertChildElementCount (1);
       if (hasLabel)
       {
-        if (Control.IsCommandEnabled (Control.IsReadOnly))
+        if (Control.IsCommandEnabled ())
         {
           var link = valueCell.GetAssertedChildElement ("a", 0);
           link.AssertAttributeValueEquals ("href", "#");
@@ -615,7 +615,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.Legacy.UI.Controls.BocReferenceVa
 
     protected void AssertIcon (XmlNode parent, bool wrapNonCommandIcon)
     {
-      if (Control.IsCommandEnabled (Control.IsReadOnly))
+      if (Control.IsCommandEnabled ())
       {
         var link = parent.GetAssertedChildElement ("a", 0);
         link.AssertAttributeValueEquals ("class", "bocAutoCompleteReferenceValueCommand");

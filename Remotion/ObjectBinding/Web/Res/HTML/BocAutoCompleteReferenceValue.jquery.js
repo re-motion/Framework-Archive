@@ -109,8 +109,6 @@
         var autoFillTimeout;
         // holds the last text the user entered into the input element
         var previousValue = '';
-        // re-motion: holds the last valid value of the input element
-        var previousValidValue = $input.val();
         var cache = $.Autocompleter.Cache(options);
         var hasFocus = TypeUtility.IsDefined (window.document.activeElement) && window.document.activeElement == input;
         var lastKeyPressCode = -1;
@@ -191,8 +189,6 @@
                     }
                     return;
 
-                // matches also semicolon                    
-                case options.multiple && $.trim(options.multipleSeparator) == "," && KEY.COMMA:
                 case KEY.RETURN:
                 case KEY.TAB:
                 case KEY.ESC:
@@ -247,14 +243,17 @@
                     || event.keyCode == KEY.DEL
                     || event.keyCode == KEY.SPACE;
 
-                var isValueSeparatorKey = options.multiple && $.trim(options.multipleSeparator) == "," && event.keyCode == KEY.COMMA;
+                var hasValueChanged = $input.val() != previousValue;
 
                 if (isTextChangeKey) {
                     clearTimeout(timeout);
-                    $input.trigger("invalidateResult");
-                  }
+                }
 
-                if (!isControlKey && !isValueSeparatorKey) {
+                if (isTextChangeKey && hasValueChanged) {
+                    $input.trigger("invalidateResult");
+                }
+
+                if (!isControlKey && hasValueChanged) {
                     handleInput();
                 }
             } else if (event.type == 'paste') {
@@ -328,13 +327,12 @@
                     }
                 }
                 if (typeof fn == "function") fn(result);
-                else $input.trigger("updateResult", result.data);
+                else updateResult(result.data);
             }
-            $.each(trimWords($input.val()), function(i, value) {
-                if (!options.matchCase)
-                  value = value.toLowerCase();
-                requestData(value, findValueCallback, findValueCallback);
-            });
+            var value = $.trim($input.val());
+            if (!options.matchCase)
+              value = value.toLowerCase();
+            requestData(value, findValueCallback, findValueCallback);
         }).bind("flushCache", function() {
             cache.flush();
         }).bind("setOptions", function() {
@@ -402,7 +400,7 @@
             } else if (lastKeyPressCode != -1) {
                 acceptCurrent(true);
             } else {
-                closeDropDownListAndSetValue(previousValidValue);
+                closeDropDownListAndSetValue(previousValue);
             }
         };
 
@@ -421,13 +419,12 @@
             }
             closeDropDownListAndSetValue(term);
 
-            if (previousValidValue == term && selectedItem != null) {
-                $input.trigger("updateResult", selectedItem.data);
+            if (previousValue == term && selectedItem != null) {
+                updateResult(selectedItem.data);
                 return;
             }
 
             previousValue = term;
-            previousValidValue = term;
 
             if (selectedItem == null) {
               options.clearRequestError();
@@ -436,7 +433,7 @@
             if (selectedItem != null) {
 
                 $input.val(selectedItem.result);
-                $input.trigger("updateResult", selectedItem.data);
+                updateResult(selectedItem.data);
 
             } else if (confirmValue && term != '' && !options.isAutoPostBackEnabled) {
 
@@ -444,20 +441,18 @@
                   if (data != null) {
                       stopLoading();
                       if ($input.val().toLowerCase() == term.toLowerCase()) {
-                          previousValue = data.result;
-                          previousValidValue = data.result;
                           $input.val(data.result);
-                          $input.trigger("updateResult", data.data);
+                          updateResult(data.data);
                       }
                   } else {
                       stopLoading();
-                      $input.trigger("updateResult", { DisplayName: term, UniqueIdentifier: options.nullValue });
+                      updateResult({ DisplayName: term, UniqueIdentifier: options.nullValue });
                   }
                 };
 
                 var failureHandler = function() {
                     stopLoading();
-                    $input.trigger("updateResult", { DisplayName: term, UniqueIdentifier: options.nullValue });
+                    updateResult({ DisplayName: term, UniqueIdentifier: options.nullValue });
                 };
 
               startLoading();
@@ -466,9 +461,14 @@
 
             } else {
 
-                $input.trigger("updateResult", { DisplayName: term, UniqueIdentifier: options.nullValue });
+              updateResult({ DisplayName: term, UniqueIdentifier: options.nullValue });
 
             }
+        };
+
+        function updateResult(item) {
+            var actualItem = $input.trigger("updateResult", item);
+            previousValue = actualItem.DisplayName;
         };
 
         function selectCurrent() {
@@ -476,21 +476,8 @@
             if (!selected)
                 return false;
 
-            var v = selected.result;
-
-            previousValue = v;
-            previousValidValue = v;
-
-            if (options.multiple) {
-                var words = trimWords($input.val());
-                if (words.length > 1) {
-                    v = words.slice(0, words.length - 1).join(options.multipleSeparator) + options.multipleSeparator + v;
-                }
-                v += options.multipleSeparator;
-            }
-
-            closeDropDownListAndSetValue(v);
-            $input.trigger("updateResult", selected.data);
+            closeDropDownListAndSetValue(selected.result);
+            updateResult(selected.data);
 
             return true;
         }
@@ -513,7 +500,7 @@
 
             if (openFromInput || openFromTrigger) {
                 startLoading();
-                var searchString = lastWord(currentValue);
+                var searchString = currentValue;
                 if (!options.matchCase)
                     searchString = searchString.toLowerCase();
                 if (dropDownTriggered)
@@ -525,7 +512,7 @@
                         informationPopUp.show (options.noDataFoundMessage);
                     }
                 };
-                var failureHandler = function() { closeDropDownListAndSetValue(previousValidValue); };
+                var failureHandler = function() { closeDropDownListAndSetValue(previousValue); };
 
                 requestData(searchString, successHandler, failureHandler);
             } else {
@@ -535,26 +522,6 @@
                   informationPopUp.show(options.searchStringValidationParams.dropDownTriggerRegexFailedMessage);
             }
         };
-
-        function trimWords(value) {
-            if (!value) {
-                return [""];
-            }
-            var words = value.split(options.multipleSeparator);
-            var result = [];
-            $.each(words, function(i, value) {
-                if ($.trim(value))
-                    result[i] = $.trim(value);
-            });
-            return result;
-        }
-
-        function lastWord(value) {
-            if (!options.multiple)
-                return value;
-            var words = trimWords(value);
-            return words[words.length - 1];
-        }
 
         // fills in the input box w/the first match (assumed to be the best match)
         // query: the term entered
@@ -572,20 +539,19 @@
                 return;
 
             // autofill in the complete box w/the first match as long as the user hasn't entered in more data
-            if (lastWord($input.val()).toLowerCase() != query.toLowerCase())
+            if ($input.val().toLowerCase() != query.toLowerCase())
                 return;
 
-            var lastWordInQuery = lastWord(query);
             //sValue completely matches the user's input, don't autofill needed
-            if (lastWordInQuery.toLowerCase() == sValue.toLowerCase())
+            if (query.toLowerCase() == sValue.toLowerCase())
                 return;
 
             //sValue does not start with the user's input, don't autofill
-            if (sValue.length >= lastWordInQuery.length && sValue.substring(0, lastWordInQuery.length).toLowerCase() != lastWordInQuery.toLowerCase())
+            if (sValue.length >= query.length && sValue.substring(0, query.length).toLowerCase() != query.toLowerCase())
               return;
 
             // fill in the value (keep the case the user has typed)
-            $input.val($input.val() + sValue.substring(lastWordInQuery.length));
+            $input.val($input.val() + sValue.substring(query.length));
             // select the portion of the value not typed by the user (so the next character will erase)
             $.Autocompleter.Selection(input, query.length, query.length + sValue.length);
         };
@@ -617,12 +583,7 @@
                     function(result) {
                         // if no value found, clear the input box
                         if (!result) {
-                            if (options.multiple) {
-                                var words = trimWords($input.val()).slice(0, -1);
-                                $input.val(words.join(options.multipleSeparator) + (words.length ? options.multipleSeparator : ""));
-                            }
-                            else
-                                $input.val("");
+                            $input.val("");
                         }
                     }
                   );
@@ -634,7 +595,6 @@
 
         function resetState() {
             lastKeyPressCode = -1;
-            previousValue = '';
             config.mouseDownOnSelect = false;
         };
 
@@ -685,7 +645,7 @@
                 //           see http://encosia.com/2008/06/05/3-mistakes-to-avoid-when-using-jquery-with-aspnet-ajax/ 
                 //           under "JSON, objects, and strings: oh my!" for details.
                 var params = {
-                    searchString: lastWord(term),
+                    searchString: term,
                     completionSetCount: options.max
                 };
                 for (var propertyName in options.extraParams)
@@ -728,7 +688,7 @@
             options.clearRequestError();
 
             var params = {
-              searchString: lastWord(term)
+              searchString: term
             };
             for (var propertyName in options.extraParams)
               params[propertyName] = options.extraParams[propertyName];
@@ -819,8 +779,6 @@
         formatItem: function(row) { return row[0]; },
         formatMatch: null,
         autoFill: false,
-        multiple: false,
-        multipleSeparator: ", ",
         highlight: function(value, term) {
             if (term == '')
               return value;

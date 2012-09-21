@@ -246,7 +246,7 @@ namespace Remotion.ObjectBinding.Web.Legacy.UI.Controls.BocReferenceValueImpleme
           icon.Style["vertical-align"] = "middle";
           icon.Style["border-style"] = "none";
 
-          if (renderingContext.Control.IsCommandEnabled (renderingContext.Control.IsReadOnly))
+          if (renderingContext.Control.IsCommandEnabled ())
           {
             if (string.IsNullOrEmpty (iconInfo.AlternateText))
               icon.AlternateText = renderingContext.Control.GetLabelText ();
@@ -319,7 +319,7 @@ namespace Remotion.ObjectBinding.Web.Legacy.UI.Controls.BocReferenceValueImpleme
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Table); // Begin table
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Tr); //  Begin tr
 
-      bool isCommandEnabled = renderingContext.Control.IsCommandEnabled (isReadOnly);
+      bool isCommandEnabled = renderingContext.Control.IsCommandEnabled ();
 
       string postBackEvent = GetPostBackEvent (renderingContext);
       string objectID = StringUtility.NullToEmpty (renderingContext.Control.BusinessObjectUniqueIdentifier);
@@ -412,7 +412,7 @@ namespace Remotion.ObjectBinding.Web.Legacy.UI.Controls.BocReferenceValueImpleme
       bool isControlWidthEmpty = renderingContext.Control.Width.IsEmpty && string.IsNullOrEmpty (renderingContext.Control.Style["width"]);
       bool isTextboxWidthEmpty = string.IsNullOrEmpty (textbox.Style["width"]);
 
-      bool isCommandEnabled = renderingContext.Control.IsCommandEnabled (isReadOnly);
+      bool isCommandEnabled = renderingContext.Control.IsCommandEnabled ();
 
       string postBackEvent = GetPostBackEvent (renderingContext);
       string objectID = StringUtility.NullToEmpty (renderingContext.Control.BusinessObjectUniqueIdentifier);

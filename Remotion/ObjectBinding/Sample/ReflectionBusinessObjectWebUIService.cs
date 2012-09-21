@@ -30,8 +30,9 @@ namespace Remotion.ObjectBinding.Sample
     {
       if (obj == null)
       {
-        string url = "~/Images/NullIcon.gif";
-        return new IconInfo (url, Unit.Pixel (16), Unit.Pixel (16));
+        return null;
+        //string url = "~/Images/NullIcon.gif";
+        //return new IconInfo (url, Unit.Pixel (16), Unit.Pixel (16));
       }
       else
       {

@@ -30,7 +30,7 @@
   <tr>
     <td></td>
     <td><remotion:bocAutoCompleteReferenceValue id=PartnerField runat="server" SearchServicePath="AutoCompleteService.asmx" 
-    TextBoxStyle-AutoPostBack="true" readonly="False" datasourcecontrol="CurrentObject" propertyidentifier="Partner" CompletionSetCount="5">
+    TextBoxStyle-AutoPostBack="true" readonly="False" datasourcecontrol="CurrentObject" propertyidentifier="Partner" CompletionSetCount="5" IgnoreSearchStringForDropDownUponValidInput="True">
 <persistedcommand>
 <remotion:BocCommand Type="Event"></remotion:BocCommand>
 </PersistedCommand>
@@ -64,7 +64,7 @@
     <td style="WIDTH: 20%"><asp:label id=ReadOnlyPartnerFieldValueLabel runat="server" enableviewstate="False">#</asp:label></td></tr>
   <tr>
     <td></td>
-    <td><remotion:bocAutoCompleteReferenceValue id=UnboundPartnerField runat="server" SearchServicePath="AutoCompleteService.asmx" IconServicePath="IconService.asmx" DataSourceControl="PersonDataSource" required="True" hasvalueembeddedinsideoptionsmenu="False" showoptionsmenu="False"  ValidSearchStringRegex=".{1}" IgnoreSearchStringForDropDownUponValidInput="True">
+    <td><remotion:bocAutoCompleteReferenceValue id=UnboundPartnerField runat="server" SearchServicePath="AutoCompleteService.asmx" IconServicePath="IconService.asmx" DataSourceControl="PersonDataSource" required="True" hasvalueembeddedinsideoptionsmenu="False" showoptionsmenu="False"  ValidSearchStringRegex=".{0}" IgnoreSearchStringForDropDownUponValidInput="True">
 <persistedcommand>
 <remotion:boccommand Type="Event"></remotion:boccommand>
 </PersistedCommand></remotion:bocAutoCompleteReferenceValue></td>
@@ -84,7 +84,7 @@
     <td style="WIDTH: 20%"><asp:label id=UnboundReadOnlyPartnerFieldValueLabel runat="server" enableviewstate="False">#</asp:label></td></tr>
   <tr>
     <td></td>
-    <td><remotion:bocAutoCompleteReferenceValue id=DisabledPartnerField runat="server" SearchServicePath="AutoCompleteService.asmx" readonly="False" datasourcecontrol="CurrentObject" propertyidentifier="Partner" hasvalueembeddedinsideoptionsmenu="True" enabled="false">
+    <td><remotion:bocAutoCompleteReferenceValue id=DisabledPartnerField runat="server" SearchServicePath="AutoCompleteService.asmx" readonly="False" datasourcecontrol="CurrentObject" propertyidentifier="Partner" hasvalueembeddedinsideoptionsmenu="True" enabled="true">
 
 <persistedcommand>
 <remotion:boccommand Type="Event"></remotion:boccommand>
@@ -119,7 +119,20 @@
 </remotion:bocAutoCompleteReferenceValue></td>
     <td>
       disabled, unbound, value set, read only</td>
-    <td style="WIDTH: 20%"><asp:label id="DisabledUnboundReadOnlyPartnerFieldValueLabel" runat="server" enableviewstate="False">#</asp:label></td></tr></table>
+    <td style="WIDTH: 20%"><asp:label id="DisabledUnboundReadOnlyPartnerFieldValueLabel" runat="server" enableviewstate="False">#</asp:label></td></tr>
+  <tr>
+    <td></td>
+    <td><remotion:bocAutoCompleteReferenceValue id=BocAutoCompleteReferenceValue1 runat="server" SearchServicePath="AutoCompleteService.asmx" 
+    TextBoxStyle-AutoPostBack="true" readonly="False" datasourcecontrol="CurrentObject" propertyidentifier="Partner" CompletionSetCount="5" IgnoreSearchStringForDropDownUponValidInput="True">
+<persistedcommand>
+<remotion:BocCommand Type="None"></remotion:BocCommand>
+</PersistedCommand>
+</remotion:bocAutoCompleteReferenceValue>
+</td>
+    <td>bound</td>
+    <td style="WIDTH: 20%"><asp:label id=Label1 runat="server" enableviewstate="False">#</asp:label></td></tr>
+
+</table>
 <p>Partner Command Click: <asp:label id="PartnerCommandClickLabel" runat="server" enableviewstate="False">#</asp:label></p>
 <p>Partner Selection Changed: <asp:label id=PartnerFieldSelectionChangedLabel runat="server" enableviewstate="False">#</asp:label></p>
 <p>Partner Menu Click: <asp:label id=PartnerFieldMenuClickEventArgsLabel runat="server" enableviewstate="False">#</asp:label></p>
