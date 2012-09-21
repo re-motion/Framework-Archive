@@ -234,7 +234,7 @@ span.bocAutoCompleteReferenceValue.readOnly img > span.content
   left: 22px; /* width of a.command icon + desired space between */
 }
 
-span.bocAutoCompleteReferenceValue a.command.hasIcon img
+span.bocAutoCompleteReferenceValue a.command > img
 {
   width: 16px;
   height: 16px;
