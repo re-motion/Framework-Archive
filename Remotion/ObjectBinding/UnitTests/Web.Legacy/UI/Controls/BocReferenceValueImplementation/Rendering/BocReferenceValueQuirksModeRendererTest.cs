@@ -207,7 +207,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.Legacy.UI.Controls.BocReferenceVa
     [Test]
     public void RenderNullReferenceValueReadOnly ()
     {
-      Control.Stub (stub => stub.EnableIcon).Return (true);
+      Control.Stub (stub => stub.IsIconEnabled()).Return (true);
       Control.Stub (stub => stub.IsReadOnly).Return (true);
 
       XmlNode div = GetAssertedDiv (1, false);
@@ -218,7 +218,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.Legacy.UI.Controls.BocReferenceVa
     [Test]
     public void RenderNullReferenceValueReadOnlyWithStyle ()
     {
-      Control.Stub (stub => stub.EnableIcon).Return (true);
+      Control.Stub (stub => stub.IsIconEnabled()).Return (true);
       Control.Stub (stub => stub.IsReadOnly).Return (true);
       AddStyle();
 
@@ -230,7 +230,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.Legacy.UI.Controls.BocReferenceVa
     [Test]
     public void RenderNullReferenceValueReadOnlyWithOptionsMenu ()
     {
-      Control.Stub (stub => stub.EnableIcon).Return (true);
+      Control.Stub (stub => stub.IsIconEnabled()).Return (true);
       Control.Stub (stub => stub.HasOptionsMenu).Return (true);
       Control.Stub (stub => stub.IsReadOnly).Return (true);
 
@@ -268,7 +268,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.Legacy.UI.Controls.BocReferenceVa
     [Test]
     public void RenderNullReferenceValueWithIcon ()
     {
-      Control.Stub (stub => stub.EnableIcon).Return (true);
+      Control.Stub (stub => stub.IsIconEnabled()).Return (true);
       Control.Stub (stub => stub.Property).Return (
           (IBusinessObjectReferenceProperty) ((IBusinessObject) BusinessObject).BusinessObjectClass.GetPropertyDefinition ("ReferenceValue"));
       SetUpGetIconExpectations();
@@ -342,7 +342,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.Legacy.UI.Controls.BocReferenceVa
     public void RenderReferenceValueReadOnly ()
     {
       SetValue();
-      Control.Stub (stub => stub.EnableIcon).Return (true);
+      Control.Stub (stub => stub.IsIconEnabled()).Return (true);
       Control.Stub (stub => stub.IsReadOnly).Return (true);
 
       XmlNode div = GetAssertedDiv (1, false);
@@ -354,7 +354,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.Legacy.UI.Controls.BocReferenceVa
     public void RenderReferenceValueReadOnlyWithStyle ()
     {
       SetValue();
-      Control.Stub (stub => stub.EnableIcon).Return (true);
+      Control.Stub (stub => stub.IsIconEnabled()).Return (true);
       Control.Stub (stub => stub.IsReadOnly).Return (true);
       AddStyle();
 
@@ -367,7 +367,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.Legacy.UI.Controls.BocReferenceVa
     public void RenderReferenceValueReadOnlyWithOptionsMenu ()
     {
       SetValue();
-      Control.Stub (stub => stub.EnableIcon).Return (true);
+      Control.Stub (stub => stub.IsIconEnabled()).Return (true);
       Control.Stub (stub => stub.HasOptionsMenu).Return (true);
       Control.Stub (stub => stub.IsReadOnly).Return (true);
 
@@ -408,7 +408,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.Legacy.UI.Controls.BocReferenceVa
     public void RenderReferenceValueWithIcon ()
     {
       SetValue();
-      Control.Stub (stub => stub.EnableIcon).Return (true);
+      Control.Stub (stub => stub.IsIconEnabled()).Return (true);
       Control.Stub (stub => stub.Property).Return (
           (IBusinessObjectReferenceProperty) ((IBusinessObject) BusinessObject).BusinessObjectClass.GetPropertyDefinition ("ReferenceValue"));
       SetUpGetIconExpectations();
@@ -433,7 +433,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.Legacy.UI.Controls.BocReferenceVa
     [Test]
     public void RenderOptionsReadOnly ()
     {
-      Control.Stub (stub => stub.EnableIcon).Return (true);
+      Control.Stub (stub => stub.IsIconEnabled()).Return (true);
       Control.Stub (stub => stub.IsReadOnly).Return (true);
 
       var renderer = new TestableBocReferenceValueQuirksModeRenderer (_resourceUrlFactory, () => new StubDropDownList());

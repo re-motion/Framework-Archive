@@ -145,7 +145,7 @@ namespace Remotion.ObjectBinding.Web.Legacy.UI.Controls.BocReferenceValueImpleme
       script.AppendFormat ("$('#{0}'), ", renderingContext.Control.HiddenFieldClientID);
       script.AppendFormat ("$('#{0}'),", renderingContext.Control.DropDownButtonClientID);
 
-      if (renderingContext.Control.EnableIcon)
+      if (renderingContext.Control.IsIconEnabled())
         script.AppendFormat ("$('#{0} .{1}'), ", renderingContext.Control.ClientID, CssClassCommand);
       else
         script.Append ("null, ");
@@ -232,7 +232,7 @@ namespace Remotion.ObjectBinding.Web.Legacy.UI.Controls.BocReferenceValueImpleme
     private Image GetIcon (BocAutoCompleteReferenceValueRenderingContext renderingContext)
     {
       var icon = new Image { EnableViewState = false, Visible = false };
-      if (renderingContext.Control.EnableIcon)
+      if (renderingContext.Control.IsIconEnabled())
       {
         IconInfo iconInfo = renderingContext.Control.GetIcon ();
 

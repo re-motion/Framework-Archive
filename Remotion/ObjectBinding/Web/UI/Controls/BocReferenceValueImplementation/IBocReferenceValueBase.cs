@@ -31,7 +31,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     DropDownMenu OptionsMenu { get; }
     Unit OptionsMenuWidth { get; }
     BocCommand Command { get; }
-    bool EnableIcon { get; }
+    bool IsIconEnabled ();
     new IBusinessObjectReferenceProperty Property { get; }
     new IBusinessObjectWithIdentity Value { get; }
     bool IsCommandEnabled ();

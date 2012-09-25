@@ -1007,13 +1007,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       return businessObjectClass;
     }
 
-    protected BusinessObjectIconWebServiceContext CreateIconWebServiceContext ()
-    {
-      if (!EnableIcon)
-        return null;
-      return BusinessObjectIconWebServiceContext.Create (GetBusinessObjectClass());
-    }
-
     bool IBocRenderableControl.IsDesignMode
     {
       get { return IsDesignMode; }
@@ -1034,12 +1027,26 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       get { return OptionsMenu; }
     }
 
+    bool IBocReferenceValueBase.IsIconEnabled()
+    {
+      if (!EnableIcon)
+        return false;
+      if (GetBusinessObjectClass() == null)
+        return false;
+      return true;
+    }
+
     IconInfo IBocReferenceValueBase.GetIcon ()
     {
       var businessObjectClass = GetBusinessObjectClass ();
       if (businessObjectClass == null)
         return null;
       return GetIcon (Value, businessObjectClass.BusinessObjectProvider);
+    }
+
+    protected BusinessObjectIconWebServiceContext CreateIconWebServiceContext ()
+    {
+      return BusinessObjectIconWebServiceContext.Create (GetBusinessObjectClass());
     }
 
     string IBocReferenceValueBase.LabelClientID

@@ -178,7 +178,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocReferenceValueImpl
     public void RenderNullReferenceValueReadOnly ()
     {
       Control.Stub (stub => stub.Enabled).Return (true);
-      Control.Stub (stub => stub.EnableIcon).Return (true);
+      Control.Stub (stub => stub.IsIconEnabled()).Return (true);
       Control.Stub (stub => stub.IsReadOnly).Return (true);
 
       XmlNode span = GetAssertedContainerSpan (false);
@@ -189,7 +189,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocReferenceValueImpl
     public void RenderNullReferenceValueReadOnlyWithStyle ()
     {
       Control.Stub (stub => stub.Enabled).Return (true);
-      Control.Stub (stub => stub.EnableIcon).Return (true);
+      Control.Stub (stub => stub.IsIconEnabled()).Return (true);
       Control.Stub (stub => stub.IsReadOnly).Return (true);
       AddStyle();
 
@@ -202,7 +202,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocReferenceValueImpl
     public void RenderNullReferenceValueReadOnlyWithOptionsMenu ()
     {
       Control.Stub (stub => stub.Enabled).Return (true);
-      Control.Stub (stub => stub.EnableIcon).Return (true);
+      Control.Stub (stub => stub.IsIconEnabled()).Return (true);
       Control.Stub (stub => stub.HasOptionsMenu).Return (true);
       Control.Stub (stub => stub.IsReadOnly).Return (true);
 
@@ -241,7 +241,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocReferenceValueImpl
     public void RenderNullReferenceValueWithIcon ()
     {
       Control.Stub (stub => stub.Enabled).Return (true);
-      Control.Stub (stub => stub.EnableIcon).Return (true);
+      Control.Stub (stub => stub.IsIconEnabled()).Return (true);
       Control.Stub (stub => stub.Property).Return (
           (IBusinessObjectReferenceProperty) ((IBusinessObject) BusinessObject).BusinessObjectClass.GetPropertyDefinition ("ReferenceValue"));
       SetUpGetIconExpectations();
@@ -327,7 +327,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocReferenceValueImpl
     {
       Control.Stub (stub => stub.Enabled).Return (true);
       SetValue();
-      Control.Stub (stub => stub.EnableIcon).Return (true);
+      Control.Stub (stub => stub.IsIconEnabled()).Return (true);
       Control.Stub (stub => stub.IsReadOnly).Return (true);
 
       XmlNode span = GetAssertedContainerSpan (false);
@@ -339,7 +339,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocReferenceValueImpl
     {
       Control.Stub (stub => stub.Enabled).Return (true);
       SetValue();
-      Control.Stub (stub => stub.EnableIcon).Return (true);
+      Control.Stub (stub => stub.IsIconEnabled()).Return (true);
       Control.Stub (stub => stub.IsReadOnly).Return (true);
       AddStyle();
 
@@ -353,7 +353,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocReferenceValueImpl
     {
       Control.Stub (stub => stub.Enabled).Return (true);
       SetValue();
-      Control.Stub (stub => stub.EnableIcon).Return (true);
+      Control.Stub (stub => stub.IsIconEnabled()).Return (true);
       Control.Stub (stub => stub.HasOptionsMenu).Return (true);
       Control.Stub (stub => stub.IsReadOnly).Return (true);
 
@@ -395,7 +395,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocReferenceValueImpl
     {
       Control.Stub (stub => stub.Enabled).Return (true);
       SetValue();
-      Control.Stub (stub => stub.EnableIcon).Return (true);
+      Control.Stub (stub => stub.IsIconEnabled()).Return (true);
       Control.Stub (stub => stub.Property).Return (
           (IBusinessObjectReferenceProperty) ((IBusinessObject) BusinessObject).BusinessObjectClass.GetPropertyDefinition ("ReferenceValue"));
       SetUpGetIconExpectations();
@@ -422,7 +422,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocReferenceValueImpl
     [Test]
     public void RenderOptionsReadOnly ()
     {
-      Control.Stub (stub => stub.EnableIcon).Return (true);
+      Control.Stub (stub => stub.IsIconEnabled()).Return (true);
       Control.Stub (stub => stub.IsReadOnly).Return (true);
 
       var renderer = new TestableBocAutoCompleteReferenceValueRenderer (_resourceUrlFactoryStub, () => new StubTextBox());

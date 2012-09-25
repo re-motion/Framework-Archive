@@ -85,7 +85,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     {
       ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
 
-      if (!renderingContext.Control.EnableIcon)
+      if (!renderingContext.Control.IsIconEnabled())
         return null;
 
       var iconServicePath = renderingContext.Control.IconServicePath;
@@ -250,7 +250,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     private void RenderSeparateIcon (BocRenderingContext<TControl> renderingContext, string postBackEvent, string onClick, string objectID)
     {
       IconInfo icon = null;
-      if (renderingContext.Control.EnableIcon)
+      var isIconEnabled = renderingContext.Control.IsIconEnabled();
+      if (isIconEnabled)
         icon = GetIcon (renderingContext);
 
       var anchorClass = CssClassCommand;
@@ -262,8 +263,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       var command = GetCommand (renderingContext, isCommandEnabled);
       command.RenderBegin (renderingContext.Writer, postBackEvent, onClick, objectID, null);
 
-      if (renderingContext.Control.EnableIcon)
+      if (isIconEnabled)
         icon = icon ?? IconInfo.Spacer;
+
       if (icon != null)
       {
         if (!string.IsNullOrEmpty (command.ToolTip))
@@ -288,8 +290,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       command.RenderBegin (renderingContext.Writer, postBackEvent, onClick, objectID, null);
 
       IconInfo icon = null;
-      if (renderingContext.Control.EnableIcon)
+      var isIconEnabled = renderingContext.Control.IsIconEnabled();
+      if (isIconEnabled)
         icon = GetIcon (renderingContext);
+
       if (icon != null)
         icon.Render (renderingContext.Writer, renderingContext.Control);
 
