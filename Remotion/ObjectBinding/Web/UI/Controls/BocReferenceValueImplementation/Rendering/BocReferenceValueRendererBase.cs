@@ -259,7 +259,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
         anchorClass += " " + CssClassHasIcon;
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, anchorClass);
 
-      var isCommandEnabled = renderingContext.Control.IsCommandEnabled();
+      var isCommandEnabled = isIconEnabled && renderingContext.Control.IsCommandEnabled();
       var command = GetCommand (renderingContext, isCommandEnabled);
       command.RenderBegin (renderingContext.Writer, postBackEvent, onClick, objectID, null);
 
@@ -273,10 +273,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
         icon.Render (renderingContext.Writer, renderingContext.Control);
       }
 
-      if (isCommandEnabled)
-        renderingContext.Control.Command.RenderEnd (renderingContext.Writer);
-      else
-        renderingContext.Writer.RenderEndTag();
+      renderingContext.Control.Command.RenderEnd (renderingContext.Writer);
     }
 
     private void RenderReadOnlyValue (BocRenderingContext<TControl> renderingContext, string postBackEvent, string onClick, string objectID)
@@ -302,10 +299,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       label.RenderControl (renderingContext.Writer);
       renderingContext.Writer.RenderEndTag();
 
-      if (isCommandEnabled)
-        renderingContext.Control.Command.RenderEnd (renderingContext.Writer);
-      else
-        renderingContext.Writer.RenderEndTag ();
+      renderingContext.Control.Command.RenderEnd (renderingContext.Writer);
     }
 
     private BocCommand GetCommand (BocRenderingContext<TControl> renderingContext, bool isCommandEnabled)

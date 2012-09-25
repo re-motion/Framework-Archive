@@ -982,7 +982,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
                         || isReadOnly && Command.Show == CommandShow.ReadOnly
                         || ! isReadOnly && Command.Show == CommandShow.EditMode;
 
-        bool isCommandLinkPossible = isReadOnly && InternalValue != null;
+        bool isCommandLinkPossible = !isReadOnly || InternalValue != null;
 
         if (isActive
             && Command.Type != CommandType.None
