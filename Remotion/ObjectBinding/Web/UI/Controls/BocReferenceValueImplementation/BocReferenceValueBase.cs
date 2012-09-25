@@ -973,23 +973,16 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       if (WcagHelper.Instance.IsWaiConformanceLevelARequired())
         return false;
 
-      bool isCommandEnabled = false;
-      if (Command != null)
-      {
-        var isReadOnly = IsReadOnly;
+      if (Command == null)
+        return false;
 
-        bool isActive = Command.Show == CommandShow.Always
-                        || isReadOnly && Command.Show == CommandShow.ReadOnly
-                        || ! isReadOnly && Command.Show == CommandShow.EditMode;
+      var isReadOnly = IsReadOnly;
 
-        bool isCommandLinkPossible = !isReadOnly || InternalValue != null;
+      bool isActive = Command.Show == CommandShow.Always
+                      || isReadOnly && Command.Show == CommandShow.ReadOnly
+                      || ! isReadOnly && Command.Show == CommandShow.EditMode;
 
-        if (isActive
-            && Command.Type != CommandType.None
-            && isCommandLinkPossible)
-          isCommandEnabled = Enabled;
-      }
-      return isCommandEnabled;
+      return Enabled && isActive && Command.Type != CommandType.None;
     }
 
     private bool IsNullValue (string newValue)

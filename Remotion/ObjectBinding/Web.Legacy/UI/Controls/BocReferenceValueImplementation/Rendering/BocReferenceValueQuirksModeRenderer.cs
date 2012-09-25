@@ -255,7 +255,7 @@ namespace Remotion.ObjectBinding.Web.Legacy.UI.Controls.BocReferenceValueImpleme
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Table); // Begin table
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Tr); //  Begin tr
 
-      bool isCommandEnabled = renderingContext.Control.IsCommandEnabled ();
+      bool isCommandEnabled = renderingContext.Control.BusinessObjectUniqueIdentifier != null && renderingContext.Control.IsCommandEnabled ();
 
       string postBackEvent = GetPostBackEvent (renderingContext);
       string objectID = StringUtility.NullToEmpty (renderingContext.Control.BusinessObjectUniqueIdentifier);
@@ -346,7 +346,7 @@ namespace Remotion.ObjectBinding.Web.Legacy.UI.Controls.BocReferenceValueImpleme
       bool isControlWidthEmpty = renderingContext.Control.Width.IsEmpty && string.IsNullOrEmpty (renderingContext.Control.Style["width"]);
       bool isDropDownListWidthEmpty = string.IsNullOrEmpty (dropDownList.Style["width"]);
 
-      bool isCommandEnabled = renderingContext.Control.IsCommandEnabled ();
+      bool isCommandEnabled = renderingContext.Control.BusinessObjectUniqueIdentifier != null && renderingContext.Control.IsCommandEnabled ();
 
       string postBackEvent = GetPostBackEvent (renderingContext);
       string objectID = StringUtility.NullToEmpty (renderingContext.Control.BusinessObjectUniqueIdentifier);

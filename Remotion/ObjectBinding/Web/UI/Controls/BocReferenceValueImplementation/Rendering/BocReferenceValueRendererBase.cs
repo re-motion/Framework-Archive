@@ -259,7 +259,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
         anchorClass += " " + CssClassHasIcon;
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, anchorClass);
 
-      var isCommandEnabled = isIconEnabled && renderingContext.Control.IsCommandEnabled();
+      var isCommandEnabled = isIconEnabled && IsCommandEnabled (renderingContext);
       var command = GetCommand (renderingContext, isCommandEnabled);
       command.RenderBegin (renderingContext.Writer, postBackEvent, onClick, objectID, null);
 
@@ -282,7 +282,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
 
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassCommand);
 
-      var isCommandEnabled = renderingContext.Control.IsCommandEnabled();
+      var isCommandEnabled = IsCommandEnabled (renderingContext);
       var command = GetCommand (renderingContext, isCommandEnabled);
       command.RenderBegin (renderingContext.Writer, postBackEvent, onClick, objectID, null);
 
@@ -302,6 +302,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       renderingContext.Control.Command.RenderEnd (renderingContext.Writer);
     }
 
+    private bool IsCommandEnabled (BocRenderingContext<TControl> renderingContext)
+    {
+      return renderingContext.Control.BusinessObjectUniqueIdentifier != null && renderingContext.Control.IsCommandEnabled();
+    }
+
     private BocCommand GetCommand (BocRenderingContext<TControl> renderingContext, bool isCommandEnabled)
     {
       var command = isCommandEnabled
@@ -315,7 +320,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     {
       var iconInfo = renderingContext.Control.GetIcon();
 
-      if (renderingContext.Control.IsCommandEnabled())
+      if (iconInfo != null && renderingContext.Control.IsCommandEnabled())
       {
         if (string.IsNullOrEmpty (iconInfo.AlternateText))
           iconInfo.AlternateText = renderingContext.Control.GetLabelText();
