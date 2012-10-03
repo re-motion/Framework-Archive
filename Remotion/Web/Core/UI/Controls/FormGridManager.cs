@@ -1102,7 +1102,6 @@ namespace Remotion.Web.UI.Controls
 
       //  Parse the values
 
-      var hotkeyParser = new HotkeyParser();
       var hotkeyFormatter = HotkeyFormatter;
 
       foreach (DictionaryEntry entry in values)
@@ -1198,7 +1197,7 @@ namespace Remotion.Web.UI.Controls
               Assertion.IsFalse (label is SmartLabel);
 #pragma warning restore 184
 
-              var textWithHotkey = hotkeyParser.Parse (label.Text);
+              var textWithHotkey = TextWithHotkey.Parse (label.Text);
 
               //  Label has associated control
               if (!string.IsNullOrEmpty (label.AssociatedControlID))
