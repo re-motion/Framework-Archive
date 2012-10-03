@@ -16,11 +16,14 @@
 // 
 
 using System;
+using Remotion.ServiceLocation;
 
 namespace Remotion.Web.UI.Controls.Hotkey
 {
+  [ConcreteImplementation (typeof (UnderscoreHotkeyFormatter), Lifetime = LifetimeKind.Singleton)]
   public interface IHotkeyFormatter
   {
-    string Format (TextWithHotkey textWithHotkey, bool encode);
+    string FormatHotkey (TextWithHotkey textWithHotkey);
+    string FormatText (TextWithHotkey textWithHotkey, bool encode);
   }
 }

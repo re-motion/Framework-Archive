@@ -14,22 +14,41 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
 using NUnit.Framework;
+using Remotion.ServiceLocation;
 using Remotion.Web.UI.Controls.Hotkey;
 
 namespace Remotion.Web.UnitTests.Core.UI.Controls.Hotkey
 {
   [TestFixture]
-  public class UnderscoreHotkeyFormatterTest
+  public class IHotkeyFormatterTest
   {
-    [Test]
-    public void Format_NoEncoding_WithHotkey ()
-    {
-      var formatter = new UnderscoreHotkeyFormatter();
-      var textWithHotkey = new TextWithHotkey ("foo bar", 4);
+    private DefaultServiceLocator _serviceLocator;
 
-      Assert.That (formatter.FormatText (textWithHotkey, false), Is.EqualTo ("foo <u>b</u>ar"));
+    [SetUp]
+    public void SetUp ()
+    {
+      _serviceLocator = new DefaultServiceLocator();
+    }
+
+    [Test]
+    public void GetInstance_Once ()
+    {
+      var instance = _serviceLocator.GetInstance<IHotkeyFormatter>();
+
+      Assert.That (instance, Is.Not.Null);
+      Assert.That (instance, Is.TypeOf (typeof (UnderscoreHotkeyFormatter)));
+    }
+
+    [Test]
+    public void GetInstance_Twice_ReturnsSameInstance ()
+    {
+      var instance1 = _serviceLocator.GetInstance<IHotkeyFormatter>();
+      var instance2 = _serviceLocator.GetInstance<IHotkeyFormatter>();
+
+      Assert.That (instance1, Is.SameAs (instance2));
     }
   }
 }

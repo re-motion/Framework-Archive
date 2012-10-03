@@ -51,6 +51,10 @@ href="WxeHandler.ashx?WxeFunctionType=OBWTest.Design.DesignTestFunction,OBWTest"
 <a href="ControlLayoutTest.wxe?WxeReturnToSelf=True&TabbedMenuSelection=ViewLayoutTests">ControlLayoutTest.wxe</a></p>
 <p>Tests for reference data sources<br />
 <a href="ReferenceDataSourceTest.wxe?WxeReturnToSelf=True">ReferenceDataSourceTest.wxe</a></p>
+  
+  <input type="text"/>
+  <label for="DropDown">test</label>
+  <select id="DropDown"> <option value="1">One</option><option value="2">Two</option></select>
 </form>
   </body>
 </html>
