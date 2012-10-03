@@ -16,7 +16,7 @@
 // 
 namespace Remotion.Mixins.UnitTests.Core.TestDomain
 {
-  [NonInherited]
+  [NonInheritable]
   public class MixinAddingNonInheritedAttribute
   {
   }

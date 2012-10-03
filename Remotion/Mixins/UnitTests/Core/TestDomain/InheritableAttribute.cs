@@ -14,13 +14,14 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+using System;
+
 namespace Remotion.Mixins.UnitTests.Core.TestDomain
 {
-  [CopyCustomAttributes (typeof (AttributeSource))]
-  public class MixinIndirectlyAddingNonInheritedAttribute : Mixin<object>
+  [AttributeUsage (AttributeTargets.All, Inherited = true)]
+  public class InheritableAttribute : Attribute
   {
-    [NonInheritable]
-    public class AttributeSource
+    public InheritableAttribute ()
     {
     }
   }
