@@ -120,7 +120,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         int absoluteRowIndex,
         int originalRowIndex)
     {
-      string selectorControlID = renderingContext.Control.GetSelectorControlClientId (rowIndex);
+      string selectorControlID = renderingContext.Control.GetSelectorControlClientID (rowIndex);
       bool isChecked = (renderingContext.Control.SelectorControlCheckedState.Contains (originalRowIndex));
       bool isOddRow = (rowIndex % 2 == 0); // row index is zero-based here, but one-based in rendering => invert even/odd
 

@@ -107,7 +107,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocListImplementation
       var editModeController = MockRepository.GenerateMock<IEditModeController>();
       List.Stub (list => list.EditModeController).Return (editModeController);
 
-      List.Stub (stub => stub.GetSelectorControlClientId (Arg<int>.Is.Anything)).Return ("SelectRowControlID");
+      List.Stub (stub => stub.GetSelectorControlClientID (Arg<int>.Is.Anything)).Return ("SelectRowControlID");
       List.Stub (stub => stub.GetSelectAllControlClientID()).Return ("SelectAllControlID");
 
       List.Stub (list => list.GetResourceManager()).Return (

@@ -186,19 +186,20 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
     ///   </para>
     /// </remarks>
     /// <param name="columnIndex"> The index of the column for which the post back function should be created. </param>
-    /// <param name="listIndex"> The index of the business object for which the post back function should be created. </param>
+    /// <param name="row"> The <see cref="BocListRow"/> for which the post back function should be created. </param>
     /// <param name="customCellArgument"> 
     ///   The argument to be passed to the <see cref="BocCustomColumnDefinitionCell"/>'s <c>OnClick</c> method.
     ///   Can be <see langword="null"/>.
     /// </param>
     /// <returns></returns>
-    string GetCustomCellPostBackClientEvent (int columnIndex, int listIndex, string customCellArgument);
+    string GetCustomCellPostBackClientEvent (int columnIndex, BocListRow row, string customCellArgument);
+    string GetListItemCommandArgument (int columnIndex, BocListRow row);
+    string GetRowEditCommandArgument (BocListRow row, BocList.RowEditModeCommand command);
     IResourceManager GetResourceManager ();
-    string GetListItemCommandArgument (int columnIndex, int originalRowIndex);
     BocListRow[] GetRowsToDisplay (out int startAbsoluteIndex);
     void OnDataRowRendering (BocListDataRowRenderEventArgs args);
     bool AreDataRowsClickSensitive ();
-    string GetSelectorControlClientId (int? absoluteRowIndex);
+    string GetSelectorControlClientID (int? absoluteRowIndex);
     string GetSelectAllControlClientID ();
     string GetSelectionChangedHandlerScript ();
   }

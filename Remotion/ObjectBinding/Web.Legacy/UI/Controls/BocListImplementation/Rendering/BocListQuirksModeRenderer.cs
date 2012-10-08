@@ -299,7 +299,7 @@ namespace Remotion.ObjectBinding.Web.Legacy.UI.Controls.BocListImplementation.Re
         string script = string.Format (
             scriptTemplate,
             renderingContext.Control.ClientID,
-            renderingContext.Control.GetSelectorControlClientId (null),
+            renderingContext.Control.GetSelectorControlClientID (null),
             count,
             (int) renderingContext.Control.Selection,
             hasClickSensitiveRows ? "true" : "false",

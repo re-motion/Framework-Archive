@@ -117,7 +117,7 @@ namespace Remotion.ObjectBinding.Web.Legacy.UI.Controls.BocListImplementation.Re
     public void RenderDataRow (
         BocListRenderingContext renderingContext, IBusinessObject businessObject, int rowIndex, int absoluteRowIndex, int originalRowIndex)
     {
-      string selectorControlID = renderingContext.Control.GetSelectorControlClientId (rowIndex);
+      string selectorControlID = renderingContext.Control.GetSelectorControlClientID (rowIndex);
       bool isChecked = (renderingContext.Control.SelectorControlCheckedState.Contains (originalRowIndex));
       bool isOddRow = (rowIndex % 2 == 0); // row index is zero-based here, but one-based in rendering => invert even/odd
 

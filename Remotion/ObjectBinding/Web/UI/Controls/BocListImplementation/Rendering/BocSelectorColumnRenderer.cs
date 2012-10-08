@@ -144,7 +144,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         string script = "BocList_OnSelectAllSelectorControlClick ("
                         + "document.getElementById ('" + renderingContext.Control.ClientID + "'), "
                         + "this , '"
-                        + renderingContext.Control.GetSelectorControlClientId (null) + "', "
+                        + renderingContext.Control.GetSelectorControlClientID (null) + "', "
                         + count + ", "
                         + "document.getElementById ('" + renderingContext.Control.ListMenu.ClientID + "'));";
         renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Onclick, script);

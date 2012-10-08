@@ -527,10 +527,16 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Handles post back events raised by a list item event. </summary>
-    /// <param name="eventArgument"> &lt;column-index&gt;,&lt;list-index&gt; </param>
+    /// <param name="eventArgument"> &lt;column-index&gt;,&lt;row-ID&gt; </param>
     private void HandleListItemCommandEvent (string eventArgument)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("eventArgument", eventArgument);
+
+      if (Value == null)
+      {
+        throw new InvalidOperationException (
+            string.Format ("The BocList '{0}' does not have a Value when attempting to handle the list item click event.", ID));
+      }
 
       string[] eventArgumentParts = eventArgument.Split (new[] { ',' }, 2);
 
@@ -539,38 +545,19 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       eventArgumentParts[0] = eventArgumentParts[0].Trim();
       try
       {
-        if (eventArgumentParts[0].Length == 0)
-          throw new FormatException();
         columnIndex = int.Parse (eventArgumentParts[0]);
       }
-      catch (FormatException)
+      catch (FormatException ex)
       {
         throw new ArgumentException (
-            "First part of argument 'eventArgument' must be an integer. Expected format: '<column-index>,<list-index>'.");
-      }
-
-      //  Second part: list index
-      int listIndex;
-      eventArgumentParts[1] = eventArgumentParts[1].Trim();
-      try
-      {
-        if (eventArgumentParts[1].Length == 0)
-          throw new FormatException();
-        listIndex = int.Parse (eventArgumentParts[1]);
-      }
-      catch (FormatException)
-      {
-        throw new ArgumentException (
-            "Second part of argument 'eventArgument' must be an integer. Expected format: <column-index>,<list-index>'.");
+            "First part of argument 'eventArgument' must be an integer. Expected format: '<column-index>,<list-index>'.", ex);
       }
 
       BocColumnDefinition[] columns = EnsureColumnsForPreviousLifeCycleGot();
-
       if (columnIndex >= columns.Length)
       {
         throw new ArgumentOutOfRangeException (
-            "Column index of argument 'eventargument' was out of the range of valid values."
-            + "Index must be less than the number of displayed columns.'",
+            "Column index of argument 'eventargument' was out of the range of valid values. Index must be less than the number of displayed columns.'",
             (Exception) null);
       }
 
@@ -578,37 +565,38 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       if (column.Command == null)
       {
         throw new ArgumentOutOfRangeException (
-            string.Format (
-                "The BocList '{0}' does not have a command inside column {1}.", ID, columnIndex));
+            string.Format ("The BocList '{0}' does not have a command inside column {1}.", ID, columnIndex));
       }
       BocListItemCommand command = column.Command;
 
-      if (Value == null)
+      //  Second part: list index
+      BocListRow row;
+      try
       {
-        throw new InvalidOperationException (
-            string.Format (
-                "The BocList '{0}' does not have a Value when attempting to handle the list item click event.", ID));
+        row = RowIDProvider.GetRowFromItemRowID (Value, eventArgumentParts[1].Trim());
       }
+      catch (FormatException ex)
+      {
+        throw new ArgumentException (
+            "Second part of argument 'eventArgument' does not match the expected format. Expected format: <column-index>,<row-ID>'.", ex);
+      }
+
+      if (row == null)
+        return;
 
       switch (command.Type)
       {
         case CommandType.Event:
         {
-          IBusinessObject businessObject = null;
-          if (listIndex < Value.Count)
-            businessObject = (IBusinessObject) Value[listIndex];
-          OnListItemCommandClick (column, listIndex, businessObject);
+          OnListItemCommandClick (column, row.Index, row.BusinessObject);
           break;
         }
         case CommandType.WxeFunction:
         {
-          IBusinessObject businessObject = null;
-          if (listIndex < Value.Count)
-            businessObject = (IBusinessObject) Value[listIndex];
           if (Page is IWxePage)
-            command.ExecuteWxeFunction ((IWxePage) Page, listIndex, businessObject);
+            command.ExecuteWxeFunction ((IWxePage) Page, row.Index, row.BusinessObject);
           //else
-          //  command.ExecuteWxeFunction (Page, listIndex, businessObject);
+          //  command.ExecuteWxeFunction (Page, row.Index, row.BusinessObject);
           break;
         }
         default:
@@ -619,10 +607,16 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Handles post back events raised by a custom cell event. </summary>
-    /// <param name="eventArgument"> &lt;column-index&gt;,&lt;list-index&gt;[,&lt;customArgument&gt;] </param>
+    /// <param name="eventArgument"> &lt;column-index&gt;,&lt;row-ID&gt;[,&lt;customArgument&gt;] </param>
     private void HandleCustomCellEvent (string eventArgument)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("eventArgument", eventArgument);
+
+      if (Value == null)
+      {
+        throw new InvalidOperationException (
+            string.Format ("The BocList '{0}' does not have a Value when attempting to handle the custom cell event.", ID));
+      }
 
       string[] eventArgumentParts = eventArgument.Split (new[] { ',' }, 3);
 
@@ -631,29 +625,33 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       eventArgumentParts[0] = eventArgumentParts[0].Trim();
       try
       {
-        if (eventArgumentParts[0].Length == 0)
-          throw new FormatException();
         columnIndex = int.Parse (eventArgumentParts[0]);
       }
-      catch (FormatException)
+      catch (Exception ex)
       {
         throw new ArgumentException (
-            "First part of argument 'eventArgument' must be an integer. Expected format: '<column-index>,<list-index>[,<customArgument>]'.");
+            "First part of argument 'eventArgument' must be an integer. Expected format: '<column-index>,<list-index>[,<customArgument>]'.", ex);
+      }
+
+      BocColumnDefinition[] columns = EnsureColumnsForPreviousLifeCycleGot();
+      if (columnIndex >= columns.Length)
+      {
+        throw new ArgumentOutOfRangeException (
+            "Column index of argument 'eventargument' was out of the range of valid values. Index must be less than the number of displayed columns.'",
+            (Exception) null);
       }
 
       //  Second part: list index
-      int listIndex;
-      eventArgumentParts[1] = eventArgumentParts[1].Trim();
+      BocListRow row;
       try
       {
-        if (eventArgumentParts[1].Length == 0)
-          throw new FormatException();
-        listIndex = int.Parse (eventArgumentParts[1]);
+        row = RowIDProvider.GetRowFromItemRowID (Value, eventArgumentParts[1].Trim());
       }
-      catch (FormatException)
+      catch (FormatException ex)
       {
         throw new ArgumentException (
-            "Second part of argument 'eventArgument' must be an integer. Expected format: <column-index>,<list-index>[,<customArgument>]'.");
+            "Second part of argument 'eventArgument' does not match the expected format. Expected format: <column-index>,<row-ID>[,<customArgument>]'.",
+            ex);
       }
 
       //  Thrid part, optional: customCellArgument
@@ -663,63 +661,19 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         eventArgumentParts[2] = eventArgumentParts[2].Trim();
         customCellArgument = eventArgumentParts[2];
       }
-      BocColumnDefinition[] columns = EnsureColumnsForPreviousLifeCycleGot();
 
-      if (columnIndex >= columns.Length)
-      {
-        throw new ArgumentOutOfRangeException (
-            "Column index of argument 'eventargument' was out of the range of valid values. Index must be less than the number of displayed columns.'",
-            (Exception) null);
-      }
-      
-      if (Value == null)
-      {
-        throw new InvalidOperationException (
-            string.Format (
-                "The BocList '{0}' does not have a Value when attempting to handle the custom cell event.", ID));
-      }
+      if (row == null)
+        return;
 
       BocCustomColumnDefinition column = (BocCustomColumnDefinition) columns[columnIndex];
-      OnCustomCellClick (column, (IBusinessObject) Value[listIndex], customCellArgument);
+      OnCustomCellClick (column, row.BusinessObject, customCellArgument);
     }
 
     /// <summary> Handles post back events raised by an row edit mode event. </summary>
-    /// <param name="eventArgument"> &lt;list-index&gt;,&lt;command&gt; </param>
+    /// <param name="eventArgument"> &lt;row-ID&gt;,&lt;command&gt; </param>
     private void HandleRowEditModeEvent (string eventArgument)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("eventArgument", eventArgument);
-
-      string[] eventArgumentParts = eventArgument.Split (new char[] { ',' }, 2);
-
-      //  First part: list index
-      int listIndex;
-      eventArgumentParts[0] = eventArgumentParts[0].Trim();
-      try
-      {
-        if (eventArgumentParts[0].Length == 0)
-          throw new FormatException();
-        listIndex = int.Parse (eventArgumentParts[0]);
-      }
-      catch (FormatException)
-      {
-        throw new ArgumentException (
-            "First part of argument 'eventArgument' must be an integer. Expected format: '<list-index>,<command>'.");
-      }
-
-      //  Second part: command
-      RowEditModeCommand command;
-      eventArgumentParts[1] = eventArgumentParts[1].Trim();
-      try
-      {
-        if (eventArgumentParts[1].Length == 0)
-          throw new FormatException();
-        command = (RowEditModeCommand) Enum.Parse (typeof (RowEditModeCommand), eventArgumentParts[1]);
-      }
-      catch (FormatException)
-      {
-        throw new ArgumentException (
-            "Second part of argument 'eventArgument' must be an integer. Expected format: <list-index>,<command>'.");
-      }
 
       if (Value == null)
       {
@@ -728,17 +682,42 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
                 "The BocList '{0}' does not have a Value when attempting to handle the list item click event.", ID));
       }
 
+      string[] eventArgumentParts = eventArgument.Split (new char[] { ',' }, 2);
+
+      //  First part: list index
+      BocListRow row;
+      try
+      {
+        row = RowIDProvider.GetRowFromItemRowID (Value, eventArgumentParts[0].Trim());
+      }
+      catch (FormatException ex)
+      {
+        throw new ArgumentException (
+            "First part of argument 'eventArgument' does not match the expected format. Expected format: <row-ID>,<command>'.",
+            ex);
+      }
+
+      //  Second part: command
+      RowEditModeCommand command;
+      eventArgumentParts[1] = eventArgumentParts[1].Trim();
+      try
+      {
+        command = (RowEditModeCommand) Enum.Parse (typeof (RowEditModeCommand), eventArgumentParts[1]);
+      }
+      catch (Exception ex)
+      {
+        throw new ArgumentException (
+            "Second part of argument 'eventArgument' must be an integer. Expected format: <list-index>,<command>'.", ex);
+      }
+
+      if (row == null)
+        return;
+
       switch (command)
       {
         case RowEditModeCommand.Edit:
         {
-          if (listIndex >= Value.Count)
-          {
-            throw new ArgumentOutOfRangeException (
-                "list-index of argument 'eventargument' was out of the range of valid values. Index must be less than the number of business objects in the list.'",
-                (Exception) null);
-          }
-          SwitchRowIntoEditMode (listIndex);
+          SwitchRowIntoEditMode (row.Index);
           break;
         }
         case RowEditModeCommand.Save:
@@ -1355,49 +1334,38 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       OnDataRowRendering (e);
     }
 
-    private string GetListItemCommandArgument (int columnIndex, int originalRowIndex)
+    private string GetListItemCommandArgument (int columnIndex, BocListRow row)
     {
-      return c_eventListItemCommandPrefix + columnIndex + "," + originalRowIndex;
+      return c_eventListItemCommandPrefix + columnIndex + "," + RowIDProvider.GetItemRowID (row);
     }
 
-    string IBocList.GetListItemCommandArgument (int columnIndex, int originalRowIndex)
+    string IBocList.GetListItemCommandArgument (int columnIndex, BocListRow row)
     {
-      return GetListItemCommandArgument (columnIndex, originalRowIndex);
+      ArgumentUtility.CheckNotNull ("row", row);
+      return GetListItemCommandArgument (columnIndex, row);
     }
 
-    /// <summary>
-    ///   Obtains a reference to a client-side script function that causes, when invoked, a server postback to the form.
-    /// </summary>
-    /// <remarks> 
-    ///   <para>
-    ///     If the <see cref="BocList"/> is in row edit mode, <c>return false;</c> will be returned to prevent actions on 
-    ///     this list.
-    ///   </para><para>
-    ///     Insert the return value in the rendered onClick event.
-    ///   </para>
-    /// </remarks>
-    /// <param name="columnIndex"> The index of the column for which the post back function should be created. </param>
-    /// <param name="listIndex"> The index of the business object for which the post back function should be created. </param>
-    /// <param name="customCellArgument"> 
-    ///   The argument to be passed to the <see cref="BocCustomColumnDefinitionCell"/>'s <c>OnClick</c> method.
-    ///   Can be <see langword="null"/>.
-    /// </param>
-    /// <returns></returns>
-    public string GetCustomCellPostBackClientEvent (int columnIndex, int listIndex, string customCellArgument)
+    string IBocList.GetRowEditCommandArgument (BocListRow row, RowEditModeCommand command)
     {
+      return c_eventRowEditModePrefix + RowIDProvider.GetItemRowID (row) + "," + command;
+    }
+
+    string IBocList.GetCustomCellPostBackClientEvent (int columnIndex, BocListRow row, string customCellArgument)
+    {
+      ArgumentUtility.CheckNotNull ("row", row);
+      
       if (_editModeController.IsRowEditModeActive)
         return "return false;";
-      string postBackArgument = FormatCustomCellPostBackArgument (columnIndex, listIndex, customCellArgument);
+      string postBackArgument = FormatCustomCellPostBackArgument (columnIndex, row, customCellArgument);
       return Page.ClientScript.GetPostBackEventReference (this, postBackArgument) + ";";
     }
 
-    /// <summary> Formats the arguments into a post back argument to be used by the client side post back event. </summary>
-    private string FormatCustomCellPostBackArgument (int columnIndex, int listIndex, string customCellArgument)
+    private string FormatCustomCellPostBackArgument (int columnIndex, BocListRow row, string customCellArgument)
     {
       if (customCellArgument == null)
-        return c_customCellEventPrefix + columnIndex + "," + listIndex;
+        return c_customCellEventPrefix + columnIndex + "," + RowIDProvider.GetItemRowID (row);
       else
-        return c_customCellEventPrefix + columnIndex + "," + listIndex + "," + customCellArgument;
+        return c_customCellEventPrefix + columnIndex + "," + RowIDProvider.GetItemRowID (row) + "," + customCellArgument;
     }
 
 
@@ -1665,18 +1633,17 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
            idxAbsoluteRows++, idxRelativeRows++)
       {
         BocListRow row = rows[idxAbsoluteRows];
-        int originalRowIndex = row.Index;
 
         DropDownMenu dropDownMenu = new DropDownMenu (this);
-        dropDownMenu.ID = ID + "_RowMenu_" + originalRowIndex;
+        dropDownMenu.ID = ID + "_RowMenu_" + RowIDProvider.GetControlRowID (row);
         dropDownMenu.EventCommandClick += RowMenu_EventCommandClick;
         dropDownMenu.WxeFunctionCommandClick += RowMenu_WxeFunctionCommandClick;
 
         _rowMenusPlaceHolder.Controls.Add (dropDownMenu);
-        WebMenuItem[] menuItems = InitializeRowMenuItems (row.BusinessObject, originalRowIndex);
+        WebMenuItem[] menuItems = InitializeRowMenuItems (row.BusinessObject, row.Index);
         dropDownMenu.MenuItems.AddRange (menuItems);
 
-        _rowMenus[idxRelativeRows] = new BocListRowMenuTuple (row.BusinessObject, originalRowIndex, dropDownMenu);
+        _rowMenus[idxRelativeRows] = new BocListRowMenuTuple (row.BusinessObject, row.Index, dropDownMenu);
       }
     }
 
@@ -1717,10 +1684,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   The <see cref="IBusinessObject"/> of the row for which the menu items are being generated. 
     /// </param>
     /// <param name="listIndex"> The position of the <paramref name="businessObject"/> in the list of values. </param>
-    protected virtual void PreRenderRowMenuItems (
-        WebMenuItemCollection menuItems,
-        IBusinessObject businessObject,
-        int listIndex)
+    protected virtual void PreRenderRowMenuItems (WebMenuItemCollection menuItems, IBusinessObject businessObject, int listIndex)
     {
     }
 
@@ -1748,10 +1712,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     /// <summary> Handles the click on an Event command of a row menu. </summary>
     /// <include file='..\..\doc\include\UI\Controls\BocList.xml' path='BocList/OnRowMenuItemEventCommandClick/*' />
-    protected virtual void OnRowMenuItemEventCommandClick (
-        WebMenuItem menuItem,
-        IBusinessObject businessObject,
-        int listIndex)
+    protected virtual void OnRowMenuItemEventCommandClick (WebMenuItem menuItem, IBusinessObject businessObject, int listIndex)
     {
       if (menuItem != null && menuItem.Command != null)
       {
@@ -1786,10 +1747,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     /// <summary> Handles the click to a WXE function command or a row menu. </summary>
     /// <include file='..\..\doc\include\UI\Controls\BocList.xml' path='BocList/OnRowMenuItemWxeFunctionCommandClick/*' />
-    protected virtual void OnRowMenuItemWxeFunctionCommandClick (
-        WebMenuItem menuItem,
-        IBusinessObject businessObject,
-        int listIndex)
+    protected virtual void OnRowMenuItemWxeFunctionCommandClick (WebMenuItem menuItem, IBusinessObject businessObject, int listIndex)
     {
       if (menuItem != null && menuItem.Command != null)
       {
@@ -1864,7 +1822,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
           {
             commandColumn.Command.RegisterForSynchronousPostBack (
                 this,
-                GetListItemCommandArgument (idxColumns, row.Index),
+                GetListItemCommandArgument (idxColumns, row),
                 string.Format ("BocList '{0}', Column '{1}'", ID, commandColumn.ItemID));
           }
         }
@@ -3991,7 +3949,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       get { return IsDesignMode; }
     }
 
-    string IBocList.GetSelectorControlClientId (int? rowIndex)
+    string IBocList.GetSelectorControlClientID (int? rowIndex)
     {
       return ClientID + c_dataRowSelectorControlIDSuffix + (rowIndex.HasValue ? rowIndex.Value.ToString() : string.Empty);
     }
@@ -4011,6 +3969,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     protected string GetSelectionCountScript ()
     {
       return "function() { return BocList_GetSelectionCount ('" + ClientID + "'); }";
+    }
+
+    private IRowIDProvider RowIDProvider
+    {
+      get { return new IndexBasedRowIdProvider(); }
     }
   }
 
