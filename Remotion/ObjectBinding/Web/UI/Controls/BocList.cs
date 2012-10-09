@@ -84,7 +84,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private const string c_optionsMenuIDSuffix = "_Boc_OptionsMenu";
     private const string c_listMenuIDSuffix = "_Boc_ListMenu";
 
-    private const int c_titleRowIndex = -1;
+    private const string c_titleRowID = "<TitleRow>";
 
     /// <summary> Prefix applied to the post back argument of the event type column commands. </summary>
     private const string c_eventListItemCommandPrefix = "ListCommand=";
@@ -306,7 +306,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   Contains the checked state for each of the selector controls in the <see cref="BocList"/>.
     ///   Hashtable&lt;int rowIndex, bool isChecked&gt; 
     /// </summary>
-    private IList<int> _selectorControlCheckedState = new List<int>();
+    private List<string> _selectorControlCheckedState = new List<string>();
 
     private RowIndex _index = RowIndex.Undefined;
     private string _indexColumnTitle;
@@ -502,8 +502,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
               && (_selectorControlCheckedState.Count > 1 || isTitleRowSelectorControl))
             continue;
           // The title row can occur multiple times, resulting in the title row value to be concatenated and thus not parsable.
-          int rowIndex = isTitleRowSelectorControl ? c_titleRowIndex : int.Parse (postCollection[i]);
-          _selectorControlCheckedState.Add (rowIndex);
+          string rowID = isTitleRowSelectorControl ? c_titleRowID : postCollection[i];
+          _selectorControlCheckedState.Add (rowID);
         }
       }
 
@@ -1378,7 +1378,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       _availableViewsListSelectedValue = (string) values[2];
       _currentRow = (int) values[3];
       _sortingOrder = (List<BocListSortingOrderEntry>) values[4];
-      _selectorControlCheckedState = (IList<int>) values[5];
+      _selectorControlCheckedState = (List<string>) values[5];
     }
 
     protected override object SaveControlState ()
@@ -2308,10 +2308,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       }
       var allRows = EnsureSortedBocListRowsGot();
 
-      BocListRow[] rowsToDisplay = new BocListRow[displayedRowCount];
-      for (int i = 0; i < displayedRowCount; i++)
-        rowsToDisplay[i] = allRows[firstRow + i];
-        
+      var rowsToDisplay = new BocListRow[displayedRowCount];
+      Array.Copy (allRows, firstRow, rowsToDisplay, 0, rowsToDisplay.Length);
+
       return rowsToDisplay;
     }
 
@@ -2747,36 +2746,27 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <returns> An array of <see cref="IBusinessObject"/> objects. </returns>
     public IBusinessObject[] GetSelectedBusinessObjects ()
     {
-      if (Value == null)
-        return new IBusinessObject[0];
-
-      int[] selectedRows = GetSelectedRows();
-      IBusinessObject[] selectedBusinessObjects = new IBusinessObject[selectedRows.Length];
-
-      for (int i = 0; i < selectedRows.Length; i++)
-      {
-        int rowIndex = selectedRows[i];
-        IBusinessObject businessObject = Value[rowIndex] as IBusinessObject;
-        if (businessObject != null)
-          selectedBusinessObjects[i] = businessObject;
-      }
-      return selectedBusinessObjects;
+      return GetSelectedRowsInternal().Select (r => r.BusinessObject).ToArray();
     }
 
     /// <summary> Gets indices for the rows selected in the <see cref="BocList"/>. </summary>
     /// <returns> An array of <see cref="int"/> values. </returns>
     public int[] GetSelectedRows ()
     {
-      ArrayList selectedRows = new ArrayList();
-      foreach (int entry in _selectorControlCheckedState)
-      {
-        if (entry == c_titleRowIndex)
-          continue;
+      return GetSelectedRowsInternal().Select (r => r.Index).ToArray();
+    }
 
-        selectedRows.Add (entry);
-      }
-      selectedRows.Sort();
-      return (int[]) selectedRows.ToArray (typeof (int));
+    private IEnumerable<BocListRow> GetSelectedRowsInternal ()
+    {
+      if (Value == null)
+        return Enumerable.Empty<BocListRow>();
+
+      var rowIDProvider = GetRowIDProvider();
+
+      return _selectorControlCheckedState
+          .Where (rowID => rowID != c_titleRowID)
+          .Select (rowID => rowIDProvider.GetRowFromItemRowID (Value, rowID))
+          .OrderBy (r => r.Index);
     }
 
     /// <summary> Sets the <see cref="IBusinessObject"/> objects selected in the <see cref="BocList"/>. </summary>
@@ -2793,7 +2783,30 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       if (Value == null)
         throw new InvalidOperationException (string.Format ("The BocList '{0}' does not have a Value.", ID));
 
-      SetSelectedRows (Utilities.ListUtility.IndicesOf (Value, selectedObjects, false));
+      var selectedRows = Utilities.ListUtility.IndicesOf (Value, selectedObjects, true);
+      for (int i = 0; i < selectedRows.Length; i++)
+      {
+        if (selectedRows[i] < 0)
+        {
+          if (selectedObjects[i] is IBusinessObjectWithIdentity)
+          {
+            throw new ArgumentException (
+                string.Format (
+                    "The object '{0}' cannot be selected because it is not part of the Value in BocList '{1}'.",
+                    ((IBusinessObjectWithIdentity) selectedObjects[i]).UniqueIdentifier,
+                    ID),
+                "selectedObjects");
+          }
+          else
+          {
+            throw new ArgumentException (
+                string.Format ("The object at index {0} cannot be selected because it is not part of the Value in BocList '{1}'.", i, ID),
+                "selectedObjects");
+          }
+        }
+      }
+
+      SetSelectedRows (selectedRows);
     }
 
 
@@ -2804,18 +2817,41 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       if ((_selection == RowSelection.Undefined || _selection == RowSelection.Disabled)
           && selectedRows.Length > 0)
-        throw new InvalidOperationException ("Cannot select rows if the BocList is set to RowSelection.Disabled.");
+      {
+        throw new InvalidOperationException (string.Format ("Cannot select rows if the BocList '{0}' is set to RowSelection.Disabled.", ID));
+      }
 
       if ((_selection == RowSelection.SingleCheckBox
            || _selection == RowSelection.SingleRadioButton)
           && selectedRows.Length > 1)
-        throw new InvalidOperationException ("Cannot select more than one row if the BocList is set to RowSelection.Single.");
+      {
+        throw new InvalidOperationException (string.Format ("Cannot select more than one row if the BocList '{0}' is set to RowSelection.Single.", ID));
+      }
+
+      if (Value == null)
+      {
+        throw new InvalidOperationException (string.Format ("The BocList '{0}' does not have a Value.", ID));
+      }
 
       _selectorControlCheckedState.Clear();
-      for (int i = 0; i < selectedRows.Length; i++)
+      var rowIDProvider = GetRowIDProvider();
+      foreach (var rowIndex in selectedRows)
       {
-        int rowIndex = selectedRows[i];
-        _selectorControlCheckedState.Add (rowIndex);
+        if (rowIndex < 0)
+          throw new ArgumentException ("Negative row-indices are not supported for selection.", "selectedRows");
+
+        if (rowIndex >= Value.Count)
+        {
+          throw new InvalidOperationException (
+              string.Format (
+                  "The Value of the BocList '{0}' only contains {1} rows but an attempt was made to select row #{2}.",
+                  ID,
+                  Value.Count,
+                  rowIndex));
+        }
+
+        string rowID = rowIDProvider.GetItemRowID (new BocListRow (rowIndex, (IBusinessObject) Value[rowIndex]));
+        _selectorControlCheckedState.Add (rowID);
       }
     }
 
