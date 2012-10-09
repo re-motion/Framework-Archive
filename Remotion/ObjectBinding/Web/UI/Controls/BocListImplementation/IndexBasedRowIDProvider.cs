@@ -28,14 +28,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
     {
       ArgumentUtility.CheckNotNull ("row", row);
 
-      return "c" +row.Index.ToString (CultureInfo.InvariantCulture);
+      return row.Index.ToString (CultureInfo.InvariantCulture);
     }
 
     public string GetItemRowID (BocListRow row)
     {
       ArgumentUtility.CheckNotNull ("row", row);
 
-      return "x"+ row.Index.ToString (CultureInfo.InvariantCulture);
+      return row.Index.ToString (CultureInfo.InvariantCulture);
     }
 
     public BocListRow GetRowFromItemRowID (IList values, string rowID)
@@ -46,7 +46,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
       int rowIndex;
       try
       {
-        rowIndex = int.Parse (rowID.TrimStart('x'), CultureInfo.InvariantCulture);
+        rowIndex = int.Parse (rowID, CultureInfo.InvariantCulture);
       }
       catch (Exception ex)
       {
