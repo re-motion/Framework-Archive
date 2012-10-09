@@ -22,6 +22,10 @@ using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
 {
+  /// <summary>
+  /// Row-index-based implementation of the <see cref="IRowIDProvider"/> interface. 
+  /// Used when the <see cref="BocList"/> is bound to objects of type <see cref="IBusinessObject"/> (without identity).
+  /// </summary>
   public class IndexBasedRowIDProvider : IRowIDProvider
   {
     public string GetControlRowID (BocListRow row)
