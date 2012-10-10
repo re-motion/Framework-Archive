@@ -26,6 +26,7 @@ using System.Reflection;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.Collections;
+using Remotion.FunctionalProgramming;
 using Remotion.Globalization;
 using Remotion.Logging;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation;
@@ -2909,12 +2910,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       {
         SetValue (newValue);
         IsDirty = true;
+
         var indices = Utilities.ListUtility.IndicesOf (newValue, businessObjects, true);
-        for (int i = 0; i < businessObjects.Length; i++)
-        {
-          if (indices[i] != -1)
-            RowIDProvider.AddRow (new BocListRow (indices[i], businessObjects[i]));
-        }
+        var rows = businessObjects.Zip (indices, (o, i) => new BocListRow (i, o)).OrderBy (r => r.Index);
+        foreach (var row in rows)
+          RowIDProvider.AddRow (row);
       }
     }
 
@@ -2937,13 +2937,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       {
         SetValue (newValue);
         IsDirty = true;
-        for (int i = 0; i < businessObjects.Length; i++)
-        {
-          // ReSharper disable PossibleNullReferenceException
-          if (indices[i] != -1)
-              // ReSharper restore PossibleNullReferenceException
-            RowIDProvider.RemoveRow (new BocListRow (indices[i], businessObjects[i]));
-        }
+
+        var rows = businessObjects.Zip (indices, (o, i) => new BocListRow (i, o)).OrderByDescending (r => r.Index);
+        foreach (var row in rows)
+          RowIDProvider.RemoveRow (row);
       }
     }
 
