@@ -187,6 +187,7 @@
     <Compile Include="UI\Controls\BocEnumValueImplementation\Rendering\IBocEnumValueRenderer.cs" />
     <Compile Include="UI\Controls\BocListImplementation\IndexBasedRowIDProvider.cs" />
     <Compile Include="UI\Controls\BocListImplementation\IRowIDProvider.cs" />
+    <Compile Include="UI\Controls\BocListImplementation\NullValueRowIDProvider.cs" />
     <Compile Include="UI\Controls\BocListImplementation\Rendering\BocColumnRenderer.cs" />
     <Compile Include="UI\Controls\BocListImplementation\Rendering\BocColumnRendererArrayBuilder.cs" />
     <Compile Include="UI\Controls\BocListImplementation\Rendering\BocColumnRenderingContext1.cs" />
@@ -206,6 +207,7 @@
     <Compile Include="UI\Controls\BocListImplementation\Sorting\BocCustomColumnDefinitionCellValueComparer.cs" />
     <Compile Include="UI\Controls\BocListImplementation\Sorting\BocListRowSortExtension.cs" />
     <Compile Include="UI\Controls\BocListImplementation\Sorting\BocSimpleColumnDefinitionCellValueComparer.cs" />
+    <Compile Include="UI\Controls\BocListImplementation\UniqueIdentifierBasedRowIDProvider.cs" />
     <Compile Include="UI\Controls\BocReferenceValueImplementation\BocAutoCompleteReferenceValueInvalidDisplayNameValidator.cs" />
     <Compile Include="UI\Controls\BocReferenceValueImplementation\IBocReferenceValueBase.cs" />
     <Compile Include="UI\Controls\BocReferenceValueImplementation\Rendering\BocAutoCompleteReferenceValueRenderingContext.cs" />

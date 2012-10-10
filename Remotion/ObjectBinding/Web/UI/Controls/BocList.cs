@@ -197,6 +197,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
 
     // member fields
+    
+    private IRowIDProvider _rowIDProvider;
 
     /// <summary> The <see cref="DropDownList"/> used to select the column configuration. </summary>
     private readonly DropDownList _availableViewsList;
@@ -1378,6 +1380,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       _currentRow = (int) values[3];
       _sortingOrder = (List<BocListSortingOrderEntry>) values[4];
       _selectorControlCheckedState = (HashSet<string>) values[5];
+      _rowIDProvider = (IRowIDProvider) values[6];
     }
 
     protected override object SaveControlState ()
@@ -1394,6 +1397,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       values[3] = _currentRow;
       values[4] = _sortingOrder;
       values[5] = _selectorControlCheckedState;
+      values[6] = _rowIDProvider;
 
       return values;
     }
@@ -2521,6 +2525,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     protected void SetValue (IList value)
     {
       _value = value;
+      InitializeRowIDProvider();
       ClearSelectedRows();
       ResetRows();
     }
@@ -4010,7 +4015,32 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     private IRowIDProvider GetRowIDProvider ()
     {
-      return new IndexBasedRowIDProvider();
+      if (_rowIDProvider == null)
+        InitializeRowIDProvider();
+      return _rowIDProvider;
+    }
+
+    private void InitializeRowIDProvider()
+    {
+      if (Value == null)
+      {
+        _rowIDProvider = new NullValueRowIDProvider();
+      }
+      else
+      {
+        //var businessObjectClass = GetBusinessObjectClass();
+        _rowIDProvider = new IndexBasedRowIDProvider (GetValue().Cast<IBusinessObject>());
+      }
+    }
+
+    protected IBusinessObjectClassWithIdentity GetBusinessObjectClass ()
+    {
+      IBusinessObjectClassWithIdentity businessObjectClass = null;
+      if (Property != null)
+        businessObjectClass = (IBusinessObjectClassWithIdentity) Property.ReferenceClass;
+      else if (DataSource != null)
+        businessObjectClass = (IBusinessObjectClassWithIdentity) DataSource.BusinessObjectClass;
+      return businessObjectClass;
     }
   }
 

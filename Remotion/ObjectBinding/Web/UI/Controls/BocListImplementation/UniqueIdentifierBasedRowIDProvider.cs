@@ -1,4 +1,4 @@
-﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
+// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -14,40 +14,32 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Globalization;
 using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
 {
   /// <summary>
-  /// Row-index-based implementation of the <see cref="IRowIDProvider"/> interface. 
-  /// Used when the <see cref="BocList"/> is bound to objects of type <see cref="IBusinessObject"/> (without identity).
+  /// <see cref="IBusinessObjectWithIdentity.UniqueIdentifier"/>-based implementation of the <see cref="IRowIDProvider"/> interface. 
+  /// Used when the <see cref="BocList"/> is bound to objects of type <see cref="IBusinessObjectWithIdentity"/>.
   /// </summary>
-  [Serializable]
-  public class IndexBasedRowIDProvider : IRowIDProvider
+  [Obsolete("", true)]
+  public class UniqueIdentifierBasedRowIDProvider : IRowIDProvider
   {
-    public IndexBasedRowIDProvider (IEnumerable<IBusinessObject> businessObjects)
-    {
-      ArgumentUtility.CheckNotNull ("businessObjects", businessObjects);
-      
-    }
-
     public string GetControlRowID (BocListRow row)
     {
       ArgumentUtility.CheckNotNull ("row", row);
 
-      return row.Index.ToString (CultureInfo.InvariantCulture);
+      return ((IBusinessObjectWithIdentity) row.BusinessObject).UniqueIdentifier;
     }
 
     public string GetItemRowID (BocListRow row)
     {
       ArgumentUtility.CheckNotNull ("row", row);
 
-      return row.Index.ToString (CultureInfo.InvariantCulture);
+      return ((IBusinessObjectWithIdentity) row.BusinessObject).UniqueIdentifier;
     }
 
     public BocListRow GetRowFromItemRowID (IList values, string rowID)
