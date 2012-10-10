@@ -1382,7 +1382,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       foreach (var sortingOrderEntry in _sortingOrder)
         sortingOrderEntry.SetColumnIndex (Array.IndexOf (columns, sortingOrderEntry.Column));
 
-      object[] values = new object[6];
+      object[] values = new object[7];
 
       values[0] = base.SaveControlState();
       values[1] = _selectedViewIndex;
