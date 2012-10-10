@@ -16,7 +16,10 @@
 // 
 using System;
 using System.Collections;
+using System.Collections.ObjectModel;
+using System.Web.UI;
 using System.Web.UI.WebControls;
+using Remotion.Collections;
 using Remotion.Globalization;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableRowSupport;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
@@ -126,12 +129,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
     /// <remarks> The <see cref="MenuBlockOffset"/> is applied as a <c>margin</c> attribute. </remarks>
     Unit MenuBlockItemOffset { get; }
 
-    /// <summary> Gets the <see cref="BocMenuItem"/> objects displayed in the <see cref="BocList"/>'s options menu. </summary>
-    WebMenuItemCollection OptionsMenuItems { get; }
-
-    /// <summary> Gets the <see cref="BocMenuItem"/> objects displayed in the <see cref="BocList"/>'s menu area. </summary>
-    WebMenuItemCollection ListMenuItems { get; }
-
     /// <summary> Gets or sets the width reserved for the menu block. </summary>
     Unit MenuBlockWidth { get; }
 
@@ -159,9 +156,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
     IDropDownMenu OptionsMenu { get; }
 
     IEditModeController EditModeController { get; }
-    ArrayList Validators { get; }
-    BocListRowMenuTuple[] RowMenus { get; }
-    System.Collections.Generic.IDictionary<BocColumnDefinition, BocListCustomColumnTuple[]> CustomColumns { get; }
+    ReadOnlyCollection<IValidator> Validators { get; }
+    ReadOnlyCollection<BocListRowMenuTuple> RowMenus { get; }
+    ReadOnlyDictionary<BocColumnDefinition, BocListCustomColumnTuple[]> CustomColumns { get; }
     bool HasListMenu { get; }
     bool IsClientSideSortingEnabled { get; }
     bool HasOptionsMenu { get; }

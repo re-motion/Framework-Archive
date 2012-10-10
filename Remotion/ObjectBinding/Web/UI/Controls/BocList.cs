@@ -17,6 +17,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Drawing.Design;
@@ -24,6 +25,7 @@ using System.Linq;
 using System.Reflection;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Remotion.Collections;
 using Remotion.Globalization;
 using Remotion.Logging;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation;
@@ -346,7 +348,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private EditableRowControlFactory _editModeControlFactory = EditableRowControlFactory.CreateEditableRowControlFactory();
 
     private string _errorMessage;
-    private readonly ArrayList _validators;
+    private readonly List<IValidator> _validators;
     private bool? _isBrowserCapableOfSCripting;
 
     // construction and disposing
@@ -361,7 +363,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       _customColumnsPlaceHolder = new PlaceHolder();
       _fixedColumns = new BocColumnDefinitionCollection (this);
       _availableViews = new BocListViewCollection (this);
-      _validators = new ArrayList();
+      _validators = new List<IValidator>();
     }
 
     // methods and properties
@@ -3957,19 +3959,19 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       get { return _editModeController; }
     }
 
-    ArrayList IBocList.Validators
+    ReadOnlyCollection<IValidator> IBocList.Validators
     {
-      get { return _validators; }
+      get { return _validators.AsReadOnly(); }
     }
 
-    BocListRowMenuTuple[] IBocList.RowMenus
+    ReadOnlyCollection<BocListRowMenuTuple> IBocList.RowMenus
     {
-      get { return _rowMenus; }
+      get { return new ReadOnlyCollection<BocListRowMenuTuple>(_rowMenus); }
     }
 
-    IDictionary<BocColumnDefinition, BocListCustomColumnTuple[]> IBocList.CustomColumns
+    ReadOnlyDictionary<BocColumnDefinition, BocListCustomColumnTuple[]> IBocList.CustomColumns
     {
-      get { return _customColumns; }
+      get { return new ReadOnlyDictionary<BocColumnDefinition, BocListCustomColumnTuple[]> (_customColumns); }
     }
 
     bool IBocRenderableControl.IsDesignMode
