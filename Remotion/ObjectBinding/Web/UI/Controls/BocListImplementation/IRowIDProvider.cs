@@ -10,5 +10,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
     string GetControlRowID (BocListRow row);
     string GetItemRowID (BocListRow row);
     BocListRow GetRowFromItemRowID (IList rows, string rowID);
+    void AddRow (BocListRow row);
+    void RemoveRow (BocListRow row);
   }
 }

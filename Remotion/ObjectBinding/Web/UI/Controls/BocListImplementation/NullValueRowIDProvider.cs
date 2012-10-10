@@ -40,5 +40,15 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
     {
       throw new NotSupportedException();
     }
+
+    public void AddRow (BocListRow row)
+    {
+      throw new NotSupportedException();
+    }
+
+    public void RemoveRow (BocListRow row)
+    {
+      throw new NotSupportedException();
+    }
   }
 }

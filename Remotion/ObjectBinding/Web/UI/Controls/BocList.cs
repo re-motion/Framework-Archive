@@ -2851,13 +2851,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       _editModeController.AddRows (businessObjects, EnsureColumnsForPreviousLifeCycleGot(), EnsureColumnsGot());
     }
 
-    internal void AddRowsInternal (IBusinessObject[] businessObjects)
-    {
-      ArgumentUtility.CheckNotNull ("businessObjects", businessObjects);
-
-      Value = ListUtility.AddRange (Value, businessObjects, Property, false, true);
-    }
-
     /// <summary> Adds the <paramref name="businessObject"/> to the <see cref="Value"/> collection. </summary>
     /// <remarks> Sets the dirty state. </remarks>
     public int AddRow (IBusinessObject businessObject)
@@ -2865,13 +2858,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       ArgumentUtility.CheckNotNull ("businessObject", businessObject);
 
       return _editModeController.AddRow (businessObject, EnsureColumnsForPreviousLifeCycleGot(), EnsureColumnsGot());
-    }
-
-    internal void RemoveRowsInternal (IBusinessObject[] businessObjects)
-    {
-      ArgumentUtility.CheckNotNull ("businessObjects", businessObjects);
-
-      Value = ListUtility.Remove (Value, businessObjects, Property, false);
     }
 
     /// <summary> Removes the <paramref name="businessObjects"/> from the <see cref="Value"/> collection. </summary>
@@ -2905,6 +2891,60 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         throw new ArgumentOutOfRangeException ("index");
 
       RemoveRow ((IBusinessObject) Value[index]);
+    }
+
+    internal void AddRowsInternal (IBusinessObject[] businessObjects)
+    {
+      ArgumentUtility.CheckNotNull ("businessObjects", businessObjects);
+
+      var oldValue = Value;
+
+      var newValue = ListUtility.AddRange (oldValue, businessObjects, Property, false, true);
+      
+      if (oldValue == null || newValue == null)
+      {
+        Value = newValue;
+      }
+      else
+      {
+        SetValue (newValue);
+        IsDirty = true;
+        var indices = Utilities.ListUtility.IndicesOf (newValue, businessObjects, true);
+        for (int i = 0; i < businessObjects.Length; i++)
+        {
+          if (indices[i] != -1)
+            RowIDProvider.AddRow (new BocListRow (indices[i], businessObjects[i]));
+        }
+      }
+    }
+
+    internal void RemoveRowsInternal (IBusinessObject[] businessObjects)
+    {
+      ArgumentUtility.CheckNotNull ("businessObjects", businessObjects);
+
+      var oldValue = Value;
+      int[] indices = null;
+      if (oldValue != null)
+        indices = Utilities.ListUtility.IndicesOf (oldValue, businessObjects, true);
+
+      var newValue = ListUtility.Remove (Value, businessObjects, Property, false);
+
+      if (oldValue == null || newValue == null)
+      {
+        Value = newValue;
+      }
+      else
+      {
+        SetValue (newValue);
+        IsDirty = true;
+        for (int i = 0; i < businessObjects.Length; i++)
+        {
+          // ReSharper disable PossibleNullReferenceException
+          if (indices[i] != -1)
+              // ReSharper restore PossibleNullReferenceException
+            RowIDProvider.RemoveRow (new BocListRow (indices[i], businessObjects[i]));
+        }
+      }
     }
 
     /// <summary>

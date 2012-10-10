@@ -62,5 +62,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
       else
         return null;
     }
+
+    public void AddRow (BocListRow row)
+    {
+    }
+
+    public void RemoveRow (BocListRow row)
+    {
+    }
   }
 }
