@@ -29,14 +29,14 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocListImplementation
     [Test]
     public void GetControlRowD ()
     {
-      var rowIDProvider = new IndexBasedRowIDProvider();
+      var rowIDProvider = new IndexBasedRowIDProvider (new IBusinessObject[6]);
       Assert.That (rowIDProvider.GetControlRowID (new BocListRow (5, MockRepository.GenerateStub<IBusinessObject>())), Is.EqualTo ("5"));
     }
 
     [Test]
     public void GetItemRowD ()
     {
-      var rowIDProvider = new IndexBasedRowIDProvider();
+      var rowIDProvider = new IndexBasedRowIDProvider (new IBusinessObject[6]);
       Assert.That (rowIDProvider.GetItemRowID (new BocListRow (3, MockRepository.GenerateStub<IBusinessObject>())), Is.EqualTo ("3"));
     }
 
@@ -49,8 +49,8 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocListImplementation
                        MockRepository.GenerateStub<IBusinessObject>(),
                        MockRepository.GenerateStub<IBusinessObject>()
                    };
-      var rowIDProvider = new IndexBasedRowIDProvider();
-      
+      var rowIDProvider = new IndexBasedRowIDProvider (values);
+
       var row = rowIDProvider.GetRowFromItemRowID (values, "1");
 
       Assert.That (row.Index, Is.EqualTo (1));
@@ -64,11 +64,96 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocListImplementation
                    {
                        MockRepository.GenerateStub<IBusinessObject>()
                    };
-      var rowIDProvider = new IndexBasedRowIDProvider();
-      
+      var rowIDProvider = new IndexBasedRowIDProvider (values);
+
       var row = rowIDProvider.GetRowFromItemRowID (values, "1");
 
       Assert.That (row, Is.Null);
+    }
+
+    [Test]
+    public void GetRowFromItemRowID_ValueLengthDiffersFromInitialization ()
+    {
+      var rowIDProvider = new IndexBasedRowIDProvider (new IBusinessObject[2]);
+      var values = new[]
+                   {
+                       MockRepository.GenerateStub<IBusinessObject>(),
+                       MockRepository.GenerateStub<IBusinessObject>(),
+                       MockRepository.GenerateStub<IBusinessObject>()
+                   };
+
+      var row = rowIDProvider.GetRowFromItemRowID (values, "1");
+
+      Assert.That (row, Is.Null);
+    }
+
+    [Test]
+    public void AddRow_AtMiddleOfList ()
+    {
+      var rowIDProvider = new IndexBasedRowIDProvider (new IBusinessObject[6]);
+
+      rowIDProvider.AddRow (new BocListRow (3, MockRepository.GenerateStub<IBusinessObject>()));
+
+      Assert.That (rowIDProvider.GetItemRowID (new BocListRow (2, MockRepository.GenerateStub<IBusinessObject>())), Is.EqualTo ("2"));
+      Assert.That (rowIDProvider.GetItemRowID (new BocListRow (3, MockRepository.GenerateStub<IBusinessObject>())), Is.EqualTo ("6"));
+      Assert.That (rowIDProvider.GetItemRowID (new BocListRow (4, MockRepository.GenerateStub<IBusinessObject>())), Is.EqualTo ("3"));
+      Assert.That (rowIDProvider.GetItemRowID (new BocListRow (5, MockRepository.GenerateStub<IBusinessObject>())), Is.EqualTo ("4"));
+      Assert.That (rowIDProvider.GetItemRowID (new BocListRow (6, MockRepository.GenerateStub<IBusinessObject>())), Is.EqualTo ("5"));
+    }
+
+    [Test]
+    public void AddRow_AtEndOfList ()
+    {
+      var rowIDProvider = new IndexBasedRowIDProvider (new IBusinessObject[6]);
+
+      rowIDProvider.AddRow (new BocListRow (6, MockRepository.GenerateStub<IBusinessObject>()));
+
+      Assert.That (rowIDProvider.GetItemRowID (new BocListRow (6, MockRepository.GenerateStub<IBusinessObject>())), Is.EqualTo ("6"));
+    }
+
+    [Test]
+    public void AddRow_BeyondEndOfList ()
+    {
+      var rowIDProvider = new IndexBasedRowIDProvider (new IBusinessObject[6]);
+
+      Assert.That (
+          () => rowIDProvider.AddRow (new BocListRow (7, MockRepository.GenerateStub<IBusinessObject>())),
+          Throws.InvalidOperationException.With.Message.StartsWith ("Tried to add row at index 7 but the current length of the row collection is 6."));
+    }
+
+    [Test]
+    public void RemoveRow ()
+    {
+      var rowIDProvider = new IndexBasedRowIDProvider (new IBusinessObject[6]);
+
+      rowIDProvider.RemoveRow (new BocListRow (3, MockRepository.GenerateStub<IBusinessObject>()));
+
+      Assert.That (rowIDProvider.GetItemRowID (new BocListRow (2, MockRepository.GenerateStub<IBusinessObject>())), Is.EqualTo ("2"));
+      Assert.That (rowIDProvider.GetItemRowID (new BocListRow (3, MockRepository.GenerateStub<IBusinessObject>())), Is.EqualTo ("4"));
+      Assert.That (rowIDProvider.GetItemRowID (new BocListRow (4, MockRepository.GenerateStub<IBusinessObject>())), Is.EqualTo ("5"));
+    }
+
+    [Test]
+    public void RemoveRow_BeyondEndOfList ()
+    {
+      var rowIDProvider = new IndexBasedRowIDProvider (new IBusinessObject[6]);
+
+      Assert.That (
+          () => rowIDProvider.RemoveRow (new BocListRow (7, MockRepository.GenerateStub<IBusinessObject>())),
+          Throws.InvalidOperationException.With.Message.StartsWith ("Tried to remove row at index 7 but the current length of the row collection is 6."));
+    }
+
+    [Test]
+    public void RemoveRow_AddRow ()
+    {
+      var rowIDProvider = new IndexBasedRowIDProvider (new IBusinessObject[6]);
+
+      rowIDProvider.RemoveRow (new BocListRow (3, MockRepository.GenerateStub<IBusinessObject>()));
+      rowIDProvider.AddRow (new BocListRow (3, MockRepository.GenerateStub<IBusinessObject>()));
+
+      Assert.That (rowIDProvider.GetItemRowID (new BocListRow (2, MockRepository.GenerateStub<IBusinessObject>())), Is.EqualTo ("2"));
+      Assert.That (rowIDProvider.GetItemRowID (new BocListRow (3, MockRepository.GenerateStub<IBusinessObject>())), Is.EqualTo ("6"));
+      Assert.That (rowIDProvider.GetItemRowID (new BocListRow (4, MockRepository.GenerateStub<IBusinessObject>())), Is.EqualTo ("4"));
     }
   }
 }

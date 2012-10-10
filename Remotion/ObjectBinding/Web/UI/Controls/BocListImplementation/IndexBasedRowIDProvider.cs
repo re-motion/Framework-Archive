@@ -19,6 +19,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
@@ -30,24 +31,28 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
   [Serializable]
   public class IndexBasedRowIDProvider : IRowIDProvider
   {
+    private readonly List<string> _rowIDs;
+    private int _nextID;
+
     public IndexBasedRowIDProvider (IEnumerable<IBusinessObject> businessObjects)
     {
       ArgumentUtility.CheckNotNull ("businessObjects", businessObjects);
-      
+
+      _rowIDs = businessObjects.Select (obj => GetNextID()).ToList();
     }
 
     public string GetControlRowID (BocListRow row)
     {
       ArgumentUtility.CheckNotNull ("row", row);
 
-      return row.Index.ToString (CultureInfo.InvariantCulture);
+      return _rowIDs[row.Index];
     }
 
     public string GetItemRowID (BocListRow row)
     {
       ArgumentUtility.CheckNotNull ("row", row);
 
-      return row.Index.ToString (CultureInfo.InvariantCulture);
+      return _rowIDs[row.Index];
     }
 
     public BocListRow GetRowFromItemRowID (IList values, string rowID)
@@ -65,10 +70,47 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
         throw new FormatException (string.Format ("RowID '{0}' could not be parsed as an integer number.", rowID), ex);
       }
 
-      if (rowIndex < values.Count)
+      if (values.Count == _rowIDs.Count && rowIndex < _rowIDs.Count)
         return new BocListRow (rowIndex, (IBusinessObject) values[rowIndex]);
       else
         return null;
+    }
+
+    public void AddRow (BocListRow row)
+    {
+      ArgumentUtility.CheckNotNull ("row", row);
+      if (row.Index > _rowIDs.Count)
+      {
+        throw new InvalidOperationException (
+            string.Format (
+                "Tried to add row at index {0} but the current length of the row collection is {1}. The index must not exceed the length of the row collection.",
+                row.Index,
+                _rowIDs.Count));
+      }
+
+      _rowIDs.Insert (row.Index, GetNextID());
+    }
+
+    public void RemoveRow (BocListRow row)
+    {
+      ArgumentUtility.CheckNotNull ("row", row);
+      if (row.Index > _rowIDs.Count)
+      {
+        throw new InvalidOperationException (
+            string.Format (
+                "Tried to remove row at index {0} but the current length of the row collection is {1}. The index must not exceed the length of the row collection.",
+                row.Index,
+                _rowIDs.Count));
+      }
+      
+      _rowIDs.RemoveAt (row.Index);
+    }
+
+    private string GetNextID ()
+    {
+      var id = _nextID.ToString (CultureInfo.InvariantCulture);
+      _nextID++;
+      return id;
     }
   }
 }
