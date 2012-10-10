@@ -198,7 +198,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     // member fields
     
-    private IRowIDProvider _rowIDProvider;
+    private IRowIDProvider _rowIDProvider = new NullValueRowIDProvider();
 
     /// <summary> The <see cref="DropDownList"/> used to select the column configuration. </summary>
     private readonly DropDownList _availableViewsList;
@@ -574,7 +574,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       BocListRow row;
       try
       {
-        row = GetRowIDProvider().GetRowFromItemRowID (Value, eventArgumentParts[1].Trim());
+        row = RowIDProvider.GetRowFromItemRowID (Value, eventArgumentParts[1].Trim());
       }
       catch (FormatException ex)
       {
@@ -646,7 +646,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       BocListRow row;
       try
       {
-        row = GetRowIDProvider().GetRowFromItemRowID (Value, eventArgumentParts[1].Trim());
+        row = RowIDProvider.GetRowFromItemRowID (Value, eventArgumentParts[1].Trim());
       }
       catch (FormatException ex)
       {
@@ -689,7 +689,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       BocListRow row;
       try
       {
-        row = GetRowIDProvider().GetRowFromItemRowID (Value, eventArgumentParts[0].Trim());
+        row = RowIDProvider.GetRowFromItemRowID (Value, eventArgumentParts[0].Trim());
       }
       catch (FormatException ex)
       {
@@ -1121,7 +1121,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
         if (_goTo != GoToOption.Undefined && evaluateGoTo)
         {
-          _selectorControlCheckedState.Clear();
+          ClearSelectedRows();
           ResetRowMenus();
         }
       }
@@ -1337,7 +1337,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     private string GetListItemCommandArgument (int columnIndex, BocListRow row)
     {
-      return c_eventListItemCommandPrefix + columnIndex + "," + GetRowIDProvider().GetItemRowID (row);
+      return c_eventListItemCommandPrefix + columnIndex + "," + RowIDProvider.GetItemRowID (row);
     }
 
     string IBocList.GetListItemCommandArgument (int columnIndex, BocListRow row)
@@ -1348,7 +1348,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     string IBocList.GetRowEditCommandArgument (BocListRow row, RowEditModeCommand command)
     {
-      return c_eventRowEditModePrefix + GetRowIDProvider().GetItemRowID (row) + "," + command;
+      return c_eventRowEditModePrefix + RowIDProvider.GetItemRowID (row) + "," + command;
     }
 
     string IBocList.GetCustomCellPostBackClientEvent (int columnIndex, BocListRow row, string customCellArgument)
@@ -1364,9 +1364,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private string FormatCustomCellPostBackArgument (int columnIndex, BocListRow row, string customCellArgument)
     {
       if (customCellArgument == null)
-        return c_customCellEventPrefix + columnIndex + "," + GetRowIDProvider().GetItemRowID (row);
+        return c_customCellEventPrefix + columnIndex + "," + RowIDProvider.GetItemRowID (row);
       else
-        return c_customCellEventPrefix + columnIndex + "," + GetRowIDProvider().GetItemRowID (row) + "," + customCellArgument;
+        return c_customCellEventPrefix + columnIndex + "," + RowIDProvider.GetItemRowID (row) + "," + customCellArgument;
     }
 
 
@@ -1638,7 +1638,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         BocListRow row = rows[idxAbsoluteRows];
 
         DropDownMenu dropDownMenu = new DropDownMenu (this);
-        dropDownMenu.ID = ID + "_RowMenu_" + GetRowIDProvider().GetControlRowID (row);
+        dropDownMenu.ID = ID + "_RowMenu_" + RowIDProvider.GetControlRowID (row);
         dropDownMenu.EventCommandClick += RowMenu_EventCommandClick;
         dropDownMenu.WxeFunctionCommandClick += RowMenu_WxeFunctionCommandClick;
 
@@ -2295,13 +2295,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     BocListRowRenderingContext[] IBocList.GetRowsToDisplay ()
     {
-      var rowIDProvider = GetRowIDProvider();
       var result = EnsureSortedBocListRowsGot().Select (
           (row, index) => new
                           {
                               Row = row,
                               SortedIndex = index,
-                              ItemRowID = rowIDProvider.GetItemRowID (row)
+                              ItemRowID = RowIDProvider.GetItemRowID (row)
                           });
 
       if (IsPagingEnabled)
@@ -2765,11 +2764,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       if (Value == null)
         return Enumerable.Empty<BocListRow>();
 
-      var rowIDProvider = GetRowIDProvider();
-
       return _selectorControlCheckedState
           .Where (rowID => rowID != c_titleRowID)
-          .Select (rowID => rowIDProvider.GetRowFromItemRowID (Value, rowID))
+          .Select (rowID => RowIDProvider.GetRowFromItemRowID (Value, rowID))
           .OrderBy (r => r.Index);
     }
 
@@ -2838,7 +2835,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       }
 
       _selectorControlCheckedState.Clear();
-      var rowIDProvider = GetRowIDProvider();
       foreach (var rowIndex in selectedRows)
       {
         if (rowIndex < 0)
@@ -2854,7 +2850,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
                   rowIndex));
         }
 
-        string rowID = rowIDProvider.GetItemRowID (new BocListRow (rowIndex, (IBusinessObject) Value[rowIndex]));
+        string rowID = RowIDProvider.GetItemRowID (new BocListRow (rowIndex, (IBusinessObject) Value[rowIndex]));
         _selectorControlCheckedState.Add (rowID);
       }
     }
@@ -3971,12 +3967,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     ReadOnlyCollection<BocListRowMenuTuple> IBocList.RowMenus
     {
-      get { return new ReadOnlyCollection<BocListRowMenuTuple>(_rowMenus); }
+      get { return _rowMenus == null ? null : new ReadOnlyCollection<BocListRowMenuTuple> (_rowMenus); }
     }
 
     ReadOnlyDictionary<BocColumnDefinition, BocListCustomColumnTuple[]> IBocList.CustomColumns
     {
-      get { return new ReadOnlyDictionary<BocColumnDefinition, BocListCustomColumnTuple[]> (_customColumns); }
+      get { return _customColumns == null ? null : new ReadOnlyDictionary<BocColumnDefinition, BocListCustomColumnTuple[]> (_customColumns); }
     }
 
     bool IBocRenderableControl.IsDesignMode
@@ -3988,7 +3984,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       ArgumentUtility.CheckNotNull ("row", row);
 
-      return GetRowIDProvider().GetItemRowID (row);
+      return RowIDProvider.GetItemRowID (row);
     }
 
     string IBocList.GetSelectorControlClientID (int? rowIndex)
@@ -4013,24 +4009,15 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       return "function() { return BocList_GetSelectionCount ('" + ClientID + "'); }";
     }
 
-    private IRowIDProvider GetRowIDProvider ()
+    private IRowIDProvider RowIDProvider
     {
-      if (_rowIDProvider == null)
-        InitializeRowIDProvider();
-      return _rowIDProvider;
+      get { return _rowIDProvider; }
     }
 
     private void InitializeRowIDProvider()
     {
-      if (Value == null)
-      {
-        _rowIDProvider = new NullValueRowIDProvider();
-      }
-      else
-      {
-        //var businessObjectClass = GetBusinessObjectClass();
-        _rowIDProvider = new IndexBasedRowIDProvider (GetValue().Cast<IBusinessObject>());
-      }
+      //var businessObjectClass = GetBusinessObjectClass();
+      _rowIDProvider = new IndexBasedRowIDProvider (GetValue().Cast<IBusinessObject>());
     }
 
     protected IBusinessObjectClassWithIdentity GetBusinessObjectClass ()
