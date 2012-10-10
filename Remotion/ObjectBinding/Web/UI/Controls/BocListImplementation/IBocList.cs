@@ -19,6 +19,7 @@ using System.Collections;
 using System.Web.UI.WebControls;
 using Remotion.Globalization;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableRowSupport;
+using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.DropDownMenuImplementation;
 using Remotion.Web.UI.Controls.ListMenuImplementation;
@@ -157,7 +158,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
     DropDownList AvailableViewsList { get; }
     IDropDownMenu OptionsMenu { get; }
 
-    System.Collections.Generic.IList<int> SelectorControlCheckedState { get; }
     IEditModeController EditModeController { get; }
     ArrayList Validators { get; }
     BocListRowMenuTuple[] RowMenus { get; }
@@ -196,10 +196,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
     string GetListItemCommandArgument (int columnIndex, BocListRow row);
     string GetRowEditCommandArgument (BocListRow row, BocList.RowEditModeCommand command);
     IResourceManager GetResourceManager ();
-    BocListRow[] GetRowsToDisplay (out int startAbsoluteIndex);
+    BocListRowRenderingContext[] GetRowsToDisplay ();
     void OnDataRowRendering (BocListDataRowRenderEventArgs args);
     bool AreDataRowsClickSensitive ();
     string GetSelectorControlClientID (int? absoluteRowIndex);
+    string GetSelectorControlValue (BocListRow row);
     string GetSelectAllControlClientID ();
     string GetSelectionChangedHandlerScript ();
   }

@@ -179,7 +179,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     private static readonly ILog s_log = LogManager.GetLogger (MethodBase.GetCurrentMethod().DeclaringType);
 
-    private object s_menuItemClickEvent = new object();
+    private static readonly object s_menuItemClickEvent = new object();
     private static readonly object s_listItemCommandClickEvent = new object();
     private static readonly object s_customCellClickEvent = new object();
 
@@ -302,11 +302,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <summary> Determines whether to enable the selecting of the data rows. </summary>
     private RowSelection _selection = RowSelection.Undefined;
 
-    /// <summary> 
-    ///   Contains the checked state for each of the selector controls in the <see cref="BocList"/>.
-    ///   Hashtable&lt;int rowIndex, bool isChecked&gt; 
-    /// </summary>
-    private List<string> _selectorControlCheckedState = new List<string>();
+    /// <summary> Contains the checked state for each of the selector controls in the <see cref="BocList"/>. </summary>
+    private HashSet<string> _selectorControlCheckedState = new HashSet<string>();
 
     private RowIndex _index = RowIndex.Undefined;
     private string _indexColumnTitle;
@@ -1378,7 +1375,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       _availableViewsListSelectedValue = (string) values[2];
       _currentRow = (int) values[3];
       _sortingOrder = (List<BocListSortingOrderEntry>) values[4];
-      _selectorControlCheckedState = (List<string>) values[5];
+      _selectorControlCheckedState = (HashSet<string>) values[5];
     }
 
     protected override object SaveControlState ()
@@ -2290,28 +2287,28 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       return rows.OrderBy (sortingOrder);
     }
 
-    BocListRow[] IBocList.GetRowsToDisplay (out int firstRow)
+    BocListRowRenderingContext[] IBocList.GetRowsToDisplay ()
     {
-      firstRow = 0;
-      int totalRowCount = HasValue ? Value.Count : 0;
-      int displayedRowCount = totalRowCount;
+      var rowIDProvider = GetRowIDProvider();
+      var result = EnsureSortedBocListRowsGot().Select (
+          (row, index) => new
+                          {
+                              Row = row,
+                              SortedIndex = index,
+                              ItemRowID = rowIDProvider.GetItemRowID (row)
+                          });
 
-      if (IsPagingEnabled && HasValue)
+      if (IsPagingEnabled)
       {
-        firstRow = CurrentPage * PageSize.Value;
-        displayedRowCount = PageSize.Value;
-     
-
-        //  Check row count on last page
-        if (Value.Count < (firstRow + displayedRowCount))
-          displayedRowCount = Value.Count - firstRow;
+        // ReSharper disable PossibleInvalidOperationException
+        int pageSize = PageSize.Value;
+        // ReSharper restore PossibleInvalidOperationException
+        result = result.Skip (CurrentPage * pageSize).Take (pageSize);
       }
-      var allRows = EnsureSortedBocListRowsGot();
 
-      var rowsToDisplay = new BocListRow[displayedRowCount];
-      Array.Copy (allRows, firstRow, rowsToDisplay, 0, rowsToDisplay.Length);
-
-      return rowsToDisplay;
+      return result
+          .Select (data => new BocListRowRenderingContext (data.Row, data.SortedIndex, _selectorControlCheckedState.Contains (data.ItemRowID)))
+          .ToArray();
     }
 
     /// <summary>
@@ -3955,11 +3952,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       get { return _listMenu; }
     }
 
-    IList<int> IBocList.SelectorControlCheckedState
-    {
-      get { return _selectorControlCheckedState; }
-    }
-
     IEditModeController IBocList.EditModeController
     {
       get { return _editModeController; }
@@ -3983,6 +3975,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     bool IBocRenderableControl.IsDesignMode
     {
       get { return IsDesignMode; }
+    }
+
+    public string GetSelectorControlValue (BocListRow row)
+    {
+      ArgumentUtility.CheckNotNull ("row", row);
+
+      return GetRowIDProvider().GetItemRowID (row);
     }
 
     string IBocList.GetSelectorControlClientID (int? rowIndex)
