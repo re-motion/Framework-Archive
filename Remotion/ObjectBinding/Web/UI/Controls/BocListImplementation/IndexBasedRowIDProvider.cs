@@ -60,15 +60,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
       ArgumentUtility.CheckNotNull ("values", values);
       ArgumentUtility.CheckNotNull ("rowID", rowID);
 
-      int rowIndex;
-      try
-      {
-        rowIndex = int.Parse (rowID, CultureInfo.InvariantCulture);
-      }
-      catch (Exception ex)
-      {
-        throw new FormatException (string.Format ("RowID '{0}' could not be parsed as an integer number.", rowID), ex);
-      }
+      var rowIndex = ParseRowID(rowID);
 
       if (values.Count == _rowIDs.Count && rowIndex < _rowIDs.Count)
         return new BocListRow (rowIndex, (IBusinessObject) values[rowIndex]);
@@ -108,9 +100,26 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
 
     private string GetNextID ()
     {
-      var id = _nextID.ToString (CultureInfo.InvariantCulture);
+      var id = FormatRowID (_nextID);
       _nextID++;
       return id;
+    }
+
+    private static string FormatRowID (int rowIndex)
+    {
+      return rowIndex.ToString (CultureInfo.InvariantCulture);
+    }
+
+    private int ParseRowID (string rowID)
+    {
+      try
+      {
+        return int.Parse (rowID, CultureInfo.InvariantCulture);
+      }
+      catch (Exception ex)
+      {
+        throw new FormatException (string.Format ("RowID '{0}' could not be parsed as an integer.", rowID), ex);
+      }
     }
   }
 }

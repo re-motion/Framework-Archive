@@ -27,17 +27,17 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocListImplementation
   public class IndexBasedRowIDProviderTest
   {
     [Test]
-    public void GetControlRowD ()
+    public void GetControlRowID ()
     {
       var rowIDProvider = new IndexBasedRowIDProvider (new IBusinessObject[6]);
-      Assert.That (rowIDProvider.GetControlRowID (new BocListRow (5, MockRepository.GenerateStub<IBusinessObject>())), Is.EqualTo ("5"));
+      Assert.That (rowIDProvider.GetControlRowID (new BocListRow (5, CreateObject())), Is.EqualTo ("5"));
     }
 
     [Test]
-    public void GetItemRowD ()
+    public void GetItemRowID ()
     {
       var rowIDProvider = new IndexBasedRowIDProvider (new IBusinessObject[6]);
-      Assert.That (rowIDProvider.GetItemRowID (new BocListRow (3, MockRepository.GenerateStub<IBusinessObject>())), Is.EqualTo ("3"));
+      Assert.That (rowIDProvider.GetItemRowID (new BocListRow (3, CreateObject())), Is.EqualTo ("3"));
     }
 
     [Test]
@@ -45,16 +45,16 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocListImplementation
     {
       var values = new[]
                    {
-                       MockRepository.GenerateStub<IBusinessObject>(),
-                       MockRepository.GenerateStub<IBusinessObject>(),
-                       MockRepository.GenerateStub<IBusinessObject>()
+                       CreateObject(),
+                       CreateObject(),
+                       CreateObject()
                    };
       var rowIDProvider = new IndexBasedRowIDProvider (values);
 
       var row = rowIDProvider.GetRowFromItemRowID (values, "1");
 
       Assert.That (row.Index, Is.EqualTo (1));
-      Assert.That (row.BusinessObject, Is.EqualTo (values[1]));
+      Assert.That (row.BusinessObject, Is.SameAs (values[1]));
     }
 
     [Test]
@@ -62,7 +62,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocListImplementation
     {
       var values = new[]
                    {
-                       MockRepository.GenerateStub<IBusinessObject>()
+                       CreateObject()
                    };
       var rowIDProvider = new IndexBasedRowIDProvider (values);
 
@@ -77,9 +77,9 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocListImplementation
       var rowIDProvider = new IndexBasedRowIDProvider (new IBusinessObject[2]);
       var values = new[]
                    {
-                       MockRepository.GenerateStub<IBusinessObject>(),
-                       MockRepository.GenerateStub<IBusinessObject>(),
-                       MockRepository.GenerateStub<IBusinessObject>()
+                       CreateObject(),
+                       CreateObject(),
+                       CreateObject()
                    };
 
       var row = rowIDProvider.GetRowFromItemRowID (values, "1");
@@ -88,17 +88,27 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocListImplementation
     }
 
     [Test]
+    public void GetRowFromItemRowID_InvalidRowIDFormat_ThrowsFormatException ()
+    {
+      var rowIDProvider = new IndexBasedRowIDProvider (new IBusinessObject[0]);
+
+      Assert.That (
+          () => rowIDProvider.GetRowFromItemRowID (new IBusinessObject[0], "x"),
+          Throws.TypeOf<FormatException>().With.Message.EqualTo ("RowID 'x' could not be parsed as an integer."));
+    }
+
+    [Test]
     public void AddRow_AtMiddleOfList ()
     {
       var rowIDProvider = new IndexBasedRowIDProvider (new IBusinessObject[6]);
 
-      rowIDProvider.AddRow (new BocListRow (3, MockRepository.GenerateStub<IBusinessObject>()));
+      rowIDProvider.AddRow (new BocListRow (3, CreateObject()));
 
-      Assert.That (rowIDProvider.GetItemRowID (new BocListRow (2, MockRepository.GenerateStub<IBusinessObject>())), Is.EqualTo ("2"));
-      Assert.That (rowIDProvider.GetItemRowID (new BocListRow (3, MockRepository.GenerateStub<IBusinessObject>())), Is.EqualTo ("6"));
-      Assert.That (rowIDProvider.GetItemRowID (new BocListRow (4, MockRepository.GenerateStub<IBusinessObject>())), Is.EqualTo ("3"));
-      Assert.That (rowIDProvider.GetItemRowID (new BocListRow (5, MockRepository.GenerateStub<IBusinessObject>())), Is.EqualTo ("4"));
-      Assert.That (rowIDProvider.GetItemRowID (new BocListRow (6, MockRepository.GenerateStub<IBusinessObject>())), Is.EqualTo ("5"));
+      Assert.That (rowIDProvider.GetItemRowID (new BocListRow (2, CreateObject())), Is.EqualTo ("2"));
+      Assert.That (rowIDProvider.GetItemRowID (new BocListRow (3, CreateObject())), Is.EqualTo ("6"));
+      Assert.That (rowIDProvider.GetItemRowID (new BocListRow (4, CreateObject())), Is.EqualTo ("3"));
+      Assert.That (rowIDProvider.GetItemRowID (new BocListRow (5, CreateObject())), Is.EqualTo ("4"));
+      Assert.That (rowIDProvider.GetItemRowID (new BocListRow (6, CreateObject())), Is.EqualTo ("5"));
     }
 
     [Test]
@@ -106,9 +116,9 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocListImplementation
     {
       var rowIDProvider = new IndexBasedRowIDProvider (new IBusinessObject[6]);
 
-      rowIDProvider.AddRow (new BocListRow (6, MockRepository.GenerateStub<IBusinessObject>()));
+      rowIDProvider.AddRow (new BocListRow (6, CreateObject()));
 
-      Assert.That (rowIDProvider.GetItemRowID (new BocListRow (6, MockRepository.GenerateStub<IBusinessObject>())), Is.EqualTo ("6"));
+      Assert.That (rowIDProvider.GetItemRowID (new BocListRow (6, CreateObject())), Is.EqualTo ("6"));
     }
 
     [Test]
@@ -117,7 +127,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocListImplementation
       var rowIDProvider = new IndexBasedRowIDProvider (new IBusinessObject[6]);
 
       Assert.That (
-          () => rowIDProvider.AddRow (new BocListRow (7, MockRepository.GenerateStub<IBusinessObject>())),
+          () => rowIDProvider.AddRow (new BocListRow (7, CreateObject())),
           Throws.InvalidOperationException.With.Message.StartsWith ("Tried to add row at index 7 but the current length of the row collection is 6."));
     }
 
@@ -126,11 +136,11 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocListImplementation
     {
       var rowIDProvider = new IndexBasedRowIDProvider (new IBusinessObject[6]);
 
-      rowIDProvider.RemoveRow (new BocListRow (3, MockRepository.GenerateStub<IBusinessObject>()));
+      rowIDProvider.RemoveRow (new BocListRow (3, CreateObject()));
 
-      Assert.That (rowIDProvider.GetItemRowID (new BocListRow (2, MockRepository.GenerateStub<IBusinessObject>())), Is.EqualTo ("2"));
-      Assert.That (rowIDProvider.GetItemRowID (new BocListRow (3, MockRepository.GenerateStub<IBusinessObject>())), Is.EqualTo ("4"));
-      Assert.That (rowIDProvider.GetItemRowID (new BocListRow (4, MockRepository.GenerateStub<IBusinessObject>())), Is.EqualTo ("5"));
+      Assert.That (rowIDProvider.GetItemRowID (new BocListRow (2, CreateObject())), Is.EqualTo ("2"));
+      Assert.That (rowIDProvider.GetItemRowID (new BocListRow (3, CreateObject())), Is.EqualTo ("4"));
+      Assert.That (rowIDProvider.GetItemRowID (new BocListRow (4, CreateObject())), Is.EqualTo ("5"));
     }
 
     [Test]
@@ -139,7 +149,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocListImplementation
       var rowIDProvider = new IndexBasedRowIDProvider (new IBusinessObject[6]);
 
       Assert.That (
-          () => rowIDProvider.RemoveRow (new BocListRow (7, MockRepository.GenerateStub<IBusinessObject>())),
+          () => rowIDProvider.RemoveRow (new BocListRow (7, CreateObject())),
           Throws.InvalidOperationException.With.Message.StartsWith ("Tried to remove row at index 7 but the current length of the row collection is 6."));
     }
 
@@ -148,12 +158,35 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocListImplementation
     {
       var rowIDProvider = new IndexBasedRowIDProvider (new IBusinessObject[6]);
 
-      rowIDProvider.RemoveRow (new BocListRow (3, MockRepository.GenerateStub<IBusinessObject>()));
-      rowIDProvider.AddRow (new BocListRow (3, MockRepository.GenerateStub<IBusinessObject>()));
+      rowIDProvider.RemoveRow (new BocListRow (3, CreateObject()));
+      rowIDProvider.AddRow (new BocListRow (3, CreateObject()));
 
-      Assert.That (rowIDProvider.GetItemRowID (new BocListRow (2, MockRepository.GenerateStub<IBusinessObject>())), Is.EqualTo ("2"));
-      Assert.That (rowIDProvider.GetItemRowID (new BocListRow (3, MockRepository.GenerateStub<IBusinessObject>())), Is.EqualTo ("6"));
-      Assert.That (rowIDProvider.GetItemRowID (new BocListRow (4, MockRepository.GenerateStub<IBusinessObject>())), Is.EqualTo ("4"));
+      Assert.That (rowIDProvider.GetItemRowID (new BocListRow (2, CreateObject())), Is.EqualTo ("2"));
+      Assert.That (rowIDProvider.GetItemRowID (new BocListRow (3, CreateObject())), Is.EqualTo ("6"));
+      Assert.That (rowIDProvider.GetItemRowID (new BocListRow (4, CreateObject())), Is.EqualTo ("4"));
+    }
+    
+    [Test]
+    public void GetItemRowID_GetRowFromItemRowID ()
+    {
+      var rowIDProvider = new IndexBasedRowIDProvider (new IBusinessObject[3]);
+      var rowID = rowIDProvider.GetItemRowID (new BocListRow (1, CreateObject()));
+
+      var values = new[]
+                   {
+                       CreateObject(),
+                       CreateObject(),
+                       CreateObject()
+                   };
+
+      var row = rowIDProvider.GetRowFromItemRowID (values, rowID);
+      Assert.That (row.Index, Is.EqualTo (1));
+      Assert.That (row.BusinessObject, Is.SameAs (values[1]));
+    }
+
+    private IBusinessObject CreateObject ()
+    {
+      return MockRepository.GenerateStub<IBusinessObject>();
     }
   }
 }
