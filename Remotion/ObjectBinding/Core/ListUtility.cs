@@ -36,50 +36,6 @@ namespace Remotion.ObjectBinding
     }
 
     /// <summary>
-    ///   Adds an objectto a list. The original list may be modified.
-    /// </summary>
-    public static IList AddRange (
-        IList list, object obj, IBusinessObjectReferenceProperty property, bool mustCreateCopy, bool createIfNull)
-    {
-      return AddRange (list, obj, GetCreateListMethod (property), mustCreateCopy, createIfNull);
-    }
-
-    /// <summary>
-    ///   Adds an objectto a list. The original list may be modified.
-    /// </summary>
-    public static IList AddRange (
-        IList list, object obj, CreateListMethod createListMethod, bool mustCreateCopy, bool createIfNull)
-    {
-      if (list == null)
-      {
-        if (! createIfNull)
-          throw new ArgumentNullException ("list");
-        
-        list = CreateList (createListMethod, list, 1);
-        list[0] = obj;
-        return list;
-      }
-
-      if (   list.IsFixedSize
-          || (mustCreateCopy && ! (list is ICloneable)))
-      {
-        ArrayList arrayList = new ArrayList (list);
-        arrayList.Add (obj);
-        IList newList = CreateList (createListMethod, list, arrayList.Count);
-        Utilities.ListUtility.CopyTo (arrayList, newList);
-        return newList;
-      }
-      else
-      {
-        if (mustCreateCopy)
-          list = (IList) ((ICloneable)list).Clone();
-
-        list.Add (obj);
-        return list;
-      }
-    }
-
-    /// <summary>
     ///   Adds a range of objects to a list. The original list may be modified.
     /// </summary>
     public static IList AddRange (
@@ -170,47 +126,6 @@ namespace Remotion.ObjectBinding
 
         foreach (object obj in objects)
           list.Remove (obj);
-        return list;
-      }
-    }
-
-    /// <summary>
-    ///    Removes a range of values from a list and returns the resulting list. The original list may be modified.
-    /// </summary>
-    public static IList Remove (IList list, object obj, IBusinessObjectReferenceProperty property, bool mustCreateCopy)
-    {
-      return Remove (list, obj, GetCreateListMethod (property), mustCreateCopy);
-    }
-
-    /// <summary>
-    ///    Removes a range of values from a list and returns the resulting list. The original list may be modified.
-    /// </summary>
-    public static IList Remove (IList list, object obj, CreateListMethod createListMethod, bool mustCreateCopy)
-    {
-      if (list == null)
-        return null;
-
-      if (   list.IsFixedSize 
-          || (mustCreateCopy && ! (list is ICloneable)))
-      {  
-        int idx = list.IndexOf (obj);
-        if (idx < 0)
-          return list;
-        
-        IList newList = CreateList (createListMethod, list, list.Count - 1);
-
-        for (int i = 0; i < idx; ++i)
-          newList[i] = list[i];
-        for (int i = idx; i < list.Count - 1; ++i)
-          newList[i] = list[i + 1];
-        return newList;
-      }
-      else
-      {
-        if (mustCreateCopy)
-          list = (IList) ((ICloneable)list).Clone();
-
-        list.Remove (obj);
         return list;
       }
     }

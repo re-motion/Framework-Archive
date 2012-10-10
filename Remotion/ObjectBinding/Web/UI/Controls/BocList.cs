@@ -2846,12 +2846,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <remarks> Sets the dirty state. </remarks>
     public void AddRows (IBusinessObject[] businessObjects)
     {
+      ArgumentUtility.CheckNotNull ("businessObjects", businessObjects);
+
       _editModeController.AddRows (businessObjects, EnsureColumnsForPreviousLifeCycleGot(), EnsureColumnsGot());
     }
 
     internal void AddRowsInternal (IBusinessObject[] businessObjects)
     {
-      ArgumentUtility.CheckNotNullOrItemsNull ("businessObjects", businessObjects);
+      ArgumentUtility.CheckNotNull ("businessObjects", businessObjects);
 
       Value = ListUtility.AddRange (Value, businessObjects, Property, false, true);
     }
@@ -2860,40 +2862,33 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <remarks> Sets the dirty state. </remarks>
     public int AddRow (IBusinessObject businessObject)
     {
+      ArgumentUtility.CheckNotNull ("businessObject", businessObject);
+
       return _editModeController.AddRow (businessObject, EnsureColumnsForPreviousLifeCycleGot(), EnsureColumnsGot());
     }
 
-    internal int AddRowInternal (IBusinessObject businessObject)
+    internal void RemoveRowsInternal (IBusinessObject[] businessObjects)
     {
-      ArgumentUtility.CheckNotNull ("businessObject", businessObject);
+      ArgumentUtility.CheckNotNull ("businessObjects", businessObjects);
 
-
-      Value = ListUtility.AddRange (Value, businessObject, Property, false, true);
-
-      if (Value == null)
-        return -1;
-      else
-        return Value.Count - 1;
+      Value = ListUtility.Remove (Value, businessObjects, Property, false);
     }
 
     /// <summary> Removes the <paramref name="businessObjects"/> from the <see cref="Value"/> collection. </summary>
     /// <remarks> Sets the dirty state. </remarks>
     public void RemoveRows (IBusinessObject[] businessObjects)
     {
+      ArgumentUtility.CheckNotNull ("businessObjects", businessObjects);
+
       _editModeController.RemoveRows (businessObjects);
-    }
-
-    internal void RemoveRowsInternal (IBusinessObject[] businessObjects)
-    {
-      ArgumentUtility.CheckNotNullOrItemsNull ("businessObjects", businessObjects);
-
-      Value = ListUtility.Remove (Value, businessObjects, Property, false);
     }
 
     /// <summary> Removes the <paramref name="businessObject"/> from the <see cref="Value"/> collection. </summary>
     /// <remarks> Sets the dirty state. </remarks>
     public void RemoveRow (IBusinessObject businessObject)
     {
+      ArgumentUtility.CheckNotNull ("businessObject", businessObject);
+
       _editModeController.RemoveRow (businessObject);
     }
 
@@ -2910,13 +2905,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         throw new ArgumentOutOfRangeException ("index");
 
       RemoveRow ((IBusinessObject) Value[index]);
-    }
-
-    internal void RemoveRowInternal (IBusinessObject businessObject)
-    {
-      ArgumentUtility.CheckNotNull ("businessObject", businessObject);
-
-      Value = ListUtility.Remove (Value, businessObject, Property, false);
     }
 
     /// <summary>
@@ -4003,8 +3991,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     private void InitializeRowIDProvider()
     {
+      if (Value == null)
+        _rowIDProvider = new NullValueRowIDProvider();
+      else
+        _rowIDProvider = new IndexBasedRowIDProvider (Value.Cast<IBusinessObject>());
       //var businessObjectClass = GetBusinessObjectClass();
-      _rowIDProvider = new IndexBasedRowIDProvider (GetValue().Cast<IBusinessObject>());
     }
 
     protected IBusinessObjectClassWithIdentity GetBusinessObjectClass ()

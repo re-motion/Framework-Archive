@@ -690,7 +690,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocListImplementation
     }
 
     [Test]
-    public void SaveAndLoadControlStateAfterRemovingMultipleRow ()
+    public void SaveAndLoadControlStateAfterRemovingMultipleRows ()
     {
       Invoker.InitRecursive();
       Controller.SwitchListIntoEditMode (Columns, Columns);
@@ -706,7 +706,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocListImplementation
       Assert.IsNotNull (values[4]);
       Assert.IsTrue (values[4] is EditableRowIDProvider);
       EditableRowIDProvider provider = (EditableRowIDProvider) values[4];
-      Assert.AreEqual (new string[] {"Controller_Row2", "Controller_Row3"}, provider.GetExcludedIDs());
+      Assert.That (provider.GetExcludedIDs(), Is.EquivalentTo (new string[] {"Controller_Row2", "Controller_Row3"}));
 
       Controller.EndListEditMode (false, Columns);
       Assert.IsFalse (Controller.IsListEditModeActive);

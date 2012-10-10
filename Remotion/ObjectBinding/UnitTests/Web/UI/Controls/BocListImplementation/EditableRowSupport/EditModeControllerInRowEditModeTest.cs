@@ -682,7 +682,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocListImplementation
 
     [Test]
     [ExpectedException (typeof (InvalidOperationException),
-        ExpectedMessage = "Cannot remove a row while the BocList 'BocList' is in row edit mode. Call EndEditMode() before removing the row.")]
+        ExpectedMessage = "Cannot remove rows while the BocList 'BocList' is in row edit mode. Call EndEditMode() before removing the row.")]
     public void RemoveRow ()
     {
       Invoker.InitRecursive();
