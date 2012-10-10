@@ -882,7 +882,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       _sortingOrder.Clear();
       _sortingOrder.AddRange (workingSortingOrder);
       OnSortingOrderChanged (oldSortingOrder, newSortingOrder);
-      ResetRows();
+      OnSortedRowsChanged();
     }
 
     protected virtual void OnSortingOrderChanging (
@@ -992,12 +992,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         if (IsSelectionEnabled && ! IsIndexEnabled)
           WcagHelper.Instance.HandleError (2, this, "Selection");
       }
-    }
-
-    private void ResetRows ()
-    {
-      _indexedRowsSorted = null;
-      ResetRowMenus();
     }
 
     public override void PrepareValidation ()
@@ -1121,8 +1115,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
         if (_goTo != GoToOption.Undefined && evaluateGoTo)
         {
-          ClearSelectedRows();
-          ResetRowMenus();
+          OnDisplayedRowsChanged();
         }
       }
     }
@@ -1461,6 +1454,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       {
         SetValue (value);
         IsDirty = false;
+        InitializeRowIDProvider();
       }
     }
 
@@ -1545,14 +1539,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
       BocDropDownMenu.HideMenuItems (ListMenuItems, _hiddenMenuItems);
       BocDropDownMenu.HideMenuItems (OptionsMenuItems, _hiddenMenuItems);
-    }
-
-    /// <summary> 
-    ///   Forces the recreation of the menus to be displayed in the <see cref="BocDropDownMenuColumnDefinition"/>.
-    /// </summary>
-    private void ResetRowMenus ()
-    {
-      _rowMenus = null;
     }
 
     /// <summary> 
@@ -2221,7 +2207,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       else
         _sortingOrder.AddRange (newSortingOrder);
 
-      ResetRows();
+      OnSortedRowsChanged();
     }
 
     /// <summary> Clears the sorting order for the <see cref="BocList"/>. </summary>
@@ -2232,7 +2218,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       _sortingOrder.Clear();
 
-      ResetRows();
+      OnSortedRowsChanged();
     }
 
     /// <summary>
@@ -2327,7 +2313,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         var oldCount = _sortingOrder.Count;
         _sortingOrder.RemoveAll (entry => !staticColumns.Contains ((BocColumnDefinition) entry.Column));
         if (oldCount != _sortingOrder.Count)
-          ResetRows();
+          OnSortedRowsChanged();
       }
     }
 
@@ -2502,15 +2488,16 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       get { return GetValue(); }
       set
       {
-        IsDirty = true;
         SetValue (value);
+        IsDirty = true;
+        InitializeRowIDProvider();
       }
     }
 
     /// <summary>
     /// Gets the value from the backing field.
     /// </summary>
-    protected IList GetValue()
+    private IList GetValue()
     {
       return _value;
     }
@@ -2521,12 +2508,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <remarks>
     /// <para>Setting the value via this method does not affect the control's dirty state.</para>
     /// </remarks>
-    protected void SetValue (IList value)
+    private void SetValue (IList value)
     {
       _value = value;
-      InitializeRowIDProvider();
-      ClearSelectedRows();
-      ResetRows();
+      OnSortedRowsChanged();
+      OnDisplayedRowsChanged();
     }
 
     /// <summary> Gets or sets the current value when <see cref="Value"/> through polymorphism. </summary>
@@ -2881,6 +2867,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       ArgumentUtility.CheckNotNull ("businessObject", businessObject);
 
+
       Value = ListUtility.AddRange (Value, businessObject, Property, false, true);
 
       if (Value == null)
@@ -3006,7 +2993,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       if (! IsReadOnly)
       {
-        ResetRows();
+        OnStateOfDisplayedRowsChanged();
         BocListRow[] sortedRows = EnsureSortedBocListRowsGot();
         for (int idxRows = 0; idxRows < sortedRows.Length; idxRows++)
         {
@@ -3038,7 +3025,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     internal void EndListEditModeCleanUp ()
     {
       if (! IsReadOnly)
-        ResetRows();
+        OnStateOfDisplayedRowsChanged();
     }
 
     private void EnsureEditModeRestored ()
@@ -4028,6 +4015,23 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       else if (DataSource != null)
         businessObjectClass = (IBusinessObjectClassWithIdentity) DataSource.BusinessObjectClass;
       return businessObjectClass;
+    }
+
+    private void OnSortedRowsChanged ()
+    {
+      _indexedRowsSorted = null;
+      _rowMenus = null;
+    }
+
+    private void OnDisplayedRowsChanged ()
+    {
+      ClearSelectedRows();
+      OnStateOfDisplayedRowsChanged();
+    }
+
+    private void OnStateOfDisplayedRowsChanged ()
+    {
+      _rowMenus = null;
     }
   }
 
