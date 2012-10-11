@@ -4030,19 +4030,19 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       if (Value == null)
         _rowIDProvider = new NullValueRowIDProvider();
+      else if (GetBusinessObjectClass() is IBusinessObjectClassWithIdentity)
+        _rowIDProvider = new UniqueIdentifierBasedRowIDProvider();
       else
         _rowIDProvider = new IndexBasedRowIDProvider (Value.Cast<IBusinessObject>());
-      //var businessObjectClass = GetBusinessObjectClass();
     }
 
-    protected IBusinessObjectClassWithIdentity GetBusinessObjectClass ()
+    protected IBusinessObjectClass GetBusinessObjectClass ()
     {
-      IBusinessObjectClassWithIdentity businessObjectClass = null;
       if (Property != null)
-        businessObjectClass = (IBusinessObjectClassWithIdentity) Property.ReferenceClass;
+        return Property.ReferenceClass;
       else if (DataSource != null)
-        businessObjectClass = (IBusinessObjectClassWithIdentity) DataSource.BusinessObjectClass;
-      return businessObjectClass;
+        return DataSource.BusinessObjectClass;
+      return null;
     }
 
     private void OnSortedRowsChanged ()
