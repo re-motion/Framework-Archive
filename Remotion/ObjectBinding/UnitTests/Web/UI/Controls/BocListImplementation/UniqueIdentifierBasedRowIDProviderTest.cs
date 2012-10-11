@@ -44,14 +44,14 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocListImplementation
     public void GetItemRowID ()
     {
       var rowIDProvider = new UniqueIdentifierBasedRowIDProvider();
-      Assert.That (rowIDProvider.GetItemRowID (new BocListRow (3, CreateObject ("a"))), Is.EqualTo ("3_a"));
+      Assert.That (rowIDProvider.GetItemRowID (new BocListRow (3, CreateObject ("a"))), Is.EqualTo ("3|a"));
     }
 
     [Test]
     public void GetItemRowID_EscapesInvalidIDCharacters ()
     {
       var rowIDProvider = new UniqueIdentifierBasedRowIDProvider();
-      Assert.That (rowIDProvider.GetItemRowID (new BocListRow (3, CreateObject ("a.1|"))), Is.EqualTo ("3_a_1_"));
+      Assert.That (rowIDProvider.GetItemRowID (new BocListRow (3, CreateObject ("a.1|"))), Is.EqualTo ("3|a.1|"));
     }
 
     [Test]
@@ -65,7 +65,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocListImplementation
                    };
       var rowIDProvider = new UniqueIdentifierBasedRowIDProvider();
 
-      var row = rowIDProvider.GetRowFromItemRowID (values, "1_b_1_");
+      var row = rowIDProvider.GetRowFromItemRowID (values, "1|b.1|");
 
       Assert.That (row.Index, Is.EqualTo (1));
       Assert.That (row.BusinessObject, Is.SameAs (values[1]));
@@ -87,7 +87,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocListImplementation
                    };
       var rowIDProvider = new UniqueIdentifierBasedRowIDProvider();
 
-      var row = rowIDProvider.GetRowFromItemRowID (values, "5_b_1_");
+      var row = rowIDProvider.GetRowFromItemRowID (values, "5|b.1|");
 
       Assert.That (row.Index, Is.EqualTo (1));
       Assert.That (row.BusinessObject, Is.SameAs (values[1]));
@@ -109,7 +109,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocListImplementation
                    };
       var rowIDProvider = new UniqueIdentifierBasedRowIDProvider();
 
-      var row = rowIDProvider.GetRowFromItemRowID (values, "2_g_1_");
+      var row = rowIDProvider.GetRowFromItemRowID (values, "2|g.1|");
 
       Assert.That (row.Index, Is.EqualTo (6));
       Assert.That (row.BusinessObject, Is.SameAs (values[6]));
@@ -125,7 +125,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocListImplementation
                    };
       var rowIDProvider = new UniqueIdentifierBasedRowIDProvider();
 
-      var row = rowIDProvider.GetRowFromItemRowID (values, "2_b_1_");
+      var row = rowIDProvider.GetRowFromItemRowID (values, "2|b.1|");
 
       Assert.That (row.Index, Is.EqualTo (1));
       Assert.That (row.BusinessObject, Is.SameAs (values[1]));
@@ -142,7 +142,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocListImplementation
                        CreateObject ("b")
                    };
 
-      var row = rowIDProvider.GetRowFromItemRowID (values, "1_d");
+      var row = rowIDProvider.GetRowFromItemRowID (values, "1|d");
 
       Assert.That (row, Is.Null);
     }
@@ -154,7 +154,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocListImplementation
 
       Assert.That (
           () => rowIDProvider.GetRowFromItemRowID (new IBusinessObject[0], "x"),
-          Throws.TypeOf<FormatException>().With.Message.EqualTo ("RowID 'x' could not be parsed. Expected format: '<rowIndex>_<unqiueIdentifier>'"));
+          Throws.TypeOf<FormatException>().With.Message.EqualTo ("RowID 'x' could not be parsed. Expected format: '<rowIndex>|<unqiueIdentifier>'"));
     }
 
     [Test]
@@ -163,8 +163,8 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocListImplementation
       var rowIDProvider = new UniqueIdentifierBasedRowIDProvider ();
 
       Assert.That (
-          () => rowIDProvider.GetRowFromItemRowID (new IBusinessObject[0], "a_x"),
-          Throws.TypeOf<FormatException>().With.Message.EqualTo ("RowID 'a_x' could not be parsed. Expected format: '<rowIndex>_<unqiueIdentifier>'"));
+          () => rowIDProvider.GetRowFromItemRowID (new IBusinessObject[0], "a|x"),
+          Throws.TypeOf<FormatException>().With.Message.EqualTo ("RowID 'a|x' could not be parsed. Expected format: '<rowIndex>|<unqiueIdentifier>'"));
     }
 
     [Test]
@@ -174,9 +174,9 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocListImplementation
 
       rowIDProvider.AddRow (new BocListRow (3, CreateObject ("a")));
 
-      Assert.That (rowIDProvider.GetItemRowID (new BocListRow (3, CreateObject ("a"))), Is.EqualTo ("3_a"));
-      Assert.That (rowIDProvider.GetItemRowID (new BocListRow (4, CreateObject ("a"))), Is.EqualTo ("4_a"));
-      Assert.That (rowIDProvider.GetItemRowID (new BocListRow (3, CreateObject ("b"))), Is.EqualTo ("3_b"));
+      Assert.That (rowIDProvider.GetItemRowID (new BocListRow (3, CreateObject ("a"))), Is.EqualTo ("3|a"));
+      Assert.That (rowIDProvider.GetItemRowID (new BocListRow (4, CreateObject ("a"))), Is.EqualTo ("4|a"));
+      Assert.That (rowIDProvider.GetItemRowID (new BocListRow (3, CreateObject ("b"))), Is.EqualTo ("3|b"));
     }
 
     [Test]
@@ -186,7 +186,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocListImplementation
 
       rowIDProvider.RemoveRow (new BocListRow (3, CreateObject ("a")));
 
-      Assert.That (rowIDProvider.GetItemRowID (new BocListRow (3, CreateObject ("a"))), Is.EqualTo ("3_a"));
+      Assert.That (rowIDProvider.GetItemRowID (new BocListRow (3, CreateObject ("a"))), Is.EqualTo ("3|a"));
     }
 
     [Test]

@@ -54,7 +54,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
       int rowIndex = tuple.Item1;
       string uniqueIdentifier = tuple.Item2;
 
-      if (rowIndex < values.Count &&  EscapeUniqueIdentifier (((IBusinessObjectWithIdentity) values[rowIndex]).UniqueIdentifier) == uniqueIdentifier)
+      if (rowIndex < values.Count && ((IBusinessObjectWithIdentity) values[rowIndex]).UniqueIdentifier == uniqueIdentifier)
       {
         return new BocListRow (rowIndex, (IBusinessObjectWithIdentity) values[rowIndex]);
       }
@@ -62,10 +62,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
       {
         for (int indexDown = rowIndex - 1, indexUp = rowIndex + 1; indexDown >= 0 || indexUp < values.Count; indexDown--, indexUp++)
         {
-          if (indexDown >= 0 && EscapeUniqueIdentifier (((IBusinessObjectWithIdentity) values[indexDown]).UniqueIdentifier) == uniqueIdentifier)
+          if (indexDown >= 0 && ((IBusinessObjectWithIdentity) values[indexDown]).UniqueIdentifier == uniqueIdentifier)
             return new BocListRow (indexDown, ((IBusinessObjectWithIdentity) values[indexDown]));
 
-          if (indexUp < values.Count && EscapeUniqueIdentifier (((IBusinessObjectWithIdentity)values[indexUp]).UniqueIdentifier) == uniqueIdentifier)
+          if (indexUp < values.Count && ((IBusinessObjectWithIdentity)values[indexUp]).UniqueIdentifier == uniqueIdentifier)
             return new BocListRow (indexUp,  ((IBusinessObjectWithIdentity)values[indexUp]));
         }
       }
@@ -83,12 +83,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
 
     private static string FormatItemRowID (int rowIndex, string uniqueIdentifier)
     {
-      return rowIndex.ToString (CultureInfo.InvariantCulture) + "_" + EscapeUniqueIdentifier (uniqueIdentifier);
+      return rowIndex.ToString (CultureInfo.InvariantCulture) + "|" + uniqueIdentifier;
     }
 
     private Tuple<int, string> ParseItemRowID (string rowID)
     {
-      var parts = rowID.Split (new[] { '_' }, 2);
+      var parts = rowID.Split (new[] { '|' }, 2);
       if (parts.Length != 2)
         throw CreateItemRowIDFormatException (rowID, null);
 
@@ -110,7 +110,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
     private FormatException CreateItemRowIDFormatException (string rowID, Exception innerException)
     {
       return new FormatException (
-          string.Format ("RowID '{0}' could not be parsed. Expected format: '<rowIndex>_<unqiueIdentifier>'", rowID),
+          string.Format ("RowID '{0}' could not be parsed. Expected format: '<rowIndex>|<unqiueIdentifier>'", rowID),
           innerException);
     }
 
