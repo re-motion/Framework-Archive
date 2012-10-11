@@ -14,11 +14,16 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
 using System.Collections;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
 {
+  /// <summary>
+  /// Implementation of the <see cref="IRowIDProvider"/> interface used when the <see cref="BocList"/> does not have a value set.
+  /// All operations throw <see cref="NotSupportedException"/>.
+  /// </summary>
   [Serializable]
   public class NullValueRowIDProvider : IRowIDProvider
   {
@@ -28,27 +33,27 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
 
     public string GetControlRowID (BocListRow row)
     {
-      throw new NotSupportedException();
+      throw new NotSupportedException ("The operation is not supported because the value is not set.");
     }
 
     public string GetItemRowID (BocListRow row)
     {
-      throw new NotSupportedException();
+      throw new NotSupportedException ("The operation is not supported because the value is not set.");
     }
 
     public BocListRow GetRowFromItemRowID (IList rows, string rowID)
     {
-      throw new NotSupportedException();
+      throw new NotSupportedException ("The operation is not supported because the value is not set.");
     }
 
     public void AddRow (BocListRow row)
     {
-      throw new NotSupportedException();
+      throw new NotSupportedException ("The operation is not supported because the value is not set.");
     }
 
     public void RemoveRow (BocListRow row)
     {
-      throw new NotSupportedException();
+      throw new NotSupportedException ("The operation is not supported because the value is not set.");
     }
   }
 }
