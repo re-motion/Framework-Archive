@@ -423,7 +423,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
 
     public bool IsRowEditModeActive
     {
-      get { return _editableRowIndex != null; }
+      get { return _editableRowIndex.HasValue; }
     }
 
     public bool IsListEditModeActive
@@ -446,7 +446,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
 
       BaseValidator[] validators = new BaseValidator[1];
 
-      EditModeValidator editModeValidator = new EditModeValidator (_editModeHost);
+      EditModeValidator editModeValidator = new EditModeValidator (this);
       editModeValidator.ID = ID + "_ValidatorEditMode";
       editModeValidator.ControlToValidate = _editModeHost.ID;
       if (StringUtility.IsNullOrEmpty (_editModeHost.ErrorMessage))
@@ -496,7 +496,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
         for (int i = 0; i < _rows.Count; i++)
           isValid &= _rows[i].Validate();
 
-        isValid &= _editModeHost.ValidateEditableRows1();
+        isValid &= _editModeHost.ValidateEditableRows();
       }
 
       return isValid;

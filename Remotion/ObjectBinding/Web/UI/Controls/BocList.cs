@@ -3085,7 +3085,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       return _editModeController.Validate();
     }
 
-    bool IEditModeHost.ValidateEditableRows1 ()
+    bool IEditModeHost.ValidateEditableRows ()
     {
       return ValidateCustomColumns();
     }

@@ -40,7 +40,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
     void EndRowEditModeCleanUp (int value);
     void EndListEditModeCleanUp ();
     bool ValidateEditableRows ();
-    bool ValidateEditableRows1 ();
     void OnEditableRowChangesSaving (int index, IBusinessObject businessObject, IBusinessObjectDataSource dataSource, IBusinessObjectBoundEditableWebControl[] controls);
     void OnEditableRowChangesSaved (int index, IBusinessObject businessObject);
     void OnEditableRowChangesCanceling (int index, IBusinessObject businessObject, IBusinessObjectDataSource dataSource, IBusinessObjectBoundEditableWebControl[] controls);

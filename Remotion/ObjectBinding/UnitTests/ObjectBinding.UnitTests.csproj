@@ -358,6 +358,8 @@
     <Compile Include="Web\Domain\TypeWithNumber.cs" />
     <Compile Include="Web\Domain\TypeWithReference.cs" />
     <Compile Include="Web\Domain\TypeWithString.cs" />
+    <Compile Include="Web\UI\Controls\BocListImplementation\EditableRowSupport\FakeEditModeHost.cs" />
+    <Compile Include="Web\UI\Controls\BocListImplementation\FakeRowIDProvider.cs" />
     <Compile Include="Web\UI\Controls\BocListImplementation\IndexBasedRowIDProviderTest.cs" />
     <Compile Include="Web\UI\Controls\BocListImplementation\NullValueRowIDProviderTest.cs" />
     <Compile Include="Web\UI\Controls\BocListImplementation\Sorting\CellValueComparerTestBase.cs" />
