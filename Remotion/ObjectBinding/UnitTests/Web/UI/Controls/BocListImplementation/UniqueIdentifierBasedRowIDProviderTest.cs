@@ -27,17 +27,31 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocListImplementation
   public class UniqueIdentifierBasedRowIDProviderTest
   {
     [Test]
-    public void GetControlRowD ()
+    public void GetControlRowID ()
     {
       var rowIDProvider = new UniqueIdentifierBasedRowIDProvider();
       Assert.That (rowIDProvider.GetControlRowID (new BocListRow (5, CreateObject ("a"))), Is.EqualTo ("a"));
     }
 
     [Test]
-    public void GetItemRowD ()
+    public void GetControlRowID_EscapesInvalidIDCharacters ()
+    {
+      var rowIDProvider = new UniqueIdentifierBasedRowIDProvider();
+      Assert.That (rowIDProvider.GetControlRowID (new BocListRow (5, CreateObject ("a.1|"))), Is.EqualTo ("a_1_"));
+    }
+
+    [Test]
+    public void GetItemRowID ()
     {
       var rowIDProvider = new UniqueIdentifierBasedRowIDProvider();
       Assert.That (rowIDProvider.GetItemRowID (new BocListRow (3, CreateObject ("a"))), Is.EqualTo ("3_a"));
+    }
+
+    [Test]
+    public void GetItemRowID_EscapesInvalidIDCharacters ()
+    {
+      var rowIDProvider = new UniqueIdentifierBasedRowIDProvider();
+      Assert.That (rowIDProvider.GetItemRowID (new BocListRow (3, CreateObject ("a.1|"))), Is.EqualTo ("3_a_1_"));
     }
 
     [Test]
@@ -46,12 +60,12 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocListImplementation
       var values = new[]
                    {
                        CreateObject ("a"),
-                       CreateObject ("b"),
+                       CreateObject ("b.1|"),
                        CreateObject ("c")
                    };
       var rowIDProvider = new UniqueIdentifierBasedRowIDProvider();
 
-      var row = rowIDProvider.GetRowFromItemRowID (values, "1_b");
+      var row = rowIDProvider.GetRowFromItemRowID (values, "1_b_1_");
 
       Assert.That (row.Index, Is.EqualTo (1));
       Assert.That (row.BusinessObject, Is.SameAs (values[1]));
@@ -63,7 +77,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocListImplementation
       var values = new[]
                    {
                        CreateObject ("a"),
-                       CreateObject ("b"),
+                       CreateObject ("b.1|"),
                        CreateObject ("c"),
                        CreateObject ("d"),
                        CreateObject ("e"),
@@ -73,7 +87,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocListImplementation
                    };
       var rowIDProvider = new UniqueIdentifierBasedRowIDProvider();
 
-      var row = rowIDProvider.GetRowFromItemRowID (values, "5_b");
+      var row = rowIDProvider.GetRowFromItemRowID (values, "5_b_1_");
 
       Assert.That (row.Index, Is.EqualTo (1));
       Assert.That (row.BusinessObject, Is.SameAs (values[1]));
@@ -90,12 +104,12 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocListImplementation
                        CreateObject ("d"),
                        CreateObject ("e"),
                        CreateObject ("f"),
-                       CreateObject ("g"),
+                       CreateObject ("g.1|"),
                        CreateObject ("h")
                    };
       var rowIDProvider = new UniqueIdentifierBasedRowIDProvider();
 
-      var row = rowIDProvider.GetRowFromItemRowID (values, "2_g");
+      var row = rowIDProvider.GetRowFromItemRowID (values, "2_g_1_");
 
       Assert.That (row.Index, Is.EqualTo (6));
       Assert.That (row.BusinessObject, Is.SameAs (values[6]));
@@ -107,11 +121,11 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocListImplementation
       var values = new[]
                    {
                        CreateObject ("a"),
-                       CreateObject ("b")
+                       CreateObject ("b.1|")
                    };
       var rowIDProvider = new UniqueIdentifierBasedRowIDProvider();
 
-      var row = rowIDProvider.GetRowFromItemRowID (values, "2_b");
+      var row = rowIDProvider.GetRowFromItemRowID (values, "2_b_1_");
 
       Assert.That (row.Index, Is.EqualTo (1));
       Assert.That (row.BusinessObject, Is.SameAs (values[1]));
@@ -179,13 +193,13 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocListImplementation
     public void GetItemRowID_GetRowFromItemRowID ()
     {
       var rowIDProvider = new IndexBasedRowIDProvider (new IBusinessObject[3]);
-      var rowID = rowIDProvider.GetItemRowID (new BocListRow (1, CreateObject("b")));
+      var rowID = rowIDProvider.GetItemRowID (new BocListRow (1, CreateObject("b.1|")));
 
       var values = new[]
                    {
-                       CreateObject ("a"),
-                       CreateObject ("b"),
-                       CreateObject ("c")
+                       CreateObject ("a.1|"),
+                       CreateObject ("b.1|"),
+                       CreateObject ("c.1|")
                    };
 
       var row = rowIDProvider.GetRowFromItemRowID (values, rowID);

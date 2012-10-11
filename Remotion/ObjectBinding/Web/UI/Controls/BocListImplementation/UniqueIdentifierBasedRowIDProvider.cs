@@ -18,6 +18,7 @@
 using System;
 using System.Collections;
 using System.Globalization;
+using System.Text;
 using Remotion.Collections;
 using Remotion.Utilities;
 
@@ -34,7 +35,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
     {
       ArgumentUtility.CheckNotNull ("row", row);
 
-      return ((IBusinessObjectWithIdentity) row.BusinessObject).UniqueIdentifier;
+      return EscapeUniqueIdentifier (((IBusinessObjectWithIdentity) row.BusinessObject).UniqueIdentifier);
     }
 
     public string GetItemRowID (BocListRow row)
@@ -53,7 +54,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
       int rowIndex = tuple.Item1;
       string uniqueIdentifier = tuple.Item2;
 
-      if (rowIndex < values.Count && ((IBusinessObjectWithIdentity) values[rowIndex]).UniqueIdentifier == uniqueIdentifier)
+      if (rowIndex < values.Count &&  EscapeUniqueIdentifier (((IBusinessObjectWithIdentity) values[rowIndex]).UniqueIdentifier) == uniqueIdentifier)
       {
         return new BocListRow (rowIndex, (IBusinessObjectWithIdentity) values[rowIndex]);
       }
@@ -61,10 +62,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
       {
         for (int indexDown = rowIndex - 1, indexUp = rowIndex + 1; indexDown >= 0 || indexUp < values.Count; indexDown--, indexUp++)
         {
-          if (indexDown >= 0 && ((IBusinessObjectWithIdentity) values[indexDown]).UniqueIdentifier == uniqueIdentifier)
+          if (indexDown >= 0 && EscapeUniqueIdentifier (((IBusinessObjectWithIdentity) values[indexDown]).UniqueIdentifier) == uniqueIdentifier)
             return new BocListRow (indexDown, ((IBusinessObjectWithIdentity) values[indexDown]));
 
-          if (indexUp < values.Count && ((IBusinessObjectWithIdentity)values[indexUp]).UniqueIdentifier == uniqueIdentifier)
+          if (indexUp < values.Count && EscapeUniqueIdentifier (((IBusinessObjectWithIdentity)values[indexUp]).UniqueIdentifier) == uniqueIdentifier)
             return new BocListRow (indexUp,  ((IBusinessObjectWithIdentity)values[indexUp]));
         }
       }
@@ -82,7 +83,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
 
     private static string FormatItemRowID (int rowIndex, string uniqueIdentifier)
     {
-      return rowIndex.ToString (CultureInfo.InvariantCulture) + "_" + uniqueIdentifier;
+      return rowIndex.ToString (CultureInfo.InvariantCulture) + "_" + EscapeUniqueIdentifier (uniqueIdentifier);
     }
 
     private Tuple<int, string> ParseItemRowID (string rowID)
@@ -111,6 +112,17 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
       return new FormatException (
           string.Format ("RowID '{0}' could not be parsed. Expected format: '<rowIndex>_<unqiueIdentifier>'", rowID),
           innerException);
+    }
+
+    private static string EscapeUniqueIdentifier (string uniqueIdentifier)
+    {
+      var escapedID = new StringBuilder (uniqueIdentifier);
+      for (int i = 0; i < escapedID.Length; i++)
+      {
+        if (!char.IsLetterOrDigit (escapedID[i]))
+          escapedID[i] = '_';
+      }
+      return escapedID.ToString();
     }
   }
 }
