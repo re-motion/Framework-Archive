@@ -168,9 +168,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
     bool IsShowSortingOrderEnabled { get; }
     IListMenu ListMenu { get; }
 
-    /// <summary> Builds the validation error marker. </summary>
-    Image GetValidationErrorMarker ();
-
     /// <summary>
     ///   Obtains a reference to a client-side script function that causes, when invoked, a server postback to the form.
     /// </summary>

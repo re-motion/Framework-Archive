@@ -62,7 +62,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       IBocList,
       IPostBackEventHandler,
       IPostBackDataHandler,
-      IResourceDispatchTarget
+      IResourceDispatchTarget,
+      IEditModeHost
   {
     #region Obsoletes
 
@@ -349,6 +350,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private readonly IEditModeController _editModeController;
     private EditableRowDataSourceFactory _editModeDataSourceFactory = new EditableRowDataSourceFactory();
     private EditableRowControlFactory _editModeControlFactory = EditableRowControlFactory.CreateEditableRowControlFactory();
+    private bool _enableEditModeValidator = true;
+    private bool _showEditModeRequiredMarkers = true;
+    private bool _showEditModeValidationMarkers;
+    private bool _disableEditModeValidationMessages;
 
     private string _errorMessage;
     private readonly List<IValidator> _validators;
@@ -1289,7 +1294,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Builds the input required marker. </summary>
-    protected internal virtual Image GetRequiredMarker ()
+    protected virtual Image GetRequiredMarker ()
     {
       Image requiredIcon = new Image();
       var themedResourceUrlResolver = ServiceLocator.GetInstance<IThemedResourceUrlResolverFactory> ().CreateResourceUrlResolver ();
@@ -1303,8 +1308,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       return requiredIcon;
     }
 
+    Image IEditModeHost.GetRequiredMarker ()
+    {
+      return GetRequiredMarker();
+    }
+
     /// <summary> Builds the validation error marker. </summary>
-    public virtual Image GetValidationErrorMarker ()
+    protected virtual Image GetValidationErrorMarker ()
     {
       Image validationErrorIcon = new Image();
       var themedResourceUrlResolver = ServiceLocator.GetInstance<IThemedResourceUrlResolverFactory> ().CreateResourceUrlResolver ();
@@ -1315,6 +1325,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
       validationErrorIcon.Style["vertical-align"] = "middle";
       return validationErrorIcon;
+    }
+
+    Image IEditModeHost.GetValidationErrorMarker ()
+    {
+      return GetValidationErrorMarker();
     }
 
     protected virtual void OnDataRowRendering (BocListDataRowRenderEventArgs e)
@@ -1544,7 +1559,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     /// <summary> 
     ///   Creates a <see cref="BocDropDownMenuColumnDefinition"/> if <see cref="RowMenuDisplay"/> is set to
-    ///   <see cref="RowMenuDisplay.Automatic"/>.
+    ///   <see cref="Controls.RowMenuDisplay.Automatic"/>.
     /// </summary>
     /// <returns> A <see cref="BocDropDownMenuColumnDefinition"/> instance or <see langword="null"/>. </returns>
     private BocDropDownMenuColumnDefinition GetRowMenuColumn ()
@@ -1562,7 +1577,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <summary> 
     ///   Tests that the <paramref name="columnDefinitions"/> array holds exactly one
     ///   <see cref="BocDropDownMenuColumnDefinition"/> if the <see cref="RowMenuDisplay"/> is set to 
-    ///   <see cref="RowMenuDisplay.Automatic"/> or <see cref="RowMenuDisplay.Manual"/>.
+    ///   <see cref="Controls.RowMenuDisplay.Automatic"/> or <see cref="Controls.RowMenuDisplay.Manual"/>.
     /// </summary>
     private void CheckRowMenuColumns (BocColumnDefinition[] columnDefinitions)
     {
@@ -2894,7 +2909,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       RemoveRow ((IBusinessObject) Value[index]);
     }
 
-    internal void AddRowsInternal (IBusinessObject[] businessObjects)
+    void IEditModeHost.AddRows (IBusinessObject[] businessObjects)
     {
       ArgumentUtility.CheckNotNull ("businessObjects", businessObjects);
 
@@ -2918,7 +2933,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       }
     }
 
-    internal void RemoveRowsInternal (IBusinessObject[] businessObjects)
+    void IEditModeHost.RemoveRows (IBusinessObject[] businessObjects)
     {
       ArgumentUtility.CheckNotNull ("businessObjects", businessObjects);
 
@@ -3014,7 +3029,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       _editModeController.EndRowEditMode (saveChanges, EnsureColumnsForPreviousLifeCycleGot());
     }
 
-    internal void EndRowEditModeCleanUp (int modifiedRowIndex)
+    void IEditModeHost.EndRowEditModeCleanUp (int modifiedRowIndex)
     {
       if (! IsReadOnly)
       {
@@ -3047,7 +3062,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       _editModeController.EndListEditMode (saveChanges, EnsureColumnsForPreviousLifeCycleGot());
     }
 
-    internal void EndListEditModeCleanUp ()
+    void IEditModeHost.EndListEditModeCleanUp ()
     {
       if (! IsReadOnly)
         OnStateOfDisplayedRowsChanged();
@@ -3070,9 +3085,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       return _editModeController.Validate();
     }
 
-    internal bool ValidateEditableRowsInternal ()
+    bool IEditModeHost.ValidateEditableRows1 ()
     {
       return ValidateCustomColumns();
+    }
+
+    EditModeValidator IEditModeHost.GetEditModeValidator ()
+    {
+      return _validators.OfType<EditModeValidator>().FirstOrDefault();
     }
 
     /// <summary> Gets a flag that determines wheter the <see cref="BocList"/> is n row edit mode. </summary>
@@ -3113,8 +3133,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     [DefaultValue (true)]
     public bool ShowEditModeRequiredMarkers
     {
-      get { return _editModeController.ShowEditModeRequiredMarkers; }
-      set { _editModeController.ShowEditModeRequiredMarkers = value; }
+      get { return _showEditModeRequiredMarkers; }
+      set { _showEditModeRequiredMarkers = value; }
     }
 
     /// <summary>
@@ -3126,8 +3146,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     [DefaultValue (false)]
     public bool ShowEditModeValidationMarkers
     {
-      get { return _editModeController.ShowEditModeValidationMarkers; }
-      set { _editModeController.ShowEditModeValidationMarkers = value; }
+      get { return _showEditModeValidationMarkers; }
+      set { _showEditModeValidationMarkers = value; }
     }
 
     /// <summary>
@@ -3139,8 +3159,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     [DefaultValue (false)]
     public bool DisableEditModeValidationMessages
     {
-      get { return _editModeController.DisableEditModeValidationMessages; }
-      set { _editModeController.DisableEditModeValidationMessages = value; }
+      get { return _disableEditModeValidationMessages; }
+      set { _disableEditModeValidationMessages = value; }
     }
 
     /// <summary> Gets or sets a flag that enables the <see cref="EditModeValidator"/>. </summary>
@@ -3153,8 +3173,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     [DefaultValue (true)]
     public bool EnableEditModeValidator
     {
-      get { return _editModeController.EnableEditModeValidator; }
-      set { _editModeController.EnableEditModeValidator = value; }
+      get { return _enableEditModeValidator; }
+      set { _enableEditModeValidator = value; }
     }
 
     /// <summary> Is raised before the changes to the editable row are saved. </summary>
@@ -3244,7 +3264,16 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       }
     }
 
-    protected internal virtual void OnEditableRowChangesSaved (int index, IBusinessObject businessObject)
+    void IEditModeHost.OnEditableRowChangesSaving (
+        int index,
+        IBusinessObject businessObject,
+        IBusinessObjectDataSource dataSource,
+        IBusinessObjectBoundEditableWebControl[] controls)
+    {
+      OnEditableRowChangesSaving (index, businessObject, dataSource, controls);
+    }
+
+    protected virtual void OnEditableRowChangesSaved (int index, IBusinessObject businessObject)
     {
       ArgumentUtility.CheckNotNull ("businessObject", businessObject);
 
@@ -3256,7 +3285,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       }
     }
 
-    protected internal virtual void OnEditableRowChangesCanceling (
+    void IEditModeHost.OnEditableRowChangesSaved (int index, IBusinessObject businessObject)
+    {
+      OnEditableRowChangesSaved (index, businessObject);
+    }
+
+    protected virtual void OnEditableRowChangesCanceling (
         int index,
         IBusinessObject businessObject,
         IBusinessObjectDataSource dataSource,
@@ -3276,7 +3310,17 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       }
     }
 
-    protected internal virtual void OnEditableRowChangesCanceled (int index, IBusinessObject businessObject)
+    void IEditModeHost.OnEditableRowChangesCanceling (
+        int index,
+        IBusinessObject businessObject,
+        IBusinessObjectDataSource dataSource,
+        IBusinessObjectBoundEditableWebControl[] controls)
+    {
+      OnEditableRowChangesCanceling (index, businessObject, dataSource, controls);
+    }
+
+
+    protected virtual void OnEditableRowChangesCanceled (int index, IBusinessObject businessObject)
     {
       ArgumentUtility.CheckNotNull ("businessObject", businessObject);
 
@@ -3288,6 +3332,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       }
     }
 
+    void IEditModeHost.OnEditableRowChangesCanceled (int index, IBusinessObject businessObject)
+    {
+      OnEditableRowChangesCanceled (index, businessObject);
+    }
 
     /// <summary> Adds the <paramref name="businessObjects"/> to the <see cref="Value"/> collection. </summary>
     /// <remarks> Sets the dirty state. </remarks>
@@ -3575,7 +3623,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Gets or sets a value that determines if the row menu is being displayed. </summary>
-    /// <value> <see cref="!:RowMenuDisplay.Undefined"/> is interpreted as <see cref="!:RowMenuDisplay.Disabled"/>. </value>
+    /// <value> <see cref="Controls.RowMenuDisplay.Undefined"/> is interpreted as <see cref="Controls.RowMenuDisplay.Disabled"/>. </value>
     [Category ("Menu")]
     [Description ("Enables the row menu. Undefined is interpreted as Disabled.")]
     [DefaultValue (RowMenuDisplay.Undefined)]
@@ -4024,6 +4072,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private IRowIDProvider RowIDProvider
     {
       get { return _rowIDProvider; }
+    }
+
+    IRowIDProvider IEditModeHost.RowIDProvider 
+    {
+      get { return RowIDProvider; }
     }
 
     private void InitializeRowIDProvider()

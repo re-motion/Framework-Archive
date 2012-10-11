@@ -29,20 +29,20 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
     // static members and constants
 
     // member fields
-    private Controls.BocList _owner;
+    private readonly IEditModeHost _editModeHost;
 
     // construction and disposing
 
-    public EditModeValidator (Controls.BocList owner)
+    public EditModeValidator (IEditModeHost editModeHost)
     {
-      _owner = owner;
+      _editModeHost = editModeHost;
     }
 
     // methods and properties
 
     protected override bool EvaluateIsValid()
     {
-      return _owner.ValidateEditableRows();
+      return _editModeHost.ValidateEditableRows();
     }
 
     protected override bool ControlPropertiesValid()
@@ -51,7 +51,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
       if (StringUtility.IsNullOrEmpty (controlToValidate))
         return base.ControlPropertiesValid();
       else
-        return NamingContainer.FindControl (controlToValidate) == _owner;
+        return NamingContainer.FindControl (controlToValidate) == _editModeHost.GetEditModeValidator();
     }
   }
 }
