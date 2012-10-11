@@ -1544,7 +1544,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     /// <summary> 
     ///   Creates a <see cref="BocDropDownMenuColumnDefinition"/> if <see cref="RowMenuDisplay"/> is set to
-    ///   <see cref="!:RowMenuDisplay.Automatic"/>.
+    ///   <see cref="RowMenuDisplay.Automatic"/>.
     /// </summary>
     /// <returns> A <see cref="BocDropDownMenuColumnDefinition"/> instance or <see langword="null"/>. </returns>
     private BocDropDownMenuColumnDefinition GetRowMenuColumn ()
@@ -1562,7 +1562,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <summary> 
     ///   Tests that the <paramref name="columnDefinitions"/> array holds exactly one
     ///   <see cref="BocDropDownMenuColumnDefinition"/> if the <see cref="RowMenuDisplay"/> is set to 
-    ///   <see cref="!:RowMenuDisplay.Automatic"/> or <see cref="!:RowMenuDisplay.Manual"/>.
+    ///   <see cref="RowMenuDisplay.Automatic"/> or <see cref="RowMenuDisplay.Manual"/>.
     /// </summary>
     private void CheckRowMenuColumns (BocColumnDefinition[] columnDefinitions)
     {
