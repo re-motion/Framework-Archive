@@ -118,6 +118,8 @@ function BocList_InitializeList(bocList, selectorControlPrefix, selectAllSelecto
       }
     }
     selectedRows.SelectAllSelectorControls = document.getElementById(selectAllSelectorControlID);
+    if (selectedRows.DataRowCount == selectedRows.Length && selectedRows.SelectAllSelectorControls != null)
+      selectedRows.SelectAllSelectorControls.checked = true;
   }
   _bocList_selectedRows[bocList.id] = selectedRows;
 
