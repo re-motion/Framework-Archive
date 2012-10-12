@@ -26,6 +26,7 @@ using System.Reflection;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.Collections;
+using Remotion.FunctionalProgramming;
 using Remotion.Globalization;
 using Remotion.Logging;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation;
@@ -2897,6 +2898,52 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       RemoveRow ((IBusinessObject) Value[index]);
     }
 
+    private void AddRowsImplementation (IBusinessObject[] businessObjects)
+    {
+      ArgumentUtility.CheckNotNull ("businessObjects", businessObjects);
+
+      var oldValue = Value;
+
+      var newValue = ListUtility.AddRange (oldValue, businessObjects, Property, false, true);
+
+      if (oldValue == null || newValue == null)
+        Value = newValue;
+      else
+      {
+        SetValue (newValue);
+        IsDirty = true;
+
+        var indices = Utilities.ListUtility.IndicesOf (newValue, businessObjects, true);
+        var rows = businessObjects.Zip (indices, (o, i) => new BocListRow (i, o)).OrderBy (r => r.Index);
+        foreach (var row in rows)
+          RowIDProvider.AddRow (row);
+      }
+    }
+
+    private void RemoveRowsImplementation (IBusinessObject[] businessObjects)
+    {
+      ArgumentUtility.CheckNotNull ("businessObjects", businessObjects);
+
+      var oldValue = Value;
+      int[] indices = null;
+      if (oldValue != null)
+        indices = Utilities.ListUtility.IndicesOf (oldValue, businessObjects, true);
+
+      var newValue = ListUtility.Remove (Value, businessObjects, Property, false);
+
+      if (oldValue == null || newValue == null)
+        Value = newValue;
+      else
+      {
+        SetValue (newValue);
+        IsDirty = true;
+
+        var rows = businessObjects.Zip (indices, (o, i) => new BocListRow (i, o)).OrderByDescending (r => r.Index);
+        foreach (var row in rows)
+          RowIDProvider.RemoveRow (row);
+      }
+    }
+
     /// <summary>
     ///   Saves changes to previous edited row and starts editing for the specified row.
     /// </summary>
@@ -2992,6 +3039,30 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       _editModeController.EnsureValidatorsRestored();
     }
 
+    private void EndRowEditModeCleanUp (int modifiedRowIndex)
+    {
+      if (! IsReadOnly)
+      {
+        OnStateOfDisplayedRowsChanged();
+        BocListRow[] sortedRows = EnsureSortedBocListRowsGot();
+        for (int idxRows = 0; idxRows < sortedRows.Length; idxRows++)
+        {
+          int originalRowIndex = sortedRows[idxRows].Index;
+          if (modifiedRowIndex == originalRowIndex)
+          {
+            _currentRow = idxRows;
+            break;
+          }
+        }
+      }
+    }
+
+    private void EndListEditModeCleanUp ()
+    {
+      if (! IsReadOnly)
+        OnStateOfDisplayedRowsChanged();
+    }
+
     /// <summary> Explicitly validates the changes made to the edit mode. </summary>
     /// <returns> <see langword="true"/> if the rows contain only valid values. </returns>
     public bool ValidateEditableRows ()
@@ -2999,6 +3070,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       return _editModeController.Validate();
     }
 
+    private EditModeValidator GetEditModeValidator ()
+    {
+      return _validators.OfType<EditModeValidator>().FirstOrDefault();
+    }
 
     /// <summary> Gets a flag that determines wheter the <see cref="BocList"/> is n row edit mode. </summary>
     /// <remarks>

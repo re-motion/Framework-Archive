@@ -109,77 +109,27 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
       public EditModeValidator GetEditModeValidator ()
       {
-        return _bocList._validators.OfType<EditModeValidator>().FirstOrDefault();
+        return _bocList.GetEditModeValidator();
       }
 
       public void AddRows (IBusinessObject[] businessObjects)
       {
-        ArgumentUtility.CheckNotNull ("businessObjects", businessObjects);
-
-        var oldValue = _bocList.Value;
-
-        var newValue = ListUtility.AddRange (oldValue, businessObjects, _bocList.Property, false, true);
-
-        if (oldValue == null || newValue == null)
-          _bocList.Value = newValue;
-        else
-        {
-          _bocList.SetValue (newValue);
-          _bocList.IsDirty = true;
-
-          var indices = Utilities.ListUtility.IndicesOf (newValue, businessObjects, true);
-          var rows = businessObjects.Zip (indices, (o, i) => new BocListRow (i, o)).OrderBy (r => r.Index);
-          foreach (var row in rows)
-            _bocList.RowIDProvider.AddRow (row);
-        }
+        _bocList.AddRowsImplementation (businessObjects);
       }
 
       public void RemoveRows (IBusinessObject[] businessObjects)
       {
-        ArgumentUtility.CheckNotNull ("businessObjects", businessObjects);
-
-        var oldValue = _bocList.Value;
-        int[] indices = null;
-        if (oldValue != null)
-          indices = Utilities.ListUtility.IndicesOf (oldValue, businessObjects, true);
-
-        var newValue = ListUtility.Remove (_bocList.Value, businessObjects, _bocList.Property, false);
-
-        if (oldValue == null || newValue == null)
-          _bocList.Value = newValue;
-        else
-        {
-          _bocList.SetValue (newValue);
-          _bocList.IsDirty = true;
-
-          var rows = businessObjects.Zip (indices, (o, i) => new BocListRow (i, o)).OrderByDescending (r => r.Index);
-          foreach (var row in rows)
-            _bocList.RowIDProvider.RemoveRow (row);
-        }
+        _bocList.RemoveRows (businessObjects);
       }
 
       public void EndRowEditModeCleanUp (int modifiedRowIndex)
       {
-        if (! _bocList.IsReadOnly)
-        {
-          _bocList.OnStateOfDisplayedRowsChanged();
-          BocListRow[] sortedRows = _bocList.EnsureSortedBocListRowsGot();
-          for (int idxRows = 0; idxRows < sortedRows.Length; idxRows++)
-          {
-            int originalRowIndex = sortedRows[idxRows].Index;
-            if (modifiedRowIndex == originalRowIndex)
-            {
-              _bocList._currentRow = idxRows;
-              break;
-            }
-          }
-        }
+        _bocList.EndRowEditModeCleanUp (modifiedRowIndex);
       }
 
       public void EndListEditModeCleanUp ()
       {
-        if (! _bocList.IsReadOnly)
-          _bocList.OnStateOfDisplayedRowsChanged();
+        _bocList.EndListEditModeCleanUp();
       }
 
       public bool ValidateEditableRows ()
