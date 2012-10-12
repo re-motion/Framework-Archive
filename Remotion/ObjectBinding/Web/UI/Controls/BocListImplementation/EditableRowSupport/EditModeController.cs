@@ -400,7 +400,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
         }
         else if (IsListEditModeActive)
         {
-          int[] indices = Utilities.ListUtility.IndicesOf (_editModeHost.Value, businessObjects, false);
+          int[] indices = ListUtility.IndicesOf (_editModeHost.Value, businessObjects, false);
           foreach (int index in indices.Reverse())
             RemoveRowFromDataStructure(index);
         }

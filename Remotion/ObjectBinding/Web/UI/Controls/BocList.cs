@@ -2771,7 +2771,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       if (Value == null)
         throw new InvalidOperationException (string.Format ("The BocList '{0}' does not have a Value.", ID));
 
-      var selectedRows = Utilities.ListUtility.IndicesOf (Value, selectedObjects, true);
+      var selectedRows = ListUtility.IndicesOf (Value, selectedObjects, true);
       for (int i = 0; i < selectedRows.Length; i++)
       {
         if (selectedRows[i] < 0)
@@ -2909,7 +2909,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         SetValue (newValue);
         IsDirty = true;
 
-        var indices = Utilities.ListUtility.IndicesOf (newValue, businessObjects, true);
+        var indices = ListUtility.IndicesOf (newValue, businessObjects, true);
         var rows = businessObjects.Zip (indices, (o, i) => new BocListRow (i, o)).OrderBy (r => r.Index);
         foreach (var row in rows)
           RowIDProvider.AddRow (row);
@@ -2923,7 +2923,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       var oldValue = Value;
       int[] indices = null;
       if (oldValue != null)
-        indices = Utilities.ListUtility.IndicesOf (oldValue, businessObjects, true);
+        indices = ListUtility.IndicesOf (oldValue, businessObjects, true);
 
       var newValue = ListUtility.Remove (Value, businessObjects, Property, false);
 

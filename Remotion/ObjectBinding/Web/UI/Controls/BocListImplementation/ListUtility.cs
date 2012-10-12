@@ -14,10 +14,12 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
 using System.Collections;
+using Remotion.Utilities;
 
-namespace Remotion.ObjectBinding
+namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
 {
   public delegate IList CreateListMethod (int count);
 
@@ -26,20 +28,10 @@ namespace Remotion.ObjectBinding
   /// </summary>
   public static class ListUtility
   {
-    private static CreateListMethod GetCreateListMethod (IBusinessObjectProperty property)
-    {
-      if (property == null)
-        return null;
-      if (!property.IsList)
-        throw new ArgumentException (string.Format ("BusinessObjectProperty '{0}' is not a list property.", property.Identifier), "property");
-      return property.ListInfo.CreateList;
-    }
-
     /// <summary>
     ///   Adds a range of objects to a list. The original list may be modified.
     /// </summary>
-    public static IList AddRange (
-        IList list, IList objects, IBusinessObjectReferenceProperty property, bool mustCreateCopy, bool createIfNull)
+    public static IList AddRange (IList list, IList objects, IBusinessObjectReferenceProperty property, bool mustCreateCopy, bool createIfNull)
     {
       return AddRange (list, objects, GetCreateListMethod (property), mustCreateCopy, createIfNull);    
     }
@@ -47,8 +39,7 @@ namespace Remotion.ObjectBinding
     /// <summary>
     ///   Adds a range of objects to a list. The original list may be modified.
     /// </summary>
-    public static IList AddRange (
-        IList list, IList objects, CreateListMethod createListMethod, bool mustCreateCopy, bool createIfNull)
+    public static IList AddRange (IList list, IList objects, CreateListMethod createListMethod, bool mustCreateCopy, bool createIfNull)
     {
       if (list == null)
       {
@@ -56,7 +47,7 @@ namespace Remotion.ObjectBinding
           throw new ArgumentNullException ("list");
         
         list = CreateList (createListMethod, list, objects.Count);
-        Utilities.ListUtility.CopyTo (objects, list);
+        CopyTo (objects, list);
         return list;
       }
       
@@ -66,7 +57,7 @@ namespace Remotion.ObjectBinding
         ArrayList arrayList = new ArrayList (list);
         arrayList.AddRange (objects);
         IList newList = CreateList (createListMethod, list, arrayList.Count);
-        Utilities.ListUtility.CopyTo (arrayList, newList);
+        CopyTo (arrayList, newList);
         return newList;
       }
       else
@@ -93,8 +84,7 @@ namespace Remotion.ObjectBinding
     /// <summary>
     ///    Removes a range of values from a list and returns the resulting list. The original list may be modified.
     /// </summary>
-    public static IList Remove (
-        IList list, IList objects, IBusinessObjectReferenceProperty property, bool mustCreateCopy)
+    public static IList Remove (IList list, IList objects, IBusinessObjectReferenceProperty property, bool mustCreateCopy)
     {
       return Remove (list, objects, GetCreateListMethod (property), mustCreateCopy);
     }
@@ -102,8 +92,7 @@ namespace Remotion.ObjectBinding
     /// <summary>
     ///    Removes a range of values from a list and returns the resulting list. The original list may be modified.
     /// </summary>
-    public static IList Remove (
-        IList list, IList objects, CreateListMethod createListMethod, bool mustCreateCopy)
+    public static IList Remove (IList list, IList objects, CreateListMethod createListMethod, bool mustCreateCopy)
     {
       if (list == null)
         return null;
@@ -116,7 +105,7 @@ namespace Remotion.ObjectBinding
           arrayList.Remove (obj);
 
         IList newList = CreateList (createListMethod, list, arrayList.Count);
-        Utilities.ListUtility.CopyTo (arrayList, newList);
+        CopyTo (arrayList, newList);
         return newList;
       }
       else
@@ -128,6 +117,80 @@ namespace Remotion.ObjectBinding
           list.Remove (obj);
         return list;
       }
+    }
+    public static void CopyTo (IList source, IList destination)
+    {
+      int len = Math.Min (source.Count, destination.Count);
+      for (int i = 0; i < len; ++i)
+        destination[i] = source[i];
+    }
+
+    public static int IndexOf (IList list, object value)
+    {
+      ArgumentUtility.CheckNotNull ("list", list);
+      try
+      {
+        return list.IndexOf (value);
+      }
+      catch (NotSupportedException)
+      {
+        return IndexOfInternal (list, value);
+      }
+    }
+
+    public static int[] IndicesOf (IList list, IList values)
+    {
+      return IndicesOf (list, values, true);
+    }
+
+    public static int[] IndicesOf (IList list, IList values, bool includeMissing)
+    {
+      ArgumentUtility.CheckNotNull ("list", list);
+      ArgumentUtility.CheckNotNull ("values", values);
+
+      ArrayList indices = new ArrayList (values.Count);
+      bool isIndexOfSupported = true;
+      for (int i = 0; i < values.Count; i++)
+      {
+        int index = -1;
+        if (isIndexOfSupported)
+        {
+          try
+          {
+            index = list.IndexOf (values[i]);
+          }
+          catch (NotSupportedException)
+          {
+            isIndexOfSupported = false;
+          }
+        }
+
+        if (! isIndexOfSupported)
+          index = IndexOfInternal (list, values[i]);
+
+        if (index > -1 || includeMissing)
+          indices.Add (index);
+      }
+      return (int[]) indices.ToArray (typeof (int));
+    }
+
+    private static int IndexOfInternal (IList list, object value)
+    {
+      for (int i = 0; i < list.Count; i++)
+      {
+        if (list[i] == value)
+          return i;
+      }
+      return -1;
+    }
+
+    private static CreateListMethod GetCreateListMethod (IBusinessObjectProperty property)
+    {
+      if (property == null)
+        return null;
+      if (!property.IsList)
+        throw new ArgumentException (string.Format ("BusinessObjectProperty '{0}' is not a list property.", property.Identifier), "property");
+      return property.ListInfo.CreateList;
     }
   }
 }

@@ -14,12 +14,13 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
 using System.Collections;
 using NUnit.Framework;
-using Remotion.Utilities;
+using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation;
 
-namespace Remotion.UnitTests.Utilities
+namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocListImplementation
 {
 
 [TestFixture]
