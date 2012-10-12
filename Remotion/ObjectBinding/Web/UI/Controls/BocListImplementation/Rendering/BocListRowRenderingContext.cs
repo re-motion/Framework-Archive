@@ -14,32 +14,40 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System;
-using Remotion.Data.DomainObjects.Web.Test.WxeFunctions;
-using Remotion.ServiceLocation;
-using Remotion.Web;
-using Remotion.Web.ExecutionEngine;
-using Remotion.Web.UI;
 
-namespace Remotion.Data.DomainObjects.Web.Test.Performance
+using System;
+using Remotion.Utilities;
+
+namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 {
-  public partial class Form : WxePage
+  public class BocListRowRenderingContext
   {
-    protected override void OnLoad (EventArgs e)
+    private readonly BocListRow _row;
+    private readonly int _sortedIndex;
+    private readonly bool _isSelected;
+
+    public BocListRowRenderingContext (BocListRow row, int sortedIndex, bool isSelected)
     {
-      base.OnLoad (e);
-      var items = ((PerformanceFunction) CurrentFunction).Items;
-      ItemList.LoadUnboundValue (items, IsPostBack);
+      ArgumentUtility.CheckNotNull ("row", row);
+
+      _row = row;
+      _sortedIndex = sortedIndex;
+      _isSelected = isSelected;
     }
 
-    protected override void OnPreRender (EventArgs e)
+    public BocListRow Row
     {
-      var resourceUrlFactory = SafeServiceLocator.Current.GetInstance<IResourceUrlFactory>();
+      get { return _row; }
+    }
 
-      HtmlHeadAppender.Current.RegisterStylesheetLink (
-          GetType() + "_Style", resourceUrlFactory.CreateThemedResourceUrl (typeof (ResourceTheme), ResourceType.Html, "Style.css"));
+    public int SortedIndex
+    {
+      get { return _sortedIndex; }
+    }
 
-      base.OnPreRender (e);
+    public bool IsSelected
+    {
+      get { return _isSelected; }
     }
   }
 }

@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
 using Remotion.Utilities;
 
@@ -26,7 +27,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     public BocListRow (int index, IBusinessObject businessObject)
     {
+      if (index < 0)
+        throw new ArgumentOutOfRangeException ("index", index, "Negative indices are not allowed.");
       ArgumentUtility.CheckNotNull ("businessObject", businessObject);
+
       _index = index;
       _businessObject = businessObject;
     }
