@@ -51,6 +51,7 @@ function BocList_SelectedRows (selection)
     this.Rows = new Object();
   };
   this.SelectAllSelectorControls = null;
+  this.DataRowCount = 0;
 }
 
 function BocList_RowBlock (row, selectorControl)
@@ -96,6 +97,7 @@ function BocList_InitializeList(bocList, selectorControlPrefix, selectAllSelecto
       var selectorControl = document.getElementById (selectorControlID);
       if (selectorControl == null)
         continue;
+      selectedRows.DataRowCount++;
       var row = selectorControl.parentNode.parentNode;
   
       if (hasClickSensitiveRows)
@@ -214,6 +216,9 @@ function BocList_SelectRow (bocList, rowBlock)
   // Select currentRow
   $(rowBlock.Row).addClass (_bocList_TrClassNameSelected);
   rowBlock.SelectorControl.checked = true;
+
+  if (selectedRows.DataRowCount == selectedRows.Length && selectedRows.SelectAllSelectorControls != null)
+    selectedRows.SelectAllSelectorControls.each(function () { this.checked = true; });
 }
 
 //  Unselects all rows in a BocList.
