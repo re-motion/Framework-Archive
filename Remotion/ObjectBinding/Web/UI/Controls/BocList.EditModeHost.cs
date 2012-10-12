@@ -119,7 +119,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
       public void RemoveRows (IBusinessObject[] businessObjects)
       {
-        _bocList.RemoveRows (businessObjects);
+        _bocList.RemoveRowsImplementation (businessObjects);
       }
 
       public void EndRowEditModeCleanUp (int modifiedRowIndex)

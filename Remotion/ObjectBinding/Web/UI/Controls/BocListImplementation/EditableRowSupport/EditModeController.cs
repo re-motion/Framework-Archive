@@ -277,8 +277,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
     {
       EnsureChildControls();
 
-      _rows.Clear();
-      Controls.Clear();
+      Assertion.IsTrue (_rows.Count == 0, "Populating the editable rows only happens after the last edit mode was ended.");
+      Assertion.IsTrue (Controls.Count == 0, "Populating the editable rows only happens after the last edit mode was ended.");
 
       foreach (var bocListRow in bocListRows)
       {
@@ -337,8 +337,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
 
     private void RemoveEditModeControls ()
     {
-      for (int i = 0; i < _rows.Count; i++)
-        _rows[i].RemoveControls();
+      for (int i = _rows.Count - 1; i >= 0; i--)
+        RemoveRowFromDataStructure (i);
     }
 
 
@@ -402,12 +402,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
         {
           int[] indices = Utilities.ListUtility.IndicesOf (_editModeHost.Value, businessObjects, false);
           foreach (int index in indices.Reverse())
-          {
-            EditableRow row = _rows[index];
-            Controls.Remove (row);
-            row.RemoveControls();
-            _rows.RemoveAt (index);
-          }
+            RemoveRowFromDataStructure(index);
         }
       }
 
@@ -419,6 +414,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
       ArgumentUtility.CheckNotNull ("businessObject", businessObject);
 
       RemoveRows (new[] { businessObject });
+    }
+
+    private void RemoveRowFromDataStructure (int index)
+    {
+      EditableRow row = _rows[index];
+      Controls.Remove (row);
+      row.RemoveControls();
+      _rows.RemoveAt (index);
     }
 
     public bool IsRowEditModeActive
@@ -435,7 +438,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
     {
       get { return _editableRowIndex; }
     }
-
 
     public BaseValidator[] CreateValidators (IResourceManager resourceManager)
     {
