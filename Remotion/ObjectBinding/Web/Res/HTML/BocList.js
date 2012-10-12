@@ -111,7 +111,8 @@ function BocList_InitializeList(bocList, selectorControlPrefix, selectAllSelecto
       }
     }
 
-    selectedRows.SelectAllSelectorControls = $("input[name="+selectAllSelectorControlName+"]");
+    selectedRows.SelectAllSelectorControls = $("input[name=" + selectAllSelectorControlName + "]");
+    BocList_SetSelectAllRowsSelectorOnDemand (selectedRows);
   }
   _bocList_selectedRows[bocList.id] = selectedRows;
 
@@ -212,13 +213,12 @@ function BocList_SelectRow (bocList, rowBlock)
   var selectedRows = _bocList_selectedRows[bocList.id];
   selectedRows.Rows[rowBlock.SelectorControl.id] = rowBlock;
   selectedRows.Length++;
-    
+
   // Select currentRow
-  $(rowBlock.Row).addClass (_bocList_TrClassNameSelected);
+  $ (rowBlock.Row).addClass (_bocList_TrClassNameSelected);
   rowBlock.SelectorControl.checked = true;
 
-  if (selectedRows.DataRowCount == selectedRows.Length && selectedRows.SelectAllSelectorControls != null)
-    selectedRows.SelectAllSelectorControls.each(function () { this.checked = true; });
+  BocList_SetSelectAllRowsSelectorOnDemand (selectedRows);
 }
 
 //  Unselects all rows in a BocList.
@@ -255,7 +255,18 @@ function BocList_UnselectRow (bocList, rowBlock)
   $(rowBlock.Row).removeClass(_bocList_TrClassNameSelected);
   rowBlock.SelectorControl.checked = false;
 
-  selectedRows.SelectAllSelectorControls.each (function () { this.checked = false; });
+  BocList_ClearSelectAllRowsSelector (selectedRows);
+}
+
+function BocList_SetSelectAllRowsSelectorOnDemand (selectedRows)
+{
+  if (selectedRows.DataRowCount == selectedRows.Length)
+    selectedRows.SelectAllSelectorControls.each (function () { this.checked = true; });
+}
+
+function BocList_ClearSelectAllRowsSelector (selectedRows)
+{
+  selectedRows.SelectAllSelectorControls.each(function () { this.checked = false; });
 }
 
 //  Event handler for the selection selectorControl in the title row.
