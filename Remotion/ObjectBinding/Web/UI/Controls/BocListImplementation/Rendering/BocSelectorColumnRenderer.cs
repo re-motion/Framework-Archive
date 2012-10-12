@@ -61,7 +61,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, cssClassTableCell);
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Td);
-      RenderSelectorControl (renderingContext, selectorControlID, selectorControlValue, isChecked, false);
+      RenderDataRowSelectorControl (renderingContext, selectorControlID, selectorControlValue, isChecked);
       renderingContext.Writer.RenderEndTag();
     }
 
@@ -77,61 +77,25 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       if (renderingContext.Control.Selection == RowSelection.Multiple)
       {
         string selectorControlName = renderingContext.Control.GetSelectAllControlClientID();
-        RenderSelectorControl (renderingContext, selectorControlName, null, false, true);
+        RenderTitleRowSelectorControl (renderingContext, selectorControlName);
       }
       else
         renderingContext.Writer.Write (c_whiteSpace);
       renderingContext.Writer.RenderEndTag();
     }
-
-    private void RenderSelectorControl (
-        BocListRenderingContext renderingContext, string id, string value, bool isChecked, bool isSelectAllSelectorControl)
+    
+    private void RenderTitleRowSelectorControl (BocListRenderingContext renderingContext, string id)
     {
       ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
       ArgumentUtility.CheckNotNullOrEmpty ("id", id);
 
-      if (renderingContext.Control.Selection == RowSelection.SingleRadioButton)
-        renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Type, "radio");
-      else
-        renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Type, "checkbox");
+      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Type, "checkbox");
 
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Id, id);
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Name, id);
 
-      if (isChecked)
-        renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Checked, "checked");
       if (renderingContext.Control.EditModeController.IsRowEditModeActive)
         renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Disabled, "disabled");
 
-      if (isSelectAllSelectorControl)
-      {
-        AddSelectAllSelectorAttributes (renderingContext);
-      }
-      else
-      {
-        renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Value, value);
-
-        AddRowSelectorAttributes (renderingContext);
-      }
-
-      renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Input);
-      renderingContext.Writer.RenderEndTag();
-    }
-
-    private void AddRowSelectorAttributes (BocListRenderingContext renderingContext)
-    {
-      string alternateText = renderingContext.Control.GetResourceManager().GetString (BocList.ResourceIdentifier.SelectRowAlternateText);
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Alt, alternateText);
-
-      if (renderingContext.Control.HasClientScript)
-      {
-        const string script = "BocList_OnSelectionSelectorControlClick();";
-        renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Onclick, script);
-      }
-    }
-
-    private void AddSelectAllSelectorAttributes (BocListRenderingContext renderingContext)
-    {
       string alternateText = renderingContext.Control.GetResourceManager().GetString (BocList.ResourceIdentifier.SelectAllRowsAlternateText);
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Alt, alternateText);
 
@@ -151,6 +115,41 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
                         + "document.getElementById ('" + renderingContext.Control.ListMenu.ClientID + "'));";
         renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Onclick, script);
       }
+
+      renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Input);
+      renderingContext.Writer.RenderEndTag();
+    }
+
+    private void RenderDataRowSelectorControl (BocListRenderingContext renderingContext, string id, string value, bool isChecked)
+    {
+      ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
+      ArgumentUtility.CheckNotNullOrEmpty ("id", id);
+
+      if (renderingContext.Control.Selection == RowSelection.SingleRadioButton)
+        renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Type, "radio");
+      else
+        renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Type, "checkbox");
+
+      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Id, id);
+      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Name, id);
+
+      if (isChecked)
+        renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Checked, "checked");
+      if (renderingContext.Control.EditModeController.IsRowEditModeActive)
+        renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Disabled, "disabled");
+      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Value, value);
+
+      string alternateText = renderingContext.Control.GetResourceManager().GetString (BocList.ResourceIdentifier.SelectRowAlternateText);
+      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Alt, alternateText);
+
+      if (renderingContext.Control.HasClientScript)
+      {
+        const string script = "BocList_OnSelectionSelectorControlClick();";
+        renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Onclick, script);
+      }
+
+      renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Input);
+      renderingContext.Writer.RenderEndTag();
     }
   }
 }
