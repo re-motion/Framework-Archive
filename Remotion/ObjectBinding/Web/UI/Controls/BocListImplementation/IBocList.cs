@@ -23,10 +23,8 @@ using Remotion.Collections;
 using Remotion.Globalization;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableRowSupport;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
-using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.DropDownMenuImplementation;
 using Remotion.Web.UI.Controls.ListMenuImplementation;
-using Image=System.Web.UI.WebControls.Image;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
 {

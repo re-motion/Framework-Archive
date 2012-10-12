@@ -26,7 +26,6 @@ using System.Reflection;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.Collections;
-using Remotion.FunctionalProgramming;
 using Remotion.Globalization;
 using Remotion.Logging;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation;
@@ -57,13 +56,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
   [Designer (typeof (BocListDesigner))]
   [DefaultEvent ("CommandClick")]
   [ToolboxItemFilter ("System.Web.UI")]
-  public class BocList : 
+  public partial class BocList : 
       BusinessObjectBoundEditableWebControl, 
       IBocList,
       IPostBackEventHandler,
       IPostBackDataHandler,
-      IResourceDispatchTarget,
-      IEditModeHost
+      IResourceDispatchTarget
   {
     #region Obsoletes
 
@@ -364,7 +362,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     public BocList ()
     {
       _availableViewsList = new DropDownList();
-      _editModeController = new EditModeController (this);
+      _editModeController = new EditModeController (new EditModeHost (this));
       _optionsMenu = new DropDownMenu (this);
       _listMenu = new ListMenu (this);
       _rowMenusPlaceHolder = new PlaceHolder();
@@ -1308,11 +1306,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       return requiredIcon;
     }
 
-    Image IEditModeHost.GetRequiredMarker ()
-    {
-      return GetRequiredMarker();
-    }
-
     /// <summary> Builds the validation error marker. </summary>
     protected virtual Image GetValidationErrorMarker ()
     {
@@ -1325,11 +1318,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
       validationErrorIcon.Style["vertical-align"] = "middle";
       return validationErrorIcon;
-    }
-
-    Image IEditModeHost.GetValidationErrorMarker ()
-    {
-      return GetValidationErrorMarker();
     }
 
     protected virtual void OnDataRowRendering (BocListDataRowRenderEventArgs e)
@@ -2909,56 +2897,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       RemoveRow ((IBusinessObject) Value[index]);
     }
 
-    void IEditModeHost.AddRows (IBusinessObject[] businessObjects)
-    {
-      ArgumentUtility.CheckNotNull ("businessObjects", businessObjects);
-
-      var oldValue = Value;
-
-      var newValue = ListUtility.AddRange (oldValue, businessObjects, Property, false, true);
-      
-      if (oldValue == null || newValue == null)
-      {
-        Value = newValue;
-      }
-      else
-      {
-        SetValue (newValue);
-        IsDirty = true;
-
-        var indices = Utilities.ListUtility.IndicesOf (newValue, businessObjects, true);
-        var rows = businessObjects.Zip (indices, (o, i) => new BocListRow (i, o)).OrderBy (r => r.Index);
-        foreach (var row in rows)
-          RowIDProvider.AddRow (row);
-      }
-    }
-
-    void IEditModeHost.RemoveRows (IBusinessObject[] businessObjects)
-    {
-      ArgumentUtility.CheckNotNull ("businessObjects", businessObjects);
-
-      var oldValue = Value;
-      int[] indices = null;
-      if (oldValue != null)
-        indices = Utilities.ListUtility.IndicesOf (oldValue, businessObjects, true);
-
-      var newValue = ListUtility.Remove (Value, businessObjects, Property, false);
-
-      if (oldValue == null || newValue == null)
-      {
-        Value = newValue;
-      }
-      else
-      {
-        SetValue (newValue);
-        IsDirty = true;
-
-        var rows = businessObjects.Zip (indices, (o, i) => new BocListRow (i, o)).OrderByDescending (r => r.Index);
-        foreach (var row in rows)
-          RowIDProvider.RemoveRow (row);
-      }
-    }
-
     /// <summary>
     ///   Saves changes to previous edited row and starts editing for the specified row.
     /// </summary>
@@ -3029,24 +2967,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       _editModeController.EndRowEditMode (saveChanges, EnsureColumnsForPreviousLifeCycleGot());
     }
 
-    void IEditModeHost.EndRowEditModeCleanUp (int modifiedRowIndex)
-    {
-      if (! IsReadOnly)
-      {
-        OnStateOfDisplayedRowsChanged();
-        BocListRow[] sortedRows = EnsureSortedBocListRowsGot();
-        for (int idxRows = 0; idxRows < sortedRows.Length; idxRows++)
-        {
-          int originalRowIndex = sortedRows[idxRows].Index;
-          if (modifiedRowIndex == originalRowIndex)
-          {
-            _currentRow = idxRows;
-            break;
-          }
-        }
-      }
-    }
-
     /// <summary>
     ///   Ends the current edit mode and optionally validates and saves the changes made during edit mode.
     /// </summary>
@@ -3060,12 +2980,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     public void EndListEditMode (bool saveChanges)
     {
       _editModeController.EndListEditMode (saveChanges, EnsureColumnsForPreviousLifeCycleGot());
-    }
-
-    void IEditModeHost.EndListEditModeCleanUp ()
-    {
-      if (! IsReadOnly)
-        OnStateOfDisplayedRowsChanged();
     }
 
     private void EnsureEditModeRestored ()
@@ -3085,15 +2999,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       return _editModeController.Validate();
     }
 
-    bool IEditModeHost.ValidateEditableRows ()
-    {
-      return ValidateCustomColumns();
-    }
-
-    EditModeValidator IEditModeHost.GetEditModeValidator ()
-    {
-      return _validators.OfType<EditModeValidator>().FirstOrDefault();
-    }
 
     /// <summary> Gets a flag that determines wheter the <see cref="BocList"/> is n row edit mode. </summary>
     /// <remarks>
@@ -3264,15 +3169,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       }
     }
 
-    void IEditModeHost.OnEditableRowChangesSaving (
-        int index,
-        IBusinessObject businessObject,
-        IBusinessObjectDataSource dataSource,
-        IBusinessObjectBoundEditableWebControl[] controls)
-    {
-      OnEditableRowChangesSaving (index, businessObject, dataSource, controls);
-    }
-
     protected virtual void OnEditableRowChangesSaved (int index, IBusinessObject businessObject)
     {
       ArgumentUtility.CheckNotNull ("businessObject", businessObject);
@@ -3283,11 +3179,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         BocListItemEventArgs e = new BocListItemEventArgs (index, businessObject);
         handler (this, e);
       }
-    }
-
-    void IEditModeHost.OnEditableRowChangesSaved (int index, IBusinessObject businessObject)
-    {
-      OnEditableRowChangesSaved (index, businessObject);
     }
 
     protected virtual void OnEditableRowChangesCanceling (
@@ -3309,17 +3200,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         handler (this, e);
       }
     }
-
-    void IEditModeHost.OnEditableRowChangesCanceling (
-        int index,
-        IBusinessObject businessObject,
-        IBusinessObjectDataSource dataSource,
-        IBusinessObjectBoundEditableWebControl[] controls)
-    {
-      OnEditableRowChangesCanceling (index, businessObject, dataSource, controls);
-    }
-
-
+    
     protected virtual void OnEditableRowChangesCanceled (int index, IBusinessObject businessObject)
     {
       ArgumentUtility.CheckNotNull ("businessObject", businessObject);
@@ -3330,11 +3211,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         BocListItemEventArgs e = new BocListItemEventArgs (index, businessObject);
         handler (this, e);
       }
-    }
-
-    void IEditModeHost.OnEditableRowChangesCanceled (int index, IBusinessObject businessObject)
-    {
-      OnEditableRowChangesCanceled (index, businessObject);
     }
 
     /// <summary> Adds the <paramref name="businessObjects"/> to the <see cref="Value"/> collection. </summary>
@@ -4072,11 +3948,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private IRowIDProvider RowIDProvider
     {
       get { return _rowIDProvider; }
-    }
-
-    IRowIDProvider IEditModeHost.RowIDProvider 
-    {
-      get { return RowIDProvider; }
     }
 
     private void InitializeRowIDProvider()
