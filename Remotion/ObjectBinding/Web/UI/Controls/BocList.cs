@@ -87,8 +87,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private const string c_optionsMenuIDSuffix = "_Boc_OptionsMenu";
     private const string c_listMenuIDSuffix = "_Boc_ListMenu";
 
-    private const string c_titleRowID = "<TitleRow>";
-
     /// <summary> Prefix applied to the post back argument of the event type column commands. </summary>
     private const string c_eventListItemCommandPrefix = "ListCommand=";
 
@@ -502,13 +500,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
         bool isDataRowSelectorControl = key.StartsWith (dataRowSelectorControlFilter);
         bool isTitleRowSelectorControl = (key == titleRowSelectorControlFilter);
-        if (isDataRowSelectorControl || isTitleRowSelectorControl)
+        if (isDataRowSelectorControl && !isTitleRowSelectorControl)
         {
-          if ((_selection == RowSelection.SingleCheckBox || _selection == RowSelection.SingleRadioButton)
-              && (_selectorControlCheckedState.Count > 1 || isTitleRowSelectorControl))
+          if ((_selection == RowSelection.SingleCheckBox || _selection == RowSelection.SingleRadioButton) && (_selectorControlCheckedState.Count > 1))
             continue;
-          // The title row can occur multiple times, resulting in the title row value to be concatenated and thus not parsable.
-          string rowID = isTitleRowSelectorControl ? c_titleRowID : postCollection[i];
+
+          string rowID = postCollection[i];
           _selectorControlCheckedState.Add (rowID);
         }
       }
@@ -2756,7 +2753,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         return Enumerable.Empty<BocListRow>();
 
       return _selectorControlCheckedState
-          .Where (rowID => rowID != c_titleRowID)
           .Select (rowID => RowIDProvider.GetRowFromItemRowID (Value, rowID))
           .OrderBy (r => r.Index);
     }
