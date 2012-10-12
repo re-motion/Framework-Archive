@@ -71,7 +71,7 @@ public class ListUtilityTest
   [Test]
   public void IndicesOfIncludeMissing ()
   {
-    int[] indices = ListUtility.IndicesOf (_list, _values);
+    int[] indices = ListUtility.IndicesOf (_list, _values, true);
 
     Assert.IsNotNull (indices);
     Assert.AreEqual (3, indices.Length);

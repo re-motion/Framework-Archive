@@ -33,26 +33,21 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
     /// </summary>
     public static IList AddRange (IList list, IList objects, IBusinessObjectReferenceProperty property, bool mustCreateCopy, bool createIfNull)
     {
-      return AddRange (list, objects, GetCreateListMethod (property), mustCreateCopy, createIfNull);    
-    }
-    
-    /// <summary>
-    ///   Adds a range of objects to a list. The original list may be modified.
-    /// </summary>
-    public static IList AddRange (IList list, IList objects, CreateListMethod createListMethod, bool mustCreateCopy, bool createIfNull)
-    {
+      ArgumentUtility.CheckNotNull ("objects", objects);
+      
+      CreateListMethod createListMethod = GetCreateListMethod (property);
       if (list == null)
       {
         if (! createIfNull)
           throw new ArgumentNullException ("list");
         
-        list = CreateList (createListMethod, list, objects.Count);
+        list = CreateList (createListMethod, null, objects.Count);
         CopyTo (objects, list);
         return list;
       }
       
       if (   list.IsFixedSize
-          || (mustCreateCopy && ! (list is ICloneable)))
+             || (mustCreateCopy && ! (list is ICloneable)))
       {
         ArrayList arrayList = new ArrayList (list);
         arrayList.AddRange (objects);
@@ -71,40 +66,24 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
       }
     }
 
-    public static IList CreateList (CreateListMethod createListMethod, IList template, int size)
-    {
-      if (createListMethod != null)
-        return createListMethod (size);
-      else if (template is Array)
-        return Array.CreateInstance (template.GetType().GetElementType(), size);
-      else 
-        throw new NotSupportedException ("Cannot create instance if argument 'createListMethod' is null and 'template' is not an array.");
-    }
-
     /// <summary>
     ///    Removes a range of values from a list and returns the resulting list. The original list may be modified.
     /// </summary>
     public static IList Remove (IList list, IList objects, IBusinessObjectReferenceProperty property, bool mustCreateCopy)
     {
-      return Remove (list, objects, GetCreateListMethod (property), mustCreateCopy);
-    }
-    
-    /// <summary>
-    ///    Removes a range of values from a list and returns the resulting list. The original list may be modified.
-    /// </summary>
-    public static IList Remove (IList list, IList objects, CreateListMethod createListMethod, bool mustCreateCopy)
-    {
+      ArgumentUtility.CheckNotNull ("objects", objects);
+      
       if (list == null)
         return null;
       
       if (   list.IsFixedSize 
-          || (mustCreateCopy && ! (list is ICloneable)))
+             || (mustCreateCopy && ! (list is ICloneable)))
       {
         ArrayList arrayList = new ArrayList (list);
         foreach (object obj in objects)
           arrayList.Remove (obj);
 
-        IList newList = CreateList (createListMethod, list, arrayList.Count);
+        IList newList = CreateList (GetCreateListMethod (property), list, arrayList.Count);
         CopyTo (arrayList, newList);
         return newList;
       }
@@ -118,12 +97,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
         return list;
       }
     }
-    public static void CopyTo (IList source, IList destination)
-    {
-      int len = Math.Min (source.Count, destination.Count);
-      for (int i = 0; i < len; ++i)
-        destination[i] = source[i];
-    }
 
     public static int IndexOf (IList list, object value)
     {
@@ -136,11 +109,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
       {
         return IndexOfInternal (list, value);
       }
-    }
-
-    public static int[] IndicesOf (IList list, IList values)
-    {
-      return IndicesOf (list, values, true);
     }
 
     public static int[] IndicesOf (IList list, IList values, bool includeMissing)
@@ -191,6 +159,23 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
       if (!property.IsList)
         throw new ArgumentException (string.Format ("BusinessObjectProperty '{0}' is not a list property.", property.Identifier), "property");
       return property.ListInfo.CreateList;
+    }
+
+    private static IList CreateList (CreateListMethod createListMethod, IList template, int size)
+    {
+      if (createListMethod != null)
+        return createListMethod (size);
+      else if (template is Array)
+        return Array.CreateInstance (template.GetType().GetElementType(), size);
+      else 
+        throw new NotSupportedException ("Cannot create instance if argument 'createListMethod' is null and 'template' is not an array.");
+    }
+
+    private static void CopyTo (IList source, IList destination)
+    {
+      int len = Math.Min (source.Count, destination.Count);
+      for (int i = 0; i < len; ++i)
+        destination[i] = source[i];
     }
   }
 }
