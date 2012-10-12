@@ -2772,7 +2772,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         throw new InvalidOperationException (string.Format ("The BocList '{0}' does not have a Value.", ID));
 
       var selectedRows = ListUtility.IndicesOf (Value, selectedObjects.Cast<IBusinessObject>());
-      SetSelectedRows (selectedRows.Select (r => r.Index).ToArray());
+      SetSelectedRows (selectedRows.ToArray());
     }
 
 
@@ -2781,25 +2781,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <exception cref="InvalidOperationException"> Thrown if the number of rows do not match the <see cref="Selection"/> mode.</exception>
     public void SetSelectedRows (int[] selectedRows)
     {
-      if ((_selection == RowSelection.Undefined || _selection == RowSelection.Disabled)
-          && selectedRows.Length > 0)
-      {
-        throw new InvalidOperationException (string.Format ("Cannot select rows if the BocList '{0}' is set to RowSelection.Disabled.", ID));
-      }
-
-      if ((_selection == RowSelection.SingleCheckBox
-           || _selection == RowSelection.SingleRadioButton)
-          && selectedRows.Length > 1)
-      {
-        throw new InvalidOperationException (string.Format ("Cannot select more than one row if the BocList '{0}' is set to RowSelection.Single.", ID));
-      }
-
       if (Value == null)
-      {
         throw new InvalidOperationException (string.Format ("The BocList '{0}' does not have a Value.", ID));
-      }
 
-      _selectorControlCheckedState.Clear();
       foreach (var rowIndex in selectedRows)
       {
         if (rowIndex < 0)
@@ -2814,12 +2798,30 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
                   Value.Count,
                   rowIndex));
         }
-
-        string rowID = RowIDProvider.GetItemRowID (new BocListRow (rowIndex, (IBusinessObject) Value[rowIndex]));
-        _selectorControlCheckedState.Add (rowID);
       }
+
+      SetSelectedRows (selectedRows.Select (rowIndex => new BocListRow (rowIndex, (IBusinessObject) Value[rowIndex])).ToArray());
     }
 
+    private void SetSelectedRows (BocListRow[] selectedRows)
+    {
+      if ((_selection == RowSelection.Undefined || _selection == RowSelection.Disabled)
+          && selectedRows.Length > 0)
+      {
+        throw new InvalidOperationException (string.Format ("Cannot select rows if the BocList '{0}' is set to RowSelection.Disabled.", ID));
+      }
+
+      if ((_selection == RowSelection.SingleCheckBox
+           || _selection == RowSelection.SingleRadioButton)
+          && selectedRows.Length > 1)
+      {
+        throw new InvalidOperationException (string.Format ("Cannot select more than one row if the BocList '{0}' is set to RowSelection.Single.", ID));
+      }
+
+      _selectorControlCheckedState.Clear();
+      foreach (var row in selectedRows)
+        _selectorControlCheckedState.Add (RowIDProvider.GetItemRowID (row));
+    }
 
     /// <summary> Adds the <paramref name="businessObjects"/> to the <see cref="Value"/> collection. </summary>
     /// <remarks> Sets the dirty state. </remarks>
