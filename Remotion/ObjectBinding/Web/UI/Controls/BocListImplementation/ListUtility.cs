@@ -18,6 +18,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
@@ -35,20 +36,20 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
     public static IList AddRange (IList list, IList objects, IBusinessObjectReferenceProperty property, bool mustCreateCopy, bool createIfNull)
     {
       ArgumentUtility.CheckNotNull ("objects", objects);
-      
+
       CreateListMethod createListMethod = GetCreateListMethod (property);
       if (list == null)
       {
         if (! createIfNull)
           throw new ArgumentNullException ("list");
-        
+
         list = CreateList (createListMethod, null, objects.Count);
         CopyTo (objects, list);
         return list;
       }
-      
-      if (   list.IsFixedSize
-             || (mustCreateCopy && ! (list is ICloneable)))
+
+      if (list.IsFixedSize
+          || (mustCreateCopy && ! (list is ICloneable)))
       {
         ArrayList arrayList = new ArrayList (list);
         arrayList.AddRange (objects);
@@ -59,7 +60,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
       else
       {
         if (mustCreateCopy)
-          list = (IList) ((ICloneable)list).Clone();
+          list = (IList) ((ICloneable) list).Clone();
 
         foreach (object obj in objects)
           list.Add (obj);
@@ -73,12 +74,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
     public static IList Remove (IList list, IList objects, IBusinessObjectReferenceProperty property, bool mustCreateCopy)
     {
       ArgumentUtility.CheckNotNull ("objects", objects);
-      
+
       if (list == null)
         return null;
-      
-      if (   list.IsFixedSize 
-             || (mustCreateCopy && ! (list is ICloneable)))
+
+      if (list.IsFixedSize
+          || (mustCreateCopy && ! (list is ICloneable)))
       {
         ArrayList arrayList = new ArrayList (list);
         foreach (object obj in objects)
@@ -91,7 +92,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
       else
       {
         if (mustCreateCopy)
-          list = (IList) ((ICloneable)list).Clone();
+          list = (IList) ((ICloneable) list).Clone();
 
         foreach (object obj in objects)
           list.Remove (obj);
@@ -104,38 +105,34 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
       ArgumentUtility.CheckNotNull ("list", list);
       ArgumentUtility.CheckNotNull ("values", values);
 
-      bool isIndexOfSupported = true;
-      foreach (var obj in values)
+      var indicesMap = new Dictionary<IBusinessObject, BocListRow>();
+      var listEnumerator = list.Cast<IBusinessObject>().Select ((o, i) => new BocListRow (i, o)).GetEnumerator();
+
+      try
       {
-        int index = -1;
-        if (isIndexOfSupported)
+        foreach (var obj in values)
         {
-          try
+          BocListRow row;
+          if (indicesMap.TryGetValue (obj, out row))
           {
-            index = list.IndexOf (obj);
+            yield return row;
           }
-          catch (NotSupportedException)
+          else
           {
-            isIndexOfSupported = false;
+            while (listEnumerator.MoveNext())
+            {
+              var bocListRow = Assertion.IsNotNull (listEnumerator.Current);
+              indicesMap.Add (bocListRow.BusinessObject, bocListRow);
+              if (bocListRow.BusinessObject.Equals (obj))
+                yield return bocListRow;
+            }
           }
         }
-
-        if (! isIndexOfSupported)
-          index = IndexOfInternal (list, obj);
-
-        if (index > -1)
-          yield return new BocListRow (index, obj);
       }
-    }
-
-    private static int IndexOfInternal (IList list, object value)
-    {
-      for (int i = 0; i < list.Count; i++)
+      finally
       {
-        if (list[i] == value)
-          return i;
+        listEnumerator.Dispose();
       }
-      return -1;
     }
 
     private static CreateListMethod GetCreateListMethod (IBusinessObjectProperty property)

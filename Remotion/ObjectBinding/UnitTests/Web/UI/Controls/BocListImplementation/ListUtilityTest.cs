@@ -54,20 +54,23 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocListImplementation
       _values.Add (_objB);
       _values.Add (_objE);
       _values.Add (_objD);
+      _values.Add (_objA);
     }
 
     [Test]
-    public void IndicesOfExcludeMissing ()
+    public void IndicesOf_AscendingValues ()
     {
       var rows = ListUtility.IndicesOf (_list, _values).ToArray();
 
       Assert.IsNotNull (rows);
-      Assert.AreEqual (2, rows.Length);
+      Assert.AreEqual (3, rows.Length);
       Assert.AreEqual (1, rows[0].Index);
       Assert.AreEqual (3, rows[1].Index);
+      Assert.AreEqual (0, rows[2].Index);
 
       Assert.AreEqual (_objB, rows[0].BusinessObject);
       Assert.AreEqual (_objD, rows[1].BusinessObject);
+      Assert.AreEqual (_objA, rows[2].BusinessObject);
     }
 
     private IBusinessObject CreateObject (string value)
