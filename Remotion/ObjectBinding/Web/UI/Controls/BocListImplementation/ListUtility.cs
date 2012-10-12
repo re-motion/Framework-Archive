@@ -99,19 +99,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
       }
     }
 
-    public static int IndexOf (IList list, object value)
-    {
-      ArgumentUtility.CheckNotNull ("list", list);
-      try
-      {
-        return list.IndexOf (value);
-      }
-      catch (NotSupportedException)
-      {
-        return IndexOfInternal (list, value);
-      }
-    }
-
     public static IEnumerable<BocListRow> IndicesOf (IList list, IEnumerable<IBusinessObject> values)
     {
       ArgumentUtility.CheckNotNull ("list", list);

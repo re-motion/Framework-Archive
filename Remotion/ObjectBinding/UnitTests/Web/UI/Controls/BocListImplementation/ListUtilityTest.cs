@@ -57,16 +57,6 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocListImplementation
     }
 
     [Test]
-    public void IndexOf ()
-    {
-      Assert.AreEqual (0, ListUtility.IndexOf (_list, _objA));
-      Assert.AreEqual (1, ListUtility.IndexOf (_list, _objB));
-      Assert.AreEqual (2, ListUtility.IndexOf (_list, _objC));
-      Assert.AreEqual (3, ListUtility.IndexOf (_list, _objD));
-      Assert.AreEqual (-1, ListUtility.IndexOf (_list, _objE));
-    }
-
-    [Test]
     public void IndicesOfExcludeMissing ()
     {
       var rows = ListUtility.IndicesOf (_list, _values).ToArray();
