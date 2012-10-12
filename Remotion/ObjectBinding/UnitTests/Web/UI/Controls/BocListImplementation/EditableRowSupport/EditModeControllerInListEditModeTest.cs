@@ -383,20 +383,8 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocListImplementation
     {
       string idFormat = "Controller_Row_{0}";
 
-      EditableRowIDProvider provider = new EditableRowIDProvider (idFormat);
-    
-      Assert.AreEqual (string.Format (idFormat, 0), provider.GetNextID());
-      Assert.AreEqual (string.Format (idFormat, 1), provider.GetNextID());
-      Assert.AreEqual (string.Format (idFormat, 2), provider.GetNextID());
-      Assert.AreEqual (string.Format (idFormat, 3), provider.GetNextID());
-      Assert.AreEqual (string.Format (idFormat, 4), provider.GetNextID());
-      Assert.AreEqual (string.Format (idFormat, 5), provider.GetNextID());
-
-      provider.ExcludeID (string.Format (idFormat, 2));
-      provider.ExcludeID (string.Format (idFormat, 5));
-
       Assert.IsFalse (Controller.IsListEditModeActive);
-      ControllerInvoker.LoadControlState (CreateControlState (null, true, null, false, provider));
+      ControllerInvoker.LoadControlState (CreateControlState (null, true, null, false));
       Assert.IsTrue (Controller.IsListEditModeActive);
     
       Controller.EnsureEditModeRestored (Columns);
@@ -404,9 +392,49 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocListImplementation
   
       Assert.AreEqual (string.Format (idFormat, 0), Controller.Controls[0].ID);
       Assert.AreEqual (string.Format (idFormat, 1), Controller.Controls[1].ID);
-      Assert.AreEqual (string.Format (idFormat, 3), Controller.Controls[2].ID);
-      Assert.AreEqual (string.Format (idFormat, 4), Controller.Controls[3].ID);
-      Assert.AreEqual (string.Format (idFormat, 6), Controller.Controls[4].ID);
+      Assert.AreEqual (string.Format (idFormat, 2), Controller.Controls[2].ID);
+      Assert.AreEqual (string.Format (idFormat, 3), Controller.Controls[3].ID);
+      Assert.AreEqual (string.Format (idFormat, 4), Controller.Controls[4].ID);
+    }
+
+    [Test]
+    public void AddRow ()
+    {
+      Invoker.InitRecursive();
+      Controller.SwitchListIntoEditMode (Columns, Columns);
+     
+      Assert.IsTrue (Controller.IsListEditModeActive);
+      Assert.AreEqual (5, EditModeHost.Value.Count);
+
+      Assert.AreEqual (5, Controller.AddRow (NewValues[0], Columns, Columns));
+    
+      Assert.AreEqual (6, EditModeHost.Value.Count);
+      Assert.AreSame (NewValues[0], EditModeHost.Value[5]);
+
+      Assert.IsTrue (Controller.IsListEditModeActive);
+      Assert.AreEqual (6, Controller.Controls.Count);
+      string idFormat = "Controller_Row_{0}";
+      Assert.AreEqual (string.Format (idFormat, 0), Controller.Controls[0].ID);
+      Assert.AreEqual (string.Format (idFormat, 1), Controller.Controls[1].ID);
+      Assert.AreEqual (string.Format (idFormat, 2), Controller.Controls[2].ID);
+      Assert.AreEqual (string.Format (idFormat, 3), Controller.Controls[3].ID);
+      Assert.AreEqual (string.Format (idFormat, 4), Controller.Controls[4].ID);
+      Assert.AreEqual (string.Format (idFormat, 5), Controller.Controls[5].ID);
+
+      Assert.AreEqual (0, ActualEvents.Count);
+    }
+
+    [Test]
+    public void AddRow_CallsEditModeHost ()
+    {
+      Invoker.InitRecursive();
+      Controller.SwitchListIntoEditMode (Columns, Columns);
+
+      IBusinessObject[] addedRows = null;
+      EditModeHost.NotifyAddRows = objects => { addedRows = objects; };
+      Controller.AddRow (NewValues[0], Columns, Columns);
+
+      CollectionAssert.AreEquivalent (new[] { NewValues[0] }, addedRows);
     }
 
 
@@ -440,30 +468,16 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocListImplementation
     }
 
     [Test]
-    public void AddRow ()
+    public void AddRows_CallsEditModeHost ()
     {
       Invoker.InitRecursive();
       Controller.SwitchListIntoEditMode (Columns, Columns);
-     
-      Assert.IsTrue (Controller.IsListEditModeActive);
-      Assert.AreEqual (5, EditModeHost.Value.Count);
 
-      Assert.AreEqual (5, Controller.AddRow (NewValues[0], Columns, Columns));
-    
-      Assert.AreEqual (6, EditModeHost.Value.Count);
-      Assert.AreSame (NewValues[0], EditModeHost.Value[5]);
+      IBusinessObject[] addedRows = null;
+      EditModeHost.NotifyAddRows = objects => { addedRows = objects; };
+      Controller.AddRows (NewValues, Columns, Columns);
 
-      Assert.IsTrue (Controller.IsListEditModeActive);
-      Assert.AreEqual (6, Controller.Controls.Count);
-      string idFormat = "Controller_Row_{0}";
-      Assert.AreEqual (string.Format (idFormat, 0), Controller.Controls[0].ID);
-      Assert.AreEqual (string.Format (idFormat, 1), Controller.Controls[1].ID);
-      Assert.AreEqual (string.Format (idFormat, 2), Controller.Controls[2].ID);
-      Assert.AreEqual (string.Format (idFormat, 3), Controller.Controls[3].ID);
-      Assert.AreEqual (string.Format (idFormat, 4), Controller.Controls[4].ID);
-      Assert.AreEqual (string.Format (idFormat, 5), Controller.Controls[5].ID);
-
-      Assert.AreEqual (0, ActualEvents.Count);
+      Assert.AreSame (NewValues, addedRows);
     }
 
 
@@ -496,18 +510,29 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocListImplementation
     }
 
     [Test]
+    public void RemoveRow_CallsEditModeHost ()
+    {
+      Invoker.InitRecursive();
+      Controller.SwitchListIntoEditMode (Columns, Columns);
+
+      var businessObject = Values[2];
+      IBusinessObject[] removedRows = null;
+      EditModeHost.NotifyRemoveRows = objects => { removedRows = objects; };
+      Controller.RemoveRow (businessObject);
+
+      CollectionAssert.AreEquivalent (new[] { businessObject }, removedRows);
+    }
+
+    [Test]
     public void RemoveRows ()
     {
       Invoker.InitRecursive();
       Controller.SwitchListIntoEditMode (Columns, Columns);
-      var bocListRows = new List<BocListRow>();
-      ((FakeRowIDProvider) EditModeHost.RowIDProvider).NotifyRemoveRow = bocListRows.Add;
 
       Assert.IsTrue (Controller.IsListEditModeActive);
       Assert.AreEqual (5, EditModeHost.Value.Count);
 
-      var removedObject = Values[2];
-      Controller.RemoveRows (new IBusinessObject[] {removedObject});
+      Controller.RemoveRows (new[] { Values[2] });
   
       Assert.AreEqual (4, EditModeHost.Value.Count);
       Assert.AreSame (Values[0], EditModeHost.Value[0]);
@@ -524,12 +549,21 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocListImplementation
       Assert.AreEqual (string.Format (idFormat, 4), Controller.Controls[3].ID);
 
       Assert.AreEqual (0, ActualEvents.Count);
-
-      Assert.AreEqual (1, bocListRows.Count);
-      Assert.AreEqual (2, bocListRows[0].Index);
-      Assert.AreEqual (removedObject, bocListRows[0].BusinessObject);
     }
 
+    [Test]
+    public void RemoveRows_CallsEditModeHost ()
+    {
+      Invoker.InitRecursive();
+      Controller.SwitchListIntoEditMode (Columns, Columns);
+
+      var businessObjects = new[] { Values[2] };
+      IBusinessObject[] removedRows = null;
+      EditModeHost.NotifyRemoveRows = objects => { removedRows = objects; };
+      Controller.RemoveRows (businessObjects);
+
+      Assert.AreSame (businessObjects, removedRows);
+    }
 
     [Test]
     public void CreateValidators ()

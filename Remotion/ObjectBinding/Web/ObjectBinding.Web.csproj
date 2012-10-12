@@ -359,9 +359,6 @@
     <Compile Include="UI\Controls\BocListImplementation\EditableRowSupport\EditableRowDataSourceFactory.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="UI\Controls\BocListImplementation\EditableRowSupport\EditableRowIDProvider.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="UI\Controls\BocListImplementation\EditableRowSupport\EditModeController.cs">
       <SubType>Code</SubType>
     </Compile>

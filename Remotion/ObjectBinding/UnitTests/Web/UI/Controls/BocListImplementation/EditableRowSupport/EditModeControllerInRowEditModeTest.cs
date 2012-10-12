@@ -54,7 +54,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocListImplementation
       Assert.IsTrue (Controller.Controls[0] is EditableRow);
 
       EditableRow row = (EditableRow) Controller.Controls[0];
-      Assert.AreEqual ("Controller_Row_0", row.ID);
+      Assert.AreEqual ("Controller_Row_2", row.ID);
 
       Assert.AreEqual (0, ActualEvents.Count);
     }
@@ -284,7 +284,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocListImplementation
       Assert.IsTrue (Controller.Controls[0] is EditableRow);
 
       EditableRow row = (EditableRow) Controller.Controls[0];
-      Assert.AreEqual ("Controller_Row_0", row.ID);
+      Assert.AreEqual ("Controller_Row_5", row.ID);
 
       Assert.AreEqual (0, ActualEvents.Count);
     }
@@ -610,8 +610,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocListImplementation
     public void EnsureEditModeRestored ()
     {
       Assert.IsFalse (Controller.IsRowEditModeActive);
-      ControllerInvoker.LoadControlState (
-          CreateControlState (null, false, 2, false, new EditableRowIDProvider (Controller.ID + "_Row{0}")));
+      ControllerInvoker.LoadControlState (CreateControlState (null, false, 2, false));
       Assert.IsTrue (Controller.IsRowEditModeActive);
     
       Controller.EnsureEditModeRestored (Columns);
@@ -624,8 +623,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocListImplementation
     public void EnsureEditModeRestoredWithInvalidRowIndex ()
     {
       Assert.IsFalse (Controller.IsRowEditModeActive);
-      ControllerInvoker.LoadControlState (
-          CreateControlState (null, false, 6, false, new EditableRowIDProvider (Controller.ID + "_Row{0}")));
+      ControllerInvoker.LoadControlState (CreateControlState (null, false, 6, false));
       Assert.IsTrue (Controller.IsRowEditModeActive);
  
       Controller.EnsureEditModeRestored (Columns);
@@ -637,8 +635,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocListImplementation
     public void EnsureEditModeRestoredWithValueNull ()
     {
       Assert.IsFalse (Controller.IsRowEditModeActive);
-      ControllerInvoker.LoadControlState (
-          CreateControlState (null, false, 6, false, new EditableRowIDProvider (Controller.ID + "_Row{0}")));
+      ControllerInvoker.LoadControlState (CreateControlState (null, false, 6, false));
       Assert.IsTrue (Controller.IsRowEditModeActive);
       EditModeHost.Value = null;
 
@@ -836,8 +833,8 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocListImplementation
 
       string id = "NamingContainer_Controller_Row_{0}_{1}_Boc_TextBox";
       string[] trackedIDs = new string[2];
-      trackedIDs[0] = string.Format (id, 0, 0);
-      trackedIDs[1] = string.Format (id, 0, 1);
+      trackedIDs[0] = string.Format (id, 2, 0);
+      trackedIDs[1] = string.Format (id, 2, 1);
 
       Assert.AreEqual (trackedIDs, Controller.GetTrackedClientIDs());
     }

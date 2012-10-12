@@ -24,6 +24,10 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocListImplementation
 {
   public class FakeRowIDProvider : IRowIDProvider
   {
+    public FakeRowIDProvider ()
+    {
+    }
+
     public Action<BocListRow> NotifyAddRow { private get; set; }
     public Action<BocListRow> NotifyRemoveRow { private get; set; }
 

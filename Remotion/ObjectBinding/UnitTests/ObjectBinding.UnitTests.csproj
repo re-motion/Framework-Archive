@@ -428,7 +428,6 @@
     <Compile Include="Web\UI\Controls\BocTreeViewTest.cs" />
     <Compile Include="Web\UI\Controls\BocListImplementation\EditableRowSupport\EditableRowControlFactoryTest.cs" />
     <Compile Include="Web\UI\Controls\BocListImplementation\EditableRowSupport\EditableRowDataSourceFactoryTest.cs" />
-    <Compile Include="Web\UI\Controls\BocListImplementation\EditableRowSupport\EditableRowIDProviderTest.cs" />
     <Compile Include="Web\UI\Controls\BocListImplementation\EditableRowSupport\EditableRowTest.cs" />
     <Compile Include="Web\UI\Controls\BocListImplementation\EditableRowSupport\EditModeControllerInListEditModeTest.cs" />
     <Compile Include="Web\UI\Controls\BocListImplementation\EditableRowSupport\EditModeControllerInRowEditModeTest.cs" />

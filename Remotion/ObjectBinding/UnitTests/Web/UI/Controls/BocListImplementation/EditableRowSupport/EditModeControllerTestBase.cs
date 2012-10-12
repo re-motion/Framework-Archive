@@ -217,16 +217,14 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocListImplementation
         object baseControlState,
         bool isListEditModeActive,
         int? editableRowIndex,
-        bool isEditNewRow,
-        EditableRowIDProvider rowIDProvider)
+        bool isEditNewRow)
     {
-      object[] values = new object[5];
+      object[] values = new object[4];
 
       values[0] = baseControlState;
       values[1] = isListEditModeActive;
       values[2] = editableRowIndex;
       values[3] = isEditNewRow;
-      values[4] = rowIDProvider;
 
       return values;
     }
