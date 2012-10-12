@@ -419,8 +419,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
     private void RemoveRowFromDataStructure (int index)
     {
       EditableRow row = _rows[index];
-      Controls.Remove (row);
       row.RemoveControls();
+      Controls.Remove (row);
       _rows.RemoveAt (index);
     }
 

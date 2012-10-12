@@ -162,6 +162,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
 
     public void RemoveControls()
     {
+      ClearChildState();
       Controls.Clear();
       _editControls = null;
       _validatorControls = null;
