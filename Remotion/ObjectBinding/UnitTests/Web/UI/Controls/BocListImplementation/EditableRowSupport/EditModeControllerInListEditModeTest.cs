@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Linq;
 using System.Web.UI.WebControls;
 using NUnit.Framework;
 using Remotion.Globalization;
@@ -431,7 +432,11 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocListImplementation
       Controller.SwitchListIntoEditMode (Columns, Columns);
 
       IBusinessObject[] addedRows = null;
-      EditModeHost.NotifyAddRows = objects => { addedRows = objects; };
+      EditModeHost.NotifyAddRows = objects =>
+      {
+        addedRows = objects;
+        return new BocListRow[0];
+      };
       Controller.AddRow (NewValues[0], Columns, Columns);
 
       CollectionAssert.AreEquivalent (new[] { NewValues[0] }, addedRows);
@@ -474,7 +479,11 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocListImplementation
       Controller.SwitchListIntoEditMode (Columns, Columns);
 
       IBusinessObject[] addedRows = null;
-      EditModeHost.NotifyAddRows = objects => { addedRows = objects; };
+      EditModeHost.NotifyAddRows = objects =>
+      {
+        addedRows = objects;
+        return new BocListRow[0];
+      };
       Controller.AddRows (NewValues, Columns, Columns);
 
       Assert.AreSame (NewValues, addedRows);
@@ -516,11 +525,11 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocListImplementation
       Controller.SwitchListIntoEditMode (Columns, Columns);
 
       var businessObject = Values[2];
-      IBusinessObject[] removedRows = null;
-      EditModeHost.NotifyRemoveRows = objects => { removedRows = objects; };
+      BocListRow[] removedRows = null;
+      EditModeHost.NotifyRemoveRows = rows => { removedRows = rows; };
       Controller.RemoveRow (businessObject);
 
-      CollectionAssert.AreEquivalent (new[] { businessObject }, removedRows);
+      CollectionAssert.AreEquivalent (new[] { businessObject }, removedRows.Select (r => r.BusinessObject));
     }
 
     [Test]
@@ -558,11 +567,11 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocListImplementation
       Controller.SwitchListIntoEditMode (Columns, Columns);
 
       var businessObjects = new[] { Values[2] };
-      IBusinessObject[] removedRows = null;
-      EditModeHost.NotifyRemoveRows = objects => { removedRows = objects; };
+      BocListRow[] removedRows = null;
+      EditModeHost.NotifyRemoveRows = rows => { removedRows = rows; };
       Controller.RemoveRows (businessObjects);
 
-      Assert.AreSame (businessObjects, removedRows);
+      CollectionAssert.AreEqual (businessObjects, removedRows.Select (r => r.BusinessObject));
     }
 
     [Test]

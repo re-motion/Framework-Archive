@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.UI.WebControls;
 using Remotion.FunctionalProgramming;
@@ -112,14 +113,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         return _bocList.GetEditModeValidator();
       }
 
-      public void AddRows (IBusinessObject[] businessObjects)
+      public BocListRow[] AddRows (IBusinessObject[] businessObjects)
       {
-        _bocList.AddRowsImplementation (businessObjects);
+        return _bocList.AddRowsImplementation (businessObjects);
       }
 
-      public void RemoveRows (IBusinessObject[] businessObjects)
+      public void RemoveRows (BocListRow[] bocListRows)
       {
-        _bocList.RemoveRowsImplementation (businessObjects);
+        _bocList.RemoveRowsImplementation (bocListRows);
       }
 
       public void EndRowEditModeCleanUp (int modifiedRowIndex)

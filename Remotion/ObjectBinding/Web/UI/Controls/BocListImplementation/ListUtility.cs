@@ -17,6 +17,7 @@
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
@@ -111,21 +112,20 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
       }
     }
 
-    public static int[] IndicesOf (IList list, IList values, bool includeMissing)
+    public static IEnumerable<BocListRow> IndicesOf (IList list, IEnumerable<IBusinessObject> values)
     {
       ArgumentUtility.CheckNotNull ("list", list);
       ArgumentUtility.CheckNotNull ("values", values);
 
-      ArrayList indices = new ArrayList (values.Count);
       bool isIndexOfSupported = true;
-      for (int i = 0; i < values.Count; i++)
+      foreach (var obj in values)
       {
         int index = -1;
         if (isIndexOfSupported)
         {
           try
           {
-            index = list.IndexOf (values[i]);
+            index = list.IndexOf (obj);
           }
           catch (NotSupportedException)
           {
@@ -134,12 +134,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
         }
 
         if (! isIndexOfSupported)
-          index = IndexOfInternal (list, values[i]);
+          index = IndexOfInternal (list, obj);
 
-        if (index > -1 || includeMissing)
-          indices.Add (index);
+        if (index > -1)
+          yield return new BocListRow (index, obj);
       }
-      return (int[]) indices.ToArray (typeof (int));
     }
 
     private static int IndexOfInternal (IList list, object value)

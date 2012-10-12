@@ -101,8 +101,15 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocListImplementation
       _editModeHost.NotifyOnEditableRowChangesCanceling = (i, o) => _actualEvents.Add (FormatChangesCancelingEventMessage (i, o));
       _editModeHost.NotifyOnEditableRowChangesSaved = (i, o) => _actualEvents.Add (FormatChangesSavedEventMessage (i, o));
       _editModeHost.NotifyOnEditableRowChangesSaving = (i, o) => _actualEvents.Add (FormatChangesSavingEventMessage (i, o));
-      _editModeHost.NotifyAddRows = objects => { _editModeHost.Value = ((IBusinessObject[]) _editModeHost.Value).Concat (objects).ToArray(); };
-      _editModeHost.NotifyRemoveRows = objects => { _editModeHost.Value = ((IBusinessObject[]) _editModeHost.Value).Except (objects).ToArray(); };
+      _editModeHost.NotifyAddRows =
+          objects =>
+          {
+            var oldLength = _editModeHost.Value.Count;
+            _editModeHost.Value = ((IBusinessObject[]) _editModeHost.Value).Concat (objects).ToArray();
+            return ((IBusinessObject[]) _editModeHost.Value).Select ((o, i) => new BocListRow (i, o)).Skip (oldLength).ToArray();
+          };
+      _editModeHost.NotifyRemoveRows =
+          rows => { _editModeHost.Value = ((IBusinessObject[]) _editModeHost.Value).Except (rows.Select (r => r.BusinessObject)).ToArray(); };
       _editModeHost.NotifyEndRowEditModeCleanUp = i => _actualEvents.Add (FormatEndRowEditModeCleanUp(i));
       _editModeHost.NotifyEndListEditModeCleanUp = () => _actualEvents.Add (FormatEndListEditModeCleanUp());
       _editModeHost.NotifyValidateEditableRows = () => _actualEvents.Add (FormatValidateEditableRows());

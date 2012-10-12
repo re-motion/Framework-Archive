@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
@@ -191,7 +190,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
 
           if (_isEditNewRow)
           {
-            _editModeHost.RemoveRows (new[] { value });
+            _editModeHost.RemoveRows (new[] { new BocListRow (index, value) });
             OnEditableRowChangesCanceled (-1, value);
           }
           else
@@ -281,12 +280,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
       Assertion.IsTrue (Controls.Count == 0, "Populating the editable rows only happens after the last edit mode was ended.");
 
       foreach (var bocListRow in bocListRows)
-      {
-        EditableRow row = CreateEditableRow (bocListRow, columns);
-
-        _rows.Add (row);
-        Controls.Add (row);
-      }
+        AddRowToDataStructure (bocListRow, columns);
     }
 
     private EditableRow CreateEditableRow (BocListRow bocListRow, BocColumnDefinition[] columns)
@@ -347,20 +341,17 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
       ArgumentUtility.CheckNotNullOrItemsNull ("businessObjects", businessObjects);
       ArgumentUtility.CheckNotNullOrItemsNull ("columns", columns);
 
-      _editModeHost.AddRows (businessObjects);
+      var bocListRows = _editModeHost.AddRows (businessObjects);
 
       if (_editModeHost.Value != null)
       {
         EnsureEditModeRestored (oldColumns);
         if (IsListEditModeActive)
         {
-          int startIndex = _editModeHost.Value.Count - businessObjects.Length;
-          for (int i = startIndex; i < _editModeHost.Value.Count; i++)
+          foreach (var bocListRow in bocListRows.OrderBy (r=>r.Index))
           {
-            EditableRow newRow = CreateEditableRow (new BocListRow (i, (IBusinessObject) _editModeHost.Value[i]), columns);
+            var newRow = AddRowToDataStructure (bocListRow, columns);
             newRow.GetDataSource().LoadValues (false);
-            Controls.Add (newRow);
-            _rows.Add (newRow);
           }
         }
       }
@@ -385,9 +376,20 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
       return -1;
     }
 
+    private EditableRow AddRowToDataStructure (BocListRow bocListRow, BocColumnDefinition[] columns)
+    {
+      EditableRow row = CreateEditableRow (bocListRow, columns);
+      Controls.Add (row);
+      _rows.Add (row);
+
+      return row;
+    }
+
     public void RemoveRows (IBusinessObject[] businessObjects)
     {
       ArgumentUtility.CheckNotNullOrItemsNull ("businessObjects", businessObjects);
+
+      var bocListRows = ListUtility.IndicesOf (_editModeHost.Value, businessObjects).ToArray();
 
       if (_editModeHost.Value != null)
       {
@@ -400,13 +402,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
         }
         else if (IsListEditModeActive)
         {
-          int[] indices = ListUtility.IndicesOf (_editModeHost.Value, businessObjects, false);
-          foreach (int index in indices.Reverse())
-            RemoveRowFromDataStructure(index);
+          foreach (var row in bocListRows.OrderByDescending (r => r.Index))
+            RemoveRowFromDataStructure (row.Index);
         }
       }
 
-      _editModeHost.RemoveRows (businessObjects);
+      _editModeHost.RemoveRows (bocListRows);
     }
 
     public void RemoveRow (IBusinessObject businessObject)

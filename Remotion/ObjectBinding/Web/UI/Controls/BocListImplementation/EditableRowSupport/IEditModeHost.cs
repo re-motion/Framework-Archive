@@ -17,6 +17,7 @@
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Web.UI.WebControls;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableRowSupport
@@ -35,8 +36,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
     bool ShowEditModeRequiredMarkers { get; }
     bool EnableEditModeValidator { get; }
     IRowIDProvider RowIDProvider { get; }
-    void AddRows (IBusinessObject[] businessObjects);
-    void RemoveRows (IBusinessObject[] businessObjects);
+    BocListRow[] AddRows (IBusinessObject[] businessObjects);
+    void RemoveRows (BocListRow[] bocListRows);
     void EndRowEditModeCleanUp (int value);
     void EndListEditModeCleanUp ();
     bool ValidateEditableRows ();

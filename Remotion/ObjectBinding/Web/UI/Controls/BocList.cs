@@ -2771,30 +2771,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       if (Value == null)
         throw new InvalidOperationException (string.Format ("The BocList '{0}' does not have a Value.", ID));
 
-      var selectedRows = ListUtility.IndicesOf (Value, selectedObjects, true);
-      for (int i = 0; i < selectedRows.Length; i++)
-      {
-        if (selectedRows[i] < 0)
-        {
-          if (selectedObjects[i] is IBusinessObjectWithIdentity)
-          {
-            throw new ArgumentException (
-                string.Format (
-                    "The object '{0}' cannot be selected because it is not part of the Value in BocList '{1}'.",
-                    ((IBusinessObjectWithIdentity) selectedObjects[i]).UniqueIdentifier,
-                    ID),
-                "selectedObjects");
-          }
-          else
-          {
-            throw new ArgumentException (
-                string.Format ("The object at index {0} cannot be selected because it is not part of the Value in BocList '{1}'.", i, ID),
-                "selectedObjects");
-          }
-        }
-      }
-
-      SetSelectedRows (selectedRows);
+      var selectedRows = ListUtility.IndicesOf (Value, selectedObjects.Cast<IBusinessObject>());
+      SetSelectedRows (selectedRows.Select (r => r.Index).ToArray());
     }
 
 
@@ -2894,7 +2872,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       RemoveRow ((IBusinessObject) Value[index]);
     }
 
-    private void AddRowsImplementation (IBusinessObject[] businessObjects)
+    private BocListRow[] AddRowsImplementation (IBusinessObject[] businessObjects)
     {
       ArgumentUtility.CheckNotNull ("businessObjects", businessObjects);
 
@@ -2903,29 +2881,30 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       var newValue = ListUtility.AddRange (oldValue, businessObjects, Property, false, true);
 
       if (oldValue == null || newValue == null)
+      {
         Value = newValue;
+        return new BocListRow[0];
+      }
       else
       {
         SetValue (newValue);
         IsDirty = true;
 
-        var indices = ListUtility.IndicesOf (newValue, businessObjects, true);
-        var rows = businessObjects.Zip (indices, (o, i) => new BocListRow (i, o)).OrderBy (r => r.Index);
+        var rows = ListUtility.IndicesOf (newValue, businessObjects).OrderBy (r => r.Index).ToArray();
         foreach (var row in rows)
           RowIDProvider.AddRow (row);
+
+        return rows;
       }
     }
 
-    private void RemoveRowsImplementation (IBusinessObject[] businessObjects)
+    private void RemoveRowsImplementation (BocListRow[] bocListRows)
     {
-      ArgumentUtility.CheckNotNull ("businessObjects", businessObjects);
+      ArgumentUtility.CheckNotNull ("bocListRows", bocListRows);
 
       var oldValue = Value;
-      int[] indices = null;
-      if (oldValue != null)
-        indices = ListUtility.IndicesOf (oldValue, businessObjects, true);
 
-      var newValue = ListUtility.Remove (Value, businessObjects, Property, false);
+      var newValue = ListUtility.Remove (Value, bocListRows.Select (r => r.BusinessObject).ToArray(), Property, false);
 
       if (oldValue == null || newValue == null)
         Value = newValue;
@@ -2934,8 +2913,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         SetValue (newValue);
         IsDirty = true;
 
-        var rows = businessObjects.Zip (indices, (o, i) => new BocListRow (i, o)).OrderByDescending (r => r.Index);
-        foreach (var row in rows)
+        foreach (var row in bocListRows.OrderByDescending (r => r.Index))
           RowIDProvider.RemoveRow (row);
       }
     }

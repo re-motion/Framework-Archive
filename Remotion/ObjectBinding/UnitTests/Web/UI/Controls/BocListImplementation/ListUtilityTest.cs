@@ -16,80 +16,74 @@
 // 
 
 using System;
-using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using NUnit.Framework;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation;
+using Rhino.Mocks;
 
 namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocListImplementation
 {
-
-[TestFixture]
-public class ListUtilityTest
-{
-  // types
-
-  // static members and constants
-
-  // member fields
-
-  private ArrayList _list;
-  private ArrayList _values;
-
-  // construction and disposing
-
-  public ListUtilityTest ()
+  [TestFixture]
+  public class ListUtilityTest
   {
+    private List<IBusinessObject> _list;
+    private List<IBusinessObject> _values;
+    private IBusinessObject _objA;
+    private IBusinessObject _objB;
+    private IBusinessObject _objC;
+    private IBusinessObject _objD;
+    private IBusinessObject _objE;
+
+    [SetUp]
+    public void SetUp ()
+    {
+      _objA = CreateObject ("A");
+      _objB = CreateObject ("B");
+      _objC = CreateObject ("C");
+      _objD = CreateObject ("D");
+      _objE = CreateObject ("E");
+
+      _list = new List<IBusinessObject>();
+      _list.Add (_objA);
+      _list.Add (_objB);
+      _list.Add (_objC);
+      _list.Add (_objD);
+
+      _values = new List<IBusinessObject>();
+      _values.Add (_objB);
+      _values.Add (_objE);
+      _values.Add (_objD);
+    }
+
+    [Test]
+    public void IndexOf ()
+    {
+      Assert.AreEqual (0, ListUtility.IndexOf (_list, _objA));
+      Assert.AreEqual (1, ListUtility.IndexOf (_list, _objB));
+      Assert.AreEqual (2, ListUtility.IndexOf (_list, _objC));
+      Assert.AreEqual (3, ListUtility.IndexOf (_list, _objD));
+      Assert.AreEqual (-1, ListUtility.IndexOf (_list, _objE));
+    }
+
+    [Test]
+    public void IndicesOfExcludeMissing ()
+    {
+      var rows = ListUtility.IndicesOf (_list, _values).ToArray();
+
+      Assert.IsNotNull (rows);
+      Assert.AreEqual (2, rows.Length);
+      Assert.AreEqual (1, rows[0].Index);
+      Assert.AreEqual (3, rows[1].Index);
+
+      Assert.AreEqual (_objB, rows[0].BusinessObject);
+      Assert.AreEqual (_objD, rows[1].BusinessObject);
+    }
+
+    private IBusinessObject CreateObject (string value)
+    {
+      var businessObject = (IBusinessObject) Domain.TypeWithString.Create (value, null);
+      return businessObject;
+    }
   }
-
-  // methods and properties
-
-  [SetUp]
-  public void SetUp ()
-  {
-    _list = new ArrayList();
-    _list.Add ("A");
-    _list.Add ("B");
-    _list.Add ("C");
-    _list.Add ("D");
-
-    _values = new ArrayList();
-    _values.Add ("B");
-    _values.Add ("E");
-    _values.Add ("D");
-  }
-
-  [Test]
-  public void IndexOf ()
-  {
-    Assert.AreEqual (0, ListUtility.IndexOf (_list, "A"));
-    Assert.AreEqual (1, ListUtility.IndexOf (_list, "B"));
-    Assert.AreEqual (2, ListUtility.IndexOf (_list, "C"));
-    Assert.AreEqual (3, ListUtility.IndexOf (_list, "D"));
-    Assert.AreEqual (-1, ListUtility.IndexOf (_list, "E"));
-  }
-
-  [Test]
-  public void IndicesOfIncludeMissing ()
-  {
-    int[] indices = ListUtility.IndicesOf (_list, _values, true);
-
-    Assert.IsNotNull (indices);
-    Assert.AreEqual (3, indices.Length);
-    Assert.AreEqual (1, indices[0]);
-    Assert.AreEqual (-1, indices[1]);
-    Assert.AreEqual (3, indices[2]);
-  }
-
-  [Test]
-  public void IndicesOfExcludeMissing ()
-  {
-    int[] indices = ListUtility.IndicesOf (_list, _values, false);
-
-    Assert.IsNotNull (indices);
-    Assert.AreEqual (2, indices.Length);
-    Assert.AreEqual (1, indices[0]);
-    Assert.AreEqual (3, indices[1]);
-  }
-}
-
 }

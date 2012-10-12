@@ -34,8 +34,8 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocListImplementation
     public Action<int, IBusinessObject> NotifyOnEditableRowChangesCanceling { private get; set; }
     public Action<int, IBusinessObject> NotifyOnEditableRowChangesSaved { private get; set; }
     public Action<int, IBusinessObject> NotifyOnEditableRowChangesSaving { private get; set; }
-    public Action<IBusinessObject[]> NotifyAddRows { private  get; set; }
-    public Action<IBusinessObject[]> NotifyRemoveRows { private get; set; }
+    public Func<IBusinessObject[], BocListRow[]> NotifyAddRows { private  get; set; }
+    public Action<BocListRow[]> NotifyRemoveRows { private get; set; }
     public Action<int> NotifyEndRowEditModeCleanUp { private get; set; }
     public Action NotifyEndListEditModeCleanUp { private get; set; }
     public Action NotifyValidateEditableRows { private get; set; }
@@ -54,16 +54,17 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocListImplementation
     public bool EnableEditModeValidator { get; set; }
     public IRowIDProvider RowIDProvider { get; set; }
 
-    public void AddRows (IBusinessObject[] businessObjects)
+    public BocListRow[] AddRows (IBusinessObject[] businessObjects)
     {
       if (NotifyAddRows != null)
-        NotifyAddRows (businessObjects);
+        return NotifyAddRows (businessObjects);
+      return new BocListRow[0];
     }
 
-    public void RemoveRows (IBusinessObject[] businessObjects)
+    public void RemoveRows (BocListRow[] bocListRows)
     {
      if (NotifyRemoveRows != null)
-        NotifyRemoveRows (businessObjects); 
+        NotifyRemoveRows (bocListRows); 
     }
 
     public void EndRowEditModeCleanUp (int value)
