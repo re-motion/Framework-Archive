@@ -19,9 +19,18 @@ using System;
 namespace JetBrains.Annotations
 {
   /// <summary>
-  /// Indicates that the function argument should be string literal and match one of the parameters of the caller function.
-  /// For example, <see cref="ArgumentNullException"/> has such parameter.
+  /// Indicates that the function is used to notify class type property value is changed.
   /// </summary>
-  [AttributeUsage (AttributeTargets.Parameter, AllowMultiple = false, Inherited = true)]
-  public sealed class InvokerParameterNameAttribute : Attribute { }
+  [AttributeUsage (AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
+  public sealed class NotifyPropertyChangedInvocatorAttribute : Attribute
+  {
+    public NotifyPropertyChangedInvocatorAttribute () { }
+    public NotifyPropertyChangedInvocatorAttribute (string parameterName)
+    {
+      ParameterName = parameterName;
+    }
+
+    [UsedImplicitly]
+    public string ParameterName { get; private set; }
+  }
 }

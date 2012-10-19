@@ -18,10 +18,18 @@ using System;
 
 namespace JetBrains.Annotations
 {
-  /// <summary>
-  /// Indicates that the function argument should be string literal and match one of the parameters of the caller function.
-  /// For example, <see cref="ArgumentNullException"/> has such parameter.
-  /// </summary>
-  [AttributeUsage (AttributeTargets.Parameter, AllowMultiple = false, Inherited = true)]
-  public sealed class InvokerParameterNameAttribute : Attribute { }
+  [AttributeUsage (AttributeTargets.Parameter)]
+  public class PathReferenceAttribute : Attribute
+  {
+    public PathReferenceAttribute () { }
+
+    [UsedImplicitly]
+    public PathReferenceAttribute ([PathReference] string basePath)
+    {
+      BasePath = basePath;
+    }
+
+    [UsedImplicitly]
+    public string BasePath { get; private set; }
+  }
 }

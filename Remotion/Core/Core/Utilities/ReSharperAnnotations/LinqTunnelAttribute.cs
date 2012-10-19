@@ -19,9 +19,10 @@ using System;
 namespace JetBrains.Annotations
 {
   /// <summary>
-  /// Indicates that the function argument should be string literal and match one of the parameters of the caller function.
-  /// For example, <see cref="ArgumentNullException"/> has such parameter.
+  /// Indicates that method is *pure* linq method, with postponed enumeration. C# iterator methods (yield ...) are always LinqTunnel.
   /// </summary>
-  [AttributeUsage (AttributeTargets.Parameter, AllowMultiple = false, Inherited = true)]
-  public sealed class InvokerParameterNameAttribute : Attribute { }
+  [AttributeUsage (AttributeTargets.Method)]
+  public sealed class LinqTunnelAttribute : Attribute
+  {
+  }
 }

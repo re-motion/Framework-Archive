@@ -19,9 +19,12 @@ using System;
 namespace JetBrains.Annotations
 {
   /// <summary>
-  /// Indicates that the function argument should be string literal and match one of the parameters of the caller function.
-  /// For example, <see cref="ArgumentNullException"/> has such parameter.
+  /// This attribute is intended to mark publicly available API which should not be removed and so is treated as used.
   /// </summary>
-  [AttributeUsage (AttributeTargets.Parameter, AllowMultiple = false, Inherited = true)]
-  public sealed class InvokerParameterNameAttribute : Attribute { }
+  [MeansImplicitUse]
+  public sealed class PublicAPIAttribute : Attribute
+  {
+    public PublicAPIAttribute () { }
+    public PublicAPIAttribute (string comment) { }
+  }
 }
