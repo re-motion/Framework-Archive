@@ -25,10 +25,11 @@ using Rhino.Mocks;
 namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocListImplementation.Rendering
 {
   [TestFixture]
+  [SetUICulture("en-US")]
   public class BocListNavigationBlockRendererTest : BocListRendererTestBase
   {
     private BocListCssClassDefinition _bocListCssClassDefinition;
-    private const string c_pageInfo = "current page: {0} (of {1})";
+    private const string c_pageInfo = "Page {0} of {1}";
     private const string c_tripleBlank = HtmlHelper.WhiteSpace + HtmlHelper.WhiteSpace + HtmlHelper.WhiteSpace;
 
     [SetUp]
@@ -39,7 +40,6 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocListImplementation
       _bocListCssClassDefinition = new BocListCssClassDefinition();
 
       List.Stub (mock => mock.HasNavigator).Return (true);
-      List.Stub (mock => mock.PageInfo).Return (c_pageInfo);
     }
 
     [Test]
