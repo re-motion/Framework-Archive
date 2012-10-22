@@ -97,20 +97,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
     /// </value>
     int? PageSize { get; }
 
-    /// <summary>
-    ///   Gets or sets a flag that indicates whether to the show the page count even when there 
-    ///   is just one page.
-    /// </summary>
-    /// <value> 
-    ///   <see langword="true"/> to force showing the page info, even if the rows fit onto a single 
-    ///   page.
-    /// </value>
-    bool AlwaysShowPageInfo { get; }
-
-    /// <summary> Gets or sets the text providing the current page information to the user. </summary>
-    /// <remarks> Use {0} for the current page and {1} for the total page count. The value will not be HTML encoded. </remarks>
-    string PageInfo { get; }
-
     /// <summary> Gets or sets the text rendered if the list is empty. </summary>
     /// <remarks> The value will not be HTML encoded. </remarks>
     string EmptyListMessage { get; }
@@ -133,12 +119,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
     /// <summary> Gets or sets the offset between the <c>list block</c> and the <c>menu block</c>. </summary>
     /// <remarks> The <see cref="MenuBlockOffset"/> is applied as a <c>padding</c> attribute. </remarks>
     Unit MenuBlockOffset { get; }
-
-    /// <summary>
-    ///   Gets or sets a value that indicates whether the control displays a drop down list 
-    ///   containing the available column definition sets.
-    /// </summary>
-    bool ShowAvailableViewsList { get; }
 
     /// <summary> Gets or sets the text that is rendered as a title for the drop list of additional columns. </summary>
     /// <remarks> The value will not be HTML encoded. </remarks>

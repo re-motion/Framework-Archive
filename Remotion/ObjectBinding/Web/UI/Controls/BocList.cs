@@ -26,7 +26,6 @@ using System.Reflection;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.Collections;
-using Remotion.FunctionalProgramming;
 using Remotion.Globalization;
 using Remotion.Logging;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation;
@@ -124,7 +123,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     public enum ResourceIdentifier
     {
       EmptyListMessage,
-      PageInfo,
       OptionsTitle,
       AvailableViewsListTitle,
       /// <summary>The alternate text for the required icon.</summary>
@@ -142,10 +140,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       RowEditModeEditAlternateText,
       RowEditModeSaveAlternateText,
       RowEditModeCancelAlternateText,
-      GoToFirstAlternateText,
-      GoToLastAlternateText,
-      GoToNextAlternateText,
-      GoToPreviousAlternateText,
       SelectAllRowsAlternateText,
       SelectRowAlternateText,
       IndexColumnTitle,
@@ -320,9 +314,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   or only if there is more than 1 page (false)
     /// </summary>
     private bool _alwaysShowPageInfo;
-
-    /// <summary> The text providing the current page information to the user. </summary>
-    private string _pageInfo;
 
     /// <summary> 
     ///   The navigation bar command that caused the post back. 
@@ -2437,10 +2428,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       if (! StringUtility.IsNullOrEmpty (key))
         IndexColumnTitle = resourceManager.GetString (key);
 
-      key = ResourceManagerUtility.GetGlobalResourceKey (PageInfo);
-      if (! StringUtility.IsNullOrEmpty (key))
-        PageInfo = resourceManager.GetString (key);
-
       key = ResourceManagerUtility.GetGlobalResourceKey (EmptyListMessage);
       if (! StringUtility.IsNullOrEmpty (key))
         EmptyListMessage = resourceManager.GetString (key);
@@ -3689,23 +3676,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     [Category ("Behavior")]
     [Description ("Indicates whether to the show the page count even when there is just one page.")]
     [DefaultValue (false)]
-    public virtual bool AlwaysShowPageInfo
+    public bool AlwaysShowPageInfo
     {
       get { return _alwaysShowPageInfo; }
       set { _alwaysShowPageInfo = value; }
-    }
-
-    /// <summary> Gets or sets the text providing the current page information to the user. </summary>
-    /// <remarks> Use {0} for the current page and {1} for the total page count. The value will not be HTML encoded. </remarks>
-    [Category ("Appearance")]
-    [Description (
-        "The text providing the current page information to the user. Use {0} for the current page and {1} for the total page count. The value will not be HTML encoded."
-        )]
-    [DefaultValue (null)]
-    public string PageInfo
-    {
-      get { return _pageInfo; }
-      set { _pageInfo = value; }
     }
 
     /// <summary> Gets or sets the text rendered if the list is empty. </summary>

@@ -17,14 +17,11 @@
 using System;
 using System.Collections.Generic;
 using System.Web.UI;
+using Remotion.Globalization;
 using Remotion.ObjectBinding.Web.UI.Controls;
-using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
-using Remotion.ObjectBinding.Web.UI.Controls.Factories;
-using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web;
-using System.Web;
 using Remotion.Web.UI.Controls;
 
 namespace Remotion.ObjectBinding.Web.Legacy.UI.Controls.BocListImplementation.Rendering
@@ -35,6 +32,23 @@ namespace Remotion.ObjectBinding.Web.Legacy.UI.Controls.BocListImplementation.Re
   /// <remarks>This class should not be instantiated directly. It is meant to be used by a <see cref="Web.UI.Controls.BocListImplementation.Rendering.BocListRenderer"/>.</remarks>
   public class BocListNavigationBlockQuirksModeRenderer : IBocListNavigationBlockRenderer
   {
+    /// <summary> A list of control specific resources. </summary>
+    /// <remarks> 
+    ///   Resources will be accessed using 
+    ///   <see cref="M:Remotion.Globalization.IResourceManager.GetString(System.Enum)">IResourceManager.GetString(Enum)</see>. 
+    ///   See the documentation of <b>GetString</b> for further details.
+    /// </remarks>
+    [ResourceIdentifiers]
+    [MultiLingualResources ("Remotion.ObjectBinding.Web.Legacy.Globalization.BocListNavigationBlockQuirksModeRenderer")]
+    public enum ResourceIdentifier
+    {
+      PageInfo,
+      GoToFirstAlternateText,
+      GoToLastAlternateText,
+      GoToNextAlternateText,
+      GoToPreviousAlternateText,
+    }
+
     private const string c_whiteSpace = "&nbsp;";
     private const string c_goToFirstIcon = "MoveFirst.gif";
     private const string c_goToLastIcon = "MoveLast.gif";
@@ -61,14 +75,14 @@ namespace Remotion.ObjectBinding.Web.Legacy.UI.Controls.BocListImplementation.Re
                                                                                   { GoToOption.Last, c_goToLastInactiveIcon }
                                                                               };
 
-    private static readonly IDictionary<GoToOption, BocList.ResourceIdentifier> s_alternateTexts =
+    private static readonly IDictionary<GoToOption, ResourceIdentifier> s_alternateTexts =
         new Dictionary
-            <GoToOption, BocList.ResourceIdentifier>
+            <GoToOption, ResourceIdentifier>
         {
-            { GoToOption.First, BocList.ResourceIdentifier.GoToFirstAlternateText },
-            { GoToOption.Previous, BocList.ResourceIdentifier.GoToPreviousAlternateText },
-            { GoToOption.Next, BocList.ResourceIdentifier.GoToNextAlternateText },
-            { GoToOption.Last, BocList.ResourceIdentifier.GoToLastAlternateText }
+            { GoToOption.First, ResourceIdentifier.GoToFirstAlternateText },
+            { GoToOption.Previous, ResourceIdentifier.GoToPreviousAlternateText },
+            { GoToOption.Next, ResourceIdentifier.GoToNextAlternateText },
+            { GoToOption.Last, ResourceIdentifier.GoToLastAlternateText }
         };
 
     /// <summary> The possible directions for paging through the List. </summary>
@@ -108,7 +122,7 @@ namespace Remotion.ObjectBinding.Web.Legacy.UI.Controls.BocListImplementation.Re
     }
     
     /// <summary> 
-    /// Renders the navigation bar consisting of the move buttons and the <see cref="BocList.PageInfo"/>. 
+    /// Renders the navigation bar consisting of the move buttons and the page information. 
     /// </summary>
     public void Render (BocListRenderingContext renderingContext)
     {
@@ -123,11 +137,7 @@ namespace Remotion.ObjectBinding.Web.Legacy.UI.Controls.BocListImplementation.Re
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Div);
 
       //  Page info
-      string pageInfo;
-      if (StringUtility.IsNullOrEmpty (renderingContext.Control.PageInfo))
-        pageInfo = renderingContext.Control.GetResourceManager().GetString (BocList.ResourceIdentifier.PageInfo);
-      else
-        pageInfo = renderingContext.Control.PageInfo;
+      string pageInfo = GetResourceManager (renderingContext).GetString (ResourceIdentifier.PageInfo);
 
       string navigationText = string.Format (pageInfo, renderingContext.Control.CurrentPage + 1, renderingContext.Control.PageCount);
       // Do not HTML encode.
@@ -168,13 +178,20 @@ namespace Remotion.ObjectBinding.Web.Legacy.UI.Controls.BocListImplementation.Re
 
         string imageUrl = GetResolvedImageUrl (renderingContext, s_activeIcons[command]);
         var icon = new IconInfo (imageUrl);
-        icon.AlternateText = renderingContext.Control.GetResourceManager().GetString (s_alternateTexts[command]);
+        icon.AlternateText = GetResourceManager (renderingContext).GetString (s_alternateTexts[command]);
         icon.Render (renderingContext.Writer, renderingContext.Control);
 
         renderingContext.Writer.RenderEndTag();
       }
 
       renderingContext.Writer.Write (c_whiteSpace + c_whiteSpace + c_whiteSpace);
+    }
+
+    protected virtual IResourceManager GetResourceManager (BocListRenderingContext renderingContext)
+    {
+      return new ResourceManagerSet (
+          MultiLingualResources.GetResourceManager (typeof (ResourceIdentifier), true),
+          renderingContext.Control.GetResourceManager());
     }
 
     private string GetResolvedImageUrl (BocListRenderingContext renderingContext, string imageUrl)
