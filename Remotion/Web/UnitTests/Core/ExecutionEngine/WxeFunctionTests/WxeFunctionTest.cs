@@ -14,14 +14,11 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
-using System.Collections.Specialized;
-using System.Threading;
-using System.Web;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
 using Remotion.Web.ExecutionEngine;
-using Remotion.Development.Web.UnitTesting.AspNetFramework;
 using Remotion.Web.ExecutionEngine.Infrastructure;
 using Remotion.Web.UnitTests.Core.ExecutionEngine.TestFunctions;
 using Rhino.Mocks;
@@ -32,18 +29,14 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxeFunctionTests
   public class WxeFunctionTest
   {
     private MockRepository _mockRepository;
-    private WxeContext _context;
     private IWxeFunctionExecutionListener _executionListenerMock;
 
     [SetUp]
     public void SetUp ()
     {
-      TestFunction rootFunction = new TestFunction ();
-      WxeContextFactory contextFactory = new WxeContextFactory ();
-      _context = contextFactory.CreateContext (rootFunction);
-      _mockRepository = new MockRepository ();
+      _mockRepository = new MockRepository();
 
-      _executionListenerMock = _mockRepository.StrictMock<IWxeFunctionExecutionListener> ();
+      _executionListenerMock = _mockRepository.StrictMock<IWxeFunctionExecutionListener>();
     }
 
     [Test]
@@ -59,7 +52,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxeFunctionTests
     public void GetFunctionToken_AsSubFunction ()
     {
       TestFunction rootFunction = new TestFunction();
-      TestFunction subFunction = new TestFunction ();
+      TestFunction subFunction = new TestFunction();
       rootFunction.Add (subFunction);
       PrivateInvoke.InvokeNonPublicMethod (rootFunction, "SetFunctionToken", "RootFunction");
 
@@ -67,36 +60,95 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxeFunctionTests
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), 
-        ExpectedMessage = "The WxeFunction does not have a RootFunction, i.e. the top-most WxeFunction does not have a FunctionToken.")]
     public void GetFunctionToken_MissingFunctionToken ()
     {
-      TestFunction rootFunction = new TestFunction ();
+      TestFunction rootFunction = new TestFunction();
 
-      Dev.Null = rootFunction.FunctionToken;
+      Assert.That (
+          () => Dev.Null = rootFunction.FunctionToken,
+          Throws.InvalidOperationException
+              .With.Message.EqualTo ("The WxeFunction does not have a RootFunction, i.e. the top-most WxeFunction does not have a FunctionToken."));
+    }
+
+    [Test]
+    public void SetTransactionMode ()
+    {
+      TestFunction2 function = new TestFunction2();
+      ITransactionStrategy actualTransaction = null;
+      function.Add (new WxeDelegateStep (() => actualTransaction = function.Transaction));
+      function.SetTransactionMode (WxeTransactionMode<TestTransactionFactory>.CreateRoot);
+
+      WxeContextFactory contextFactory = new WxeContextFactory();
+      var context = contextFactory.CreateContext (function);
+
+      Assert.That (function.Transaction, Is.InstanceOf<NullTransactionStrategy>());
+
+      function.Execute (context);
+
+      Assert.That (actualTransaction, Is.InstanceOf<RootTransactionStrategy>());
+    }
+
+    [Test]
+    public void SetTransactionMode_AfterExecutionHasStarted_ThrowsInvalidOperationException ()
+    {
+      TestFunction2 function = new TestFunction2();
+      function.Add (
+          new WxeDelegateStep (
+              () => Assert.That (
+                  () => function.SetTransactionMode (WxeTransactionMode<TestTransactionFactory>.CreateRoot),
+                  Throws.InvalidOperationException
+                      .With.Message.EqualTo ("The TransactionMode cannot be set after the TransactionStrategy has been initialized."))));
+
+      WxeContextFactory contextFactory = new WxeContextFactory();
+      var context = contextFactory.CreateContext (function);
+
+      function.Execute (context);
+    }
+
+    [Test]
+    public void GetTransaction_BeforeTransactionStrategyInitialized ()
+    {
+      TestFunction2 function = new TestFunction2();
+      Assert.That (function.Transaction, Is.InstanceOf<NullTransactionStrategy>());
     }
 
     [Test]
     public void GetExecutionListener ()
     {
-      TestFunction2 function = new TestFunction2 ();
+      TestFunction2 function = new TestFunction2();
       Assert.That (function.ExecutionListener, Is.InstanceOf (typeof (NullExecutionListener)));
     }
 
     [Test]
     public void SetExecutionListener ()
     {
-      TestFunction2 function = new TestFunction2 ();
-      function.ExecutionListener = _executionListenerMock;
+      TestFunction2 function = new TestFunction2();
+      function.SetExecutionListener (_executionListenerMock);
       Assert.That (function.ExecutionListener, Is.SameAs (_executionListenerMock));
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentNullException))]
+    public void SetExecutionListener_AfterExecutionHasStarted_ThrowsInvalidOperationException ()
+    {
+      TestFunction2 function = new TestFunction2();
+      function.Add (
+          new WxeDelegateStep (
+              () => Assert.That (
+                  () => function.SetExecutionListener (_executionListenerMock),
+                  Throws.InvalidOperationException
+                      .With.Message.EqualTo ("The ExecutionListener cannot be set after the TransactionStrategy has been initialized."))));
+
+      WxeContextFactory contextFactory = new WxeContextFactory();
+      var context = contextFactory.CreateContext (function);
+
+      function.Execute (context);
+    }
+
+    [Test]
     public void SetExecutionListenerNull ()
     {
-      TestFunction2 function = new TestFunction2 ();
-      function.ExecutionListener = null;
+      TestFunction2 function = new TestFunction2();
+      Assert.That (() =>function.SetExecutionListener (null), Throws.TypeOf<ArgumentNullException>());
     }
   }
 }

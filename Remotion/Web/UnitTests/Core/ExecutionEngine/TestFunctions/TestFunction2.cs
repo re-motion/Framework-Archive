@@ -32,9 +32,24 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.TestFunctions
     {
     }
 
+    public new IWxeFunctionExecutionListener ExecutionListener
+    {
+      get { return base.ExecutionListener; }
+    }
+
+    public new void SetExecutionListener (IWxeFunctionExecutionListener value)
+    {
+      base.SetExecutionListener (value);
+    }
+
     public new TransactionStrategyBase TransactionStrategy
     {
       get { return base.TransactionStrategy; }
+    }
+
+    public new void SetTransactionMode (ITransactionMode transactionMode)
+    {
+      base.SetTransactionMode (transactionMode);
     }
   }
 }
