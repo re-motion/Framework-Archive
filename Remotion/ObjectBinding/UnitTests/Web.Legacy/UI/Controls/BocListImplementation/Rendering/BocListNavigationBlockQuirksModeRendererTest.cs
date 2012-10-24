@@ -111,12 +111,12 @@ namespace Remotion.ObjectBinding.UnitTests.Web.Legacy.UI.Controls.BocListImpleme
       Html.AssertTextNode (div, c_tripleBlank, 4);
 
       var nextIcon = Html.GetAssertedChildElement (div, "a", 5);
-      AssertActiveIcon (nextIcon, "Next");
+      AssertActiveIcon (nextIcon, "Next", 1);
 
       Html.AssertTextNode (div, c_tripleBlank, 6);
 
       var lastIcon = Html.GetAssertedChildElement (div, "a", 7);
-      AssertActiveIcon (lastIcon, "Last");
+      AssertActiveIcon (lastIcon, "Last", 1);
 
       Html.AssertTextNode (div, c_tripleBlank, 8);
     }
@@ -140,12 +140,12 @@ namespace Remotion.ObjectBinding.UnitTests.Web.Legacy.UI.Controls.BocListImpleme
       Html.AssertTextNode (div, string.Format (c_pageInfo, 2, 2) + c_tripleBlank, 0);
 
       var firstIcon = Html.GetAssertedChildElement (div, "a", 1);
-      AssertActiveIcon (firstIcon, "First");
+      AssertActiveIcon (firstIcon, "First", 0);
 
       Html.AssertTextNode (div, c_tripleBlank, 2);
 
       var previousIcon = Html.GetAssertedChildElement (div, "a", 3);
-      AssertActiveIcon (previousIcon, "Previous");
+      AssertActiveIcon (previousIcon, "Previous", 0);
 
       Html.AssertTextNode (div, c_tripleBlank, 4);
 
@@ -179,12 +179,12 @@ namespace Remotion.ObjectBinding.UnitTests.Web.Legacy.UI.Controls.BocListImpleme
       Html.AssertTextNode (div, string.Format (c_pageInfo, 2, 3) + c_tripleBlank, 0);
 
       var firstIcon = Html.GetAssertedChildElement (div, "a", 1);
-      AssertActiveIcon (firstIcon, "First");
+      AssertActiveIcon (firstIcon, "First", 0);
 
       Html.AssertTextNode (div, c_tripleBlank, 2);
 
       var previousIcon = Html.GetAssertedChildElement (div, "a", 3);
-      AssertActiveIcon (previousIcon, "Previous", );
+      AssertActiveIcon (previousIcon, "Previous", 0);
 
       Html.AssertTextNode (div, c_tripleBlank, 4);
 
@@ -194,7 +194,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.Legacy.UI.Controls.BocListImpleme
       Html.AssertTextNode (div, c_tripleBlank, 6);
 
       var lastIcon = Html.GetAssertedChildElement (div, "a", 7);
-      AssertActiveIcon (lastIcon, "Last", 3);
+      AssertActiveIcon (lastIcon, "Last", 2);
 
       Html.AssertTextNode (div, c_tripleBlank, 8);
     }
