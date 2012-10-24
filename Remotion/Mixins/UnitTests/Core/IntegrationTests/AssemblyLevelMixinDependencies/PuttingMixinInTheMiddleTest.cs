@@ -19,29 +19,33 @@ using NUnit.Framework;
 using Remotion.Mixins.UnitTests.Core.IntegrationTests.AssemblyLevelMixinDependencies;
 
 [assembly: AdditionalMixinDependency (
-    typeof (DependencyResolvingOrderingConflictTest.C), 
-    typeof (DependencyResolvingOrderingConflictTest.M1),
-    typeof (DependencyResolvingOrderingConflictTest.M2))]
+    typeof (PuttingMixinInTheMiddleTest.C),
+    typeof (PuttingMixinInTheMiddleTest.M1),
+    typeof (PuttingMixinInTheMiddleTest.M3))]
+[assembly: AdditionalMixinDependency (
+    typeof (PuttingMixinInTheMiddleTest.C),
+    typeof (PuttingMixinInTheMiddleTest.M3),
+    typeof (PuttingMixinInTheMiddleTest.M2))]
 
 namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.AssemblyLevelMixinDependencies
 {
   [TestFixture]
   [Ignore ("TODO 5142")]
-  public class DependencyResolvingOrderingConflictTest
+  public class PuttingMixinInTheMiddleTest
   {
     [Test]
-    public void OrderingConflictIsResolvedViaAssemblyLevelAttribute ()
+    public void AssemblyLevelAttribute_CanBeUsedToPutAMixinInTheMiddle ()
     {
-      var instance = ObjectFactory.Create<C>();
+      var instance = ObjectFactory.Create<C> ();
 
-      var result = instance.M();
+      var result = instance.M ();
 
-      Assert.That (result, Is.EqualTo ("M1 M2 C"));
+      Assert.That (result, Is.EqualTo ("M1 M3 M2 C"));
     }
 
     public class C : IC
     {
-      public virtual string M()
+      public virtual string M ()
       {
         return "C";
       }
@@ -52,13 +56,13 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.AssemblyLevelMixinDepe
       string M ();
     }
 
-    [Extends (typeof (C))]
+    [Extends (typeof (C), AdditionalDependencies = new[] { typeof (M2) })]
     public class M1 : Mixin<C, IC>
     {
       [OverrideTarget]
       public string M ()
       {
-        return "M1 " + Next.M();
+        return "M1 " + Next.M ();
       }
     }
 
@@ -72,5 +76,14 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.AssemblyLevelMixinDepe
       }
     }
 
+    [Extends (typeof (C))]
+    public class M3 : Mixin<C, IC>
+    {
+      [OverrideTarget]
+      public string M ()
+      {
+        return "M3 " + Next.M ();
+      }
+    }
   }
 }
