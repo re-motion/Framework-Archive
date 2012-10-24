@@ -57,12 +57,13 @@ namespace Remotion.ObjectBinding.Web.Legacy.UI.Controls.BocListImplementation.Re
       if (!renderingContext.Control.IsSelectionEnabled)
         return;
 
+      var selectorControlName = renderingContext.Control.GetSelectorControlUniqueID (rowRenderingContext.Row.Index);
       var selectorControlValue = renderingContext.Control.GetSelectorControlValue (rowRenderingContext.Row);
       var isChecked = rowRenderingContext.IsSelected;
 
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, cssClassTableCell);
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Td);
-      RenderSelectorControl (renderingContext, selectorControlID, selectorControlValue, isChecked, false);
+      RenderSelectorControl (renderingContext, selectorControlID, selectorControlName, selectorControlValue, isChecked, false);
       renderingContext.Writer.RenderEndTag();
     }
 
@@ -77,25 +78,27 @@ namespace Remotion.ObjectBinding.Web.Legacy.UI.Controls.BocListImplementation.Re
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Th);
       if (renderingContext.Control.Selection == RowSelection.Multiple)
       {
-        string selectorControlName = renderingContext.Control.GetSelectAllControlClientID ();
-        RenderSelectorControl (renderingContext, selectorControlName, null, false, true);
+        string selectorControlName = renderingContext.Control.GetSelectAllControlUnqiueID ();
+        var selectorControlID = selectorControlName.Replace ('$', '_');
+        RenderSelectorControl (renderingContext, selectorControlID, selectorControlName, null, false, true);
       }
       else
         renderingContext.Writer.Write (c_whiteSpace);
       renderingContext.Writer.RenderEndTag ();
     }
 
-    private void RenderSelectorControl (BocListRenderingContext renderingContext, string id, string value, bool isChecked, bool isSelectAllSelectorControl)
+    private void RenderSelectorControl (BocListRenderingContext renderingContext, string id, string name, string value, bool isChecked, bool isSelectAllSelectorControl)
     {
       ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
       ArgumentUtility.CheckNotNullOrEmpty ("id", id);
+      ArgumentUtility.CheckNotNullOrEmpty ("name", name);
 
       if (renderingContext.Control.Selection == RowSelection.SingleRadioButton)
         renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Type, "radio");
       else
         renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Type, "checkbox");
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Id, id);
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Name, id);
+      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Name, name);
 
       if (isChecked)
         renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Checked, "checked");

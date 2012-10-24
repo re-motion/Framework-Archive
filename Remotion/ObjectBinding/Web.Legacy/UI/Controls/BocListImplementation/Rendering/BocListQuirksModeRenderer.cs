@@ -300,7 +300,7 @@ namespace Remotion.ObjectBinding.Web.Legacy.UI.Controls.BocListImplementation.Re
             scriptTemplate,
             renderingContext.Control.ClientID,
             renderingContext.Control.GetSelectorControlClientID (null),
-            renderingContext.Control.GetSelectAllControlClientID(),
+            renderingContext.Control.GetSelectAllControlUnqiueID(),
             count,
             (int) renderingContext.Control.Selection,
             hasClickSensitiveRows ? "true" : "false",

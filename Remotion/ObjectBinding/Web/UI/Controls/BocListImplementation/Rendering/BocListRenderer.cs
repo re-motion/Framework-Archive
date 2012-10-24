@@ -212,7 +212,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
             scriptTemplate,
             renderingContext.Control.ClientID,
             renderingContext.Control.GetSelectorControlClientID (null),
-            renderingContext.Control.GetSelectAllControlClientID(),
+            renderingContext.Control.GetSelectAllControlUnqiueID(),
             count,
             (int) renderingContext.Control.Selection,
             hasClickSensitiveRows ? "true" : "false",

@@ -45,7 +45,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocListImplementation
     [Test]
     public void RenderOnlyPage ()
     {
-      List.Stub (mock => mock.CurrentPage).Return (0);
+      List.Stub (mock => mock.CurrentPageIndex).Return (0);
       List.Stub (mock => mock.PageCount).Return (1);
 
       var renderer = new BocListNavigationBlockRenderer (new ResourceUrlFactory (new ResourceTheme.ClassicBlue ()), _bocListCssClassDefinition);
@@ -82,7 +82,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocListImplementation
     [Test]
     public void RenderFirstPage ()
     {
-      List.Stub (mock => mock.CurrentPage).Return (0);
+      List.Stub (mock => mock.CurrentPageIndex).Return (0);
       List.Stub (mock => mock.PageCount).Return (2);
 
       var renderer = new BocListNavigationBlockRenderer (new ResourceUrlFactory (new ResourceTheme.ClassicBlue ()), _bocListCssClassDefinition);
@@ -119,7 +119,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocListImplementation
     [Test]
     public void RenderLastPage ()
     {
-      List.Stub (mock => mock.CurrentPage).Return (1);
+      List.Stub (mock => mock.CurrentPageIndex).Return (1);
       List.Stub (mock => mock.PageCount).Return (2);
 
       var renderer = new BocListNavigationBlockRenderer (new ResourceUrlFactory (new ResourceTheme.ClassicBlue ()), _bocListCssClassDefinition);
@@ -156,7 +156,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocListImplementation
     [Test]
     public void RenderMiddlePage ()
     {
-      List.Stub (mock => mock.CurrentPage).Return (1);
+      List.Stub (mock => mock.CurrentPageIndex).Return (1);
       List.Stub (mock => mock.PageCount).Return (3);
 
       var renderer = new BocListNavigationBlockRenderer (new ResourceUrlFactory (new ResourceTheme.ClassicBlue ()), _bocListCssClassDefinition);

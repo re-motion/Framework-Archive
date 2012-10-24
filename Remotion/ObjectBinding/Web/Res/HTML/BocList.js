@@ -111,7 +111,7 @@ function BocList_InitializeList(bocList, selectorControlPrefix, selectAllSelecto
       }
     }
 
-    selectedRows.SelectAllSelectorControls = $("input[name=" + selectAllSelectorControlName + "]");
+    selectedRows.SelectAllSelectorControls = $("input[name='" + selectAllSelectorControlName + "']");
     BocList_SetSelectAllRowsSelectorOnDemand (selectedRows);
   }
   _bocList_selectedRows[bocList.id] = selectedRows;

@@ -46,7 +46,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.Legacy.UI.Controls.BocListImpleme
     [Test]
     public void RenderOnlyPage ()
     {
-      List.Stub (mock => mock.CurrentPage).Return (0);
+      List.Stub (mock => mock.CurrentPageIndex).Return (0);
       List.Stub (mock => mock.PageCount).Return (1);
 
       var renderer = new BocListNavigationBlockQuirksModeRenderer (_bocListQuirksModeCssClassDefinition);
@@ -85,7 +85,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.Legacy.UI.Controls.BocListImpleme
     [Test]
     public void RenderFirstPage ()
     {
-      List.Stub (mock => mock.CurrentPage).Return (0);
+      List.Stub (mock => mock.CurrentPageIndex).Return (0);
       List.Stub (mock => mock.PageCount).Return (2);
 
       var renderer = new BocListNavigationBlockQuirksModeRenderer (_bocListQuirksModeCssClassDefinition);
@@ -124,7 +124,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.Legacy.UI.Controls.BocListImpleme
     [Test]
     public void RenderLastPage ()
     {
-      List.Stub (mock => mock.CurrentPage).Return (1);
+      List.Stub (mock => mock.CurrentPageIndex).Return (1);
       List.Stub (mock => mock.PageCount).Return (2);
 
       var renderer = new BocListNavigationBlockQuirksModeRenderer (_bocListQuirksModeCssClassDefinition);
@@ -163,7 +163,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.Legacy.UI.Controls.BocListImpleme
     [Test]
     public void RenderMiddlePage ()
     {
-      List.Stub (mock => mock.CurrentPage).Return (1);
+      List.Stub (mock => mock.CurrentPageIndex).Return (1);
       List.Stub (mock => mock.PageCount).Return (3);
 
       var renderer = new BocListNavigationBlockQuirksModeRenderer (_bocListQuirksModeCssClassDefinition);
@@ -184,25 +184,25 @@ namespace Remotion.ObjectBinding.UnitTests.Web.Legacy.UI.Controls.BocListImpleme
       Html.AssertTextNode (div, c_tripleBlank, 2);
 
       var previousIcon = Html.GetAssertedChildElement (div, "a", 3);
-      AssertActiveIcon (previousIcon, "Previous");
+      AssertActiveIcon (previousIcon, "Previous", );
 
       Html.AssertTextNode (div, c_tripleBlank, 4);
 
       var nextIcon = Html.GetAssertedChildElement (div, "a", 5);
-      AssertActiveIcon (nextIcon, "Next");
+      AssertActiveIcon (nextIcon, "Next", 2);
 
       Html.AssertTextNode (div, c_tripleBlank, 6);
 
       var lastIcon = Html.GetAssertedChildElement (div, "a", 7);
-      AssertActiveIcon (lastIcon, "Last");
+      AssertActiveIcon (lastIcon, "Last", 3);
 
       Html.AssertTextNode (div, c_tripleBlank, 8);
     }
 
-    private void AssertActiveIcon (XmlNode link, string command)
+    private void AssertActiveIcon (XmlNode link, string command, int pageIndex)
     {
       Html.AssertAttribute (link, "id", List.ClientID + "_Navigation_" + command);
-      Html.AssertAttribute (link, "onclick", "postBackEventReference");
+      Html.AssertAttribute (link, "onclick", "document.getElementById ('CurrentPageControlClientID').value = "+pageIndex+";");
       Html.AssertAttribute (link, "href", "#");
 
       var icon = Html.GetAssertedChildElement (link, "img", 0);

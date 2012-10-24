@@ -112,7 +112,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
     string OptionsTitle { get; }
 
     bool HasClientScript { get; }
-    DropDownList AvailableViewsList { get; }
+    DropDownList GetAvailableViewsList ();
     IDropDownMenu OptionsMenu { get; }
 
     IEditModeController EditModeController { get; }
@@ -154,14 +154,17 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
 
     RowSelection Selection { get; }
     bool AreDataRowsClickSensitive ();
+    string GetSelectorControlUniqueID (int? absoluteRowIndex);
     string GetSelectorControlClientID (int? absoluteRowIndex);
     string GetSelectorControlValue (BocListRow row);
-    string GetSelectAllControlClientID ();
+    string GetSelectAllControlUnqiueID ();
     string GetSelectionChangedHandlerScript ();
 
     bool IsPagingEnabled { get; }
     int PageCount { get; }
     int? PageSize { get; }
-    int CurrentPage { get; }
+    int CurrentPageIndex { get; }
+    string GetCurrentPageControlUniqueID ();
+    string GetCurrentPageControlClientID ();
   }
 }
