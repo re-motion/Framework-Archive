@@ -66,7 +66,7 @@ namespace OBWTest
     protected void Application_Start (Object sender, EventArgs e)
     {
       XmlConfigurator.Configure();
-      PreferQuirksModeRendering = false;
+      PreferQuirksModeRendering = true;
       bool useClassicBlueTheme = false;
 
       if (useClassicBlueTheme)

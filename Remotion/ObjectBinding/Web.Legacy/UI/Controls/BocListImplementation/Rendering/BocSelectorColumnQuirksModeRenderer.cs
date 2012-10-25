@@ -52,8 +52,8 @@ namespace Remotion.ObjectBinding.Web.Legacy.UI.Controls.BocListImplementation.Re
       if (!renderingContext.Control.IsSelectionEnabled)
         return;
 
-      string selectorControlID = renderingContext.Control.GetSelectorControlUniqueID (rowRenderingContext.Row.Index).Replace('$', '_');
-      var selectorControlName = renderingContext.Control.GetSelectorControlUniqueID (rowRenderingContext.Row.Index);
+      string selectorControlID = renderingContext.Control.GetSelectorControlUniqueID (rowRenderingContext.SortedIndex).Replace('$', '_');
+      var selectorControlName = renderingContext.Control.GetSelectorControlUniqueID (null);
       var selectorControlValue = renderingContext.Control.GetSelectorControlValue (rowRenderingContext.Row);
       var isChecked = rowRenderingContext.IsSelected;
 
@@ -132,20 +132,12 @@ namespace Remotion.ObjectBinding.Web.Legacy.UI.Controls.BocListImplementation.Re
       string alternateText = renderingContext.Control.GetResourceManager().GetString (BocList.ResourceIdentifier.SelectAllRowsAlternateText);
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Alt, alternateText);
 
-      int count = 0;
-      if (renderingContext.Control.IsPagingEnabled)
-        count = renderingContext.Control.PageSize.Value;
-      else if (renderingContext.Control.HasValue)
-        count = renderingContext.Control.Value.Count;
-
       if (renderingContext.Control.HasClientScript)
       {
         string script = "BocList_OnSelectAllSelectorControlClick ("
                         + "document.getElementById ('" + renderingContext.Control.ClientID + "'), "
                         + "this , '"
-                        + renderingContext.Control.GetSelectorControlUniqueID (null).Replace ('$', '_') + "', "
-                        + count + ", "
-                        + "document.getElementById ('" + renderingContext.Control.ListMenu.ClientID + "'));";
+                        + renderingContext.Control.GetSelectorControlUniqueID (null).Replace ('$', '_') + "');";
         renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Onclick, script);
       }
     }
