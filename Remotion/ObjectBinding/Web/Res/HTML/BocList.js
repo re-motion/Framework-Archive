@@ -111,7 +111,7 @@ function BocList_InitializeList(bocList, selectorControlPrefix, selectAllSelecto
       }
     }
 
-    selectedRows.SelectAllSelectorControls = $("input[name='" + selectAllSelectorControlName + "']");
+    selectedRows.SelectAllSelectorControls = $('input[name="' + selectAllSelectorControlName + '"]');
     BocList_SetSelectAllRowsSelectorOnDemand (selectedRows);
   }
   _bocList_selectedRows[bocList.id] = selectedRows;
@@ -463,9 +463,8 @@ function BocList_CreateFakeTableHead(tableContainer, scrollableContainer)
   checkboxes.click(function ()
   {
     var checkName = $(this).attr('name');
-    var realCheckName = checkName.replace('_fake', '');
     var checkStatus = $(this).prop('checked');
-    $('input[name*=' + realCheckName + ']').prop('checked', checkStatus);
+    $('input[name="' + checkName + '"]').prop('checked', checkStatus);
   });
 
   if ($('body').is('.msie'))

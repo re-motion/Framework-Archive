@@ -168,7 +168,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
     private void RenderValueField (BocListRenderingContext renderingContext)
     {
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Id, renderingContext.Control.GetCurrentPageControlClientID());
+      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Id, renderingContext.Control.GetCurrentPageControlUniqueID().Replace('$', '_'));
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Name, renderingContext.Control.GetCurrentPageControlUniqueID());
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Type, "hidden");
       renderingContext.Writer.AddAttribute (
@@ -202,9 +202,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       {
         renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Id, navigateCommandID);
 
-        var postBackEvent = new StringBuilder (200);
-        postBackEvent.AppendFormat ("$('#{0}').val({1}).trigger('change');", renderingContext.Control.GetCurrentPageControlClientID(), pageIndex);
-        renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Onclick, postBackEvent.ToString());
+        var currentPageControlClientID = renderingContext.Control.GetCurrentPageControlUniqueID().Replace ('$', '_');
+        var postBackEvent = string.Format ("$('#{0}').val({1}).trigger('change');", currentPageControlClientID, pageIndex);
+        renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Onclick, postBackEvent);
 
         renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Href, "#");
 

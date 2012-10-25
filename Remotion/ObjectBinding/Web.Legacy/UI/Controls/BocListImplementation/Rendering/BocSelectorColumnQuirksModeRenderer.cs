@@ -43,20 +43,16 @@ namespace Remotion.ObjectBinding.Web.Legacy.UI.Controls.BocListImplementation.Re
       get { return _cssClasses; }
     }
 
-    public void RenderDataCell (
-        BocListRenderingContext renderingContext,
-        BocListRowRenderingContext rowRenderingContext,
-        string selectorControlID,
-        string cssClassTableCell)
+    public void RenderDataCell (BocListRenderingContext renderingContext, BocListRowRenderingContext rowRenderingContext, string cssClassTableCell)
     {
       ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
       ArgumentUtility.CheckNotNull ("cssClassTableCell", cssClassTableCell);
-      ArgumentUtility.CheckNotNullOrEmpty ("selectorControlID", selectorControlID);
       ArgumentUtility.CheckNotNullOrEmpty ("cssClassTableCell", cssClassTableCell);
 
       if (!renderingContext.Control.IsSelectionEnabled)
         return;
 
+      string selectorControlID = renderingContext.Control.GetSelectorControlUniqueID (rowRenderingContext.Row.Index).Replace('$', '_');
       var selectorControlName = renderingContext.Control.GetSelectorControlUniqueID (rowRenderingContext.Row.Index);
       var selectorControlValue = renderingContext.Control.GetSelectorControlValue (rowRenderingContext.Row);
       var isChecked = rowRenderingContext.IsSelected;
@@ -147,7 +143,7 @@ namespace Remotion.ObjectBinding.Web.Legacy.UI.Controls.BocListImplementation.Re
         string script = "BocList_OnSelectAllSelectorControlClick ("
                         + "document.getElementById ('" + renderingContext.Control.ClientID + "'), "
                         + "this , '"
-                        + renderingContext.Control.GetSelectorControlClientID (null) + "', "
+                        + renderingContext.Control.GetSelectorControlUniqueID (null).Replace ('$', '_') + "', "
                         + count + ", "
                         + "document.getElementById ('" + renderingContext.Control.ListMenu.ClientID + "'));";
         renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Onclick, script);

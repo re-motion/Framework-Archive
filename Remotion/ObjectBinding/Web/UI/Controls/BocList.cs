@@ -21,6 +21,7 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Drawing.Design;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Web.UI;
@@ -81,8 +82,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     //  constants
     private const string c_currentPageControlIDSuffix = "_Boc_CurrentPage";
-    private const string c_dataRowSelectorControlIDSuffix = "_Boc_SelectorControl_";
-    private const string c_titleRowSelectorControlIDSuffix = "_Boc_SelectorControl_SelectAll";
+    private const string c_dataRowSelectorControlIDSuffix = "_Boc_SelectRowControl_";
+    private const string c_titleRowSelectorControlIDSuffix = "_Boc_SelectAllControl";
     private const string c_availableViewsListIDSuffix = "_Boc_AvailableViewsList";
     private const string c_optionsMenuIDSuffix = "_Boc_OptionsMenu";
     private const string c_listMenuIDSuffix = "_Boc_ListMenu";
@@ -295,11 +296,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </summary>
     private bool _alwaysShowPageInfo;
 
-    /// <summary> 
-    ///   The index of the current row in the <see cref="IBusinessObject"/> this control is bound to.
-    /// </summary>
-    private int _currentRowIndex;
-
     /// <summary> The index of the current page. </summary>
     private int _currentPageIndex;
 
@@ -483,7 +479,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     private void LoadSelectionPostData (NameValueCollection postCollection)
     {
-      string dataRowSelectorControlFilter = ClientID + c_dataRowSelectorControlIDSuffix;
+      string dataRowSelectorControlFilter = ((IBocList) this).GetSelectorControlUniqueID (null);
       string titleRowSelectorControlFilter = ClientID + c_titleRowSelectorControlIDSuffix;
 
       _selectorControlCheckedState.Clear();
@@ -982,22 +978,22 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       // Must be executed before CalculateCurrentPage
       if (_editModeController.IsRowEditModeActive)
       {
-        BocListRow[] sortedRows = EnsureSortedBocListRowsGot();
-        for (int idxRows = 0; idxRows < sortedRows.Length; idxRows++)
+        if (IsPagingEnabled)
         {
-          int originalRowIndex = sortedRows[idxRows].Index;
-          if (_editModeController.EditableRowIndex.Value == originalRowIndex)
+          BocListRow[] sortedRows = EnsureSortedBocListRowsGot();
+          for (int idxRows = 0; idxRows < sortedRows.Length; idxRows++)
           {
-            _currentRowIndex = idxRows;
-            break;
+            int originalRowIndex = sortedRows[idxRows].Index;
+            if (_editModeController.EditableRowIndex.Value == originalRowIndex)
+            {
+              _newPageIndex = _currentPageIndex = idxRows / _pageSize.Value;
+              break;
+            }
           }
         }
       }
 
-      if (_editModeController.IsRowEditModeActive || _editModeController.IsListEditModeActive)
-        CalculateCurrentPage (null);
-      else
-        CalculateCurrentPage (_newPageIndex);
+      CalculateCurrentPage (_newPageIndex);
 
       BocColumnDefinition[] columns = EnsureColumnsGot (true);
 
@@ -1020,8 +1016,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
         _optionsMenu.GetSelectionCount = GetSelectionCountScript();
       }
-
-      CreateAvailableViewsList();
     }
 
     /// <summary> Gets a <see cref="HtmlTextWriterTag.Div"/> as the <see cref="WebControl.TagKey"/>. </summary>
@@ -1032,44 +1026,28 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     private void CalculateCurrentPage (int? newPageIndex)
     {
+      var oldPageIndex = _currentPageIndex;
+
       if (!IsPagingEnabled || Value == null)
       {
         _pageCount = 1;
         _currentPageIndex = 0;
-        _currentRowIndex = 0;
       }
       else
       {
-        var oldPageIndex = _currentPageIndex;
-
         if (newPageIndex.HasValue)
-        {
-          _currentPageIndex = _newPageIndex.Value;
-          _currentRowIndex = _newPageIndex.Value * _pageSize.Value;
-        }
-        else
-        {
-          _currentPageIndex = _currentRowIndex / _pageSize.Value;
-        }
+          _currentPageIndex = newPageIndex.Value;
 
         _pageCount = (int) Math.Ceiling ((double) Value.Count / _pageSize.Value);
-        if (_currentPageIndex >= _pageCount || _currentRowIndex >= Value.Count)
-        {
+        if (_currentPageIndex >= _pageCount)
           _currentPageIndex = _pageCount - 1;
-          _currentRowIndex = Value.Count - 1;
-        }
 
-        if (_currentPageIndex < 0 || _currentRowIndex < 0)
-        {
+        if (_currentPageIndex < 0)
           _currentPageIndex = 0;
-          _currentRowIndex = 0;
-        }
-
-        if (_currentPageIndex != oldPageIndex)
-        {
-          OnDisplayedRowsChanged();
-        }
       }
+
+      if (_currentPageIndex != oldPageIndex)
+        OnDisplayedRowsChanged();
     }
 
     protected override void Render (HtmlTextWriter writer)
@@ -1078,6 +1056,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
       if (Page != null)
         Page.VerifyRenderingInServerForm (this);
+
+      CreateAvailableViewsList();
 
       BocColumnDefinition[] renderColumns = EnsureColumnsGot (IsDesignMode);
       EvaluateWaiConformity (renderColumns);
@@ -1328,11 +1308,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       base.LoadControlState (values[0]);
       _selectedViewIndex = (int?) values[1];
       _availableViewsListPlaceHolder.Controls.Cast<ScalarLoadPostDataTarget>().Single().Value = (string) values[2];
-      _currentRowIndex = (int) values[3];
-      _currentPagePostBackTarget.Value = (string) values[4];
-      _sortingOrder = (List<BocListSortingOrderEntry>) values[5];
-      _selectorControlCheckedState = (HashSet<string>) values[6];
-      _rowIDProvider = (IRowIDProvider) values[7];
+      _currentPageIndex = (int) values[3];
+      _sortingOrder = (List<BocListSortingOrderEntry>) values[4];
+      _selectorControlCheckedState = (HashSet<string>) values[5];
+      _rowIDProvider = (IRowIDProvider) values[6];
+
+      _currentPagePostBackTarget.Value = _currentPageIndex.ToString (CultureInfo.InvariantCulture);
     }
 
     protected override object SaveControlState ()
@@ -1341,16 +1322,15 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       foreach (var sortingOrderEntry in _sortingOrder)
         sortingOrderEntry.SetColumnIndex (Array.IndexOf (columns, sortingOrderEntry.Column));
 
-      object[] values = new object[8];
+      object[] values = new object[7];
 
       values[0] = base.SaveControlState();
       values[1] = _selectedViewIndex;
-      values[2] = _availableViewsListPlaceHolder.Controls.Cast<DropDownList>().Single().SelectedValue; // Switched to DropDownList during OnPreRender
-      values[3] = _currentRowIndex;
-      values[4] = _currentPagePostBackTarget.Value;
-      values[5] = _sortingOrder;
-      values[6] = _selectorControlCheckedState;
-      values[7] = _rowIDProvider;
+      values[2] = _availableViewsListPlaceHolder.Controls.Cast<ScalarLoadPostDataTarget>().Single().Value;
+      values[3] = _currentPageIndex;
+      values[4] = _sortingOrder;
+      values[5] = _selectorControlCheckedState;
+      values[6] = _rowIDProvider;
 
       return values;
     }
@@ -2980,14 +2960,17 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       if (! IsReadOnly)
       {
         OnStateOfDisplayedRowsChanged();
-        BocListRow[] sortedRows = EnsureSortedBocListRowsGot();
-        for (int idxRows = 0; idxRows < sortedRows.Length; idxRows++)
+        if (IsPagingEnabled)
         {
-          int originalRowIndex = sortedRows[idxRows].Index;
-          if (modifiedRowIndex == originalRowIndex)
+          BocListRow[] sortedRows = EnsureSortedBocListRowsGot();
+          for (int idxRows = 0; idxRows < sortedRows.Length; idxRows++)
           {
-            _currentRowIndex = idxRows;
-            break;
+            int originalRowIndex = sortedRows[idxRows].Index;
+            if (modifiedRowIndex == originalRowIndex)
+            {
+              _newPageIndex = _currentPageIndex = idxRows / _pageSize.Value;
+              break;
+            }
           }
         }
       }
@@ -3860,7 +3843,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     DropDownList IBocList.GetAvailableViewsList ()
     {
-      return _availableViewsListPlaceHolder.Controls.Cast<DropDownList>().Single();
+      return _availableViewsListPlaceHolder.Controls.OfType<DropDownList>().SingleOrDefault();
     }
 
     IDropDownMenu IBocList.OptionsMenu
@@ -3916,19 +3899,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       return RowIDProvider.GetItemRowID (row);
     }
 
-    string IBocList.GetSelectorControlClientID (int? rowIndex)
-    {
-      return ClientID + GetSelectorControlSuffix (rowIndex);
-    }
-    
     string IBocList.GetSelectorControlUniqueID (int? rowIndex)
     {
-      return UniqueID + GetSelectorControlSuffix (rowIndex);
-    }
-    
-    private string GetSelectorControlSuffix (int? rowIndex)
-    {
-      return c_dataRowSelectorControlIDSuffix + (rowIndex.HasValue ? rowIndex.Value.ToString() : string.Empty);
+      return UniqueID + (c_dataRowSelectorControlIDSuffix + (rowIndex.HasValue ? rowIndex.Value.ToString() : string.Empty));
     }
 
     string IBocList.GetSelectAllControlUnqiueID ()
@@ -3997,11 +3970,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     int IBocList.PageCount
     {
       get { return _pageCount; }
-    }
-
-    string IBocList.GetCurrentPageControlClientID ()
-    {
-      return ClientID + c_currentPageControlIDSuffix;
     }
 
     string IBocList.GetCurrentPageControlUniqueID ()

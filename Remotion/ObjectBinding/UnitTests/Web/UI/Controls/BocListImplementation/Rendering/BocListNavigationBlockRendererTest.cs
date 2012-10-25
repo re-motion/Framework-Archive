@@ -106,12 +106,12 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocListImplementation
       Html.AssertTextNode (div, c_tripleBlank, 4);
 
       var nextIcon = Html.GetAssertedChildElement (div, "a", 5);
-      AssertActiveIcon (nextIcon, "Next");
+      AssertActiveIcon (nextIcon, "Next", 1);
 
       Html.AssertTextNode (div, c_tripleBlank, 6);
 
       var lastIcon = Html.GetAssertedChildElement (div, "a", 7);
-      AssertActiveIcon (lastIcon, "Last");
+      AssertActiveIcon (lastIcon, "Last", 1);
 
       Html.AssertTextNode (div, c_tripleBlank, 8);
     }
@@ -133,12 +133,12 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocListImplementation
       Html.AssertTextNode (div, string.Format (c_pageInfo, 2, 2) + c_tripleBlank, 0);
 
       var firstIcon = Html.GetAssertedChildElement (div, "a", 1);
-      AssertActiveIcon (firstIcon, "First");
+      AssertActiveIcon (firstIcon, "First", 0);
 
       Html.AssertTextNode (div, c_tripleBlank, 2);
 
       var previousIcon = Html.GetAssertedChildElement (div, "a", 3);
-      AssertActiveIcon (previousIcon, "Previous");
+      AssertActiveIcon (previousIcon, "Previous", 0);
 
       Html.AssertTextNode (div, c_tripleBlank, 4);
 
@@ -156,8 +156,8 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocListImplementation
     [Test]
     public void RenderMiddlePage ()
     {
-      List.Stub (mock => mock.CurrentPageIndex).Return (1);
-      List.Stub (mock => mock.PageCount).Return (3);
+      List.Stub (mock => mock.CurrentPageIndex).Return (3);
+      List.Stub (mock => mock.PageCount).Return (7);
 
       var renderer = new BocListNavigationBlockRenderer (new ResourceUrlFactory (new ResourceTheme.ClassicBlue ()), _bocListCssClassDefinition);
       renderer.Render (new BocListRenderingContext(HttpContext, Html.Writer, List, new BocColumnRenderer[0]));
@@ -167,33 +167,33 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocListImplementation
       var div = Html.GetAssertedChildElement (document, "div", 0);
       Html.AssertAttribute (div, "class", _bocListCssClassDefinition.Navigator);
 
-      Html.AssertTextNode (div, string.Format (c_pageInfo, 2, 3) + c_tripleBlank, 0);
+      Html.AssertTextNode (div, string.Format (c_pageInfo, 4, 7) + c_tripleBlank, 0);
 
       var firstIcon = Html.GetAssertedChildElement (div, "a", 1);
-      AssertActiveIcon (firstIcon, "First");
+      AssertActiveIcon (firstIcon, "First", 0);
 
       Html.AssertTextNode (div, c_tripleBlank, 2);
 
       var previousIcon = Html.GetAssertedChildElement (div, "a", 3);
-      AssertActiveIcon (previousIcon, "Previous");
+      AssertActiveIcon (previousIcon, "Previous", 2);
 
       Html.AssertTextNode (div, c_tripleBlank, 4);
 
       var nextIcon = Html.GetAssertedChildElement (div, "a", 5);
-      AssertActiveIcon (nextIcon, "Next");
+      AssertActiveIcon (nextIcon, "Next", 4);
 
       Html.AssertTextNode (div, c_tripleBlank, 6);
 
       var lastIcon = Html.GetAssertedChildElement (div, "a", 7);
-      AssertActiveIcon (lastIcon, "Last");
+      AssertActiveIcon (lastIcon, "Last", 6);
 
       Html.AssertTextNode (div, c_tripleBlank, 8);
     }
 
-    private void AssertActiveIcon (XmlNode link, string command)
+    private void AssertActiveIcon (XmlNode link, string command, int pageIndex)
     {
       Html.AssertAttribute (link, "id", List.ClientID + "_Navigation_" + command);
-      Html.AssertAttribute (link, "onclick", "postBackEventReference");
+      Html.AssertAttribute (link, "onclick", string.Format("$('#CurrentPageControl_UniqueID').val({0}).trigger('change');", pageIndex));
       Html.AssertAttribute (link, "href", "#");
 
       var icon = Html.GetAssertedChildElement (link, "img", 0);
