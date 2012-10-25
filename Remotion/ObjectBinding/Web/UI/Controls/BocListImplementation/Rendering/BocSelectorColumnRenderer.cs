@@ -52,7 +52,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         return;
 
       string selectorControlID = renderingContext.Control.GetSelectorControlUniqueID (rowRenderingContext.Row.Index).Replace('$', '_');
-      var selectorControlName = renderingContext.Control.GetSelectorControlUniqueID (rowRenderingContext.Row.Index);
+      var selectorControlName = renderingContext.Control.GetSelectorControlUniqueID (null);
       var selectorControlValue = renderingContext.Control.GetSelectorControlValue (rowRenderingContext.Row);
       var isChecked = rowRenderingContext.IsSelected;
 
@@ -96,20 +96,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       string alternateText = renderingContext.Control.GetResourceManager().GetString (BocList.ResourceIdentifier.SelectAllRowsAlternateText);
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Alt, alternateText);
 
-      int count = 0;
-      if (renderingContext.Control.IsPagingEnabled)
-        count = renderingContext.Control.PageSize.Value;
-      else if (renderingContext.Control.HasValue)
-        count = renderingContext.Control.Value.Count;
-
       if (renderingContext.Control.HasClientScript)
       {
         string script = "BocList_OnSelectAllSelectorControlClick ("
                         + "document.getElementById ('" + renderingContext.Control.ClientID + "'), "
-                        + "this , '"
-                        + renderingContext.Control.GetSelectorControlUniqueID (null).Replace('$', '_') + "', "
-                        + count + ", "
-                        + "document.getElementById ('" + renderingContext.Control.ListMenu.ClientID + "'));";
+                        + "this);";
         renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Onclick, script);
       }
 

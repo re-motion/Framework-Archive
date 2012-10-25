@@ -479,26 +479,19 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     private void LoadSelectionPostData (NameValueCollection postCollection)
     {
-      string dataRowSelectorControlFilter = ((IBocList) this).GetSelectorControlUniqueID (null);
-      string titleRowSelectorControlFilter = ClientID + c_titleRowSelectorControlIDSuffix;
-
       _selectorControlCheckedState.Clear();
-      for (int i = 0; i < postCollection.Count; i++)
+
+      string dataRowSelectorControlFilter = ((IBocList) this).GetSelectorControlUniqueID (null);
+      var values = postCollection.GetValues (dataRowSelectorControlFilter);
+      if (values == null)
+        return;
+
+      foreach (string rowID in values)
       {
-        string key = postCollection.Keys[i];
-        if (string.IsNullOrEmpty (key))
-          continue;
+        if ((_selection == RowSelection.SingleCheckBox || _selection == RowSelection.SingleRadioButton) && (_selectorControlCheckedState.Count > 1))
+          break;
 
-        bool isDataRowSelectorControl = key.StartsWith (dataRowSelectorControlFilter);
-        bool isTitleRowSelectorControl = (key == titleRowSelectorControlFilter);
-        if (isDataRowSelectorControl && !isTitleRowSelectorControl)
-        {
-          if ((_selection == RowSelection.SingleCheckBox || _selection == RowSelection.SingleRadioButton) && (_selectorControlCheckedState.Count > 1))
-            continue;
-
-          string rowID = postCollection[i];
-          _selectorControlCheckedState.Add (rowID);
-        }
+        _selectorControlCheckedState.Add (rowID);
       }
     }
 
