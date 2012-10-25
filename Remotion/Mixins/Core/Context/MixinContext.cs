@@ -17,7 +17,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Remotion.Collections;
 using Remotion.Mixins.Context.Serialization;
+using Remotion.Text;
 using Remotion.Utilities;
 
 namespace Remotion.Mixins.Context
@@ -46,7 +48,7 @@ namespace Remotion.Mixins.Context
     private readonly Type _mixinType;
     private readonly MixinKind _mixinKind;
     private readonly MemberVisibility _introducedMemberVisibility;
-    private readonly ReadOnlyContextCollection<Type, Type> _explicitDependencies;
+    private readonly ReadOnlyCollectionDecorator<Type> _explicitDependencies;
     private readonly MixinContextOrigin _origin;
 
     private readonly int _cachedHashCode;
@@ -76,7 +78,7 @@ namespace Remotion.Mixins.Context
       _mixinType = mixinType;
       _mixinKind = mixinKind;
       _introducedMemberVisibility = introducedMemberVisibility;
-      _explicitDependencies = new ReadOnlyContextCollection<Type, Type> (t => t, explicitDependencies);
+      _explicitDependencies = new HashSet<Type> (explicitDependencies).AsReadOnly();
       _origin = origin;
 
       _cachedHashCode = EqualityUtility.GetRotatedHashCode (
@@ -113,7 +115,7 @@ namespace Remotion.Mixins.Context
       // ReSharper disable LoopCanBeConvertedToQuery
       foreach (var explicitDependency in _explicitDependencies)
       {
-        if (!other._explicitDependencies.ContainsKey (explicitDependency))
+        if (!other._explicitDependencies.Contains (explicitDependency))
           return false;
       }
       // ReSharper restore LoopCanBeConvertedToQuery
@@ -163,7 +165,7 @@ namespace Remotion.Mixins.Context
     /// <value>The explicit dependencies added to this <see cref="MixinContext"/>.</value>
     /// <remarks>An explicit dependency is a base call dependency which should be considered for a mixin even though it is not expressed in the
     /// mixin's class declaration. This can be used to define the ordering of mixins in specific mixin configurations.</remarks>
-    public ReadOnlyContextCollection<Type, Type> ExplicitDependencies
+    public ReadOnlyCollectionDecorator<Type> ExplicitDependencies
     {
       get { return _explicitDependencies; }
     }
@@ -178,6 +180,21 @@ namespace Remotion.Mixins.Context
       get { return _origin; }
     }
 
+    /// <summary>
+    /// Returns an equivalent <see cref="MixinContext"/> that contains the given <paramref name="explicitDependencies"/> (eliminating duplicates).
+    /// </summary>
+    /// <param name="explicitDependencies">The additional types to add to the <see cref="ExplicitDependencies"/> collection of the returned
+    /// <see cref="MixinContext"/>. If this sequence contains duplicate entries or entries that already exist within the 
+    /// <see cref="ExplicitDependencies"/>, those entries are ignored.</param>
+    /// <returns>An equivalent <see cref="MixinContext"/> that contains the given <paramref name="explicitDependencies"/>.</returns>
+    public MixinContext ApplyAdditionalExplicitDependencies (IEnumerable<Type> explicitDependencies)
+    {
+      ArgumentUtility.CheckNotNull ("explicitDependencies", explicitDependencies);
+      
+      var newDependencies = _explicitDependencies.Concat (explicitDependencies);
+      return new MixinContext (_mixinKind, _mixinType, _introducedMemberVisibility, newDependencies, _origin);
+    }
+
     public void Serialize (IMixinContextSerializer serializer)
     {
       ArgumentUtility.CheckNotNull ("serializer", serializer);
@@ -187,6 +204,16 @@ namespace Remotion.Mixins.Context
       serializer.AddIntroducedMemberVisibility (_introducedMemberVisibility);
       serializer.AddExplicitDependencies (_explicitDependencies);
       serializer.AddOrigin (_origin);
+    }
+
+    public override string ToString ()
+    {
+      return string.Format (
+          "MixinContext: '{0}' ({1},{2},Dependencies=({3}))",
+          MixinType,
+          MixinKind,
+          IntroducedMemberVisibility,
+          SeparatedStringBuilder.Build (",", ExplicitDependencies, t => t.Name));
     }
   }
 }

@@ -486,7 +486,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
       foreach (string rowID in values)
       {
-        if ((_selection == RowSelection.SingleCheckBox || _selection == RowSelection.SingleRadioButton) && (_selectorControlCheckedState.Count > 1))
+        if ((_selection == RowSelection.SingleCheckBox || _selection == RowSelection.SingleRadioButton) && (_selectorControlCheckedState.Count == 1))
           break;
 
         _selectorControlCheckedState.Add (rowID);
@@ -963,7 +963,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       _listMenu.Visible = HasListMenu;
       _listMenu.Enabled = !_editModeController.IsRowEditModeActive;
 
+      BocColumnDefinition[] columns = EnsureColumnsGot (true);
       EnsureChildControls();
+
       base.OnPreRender (e);
 
       // Must be executed before CalculateCurrentPage
@@ -985,8 +987,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       }
 
       CalculateCurrentPage (_newPageIndex);
-
-      BocColumnDefinition[] columns = EnsureColumnsGot (true);
 
       EnsureEditModeValidatorsRestored();
 

@@ -42,10 +42,10 @@ namespace Remotion.Mixins.UnitTests.Core.Context
     public void ConstructorWithMixinParameters()
     {
       var context = ClassContextObjectMother.Create(typeof (BaseType1), typeof (BT1Mixin1), typeof (BT1Mixin2));
-      Assert.AreEqual (2, context.Mixins.Count);
-      Assert.IsTrue (context.Mixins.ContainsKey (typeof (BT1Mixin1)));
-      Assert.IsTrue (context.Mixins.ContainsKey (typeof (BT1Mixin2)));
-      Assert.IsFalse (context.Mixins.ContainsKey (typeof (BT2Mixin1)));
+      Assert.That (context.Mixins.Count, Is.EqualTo (2));
+      Assert.That (context.Mixins.ContainsKey (typeof (BT1Mixin1)), Is.True);
+      Assert.That (context.Mixins.ContainsKey (typeof (BT1Mixin2)), Is.True);
+      Assert.That (context.Mixins.ContainsKey (typeof (BT2Mixin1)), Is.False);
     }
 
     [Test]
@@ -60,32 +60,32 @@ namespace Remotion.Mixins.UnitTests.Core.Context
     {
       var classContext = ClassContextObjectMother.Create(typeof (BaseType7));
 
-      Assert.IsFalse (classContext.Mixins.ContainsKey (typeof (BT7Mixin1)));
+      Assert.That (classContext.Mixins.ContainsKey (typeof (BT7Mixin1)), Is.False);
       MixinContext mixinContext = classContext.Mixins[typeof (BT7Mixin1)];
-      Assert.IsNull (mixinContext);
+      Assert.That (mixinContext, Is.Null);
 
       classContext = ClassContextObjectMother.Create(typeof (BaseType7), typeof (BT7Mixin1));
-      Assert.IsTrue (classContext.Mixins.ContainsKey (typeof (BT7Mixin1)));
+      Assert.That (classContext.Mixins.ContainsKey (typeof (BT7Mixin1)), Is.True);
       mixinContext = classContext.Mixins[typeof (BT7Mixin1)];
-      Assert.AreSame (mixinContext, classContext.Mixins[typeof (BT7Mixin1)]);
+      Assert.That (classContext.Mixins[typeof (BT7Mixin1)], Is.SameAs (mixinContext));
     }
 
     [Test]
     public void CompleteInterfaces_Empty()
     {
       var context = new ClassContext (typeof (BaseType5), new MixinContext[0], new Type[0]);
-      Assert.AreEqual (0, context.CompleteInterfaces.Count);
-      Assert.IsEmpty (context.CompleteInterfaces);
-      Assert.IsFalse (context.CompleteInterfaces.ContainsKey (typeof (IBT5MixinC1)));
+      Assert.That (context.CompleteInterfaces.Count, Is.EqualTo (0));
+      Assert.That (context.CompleteInterfaces, Is.Empty);
+      Assert.That (context.CompleteInterfaces.ContainsKey (typeof (IBT5MixinC1)), Is.False);
     }
 
     [Test]
     public void CompleteInterfaces_NonEmpty ()
     {
       var context = new ClassContext (typeof (BaseType5), new MixinContext[0], new[] { typeof (IBT5MixinC1) });
-      Assert.AreEqual (1, context.CompleteInterfaces.Count);
-      Assert.Contains (typeof (IBT5MixinC1), context.CompleteInterfaces);
-      Assert.IsTrue (context.CompleteInterfaces.ContainsKey (typeof (IBT5MixinC1)));
+      Assert.That (context.CompleteInterfaces.Count, Is.EqualTo (1));
+      Assert.That (context.CompleteInterfaces, Has.Member (typeof (IBT5MixinC1)));
+      Assert.That (context.CompleteInterfaces.ContainsKey (typeof (IBT5MixinC1)), Is.True);
     }
 
     [Test]
@@ -121,7 +121,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context
     public void DuplicateCompleteInterfacesAreIgnored ()
     {
       var context = new ClassContext (typeof (BaseType5), new MixinContext[0], new[] { typeof (IBT5MixinC1), typeof (IBT5MixinC1) });
-      Assert.AreEqual (1, context.CompleteInterfaces.Count);
+      Assert.That (context.CompleteInterfaces.Count, Is.EqualTo (1));
     }
 
     [Test]
@@ -130,17 +130,17 @@ namespace Remotion.Mixins.UnitTests.Core.Context
       ClassContext original = new ClassContextBuilder (typeof (List<>)).AddMixin<BT1Mixin1>().WithDependency<IBaseType2>().BuildClassContext();
 
       ClassContext specialized = original.SpecializeWithTypeArguments (new[] { typeof (int) });
-      Assert.IsNotNull (specialized);
-      Assert.AreEqual (typeof (List<int>), specialized.Type);
-      Assert.IsTrue (specialized.Mixins.ContainsKey (typeof (BT1Mixin1)));
-      Assert.IsTrue (specialized.Mixins[typeof (BT1Mixin1)].ExplicitDependencies.ContainsKey (typeof (IBaseType2)));
+      Assert.That (specialized, Is.Not.Null);
+      Assert.That (specialized.Type, Is.EqualTo (typeof (List<int>)));
+      Assert.That (specialized.Mixins.ContainsKey (typeof (BT1Mixin1)), Is.True);
+      Assert.That (specialized.Mixins[typeof (BT1Mixin1)].ExplicitDependencies, Has.Member (typeof (IBaseType2)));
     }
 
     [Test]
     public void GenericTypesNotTransparentlyConvertedToTypeDefinitions ()
     {
       var context = ClassContextObjectMother.Create(typeof (List<int>));
-      Assert.AreEqual (typeof (List<int>), context.Type);
+      Assert.That (context.Type, Is.EqualTo (typeof (List<int>)));
     }
 
     [Test]
@@ -148,20 +148,20 @@ namespace Remotion.Mixins.UnitTests.Core.Context
     {
       var context = ClassContextObjectMother.Create(typeof (object), typeof (IList<int>));
 
-      Assert.IsTrue (context.Mixins.ContainsKey (typeof (IList<int>)));
-      Assert.IsTrue (context.Mixins.ContainsAssignableMixin (typeof (IList<int>)));
+      Assert.That (context.Mixins.ContainsKey (typeof (IList<int>)), Is.True);
+      Assert.That (context.Mixins.ContainsAssignableMixin (typeof (IList<int>)), Is.True);
 
-      Assert.IsFalse (context.Mixins.ContainsKey (typeof (ICollection<int>)));
-      Assert.IsTrue (context.Mixins.ContainsAssignableMixin (typeof (ICollection<int>)));
+      Assert.That (context.Mixins.ContainsKey (typeof (ICollection<int>)), Is.False);
+      Assert.That (context.Mixins.ContainsAssignableMixin (typeof (ICollection<int>)), Is.True);
 
-      Assert.IsFalse (context.Mixins.ContainsKey (typeof (object)));
-      Assert.IsTrue (context.Mixins.ContainsAssignableMixin (typeof (object)));
+      Assert.That (context.Mixins.ContainsKey (typeof (object)), Is.False);
+      Assert.That (context.Mixins.ContainsAssignableMixin (typeof (object)), Is.True);
 
-      Assert.IsFalse (context.Mixins.ContainsKey (typeof (List<int>)));
-      Assert.IsFalse (context.Mixins.ContainsAssignableMixin (typeof (List<int>)));
+      Assert.That (context.Mixins.ContainsKey (typeof (List<int>)), Is.False);
+      Assert.That (context.Mixins.ContainsAssignableMixin (typeof (List<int>)), Is.False);
 
-      Assert.IsFalse (context.Mixins.ContainsKey (typeof (IList<>)));
-      Assert.IsFalse (context.Mixins.ContainsAssignableMixin (typeof (List<>)));
+      Assert.That (context.Mixins.ContainsKey (typeof (IList<>)), Is.False);
+      Assert.That (context.Mixins.ContainsAssignableMixin (typeof (List<>)), Is.False);
     }
 
     [Test]
@@ -172,12 +172,12 @@ namespace Remotion.Mixins.UnitTests.Core.Context
       var source = new ClassContext (typeof (BaseType1), mixins, interfaces);
       
       var clone = source.CloneForSpecificType (typeof (BaseType2));
-      
-      Assert.AreNotEqual (source, clone);
+
+      Assert.That (clone, Is.Not.EqualTo (source));
       Assert.That(clone.Mixins, Is.EquivalentTo(mixins));
       Assert.That (clone.CompleteInterfaces, Is.EquivalentTo (interfaces));
-      Assert.AreEqual (typeof (BaseType2), clone.Type);
-      Assert.AreEqual (typeof (BaseType1), source.Type);
+      Assert.That (clone.Type, Is.EqualTo (typeof (BaseType2)));
+      Assert.That (source.Type, Is.EqualTo (typeof (BaseType1)));
     }
 
     [Test]
@@ -204,14 +204,14 @@ namespace Remotion.Mixins.UnitTests.Core.Context
               new[] { CreateBT1Mixin1Context(), CreateBT2Mixin2Context() },
               new[] { typeof (IBT5MixinC2), typeof (IBT5MixinC1) });
 
-      Assert.AreEqual (c1, c1);
-      Assert.AreEqual (c1, c2);
-      Assert.AreEqual (c1, c3);
-      Assert.AreEqual (c1, c4);
+      Assert.That (c1, Is.EqualTo (c1));
+      Assert.That (c2, Is.EqualTo (c1));
+      Assert.That (c3, Is.EqualTo (c1));
+      Assert.That (c4, Is.EqualTo (c1));
 
       var c5 = ClassContextObjectMother.Create(typeof (BaseType1));
       var c6 = ClassContextObjectMother.Create(typeof (BaseType1));
-      Assert.AreEqual (c5, c6);
+      Assert.That (c6, Is.EqualTo (c5));
     }
 
     [Test]
@@ -220,7 +220,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context
       var c1 = ClassContextObjectMother.Create(typeof (BaseType1));
       var c2 = ClassContextObjectMother.Create(typeof (BaseType2));
 
-      Assert.AreNotEqual (c1, c2);
+      Assert.That (c2, Is.Not.EqualTo (c1));
     }
 
     [Test]
@@ -230,9 +230,9 @@ namespace Remotion.Mixins.UnitTests.Core.Context
       var c3 = ClassContextObjectMother.Create(typeof (BaseType1), typeof (BT1Mixin2));
       var c4 = ClassContextObjectMother.Create(typeof (BaseType1), typeof (BT1Mixin1), typeof (BT1Mixin2));
 
-      Assert.AreNotEqual (c1, c3);
-      Assert.AreNotEqual (c1, c4);
-      Assert.AreNotEqual (c3, c4);
+      Assert.That (c3, Is.Not.EqualTo (c1));
+      Assert.That (c4, Is.Not.EqualTo (c1));
+      Assert.That (c4, Is.Not.EqualTo (c3));
     }
 
     [Test]
@@ -254,9 +254,9 @@ namespace Remotion.Mixins.UnitTests.Core.Context
               new MixinContext[0],
               new[] { typeof (IBT5MixinC1), typeof (IBT5MixinC2) });
 
-      Assert.AreNotEqual (c1, c2);
-      Assert.AreNotEqual (c1, c3);
-      Assert.AreNotEqual (c2, c3);
+      Assert.That (c2, Is.Not.EqualTo (c1));
+      Assert.That (c3, Is.Not.EqualTo (c1));
+      Assert.That (c3, Is.Not.EqualTo (c2));
     }
 
     [Test]
@@ -283,13 +283,13 @@ namespace Remotion.Mixins.UnitTests.Core.Context
               new[] { CreateBT1Mixin1Context(), CreateBT2Mixin2Context() },
               new[] { typeof (IBT5MixinC2), typeof (IBT5MixinC1) });
 
-      Assert.AreEqual (c1.GetHashCode (), c2.GetHashCode ());
-      Assert.AreEqual (c1.GetHashCode (), c3.GetHashCode ());
-      Assert.AreEqual (c1.GetHashCode (), c4.GetHashCode ());
+      Assert.That (c2.GetHashCode (), Is.EqualTo (c1.GetHashCode ()));
+      Assert.That (c3.GetHashCode (), Is.EqualTo (c1.GetHashCode ()));
+      Assert.That (c4.GetHashCode (), Is.EqualTo (c1.GetHashCode ()));
 
       var c5 = ClassContextObjectMother.Create(typeof (BaseType1));
       var c6 = ClassContextObjectMother.Create(typeof (BaseType1));
-      Assert.AreEqual (c5.GetHashCode (), c6.GetHashCode ());
+      Assert.That (c6.GetHashCode (), Is.EqualTo (c5.GetHashCode ()));
     }
 
     [Test]
@@ -345,6 +345,129 @@ namespace Remotion.Mixins.UnitTests.Core.Context
       var result = original.SuppressMixins (new[] { ruleStub1, ruleStub2 });
 
       Assert.That (result.Mixins.Select (mc => mc.MixinType).ToArray (), Is.EquivalentTo (new[] { typeof (string) }));
+    }
+
+    [Test]
+    public void ApplyMixinDependencies ()
+    {
+      var originalMixinContext1 = MixinContextObjectMother.Create (mixinType: typeof (string), explicitDependencies: new[] { typeof (int) });
+      var originalMixinContext2 = MixinContextObjectMother.Create (mixinType: typeof (DateTime), explicitDependencies: new[] { typeof (double) });
+      var originalMixinContext3 = MixinContextObjectMother.Create (mixinType: typeof (object), explicitDependencies: new[] { typeof (decimal) });
+      var originalClassContext = ClassContextObjectMother.Create (typeof (NullTarget), originalMixinContext1, originalMixinContext2, originalMixinContext3);
+
+      var dependencies = 
+          new[] 
+          { 
+            new MixinDependencySpecification (typeof (string), new[] { typeof (int), typeof (float), typeof (long) }),
+            new MixinDependencySpecification (typeof (object), new[] { typeof (byte) }),
+            new MixinDependencySpecification (typeof (string), new[] { typeof (Enum) })
+          };
+
+      var result = originalClassContext.ApplyMixinDependencies (dependencies);
+
+      Assert.That (result, Is.Not.EqualTo (originalClassContext));
+      var expectedResult = new ClassContext (
+          originalClassContext.Type,
+          new[]
+          {
+              new MixinContext (
+                  originalMixinContext1.MixinKind,
+                  originalMixinContext1.MixinType,
+                  originalMixinContext1.IntroducedMemberVisibility,
+                  new[] { typeof (int), typeof (float), typeof (long), typeof (Enum) },
+                  originalMixinContext1.Origin),
+              originalMixinContext2,
+              new MixinContext (
+                  originalMixinContext3.MixinKind,
+                  originalMixinContext3.MixinType,
+                  originalMixinContext3.IntroducedMemberVisibility,
+                  new[] { typeof (decimal), typeof (byte) },
+                  originalMixinContext3.Origin)
+          },
+          originalClassContext.CompleteInterfaces);
+      Assert.That (result, Is.EqualTo (expectedResult));
+
+      Assert.That (originalClassContext.Mixins[typeof (string)].ExplicitDependencies, Has.No.Member (typeof (float)), "Original is not changed");
+    }
+
+    [Test]
+    public void ApplyMixinDependencies_NotFound ()
+    {
+      var originalMixinContext1 = MixinContextObjectMother.Create (mixinType: typeof (object), explicitDependencies: new[] { typeof (int) });
+      var originalClassContext = ClassContextObjectMother.Create (typeof (NullTarget), originalMixinContext1);
+      var dependencies = new[] { new MixinDependencySpecification (typeof (string), new[] { typeof (float) })};
+
+      Assert.That (
+          () => originalClassContext.ApplyMixinDependencies (dependencies), 
+          Throws.InvalidOperationException.With.Message.EqualTo (
+              "The mixin 'System.String' is not configured for class 'Remotion.Mixins.UnitTests.Core.TestDomain.NullTarget'."));
+    }
+
+    [Test]
+    public void ApplyMixinDependencies_GenericMixins ()
+    {
+      var originalMixinContext1 = MixinContextObjectMother.Create (mixinType: typeof (List<>), explicitDependencies: new[] { typeof (int) });
+      var originalMixinContext2 = MixinContextObjectMother.Create (mixinType: typeof (Dictionary<int, string>), explicitDependencies: new[] { typeof (double) });
+      var originalClassContext = ClassContextObjectMother.Create (typeof (NullTarget), originalMixinContext1, originalMixinContext2);
+
+      var dependencies =
+          new[] 
+          { 
+            new MixinDependencySpecification (typeof (List<>), new[] { typeof (float) }),
+            new MixinDependencySpecification (typeof (Dictionary<,>), new[] { typeof (byte) })
+          };
+
+      var result = originalClassContext.ApplyMixinDependencies (dependencies);
+
+      var expectedResult = new ClassContext (
+          originalClassContext.Type,
+          new[]
+          {
+              new MixinContext (
+                  originalMixinContext1.MixinKind,
+                  originalMixinContext1.MixinType,
+                  originalMixinContext1.IntroducedMemberVisibility,
+                  new[] { typeof (int), typeof (float) },
+                  originalMixinContext1.Origin),
+              new MixinContext (
+                  originalMixinContext2.MixinKind,
+                  originalMixinContext2.MixinType,
+                  originalMixinContext2.IntroducedMemberVisibility,
+                  new[] { typeof (double), typeof (byte) },
+                  originalMixinContext2.Origin)
+          },
+          originalClassContext.CompleteInterfaces);
+      Assert.That (result, Is.EqualTo (expectedResult));
+    }
+
+    [Test]
+    public void ApplyMixinDependencies_GenericMixin_NotFound ()
+    {
+      var originalMixinContext1 = MixinContextObjectMother.Create (mixinType: typeof (List<>), explicitDependencies: new[] { typeof (int) });
+      var originalClassContext = ClassContextObjectMother.Create (typeof (NullTarget), originalMixinContext1);
+      var dependencies = new[] { new MixinDependencySpecification (typeof (List<int>), new[] { typeof (float) }) };
+
+      Assert.That (
+          () => originalClassContext.ApplyMixinDependencies (dependencies),
+          Throws.InvalidOperationException.With.Message.EqualTo (
+              "The mixin 'System.Collections.Generic.List`1[System.Int32]' is not configured for class "
+              + "'Remotion.Mixins.UnitTests.Core.TestDomain.NullTarget'."));
+    }
+
+    [Test]
+    public void ApplyMixinDependencies_GenericMixin_Ambiguous ()
+    {
+      var originalMixinContext1 = MixinContextObjectMother.Create (mixinType: typeof (List<int>), explicitDependencies: new[] { typeof (int) });
+      var originalMixinContext2 = MixinContextObjectMother.Create (mixinType: typeof (List<string>), explicitDependencies: new[] { typeof (int) });
+      var originalClassContext = ClassContextObjectMother.Create (typeof (NullTarget), originalMixinContext1, originalMixinContext2);
+      var dependencies = new[] { new MixinDependencySpecification (typeof (List<>), new[] { typeof (float) }) };
+
+      Assert.That (
+          () => originalClassContext.ApplyMixinDependencies (dependencies),
+          Throws.InvalidOperationException.With.Message.EqualTo (
+              "The dependency specification for 'System.Collections.Generic.List`1[T]' applied to class "
+              + "'Remotion.Mixins.UnitTests.Core.TestDomain.NullTarget' is ambiguous; matching mixins: "
+              + "'System.Collections.Generic.List`1[System.Int32]', 'System.Collections.Generic.List`1[System.String]'."));
     }
 
     private static MixinContext CreateBT1Mixin1Context ()
