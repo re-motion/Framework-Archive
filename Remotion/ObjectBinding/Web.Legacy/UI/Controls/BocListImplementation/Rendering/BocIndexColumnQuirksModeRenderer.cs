@@ -50,7 +50,7 @@ namespace Remotion.ObjectBinding.Web.Legacy.UI.Controls.BocListImplementation.Re
       if (!renderingContext.Control.IsIndexEnabled)
         return;
 
-      string selectorControlID = renderingContext.Control.GetSelectorControlUniqueID (absoluteRowIndex).Replace('$', '_');
+      string selectorControlID = renderingContext.Control.GetSelectorControlName ().Replace('$', '_');
       string cssClass = cssClassTableCell + " " + CssClasses.DataCellIndex;
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, cssClass);
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Td);

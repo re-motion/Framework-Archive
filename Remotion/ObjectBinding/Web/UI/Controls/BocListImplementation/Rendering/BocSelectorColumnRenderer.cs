@@ -51,8 +51,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       if (!renderingContext.Control.IsSelectionEnabled)
         return;
 
-      string selectorControlID = renderingContext.Control.GetSelectorControlUniqueID (rowRenderingContext.Row.Index).Replace('$', '_');
-      var selectorControlName = renderingContext.Control.GetSelectorControlUniqueID (null);
+      string selectorControlID = renderingContext.Control.GetSelectorControlName ().Replace('$', '_');
+      var selectorControlName = renderingContext.Control.GetSelectorControlName ();
       var selectorControlValue = renderingContext.Control.GetSelectorControlValue (rowRenderingContext.Row);
       var isChecked = rowRenderingContext.IsSelected;
 
@@ -73,7 +73,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Th);
       if (renderingContext.Control.Selection == RowSelection.Multiple)
       {
-        string selectorControlName = renderingContext.Control.GetSelectAllControlUnqiueID();
+        string selectorControlName = renderingContext.Control.GetSelectAllControlName();
         RenderTitleRowSelectorControl (renderingContext, selectorControlName);
       }
       else

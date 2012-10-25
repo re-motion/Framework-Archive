@@ -168,14 +168,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
     private void RenderValueField (BocListRenderingContext renderingContext)
     {
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Id, renderingContext.Control.GetCurrentPageControlUniqueID().Replace('$', '_'));
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Name, renderingContext.Control.GetCurrentPageControlUniqueID());
+      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Id, renderingContext.Control.GetCurrentPageControlName().Replace('$', '_'));
+      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Name, renderingContext.Control.GetCurrentPageControlName());
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Type, "hidden");
       renderingContext.Writer.AddAttribute (
           HtmlTextWriterAttribute.Value,
           renderingContext.Control.CurrentPageIndex.ToString (CultureInfo.InvariantCulture));
 
-      var postBackOptions = new PostBackOptions (new Control { ID = renderingContext.Control.GetCurrentPageControlUniqueID() }, "");
+      var postBackOptions = new PostBackOptions (new Control { ID = renderingContext.Control.GetCurrentPageControlName() }, "");
       renderingContext.Writer.AddAttribute (
           HtmlTextWriterAttribute.Onchange,
           renderingContext.Control.Page.ClientScript.GetPostBackEventReference (postBackOptions));
@@ -202,7 +202,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       {
         renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Id, navigateCommandID);
 
-        var currentPageControlClientID = renderingContext.Control.GetCurrentPageControlUniqueID().Replace ('$', '_');
+        var currentPageControlClientID = renderingContext.Control.GetCurrentPageControlName().Replace ('$', '_');
         var postBackEvent = string.Format ("$('#{0}').val({1}).trigger('change');", currentPageControlClientID, pageIndex);
         renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Onclick, postBackEvent);
 

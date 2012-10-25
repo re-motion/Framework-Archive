@@ -54,7 +54,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.Legacy.UI.Controls.BocListImpleme
 
       var input = Html.GetAssertedChildElement (th, "input", 0);
       Html.AssertAttribute (input, "type", "checkbox");
-      Html.AssertAttribute (input, "name", List.GetSelectAllControlUnqiueID());
+      Html.AssertAttribute (input, "name", List.GetSelectAllControlName());
       Html.AssertNoAttribute (input, "value");
       Html.AssertAttribute (input, "alt", "Select all rows.");
     }

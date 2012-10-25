@@ -306,8 +306,8 @@ namespace Remotion.ObjectBinding.Web.Legacy.UI.Controls.BocListImplementation.Re
         string script = string.Format (
             scriptTemplate,
             renderingContext.Control.ClientID,
-            renderingContext.Control.GetSelectorControlUniqueID (null).Replace('$', '_'),
-            renderingContext.Control.GetSelectAllControlUnqiueID(),
+            renderingContext.Control.GetSelectorControlName ().Replace('$', '_'),
+            renderingContext.Control.GetSelectAllControlName(),
             startIndex,
             count,
             (int) renderingContext.Control.Selection,

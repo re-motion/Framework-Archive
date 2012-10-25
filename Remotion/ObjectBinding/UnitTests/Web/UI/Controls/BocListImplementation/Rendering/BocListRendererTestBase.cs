@@ -108,9 +108,9 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocListImplementation
       var editModeController = MockRepository.GenerateMock<IEditModeController>();
       List.Stub (list => list.EditModeController).Return (editModeController);
 
-      List.Stub (stub => stub.GetSelectorControlUniqueID (Arg<int>.Is.Anything)).Return ("SelectRowControl$UnqiueID");
-      List.Stub (stub => stub.GetSelectAllControlUnqiueID()).Return ("SelectAllControl$UniqueID");
-      List.Stub (stub => stub.GetCurrentPageControlUniqueID()).Return ("CurrentPageControl$UniqueID");
+      List.Stub (stub => stub.GetSelectorControlName ()).Return ("SelectRowControl$UnqiueID");
+      List.Stub (stub => stub.GetSelectAllControlName()).Return ("SelectAllControl$UniqueID");
+      List.Stub (stub => stub.GetCurrentPageControlName()).Return ("CurrentPageControl$UniqueID");
 
       List.Stub (list => list.GetResourceManager()).Return (
           MultiLingualResources.GetResourceManager (typeof (ObjectBinding.Web.UI.Controls.BocList.ResourceIdentifier)));

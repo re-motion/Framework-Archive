@@ -81,9 +81,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     #endregion
 
     //  constants
-    private const string c_currentPageControlIDSuffix = "_Boc_CurrentPage";
-    private const string c_dataRowSelectorControlIDSuffix = "_Boc_SelectRowControl_";
-    private const string c_titleRowSelectorControlIDSuffix = "_Boc_SelectAllControl";
+    private const string c_currentPageControlName = "_Boc_CurrentPage";
     private const string c_availableViewsListIDSuffix = "_Boc_AvailableViewsList";
     private const string c_optionsMenuIDSuffix = "_Boc_OptionsMenu";
     private const string c_listMenuIDSuffix = "_Boc_ListMenu";
@@ -356,7 +354,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       _availableViewsListPlaceHolder.Controls.Add (availableViewsListPostBackTarget);
 
       _currentPagePostBackTarget = new ScalarLoadPostDataTarget();
-      _currentPagePostBackTarget.ID = ID + c_currentPageControlIDSuffix;
+      _currentPagePostBackTarget.ID = ID + c_currentPageControlName;
       _currentPagePostBackTarget.DataChanged += HandleCurrentPageChanged;
       Controls.Add (_currentPagePostBackTarget);
 
@@ -481,7 +479,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       _selectorControlCheckedState.Clear();
 
-      string dataRowSelectorControlFilter = ((IBocList) this).GetSelectorControlUniqueID (null);
+      string dataRowSelectorControlFilter = ((IBocList) this).GetSelectorControlName ();
       var values = postCollection.GetValues (dataRowSelectorControlFilter);
       if (values == null)
         return;
@@ -3892,14 +3890,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       return RowIDProvider.GetItemRowID (row);
     }
 
-    string IBocList.GetSelectorControlUniqueID (int? rowIndex)
+    string IBocList.GetSelectorControlName ()
     {
-      return UniqueID + (c_dataRowSelectorControlIDSuffix + (rowIndex.HasValue ? rowIndex.Value.ToString() : string.Empty));
+      return UniqueID + "_Boc_SelectRowControl";
     }
 
-    string IBocList.GetSelectAllControlUnqiueID ()
+    string IBocList.GetSelectAllControlName ()
     {
-      return UniqueID + c_titleRowSelectorControlIDSuffix;
+      return UniqueID + "_Boc_SelectAllControl";
     }
 
     string IBocList.GetSelectionChangedHandlerScript()
@@ -3965,9 +3963,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       get { return _pageCount; }
     }
 
-    string IBocList.GetCurrentPageControlUniqueID ()
+    string IBocList.GetCurrentPageControlName ()
     {
-      return UniqueID + c_currentPageControlIDSuffix;
+      return UniqueID + c_currentPageControlName;
     }
   }
 

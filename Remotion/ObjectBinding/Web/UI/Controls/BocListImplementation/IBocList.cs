@@ -154,15 +154,15 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
 
     RowSelection Selection { get; }
     bool AreDataRowsClickSensitive ();
-    string GetSelectorControlUniqueID (int? absoluteRowIndex);
+    string GetSelectorControlName ();
     string GetSelectorControlValue (BocListRow row);
-    string GetSelectAllControlUnqiueID ();
+    string GetSelectAllControlName ();
     string GetSelectionChangedHandlerScript ();
 
     bool IsPagingEnabled { get; }
     int PageCount { get; }
     int? PageSize { get; }
     int CurrentPageIndex { get; }
-    string GetCurrentPageControlUniqueID ();
+    string GetCurrentPageControlName ();
   }
 }

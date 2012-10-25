@@ -52,8 +52,8 @@ namespace Remotion.ObjectBinding.Web.Legacy.UI.Controls.BocListImplementation.Re
       if (!renderingContext.Control.IsSelectionEnabled)
         return;
 
-      string selectorControlID = renderingContext.Control.GetSelectorControlUniqueID (rowRenderingContext.SortedIndex).Replace('$', '_');
-      var selectorControlName = renderingContext.Control.GetSelectorControlUniqueID (null);
+      string selectorControlID = renderingContext.Control.GetSelectorControlName ().Replace('$', '_');
+      var selectorControlName = renderingContext.Control.GetSelectorControlName ();
       var selectorControlValue = renderingContext.Control.GetSelectorControlValue (rowRenderingContext.Row);
       var isChecked = rowRenderingContext.IsSelected;
 
@@ -74,7 +74,7 @@ namespace Remotion.ObjectBinding.Web.Legacy.UI.Controls.BocListImplementation.Re
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Th);
       if (renderingContext.Control.Selection == RowSelection.Multiple)
       {
-        string selectorControlName = renderingContext.Control.GetSelectAllControlUnqiueID ();
+        string selectorControlName = renderingContext.Control.GetSelectAllControlName ();
         var selectorControlID = selectorControlName.Replace ('$', '_');
         RenderSelectorControl (renderingContext, selectorControlID, selectorControlName, null, false, true);
       }
@@ -137,7 +137,7 @@ namespace Remotion.ObjectBinding.Web.Legacy.UI.Controls.BocListImplementation.Re
         string script = "BocList_OnSelectAllSelectorControlClick ("
                         + "document.getElementById ('" + renderingContext.Control.ClientID + "'), "
                         + "this , '"
-                        + renderingContext.Control.GetSelectorControlUniqueID (null).Replace ('$', '_') + "');";
+                        + renderingContext.Control.GetSelectorControlName ().Replace ('$', '_') + "');";
         renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Onclick, script);
       }
     }

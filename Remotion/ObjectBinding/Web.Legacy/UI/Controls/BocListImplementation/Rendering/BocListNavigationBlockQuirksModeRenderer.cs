@@ -161,8 +161,8 @@ namespace Remotion.ObjectBinding.Web.Legacy.UI.Controls.BocListImplementation.Re
 
     private void RenderValueField (BocListRenderingContext renderingContext)
     {
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Id, renderingContext.Control.GetCurrentPageControlUniqueID().Replace ('$', '_'));
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Name, renderingContext.Control.GetCurrentPageControlUniqueID());
+      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Id, renderingContext.Control.GetCurrentPageControlName().Replace ('$', '_'));
+      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Name, renderingContext.Control.GetCurrentPageControlName());
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Type, "hidden");
       renderingContext.Writer.AddAttribute (
           HtmlTextWriterAttribute.Value,
@@ -187,9 +187,9 @@ namespace Remotion.ObjectBinding.Web.Legacy.UI.Controls.BocListImplementation.Re
         var postBackEvent = new StringBuilder (200);
         postBackEvent.AppendFormat (
             "document.getElementById ('{0}').value = {1};",
-            renderingContext.Control.GetCurrentPageControlUniqueID().Replace ('$', '_'),
+            renderingContext.Control.GetCurrentPageControlName().Replace ('$', '_'),
             pageIndex);
-        var postBackOptions = new PostBackOptions ( new Control { ID = renderingContext.Control.GetCurrentPageControlUniqueID() }, "");
+        var postBackOptions = new PostBackOptions ( new Control { ID = renderingContext.Control.GetCurrentPageControlName() }, "");
         postBackEvent.Append (renderingContext.Control.Page.ClientScript.GetPostBackEventReference (postBackOptions));
         renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Onclick, postBackEvent.ToString());
 
