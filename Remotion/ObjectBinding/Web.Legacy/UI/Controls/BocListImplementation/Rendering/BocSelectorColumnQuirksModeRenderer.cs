@@ -52,7 +52,7 @@ namespace Remotion.ObjectBinding.Web.Legacy.UI.Controls.BocListImplementation.Re
       if (!renderingContext.Control.IsSelectionEnabled)
         return;
 
-      string selectorControlID = renderingContext.Control.GetSelectorControlName ().Replace('$', '_');
+      string selectorControlID = renderingContext.Control.GetSelectorControlName ().Replace('$', '_') + "_" + rowRenderingContext.Row.Index;
       var selectorControlName = renderingContext.Control.GetSelectorControlName ();
       var selectorControlValue = renderingContext.Control.GetSelectorControlValue (rowRenderingContext.Row);
       var isChecked = rowRenderingContext.IsSelected;

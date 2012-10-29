@@ -89,7 +89,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.Legacy.UI.Controls.BocListImpleme
 
       var label = Html.GetAssertedChildElement (td, "label", 0);
       Html.AssertAttribute (label, "class", _bocListQuirksModeCssClassDefinition.Content);
-      Html.AssertAttribute (label, "for", "SelectRowControl_UnqiueID");
+      Html.AssertAttribute (label, "for", "SelectRowControl_UnqiueID_0");
 
       Html.AssertTextNode (label, (1 + indexOffset).ToString(), 0);
     }
