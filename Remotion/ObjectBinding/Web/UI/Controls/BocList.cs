@@ -3648,7 +3648,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <remarks> Effects only advanced scripts used for selcting data rows. </remarks>
     /// <value> <see langref="true"/> to enable the client script. </value>
     [Category ("Behavior")]
-    [Description (" True to enable the client script for the pop-up calendar. ")]
+    [Description (" True to enable the client script for BocList features. ")]
     [DefaultValue (true)]
     public bool EnableClientScript
     {
