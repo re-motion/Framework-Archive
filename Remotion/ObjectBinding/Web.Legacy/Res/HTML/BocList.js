@@ -102,7 +102,7 @@ function BocList_InitializeList(bocList, selectorControlPrefix, selectAllSelecto
   {
     for (var i = 0; i < count; i++)
     {
-      var selectorControlID = selectorControlPrefix + (startIndex + i);
+      var selectorControlID = selectorControlPrefix + '_' + (startIndex + i);
       var selectorControl = document.getElementById (selectorControlID);
       if (selectorControl == null)
         continue;
@@ -284,7 +284,7 @@ function BocList_OnSelectAllSelectorControlClick(bocList, selectAllSelectorContr
 
   for (var i = 0; i < selectedRows.DataRowCount; i++)
   {
-    var selectorControlID = selectorControlPrefix + (selectedRows.DataRowIDStartIndex + i);
+    var selectorControlID = selectorControlPrefix + '_' + (selectedRows.DataRowIDStartIndex + i);
     var selectorControl = document.getElementById (selectorControlID);
     if (selectorControl == null)
       continue;

@@ -77,7 +77,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.Legacy.UI.Controls.BocListImpleme
 
       var input = Html.GetAssertedChildElement (td, "input", 0);
       Html.AssertAttribute (input, "type", "checkbox");
-      Html.AssertAttribute (input, "id", "SelectRowControl_UnqiueID_1");
+      Html.AssertAttribute (input, "id", "SelectRowControl_UnqiueID_0");
       Html.AssertAttribute (input, "name", "SelectRowControl$UnqiueID");
       Html.AssertAttribute (input, "value", "row1");
       Html.AssertAttribute (input, "alt", "Select this row.");
@@ -116,7 +116,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.Legacy.UI.Controls.BocListImpleme
 
       var input = Html.GetAssertedChildElement (td, "input", 0);
       Html.AssertAttribute (input, "type", "radio");
-      Html.AssertAttribute (input, "id", "SelectRowControl_UnqiueID_1");
+      Html.AssertAttribute (input, "id", "SelectRowControl_UnqiueID_0");
       Html.AssertAttribute (input, "name", "SelectRowControl$UnqiueID");
       Html.AssertAttribute (input, "value", "row1");
       Html.AssertAttribute (input, "alt", "Select this row.");
