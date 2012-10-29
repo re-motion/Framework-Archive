@@ -42,7 +42,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     [MultiLingualResources ("Remotion.ObjectBinding.Web.Globalization.BocListNavigationBlockRenderer")]
     public enum ResourceIdentifier
     {
-      PageInfo,
+      PageLabelText,
+      TotalPageCountText,
       GoToFirstAlternateText,
       GoToLastAlternateText,
       GoToNextAlternateText,
@@ -137,12 +138,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         bool isFirstPage = renderingContext.Control.CurrentPageIndex == 0;
         bool isLastPage = renderingContext.Control.CurrentPageIndex + 1 >= renderingContext.Control.PageCount;
 
-        //  Page info
-        string pageInfo = GetResourceManager (renderingContext).GetString (ResourceIdentifier.PageInfo);
-
-        string navigationText = string.Format (pageInfo, renderingContext.Control.CurrentPageIndex + 1, renderingContext.Control.PageCount);
-        // Do not HTML encode.
-        renderingContext.Writer.Write (navigationText);
+        RenderPageInformation (renderingContext);
 
         renderingContext.Writer.Write (c_whiteSpace + c_whiteSpace + c_whiteSpace);
 
@@ -151,19 +147,50 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         RenderNavigationIcon (renderingContext, isLastPage, GoToOption.Next, renderingContext.Control.CurrentPageIndex + 1);
         RenderNavigationIcon (renderingContext, isLastPage, GoToOption.Last, renderingContext.Control.PageCount - 1);
 
-        RenderValueField(renderingContext);
+        RenderValueField (renderingContext);
       }
       else
       {
         //  Page info
-        string pageInfo = GetResourceManager (renderingContext).GetString (ResourceIdentifier.PageInfo);
+        string pageLabelText = GetResourceManager (renderingContext).GetString (ResourceIdentifier.PageLabelText);
+        string totalPageCountText = GetResourceManager (renderingContext).GetString (ResourceIdentifier.TotalPageCountText);
 
-        string navigationText = string.Format (pageInfo, renderingContext.Control.CurrentPageIndex + 1, renderingContext.Control.PageCount);
         // Do not HTML encode.
-        renderingContext.Writer.Write (navigationText);
+        renderingContext.Writer.Write (pageLabelText);
+        renderingContext.Writer.Write (" ");
+        renderingContext.Writer.Write (renderingContext.Control.CurrentPageIndex + 1);
+        renderingContext.Writer.Write (" ");
+        renderingContext.Writer.Write (totalPageCountText, renderingContext.Control.PageCount);
       }
 
       renderingContext.Writer.RenderEndTag();
+    }
+
+    private void RenderPageInformation (BocListRenderingContext renderingContext)
+    {
+      string pageLabelText = GetResourceManager (renderingContext).GetString (ResourceIdentifier.PageLabelText);
+      string totalPageCountText = GetResourceManager (renderingContext).GetString (ResourceIdentifier.TotalPageCountText);
+
+      renderingContext.Writer.Write (pageLabelText);
+      renderingContext.Writer.Write (" ");
+
+      //renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Id, renderingContext.Control.GetCurrentPageControlName().Replace ('$', '_'));
+      //renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Name, renderingContext.Control.GetCurrentPageControlName());
+      //renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Type, "text");
+      //renderingContext.Writer.AddAttribute (
+      //    HtmlTextWriterAttribute.Value,
+      //    renderingContext.Control.CurrentPageIndex.ToString (CultureInfo.InvariantCulture));
+
+      //renderingContext.Writer.AddAttribute (
+      //    HtmlTextWriterAttribute.Onchange,
+      //    "return true;");
+
+      //renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Input);
+      //renderingContext.Writer.RenderEndTag();
+
+      renderingContext.Writer.Write (renderingContext.Control.CurrentPageIndex + 1);
+      renderingContext.Writer.Write (" ");
+      renderingContext.Writer.Write (totalPageCountText, renderingContext.Control.PageCount);
     }
 
     private void RenderValueField (BocListRenderingContext renderingContext)

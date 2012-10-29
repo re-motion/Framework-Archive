@@ -117,8 +117,8 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering.BocListNavigationBlockRenderer.PageInfo" xml:space="preserve">
-    <value>Page {0} of {1}</value>
+  <data name="Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering.BocListNavigationBlockRenderer.PageLabelText" xml:space="preserve">
+    <value>Page</value>
   </data>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering.BocListNavigationBlockRenderer.GoToFirstAlternateText" xml:space="preserve">
     <value>Go to First Page.</value>
@@ -131,5 +131,8 @@
   </data>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering.BocListNavigationBlockRenderer.GoToPreviousAlternateText" xml:space="preserve">
     <value>Go To Previous Page.</value>
+  </data>
+  <data name="Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering.BocListNavigationBlockRenderer.TotalPageCountText" xml:space="preserve">
+    <value>of {0}</value>
   </data>
 </root>
