@@ -1,0 +1,58 @@
+/* Style applied to the BocEnumValue. */
+
+span.bocEnumValue
+{
+  width: 15em;
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+  overflow: hidden;
+}
+
+.bocEnumValue.readOnly
+{
+}
+
+.bocEnumValue.disabled
+{
+}
+
+span.bocEnumValue select
+{
+  width: 100%;
+}
+
+span.bocEnumValue select
+{
+  height: 1.68em;
+}
+
+span.bocEnumValue select[size]
+{
+  height: auto;
+}
+
+span.bocEnumValue select[size="1"]
+{
+  height: 1.68em;
+}
+
+body.webkit span.bocEnumValue select[size="2"]
+{
+  height: 2.85em;
+}
+
+body.webkit span.bocEnumValue select[size="3"]
+{
+  height: 4.2em;
+}
+
+.bocEnumValue td
+{
+  white-space: nowrap;
+}
+
+.bocEnumValue td label
+{
+  vertical-align: text-bottom;
+}
