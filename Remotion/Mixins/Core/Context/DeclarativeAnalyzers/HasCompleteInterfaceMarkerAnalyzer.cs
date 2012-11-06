@@ -21,20 +21,16 @@ using System.Linq;
 
 namespace Remotion.Mixins.Context.DeclarativeAnalyzers
 {
-  public class CompleteInterfaceAnalyzer
+  /// <summary>
+  /// Analyzes <see cref="IHasCompleteInterface{TInterface}"/> markers implemented by a type and applies the respective configuration information
+  /// to the <see cref="MixinConfigurationBuilder"/>.
+  /// </summary>
+  public class HasCompleteInterfaceMarkerAnalyzer : IMixinDeclarationAnalyzer<Type>
   {
-    private readonly MixinConfigurationBuilder _configurationBuilder;
-
-    public CompleteInterfaceAnalyzer (MixinConfigurationBuilder configurationBuilder)
+    public void Analyze (Type type, MixinConfigurationBuilder configurationBuilder)
     {
+      ArgumentUtility.CheckNotNull ("type", type);
       ArgumentUtility.CheckNotNull ("configurationBuilder", configurationBuilder);
-      _configurationBuilder = configurationBuilder;
-    }
-
-    public void Analyze (Type type)
-    {
-      foreach (CompleteInterfaceAttribute interfaceAttribute in type.GetCustomAttributes (typeof (CompleteInterfaceAttribute), false))
-        AnalyzeCompleteInterfaceAttribute (type, interfaceAttribute);
 
       var completeInterfaceMarkers = (from ifc in type.GetInterfaces()
                                       where ifc.IsGenericType
@@ -45,12 +41,7 @@ namespace Remotion.Mixins.Context.DeclarativeAnalyzers
                                       select completeInterfaceType).ToArray();
 
       if (completeInterfaceMarkers.Length > 0)
-        _configurationBuilder.ForClass (type).AddCompleteInterfaces (completeInterfaceMarkers);
-    }
-
-    public void AnalyzeCompleteInterfaceAttribute (Type interfaceType, CompleteInterfaceAttribute completeInterfaceAttribute)
-    {
-      _configurationBuilder.ForClass (completeInterfaceAttribute.TargetType).AddCompleteInterface (interfaceType);
+        configurationBuilder.ForClass (type).AddCompleteInterfaces (completeInterfaceMarkers);
     }
   }
 }
