@@ -472,6 +472,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       if (!RequiresLoadPostData)
         return;
 
+      if (!IsPagingEnabled)
+        return;
+
       _newPageIndex = int.Parse (((ScalarLoadPostDataTarget) sender).Value);
     }
 
@@ -1015,6 +1018,22 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       get { return HtmlTextWriterTag.Div; }
     }
 
+    /// <summary>
+    /// Sets the page index for <see cref="BocList"/> during the next render phase.
+    /// </summary>
+    /// <remarks>Note: The page index will be ignored if row edit mode is active since the <see cref="BocList"/> will always page to the edited row.</remarks>
+    /// <exception cref="InvalidOperationException">Thrown if paging is not enabled.</exception>
+    protected void SetPageIndex (int pageIndex)
+    {
+      if (pageIndex < 0)
+        throw new ArgumentOutOfRangeException ("pageIndex", "The page index must not be less then zero.");
+
+      if (!IsPagingEnabled)
+        throw new InvalidOperationException ("The page index cannot be set unless paging is enabled.");
+
+      _newPageIndex = pageIndex;
+    }
+
     private void CalculateCurrentPage (int? newPageIndex)
     {
       var oldPageIndex = _currentPageIndex;
@@ -1026,6 +1045,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       }
       else
       {
+        Assertion.IsFalse (_editModeController.IsListEditModeActive, "ListEditMode cannot be enabled when paging is enabled and vice versa.");
+
         if (newPageIndex.HasValue)
           _currentPageIndex = newPageIndex.Value;
 
@@ -3570,7 +3591,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   or zero, less than zero or <see langword="null"/> to show all rows.
     /// </value>
     [Category ("Appearance")]
-    [Description ("The number of rows displayed per page. Set PageSize to 0 to show all rows.")]
+    [Description ("The number of rows displayed per page. Set PageSize to null/0 to show all rows.")]
     [DefaultValue (typeof (int?), "")]
     public virtual int? PageSize
     {
@@ -3579,6 +3600,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       {
         if (value == null || value.Value < 0)
           _pageSize = null;
+        else if (_editModeController.IsListEditModeActive)
+          throw new InvalidOperationException ("Paging cannot be enabled (i.e. the PageSize cannot be set) when ListEditMode is active.");
         else
           _pageSize = value;
       }
