@@ -170,7 +170,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       var currentPageNumber = (renderingContext.Control.CurrentPageIndex + 1).ToString (CultureInfo.InvariantCulture);
       var totalPageCount = renderingContext.Control.PageCount.ToString (CultureInfo.InvariantCulture);
       var currentPageNumberMaxLength = totalPageCount.Length.ToString (CultureInfo.InvariantCulture);
-      var currentPageNumberTextBoxID = renderingContext.Control.GetCurrentPageControlName().Replace ('$', '_') + "_TextBox";
+      var currentPageNumberTextBoxID = GetCurrentPageNumberControlID(renderingContext);
       var totalPageCountText = GetResourceManager (renderingContext).GetString (ResourceIdentifier.TotalPageCountText);
 
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.For, currentPageNumberTextBoxID);
@@ -184,10 +184,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Value, currentPageNumber);
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Size, currentPageNumberMaxLength);
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Maxlength, currentPageNumberMaxLength);
-
-      renderingContext.Writer.AddAttribute (
-          HtmlTextWriterAttribute.Onchange,
-          "return true;");
+      //renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Maxlength, "3");
 
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Input);
       renderingContext.Writer.RenderEndTag();
@@ -195,13 +192,20 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       renderingContext.Writer.Write (totalPageCountText, totalPageCount);
 
       renderingContext.Writer.RenderEndTag(); // end span
+
+      string script = string.Format (
+          "BocListNavigationBlock_Initialize ($('#{0}'), $('#{1}'))",
+          currentPageNumberTextBoxID,
+          GetCurrentPageIndexControlID (renderingContext));
+      renderingContext.Control.Page.ClientScript.RegisterStartupScriptBlock (
+          renderingContext.Control, typeof (BocListNavigationBlockRenderer), "Initialize_" + renderingContext.Control.ClientID, script);
     }
 
     private void RenderValueField (BocListRenderingContext renderingContext)
     {
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Id, renderingContext.Control.GetCurrentPageControlName().Replace('$', '_'));
+      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Id, GetCurrentPageIndexControlID (renderingContext));
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Name, renderingContext.Control.GetCurrentPageControlName());
-    //  renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Type, "hidden");
+      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Type, "hidden");
       renderingContext.Writer.AddAttribute (
           HtmlTextWriterAttribute.Value,
           renderingContext.Control.CurrentPageIndex.ToString (CultureInfo.InvariantCulture));
@@ -227,13 +231,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         var imageUrl = GetResolvedImageUrl (s_inactiveIcons[command]);
         new IconInfo (imageUrl.GetUrl()).Render (renderingContext.Writer, renderingContext.Control);
 
-        renderingContext.Writer.RenderEndTag ();
+        renderingContext.Writer.RenderEndTag();
       }
       else
       {
         renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Id, navigateCommandID);
 
-        var currentPageControlClientID = renderingContext.Control.GetCurrentPageControlName().Replace ('$', '_');
+        var currentPageControlClientID = GetCurrentPageIndexControlID (renderingContext);
         var postBackEvent = string.Format ("$('#{0}').val({1}).trigger('change');", currentPageControlClientID, pageIndex);
         renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Onclick, postBackEvent);
 
@@ -242,7 +246,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.A);
 
         var imageUrl = GetResolvedImageUrl (s_activeIcons[command]);
-        var icon = new IconInfo (imageUrl.GetUrl ());
+        var icon = new IconInfo (imageUrl.GetUrl());
         icon.AlternateText = GetResourceManager (renderingContext).GetString (s_alternateTexts[command]);
         icon.Render (renderingContext.Writer, renderingContext.Control);
 
@@ -258,6 +262,16 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     private IResourceUrl GetResolvedImageUrl (string imageUrl)
     {
       return ResourceUrlFactory.CreateThemedResourceUrl(typeof (BocListNavigationBlockRenderer), ResourceType.Image, imageUrl);
+    }
+
+    private string GetCurrentPageNumberControlID (BocListRenderingContext renderingContext)
+    {
+      return renderingContext.Control.GetCurrentPageControlName().Replace ('$', '_') + "_TextBox";
+    }
+
+    private static string GetCurrentPageIndexControlID (BocListRenderingContext renderingContext)
+    {
+      return renderingContext.Control.GetCurrentPageControlName().Replace ('$', '_');
     }
   }
 }

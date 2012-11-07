@@ -522,3 +522,35 @@ function BocList_FixHeaderPosition(tableContainer, scrollableContainer)
   var scrollLeft = scrollableContainer.scrollLeft();
   fakeTableHeadContainer.css({ 'top': scrollTop, 'left': scrollLeft * -1 });
 }
+
+function BocListNavigationBlock_Initialize(pageNumberField, pageIndexField)
+{
+  ArgumentUtility.CheckNotNullAndTypeIsObject ('pageNumberField', pageNumberField);
+  ArgumentUtility.CheckNotNullAndTypeIsObject('pageIndexField', pageIndexField);
+
+  pageNumberField.bind('change', function () {
+    var pageNumber = Number.parseInvariant (pageNumberField.val());
+    if (isNaN (pageNumber) || !TypeUtility.IsInteger (pageNumber))
+    {
+      if (pageNumberField.val().length > 0)
+        setTimeout(function () { pageNumberField.focus(); }, 0);
+
+      pageNumberField.val(parseInt(pageIndexField.val(), 10) + 1);
+      return false;
+    }
+    else
+    {
+      pageIndexField.val (pageNumber - 1);
+      pageIndexField.trigger('change');
+      return true;
+    }
+  });
+
+  //pageNumberField.bind('keyup', function (event) {
+  //  var zeroCharacter = 48;
+  //  var nineCharacter = 48 + 10;
+
+  //  if (event.keyCode > nineCharacter )
+
+  //});
+}
