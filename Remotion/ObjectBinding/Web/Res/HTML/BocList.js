@@ -546,11 +546,19 @@ function BocListNavigationBlock_Initialize(pageNumberField, pageIndexField)
     }
   });
 
-  //pageNumberField.bind('keyup', function (event) {
-  //  var zeroCharacter = 48;
-  //  var nineCharacter = 48 + 10;
+  pageNumberField.bind('keydown', function (event) {
+    var zeroKey = 48;
+    var nineKey = 57;
+    var zeroKeyNumBlock = 96;
+    var nineKeyNumBlock = 105;
+    var f1Key = 112;
+    var f12Key = 123;
+    var isControlKey = event.keyCode < zeroKey || event.keyCode >= f1Key && event.keyCode <= f12Key;
+    var isNumericKey = event.keyCode >= zeroKey && event.keyCode <= nineKey || event.keyCode >= zeroKeyNumBlock && event.keyCode <= nineKeyNumBlock;
 
-  //  if (event.keyCode > nineCharacter )
-
-  //});
+    if (event.altKey || event.ctrlKey || isControlKey || isNumericKey)
+      return true;
+    else
+      return false;
+  });
 }
