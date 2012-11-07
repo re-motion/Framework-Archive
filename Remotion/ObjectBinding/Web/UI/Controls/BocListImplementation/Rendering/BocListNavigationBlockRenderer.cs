@@ -87,8 +87,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     /// <summary> The possible directions for paging through the List. </summary>
     private enum GoToOption
     {
-      /// <summary> Don't page. </summary>
-      Undefined,
       /// <summary> Move to first page. </summary>
       First,
       /// <summary> Move to last page. </summary>
@@ -176,7 +174,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       renderingContext.Writer.RenderEndTag();
 
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Id, currentPageNumberTextBoxID);
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Name, renderingContext.Control.GetCurrentPageControlName());
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Type, "text");
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Value, currentPageNumber);
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Size, currentPageNumberMaxLength);

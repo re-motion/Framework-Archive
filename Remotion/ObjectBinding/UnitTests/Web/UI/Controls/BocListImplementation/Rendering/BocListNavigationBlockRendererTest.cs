@@ -197,6 +197,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocListImplementation
       var pageNumberField = Html.GetAssertedChildElement (manualInputArea, "input", 1);
       Html.AssertAttribute (pageNumberField, "value", (currentPageIndex + 1).ToString (CultureInfo.InvariantCulture));
       Html.AssertAttribute (pageNumberField, "id", inputID);
+      Html.AssertNoAttribute (pageNumberField, "name");
       Html.AssertAttribute (pageNumberField, "type", "text");
       Html.AssertAttribute (pageNumberField, "maxlength", 
           totalPageCount.ToString(CultureInfo.InvariantCulture).Length.ToString(CultureInfo.InvariantCulture));
@@ -212,6 +213,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocListImplementation
 
       Html.AssertAttribute (pageIndexField, "value", (currentPageIndex).ToString (CultureInfo.InvariantCulture));
       Html.AssertAttribute (pageIndexField, "id", inputID);
+      Html.AssertAttribute (pageIndexField, "name", List.GetCurrentPageControlName());
       Html.AssertAttribute (pageIndexField, "type", "hidden");
     }
 
