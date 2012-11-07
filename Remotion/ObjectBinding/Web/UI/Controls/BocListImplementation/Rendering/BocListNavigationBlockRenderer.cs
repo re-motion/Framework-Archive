@@ -136,27 +136,24 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         bool isFirstPage = renderingContext.Control.CurrentPageIndex == 0;
         bool isLastPage = renderingContext.Control.CurrentPageIndex + 1 >= renderingContext.Control.PageCount;
 
-        RenderPageInformation (renderingContext);
+        var isReadOnly = renderingContext.Control.PageCount == 1 || renderingContext.Control.EditModeController.IsRowEditModeActive;
 
-        RenderNavigationIcon (renderingContext, isFirstPage, GoToOption.First, 0);
-        RenderNavigationIcon (renderingContext, isFirstPage, GoToOption.Previous, renderingContext.Control.CurrentPageIndex - 1);
-        RenderNavigationIcon (renderingContext, isLastPage, GoToOption.Next, renderingContext.Control.CurrentPageIndex + 1);
-        RenderNavigationIcon (renderingContext, isLastPage, GoToOption.Last, renderingContext.Control.PageCount - 1);
+        if (isReadOnly)
+          RenderPageInformationReadOnly (renderingContext);
+        else
+          RenderPageInformation (renderingContext);
 
-        RenderValueField (renderingContext);
+        RenderNavigationIcon (renderingContext, isFirstPage || isReadOnly, GoToOption.First, 0);
+        RenderNavigationIcon (renderingContext, isFirstPage || isReadOnly, GoToOption.Previous, renderingContext.Control.CurrentPageIndex - 1);
+        RenderNavigationIcon (renderingContext, isLastPage || isReadOnly, GoToOption.Next, renderingContext.Control.CurrentPageIndex + 1);
+        RenderNavigationIcon (renderingContext, isLastPage || isReadOnly, GoToOption.Last, renderingContext.Control.PageCount - 1);
+
+        if (!isReadOnly)
+          RenderValueField (renderingContext);
       }
       else
       {
-        //  Page info
-        string pageLabelText = GetResourceManager (renderingContext).GetString (ResourceIdentifier.PageLabelText);
-        string totalPageCountText = GetResourceManager (renderingContext).GetString (ResourceIdentifier.TotalPageCountText);
-
-        // Do not HTML encode.
-        renderingContext.Writer.Write (pageLabelText);
-        renderingContext.Writer.Write (" ");
-        renderingContext.Writer.Write (renderingContext.Control.CurrentPageIndex + 1);
-        renderingContext.Writer.Write (" ");
-        renderingContext.Writer.Write (totalPageCountText, renderingContext.Control.PageCount);
+        RenderPageInformationReadOnly(renderingContext);
       }
 
       renderingContext.Writer.RenderEndTag();
@@ -201,6 +198,24 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
           renderingContext.Control, typeof (BocListNavigationBlockRenderer), "Initialize_" + renderingContext.Control.ClientID, script);
     }
 
+    private void RenderPageInformationReadOnly (BocListRenderingContext renderingContext)
+    {
+      renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
+
+      //  Page info
+      string pageLabelText = GetResourceManager (renderingContext).GetString (ResourceIdentifier.PageLabelText);
+      string totalPageCountText = GetResourceManager (renderingContext).GetString (ResourceIdentifier.TotalPageCountText);
+
+      // Do not HTML encode.
+      renderingContext.Writer.Write (pageLabelText);
+      renderingContext.Writer.Write (" ");
+      renderingContext.Writer.Write (renderingContext.Control.CurrentPageIndex + 1);
+      renderingContext.Writer.Write (" ");
+      renderingContext.Writer.Write (totalPageCountText, renderingContext.Control.PageCount);
+
+      renderingContext.Writer.RenderEndTag(); // end span
+    }
+
     private void RenderValueField (BocListRenderingContext renderingContext)
     {
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Id, GetCurrentPageIndexControlID (renderingContext));
@@ -223,7 +238,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     {
       var navigateCommandID = renderingContext.Control.ClientID + "_Navigation_" + command;
 
-      if (isInactive || renderingContext.Control.EditModeController.IsRowEditModeActive)
+      if (isInactive)
       {
         renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Id, navigateCommandID);
         renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.A);
