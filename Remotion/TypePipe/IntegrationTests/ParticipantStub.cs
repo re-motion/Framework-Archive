@@ -15,13 +15,13 @@
 // under the License.
 // 
 using System;
+using Remotion.TypePipe;
 using Remotion.TypePipe.MutableReflection;
-using Remotion.TypePipe.TypeAssembly;
 using Remotion.Utilities;
 
 namespace TypePipe.IntegrationTests
 {
-  public class ParticipantStub : ITypeAssemblyParticipant
+  public class ParticipantStub : IParticipant
   {
     private readonly Action<MutableType> _typeModification;
 
@@ -30,6 +30,11 @@ namespace TypePipe.IntegrationTests
       ArgumentUtility.CheckNotNull ("typeModification", typeModification);
 
       _typeModification = typeModification;
+    }
+
+    public ICacheKey GetCacheKey (Type type)
+    {
+      throw new NotImplementedException();
     }
 
     public void ModifyType (MutableType mutableType)

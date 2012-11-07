@@ -14,17 +14,18 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Remotion.Mixins.Utilities.DependencySort;
-using Remotion.Text;
 
 namespace Remotion.Mixins.Definitions.Building.DependencySorting
 {
   /// <summary>
-  /// Sorts the given mixin definitions by first grouping them into independent groups via <see cref="DependentMixinGrouper"/> and then sorting the
-  /// mixins in the groups via <see cref="DependentObjectSorter{T}"/>. The groups are alphabetically sorted according to the full name of the first 
-  /// mixin in the group.
+  /// Sorts the mixin definitions of a <see cref="TargetClassDefinition"/> by first grouping them into independent groups via 
+  /// <see cref="DependentMixinGrouper"/> and then sorting the mixins in the groups via <see cref="DependentObjectSorter{T}"/>. 
+  /// The groups are alphabetically sorted according to the full name of the first mixin in the group.
   /// </summary>
   public class MixinDefinitionSorter
   {
@@ -48,42 +49,28 @@ namespace Remotion.Mixins.Definitions.Building.DependencySorting
     }
 
     /// <summary>
-    /// Sorts the mixins of <paramref name="targetClassDefinition"/>. The <see cref="TargetClassDefinition"/> is required because without a target
-    /// class, the dependencies are not defined.
+    /// Sorts the given mixins.
     /// </summary>
-    /// <param name="targetClassDefinition">The target class definition holding the mixins.</param>
-    /// <returns>A list with the mixins held by <paramref name="targetClassDefinition"/>, but in the correct order.</returns>
-    public List<MixinDefinition> SortMixins (TargetClassDefinition targetClassDefinition)
+    /// <param name="mixinDefinitions">The <see cref="MixinDefinition"/> objects to sort relative to each other.</param>
+    /// <returns>A sequence with the given mixins, but in the correct order.</returns>
+    public IEnumerable<MixinDefinition> SortMixins (IEnumerable<MixinDefinition> mixinDefinitions)
     {
-      var sortedMixinGroups = PartitionAndSortMixins (targetClassDefinition.Mixins);
+      var sortedMixinGroups = PartitionAndSortMixins (mixinDefinitions);
 
       // flatten ordered groups of sorted mixins
-      return sortedMixinGroups.SelectMany (mixinGroup => mixinGroup).ToList();
+      return sortedMixinGroups.SelectMany (mixinGroup => mixinGroup);
     }
 
-    private List<List<MixinDefinition>> PartitionAndSortMixins (IEnumerable<MixinDefinition> unsortedMixins)
+    private IEnumerable<List<MixinDefinition>> PartitionAndSortMixins (IEnumerable<MixinDefinition> mixinDefinitions)
     {
-      var sortedMixinGroups = new List<List<MixinDefinition>> ();
-
       // partition mixins into independent groups
-      foreach (HashSet<MixinDefinition> mixinGroup in _grouper.GroupMixins (unsortedMixins))
-      {
-        try
-        {
-          IEnumerable<MixinDefinition> sortedGroup = _sorter.SortDependencies (mixinGroup);
-          sortedMixinGroups.Add (new List<MixinDefinition> (sortedGroup));
-        }
-        catch (CircularDependenciesException<MixinDefinition> ex)
-        {
-          string message = string.Format ("The following group of mixins contains circular dependencies: {0}.",
-                                          SeparatedStringBuilder.Build (", ", ex.Circulars, m => m.FullName));
-          throw new ConfigurationException (message, ex);
-        }
-      }
+      var sortedMixinGroups = _grouper
+          .GroupMixins (mixinDefinitions)
+          .Select (mixinGroup => _sorter.SortDependencies (mixinGroup).ToList())
+          .ToList();
 
       // order groups alphabetically
-      sortedMixinGroups.Sort ((one, two) => one[0].FullName.CompareTo (two[0].FullName));
-
+      sortedMixinGroups.Sort ((one, two) => System.String.Compare(one[0].FullName, two[0].FullName, System.StringComparison.Ordinal));
       return sortedMixinGroups;
     }
   }
