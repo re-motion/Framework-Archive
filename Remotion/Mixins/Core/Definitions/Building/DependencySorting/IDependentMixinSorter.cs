@@ -14,13 +14,17 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
 using System.Collections.Generic;
+using Remotion.Mixins.Utilities.DependencySort;
+using Remotion.ServiceLocation;
 
-namespace Remotion.Mixins.Utilities.DependencySort
+namespace Remotion.Mixins.Definitions.Building.DependencySorting
 {
-  public interface IDependentObjectSorter<T>
+  [ConcreteImplementation (typeof(DependentMixinSorter), Lifetime = LifetimeKind.Singleton)]
+  public interface IDependentMixinSorter
   {
-    IEnumerable<T> SortDependencies (IEnumerable<T> dependentObjects);
+    IEnumerable<MixinDefinition> SortDependencies (IEnumerable<MixinDefinition> dependentObjects);
   }
 }

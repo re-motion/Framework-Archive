@@ -16,9 +16,11 @@
 // 
 using System;
 using System.Collections.Generic;
+using Remotion.ServiceLocation;
 
 namespace Remotion.Mixins.Definitions.Building.DependencySorting
 {
+  [ConcreteImplementation (typeof (DependentMixinGrouper), Lifetime = LifetimeKind.Singleton)]
   public interface IDependentMixinGrouper
   {
     IEnumerable<HashSet<MixinDefinition>> GroupMixins (IEnumerable<MixinDefinition> mixins);

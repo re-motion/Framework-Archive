@@ -14,26 +14,17 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System.Collections.Generic;
-using Remotion.Utilities;
 
-namespace Remotion.Mixins.Utilities.DependencySort
+using System;
+using Remotion.Mixins.Utilities.DependencySort;
+
+namespace Remotion.Mixins.Definitions.Building.DependencySorting
 {
-  public class DependentObjectSorter<T>
+  public class DependentMixinSorter : DependentObjectSorter<MixinDefinition>, IDependentMixinSorter
   {
-    private readonly IDependencyAnalyzer<T> _analyzer;
-
-    public DependentObjectSorter (IDependencyAnalyzer<T> analyzer)
+    public DependentMixinSorter (IMixinDependencyAnalyzer analyzer)
+        : base(analyzer)
     {
-      ArgumentUtility.CheckNotNull ("analyzer", analyzer);
-      _analyzer = analyzer;
-    }
-
-    public IEnumerable<T> SortDependencies (IEnumerable<T> dependentObjects)
-    {
-      ArgumentUtility.CheckNotNull ("dependentObjects", dependentObjects);
-      var algorithm = new DependentObjectSorterAlgorithm<T> (_analyzer, dependentObjects);
-      return algorithm.Execute ();
     }
   }
 }

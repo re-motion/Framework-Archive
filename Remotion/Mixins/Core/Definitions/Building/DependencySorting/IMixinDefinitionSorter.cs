@@ -17,6 +17,7 @@
 
 using System;
 using System.Collections.Generic;
+using Remotion.ServiceLocation;
 
 namespace Remotion.Mixins.Definitions.Building.DependencySorting
 {
@@ -24,6 +25,7 @@ namespace Remotion.Mixins.Definitions.Building.DependencySorting
   /// Defines an interface for classes sorting a sequence of <see cref="MixinDefinition"/> objects based on the dependencies between the mixins and 
   /// other ordering-relevant information.
   /// </summary>
+  [ConcreteImplementation (typeof (MixinDefinitionSorter), Lifetime = LifetimeKind.Singleton)]
   public interface IMixinDefinitionSorter
   {
     /// <summary>

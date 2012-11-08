@@ -14,26 +14,18 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System.Collections.Generic;
-using Remotion.Utilities;
+using Remotion.Mixins.Context;
+using Remotion.ServiceLocation;
 
-namespace Remotion.Mixins.Utilities.DependencySort
+namespace Remotion.Mixins.Definitions.Building
 {
-  public class DependentObjectSorter<T>
+  /// <summary>
+  /// Defines an interface for classes building <see cref="TargetClassDefinition"/> objects containing all metadata required for code generation 
+  /// from a <see cref="ClassContext"/>.
+  /// </summary>
+  [ConcreteImplementation (typeof (TargetClassDefinitionBuilder), Lifetime = LifetimeKind.Singleton)]
+  public interface ITargetClassDefinitionBuilder
   {
-    private readonly IDependencyAnalyzer<T> _analyzer;
-
-    public DependentObjectSorter (IDependencyAnalyzer<T> analyzer)
-    {
-      ArgumentUtility.CheckNotNull ("analyzer", analyzer);
-      _analyzer = analyzer;
-    }
-
-    public IEnumerable<T> SortDependencies (IEnumerable<T> dependentObjects)
-    {
-      ArgumentUtility.CheckNotNull ("dependentObjects", dependentObjects);
-      var algorithm = new DependentObjectSorterAlgorithm<T> (_analyzer, dependentObjects);
-      return algorithm.Execute ();
-    }
+    TargetClassDefinition Build (ClassContext classContext);
   }
 }
