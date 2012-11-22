@@ -118,7 +118,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
     IEditModeController EditModeController { get; }
     ReadOnlyCollection<IValidator> Validators { get; }
     ReadOnlyCollection<BocListRowMenuTuple> RowMenus { get; }
-    ReadOnlyDictionary<BocColumnDefinition, BocListCustomColumnTuple[]> CustomColumns { get; }
+    ReadOnlyDictionary<BocCustomColumnDefinition, BocListCustomColumnTuple[]> CustomColumns { get; }
     bool HasListMenu { get; }
     bool IsClientSideSortingEnabled { get; }
     bool HasOptionsMenu { get; }
@@ -149,7 +149,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
     string GetListItemCommandArgument (int columnIndex, BocListRow row);
     string GetRowEditCommandArgument (BocListRow row, BocList.RowEditModeCommand command);
     IResourceManager GetResourceManager ();
-    BocListRowRenderingContext[] GetRowsToDisplay ();
+    BocListRowRenderingContext[] GetRowsToRender ();
     void OnDataRowRendering (BocListDataRowRenderEventArgs args);
 
     RowSelection Selection { get; }

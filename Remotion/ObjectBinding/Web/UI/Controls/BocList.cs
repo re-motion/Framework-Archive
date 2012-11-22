@@ -85,6 +85,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private const string c_availableViewsListIDSuffix = "_Boc_AvailableViewsList";
     private const string c_optionsMenuIDSuffix = "_Boc_OptionsMenu";
     private const string c_listMenuIDSuffix = "_Boc_ListMenu";
+    private const string c_rowMenuIDPrefix = "_RowMenu_";
 
     /// <summary> Prefix applied to the post back argument of the event type column commands. </summary>
     private const string c_eventListItemCommandPrefix = "ListCommand=";
@@ -233,20 +234,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     private readonly ListMenu _listMenu;
 
-    /// <summary> Triplet &lt; IBusinessObject, listIndex, DropDownMenu &gt;</summary>
-    private BocListRowMenuTuple[] _rowMenus;
-
-    private readonly PlaceHolder _rowMenusPlaceHolder;
-
-    /// <summary> 
-    ///   HashTable &lt; 
-    ///       Key = CustomColumn, 
-    ///       Value = Triplet[] &lt; IBusinessObject, listIndex, Control &gt; &gt;
-    /// </summary>
-    private Dictionary<BocColumnDefinition, BocListCustomColumnTuple[]> _customColumns;
-
-    private readonly PlaceHolder _customColumnsPlaceHolder;
-
     /// <summary> Determines wheter an empty list will still render its headers and the additional column sets list. </summary>
     private bool _showEmptyListEditMode = true;
 
@@ -325,8 +312,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       _editModeController = new EditModeController (new EditModeHost (this));
       _optionsMenu = new DropDownMenu (this);
       _listMenu = new ListMenu (this);
-      _rowMenusPlaceHolder = new PlaceHolder();
-      _customColumnsPlaceHolder = new PlaceHolder();
       _fixedColumns = new BocColumnDefinitionCollection (this);
       _availableViews = new BocListViewCollection (this);
       _validators = new List<IValidator>();
@@ -361,8 +346,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       _editModeController.ID = ID + "_EditModeController";
       Controls.Add ((Control) _editModeController);
 
-      Controls.Add (_rowMenusPlaceHolder);
-      Controls.Add (_customColumnsPlaceHolder);
+      CreateChildControlsForRowMenus();
+      CreateChildControlsForCustomColumns();
     }
 
     /// <summary> Calls the parent's <c>OnInit</c> method and initializes this control's sub-controls. </summary>
@@ -395,14 +380,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       base.OnLoad (e);
 
-      if (! Page.IsPostBack)
-        EnsureColumnsGot();
-      else
-        EnsureColumnsForPreviousLifeCycleGot();
-
-      EnsureEditModeRestored();
-      EnsureRowMenusInitialized();
-      RestoreCustomColumns();
+      if (ControlExistedInPreviousRequest)
+      {
+        var columns = EnsureColumnsForPreviousLifeCycleGot();
+        EnsureEditModeRestored();
+        EnsureRowMenusInitialized();
+        InitializeCustomColumns (columns);
+      }
     }
 
     /// <summary> Implements interface <see cref="IPostBackEventHandler"/>. </summary>
@@ -767,7 +751,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         throw new ArgumentException ("Argument 'eventArgument' must be an integer.");
       }
 
-      BocColumnDefinition[] columns = EnsureColumnsForPreviousLifeCycleGot();
+      // Get columns from current life cycle. Once a sorting event was fired, no one will change the columns in this page life cycle.
+      BocColumnDefinition[] columns = EnsureColumnsGot();
 
       if (columnIndex >= columns.Length)
       {
@@ -780,7 +765,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       if (!(column is IBocSortableColumnDefinition && ((IBocSortableColumnDefinition) column).IsSortable))
         throw new ArgumentOutOfRangeException ("The BocList '" + ID + "' does not sortable column at index" + columnIndex + ".");
 
-      var workingSortingOrder = new List<BocListSortingOrderEntry> (_sortingOrder);
+      var workingSortingOrder = new List<BocListSortingOrderEntry> (GetSortingOrder());
 
       var oldSortingOrderEntry = workingSortingOrder.FirstOrDefault (entry => entry.Column == column) ?? BocListSortingOrderEntry.Empty;
 
@@ -837,8 +822,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       BocListSortingOrderEntry[] newSortingOrder = workingSortingOrder.ToArray();
 
       OnSortingOrderChanging (oldSortingOrder, newSortingOrder);
-      _sortingOrder.Clear();
-      _sortingOrder.AddRange (workingSortingOrder);
+      _sortingOrder = workingSortingOrder;
       OnSortingOrderChanged (oldSortingOrder, newSortingOrder);
       OnSortedRowsChanged();
     }
@@ -966,7 +950,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       _listMenu.Visible = HasListMenu;
       _listMenu.Enabled = !_editModeController.IsRowEditModeActive;
 
-      BocColumnDefinition[] columns = EnsureColumnsGot (true);
+      BocColumnDefinition[] columns = EnsureColumnsGot();
       EnsureChildControls();
 
       base.OnPreRender (e);
@@ -998,15 +982,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       if (!IsDesignMode)
       {
         PreRenderMenuItems();
+        PreRenderListItemCommands();
 
         EnsureRowMenusInitialized();
         PreRenderRowMenusItems();
 
-        CreateCustomColumnControls (columns);
-        InitCustomColumns();
-        LoadCustomColumns();
+        InitializeCustomColumns (columns);
         PreRenderCustomColumns();
-        PreRenderListItemCommands();
 
         _optionsMenu.GetSelectionCount = GetSelectionCountScript();
       }
@@ -1071,7 +1053,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
       CreateAvailableViewsList();
 
-      BocColumnDefinition[] renderColumns = EnsureColumnsGot (IsDesignMode);
+      BocColumnDefinition[] renderColumns = EnsureColumnsGot ();
       EvaluateWaiConformity (renderColumns);
 
       if (IsDesignMode)
@@ -1506,242 +1488,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       BocDropDownMenu.HideMenuItems (ListMenuItems, _hiddenMenuItems);
       BocDropDownMenu.HideMenuItems (OptionsMenuItems, _hiddenMenuItems);
     }
-
-    /// <summary> 
-    ///   Creates a <see cref="BocDropDownMenuColumnDefinition"/> if <see cref="RowMenuDisplay"/> is set to
-    ///   <see cref="Controls.RowMenuDisplay.Automatic"/>.
-    /// </summary>
-    /// <returns> A <see cref="BocDropDownMenuColumnDefinition"/> instance or <see langword="null"/>. </returns>
-    private BocDropDownMenuColumnDefinition GetRowMenuColumn ()
-    {
-      if (_rowMenuDisplay == RowMenuDisplay.Automatic)
-      {
-        BocDropDownMenuColumnDefinition dropDownMenuColumn = new BocDropDownMenuColumnDefinition();
-        dropDownMenuColumn.Width = Unit.Percentage (0);
-        dropDownMenuColumn.MenuTitleText = GetResourceManager().GetString (ResourceIdentifier.RowMenuTitle);
-        return dropDownMenuColumn;
-      }
-      return null;
-    }
-
-    /// <summary> 
-    ///   Tests that the <paramref name="columnDefinitions"/> array holds exactly one
-    ///   <see cref="BocDropDownMenuColumnDefinition"/> if the <see cref="RowMenuDisplay"/> is set to 
-    ///   <see cref="Controls.RowMenuDisplay.Automatic"/> or <see cref="Controls.RowMenuDisplay.Manual"/>.
-    /// </summary>
-    private void CheckRowMenuColumns (BocColumnDefinition[] columnDefinitions)
-    {
-      bool isFound = false;
-      for (int i = 0; i < columnDefinitions.Length; i++)
-      {
-        if (columnDefinitions[i] is BocDropDownMenuColumnDefinition)
-        {
-          if (isFound)
-            throw new InvalidOperationException ("Only a single BocDropDownMenuColumnDefinition is allowed in the BocList '" + ID + "'.");
-          isFound = true;
-        }
-      }
-      if (RowMenuDisplay == RowMenuDisplay.Manual && ! isFound)
-      {
-        throw new InvalidOperationException (
-            "No BocDropDownMenuColumnDefinition was found in the BocList '" + ID + "' but the RowMenuDisplay was set to manual.");
-      }
-    }
-
-    private void EnsureRowMenusInitialized ()
-    {
-      if (_rowMenus != null)
-        return;
-      if (! AreRowMenusEnabled)
-        return;
-      if (IsDesignMode)
-        return;
-      if (!HasValue)
-        return;
-
-      EnsureChildControls();
-      CalculateCurrentPage (null);
-
-      if (IsPagingEnabled)
-        _rowMenus = new BocListRowMenuTuple[PageSize.Value];
-      else
-        _rowMenus = new BocListRowMenuTuple[Value.Count];
-      _rowMenusPlaceHolder.Controls.Clear();
-
-
-      int firstRow = 0;
-      int totalRowCount = Value.Count;
-      int rowCountWithOffset = totalRowCount;
-
-      if (IsPagingEnabled)
-      {
-        firstRow = _currentPageIndex * _pageSize.Value;
-        rowCountWithOffset = firstRow + _pageSize.Value;
-        //  Check row count on last page
-        rowCountWithOffset = (rowCountWithOffset < Value.Count) ? rowCountWithOffset : Value.Count;
-      }
-
-      BocListRow[] rows = EnsureSortedBocListRowsGot();
-
-      for (int idxAbsoluteRows = firstRow, idxRelativeRows = 0;
-           idxAbsoluteRows < rowCountWithOffset;
-           idxAbsoluteRows++, idxRelativeRows++)
-      {
-        BocListRow row = rows[idxAbsoluteRows];
-
-        DropDownMenu dropDownMenu = new DropDownMenu (this);
-        dropDownMenu.ID = ID + "_RowMenu_" + RowIDProvider.GetControlRowID (row);
-        dropDownMenu.EventCommandClick += RowMenu_EventCommandClick;
-        dropDownMenu.WxeFunctionCommandClick += RowMenu_WxeFunctionCommandClick;
-
-        _rowMenusPlaceHolder.Controls.Add (dropDownMenu);
-        WebMenuItem[] menuItems = InitializeRowMenuItems (row.BusinessObject, row.Index);
-        dropDownMenu.MenuItems.AddRange (menuItems);
-
-        _rowMenus[idxRelativeRows] = new BocListRowMenuTuple (row.BusinessObject, row.Index, dropDownMenu);
-      }
-    }
-
-    /// <summary> Creates the menu items for a data row. </summary>
-    /// <param name="businessObject"> 
-    ///   The <see cref="IBusinessObject"/> of the row for which the menu items are being generated. 
-    /// </param>
-    /// <param name="listIndex"> The position of the <paramref name="businessObject"/> in the list of values. </param>
-    /// <returns> A <see cref="WebMenuItem"/> array with the menu items generated by the implementation. </returns>
-    protected virtual WebMenuItem[] InitializeRowMenuItems (IBusinessObject businessObject, int listIndex)
-    {
-      return new WebMenuItem[0];
-    }
-
-    /// <summary> PreRenders the menu items for all row menus. </summary>
-    private void PreRenderRowMenusItems ()
-    {
-      if (_rowMenus == null)
-        return;
-
-      for (int i = 0; i < _rowMenus.Length; i++)
-      {
-        BocListRowMenuTuple rowMenuTuple = _rowMenus[i];
-        if (rowMenuTuple != null)
-        {
-          IBusinessObject businessObject = rowMenuTuple.Item1;
-          int listIndex = rowMenuTuple.Item2;
-          DropDownMenu dropDownMenu = rowMenuTuple.Item3;
-          PreRenderRowMenuItems (dropDownMenu.MenuItems, businessObject, listIndex);
-          dropDownMenu.Visible = dropDownMenu.MenuItems.Cast<WebMenuItem>().Any (item => item.EvaluateVisible());
-        }
-      }
-    }
-
-    /// <summary> PreRenders the menu items for a data row. </summary>
-    /// <param name="menuItems"> The menu items to be displayed for the row. </param>
-    /// <param name="businessObject"> 
-    ///   The <see cref="IBusinessObject"/> of the row for which the menu items are being generated. 
-    /// </param>
-    /// <param name="listIndex"> The position of the <paramref name="businessObject"/> in the list of values. </param>
-    protected virtual void PreRenderRowMenuItems (WebMenuItemCollection menuItems, IBusinessObject businessObject, int listIndex)
-    {
-    }
-
-    /// <summary> 
-    ///   Event handler for the <see cref="MenuBase.EventCommandClick"/> of the <b>RowMenu</b>.
-    /// </summary>
-    private void RowMenu_EventCommandClick (object sender, WebMenuItemClickEventArgs e)
-    {
-      for (int i = 0; i < _rowMenus.Length; i++)
-      {
-        BocListRowMenuTuple rowMenuTuple = _rowMenus[i];
-        if (rowMenuTuple != null)
-        {
-          DropDownMenu rowMenu = rowMenuTuple.Item3;
-          if (rowMenu == sender)
-          {
-            IBusinessObject businessObject = rowMenuTuple.Item1;
-            int listIndex = rowMenuTuple.Item2;
-            OnRowMenuItemEventCommandClick (e.Item, businessObject, listIndex);
-            return;
-          }
-        }
-      }
-    }
-
-    /// <summary> Handles the click on an Event command of a row menu. </summary>
-    /// <include file='..\..\doc\include\UI\Controls\BocList.xml' path='BocList/OnRowMenuItemEventCommandClick/*' />
-    protected virtual void OnRowMenuItemEventCommandClick (WebMenuItem menuItem, IBusinessObject businessObject, int listIndex)
-    {
-      if (menuItem != null && menuItem.Command != null)
-      {
-        if (menuItem is BocMenuItem)
-          ((BocMenuItemCommand) menuItem.Command).OnClick ((BocMenuItem) menuItem);
-        else
-          menuItem.Command.OnClick();
-      }
-    }
-
-    /// <summary> 
-    ///   Event handler for the <see cref="MenuBase.WxeFunctionCommandClick"/> of the <b>RowMenu</b>.
-    /// </summary>
-    private void RowMenu_WxeFunctionCommandClick (object sender, WebMenuItemClickEventArgs e)
-    {
-      for (int i = 0; i < _rowMenus.Length; i++)
-      {
-        BocListRowMenuTuple rowMenuTuple = _rowMenus[i];
-        if (rowMenuTuple != null)
-        {
-          DropDownMenu rowMenu = rowMenuTuple.Item3;
-          if (rowMenu == sender)
-          {
-            IBusinessObject businessObject = rowMenuTuple.Item1;
-            int listIndex = rowMenuTuple.Item2;
-            OnRowMenuItemWxeFunctionCommandClick (e.Item, businessObject, listIndex);
-            return;
-          }
-        }
-      }
-    }
-
-    /// <summary> Handles the click to a WXE function command or a row menu. </summary>
-    /// <include file='..\..\doc\include\UI\Controls\BocList.xml' path='BocList/OnRowMenuItemWxeFunctionCommandClick/*' />
-    protected virtual void OnRowMenuItemWxeFunctionCommandClick (WebMenuItem menuItem, IBusinessObject businessObject, int listIndex)
-    {
-      if (menuItem != null && menuItem.Command != null)
-      {
-        if (menuItem is BocMenuItem)
-        {
-          BocMenuItemCommand command = (BocMenuItemCommand) menuItem.Command;
-          if (Page is IWxePage)
-            command.ExecuteWxeFunction ((IWxePage) Page, new[] { listIndex }, new[] { businessObject });
-          //else
-          //  command.ExecuteWxeFunction (Page, new int[1] {listIndex}, new IBusinessObject[1] {businessObject});
-        }
-        else
-        {
-          Command command = menuItem.Command;
-          if (Page is IWxePage)
-            command.ExecuteWxeFunction ((IWxePage) Page, null);
-          //else
-          //  command.ExecuteWxeFunction (Page, null, new NameValueCollection (0));
-        }
-      }
-    }
-
-    /// <summary> 
-    ///   Gets a flag describing whether a <see cref="DropDownMenu"/> is shown in the 
-    ///   <see cref="BocDropDownMenuColumnDefinition"/>.
-    /// </summary>
-    protected virtual bool AreRowMenusEnabled
-    {
-      get
-      {
-        if (WcagHelper.Instance.IsWaiConformanceLevelARequired())
-          return false;
-        if (_rowMenuDisplay == RowMenuDisplay.Undefined
-            || _rowMenuDisplay == RowMenuDisplay.Disabled)
-          return false;
-        return true;
-      }
-    }
-
     private void PreRenderListItemCommands ()
     {
       if (IsDesignMode)
@@ -1749,215 +1495,22 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       if (!HasValue)
         return;
 
-      int firstRow = 0;
-      int totalRowCount = Value.Count;
-      int rowCountWithOffset = totalRowCount;
+      BocColumnDefinition[] columns = EnsureColumnsGot();
+      var commandColumns =
+          columns.Select ((column, index) => new { Column = column as BocCommandEnabledColumnDefinition, Index = index })
+                 .Where (d => d.Column != null && d.Column.Command != null)
+                 .ToArray();
 
-      if (IsPagingEnabled)
+      //TODO: Change to Lazy after upgrade to .NET 4.0
+      var rows = new DoubleCheckedLockingContainer<SortedRow[]> (() => GetRowsForCurrentPage().ToArray());
+      foreach (var commandColumn in commandColumns)
       {
-        firstRow = _currentPageIndex * _pageSize.Value;
-        rowCountWithOffset = firstRow + _pageSize.Value;
-        //  Check row count on last page
-        rowCountWithOffset = (rowCountWithOffset < Value.Count) ? rowCountWithOffset : Value.Count;
-      }
-
-      BocColumnDefinition[] columns = EnsureColumnsGot (false);
-      BocListRow[] rows = EnsureSortedBocListRowsGot();
-
-      for (int idxAbsoluteRows = firstRow, idxRelativeRows = 0;
-           idxAbsoluteRows < rowCountWithOffset;
-           idxAbsoluteRows++, idxRelativeRows++)
-      {
-        BocListRow row = rows[idxAbsoluteRows];
-
-        for (int idxColumns = 0; idxColumns < columns.Length; idxColumns++)
+        foreach (var row in rows.Value)
         {
-          BocCommandEnabledColumnDefinition commandColumn = columns[idxColumns] as BocCommandEnabledColumnDefinition;
-          if (commandColumn != null && commandColumn.Command != null)
-          {
-            commandColumn.Command.RegisterForSynchronousPostBack (
-                this,
-                GetListItemCommandArgument (idxColumns, row),
-                string.Format ("BocList '{0}', Column '{1}'", ID, commandColumn.ItemID));
-          }
-        }
-      }
-    }
-
-    /// <summary> Restores the custom columns from the previous life cycle. </summary>
-    private void RestoreCustomColumns ()
-    {
-      if (! Page.IsPostBack)
-        return;
-      CreateCustomColumnControls (EnsureColumnsForPreviousLifeCycleGot());
-      InitCustomColumns();
-      LoadCustomColumns();
-    }
-
-    /// <summary> Creates the controls for the custom columns in the <paramref name="columns"/> array. </summary>
-    private void CreateCustomColumnControls (BocColumnDefinition[] columns)
-    {
-      _customColumns = null;
-      _customColumnsPlaceHolder.Controls.Clear();
-
-      if (IsDesignMode)
-        return;
-      if (!HasValue)
-        return;
-
-      EnsureChildControls();
-
-      CalculateCurrentPage (null);
-
-      _customColumns = new Dictionary<BocColumnDefinition, BocListCustomColumnTuple[]>();
-
-      int firstRow = 0;
-      int totalRowCount = Value.Count;
-      int rowCountWithOffset = totalRowCount;
-
-      if (IsPagingEnabled)
-      {
-        firstRow = _currentPageIndex * _pageSize.Value;
-        rowCountWithOffset = firstRow + _pageSize.Value;
-        //  Check row count on last page
-        rowCountWithOffset = (rowCountWithOffset < Value.Count) ? rowCountWithOffset : Value.Count;
-      }
-
-      BocListRow[] rows = EnsureSortedBocListRowsGot();
-
-      for (int idxColumns = 0; idxColumns < columns.Length; idxColumns++)
-      {
-        BocCustomColumnDefinition customColumn = columns[idxColumns] as BocCustomColumnDefinition;
-        if (customColumn != null
-            && (customColumn.Mode == BocCustomColumnDefinitionMode.ControlsInAllRows
-                || customColumn.Mode == BocCustomColumnDefinitionMode.ControlInEditedRow))
-        {
-          PlaceHolder placeHolder = new PlaceHolder();
-          _customColumnsPlaceHolder.Controls.Add (placeHolder);
-
-          BocListCustomColumnTuple[] customColumnTuples;
-          if (IsPagingEnabled)
-            customColumnTuples = new BocListCustomColumnTuple[PageSize.Value];
-          else
-            customColumnTuples = new BocListCustomColumnTuple[Value.Count];
-          _customColumns[customColumn] = customColumnTuples;
-
-          for (int idxAbsoluteRows = firstRow, idxRelativeRows = 0;
-               idxAbsoluteRows < rowCountWithOffset;
-               idxAbsoluteRows++, idxRelativeRows++)
-          {
-            BocListRow row = rows[idxAbsoluteRows];
-
-            bool isEditedRow = _editModeController.IsRowEditModeActive && _editModeController.GetEditableRow (row.Index) != null;
-
-            if (customColumn.Mode == BocCustomColumnDefinitionMode.ControlsInAllRows
-                || (customColumn.Mode == BocCustomColumnDefinitionMode.ControlInEditedRow && isEditedRow))
-            {
-              BocCustomCellArguments args = new BocCustomCellArguments (this, customColumn);
-              Control control = customColumn.CustomCell.CreateControlInternal (args);
-              control.ID = ID + "_CustomColumnControl_" + idxColumns + "_" + row.Index;
-              placeHolder.Controls.Add (control);
-              customColumnTuples[idxRelativeRows] = new BocListCustomColumnTuple (row.BusinessObject, row.Index, control);
-            }
-          }
-        }
-      }
-    }
-
-    /// <summary> Invokes the <see cref="BocCustomColumnDefinitionCell.Init"/> method for each custom column. </summary>
-    private void InitCustomColumns ()
-    {
-      var customColumns = EnsureColumnsForPreviousLifeCycleGot()
-          .OfType<BocCustomColumnDefinition>()
-          .Where (c => c.Mode == BocCustomColumnDefinitionMode.ControlInEditedRow || c.Mode == BocCustomColumnDefinitionMode.ControlsInAllRows);
-
-      foreach (var customColumn in customColumns)
-      {
-        if (customColumn.Mode == BocCustomColumnDefinitionMode.ControlsInAllRows
-            || (_editModeController.IsRowEditModeActive))
-        {
-          BocCustomCellArguments args = new BocCustomCellArguments (this, customColumn);
-          customColumn.CustomCell.Init (args);
-        }
-      }
-    }
-
-    /// <summary>
-    ///   Invokes the <see cref="BocCustomColumnDefinitionCell.Load"/> method for each cell with a control in the 
-    ///   custom columns. 
-    /// </summary>
-    private void LoadCustomColumns ()
-    {
-      if (_customColumns == null)
-        return;
-
-      var customColumns = EnsureColumnsForPreviousLifeCycleGot()
-          .OfType<BocCustomColumnDefinition>()
-          .Where (c => c.Mode == BocCustomColumnDefinitionMode.ControlInEditedRow || c.Mode == BocCustomColumnDefinitionMode.ControlsInAllRows);
-
-      foreach (var customColumn in customColumns)
-      {
-        var customColumnTuples = _customColumns[customColumn].Where (t => t != null);
-        foreach (var customColumnTuple in customColumnTuples)
-        {
-          int originalRowIndex = customColumnTuple.Item2;
-          bool isEditedRow = _editModeController.IsRowEditModeActive && _editModeController.GetEditableRow (originalRowIndex) != null;
-
-          if (customColumn.Mode == BocCustomColumnDefinitionMode.ControlsInAllRows
-              || (customColumn.Mode == BocCustomColumnDefinitionMode.ControlInEditedRow && isEditedRow))
-          {
-            IBusinessObject businessObject = customColumnTuple.Item1;
-            Control control = customColumnTuple.Item3;
-
-            var args = new BocCustomCellLoadArguments (this, businessObject, customColumn, originalRowIndex, control);
-            customColumn.CustomCell.Load (args);
-          }
-        }
-      }
-    }
-
-    private bool ValidateCustomColumns ()
-    {
-      if (_customColumns == null)
-        return true;
-
-      if (!_editModeController.IsRowEditModeActive)
-        return true;
-
-      var editedRow = _editModeController.GetEditedRow();
-      bool isValid = true;
-
-      var customColumns = EnsureColumnsForPreviousLifeCycleGot()
-          .OfType<BocCustomColumnDefinition>()
-          .Where (c => c.Mode == BocCustomColumnDefinitionMode.ControlInEditedRow);
-
-      foreach (var customColumn in customColumns)
-      {
-        var editedCustomColumnTuple = _customColumns[customColumn].Where (t => t != null).SingleOrDefault (t => t.Item2 == editedRow.Index);
-
-        if (editedCustomColumnTuple != null)
-        {
-          IBusinessObject businessObject = editedCustomColumnTuple.Item1;
-          Control control = editedCustomColumnTuple.Item3;
-          var args = new BocCustomCellValidationArguments (this, businessObject, customColumn, control);
-          customColumn.CustomCell.Validate (args);
-          isValid &= args.IsValid;
-        }
-      }
-      return isValid;
-    }
-
-    /// <summary> Invokes the <see cref="BocCustomColumnDefinitionCell.PreRender"/> method for each custom column.  </summary>
-    private void PreRenderCustomColumns ()
-    {
-      BocColumnDefinition[] columns = EnsureColumnsGot (true);
-      for (int i = 0; i < columns.Length; i++)
-      {
-        BocCustomColumnDefinition customColumn = columns[i] as BocCustomColumnDefinition;
-        if (customColumn != null)
-        {
-          BocCustomCellArguments args = new BocCustomCellArguments (this, customColumn);
-          customColumn.CustomCell.PreRender (args);
+          commandColumn.Column.Command.RegisterForSynchronousPostBack (
+              this,
+              GetListItemCommandArgument (commandColumn.Index, row.ValueRow),
+              string.Format ("BocList '{0}', Column '{1}'", ID, commandColumn.Column.ItemID));
         }
       }
     }
@@ -1969,16 +1522,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       return _columnDefinitionsPostBackEventHandlingPhase;
     }
 
-    private BocColumnDefinition[] EnsureColumnsGot (bool forceRefresh)
-    {
-      if (_columnDefinitionsRenderPhase == null || forceRefresh)
-        _columnDefinitionsRenderPhase = GetColumnsInternal();
-      return _columnDefinitionsRenderPhase;
-    }
-
     private BocColumnDefinition[] EnsureColumnsGot ()
     {
-      return EnsureColumnsGot (false);
+      if (_columnDefinitionsRenderPhase == null || IsDesignMode)
+        _columnDefinitionsRenderPhase = GetColumnsInternal();
+      return _columnDefinitionsRenderPhase;
     }
 
     private BocColumnRenderer[] GetColumnRenderers (BocColumnDefinition[] columns)
@@ -1990,7 +1538,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       columnRendererBuilder.IsBrowserCapableOfScripting = IsBrowserCapableOfScripting;
       columnRendererBuilder.IsClientSideSortingEnabled = IsClientSideSortingEnabled;
       columnRendererBuilder.HasSortingKeys = HasSortingKeys;
-      columnRendererBuilder.SortingOrder = _sortingOrder.AsReadOnly();
+      columnRendererBuilder.SortingOrder = GetSortingOrder();
 
       return columnRendererBuilder.CreateColumnRenderers ();
     }
@@ -2230,15 +1778,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       return rows.OrderBy (sortingOrder);
     }
 
-    BocListRowRenderingContext[] IBocList.GetRowsToDisplay ()
+    protected IEnumerable<SortedRow> GetRowsForCurrentPage ()
     {
-      var result = EnsureSortedBocListRowsGot().Select (
-          (row, index) => new
-                          {
-                              Row = row,
-                              SortedIndex = index,
-                              ItemRowID = RowIDProvider.GetItemRowID (row)
-                          });
+      var result = EnsureSortedBocListRowsGot().Select ((row, index) => new SortedRow (row, index));
 
       if (IsPagingEnabled)
       {
@@ -2248,8 +1790,17 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         result = result.Skip (_currentPageIndex * pageSize).Take (pageSize);
       }
 
-      return result
-          .Select (data => new BocListRowRenderingContext (data.Row, data.SortedIndex, _selectorControlCheckedState.Contains (data.ItemRowID)))
+      return result;
+    }
+
+    BocListRowRenderingContext[] IBocList.GetRowsToRender ()
+    {
+      return GetRowsForCurrentPage()
+          .Select (
+              data => new BocListRowRenderingContext (
+                          data.ValueRow,
+                          data.SortedIndex,
+                          _selectorControlCheckedState.Contains (RowIDProvider.GetItemRowID (data.ValueRow))))
           .ToArray();
     }
 
@@ -2775,7 +2326,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       ArgumentUtility.CheckNotNull ("businessObjects", businessObjects);
 
-      _editModeController.AddRows (businessObjects, EnsureColumnsForPreviousLifeCycleGot(), EnsureColumnsGot());
+      _editModeController.AddRows (businessObjects, EnsureColumnsGot());
     }
 
     /// <summary> Adds the <paramref name="businessObject"/> to the <see cref="Value"/> collection. </summary>
@@ -2784,7 +2335,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       ArgumentUtility.CheckNotNull ("businessObject", businessObject);
 
-      return _editModeController.AddRow (businessObject, EnsureColumnsForPreviousLifeCycleGot(), EnsureColumnsGot());
+      return _editModeController.AddRow (businessObject, EnsureColumnsGot());
     }
 
     /// <summary> Removes the <paramref name="businessObjects"/> from the <see cref="Value"/> collection. </summary>
@@ -2888,7 +2439,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <param name="index"> The index of the row to be edited. </param>
     public void SwitchRowIntoEditMode (int index)
     {
-      _editModeController.SwitchRowIntoEditMode (index, EnsureColumnsForPreviousLifeCycleGot(), EnsureColumnsGot());
+      _editModeController.SwitchRowIntoEditMode (index, EnsureColumnsGot());
     }
 
     /// <summary>
@@ -2910,7 +2461,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
                 "Cannot switch BocList '{0}' in to List Edit Mode: Paging Enabled.", ID));
       }
 
-      _editModeController.SwitchListIntoEditMode (EnsureColumnsForPreviousLifeCycleGot(), EnsureColumnsGot());
+      _editModeController.SwitchListIntoEditMode (EnsureColumnsGot());
     }
 
     /// <summary> 
@@ -2923,7 +2474,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <param name="businessObject"> The <see cref="IBusinessObject"/> to add. Must not be <see langword="null"/>. </param>
     public bool AddAndEditRow (IBusinessObject businessObject)
     {
-      return _editModeController.AddAndEditRow (businessObject, EnsureColumnsForPreviousLifeCycleGot(), EnsureColumnsGot());
+      return _editModeController.AddAndEditRow (businessObject, EnsureColumnsGot());
     }
 
     /// <summary>
@@ -3466,11 +3017,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       set
       {
         _enableMultipleSorting = value;
-        if (_sortingOrder.Count > 1 && ! IsMultipleSortingEnabled)
+        if (!IsMultipleSortingEnabled)
         {
-          BocListSortingOrderEntry entry = (BocListSortingOrderEntry) _sortingOrder[0];
-          _sortingOrder.Clear();
-          _sortingOrder.Add (entry);
+          var oldCount = _sortingOrder.Count;
+          _sortingOrder = _sortingOrder.Where (o => !o.IsEmpty).ToList();
+          if (_sortingOrder.Count != oldCount)
+            OnSortedRowsChanged();
         }
       }
     }
@@ -3895,12 +3447,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     ReadOnlyCollection<BocListRowMenuTuple> IBocList.RowMenus
     {
-      get { return _rowMenus == null ? null : new ReadOnlyCollection<BocListRowMenuTuple> (_rowMenus); }
+      get { return new ReadOnlyCollection<BocListRowMenuTuple> (_rowMenus); }
     }
 
-    ReadOnlyDictionary<BocColumnDefinition, BocListCustomColumnTuple[]> IBocList.CustomColumns
+    ReadOnlyDictionary<BocCustomColumnDefinition, BocListCustomColumnTuple[]> IBocList.CustomColumns
     {
-      get { return _customColumns == null ? null : new ReadOnlyDictionary<BocColumnDefinition, BocListCustomColumnTuple[]> (_customColumns); }
+      get { return new ReadOnlyDictionary<BocCustomColumnDefinition, BocListCustomColumnTuple[]> (_customColumnControls); }
     }
 
     bool IBocRenderableControl.IsDesignMode
@@ -3964,7 +3516,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private void OnSortedRowsChanged ()
     {
       _indexedRowsSorted = null;
-      _rowMenus = null;
+      ResetRowMenus();
     }
 
     private void OnDisplayedRowsChanged ()
@@ -3975,7 +3527,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     private void OnStateOfDisplayedRowsChanged ()
     {
-      _rowMenus = null;
+      ResetRowMenus();
     }
 
     int IBocList.CurrentPageIndex
