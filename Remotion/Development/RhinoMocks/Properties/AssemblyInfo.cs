@@ -15,28 +15,14 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Runtime.Serialization;
+using System.Reflection;
 
-namespace Remotion.Development.UnitTesting
-{
-  [Serializable]
-  public class MethodNotFoundException: Exception
-  {
-    private const string c_errorMessage = "There is no method \"{0}\" in type {1} that accepts the specified argument types.";
-
-    public MethodNotFoundException (string methodName, Type type)
-        : this (string.Format (c_errorMessage, methodName, type.FullName))
-    {
-    }
-
-    public MethodNotFoundException (string message)
-        : base (message)
-    {
-    }
-
-    protected MethodNotFoundException (SerializationInfo info, StreamingContext context)
-        : base (info, context)
-    {
-    }
-  }
-}
+//
+// General Information about an assembly is controlled through the following 
+// set of attributes. Change these attribute values to modify the information
+// associated with an assembly.
+//
+[assembly: AssemblyTitle("Remotion Development Support Library for RhinoMocks")]
+[assembly: AssemblyDescription("Library for unit testing with RhinoMocks.")]
+[assembly: AssemblyCulture("")]
+[assembly: CLSCompliant (true)]

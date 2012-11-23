@@ -15,28 +15,18 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Runtime.Serialization;
+using NUnit.Framework;
+using Remotion.Development.UnitTesting.Sandboxing;
 
-namespace Remotion.Development.UnitTesting
+namespace Remotion.Development.UnitTests.Core.UnitTesting.Sandboxing
 {
-  [Serializable]
-  public class AmbiguousMethodNameException: Exception
+  [Ignore]
+  public class DummyTestIgnored
   {
-    private const string c_errorMessage = "Method name \"{0}\" is ambiguous in type {1}.";
-
-    public AmbiguousMethodNameException (string methodName, Type type)
-        : this (string.Format (c_errorMessage, methodName, type.FullName))
+    [Test]
+    public void TestIgnored ()
     {
-    }
-
-    public AmbiguousMethodNameException (string message)
-        : base (message)
-    {
-    }
-
-    protected AmbiguousMethodNameException (SerializationInfo info, StreamingContext context)
-        : base (info, context)
-    {
+      throw new TestFailedException (typeof (DummyTest5), "TestIgnored", SandboxTestStatus.Failed, new NotSupportedException ());
     }
   }
 }
