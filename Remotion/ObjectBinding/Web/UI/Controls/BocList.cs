@@ -209,11 +209,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </summary>
     private BocColumnDefinition[] _allPropertyColumns;
 
-    /// <summary> Contains the <see cref="BocColumnDefinition"/> objects during the handling of the post back events. </summary>
-    private BocColumnDefinition[] _columnDefinitionsPostBackEventHandlingPhase;
-
     /// <summary> Contains the <see cref="BocColumnDefinition"/> objects during the rendering phase. </summary>
-    private BocColumnDefinition[] _columnDefinitionsRenderPhase;
+    private BocColumnDefinition[] _columnDefinitions;
 
     private bool _hasAppendedAllPropertyColumnDefinitions;
 
@@ -258,7 +255,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <summary> Undefined interpreted as True. </summary>
     private bool? _enableMultipleSorting;
 
-    private List<BocListSortingOrderEntry> _sortingOrder = new List<BocListSortingOrderEntry>();
+    private BocListSortingOrderEntry[] _sortingOrder = new BocListSortingOrderEntry[0];
 
     private BocListRow[] _indexedRowsSorted;
     private SortedRow[] _currentPageRows;
@@ -314,9 +311,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       _editModeController = new EditModeController (new EditModeHost (this));
       _optionsMenu = new DropDownMenu (this);
       _listMenu = new ListMenu (this);
-      _fixedColumns = new BocColumnDefinitionCollection (this);
       _availableViews = new BocListViewCollection (this);
       _validators = new List<IValidator>();
+      _fixedColumns = new BocColumnDefinitionCollection (this);
+      _fixedColumns.CollectionChanged += delegate { OnColumnsChanged(); };
     }
 
     // methods and properties
@@ -384,7 +382,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
       if (ControlExistedInPreviousRequest)
       {
-        var columns = EnsureColumnsForPreviousLifeCycleGot();
+        var columns = EnsureColumnsGot();
         EnsureEditModeRestored();
         EnsureRowMenusInitialized();
         EnsureCustomColumnsInitialized (columns);
@@ -514,7 +512,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
             "First part of argument 'eventArgument' must be an integer. Expected format: '<column-index>,<list-index>'.", ex);
       }
 
-      BocColumnDefinition[] columns = EnsureColumnsForPreviousLifeCycleGot();
+      BocColumnDefinition[] columns = EnsureColumnsGot();
       if (columnIndex >= columns.Length)
       {
         throw new ArgumentOutOfRangeException (
@@ -594,7 +592,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
             "First part of argument 'eventArgument' must be an integer. Expected format: '<column-index>,<list-index>[,<customArgument>]'.", ex);
       }
 
-      BocColumnDefinition[] columns = EnsureColumnsForPreviousLifeCycleGot();
+      BocColumnDefinition[] columns = EnsureColumnsGot();
       if (columnIndex >= columns.Length)
       {
         throw new ArgumentOutOfRangeException (
@@ -767,7 +765,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       if (!(column is IBocSortableColumnDefinition && ((IBocSortableColumnDefinition) column).IsSortable))
         throw new ArgumentOutOfRangeException ("The BocList '" + ID + "' does not sortable column at index" + columnIndex + ".");
 
-      var workingSortingOrder = new List<BocListSortingOrderEntry> (GetSortingOrder());
+      var oldSortingOrder = GetSortingOrder();
+      var workingSortingOrder = new List<BocListSortingOrderEntry> (oldSortingOrder);
 
       var oldSortingOrderEntry = workingSortingOrder.FirstOrDefault (entry => entry.Column == column) ?? BocListSortingOrderEntry.Empty;
 
@@ -820,11 +819,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         workingSortingOrder.Add (newSortingOrderEntry);
       }
 
-      BocListSortingOrderEntry[] oldSortingOrder = _sortingOrder.ToArray ();
-      BocListSortingOrderEntry[] newSortingOrder = workingSortingOrder.ToArray();
+      var newSortingOrder = workingSortingOrder.ToArray();
 
       OnSortingOrderChanging (oldSortingOrder, newSortingOrder);
-      _sortingOrder = workingSortingOrder;
+      _sortingOrder = workingSortingOrder.ToArray();
       OnSortingOrderChanged (oldSortingOrder, newSortingOrder);
       OnSortedRowsChanged();
     }
@@ -1309,7 +1307,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       _selectedViewIndex = (int?) values[1];
       _availableViewsListPlaceHolder.Controls.Cast<ScalarLoadPostDataTarget>().Single().Value = (string) values[2];
       _currentPageIndex = (int) values[3];
-      _sortingOrder = (List<BocListSortingOrderEntry>) values[4];
+      _sortingOrder = (BocListSortingOrderEntry[]) values[4];
       _selectorControlCheckedState = (HashSet<string>) values[5];
       _rowIDProvider = (IRowIDProvider) values[6];
 
@@ -1318,17 +1316,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     protected override object SaveControlState ()
     {
-      var columns = EnsureColumnsGot();
-      foreach (var sortingOrderEntry in _sortingOrder)
-        sortingOrderEntry.SetColumnIndex (Array.IndexOf (columns, sortingOrderEntry.Column));
-
       object[] values = new object[7];
 
       values[0] = base.SaveControlState();
       values[1] = _selectedViewIndex;
       values[2] = _availableViewsListPlaceHolder.Controls.Cast<ScalarLoadPostDataTarget>().Single().Value;
       values[3] = _currentPageIndex;
-      values[4] = _sortingOrder;
+      values[4] = GetSortingOrder();
       values[5] = _selectorControlCheckedState;
       values[6] = _rowIDProvider;
 
@@ -1455,6 +1449,33 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       _allPropertyColumns = null;
     }
+    
+    protected virtual void InitializeMenusItems ()
+    {
+    }
+
+    protected virtual void PreRenderMenuItems ()
+    {
+      if (_hiddenMenuItems == null)
+        return;
+
+      BocDropDownMenu.HideMenuItems (ListMenuItems, _hiddenMenuItems);
+      BocDropDownMenu.HideMenuItems (OptionsMenuItems, _hiddenMenuItems);
+    }
+
+    private BocColumnRenderer[] GetColumnRenderers (BocColumnDefinition[] columns)
+    {
+      var columnRendererBuilder = new BocColumnRendererArrayBuilder (columns, ServiceLocator, WcagHelper.Instance);
+      columnRendererBuilder.IsListReadOnly = IsReadOnly;
+      columnRendererBuilder.EnableIcon = EnableIcon;
+      columnRendererBuilder.IsListEditModeActive = _editModeController.IsListEditModeActive;
+      columnRendererBuilder.IsBrowserCapableOfScripting = IsBrowserCapableOfScripting;
+      columnRendererBuilder.IsClientSideSortingEnabled = IsClientSideSortingEnabled;
+      columnRendererBuilder.HasSortingKeys = HasSortingKeys;
+      columnRendererBuilder.SortingOrder = GetSortingOrder();
+
+      return columnRendererBuilder.CreateColumnRenderers ();
+    }
 
     private BocColumnDefinition[] GetAllPropertyColumns ()
     {
@@ -1482,18 +1503,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       return _allPropertyColumns;
     }
 
-    protected virtual void InitializeMenusItems ()
-    {
-    }
-
-    protected virtual void PreRenderMenuItems ()
-    {
-      if (_hiddenMenuItems == null)
-        return;
-
-      BocDropDownMenu.HideMenuItems (ListMenuItems, _hiddenMenuItems);
-      BocDropDownMenu.HideMenuItems (OptionsMenuItems, _hiddenMenuItems);
-    }
     private void PreRenderListItemCommands ()
     {
       if (IsDesignMode)
@@ -1519,32 +1528,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       }
     }
 
-    private BocColumnDefinition[] EnsureColumnsForPreviousLifeCycleGot ()
-    {
-      if (_columnDefinitionsPostBackEventHandlingPhase == null)
-        _columnDefinitionsPostBackEventHandlingPhase = ControlExistedInPreviousRequest ? GetColumnsInternal() : EnsureColumnsGot();
-      return _columnDefinitionsPostBackEventHandlingPhase;
-    }
-
     private BocColumnDefinition[] EnsureColumnsGot ()
     {
-      if (_columnDefinitionsRenderPhase == null || IsDesignMode)
-        _columnDefinitionsRenderPhase = GetColumnsInternal();
-      return _columnDefinitionsRenderPhase;
-    }
-
-    private BocColumnRenderer[] GetColumnRenderers (BocColumnDefinition[] columns)
-    {
-      var columnRendererBuilder = new BocColumnRendererArrayBuilder (columns, ServiceLocator, WcagHelper.Instance);
-      columnRendererBuilder.IsListReadOnly = IsReadOnly;
-      columnRendererBuilder.EnableIcon = EnableIcon;
-      columnRendererBuilder.IsListEditModeActive = _editModeController.IsListEditModeActive;
-      columnRendererBuilder.IsBrowserCapableOfScripting = IsBrowserCapableOfScripting;
-      columnRendererBuilder.IsClientSideSortingEnabled = IsClientSideSortingEnabled;
-      columnRendererBuilder.HasSortingKeys = HasSortingKeys;
-      columnRendererBuilder.SortingOrder = GetSortingOrder();
-
-      return columnRendererBuilder.CreateColumnRenderers ();
+      if (_columnDefinitions == null || IsDesignMode)
+        _columnDefinitions = GetColumnsInternal();
+      return _columnDefinitions;
     }
 
     /// <summary>
@@ -1566,8 +1554,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       AppendSelectedViewColumns (columnDefinitionList);
 
       var columnDefinitions = GetColumns (columnDefinitionList.ToArray());
-
-      _sortingOrder = RestoreSortingOrderColumns (_sortingOrder, columnDefinitions);
 
       CheckRowMenuColumns (columnDefinitions);
 
@@ -1644,18 +1630,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       _hasAppendedAllPropertyColumnDefinitions = true;
     }
 
-    private List<BocListSortingOrderEntry> RestoreSortingOrderColumns (List<BocListSortingOrderEntry> sortingOrder, BocColumnDefinition[] columnDefinitions)
-    {
-      return sortingOrder
-          .Where (entry => !entry.IsEmpty)
-          .Select (
-              entry =>
-              entry.Column == null
-                  ? new BocListSortingOrderEntry ((IBocSortableColumnDefinition) columnDefinitions[entry.ColumnIndex], entry.Direction)
-                  : entry)
-          .ToList();
-    }
-
     /// <summary>
     ///   Override this method to modify the column definitions displayed in the <see cref="BocList"/> in the
     ///   current page life cycle.
@@ -1704,11 +1678,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       ArgumentUtility.CheckNotNullOrItemsNull ("newSortingOrder", newSortingOrder);
 
-      _sortingOrder.Clear();
       if (! IsMultipleSortingEnabled && newSortingOrder.Length > 1)
         throw new InvalidOperationException ("Attempted to set multiple sorting keys but EnableMultipleSorting is False.");
       else
-        _sortingOrder.AddRange (newSortingOrder);
+        _sortingOrder = newSortingOrder.ToArray();
 
       OnSortedRowsChanged();
     }
@@ -1719,7 +1692,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </remarks>
     public void ClearSortingOrder ()
     {
-      _sortingOrder.Clear();
+      _sortingOrder = new BocListSortingOrderEntry[0];
 
       OnSortedRowsChanged();
     }
@@ -1734,8 +1707,41 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </remarks>
     public BocListSortingOrderEntry[] GetSortingOrder ()
     {
-      EnsureColumnsGot();
-      return _sortingOrder.ToArray ();
+      var columns = EnsureColumnsGot();
+
+      Func<BocListSortingOrderEntry, BocListSortingOrderEntry> entryProcessor =
+          entry =>
+          {
+            if (entry.Column == null)
+            {
+              var newEntry = new BocListSortingOrderEntry ((IBocSortableColumnDefinition) columns[entry.ColumnIndex], entry.Direction);
+              newEntry.SetColumnIndex (entry.ColumnIndex);
+              return newEntry;
+            }
+            else
+            {
+              var newIndex = Array.IndexOf (columns, entry.Column);
+              if (newIndex == entry.ColumnIndex)
+              {
+                return entry;
+              }
+              else if (newIndex >= 0)
+              {
+                entry.SetColumnIndex (newIndex);
+                return entry;
+              }
+              else
+              {
+                var newEntry = new BocListSortingOrderEntry ((IBocSortableColumnDefinition) columns[entry.ColumnIndex], entry.Direction);
+                newEntry.SetColumnIndex (entry.ColumnIndex);
+                return newEntry;
+              }
+            }
+          };
+
+      _sortingOrder = _sortingOrder.Where (entry => !entry.IsEmpty).Select (entryProcessor).ToArray();
+
+      return _sortingOrder.ToArray();
     }
 
     /// <summary>
@@ -1823,10 +1829,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       if (HasSortingKeys)
       {
         var staticColumns = new HashSet<BocColumnDefinition> (_fixedColumns.Cast<BocColumnDefinition>().Concat (GetAllPropertyColumns()));
-        var oldCount = _sortingOrder.Count;
-        _sortingOrder.RemoveAll (entry => !staticColumns.Contains ((BocColumnDefinition) entry.Column));
-        if (oldCount != _sortingOrder.Count)
-          OnSortedRowsChanged();
+        var oldSortingOrder = GetSortingOrder();
+        var oldCount = oldSortingOrder.Length;
+        _sortingOrder = oldSortingOrder.Where (entry => staticColumns.Contains ((BocColumnDefinition) entry.Column)).ToArray();
       }
     }
 
@@ -2168,7 +2173,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         }
 
         if (hasChanged)
+        {
           RemoveDynamicColumnsFromSortingOrder();
+          OnColumnsChanged();
+        }
       }
     }
 
@@ -2217,7 +2225,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         }
 
         if (hasIndexChanged)
+        {
           RemoveDynamicColumnsFromSortingOrder();
+          OnColumnsChanged();
+        }
       }
     }
 
@@ -2500,7 +2511,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </param>
     public void EndRowEditMode (bool saveChanges)
     {
-      _editModeController.EndRowEditMode (saveChanges, EnsureColumnsForPreviousLifeCycleGot());
+      _editModeController.EndRowEditMode (saveChanges, EnsureColumnsGot());
     }
 
     /// <summary>
@@ -2515,12 +2526,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </param>
     public void EndListEditMode (bool saveChanges)
     {
-      _editModeController.EndListEditMode (saveChanges, EnsureColumnsForPreviousLifeCycleGot());
+      _editModeController.EndListEditMode (saveChanges, EnsureColumnsGot());
     }
 
     private void EnsureEditModeRestored ()
     {
-      _editModeController.EnsureEditModeRestored (EnsureColumnsForPreviousLifeCycleGot());
+      _editModeController.EnsureEditModeRestored (EnsureColumnsGot());
     }
 
     private void EnsureEditModeValidatorsRestored ()
@@ -3019,9 +3030,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         _enableMultipleSorting = value;
         if (!IsMultipleSortingEnabled)
         {
-          var oldCount = _sortingOrder.Count;
-          _sortingOrder = _sortingOrder.Where (o => !o.IsEmpty).ToList();
-          if (_sortingOrder.Count != oldCount)
+          var oldCount = _sortingOrder.Length;
+          _sortingOrder = _sortingOrder.Where (o => !o.IsEmpty).Take (1).ToArray();
+          if (_sortingOrder.Length != oldCount)
             OnSortedRowsChanged();
         }
       }
@@ -3513,20 +3524,24 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       return null;
     }
 
+    private void OnColumnsChanged ()
+    {
+      _columnDefinitions = null;
+      OnSortedRowsChanged();
+    }
+
     private void OnSortedRowsChanged ()
     {
       _indexedRowsSorted = null;
       _currentPageRows = null;
-      ResetCustomColumns();
-      ResetRowMenus();
+      OnStateOfDisplayedRowsChanged();
     }
 
     private void OnDisplayedRowsChanged ()
     {
-      _currentPageRows = null;
-      ResetCustomColumns();
-      ResetRowMenus();
       ClearSelectedRows();
+      _currentPageRows = null;
+      OnStateOfDisplayedRowsChanged();
     }
 
     private void OnStateOfDisplayedRowsChanged ()
