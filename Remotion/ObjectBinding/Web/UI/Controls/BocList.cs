@@ -974,7 +974,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         if (currentRow == null)
           _newPageIndex = null;
         else
-          _newPageIndex = _currentPageIndex = currentRow.SortedIndex / _pageSize.Value;
+          _newPageIndex = currentRow.SortedIndex / _pageSize.Value;
       }
 
       CalculateCurrentPage (_newPageIndex);
