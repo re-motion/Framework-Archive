@@ -261,6 +261,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private List<BocListSortingOrderEntry> _sortingOrder = new List<BocListSortingOrderEntry>();
 
     private BocListRow[] _indexedRowsSorted;
+    private SortedRow[] _currentPageRows;
 
     /// <summary> Determines whether to enable the selecting of the data rows. </summary>
     private RowSelection _selection = RowSelection.Undefined;
@@ -287,6 +288,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <summary> The total number of pages required for paging through the entire list. </summary>
     private int _pageCount;
     private int? _newPageIndex;
+    private int? _editedRowIndex;
 
     /// <summary> Determines whether the client script is enabled. </summary>
     private bool _enableClientScript = true;
@@ -385,7 +387,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         var columns = EnsureColumnsForPreviousLifeCycleGot();
         EnsureEditModeRestored();
         EnsureRowMenusInitialized();
-        InitializeCustomColumns (columns);
+        EnsureCustomColumnsInitialized (columns);
       }
     }
 
@@ -957,20 +959,24 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
       // Must be executed before CalculateCurrentPage
       if (_editModeController.IsRowEditModeActive)
+        _editedRowIndex = _editModeController.GetEditedRow().Index;
+
+      if (!IsPagingEnabled)
+        _editedRowIndex = null;
+
+      if (_editedRowIndex.HasValue)
       {
-        if (IsPagingEnabled)
-        {
-          BocListRow[] sortedRows = EnsureSortedBocListRowsGot();
-          BocListRow editedRow = _editModeController.GetEditedRow();
-          for (int idxRows = 0; idxRows < sortedRows.Length; idxRows++)
-          {
-            if (sortedRows[idxRows] == editedRow)
-            {
-              _newPageIndex = _currentPageIndex = idxRows / _pageSize.Value;
-              break;
-            }
-          }
-        }
+        var currentRow = EnsureBocListRowsForCurrentPageGot()
+                             .FirstOrDefault (r => r.ValueRow.Index == _editedRowIndex.Value)
+                         ??
+                         EnsureSortedBocListRowsGot()
+                             .Select ((row, index) => new SortedRow (row, index))
+                             .FirstOrDefault (r => r.ValueRow.Index == _editedRowIndex.Value);
+
+        if (currentRow == null)
+          _newPageIndex = null;
+        else
+          _newPageIndex = _currentPageIndex = currentRow.SortedIndex / _pageSize.Value;
       }
 
       CalculateCurrentPage (_newPageIndex);
@@ -987,7 +993,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         EnsureRowMenusInitialized();
         PreRenderRowMenusItems();
 
-        InitializeCustomColumns (columns);
+        EnsureCustomColumnsInitialized (columns);
         PreRenderCustomColumns();
 
         _optionsMenu.GetSelectionCount = GetSelectionCountScript();
@@ -1501,11 +1507,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
                  .Where (d => d.Column != null && d.Column.Command != null)
                  .ToArray();
 
-      //TODO: Change to Lazy after upgrade to .NET 4.0
-      var rows = new DoubleCheckedLockingContainer<SortedRow[]> (() => GetRowsForCurrentPage().ToArray());
       foreach (var commandColumn in commandColumns)
       {
-        foreach (var row in rows.Value)
+        foreach (var row in EnsureBocListRowsForCurrentPageGot())
         {
           commandColumn.Column.Command.RegisterForSynchronousPostBack (
               this,
@@ -1777,8 +1781,15 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
       return rows.OrderBy (sortingOrder);
     }
+    
+    protected SortedRow[] EnsureBocListRowsForCurrentPageGot ()
+    {
+      if (_currentPageRows == null)
+        _currentPageRows = GetBocListRowsForCurrentPage().ToArray();
+      return _currentPageRows;
+    }
 
-    protected IEnumerable<SortedRow> GetRowsForCurrentPage ()
+    protected IEnumerable<SortedRow> GetBocListRowsForCurrentPage ()
     {
       var result = EnsureSortedBocListRowsGot().Select ((row, index) => new SortedRow (row, index));
 
@@ -1795,7 +1806,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     BocListRowRenderingContext[] IBocList.GetRowsToRender ()
     {
-      return GetRowsForCurrentPage()
+      return EnsureBocListRowsForCurrentPageGot()
           .Select (
               data => new BocListRowRenderingContext (
                           data.ValueRow,
@@ -2522,18 +2533,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       if (! IsReadOnly)
       {
         OnStateOfDisplayedRowsChanged();
-        if (IsPagingEnabled)
-        {
-          BocListRow[] sortedRows = EnsureSortedBocListRowsGot();
-          for (int idxRows = 0; idxRows < sortedRows.Length; idxRows++)
-          {
-            if (sortedRows[idxRows].Index == modifiedRowIndex)
-            {
-              _newPageIndex = _currentPageIndex = idxRows / _pageSize.Value;
-              break;
-            }
-          }
-        }
+        _editedRowIndex = modifiedRowIndex;
       }
     }
 
@@ -3516,17 +3516,22 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private void OnSortedRowsChanged ()
     {
       _indexedRowsSorted = null;
+      _currentPageRows = null;
+      ResetCustomColumns();
       ResetRowMenus();
     }
 
     private void OnDisplayedRowsChanged ()
     {
+      _currentPageRows = null;
+      ResetCustomColumns();
+      ResetRowMenus();
       ClearSelectedRows();
-      OnStateOfDisplayedRowsChanged();
     }
 
     private void OnStateOfDisplayedRowsChanged ()
     {
+      ResetCustomColumns();
       ResetRowMenus();
     }
 

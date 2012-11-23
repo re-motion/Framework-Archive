@@ -21,11 +21,14 @@ using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation;
+using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls
 {
   public partial class BocList
   {
+    private bool _customColumnsInitialized;
+
     private readonly Dictionary<BocCustomColumnDefinition, BocListCustomColumnTuple[]> _customColumnControls =
         new Dictionary<BocCustomColumnDefinition, BocListCustomColumnTuple[]>();
 
@@ -35,9 +38,26 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       Controls.Add (_customColumnsPlaceHolder);
     }
-
-    private void InitializeCustomColumns (BocColumnDefinition[] columns)
+    
+    private void ResetCustomColumns ()
     {
+      _customColumnControls.Clear();
+      _customColumnsPlaceHolder.Controls.Clear();
+      _customColumnsInitialized = false;
+    }
+
+    private void EnsureCustomColumnsInitialized (BocColumnDefinition[] columns)
+    {
+      if (_customColumnsInitialized)
+        return;
+
+      _customColumnsInitialized = true;
+
+      if (IsDesignMode)
+        return;
+      if (!HasValue)
+        return;
+
       CreateCustomColumnControls (columns);
       InitCustomColumns();
       LoadCustomColumns();
@@ -46,15 +66,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <summary> Creates the controls for the custom columns in the <paramref name="columns"/> array. </summary>
     private void CreateCustomColumnControls (BocColumnDefinition[] columns)
     {
-      _customColumnControls.Clear();
-      _customColumnsPlaceHolder.Controls.Clear();
-
-      if (IsDesignMode)
-        return;
-      if (!HasValue)
-        return;
-
       EnsureChildControls();
+
+      Assertion.IsTrue (_customColumnControls.Count == 0);
+      Assertion.IsTrue (_customColumnsPlaceHolder.Controls.Count == 0);
 
       var controlEnabledCustomColumns = columns
           .Select ((column, index) => new { Column = column as BocCustomColumnDefinition, Index = index })
@@ -64,15 +79,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
                    || d.Column.Mode == BocCustomColumnDefinitionMode.ControlInEditedRow)
           .ToArray();
 
-       //TODO: Change to Lazy after upgrade to .NET 4.0
-      var rows = new DoubleCheckedLockingContainer<SortedRow[]> (() => GetRowsForCurrentPage().ToArray());
       foreach (var customColumnData in controlEnabledCustomColumns)
       {
         var customColumn = customColumnData.Column;
         var placeHolder = new PlaceHolder();
 
         var customColumnTuples = new List<BocListCustomColumnTuple>();
-        foreach (var row in rows.Value)
+        foreach (var row in EnsureBocListRowsForCurrentPageGot())
         {
           bool isEditedRow = _editModeController.IsRowEditModeActive && _editModeController.GetEditableRow (row.ValueRow.Index) != null;
           if (customColumn.Mode == BocCustomColumnDefinitionMode.ControlInEditedRow && !isEditedRow)
