@@ -2543,7 +2543,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       if (! IsReadOnly)
       {
-        OnStateOfDisplayedRowsChanged();
+        OnSortedRowsChanged();
         _editedRowIndex = modifiedRowIndex;
       }
     }
@@ -2551,7 +2551,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private void EndListEditModeCleanUp ()
     {
       if (! IsReadOnly)
-        OnStateOfDisplayedRowsChanged();
+        OnSortedRowsChanged();
     }
 
     /// <summary> Explicitly validates the changes made to the edit mode. </summary>
