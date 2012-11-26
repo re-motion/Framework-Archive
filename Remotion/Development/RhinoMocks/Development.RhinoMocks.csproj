@@ -44,10 +44,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="nunit.framework">
-      <HintPath>..\..\Core\UnitTests\bin\Debug\nunit.framework.dll</HintPath>
+      <HintPath>..\..\..\prereq\Assemblies\NUnit-2.6\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="Rhino.Mocks">
-      <HintPath>..\..\Core\UnitTests\bin\Debug\Rhino.Mocks.dll</HintPath>
+      <HintPath>..\..\..\prereq\Assemblies\Rhino.Mocks.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -69,17 +69,14 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Dms\Shared\Dms.Shared.csproj">
-      <Project>{B79940B8-1949-406D-9CCA-E6349898E11A}</Project>
-      <Name>Dms.Shared</Name>
+    <ProjectReference Include="..\..\Core\Core\Core.Core.csproj">
+      <Project>{2AA369EC-A4E7-4D75-9101-EFA90E902625}</Project>
+      <Name>Core.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\Core\Development.Core.csproj">
       <Project>{b719a305-0493-4c72-88fe-9a2fc6964578}</Project>
       <Name>Development.Core</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

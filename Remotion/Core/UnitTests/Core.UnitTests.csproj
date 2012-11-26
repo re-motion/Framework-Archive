@@ -131,6 +131,10 @@
     <Reference Include="System.Xml">
       <Name>System.XML</Name>
     </Reference>
+    <ProjectReference Include="..\..\Development\RhinoMocks\Development.RhinoMocks.csproj">
+      <Project>{2177143e-345f-4faa-9958-1ae2b5eed242}</Project>
+      <Name>Development.RhinoMocks</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Core\Core.Core.csproj">
       <Name>Core.Core</Name>
       <Project>{2AA369EC-A4E7-4D75-9101-EFA90E902625}</Project>
@@ -159,8 +163,6 @@
     <Compile Include="Collections\LazyLockingCachingAdapterTest.cs" />
     <Compile Include="Collections\LazyLockingDataStoreAdapterTest.cs" />
     <Compile Include="Collections\ListAdapterTest.cs" />
-    <Compile Include="Collections\LockingCacheDecoratorTestHelper.cs" />
-    <Compile Include="Collections\LockingDataStoreDecoratorTestHelper.cs" />
     <Compile Include="Collections\ReadOnlyCollectionDecoratorTest.cs" />
     <Compile Include="Collections\TimeSpanBasedExpirationPolicyTest.cs" />
     <Compile Include="Configuration\TypeDiscovery\IntegrationTests\SpecificRootAssemblies\SpecificRootAssembliesAreNotSubjectToApplicationFilterTest.cs" />
