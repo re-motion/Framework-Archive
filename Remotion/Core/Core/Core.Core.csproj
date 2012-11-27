@@ -146,6 +146,7 @@
     <Compile Include="Collections\LazyLockingDataStoreAdapter.cs" />
     <Compile Include="Collections\ReadOnlyCollectionDecorator.cs" />
     <Compile Include="Collections\TimeSpanBasedExpirationPolicy.cs" />
+    <Compile Include="Configuration\ServiceLocation\ServiceLocationConfiguration.cs" />
     <Compile Include="Context\ISafeContextStorageProvider.cs" />
     <Compile Include="Context\SafeContext.cs" />
     <Compile Include="Context\SafeContextKeys.cs" />
@@ -163,6 +164,8 @@
     <Compile Include="Diagnostics\IDebuggerInterface.cs" />
     <Compile Include="IAdapter.cs" />
     <Compile Include="ServiceLocation\ConcreteImplementationAttribute.cs" />
+    <Compile Include="ServiceLocation\DefaultServiceLocatorProvider.cs" />
+    <Compile Include="ServiceLocation\IServiceLocatorProvider.cs" />
     <Compile Include="ServiceLocation\LifetimeKind.cs" />
     <Compile Include="ServiceLocation\ServiceImplementationInfo.cs" />
     <Compile Include="ServiceLocation\TypeNameTemplateResolver.cs" />
@@ -463,6 +466,7 @@
     <Compile Include="Utilities\FileUtility.cs" />
     <Compile Include="Utilities\IConsoleManager.cs" />
     <Compile Include="Utilities\DelegateBasedComparer.cs" />
+    <Compile Include="Utilities\InvertedComparerDecorator.cs" />
     <Compile Include="Utilities\IUtcNowProvider.cs" />
     <Compile Include="Utilities\MemberInfoEqualityComparer.cs" />
     <Compile Include="Utilities\MemberInfoFromExpressionUtility.cs" />
@@ -548,6 +552,9 @@
       <Link>remotion.snk</Link>
     </None>
     <EmbeddedResource Include="Configuration\TypeDiscovery\TypeDiscoveryConfiguration.xsd" />
+    <EmbeddedResource Include="Configuration\ServiceLocation\ServiceLocationConfiguration.xsd">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <None Include="doc\include\GettingStartedWithRemotion.aml" />
     <Content Include="doc\include\Globalization\MultiLingualResourcesAttribute.xml" />
     <Content Include="doc\include\Globalization\ResourceManagerWrapper.xml" />

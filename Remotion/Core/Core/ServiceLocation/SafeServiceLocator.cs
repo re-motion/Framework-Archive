@@ -17,35 +17,47 @@
 using System;
 using System.Diagnostics;
 using Microsoft.Practices.ServiceLocation;
+using Remotion.Configuration.ServiceLocation;
 
 namespace Remotion.ServiceLocation
 {
   /// <summary>
   /// <see cref="SafeServiceLocator"/> is intended as a wrapper for <see cref="ServiceLocator"/>, specifically the 
   /// <see cref="ServiceLocator.Current"/> property. In contrast to <see cref="ServiceLocator"/>, <see cref="SafeServiceLocator"/> will never throw
-  /// a <see cref="NullReferenceException"/> but instead register an instance of the DefaultServiceLocatorClass if no custom service locator was
+  /// a <see cref="NullReferenceException"/> but instead register an default <see cref="IServiceLocator"/> instance if no custom service locator was
   /// registered.
   /// </summary>
   /// <remarks>
+  /// <para>
   /// Accessing <see cref="ServiceLocator"/> will always lead to a <see cref="NullReferenceException"/> if no service locator is 
-  /// configured. Using <see cref="SafeServiceLocator"/> instead will catch the exception and register an instance of the DefaultServiceLocator class.
+  /// configured. Using <see cref="SafeServiceLocator"/> instead will catch the exception and register a default <see cref="IServiceLocator"/> instance.
+  /// A provider for the default instance can be defined in the application configuration file (handled by 
+  /// <see cref="ServiceLocationConfiguration"/>). The provider needs to implement <see cref="IServiceLocatorProvider"/> and must have a default 
+  /// constructor.
+  /// <code>
+  /// &lt;?xml version="1.0" encoding="utf-8" ?&gt;
+  /// &lt;configuration&gt;
+  ///   &lt;configSections&gt;
+  ///     &lt;section name="remotion.serviceLocation" type="Remotion.Configuration.ServiceLocation.ServiceLocationConfiguration,Remotion" /&gt;
+  ///   &lt;/configSections&gt;
+  /// 
+  ///   &lt;remotion.serviceLocation xmlns="http://www.re-motion.org/serviceLocation/configuration"&gt;
+  ///     &lt;serviceLocatorProvider type="MyAssembly::MyServiceLocatorProvider"/&gt;
+  ///   &lt;/remotion.serviceLocation&gt;
+  /// &lt;/configuration&gt;
+  /// </code>
+  /// </para>
+  /// <para>
+  /// If no provider is configured, a <see cref="DefaultServiceLocator"/> instance is used as the default instance.
+  /// </para>
   /// </remarks>
   public static class SafeServiceLocator
   {
-    // This class holds lazily initialized, readonly static fields. It relies on the fact that the .NET runtime will reliably initialize fields in a 
-    // nested static class with a static constructor as lazily as possible on first access of the static field.
-    // Singleton implementations with nested classes are documented here: http://csharpindepth.com/Articles/General/Singleton.aspx.
-    static class LazyStaticFields
-    {
-      public static readonly IServiceLocator DefaultServiceLocatorInstance = new DefaultServiceLocator();
-
-      // ReSharper disable EmptyConstructor
-      // Explicit static constructor to tell C# compiler not to mark type as beforefieldinit; this will make the static fields as lazy as possible.
-      static LazyStaticFields ()
-      {
-      }
-      // ReSharper restore EmptyConstructor
-    }
+    // This is a DoubleCheckedLockingContainer rather than a static field (maybe wrapped in a nested class to improve laziness) because we want
+    // any exceptions thrown by GetDefaultServiceLocator to bubble up to the caller normally. (Exceptions during static field initialization get
+    // wrapped in a TypeInitializationException.)
+    private static readonly DoubleCheckedLockingContainer<IServiceLocator> s_defaultServiceLocator = 
+        new DoubleCheckedLockingContainer<IServiceLocator> (GetDefaultServiceLocator);
     
     /// <summary>
     /// Gets the currently configured <see cref="IServiceLocator"/>. 
@@ -60,14 +72,20 @@ namespace Remotion.ServiceLocation
       {
         try
         {
-          return ServiceLocator.Current ?? LazyStaticFields.DefaultServiceLocatorInstance;
+          return ServiceLocator.Current ?? s_defaultServiceLocator.Value;
         }
         catch (NullReferenceException)
         {
-          ServiceLocator.SetLocatorProvider (() => LazyStaticFields.DefaultServiceLocatorInstance);
-          return LazyStaticFields.DefaultServiceLocatorInstance;
+          ServiceLocator.SetLocatorProvider (() => s_defaultServiceLocator.Value);
+          return s_defaultServiceLocator.Value;
         }
       }
+    }
+
+    private static IServiceLocator GetDefaultServiceLocator ()
+    {
+      var serviceLocatorProvider = ServiceLocationConfiguration.Current.CreateServiceLocatorProvider();
+      return serviceLocatorProvider.GetServiceLocator ();
     }
   }
 }
