@@ -17,11 +17,24 @@
 
 using System;
 
-namespace Remotion.ObjectBinding.BusinessObjectPropertyPaths
+namespace Remotion.ObjectBinding.BusinessObjectPropertyPaths.Enumerators
 {
-  public interface IBusinessObjectPropertyPathPropertyEnumerator
+  public class DynamicBusinessObjectPropertyPathPropertyEnumerator : BusinessObjectPropertyPathPropertyEnumeratorBase
   {
-    IBusinessObjectProperty Current { get; }
-    bool MoveNext (IBusinessObjectClass businessObjectClass);
+    public DynamicBusinessObjectPropertyPathPropertyEnumerator (string propertyPathIdentifier)
+        : base (propertyPathIdentifier)
+    {
+    }
+
+    protected override void HandlePropertyNotFound (IBusinessObjectClass businessObjectClass, string propertyIdentifier)
+    {
+      //NOP
+    }
+
+    protected override void HandlePropertyNotLastPropertyAndNotReferenceProperty (
+        IBusinessObjectClass businessObjectClass, IBusinessObjectProperty property)
+    {
+      //NOP
+    }
   }
 }
