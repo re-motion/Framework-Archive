@@ -16,31 +16,33 @@
 // 
 
 using System;
-using System.Collections.Generic;
-using Remotion.Utilities;
+using Remotion.Mixins;
+using Remotion.Reflection;
 
-namespace Remotion.ObjectBinding.BusinessObjectPropertyPaths.Enumerators
+namespace Remotion.ObjectBinding.UnitTests.Core.BusinessObjectPropertyPaths.TestDomain
 {
-  public sealed class EvaluatedBusinessObjectPropertyPathPropertyEnumerator : IBusinessObjectPropertyPathPropertyEnumerator
+  [BindableObjectWithIdentity]
+  public class TypeOne
   {
-    private readonly IEnumerator<IBusinessObjectProperty> _propertyEnumerator;
-
-    public EvaluatedBusinessObjectPropertyPathPropertyEnumerator (IEnumerable<IBusinessObjectProperty> properties)
+    public static TypeOne Create ()
     {
-      ArgumentUtility.CheckNotNull ("properties", properties);
-      _propertyEnumerator = properties.GetEnumerator();
+      return ObjectFactory.Create<TypeOne> (true, ParamList.Empty);
     }
 
-    public IBusinessObjectProperty Current
+    protected TypeOne ()
     {
-      get { return _propertyEnumerator.Current; }
+      TypeTwoValue = TypeTwo.Create();
+      IntValue = 1;
     }
 
-    public bool MoveNext (IBusinessObjectClass businessObjectClass)
+    [OverrideMixin]
+    public string UniqueIdentifier
     {
-      ArgumentUtility.CheckNotNull ("businessObjectClass", businessObjectClass);
-
-      return _propertyEnumerator.MoveNext();
+      get { return "Type One ID"; }
     }
-  }
+
+    public TypeTwo TypeTwoValue { get; set; }
+ 
+    public int IntValue { get; set; }
+ }
 }
