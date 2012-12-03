@@ -16,39 +16,39 @@
 // 
 
 using System;
-using System.Collections.ObjectModel;
+using NUnit.Framework;
 using Remotion.ObjectBinding.BusinessObjectPropertyPaths;
-using Remotion.ObjectBinding.BusinessObjectPropertyPaths.Enumerators;
 
 namespace Remotion.ObjectBinding.UnitTests.Core.BusinessObjectPropertyPaths.BusinessObjectPropertyPathBaseTests
 {
-  public class TestBusinessObjectPropertyPath : BusinessObjectPropertyPathBase
+  [TestFixture]
+  public class SingleValuePropertyPathTest
   {
-    private readonly IBusinessObjectProperty[] _properties;
-
-    public TestBusinessObjectPropertyPath (params IBusinessObjectProperty[] properties)
+    private BusinessObjectPropertyPathTestHelper _testHelper;
+    private BusinessObjectPropertyPathBase _path;
+    
+    [SetUp]
+    public void SetUp ()
     {
-      _properties = properties;
+      _testHelper = new BusinessObjectPropertyPathTestHelper ();
+      _path = new TestBusinessObjectPropertyPathBase (_testHelper.Property);
     }
 
-    public override bool IsDynamic
+    [Test]
+    public void GetValue ()
     {
-      get { throw new NotImplementedException(); }
-    }
+      _testHelper.ReplayAll();
 
-    public override string Identifier
-    {
-      get { return "Identifier"; }
-    }
+      var actual = _path.GetResult (
+          _testHelper.BusinessObjectWithIdentity,
+          BusinessObjectPropertyPath.UnreachableValueBehavior.FailForUnreachableValue,
+          BusinessObjectPropertyPath.ListValueBehavior.GetResultForFirstListEntry);
 
-    public override ReadOnlyCollection<IBusinessObjectProperty> Properties
-    {
-      get { return new ReadOnlyCollection<IBusinessObjectProperty> (_properties); }
-    }
+      _testHelper.VerifyAll();
 
-    protected override IBusinessObjectPropertyPathPropertyEnumerator GetResultPropertyEnumerator ()
-    {
-      return new EvaluatedBusinessObjectPropertyPathPropertyEnumerator (_properties);
+      Assert.That (actual, Is.InstanceOf<EvaluatedBusinessObjectPropertyPathResult>());
+      Assert.That (actual.ResultObject, Is.SameAs (_testHelper.BusinessObjectWithIdentity));
+      Assert.That (actual.ResultProperty, Is.SameAs (_testHelper.Property));
     }
   }
 }
