@@ -17,17 +17,10 @@
 
 using System;
 
-namespace Remotion.ObjectBinding.BusinessObjectPropertyPaths
+namespace Remotion.ObjectBinding.BusinessObjectPropertyPaths.Results
 {
-  public class NotAccessibleBusinessObjectPropertyPathResult : IBusinessObjectPropertyPathResult
+  public class NullBusinessObjectPropertyPathResult : IBusinessObjectPropertyPathResult
   {
-    private readonly IBusinessObjectProvider _businessObjectProvider;
-
-    public NotAccessibleBusinessObjectPropertyPathResult (IBusinessObjectProvider businessObjectProvider)
-    {
-      _businessObjectProvider = businessObjectProvider;
-    }
-
     public bool IsEvaluated
     {
       get { return false; }
@@ -40,7 +33,7 @@ namespace Remotion.ObjectBinding.BusinessObjectPropertyPaths
 
     public string GetString (string format)
     {
-      return _businessObjectProvider.GetNotAccessiblePropertyStringPlaceHolder();
+      return string.Empty;
     }
 
     public IBusinessObjectProperty ResultProperty
