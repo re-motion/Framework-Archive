@@ -16,39 +16,39 @@
 // 
 
 using System;
-using NUnit.Framework;
+using System.Collections.ObjectModel;
 using Remotion.ObjectBinding.BusinessObjectPropertyPaths;
+using Remotion.ObjectBinding.BusinessObjectPropertyPaths.Enumerators;
 
 namespace Remotion.ObjectBinding.UnitTests.Core.BusinessObjectPropertyPaths.BusinessObjectPropertyPathBaseTests
 {
-  [TestFixture]
-  public class SingleValuePropertyPathTest
+  public class TestableBusinessObjectPropertyPathBase : BusinessObjectPropertyPathBase
   {
-    private BusinessObjectPropertyPathTestHelper _testHelper;
-    private BusinessObjectPropertyPathBase _path;
-    
-    [SetUp]
-    public void SetUp ()
+    private readonly IBusinessObjectProperty[] _properties;
+
+    public TestableBusinessObjectPropertyPathBase (params IBusinessObjectProperty[] properties)
     {
-      _testHelper = new BusinessObjectPropertyPathTestHelper ();
-      _path = new TestBusinessObjectPropertyPathBase (_testHelper.Property);
+      _properties = properties;
     }
 
-    [Test]
-    public void GetValue ()
+    public override bool IsDynamic
     {
-      _testHelper.ReplayAll();
+      get { throw new NotImplementedException(); }
+    }
 
-      var actual = _path.GetResult (
-          _testHelper.BusinessObjectWithIdentity,
-          BusinessObjectPropertyPath.UnreachableValueBehavior.FailForUnreachableValue,
-          BusinessObjectPropertyPath.ListValueBehavior.GetResultForFirstListEntry);
+    public override string Identifier
+    {
+      get { return "Identifier"; }
+    }
 
-      _testHelper.VerifyAll();
+    public override ReadOnlyCollection<IBusinessObjectProperty> Properties
+    {
+      get { return new ReadOnlyCollection<IBusinessObjectProperty> (_properties); }
+    }
 
-      Assert.That (actual, Is.InstanceOf<EvaluatedBusinessObjectPropertyPathResult>());
-      Assert.That (actual.ResultObject, Is.SameAs (_testHelper.BusinessObjectWithIdentity));
-      Assert.That (actual.ResultProperty, Is.SameAs (_testHelper.Property));
+    protected override IBusinessObjectPropertyPathPropertyEnumerator GetResultPropertyEnumerator ()
+    {
+      return new EvaluatedBusinessObjectPropertyPathPropertyEnumerator (_properties);
     }
   }
 }
