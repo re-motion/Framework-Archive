@@ -28,11 +28,6 @@ namespace Remotion.ObjectBinding.BusinessObjectPropertyPaths.Results
       _businessObjectProvider = businessObjectProvider;
     }
 
-    public bool IsEvaluated
-    {
-      get { return false; }
-    }
-
     public object GetValue ()
     {
       return null;
@@ -45,12 +40,17 @@ namespace Remotion.ObjectBinding.BusinessObjectPropertyPaths.Results
 
     public IBusinessObjectProperty ResultProperty
     {
-      get { throw new NotSupportedException(); }
+      get { return null; }
     }
 
     public IBusinessObject ResultObject
     {
-      get { throw new NotSupportedException(); }
+      get { return null; }
+    }
+
+    bool INullObject.IsNull
+    {
+      get { return true; }
     }
   }
 }

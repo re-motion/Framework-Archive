@@ -16,34 +16,50 @@
 // 
 
 using System;
+using NUnit.Framework;
+using Remotion.ObjectBinding.BusinessObjectPropertyPaths.Results;
 
-namespace Remotion.ObjectBinding.BusinessObjectPropertyPaths.Results
+namespace Remotion.ObjectBinding.UnitTests.Core.BusinessObjectPropertyPaths.Results
 {
-  public class NullBusinessObjectPropertyPathResult : IBusinessObjectPropertyPathResult
+  [TestFixture]
+  public class NullBusinessObjectPropertyPathResultTest
   {
-    public bool IsNull
+    private IBusinessObjectPropertyPathResult _result;
+
+    [SetUp]
+    public void SetUp ()
     {
-      get { return true; }
+      _result = new NullBusinessObjectPropertyPathResult();
     }
 
-    public object GetValue ()
+    [Test]
+    public void GetValue ()
     {
-      return null;
+      Assert.That (_result.GetValue(), Is.Null);
     }
 
-    public string GetString (string format)
+    [Test]
+    public void GetString ()
     {
-      return string.Empty;
+      Assert.That (_result.GetString (string.Empty), Is.Empty);
     }
 
-    public IBusinessObjectProperty ResultProperty
+    [Test]
+    public void GetResultObject ()
     {
-      get { return null; }
+      Assert.That (_result.ResultObject, Is.Null);
+    }
+ 
+    [Test]
+    public void GetResulProperty ()
+    {
+      Assert.That (_result.ResultProperty, Is.Null);
     }
 
-    public IBusinessObject ResultObject
+    [Test]
+    public void GetIsNull ()
     {
-      get { return null; }
+      Assert.That (_result.IsNull, Is.True);
     }
   }
 }
