@@ -10,15 +10,12 @@
     <form id="form1" runat="server">
     <div>
         
-        name: 
-        <asp:TextBox runat="server" ID="nameTextBox"></asp:TextBox>
-    
-        <asp:Panel runat="server" ID="displayNamePanel" Visible="False">
-            your name is <asp:Label runat="server" ID="nameLabel"></asp:Label>
-        </asp:Panel>
+        <asp:Label runat="server" ID="nameLabel"></asp:Label>
 
+        <asp:Button runat="server" ID="submitButton" Text="update" />
         <asp:Button runat="server" ID="nextPageButton" Text="nextPage" OnClick="nextPageButton_OnClick" />
-        <asp:Button runat="server" ID="submitButton" Text="submit" />
+        <asp:Button runat="server" ID="executeSubFunctionButton" Text="execute sub function" OnClick="executeSubFunctionButton_OnClick" />
+        <asp:Button runat="server" ID="executeAsyncSubFunction" Text="execute async sub function" OnClick="executeAsyncSubFunction_OnClick" />
     </div>
     </form>
 </body>

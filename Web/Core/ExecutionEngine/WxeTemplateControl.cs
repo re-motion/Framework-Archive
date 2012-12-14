@@ -11,13 +11,13 @@ namespace Rubicon.Web.ExecutionEngine
 public interface IWxeTemplateControl: ITemplateControl
 {
   NameObjectCollection Variables { get; }
-  WxePageStep CurrentStep { get; }
+  IWxePageStep CurrentStep { get; }
   WxeFunction CurrentFunction { get; }
 }
 
 public class WxeTemplateControlInfo
 {
-  private WxePageStep _currentStep;
+  private WxeStep _currentStep;
   private WxeFunction _currentFunction;
   private WxeHandler _wxeHandler;
 
@@ -42,9 +42,9 @@ public class WxeTemplateControlInfo
     if (wxeHandler == null)
       throw new HttpException ("No current WxeHandler found.");
 
-    _currentStep = (wxeHandler == null) ? null : wxeHandler.CurrentFunction.ExecutingStep as WxePageStep;
+    _currentStep = (wxeHandler == null) ? null : wxeHandler.CurrentFunction.ExecutingStep as WxeStep;
 
-    WxeStep step = _currentStep;
+    var step = _currentStep;
     do {
       _currentFunction = step as WxeFunction;
       if (_currentFunction != null)
@@ -53,7 +53,7 @@ public class WxeTemplateControlInfo
     } while (step != null);
   }
 
-  public WxePageStep CurrentStep
+  public WxeStep CurrentStep
   {
     get { return _currentStep; }
   }

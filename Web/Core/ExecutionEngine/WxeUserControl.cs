@@ -17,9 +17,9 @@ public class WxeUserControl: UserControl, IWxeTemplateControl
     base.OnLoad (e);
   }
 
-  public WxePageStep CurrentStep
+  public IWxePageStep CurrentStep
   {
-    get { return _wxeInfo.CurrentStep; }
+    get { return (IWxePageStep) _wxeInfo.CurrentStep; }
   }
   
   public WxeFunction CurrentFunction

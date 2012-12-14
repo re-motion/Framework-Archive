@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Specialized;
-using Rubicon.Utilities;
 using Rubicon.Collections;
 
 namespace Rubicon.Web.ExecutionEngine
@@ -109,31 +108,4 @@ public abstract class WxeStep: IDisposable
 
 public delegate void WxeMethod ();
 public delegate void WxeMethodWithContext (WxeContext context);
-
-public class WxeMethodStep: WxeStep
-{
-  private WxeMethod _method;
-  private WxeMethodWithContext _methodWithContext;
-
-  public WxeMethodStep (WxeMethod method)
-  {
-    ArgumentUtility.CheckNotNull ("method", method);
-    _method = method;
-  }
-
-  public WxeMethodStep (WxeMethodWithContext method)
-  {
-    ArgumentUtility.CheckNotNull ("method", method);
-    _methodWithContext = method;
-  }
-
-  public override void Execute (WxeContext context)
-  {
-    if (_method != null)
-      _method ();
-    else
-      _methodWithContext (context);
-  }
-}
-
 }

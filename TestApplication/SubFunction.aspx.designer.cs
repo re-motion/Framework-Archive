@@ -10,7 +10,7 @@
 namespace TestApplication {
     
     
-    public partial class Step2 {
+    public partial class SubFunction {
         
         /// <summary>
         /// form1 control.
@@ -22,48 +22,30 @@ namespace TestApplication {
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
         
         /// <summary>
-        /// nameLabel control.
+        /// dateLabel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label nameLabel;
+        protected global::System.Web.UI.WebControls.Label dateLabel;
         
         /// <summary>
-        /// submitButton control.
+        /// updateButton control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button submitButton;
+        protected global::System.Web.UI.WebControls.Button updateButton;
         
         /// <summary>
-        /// nextPageButton control.
+        /// exitSubFunctionButton control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button nextPageButton;
-        
-        /// <summary>
-        /// executeSubFunctionButton control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button executeSubFunctionButton;
-        
-        /// <summary>
-        /// executeAsyncSubFunction control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button executeAsyncSubFunction;
+        protected global::System.Web.UI.WebControls.Button exitSubFunctionButton;
     }
 }

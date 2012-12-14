@@ -9,17 +9,8 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Web.ExecutionEngine
 {
-
-public class WxeExecuteNextStepException: Exception
-{
-  public WxeExecuteNextStepException()
-    : base ("This exception does not indicate an error. It is used to roll back the call stack. It is recommended to disable breaking on this exeption type while debugging.")
+  public class WxePageStep: WxeStep, IWxePageStep
   {
-  }
-}
-
-public class WxePageStep: WxeStep
-{
   private string _page;
   private string _pageToken;
   private WxeFunction _function;
@@ -34,9 +25,7 @@ public class WxePageStep: WxeStep
 
   public override void Execute (WxeContext context)
   {
-      var current = HttpContext.Current;
-    
-      if (_function != null)
+    if (_function != null)
     {
       _function.Execute (context);
       context.ReturningFunction = _function;
@@ -52,18 +41,18 @@ public class WxePageStep: WxeStep
       context.IsReturningPostBack = false;
     }
 
-      try
-      {
-          context.HttpContext.Server.Transfer (_page, context.IsPostBack);
-      }
-      catch (HttpException e)
-      {
-          if (e.InnerException is WxeExecuteNextStepException)
-              return;
-          if (e.InnerException is HttpUnhandledException && e.InnerException.InnerException is WxeExecuteNextStepException)
-              return;
-          throw;
-      }
+    try
+    {
+      context.HttpContext.Server.Transfer (_page, context.IsPostBack);
+    }
+    catch (HttpException e)
+    {
+      if (e.InnerException is WxeExecuteNextStepException)
+        return;
+      if (e.InnerException is HttpUnhandledException && e.InnerException.InnerException is WxeExecuteNextStepException)
+        return;
+      throw;
+    }
   }
 
   public override WxeStep ExecutingStep
@@ -91,7 +80,7 @@ public class WxePageStep: WxeStep
     InternalExecuteFunction (function);
   }
 
-  internal void ExecuteFunctionNoRepost (IWxePage page, WxeFunction function, Control sender, bool usesEventTarget)
+    public void ExecuteFunctionNoRepost (IWxePage page, WxeFunction function, Control sender, bool usesEventTarget)
   {
     _postBackCollection = new NameValueCollection (page.GetPostBackCollection());
 

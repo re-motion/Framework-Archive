@@ -13,7 +13,7 @@ namespace TestApplication
   {
     private readonly Queue<Action> _continuationQueue = new Queue<Action>();
     private readonly Queue<Action> _reentryQueue = new Queue<Action>();
-    private WxePageStep _pageStep;
+    private AsyncPageStep _pageStep;
 
     public AsyncFunction ()
     {
@@ -55,12 +55,12 @@ namespace TestApplication
       get { return (WxeStep) _pageStep ?? this; }
     }
 
-    public PageStepAwaitable PageStep (string url)
+    public AsyncPageStep PageStep (string url)
     {
-      return new PageStepAwaitable (url, this);
+      return new AsyncPageStep (url, this);
     }
 
-    public void SetExecutingPageStep (WxePageStep pageStep)
+    public void SetExecutingPageStep (AsyncPageStep pageStep)
     {
       _pageStep = pageStep;
     }

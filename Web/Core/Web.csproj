@@ -109,12 +109,15 @@
     <Compile Include="AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ExecutionEngine\IWxePage.cs" />
+    <Compile Include="ExecutionEngine\IWxePageStep.cs" />
     <Compile Include="ExecutionEngine\NumberedMemberFinder.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ExecutionEngine\WxeContext.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ExecutionEngine\WxeExecuteNextStepException.cs" />
     <Compile Include="ExecutionEngine\WxeForm.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -130,9 +133,11 @@
     <Compile Include="ExecutionEngine\WxeIf.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ExecutionEngine\WxeMethodStep.cs" />
     <Compile Include="ExecutionEngine\WxePage.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="ExecutionEngine\WxePageInfo.cs" />
     <Compile Include="ExecutionEngine\WxePageStep.cs">
       <SubType>Code</SubType>
     </Compile>

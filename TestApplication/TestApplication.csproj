@@ -41,17 +41,22 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Step3.aspx" />
     <Content Include="PageWithAButton.aspx" />
     <Content Include="default.aspx" />
     <Content Include="Step2.aspx" />
+    <Content Include="SubFunction.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AsyncFunction.cs" />
+    <Compile Include="TestAsyncSubFunction.cs" />
     <Compile Include="Step3.aspx.cs">
       <DependentUpon>Step3.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -59,7 +64,7 @@
     <Compile Include="Step3.aspx.designer.cs">
       <DependentUpon>Step3.aspx</DependentUpon>
     </Compile>
-    <Compile Include="PageStepAwaitable.cs" />
+    <Compile Include="AsyncPageStep.cs" />
     <Compile Include="PageWithAButton.aspx.cs">
       <DependentUpon>PageWithAButton.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -82,8 +87,16 @@
     <Compile Include="Step2.aspx.designer.cs">
       <DependentUpon>Step2.aspx</DependentUpon>
     </Compile>
+    <Compile Include="SubFunction.aspx.cs">
+      <DependentUpon>SubFunction.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SubFunction.aspx.designer.cs">
+      <DependentUpon>SubFunction.aspx</DependentUpon>
+    </Compile>
     <Compile Include="TestAsyncFunction.cs" />
     <Compile Include="TestFunction.cs" />
+    <Compile Include="TestSubFunction.cs" />
     <Compile Include="WxeSynchronizationContext.cs" />
   </ItemGroup>
   <ItemGroup>
