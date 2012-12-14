@@ -11,13 +11,11 @@ namespace TestApplication
     { 
         private readonly string _url;
         private readonly AsyncFunction _callingFunction;
-        private readonly Func<ExecutionContext> _executionContextAccessor;
 
-        public PageStepAwaitable (string url, AsyncFunction callingFunction, Func<ExecutionContext> executionContextAccessor)
+        public PageStepAwaitable (string url, AsyncFunction callingFunction)
         {
             _url = url;
             _callingFunction = callingFunction;
-            _executionContextAccessor = executionContextAccessor;
         }
 
         public PageStepAwaitable GetAwaiter()
@@ -48,11 +46,9 @@ namespace TestApplication
 
             try
             {
-
                 _callingFunction.SetReentryAction(ExecutePageStep);
 
                 _callingFunction.SetExecutingPageStep (wxePageStep);
-                var executionContext = _executionContextAccessor();
                 wxePageStep.Execute();
 
                 //pagestep complete
@@ -60,16 +56,7 @@ namespace TestApplication
 
                 //continue with original continuation
                 _callingFunction.ResetReentryQueue();
-
-                //ExecutionContext.Run (executionContext, state => wxePageStep.Execute(), null);
             }
-                    //catch (ThreadAbortException ex)
-                    //{
-                    //    var state = ex.ExceptionState;
-                    //    Thread.ResetAbort();
-                    //    _callingFunction.SetAbort(state, ex);
-                    //    return;
-                    //}
             finally
             {
                 _callingFunction.SetExecutingPageStep (null);
