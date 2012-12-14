@@ -9,57 +9,30 @@ namespace TestApplication
 {
   public class AsyncPageStep : WxeStep, IWxePageStep
   {
-    public class Awaiter : INotifyCompletion
-    {
-      private readonly AsyncPageStep _parentPageStep;
-      private readonly AsyncFunction _callingFunction;
-
-      public Awaiter (AsyncPageStep parentPageStep, AsyncFunction callingFunction)
-      {
-        _parentPageStep = parentPageStep;
-        _callingFunction = callingFunction;
-      }
-
-      public bool IsCompleted
-      {
-        get { return false; }
-      }
-
-      public void GetResult ()
-      {
-      }
-
-      public void OnCompleted (Action continuation)
-      {
-        var pageStepAction = new Action (_parentPageStep.Execute);
-
-        _callingFunction.SetReentryAction (pageStepAction);
-        _callingFunction.SetContinuation (continuation);
-      }
-    }
-
     private readonly string _url;
     private readonly AsyncFunction _callingFunction;
+    private readonly AsyncExecutionIterator _executionIterator;
     private WxeFunction _function;
     private NameValueCollection _postBackCollection;
 
-    public AsyncPageStep (string url, AsyncFunction callingFunction)
+    public AsyncPageStep (string url, AsyncFunction callingFunction, AsyncExecutionIterator executionIterator)
     {
       _url = url;
       PageToken = Guid.NewGuid().ToString();
       _callingFunction = callingFunction;
+      _executionIterator = executionIterator;
     }
 
-    public Awaiter GetAwaiter()
+    public AsyncExecutionIterator.Awaiter GetAwaiter()
     {
-      return new Awaiter(this, _callingFunction);
+      return _executionIterator.CreateAwaiter(Execute);
     }
 
     public override void Execute (WxeContext context)
     {
       try
       {
-        _callingFunction.SetReentryAction(Execute);
+        _executionIterator.SetReentryAction(Execute);
 
         _callingFunction.SetExecutingPageStep(this);
 
@@ -69,7 +42,7 @@ namespace TestApplication
         //executeNextStep exception thrown
 
         //continue with original continuation
-        _callingFunction.ResetReentryQueue();
+        _executionIterator.ResetReentryQueue();
       }
       finally
       {

@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Step21.aspx" />
     <Content Include="Step3.aspx" />
     <Content Include="PageWithAButton.aspx" />
     <Content Include="default.aspx" />
@@ -55,7 +56,15 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AsyncExecutionIterator.cs" />
     <Compile Include="AsyncFunction.cs" />
+    <Compile Include="Step21.aspx.cs">
+      <DependentUpon>Step21.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Step21.aspx.designer.cs">
+      <DependentUpon>Step21.aspx</DependentUpon>
+    </Compile>
     <Compile Include="TestAsyncSubFunction.cs" />
     <Compile Include="Step3.aspx.cs">
       <DependentUpon>Step3.aspx</DependentUpon>
