@@ -1,0 +1,631 @@
+<VisualStudioProject>
+    <CSHARP
+        ProjectType = "Web"
+        ProductVersion = "7.10.3077"
+        SchemaVersion = "2.0"
+        ProjectGuid = "{FE98ED8D-E645-4E11-9431-FA5EE8ED7C86}"
+        SccProjectName = "SAK"
+        SccLocalPath = "SAK"
+        SccAuxPath = "SAK"
+        SccProvider = "SAK"
+    >
+        <Build>
+            <Settings
+                ApplicationIcon = ""
+                AssemblyKeyContainerName = ""
+                AssemblyName = "OBWTest"
+                AssemblyOriginatorKeyFile = ""
+                DefaultClientScript = "JScript"
+                DefaultHTMLPageLayout = "Grid"
+                DefaultTargetSchema = "IE50"
+                DelaySign = "false"
+                OutputType = "Library"
+                PreBuildEvent = ""
+                PostBuildEvent = ""
+                RootNamespace = "OBWTest"
+                RunPostBuildEvent = "OnBuildSuccess"
+                StartupObject = ""
+            >
+                <Config
+                    Name = "Debug"
+                    AllowUnsafeBlocks = "false"
+                    BaseAddress = "285212672"
+                    CheckForOverflowUnderflow = "false"
+                    ConfigurationOverrideFile = ""
+                    DefineConstants = "DEBUG;TRACE"
+                    DocumentationFile = ""
+                    DebugSymbols = "true"
+                    FileAlignment = "4096"
+                    IncrementalBuild = "false"
+                    NoStdLib = "false"
+                    NoWarn = ""
+                    Optimize = "false"
+                    OutputPath = "bin\"
+                    RegisterForComInterop = "false"
+                    RemoveIntegerChecks = "false"
+                    TreatWarningsAsErrors = "false"
+                    WarningLevel = "4"
+                />
+                <Config
+                    Name = "Release"
+                    AllowUnsafeBlocks = "false"
+                    BaseAddress = "285212672"
+                    CheckForOverflowUnderflow = "false"
+                    ConfigurationOverrideFile = ""
+                    DefineConstants = "TRACE"
+                    DocumentationFile = ""
+                    DebugSymbols = "false"
+                    FileAlignment = "4096"
+                    IncrementalBuild = "false"
+                    NoStdLib = "false"
+                    NoWarn = ""
+                    Optimize = "true"
+                    OutputPath = "bin\"
+                    RegisterForComInterop = "false"
+                    RemoveIntegerChecks = "false"
+                    TreatWarningsAsErrors = "false"
+                    WarningLevel = "4"
+                />
+            </Settings>
+            <References>
+                <Reference
+                    Name = "System"
+                    AssemblyName = "System"
+                    HintPath = "..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.dll"
+                />
+                <Reference
+                    Name = "System.Drawing"
+                    AssemblyName = "System.Drawing"
+                    HintPath = "..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.Drawing.dll"
+                />
+                <Reference
+                    Name = "System.Data"
+                    AssemblyName = "System.Data"
+                    HintPath = "..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.Data.dll"
+                />
+                <Reference
+                    Name = "System.Web"
+                    AssemblyName = "System.Web"
+                    HintPath = "..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.Web.dll"
+                />
+                <Reference
+                    Name = "System.XML"
+                    AssemblyName = "System.Xml"
+                    HintPath = "..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.XML.dll"
+                />
+                <Reference
+                    Name = "System.Windows.Forms"
+                    AssemblyName = "System.Windows.Forms"
+                    HintPath = "..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.Windows.Forms.dll"
+                />
+                <Reference
+                    Name = "System.Design"
+                    AssemblyName = "System.Design"
+                    HintPath = "..\..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.Design.dll"
+                />
+                <Reference
+                    Name = "log4net"
+                    AssemblyName = "log4net"
+                    HintPath = "..\Web\bin\Debug\log4net.dll"
+                />
+                <Reference
+                    Name = "Core"
+                    Project = "{2AA369EC-A4E7-4D75-9101-EFA90E902625}"
+                    Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
+                />
+                <Reference
+                    Name = "ObjectBinding"
+                    Project = "{FDCCDB1E-0962-41DA-99A1-2DB390C48748}"
+                    Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
+                />
+                <Reference
+                    Name = "ObjectBinding.Reflection"
+                    Project = "{07113F20-C57A-4FB1-9E87-2BBE912F527B}"
+                    Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
+                />
+                <Reference
+                    Name = "ObjectBinding.Web"
+                    Project = "{390FBB93-A757-47A7-B769-A64A7465FF84}"
+                    Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
+                />
+                <Reference
+                    Name = "Web"
+                    Project = "{DF8BA786-9679-4879-8757-16AE2709D83A}"
+                    Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
+                />
+                <Reference
+                    Name = "Microsoft.Web.UI.WebControls"
+                    AssemblyName = "Microsoft.Web.UI.WebControls"
+                    HintPath = "..\..\prereq\Assemblies\Microsoft.Web.UI.WebControls.dll"
+                />
+                <Reference
+                    Name = "ObjectBinding.Reflection.Test"
+                    Project = "{5F1B88F7-FAFB-45C2-A357-333245870A6B}"
+                    Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
+                />
+            </References>
+        </Build>
+        <Files>
+            <Include>
+                <File
+                    RelPath = "AssemblyInfo.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "CompleteBocTestForm.aspx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "CompleteBocTestForm.aspx.cs"
+                    DependentUpon = "CompleteBocTestForm.aspx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "CompleteBocTestForm.aspx.resx"
+                    DependentUpon = "CompleteBocTestForm.aspx.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "CompleteBocTestMainWxeFunction.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "CompleteBocTestUserControl.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "CompleteBocTestUserControl.ascx.cs"
+                    DependentUpon = "CompleteBocTestUserControl.ascx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "CompleteBocTestUserControl.ascx.resx"
+                    DependentUpon = "CompleteBocTestUserControl.ascx.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "CompleteBocTestUserControlForm.aspx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "CompleteBocTestUserControlForm.aspx.cs"
+                    DependentUpon = "CompleteBocTestUserControlForm.aspx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "CompleteBocTestUserControlForm.aspx.resx"
+                    DependentUpon = "CompleteBocTestUserControlForm.aspx.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Global.asax"
+                    SubType = "Component"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Global.asax.cs"
+                    DependentUpon = "Global.asax"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Global.asax.resx"
+                    DependentUpon = "Global.asax.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "OBWTest.dll.log4net"
+                    BuildAction = "None"
+                />
+                <File
+                    RelPath = "PersonDetailsForm.aspx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "PersonDetailsForm.aspx.cs"
+                    DependentUpon = "PersonDetailsForm.aspx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "PersonDetailsForm.aspx.resx"
+                    DependentUpon = "PersonDetailsForm.aspx.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "PersonsForm.aspx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "PersonsForm.aspx.cs"
+                    DependentUpon = "PersonsForm.aspx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "PersonsForm.aspx.resx"
+                    DependentUpon = "PersonsForm.aspx.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "SingleBocTestBasePage.cs"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "SingleBocTestBooleanValueForm.aspx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "SingleBocTestBooleanValueForm.aspx.cs"
+                    DependentUpon = "SingleBocTestBooleanValueForm.aspx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "SingleBocTestBooleanValueForm.aspx.resx"
+                    DependentUpon = "SingleBocTestBooleanValueForm.aspx.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "SingleBocTestDateTimeValueForm.aspx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "SingleBocTestDateTimeValueForm.aspx.cs"
+                    DependentUpon = "SingleBocTestDateTimeValueForm.aspx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "SingleBocTestDateTimeValueForm.aspx.resx"
+                    DependentUpon = "SingleBocTestDateTimeValueForm.aspx.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "SingleBocTestEnumValueForm.aspx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "SingleBocTestEnumValueForm.aspx.cs"
+                    DependentUpon = "SingleBocTestEnumValueForm.aspx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "SingleBocTestEnumValueForm.aspx.resx"
+                    DependentUpon = "SingleBocTestEnumValueForm.aspx.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "SingleBocTestListForm.aspx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "SingleBocTestListForm.aspx.cs"
+                    DependentUpon = "SingleBocTestListForm.aspx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "SingleBocTestListForm.aspx.resx"
+                    DependentUpon = "SingleBocTestListForm.aspx.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "SingleBocTestMainWxeFunction.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "SingleBocTestMultilineTextValueForm.aspx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "SingleBocTestMultilineTextValueForm.aspx.cs"
+                    DependentUpon = "SingleBocTestMultilineTextValueForm.aspx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "SingleBocTestMultilineTextValueForm.aspx.resx"
+                    DependentUpon = "SingleBocTestMultilineTextValueForm.aspx.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "SingleBocTestReferenceValueForm.aspx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "SingleBocTestReferenceValueForm.aspx.cs"
+                    DependentUpon = "SingleBocTestReferenceValueForm.aspx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "SingleBocTestReferenceValueForm.aspx.resx"
+                    DependentUpon = "SingleBocTestReferenceValueForm.aspx.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "SingleBocTestTextValueForm.aspx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "SingleBocTestTextValueForm.aspx.cs"
+                    DependentUpon = "SingleBocTestTextValueForm.aspx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "SingleBocTestTextValueForm.aspx.resx"
+                    DependentUpon = "SingleBocTestTextValueForm.aspx.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "SingleBocTestWxeBasePage.cs"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "SingleTestTreeView.aspx"
+                    SubType = "Form"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "SingleTestTreeView.aspx.cs"
+                    DependentUpon = "SingleTestTreeView.aspx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "SingleTestTreeView.aspx.resx"
+                    DependentUpon = "SingleTestTreeView.aspx.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "StartForm.aspx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "StartForm.aspx.cs"
+                    DependentUpon = "StartForm.aspx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "StartForm.aspx.resx"
+                    DependentUpon = "StartForm.aspx.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "TestForm.aspx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "TestForm.aspx.cs"
+                    DependentUpon = "TestForm.aspx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "TestForm.aspx.resx"
+                    DependentUpon = "TestForm.aspx.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "TestTabbedForm.aspx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "TestTabbedForm.aspx.cs"
+                    DependentUpon = "TestTabbedForm.aspx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "TestTabbedForm.aspx.resx"
+                    DependentUpon = "TestTabbedForm.aspx.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "TestTabbedFormWxeFunction.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "TestTabbedPersonDetailsUserControl.ascx"
+                    SubType = "UserControl"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "TestTabbedPersonDetailsUserControl.ascx.cs"
+                    DependentUpon = "TestTabbedPersonDetailsUserControl.ascx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "TestTabbedPersonDetailsUserControl.ascx.resx"
+                    DependentUpon = "TestTabbedPersonDetailsUserControl.ascx.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "TestTabbedPersonJobsUserControl.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "TestTabbedPersonJobsUserControl.ascx.cs"
+                    DependentUpon = "TestTabbedPersonJobsUserControl.ascx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "TestTabbedPersonJobsUserControl.ascx.resx"
+                    DependentUpon = "TestTabbedPersonJobsUserControl.ascx.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "TestUserControlBinding.aspx"
+                    SubType = "Form"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "TestUserControlBinding.aspx.cs"
+                    DependentUpon = "TestUserControlBinding.aspx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "TestUserControlBinding.aspx.resx"
+                    DependentUpon = "TestUserControlBinding.aspx.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "TestWxeBasePage.cs"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "ViewPersonDetailsWxeFunction.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "ViewPersonsWxeFunction.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Web.config"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "WebForm1.aspx"
+                    SubType = "Form"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "WebForm1.aspx.cs"
+                    DependentUpon = "WebForm1.aspx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "WebForm1.aspx.resx"
+                    DependentUpon = "WebForm1.aspx.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "WebForm2.aspx"
+                    SubType = "Form"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "WebForm2.aspx.cs"
+                    DependentUpon = "WebForm2.aspx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "WebForm2.aspx.resx"
+                    DependentUpon = "WebForm2.aspx.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "WebForm3.aspx"
+                    SubType = "Form"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "WebForm3.aspx.cs"
+                    DependentUpon = "WebForm3.aspx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "WebForm3.aspx.resx"
+                    DependentUpon = "WebForm3.aspx.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "WebUserControl1.ascx"
+                    SubType = "UserControl"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "WebUserControl1.ascx.cs"
+                    DependentUpon = "WebUserControl1.ascx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "WebUserControl1.ascx.resx"
+                    DependentUpon = "WebUserControl1.ascx.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "WxeHandler.ashx"
+                    BuildAction = "None"
+                />
+                <File
+                    RelPath = "Globalization\RMTest.de-at.resx"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Globalization\RMTest.resx"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Globalization\SingleBocTestBasePage.resx"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Globalization\SingleBocTestListForm.resx"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Globalization\TestBasePage.resx"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Images\CopyItem.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\CopyItemDisabled.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\DeleteItem.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\DeleteItemDisabled.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\EditItem.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\NullIcon.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\OBRTest.Job.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\OBRTest.Person.gif"
+                    BuildAction = "Content"
+                />
+            </Include>
+        </Files>
+    </CSHARP>
+</VisualStudioProject>
+

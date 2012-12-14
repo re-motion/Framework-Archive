@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="utf-8" ?> 
+<BocDateTimeValue>
+  <Class>
+    <remarks>
+      <list type="table">
+        <listheader>
+          <term>State</term>
+          <description>Behaviour</description>
+        </listheader>
+        <item>
+          <term>
+            Read-Only / <see cref="Value"/> is not <see langword="null"/>
+          </term>
+          <description>
+            Formats the <see cref="Value"/> according to the setting of 
+            <see cref="ActualValueType"/>.
+          </description>
+        </item>
+        <item>
+          <term>
+            Read-Only / <see cref="Value"/> is <see langword="null"/>
+          </term>
+          <description>
+            Displays no text.
+          </description>
+        </item>
+        <item>
+          <term>
+            Edit Mode / <see cref="Value"/> is not <see langword="null"/>
+          </term>
+          <description>
+            Displayes the <see cref="DateTextBox"/> and the <see cref="TimeTextBox"/>
+            according to the setting of <see cref="ActualValueType"/>. Sets the inital value of 
+            the <c>Text</c> property to the foramtted date and time components.
+          </description>
+        </item>
+        <item>
+          <term>
+            Edit Mode / <see cref="Value"/> is <see langword="null"/>
+          </term>
+          <description>
+            Displayes the <see cref="DateTextBox"/> and the <see cref="TimeTextBox"/>
+            according to the setting of <see cref="ActualValueType"/>.
+          </description>
+        </item>
+      </list>
+      <para>
+        If <see cref="IBusinessObjectBoundControl.DataSource"/> and 
+        <see cref="IBusinessObjectBoundControl.PropertyIdentifier"/> are not set, the 
+        control is unbound. In that case, <see cref="IBusinessObjectBoundControl.Property"/> must 
+        be set programmatically and <see cref="Value"/> must be set to display the current item 
+        and queried to save it back into the <see cref="IBusinessObject"/>.
+      </para><para>
+        It is also possible to programmatically set <see cref="ValueType"/>, and then assign a 
+        a value to <see cref="Value"/>.
+      </para><para>
+        If <see cref="ShowSeconds"/> is <see langword="false"/> and only the date component is 
+        changed, the hidden seconds will also remain unchanged along with the rest 
+        of the time component.        
+      </para><para>
+        If the time component is not displayed but the date component is changed, the time will be
+        reset to 00:00.
+      </para>
+    </remarks>
+  </Class>
+</BocDateTimeValue>

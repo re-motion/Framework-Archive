@@ -1,0 +1,55 @@
+Microsoft Visual Studio Solution File, Format Version 8.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.UI", "..\Core\Web.UI.csproj", "{DF8BA786-9679-4879-8757-16AE2709D83A}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "..\..\Core\Core.csproj", "{2AA369EC-A4E7-4D75-9101-EFA90E902625}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Globalization", "..\..\Globalization\Globalization.csproj", "{423EF587-4DB3-49D9-87FE-CC659643E526}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SourceCodeControl) = preSolution
+		SccNumberOfProjects = 4
+		SccLocalPath0 = .
+		CanCheckoutShared = false
+		SolutionUniqueID = {8EDFEBB2-0421-47F7-9790-CE7B47484E86}
+		SccProjectUniqueName1 = ..\\Core\\Web.UI.csproj
+		SccProjectName1 = \u0022$/libraries/Commons/Web.UI/Core\u0022,\u0020EVHAAAAA
+		SccLocalPath1 = ..\\Core
+		CanCheckoutShared = false
+		SccProjectUniqueName2 = ..\\..\\Core\\Core.csproj
+		SccProjectName2 = \u0022$/libraries/Commons/Core\u0022,\u0020GNDAAAAA
+		SccLocalPath2 = ..\\..\\Core
+		CanCheckoutShared = false
+		SccProjectUniqueName3 = ..\\..\\Globalization\\Globalization.csproj
+		SccProjectName3 = \u0022$/libraries/Commons/Globalization\u0022,\u0020VXHAAAAA
+		SccLocalPath3 = ..\\..\\Globalization
+		CanCheckoutShared = false
+	EndGlobalSection
+	GlobalSection(SolutionConfiguration) = preSolution
+		Debug = Debug
+		Release = Release
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
+		{DF8BA786-9679-4879-8757-16AE2709D83A}.Debug.ActiveCfg = Debug|.NET
+		{DF8BA786-9679-4879-8757-16AE2709D83A}.Debug.Build.0 = Debug|.NET
+		{DF8BA786-9679-4879-8757-16AE2709D83A}.Release.ActiveCfg = Release|.NET
+		{DF8BA786-9679-4879-8757-16AE2709D83A}.Release.Build.0 = Release|.NET
+		{2AA369EC-A4E7-4D75-9101-EFA90E902625}.Debug.ActiveCfg = Debug|.NET
+		{2AA369EC-A4E7-4D75-9101-EFA90E902625}.Debug.Build.0 = Debug|.NET
+		{2AA369EC-A4E7-4D75-9101-EFA90E902625}.Release.ActiveCfg = Release|.NET
+		{2AA369EC-A4E7-4D75-9101-EFA90E902625}.Release.Build.0 = Release|.NET
+		{423EF587-4DB3-49D9-87FE-CC659643E526}.Debug.ActiveCfg = Debug|.NET
+		{423EF587-4DB3-49D9-87FE-CC659643E526}.Debug.Build.0 = Debug|.NET
+		{423EF587-4DB3-49D9-87FE-CC659643E526}.Release.ActiveCfg = Release|.NET
+		{423EF587-4DB3-49D9-87FE-CC659643E526}.Release.Build.0 = Release|.NET
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal

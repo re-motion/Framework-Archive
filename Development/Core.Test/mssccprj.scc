@@ -1,0 +1,9 @@
+SCC = This is a Source Code Control file
+
+[Development.Core.Test.csproj]
+SCC_Aux_Path = "\\at-vie-dc-02\Development\VSSDB\rubicon"
+SCC_Project_Name = "$/libraries/Commons/Development/Core.Test", TQAAAAAA
+
+[DevelopmentCoreTest.csproj]
+SCC_Aux_Path = "\\at-vie-dc-02\Development\VSSDB\rubicon"
+SCC_Project_Name = "$/libraries/Commons/Development/Core.Test", TQAAAAAA

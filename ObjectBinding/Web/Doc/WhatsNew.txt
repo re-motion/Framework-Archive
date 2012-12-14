@@ -1,0 +1,96 @@
+1.1.50.0
+========
+
+- BocValueColumnDefinition und BocCommandColumnDefinition
+  * Ableitungshierachie geändert: statt von BocColumnDefinition nun von BocCommandEnabledColumnDefinition abgeleitet.
+  
+1.1.49.0
+========
+
+- BocTreeView
+  * Neue Klasse
+  * Bietet einen Read-Only Object-Bound Tree View.
+  * Nodes werden gecached um Abfragen auf das Objectmodell so gering wie möglich zu halten.
+    (Kann deaktiviert werden: EnableTreeNodeCaching.)
+  
+1.1.46.0
+========
+
+- BocReferenceValue
+  * Read-Only Mode: Der Text wurde nicht angezeigt wenn IsReadOnly abwechselnd true und false gesetzt wurde,
+    während gleichzeitig Value zwischen einem gültigen Wert und null gewechselt hat.
+  * Bug: Null-Wert angegeben und Icon aktivert -> ArgumentException. Gefixed in 1.1.47.0
+
+  
+1.1.44.0
+========
+
+- BocList
+  * MenuItemClick: Signatur geändert: MenuItemClickEventHandler -> WebMenuItemClickEventHandler
+
+- BocReferenceValue
+  * MenuItemClick: Signatur geändert: MenuItemClickEventHandler -> WebMenuItemClickEventHandler
+  
+- BocMenuItemCommand
+  * Click: Signator geändert: MenuItemClickEventHandler -> WebMenuItemClickEventHandler
+  
+1.1.40.0
+========
+
+- BocList
+  * OptionsMenu und ListMenu unterstützen WxeCommands
+  * OptionsMenu und ListMenu: IconDisabled zu DisabledIcon geändert.
+  * OptionsMenu und ListMenu: Neue Property: Style.
+  * BugFix: Sortieren hat nur bedingt auf Änderungen der Sortierreihenfolge reagiert.
+  
+- BocReferenceValue
+  * OptionsMenu integriert
+
+- BocBooleanValue
+  * BugFix: Die Description Werte wurden jeweils vom ersten BocBooleanValue Control auf der Seite übernommen.
+  
+- Boc allgemein
+  * Bugfix: Als Properties im Designer eingebene Validation Error Messages führten zu Fehlermeldungen.
+  
+1.1.36.0
+========
+
+- Boclist
+  * OptionsMenu und ListMenu: Layout (IE 5.5, 6.0) komplett, WxeCommand noch ohne Funktion.
+  * Farbschema überarbeitet (1. Iteration).
+  * Neue Methoden: ClearSelection(), SetSelectedRows(...), SetSelectedBusinessObjects(...).
+  
+1.1.34.0
+========
+
+- BocList
+  * BocCommandColumnDefinition: Property 'Label' auf 'Text' umbenannt. 
+    'Label' wird voraussichtlich Ende April entfernt und ab da als ungültiges Attribut identifiziert.
+    Auswirkungen nur bei jenen Listen deren Properties nicht mehr editiert werden. Andernfalls wird automatisch
+    die neue Property (Text) persistiert und die alte (Label) entfernt.
+    
+
+1.1.33.0
+========
+
+- BocList
+  * OptionsMenu, ListMenu: Commands lassen sich definieren, WxeCommand noch ohne Funktion.
+  * Commands allgemein: Persistierung hat sich geändert.
+    ColumnCommand: die Start- und End-Tags wie folgt ersetzen.
+    "<command " durch "<persistedcommand><obc:BocListItemCommand " ersetzen.
+    "</command>" durch "</obc:BocListItemCommand></PersistedCommand>" ersetzen.
+    MenuCommand: die Start- und End-Tags wie folgt ersetzen.
+    "<command " durch "<persistedcommand><obc:BocMenuItemCommand " ersetzen.
+    "</command>" durch "</obc:BocMenuItemCommand></PersistedCommand>" ersetzen.
+
+1.1.32.0
+========
+
+- BocList
+  * Direktes Setzen eines Wertes über Value, 
+    für die Spaltendefinitionen muss der Liste eine (gerne auch leere) DataSource zugewiesen sein.
+  * Menübereich rendert zusätzliche Menüeinträge (ListMenu) im Anschluss an das OptionsMenu
+  * Menübereich wird ausgeblendet, falls kein Inhalt vorhanden ist.
+    (keine zusätzlichen Spaltendefinitionen, leeres OptionsMenu, leeres ListMenu)
+  * Zusätzliche Spaltendefinitionen, OptionsMenu, ListMenu
+    werden individuell augeblendet, wenn sie keine Einträge besitzen.

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<queries 
+    application="UnitTests" 
+    xmlns="http://www.rubicon-it.com/Data/DomainObjects/Queries/1.0" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:schemaLocation="http://www.rubicon-it.com/Data/DomainObjects/Queries/1.0 ..\queries.xsd">
+
+  <query id="QueryWithoutParameter" type="scalar">
+    <storageProviderID>TestDomain</storageProviderID>
+    <statement>select 42</statement>
+  </query>
+
+  <query id="OrderNoSumByCustomerNameQuery" type="scalar">
+    <storageProviderID>TestDomain</storageProviderID>
+    <statement>
+	    select sum(OrderNo) 
+	      from [Order] inner join Company on [Order].CustomerID = Company.ID
+	      where Company.Name = @customerName;
+	    </statement>
+  </query>
+
+  <query id="OrderNoSumForMultipleCustomers" type="scalar">
+    <storageProviderID>TestDomain</storageProviderID>
+    <statement>
+	    select sum(OrderNo) 
+	      from [Order] inner join Company on [Order].CustomerID = Company.ID
+	      where Company.Name in ({companyNames});
+	    </statement>
+  </query>
+
+  <query id="BulkUpdateQuery" type="scalar">
+    <storageProviderID>TestDomain</storageProviderID>
+    <statement>
+	    update [Order] set DeliveryDate = '2006/01/01' where CustomerID = @customerID;
+	    select @@ROWCOUNT;
+	  </statement>
+  </query>
+
+  <query id="OrderQuery" type="collection">
+    <storageProviderID>TestDomain</storageProviderID>
+    <statement>select [Order].* from [Order] where [Order].CustomerID = @customerID order by OrderNo asc;</statement>
+    <collectionType>Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderCollection, Rubicon.Data.DomainObjects.UnitTests</collectionType>
+  </query>
+
+  <query id="CustomerTypeQuery" type="collection">
+    <storageProviderID>TestDomain</storageProviderID>
+    <statement>select * from Company where CustomerType = @customerType order by Name asc;</statement>
+  </query>
+
+  <query id="QueryWithAllDataTypes" type="collection">
+    <storageProviderID>TestDomain</storageProviderID>
+    <statement>
+      set ANSI_NULLS OFF;
+      select * from TableWithAllDataTypes where 
+        [Boolean] = @boolean and
+        [Byte] = @byte and
+        [Char] = @char and
+        [Date] = @date and
+        [DateTime] = @dateTime and
+        [Decimal] = @decimal and
+        [Double] = @double and
+        [Enum] = @enum and
+        [Guid] = @guid and
+        [Int16] = @int16 and
+        [Int32] = @int32 and
+        [Int64] = @int64 and
+        [Single] = @single and
+        [String] = @string and 
+        [NaBoolean] = @naBoolean and
+        [NaDate] = @naDate and
+        [NaDateTime] = @naDateTime and
+        [NaDouble] = @naDouble and
+        [NaInt32] = @naInt32 and
+        [StringWithNullValue] = @stringWithNullValue and
+        [NaBooleanWithNullValue] = @naBooleanWithNullValue and 
+        [NaDateWithNullValue] = @naDateWithNullValue and
+        [NaDateTimeWithNullValue] = @naDateTimeWithNullValue and
+        [NaDoubleWithNullValue] = @naDoubleWithNullValue and
+        [NaInt32WithNullValue] = @naInt32WithNullValue;
+    </statement>
+  </query>
+
+</queries>

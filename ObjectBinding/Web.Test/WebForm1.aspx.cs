@@ -1,0 +1,113 @@
+using System;
+using System.Collections;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Web;
+using System.Web.SessionState;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Web.UI.HtmlControls;
+
+using Rubicon.Web.UI.Controls;
+using Rubicon.ObjectBinding.Web.Controls;
+using Rubicon.ObjectBinding.Reflection;
+using OBRTest;
+
+namespace OBWTest
+{
+
+public class WebForm1 : System.Web.UI.Page
+{
+  protected Rubicon.ObjectBinding.Web.Controls.BocTextValue FirstNameField;
+  protected Rubicon.Web.UI.Controls.SmartLabel BocPropertyLabel1;
+  protected System.Web.UI.WebControls.Button SaveButton;
+  protected Rubicon.ObjectBinding.Web.Controls.BocTextValue LastNameField;
+  protected Rubicon.Web.UI.Controls.SmartLabel BocPropertyLabel2;
+  protected Rubicon.ObjectBinding.Web.Controls.BocTextValue DateOfBirthField;
+  protected Rubicon.Web.UI.Controls.SmartLabel BocPropertyLabel3;
+  protected Rubicon.ObjectBinding.Web.Controls.BocTextValueValidator BocTextValueValidator1;
+  protected Rubicon.ObjectBinding.Web.Controls.BocTextValue HeightField;
+  protected Rubicon.Web.UI.Controls.SmartLabel BocPropertyLabel4;
+  protected Rubicon.ObjectBinding.Web.Controls.BocTextValueValidator BocTextValueValidator2;
+  protected System.Web.UI.WebControls.Label Label1;
+  protected Rubicon.ObjectBinding.Web.Controls.BocEnumValue GenderField;
+  protected Rubicon.Web.UI.Controls.SmartLabel BocPropertyLabel5;
+  protected Rubicon.ObjectBinding.Web.Controls.BocEnumValue MarriageStatusField;
+  protected Rubicon.Web.UI.Controls.SmartLabel SmartLabel1;
+  protected Rubicon.ObjectBinding.Web.Controls.BocTextValue PartnerFirstNameField;
+  protected System.Web.UI.WebControls.Label Label2;
+  protected Rubicon.ObjectBinding.Reflection.ReflectionBusinessObjectDataSourceControl CurrentObjectDataSource;
+  protected Rubicon.ObjectBinding.Web.Controls.BusinessObjectReferenceDataSourceControl PartnerDataSource;
+  protected Rubicon.Web.UI.Controls.SmartLabel SmartLabel2;
+
+	private void Page_Load(object sender, System.EventArgs e)
+	{
+    ReflectionBusinessObjectStorage.Reset();
+    Guid personID = new Guid(0,0,0,0,0,0,0,0,0,0,1);
+    Person person = Person.GetObject (personID);
+    Person partner;
+    if (person == null)
+    {
+      person = Person.CreateObject (personID);
+      person.FirstName = "Hugo";
+      person.LastName = "Meier";
+      person.DateOfBirth = new DateTime (1959, 4, 15);
+      person.Height = 179;
+      person.Income = 2000;
+
+      partner = person.Partner = Person.CreateObject();
+      partner.FirstName = "Sepp";
+      partner.LastName = "Forcher";
+
+      person.SaveObject();
+      partner.SaveObject();
+    }
+    else
+    {
+      partner = person.Partner;
+    }
+
+		CurrentObjectDataSource.BusinessObject = person;
+
+    this.DataBind();
+    CurrentObjectDataSource.LoadValues (IsPostBack);
+	}
+
+	#region Web Form Designer generated code
+	override protected void OnInit(EventArgs e)
+	{
+		//
+		// CODEGEN: This call is required by the ASP.NET Web Form Designer.
+		//
+		InitializeComponent();
+		base.OnInit(e);
+	}
+	
+	/// <summary>
+	/// Required method for Designer support - do not modify
+	/// the contents of this method with the code editor.
+	/// </summary>
+	private void InitializeComponent()
+	{    
+    this.SaveButton.Click += new System.EventHandler(this.SaveButton_Click);
+    this.Load += new System.EventHandler(this.Page_Load);
+
+  }
+	#endregion
+
+  private void SaveButton_Click (object sender, System.EventArgs e)
+  {
+    if (Page.IsValid)
+    {
+      CurrentObjectDataSource.SaveValues (false);
+      Person person = (Person) CurrentObjectDataSource.BusinessObject;
+      person.SaveObject();
+      if (person.Partner != null)
+        person.Partner.SaveObject();
+    }
+  }
+
+}
+
+}

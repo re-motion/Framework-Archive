@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="utf-8" ?> 
+<project xmlns="nant-schema" name="Rubicon.Data.DomainObjects">
+
+  <target name="package" depends="makepackage" />
+  <target name="release" depends="setversion,makerelease,doc" />
+  <target name="debug" depends="setversion,makedebug,doc" />
+  <target name="clean" depends="makeclean" />
+
+  <property name="text.companyname" value="rubicon informationstechnologie gmbh" />
+  <property name="text.companyurl" value="http://www.rubicon-it.com" />
+  <property name="text.copyright" value="(c) 2005 rubicon informationstechnologie gmbh, www.rubicon-it.com" />
+  <property name="text.productname" value="Rubicon .NET Commons" />
+  <property name="text.productshortname" value="Rubicon.Data.DomainObjects" />
+
+  <property name="rubicon.buildenvironment.global.dir" value="\development\global" />
+  <property name="build.keyfile" value="${rubicon.buildenvironment.global.dir}/rubicon.snk" />
+  <property name="solution.basedir" value="${nant.project.basedir}" />
+  <property name="solution.basebuilddir" value="${solution.basedir}/build/bin" />
+  <property name="external.assemblies" value="${solution.basedir}/../prereq/Assemblies" />
+  <property name="dummy" value="true" />
+  
+  <target name="setversion">
+    <property name="build.version" value="${version}" />
+  </target>
+  
+  <target name="makerelease">
+    <property name="build.debug" value="false" />
+    <property name="build.csc.define" value="TRACE" />
+    <property name="project.config" value="release" />
+    <call target="makeall" />
+  </target>
+  
+  <target name="makedebug">
+    <property name="build.debug" value="true" />
+    <property name="build.csc.define" value="DEBUG;TRACE" />
+    <property name="project.config" value="debug" />
+    <call target="makeall" />
+  </target>
+  
+  <!-- PROJECTS -->
+  
+  <target name="allprojects" depends="Core,ObjectBinding,Web,ObjectBinding.Web,Data.DomainObjects,Data.DomainObjects.UnitTests,Data.DomainObjects.ObjectBinding,Data.DomainObjects.ObjectBinding.Web" />
+  
+  <target name="Core">
+    <property name="project.createdoc" value="true" />
+    <property name="project.name" value="Core" />
+    <property name="project.dir" value="../Core" />
+    <property name="project.output" value="Rubicon.Core" />
+    <property name="project.extension" value="dll" />
+    <call target="buildproject" />
+  </target>
+  
+  <target name="ObjectBinding">
+    <property name="project.createdoc" value="true" />
+    <property name="project.name" value="ObjectBinding" />
+    <property name="project.dir" value="../ObjectBinding/Core" />
+    <property name="project.output" value="Rubicon.ObjectBinding" />
+    <property name="project.extension" value="dll" />
+    <call target="buildproject" />
+  </target>
+  
+  <target name="ObjectBinding.Web">
+    <property name="project.createdoc" value="true" />
+    <property name="project.name" value="ObjectBinding.Web" />
+    <property name="project.dir" value="../ObjectBinding/Web" />
+    <property name="project.output" value="Rubicon.ObjectBinding.Web" />
+    <property name="project.extension" value="dll" />
+    <call target="buildproject" />
+  </target>
+  
+  <target name="Web">
+    <property name="project.createdoc" value="true" />
+    <property name="project.name" value="Web" />
+    <property name="project.dir" value="../Web/Core" />
+    <property name="project.output" value="Rubicon.Web" />
+    <property name="project.extension" value="dll" />
+    <call target="buildproject" />
+  </target>
+  
+  <target name="Data.DomainObjects">
+    <property name="project.createdoc" value="true" />
+    <property name="project.name" value="Rubicon.Data.DomainObjects" />
+    <property name="project.dir" value="DomainObjects" />
+    <property name="project.output" value="Rubicon.Data.DomainObjects" />
+    <property name="project.extension" value="dll" />
+    <call target="buildproject" />
+  </target>
+  
+  <target name="Data.DomainObjects.UnitTests">
+    <property name="project.createdoc" value="false" />
+    <property name="project.name" value="Rubicon.Data.DomainObjects.UnitTests" />
+    <property name="project.dir" value="DomainObjects/UnitTests" />
+    <property name="project.output" value="Rubicon.Data.DomainObjects.UnitTests" />
+    <property name="project.extension" value="dll" />
+    <call target="buildproject" />
+  </target>
+  
+  <target name="Data.DomainObjects.ObjectBinding">
+    <property name="project.createdoc" value="false" />
+    <property name="project.name" value="Rubicon.Data.DomainObjects.ObjectBinding" />
+    <property name="project.dir" value="DomainObjects/ObjectBinding" />
+    <property name="project.output" value="Rubicon.Data.DomainObjects.ObjectBinding" />
+    <property name="project.extension" value="dll" />
+    <call target="buildproject" />
+  </target>
+  
+  <target name="Data.DomainObjects.ObjectBinding.Web">
+    <property name="project.createdoc" value="false" />
+    <property name="project.name" value="Rubicon.Data.DomainObjects.ObjectBinding.Web" />
+    <property name="project.dir" value="DomainObjects/ObjectBinding/Web" />
+    <property name="project.output" value="Rubicon.Data.DomainObjects.ObjectBinding.Web" />
+    <property name="project.extension" value="dll" />
+    <call target="buildproject" />
+  </target>
+  
+  <!-- COMMON TARGETS -->
+  
+  <target name="makeall">
+    <property name="build.directory" value="${solution.basebuilddir}/${project.config}" />
+    <property name="build.directory.temp" value="${build.directory}/temp" />
+    
+    <mkdir dir="${build.directory.temp}" />
+    <copy todir="${build.directory.temp}">
+      <fileset basedir="${external.assemblies}">
+        <includes name="*.dll" />
+        <includes name="*.xml" />
+      </fileset>
+    </copy>
+    <if propertytrue="build.debug">
+      <copy todir="${build.directory.temp}">
+        <fileset basedir="${external.assemblies}">
+          <includes name="*.pdb" />
+        </fileset>
+      </copy>
+    </if>
+    
+    <call target="allprojects" />
+    
+    <mkdir dir="${build.directory}/library" />
+    <mkdir dir="${build.directory}/tests" />
+    <mkdir dir="${build.directory}/tests/Database" />
+    
+    <copy todir="${build.directory}/library">
+      <fileset basedir="${build.directory.temp}">
+        <includes name="Rubicon.*" />
+        <includes name="*.xsd" />
+        <excludes name="*UnitTests*" />
+      </fileset>
+    </copy>
+    
+    <copy todir="${build.directory}/tests">
+      <fileset basedir="${build.directory.temp}">
+        <includes name="Rubicon.*" />
+        <includes name="*.xsd" />
+        <includes name="*.xml" />
+      </fileset>
+    </copy>
+    
+    <copy todir="${build.directory}/tests/Database">
+      <fileset basedir="${solution.basedir}/DomainObjects/UnitTests/Database">
+        <includes name="**/*.sql" />
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="buildproject">
+    <property name="project.builddir" value="${build.directory.temp}" />
+    <property name="project.basedir" value="${solution.basedir}/${project.dir}" />
+    <call target="prepareassemblyinfo" />
+    <property name="project.doc" value="${project.builddir}/${project.output}.xml" />
+    <property name="prereq.assemblies" value="${solution.basedir}/../prereq/Assemblies" />
+    <nant buildfile="${project.basedir}/${project.name}.build" target="build" />
+  </target>
+
+  <target name="prepareassemblyinfo">
+    <copy file="${project.basedir}/AssemblyInfoTemplate.cs" tofile="${project.basedir}/AssemblyInfo.cs" overwrite="true" />
+    <attrib readonly="false" file="${project.basedir}/AssemblyInfo.cs"/>
+    <replace>
+      <filterset>
+        <filter token="keyfile" value="${build.keyfile}" />  
+        <filter token="versionnumber" value="${build.version}" />
+        <filter token="buildinfo" value=".NET Framework: ${nant.settings.currentframework}, build type: ${project.config}" />
+        <filter token="company" value="${text.companyname}" />
+        <filter token="copyright" value="${text.copyright}" />
+        <filter token="productname" value="${text.productname}" />
+      </filterset>
+      <fileset>
+        <includes name="${project.basedir}/AssemblyInfo.cs" />
+      </fileset>
+    </replace>
+    <attrib readonly="true" file="${project.basedir}/AssemblyInfo.cs"/>
+  </target>
+  
+  <target name="makeclean">
+    <delete>
+      <fileset failonempty="false">
+        <includes name="${solution.basebuilddir}/**/*" />
+      </fileset>
+    </delete>
+  </target>
+  
+  <target name="makepackage" depends="release,debug">
+    <property name="zip.releasefile" value="${solution.basebuilddir}/DomainObjects_release_${build.version}.zip" />
+    <property name="zip.debugfile" value="${solution.basebuilddir}/DomainObjects_debug_${build.version}.zip" />
+    
+    <delete file="${zip.releasefile}" failonerror="false" />
+    <delete file="${zip.debugfile}" failonerror="false" />
+    
+    <zip zipfile="${zip.releasefile}">
+      <fileset basedir="${solution.basebuilddir}">
+        <includes name="release/library/**/*" />
+        <includes name="doc/**/*.chm" />
+      </fileset>
+    </zip>
+    <zip zipfile="${zip.debugfile}">
+      <fileset basedir="${solution.basebuilddir}">
+        <includes name="debug/library/**/*" />
+        <includes name="doc/**/*.chm" />
+      </fileset>
+    </zip>
+  </target>
+
+  <target name="doc">
+    <property name="doc.filebase" value="${text.productshortname}" />
+    <property name="doc.tempdir" value="${build.directory.temp}/doc" />
+    <property name="doc.targetdir" value="${solution.basebuilddir}/doc" />
+    <mkdir dir="${doc.tempdir}"/>
+    <mkdir dir="${doc.targetdir}"/>
+    <ndoc>
+      <assemblies basedir="${project.builddir}" failonempty="true">
+        <includes name="Rubicon.Data.DomainObjects.dll" />
+      </assemblies>
+      <documenters>
+        <documenter name="MSDN">
+          <property name="OutputDirectory" value="${doc.tempdir}" />
+          <property name="LinkToSdkDocVersion" value="SDK_v1_1" />
+          <property name="HtmlHelpName" value="${doc.filebase}" />
+          <property name="HtmlHelpCompilerFilename" value="hhc.exe" />
+          <property name="IncludeFavorites" value="False" />
+          <property name="Title" value="${text.productname}" />
+          <property name="SplitTOCs" value="False" />
+          <property name="DefaulTOC" value="" />
+          <property name="ShowVisualBasic" value="True" />
+          <property name="ShowMissingSummaries" value="False" />
+          <property name="ShowMissingRemarks" value="False" />
+          <property name="ShowMissingParams" value="False" />
+          <property name="ShowMissingReturns" value="False" />
+          <property name="ShowMissingValues" value="False" />
+          <property name="DocumentInternals" value="False" />
+          <property name="DocumentProtected" value="True" />
+          <property name="DocumentPrivates" value="False" />
+          <property name="DocumentEmptyNamespaces" value="False" />
+          <property name="IncludeAssemblyVersion" value="False" />
+          <property name="CopyrightText" value="${text.companyname}" />
+          <property name="CopyrightHref" value="${text.companyurl}" />
+        </documenter>
+      </documenters>
+    </ndoc>
+    <copy file="${doc.tempdir}/${doc.filebase}.chm" todir="${doc.targetdir}" />
+  </target>
+  
+</project>

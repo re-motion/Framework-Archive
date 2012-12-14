@@ -1,0 +1,455 @@
+1.1.46.0
+========
+
+- Rubicon.Web.UI.Controls.WebTreeView
+  * Neue Klasse
+  * Bietet einen TreeView (kein ClientSide Script).
+  * Nodes können On-Demand befüllt werden.
+
+1.1.45.0
+========
+
+- Rubicon.Web.UI.Controls.MenuItem
+  * Umbenannt zu WebMenuItem
+
+- Rubicon.Web.UI.Controls.MenuItemClickEventHandler
+  * Umbenannt zu WebMenuItemClickEventHandler
+
+- Rubicon.Web.UI.Controls.MenuItemClickEventArgs
+  * Umbenannt zu WebMenuItemClickEventArgs
+
+1.1.40.0
+========
+
+- ValidationStateViewer
+  * BugFix: ValidationStateViewer konnte nicht mit verschachtelten Controls umgehen.
+  * Neue Property: SkipNamingContainers
+  * Neue Property: ShowLabels
+  
+- FormGridManager
+  * Neue Property: SkipNamingContainers
+
+1.1.36.0
+========
+
+- Rubicon.Web.UI.Controls.DropDownMenu
+  * Neue Klasse
+  * Bietet ein Menu ähnlich einer DropDownBox an.
+  
+1.1.32.0
+========
+
+- BugFix Rubicon.Web.UI.Controls.FormGridManager
+  * Gefixed: 
+    Wenn der FormGridManager eine HtmlTable managed, welche auf einem nicht angewählten Tab liegt,
+    dann gab es beim Wechsel auf einen bisher nicht angezeigten Tab eine ViewStateException.
+
+- BugFix Rubicon.Web.UI.Controls.SmartLabel
+  * Gefixed:
+    Exception wenn ForControl nicht gesetzt wurde. Neues Verhalten: Default Text.
+    
+1.1.30.0
+========
+
+- Rubicon.Web.UI.IFormGridRowProvider
+  * Methoden GetHiddenRows (string) und GetAdditionalRows (string)
+    Der erwartete Parameter ist jetzt der jeweiligen Table, nicht die ID.
+  
+1.1.26.0
+========
+
+- BugFix Form.cs:
+  * Gewünschtes Verhalten: Wenn die action-Url bei einem rubicon:Form auf eine andere Seite zeigt, 
+      soll der Viewstate nicht gerendert werden!!
+  * Jetzt werden die Url-Parameter der action-Url beim Vergleich der aktuellen Seite und der action-Url 
+    gefiltert, somit wird der ViewState bei Postbacks auf die eigene Seite gerendert. 
+    (Bisher ergab der Vergleich immer false, da die Url-Parameter nur auf einer Seite berücksichtigt wurden)
+    
+- Rubicon.Web.UI.HtmlHeadAppender
+  * Neue Klasse
+  * Bietet die Möglichkeit, Elemente in den HTML Head einzuhängen.
+  * Registrieren: HtmlHeadAppender.Current.Register...(key, ...)
+  * Die registierten Elemente werden mit Hilfe des Controls HtmlHeadContents gerendert.
+  * Sämtliche Elemente müssen vor Begin der Render-Phase registriert werden.
+
+- Rubicon.Web.UI.Controls.HtmlHeadContents
+  * Neue Klasse
+  * Rendered die Elemente, welche über den HtmlHeadAppender registriert wurden.
+  * Verwendung: HtmlHeadContents wird als Servercontrol in den HTML Head der ASPX-Seite eingefügt:
+    <{0}:HtmlHeadContents runat="server" id="HtmlHeadContents"></{0}:HtmlHeadContents>
+    
+1.1.24.0
+========
+
+- PageUtility
+  * Neue Methode RegisterClientScriptInclude
+  * Neue Methode RegisterStartupScriptBlock
+  
+- Methode GetResourceUrl der Klasse ResourceUrlResolver: Signatur geändert.
+
+- UI.Controls.DatePickerPage
+  * Neue Klasse
+  * Bietet zusammen mit Res\UI\DatePickerForm.aspx und Res\Html\DatePicker.js einen Kalender
+    als IFrame an.
+  * Aufruf über die Funktion ShowDatePicker in DatePicker.js.
+  
+- UI.Controls.FormGridRowPrototype
+  * Umbenannt zu FormGridRowInfo
+
+- UI.Controls.FormGridRowPrototypeCollection
+  * Umbenannt zu FormGridRowInfoCollection
+ 
+- Utitilies.AccessKeyUtility
+  * FormatAccessKey (...) Methoden nach UI.Controls.SmartLabel verschoben.
+  
+- UI.Controls.FormGridRowProvider
+  * gelöscht
+  * Rubicon.Collections.AutoInitHashtable um die Funktionalität der 
+    Get...(string) Methoden nachzubauen
+ 
+1.1.21.0
+========
+
+- UIUtility:
+  * "internal sealed class UIUtility" in "public class ImageUtility" umbenannt
+  * Neue Methode "GetErrorImageUrl"
+
+- EntryFormGrid.cs:
+  * Neues property "EntryFormGrid" bei Klasse "EntryTitle"
+  * Methode "Render" bei Klasse "EntryField":
+    Ab Version 3.1.7.0 wurde die Table-Column mit dem Label nur gerendert wenn LabelColumnWidth ungleich 0;
+    Ab der aktuellen Version wird die Table-Column mit dem Label nur gerendert 
+      wenn LabelColumnWidth ungleich 0 oder der Text des Labels ungleich Leerstring; 
+    Einschränkung: Wenn in einem EntryFormGrid mit LabelColumnWidth = 0 oder nicht gesetzt EntryFields nicht alle keinen Text 
+      oder alle einen Text haben, dann werden die EntryFields versetzt ausgegeben!!
+  
+- ViewControl.cs:
+  * Neue Methoden "GetWhitespaceImage" und "GetImagePath" bei Klasse "ViewControl"
+
+1.1.18.0
+========
+
+- NavigablePage
+  * ClearGlobalSessionValue -> Funktioniert jetzt analog zu Set- und GetGlobalSessionValue 
+      ohne UniqueKey (PageToken) 
+- Utilities.HtmlUtility
+  * HtmlEncode überladen: HtmlEncode (string,HttpWriter)
+      schreibt encoded string direkt auf den HttpWriter
+- Form
+  * Page_RenderPostBackScript -> Die ControlID für das Eventtarget wird jetzt 
+      mit ':' als Separator für Control-Hierarchien statt '_' gesetzt 
+      (Events in UserControls funktionieren wieder)
+
+1.1.14.0
+========
+- Neues Interface: IResourceUrlResolver
+    Löst IImageUrlResolver und IHelpUrlResolver ab.
+    
+- Klasse ResourceUrlResolver
+    Methoden GetImageUrl und GetHelpUrl durch GetResourceUrl ersetzt.
+    
+3.2.0.0
+=======
+
+- Moved von Rubicon nach Commons.
+    
+- Controls - Form-Grid:
+  * Neue Implementierung des EntryFormGrid-Funktionalität
+    Form-Grids können nun im Designer via Drag'n'Drop erstellt werden.
+  * Siehe Doku: FormGridManager.doc
+  * Besteht aus:
+    FormGridManager:
+      Zuständig für die Formatierung einer oder mehrerer HTML-Tables als Form-Grids.
+      Zuständig für das automatische Hinzufügen fehlender Komponeneten
+      Zuständig für eine Form-Grid-weite Validierung
+      Enthällt dieSub-Klassen
+        FormGrid, FormGridRow, FormGridRowCollection und ReadOnlyHtmlTableRowCollection.
+    IFormGridRowProvider:
+      Kann in einem Parent-Control des FormGridManager implementiert werden.
+      Stellt dem FormGridManager neue Zeilen bzw zu entfernende Zeilen zur Verfügung.
+    FormGridRowProvider:
+      Implementierungshilfe
+      Kapselt die Funktionalität des IFormGridRowProvider Interfaces
+    FormGridRowPrototype, FormGridRowPrototypeCollection:
+      Wrapper-Klasse und zugehörige Liste um zur Laufzeit erstellte Zeilen in das Form-Grid
+      einzufügen.
+    ValidationError:
+      Wrapper-Klasse für einen Validierungsfehler
+   
+- Controls.IImageUrlResolver, Controls.IHelpUrlResolver:
+  * Wird implementiert falls das jeweilige Control einem Child-Control 
+    (ins besondere dem FormGridManager) den Pfad zu Bildern oder Hilfe-Texten zur Verfügung stellen
+    soll.
+
+- Controls.ISmartControl:
+  * Definiert die Bereitstellung sämlticher Informationen die benötigt werden, damit ein Control
+    durch simples Drag'n'Drop in das Form-Grid integriert werden kann.
+  * Definiert die Bereitstellung von: 
+      Validatoren, Label, Hilfe, Input-Required Flag
+  
+- Controls.ValidationStateViewer:
+  * Zubau für den FormGridManager
+  * Liest sämtliche FormGridManager der Page aus und
+      ermöglicht deren Validierung.
+      die gruppierte Anzeige der Validierungsfehler.
+  
+- Globalization.ResourceDispatcher:
+  * Überarbeitet um das unter Rubicon.Globalization implementierte IResourceManager Interface
+    zu unterstützen.
+  * Methoden, die noch direkt den FCL ResourceManager unterstützen, sind als obsolete
+    gekennzeichnet.
+  * Ergänzt um verschiedene public Methoden,
+    um Teilfunktionialität nach außen zur Verfügung zu stellen.
+  * Fehlerhafte Resourcenangaben werden mit Hilfe von log4net geloggt.
+  * Abwärtskompatibilität ist gewährt (vorbehaltlich Bugs)
+
+- Utilities.AccessKeyUtility:
+  * Hinzugefügt
+  * AccesskeyUtility.FormatLabelText (...)
+    Methode zum Parsen von Strings mit AccessKey-Syntax (&), highlighten des Keys und Rückgabe des 
+    Chars der als Key verwendet wird.
+  * AccesskeyUtility.RemoveAccessKey (...)
+    Methode um die AccessKey-Syntax aus einem String zu entfernen.
+    
+- Utilities.UrlResolverUtility
+  * Sucht die Control-Hierarchie nach implementierungen von Controls.IImageUrlResolver, bzw
+    Controls.IHelpUrlResolver ab und kapselt die Abfrage der jeweiligen Interface-Methode.
+    
+- log4net
+  * Die Binary für log4net 1.2beta wurde in the References aufgenommen.
+
+3.1.8.0
+=======
+
+- PageUtility.RegisterWindowOpenJavascript (): Javascript-Methode "Refresh ()" ist nur unter speziellen Umständen
+  vorhanden => Wenn keine "Refresh ()" Methode vorhanden ist, dann wird das erste Form auf der Seite submitted =>
+  Achtung: In diesem Fall sollte die Page.Validate () Methode überschrieben werden, da bei einem Submit ohne
+  Quellcontrol die Page im Normalfall automatisch validiert!
+- Neue Methode StandardUserControl.ClearSessionValue () zum Entfernen von Session-Einträgen => 
+  Nun auch für Controls verfügbar. 
+    
+    
+3.1.7.1
+=======
+
+- Bugfix in StandardButton: OnClick Event MUSS im OnPreRender überschrieben und nicht 
+  aneinandergehängt werden, da ansonsten gesamtes OnClick immer wieder wiederholt wird 
+  => Das daraus resultierende Verhalten im IE führt dazu, dass die Postbacks nicht
+  mehr korrekt funktionieren => Rubicon.Web.UI Build 3.1.7.0 NICHT verwenden.
+  
+
+3.1.7.0
+=======
+
+- EntryFieldBreak und EntryTitle können jetzt auch in einem ViewControl platziert werden =>
+  Property EntryFormGrid in beiden entfernt. Dafür private property ImagePath eingeführt.
+- Methoden für das Handling von Images von EntryFormGrid in UIUtility ausgelagert.
+- Neue Methode UrlUtility.Combine (...): Fügt 2 Webpfade zusammen. 
+- Neues Servercontrol "CurrencyTextBox":
+  * Rendert ein Währungssymbol und eine Textbox für den Betrag
+  * Währungssymbol definierbar; default "€"
+  * Position des Währungssymbols definierbar ("BeforeTextbox", "AfterTextbox"); default "BeforeTextbox"
+  * Validiert wird der Datentyp des eingegebenen Betrags, nicht aber ob leer oder nicht 
+    -> im Entryfield mit RequiredFieldValidator prüfen
+- Klasse "EntryField" Methode "Render": Wenn LabelColumnWidth = 0, dann werden links neben den 
+    requiredfield- und invalidstate-images keine Whitespaceimages angezeigt
+- Kernfunktionalität von Standardpage.CloseBrowserWindow (...) in neue Methode PageUtility.CloseBrowserWindow (...) 
+  verlagert.
+- Bugfix in StandardButton: Page.GetPostBackClientEvent(...) fügt nicht von selbst abschließenden ";" 
+  für Javascript ein => Wird durch StandardButton erledigt.
+
+   
+3.1.6.1
+=======
+
+- Neue static Methode EntryFormGrid.GetParentEntryFormGrid (...): Gibt von einem control dessen
+  EntryFormGrid auch über mehrere Hierarchieebenen zurück.
+
+- EntryFieldBreak, EntryTitle, EntryField: Property EntryFormGrid retoruniert jetzt auch EntryFormGrid
+  über mehrere Hierarchieebenen.
+ 
+
+3.1.6.0
+=======
+
+- EntryFormGrid: Folgende statics zu instance members gemacht: 
+  * ImagePath
+  * GetImagePath (...)
+  * GetWhitespaceImage (...) + Overload
+  
+- EntryFieldBreak: 
+  * Neue property EntryFormGrid
+  * Zugriff auf ehemalige statics in EntryFormGrid passiert jetzt über instance members
+  * EntryFieldBreak darf nur mehr in EntryFormGrid platziert werden
+  
+- EntryTitle: 
+  * Neue property EntryFormGrid
+  * Zugriff auf ehemalige statics in EntryFormGrid passiert jetzt über instance members
+  * EntryTitle darf nur mehr in EntryFormGrid platziert werden
+  
+- EntryField: 
+  * Neue property EntryFormGrid
+  * Protected property ParentGrid entfernt
+  * Implementierung von Render (...) geändert => Statt cast und Abfrage auf null beim Zugriff auf EntryFormGrid
+    neue property EntryFormGrid verwendet => EntryField darf nur mehr in einem EntryFormGrid platziert werden.
+  * Zugriff auf ehemalige statics in EntryFormGrid passiert jetzt über instance members
+
+  
+3.1.5.0
+=======
+
+- EntryFormGrid: Neue static property "ImagePath". Wird default auf ApplicationPath + "/images" gesetzt.
+  Kann jedoch von einer Applikation überschrieben werden, wenn sich die EntryFormGrid images wo anders befinden.
+
+
+3.1.4.0
+=======
+
+- EntryFormGrid: GetImagePath () liefert jetzt immer das Verzeichnis "Images" im Root der Application
+
+- Form: Neue Methode "GetPageUrlWithoutPath": Liefert Url auf aktuelle Seite ohne Pfad aber mit QueryString
+    (wird hauptsächlich verwendet für das Setzen der Action-Url)
+
+- TabControl.GetCompleteUrl (...): Statt private => protected virtual
+
+
+3.1.3.0
+=======
+
+- Klasse Form: HTML 4.0 erlaubt kein name-Attribut beim Form-Tag -> name-Attribut wird nicht gerendert.
+
+- Neue Methoden in StandardControl: 
+  * CloseBrowserWindow: Overload Methode die ein Parent Refresh unterstützt
+- Neue Methoden in PageUtility: 
+  * RegisterClientScriptBlock: Umhüllt die JavaScript Methode mit den script Tag und
+    registriert diese als eGovernment Gütesiegel konformes Skript.
+
+3.1.2.0
+=======
+
+- StandardControl: 
+  * Von StandardControl auf StandardUserControl umbenannt
+  * Stellt Protected property "StandardPage" zur Verfügung.
+  * Kann Session Variablen unter dem pageToken der Page speichern.
+  * RegisterEventHandlers () von MultiLingualControl nach StandardUserControl verschoben.
+- Neues Control StandardButton
+  * Stellt Referenz auf StandardPage zur Verfügung.
+  * Wird nach dem Drücken client-seitig disabled, um visuelles Feedback zu geben und zu 
+    verhindern, dass Button mehrmals gedrückt wird.
+
+
+3.1.1.0
+=======
+
+- Neue Methoden in PageUtility: 
+  * RegisterWindowOpenJavascript: Registriert eine Javascript Methode zum Öffnen von URLs 
+    in neuem Fenster optimiert für Anzeigen >= 1024x768.
+  * GetWindowOpenJavascript: Gibt den Javascript Methodenaufruf zum Öffnen von URLs in 
+    neuem Fenster zurück.
+- Neue Methoden in StandardPage:
+  * GetWindowOpenJavascriptWithRegistration: Registriert Javascript Methode zum Öffnen
+    von URLs in neuem Fenster und liefert den Javascript Methodenaufruf zurück.        
+  * CloseBrowserWindow: Räumt Session Variablen auf und schließt Browser Fenster. In diesem 
+    Fall wird der ViewState nicht mehr in die Session geschrieben, damit kein Memory Leak
+    entsteht.    
+- Neues Control "StandardControl" eingeführt:
+  Unterstützt aktuell den Zugriff auf Session Variablen der NavigablePage (pageToken-Handling)
+- Form.cs - Methode "Page_RenderPostBackScript": Änderung der Ermittlung des Forms eines Elements,
+    da z.B. Anchor-Tags kein Form-Property haben.
+
+
+3.1.0.0
+=======
+
+- Rubicon.Data.TableModules unterstützt ab Version 3.1.0.0 auch Guids als ID-Spalten.
+  * ExtendedDropDownList unterstützt nun ebenfalls Guids als eindeutigen Identifier =>
+    Folgende Änderungen:
+      SelectedValue: Datentyp ist statt "int" jetzt "string" (wie Basisklasse DropDownList)
+      SelectedInt32Value: Für Listen mit Datentyp "int" als eindeutigen Identifier
+      SelectedGuidValue: Für Listen mit Datentyp "Guid" als eindeutigen Identifier
+      Add (...): Nimmt für Parameter "value" jetzt statt "int" ein "object"
+      GetListItemByValue (...): Nimmt für Parameter "value" jetzt statt "int" ein "object"
+  * In DataDropDownList wurde folgendes geändert:
+      Property EmptyValue entfernt
+      SelectedValue, SelectedInt32Value, SelectedGuidValue wie ExtendedDropDownList nur 
+      zusätzliches Handling für Leerzeile. Bei Leerzeilen werden folgende Werte retourniert:
+        SelectedValue: string.Empty
+        SelectedInt32Value: -1
+        SelectedGuidValue: Guid.Empty 
+      Interne Implementierungen geändert.
+  * Durch diese Änderungen müssen alle Referenzen auf "DataDropDownList.SelectedValue" 
+    berichtigt werden. Weiters müssen alle CompareValidators auf RequiredFieldValidators 
+    umgestellt werden, da SelectedValue bei leerem Eintrag nicht mehr "-1", sondern string.Empty
+    zurückliefert!
+- Neue Methoden in "StandardPage":
+  * GetIconImage (...): Liefert ein Icon Image (zB Info- oder Fehler-Image) zurück    
+  * GetErrorImage (...): Error-Image
+  * GetRequiredFieldImage (...): "*" für Pflichtfeld
+  => Verwendet intern neue Klasse "UIUtility" => Wird in EntryFormGrid verwendet.
+        
+        
+3.0.5.1
+=======
+
+- Bei Klassen Form, NavigablePage, Standardpage u. PageUtility: Bei allen Script-tags type="text/javascript" angeben ->
+    HTML 4.0 Konformität für eGovernment Gütesiegel
+    
+
+3.0.5.0
+=======
+
+- ResourceDispatcher.Dispatch (...) - Änderung der Implementierung:
+    Alt: Bei Setzen von Eigenschaften von HtmlControls wurde immer die Attributes-Collection verwendet.
+    Neu: Auch bei HtmlControls wird vorher geprüft ob es ein Property gibt, ansonsten wird die 
+         Attributes-Collection verwendet
+  Grund: Bei serverseitigen HTML-Labels muss das Property "InnerText" gesetzt werden und nicht 
+         über die Attributes-Collection
+
+3.0.4.0
+=======
+
+- EntryFormGrid: Images müssen lt. HTML 4.0 einen Alt-Text definieren -> Whitespace-Images um leeren
+    alt-text erweitert (Für eGovernment Gütesiegel)
+- EntryField: For-Attribute der Labels werden nur gerendert, wenn diese auch beim EntryField 
+    spezifiziert sind -> keine Defaultwerte
+- StandardPage schreibt jetzt immer ResponseHeader, die Caching (im Browser, Proxyserver) verhindern.
+- Bugfix in PageUtility.CallPage (...): Abfrage von ShowNavigationBar.Show und ShowNavigationBar.Hide 
+  waren vertauscht => Bei Hide wurde ShowNavigationBar angezeigt und umgekehrt. 
+  Da sich bestehende Projekte auf dieses Fehlverhalten verlassen, wurde der Enum von 
+  ShowNavigationBar auf NavigationBar umbenannt. Deshalb sind bei der Einbindung einer neuen Version
+  von Rubicon.Web.UI alle Rereferenzen von ShowNavigationBar zu korrigieren (Compile Errors).
+- TabControl: Neue Methode GetCompleteUrl (...). Unterschied zu GetCurrentUrl (...) ist, dass der
+  Tab der Ziel URL ausgewählt wird und nicht erhalten bleibt wie bei GetCurrentUrl.
+
+
+3.0.3.0
+=======
+
+- Neues Control Form: Ist von ASP.NET Htmlform abgeleitet und bietet folgende Zusatzfeatures:
+  * Action Attribut von server-seitiger Form setzen. Damit sind Posts auf andere Seiten möglich.
+  * Es können mehrere server-seitige Forms auf einer ASP.NET Page platziert werden.
+    Startup-Scripts, registrierte Script-Blöcke, registrierte Javascript-Arrays, 
+    Viewstate, Postback-Function, etc. werden richtig gehandelt.
+
+
+3.0.2.0
+=======
+
+- TableControl: AddRow (...), AddRowWithStyle (...), AddHorizontalRow (...) liefern jetzt die erzeugte Row zurück.
+
+
+3.0.1.0
+=======
+
+- BugFix TabControl.cs:
+  * CheckActiveMenu + GetCurrentUrl werten activeMenu nur aus wenn min. 1 TabMenu in Tab.Controls
+    vorhanden.
+  * GetCurrentUrl liefert HRef von Tag wenn TabMenu nicht vorhanden
+- Neue Klassen NavigablePage und StandardPage.
+- CommandHandler unterstützt jetzt auch " und ' bei Text in Benutzerrückfragen (Confirmation Methoden).
+
+
+3.0.0.0
+=======
+
+- Erste Version

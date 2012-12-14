@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="utf-8" ?> 
+<BocEnumValue>
+  <Class>
+    <remarks>
+      <list type="table">
+        <listheader>
+          <term>State</term>
+          <description>Behaviour</description>
+        </listheader>
+        <item>
+          <term>
+            Read-Only / <see cref="Value"/> is not <see langword="null"/>
+          </term>
+          <description>
+            Queries the <see cref="IBusinessObjectEnumerationProperty"/> for the
+            <see cref="IEnumerationValueInfo.DisplayName"/>, which is then displayed.
+          </description>
+        </item>
+        <item>
+          <term>
+            Read-Only / <see cref="Value"/> is <see langword="null"/>
+          </term>
+          <description>
+            Displays no text.
+          </description>
+        </item>
+        <item>
+          <term>
+            Edit Mode / <see cref="Value"/> is not <see langword="null"/>
+          </term>
+          <description>
+            Text is automatically provided by the <see cref="ListControl"/>.
+            Queries the <see cref="IBusinessObjectEnumerationProperty"/> for the
+            <see cref="IEnumerationValueInfo.Identifier"/>, which is then used 
+            to select the item.
+          </description>
+        </item>
+        <item>
+          <term>
+            Edit Mode / <see cref="Value"/> is <see langword="null"/>
+          </term>
+          <description>
+            <para>
+              Text is automatically provided by the <see cref="ListControl"/>.
+              The undefined item is selected.
+            </para><para>
+              If the control is required, the undefined item is removed, once a valid item is
+              selected.
+            </para>
+          </description>
+        </item>
+        <item>
+          <term>
+            Edit Mode / <see cref="Value"/> is set to an item not in the list.
+          </term>
+          <description>
+            <para>
+              The new item is added to the list and displayed in the <see cref="ListControl"/>. 
+            </para><para>
+              If <see cref="Value"/> is null but the control is required, the undefined item is
+              added to the <see cref="ListControl"/> unitl the selection is again changed to a
+              valid item.
+            </para><para>
+              If <see cref="Value"/> is a disabled enumeration value, it is added to the 
+              <see cref="ListControl"/> unitl the selection is again changed to a valid item.
+              When this happens, the disabled item is removed from the 
+              <see cref="ListControl"/>.
+            </para>
+          </description>
+        </item>
+      </list>
+      <para>
+        If <see cref="IBusinessObjectBoundControl.DataSource"/> and 
+        <see cref="IBusinessObjectBoundControl.PropertyIdentifier"/> are not set, the 
+        control is unbound. In that case, <see cref="Property"/> must be set programmatically and
+        <see cref="Value"/> must be set to display the current item and queried to save it back 
+        into the <see cref="IBusinessObject"/>.
+      </para><para>
+        Initalizing or forcing the control's selected value to a disabled enumeration value 
+        causes no validation error. This means that an existing property can retain it's value 
+        as long as it is not deseselected, upon which the disabled value is removed from the list 
+        of valid choices. This behaviour mimics the Fabasoft enum behaviour.
+      </para>
+    </remarks>
+  </Class>
+</BocEnumValue>
