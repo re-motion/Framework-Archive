@@ -9,7 +9,7 @@ namespace TestApplication
   public abstract class AsyncFunction : WxeFunction
   {
     private AsyncPageStep _pageStep;
-    private AsyncExecutionIterator _executionIterator;
+    private readonly AsyncExecutionIterator _executionIterator;
 
     public AsyncFunction ()
     {
@@ -17,6 +17,11 @@ namespace TestApplication
     }
 
     protected abstract Task BeginExecute ();
+
+    public AsyncExecutionIterator ExecutionIterator
+    {
+      get { return _executionIterator; }
+    }
 
     public override sealed void Execute (WxeContext context)
     {

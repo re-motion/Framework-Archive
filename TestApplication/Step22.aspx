@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Step2.aspx.cs" Inherits="TestApplication.Step2" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Step22.aspx.cs" Inherits="TestApplication.Step22" %>
 
 <!DOCTYPE html>
 
@@ -10,7 +10,8 @@
     <form id="form1" runat="server">
     <div>
         
-        step 2<br/>
+        step 2-2 <br />
+
         <asp:Label runat="server" ID="nameLabel"></asp:Label>
 
         <asp:Button runat="server" ID="submitButton" Text="update" />

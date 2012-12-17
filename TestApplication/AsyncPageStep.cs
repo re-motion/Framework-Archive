@@ -42,7 +42,7 @@ namespace TestApplication
         //executeNextStep exception thrown
 
         //continue with original continuation
-        _executionIterator.ResetReentryQueue();
+        _executionIterator.ResetReentryAction();
       }
       finally
       {

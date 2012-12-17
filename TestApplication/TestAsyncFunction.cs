@@ -10,20 +10,26 @@ namespace TestApplication
 
     protected override async Task BeginExecute()
     {
-      Debug.WriteLine(">>> function starting!!");
-
       await PageStep("Step2.aspx");
 
-      //await Step21();
+      await Step21().ConfigureAwait(ExecutionIterator);
+
+      var result = await Step22().ConfigureAwait (ExecutionIterator);
+
+      Console.WriteLine ("result: " + result);
 
       await PageStep("Step3.aspx");
-
-      Debug.WriteLine(">>> function completed!!");
     }
 
-    //public async Task Step21()
-    //{
-    //  await PageStep("Step3.aspx");
-    //}
+    public async Task Step21()
+    {
+      await PageStep("Step21.aspx");
+    }
+
+    public async Task<int> Step22()
+    {
+      await PageStep("Step22.aspx");
+      return 123;
+    }
   }
 }
