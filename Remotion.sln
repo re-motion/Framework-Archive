@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestApplication", "TestApplication\TestApplication.csproj", "{A389701E-D166-4155-AD1B-7E23CBADBD55}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TplDataFlow", "CustomSynchronizationContext\TplDataFlow.csproj", "{AF4B52E1-8EA9-4D94-B475-5E96D10F0444}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,6 +27,10 @@ Global
 		{A389701E-D166-4155-AD1B-7E23CBADBD55}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A389701E-D166-4155-AD1B-7E23CBADBD55}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A389701E-D166-4155-AD1B-7E23CBADBD55}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AF4B52E1-8EA9-4D94-B475-5E96D10F0444}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF4B52E1-8EA9-4D94-B475-5E96D10F0444}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF4B52E1-8EA9-4D94-B475-5E96D10F0444}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF4B52E1-8EA9-4D94-B475-5E96D10F0444}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -52,6 +52,8 @@ namespace TestApplication
 
     private void ExecuteInternal(WxeContext context)
     {
+      var httpContext = HttpContext.Current;
+
       if (_function != null)
       {
         _function.Execute(context);

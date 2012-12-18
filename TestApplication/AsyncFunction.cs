@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using Rubicon.Web.ExecutionEngine;
@@ -13,7 +14,7 @@ namespace TestApplication
 
     public AsyncFunction ()
     {
-      _executionIterator = new AsyncExecutionIterator(BeginExecute);
+      _executionIterator = new AsyncExecutionIterator (BeginExecute);
     }
 
     protected abstract Task BeginExecute ();
@@ -33,13 +34,30 @@ namespace TestApplication
 
       var isPostBack = (0 == string.Compare (HttpContext.Current.Request.HttpMethod, "POST", false, CultureInfo.InvariantCulture));
 
-      foreach (var continuation in _executionIterator)
+      var synchronizationContext = SynchronizationContext.Current;
+      try
       {
-        context.IsPostBack = isPostBack;
+        SynchronizationContext.SetSynchronizationContext (null);
+        var customTaskScheduler = new CustomTaskScheduler (ExecutionIterator);
 
-        continuation();
+        var task = new Task (
+            () =>
+            {
+              foreach (var continuation in _executionIterator)
+              {
+                context.IsPostBack = isPostBack;
 
-        isPostBack = false;
+                WxeContext.SetCurrent (context);
+                continuation();
+
+                isPostBack = false;
+              }
+            });
+        task.RunSynchronously (customTaskScheduler);
+      }
+      finally
+      {
+        SynchronizationContext.SetSynchronizationContext (synchronizationContext);
       }
 
       if (ParentStep != null)

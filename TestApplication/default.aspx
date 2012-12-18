@@ -11,7 +11,10 @@
     <div>
     
         <a href="WxeHandler.ashx?WxeFunctionType=TestApplication.TestFunction,TestApplication">execute function</a>
+        <br/>
         <a href="WxeHandler.ashx?WxeFunctionType=TestApplication.TestAsyncFunction,TestApplication">execute async function</a>
+        <br/>
+        <a href="WxeHandler.ashx?WxeFunctionType=TestApplication.TestAsyncFunctionWithoutExtensionMethods,TestApplication">execute async function without extension methods</a>
     </div>
     </form>
 </body>

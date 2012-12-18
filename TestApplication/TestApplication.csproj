@@ -60,6 +60,8 @@
   <ItemGroup>
     <Compile Include="AsyncExecutionIterator.cs" />
     <Compile Include="AsyncFunction.cs" />
+    <Compile Include="CustomTaskScheduler.cs" />
+    <Compile Include="TestAsyncFunctionWithoutExtensionMethods.cs" />
     <Compile Include="Step221.aspx.cs">
       <DependentUpon>Step221.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -123,7 +125,6 @@
     <Compile Include="TestAsyncFunction.cs" />
     <Compile Include="TestFunction.cs" />
     <Compile Include="TestSubFunction.cs" />
-    <Compile Include="WxeSynchronizationContext.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Web.Debug.config">
