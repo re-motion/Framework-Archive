@@ -8,15 +8,17 @@ namespace TestApplication
     public class Awaitable
     {
       private readonly AsyncExecutionIterator _iterator;
+      private readonly Task _task;
 
-      public Awaitable (AsyncExecutionIterator iterator)
+      public Awaitable (AsyncExecutionIterator iterator, Task task)
       {
         _iterator = iterator;
+        _task = task;
       }
 
       public AsyncExecutionIterator.Awaiter GetAwaiter()
       {
-        return _iterator.CreateAwaiter(null);
+        return _iterator.CreateAwaiter(null, _task);
       }
     }
 
@@ -39,7 +41,7 @@ namespace TestApplication
 
     public static Awaitable ConfigureAwait (this Task task, AsyncExecutionIterator iterator)
     {
-      return new Awaitable (iterator);
+      return new Awaitable (iterator, task);
     }
 
     public static Awaitable<T> ConfigureAwait<T>(this Task<T> task, AsyncExecutionIterator iterator)

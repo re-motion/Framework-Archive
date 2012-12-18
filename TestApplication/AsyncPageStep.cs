@@ -25,7 +25,7 @@ namespace TestApplication
 
     public AsyncExecutionIterator.Awaiter GetAwaiter()
     {
-      return _executionIterator.CreateAwaiter(Execute);
+      return _executionIterator.CreateAwaiter(Execute, null);
     }
 
     public override void Execute (WxeContext context)
