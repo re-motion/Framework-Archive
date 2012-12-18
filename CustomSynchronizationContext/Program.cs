@@ -23,7 +23,7 @@ namespace CustomSynchronizationContext
 
     public static void Main ()
     {
-      var singleThradedTaskScheduler = new SingleThradedTaskScheduler();
+      var singleThradedTaskScheduler = new SingleThreadedTaskScheduler();
 
       var broadcastBlock = new BroadcastBlock<string> (
           s => s,
@@ -42,7 +42,7 @@ namespace CustomSynchronizationContext
     }
   }
 
-  public class SingleThradedTaskScheduler : TaskScheduler
+  public class SingleThreadedTaskScheduler : TaskScheduler
   {
     protected override void QueueTask (Task task)
     {
