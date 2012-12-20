@@ -61,7 +61,7 @@ namespace Remotion.Web.Compilation
 
     public override CodeExpression GetCodeExpression (BoundPropertyEntry entry, object parsedData, ExpressionBuilderContext context)
     {
-      Tuple<string, Type> entryTuple = (Tuple<string, Type>) parsedData;
+      Collections.Tuple<string, Type> entryTuple = (Collections.Tuple<string, Type>) parsedData;
       CodeMethodInvokeExpression expression = new CodeMethodInvokeExpression ();
       expression.Method.TargetObject = new CodeTypeReferenceExpression (base.GetType ());
       expression.Method.MethodName = "GetResourceString";
@@ -73,7 +73,7 @@ namespace Remotion.Web.Compilation
  
     public override object ParseExpression (string expression, Type propertyType, ExpressionBuilderContext context)
     {
-      return new Tuple<string, Type> (expression, propertyType);
+      return new Collections.Tuple<string, Type> (expression, propertyType);
     }
   }
 }

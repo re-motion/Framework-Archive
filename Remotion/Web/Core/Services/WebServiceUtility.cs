@@ -21,6 +21,7 @@ using System.Web.Script.Services;
 using System.Web.Services;
 using Remotion.Collections;
 using Remotion.Utilities;
+using Tuple = Remotion.Collections.Tuple;
 
 namespace Remotion.Web.Services
 {
@@ -29,11 +30,11 @@ namespace Remotion.Web.Services
   /// </summary>
   public static class WebServiceUtility
   {
-    private static readonly ICache<Tuple<MemberInfo, Type>, Attribute> s_attributeCache =
-        CacheFactory.CreateWithLocking<Tuple<MemberInfo, Type>, Attribute>();
+    private static readonly ICache<Collections.Tuple<MemberInfo, Type>, Attribute> s_attributeCache =
+        CacheFactory.CreateWithLocking<Collections.Tuple<MemberInfo, Type>, Attribute>();
 
-    private static readonly ICache<Tuple<Type, string>, MethodInfo> s_methodInfoCache =
-        CacheFactory.CreateWithLocking<Tuple<Type, string>, MethodInfo>();
+    private static readonly ICache<Collections.Tuple<Type, string>, MethodInfo> s_methodInfoCache =
+        CacheFactory.CreateWithLocking<Collections.Tuple<Type, string>, MethodInfo>();
 
     /// <summary>
     /// Checks that <paramref name="type"/> and <paramref name="method"/> declare a valid web service.

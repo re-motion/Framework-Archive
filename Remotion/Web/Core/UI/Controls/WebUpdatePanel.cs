@@ -60,7 +60,7 @@ namespace Remotion.Web.UI.Controls
 
     [Browsable (false)]
     [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    public AttributeCollection Attributes
+    public new AttributeCollection Attributes
     {
       get
       {

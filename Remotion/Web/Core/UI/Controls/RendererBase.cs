@@ -21,6 +21,7 @@ using Remotion.Collections;
 using Remotion.Globalization;
 using Remotion.Utilities;
 using Remotion.Web.Utilities;
+using Tuple = Remotion.Collections.Tuple;
 
 namespace Remotion.Web.UI.Controls
 {
@@ -31,8 +32,8 @@ namespace Remotion.Web.UI.Controls
   public abstract class RendererBase<TControl>
       where TControl: IStyledControl
   {
-    private readonly ICache<Tuple<Type, IResourceManager>, IResourceManager> _resourceManagerCache = 
-        CacheFactory.Create<Tuple<Type, IResourceManager>, IResourceManager>();
+    private readonly ICache<Collections.Tuple<Type, IResourceManager>, IResourceManager> _resourceManagerCache = 
+        CacheFactory.Create<Collections.Tuple<Type, IResourceManager>, IResourceManager>();
 
     private readonly IResourceUrlFactory _resourceUrlFactory;
 

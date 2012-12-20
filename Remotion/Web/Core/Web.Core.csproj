@@ -30,7 +30,7 @@
     <OldToolsVersion>3.5</OldToolsVersion>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\..\remotion.snk</AssemblyOriginatorKeyFile>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -46,6 +46,7 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <OutputPath>bin\debug\</OutputPath>
@@ -70,6 +71,7 @@
     <DebugType>full</DebugType>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <OutputPath>bin\Release\</OutputPath>
@@ -94,6 +96,7 @@
     <DebugType>none</DebugType>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -141,7 +144,11 @@
     <Compile Include="Context\HttpContextStorageProvider.cs" />
     <Compile Include="Design\DesignTimeThemedResourceUrl.cs" />
     <Compile Include="Design\DesignTimeResourceUrl.cs" />
+    <Compile Include="ExecutionEngine\AsyncExecutionIterator.cs" />
+    <Compile Include="ExecutionEngine\AsyncFunction.cs" />
+    <Compile Include="ExecutionEngine\AsyncPageStep.cs" />
     <Compile Include="ExecutionEngine\IWxeCallOptions.cs" />
+    <Compile Include="ExecutionEngine\TaskExtensions.cs" />
     <Compile Include="ExecutionEngine\WxeCallArgumentsWithoutSender.cs" />
     <Compile Include="ExecutionEngine\WxeCallOptionsBase.cs" />
     <Compile Include="Infrastructure\IBuildManager.cs" />

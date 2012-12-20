@@ -29,7 +29,7 @@ namespace Remotion.Web.ExecutionEngine
   public class WxeFunctionStateManager
   {
     [Serializable]
-    public class WxeFunctionStateMetaData : Tuple<string, int, DateTime>
+    public class WxeFunctionStateMetaData : Collections.Tuple<string, int, DateTime>
     {
       public WxeFunctionStateMetaData (string functionToken, int lifetime, DateTime lastAccess)
           : base (functionToken, lifetime, lastAccess)

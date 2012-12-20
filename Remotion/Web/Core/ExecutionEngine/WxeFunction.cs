@@ -260,6 +260,7 @@ namespace Remotion.Web.ExecutionEngine
     protected internal TransactionStrategyBase TransactionStrategy
     {
       get { return _transactionStrategy ?? NullTransactionStrategy.Null; }
+      set { _transactionStrategy = value; }
     }
 
     protected ITransactionMode TransactionMode
@@ -280,6 +281,7 @@ namespace Remotion.Web.ExecutionEngine
     protected IWxeFunctionExecutionListener ExecutionListener
     {
       get { return _executionListener; }
+      set { _executionListener = value; }
     }
 
     protected void SetExecutionListener (IWxeFunctionExecutionListener executionListener)

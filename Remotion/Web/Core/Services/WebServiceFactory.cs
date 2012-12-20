@@ -20,6 +20,7 @@ using Remotion.Collections;
 using Remotion.Reflection;
 using Remotion.Utilities;
 using Remotion.Web.Infrastructure;
+using Tuple = Remotion.Collections.Tuple;
 
 namespace Remotion.Web.Services
 {
@@ -28,8 +29,8 @@ namespace Remotion.Web.Services
   /// </summary>
   public class WebServiceFactory : IWebServiceFactory
   {
-    private static readonly ICache<Type, Tuple<string, string[]>[]> s_serviceMethodCache =
-        CacheFactory.CreateWithLocking<Type, Tuple<string, string[]>[]>();
+    private static readonly ICache<Type, Collections.Tuple<string, string[]>[]> s_serviceMethodCache =
+        CacheFactory.CreateWithLocking<Type, Collections.Tuple<string, string[]>[]>();
 
     private readonly IBuildManager _buildManager;
 
@@ -84,12 +85,12 @@ namespace Remotion.Web.Services
       return compiledType;
     }
 
-    private Tuple<string, string[]>[] GetServiceMethodsFromCache<T> ()
+    private Collections.Tuple<string, string[]>[] GetServiceMethodsFromCache<T> ()
     {
       return s_serviceMethodCache.GetOrCreateValue (typeof (T), GetServiceMethods);
     }
 
-    private Tuple<string, string[]>[] GetServiceMethods (Type type)
+    private Collections.Tuple<string, string[]>[] GetServiceMethods (Type type)
     {
       return type.GetMethods().Select (
           mi => Tuple.Create (

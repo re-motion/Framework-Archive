@@ -79,11 +79,11 @@ namespace Remotion.Web.UI
     private readonly Hashtable _trackedControls = new Hashtable();
     private readonly StringCollection _trackedControlsByID = new StringCollection();
     private readonly Hashtable _navigationControls = new Hashtable();
-    private readonly List<Tuple<Control, string>> _synchronousPostBackCommands = new List<Tuple<Control, string>>();
+    private readonly List<Collections.Tuple<Control, string>> _synchronousPostBackCommands = new List<Collections.Tuple<Control, string>>();
 
     private ResourceManagerSet _cachedResourceManager;
 
-    private Tuple<Control, FieldInfo> _htmlFormField;
+    private Collections.Tuple<Control, FieldInfo> _htmlFormField;
     private bool _htmlFormFieldInitialized;
 
     public SmartPageInfo (ISmartPage page)
@@ -169,7 +169,7 @@ namespace Remotion.Web.UI
             "RegisterCommandForSynchronousPostBack must not be called after the PreRenderComplete method of the System.Web.UI.Page has been invoked.");
       }
 
-      Tuple<Control, string> command = new Tuple<Control, string> (control, StringUtility.NullToEmpty (eventArguments));
+      var command = new Collections.Tuple<Control, string> (control, StringUtility.NullToEmpty (eventArguments));
       if (!_synchronousPostBackCommands.Contains (command))
         _synchronousPostBackCommands.Add (command);
     }
@@ -242,7 +242,7 @@ namespace Remotion.Web.UI
         }
         if (fields.Length == 1) // Can only be 0 without an exception during design mode
         {
-          _htmlFormField = new Tuple<Control, FieldInfo> (page, (FieldInfo) fields[0]);
+          _htmlFormField = new Collections.Tuple<Control, FieldInfo> (page, (FieldInfo) fields[0]);
           _htmlFormFieldInitialized = true;
         }
       }
@@ -522,7 +522,7 @@ namespace Remotion.Web.UI
 
     private void FormatPopulateSynchronousPostBackCommandsArrayClientScript (StringBuilder script, string array)
     {
-      foreach (Tuple<Control, string> command in _synchronousPostBackCommands)
+      foreach (Collections.Tuple<Control, string> command in _synchronousPostBackCommands)
       {
         script.Append ("  ");
         script.Append (array).Append ("[").Append (array).Append (".length] = '");
