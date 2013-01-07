@@ -1,4 +1,4 @@
-﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
+// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -16,8 +16,13 @@
 // 
 namespace Remotion.Mixins.UnitTests.Core.TestDomain
 {
-  public class BaseClassWithHasCompleteInterface<T> : IHasCompleteInterface<T>
-      where T: class
-  {
-  }
+// ReSharper disable PossibleInterfaceMemberAmbiguity - This is on purpose.
+// ReSharper disable RedundantExtendsListEntry - This is on purpose.
+  public interface ICBaseType3 : IBaseType31, IBaseType32, IBaseType33, IBaseType34, IBaseType35
+// ReSharper restore RedundantExtendsListEntry
+// ReSharper restore PossibleInterfaceMemberAmbiguity
+  { }
+
+  public interface ICBaseType3BT3Mixin4 : ICBaseType3, IBT3Mixin4
+  { }
 }

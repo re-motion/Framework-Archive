@@ -17,17 +17,17 @@
 namespace Remotion.Mixins.UnitTests.Core.TestDomain
 {
   [Uses (typeof (MixinImplementingSimpleInterface))]
-  public class ClassWithCompleteInterface
+  public class ClassWithComposedInterface
   {
-    [CompleteInterface (typeof (ClassWithCompleteInterface))]
-    public interface ICompleteInterface : ISimpleInterface
+    [ComposedInterface (typeof (ClassWithComposedInterface))]
+    public interface IComposedInterface : ISimpleInterface
     {
       string M1 ();
     }
 
     public string M1()
     {
-      return "ClassWithCompleteInterface.M1";
+      return "ClassWithComposedInterface.M1";
     }
   }
 }

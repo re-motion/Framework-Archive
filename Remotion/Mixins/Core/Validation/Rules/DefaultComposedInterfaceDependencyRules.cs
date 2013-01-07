@@ -14,29 +14,19 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using NUnit.Framework;
+using System;
 using Remotion.Mixins.Definitions;
-using Remotion.Mixins.Definitions.Building;
-using Remotion.Mixins.UnitTests.Core.TestDomain;
-using Rhino.Mocks;
 
-namespace Remotion.Mixins.UnitTests.Core.Definitions
+namespace Remotion.Mixins.Validation.Rules
 {
-  [TestFixture]
-  public class CompleteInterfaceDependencyDefinitionTest
+  /// <summary>
+  /// Holds the validation rules for <see cref="ComposedInterfaceDependencyDefinition"/> objects.
+  /// </summary>
+  public class DefaultComposedInterfaceDependencyRules : RuleSetBase
   {
-    [Test]
-    public void Accept ()
+    public override void Install (ValidatingVisitor visitor)
     {
-      var targetClass = DefinitionObjectMother.CreateTargetClassDefinition (typeof (NullTarget));
-      var requiredTargetCallTypeDefinition = DefinitionObjectMother.CreateRequiredTargetCallTypeDefinition (targetClass, typeof (ISimpleInterface));
-      var dependency = new CompleteInterfaceDependencyDefinition (requiredTargetCallTypeDefinition, typeof (ISimpleInterface), null);
-
-      var visitorMock = MockRepository.GenerateMock<IDefinitionVisitor> ();
-
-      dependency.Accept (visitorMock);
-
-      visitorMock.AssertWasCalled (mock => mock.Visit (dependency));
+      // no rules ATM
     }
   }
 }
