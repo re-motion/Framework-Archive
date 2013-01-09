@@ -30,11 +30,92 @@ namespace Remotion.Data.DomainObjects
   /// <b>ObjectID</b> supports values of type <see cref="System.Guid"/>, <see cref="System.Int32"/> and <see cref="System.String"/>.
   /// </remarks>
   [Serializable]
-  public sealed class ObjectID : IComparable, ISerializable
+  public class ObjectID : IComparable, ISerializable
   {
-    // types
+    /// <summary>
+    /// Initializes a new instance of the <b>ObjectID</b> class with the specified class type and ID value.
+    /// </summary>
+    /// <param name="classType">The <see cref="System.Type"/> of the class of the object. Must not be <see langword="null"/>.</param>
+    /// <param name="value">The ID value used to identify the object in the storage provider. Must not be <see langword="null"/>.</param>
+    /// <exception cref="System.ArgumentNullException">
+    ///   <paramref name="classType"/> is <see langword="null"/>.<br /> -or- <br />
+    ///   <paramref name="value"/> is <see langword="null"/>.
+    /// </exception>
+    /// <exception cref="Remotion.Utilities.ArgumentEmptyException">
+    ///   <paramref name="value"/> is an empty <see cref="System.String"/>.<br /> -or- <br />
+    ///   <paramref name="value"/> is an empty <see cref="System.Guid"/>.
+    /// </exception>
+    /// <exception cref="System.ArgumentException">
+    ///   <paramref name="value"/> has an unsupported type or is a string and contains invalid characters. Supported types are <see cref="System.Guid"/>, <see cref="System.Int32"/> and <see cref="System.String"/>.
+    /// </exception>
+    /// <exception cref="Remotion.Data.DomainObjects.Persistence.Configuration.IdentityTypeNotSupportedException">
+    ///   The type of <paramref name="value"/> is not supported by the underlying <see cref="Remotion.Data.DomainObjects.Persistence.StorageProvider"/>.
+    /// </exception>
+    /// <exception cref="Mapping.MappingException"/>The specified <paramref name="classType"/> could not be found in the mapping configuration.
+    public static ObjectID Create (Type classType, object value)
+    {
+      ArgumentUtility.CheckNotNull ("classType", classType);
 
-    // static members and constants
+      var classDefinition = MappingConfiguration.Current.GetTypeDefinition (classType);
+      return Create (classDefinition, value);
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <b>ObjectID</b> class with the specified class ID and ID value.
+    /// </summary>
+    /// <param name="classID">The ID of the class of the object. Must not be <see langword="null"/>.</param>
+    /// <param name="value">The ID value used to identify the object in the storage provider. Must not be <see langword="null"/>.</param>
+    /// <returns>A new instance of the <b>ObjectID</b> class with the specified class ID and ID value.</returns>
+    /// <exception cref="System.ArgumentNullException">
+    ///   <paramref name="classID"/> is <see langword="null"/>.<br /> -or- <br />
+    ///   <paramref name="value"/> is <see langword="null"/>.
+    /// </exception>
+    /// <exception cref="Remotion.Utilities.ArgumentEmptyException">
+    ///   <paramref name="classID"/> is an empty <see cref="System.String"/>.<br /> -or- <br />
+    ///   <paramref name="value"/> is an empty <see cref="System.String"/>.<br /> -or- <br />
+    ///   <paramref name="value"/> is an empty <see cref="System.Guid"/>.
+    /// </exception>
+    /// <exception cref="System.ArgumentException">
+    ///   <paramref name="value"/> has an unsupported type or is a string and contains invalid characters. Supported types are <see cref="System.Guid"/>, <see cref="System.Int32"/> and <see cref="System.String"/>.
+    /// </exception>
+    /// <exception cref="Remotion.Data.DomainObjects.Persistence.Configuration.IdentityTypeNotSupportedException">
+    ///   The type of <paramref name="value"/> is not supported by the underlying <see cref="Remotion.Data.DomainObjects.Persistence.StorageProvider"/>.
+    /// </exception>
+    /// <exception cref="Mapping.MappingException"/>The specified <paramref name="classID"/> could not be found in the mapping configuration.
+    public static ObjectID Create (string classID, object value)
+    {
+      ArgumentUtility.CheckNotNullOrEmpty ("classID", classID);
+
+      var classDefinition = MappingConfiguration.Current.GetClassDefinition (classID);
+      return Create (classDefinition, value);
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <b>ObjectID</b> class with the specified <see cref="Mapping.ClassDefinition"/> and ID value.
+    /// </summary>
+    /// <param name="classDefinition">The <see cref="Mapping.ClassDefinition"/> of the object. Must not be <see langword="null"/>.</param>
+    /// <param name="value">The ID value used to identify the object in the storage provider. Must not be <see langword="null"/>.</param>
+    /// <returns>A new instance of the <b>ObjectID</b> class with the specified <see cref="Mapping.ClassDefinition"/> and ID value.</returns>
+    /// <exception cref="System.ArgumentNullException">
+    ///   <paramref name="classDefinition"/> is <see langword="null"/>.<br /> -or- <br />
+    ///   <paramref name="value"/> is <see langword="null"/>.
+    /// </exception>
+    /// <exception cref="Remotion.Utilities.ArgumentEmptyException">
+    ///   <paramref name="value"/> is an empty <see cref="System.String"/>.<br /> -or- <br />
+    ///   <paramref name="value"/> is an empty <see cref="System.Guid"/>.
+    /// </exception>
+    /// <exception cref="System.ArgumentException">
+    ///   <paramref name="value"/> has an unsupported type or is a string and contains invalid characters. Supported types are 
+    /// <see cref="System.Guid"/>, <see cref="System.Int32"/> and <see cref="System.String"/>.
+    /// </exception>
+    /// <exception cref="Remotion.Data.DomainObjects.Persistence.Configuration.IdentityTypeNotSupportedException">
+    ///   The type of <paramref name="value"/> is not supported by the underlying <see cref="Remotion.Data.DomainObjects.Persistence.StorageProvider"/>.
+    /// </exception>
+    /// <exception cref="Mapping.MappingException"/>The specified <paramref name="classDefinition"/> could not be found in the mapping configuration.
+    public static ObjectID Create (ClassDefinition classDefinition, object value)
+    {
+      return new ObjectID (classDefinition, value);
+    }
 
     /// <summary>
     /// Tests whether two specified <see cref="ObjectID"/> objects are equivalent.
@@ -120,78 +201,7 @@ namespace Remotion.Data.DomainObjects
     private readonly ClassDefinition _classDefinition;
     private int _cachedHashCode;
     
-    /// <summary>
-    /// Initializes a new instance of the <b>ObjectID</b> class with the specified class ID and ID value.
-    /// </summary>
-    /// <param name="classID">The ID of the class of the object. Must not be <see langword="null"/>.</param>
-    /// <param name="value">The ID value used to identify the object in the storage provider. Must not be <see langword="null"/>.</param>
-    /// <exception cref="System.ArgumentNullException">
-    ///   <paramref name="classID"/> is <see langword="null"/>.<br /> -or- <br />
-    ///   <paramref name="value"/> is <see langword="null"/>.
-    /// </exception>
-    /// <exception cref="Remotion.Utilities.ArgumentEmptyException">
-    ///   <paramref name="classID"/> is an empty <see cref="System.String"/>.<br /> -or- <br />
-    ///   <paramref name="value"/> is an empty <see cref="System.String"/>.<br /> -or- <br />
-    ///   <paramref name="value"/> is an empty <see cref="System.Guid"/>.
-    /// </exception>
-    /// <exception cref="System.ArgumentException">
-    ///   <paramref name="value"/> has an unsupported type or is a string and contains invalid characters. Supported types are <see cref="System.Guid"/>, <see cref="System.Int32"/> and <see cref="System.String"/>.
-    /// </exception>
-    /// <exception cref="Remotion.Data.DomainObjects.Persistence.Configuration.IdentityTypeNotSupportedException">
-    ///   The type of <paramref name="value"/> is not supported by the underlying <see cref="Remotion.Data.DomainObjects.Persistence.StorageProvider"/>.
-    /// </exception>
-    /// <exception cref="Mapping.MappingException"/>The specified <paramref name="classID"/> could not be found in the mapping configuration.
-    public ObjectID (string classID, object value)
-      : this (MappingConfiguration.Current.GetClassDefinition (ArgumentUtility.CheckNotNullOrEmpty ("classID", classID)), value)
-    {
-    }
-
-    /// <summary>
-    /// Initializes a new instance of the <b>ObjectID</b> class with the specified class type and ID value.
-    /// </summary>
-    /// <param name="classType">The <see cref="System.Type"/> of the class of the object. Must not be <see langword="null"/>.</param>
-    /// <param name="value">The ID value used to identify the object in the storage provider. Must not be <see langword="null"/>.</param>
-    /// <exception cref="System.ArgumentNullException">
-    ///   <paramref name="classType"/> is <see langword="null"/>.<br /> -or- <br />
-    ///   <paramref name="value"/> is <see langword="null"/>.
-    /// </exception>
-    /// <exception cref="Remotion.Utilities.ArgumentEmptyException">
-    ///   <paramref name="value"/> is an empty <see cref="System.String"/>.<br /> -or- <br />
-    ///   <paramref name="value"/> is an empty <see cref="System.Guid"/>.
-    /// </exception>
-    /// <exception cref="System.ArgumentException">
-    ///   <paramref name="value"/> has an unsupported type or is a string and contains invalid characters. Supported types are <see cref="System.Guid"/>, <see cref="System.Int32"/> and <see cref="System.String"/>.
-    /// </exception>
-    /// <exception cref="Remotion.Data.DomainObjects.Persistence.Configuration.IdentityTypeNotSupportedException">
-    ///   The type of <paramref name="value"/> is not supported by the underlying <see cref="Remotion.Data.DomainObjects.Persistence.StorageProvider"/>.
-    /// </exception>
-    /// <exception cref="Mapping.MappingException"/>The specified <paramref name="classType"/> could not be found in the mapping configuration.
-    public ObjectID (Type classType, object value)
-      : this (MappingConfiguration.Current.GetTypeDefinition (ArgumentUtility.CheckNotNull ("classType", classType)), value)
-    {
-    }
-
-    /// <summary>
-    /// Initializes a new instance of the <b>ObjectID</b> class with the specified <see cref="Mapping.ClassDefinition"/> and ID value.
-    /// </summary>
-    /// <param name="classDefinition">The <see cref="Mapping.ClassDefinition"/> of the object. Must not be <see langword="null"/>.</param>
-    /// <param name="value">The ID value used to identify the object in the storage provider. Must not be <see langword="null"/>.</param>
-    /// <exception cref="System.ArgumentNullException">
-    ///   <paramref name="classDefinition"/> is <see langword="null"/>.<br /> -or- <br />
-    ///   <paramref name="value"/> is <see langword="null"/>.
-    /// </exception>
-    /// <exception cref="Remotion.Utilities.ArgumentEmptyException">
-    ///   <paramref name="value"/> is an empty <see cref="System.String"/>.<br /> -or- <br />
-    ///   <paramref name="value"/> is an empty <see cref="System.Guid"/>.
-    /// </exception>
-    /// <exception cref="System.ArgumentException">
-    ///   <paramref name="value"/> has an unsupported type or is a string and contains invalid characters. Supported types are <see cref="System.Guid"/>, <see cref="System.Int32"/> and <see cref="System.String"/>.
-    /// </exception>
-    /// <exception cref="Remotion.Data.DomainObjects.Persistence.Configuration.IdentityTypeNotSupportedException">
-    ///   The type of <paramref name="value"/> is not supported by the underlying <see cref="Remotion.Data.DomainObjects.Persistence.StorageProvider"/>.
-    /// </exception>
-    /// <exception cref="Mapping.MappingException"/>The specified <paramref name="classDefinition"/> could not be found in the mapping configuration.
-    public ObjectID (ClassDefinition classDefinition, object value)
+    protected ObjectID (ClassDefinition classDefinition, object value)
     {
       ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
       ArgumentUtility.CheckNotNull ("value", value);

@@ -426,7 +426,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
       ClientTransaction subTransaction = TestableClientTransaction.CreateSubTransaction ();
       using (subTransaction.EnterDiscardingScope ())
       {
-        LifetimeService.GetObjects<DomainObject> (subTransaction, new ObjectID (typeof (Order), guid));
+        LifetimeService.GetObjects<DomainObject> (subTransaction, ObjectID.Create(typeof (Order), guid));
       }
     }
 
@@ -442,7 +442,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
             subTransaction,
             DomainObjectIDs.Order1,
             newObject.ID,
-            new ObjectID (typeof (Order), guid),
+            ObjectID.Create(typeof (Order), guid),
             DomainObjectIDs.Order2);
         var expectedObjects = new DomainObject[]
                               {

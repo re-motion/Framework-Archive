@@ -145,7 +145,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DomainImplementation
     [Test]
     public void TryGetObject_NotFound ()
     {
-      var id = new ObjectID (typeof (Order), Guid.NewGuid());
+      var id = ObjectID.Create(typeof (Order), Guid.NewGuid());
       Assert.That (TestableClientTransaction.IsInvalid (id), Is.False);
       
       var result = LifetimeService.TryGetObject (TestableClientTransaction, id);
@@ -201,7 +201,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DomainImplementation
     [Test]
     public void TryGetObjects ()
     {
-      var notFoundObjectID = new ObjectID (typeof (Order), Guid.NewGuid());
+      var notFoundObjectID = ObjectID.Create(typeof (Order), Guid.NewGuid());
 
       var deletedObjectID = DomainObjectIDs.Order3;
       var deletedObject = Order.GetObject (deletedObjectID);

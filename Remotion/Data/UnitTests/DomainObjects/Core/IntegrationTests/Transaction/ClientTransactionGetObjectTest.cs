@@ -86,7 +86,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
     [Test]
     public void GetObject_NotFound_True ()
     {
-      var notFoundID = new ObjectID (typeof (Order), Guid.NewGuid());
+      var notFoundID = ObjectID.Create(typeof (Order), Guid.NewGuid());
 
       Assert.That (
           () => LifetimeService.GetObject (TestableClientTransaction, notFoundID, true), 
@@ -96,7 +96,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
     [Test]
     public void GetObject_NotFound_False ()
     {
-      var notFoundID = new ObjectID (typeof (Order), Guid.NewGuid ());
+      var notFoundID = ObjectID.Create(typeof (Order), Guid.NewGuid ());
 
       Assert.That (() => LifetimeService.GetObject (TestableClientTransaction, notFoundID, false), Throws.TypeOf<ObjectsNotFoundException> ());
     }
@@ -149,7 +149,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
     [Test]
     public void TryGetObject_NotFound ()
     {
-      var notFoundID = new ObjectID (typeof (Order), Guid.NewGuid ());
+      var notFoundID = ObjectID.Create(typeof (Order), Guid.NewGuid ());
 
       var domainObject = LifetimeService.TryGetObject (TestableClientTransaction, notFoundID);
       Assert.That (domainObject, Is.Null);
@@ -287,7 +287,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
     public void GetObjects_NotFound ()
     {
       var guid = new Guid ("33333333333333333333333333333333");
-      LifetimeService.GetObjects<DomainObject> (TestableClientTransaction, new ObjectID (typeof (Order), guid));
+      LifetimeService.GetObjects<DomainObject> (TestableClientTransaction, ObjectID.Create(typeof (Order), guid));
     }
 
     [Test]
@@ -299,7 +299,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
           TestableClientTransaction, 
           DomainObjectIDs.Order1,
           newObject.ID,
-          new ObjectID (typeof (Order), guid),
+          ObjectID.Create(typeof (Order), guid),
           DomainObjectIDs.Order2);
       var expectedObjects = new DomainObject[] { 
           Order.GetObject (DomainObjectIDs.Order1), 
@@ -410,7 +410,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
       var ids = new List<ObjectID> ();
       ids.Add (DomainObjectIDs.Order1);
       ids.Add (DomainObjectIDs.Order2);
-      ids.AddRange (Enumerable.Range (0, 4000).Select (i => new ObjectID (DomainObjectIDs.Order1.ClassDefinition, Guid.NewGuid ())));
+      ids.AddRange (Enumerable.Range (0, 4000).Select (i => ObjectID.Create(DomainObjectIDs.Order1.ClassDefinition, Guid.NewGuid ())));
 
       var result = LifetimeService.TryGetObjects<Order> (TestableClientTransaction, ids.ToArray ());
       Assert.That (result.Length, Is.EqualTo (4002));
