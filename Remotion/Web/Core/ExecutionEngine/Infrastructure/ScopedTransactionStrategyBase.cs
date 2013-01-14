@@ -17,6 +17,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 using Remotion.Data;
 using Remotion.Utilities;
 
@@ -26,7 +27,9 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
   [Serializable]
   public abstract class ScopedTransactionStrategyBase : TransactionStrategyBase
   {
-    private readonly ITransaction _transaction;
+    private readonly Func<ITransaction> _transactionFactory;
+    [NotNull]
+    private ITransaction _transaction;
     [NonSerialized]
     private ITransactionScope _scope;
     private readonly bool _autoCommit;
@@ -35,17 +38,22 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
     private TransactionStrategyBase _child;
 
     protected ScopedTransactionStrategyBase (
-        bool autoCommit, ITransaction transaction, TransactionStrategyBase outerTransactionStrategy, IWxeFunctionExecutionContext executionContext)
+        bool autoCommit,
+        Func<ITransaction> transactionFactory,
+        TransactionStrategyBase outerTransactionStrategy,
+        IWxeFunctionExecutionContext executionContext)
     {
-      ArgumentUtility.CheckNotNull ("transaction", transaction);
+      ArgumentUtility.CheckNotNull ("transactionFactory", transactionFactory);
       ArgumentUtility.CheckNotNull ("outerTransactionStrategy", outerTransactionStrategy);
       ArgumentUtility.CheckNotNull ("executionContext", executionContext);
 
       _autoCommit = autoCommit;
-      _transaction = transaction;
+      _transactionFactory = transactionFactory;
       _outerTransactionStrategy = outerTransactionStrategy;
       _executionContext = executionContext;
       _child = NullTransactionStrategy.Null;
+
+      _transaction = CreateTransaction();
 
       var inParameters = _executionContext.GetInParameters ();
       RegisterObjects (inParameters);
@@ -101,12 +109,14 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
       if (_scope != null)
       {
         _scope.Leave ();
-        _transaction.Reset ();
+        _transaction.Release();
+        _transaction = CreateTransaction();
         EnterScope();
       }
       else
       {
-        _transaction.Reset();
+        _transaction.Release ();
+        _transaction = CreateTransaction ();
       }
 
       var variables = _executionContext.GetVariables();
@@ -125,7 +135,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
             + "This child transaction strategy must first be unregistered before invoking CreateChildTransactionStrategy again.");
       }
 
-      var childTransactionStrategy = new ChildTransactionStrategy (autoCommit, Transaction.CreateChild(), this, executionContext);
+      var childTransactionStrategy = new ChildTransactionStrategy (autoCommit, this, Transaction, executionContext);
       _child = childTransactionStrategy;
       if (_scope != null)
         _child.OnExecutionPlay (wxeContext, NullExecutionListener.Null);
@@ -258,9 +268,17 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
       _transaction.Release();
     }
 
+    [NotNull]
+    private ITransaction CreateTransaction ()
+    {
+      var transaction = _transactionFactory ();
+      Assertion.IsNotNull (transaction, "Factory must return a non-null transaction.");
+      return transaction;
+    }
+
     private void LeaveScope (Exception innerException)
     {
-      bool isFatalExecutionException = innerException != null && innerException is WxeFatalExecutionException;
+      bool isFatalExecutionException = innerException is WxeFatalExecutionException;
       if (!isFatalExecutionException)
       {
         ExecuteAndWrapInnerException (_scope.Leave, innerException);
@@ -270,7 +288,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
 
     private void LeaveScopeAndReleaseTransaction (Exception innerException)
     {
-      bool isFatalExecutionException = innerException != null && innerException is WxeFatalExecutionException;
+      bool isFatalExecutionException = innerException is WxeFatalExecutionException;
       if (!isFatalExecutionException)
       {
         ExecuteAndWrapInnerException (_scope.Leave, innerException);
@@ -284,8 +302,9 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
       var list = new List<object>();
       foreach (var obj in objects)
       {
-        if (obj is IEnumerable)
-          list.AddRange (FlattenList ((IEnumerable) obj));
+        var enumerable = obj as IEnumerable;
+        if (enumerable != null)
+          list.AddRange (FlattenList (enumerable));
         else if (obj != null)
           list.Add (obj);
       }

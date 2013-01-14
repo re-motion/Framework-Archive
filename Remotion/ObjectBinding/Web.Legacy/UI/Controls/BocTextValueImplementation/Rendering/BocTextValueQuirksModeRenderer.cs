@@ -51,14 +51,40 @@ namespace Remotion.ObjectBinding.Web.Legacy.UI.Controls.BocTextValueImplementati
       base.Render (renderingContext);
     }
 
+    protected override TextBox GetTextBox (BocRenderingContext<IBocTextValue> renderingContext)
+    {
+      ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
+
+      var textBox = base.GetTextBox (renderingContext);
+      if (renderingContext.Control.TextBoxStyle.TextMode == BocTextBoxMode.PasswordRenderMasked)
+        textBox.Attributes.Add ("value", textBox.Text);
+      return textBox;
+    }
+
     protected override Label GetLabel (BocRenderingContext<IBocTextValue> renderingContext)
     {
       Label label = new Label { Text = renderingContext.Control.Text };
       label.ID = renderingContext.Control.GetTextBoxClientID ();
       label.EnableViewState = false;
 
+      var text = GetText(renderingContext);
+      label.Text = text;
+      label.Width = Unit.Empty;
+      label.Height = Unit.Empty;
+      label.ApplyStyle (renderingContext.Control.CommonStyle);
+      label.ApplyStyle (renderingContext.Control.LabelStyle);
+      return label;
+    }
+
+    private static string GetText (BocRenderingContext<IBocTextValue> renderingContext)
+    {
+      var textMode = renderingContext.Control.TextBoxStyle.TextMode;
+
+      if (textMode == BocTextBoxMode.PasswordNoRender || textMode == BocTextBoxMode.PasswordRenderMasked)
+        return new string ((char) 9679, 5);
+
       string text;
-      if (renderingContext.Control.TextBoxStyle.TextMode == TextBoxMode.MultiLine
+      if (textMode == BocTextBoxMode.MultiLine
           && !StringUtility.IsNullOrEmpty (renderingContext.Control.Text))
       {
         //  Allows for an optional \r
@@ -82,12 +108,7 @@ namespace Remotion.ObjectBinding.Web.Legacy.UI.Controls.BocTextValueImplementati
         else
           text = "&nbsp;";
       }
-      label.Text = text;
-      label.Width = Unit.Empty;
-      label.Height = Unit.Empty;
-      label.ApplyStyle (renderingContext.Control.CommonStyle);
-      label.ApplyStyle (renderingContext.Control.LabelStyle);
-      return label;
+      return text;
     }
 
     public override string CssClassBase

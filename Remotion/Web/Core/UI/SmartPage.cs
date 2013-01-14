@@ -24,6 +24,7 @@ using Remotion.Utilities;
 using Remotion.Web.Compilation;
 using Remotion.Web.Configuration;
 using Remotion.Web.UI.Controls;
+using Remotion.Web.UI.SmartPageImplementation;
 using Remotion.Web.Utilities;
 using Remotion.Web.Infrastructure;
 
@@ -525,12 +526,6 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
     values[0] = base.SaveControlState();
     values[1] = _isDirty;
     return values;
-  }
-
-  protected override void OnPreRenderComplete (EventArgs e)
-  {
-    _smartPageInfo.OnPreRenderComplete ();
-    base.OnPreRenderComplete (e);
   }
 
   void ISmartPage.SaveAllState ()
