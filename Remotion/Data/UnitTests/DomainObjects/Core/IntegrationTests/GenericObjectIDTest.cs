@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using JetBrains.Annotations;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects;
 using Remotion.Data.UnitTests.DomainObjects.TestDomain;
@@ -23,7 +24,6 @@ using Remotion.Development.UnitTesting;
 namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests
 {
   [TestFixture]
-  [Ignore ("TODO 5339")]
   public class GenericObjectIDTest : ClientTransactionBaseTest
   {
     [Test]
@@ -34,7 +34,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests
       var result = ObjectID.Create (typeof (Order), value);
 
       Assert.That (result, Is.TypeOf<ObjectID<Order>> ());
-      Assert.That (result, Is.EqualTo (new ObjectID<Order> (value)));
+      Assert.That (result, Is.EqualTo (ObjectID.Create<Order> (value)));
     }
 
     [Test]
@@ -45,7 +45,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests
       var result = ObjectID.Create ("Order", value);
 
       Assert.That (result, Is.TypeOf<ObjectID<Order>> ());
-      Assert.That (result, Is.EqualTo (new ObjectID<Order> (value)));
+      Assert.That (result, Is.EqualTo (ObjectID.Create<Order> (value)));
     }
 
     [Test]
@@ -56,7 +56,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests
       var result = ObjectID.Create (GetTypeDefinition (typeof (Order)), value);
 
       Assert.That (result, Is.TypeOf<ObjectID<Order>> ());
-      Assert.That (result, Is.EqualTo (new ObjectID<Order> (value)));
+      Assert.That (result, Is.EqualTo (ObjectID.Create<Order> (value)));
     }
 
     [Test]
@@ -75,15 +75,64 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests
       Order order = Order.NewObject();
 
       var orderTypedID = order.GetTypedID ();
-      var testDomainBaseTypedID = ((TestDomainBase) order).GetTypedID ();
+      var testDomainBaseTypedID1 = ((TestDomainBase) order).GetTypedID ();
+      var testDomainBaseTypedID2 = order.GetTypedID<TestDomainBase> ();
       var domainObjectTypedID = ((DomainObject) order).GetTypedID ();
 
       Assert.That (orderTypedID, Is.EqualTo (order.ID));
       Assert.That (orderTypedID, Is.TypeOf<ObjectID<Order>> ());
-      Assert.That (testDomainBaseTypedID, Is.EqualTo (order.ID));
-      Assert.That (testDomainBaseTypedID, Is.TypeOf<ObjectID<TestDomainBase>> ());
+      Assert.That (GetVariableType (orderTypedID), Is.SameAs (typeof (IObjectID<Order>)));
+
+      Assert.That (testDomainBaseTypedID1, Is.EqualTo (order.ID));
+      Assert.That (testDomainBaseTypedID1, Is.TypeOf<ObjectID<Order>> ());
+      Assert.That (GetVariableType (testDomainBaseTypedID1), Is.SameAs (typeof (IObjectID<TestDomainBase>)));
+
+      Assert.That (testDomainBaseTypedID2, Is.EqualTo (order.ID));
+      Assert.That (testDomainBaseTypedID2, Is.TypeOf<ObjectID<Order>> ());
+      Assert.That (GetVariableType (testDomainBaseTypedID2), Is.SameAs (typeof (IObjectID<TestDomainBase>)));
+
       Assert.That (domainObjectTypedID, Is.EqualTo (order.ID));
-      Assert.That (domainObjectTypedID, Is.TypeOf<ObjectID<DomainObject>> ());
+      Assert.That (domainObjectTypedID, Is.TypeOf<ObjectID<Order>> ());
+      Assert.That (GetVariableType (domainObjectTypedID), Is.SameAs (typeof (IObjectID<DomainObject>)));
+    }
+
+    [Test]
+    public void GetTypedID_Null ()
+    {
+      Assert.That (() => ((Order) null).GetTypedID (), Throws.TypeOf<ArgumentNullException>());
+    }
+
+    [Test]
+    public void GetSafeTypedID ()
+    {
+      Order order = Order.NewObject ();
+
+      var orderTypedID = order.GetSafeTypedID ();
+      var testDomainBaseTypedID1 = ((TestDomainBase) order).GetSafeTypedID ();
+      var testDomainBaseTypedID2 = order.GetSafeTypedID<TestDomainBase> ();
+      var domainObjectTypedID = ((DomainObject) order).GetSafeTypedID ();
+
+      Assert.That (orderTypedID, Is.EqualTo (order.ID));
+      Assert.That (orderTypedID, Is.TypeOf<ObjectID<Order>> ());
+      Assert.That (GetVariableType (orderTypedID), Is.SameAs (typeof (IObjectID<Order>)));
+
+      Assert.That (testDomainBaseTypedID1, Is.EqualTo (order.ID));
+      Assert.That (testDomainBaseTypedID1, Is.TypeOf<ObjectID<Order>> ());
+      Assert.That (GetVariableType (testDomainBaseTypedID1), Is.SameAs (typeof (IObjectID<TestDomainBase>)));
+
+      Assert.That (testDomainBaseTypedID2, Is.EqualTo (order.ID));
+      Assert.That (testDomainBaseTypedID2, Is.TypeOf<ObjectID<Order>> ());
+      Assert.That (GetVariableType (testDomainBaseTypedID2), Is.SameAs (typeof (IObjectID<TestDomainBase>)));
+
+      Assert.That (domainObjectTypedID, Is.EqualTo (order.ID));
+      Assert.That (domainObjectTypedID, Is.TypeOf<ObjectID<Order>> ());
+      Assert.That (GetVariableType (domainObjectTypedID), Is.SameAs (typeof (IObjectID<DomainObject>)));
+    }
+
+    [Test]
+    public void GetSafeTypedID_Null ()
+    {
+      Assert.That (((Order) null).GetSafeTypedID (), Is.Null);
     }
 
     [Test]
@@ -94,30 +143,13 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests
 
       var deserialized = Serializer.SerializeAndDeserialize (objectID);
 
-      Assert.That (deserialized, Is.TypeOf<IObjectID<Order>>());
+      Assert.That (deserialized, Is.TypeOf<ObjectID<Order>>());
       Assert.That (deserialized, Is.EqualTo (objectID));
     }
-  }
 
-  public sealed class ObjectID<T> : ObjectID, IObjectID<T>
-    where T : DomainObject
-  {
-    public ObjectID (object value)
-      : base (null, value)
+    private Type GetVariableType<T> ([UsedImplicitly] T value)
     {
-    }
-  }
-
-  public interface IObjectID<out T>
-      where T : DomainObject
-  {
-  }
-
-  public static class DomainObjectExtensions
-  {
-    public static IObjectID<T> GetTypedID<T> (this T domainObject) where T : DomainObject
-    {
-      return null;
+      return typeof (T);
     }
   }
 }

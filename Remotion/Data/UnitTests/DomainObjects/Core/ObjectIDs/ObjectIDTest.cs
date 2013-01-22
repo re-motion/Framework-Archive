@@ -75,6 +75,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.ObjectIDs
       string idString = "Order|5d09030c-25c2-4735-b514-46333bd28ac8|System.Guid";
       ObjectID id = ObjectID.Parse (idString);
 
+      Assert.That (id, Is.TypeOf<ObjectID<Order>>());
       Assert.That (id.StorageProviderDefinition.Name, Is.EqualTo ("TestDomain"));
       Assert.That (id.ClassID, Is.EqualTo ("Order"));
       Assert.That (id.Value.GetType (), Is.EqualTo (typeof (Guid)));

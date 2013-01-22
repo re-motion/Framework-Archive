@@ -15,8 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Linq.Expressions;
-using System.Reflection;
 using System.Runtime.Serialization;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectIDStringSerialization;
 using Remotion.Data.DomainObjects.Mapping;
@@ -427,11 +425,8 @@ namespace Remotion.Data.DomainObjects
   /// Uniquely identifies a <see cref="DomainObject"/> of a given type <typeparamref name="T"/>.
   /// </summary>
   /// <typeparam name="T">The class of the object.</typeparam>
-  /// <remarks>
-  /// <see cref="ObjectID"/> supports values of type <see cref="System.Guid"/>, <see cref="System.Int32"/> and <see cref="System.String"/>.
-  /// </remarks>
   [Serializable]
-  public sealed class ObjectID<T> : ObjectID
+  public sealed class ObjectID<T> : ObjectID, IObjectID<T>
       where T : DomainObject
   {
     internal ObjectID (ClassDefinition classDefinition, object value)
