@@ -15,6 +15,8 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Linq.Expressions;
+using System.Reflection;
 using System.Runtime.Serialization;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectIDStringSerialization;
 using Remotion.Data.DomainObjects.Mapping;
@@ -24,16 +26,45 @@ using Remotion.Utilities;
 namespace Remotion.Data.DomainObjects
 {
   /// <summary>
-  /// Uniquely identifies a domain object.
+  /// Uniquely identifies a <see cref="DomainObject"/>.
   /// </summary>
   /// <remarks>
-  /// <b>ObjectID</b> supports values of type <see cref="System.Guid"/>, <see cref="System.Int32"/> and <see cref="System.String"/>.
+  /// <see cref="ObjectID"/> supports values of type <see cref="System.Guid"/>, <see cref="System.Int32"/> and <see cref="System.String"/>.
   /// </remarks>
   [Serializable]
-  public class ObjectID : IComparable, ISerializable
+  public abstract class ObjectID : IComparable, ISerializable
   {
     /// <summary>
-    /// Initializes a new instance of the <b>ObjectID</b> class with the specified class type and ID value.
+    /// Initializes a new instance of the <see cref="ObjectID{T}"/> class with the <see cref="Mapping.ClassDefinition"/> of <typeparamref name="T"/> 
+    /// and the given ID value.
+    /// </summary>
+    /// <typeparam name="T">The class of the object.</typeparam>
+    /// <param name="value">The ID value used to identify the object in the storage provider. Must not be <see langword="null"/>.</param>
+    /// <returns>A new instance of the <see cref="ObjectID"/> class with the specified <see cref="Mapping.ClassDefinition"/> and ID value.</returns>
+    /// <exception cref="System.ArgumentNullException">
+    ///   <paramref name="value"/> is <see langword="null"/>.
+    /// </exception>
+    /// <exception cref="Remotion.Utilities.ArgumentEmptyException">
+    ///   <paramref name="value"/> is an empty <see cref="System.String"/>.<br /> -or- <br />
+    ///   <paramref name="value"/> is an empty <see cref="System.Guid"/>.
+    /// </exception>
+    /// <exception cref="System.ArgumentException">
+    ///   <paramref name="value"/> has an unsupported type or is a string and contains invalid characters. Supported types are 
+    /// <see cref="System.Guid"/>, <see cref="System.Int32"/> and <see cref="System.String"/>.
+    /// </exception>
+    /// <exception cref="Remotion.Data.DomainObjects.Persistence.Configuration.IdentityTypeNotSupportedException">
+    ///   The type of <paramref name="value"/> is not supported by the underlying <see cref="Remotion.Data.DomainObjects.Persistence.StorageProvider"/>.
+    /// </exception>
+    /// <exception cref="Mapping.MappingException"/>The specified type <typeparamref name="T"/> could not be found in the mapping configuration.
+    public static ObjectID<T> Create<T> (object value)
+        where T : DomainObject
+    {
+      var classDefinition = MappingConfiguration.Current.GetTypeDefinition (typeof (T));
+      return new ObjectID<T> (classDefinition, value);
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ObjectID"/> class with the specified class type and ID value.
     /// </summary>
     /// <param name="classType">The <see cref="System.Type"/> of the class of the object. Must not be <see langword="null"/>.</param>
     /// <param name="value">The ID value used to identify the object in the storage provider. Must not be <see langword="null"/>.</param>
@@ -61,11 +92,11 @@ namespace Remotion.Data.DomainObjects
     }
 
     /// <summary>
-    /// Initializes a new instance of the <b>ObjectID</b> class with the specified class ID and ID value.
+    /// Initializes a new instance of the <see cref="ObjectID"/> class with the specified class ID and ID value.
     /// </summary>
     /// <param name="classID">The ID of the class of the object. Must not be <see langword="null"/>.</param>
     /// <param name="value">The ID value used to identify the object in the storage provider. Must not be <see langword="null"/>.</param>
-    /// <returns>A new instance of the <b>ObjectID</b> class with the specified class ID and ID value.</returns>
+    /// <returns>A new instance of the <see cref="ObjectID"/> class with the specified class ID and ID value.</returns>
     /// <exception cref="System.ArgumentNullException">
     ///   <paramref name="classID"/> is <see langword="null"/>.<br /> -or- <br />
     ///   <paramref name="value"/> is <see langword="null"/>.
@@ -91,11 +122,11 @@ namespace Remotion.Data.DomainObjects
     }
 
     /// <summary>
-    /// Initializes a new instance of the <b>ObjectID</b> class with the specified <see cref="Mapping.ClassDefinition"/> and ID value.
+    /// Initializes a new instance of the <see cref="ObjectID"/> class with the specified <see cref="Mapping.ClassDefinition"/> and ID value.
     /// </summary>
     /// <param name="classDefinition">The <see cref="Mapping.ClassDefinition"/> of the object. Must not be <see langword="null"/>.</param>
     /// <param name="value">The ID value used to identify the object in the storage provider. Must not be <see langword="null"/>.</param>
-    /// <returns>A new instance of the <b>ObjectID</b> class with the specified <see cref="Mapping.ClassDefinition"/> and ID value.</returns>
+    /// <returns>A new instance of the <see cref="ObjectID"/> class with the specified <see cref="Mapping.ClassDefinition"/> and ID value.</returns>
     /// <exception cref="System.ArgumentNullException">
     ///   <paramref name="classDefinition"/> is <see langword="null"/>.<br /> -or- <br />
     ///   <paramref name="value"/> is <see langword="null"/>.
@@ -114,7 +145,7 @@ namespace Remotion.Data.DomainObjects
     /// <exception cref="Mapping.MappingException"/>The specified <paramref name="classDefinition"/> could not be found in the mapping configuration.
     public static ObjectID Create (ClassDefinition classDefinition, object value)
     {
-      return new ObjectID (classDefinition, value);
+      return classDefinition.IDCreator (value);
     }
 
     /// <summary>
@@ -217,6 +248,7 @@ namespace Remotion.Data.DomainObjects
 
       CheckValue ("value", value);
 
+      Assertion.IsNotNull (classDefinition.StorageEntityDefinition, "Entitiy definition must be initialized before an ObjectID can be created.");
       classDefinition.StorageEntityDefinition.StorageProviderDefinition.CheckIdentityType (value.GetType ());
 
       _classDefinition = classDefinition;
@@ -251,7 +283,7 @@ namespace Remotion.Data.DomainObjects
     }
 
     /// <summary>
-    /// Gets the <see cref="Mapping.ClassDefinition"/> associated with this <b>ObjectID</b>.
+    /// Gets the <see cref="Mapping.ClassDefinition"/> associated with this <see cref="ObjectID"/>.
     /// </summary>
     public ClassDefinition ClassDefinition
     {
@@ -324,10 +356,10 @@ namespace Remotion.Data.DomainObjects
     }
 
     /// <summary>
-    /// Determines whether the specified <see cref="ObjectID"/> is equal to the current <b>ObjectID</b>.
+    /// Determines whether the specified <see cref="ObjectID"/> is equal to the current <see cref="ObjectID"/>.
     /// </summary>
-    /// <param name="obj">The <see cref="ObjectID"/> to compare with the current <b>ObjectID</b>. </param>
-    /// <returns><see langword="true"/> if the specified <see cref="ObjectID"/> is equal to the current <b>ObjectID</b>; otherwise, <see langword="false"/>.</returns>
+    /// <param name="obj">The <see cref="ObjectID"/> to compare with the current <see cref="ObjectID"/>. </param>
+    /// <returns><see langword="true"/> if the specified <see cref="ObjectID"/> is equal to the current <see cref="ObjectID"/>; otherwise, <see langword="false"/>.</returns>
     public override bool Equals (object obj)
     {
       if (obj == null)
@@ -368,7 +400,7 @@ namespace Remotion.Data.DomainObjects
 
     #region Serialization
 
-    private ObjectID (SerializationInfo info, StreamingContext context)
+    protected ObjectID (SerializationInfo info, StreamingContext context)
     {
       ArgumentUtility.CheckNotNull ("info", info);
 
@@ -389,5 +421,28 @@ namespace Remotion.Data.DomainObjects
     }
 
     #endregion
+  }
+
+  /// <summary>
+  /// Uniquely identifies a <see cref="DomainObject"/> of a given type <typeparamref name="T"/>.
+  /// </summary>
+  /// <typeparam name="T">The class of the object.</typeparam>
+  /// <remarks>
+  /// <see cref="ObjectID"/> supports values of type <see cref="System.Guid"/>, <see cref="System.Int32"/> and <see cref="System.String"/>.
+  /// </remarks>
+  [Serializable]
+  public sealed class ObjectID<T> : ObjectID
+      where T : DomainObject
+  {
+    internal ObjectID (ClassDefinition classDefinition, object value)
+        : base (classDefinition, value)
+    {
+      Assertion.DebugAssert (classDefinition.ClassType == typeof (T));
+    }
+
+    private ObjectID (SerializationInfo info, StreamingContext context)
+        : base (info, context)
+    {
+    }
   }
 }

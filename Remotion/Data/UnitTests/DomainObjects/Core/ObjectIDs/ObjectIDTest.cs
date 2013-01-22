@@ -17,6 +17,7 @@
 using System;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects;
+using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.UnitTests.DomainObjects.TestDomain;
@@ -28,6 +29,14 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.ObjectIDs
   [TestFixture]
   public class ObjectIDTest : StandardMappingTest
   {
+    private ClassDefinition _orderClassDefinition;
+
+    public override void SetUp ()
+    {
+      base.SetUp ();
+      _orderClassDefinition = MappingConfiguration.Current.GetClassDefinition ("Order");
+    }
+
     [Test]
     public void Create_WithAbstractType ()
     {
@@ -214,8 +223,9 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.ObjectIDs
       var value = new Guid ("{5682F032-2F0B-494b-A31C-C97F02B89C36}");
       var id = ObjectID.Create("Order", value);
 
+      Assert.That (id, Is.TypeOf<ObjectID<Order>>());
       Assert.That (id.StorageProviderDefinition.Name, Is.EqualTo ("TestDomain"));
-      Assert.That (id.ClassID, Is.EqualTo ("Order"));
+      Assert.That (id.ClassDefinition, Is.SameAs (_orderClassDefinition));
       Assert.That (id.Value, Is.EqualTo (value));
     }
 
@@ -225,21 +235,52 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.ObjectIDs
       var value = new Guid ("{5682F032-2F0B-494b-A31C-C97F02B89C36}");
       var id = ObjectID.Create(typeof (Order), value);
 
+      Assert.That (id, Is.TypeOf<ObjectID<Order>> ());
       Assert.That (id.StorageProviderDefinition.Name, Is.EqualTo ("TestDomain"));
-      Assert.That (id.ClassID, Is.EqualTo ("Order"));
+      Assert.That (id.ClassDefinition, Is.SameAs (_orderClassDefinition));
       Assert.That (id.Value, Is.EqualTo (value));
+    }
+
+    [Test]
+    public void Create_WithGenericType_CreatesGenericObjectIDWithCorrectClassDefinition ()
+    {
+      var value = new Guid ("{5682F032-2F0B-494b-A31C-C97F02B89C36}");
+      var id = ObjectID.Create<Order> (value);
+
+      Assert.That (id, Is.TypeOf<ObjectID<Order>> ());
+      Assert.That (id.StorageProviderDefinition.Name, Is.EqualTo ("TestDomain"));
+      Assert.That (id.ClassDefinition, Is.SameAs (_orderClassDefinition));
+      Assert.That (id.Value, Is.EqualTo (value));
+    }
+
+    [Test]
+    public void Create_WithGenericType_WithUnmappedType_Throws ()
+    {
+      var value = new Guid ("{5682F032-2F0B-494b-A31C-C97F02B89C36}");
+
+      Assert.That (
+          () => ObjectID.Create<UnmappedDomainObject> (value),
+          Throws.TypeOf<MappingException>()
+                .With.Message.EqualTo (
+                    "Mapping does not contain class 'Remotion.Data.UnitTests.DomainObjects.Core.ObjectIDs.ObjectIDTest+UnmappedDomainObject'."));
+    }
+
+    [Test]
+    public void Create_WithGenericType_WithNullValue_Throws ()
+    {
+      Assert.That (() => ObjectID.Create<Order> (null), Throws.TypeOf<ArgumentNullException> ());
     }
 
     [Test]
     public void Create_WithClassDefinition ()
     {
-      ClassDefinition orderDefinition = MappingConfiguration.Current.GetClassDefinition ("Order");
       var value = new Guid ("{5682F032-2F0B-494b-A31C-C97F02B89C36}");
 
-      var id = ObjectID.Create(orderDefinition, value);
+      var id = ObjectID.Create(_orderClassDefinition, value);
 
-      Assert.That (id.StorageProviderDefinition.Name, Is.EqualTo (orderDefinition.StorageEntityDefinition.StorageProviderDefinition.Name));
-      Assert.That (id.ClassID, Is.EqualTo (orderDefinition.ID));
+      Assert.That (id, Is.TypeOf<ObjectID<Order>> ());
+      Assert.That (id.StorageProviderDefinition.Name, Is.EqualTo (_orderClassDefinition.StorageEntityDefinition.StorageProviderDefinition.Name));
+      Assert.That (id.ClassDefinition, Is.SameAs (_orderClassDefinition));
       Assert.That (id.Value, Is.EqualTo (value));
     }
 
@@ -343,6 +384,9 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.ObjectIDs
       id.CompareTo ("test");
     }
 
-
+    [IgnoreForMappingConfiguration]
+    private class UnmappedDomainObject : DomainObject
+    {
+    }
   }
 }
