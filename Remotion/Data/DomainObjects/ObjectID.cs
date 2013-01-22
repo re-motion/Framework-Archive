@@ -30,7 +30,7 @@ namespace Remotion.Data.DomainObjects
   /// <see cref="ObjectID"/> supports values of type <see cref="System.Guid"/>, <see cref="System.Int32"/> and <see cref="System.String"/>.
   /// </remarks>
   [Serializable]
-  public abstract class ObjectID : IComparable, ISerializable
+  public abstract class ObjectID : IObjectID<DomainObject>, ISerializable
   {
     /// <summary>
     /// Initializes a new instance of the <see cref="ObjectID{T}"/> class with the <see cref="Mapping.ClassDefinition"/> of <typeparamref name="T"/> 
