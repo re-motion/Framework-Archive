@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -32,7 +33,7 @@ using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Globalization;
 using Remotion.Web.Utilities;
 
-namespace Remotion.Web.UI
+namespace Remotion.Web.UI.SmartPageImplementation
 {
   public class SmartPageInfo
   {
@@ -91,7 +92,9 @@ namespace Remotion.Web.UI
       ArgumentUtility.CheckNotNullAndType<Page> ("page", page);
       _page = page;
       _page.Init += Page_Init;
-    }
+      // PreRenderComplete-handler must be registered before ScriptManager registers its own PreRenderComplete-handler during OnInit.
+      _page.PreRenderComplete += Page_PreRenderComplete;
+   }
 
     /// <summary> Implements <see cref="ISmartPage.RegisterClientSidePageEventHandler">ISmartPage.RegisterClientSidePageEventHandler</see>. </summary>
     public void RegisterClientSidePageEventHandler (SmartPageEvents pageEvent, string key, string function)
@@ -318,6 +321,13 @@ namespace Remotion.Web.UI
         string url3 = themedResourceUrlResolver.GetResourceUrl (_page, ResourceType.Html, c_styleFileUrl);
         HtmlHeadAppender.Current.RegisterStylesheetLink (s_styleFileKey, url3, HtmlHeadAppender.Priority.Library);
       }
+
+      var scriptManager = ScriptManager.GetCurrent (_page.WrappedInstance);
+      if (scriptManager != null)
+      {
+        var handler = new SmartPageAsynchronousPostBackErrorHandler (_page.Context);
+        scriptManager.AsyncPostBackError += (o, args) => handler.HandleError (args.Exception);
+      }
     }
 
     protected ResourceTheme ResourceTheme
@@ -325,7 +335,7 @@ namespace Remotion.Web.UI
       get { return SafeServiceLocator.Current.GetInstance<ResourceTheme>(); }
     }
 
-    public void OnPreRenderComplete ()
+    private void Page_PreRenderComplete (object sender, EventArgs eventArgs)
     {
       PreRenderSmartPage();
       PreRenderSmartNavigation();
@@ -419,13 +429,21 @@ namespace Remotion.Web.UI
       _page.ClientScript.RegisterClientScriptBlock (_page, typeof (SmartPageInfo), "smartPageInitialize", initScript.ToString ());
 
       string isAsynchronous = "false";
-      var scriptManager = ScriptManager.GetCurrent (_page.WrappedInstance);
-      if (scriptManager != null && scriptManager.IsInAsyncPostBack)
+      if (IsInAsyncPostBack)
         isAsynchronous = "true";
       _page.ClientScript.RegisterStartupScriptBlock (_page, typeof (SmartPageInfo), "smartPageStartUp", "SmartPage_OnStartUp (" + isAsynchronous + ", " + isDirty + ");");
 
       // Ensure the __doPostBack function on the rendered page
       _page.ClientScript.GetPostBackEventReference (_page, string.Empty);
+    }
+
+    private bool IsInAsyncPostBack
+    {
+      get
+      {
+        var scriptManager = ScriptManager.GetCurrent (_page.WrappedInstance);
+        return scriptManager != null && scriptManager.IsInAsyncPostBack;
+      }
     }
 
     private string GetAbortMessage ()

@@ -16,7 +16,6 @@
 // 
 using System;
 using System.ComponentModel.Design;
-using System.Configuration;
 using System.Data.SqlClient;
 using System.IO;
 using Microsoft.Practices.ServiceLocation;
@@ -45,12 +44,12 @@ namespace Remotion.SecurityManager.UnitTests
   {
     public static string TestDomainConnectionString
     {
-      get { return string.Format ("Integrated Security=SSPI;Initial Catalog=RemotionSecurityManager;Data Source={0}", ConfigurationManager.AppSettings["DataSource"]); }
+      get { return string.Format ("Integrated Security=SSPI;Initial Catalog=RemotionSecurityManager;Data Source={0}", DatabaseConfiguration.DataSource); }
     }
 
     public static string MasterConnectionString
     {
-      get { return string.Format ("Integrated Security=SSPI;Initial Catalog=master;Data Source={0}", ConfigurationManager.AppSettings["DataSource"]); }
+      get { return string.Format ("Integrated Security=SSPI;Initial Catalog=master;Data Source={0}", DatabaseConfiguration.DataSource); }
     }
 
     [SetUp]
@@ -82,7 +81,7 @@ namespace Remotion.SecurityManager.UnitTests
         SqlConnection.ClearAllPools();
 
         DatabaseAgent masterAgent = new DatabaseAgent (MasterConnectionString);
-        masterAgent.ExecuteBatchFile ("SecurityManagerCreateDB.sql", false, ConfigurationManager.AppSettings["DatabaseDirectory"]);
+        masterAgent.ExecuteBatchFile ("SecurityManagerCreateDB.sql", false, DatabaseConfiguration.GetReplacementDictionary());
         DatabaseAgent databaseAgent = new DatabaseAgent (TestDomainConnectionString);
         databaseAgent.ExecuteBatchFile ("SecurityManagerSetupDB.sql", true);
         databaseAgent.ExecuteBatchFile ("SecurityManagerSetupConstraints.sql", true);
