@@ -18,6 +18,7 @@ using System;
 using JetBrains.Annotations;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects;
+using Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests;
 using Remotion.Data.UnitTests.DomainObjects.TestDomain;
 
 namespace Remotion.Data.UnitTests.DomainObjects.Core
@@ -47,9 +48,9 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
       Assert.That (domainObjectTypedObjectID1, Is.TypeOf<ObjectID<Order>> ().And.EqualTo (domainObject.ID));
       Assert.That (domainObjectTypedObjectID2, Is.TypeOf<ObjectID<Order>> ().And.EqualTo (domainObject.ID));
 
-      Assert.That (GetVariableType (objectID), Is.SameAs (typeof (IObjectID<Order>)));
-      Assert.That (GetVariableType (domainObjectTypedObjectID1), Is.SameAs (typeof (IObjectID<DomainObject>)));
-      Assert.That (GetVariableType (domainObjectTypedObjectID2), Is.SameAs (typeof (IObjectID<DomainObject>)));
+      Assert.That (VariableTypeInferrer.GetVariableType (objectID), Is.SameAs (typeof (IObjectID<Order>)));
+      Assert.That (VariableTypeInferrer.GetVariableType (domainObjectTypedObjectID1), Is.SameAs (typeof (IObjectID<DomainObject>)));
+      Assert.That (VariableTypeInferrer.GetVariableType (domainObjectTypedObjectID2), Is.SameAs (typeof (IObjectID<DomainObject>)));
     }
 
     [Test]
@@ -61,14 +62,9 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
       var nullID = ((Order) null).GetSafeTypedID ();
 
       Assert.That (objectID, Is.TypeOf<ObjectID<Order>> ().And.EqualTo (domainObject.ID));
-      Assert.That (GetVariableType (objectID), Is.SameAs (typeof (IObjectID<Order>)));
+      Assert.That (VariableTypeInferrer.GetVariableType (objectID), Is.SameAs (typeof (IObjectID<Order>)));
 
       Assert.That (nullID, Is.Null);
-    }
-
-    private Type GetVariableType<T> ([UsedImplicitly] T value)
-    {
-      return typeof (T);
     }
   }
 }

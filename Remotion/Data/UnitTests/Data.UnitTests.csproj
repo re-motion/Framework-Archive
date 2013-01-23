@@ -217,6 +217,7 @@
     <Compile Include="DomainObjects\Core\Infrastructure\ClientTransactionListenerObjectMother.cs" />
     <Compile Include="DomainObjects\Core\IntegrationTests\GenericObjectIDTest.cs" />
     <Compile Include="DomainObjects\Core\IntegrationTests\RegisterForCommitTest.cs" />
+    <Compile Include="DomainObjects\Core\VariableTypeInferrer.cs" />
     <Compile Include="DomainObjects\Core\Queries\QueryObjectMother.cs" />
     <Compile Include="DomainObjects\Core\Queries\QueryResultObjectMother.cs" />
     <Compile Include="DomainObjects\Database\DatabaseConfiguration.cs" />

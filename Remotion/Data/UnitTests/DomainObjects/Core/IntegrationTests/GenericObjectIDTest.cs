@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using JetBrains.Annotations;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects;
 using Remotion.Data.UnitTests.DomainObjects.TestDomain;
@@ -81,19 +80,19 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests
 
       Assert.That (orderTypedID, Is.EqualTo (order.ID));
       Assert.That (orderTypedID, Is.TypeOf<ObjectID<Order>> ());
-      Assert.That (GetVariableType (orderTypedID), Is.SameAs (typeof (IObjectID<Order>)));
+      Assert.That (VariableTypeInferrer.GetVariableType (orderTypedID), Is.SameAs (typeof (IObjectID<Order>)));
 
       Assert.That (testDomainBaseTypedID1, Is.EqualTo (order.ID));
       Assert.That (testDomainBaseTypedID1, Is.TypeOf<ObjectID<Order>> ());
-      Assert.That (GetVariableType (testDomainBaseTypedID1), Is.SameAs (typeof (IObjectID<TestDomainBase>)));
+      Assert.That (VariableTypeInferrer.GetVariableType (testDomainBaseTypedID1), Is.SameAs (typeof (IObjectID<TestDomainBase>)));
 
       Assert.That (testDomainBaseTypedID2, Is.EqualTo (order.ID));
       Assert.That (testDomainBaseTypedID2, Is.TypeOf<ObjectID<Order>> ());
-      Assert.That (GetVariableType (testDomainBaseTypedID2), Is.SameAs (typeof (IObjectID<TestDomainBase>)));
+      Assert.That (VariableTypeInferrer.GetVariableType (testDomainBaseTypedID2), Is.SameAs (typeof (IObjectID<TestDomainBase>)));
 
       Assert.That (domainObjectTypedID, Is.EqualTo (order.ID));
       Assert.That (domainObjectTypedID, Is.TypeOf<ObjectID<Order>> ());
-      Assert.That (GetVariableType (domainObjectTypedID), Is.SameAs (typeof (IObjectID<DomainObject>)));
+      Assert.That (VariableTypeInferrer.GetVariableType (domainObjectTypedID), Is.SameAs (typeof (IObjectID<DomainObject>)));
     }
 
     [Test]
@@ -114,19 +113,19 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests
 
       Assert.That (orderTypedID, Is.EqualTo (order.ID));
       Assert.That (orderTypedID, Is.TypeOf<ObjectID<Order>> ());
-      Assert.That (GetVariableType (orderTypedID), Is.SameAs (typeof (IObjectID<Order>)));
+      Assert.That (VariableTypeInferrer.GetVariableType (orderTypedID), Is.SameAs (typeof (IObjectID<Order>)));
 
       Assert.That (testDomainBaseTypedID1, Is.EqualTo (order.ID));
       Assert.That (testDomainBaseTypedID1, Is.TypeOf<ObjectID<Order>> ());
-      Assert.That (GetVariableType (testDomainBaseTypedID1), Is.SameAs (typeof (IObjectID<TestDomainBase>)));
+      Assert.That (VariableTypeInferrer.GetVariableType (testDomainBaseTypedID1), Is.SameAs (typeof (IObjectID<TestDomainBase>)));
 
       Assert.That (testDomainBaseTypedID2, Is.EqualTo (order.ID));
       Assert.That (testDomainBaseTypedID2, Is.TypeOf<ObjectID<Order>> ());
-      Assert.That (GetVariableType (testDomainBaseTypedID2), Is.SameAs (typeof (IObjectID<TestDomainBase>)));
+      Assert.That (VariableTypeInferrer.GetVariableType (testDomainBaseTypedID2), Is.SameAs (typeof (IObjectID<TestDomainBase>)));
 
       Assert.That (domainObjectTypedID, Is.EqualTo (order.ID));
       Assert.That (domainObjectTypedID, Is.TypeOf<ObjectID<Order>> ());
-      Assert.That (GetVariableType (domainObjectTypedID), Is.SameAs (typeof (IObjectID<DomainObject>)));
+      Assert.That (VariableTypeInferrer.GetVariableType (domainObjectTypedID), Is.SameAs (typeof (IObjectID<DomainObject>)));
     }
 
     [Test]
@@ -155,11 +154,6 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests
 
       Assert.That (deserialized, Is.TypeOf<ObjectID<Order>>());
       Assert.That (deserialized, Is.EqualTo (objectID));
-    }
-
-    private Type GetVariableType<T> ([UsedImplicitly] T value)
-    {
-      return typeof (T);
     }
   }
 }
