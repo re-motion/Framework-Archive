@@ -34,7 +34,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.ObjectPersis
     }
 
     [Test]
-    public void IObjectID<DomainObject> ()
+    public void ObjectID ()
     {
       Assert.That (_loadedObjectData.ObjectID, Is.EqualTo (DomainObjectIDs.Order1));
     }
