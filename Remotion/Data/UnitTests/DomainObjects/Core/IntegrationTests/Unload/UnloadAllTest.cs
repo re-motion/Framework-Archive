@@ -464,11 +464,11 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Unload
 
             clientTransactionListener.AssertWasCalled (mock => mock.ObjectMarkedInvalid (middleTopTransaction, newObject));
             clientTransactionListener.AssertWasCalled (
-                mock => mock.DataContainerMapUnregistering (Arg.Is (middleTopTransaction), Arg<DataContainer>.Matches (dc => dc.ID == newObject.ID)));
+                mock => mock.DataContainerMapUnregistering (Arg.Is (middleTopTransaction), Arg<DataContainer>.Matches (dc => object.Equals (dc.ID, newObject.ID))));
 
             clientTransactionListener.AssertWasCalled (
                 mock =>
-                mock.DataContainerMapUnregistering (Arg.Is (middleBottomTransaction), Arg<DataContainer>.Matches (dc => dc.ID == newObject.ID)));
+                mock.DataContainerMapUnregistering (Arg.Is (middleBottomTransaction), Arg<DataContainer>.Matches (dc => object.Equals (dc.ID, newObject.ID))));
 
             clientTransactionListener.AssertWasCalled (mock => mock.ObjectMarkedInvalid (subSubTransaction, newObject));
           }
@@ -558,11 +558,11 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Unload
         using (mockRepository.Unordered ())
         {
           clientTransactionListener.Expect (
-              mock => mock.DataContainerMapUnregistering (Arg.Is (TestableClientTransaction), Arg<DataContainer>.Matches (dc => dc.ID == order1.ID)));
+              mock => mock.DataContainerMapUnregistering (Arg.Is (TestableClientTransaction), Arg<DataContainer>.Matches (dc => object.Equals (dc.ID, order1.ID))));
           clientTransactionListener.Expect (
-              mock => mock.DataContainerMapUnregistering (Arg.Is (TestableClientTransaction), Arg<DataContainer>.Matches (dc => dc.ID == order2.ID)));
+              mock => mock.DataContainerMapUnregistering (Arg.Is (TestableClientTransaction), Arg<DataContainer>.Matches (dc => object.Equals (dc.ID, order2.ID))));
           clientTransactionListener.Expect (
-              mock => mock.DataContainerMapUnregistering (Arg.Is (TestableClientTransaction), Arg<DataContainer>.Matches (dc => dc.ID == order3.ID)));
+              mock => mock.DataContainerMapUnregistering (Arg.Is (TestableClientTransaction), Arg<DataContainer>.Matches (dc => object.Equals (dc.ID, order3.ID))));
         }
 
         unloadEventReceiver.Expect (mock => mock.OnUnloaded (order3));
@@ -621,7 +621,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Unload
       CheckEndPointExists (order, "Customer", shouldBePresent);
     }
 
-    private Order LoadOrderWithRelations (ObjectID objectID)
+    private Order LoadOrderWithRelations (IObjectID<DomainObject> objectID)
     {
       var order = Order.GetObject (objectID);
       order.EnsureDataAvailable ();

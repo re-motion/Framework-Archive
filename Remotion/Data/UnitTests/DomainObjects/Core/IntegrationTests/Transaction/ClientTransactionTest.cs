@@ -497,7 +497,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
 
       listenerMock.ObjectsLoading (
           Arg.Is (innerTransaction), 
-          Arg<ReadOnlyCollection<ObjectID>>.List.ContainsAll (new[] { DomainObjectIDs.OrderItem1, DomainObjectIDs.OrderItem2 }));
+          Arg<ReadOnlyCollection<IObjectID<DomainObject>>>.List.ContainsAll (new[] { DomainObjectIDs.OrderItem1, DomainObjectIDs.OrderItem2 }));
       listenerMock.DataContainerMapRegistering (null, null);
       LastCall.IgnoreArguments ().Repeat.Any();
       listenerMock.RelationEndPointMapRegistering (null, null);

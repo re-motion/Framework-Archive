@@ -28,7 +28,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Linq.IntegrationTests
   [TestFixture]
   public abstract class IntegrationTestBase : ClientTransactionBaseTest
   {
-    protected void CheckQueryResult<T> (IEnumerable<T> query, params ObjectID[] expectedObjectIDs)
+    protected void CheckQueryResult<T> (IEnumerable<T> query, params IObjectID<DomainObject>[] expectedObjectIDs)
         where T : DomainObject
     {
       T[] results = query.ToArray ();
@@ -43,7 +43,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Linq.IntegrationTests
       Assert.That (results, Is.EquivalentTo (expected));
     }
 
-    protected void CheckOrderedQueryResult<T> (IEnumerable<T> query, params ObjectID[] expectedObjectIDs)
+    protected void CheckOrderedQueryResult<T> (IEnumerable<T> query, params IObjectID<DomainObject>[] expectedObjectIDs)
         where T : DomainObject
     {
       T[] results = query.ToArray ();
@@ -58,7 +58,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Linq.IntegrationTests
       Assert.That (results, Is.EqualTo (expected));
     }
 
-    protected T[] GetExpectedObjects<T> (params ObjectID[] expectedObjectIDs)
+    protected T[] GetExpectedObjects<T> (params IObjectID<DomainObject>[] expectedObjectIDs)
         where T: DomainObject
     {
       if(expectedObjectIDs==null)
@@ -67,7 +67,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Linq.IntegrationTests
               select (id == null ? null : (T) LifetimeService.GetObject (TestableClientTransaction, id, false))).ToArray ();
     }
 
-    protected void CheckDataContainersRegistered (params ObjectID[] objectIDs)
+    protected void CheckDataContainersRegistered (params IObjectID<DomainObject>[] objectIDs)
     {
       // check that related objects have been loaded
       foreach (var id in objectIDs)
@@ -75,14 +75,14 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Linq.IntegrationTests
     }
 
     protected void CheckCollectionRelationRegistered (
-        ObjectID originatingObjectID, string shortPropertyName, bool checkOrdering, params ObjectID[] expectedRelatedObjectIDs)
+        IObjectID<DomainObject> originatingObjectID, string shortPropertyName, bool checkOrdering, params IObjectID<DomainObject>[] expectedRelatedObjectIDs)
     {
       var declaringType = originatingObjectID.ClassDefinition.ClassType;
       CheckCollectionRelationRegistered(originatingObjectID, declaringType, shortPropertyName, checkOrdering, expectedRelatedObjectIDs);
     }
 
     protected void CheckCollectionRelationRegistered (
-        ObjectID originatingObjectID, Type declaringType, string shortPropertyName, bool checkOrdering, params ObjectID[] expectedRelatedObjectIDs)
+        IObjectID<DomainObject> originatingObjectID, Type declaringType, string shortPropertyName, bool checkOrdering, params IObjectID<DomainObject>[] expectedRelatedObjectIDs)
     {
       var relationEndPointDefinition =
           originatingObjectID.ClassDefinition.GetMandatoryRelationEndPointDefinition (
@@ -99,13 +99,13 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Linq.IntegrationTests
         Assert.That (collectionEndPoint.Collection, Is.EquivalentTo (expectedRelatedObjects));
     }
 
-    protected void CheckObjectRelationRegistered (ObjectID originatingObjectID, string shortPropertyName, ObjectID expectedRelatedObjectID)
+    protected void CheckObjectRelationRegistered (IObjectID<DomainObject> originatingObjectID, string shortPropertyName, IObjectID<DomainObject> expectedRelatedObjectID)
     {
       var declaringType = originatingObjectID.ClassDefinition.ClassType;
       CheckObjectRelationRegistered(originatingObjectID, declaringType, shortPropertyName, expectedRelatedObjectID);
     }
 
-    protected void CheckObjectRelationRegistered (ObjectID originatingObjectID, Type declaringType, string shortPropertyName, ObjectID expectedRelatedObjectID)
+    protected void CheckObjectRelationRegistered (IObjectID<DomainObject> originatingObjectID, Type declaringType, string shortPropertyName, IObjectID<DomainObject> expectedRelatedObjectID)
     {
       var longPropertyName = declaringType.FullName + "." + shortPropertyName;
       var relationEndPointDefinition =

@@ -68,7 +68,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Mapping.Validation.Logical
       var validationResult = _validationRule.Validate (relationDefinition);
 
       var expectedMessage = "Relation property 'TestProperty' on class 'DerivedValidationDomainObjectClass' is of type 'String', but non-virtual "
-        +"relation properties must be of type 'ObjectID'.\r\n\r\n"
+        +"relation properties must be of type 'IObjectID`1'.\r\n\r\n"
         +"Declaring type: Remotion.Data.UnitTests.DomainObjects.Core.Mapping.TestDomain.Validation.DerivedValidationDomainObjectClass";
       AssertMappingValidationResult (validationResult, false, expectedMessage);
     }

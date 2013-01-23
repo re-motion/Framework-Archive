@@ -44,7 +44,7 @@ namespace Remotion.SecurityManager.Clients.Web.WxeFunctions.AccessControl
     {
     }
 
-    public EditPermissionsFormFunction (ITransactionMode transactionMode, ObjectID securableClassDefinitionObjectID)
+    public EditPermissionsFormFunction (ITransactionMode transactionMode, IObjectID<DomainObject> securableClassDefinitionObjectID)
       : base (transactionMode, securableClassDefinitionObjectID)
     {
     }

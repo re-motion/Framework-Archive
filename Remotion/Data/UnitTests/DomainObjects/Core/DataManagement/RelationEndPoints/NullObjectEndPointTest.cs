@@ -59,7 +59,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.RelationEndP
     }
 
     [Test]
-    public void ObjectID ()
+    public void IObjectID<DomainObject> ()
     {
       Assert.That (_nullEndPoint.ObjectID, Is.Null);
     }

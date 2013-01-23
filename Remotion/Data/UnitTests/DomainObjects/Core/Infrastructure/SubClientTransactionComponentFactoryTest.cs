@@ -100,7 +100,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure
     [Test]
     public void CreateInvalidDomainObjectManager ()
     {
-      _parentInvalidDomainObjectManagerStub.Stub (stub => stub.InvalidObjectIDs).Return (new ObjectID[0]);
+      _parentInvalidDomainObjectManagerStub.Stub (stub => stub.InvalidObjectIDs).Return (new IObjectID<DomainObject>[0]);
       var eventSink = MockRepository.GenerateStub<IClientTransactionEventSink>();
 
       var manager = _factory.CreateInvalidDomainObjectManager (_fakeConstructedTransaction, eventSink);

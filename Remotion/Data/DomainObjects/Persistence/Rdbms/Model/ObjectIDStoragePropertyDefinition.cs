@@ -23,7 +23,7 @@ using Remotion.Utilities;
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 {
   /// <summary>
-  /// The <see cref="ObjectIDStoragePropertyDefinition"/> represents an <see cref="ObjectID"/> property that is stored as an ID column and a ClassID
+  /// The <see cref="ObjectIDStoragePropertyDefinition"/> represents an <see cref="IObjectID{DomainObject}"/> property that is stored as an ID column and a ClassID
   /// column.
   /// </summary>
   public class ObjectIDStoragePropertyDefinition : IObjectIDStoragePropertyDefinition
@@ -42,7 +42,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 
     public Type PropertyType
     {
-      get { return typeof (ObjectID); }
+      get { return typeof (IObjectID<DomainObject>); }
     }
 
     public IRdbmsStoragePropertyDefinition ValueProperty
@@ -78,7 +78,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 
     public IEnumerable<ColumnValue> SplitValue (object value)
     {
-      var objectID = ArgumentUtility.CheckType<ObjectID> ("value", value);
+      var objectID = ArgumentUtility.CheckType<IObjectID<DomainObject>> ("value", value);
       if (objectID == null)
         return _valueProperty.SplitValue (null).Concat (_classIDProperty.SplitValue (null));
 
@@ -87,7 +87,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 
     public IEnumerable<ColumnValue> SplitValueForComparison (object value)
     {
-      var objectID = ArgumentUtility.CheckType<ObjectID> ("value", value);
+      var objectID = ArgumentUtility.CheckType<IObjectID<DomainObject>> ("value", value);
 
       return _valueProperty.SplitValueForComparison (GetValueOrNull (objectID));
     }
@@ -96,7 +96,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
     {
       ArgumentUtility.CheckNotNull ("values", values);
 
-      return _valueProperty.SplitValuesForComparison (values.Select (v => GetValueOrNull ((ObjectID) v)));
+      return _valueProperty.SplitValuesForComparison (values.Select (v => GetValueOrNull ((IObjectID<DomainObject>) v)));
     }
 
     public object CombineValue (IColumnValueProvider columnValueProvider)
@@ -143,7 +143,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
       return new ForeignKeyConstraintDefinition (nameProvider (referencingColumns),  referencedTableName,  referencingColumns, referencedColumns);
     }
 
-    private object GetValueOrNull (ObjectID objectID)
+    private object GetValueOrNull (IObjectID<DomainObject> objectID)
     {
       return objectID != null ? objectID.Value : null;
     }

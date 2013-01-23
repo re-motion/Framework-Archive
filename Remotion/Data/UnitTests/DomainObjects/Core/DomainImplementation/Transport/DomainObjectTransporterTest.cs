@@ -240,7 +240,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DomainImplementation.Transp
     {
       _transporter.LoadRecursive (DomainObjectIDs.Employee1, new FollowAllProcessNoneStrategy());
       Assert.That (_transporter.ObjectIDs.Count, Is.EqualTo (0));
-      Assert.That (new List<ObjectID> (_transporter.ObjectIDs), Is.Empty);
+      Assert.That (new List<IObjectID<DomainObject>> (_transporter.ObjectIDs), Is.Empty);
 
       TransportedDomainObjects transportedObjects = ExportAndLoadTransportData();
       Assert.That (transportedObjects.TransportedObjects, Is.Empty);
@@ -266,7 +266,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DomainImplementation.Transp
       strategyMock.Expect (
           mock => mock.Export (
                       Arg.Is (_stream),
-                      Arg<TransportItem[]>.Matches (items => items.Length == 2 && items[0].ID == loadedObject1.ID && items[1].ID == loadedObject2.ID)));
+                      Arg<TransportItem[]>.Matches (items => items.Length == 2 && object.Equals (items[0].ID, loadedObject1.ID) && object.Equals (items[1].ID, loadedObject2.ID))));
 
       strategyMock.Replay();
       _transporter.Export (_stream, strategyMock);

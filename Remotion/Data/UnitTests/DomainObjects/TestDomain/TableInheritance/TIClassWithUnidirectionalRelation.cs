@@ -29,7 +29,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.TestDomain.TableInheritance
       return NewObject<TIClassWithUnidirectionalRelation> ();
     }
 
-    public static TIClassWithUnidirectionalRelation GetObject (ObjectID id)
+    public static TIClassWithUnidirectionalRelation GetObject (IObjectID<DomainObject> id)
     {
       return GetObject<TIClassWithUnidirectionalRelation> (id);
     }

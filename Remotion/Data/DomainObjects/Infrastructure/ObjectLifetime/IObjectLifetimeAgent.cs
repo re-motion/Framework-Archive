@@ -35,13 +35,13 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectLifetime
     /// </summary>
     IObjectInitializationContext CurrentInitializationContext { get; }
 
-    DomainObject GetObjectReference (ObjectID objectID);
+    DomainObject GetObjectReference (IObjectID<DomainObject> objectID);
 
-    DomainObject GetObject (ObjectID objectID, bool includeDeleted);
-    DomainObject TryGetObject (ObjectID objectID);
+    DomainObject GetObject (IObjectID<DomainObject> objectID, bool includeDeleted);
+    DomainObject TryGetObject (IObjectID<DomainObject> objectID);
 
-    T[] GetObjects<T> (IEnumerable<ObjectID> objectIDs);
-    T[] TryGetObjects<T> (IEnumerable<ObjectID> objectIDs) where T : DomainObject;
+    T[] GetObjects<T> (IEnumerable<IObjectID<DomainObject>> objectIDs);
+    T[] TryGetObjects<T> (IEnumerable<IObjectID<DomainObject>> objectIDs) where T : DomainObject;
 
     void Delete (DomainObject domainObject);
   }

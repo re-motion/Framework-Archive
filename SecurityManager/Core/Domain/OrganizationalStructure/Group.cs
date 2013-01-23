@@ -79,17 +79,17 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
       return NewObject<Group>();
     }
 
-    public new static Group GetObject (ObjectID id)
+    public new static Group GetObject (IObjectID<DomainObject> id)
     {
       return DomainObject.GetObject<Group> (id);
     }
 
-    public static IQueryable<Group> FindByTenantID (ObjectID tenantID)
+    public static IQueryable<Group> FindByTenantID (IObjectID<DomainObject> tenantID)
     {
       ArgumentUtility.CheckNotNull ("tenantID", tenantID);
 
       return from g in QueryFactory.CreateLinqQuery<Group>()
-                   where g.Tenant.ID == tenantID
+                   where object.Equals (g.Tenant.ID, tenantID)
                    orderby g.Name, g.ShortName
                    select g;
     }

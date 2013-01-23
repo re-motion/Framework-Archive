@@ -29,7 +29,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
   public class DomainObjectStateCache
   {
     private readonly ClientTransaction _clientTransaction;
-    private readonly Dictionary<ObjectID, StateType> _stateCache = new Dictionary<ObjectID, StateType> ();
+    private readonly Dictionary<IObjectID<DomainObject>, StateType> _stateCache = new Dictionary<IObjectID<DomainObject>, StateType> ();
 
     [Serializable]
     private class StateUpdateListener : ClientTransactionListenerBase
@@ -80,13 +80,13 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     }
 
     /// <summary>
-    /// Gets the <see cref="StateType"/> value for the <see cref="DomainObject"/> with the given <see cref="ObjectID"/> from the cache; recalculating 
+    /// Gets the <see cref="StateType"/> value for the <see cref="DomainObject"/> with the given <see cref="IObjectID{DomainObject}"/> from the cache; recalculating 
     /// it if the cache does not have an up-to-date <see cref="StateType"/> value.
     /// </summary>
-    /// <param name="objectID">The <see cref="ObjectID"/> of the <see cref="DomainObject"/> whose state to get.</param>
-    /// <returns>The state of the <see cref="DomainObject"/> with the given <see cref="ObjectID"/>. If no such object has been loaded, 
+    /// <param name="objectID">The <see cref="IObjectID{DomainObject}"/> of the <see cref="DomainObject"/> whose state to get.</param>
+    /// <returns>The state of the <see cref="DomainObject"/> with the given <see cref="IObjectID{DomainObject}"/>. If no such object has been loaded, 
     /// <see cref="StateType.NotLoadedYet"/> is returned.</returns>
-    public StateType GetState (ObjectID objectID)
+    public StateType GetState (IObjectID<DomainObject> objectID)
     {
       ArgumentUtility.CheckNotNull ("objectID", objectID);
       
@@ -99,12 +99,12 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       return state;
     }
 
-    private void HandleStateUpdate (ObjectID objectID)
+    private void HandleStateUpdate (IObjectID<DomainObject> objectID)
     {
       _stateCache.Remove (objectID);
     }
 
-    private StateType CalculateState (ObjectID objectID)
+    private StateType CalculateState (IObjectID<DomainObject> objectID)
     {
       if (_clientTransaction.IsInvalid (objectID))
         return StateType.Invalid;

@@ -43,7 +43,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Queries
       TestableClientTransaction.Extensions.Add (extensionMock);
       try
       {
-        var query = from o in QueryFactory.CreateLinqQuery<Order>() where o.Customer.ID == DomainObjectIDs.Customer1 select o;
+        var query = from o in QueryFactory.CreateLinqQuery<Order>() where object.Equals (o.Customer.ID, DomainObjectIDs.Customer1) select o;
         query.ToArray();
 
         extensionMock.VerifyAllExpectations();

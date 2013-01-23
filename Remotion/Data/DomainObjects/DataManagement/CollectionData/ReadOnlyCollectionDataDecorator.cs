@@ -52,7 +52,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
       throw new NotSupportedException ("Cannot remove an item from a read-only collection.");
     }
 
-    public override bool Remove (ObjectID objectID)
+    public override bool Remove (IObjectID<DomainObject> objectID)
     {
       throw new NotSupportedException ("Cannot remove an item from a read-only collection.");
     }

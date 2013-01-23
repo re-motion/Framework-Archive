@@ -86,22 +86,22 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
     {
       return (ICommitRollbackAgent) PrivateInvoke.GetNonPublicField (clientTransaction, "_commitRollbackAgent");
     }
-    public static DomainObject CallGetObject (ClientTransaction clientTransaction, ObjectID objectID, bool includeDeleted)
+    public static DomainObject CallGetObject (ClientTransaction clientTransaction, IObjectID<DomainObject> objectID, bool includeDeleted)
     {
       return (DomainObject) PrivateInvoke.InvokeNonPublicMethod (clientTransaction, "GetObject", objectID, includeDeleted);
     }
 
-    public static DomainObject CallTryGetObject (ClientTransaction clientTransaction, ObjectID objectID)
+    public static DomainObject CallTryGetObject (ClientTransaction clientTransaction, IObjectID<DomainObject> objectID)
     {
       return (DomainObject) PrivateInvoke.InvokeNonPublicMethod (clientTransaction, "TryGetObject", objectID);
     }
 
-    public static DomainObject CallGetObjectReference (ClientTransaction clientTransaction, ObjectID objectID)
+    public static DomainObject CallGetObjectReference (ClientTransaction clientTransaction, IObjectID<DomainObject> objectID)
     {
       return (DomainObject) PrivateInvoke.InvokeNonPublicMethod (clientTransaction, "GetObjectReference", objectID);
     }
 
-    public static DomainObject CallGetInvalidObjectReference (ClientTransaction clientTransaction, ObjectID objectID)
+    public static DomainObject CallGetInvalidObjectReference (ClientTransaction clientTransaction, IObjectID<DomainObject> objectID)
     {
       return (DomainObject) PrivateInvoke.InvokeNonPublicMethod (clientTransaction, "GetInvalidObjectReference", objectID);
     }
@@ -131,14 +131,14 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
       return (DomainObject) PrivateInvoke.InvokeNonPublicMethod (clientTransaction, "NewObject", domainObjectType, constructorParameters);
     }
 
-    public static T[] CallGetObjects<T> (ClientTransaction clientTransaction, params ObjectID[] objectIDs)
+    public static T[] CallGetObjects<T> (ClientTransaction clientTransaction, params IObjectID<DomainObject>[] objectIDs)
     {
       // TODO 5118: Use PrivateInvoke when it gets support for generic.
       var method = typeof (ClientTransaction).GetMethod ("GetObjects", BindingFlags.NonPublic | BindingFlags.Instance).MakeGenericMethod (typeof (T));
       return (T[]) method.Invoke (clientTransaction, new object[] { objectIDs });
     }
 
-    public static T[] CallTryGetObjects<T> (ClientTransaction clientTransaction, params ObjectID[] objectIDs)
+    public static T[] CallTryGetObjects<T> (ClientTransaction clientTransaction, params IObjectID<DomainObject>[] objectIDs)
     {
       // TODO 5118: Use PrivateInvoke when it gets support for generic.
       var method = typeof (ClientTransaction).GetMethod ("TryGetObjects", BindingFlags.NonPublic | BindingFlags.Instance).MakeGenericMethod (typeof (T));

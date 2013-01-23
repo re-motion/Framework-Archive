@@ -393,7 +393,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Unload
       SetDatabaseModifyable ();
       var computer1 = Computer.GetObject (DomainObjectIDs.Computer1);
 
-      ObjectID newEmployeeID;
+      IObjectID<DomainObject> newEmployeeID;
       using (ClientTransaction.CreateRootTransaction ().EnterDiscardingScope ())
       {
         var computerInOtherTx = Computer.GetObject (computer1.ID);

@@ -135,7 +135,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
       base.CopyTo (array, arrayIndex);
     }
 
-    public bool Contains (ObjectID id)
+    public bool Contains (IObjectID<DomainObject> id)
     {
       return BaseContainsKey (id);
     }
@@ -163,7 +163,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
       set { throw new NotSupportedException ("It is not supported to set a DataContainer based by index."); }
     }
 
-    public DataContainer this [ObjectID id]
+    public DataContainer this [IObjectID<DomainObject> id]
     {
       get { return (DataContainer) BaseGetObject (id); }
     }
@@ -180,7 +180,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
       Remove (this[index]);
     }
 
-    public void Remove (ObjectID id)
+    public void Remove (IObjectID<DomainObject> id)
     {
       Remove (this[id]);
     }

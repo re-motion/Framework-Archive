@@ -59,7 +59,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
           (RelationEndPointDefinition) propertyDefinition.ClassDefinition.GetRelationEndPointDefinition (propertyDefinition.PropertyName);
       if (relationEndPointDefinition != null)
       {
-        Assertion.IsTrue (propertyDefinition.PropertyType == typeof (ObjectID));
+        Assertion.IsTrue (propertyDefinition.PropertyType == typeof (IObjectID<DomainObject>));
         return _relationStoragePropertyDefinitionFactory.CreateStoragePropertyDefinition (relationEndPointDefinition);
       }
       else
@@ -70,7 +70,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
 
     public virtual IRdbmsStoragePropertyDefinition CreateStoragePropertyDefinition (object value)
     {
-      var objectID = value as ObjectID;
+      var objectID = value as IObjectID<DomainObject>;
       if (objectID != null)
         return _relationStoragePropertyDefinitionFactory.CreateStoragePropertyDefinition (objectID.ClassDefinition, "Value", "ValueClassID");
 

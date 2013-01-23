@@ -30,7 +30,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.TestDomain.TableInheritance
       return NewObject<TIHistoryEntry>();
     }
 
-    public static TIHistoryEntry GetObject (ObjectID id)
+    public static TIHistoryEntry GetObject (IObjectID<DomainObject> id)
     {
       return GetObject<TIHistoryEntry> (id);
     }

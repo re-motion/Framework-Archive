@@ -27,9 +27,9 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SecurityManagerPrincipalTest
   [TestFixture]
   public class GetActiveSubstitutions : DomainTest
   {
-    private ObjectID _tenantID;
-    private ObjectID _userID;
-    private ObjectID[] _substitutionIDs;
+    private IObjectID<DomainObject> _tenantID;
+    private IObjectID<DomainObject> _userID;
+    private IObjectID<DomainObject>[] _substitutionIDs;
 
     public override void SetUp ()
     {

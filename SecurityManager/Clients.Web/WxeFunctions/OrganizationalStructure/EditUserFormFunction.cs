@@ -44,7 +44,7 @@ namespace Remotion.SecurityManager.Clients.Web.WxeFunctions.OrganizationalStruct
     {
     }
 
-    public EditUserFormFunction (ITransactionMode transactionMode, ObjectID organizationalStructureObjectID)
+    public EditUserFormFunction (ITransactionMode transactionMode, IObjectID<DomainObject> organizationalStructureObjectID)
       : base (transactionMode, organizationalStructureObjectID)
     {
     }

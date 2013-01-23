@@ -62,7 +62,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.ObjectIDStri
     public void Parse_StringValue ()
     {
       string idString = "Official|Arthur Dent|System.String";
-      ObjectID id = ObjectIDStringSerializer.Instance.Parse (idString);
+      IObjectID<DomainObject> id = ObjectIDStringSerializer.Instance.Parse (idString);
 
       Assert.That (id.StorageProviderDefinition.Name, Is.EqualTo ("UnitTestStorageProviderStub"));
       Assert.That (id.ClassID, Is.EqualTo ("Official"));
@@ -74,7 +74,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.ObjectIDStri
     public void Parse_Int32Value ()
     {
       string idString = "Official|42|System.Int32";
-      ObjectID id = ObjectIDStringSerializer.Instance.Parse (idString);
+      IObjectID<DomainObject> id = ObjectIDStringSerializer.Instance.Parse (idString);
 
       Assert.That (id.StorageProviderDefinition.Name, Is.EqualTo ("UnitTestStorageProviderStub"));
       Assert.That (id.ClassID, Is.EqualTo ("Official"));
@@ -86,7 +86,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.ObjectIDStri
     public void Parse_GuidValue ()
     {
       string idString = "Order|5d09030c-25c2-4735-b514-46333bd28ac8|System.Guid";
-      ObjectID id = ObjectIDStringSerializer.Instance.Parse (idString);
+      IObjectID<DomainObject> id = ObjectIDStringSerializer.Instance.Parse (idString);
 
       Assert.That (id.StorageProviderDefinition.Name, Is.EqualTo ("TestDomain"));
       Assert.That (id.ClassID, Is.EqualTo ("Order"));
@@ -139,7 +139,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.ObjectIDStri
     }
 
     [Test]
-    [ExpectedException (typeof (FormatException), 
+    [ExpectedException (typeof (FormatException),
         ExpectedMessage = "Serialized ObjectID 'Arder|5d09030c-25c2-4735-b514-46333bd28ac8|System.Guid' is invalid: 'Arder' is not a valid class ID.",
         MatchType = MessageMatch.Contains)]
     public void Parse_WithErrorParsingClassID ()
@@ -153,7 +153,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.ObjectIDStri
     {
       string idString = "Order|5d09030c-25c2-4735-b514-46333bd28ac8|System.Guid";
 
-      ObjectID id;
+      IObjectID<DomainObject> id;
       bool result = ObjectIDStringSerializer.Instance.TryParse (idString, out id);
 
       Assert.That (result, Is.True);
@@ -168,7 +168,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.ObjectIDStri
     {
       string idString = "";
 
-      ObjectID id;
+      IObjectID<DomainObject> id;
       bool result = ObjectIDStringSerializer.Instance.TryParse (idString, out id);
 
       Assert.That (result, Is.False);
@@ -180,7 +180,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.ObjectIDStri
     {
       string idString = "Order|5d09030c-25c2-4735-b514-46333bd28ac8|System.Guid|Zaphod";
 
-      ObjectID id;
+      IObjectID<DomainObject> id;
       bool result = ObjectIDStringSerializer.Instance.TryParse (idString, out id);
 
       Assert.That (result, Is.False);
@@ -192,7 +192,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.ObjectIDStri
     {
       string idString = "Order|5d09030c-25c2-4735-b514-46333bd28ac8|System.Double";
 
-      ObjectID id;
+      IObjectID<DomainObject> id;
       bool result = ObjectIDStringSerializer.Instance.TryParse (idString, out id);
 
       Assert.That (result, Is.False);
@@ -204,7 +204,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.ObjectIDStri
     {
       string idString = "Order|12|System.Guid";
 
-      ObjectID id;
+      IObjectID<DomainObject> id;
       bool result = ObjectIDStringSerializer.Instance.TryParse (idString, out id);
 
       Assert.That (result, Is.False);
@@ -216,7 +216,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.ObjectIDStri
     {
       string idString = "Order|5d09030c-25c2-4735-b514-46333bd28ac8|System.Goid";
 
-      ObjectID id;
+      IObjectID<DomainObject> id;
       bool result = ObjectIDStringSerializer.Instance.TryParse (idString, out id);
 
       Assert.That (result, Is.False);
@@ -228,7 +228,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.ObjectIDStri
     {
       string idString = "Arder|5d09030c-25c2-4735-b514-46333bd28ac8|System.Guid";
 
-      ObjectID id;
+      IObjectID<DomainObject> id;
       bool result = ObjectIDStringSerializer.Instance.TryParse (idString, out id);
 
       Assert.That (result, Is.False);

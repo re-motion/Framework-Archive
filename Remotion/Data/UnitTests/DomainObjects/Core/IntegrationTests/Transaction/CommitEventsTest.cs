@@ -151,7 +151,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
       _customer.Committing += (sender, e) => order.OrderNumber = 1000;
       TestableClientTransaction.Committing += (sender1, args) =>
       {
-        var customer = (Customer) args.DomainObjects.SingleOrDefault (obj => obj.ID == DomainObjectIDs.Customer1);
+        var customer = (Customer) args.DomainObjects.SingleOrDefault (obj => object.Equals (obj.ID, DomainObjectIDs.Customer1));
         if (customer != null)
           customer.IndustrialSector.Name = "New industrial sector name";
       };
@@ -205,7 +205,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
       var clientTransactionEventReceiver = new ClientTransactionEventReceiver (TestableClientTransaction);
 
       ClassWithAllDataTypes classWithAllDataTypes = ClassWithAllDataTypes.GetObject (DomainObjectIDs.ClassWithAllDataTypes1);
-      ObjectID classWithAllDataTypesID = classWithAllDataTypes.ID;
+      IObjectID<DomainObject> classWithAllDataTypesID = classWithAllDataTypes.ID;
 
       classWithAllDataTypes.Delete();
 
@@ -220,7 +220,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
       Assert.That (committingDomainObjects.Count, Is.EqualTo (1));
       Assert.That (committedDomainObjects.Count, Is.EqualTo (0));
 
-      Assert.That (committingDomainObjects.Any (obj => obj.ID == classWithAllDataTypesID), Is.True);
+      Assert.That (committingDomainObjects.Any (obj => object.Equals (obj.ID, classWithAllDataTypesID)), Is.True);
     }
 
     [Test]

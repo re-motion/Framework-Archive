@@ -49,7 +49,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       get { return _definition; }
     }
 
-    public ObjectID ObjectID
+    public IObjectID<DomainObject> ObjectID
     {
       get { return null; }
     }
@@ -69,12 +69,12 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       get { return true; }
     }
 
-    public ObjectID OppositeObjectID
+    public IObjectID<DomainObject> OppositeObjectID
     {
       get { return null; }
     }
 
-    public ObjectID OriginalOppositeObjectID
+    public IObjectID<DomainObject> OriginalOppositeObjectID
     {
       get { throw new InvalidOperationException ("It is not possible to get the OriginalOppositeObjectID from a NullObjectEndPoint."); }
     }

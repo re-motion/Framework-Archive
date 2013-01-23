@@ -20,10 +20,10 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
 {
   /// <summary>
   /// <see cref="ITableDefinitionFinder"/> defines the API for all implementations that are responsible to get the <see cref="TableDefinition"/> for
-  /// an <see cref="ObjectID"/>-class definition.
+  /// an <see cref="IObjectID{DomainObject}"/>-class definition.
   /// </summary>
   public interface ITableDefinitionFinder
   {
-    TableDefinition GetTableDefinition (ObjectID objectID);
+    TableDefinition GetTableDefinition (IObjectID<DomainObject> objectID);
   }
 }

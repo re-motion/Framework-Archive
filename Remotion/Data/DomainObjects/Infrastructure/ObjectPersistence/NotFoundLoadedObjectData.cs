@@ -24,14 +24,14 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
   /// </summary>
   public class NotFoundLoadedObjectData : ILoadedObjectData
   {
-    private readonly ObjectID _objectID;
+    private readonly IObjectID<DomainObject> _objectID;
 
-    public NotFoundLoadedObjectData (ObjectID objectID)
+    public NotFoundLoadedObjectData (IObjectID<DomainObject> objectID)
     {
       _objectID = objectID;
     }
 
-    public ObjectID ObjectID
+    public IObjectID<DomainObject> ObjectID
     {
       get { return _objectID; }
     }

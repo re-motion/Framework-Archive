@@ -126,7 +126,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
     }
 
     public IStorageProviderCommand<ObjectLookupResult<DataContainer>, IRdbmsProviderCommandExecutionContext> CreateForSingleIDLookup (
-        ObjectID objectID)
+        IObjectID<DomainObject> objectID)
     {
       ArgumentUtility.CheckNotNull ("objectID", objectID);
 
@@ -135,7 +135,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
 
     public IStorageProviderCommand<IEnumerable<ObjectLookupResult<DataContainer>>, IRdbmsProviderCommandExecutionContext> CreateForSortedMultiIDLookup
         (
-        IEnumerable<ObjectID> objectIDs)
+        IEnumerable<IObjectID<DomainObject>> objectIDs)
     {
       ArgumentUtility.CheckNotNull ("objectIDs", objectIDs);
 
@@ -143,7 +143,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
     }
 
     public IStorageProviderCommand<IEnumerable<DataContainer>, IRdbmsProviderCommandExecutionContext> CreateForRelationLookup (
-        RelationEndPointDefinition foreignKeyEndPoint, ObjectID foreignKeyValue, SortExpressionDefinition sortExpressionDefinition)
+        RelationEndPointDefinition foreignKeyEndPoint, IObjectID<DomainObject> foreignKeyValue, SortExpressionDefinition sortExpressionDefinition)
     {
       ArgumentUtility.CheckNotNull ("foreignKeyEndPoint", foreignKeyEndPoint);
       ArgumentUtility.CheckNotNull ("foreignKeyValue", foreignKeyValue);
@@ -170,7 +170,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
     }
 
     public IStorageProviderCommand<IEnumerable<ObjectLookupResult<object>>, IRdbmsProviderCommandExecutionContext> CreateForMultiTimestampLookup (
-        IEnumerable<ObjectID> objectIDs)
+        IEnumerable<IObjectID<DomainObject>> objectIDs)
     {
       ArgumentUtility.CheckNotNull ("objectIDs", objectIDs);
 

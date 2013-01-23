@@ -28,8 +28,8 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
 
     // static members and constants
 
-    private ObjectID _clientID;
-    private ObjectID _fileID;
+    private IObjectID<DomainObject> _clientID;
+    private IObjectID<DomainObject> _fileID;
 
     // member fields
 

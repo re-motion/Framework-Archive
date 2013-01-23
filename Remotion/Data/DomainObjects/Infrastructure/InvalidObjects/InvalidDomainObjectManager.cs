@@ -27,7 +27,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.InvalidObjects
   public class InvalidDomainObjectManager : IInvalidDomainObjectManager
   {
     private readonly IClientTransactionEventSink _transactionEventSink;
-    private readonly Dictionary<ObjectID, DomainObject> _invalidObjects = new Dictionary<ObjectID, DomainObject> ();
+    private readonly Dictionary<IObjectID<DomainObject>, DomainObject> _invalidObjects = new Dictionary<IObjectID<DomainObject>, DomainObject> ();
 
     public InvalidDomainObjectManager (IClientTransactionEventSink transactionEventSink)
     {
@@ -63,18 +63,18 @@ namespace Remotion.Data.DomainObjects.Infrastructure.InvalidObjects
       get { return _invalidObjects.Count; }
     }
 
-    public IEnumerable<ObjectID> InvalidObjectIDs
+    public IEnumerable<IObjectID<DomainObject>> InvalidObjectIDs
     {
       get { return _invalidObjects.Keys; }
     }
 
-    public bool IsInvalid (ObjectID id)
+    public bool IsInvalid (IObjectID<DomainObject> id)
     {
       ArgumentUtility.CheckNotNull ("id", id);
       return _invalidObjects.ContainsKey (id);
     }
 
-    public DomainObject GetInvalidObjectReference (ObjectID id)
+    public DomainObject GetInvalidObjectReference (IObjectID<DomainObject> id)
     {
       ArgumentUtility.CheckNotNull ("id", id);
 
@@ -105,7 +105,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.InvalidObjects
       return true;
     }
 
-    public bool MarkNotInvalid (ObjectID objectID)
+    public bool MarkNotInvalid (IObjectID<DomainObject> objectID)
     {
       ArgumentUtility.CheckNotNull ("objectID", objectID);
 

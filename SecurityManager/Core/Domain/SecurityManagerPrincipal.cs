@@ -62,15 +62,15 @@ namespace Remotion.SecurityManager.Domain
     }
 
     private int _revision;
-    private readonly ObjectID _tenantID;
-    private readonly ObjectID _userID;
-    private readonly ObjectID _substitutionID;
+    private readonly IObjectID<DomainObject> _tenantID;
+    private readonly IObjectID<DomainObject> _userID;
+    private readonly IObjectID<DomainObject> _substitutionID;
     private TenantProxy _tenantProxy;
     private UserProxy _userProxy;
     private SubstitutionProxy _substitutionProxy;
     private ISecurityPrincipal _securityPrincipal;
 
-    public SecurityManagerPrincipal (ObjectID tenantID, ObjectID userID, ObjectID substitutionID)
+    public SecurityManagerPrincipal (IObjectID<DomainObject> tenantID, IObjectID<DomainObject> userID, IObjectID<DomainObject> substitutionID)
     {
       ArgumentUtility.CheckNotNull ("tenantID", tenantID);
       ArgumentUtility.CheckNotNull ("userID", userID);

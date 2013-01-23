@@ -30,7 +30,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.ObjectLifeti
       PrivateInvoke.SetNonPublicStaticField (typeof (ObjectLifetimeAgent), "_currentInitializationContext", objectInitializationContext);
     }
 
-    public static void StubCurrentObjectInitializationContext (ClientTransaction clientTransaction, ObjectID objectID)
+    public static void StubCurrentObjectInitializationContext (ClientTransaction clientTransaction, IObjectID<DomainObject> objectID)
     {
       var initializationContextStub = new ObjectInitializationContext (
           objectID,
@@ -40,7 +40,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.ObjectLifeti
       SetCurrentInitializationContext (initializationContextStub);
    }
 
-    public static T CallWithInitializationContext<T> (ClientTransaction clientTransaction, ObjectID objectID, Func<T> func)
+    public static T CallWithInitializationContext<T> (ClientTransaction clientTransaction, IObjectID<DomainObject> objectID, Func<T> func)
     {
       StubCurrentObjectInitializationContext (clientTransaction, objectID);
       try
@@ -53,7 +53,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.ObjectLifeti
       }
     }
 
-    public static void CallWithInitializationContext (ClientTransaction clientTransaction, ObjectID objectID, Action action)
+    public static void CallWithInitializationContext (ClientTransaction clientTransaction, IObjectID<DomainObject> objectID, Action action)
     {
       StubCurrentObjectInitializationContext (clientTransaction, objectID);
       try

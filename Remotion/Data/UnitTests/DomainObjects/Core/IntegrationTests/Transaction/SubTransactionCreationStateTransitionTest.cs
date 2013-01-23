@@ -133,7 +133,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
     public void RootToSubDeletedThrowsWhenReloadingTheObject ()
     {
       Order obj = GetDeleted ();
-      ObjectID id = obj.ID;
+      IObjectID<DomainObject> id = obj.ID;
       using (TestableClientTransaction.CreateSubTransaction ().EnterDiscardingScope ())
       {
         Assert.That (obj.IsInvalid, Is.True);

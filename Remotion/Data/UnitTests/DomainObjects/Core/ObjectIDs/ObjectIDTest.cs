@@ -73,7 +73,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.ObjectIDs
     public void DeserializeGuidValue ()
     {
       string idString = "Order|5d09030c-25c2-4735-b514-46333bd28ac8|System.Guid";
-      ObjectID id = ObjectID.Parse (idString);
+      var id = ObjectID.Parse (idString);
 
       Assert.That (id, Is.TypeOf<ObjectID<Order>>());
       Assert.That (id.StorageProviderDefinition.Name, Is.EqualTo ("TestDomain"));
@@ -145,8 +145,8 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.ObjectIDs
       var id1 = ObjectID.Create("Official", 42);
       var id2 = ObjectID.Create("Official", 42);
 
-      Assert.That (id1 == id2, Is.True);
-      Assert.That (id1 != id2, Is.False);
+      Assert.That (object.Equals (id1, id2), Is.True);
+      Assert.That (!object.Equals (id1, id2), Is.False);
     }
 
     [Test]
@@ -155,18 +155,18 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.ObjectIDs
       var id1 = ObjectID.Create("Official", 42);
       var id2 = ObjectID.Create("SpecialOfficial", 1);
 
-      Assert.That (id1 == id2, Is.False);
-      Assert.That (id1 != id2, Is.True);
+      Assert.That (object.Equals (id1, id2), Is.False);
+      Assert.That (!object.Equals (id1, id2), Is.True);
     }
 
     [Test]
     public void EqualityOperatorForSameObject ()
     {
       var id1 = ObjectID.Create("Official", 42);
-      ObjectID id2 = id1;
+      var id2 = id1;
 
-      Assert.That (id1 == id2, Is.True);
-      Assert.That (id1 != id2, Is.False);
+      Assert.That (object.Equals (id1, id2), Is.True);
+      Assert.That (!object.Equals (id1, id2), Is.False);
     }
 
     [Test]
@@ -175,8 +175,8 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.ObjectIDs
 // ReSharper disable RedundantCast
 // ReSharper disable EqualExpressionComparison
 // ReSharper disable ConditionIsAlwaysTrueOrFalse
-      Assert.That ((ObjectID) null == (ObjectID) null, Is.True);
-      Assert.That ((ObjectID) null != (ObjectID) null, Is.False);
+      Assert.That (object.Equals ((ObjectID) null, (ObjectID) null), Is.True);
+      Assert.That (!object.Equals ((ObjectID) null, (ObjectID) null), Is.False);
 // ReSharper restore ConditionIsAlwaysTrueOrFalse
 // ReSharper restore EqualExpressionComparison
 // ReSharper restore RedundantCast

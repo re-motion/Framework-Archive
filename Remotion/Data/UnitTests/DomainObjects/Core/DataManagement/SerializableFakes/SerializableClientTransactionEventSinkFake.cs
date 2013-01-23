@@ -147,7 +147,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.Serializable
 
     }
 
-    public void RaiseObjectsLoadingEvent (ReadOnlyCollection<ObjectID> objectIDs)
+    public void RaiseObjectsLoadingEvent (ReadOnlyCollection<IObjectID<DomainObject>> objectIDs)
     {
 
     }
@@ -157,7 +157,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.Serializable
 
     }
 
-    public void RaiseObjectsNotFoundEvent (ReadOnlyCollection<ObjectID> objectIDs)
+    public void RaiseObjectsNotFoundEvent (ReadOnlyCollection<IObjectID<DomainObject>> objectIDs)
     {
 
     }

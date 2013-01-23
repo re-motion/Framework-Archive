@@ -273,9 +273,9 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
           DomainObjectIDs.OrderItem1);
 
       extensionMock.AssertWasCalled (mock => mock.ObjectsLoading (Arg.Is (parent),
-          Arg<ReadOnlyCollection<ObjectID>>.List.Equal (new[] { DomainObjectIDs.Order1, DomainObjectIDs.Order2, DomainObjectIDs.OrderItem1 })));
+          Arg<ReadOnlyCollection<IObjectID<DomainObject>>>.List.Equal (new[] { DomainObjectIDs.Order1, DomainObjectIDs.Order2, DomainObjectIDs.OrderItem1 })));
       extensionMock.AssertWasNotCalled (mock => mock.ObjectsLoading (Arg.Is (parent),
-          Arg<ReadOnlyCollection<ObjectID>>.List.ContainsAll (new[] { DomainObjectIDs.ClassWithAllDataTypes1 })));
+          Arg<ReadOnlyCollection<IObjectID<DomainObject>>>.List.ContainsAll (new[] { DomainObjectIDs.ClassWithAllDataTypes1 })));
     }
 
     [Test]
@@ -298,9 +298,9 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
           DomainObjectIDs.OrderItem1);
 
       extensionMock.AssertWasCalled (mock => mock.ObjectsLoading (Arg.Is (parent),
-          Arg<ReadOnlyCollection<ObjectID>>.List.Equal (new[] { DomainObjectIDs.Order1, DomainObjectIDs.Order2, DomainObjectIDs.OrderItem1 })));
+          Arg<ReadOnlyCollection<IObjectID<DomainObject>>>.List.Equal (new[] { DomainObjectIDs.Order1, DomainObjectIDs.Order2, DomainObjectIDs.OrderItem1 })));
       extensionMock.AssertWasNotCalled (mock => mock.ObjectsLoading (Arg.Is (parent),
-          Arg<ReadOnlyCollection<ObjectID>>.List.ContainsAll (new[] { DomainObjectIDs.ClassWithAllDataTypes1 })));
+          Arg<ReadOnlyCollection<IObjectID<DomainObject>>>.List.ContainsAll (new[] { DomainObjectIDs.ClassWithAllDataTypes1 })));
     }
 
     [Test]
@@ -324,7 +324,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
 
         listenerMock.AssertWasCalled (mock => mock.ObjectsLoading (
             Arg.Is (subTransaction),
-            Arg<ReadOnlyCollection<ObjectID>>.List.Equal (new[] { DomainObjectIDs.Order1, DomainObjectIDs.Order2, DomainObjectIDs.OrderItem1 })));
+            Arg<ReadOnlyCollection<IObjectID<DomainObject>>>.List.Equal (new[] { DomainObjectIDs.Order1, DomainObjectIDs.Order2, DomainObjectIDs.OrderItem1 })));
 
         listenerMock.AssertWasCalled (mock => mock.ObjectsLoaded (
             Arg.Is (subTransaction),
@@ -373,7 +373,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
 
         listenerMock.AssertWasNotCalled (mock => mock.ObjectsLoading (
             Arg<ClientTransaction>.Is.Anything,
-            Arg<ReadOnlyCollection<ObjectID>>.Is.Anything));
+            Arg<ReadOnlyCollection<IObjectID<DomainObject>>>.Is.Anything));
         listenerMock.AssertWasNotCalled (mock => mock.ObjectsLoaded (
             Arg<ClientTransaction>.Is.Anything,
             Arg<ReadOnlyCollection<DomainObject>>.Is.Anything));
@@ -410,7 +410,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
 
         listenerMock.AssertWasNotCalled (mock => mock.ObjectsLoading (
             Arg<ClientTransaction>.Is.Anything,
-            Arg<ReadOnlyCollection<ObjectID>>.Is.Anything));
+            Arg<ReadOnlyCollection<IObjectID<DomainObject>>>.Is.Anything));
         listenerMock.AssertWasNotCalled (mock => mock.ObjectsLoaded (
             Arg<ClientTransaction>.Is.Anything,
             Arg<ReadOnlyCollection<DomainObject>>.Is.Anything));

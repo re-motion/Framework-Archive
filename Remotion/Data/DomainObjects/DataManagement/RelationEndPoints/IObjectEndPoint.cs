@@ -17,13 +17,13 @@
 namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 {
   /// <summary>
-  /// Represents an <see cref="IRelationEndPoint"/> holding the <see cref="ObjectID"/> of a <see cref="DomainObject"/> instance, i.e. the "one" side of a 
+  /// Represents an <see cref="IRelationEndPoint"/> holding the <see cref="IObjectID{DomainObject}"/> of a <see cref="DomainObject"/> instance, i.e. the "one" side of a 
   /// relation.
   /// </summary>
   public interface IObjectEndPoint : IRelationEndPoint
   {
-    ObjectID OppositeObjectID { get; }
-    ObjectID OriginalOppositeObjectID { get; }
+    IObjectID<DomainObject> OppositeObjectID { get; }
+    IObjectID<DomainObject> OriginalOppositeObjectID { get; }
 
     DomainObject GetOppositeObject ();
     DomainObject GetOriginalOppositeObject ();

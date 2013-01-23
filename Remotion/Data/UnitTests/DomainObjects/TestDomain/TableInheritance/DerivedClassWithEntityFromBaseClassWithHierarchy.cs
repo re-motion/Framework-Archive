@@ -27,7 +27,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.TestDomain.TableInheritance
       return NewObject<DerivedClassWithEntityFromBaseClassWithHierarchy> ();
     }
 
-    public new static DerivedClassWithEntityFromBaseClassWithHierarchy GetObject (ObjectID id)
+    public new static DerivedClassWithEntityFromBaseClassWithHierarchy GetObject (IObjectID<DomainObject> id)
     {
       return GetObject<DerivedClassWithEntityFromBaseClassWithHierarchy> (id);
     }

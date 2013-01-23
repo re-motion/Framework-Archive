@@ -53,7 +53,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.Serializable
       get { throw new NotImplementedException(); }
     }
 
-    public ObjectID ObjectID
+    public IObjectID<DomainObject> ObjectID
     {
       get { throw new NotImplementedException(); }
     }
@@ -198,12 +198,12 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.Serializable
       throw new NotImplementedException();
     }
 
-    public ObjectID OppositeObjectID
+    public IObjectID<DomainObject> OppositeObjectID
     {
       get { throw new NotImplementedException(); }
     }
 
-    public ObjectID OriginalOppositeObjectID
+    public IObjectID<DomainObject> OriginalOppositeObjectID
     {
       get { throw new NotImplementedException(); }
     }

@@ -30,7 +30,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.TestDomain
       return NewObject<Company> ();
     }
 
-    public new static Company GetObject (ObjectID id)
+    public new static Company GetObject (IObjectID<DomainObject> id)
     {
       return GetObject<Company> (id);
     }

@@ -44,7 +44,7 @@ namespace Remotion.SecurityManager.Clients.Web.WxeFunctions.AccessControl
     {
     }
 
-    public SecurableClassDefinitionListFormFunction (ITransactionMode transactionMode, ObjectID tenantID)
+    public SecurableClassDefinitionListFormFunction (ITransactionMode transactionMode, IObjectID<DomainObject> tenantID)
       : base (transactionMode, tenantID)
     {
     }

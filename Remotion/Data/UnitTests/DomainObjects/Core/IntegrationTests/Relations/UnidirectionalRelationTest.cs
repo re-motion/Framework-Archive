@@ -112,9 +112,9 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Relations
       Assert.That (client2.State, Is.EqualTo (StateType.New));
       Assert.That (location.State, Is.EqualTo (StateType.New));
 
-      ObjectID clientID1 = client1.ID;
-      ObjectID clientID2 = client2.ID;
-      ObjectID locationID = location.ID;
+      IObjectID<DomainObject> clientID1 = client1.ID;
+      IObjectID<DomainObject> clientID2 = client2.ID;
+      IObjectID<DomainObject> locationID = location.ID;
 
 
       ChangeState[] expectedStates = new ChangeState[]
@@ -283,8 +283,8 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Relations
       Client newClient2 = Client.NewObject ();
       newClient2.ParentClient = newClient1;
 
-      ObjectID newClientID1 = newClient1.ID;
-      ObjectID newClientID2 = newClient2.ID;
+      IObjectID<DomainObject> newClientID1 = newClient1.ID;
+      IObjectID<DomainObject> newClientID2 = newClient2.ID;
 
       TestableClientTransaction.Commit ();
 

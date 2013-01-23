@@ -35,7 +35,7 @@ namespace Remotion.Data.DomainObjects
     private static readonly Type s_stringPropertyValueType = typeof (string);
     private static readonly Type s_binaryPropertyValueType = typeof (byte[]);
     private static readonly Type s_typePropertyValueType = typeof (Type);
-    private static readonly Type s_objectIDPropertyValueType = typeof (ObjectID);
+    private static readonly Type s_objectIDPropertyValueType = typeof (IObjectID<DomainObject>);
 
     /// <summary>
     /// Returns the directory of the current executing assembly.

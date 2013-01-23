@@ -34,7 +34,7 @@ namespace Remotion.SecurityManager.Domain.SearchInfrastructure.OrganizationalStr
   /// </para>
   /// <para>
   /// The service expected search arguments of type <see cref="SecurityManagerSearchArguments"/>,
-  /// <see cref="DefaultSearchArguments"/> with the <see cref="DefaultSearchArguments.SearchStatement"/> set to the serialized <see cref="ObjectID"/>
+  /// <see cref="DefaultSearchArguments"/> with the <see cref="DefaultSearchArguments.SearchStatement"/> set to the serialized <see cref="IObjectID{DomainObject}"/>
   /// of the <see cref="Tenant"/>, or <see langword="null" />.
   /// </para>
   /// </remarks>

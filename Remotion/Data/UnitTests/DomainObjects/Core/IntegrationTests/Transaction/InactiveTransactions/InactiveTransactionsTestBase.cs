@@ -118,7 +118,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
       Assert.That (domainObject.TransactionContext[clientTransaction].State, Is.EqualTo (expectedState));
     }
 
-    protected void CheckDataNotLoaded (ClientTransaction clientTransaction, ObjectID objectID)
+    protected void CheckDataNotLoaded (ClientTransaction clientTransaction, IObjectID<DomainObject> objectID)
     {
       Assert.That (ClientTransactionTestHelper.GetIDataManager (clientTransaction).DataContainers[objectID], Is.Null);
     }

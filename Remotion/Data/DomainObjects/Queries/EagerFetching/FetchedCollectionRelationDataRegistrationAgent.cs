@@ -65,7 +65,7 @@ namespace Remotion.Data.DomainObjects.Queries.EagerFetching
       RegisterEndPointData (relationEndPointDefinition, originatingObjects, groupedRelatedObjects);
     }
 
-    private ILookup<ObjectID, ILoadedObjectData> CorrelateRelatedObjects (
+    private ILookup<IObjectID<DomainObject>, ILoadedObjectData> CorrelateRelatedObjects (
         IEnumerable<LoadedObjectDataWithDataSourceData> relatedObjects, 
         VirtualRelationEndPointDefinition relationEndPointDefinition)
     {
@@ -76,7 +76,7 @@ namespace Remotion.Data.DomainObjects.Queries.EagerFetching
     private void RegisterEndPointData (
        IRelationEndPointDefinition relationEndPointDefinition,
        IEnumerable<ILoadedObjectData> originatingObjects,
-       ILookup<ObjectID, ILoadedObjectData> groupedRelatedObjects)
+       ILookup<IObjectID<DomainObject>, ILoadedObjectData> groupedRelatedObjects)
     {
       var relatedObjectsByOriginalObject = groupedRelatedObjects;
       foreach (var originalObject in originatingObjects)

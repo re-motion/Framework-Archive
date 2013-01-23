@@ -89,7 +89,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Unload
     {
       ClientTransactionTestHelper.EnsureTransactionThrowsOnEvent (
           ClientTransaction.Current,
-          mock => mock.ObjectsLoading (Arg<ClientTransaction>.Is.Anything, Arg<ReadOnlyCollection<ObjectID>>.Is.Anything));
+          mock => mock.ObjectsLoading (Arg<ClientTransaction>.Is.Anything, Arg<ReadOnlyCollection<IObjectID<DomainObject>>>.Is.Anything));
     }
 
     protected void AssertObjectWasLoaded (IClientTransactionListener listenerMock, DomainObject loadedObject)

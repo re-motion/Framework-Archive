@@ -39,12 +39,12 @@ namespace Remotion.Data.UnitTests.DomainObjects.TestDomain
       return orderTicket;
     }
 
-    public new static OrderTicket GetObject (ObjectID id)
+    public new static OrderTicket GetObject (IObjectID<DomainObject> id)
     {
       return GetObject<OrderTicket> (id);
     }
 
-    public new static OrderTicket GetObject (ObjectID id, bool includeDeleted)
+    public new static OrderTicket GetObject (IObjectID<DomainObject> id, bool includeDeleted)
     {
       return GetObject<OrderTicket> (id, includeDeleted);
     }

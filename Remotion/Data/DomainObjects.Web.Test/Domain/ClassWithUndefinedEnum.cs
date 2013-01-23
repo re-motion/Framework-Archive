@@ -30,7 +30,7 @@ namespace Remotion.Data.DomainObjects.Web.Test.Domain
       return DomainObject.NewObject<ClassWithUndefinedEnum> ();
     }
 
-    public static ClassWithUndefinedEnum GetObject (ObjectID id)
+    public static ClassWithUndefinedEnum GetObject (IObjectID<DomainObject> id)
     {
       return DomainObject.GetObject<ClassWithUndefinedEnum> (id);
     }

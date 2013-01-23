@@ -27,15 +27,15 @@ namespace Remotion.SecurityManager.Domain.SearchInfrastructure.OrganizationalStr
   /// </summary>
   public class RolePropertiesSearchArguments : ISearchAvailableObjectsArguments
   {
-    private readonly ObjectID _groupID;
+    private readonly IObjectID<DomainObject> _groupID;
 
-    public RolePropertiesSearchArguments (ObjectID groupID)
+    public RolePropertiesSearchArguments (IObjectID<DomainObject> groupID)
     {
       ArgumentUtility.CheckNotNull ("groupID", groupID);
       _groupID = groupID;
     }
 
-    public ObjectID GroupID
+    public IObjectID<DomainObject> GroupID
     {
       get { return _groupID; }
     }

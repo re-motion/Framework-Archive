@@ -47,7 +47,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
       get { return _transactionID; }
     }
 
-    public virtual ObjectID CreateNewObjectID (ClassDefinition classDefinition)
+    public virtual IObjectID<DomainObject> CreateNewObjectID (ClassDefinition classDefinition)
     {
       ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
 
@@ -57,7 +57,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
       }
     }
 
-    public virtual ILoadedObjectData LoadObjectData (ObjectID id)
+    public virtual ILoadedObjectData LoadObjectData (IObjectID<DomainObject> id)
     {
       ArgumentUtility.CheckNotNull ("id", id);
 
@@ -68,7 +68,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
       }
     }
 
-    public virtual IEnumerable<ILoadedObjectData> LoadObjectData (IEnumerable<ObjectID> objectIDs)
+    public virtual IEnumerable<ILoadedObjectData> LoadObjectData (IEnumerable<IObjectID<DomainObject>> objectIDs)
     {
       ArgumentUtility.CheckNotNull ("objectIDs", objectIDs);
 

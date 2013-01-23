@@ -77,7 +77,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
     }
 
     public virtual IStorageProviderCommand<IEnumerable<DataContainer>, IRdbmsProviderCommandExecutionContext> CreateForRelationLookup (
-        RelationEndPointDefinition foreignKeyEndPoint, ObjectID foreignKeyValue, SortExpressionDefinition sortExpressionDefinition)
+        RelationEndPointDefinition foreignKeyEndPoint, IObjectID<DomainObject> foreignKeyValue, SortExpressionDefinition sortExpressionDefinition)
     {
       ArgumentUtility.CheckNotNull ("foreignKeyEndPoint", foreignKeyEndPoint);
       ArgumentUtility.CheckNotNull ("foreignKeyValue", foreignKeyValue);
@@ -93,7 +93,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
     protected virtual IStorageProviderCommand<IEnumerable<DataContainer>, IRdbmsProviderCommandExecutionContext> CreateForDirectRelationLookup (
         TableDefinition tableDefinition,
         RelationEndPointDefinition foreignKeyEndPoint,
-        ObjectID foreignKeyValue,
+        IObjectID<DomainObject> foreignKeyValue,
         SortExpressionDefinition sortExpression)
     {
       var selectedColumns = tableDefinition.GetAllColumns();
@@ -110,7 +110,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
     protected virtual IStorageProviderCommand<IEnumerable<DataContainer>, IRdbmsProviderCommandExecutionContext> CreateForIndirectRelationLookup (
         UnionViewDefinition unionViewDefinition,
         RelationEndPointDefinition foreignKeyEndPoint,
-        ObjectID foreignKeyValue,
+        IObjectID<DomainObject> foreignKeyValue,
         SortExpressionDefinition sortExpression)
     {
       var selectedColumns = unionViewDefinition.ObjectIDProperty.GetColumns();
@@ -142,7 +142,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
           new FixedValueCommand<IEnumerable<DataContainer>, IRdbmsProviderCommandExecutionContext> (Enumerable.Empty<DataContainer> ());
     }
 
-    protected virtual IEnumerable<ColumnValue> GetComparedColumns (RelationEndPointDefinition foreignKeyEndPoint, ObjectID foreignKeyValue)
+    protected virtual IEnumerable<ColumnValue> GetComparedColumns (RelationEndPointDefinition foreignKeyEndPoint, IObjectID<DomainObject> foreignKeyValue)
     {
       var storagePropertyDefinition = _rdbmsPersistenceModelProvider.GetStoragePropertyDefinition (foreignKeyEndPoint.PropertyDefinition);
       return storagePropertyDefinition.SplitValueForComparison (foreignKeyValue);

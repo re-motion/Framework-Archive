@@ -40,7 +40,7 @@ namespace Remotion.SecurityManager.Clients.Web.Test.Domain
       }
     }
 
-    public static File GetObject (ObjectID id, ClientTransaction clientTransaction)
+    public static File GetObject (IObjectID<DomainObject> id, ClientTransaction clientTransaction)
     {
       using (clientTransaction.EnterNonDiscardingScope())
       {

@@ -42,7 +42,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Mapping.TestDomain.Integrat
       return NewObject<OrderItem> (ParamList.Create (product));
     }
 
-    public new static OrderItem GetObject (ObjectID id)
+    public new static OrderItem GetObject (IObjectID<DomainObject> id)
     {
       return GetObject<OrderItem> (id);
     }

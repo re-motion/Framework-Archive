@@ -20,7 +20,7 @@ using Remotion.Utilities;
 namespace Remotion.Data.DomainObjects.Infrastructure.ObjectIDStringSerialization
 {
   /// <summary>
-  /// Parses the <see cref="Guid"/> value of an <see cref="ObjectID"/>.
+  /// Parses the <see cref="Guid"/> value of an <see cref="IObjectID{DomainObject}"/>.
   /// </summary>
   public class GuidObjectIDValueParser : IObjectIDValueParser
   {

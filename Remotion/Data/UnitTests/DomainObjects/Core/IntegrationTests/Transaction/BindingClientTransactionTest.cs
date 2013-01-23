@@ -313,7 +313,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
       return DomainObjectMother.CreateObjectInTransaction<T> (_bindingTransaction);
     }
 
-    private T GetBound<T> (ObjectID id)
+    private T GetBound<T> (IObjectID<DomainObject> id)
         where T : DomainObject
     {
       return DomainObjectMother.GetObjectInTransaction<T> (_bindingTransaction, id);

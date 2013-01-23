@@ -43,7 +43,7 @@ namespace Remotion.Data.DomainObjects.Mapping
             propertyDefinition.PropertyName,
             propertyDefinition.ClassDefinition.ID,
             propertyDefinition.PropertyType,
-            typeof (ObjectID));
+            typeof (IObjectID<DomainObject>));
       }
 
       _classDefinition = propertyDefinition.ClassDefinition;

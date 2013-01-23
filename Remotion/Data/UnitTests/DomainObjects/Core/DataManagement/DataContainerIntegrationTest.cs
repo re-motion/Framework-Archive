@@ -39,7 +39,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement
     {
       var propertyDefinition = GetPropertyDefinition (typeof (Order), "Customer");
       _existingOrderDataContainer.SetValue (propertyDefinition, DomainObjectIDs.Customer1);
-      var id = (ObjectID) _existingOrderDataContainer.GetValue (propertyDefinition);
+      var id = (IObjectID<DomainObject>) _existingOrderDataContainer.GetValue (propertyDefinition);
       Assert.That (id, Is.EqualTo (DomainObjectIDs.Customer1));
     }
 
@@ -47,7 +47,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement
     public void GetNullObjectID ()
     {
       var propertyDefinition = GetPropertyDefinition (typeof (Order), "Customer");
-      var id = (ObjectID) _existingOrderDataContainer.GetValue (propertyDefinition);
+      var id = (IObjectID<DomainObject>) _existingOrderDataContainer.GetValue (propertyDefinition);
       Assert.That (id, Is.Null);
     }
 

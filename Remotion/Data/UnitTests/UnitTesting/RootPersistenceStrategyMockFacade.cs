@@ -65,10 +65,10 @@ namespace Remotion.Data.UnitTests.UnitTesting
       return RootClientTransactionComponentFactoryMixin.CreatePersistenceStrategyScope (Mock);
     }
 
-    public IMethodOptions<IEnumerable<ILoadedObjectData>> ExpectLoadObjectData (IEnumerable<ObjectID> loadedObjectIDs)
+    public IMethodOptions<IEnumerable<ILoadedObjectData>> ExpectLoadObjectData (IEnumerable<IObjectID<DomainObject>> loadedObjectIDs)
     {
       return Mock
-          .Expect (mock => mock.LoadObjectData (Arg<IEnumerable<ObjectID>>.List.Equal (loadedObjectIDs)))
+          .Expect (mock => mock.LoadObjectData (Arg<IEnumerable<IObjectID<DomainObject>>>.List.Equal (loadedObjectIDs)))
           .Return (loadedObjectIDs.Select (id => (ILoadedObjectData) new FreshlyLoadedObjectData (DataContainerObjectMother.CreateExisting (id))));
     }
 

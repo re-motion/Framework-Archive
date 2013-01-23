@@ -31,16 +31,16 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands
   /// </summary>
   public class MultiDataContainerSaveCommand : IStorageProviderCommand<IRdbmsProviderCommandExecutionContext>
   {
-    private readonly Tuple<ObjectID, IDbCommandBuilder>[] _tuples;
+    private readonly Tuple<IObjectID<DomainObject>, IDbCommandBuilder>[] _tuples;
 
-    public MultiDataContainerSaveCommand (IEnumerable<Tuple<ObjectID, IDbCommandBuilder>> tuples)
+    public MultiDataContainerSaveCommand (IEnumerable<Tuple<IObjectID<DomainObject>, IDbCommandBuilder>> tuples)
     {
       ArgumentUtility.CheckNotNull ("tuples", tuples);
 
       _tuples = tuples.ToArray();
     }
 
-    public Tuple<ObjectID, IDbCommandBuilder>[] Tuples
+    public Tuple<IObjectID<DomainObject>, IDbCommandBuilder>[] Tuples
     {
       get { return _tuples; }
     }

@@ -31,7 +31,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.Interception
     private readonly IObjectReference _nestedObjectReference;
     private readonly object[] _baseMemberValues;
     private readonly Type _publicDomainObjectType;
-    private ObjectID _idForCheck;
+    private IObjectID<DomainObject> _idForCheck;
     private readonly StreamingContext _context;
 
     // Always remember: the whole configuration must be serialized as one single, flat object (or SerializationInfo), we cannot rely on any
@@ -58,7 +58,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.Interception
       }
       else
       {
-        // The ObjectID is actually stored and retrieved by ObjectID's BaseGetObjectData and deserialization constructor. However, to check
+        // The IObjectID<DomainObject> is actually stored and retrieved by IObjectID<DomainObject>'s BaseGetObjectData and deserialization constructor. However, to check
         // whether these methods are correctly invoked, we need to store another copy for ourselves.
         info.AddValue ("DomainObject._idForCheck", concreteObject.ID);
       }
@@ -94,7 +94,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.Interception
       {
         _nestedObjectReference = DomainObjectMixinCodeGenerationBridge.BeginDeserialization (_publicDomainObjectType, info, context);
         _realObject = (DomainObject) _nestedObjectReference.GetRealObject (context);
-        _idForCheck = (ObjectID) info.GetValue ("DomainObject._idForCheck", typeof (ObjectID));
+        _idForCheck = (IObjectID<DomainObject>) info.GetValue ("DomainObject._idForCheck", typeof (IObjectID<DomainObject>));
       }
 
       DomainObjectMixinCodeGenerationBridge.RaiseOnDeserializing (_realObject, _context);

@@ -30,24 +30,24 @@ namespace Remotion.Data.DomainObjects.Persistence
   [Serializable]
   public class ObjectsNotFoundException : StorageProviderException
   {
-    private static string BuildMessage (IEnumerable<ObjectID> ids)
+    private static string BuildMessage (IEnumerable<IObjectID<DomainObject>> ids)
     {
       return string.Format ("Object(s) could not be found: {0}.", SeparatedStringBuilder.Build (", ", ids, id => "'" + id + "'"));
     }
     
-    private readonly ObjectID[] _ids;
+    private readonly IObjectID<DomainObject>[] _ids;
 
-    public ObjectsNotFoundException (IEnumerable<ObjectID> ids)
+    public ObjectsNotFoundException (IEnumerable<IObjectID<DomainObject>> ids)
       : this (ids, null)
     {
     }
 
-    public ObjectsNotFoundException (IEnumerable<ObjectID> ids, Exception inner)
+    public ObjectsNotFoundException (IEnumerable<IObjectID<DomainObject>> ids, Exception inner)
         : this (BuildMessage(ids), ids, inner)
     {
     }
 
-    public ObjectsNotFoundException (string message, IEnumerable<ObjectID> ids, Exception inner)
+    public ObjectsNotFoundException (string message, IEnumerable<IObjectID<DomainObject>> ids, Exception inner)
       : base (message, inner)
     {
       ArgumentUtility.CheckNotNull ("ids", ids);
@@ -58,16 +58,16 @@ namespace Remotion.Data.DomainObjects.Persistence
     protected ObjectsNotFoundException (SerializationInfo info, StreamingContext context)
         : base (info, context)
     {
-      _ids = (ObjectID[]) info.GetValue ("_ids", typeof (ObjectID[]));
+      _ids = (IObjectID<DomainObject>[]) info.GetValue ("_ids", typeof (IObjectID<DomainObject>[]));
     }
 
     [Obsolete ("This property is obsolete. Use IDs instead. (1.13.131)", true)]
-    public ObjectID ID
+    public IObjectID<DomainObject> ID
     {
       get { throw new NotImplementedException(); }
     }
 
-    public ReadOnlyCollection<ObjectID> IDs
+    public ReadOnlyCollection<IObjectID<DomainObject>> IDs
     {
       get { return Array.AsReadOnly (_ids); }
     }

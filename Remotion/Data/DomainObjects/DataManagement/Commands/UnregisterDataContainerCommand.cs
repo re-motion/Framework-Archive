@@ -25,10 +25,10 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands
   /// </summary>
   public class UnregisterDataContainerCommand : IDataManagementCommand
   {
-    private readonly ObjectID _objectID;
+    private readonly IObjectID<DomainObject> _objectID;
     private readonly DataContainerMap _map;
 
-    public UnregisterDataContainerCommand (ObjectID objectID, DataContainerMap map)
+    public UnregisterDataContainerCommand (IObjectID<DomainObject> objectID, DataContainerMap map)
     {
       ArgumentUtility.CheckNotNull ("objectID", objectID);
       ArgumentUtility.CheckNotNull ("map", map);
@@ -37,7 +37,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands
       _map = map;
     }
 
-    public ObjectID ObjectID
+    public IObjectID<DomainObject> ObjectID
     {
       get { return _objectID; }
     }

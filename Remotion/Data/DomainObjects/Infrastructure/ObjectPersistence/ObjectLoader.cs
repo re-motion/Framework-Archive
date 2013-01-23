@@ -73,7 +73,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
       get { return _loadedObjectDataProvider; }
     }
 
-    public ILoadedObjectData LoadObject (ObjectID id, bool throwOnNotFound)
+    public ILoadedObjectData LoadObject (IObjectID<DomainObject> id, bool throwOnNotFound)
     {
       ArgumentUtility.CheckNotNull ("id", id);
 
@@ -82,7 +82,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
       return loadedObjectData;
     }
 
-    public ICollection<ILoadedObjectData> LoadObjects (IEnumerable<ObjectID> idsToBeLoaded, bool throwOnNotFound)
+    public ICollection<ILoadedObjectData> LoadObjects (IEnumerable<IObjectID<DomainObject>> idsToBeLoaded, bool throwOnNotFound)
     {
       ArgumentUtility.CheckNotNull ("idsToBeLoaded", idsToBeLoaded);
 
@@ -91,7 +91,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
       Assertion.IsTrue (loadedObjectData.Count == idsToBeLoadedAsCollection.Count, "Persistence strategy must return exactly as many items as requested.");
       Assertion.DebugAssert (
-          loadedObjectData.Zip (idsToBeLoadedAsCollection).All (tuple => tuple.Item1.ObjectID == tuple.Item2), 
+          loadedObjectData.Zip (idsToBeLoadedAsCollection).All (tuple => object.Equals (tuple.Item1.ObjectID, tuple.Item2)), 
           "Persistence strategy result must be in the same order as the input IDs.");
 
       _loadedObjectDataRegistrationAgent.RegisterIfRequired (loadedObjectData, throwOnNotFound);

@@ -24,7 +24,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
   /// </summary>
   public class NullLoadedObjectData : ILoadedObjectData
   {
-    public ObjectID ObjectID
+    public IObjectID<DomainObject> ObjectID
     {
       get { return null; }
     }

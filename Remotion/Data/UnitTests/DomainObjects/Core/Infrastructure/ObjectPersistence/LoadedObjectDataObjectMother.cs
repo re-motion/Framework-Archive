@@ -32,7 +32,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.ObjectPersis
       return loadedObjectDataStub;
     }
 
-    public static ILoadedObjectData CreateLoadedObjectDataStub (ObjectID objectID)
+    public static ILoadedObjectData CreateLoadedObjectDataStub (IObjectID<DomainObject> objectID)
     {
       var loadedObjectDataStub = MockRepository.GenerateStub<ILoadedObjectData> ();
       loadedObjectDataStub.Stub (stub => stub.ObjectID).Return (objectID);
@@ -56,7 +56,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.ObjectPersis
       return CreateLoadedObjectDataWithDataSourceData (DomainObjectMother.CreateFakeObject<Order>());
     }
 
-    public static LoadedObjectDataWithDataSourceData CreateLoadedObjectDataWithDataSourceData (ObjectID objectID)
+    public static LoadedObjectDataWithDataSourceData CreateLoadedObjectDataWithDataSourceData (IObjectID<DomainObject> objectID)
     {
       return CreateLoadedObjectDataWithDataSourceData (DomainObjectMother.CreateFakeObject (objectID));
     }

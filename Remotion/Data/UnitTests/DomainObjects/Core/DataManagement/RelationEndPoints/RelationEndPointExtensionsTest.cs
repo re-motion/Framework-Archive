@@ -72,7 +72,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.RelationEndP
       var id = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof (Order).FullName + ".Customer");
       var endPoint = RelationEndPointObjectMother.CreateObjectEndPoint (id, null);
 
-      var oppositeEndPoint = endPoint.GetEndPointWithOppositeDefinition<ICollectionEndPoint> ((ObjectID) null);
+      var oppositeEndPoint = endPoint.GetEndPointWithOppositeDefinition<ICollectionEndPoint> ((IObjectID<DomainObject>) null);
 
       Assert.That (oppositeEndPoint, Is.InstanceOf (typeof (NullCollectionEndPoint)));
       var expectedID = RelationEndPointID.Create(null, endPoint.Definition.GetOppositeEndPointDefinition ());
@@ -88,7 +88,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.RelationEndP
       var id = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof (Order).FullName + ".Customer");
       var endPoint = RelationEndPointObjectMother.CreateObjectEndPoint (id, null);
 
-      endPoint.GetEndPointWithOppositeDefinition<IObjectEndPoint> ((ObjectID) null);
+      endPoint.GetEndPointWithOppositeDefinition<IObjectEndPoint> ((IObjectID<DomainObject>) null);
     }
   }
 }

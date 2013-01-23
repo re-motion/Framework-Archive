@@ -332,10 +332,10 @@ namespace Remotion.Data.DomainObjects
     /// <summary>
     /// Determines whether an item is in the <see cref="DomainObjectCollection"/>.
     /// </summary>
-    /// <param name="id">The <see cref="ObjectID"/> of the <see cref="DomainObject"/> to locate in the <see cref="DomainObjectCollection"/>. Must not be <see langword="null"/>.</param>
+    /// <param name="id">The <see cref="IObjectID{DomainObject}"/> of the <see cref="DomainObject"/> to locate in the <see cref="DomainObjectCollection"/>. Must not be <see langword="null"/>.</param>
     /// <returns><see langword="true"/> if the <see cref="DomainObject"/> with the <paramref name="id"/> is found in the <see cref="DomainObjectCollection"/>; otherwise, false;</returns>
     /// <exception cref="System.ArgumentNullException"><paramref name="id"/> is <see langword="null"/></exception>
-    public bool Contains (ObjectID id)
+    public bool Contains (IObjectID<DomainObject> id)
     {
       ArgumentUtility.CheckNotNull ("id", id);
 
@@ -350,7 +350,7 @@ namespace Remotion.Data.DomainObjects
     /// <remarks>
     /// The method returns -1 if the <paramref name="domainObject"/> is <see langword="null" />. If the collection holds a different item with the
     /// same <see cref="DomainObject.ID"/> as <paramref name="domainObject"/>, -1 is returned as well. Use the 
-    /// <see cref="IndexOf(Remotion.Data.DomainObjects.ObjectID)"/> overload taking an <see cref="ObjectID"/> to find the index in such cases.
+    /// <see cref="IndexOf(Remotion.Data.DomainObjects.IObjectID{Remotion.Data.DomainObjects.DomainObject})"/> overload taking an <see cref="IObjectID{DomainObject}"/> to find the index in such cases.
     /// </remarks>
     public int IndexOf (DomainObject domainObject)
     {
@@ -365,11 +365,11 @@ namespace Remotion.Data.DomainObjects
     }
 
     /// <summary>
-    /// Returns the zero-based index of a given <see cref="ObjectID"/> in the collection.
+    /// Returns the zero-based index of a given <see cref="IObjectID{DomainObject}"/> in the collection.
     /// </summary>
     /// <param name="id">The <paramref name="id"/> to locate in the collection.</param>
     /// <returns>The zero-based index of the <paramref name="id"/>, if found; otherwise, -1.</returns>
-    public int IndexOf (ObjectID id)
+    public int IndexOf (IObjectID<DomainObject> id)
     {
       if (id != null)
         return _dataStrategy.IndexOf (id);
@@ -405,10 +405,10 @@ namespace Remotion.Data.DomainObjects
     }
 
     /// <summary>
-    /// Gets the <see cref="DomainObject"/> with a given <see cref="ObjectID"/> from the <see cref="DomainObjectCollection"/>.
+    /// Gets the <see cref="DomainObject"/> with a given <see cref="IObjectID{DomainObject}"/> from the <see cref="DomainObjectCollection"/>.
     /// </summary>
     /// <remarks>The indexer returns <see langword="null"/> if the given <paramref name="id"/> was not found.</remarks>
-    public DomainObject this [ObjectID id]
+    public DomainObject this [IObjectID<DomainObject> id]
     {
       get { return _dataStrategy.GetObject (id); }
     }
@@ -474,10 +474,10 @@ namespace Remotion.Data.DomainObjects
     /// <summary>
     /// Removes a <see cref="DomainObject"/> from the collection.
     /// </summary>
-    /// <param name="id">The <see cref="ObjectID"/> of the <see cref="DomainObject"/> to remove. Must not be <see langword="null"/>.</param>
+    /// <param name="id">The <see cref="IObjectID{DomainObject}"/> of the <see cref="DomainObject"/> to remove. Must not be <see langword="null"/>.</param>
     /// <exception cref="System.ArgumentNullException"><paramref name="id"/> is <see langword="null"/>.</exception>
     /// <exception cref="System.NotSupportedException">The collection is read-only.</exception>
-    public void Remove (ObjectID id)
+    public void Remove (IObjectID<DomainObject> id)
     {
       ArgumentUtility.CheckNotNull ("id", id);
       this.CheckNotReadOnly ("Cannot remove an item from a read-only collection.");
@@ -495,8 +495,8 @@ namespace Remotion.Data.DomainObjects
     /// </remarks>
     /// <param name="domainObject">The <see cref="DomainObject"/> to remove. Must not be <see langword="null"/>.</param>
     /// <exception cref="System.ArgumentNullException"><paramref name="domainObject"/> is <see langword="null"/>.</exception>
-    /// <exception cref="System.ArgumentException"><paramref name="domainObject"/> has the same <see cref="ObjectID"/> as an object in this collection, but it is a 
-    /// different object reference. You can use <see cref="Remove(ObjectID)"/> to remove an object if you only know its <see cref="ObjectID"/>.</exception>
+    /// <exception cref="System.ArgumentException"><paramref name="domainObject"/> has the same <see cref="IObjectID{DomainObject}"/> as an object in this collection, but it is a 
+    /// different object reference. You can use <see cref="Remove(IObjectID{DomainObject})"/> to remove an object if you only know its <see cref="IObjectID{DomainObject}"/>.</exception>
     /// <exception cref="System.NotSupportedException">The collection is read-only.</exception>
     /// <exception cref="DataManagement.ClientTransactionsDifferException">
     ///   <paramref name="domainObject"/> belongs to a <see cref="ClientTransaction"/> that is different from the <see cref="ClientTransaction"/> 

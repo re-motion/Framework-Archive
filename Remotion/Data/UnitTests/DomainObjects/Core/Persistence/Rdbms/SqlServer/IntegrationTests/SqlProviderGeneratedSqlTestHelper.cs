@@ -168,7 +168,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.SqlServer
       }
     }
 
-    public DataContainer LoadDataContainerInSeparateProvider (ObjectID objectID)
+    public DataContainer LoadDataContainerInSeparateProvider (IObjectID<DomainObject> objectID)
     {
       using (var provider = RdbmsProviderObjectMother.CreateForIntegrationTest (_rdbmsProviderDefinition))
       {

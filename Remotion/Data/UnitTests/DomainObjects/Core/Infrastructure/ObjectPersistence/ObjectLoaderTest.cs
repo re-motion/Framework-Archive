@@ -82,7 +82,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.ObjectPersis
 
       _persistenceStrategyMock
           .Expect (mock => mock.LoadObjectData (
-              Arg<ICollection<ObjectID>>.List.Equal (new[] { DomainObjectIDs.Order1, DomainObjectIDs.Order2 })))
+              Arg<ICollection<IObjectID<DomainObject>>>.List.Equal (new[] { DomainObjectIDs.Order1, DomainObjectIDs.Order2 })))
           .Return (new[] { _loadedObjectDataStub1, _loadedObjectDataStub2 });
       _loadedObjectDataRegistrationAgentMock
           .Expect (mock => mock.RegisterIfRequired (

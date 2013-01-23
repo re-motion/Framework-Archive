@@ -31,7 +31,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.ObjectBinding.TestDomain
       return NewObject<SampleBindableMixinDomainObject> ();
     }
 
-    public static SampleBindableMixinDomainObject GetObject (ObjectID id)
+    public static SampleBindableMixinDomainObject GetObject (IObjectID<DomainObject> id)
     {
       return GetObject<SampleBindableMixinDomainObject> (id);
     }

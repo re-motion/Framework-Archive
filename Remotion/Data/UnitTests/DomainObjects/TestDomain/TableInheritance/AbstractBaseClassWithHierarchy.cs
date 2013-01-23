@@ -26,7 +26,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.TestDomain.TableInheritance
     {
     }
 
-    public static AbstractBaseClassWithHierarchy GetObject (ObjectID id)
+    public static AbstractBaseClassWithHierarchy GetObject (IObjectID<DomainObject> id)
     {
       return GetObject<AbstractBaseClassWithHierarchy> (id);
     }

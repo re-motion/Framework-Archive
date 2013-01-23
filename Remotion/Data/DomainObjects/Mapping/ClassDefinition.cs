@@ -46,7 +46,7 @@ namespace Remotion.Data.DomainObjects.Mapping
     private readonly Type _classType;
     private readonly IPersistentMixinFinder _persistentMixinFinder;
     private readonly IDomainObjectCreator _instanceCreator;
-    private readonly Func<object, ObjectID> _idCreator;
+    private readonly Func<object, IObjectID<DomainObject>> _idCreator;
 
     public ClassDefinition (
         string id,
@@ -362,7 +362,7 @@ namespace Remotion.Data.DomainObjects.Mapping
       get { return _instanceCreator; }
     }
 
-    public Func<object, ObjectID> IDCreator
+    public Func<object, IObjectID<DomainObject>> IDCreator
     {
       get { return _idCreator; }
     }
@@ -560,7 +560,7 @@ namespace Remotion.Data.DomainObjects.Mapping
       }
     }
 
-    private Func<object, ObjectID> BuildIDCreator ()
+    private Func<object, IObjectID<DomainObject>> BuildIDCreator ()
     {
       var valueParameter = Expression.Parameter (typeof (object), "value");
 
@@ -577,11 +577,11 @@ namespace Remotion.Data.DomainObjects.Mapping
       }
       else
       {
-        var throwingDelegate = (Func<ObjectID>) (() => { throw new InvalidOperationException ("ObjectIDs cannot be created when the ClassType does not derive from DomainObject."); });
+        var throwingDelegate = (Func<IObjectID<DomainObject>>) (() => { throw new InvalidOperationException ("ObjectIDs cannot be created when the ClassType does not derive from DomainObject."); });
         body = Expression.Invoke (Expression.Constant (throwingDelegate));
       }
 
-      var createDelegate = Expression.Lambda<Func<object, ObjectID>> (body, valueParameter).Compile ();
+      var createDelegate = Expression.Lambda<Func<object, IObjectID<DomainObject>>> (body, valueParameter).Compile ();
       return createDelegate;
     }
 

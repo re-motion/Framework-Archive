@@ -22,7 +22,7 @@ using System.Linq;
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 {
   /// <summary>
-  /// The <see cref="ObjectIDStoragePropertyDefinition"/> represents an <see cref="ObjectID"/> property that is stored in a single string-typed column.
+  /// The <see cref="ObjectIDStoragePropertyDefinition"/> represents an <see cref="IObjectID{DomainObject}"/> property that is stored in a single string-typed column.
   /// </summary>
   public class SerializedObjectIDStoragePropertyDefinition : IObjectIDStoragePropertyDefinition
   {
@@ -37,7 +37,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 
     public Type PropertyType
     {
-      get { return typeof (ObjectID); }
+      get { return typeof (IObjectID<DomainObject>); }
     }
 
     public IRdbmsStoragePropertyDefinition SerializedIDProperty
@@ -62,14 +62,14 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 
     public IEnumerable<ColumnValue> SplitValue (object value)
     {
-      var objectID = ArgumentUtility.CheckType<ObjectID> ("value", value);
+      var objectID = ArgumentUtility.CheckType<IObjectID<DomainObject>> ("value", value);
 
       return _serializedIDProperty.SplitValue (GetStringOrNull (objectID));
     }
 
     public IEnumerable<ColumnValue> SplitValueForComparison (object value)
     {
-      var objectID = ArgumentUtility.CheckType<ObjectID> ("value", value);
+      var objectID = ArgumentUtility.CheckType<IObjectID<DomainObject>> ("value", value);
 
       return _serializedIDProperty.SplitValueForComparison (GetStringOrNull (objectID));
     }
@@ -78,7 +78,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
     {
       ArgumentUtility.CheckNotNull ("values", values);
 
-      return _serializedIDProperty.SplitValuesForComparison (values.Select (v => (object) GetStringOrNull ((ObjectID) v)));
+      return _serializedIDProperty.SplitValuesForComparison (values.Select (v => (object) GetStringOrNull ((IObjectID<DomainObject>) v)));
     }
 
     public object CombineValue (IColumnValueProvider columnValueProvider)
@@ -100,7 +100,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
       throw new NotSupportedException ("String-serialized ObjectID values cannot be used as foreign keys.");
     }
 
-    private string GetStringOrNull (ObjectID objectID)
+    private string GetStringOrNull (IObjectID<DomainObject> objectID)
     {
       return objectID == null ? null : objectID.ToString ();
     }

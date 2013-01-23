@@ -35,17 +35,17 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
 
     void EnsureDataComplete ();
 
-    bool ContainsObjectID (ObjectID objectID);
+    bool ContainsObjectID (IObjectID<DomainObject> objectID);
 
     DomainObject GetObject (int index);
-    DomainObject GetObject (ObjectID objectID);
+    DomainObject GetObject (IObjectID<DomainObject> objectID);
 
-    int IndexOf (ObjectID objectID);
+    int IndexOf (IObjectID<DomainObject> objectID);
 
     void Clear ();
     void Insert (int index, DomainObject domainObject);
     bool Remove (DomainObject domainObject); // this overload should be called from DomainObjectCollection.Remove (DomainObject)
-    bool Remove (ObjectID objectID); // this overload should be called from DomainObjectCollection.Remove (ObjectID)
+    bool Remove (IObjectID<DomainObject> objectID); // this overload should be called from DomainObjectCollection.Remove (IObjectID<DomainObject>)
     void Replace (int index, DomainObject value);
 
     void Sort (Comparison<DomainObject> comparison);

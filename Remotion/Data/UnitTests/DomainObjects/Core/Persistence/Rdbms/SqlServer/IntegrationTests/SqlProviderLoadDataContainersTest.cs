@@ -67,13 +67,13 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.SqlServer
     [Test]
     public void LoadDataContainers_Empty ()
     {
-      var result = Provider.LoadDataContainers (new ObjectID[0]).ToList();
+      var result = Provider.LoadDataContainers (new IObjectID<DomainObject>[0]).ToList();
 
       Assert.That (result, Is.Empty);
     }
 
     [Test]
-    [ExpectedException (typeof (PersistenceException), ExpectedMessage = 
+    [ExpectedException (typeof (PersistenceException), ExpectedMessage =
         "The ObjectID of one or more loaded DataContainers does not match the expected ObjectIDs:\r\n"
         + "Loaded DataContainer ID: Partner|5587a9c0-be53-477d-8c0a-4803c7fae1a9|System.Guid, "
         + "expected ObjectID(s): Distributor|5587a9c0-be53-477d-8c0a-4803c7fae1a9|System.Guid\r\n"
@@ -83,9 +83,9 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.SqlServer
         + "expected ObjectID(s): Distributor|55b52e75-514b-4e82-a91b-8f0bb59b80ad|System.Guid")]
     public void LoadDataContainers_WithInvalidClassID ()
     {
-      ObjectID id1 = ObjectID.Create("Distributor", (Guid) DomainObjectIDs.Partner1.Value);
-      ObjectID id2 = ObjectID.Create("Distributor", (Guid) DomainObjectIDs.Partner2.Value);
-      ObjectID id3 = ObjectID.Create("Distributor", (Guid) DomainObjectIDs.Customer1.Value);
+      IObjectID<DomainObject> id1 = ObjectID.Create("Distributor", (Guid) DomainObjectIDs.Partner1.Value);
+      IObjectID<DomainObject> id2 = ObjectID.Create("Distributor", (Guid) DomainObjectIDs.Partner2.Value);
+      IObjectID<DomainObject> id3 = ObjectID.Create("Distributor", (Guid) DomainObjectIDs.Customer1.Value);
       Provider.LoadDataContainers (new[] { id1, id2, id3 }).ToList();
     }
   }

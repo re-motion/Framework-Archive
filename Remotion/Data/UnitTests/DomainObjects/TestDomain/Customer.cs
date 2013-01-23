@@ -43,7 +43,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.TestDomain
       return NewObject<Customer> ();
     }
 
-    public new static Customer GetObject (ObjectID id)
+    public new static Customer GetObject (IObjectID<DomainObject> id)
     {
       return GetObject<Customer> (id);
     }

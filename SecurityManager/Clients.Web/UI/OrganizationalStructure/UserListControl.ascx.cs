@@ -78,7 +78,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure
       return User.FindByTenantID (CurrentFunction.TenantID).ToArray();
     }
 
-    protected override FormFunction CreateEditFunction (ITransactionMode transactionMode, ObjectID objectID)
+    protected override FormFunction CreateEditFunction (ITransactionMode transactionMode, IObjectID<DomainObject> objectID)
     {
       return new EditUserFormFunction (transactionMode, objectID);
     }

@@ -27,17 +27,17 @@ namespace Remotion.Data.DomainObjects.Persistence.StorageProviderCommands
 {
   /// <summary>
   /// Executes a given <see cref="IStorageProviderCommand{T,TExecutionContext}"/> and associates the resulting <see cref="DataContainer"/> instances
-  /// with a given list of <see cref="ObjectID"/> values. If any <see cref="DataContainer"/> has a non-matching <see cref="ObjectID"/>, an exception
+  /// with a given list of <see cref="IObjectID{DomainObject}"/> values. If any <see cref="DataContainer"/> has a non-matching <see cref="IObjectID{DomainObject}"/>, an exception
   /// is thrown.
   /// </summary>
   public class MultiDataContainerAssociateWithIDsCommand
       : IStorageProviderCommand<IEnumerable<ObjectLookupResult<DataContainer>>, IRdbmsProviderCommandExecutionContext>
   {
-    private readonly ObjectID[] _objectIDs;
+    private readonly IObjectID<DomainObject>[] _objectIDs;
     private readonly IStorageProviderCommand<IEnumerable<DataContainer>, IRdbmsProviderCommandExecutionContext> _command;
 
     public MultiDataContainerAssociateWithIDsCommand (
-        IEnumerable<ObjectID> objectIDs,
+        IEnumerable<IObjectID<DomainObject>> objectIDs,
         IStorageProviderCommand<IEnumerable<DataContainer>, IRdbmsProviderCommandExecutionContext> command)
     {
       ArgumentUtility.CheckNotNull ("objectIDs", objectIDs);
@@ -47,7 +47,7 @@ namespace Remotion.Data.DomainObjects.Persistence.StorageProviderCommands
       _command = command;
     }
 
-    public ObjectID[] ObjectIDs
+    public IObjectID<DomainObject>[] ObjectIDs
     {
       get { return _objectIDs; }
     }
@@ -63,14 +63,14 @@ namespace Remotion.Data.DomainObjects.Persistence.StorageProviderCommands
 
       var dataContainers = _command.Execute (executionContext);
 
-      var dataContainersByID =  new Dictionary<ObjectID, DataContainer> ();
+      var dataContainersByID =  new Dictionary<IObjectID<DomainObject>, DataContainer> ();
       foreach (var dataContainer in dataContainers.Where (dc => dc != null))
       {
         // Duplicates overwrite the previous DataContainer
         dataContainersByID[dataContainer.ID] = dataContainer;
       }
 
-      var unassociatedDataContainerIDs = new HashSet<ObjectID> (dataContainersByID.Keys);
+      var unassociatedDataContainerIDs = new HashSet<IObjectID<DomainObject>> (dataContainersByID.Keys);
       foreach (var objectID in _objectIDs)
       {
         var lookupResult = CreateLookupResult (objectID, dataContainersByID);
@@ -96,7 +96,7 @@ namespace Remotion.Data.DomainObjects.Persistence.StorageProviderCommands
       }
     }
 
-    private ObjectLookupResult<DataContainer> CreateLookupResult (ObjectID id, Dictionary<ObjectID, DataContainer> dataContainersByID)
+    private ObjectLookupResult<DataContainer> CreateLookupResult (IObjectID<DomainObject> id, Dictionary<IObjectID<DomainObject>, DataContainer> dataContainersByID)
     {
       return id != null
                  ? new ObjectLookupResult<DataContainer> (id, dataContainersByID.GetValueOrDefault (id))

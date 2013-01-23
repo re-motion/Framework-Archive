@@ -43,7 +43,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.Serializable
       throw new NotImplementedException();
     }
 
-    public DataContainer GetDataContainerWithoutLoading (ObjectID objectID)
+    public DataContainer GetDataContainerWithoutLoading (IObjectID<DomainObject> objectID)
     {
       throw new NotImplementedException();
     }
@@ -68,7 +68,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.Serializable
       throw new NotImplementedException();
     }
 
-    public DataContainer LoadLazyDataContainer (ObjectID objectID)
+    public DataContainer LoadLazyDataContainer (IObjectID<DomainObject> objectID)
     {
       throw new NotImplementedException();
     }
@@ -88,12 +88,12 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.Serializable
       get { throw new NotImplementedException(); }
     }
 
-    public DataContainer GetDataContainerWithLazyLoad (ObjectID objectID, bool throwOnNotFound)
+    public DataContainer GetDataContainerWithLazyLoad (IObjectID<DomainObject> objectID, bool throwOnNotFound)
     {
       throw new NotImplementedException();
     }
 
-    public IEnumerable<DataContainer> GetDataContainersWithLazyLoad (IEnumerable<ObjectID> objectIDs, bool throwOnNotFound)
+    public IEnumerable<DataContainer> GetDataContainersWithLazyLoad (IEnumerable<IObjectID<DomainObject>> objectIDs, bool throwOnNotFound)
     {
       throw new NotImplementedException();
     }
@@ -123,7 +123,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.Serializable
       throw new NotImplementedException();
     }
 
-    public void MarkNotInvalid (ObjectID objectID)
+    public void MarkNotInvalid (IObjectID<DomainObject> objectID)
     {
       throw new NotImplementedException();
     }
@@ -143,7 +143,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.Serializable
       throw new NotImplementedException();
     }
 
-    public IDataManagementCommand CreateUnloadCommand (params ObjectID[] objectIDs)
+    public IDataManagementCommand CreateUnloadCommand (params IObjectID<DomainObject>[] objectIDs)
     {
       throw new NotImplementedException();
     }

@@ -123,7 +123,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation
     /// it will stop before any data is unloaded.
     /// </para>
     /// </remarks>
-    public static void UnloadData (ClientTransaction clientTransaction, ObjectID objectID)
+    public static void UnloadData (ClientTransaction clientTransaction, IObjectID<DomainObject> objectID)
     {
       ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
       ArgumentUtility.CheckNotNull ("objectID", objectID);
@@ -161,7 +161,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation
     /// it will stop before any data is unloaded.
     /// </para>
     /// </remarks>
-    public static bool TryUnloadData (ClientTransaction clientTransaction, ObjectID objectID)
+    public static bool TryUnloadData (ClientTransaction clientTransaction, IObjectID<DomainObject> objectID)
     {
       ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
       ArgumentUtility.CheckNotNull ("objectID", objectID);
@@ -303,13 +303,13 @@ namespace Remotion.Data.DomainObjects.DomainImplementation
 
       var unloadEndPointCommand = tx.DataManager.CreateUnloadVirtualEndPointsCommand (endPointID);
 
-      ObjectID[] unloadedObjectIDs;
+      IObjectID<DomainObject>[] unloadedObjectIDs;
       if (endPoint.Definition.Cardinality == CardinalityType.Many)
         unloadedObjectIDs = ((ICollectionEndPoint) endPoint).Collection.Cast<DomainObject> ().Select (obj => obj.ID).ToArray ();
       else
       {
         var oppositeObjectID = ((IVirtualObjectEndPoint) endPoint).OppositeObjectID;
-        unloadedObjectIDs = oppositeObjectID != null ? new[] { oppositeObjectID } : new ObjectID[0];
+        unloadedObjectIDs = oppositeObjectID != null ? new[] { oppositeObjectID } : new IObjectID<DomainObject>[0];
       }
       var unloadDataCommand = tx.DataManager.CreateUnloadCommand (unloadedObjectIDs);
 

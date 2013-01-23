@@ -35,8 +35,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       Assertion.IsFalse (id.Definition.IsAnonymous);
     }
 
-    public abstract ObjectID OppositeObjectID { get; }
-    public abstract ObjectID OriginalOppositeObjectID { get; }
+    public abstract IObjectID<DomainObject> OppositeObjectID { get; }
+    public abstract IObjectID<DomainObject> OriginalOppositeObjectID { get; }
 
     public abstract DomainObject GetOppositeObject ();
     public abstract DomainObject GetOriginalOppositeObject ();
@@ -51,7 +51,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       {
         throw new MandatoryRelationNotSetException (
             GetDomainObjectReference(), 
-            PropertyName, 
+            PropertyName,
             string.Format ("Mandatory relation property '{0}' of domain object '{1}' cannot be null.", PropertyName, ObjectID));
       }
     }
@@ -60,7 +60,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
     {
       ArgumentUtility.CheckNotNull ("removedRelatedObject", removedRelatedObject);
 
-      if (removedRelatedObject.ID != OppositeObjectID)
+      if (!object.Equals (removedRelatedObject.ID, OppositeObjectID))
       {
         string removedID = removedRelatedObject.ID.ToString();
         string currentID = OppositeObjectID != null ? OppositeObjectID.ToString() : "<null>";

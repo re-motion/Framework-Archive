@@ -48,14 +48,14 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.StoragePr
     private IObjectReaderFactory _objectReaderFactoryStrictMock;
     private IDbCommandBuilder _dbCommandBuilderStub;
     private IObjectReader<DataContainer> _dataContainerReaderStub;
-    private IObjectReader<ObjectID> _objectIDReaderStub;
+    private IObjectReader<IObjectID<DomainObject>> _objectIDReaderStub;
     private IStorageProviderCommandFactory<IRdbmsProviderCommandExecutionContext> _fakeStorageProviderCommandFactory;
 
     private RelationLookupCommandFactory _factory;
     
     private TableDefinition _tableDefinition;
     private UnionViewDefinition _unionViewDefinition;
-    private ObjectID _foreignKeyValue;
+    private IObjectID<DomainObject> _foreignKeyValue;
     private IRdbmsStoragePropertyDefinition _foreignKeyStoragePropertyDefinitionStrictMock;
 
     private ColumnValue[] _fakeComparedColumns;
@@ -70,7 +70,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.StoragePr
       _objectReaderFactoryStrictMock = MockRepository.GenerateStrictMock<IObjectReaderFactory>();
       _dbCommandBuilderStub = MockRepository.GenerateStub<IDbCommandBuilder> ();
       _dataContainerReaderStub = MockRepository.GenerateStub<IObjectReader<DataContainer>> ();
-      _objectIDReaderStub = MockRepository.GenerateStub<IObjectReader<ObjectID>> ();
+      _objectIDReaderStub = MockRepository.GenerateStub<IObjectReader<IObjectID<DomainObject>>> ();
       _fakeStorageProviderCommandFactory = MockRepository.GenerateStub<IStorageProviderCommandFactory<IRdbmsProviderCommandExecutionContext>>();
 
       _factory = new RelationLookupCommandFactory (
@@ -294,7 +294,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.StoragePr
       Assert.That (fixedValueCommand.Value, Is.EqualTo (Enumerable.Empty<DataContainer>()));
     }
 
-    private ObjectID CreateObjectID (IStorageEntityDefinition entityDefinition)
+    private IObjectID<DomainObject> CreateObjectID (IStorageEntityDefinition entityDefinition)
     {
       var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition (classType: typeof (Order), baseClass: null);
       classDefinition.SetStorageEntity (entityDefinition);

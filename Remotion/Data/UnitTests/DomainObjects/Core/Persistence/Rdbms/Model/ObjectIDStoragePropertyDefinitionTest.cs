@@ -75,7 +75,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.Model
     [Test]
     public void PropertyType ()
     {
-      Assert.That (_objectIDStoragePropertyDefinition.PropertyType, Is.SameAs (typeof (ObjectID)));
+      Assert.That (_objectIDStoragePropertyDefinition.PropertyType, Is.SameAs (typeof (IObjectID<DomainObject>)));
     }
 
     [Test]
@@ -196,8 +196,8 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.Model
       var result = _objectIDStoragePropertyDefinition.CombineValue (_columnValueProviderStub);
 
       Assert.That (result, Is.TypeOf<ObjectID<Order>> ());
-      Assert.That (((ObjectID) result).Value.ToString (), Is.EqualTo (DomainObjectIDs.Order1.Value.ToString ()));
-      Assert.That (((ObjectID) result).ClassID, Is.EqualTo ("Order"));
+      Assert.That (((IObjectID<DomainObject>) result).Value.ToString (), Is.EqualTo (DomainObjectIDs.Order1.Value.ToString ()));
+      Assert.That (((IObjectID<DomainObject>) result).ClassID, Is.EqualTo ("Order"));
     }
 
     [Test]

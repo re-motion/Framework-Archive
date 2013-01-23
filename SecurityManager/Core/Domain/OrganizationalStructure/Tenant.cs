@@ -48,7 +48,7 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
       return NewObject<Tenant>();
     }
 
-    public new static Tenant GetObject (ObjectID id)
+    public new static Tenant GetObject (IObjectID<DomainObject> id)
     {
       return GetObject<Tenant> (id);
     }

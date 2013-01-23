@@ -8,12 +8,12 @@ namespace Remotion.Data.DomainObjects.Infrastructure.InvalidObjects
   /// </summary>
   public interface IInvalidDomainObjectManager
   {
-    IEnumerable<ObjectID> InvalidObjectIDs { get; }
+    IEnumerable<IObjectID<DomainObject>> InvalidObjectIDs { get; }
     
-    bool IsInvalid (ObjectID id);
-    DomainObject GetInvalidObjectReference (ObjectID id);
+    bool IsInvalid (IObjectID<DomainObject> id);
+    DomainObject GetInvalidObjectReference (IObjectID<DomainObject> id);
 
     bool MarkInvalid (DomainObject domainObject);
-    bool MarkNotInvalid (ObjectID objectID);
+    bool MarkNotInvalid (IObjectID<DomainObject> objectID);
   }
 }

@@ -26,7 +26,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.RelationEndP
 {
   public static class RealObjectEndPointTestHelper
   {
-    public static void SetOppositeObjectID (RealObjectEndPoint objectEndPoint, ObjectID newID)
+    public static void SetOppositeObjectID (RealObjectEndPoint objectEndPoint, IObjectID<DomainObject> newID)
     {
       PrivateInvoke.InvokeNonPublicMethod (objectEndPoint, "SetOppositeObjectID", newID);
     }
@@ -41,7 +41,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.RelationEndP
       return realObjectEndPoint.ForeignKeyDataContainer.GetValue (realObjectEndPoint.PropertyDefinition);
     }
 
-    public static void SetValueViaDataContainer (RealObjectEndPoint realObjectEndPoint, ObjectID objectID)
+    public static void SetValueViaDataContainer (RealObjectEndPoint realObjectEndPoint, IObjectID<DomainObject> objectID)
     {
       realObjectEndPoint.ForeignKeyDataContainer.SetValue (realObjectEndPoint.PropertyDefinition, objectID);
     }

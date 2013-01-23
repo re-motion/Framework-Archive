@@ -47,7 +47,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Mapping.TestDomain.Integrat
       return NewObject<ClassWithAllDataTypes> ();
     }
 
-    public new static ClassWithAllDataTypes GetObject (ObjectID id)
+    public new static ClassWithAllDataTypes GetObject (IObjectID<DomainObject> id)
     {
       return GetObject<ClassWithAllDataTypes> (id);
     }

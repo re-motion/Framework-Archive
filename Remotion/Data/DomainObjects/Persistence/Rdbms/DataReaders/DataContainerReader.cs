@@ -27,7 +27,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
   /// <summary>
   /// Reads data from an <see cref="IDataReader"/> and converts it into <see cref="DataContainer"/> instances.
   /// The command whose data is converted must return an ID, a timestamp (as defined by the given <see cref="IRdbmsStoragePropertyDefinition"/> 
-  /// instances), and values for each persistent property of the <see cref="ClassDefinition"/> matching the <see cref="ObjectID"/> read from the 
+  /// instances), and values for each persistent property of the <see cref="ClassDefinition"/> matching the <see cref="IObjectID{DomainObject}"/> read from the 
   /// <see cref="IDataReader"/>.
   /// </summary>
   public class DataContainerReader : IObjectReader<DataContainer>
@@ -99,7 +99,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
     {
       ArgumentUtility.CheckNotNull ("dataReader", dataReader);
 
-      var id = (ObjectID) _idProperty.CombineValue (columnValueReader);
+      var id = (IObjectID<DomainObject>) _idProperty.CombineValue (columnValueReader);
       if (id == null)
         return null;
 
@@ -110,7 +110,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
           pd => pd.StorageClass == StorageClass.Persistent ? ReadPropertyValue (pd, columnValueReader, id) : pd.DefaultValue);
     }
 
-    private object ReadPropertyValue (PropertyDefinition propertyDefinition, IColumnValueProvider columnValueProvider, ObjectID id)
+    private object ReadPropertyValue (PropertyDefinition propertyDefinition, IColumnValueProvider columnValueProvider, IObjectID<DomainObject> id)
     {
       try
       {

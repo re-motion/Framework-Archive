@@ -38,7 +38,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.ObjectPersis
     }
 
     [Test]
-    public void ObjectID ()
+    public void IObjectID<DomainObject> ()
     {
       Assert.That (_loadedObjectData.ObjectID, Is.EqualTo (_invalidObjectReference.ID));
     }

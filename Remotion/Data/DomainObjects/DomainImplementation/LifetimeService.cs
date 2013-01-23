@@ -68,7 +68,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation
     /// exception is thrown, and the object is marked <see cref="StateType.Invalid"/> in the <paramref name="clientTransaction"/>.
     /// </summary>
     /// <param name="clientTransaction">The <see cref="ClientTransaction"/>.</param>
-    /// <param name="objectID">The <see cref="ObjectID"/> of the <see cref="DomainObject"/> that should be loaded. Must not be <see langword="null"/>.</param>
+    /// <param name="objectID">The <see cref="IObjectID{DomainObject}"/> of the <see cref="DomainObject"/> that should be loaded. Must not be <see langword="null"/>.</param>
     /// <param name="includeDeleted">Indicates if the method should return <see cref="DomainObject"/>s that are already deleted.</param>
     /// <returns>
     /// The <see cref="DomainObject"/> with the specified <paramref name="objectID"/>.
@@ -76,7 +76,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation
     /// <exception cref="System.ArgumentNullException"><paramref name="clientTransaction"/> or <paramref name="objectID"/> are <see langword="null"/>.</exception>
     /// <exception cref="ObjectsNotFoundException">
     /// The object could not be found in the data source. Note that the <see cref="ClientTransaction"/> marks
-    /// not found objects as <see cref="StateType.Invalid"/>, so calling this API again witht he same <see cref="ObjectID"/> results in a 
+    /// not found objects as <see cref="StateType.Invalid"/>, so calling this API again witht he same <see cref="IObjectID{DomainObject}"/> results in a 
     /// <see cref="ObjectInvalidException"/> being thrown.
     /// </exception>
     /// <exception cref="ObjectInvalidException">The object is invalid in the <paramref name="clientTransaction"/>.</exception>
@@ -87,7 +87,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation
     /// </exception>
     /// <exception cref="ObjectDeletedException">The object has already been deleted and the <paramref name="includeDeleted"/> flag is 
     /// <see langword="false" />.</exception>
-    public static DomainObject GetObject (ClientTransaction clientTransaction, ObjectID objectID, bool includeDeleted)
+    public static DomainObject GetObject (ClientTransaction clientTransaction, IObjectID<DomainObject> objectID, bool includeDeleted)
     {
       ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
       ArgumentUtility.CheckNotNull ("objectID", objectID);
@@ -101,7 +101,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation
     /// return a <see langword="null" /> reference in its place.
     /// </summary>
     /// <param name="clientTransaction">The <see cref="ClientTransaction"/>.</param>
-    /// <param name="objectID">The <see cref="ObjectID"/> of the <see cref="DomainObject"/> that should be loaded. Must not be <see langword="null"/>.</param>
+    /// <param name="objectID">The <see cref="IObjectID{DomainObject}"/> of the <see cref="DomainObject"/> that should be loaded. Must not be <see langword="null"/>.</param>
     /// <returns>
     /// The <see cref="DomainObject"/> with the specified <paramref name="objectID"/>, or <see langword="null" /> if it couldn't be found.
     /// </returns>
@@ -111,7 +111,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation
     /// An error occurred while reading a <see cref="PropertyValue"/>.<br/> -or- <br/>
     /// An error occurred while accessing the data source.
     /// </exception>
-    public static DomainObject TryGetObject (ClientTransaction clientTransaction, ObjectID objectID)
+    public static DomainObject TryGetObject (ClientTransaction clientTransaction, IObjectID<DomainObject> objectID)
     {
       ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
       ArgumentUtility.CheckNotNull ("objectID", objectID);
@@ -120,15 +120,15 @@ namespace Remotion.Data.DomainObjects.DomainImplementation
     }
 
     /// <summary>
-    /// Gets a reference to a <see cref="DomainObject"/> with the given <see cref="ObjectID"/> in a specific <see cref="ClientTransaction"/>. If the
-    /// transaction does not currently hold an object with this <see cref="ObjectID"/>, an object reference representing that <see cref="ObjectID"/>
+    /// Gets a reference to a <see cref="DomainObject"/> with the given <see cref="IObjectID{DomainObject}"/> in a specific <see cref="ClientTransaction"/>. If the
+    /// transaction does not currently hold an object with this <see cref="IObjectID{DomainObject}"/>, an object reference representing that <see cref="IObjectID{DomainObject}"/>
     /// is created without calling a constructor and without loading the object's data from the data source. This method does not check whether an
-    /// object with the given <see cref="ObjectID"/> actually exists in the data source.
+    /// object with the given <see cref="IObjectID{DomainObject}"/> actually exists in the data source.
     /// </summary>
     /// <param name="clientTransaction">The <see cref="ClientTransaction"/> to get the reference from.</param>
-    /// <param name="objectID">The <see cref="ObjectID"/> to get an object reference for.</param>
+    /// <param name="objectID">The <see cref="IObjectID{DomainObject}"/> to get an object reference for.</param>
     /// <returns>
-    /// An object with the given <see cref="ObjectID"/>, possibly in <see cref="StateType.NotLoadedYet"/> state.
+    /// An object with the given <see cref="IObjectID{DomainObject}"/>, possibly in <see cref="StateType.NotLoadedYet"/> state.
     /// </returns>
     /// <remarks>
     /// When an object with the given <paramref name="objectID"/> has already been enlisted in the transaction, that object is returned. Otherwise,
@@ -140,7 +140,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation
     /// <exception cref="ArgumentNullException">One of the parameters passed to this method is <see langword="null"/>.</exception>
     /// <exception cref="ObjectInvalidException">The object with the given <paramref name="objectID"/> is invalid in the given 
     /// <paramref name="clientTransaction"/>.</exception>
-    public static DomainObject GetObjectReference (ClientTransaction clientTransaction, ObjectID objectID)
+    public static DomainObject GetObjectReference (ClientTransaction clientTransaction, IObjectID<DomainObject> objectID)
     {
       ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
       ArgumentUtility.CheckNotNull ("objectID", objectID);
@@ -163,16 +163,16 @@ namespace Remotion.Data.DomainObjects.DomainImplementation
     /// <exception cref="ObjectInvalidException">One of the retrieved objects is invalid in this transaction.</exception>
     /// <exception cref="ObjectsNotFoundException">
     /// One or more objects could not be found in the data source. Note that the <see cref="ClientTransaction"/> marks
-    /// not found objects as <see cref="StateType.Invalid"/>, so calling this API again witht he same <see cref="ObjectID"/> results in a 
+    /// not found objects as <see cref="StateType.Invalid"/>, so calling this API again witht he same <see cref="IObjectID{DomainObject}"/> results in a 
     /// <see cref="ObjectInvalidException"/> being thrown.
     /// </exception>
-    public static T[] GetObjects<T> (ClientTransaction clientTransaction, params ObjectID[] objectIDs)
+    public static T[] GetObjects<T> (ClientTransaction clientTransaction, params IObjectID<DomainObject>[] objectIDs)
         where T : DomainObject
     {
       ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
       ArgumentUtility.CheckNotNull ("objectIDs", objectIDs);
 
-      return GetObjects<T> (clientTransaction, (IEnumerable<ObjectID>) objectIDs);
+      return GetObjects<T> (clientTransaction, (IEnumerable<IObjectID<DomainObject>>) objectIDs);
     }
 
     /// <summary>
@@ -190,10 +190,10 @@ namespace Remotion.Data.DomainObjects.DomainImplementation
     /// <exception cref="ObjectInvalidException">One of the retrieved objects is invalid in this transaction.</exception>
     /// <exception cref="ObjectsNotFoundException">
     /// One or more objects could not be found in the data source. Note that the <see cref="ClientTransaction"/> marks
-    /// not found objects as <see cref="StateType.Invalid"/>, so calling this API again witht he same <see cref="ObjectID"/> results in a 
+    /// not found objects as <see cref="StateType.Invalid"/>, so calling this API again witht he same <see cref="IObjectID{DomainObject}"/> results in a 
     /// <see cref="ObjectInvalidException"/> being thrown.
     /// </exception>
-    public static T[] GetObjects<T> (ClientTransaction clientTransaction, IEnumerable<ObjectID> objectIDs)
+    public static T[] GetObjects<T> (ClientTransaction clientTransaction, IEnumerable<IObjectID<DomainObject>> objectIDs)
         where T : DomainObject
     {
       ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
@@ -214,7 +214,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation
     /// <paramref name="objectIDs"/>. This list can contain invalid and <see langword="null" /> <see cref="DomainObject"/> references.</returns>
     /// <exception cref="ArgumentNullException">The <paramref name="objectIDs"/> parameter is <see langword="null"/>.</exception>
     /// <exception cref="InvalidCastException">One of the retrieved objects doesn't fit the specified type <typeparamref name="T"/>.</exception>
-    public static T[] TryGetObjects<T> (ClientTransaction clientTransaction, params ObjectID[] objectIDs)
+    public static T[] TryGetObjects<T> (ClientTransaction clientTransaction, params IObjectID<DomainObject>[] objectIDs)
         where T : DomainObject
     {
       ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
@@ -235,7 +235,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation
     /// <paramref name="objectIDs"/>. This list can contain invalid and <see langword="null" /> <see cref="DomainObject"/> references.</returns>
     /// <exception cref="ArgumentNullException">The <paramref name="objectIDs"/> parameter is <see langword="null"/>.</exception>
     /// <exception cref="InvalidCastException">One of the retrieved objects doesn't fit the specified type <typeparamref name="T"/>.</exception>
-    public static T[] TryGetObjects<T> (ClientTransaction clientTransaction, IEnumerable<ObjectID> objectIDs)
+    public static T[] TryGetObjects<T> (ClientTransaction clientTransaction, IEnumerable<IObjectID<DomainObject>> objectIDs)
         where T : DomainObject
     {
       ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
@@ -267,7 +267,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation
     }
 
     [Obsolete ("This method is now obsolete, use the overload taking a ClientTransaction instead. (1.13.42)", true)]
-    public static DomainObject GetObject (ObjectID objectID, bool includeDeleted)
+    public static DomainObject GetObject (IObjectID<DomainObject> objectID, bool includeDeleted)
     {
       return GetObject (ClientTransactionScope.CurrentTransaction, objectID, includeDeleted);
     }

@@ -29,15 +29,15 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
   public interface IPersistenceStrategy
   {
     /// <summary>
-    /// Creates a new <see cref="ObjectID"/> for the given class definition. The <see cref="ObjectID"/> must be created in a such a way that it can 
+    /// Creates a new <see cref="IObjectID{DomainObject}"/> for the given class definition. The <see cref="IObjectID{DomainObject}"/> must be created in a such a way that it can 
     /// later be used to identify objects when persisting or loading <see cref="DataContainer"/> instances.
     /// </summary>
-    /// <param name="classDefinition">The class definition to create a new <see cref="ObjectID"/> for.</param>
-    /// <returns>A new <see cref="ObjectID"/> for the given class definition.</returns>
-    ObjectID CreateNewObjectID (ClassDefinition classDefinition);
+    /// <param name="classDefinition">The class definition to create a new <see cref="IObjectID{DomainObject}"/> for.</param>
+    /// <returns>A new <see cref="IObjectID{DomainObject}"/> for the given class definition.</returns>
+    IObjectID<DomainObject> CreateNewObjectID (ClassDefinition classDefinition);
 
     /// <summary>
-    /// Loads the data for the given <see cref="ObjectID"/> from the underlying data source.
+    /// Loads the data for the given <see cref="IObjectID{DomainObject}"/> from the underlying data source.
     /// </summary>
     /// <param name="id">The id of the data to load.</param>
     /// <returns>An <see cref="ILoadedObjectData"/> instance for the given <paramref name="id"/>. Items that
@@ -53,10 +53,10 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
     /// <see cref="IClientTransactionListener.ObjectsLoaded"/> events.
     /// </para>
     /// </remarks>
-    ILoadedObjectData LoadObjectData (ObjectID id);
+    ILoadedObjectData LoadObjectData (IObjectID<DomainObject> id);
 
     /// <summary>
-    /// Loads the data for a number of <see cref="ObjectID"/> values from the underlying data source.
+    /// Loads the data for a number of <see cref="IObjectID{DomainObject}"/> values from the underlying data source.
     /// </summary>
     /// <param name="objectIDs">The ids of the data to load.</param>
     /// <returns>A sequence of <see cref="ILoadedObjectData"/> instances in the same order as in <paramref name="objectIDs"/>. Items that
@@ -73,7 +73,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
     /// <see cref="IClientTransactionListener.ObjectsLoaded"/> events.
     /// </para>
     /// </remarks>
-    IEnumerable<ILoadedObjectData> LoadObjectData (IEnumerable<ObjectID> objectIDs);
+    IEnumerable<ILoadedObjectData> LoadObjectData (IEnumerable<IObjectID<DomainObject>> objectIDs);
 
     /// <summary>
     /// Resolves the relation identified by the given <see cref="RelationEndPointID"/>, loading the related object's data unless already available.

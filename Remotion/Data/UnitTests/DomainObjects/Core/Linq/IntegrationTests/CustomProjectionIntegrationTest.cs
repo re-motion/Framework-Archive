@@ -37,9 +37,9 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Linq.IntegrationTests
 
     [Test]
     [ExpectedException (typeof (NotSupportedException), ExpectedMessage = 
-        "Type 'ObjectID' ist not supported by this storage provider.\r\n"+
+        "Type 'IObjectID<T>' ist not supported by this storage provider.\r\n"+
         "Please select the ID and ClassID values separately, then create an ObjectID with it in memory "
-        + "(e.g., 'select new ObjectID (o.ID.ClassID, o.ID.Value)').")]
+        + "(e.g., 'select ObjectID.Create (o.ID.ClassID, o.ID.Value)').")]
     public void SequenceOfObjectIDs ()
     {
       var result = from o in QueryFactory.CreateLinqQuery<Order>() select o.ID;
@@ -75,7 +75,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Linq.IntegrationTests
 
       var result =
           (from c in QueryFactory.CreateLinqQuery<Computer> ()
-           where c.ID == DomainObjectIDs.Computer1
+           where object.Equals (c.ID, DomainObjectIDs.Computer1)
            select ObjectID.Create(c.Employee.ID.ClassID, c.Employee.ID.Value)).ToArray ();
 
       Assert.That (result, Is.EquivalentTo (new[] { DomainObjectIDs.Employee3 }));

@@ -28,7 +28,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Serialization
     [Test]
     public void ObjectIDIsSerializable ()
     {
-      ObjectID id = Serializer.SerializeAndDeserialize (DomainObjectIDs.Order1);
+      IObjectID<DomainObject> id = Serializer.SerializeAndDeserialize (DomainObjectIDs.Order1);
       Assert.That (id, Is.TypeOf<ObjectID<Order>>());
       Assert.That (id, Is.EqualTo (DomainObjectIDs.Order1));
     }
@@ -36,8 +36,8 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Serialization
     [Test]
     public void DeserializedContent_Value ()
     {
-      ObjectID id = DomainObjectIDs.Order1;
-      ObjectID deserializedID = Serializer.SerializeAndDeserialize (id);
+      IObjectID<DomainObject> id = DomainObjectIDs.Order1;
+      IObjectID<DomainObject> deserializedID = Serializer.SerializeAndDeserialize (id);
 
       Assert.That (deserializedID.Value, Is.EqualTo (id.Value));
     }
@@ -45,8 +45,8 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Serialization
     [Test]
     public void DeserializedContent_ClassDefinition ()
     {
-      ObjectID id = DomainObjectIDs.Order1;
-      ObjectID deserializedID = Serializer.SerializeAndDeserialize (id);
+      IObjectID<DomainObject> id = DomainObjectIDs.Order1;
+      IObjectID<DomainObject> deserializedID = Serializer.SerializeAndDeserialize (id);
 
       Assert.That (deserializedID.ClassDefinition, Is.EqualTo (id.ClassDefinition));
     }
@@ -54,8 +54,8 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Serialization
     [Test]
     public void DeserializedContent_HashCode ()
     {
-      ObjectID id = DomainObjectIDs.Order1;
-      ObjectID deserializedID = Serializer.SerializeAndDeserialize (id);
+      IObjectID<DomainObject> id = DomainObjectIDs.Order1;
+      IObjectID<DomainObject> deserializedID = Serializer.SerializeAndDeserialize (id);
 
       Assert.That (deserializedID.GetHashCode(), Is.EqualTo (id.GetHashCode()));
     }

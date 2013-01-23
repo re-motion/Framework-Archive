@@ -37,7 +37,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Factories
     // Supervisor: -
     // Subordinates: Employee4, Employee5
     // Computer: -
-    public ObjectID Employee1
+    public IObjectID<DomainObject> Employee1
     {
       get { return CreateObjectID ("Employee", new Guid ("{51ECE39B-F040-45b0-8B72-AD8B45353990}")); }
     }
@@ -45,7 +45,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Factories
     // Supervisor: -
     // Subordinates: Employee3
     // Computer: -
-    public ObjectID Employee2
+    public IObjectID<DomainObject> Employee2
     {
       get { return CreateObjectID ("Employee", new Guid ("{C3B2BBC3-E083-4974-BAC7-9CEE1FB85A5E}")); }
     }
@@ -53,7 +53,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Factories
     // Supervisor: Employee2
     // Subordinates: -
     // Computer: Computer1
-    public ObjectID Employee3
+    public IObjectID<DomainObject> Employee3
     {
       get { return CreateObjectID ("Employee", new Guid ("{3C4F3FC8-0DB2-4c1f-AA00-ADE72E9EDB32}")); }
     }
@@ -61,7 +61,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Factories
     // Supervisor: Employee1
     // Subordinates: -
     // Computer: Computer2
-    public ObjectID Employee4
+    public IObjectID<DomainObject> Employee4
     {
       get { return CreateObjectID ("Employee", new Guid ("{890BF138-7559-40d6-9C7F-436BC1AD4F59}")); }
     }
@@ -69,7 +69,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Factories
     // Supervisor: Employee1
     // Subordinates: -
     // Computer: Computer3
-    public ObjectID Employee5
+    public IObjectID<DomainObject> Employee5
     {
       get { return CreateObjectID ("Employee", new Guid ("{43329F84-D8BB-4988-BFD2-96D4F48EE5DE}")); }
     }
@@ -77,7 +77,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Factories
     // Supervisor: -
     // Subordinates: Employee7
     // Computer: -
-    public ObjectID Employee6
+    public IObjectID<DomainObject> Employee6
     {
       get { return CreateObjectID ("Employee", new Guid ("{3A24D098-EAAD-4dd7-ADA2-932D9B6935F1}")); }
     }
@@ -86,7 +86,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Factories
     // Supervisor: Employee6
     // Subordinates: -
     // Computer: -
-    public ObjectID Employee7
+    public IObjectID<DomainObject> Employee7
     {
       get { return CreateObjectID ("Employee", new Guid ("{DBD9EA74-8C97-4411-AC02-9205D1D6D031}")); }
     }
@@ -96,31 +96,31 @@ namespace Remotion.Data.UnitTests.DomainObjects.Factories
     #region Computer
 
     // Employee: Employee3
-    public ObjectID Computer1
+    public IObjectID<DomainObject> Computer1
     {
       get { return CreateObjectID ("Computer", new Guid ("{C7C26BF5-871D-48c7-822A-E9B05AAC4E5A}")); }
     }
 
     // Employee: Employee4
-    public ObjectID Computer2
+    public IObjectID<DomainObject> Computer2
     {
       get { return CreateObjectID ("Computer", new Guid ("{176A0FF6-296D-4934-BD1A-23CF52C22411}")); }
     }
 
     // Employee: Employee5
-    public ObjectID Computer3
+    public IObjectID<DomainObject> Computer3
     {
       get { return CreateObjectID ("Computer", new Guid ("{704CE38C-4A08-4ef2-A6FE-9ED849BA31E5}")); }
     }
 
     // Employee: -
-    public ObjectID Computer4
+    public IObjectID<DomainObject> Computer4
     {
       get { return CreateObjectID ("Computer", new Guid ("{D6F50E77-2041-46b8-A840-AAA4D2E1BF5A}")); }
     }
 
     // Employee: -
-    public ObjectID Computer5
+    public IObjectID<DomainObject> Computer5
     {
       get { return CreateObjectID ("Computer", new Guid ("{AEAC0C5D-44E0-45cc-B716-103B0A4981A4}")); }
     }
@@ -129,42 +129,42 @@ namespace Remotion.Data.UnitTests.DomainObjects.Factories
 
     #region Person
 
-    public ObjectID Person1
+    public IObjectID<DomainObject> Person1
     {
       get { return CreateObjectID ("Person", new Guid ("{2001BF42-2AA4-4c81-AD8E-73E9145411E9}")); }
     }
 
-    public ObjectID Person2
+    public IObjectID<DomainObject> Person2
     {
       get { return CreateObjectID ("Person", new Guid ("{DC50A962-EC95-4cf6-A4E7-A6608EAA23C8}")); }
     }
 
-    public ObjectID Person3
+    public IObjectID<DomainObject> Person3
     {
       get { return CreateObjectID ("Person", new Guid ("{10F36130-E97B-4078-A535-B79E07F16AB2}")); }
     }
 
-    public ObjectID Person4
+    public IObjectID<DomainObject> Person4
     {
       get { return CreateObjectID ("Person", new Guid ("{45C6730A-DE0B-40d2-9D35-C1E56B8A89D6}")); }
     }
 
-    public ObjectID Person5
+    public IObjectID<DomainObject> Person5
     {
       get { return CreateObjectID ("Person", new Guid ("{70C91528-4DB4-4e6a-B3F8-70C53A728DCC}")); }
     }
 
-    public ObjectID Person6
+    public IObjectID<DomainObject> Person6
     {
       get { return CreateObjectID ("Person", new Guid ("{19C04A28-094F-4d1f-9705-E2FC7107A68F}")); }
     }
 
-    public ObjectID Person7
+    public IObjectID<DomainObject> Person7
     {
       get { return CreateObjectID ("Person", new Guid ("{E4F6F59F-80F7-4e41-A004-1A5BA0F68F78}")); }
     }
 
-    public ObjectID ContactPersonInTwoOrganizations
+    public IObjectID<DomainObject> ContactPersonInTwoOrganizations
     {
       get { return CreateObjectID ("Person", new Guid ("{911957D1-483C-4a8b-AA53-FF07464C58F9}")); }
     }
@@ -174,19 +174,19 @@ namespace Remotion.Data.UnitTests.DomainObjects.Factories
     #region IndustrialSector
 
     // Companies: Customer1, Partner1, PartnerWithoutCeo, Supplier1, Distributor2
-    public ObjectID IndustrialSector1
+    public IObjectID<DomainObject> IndustrialSector1
     {
       get { return CreateObjectID ("IndustrialSector", new Guid ("{3BB7BEE9-2AF9-4a85-998E-618BEBBE5A6B}")); }
     }
 
     // Companies: Company1, Company2, Customer2, Customer3, Partner2, Supplier2, Distributor1
-    public ObjectID IndustrialSector2
+    public IObjectID<DomainObject> IndustrialSector2
     {
       get { return CreateObjectID ("IndustrialSector", new Guid ("{8565A077-EA01-4b5d-BEAA-293DC484BDDC}")); }
     }
 
     // Companies: DistributorWithoutContactPerson
-    public ObjectID IndustrialSector3
+    public IObjectID<DomainObject> IndustrialSector3
     {
       get { return CreateObjectID ("IndustrialSector", new Guid ("{53B322BF-25D8-4fe1-96C8-508E055143E7}")); }
     }
@@ -197,14 +197,14 @@ namespace Remotion.Data.UnitTests.DomainObjects.Factories
 
     // IndustrialSector: IndustrialSector2
     // Ceo: Ceo1
-    public ObjectID Company1
+    public IObjectID<DomainObject> Company1
     {
       get { return CreateObjectID ("Company", new Guid ("{C4954DA8-8870-45c1-B7A3-C7E5E6AD641A}")); }
     }
 
     // IndustrialSector: IndustrialSector2
     // Ceo: Ceo2
-    public ObjectID Company2
+    public IObjectID<DomainObject> Company2
     {
       get { return CreateObjectID ("Company", new Guid ("{A21A9EC2-17D6-44de-9F1A-2AB6FC3742DF}")); }
     }
@@ -216,7 +216,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Factories
     // IndustrialSector: IndustrialSector1
     // Ceo: Ceo3
     // Orders: Order1, OrderWithoutOrderItem
-    public ObjectID Customer1
+    public IObjectID<DomainObject> Customer1
     {
       get { return CreateObjectID ("Customer", new Guid ("{55B52E75-514B-4e82-A91B-8F0BB59B80AD}")); }
     }
@@ -224,7 +224,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Factories
     // IndustrialSector: IndustrialSector2
     // Ceo: Ceo4
     // Orders: -
-    public ObjectID Customer2
+    public IObjectID<DomainObject> Customer2
     {
       get { return CreateObjectID ("Customer", new Guid ("{F577F879-2DB4-4a3c-A18A-AFB4E57CE098}")); }
     }
@@ -232,7 +232,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Factories
     // IndustrialSector: IndustrialSector2
     // Ceo: Ceo5
     // Orders: Order2
-    public ObjectID Customer3
+    public IObjectID<DomainObject> Customer3
     {
       get { return CreateObjectID ("Customer", new Guid ("{DD3E3D55-C16F-497f-A3E1-384D08DE0D66}")); }
     }
@@ -241,12 +241,12 @@ namespace Remotion.Data.UnitTests.DomainObjects.Factories
     // IndustrialSector: -
     // Ceo: Ceo12
     // Orders: Order3, Order4
-    public ObjectID Customer4
+    public IObjectID<DomainObject> Customer4
     {
       get { return CreateObjectID ("Customer", new Guid ("{B3F0A333-EC2A-4ddd-9035-9ADA34052450}")); }
     }
 
-    public ObjectID Customer5
+    public IObjectID<DomainObject> Customer5
     {
       get { return CreateObjectID ("Customer", new Guid ("{DA658F26-8107-44CE-9DD0-1804503ECCAF}")); }
     }
@@ -258,7 +258,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Factories
     // IndustrialSector: IndustrialSector1
     // ContactPerson: Person1
     // Ceo: Ceo6
-    public ObjectID Partner1
+    public IObjectID<DomainObject> Partner1
     {
       get { return CreateObjectID ("Partner", new Guid ("{5587A9C0-BE53-477d-8C0A-4803C7FAE1A9}")); }
     }
@@ -266,7 +266,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Factories
     // IndustrialSector: IndustrialSector2
     // ContactPerson: Person2
     // Ceo: Ceo7
-    public ObjectID Partner2
+    public IObjectID<DomainObject> Partner2
     {
       get { return CreateObjectID ("Partner", new Guid ("{B403E58E-9FA5-47ed-883C-73420D64DEB3}")); }
     }
@@ -274,7 +274,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Factories
     // IndustrialSector: IndustrialSector1
     // ContactPerson: Person7
     // Ceo: -
-    public ObjectID PartnerWithoutCeo
+    public IObjectID<DomainObject> PartnerWithoutCeo
     {
       get { return CreateObjectID ("Partner", new Guid ("{A65B123A-6E17-498e-A28E-946217C0AE30}")); }
     }
@@ -286,7 +286,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Factories
     // IndustrialSector: IndustrialSector1
     // ContactPerson: Person3
     // Ceo: Ceo8
-    public ObjectID Supplier1
+    public IObjectID<DomainObject> Supplier1
     {
       get { return CreateObjectID ("Supplier", new Guid ("{FD392135-1FDD-42a3-8E2F-232BAB9893A2}")); }
     }
@@ -294,7 +294,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Factories
     // IndustrialSector: IndustrialSector2
     // ContactPerson: Person4
     // Ceo: Ceo9
-    public ObjectID Supplier2
+    public IObjectID<DomainObject> Supplier2
     {
       get { return CreateObjectID ("Supplier", new Guid ("{92A8BB6A-412A-4fe3-9B09-3E1B6136E425}")); }
     }
@@ -306,7 +306,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Factories
     // IndustrialSector: IndustrialSector2
     // ContactPerson: Person5
     // Ceo: Ceo10
-    public ObjectID Distributor1
+    public IObjectID<DomainObject> Distributor1
     {
       get { return CreateObjectID ("Distributor", new Guid ("{E4087155-D60A-4d31-95B3-9A401A3E4E78}")); }
     }
@@ -314,7 +314,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Factories
     // IndustrialSector: IndustrialSector1
     // ContactPerson: Person6
     // Ceo: Ceo11
-    public ObjectID Distributor2
+    public IObjectID<DomainObject> Distributor2
     {
       get { return CreateObjectID ("Distributor", new Guid ("{247206C3-7B48-4e17-91DD-3363B568D7E4}")); }
     }
@@ -322,7 +322,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Factories
     // IndustrialSector: IndustrialSector3
     // ContactPerson: -
     // Ceo: -
-    public ObjectID DistributorWithoutContactPersonAndCeo
+    public IObjectID<DomainObject> DistributorWithoutContactPersonAndCeo
     {
       get { return CreateObjectID ("Distributor", new Guid ("{1514D668-A0A5-40e9-AC22-F24900E0EB39}")); }
     }
@@ -336,7 +336,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Factories
     // Customer: Customer1
     // Official: Official1
     // OrderNumber: 1
-    public ObjectID Order1
+    public IObjectID<DomainObject> Order1
     {
       get { return CreateObjectID ("Order", new Guid ("{5682F032-2F0B-494b-A31C-C97F02B89C36}")); }
     }
@@ -346,7 +346,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Factories
     // Customer: Customer1
     // Official: Official1
     // OrderNumber: 2
-    public ObjectID OrderWithoutOrderItem
+    public IObjectID<DomainObject> OrderWithoutOrderItem
     {
       get { return CreateObjectID ("Order", new Guid ("{F4016F41-F4E4-429e-B8D1-659C8C480A67}")); }
     }
@@ -356,7 +356,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Factories
     // Customer: Customer3
     // Official: Official1
     // OrderNumber: 3
-    public ObjectID Order2
+    public IObjectID<DomainObject> Order2
     {
       get { return CreateObjectID ("Order", new Guid ("{83445473-844A-4d3f-A8C3-C27F8D98E8BA}")); }
     }
@@ -366,7 +366,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Factories
     // Customer: Customer4
     // Official: Official1
     // OrderNumber: 4
-    public ObjectID Order3
+    public IObjectID<DomainObject> Order3
     {
       get { return CreateObjectID ("Order", new Guid ("{3C0FB6ED-DE1C-4e70-8D80-218E0BF58DF3}")); }
     }
@@ -376,7 +376,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Factories
     // Customer: Customer4
     // Official: Official1
     // OrderNumber: 5
-    public ObjectID Order4
+    public IObjectID<DomainObject> Order4
     {
       get { return CreateObjectID ("Order", new Guid ("{90E26C86-611F-4735-8D1B-E1D0918515C2}")); }
     }
@@ -386,7 +386,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Factories
     // Customer: invalid
     // Official: does not exist
     // OrderNumber: 6
-    public ObjectID InvalidOrder
+    public IObjectID<DomainObject> InvalidOrder
     {
       get { return CreateObjectID ("Order", new Guid ("{DA658F26-8107-44ce-9DD0-1804503ECCAF}")); }
     }
@@ -397,35 +397,35 @@ namespace Remotion.Data.UnitTests.DomainObjects.Factories
 
     // Order: Order1
     // Product: Mainboard
-    public ObjectID OrderItem1
+    public IObjectID<DomainObject> OrderItem1
     {
       get { return CreateObjectID ("OrderItem", new Guid ("{2F4D42C7-7FFA-490d-BFCD-A9101BBF4E1A}")); }
     }
 
     // Order: Order1
     // Product: CPU Fan
-    public ObjectID OrderItem2
+    public IObjectID<DomainObject> OrderItem2
     {
       get { return CreateObjectID ("OrderItem", new Guid ("{AD620A11-4BC4-4791-BCF4-A0770A08C5B0}")); }
     }
 
     // Order: Order2
     // Product: Harddisk
-    public ObjectID OrderItem3
+    public IObjectID<DomainObject> OrderItem3
     {
       get { return CreateObjectID ("OrderItem", new Guid ("{0D7196A5-8161-4048-820D-B1BBDABE3293}")); }
     }
 
     // Order: Order3
     // Product: Hitchhiker's guide
-    public ObjectID OrderItem4
+    public IObjectID<DomainObject> OrderItem4
     {
       get { return CreateObjectID ("OrderItem", new Guid ("{DC20E0EB-4B55-4f23-89CF-6D6478F96D3B}")); }
     }
 
     // Order: Order4
     // Product: Blumentopf
-    public ObjectID OrderItem5
+    public IObjectID<DomainObject> OrderItem5
     {
       get { return CreateObjectID ("OrderItem", new Guid ("{EA505094-770A-4505-82C1-5A4F94F56FE2}")); }
     }
@@ -436,7 +436,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Factories
 
     // OrderItems: OrderItemWithNewPropertyAccess1, OrderItemWithNewPropertyAccess2
     // Customer: Customer1
-    public ObjectID OrderWithNewPropertyAccess1
+    public IObjectID<DomainObject> OrderWithNewPropertyAccess1
     {
       get { return CreateObjectID ("OrderWithNewPropertyAccess", new Guid ("{5682F032-2F0B-494b-A31C-C97F02B89C36}")); }
     }
@@ -446,13 +446,13 @@ namespace Remotion.Data.UnitTests.DomainObjects.Factories
     #region OrderItemWithNewPropertyAccess
 
     // Order: OrderWithNewPropertyAccess1
-    public ObjectID OrderItemWithNewPropertyAccess1
+    public IObjectID<DomainObject> OrderItemWithNewPropertyAccess1
     {
       get { return CreateObjectID ("OrderItemWithNewPropertyAccess", new Guid ("{2F4D42C7-7FFA-490d-BFCD-A9101BBF4E1A}")); }
     }
 
     // Order: OrderWithNewPropertyAccess1
-    public ObjectID OrderItemWithNewPropertyAccess2
+    public IObjectID<DomainObject> OrderItemWithNewPropertyAccess2
     {
       get { return CreateObjectID ("OrderItemWithNewPropertyAccess", new Guid ("{AD620A11-4BC4-4791-BCF4-A0770A08C5B0}")); }
     }
@@ -462,31 +462,31 @@ namespace Remotion.Data.UnitTests.DomainObjects.Factories
     #region OrderTicket
 
     // Order: Order1
-    public ObjectID OrderTicket1
+    public IObjectID<DomainObject> OrderTicket1
     {
       get { return CreateObjectID ("OrderTicket", new Guid ("{058EF259-F9CD-4cb1-85E5-5C05119AB596}")); }
     }
 
     // Order: OrderWithoutOrderItem
-    public ObjectID OrderTicket2
+    public IObjectID<DomainObject> OrderTicket2
     {
       get { return CreateObjectID ("OrderTicket", new Guid ("{0005BDF4-4CCC-4a41-B9B5-BAAB3EB95237}")); }
     }
 
     // Order: Order2
-    public ObjectID OrderTicket3
+    public IObjectID<DomainObject> OrderTicket3
     {
       get { return CreateObjectID ("OrderTicket", new Guid ("{BCF6C5F6-323F-4471-9CA5-7DF0A48C7A59}")); }
     }
 
     // Order: Order3
-    public ObjectID OrderTicket4
+    public IObjectID<DomainObject> OrderTicket4
     {
       get { return CreateObjectID ("OrderTicket", new Guid ("{6768DB2B-9C66-4e2f-BBA2-89C56718FF2B}")); }
     }
 
     // Order: Order4
-    public ObjectID OrderTicket5
+    public IObjectID<DomainObject> OrderTicket5
     {
       get { return CreateObjectID ("OrderTicket", new Guid ("{DC20E0EB-4B55-4f23-89CF-6D6478F96D3B}")); }
     }
@@ -496,73 +496,73 @@ namespace Remotion.Data.UnitTests.DomainObjects.Factories
     #region Ceo
 
     // Company: Company1
-    public ObjectID Ceo1
+    public IObjectID<DomainObject> Ceo1
     {
       get { return CreateObjectID ("Ceo", new Guid ("{A1691AF1-F96D-42e1-B021-B5099840D572}")); }
     }
 
     // Company: Company2
-    public ObjectID Ceo2
+    public IObjectID<DomainObject> Ceo2
     {
       get { return CreateObjectID ("Ceo", new Guid ("{A6A848CE-505F-4cd3-A337-1F5EEA1D2260}")); }
     }
 
     // Company: Customer1
-    public ObjectID Ceo3
+    public IObjectID<DomainObject> Ceo3
     {
       get { return CreateObjectID ("Ceo", new Guid ("{481C7840-9D8A-4872-BBCD-B41A9BD85528}")); }
     }
 
     // Company: Customer2
-    public ObjectID Ceo4
+    public IObjectID<DomainObject> Ceo4
     {
       get { return CreateObjectID ("Ceo", new Guid ("{BE7F24E2-600C-4cd8-A7C3-8669AFD54154}")); }
     }
 
     // Company: Customer3
-    public ObjectID Ceo5
+    public IObjectID<DomainObject> Ceo5
     {
       get { return CreateObjectID ("Ceo", new Guid ("{7236BA88-48C6-415f-A0BA-A328A1A22DFE}")); }
     }
 
     // Company: Partner1
-    public ObjectID Ceo6
+    public IObjectID<DomainObject> Ceo6
     {
       get { return CreateObjectID ("Ceo", new Guid ("{C7837D11-C1D6-458f-A3F7-7D5C96C1F726}")); }
     }
 
     // Company: Partner2
-    public ObjectID Ceo7
+    public IObjectID<DomainObject> Ceo7
     {
       get { return CreateObjectID ("Ceo", new Guid ("{9F0AC953-E78E-4939-8AFE-0EFF9B3B3ED9}")); }
     }
 
     // Company: Supplier1
-    public ObjectID Ceo8
+    public IObjectID<DomainObject> Ceo8
     {
       get { return CreateObjectID ("Ceo", new Guid ("{394C69B2-BD40-48d1-A2AE-A73FB63C0B66}")); }
     }
 
     // Company: Supplier2
-    public ObjectID Ceo9
+    public IObjectID<DomainObject> Ceo9
     {
       get { return CreateObjectID ("Ceo", new Guid ("{421D04B4-BC77-4682-B0FE-58B96802C524}")); }
     }
 
     // Company: Distributor1
-    public ObjectID Ceo10
+    public IObjectID<DomainObject> Ceo10
     {
       get { return CreateObjectID ("Ceo", new Guid ("{6B801331-2163-4837-B20C-973BD9B8768E}")); }
     }
 
     // Company: Distributor2
-    public ObjectID Ceo11
+    public IObjectID<DomainObject> Ceo11
     {
       get { return CreateObjectID ("Ceo", new Guid ("{2E8AE776-DC3A-45a5-9B0C-35900CC78FDC}")); }
     }
 
     // Company: Customer4
-    public ObjectID Ceo12
+    public IObjectID<DomainObject> Ceo12
     {
       get { return CreateObjectID ("Ceo", new Guid ("{FD1B587C-3E26-43f8-9866-8B770194D70F}")); }
     }
@@ -572,13 +572,13 @@ namespace Remotion.Data.UnitTests.DomainObjects.Factories
     #region Official
 
     // Orders: Order1, Order2, OrderWithoutOrderItem, Order3, Order4
-    public ObjectID Official1
+    public IObjectID<DomainObject> Official1
     {
       get { return CreateObjectID ("Official", 1); }
     }
 
     // Orders: -
-    public ObjectID Official2
+    public IObjectID<DomainObject> Official2
     {
       get { return CreateObjectID ("Official", 2); }
     }
@@ -590,7 +590,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Factories
     // ChildClients: Client2, Client3
     // ParentClient: -
     // Location: Location1, Location2
-    public ObjectID Client1
+    public IObjectID<DomainObject> Client1
     {
       get { return CreateObjectID ("Client", new Guid ("{1627ADE8-125F-4819-8E33-CE567C42B00C}")); }
     }
@@ -598,7 +598,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Factories
     // ChildClients: -
     // ParentClient: Client1
     // Location: Location3
-    public ObjectID Client2
+    public IObjectID<DomainObject> Client2
     {
       get { return CreateObjectID ("Client", new Guid ("{090D54F2-738C-48ac-9C78-F40365A72305}")); }
     }
@@ -606,7 +606,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Factories
     // ChildClients: -
     // ParentClient: Client1
     // Location: -
-    public ObjectID Client3
+    public IObjectID<DomainObject> Client3
     {
       get { return CreateObjectID ("Client", new Guid ("{01349595-88A3-4583-A7BA-CB08795C97F6}")); }
     }
@@ -614,7 +614,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Factories
     // ChildClients: -
     // ParentClient: -
     // Location: -
-    public ObjectID Client4
+    public IObjectID<DomainObject> Client4
     {
       get { return CreateObjectID ("Client", new Guid ("{015E25B1-ACFA-4364-87F5-D28A45384D11}")); }
     }
@@ -624,19 +624,19 @@ namespace Remotion.Data.UnitTests.DomainObjects.Factories
     #region Location
 
     // Client: Client1
-    public ObjectID Location1
+    public IObjectID<DomainObject> Location1
     {
       get { return CreateObjectID ("Location", new Guid ("{D527B630-B0AC-4572-A614-EAC9F486148D}")); }
     }
 
     // Client: Client1
-    public ObjectID Location2
+    public IObjectID<DomainObject> Location2
     {
       get { return CreateObjectID ("Location", new Guid ("{20380C9D-B70F-4d9a-880E-EAE5D6E3919C}")); }
     }
 
     // Client: Client2
-    public ObjectID Location3
+    public IObjectID<DomainObject> Location3
     {
       get { return CreateObjectID ("Location", new Guid ("{903E7EE5-CBB8-44c0-BEB6-ACAFFA5ADA7F}")); }
     }
@@ -645,12 +645,12 @@ namespace Remotion.Data.UnitTests.DomainObjects.Factories
 
     #region ClassWithAllDataTypes
 
-    public ObjectID ClassWithAllDataTypes1
+    public IObjectID<DomainObject> ClassWithAllDataTypes1
     {
       get { return CreateObjectID ("ClassWithAllDataTypes", new Guid ("{3F647D79-0CAF-4a53-BAA7-A56831F8CE2D}")); }
     }
 
-    public ObjectID ClassWithAllDataTypes2
+    public IObjectID<DomainObject> ClassWithAllDataTypes2
     {
       get { return CreateObjectID ("ClassWithAllDataTypes", new Guid ("{583EC716-8443-4b55-92BF-09F7C8768529}")); }
     }
@@ -659,12 +659,12 @@ namespace Remotion.Data.UnitTests.DomainObjects.Factories
 
     #region StorageGroupClass
 
-    public ObjectID StorageGroupClass1
+    public IObjectID<DomainObject> StorageGroupClass1
     {
       get { return CreateObjectID ("StorageGroupClass", new Guid ("{09755471-E551-496d-941B-84D90D0C9ECA}")); }
     }
 
-    public ObjectID StorageGroupClass2
+    public IObjectID<DomainObject> StorageGroupClass2
     {
       get { return CreateObjectID ("StorageGroupClass", new Guid ("{F394AE2E-CB4E-4e38-8E08-9C847EE1F376}")); }
     }
@@ -679,7 +679,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Factories
     // VirtualRelationProperty: -
     // CollectionProperty1Side: -
     // CollectionPropertyNSide: -
-    public ObjectID TargetClassForPersistentMixins1
+    public IObjectID<DomainObject> TargetClassForPersistentMixins1
     {
       get { return CreateObjectID ("TargetClassForPersistentMixin", new Guid ("{784EBDDD-EE94-456D-A5F4-F6CB1B41B6CA}")); }
     }
@@ -691,7 +691,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Factories
     // CollectionProperty1Side: RelationTargetForPersistentMixin3
     // CollectionPropertyNSide: RelationTargetForPersistentMixin4
     // UnidirectionalRelationProperty: RelationTargetForPersistentMixin5
-    public ObjectID TargetClassForPersistentMixins2
+    public IObjectID<DomainObject> TargetClassForPersistentMixins2
     {
       get { return CreateObjectID ("TargetClassForPersistentMixin", new Guid ("{FF79502F-FF40-45E0-929A-230006EA3E83}")); }
     }
@@ -702,7 +702,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Factories
     // VirtualRelationProperty: -
     // CollectionProperty1Side: -
     // CollectionPropertyNSide: -
-    public ObjectID DerivedTargetClassForPersistentMixin1
+    public IObjectID<DomainObject> DerivedTargetClassForPersistentMixin1
     {
       get { return CreateObjectID ("DerivedTargetClassForPersistentMixin", new Guid ("{4ED563B8-B337-4C8E-9A77-5FA907919377}")); }
     }
@@ -713,7 +713,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Factories
     // VirtualRelationProperty: -
     // CollectionProperty1Side: -
     // CollectionPropertyNSide: -
-    public ObjectID DerivedDerivedTargetClassForPersistentMixin1
+    public IObjectID<DomainObject> DerivedDerivedTargetClassForPersistentMixin1
     {
       get { return CreateObjectID ("DerivedDerivedTargetClassForPersistentMixin", new Guid ("{B551C440-8C80-4930-A2A1-7FBB4F6B69D8}")); }
     }
@@ -724,7 +724,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Factories
     // VirtualRelationProperty: -
     // CollectionProperty1Side: -
     // CollectionPropertyNSide: -
-    public ObjectID DerivedTargetClassWithDerivedMixinWithInterface1
+    public IObjectID<DomainObject> DerivedTargetClassWithDerivedMixinWithInterface1
     {
       get { return CreateObjectID ("DerivedTargetClassWithDerivedMixinWithInterface", new Guid ("{5FFD52D9-2A38-4DEC-9AA1-FA76C30B91A4}")); }
     }
@@ -733,34 +733,34 @@ namespace Remotion.Data.UnitTests.DomainObjects.Factories
 
     #region RelationTargetForPersistentMixin
 
-    public ObjectID RelationTargetForPersistentMixin1
+    public IObjectID<DomainObject> RelationTargetForPersistentMixin1
     {
       get { return CreateObjectID ("RelationTargetForPersistentMixin", new Guid ("{DC42158C-7DA6-4D5C-B522-C0879E404DEC}")); }
     }
 
-    public ObjectID RelationTargetForPersistentMixin2
+    public IObjectID<DomainObject> RelationTargetForPersistentMixin2
     {
       get { return CreateObjectID ("RelationTargetForPersistentMixin", new Guid ("{332F9971-E6FD-411C-862A-23416E0019BC}")); }
     }
 
-    public ObjectID RelationTargetForPersistentMixin3
+    public IObjectID<DomainObject> RelationTargetForPersistentMixin3
     {
       get { return CreateObjectID ("RelationTargetForPersistentMixin", new Guid ("{58458546-9C4A-4E36-9D62-C6CF171748A6}")); }
     }
 
-    public ObjectID RelationTargetForPersistentMixin4
+    public IObjectID<DomainObject> RelationTargetForPersistentMixin4
     {
       get { return CreateObjectID ("RelationTargetForPersistentMixin", new Guid ("{A5AC369E-9742-412C-8275-4B31B48CEFF3}")); }
     }
 
-    public ObjectID RelationTargetForPersistentMixin5
+    public IObjectID<DomainObject> RelationTargetForPersistentMixin5
     {
       get { return CreateObjectID ("RelationTargetForPersistentMixin", new Guid ("{C007F590-7953-4429-A34E-778309F2FC1D}")); }
     }
 
     #endregion
 
-    private ObjectID CreateObjectID (string classID, object value)
+    private IObjectID<DomainObject> CreateObjectID (string classID, object value)
     {
       return ObjectID.Create(_mappingConfiguration.GetClassDefinition (classID), value);
     }

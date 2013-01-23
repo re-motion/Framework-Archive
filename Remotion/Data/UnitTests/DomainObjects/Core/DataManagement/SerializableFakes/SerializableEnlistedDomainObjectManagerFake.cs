@@ -35,7 +35,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.Serializable
       throw new NotImplementedException();
     }
 
-    public DomainObject GetEnlistedDomainObject (ObjectID objectID)
+    public DomainObject GetEnlistedDomainObject (IObjectID<DomainObject> objectID)
     {
       throw new NotImplementedException();
     }

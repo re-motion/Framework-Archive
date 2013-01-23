@@ -93,7 +93,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
       get { return _innerMockStorageProvider.Current; }
     }
 
-    public override ObjectLookupResult<DataContainer> LoadDataContainer (ObjectID id)
+    public override ObjectLookupResult<DataContainer> LoadDataContainer (IObjectID<DomainObject> id)
     {
       if (InnerProvider != null)
         return InnerProvider.LoadDataContainer (id);
@@ -117,7 +117,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
       }
     }
 
-    public override IEnumerable<ObjectLookupResult<DataContainer>> LoadDataContainers (IEnumerable<ObjectID> ids)
+    public override IEnumerable<ObjectLookupResult<DataContainer>> LoadDataContainers (IEnumerable<IObjectID<DomainObject>> ids)
     {
       if (InnerProvider != null)
         return InnerProvider.LoadDataContainers (ids);
@@ -161,7 +161,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
         InnerProvider.UpdateTimestamps (dataContainers);
     }
 
-    public override IEnumerable<DataContainer> LoadDataContainersByRelatedID (RelationEndPointDefinition relationEndPointDefinition, SortExpressionDefinition sortExpressionDefinition, ObjectID relatedID)
+    public override IEnumerable<DataContainer> LoadDataContainersByRelatedID (RelationEndPointDefinition relationEndPointDefinition, SortExpressionDefinition sortExpressionDefinition, IObjectID<DomainObject> relatedID)
     {
       if (InnerProvider != null)
         return InnerProvider.LoadDataContainersByRelatedID (relationEndPointDefinition, sortExpressionDefinition, relatedID);
@@ -187,7 +187,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
         InnerProvider.Rollback();
     }
 
-    public override ObjectID CreateNewObjectID (ClassDefinition classDefinition)
+    public override IObjectID<DomainObject> CreateNewObjectID (ClassDefinition classDefinition)
     {
       if (InnerProvider != null)
         return InnerProvider.CreateNewObjectID (classDefinition);

@@ -33,14 +33,14 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     }
 
     private readonly IEndPointLoader _endPointLoader;
-    private readonly Dictionary<ObjectID, IRealObjectEndPoint> _originalOppositeEndPoints;
+    private readonly Dictionary<IObjectID<DomainObject>, IRealObjectEndPoint> _originalOppositeEndPoints;
 
     protected IncompleteVirtualEndPointLoadStateBase (IEndPointLoader endPointLoader)
     {
       ArgumentUtility.CheckNotNull ("endPointLoader", endPointLoader);
 
       _endPointLoader = endPointLoader;
-      _originalOppositeEndPoints = new Dictionary<ObjectID, IRealObjectEndPoint>();
+      _originalOppositeEndPoints = new Dictionary<IObjectID<DomainObject>, IRealObjectEndPoint>();
     }
 
     protected abstract TDataManager CreateEndPointDataManager (TEndPoint endPoint);

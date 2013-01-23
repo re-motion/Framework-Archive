@@ -48,12 +48,12 @@ namespace Remotion.Data.DomainObjects.Web.Test.Domain
       return NewObject<ClassWithAllDataTypes> ();
     }
 
-    public static ClassWithAllDataTypes GetObject (ObjectID id)
+    public static ClassWithAllDataTypes GetObject (IObjectID<DomainObject> id)
     {
       return GetObject<ClassWithAllDataTypes> (id);
     }
 
-    public static ClassWithAllDataTypes GetObject (ObjectID id, ClientTransaction clientTransaction)
+    public static ClassWithAllDataTypes GetObject (IObjectID<DomainObject> id, ClientTransaction clientTransaction)
     {
       using (clientTransaction.EnterNonDiscardingScope())
       {
@@ -111,7 +111,7 @@ namespace Remotion.Data.DomainObjects.Web.Test.Domain
     protected abstract string DelimitedNullStringArrayProperty { get; set; }
 
     [StorageClassNone]
-    public ObjectID ObjectID
+    public IObjectID<DomainObject> ObjectID
     {
       get { return base.ID; }
     }

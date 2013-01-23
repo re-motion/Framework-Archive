@@ -106,7 +106,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms
         _connectionCreatorMock.Expect (mock => mock.CreateConnection()).Return (_connectionStub);
         _commandFactoryMock
             .Expect (mock => mock.CreateForMultiTimestampLookup (
-                Arg<IEnumerable<ObjectID>>.List.Equal (new[] { DomainObjectIDs.Order1, DomainObjectIDs.Order2 })))
+                Arg<IEnumerable<IObjectID<DomainObject>>>.List.Equal (new[] { DomainObjectIDs.Order1, DomainObjectIDs.Order2 })))
             .Return (commandMock);
         commandMock
             .Expect (stub => stub.Execute (_provider))
@@ -141,7 +141,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms
       _connectionCreatorMock.Expect (mock => mock.CreateConnection ()).Return (_connectionStub);
       _commandFactoryMock
           .Expect (mock => mock.CreateForMultiTimestampLookup (
-              Arg<IEnumerable<ObjectID>>.List.Equal (new[] { DomainObjectIDs.Order1 })))
+              Arg<IEnumerable<IObjectID<DomainObject>>>.List.Equal (new[] { DomainObjectIDs.Order1 })))
           .Return (commandMock);
       commandMock
           .Expect (stub => stub.Execute (_provider))
@@ -350,7 +350,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms
       {
         _connectionCreatorMock.Expect (mock => mock.CreateConnection()).Return (_connectionStub);
         _commandFactoryMock
-            .Expect (mock => mock.CreateForSortedMultiIDLookup (Arg<IEnumerable<ObjectID>>.List.Equal (new[] { objectID1, objectID2, objectID3 })))
+            .Expect (mock => mock.CreateForSortedMultiIDLookup (Arg<IEnumerable<IObjectID<DomainObject>>>.List.Equal (new[] { objectID1, objectID2, objectID3 })))
             .Return (commandMock);
         commandMock.Expect (mock => mock.Execute (_provider)).Return (new[] { lookupResult1, lookupResult2, lookupResult3 });
       }
@@ -384,7 +384,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms
           _mockRepository.StrictMock<IStorageProviderCommand<IEnumerable<ObjectLookupResult<DataContainer>>, IRdbmsProviderCommandExecutionContext>>();
       _connectionCreatorMock.Expect (mock => mock.CreateConnection()).Return (_connectionStub);
       _commandFactoryMock
-          .Expect (mock => mock.CreateForSortedMultiIDLookup (Arg<IEnumerable<ObjectID>>.List.Equal (new[] { objectID })))
+          .Expect (mock => mock.CreateForSortedMultiIDLookup (Arg<IEnumerable<IObjectID<DomainObject>>>.List.Equal (new[] { objectID })))
           .Return (commandMock);
       _mockRepository.ReplayAll();
 

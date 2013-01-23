@@ -26,12 +26,12 @@ namespace Remotion.Data.DomainObjects.PerformanceTests.TestDomain
 
     // static members and constants
 
-    public static ClientBoundBaseClass GetObject (ObjectID id)
+    public static ClientBoundBaseClass GetObject (IObjectID<DomainObject> id)
     {
       return DomainObject.GetObject<ClientBoundBaseClass> (id);
     }
 
-    public static ClientBoundBaseClass GetObject (ObjectID id, ClientTransaction clientTransaction)
+    public static ClientBoundBaseClass GetObject (IObjectID<DomainObject> id, ClientTransaction clientTransaction)
     {
       using (clientTransaction.EnterNonDiscardingScope())
       {

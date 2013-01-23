@@ -265,7 +265,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.RelationEndP
 
     private void AddOriginalOppositeEndPoint (IncompleteVirtualObjectEndPointLoadState loadState, IRealObjectEndPoint oppositeEndPoint)
     {
-      var dictionary = (Dictionary<ObjectID, IRealObjectEndPoint>) PrivateInvoke.GetNonPublicField (loadState, "_originalOppositeEndPoints");
+      var dictionary = (Dictionary<IObjectID<DomainObject>, IRealObjectEndPoint>) PrivateInvoke.GetNonPublicField (loadState, "_originalOppositeEndPoints");
       dictionary.Add (oppositeEndPoint.ObjectID, oppositeEndPoint);
     }
   }

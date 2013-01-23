@@ -71,7 +71,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
           _rdbmsPersistenceModelProvider);
     }
 
-    public IObjectReader<ObjectID> CreateObjectIDReader (IRdbmsStorageEntityDefinition entityDefinition, IEnumerable<ColumnDefinition> selectedColumns)
+    public IObjectReader<IObjectID<DomainObject>> CreateObjectIDReader (IRdbmsStorageEntityDefinition entityDefinition, IEnumerable<ColumnDefinition> selectedColumns)
     {
       ArgumentUtility.CheckNotNull ("entityDefinition", entityDefinition);
       ArgumentUtility.CheckNotNull ("selectedColumns", selectedColumns);
@@ -80,7 +80,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
       return new ObjectIDReader (entityDefinition.ObjectIDProperty, ordinalProvider);
     }
 
-    public IObjectReader<Tuple<ObjectID, object>> CreateTimestampReader (
+    public IObjectReader<Tuple<IObjectID<DomainObject>, object>> CreateTimestampReader (
         IRdbmsStorageEntityDefinition entityDefinition, IEnumerable<ColumnDefinition> selectedColumns)
     {
       ArgumentUtility.CheckNotNull ("entityDefinition", entityDefinition);

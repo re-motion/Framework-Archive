@@ -313,7 +313,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain
       }
     }
 
-    public ObjectID CreateAndCommitAccessControlEntryWithPermissions (int permissions, ClientTransaction transaction)
+    public IObjectID<DomainObject> CreateAndCommitAccessControlEntryWithPermissions (int permissions, ClientTransaction transaction)
     {
       CreateEmptyDomain ();
 

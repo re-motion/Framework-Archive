@@ -28,7 +28,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
   [Serializable]
   public class NotFoundObjectsClientTransactionListener : ClientTransactionListenerBase
   {
-    public override void ObjectsNotFound (ClientTransaction clientTransaction, ReadOnlyCollection<ObjectID> objectIDs)
+    public override void ObjectsNotFound (ClientTransaction clientTransaction, ReadOnlyCollection<IObjectID<DomainObject>> objectIDs)
     {
       ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
       ArgumentUtility.CheckNotNull ("objectIDs", objectIDs);

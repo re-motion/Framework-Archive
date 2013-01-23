@@ -33,7 +33,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Mapping.TestDomain.Integrat
     public bool OnDomainObjectReferenceInitializingCalled;
 
     [StorageClassNone]
-    public new ObjectID ID
+    public new IObjectID<DomainObject> ID
     {
       get { return base.ID; }
     }

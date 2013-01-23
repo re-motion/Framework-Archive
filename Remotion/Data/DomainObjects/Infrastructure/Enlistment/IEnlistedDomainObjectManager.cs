@@ -41,12 +41,12 @@ namespace Remotion.Data.DomainObjects.Infrastructure.Enlistment
     /// Returns the <see cref="DomainObject"/> enlisted for the given <paramref name="objectID"/> via <see cref="EnlistDomainObject"/>, or 
     /// <see langword="null"/> if no such object exists.
     /// </summary>
-    /// <param name="objectID">The <see cref="ObjectID"/> for which to retrieve a <see cref="DomainObject"/>.</param>
+    /// <param name="objectID">The <see cref="IObjectID{DomainObject}"/> for which to retrieve a <see cref="DomainObject"/>.</param>
     /// <returns>
     /// A <see cref="DomainObject"/> with the given <paramref name="objectID"/> previously enlisted via <see cref="EnlistDomainObject"/>,
     /// or <see langword="null"/> if no such object exists.
     /// </returns>
-    DomainObject GetEnlistedDomainObject (ObjectID objectID);
+    DomainObject GetEnlistedDomainObject (IObjectID<DomainObject> objectID);
 
     /// <summary>
     /// Determines whether the specified <paramref name="domainObject"/> has been enlisted via <see cref="EnlistDomainObject"/>.

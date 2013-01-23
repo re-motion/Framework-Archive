@@ -30,7 +30,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Mapping.TestDomain.Integrat
       return NewObject<TargetClassForPersistentMixin> ();
     }
 
-    public static TargetClassForPersistentMixin GetObject (ObjectID id)
+    public static TargetClassForPersistentMixin GetObject (IObjectID<DomainObject> id)
     {
       return GetObject<TargetClassForPersistentMixin> (id);
     }

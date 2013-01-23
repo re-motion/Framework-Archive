@@ -54,7 +54,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.Serializable
       get { throw new NotImplementedException(); }
     }
 
-    public ObjectID ObjectID
+    public IObjectID<DomainObject> ObjectID
     {
       get { throw new NotImplementedException(); }
     }

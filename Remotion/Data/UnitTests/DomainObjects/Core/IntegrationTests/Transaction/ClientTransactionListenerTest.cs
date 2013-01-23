@@ -135,7 +135,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
       {
         _strictListenerMock.Expect (mock => mock.ObjectsLoading (
           Arg.Is (TestableClientTransaction), 
-          Arg<ReadOnlyCollection<ObjectID>>.List.Equal (new[] { DomainObjectIDs.ClassWithAllDataTypes1 })));
+          Arg<ReadOnlyCollection<IObjectID<DomainObject>>>.List.Equal (new[] { DomainObjectIDs.ClassWithAllDataTypes1 })));
         _strictListenerMock.Expect (mock => mock.DataContainerMapRegistering (Arg.Is (TestableClientTransaction), Arg<DataContainer>.Is.Anything));
         _strictListenerMock.Expect (mock => mock.ObjectsLoaded (
             Arg.Is (TestableClientTransaction), 
@@ -441,18 +441,18 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
       {
         _strictListenerMock.Expect (mock => mock.ObjectsLoading (
             Arg.Is (TestableClientTransaction), 
-            Arg<ReadOnlyCollection<ObjectID>>.Is.Anything));
+            Arg<ReadOnlyCollection<IObjectID<DomainObject>>>.Is.Anything));
         _strictListenerMock.Expect (mock => mock.DataContainerMapRegistering (Arg.Is (TestableClientTransaction), Arg<DataContainer>.Is.Anything));
         _strictListenerMock.Expect (
             mock => mock.RelationEndPointMapRegistering (
                 Arg.Is (TestableClientTransaction), 
                 Arg<IRelationEndPoint>.Matches (
-                    rep => rep.Definition.PropertyName == typeof (Company).FullName + ".IndustrialSector" && rep.ObjectID == DomainObjectIDs.Customer1)));
+                    rep => rep.Definition.PropertyName == typeof (Company).FullName + ".IndustrialSector" && object.Equals (rep.ObjectID, DomainObjectIDs.Customer1))));
         _strictListenerMock.Expect (
             mock => mock.RelationEndPointMapRegistering (
                 Arg.Is (TestableClientTransaction),
                 Arg<IRelationEndPoint>.Matches (
-                    rep => rep.Definition.PropertyName == typeof (IndustrialSector).FullName + ".Companies" && rep.ObjectID == DomainObjectIDs.IndustrialSector1)));
+                    rep => rep.Definition.PropertyName == typeof (IndustrialSector).FullName + ".Companies" && object.Equals (rep.ObjectID, DomainObjectIDs.IndustrialSector1))));
 
         _strictListenerMock.Expect (mock => mock.ObjectsLoaded (
             Arg.Is (TestableClientTransaction), 
@@ -484,7 +484,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
         _strictListenerMock
             .Expect (mock => mock.RelationEndPointMapUnregistering (
                 Arg.Is (TestableClientTransaction), 
-                Arg<RelationEndPointID>.Matches (id => id.ObjectID == order.ID)))
+                Arg<RelationEndPointID>.Matches (id => object.Equals (id.ObjectID, order.ID))))
             .Repeat.Times (4); // four related objects/object collections in Order
 
         _strictListenerMock.Expect (mock => mock.DataContainerMapUnregistering (TestableClientTransaction, order.InternalDataContainer));
@@ -509,11 +509,11 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
       {
         _strictListenerMock.Expect (mock => mock.ObjectsLoading (
             Arg.Is (TestableClientTransaction), 
-            Arg<ReadOnlyCollection<ObjectID>>.List.Equal (new[] { DomainObjectIDs.ClassWithAllDataTypes1 })));
+            Arg<ReadOnlyCollection<IObjectID<DomainObject>>>.List.Equal (new[] { DomainObjectIDs.ClassWithAllDataTypes1 })));
         _strictListenerMock.Expect (
             mock => mock.DataContainerMapRegistering (
                 Arg.Is (TestableClientTransaction), 
-                Arg<DataContainer>.Matches (dc => dc.ID == DomainObjectIDs.ClassWithAllDataTypes1)));
+                Arg<DataContainer>.Matches (dc => object.Equals (dc.ID, DomainObjectIDs.ClassWithAllDataTypes1))));
 
         _strictListenerMock.Expect (mock => mock.ObjectsLoaded (
             Arg.Is (TestableClientTransaction), 

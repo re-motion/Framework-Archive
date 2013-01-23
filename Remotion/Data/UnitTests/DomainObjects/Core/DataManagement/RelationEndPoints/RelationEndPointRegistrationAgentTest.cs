@@ -323,7 +323,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.RelationEndP
       return endPointMock;
     }
 
-    private IRealObjectEndPoint CreateRealObjectEndPointMock (ObjectID oppositeObjectID)
+    private IRealObjectEndPoint CreateRealObjectEndPointMock (IObjectID<DomainObject> oppositeObjectID)
     {
       var endPointMock = MockRepository.GenerateStrictMock<IRealObjectEndPoint> ();
       endPointMock.Stub (stub => stub.ID).Return (_realOneManyEndPointID);

@@ -142,7 +142,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Relations
       _eventReceiverMock.VerifyAllExpectations();
     }
 
-    private Order PrepareUnsynchronizedOrder (ObjectID orderID, ObjectID relatedCustomerID)
+    private Order PrepareUnsynchronizedOrder (IObjectID<DomainObject> orderID, IObjectID<DomainObject> relatedCustomerID)
     {
       var unsynchronizedOrder = (Order) LifetimeService.GetObjectReference (TestableClientTransaction, orderID);
       var dataContainer = DataContainer.CreateForExisting (

@@ -31,7 +31,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.MixedDomains.TestDomain
       return NewObject<HookedTargetClass> ();
     }
 
-    public static HookedTargetClass GetObject (ObjectID objectID)
+    public static HookedTargetClass GetObject (IObjectID<DomainObject> objectID)
     {
       return GetObject<HookedTargetClass> (objectID);
     }

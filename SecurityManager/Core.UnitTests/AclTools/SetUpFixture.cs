@@ -36,9 +36,9 @@ namespace Remotion.SecurityManager.UnitTests.AclTools
     private Culture _cultureEn;
     private Culture _cultureDe;
 
-    public static ObjectID OrderClassID { get; private set; }
+    public static IObjectID<DomainObject> OrderClassID { get; private set; }
     public static  List<AccessControlList> aclList { get; private set; }
-    public ObjectID InvoiceClassID { get; set; }
+    public IObjectID<DomainObject> InvoiceClassID { get; set; }
 
     [SetUp]
     public void SetUp ()

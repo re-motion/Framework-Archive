@@ -84,8 +84,8 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.MixedDomains
     [Test]
     public void SingleInheritance_GetObject ()
     {
-      ObjectID firstDerivedClassObjectID;
-      ObjectID secondDerivedClassObjectID;
+      IObjectID<DomainObject> firstDerivedClassObjectID;
+      IObjectID<DomainObject> secondDerivedClassObjectID;
       using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
         var firstDerivedClass = SingleInheritanceFirstDerivedClass.NewObject();
@@ -172,8 +172,8 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.MixedDomains
     [Test]
     public void ConcreteInheritance_GetObject ()
     {
-      ObjectID firstDerivedClassObjectID;
-      ObjectID secondDerivedClassObjectID;
+      IObjectID<DomainObject> firstDerivedClassObjectID;
+      IObjectID<DomainObject> secondDerivedClassObjectID;
       using (ClientTransaction.CreateRootTransaction ().EnterDiscardingScope ())
       {
         var firstDerivedClass = ConcreteInheritanceFirstDerivedClass.NewObject ();

@@ -97,7 +97,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Mapping.PropertyReflectorTe
       PropertyDefinition actual = propertyReflector.GetMetadata();
 
       Assert.That (actual.PropertyName, Is.EqualTo ("Remotion.Data.UnitTests.DomainObjects.Core.Mapping.TestDomain.Integration.ClassWithGuidKey.ClassWithValidRelationsOptional"));
-      Assert.That (actual.PropertyType, Is.SameAs (typeof (ObjectID)));
+      Assert.That (actual.PropertyType, Is.SameAs (typeof (IObjectID<DomainObject>)));
       Assert.That (actual.IsNullable, Is.True);
       Assert.That (actual.MaxLength, Is.Null);
       Assert.That (actual.DefaultValue, Is.EqualTo (null));

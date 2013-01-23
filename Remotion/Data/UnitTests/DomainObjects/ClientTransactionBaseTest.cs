@@ -80,7 +80,7 @@ namespace Remotion.Data.UnitTests.DomainObjects
       _testDataContainerObjectMother = new TestDataContainerObjectMother ();
     }
 
-    protected void CheckIfObjectIsDeleted (ObjectID id)
+    protected void CheckIfObjectIsDeleted (IObjectID<DomainObject> id)
     {
       try
       {

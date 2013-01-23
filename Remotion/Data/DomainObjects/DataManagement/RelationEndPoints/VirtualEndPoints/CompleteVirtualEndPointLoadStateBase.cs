@@ -41,7 +41,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     private readonly IRelationEndPointProvider _endPointProvider;
     private readonly IClientTransactionEventSink _transactionEventSink;
 
-    private readonly Dictionary<ObjectID, IRealObjectEndPoint> _unsynchronizedOppositeEndPoints;
+    private readonly Dictionary<IObjectID<DomainObject>, IRealObjectEndPoint> _unsynchronizedOppositeEndPoints;
 
     protected CompleteVirtualEndPointLoadStateBase (
         TDataManager dataManager,
@@ -56,7 +56,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       _endPointProvider = endPointProvider;
       _transactionEventSink = transactionEventSink;
 
-      _unsynchronizedOppositeEndPoints = new Dictionary<ObjectID, IRealObjectEndPoint> ();
+      _unsynchronizedOppositeEndPoints = new Dictionary<IObjectID<DomainObject>, IRealObjectEndPoint> ();
     }
 
     public abstract TData GetData (TEndPoint endPoint);
@@ -282,7 +282,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       throw new InvalidOperationException ("The data is already complete.");
     }
 
-    protected bool ContainsUnsynchronizedOppositeEndPoint (ObjectID objectID)
+    protected bool ContainsUnsynchronizedOppositeEndPoint (IObjectID<DomainObject> objectID)
     {
       return _unsynchronizedOppositeEndPoints.ContainsKey (objectID);
     }

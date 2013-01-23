@@ -31,7 +31,7 @@ namespace Remotion.Data.DomainObjects.Web.Test.WxeFunctions
 
     // construction and disposing
 
-    public TestTransactedFunction (ITransactionMode transactionMode, ObjectID objectWithAllDataTypes)
+    public TestTransactedFunction (ITransactionMode transactionMode, IObjectID<DomainObject> objectWithAllDataTypes)
         : base (transactionMode, objectWithAllDataTypes)
     {
     }
@@ -39,9 +39,9 @@ namespace Remotion.Data.DomainObjects.Web.Test.WxeFunctions
     // methods and properties
 
     [WxeParameter (1, true, WxeParameterDirection.In)]
-    public ObjectID ObjectWithAllDataTypes
+    public IObjectID<DomainObject> ObjectWithAllDataTypes
     {
-      get { return (ObjectID) Variables["ObjectWithAllDataTypes"]; }
+      get { return (IObjectID<DomainObject>) Variables["ObjectWithAllDataTypes"]; }
       set { Variables["ObjectWithAllDataTypes"] = value; }
     }
 

@@ -35,9 +35,9 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SearchInfrastructure.Organiz
   [TestFixture]
   public class SearchPosition : SearchServiceTestBase
   {
-    private ObjectID _expectedTenantID;
-    private ObjectID _expectedRootGroupID;
-    private ObjectID _expectedParentGroup0ID;
+    private IObjectID<DomainObject> _expectedTenantID;
+    private IObjectID<DomainObject> _expectedRootGroupID;
+    private IObjectID<DomainObject> _expectedParentGroup0ID;
     private MockRepository _mocks;
     private ISecurityProvider _mockSecurityProvider;
     private IPrincipalProvider _mockPrincipalProvider;

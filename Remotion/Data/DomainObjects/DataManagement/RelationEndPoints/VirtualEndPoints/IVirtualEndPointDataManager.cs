@@ -9,7 +9,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
   {
     RelationEndPointID EndPointID { get; }
     
-    bool ContainsOriginalObjectID (ObjectID objectID);
+    bool ContainsOriginalObjectID (IObjectID<DomainObject> objectID);
 
     void RegisterOriginalOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint);
     void UnregisterOriginalOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint);

@@ -20,7 +20,7 @@ using System.Collections.Generic;
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 {
   /// <summary>
-  /// Represents an RDBMS storage property for <see cref="ObjectID"/> values.
+  /// Represents an RDBMS storage property for <see cref="IObjectID{DomainObject}"/> values.
   /// </summary>
   public interface IObjectIDStoragePropertyDefinition : IRdbmsStoragePropertyDefinition
   {

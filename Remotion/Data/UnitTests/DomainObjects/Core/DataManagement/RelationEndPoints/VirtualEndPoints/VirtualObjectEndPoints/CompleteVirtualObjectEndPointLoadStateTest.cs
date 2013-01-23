@@ -412,7 +412,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.RelationEndP
 
     private void AddUnsynchronizedOppositeEndPoint (CompleteVirtualObjectEndPointLoadState loadState, IRealObjectEndPoint oppositeEndPoint)
     {
-      var dictionary = (Dictionary<ObjectID, IRealObjectEndPoint>) PrivateInvoke.GetNonPublicField (loadState, "_unsynchronizedOppositeEndPoints");
+      var dictionary = (Dictionary<IObjectID<DomainObject>, IRealObjectEndPoint>) PrivateInvoke.GetNonPublicField (loadState, "_unsynchronizedOppositeEndPoints");
       dictionary.Add (oppositeEndPoint.ObjectID, oppositeEndPoint);
     }
 

@@ -72,7 +72,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
         s_log.DebugFormat ("{0} NewObjectCreating: {1}", clientTransaction.ID, type.FullName);
     }
 
-    public void ObjectsLoading (ClientTransaction clientTransaction, ReadOnlyCollection<ObjectID> objectIDs)
+    public void ObjectsLoading (ClientTransaction clientTransaction, ReadOnlyCollection<IObjectID<DomainObject>> objectIDs)
     {
       if (s_log.IsDebugEnabled)
         s_log.DebugFormat ("{0} ObjectsLoading: {1}", clientTransaction.ID, GetObjectIDString (objectIDs));
@@ -84,7 +84,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
         s_log.DebugFormat ("{0} ObjectsLoaded: {1}", clientTransaction.ID, GetDomainObjectsString (domainObjects));
     }
 
-    public void ObjectsNotFound (ClientTransaction clientTransaction, ReadOnlyCollection<ObjectID> objectIDs)
+    public void ObjectsNotFound (ClientTransaction clientTransaction, ReadOnlyCollection<IObjectID<DomainObject>> objectIDs)
     {
       if (s_log.IsDebugEnabled)
         s_log.DebugFormat ("{0} ObjectsNotFound: {1}", clientTransaction.ID, GetObjectIDString (objectIDs));
@@ -374,12 +374,12 @@ namespace Remotion.Data.DomainObjects.Infrastructure
         s_log.DebugFormat ("{0} VirtualRelationEndPointStateUpdated: {1} {2}", clientTransaction.ID, endPointID, newEndPointChangeState);
     }
 
-    private string GetObjectIDString (IEnumerable<ObjectID> objectIDs)
+    private string GetObjectIDString (IEnumerable<IObjectID<DomainObject>> objectIDs)
     {
       return SeparatedStringBuilder.Build (", ", ConvertToStringAndCount (objectIDs, 10, GetObjectIDString));
     }
 
-    private string GetObjectIDString (ObjectID id)
+    private string GetObjectIDString (IObjectID<DomainObject> id)
     {
       return id != null ? id.ToString() : "<null>";
     }

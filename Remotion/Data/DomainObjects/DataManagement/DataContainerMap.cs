@@ -46,7 +46,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
       get { return _transactionEventSink; }
     }
 
-    public DataContainer this [ObjectID id]
+    public DataContainer this [IObjectID<DomainObject> id]
     {
       get { return _dataContainers[id]; }
     }
@@ -75,7 +75,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
       _dataContainers.Add (dataContainer);
     }
 
-    public void Remove (ObjectID id)
+    public void Remove (IObjectID<DomainObject> id)
     {
       ArgumentUtility.CheckNotNull ("id", id);
 

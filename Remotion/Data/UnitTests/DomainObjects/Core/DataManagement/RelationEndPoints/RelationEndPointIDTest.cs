@@ -28,7 +28,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.RelationEndP
   [TestFixture]
   public class RelationEndPointIDTest : StandardMappingTest
   {
-    private ObjectID _objectID;
+    private IObjectID<DomainObject> _objectID;
     private string _propertyName;
     private RelationEndPointID _endPointID;
     private RelationEndPointID _nullEndPointID;

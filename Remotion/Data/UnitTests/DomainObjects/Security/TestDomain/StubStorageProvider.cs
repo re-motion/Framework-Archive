@@ -36,12 +36,12 @@ namespace Remotion.Data.UnitTests.DomainObjects.Security.TestDomain
     {
     }
 
-    public override ObjectLookupResult<DataContainer> LoadDataContainer (ObjectID id)
+    public override ObjectLookupResult<DataContainer> LoadDataContainer (IObjectID<DomainObject> id)
     {
       throw new NotImplementedException ();
     }
 
-    public override IEnumerable<ObjectLookupResult<DataContainer>> LoadDataContainers (IEnumerable<ObjectID> ids)
+    public override IEnumerable<ObjectLookupResult<DataContainer>> LoadDataContainers (IEnumerable<IObjectID<DomainObject>> ids)
     {
       throw new NotImplementedException ();
     }
@@ -77,7 +77,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Security.TestDomain
     {
     }
 
-    public override IEnumerable<DataContainer> LoadDataContainersByRelatedID (RelationEndPointDefinition relationEndPointDefinition, SortExpressionDefinition sortExpressionDefinition, ObjectID relatedID)
+    public override IEnumerable<DataContainer> LoadDataContainersByRelatedID (RelationEndPointDefinition relationEndPointDefinition, SortExpressionDefinition sortExpressionDefinition, IObjectID<DomainObject> relatedID)
     {
       throw new NotImplementedException ();
     }
@@ -94,7 +94,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Security.TestDomain
     {
     }
 
-    public override ObjectID CreateNewObjectID (ClassDefinition classDefinition)
+    public override IObjectID<DomainObject> CreateNewObjectID (ClassDefinition classDefinition)
     {
       CheckDisposed ();
       ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);

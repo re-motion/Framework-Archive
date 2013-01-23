@@ -36,7 +36,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement
     private DataContainer _existingDataContainer;
     private DataContainer _deletedDataContainer;
     private DataContainer _discardedDataContainer;
-    private ObjectID _invalidObjectID;
+    private IObjectID<DomainObject> _invalidObjectID;
     private IDataContainerEventListener _eventListenerMock;
 
     private PropertyDefinition _orderNumberProperty;

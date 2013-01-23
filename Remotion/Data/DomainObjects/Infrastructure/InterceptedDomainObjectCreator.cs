@@ -39,7 +39,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
     public InterceptedDomainObjectTypeFactory Factory { get; set; }
 
-    public DomainObject CreateObjectReference (ObjectID objectID, ClientTransaction clientTransaction)
+    public DomainObject CreateObjectReference (IObjectID<DomainObject> objectID, ClientTransaction clientTransaction)
     {
       ArgumentUtility.CheckNotNull ("objectID", objectID);
       ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);

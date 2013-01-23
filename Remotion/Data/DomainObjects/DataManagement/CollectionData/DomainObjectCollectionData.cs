@@ -25,15 +25,15 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
   /// <summary>
   /// Provides an an encapsulation of the data stored inside a <see cref="DomainObjectCollection"/>, implementing the 
   /// <see cref="IDomainObjectCollectionData"/> interface. The data is stored by means of two collections, an ordered <see cref="List{T}"/> of 
-  /// <see cref="ObjectID"/>s and a <see cref="Dictionary{TKey,TValue}"/> mapping the IDs to <see cref="DomainObject"/> instances.
+  /// <see cref="IObjectID{DomainObject}"/>s and a <see cref="Dictionary{TKey,TValue}"/> mapping the IDs to <see cref="DomainObject"/> instances.
   /// This class does not perform any fancy argument checking, use <see cref="ModificationCheckingCollectionDataDecorator"/> for that. It does, however,
   /// ensure that no inconsistent state can be created, even when calling its members with invalid arguments.
   /// </summary>
   [Serializable]
   public class DomainObjectCollectionData : IDomainObjectCollectionData
   {
-    private readonly List<ObjectID> _orderedObjectIDs = new List<ObjectID> ();
-    private readonly Dictionary<ObjectID, DomainObject> _objectsByID = new Dictionary<ObjectID, DomainObject> ();
+    private readonly List<IObjectID<DomainObject>> _orderedObjectIDs = new List<IObjectID<DomainObject>> ();
+    private readonly Dictionary<IObjectID<DomainObject>, DomainObject> _objectsByID = new Dictionary<IObjectID<DomainObject>, DomainObject> ();
 
     public DomainObjectCollectionData ()
     {
@@ -79,7 +79,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
       Assertion.IsTrue (((IDomainObjectCollectionData) this).IsDataComplete);
     }
 
-    public bool ContainsObjectID (ObjectID objectID)
+    public bool ContainsObjectID (IObjectID<DomainObject> objectID)
     {
       ArgumentUtility.CheckNotNull ("objectID", objectID);
       return _objectsByID.ContainsKey (objectID);
@@ -90,7 +90,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
       return _objectsByID[_orderedObjectIDs[index]];
     }
 
-    public DomainObject GetObject (ObjectID objectID)
+    public DomainObject GetObject (IObjectID<DomainObject> objectID)
     {
       ArgumentUtility.CheckNotNull ("objectID", objectID);
 
@@ -99,7 +99,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
       return result;
     }
 
-    public int IndexOf (ObjectID objectID)
+    public int IndexOf (IObjectID<DomainObject> objectID)
     {
       ArgumentUtility.CheckNotNull ("objectID", objectID);
 
@@ -136,7 +136,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
       return Remove (domainObject.ID);
     }
 
-    public bool Remove (ObjectID objectID)
+    public bool Remove (IObjectID<DomainObject> objectID)
     {
       ArgumentUtility.CheckNotNull ("objectID", objectID);
 
@@ -159,7 +159,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
       var oldDomainObject = GetObject (index);
       if (oldDomainObject != value)
       {
-        Assertion.IsTrue (_orderedObjectIDs[index] == oldDomainObject.ID);
+        Assertion.IsTrue (object.Equals (_orderedObjectIDs[index], oldDomainObject.ID));
         Assertion.IsTrue (_objectsByID.ContainsKey (oldDomainObject.ID));
 
         // only the first line can fail => corruption impossible

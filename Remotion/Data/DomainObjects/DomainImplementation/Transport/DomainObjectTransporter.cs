@@ -71,7 +71,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
     }
 
     private readonly ClientTransaction _transportTransaction;
-    private readonly Set<ObjectID> _transportedObjects = new Set<ObjectID>();
+    private readonly Set<IObjectID<DomainObject>> _transportedObjects = new Set<IObjectID<DomainObject>>();
 
     public DomainObjectTransporter ()
     {
@@ -83,9 +83,9 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
     /// Gets the IDs of the objects loaded into this transporter.
     /// </summary>
     /// <value>The IDs of the loaded objects.</value>
-    public ReadOnlyCollection<ObjectID> ObjectIDs
+    public ReadOnlyCollection<IObjectID<DomainObject>> ObjectIDs
     {
-      get { return new ReadOnlyCollection<ObjectID> (_transportedObjects.ToArray()); }
+      get { return new ReadOnlyCollection<IObjectID<DomainObject>> (_transportedObjects.ToArray()); }
     }
 
     /// <summary>
@@ -95,7 +95,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
     /// <returns>
     /// True if the specified object ID has been loaded; otherwise, false.
     /// </returns>
-    public bool IsLoaded (ObjectID objectID)
+    public bool IsLoaded (IObjectID<DomainObject> objectID)
     {
       return _transportedObjects.Contains (objectID);
     }
@@ -118,9 +118,9 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
     }
 
     /// <summary>
-    /// Loads the object with the specified <see cref="ObjectID"/> into the transporter.
+    /// Loads the object with the specified <see cref="IObjectID{DomainObject}"/> into the transporter.
     /// </summary>
-    /// <param name="objectID">The <see cref="ObjectID"/> of the object to load.</param>
+    /// <param name="objectID">The <see cref="IObjectID{DomainObject}"/> of the object to load.</param>
     /// <returns>The loaded object, whose properties can be manipulated before it is transported.</returns>
     /// <remarks>
     /// <para>
@@ -137,7 +137,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
     /// also applies to the 1-side of a 1-to-n relationship because the n-side is the foreign key side.
     /// </para>
     /// </remarks>
-    public DomainObject Load (ObjectID objectID)
+    public DomainObject Load (IObjectID<DomainObject> objectID)
     {
       ArgumentUtility.CheckNotNull ("objectID", objectID);
       DomainObject domainObject = _transportTransaction.GetObject (objectID, false);
@@ -146,19 +146,19 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
     }
 
     /// <summary>
-    /// Loads the object with the specified <see cref="ObjectID"/> plus all objects directly referenced by it into the transporter.
+    /// Loads the object with the specified <see cref="IObjectID{DomainObject}"/> plus all objects directly referenced by it into the transporter.
     /// Each object behaves as if it were loaded via <see cref="Load"/>.
     /// </summary>
-    /// <param name="objectID">The <see cref="ObjectID"/> of the object which is to be loaded together with its related objects.</param>
+    /// <param name="objectID">The <see cref="IObjectID{DomainObject}"/> of the object which is to be loaded together with its related objects.</param>
     /// <returns>The loaded objects, whose properties can be manipulated before they are transported.</returns>
     /// <seealso cref="PropertyIndexer.GetAllRelatedObjects"/>
-    public IEnumerable<DomainObject> LoadWithRelatedObjects (ObjectID objectID)
+    public IEnumerable<DomainObject> LoadWithRelatedObjects (IObjectID<DomainObject> objectID)
     {
       ArgumentUtility.CheckNotNull ("objectID", objectID);
       return LazyLoadWithRelatedObjects(objectID).ToArray ();
     }
 
-    private IEnumerable<DomainObject> LazyLoadWithRelatedObjects (ObjectID objectID)
+    private IEnumerable<DomainObject> LazyLoadWithRelatedObjects (IObjectID<DomainObject> objectID)
     {
       DomainObject sourceObject = _transportTransaction.GetObject (objectID, false);
       yield return Load (sourceObject.ID);
@@ -171,28 +171,28 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
     }
 
     /// <summary>
-    /// Loads the object with the specified <see cref="ObjectID"/> plus all objects directly or indirectly referenced by it into the
+    /// Loads the object with the specified <see cref="IObjectID{DomainObject}"/> plus all objects directly or indirectly referenced by it into the
     /// transporter. Each object behaves as if it were loaded via <see cref="Load"/>.
     /// </summary>
-    /// <param name="objectID">The <see cref="ObjectID"/> of the object which is to be loaded together with its related objects.</param>
+    /// <param name="objectID">The <see cref="IObjectID{DomainObject}"/> of the object which is to be loaded together with its related objects.</param>
     /// <returns>The loaded objects, whose properties can be manipulated before they are transported.</returns>
     /// <seealso cref="DomainObjectGraphTraverser.GetFlattenedRelatedObjectGraph"/>
-    public IEnumerable<DomainObject> LoadRecursive (ObjectID objectID)
+    public IEnumerable<DomainObject> LoadRecursive (IObjectID<DomainObject> objectID)
     {
       ArgumentUtility.CheckNotNull ("objectID", objectID);
       return LoadRecursive (objectID, FullGraphTraversalStrategy.Instance);
     }
 
     /// <summary>
-    /// Loads the object with the specified <see cref="ObjectID"/> plus all objects directly or indirectly referenced by it into the
+    /// Loads the object with the specified <see cref="IObjectID{DomainObject}"/> plus all objects directly or indirectly referenced by it into the
     /// transporter, as specified by the <see cref="IGraphTraversalStrategy"/>. Each object behaves as if it were loaded via <see cref="Load"/>.
     /// </summary>
-    /// <param name="objectID">The <see cref="ObjectID"/> of the object which is to be loaded together with its related objects.</param>
+    /// <param name="objectID">The <see cref="IObjectID{DomainObject}"/> of the object which is to be loaded together with its related objects.</param>
     /// <param name="strategy">An <see cref="IGraphTraversalStrategy"/> instance defining which related object links to follow and which
     /// objects to include in the set of transported objects.</param>
     /// <returns>The loaded objects, whose properties can be manipulated before they are transported.</returns>
     /// <seealso cref="DomainObjectGraphTraverser.GetFlattenedRelatedObjectGraph"/>
-    public IEnumerable<DomainObject> LoadRecursive (ObjectID objectID, IGraphTraversalStrategy strategy)
+    public IEnumerable<DomainObject> LoadRecursive (IObjectID<DomainObject> objectID, IGraphTraversalStrategy strategy)
     {
       ArgumentUtility.CheckNotNull ("objectID", objectID);
       ArgumentUtility.CheckNotNull ("strategy", strategy);
@@ -212,7 +212,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
     /// </summary>
     /// <param name="loadedObjectID">The object ID of the object to be retrieved.</param>
     /// <returns>A <see cref="DomainObject"/> representing an object to be transported. Properties of this object can be manipulated.</returns>
-    public DomainObject GetTransportedObject (ObjectID loadedObjectID)
+    public DomainObject GetTransportedObject (IObjectID<DomainObject> loadedObjectID)
     {
       ArgumentUtility.CheckNotNull ("loadedObjectID", loadedObjectID);
       if (!IsLoaded (loadedObjectID))
@@ -250,7 +250,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
 
     private IEnumerable<DataContainer> GetTransportedContainers ()
     {
-      foreach (ObjectID id in _transportedObjects)
+      foreach (IObjectID<DomainObject> id in _transportedObjects)
         yield return _transportTransaction.DataManager.DataContainers[id];
     }
   }

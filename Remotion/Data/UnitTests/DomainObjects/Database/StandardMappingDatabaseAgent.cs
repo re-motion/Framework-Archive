@@ -45,7 +45,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Database
       UpdateClassWithAllDataTypes (connection, transaction, domainObjectIDs.ClassWithAllDataTypes2, ResourceManager.GetImage2 ());
     }
 
-    private void UpdateClassWithAllDataTypes (IDbConnection connection, IDbTransaction transaction, ObjectID id, byte[] binary)
+    private void UpdateClassWithAllDataTypes (IDbConnection connection, IDbTransaction transaction, IObjectID<DomainObject> id, byte[] binary)
     {
       string updateText = "Update [TableWithAllDataTypes] set [Binary] = @binary where [ID] = @id";
       using (SqlCommand command = (SqlCommand) CreateCommand (connection, updateText, transaction))

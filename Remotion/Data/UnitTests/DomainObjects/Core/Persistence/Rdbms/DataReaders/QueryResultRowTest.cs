@@ -104,16 +104,16 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.DataReade
 
     [Test]
     [ExpectedException(typeof(NotSupportedException), ExpectedMessage = 
-      "Type 'ObjectID' ist not supported by this storage provider.\r\n"
+      "Type 'IObjectID<T>' ist not supported by this storage provider.\r\n"
       + "Please select the ID and ClassID values separately, then create an ObjectID with it in memory "
-      + "(e.g., 'select new ObjectID (o.ID.ClassID, o.ID.Value)').")]
+      + "(e.g., 'select ObjectID.Create (o.ID.ClassID, o.ID.Value)').")]
     public void GetConvertedValue_ThrowsNotSupportedException_TypeObjectID ()
     {
       _storageTypeInformationProviderStub
-        .Stub (stub => stub.GetStorageType (typeof (ObjectID)))
+        .Stub (stub => stub.GetStorageType (typeof (IObjectID<DomainObject>)))
         .Throw (new NotSupportedException ("Type not supported."));
 
-      _queryResultRow.GetConvertedValue (1, typeof (ObjectID));
+      _queryResultRow.GetConvertedValue (1, typeof (IObjectID<DomainObject>));
     }
 
     [Test]

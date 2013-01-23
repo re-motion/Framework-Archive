@@ -102,7 +102,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.EagerFetch
       Assert.That (BidirectionalRelationSyncService.IsSynchronized (TestableClientTransaction, orderItemsEndPointID), Is.False);
     }
 
-    private OrderItem RegisterFakeOrderItem (ObjectID objectID, ObjectID fakeOrderID)
+    private OrderItem RegisterFakeOrderItem (IObjectID<DomainObject> objectID, IObjectID<DomainObject> fakeOrderID)
     {
       var orderItem = (OrderItem) LifetimeService.GetObjectReference (TestableClientTransaction, objectID);
       var fakeDataContainer = DataContainer.CreateForExisting (

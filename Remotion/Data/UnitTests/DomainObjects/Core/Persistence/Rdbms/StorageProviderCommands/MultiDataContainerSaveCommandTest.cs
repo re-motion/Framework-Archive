@@ -30,8 +30,8 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.StoragePr
   [TestFixture]
   public class MultiDataContainerSaveCommandTest : StandardMappingTest
   {
-    private ObjectID _objectID1;
-    private ObjectID _objectID2;
+    private IObjectID<DomainObject> _objectID1;
+    private IObjectID<DomainObject> _objectID2;
 
     private MockRepository _mockRepository;
 
@@ -43,8 +43,8 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.StoragePr
 
     private IRdbmsProviderCommandExecutionContext _rdbmsExecutionContextStrictMock;
 
-    private Tuple<ObjectID, IDbCommandBuilder> _tuple1;
-    private Tuple<ObjectID, IDbCommandBuilder> _tuple2;
+    private Tuple<IObjectID<DomainObject>, IDbCommandBuilder> _tuple1;
+    private Tuple<IObjectID<DomainObject>, IDbCommandBuilder> _tuple2;
 
     public override void SetUp ()
     {

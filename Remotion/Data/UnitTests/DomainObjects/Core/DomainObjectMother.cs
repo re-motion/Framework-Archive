@@ -35,13 +35,13 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
       return CreateObjectInTransaction<T> (ClientTransaction.CreateRootTransaction());
     }
 
-    public static T GetObjectInOtherTransaction<T> (ObjectID objectID) where T : DomainObject
+    public static T GetObjectInOtherTransaction<T> (IObjectID<DomainObject> objectID) where T : DomainObject
     {
       var transaction = ClientTransaction.CreateRootTransaction ();
       return GetObjectInTransaction<T> (transaction, objectID);
     }
 
-    public static T GetObjectInTransaction<T> (ClientTransaction transaction, ObjectID objectID) where T : DomainObject
+    public static T GetObjectInTransaction<T> (ClientTransaction transaction, IObjectID<DomainObject> objectID) where T : DomainObject
     {
       return (T) LifetimeService.GetObject (transaction, objectID, true);
     }
@@ -51,27 +51,27 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
       return CreateObjectInOtherTransaction<T>();
     }
 
-    public static T CreateFakeObject<T> (ObjectID id) where T : DomainObject
+    public static T CreateFakeObject<T> (IObjectID<DomainObject> id) where T : DomainObject
     {
       return GetObjectReference<T> (ClientTransaction.CreateRootTransaction (), id);
     }
 
-    public static DomainObject CreateFakeObject (ObjectID id = null)
+    public static DomainObject CreateFakeObject (IObjectID<DomainObject> id = null)
     {
       return LifetimeService.GetObjectReference (ClientTransaction.CreateRootTransaction (), id ?? ObjectID.Create(typeof (Order), Guid.NewGuid()));
     }
 
-    public static T GetObjectReference<T> (ClientTransaction clientTransaction, ObjectID objectID) where T : DomainObject
+    public static T GetObjectReference<T> (ClientTransaction clientTransaction, IObjectID<DomainObject> objectID) where T : DomainObject
     {
       return (T) LifetimeService.GetObjectReference (clientTransaction, objectID);
     }
 
-    public static DomainObject GetObjectReference (ClientTransaction clientTransaction, ObjectID objectID)
+    public static DomainObject GetObjectReference (ClientTransaction clientTransaction, IObjectID<DomainObject> objectID)
     {
       return GetObjectReference<DomainObject> (clientTransaction, objectID);
     }
 
-    public static DomainObject GetChangedObject (ClientTransaction transaction, ObjectID objectID)
+    public static DomainObject GetChangedObject (ClientTransaction transaction, IObjectID<DomainObject> objectID)
     {
       var changedInstance = LifetimeService.GetObject (transaction, objectID, false);
       changedInstance.RegisterForCommit();
@@ -80,7 +80,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
       return changedInstance;
     }
 
-    public static DomainObject GetUnchangedObject (ClientTransaction transaction, ObjectID objectID)
+    public static DomainObject GetUnchangedObject (ClientTransaction transaction, IObjectID<DomainObject> objectID)
     {
       var unchangedInstance = LifetimeService.GetObject (transaction, objectID, false);
       Assert.That (unchangedInstance.State, Is.EqualTo (StateType.Unchanged));
@@ -95,7 +95,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
       return invalidInstance;
     }
 
-    public static DomainObject GetNotLoadedObject (ClientTransaction transaction, ObjectID objectID)
+    public static DomainObject GetNotLoadedObject (ClientTransaction transaction, IObjectID<DomainObject> objectID)
     {
       var notLoadedInstance = LifetimeService.GetObjectReference (transaction, objectID);
       Assert.That (notLoadedInstance.TransactionContext[transaction].State, Is.EqualTo (StateType.NotLoadedYet));
@@ -109,7 +109,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
       return newInstance;
     }
 
-    public static DomainObject GetDeletedObject (TestableClientTransaction transaction, ObjectID objectID)
+    public static DomainObject GetDeletedObject (TestableClientTransaction transaction, IObjectID<DomainObject> objectID)
     {
       var deletedInstance = LifetimeService.GetObjectReference (transaction, objectID);
       LifetimeService.DeleteObject (transaction, deletedInstance);

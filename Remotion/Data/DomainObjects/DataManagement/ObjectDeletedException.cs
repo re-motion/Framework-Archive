@@ -29,7 +29,7 @@ public class ObjectDeletedException : DomainObjectException
 
   // member fields
 
-  private ObjectID _id;
+  private IObjectID<DomainObject> _id;
 
   // construction and disposing
 
@@ -47,14 +47,14 @@ public class ObjectDeletedException : DomainObjectException
 
   protected ObjectDeletedException (SerializationInfo info, StreamingContext context) : base (info, context) 
   {
-    _id = (ObjectID) info.GetValue ("ID", typeof (ObjectID));
+    _id = (IObjectID<DomainObject>) info.GetValue ("ID", typeof (IObjectID<DomainObject>));
   }
 
-  public ObjectDeletedException (ObjectID id) : this (string.Format ("Object '{0}' is already deleted.", id), id)
+  public ObjectDeletedException (IObjectID<DomainObject> id) : this (string.Format ("Object '{0}' is already deleted.", id), id)
   {
   }
 
-  public ObjectDeletedException (string message, ObjectID id) : base (message) 
+  public ObjectDeletedException (string message, IObjectID<DomainObject> id) : base (message) 
   {
     ArgumentUtility.CheckNotNull ("id", id);
 
@@ -63,7 +63,7 @@ public class ObjectDeletedException : DomainObjectException
 
   // methods and properties
 
-  public ObjectID ID
+  public IObjectID<DomainObject> ID
   {
     get { return _id; }
   }

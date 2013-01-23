@@ -41,7 +41,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
       return NewObject<StatePropertyDefinition> (ParamList.Create (metadataItemID, name));
     }
 
-    public new static StatePropertyDefinition GetObject (ObjectID id)
+    public new static StatePropertyDefinition GetObject (IObjectID<DomainObject> id)
     {
       return GetObject<StatePropertyDefinition> (id);
     }

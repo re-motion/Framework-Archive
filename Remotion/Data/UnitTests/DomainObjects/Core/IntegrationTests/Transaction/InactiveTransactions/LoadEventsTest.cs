@@ -47,7 +47,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
             .Expect (
                 mock => mock.ObjectsLoading (
                     Arg.Is (InactiveRootTransaction),
-                    Arg<ReadOnlyCollection<ObjectID>>.List.Equal (new[] { _order.ID })))
+                    Arg<ReadOnlyCollection<IObjectID<DomainObject>>>.List.Equal (new[] { _order.ID })))
             .WhenCalled (mi => Assert.That (InactiveRootTransaction.IsActive, Is.False));
         ExtensionStrictMock
             .Expect (
@@ -60,7 +60,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
             .Expect (
                 mock => mock.ObjectsLoading (
                     Arg.Is (InactiveMiddleTransaction),
-                    Arg<ReadOnlyCollection<ObjectID>>.List.Equal (new[] { _order.ID })))
+                    Arg<ReadOnlyCollection<IObjectID<DomainObject>>>.List.Equal (new[] { _order.ID })))
             .WhenCalled (mi => Assert.That (InactiveMiddleTransaction.IsActive, Is.False));
         ExtensionStrictMock
             .Expect (
@@ -73,7 +73,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
             .Expect (
                 mock => mock.ObjectsLoading (
                     Arg.Is (ActiveSubTransaction),
-                    Arg<ReadOnlyCollection<ObjectID>>.List.Equal (new[] { _order.ID })))
+                    Arg<ReadOnlyCollection<IObjectID<DomainObject>>>.List.Equal (new[] { _order.ID })))
             .WhenCalled (mi => Assert.That (ActiveSubTransaction.IsActive, Is.True));
         ExtensionStrictMock
             .Expect (

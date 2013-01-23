@@ -64,7 +64,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI
 
         CurrentTenantField.LoadUnboundValue (currentTenant, false);
 
-        bool isCurrentTenantTheOnlyTenantInTheCollection = tenants.Length == 1 && currentTenant != null && tenants[0].ID == currentTenant.ID;
+        bool isCurrentTenantTheOnlyTenantInTheCollection = tenants.Length == 1 && currentTenant != null && object.Equals (tenants[0].ID, currentTenant.ID);
         bool isCurrentTenantTheOnlyTenant = tenants.Length == 0 && currentTenant != null;
         bool hasExactlyOneTenant = isCurrentTenantTheOnlyTenantInTheCollection || isCurrentTenantTheOnlyTenant;
         IsTenantSelectionEnabled = !hasExactlyOneTenant;

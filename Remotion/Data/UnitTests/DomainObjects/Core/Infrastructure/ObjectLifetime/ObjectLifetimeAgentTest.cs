@@ -51,11 +51,11 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.ObjectLifeti
 
     private ObjectLifetimeAgent _agent;
 
-    private ObjectID _objectID1;
+    private IObjectID<DomainObject> _objectID1;
     private DomainObject _domainObject1;
     private DataContainer _dataContainer1;
 
-    private ObjectID _objectID2;
+    private IObjectID<DomainObject> _objectID2;
     private DomainObject _domainObject2;
     private DataContainer _dataContainer2;
     private IDomainObjectCreator _domainObjectCreatorMock;
@@ -164,7 +164,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.ObjectLifeti
       _eventSinkWithMock.Stub (mock => mock.RaiseNewObjectCreatingEvent ( Arg<Type>.Is.Anything));
       _persistenceStrategyMock.Stub (mock => mock.CreateNewObjectID (Arg<ClassDefinition>.Is.Anything)).Return (_objectID1);
       _initializationContextProviderMock
-          .Stub (stub => stub.CreateContext (Arg<ObjectID>.Is.Anything, Arg<BindingClientTransaction>.Is.Anything))
+          .Stub (stub => stub.CreateContext (Arg<IObjectID<DomainObject>>.Is.Anything, Arg<BindingClientTransaction>.Is.Anything))
           .Return (_initializationContextStub);
 
       _domainObjectCreatorMock
@@ -236,7 +236,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.ObjectLifeti
       _eventSinkWithMock.Stub (stub => stub.RaiseNewObjectCreatingEvent ( _typeDefinitionWithCreatorMock.ClassType));
       _persistenceStrategyMock.Stub (stub => stub.CreateNewObjectID (_typeDefinitionWithCreatorMock)).Return (_objectID1);
       _initializationContextProviderMock
-          .Stub (stub => stub.CreateContext (Arg<ObjectID>.Is.Anything, Arg<BindingClientTransaction>.Is.Anything))
+          .Stub (stub => stub.CreateContext (Arg<IObjectID<DomainObject>>.Is.Anything, Arg<BindingClientTransaction>.Is.Anything))
           .Return (_initializationContextStub);
 
       // Pretend an object was registered before the exception was thrown
@@ -269,7 +269,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.ObjectLifeti
       _eventSinkWithMock.Stub (stub => stub.RaiseNewObjectCreatingEvent ( _typeDefinitionWithCreatorMock.ClassType));
       _persistenceStrategyMock.Stub (stub => stub.CreateNewObjectID (_typeDefinitionWithCreatorMock)).Return (_objectID1);
       _initializationContextProviderMock
-          .Stub (stub => stub.CreateContext (Arg<ObjectID>.Is.Anything, Arg<BindingClientTransaction>.Is.Anything))
+          .Stub (stub => stub.CreateContext (Arg<IObjectID<DomainObject>>.Is.Anything, Arg<BindingClientTransaction>.Is.Anything))
           .Return (_initializationContextStub);
 
       // Pretend an object was registered before the exception was thrown
@@ -313,7 +313,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.ObjectLifeti
       _eventSinkWithMock.Stub (stub => stub.RaiseNewObjectCreatingEvent ( _typeDefinitionWithCreatorMock.ClassType));
       _persistenceStrategyMock.Stub (stub => stub.CreateNewObjectID (_typeDefinitionWithCreatorMock)).Return (_objectID1);
       _initializationContextProviderMock
-          .Stub (stub => stub.CreateContext (Arg<ObjectID>.Is.Anything, Arg<BindingClientTransaction>.Is.Anything))
+          .Stub (stub => stub.CreateContext (Arg<IObjectID<DomainObject>>.Is.Anything, Arg<BindingClientTransaction>.Is.Anything))
           .Return (_initializationContextStub);
 
       // No object was registered before the exception was thrown
@@ -417,7 +417,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.ObjectLifeti
 
       var result = _agent.TryGetObject (_objectID1);
       
-      _dataManagerMock.AssertWasNotCalled (mock => mock.GetDataContainerWithLazyLoad (Arg<ObjectID>.Is.Anything, Arg<bool>.Is.Anything));
+      _dataManagerMock.AssertWasNotCalled (mock => mock.GetDataContainerWithLazyLoad (Arg<IObjectID<DomainObject>>.Is.Anything, Arg<bool>.Is.Anything));
       Assert.That (result, Is.SameAs (_domainObject1));
     }
 

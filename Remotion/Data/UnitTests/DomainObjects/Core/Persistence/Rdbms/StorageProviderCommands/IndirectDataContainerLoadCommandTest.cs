@@ -29,13 +29,13 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.StoragePr
   [TestFixture]
   public class IndirectDataContainerLoadCommandTest : StandardMappingTest
   {
-    private IStorageProviderCommand<IEnumerable<ObjectID>, IRdbmsProviderCommandExecutionContext> _objectIDLoadCommandStub;
+    private IStorageProviderCommand<IEnumerable<IObjectID<DomainObject>>, IRdbmsProviderCommandExecutionContext> _objectIDLoadCommandStub;
     private IStorageProviderCommand<ObjectLookupResult<DataContainer>[], IRdbmsProviderCommandExecutionContext> _dataContainerLoadCommandStub;
     private IStorageProviderCommandFactory<IRdbmsProviderCommandExecutionContext> _storageProviderFactoryStub;
 
     private IndirectDataContainerLoadCommand _loadCommand;
-    private ObjectID _objectID1;
-    private ObjectID _objectID2;
+    private IObjectID<DomainObject> _objectID1;
+    private IObjectID<DomainObject> _objectID2;
     private ObjectLookupResult<DataContainer>[] _fakeResult;
     private IRdbmsProviderCommandExecutionContext _commandExecutionContextStub;
 
@@ -49,7 +49,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.StoragePr
       _commandExecutionContextStub = MockRepository.GenerateStub<IRdbmsProviderCommandExecutionContext>();
       _commandExecutionContextStub = MockRepository.GenerateStub<IRdbmsProviderCommandExecutionContext>();
 
-      _objectIDLoadCommandStub = MockRepository.GenerateStub<IStorageProviderCommand<IEnumerable<ObjectID>, IRdbmsProviderCommandExecutionContext>>();
+      _objectIDLoadCommandStub = MockRepository.GenerateStub<IStorageProviderCommand<IEnumerable<IObjectID<DomainObject>>, IRdbmsProviderCommandExecutionContext>>();
       _objectIDLoadCommandStub.Stub (stub => stub.Execute (_commandExecutionContextStub)).Return (new[] { _objectID1, _objectID2 });
 
       _dataContainerLoadCommandStub =
@@ -58,7 +58,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.StoragePr
 
       _storageProviderFactoryStub = MockRepository.GenerateStub<IStorageProviderCommandFactory<IRdbmsProviderCommandExecutionContext>>();
       _storageProviderFactoryStub
-          .Stub (stub => stub.CreateForSortedMultiIDLookup (Arg<ObjectID[]>.List.Equal (new[] { _objectID1, _objectID2 })))
+          .Stub (stub => stub.CreateForSortedMultiIDLookup (Arg<IObjectID<DomainObject>[]>.List.Equal (new[] { _objectID1, _objectID2 })))
           .Return (_dataContainerLoadCommandStub);
 
       _loadCommand = new IndirectDataContainerLoadCommand (_objectIDLoadCommandStub, _storageProviderFactoryStub);

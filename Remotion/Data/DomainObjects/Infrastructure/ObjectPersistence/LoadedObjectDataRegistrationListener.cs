@@ -52,7 +52,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
       get { return _hierarchyManager; }
     }
 
-    public void OnBeforeObjectRegistration (ReadOnlyCollection<ObjectID> loadedObjectIDs)
+    public void OnBeforeObjectRegistration (ReadOnlyCollection<IObjectID<DomainObject>> loadedObjectIDs)
     {
       ArgumentUtility.CheckNotNull ("loadedObjectIDs", loadedObjectIDs);
 
@@ -60,7 +60,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
       _eventSink.RaiseObjectsLoadingEvent (loadedObjectIDs);
     }
 
-    public void OnAfterObjectRegistration (ReadOnlyCollection<ObjectID> objectIDsToBeLoaded, ReadOnlyCollection<DomainObject> actuallyLoadedDomainObjects)
+    public void OnAfterObjectRegistration (ReadOnlyCollection<IObjectID<DomainObject>> objectIDsToBeLoaded, ReadOnlyCollection<DomainObject> actuallyLoadedDomainObjects)
     {
       ArgumentUtility.CheckNotNull ("objectIDsToBeLoaded", objectIDsToBeLoaded);
       ArgumentUtility.CheckNotNull ("actuallyLoadedDomainObjects", actuallyLoadedDomainObjects);
@@ -76,7 +76,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
       }
     }
 
-    public void OnObjectsNotFound (ReadOnlyCollection<ObjectID> notFoundObjectIDs)
+    public void OnObjectsNotFound (ReadOnlyCollection<IObjectID<DomainObject>> notFoundObjectIDs)
     {
       ArgumentUtility.CheckNotNull ("notFoundObjectIDs", notFoundObjectIDs);
 

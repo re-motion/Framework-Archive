@@ -72,7 +72,7 @@ namespace Remotion.Data.DomainObjects
     {
     }
 
-    public virtual void ObjectsLoading (ClientTransaction clientTransaction, ReadOnlyCollection<ObjectID> objectIDs)
+    public virtual void ObjectsLoading (ClientTransaction clientTransaction, ReadOnlyCollection<IObjectID<DomainObject>> objectIDs)
     {
     }
 

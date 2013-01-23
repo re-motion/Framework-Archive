@@ -109,12 +109,12 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Mapping
 
     public static PropertyDefinition CreateForFakePropertyInfo_ObjectID (ClassDefinition classDefinition, string propertyName)
     {
-      return CreateForFakePropertyInfo (classDefinition, propertyName, true, typeof (ObjectID), true, null, StorageClass.Persistent);
+      return CreateForFakePropertyInfo (classDefinition, propertyName, true, typeof (IObjectID<DomainObject>), true, null, StorageClass.Persistent);
     }
 
     public static PropertyDefinition CreateForFakePropertyInfo_ObjectID (ClassDefinition classDefinition, string propertyName, StorageClass storageClass)
     {
-      return CreateForFakePropertyInfo (classDefinition, propertyName, true, typeof (ObjectID), true, null, storageClass);
+      return CreateForFakePropertyInfo (classDefinition, propertyName, true, typeof (IObjectID<DomainObject>), true, null, storageClass);
     }
 
     public static PropertyDefinition CreateForRealPropertyInfo (ClassDefinition classDefinition, Type declaringClassType, string propertyName)

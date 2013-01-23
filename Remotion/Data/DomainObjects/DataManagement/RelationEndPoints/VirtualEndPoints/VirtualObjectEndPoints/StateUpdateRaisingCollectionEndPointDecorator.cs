@@ -220,7 +220,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       }
     }
 
-    public ObjectID ObjectID
+    public IObjectID<DomainObject> ObjectID
     {
       get
       {
@@ -460,7 +460,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       }
     }
 
-    public ObjectID OppositeObjectID
+    public IObjectID<DomainObject> OppositeObjectID
     {
       get
       {
@@ -473,7 +473,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       }
     }
 
-    public ObjectID OriginalOppositeObjectID
+    public IObjectID<DomainObject> OriginalOppositeObjectID
     {
       get
       {

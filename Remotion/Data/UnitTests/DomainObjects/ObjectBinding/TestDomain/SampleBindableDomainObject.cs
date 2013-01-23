@@ -38,7 +38,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.ObjectBinding.TestDomain
       return NewObject<SampleBindableDomainObject> (ParamList.Create (implementation));
     }
 
-    public static SampleBindableDomainObject GetObject (ObjectID id)
+    public static SampleBindableDomainObject GetObject (IObjectID<DomainObject> id)
     {
       return GetObject<SampleBindableDomainObject> (id);
     }

@@ -217,7 +217,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests
       _eventReceiverMock.Replay ();
       _collection.SetEventReceiver (_eventReceiverMock);
 
-      Assert.That (() => _collection.Remove ((ObjectID) null), Throws.TypeOf<ArgumentNullException> ());
+      Assert.That (() => _collection.Remove ((IObjectID<DomainObject>) null), Throws.TypeOf<ArgumentNullException> ());
 
       _eventReceiverMock.VerifyAllExpectations ();
     }

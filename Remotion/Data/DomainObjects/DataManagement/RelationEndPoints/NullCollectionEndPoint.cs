@@ -55,7 +55,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       get { return _clientTransaction; }
     }
 
-    public ObjectID ObjectID
+    public IObjectID<DomainObject> ObjectID
     {
       get { return null; }
     }

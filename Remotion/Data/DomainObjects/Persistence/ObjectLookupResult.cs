@@ -20,20 +20,20 @@ using Remotion.Data.DomainObjects.DataManagement;
 namespace Remotion.Data.DomainObjects.Persistence
 {
   /// <summary>
-  /// Holds the result from looking up the <see cref="DataContainer"/> for a specific <see cref="ObjectID"/>.
+  /// Holds the result from looking up the <see cref="DataContainer"/> for a specific <see cref="IObjectID{DomainObject}"/>.
   /// </summary>
   public struct ObjectLookupResult<T>
   {
-    private readonly ObjectID _objectID;
+    private readonly IObjectID<DomainObject> _objectID;
     private readonly T _locatedObject;
 
-    public ObjectLookupResult (ObjectID objectID, T locatedObject)
+    public ObjectLookupResult (IObjectID<DomainObject> objectID, T locatedObject)
     {
       _objectID = objectID;
       _locatedObject = locatedObject;
     }
 
-    public ObjectID ObjectID
+    public IObjectID<DomainObject> ObjectID
     {
       get { return _objectID; }
     }

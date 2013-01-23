@@ -25,8 +25,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
   /// </summary>
   public interface IObjectLoader
   {
-    ILoadedObjectData LoadObject (ObjectID id, bool throwOnNotFound);
-    ICollection<ILoadedObjectData> LoadObjects (IEnumerable<ObjectID> idsToBeLoaded, bool throwOnNotFound);
+    ILoadedObjectData LoadObject (IObjectID<DomainObject> id, bool throwOnNotFound);
+    ICollection<ILoadedObjectData> LoadObjects (IEnumerable<IObjectID<DomainObject>> idsToBeLoaded, bool throwOnNotFound);
 
     ILoadedObjectData GetOrLoadRelatedObject (RelationEndPointID relationEndPointID);
     ICollection<ILoadedObjectData> GetOrLoadRelatedObjects (RelationEndPointID relationEndPointID);

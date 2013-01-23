@@ -131,7 +131,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure
     public void ObjectsLoading ()
     {
       CheckLoggingMethod (
-          () => _listener.ObjectsLoading (_clientTransaction, new ReadOnlyCollection<ObjectID> (new List<ObjectID>())),
+          () => _listener.ObjectsLoading (_clientTransaction, new ReadOnlyCollection<IObjectID<DomainObject>> (new List<IObjectID<DomainObject>>())),
           string.Format ("{0} ObjectsLoading: {1}", _clientTransaction.ID, ""));
     }
 
@@ -147,7 +147,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure
     public void ObjectsNotFound ()
     {
       CheckLoggingMethod (
-          () => _listener.ObjectsNotFound (_clientTransaction, new ReadOnlyCollection<ObjectID> (new List<ObjectID> ())),
+          () => _listener.ObjectsNotFound (_clientTransaction, new ReadOnlyCollection<IObjectID<DomainObject>> (new List<IObjectID<DomainObject>> ())),
           string.Format ("{0} ObjectsNotFound: {1}", _clientTransaction.ID, ""));
     }
 

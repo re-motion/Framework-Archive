@@ -448,7 +448,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DomainObjects
       order3.OrderNumber = 7;
 
       Order newOrder = Order.NewObject ();
-      ObjectID newOrderID = newOrder.ID;
+      IObjectID<DomainObject> newOrderID = newOrder.ID;
       newOrder.DeliveryDate = DateTime.Now;
       newOrder.Official = official1;
       customer1.Orders.Add (newOrder);
@@ -457,21 +457,21 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DomainObjects
       orderTicket1.FileName = @"C:\NewFile.tif";
 
       OrderItem newOrderItem1 = OrderItem.NewObject ();
-      ObjectID newOrderItem1ID = newOrderItem1.ID;
+      IObjectID<DomainObject> newOrderItem1ID = newOrderItem1.ID;
 
       newOrderItem1.Position = 1;
       newOrder.OrderItems.Add (newOrderItem1);
 
       OrderItem newOrderItem2 = OrderItem.NewObject ();
-      ObjectID newOrderItem2ID = newOrderItem2.ID;
+      IObjectID<DomainObject> newOrderItem2ID = newOrderItem2.ID;
       newOrderItem2.Position = 2;
       order3.OrderItems.Add (newOrderItem2);
 
       Customer newCustomer = Customer.NewObject ();
-      ObjectID newCustomerID = newCustomer.ID;
+      IObjectID<DomainObject> newCustomerID = newCustomer.ID;
 
       Ceo newCeo = Ceo.NewObject ();
-      ObjectID newCeoID = newCeo.ID;
+      IObjectID<DomainObject> newCeoID = newCeo.ID;
       newCustomer.Ceo = newCeo;
       order2.Customer = newCustomer;
 
@@ -531,10 +531,10 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DomainObjects
     public void TestAllOperationsWithHierarchy ()
     {
       Employee newSupervisor1 = Employee.NewObject ();
-      ObjectID newSupervisor1ID = newSupervisor1.ID;
+      IObjectID<DomainObject> newSupervisor1ID = newSupervisor1.ID;
 
       Employee newSubordinate1 = Employee.NewObject ();
-      ObjectID newSubordinate1ID = newSubordinate1.ID;
+      IObjectID<DomainObject> newSubordinate1ID = newSubordinate1.ID;
       newSubordinate1.Supervisor = newSupervisor1;
 
       Employee supervisor1 = Employee.GetObject (DomainObjectIDs.Employee1);
@@ -550,9 +550,9 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DomainObjects
       Dev.Null = Employee.GetObject (DomainObjectIDs.Employee7);
 
       Employee newSubordinate2 = Employee.NewObject ();
-      ObjectID newSubordinate2ID = newSubordinate2.ID;
+      IObjectID<DomainObject> newSubordinate2ID = newSubordinate2.ID;
       Employee newSubordinate3 = Employee.NewObject ();
-      ObjectID newSubordinate3ID = newSubordinate3.ID;
+      IObjectID<DomainObject> newSubordinate3ID = newSubordinate3.ID;
 
       newSupervisor1.Supervisor = supervisor2;
       newSubordinate2.Supervisor = supervisor1;

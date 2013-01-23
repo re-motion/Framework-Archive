@@ -48,8 +48,8 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.StoragePr
     private IObjectReaderFactory _objectReaderFactoryStrictMock;
     private IDbCommandBuilder _dbCommandBuilder1Stub;
     private IDbCommandBuilder _dbCommandBuilder2Stub;
-    private IObjectReader<Tuple<ObjectID, object>> _timestampReader1Stub;
-    private IObjectReader<Tuple<ObjectID, object>> _timestampReader2Stub;
+    private IObjectReader<Tuple<IObjectID<DomainObject>, object>> _timestampReader1Stub;
+    private IObjectReader<Tuple<IObjectID<DomainObject>, object>> _timestampReader2Stub;
     private IObjectReader<DataContainer> _dataContainerReader1Stub;
     private IObjectReader<DataContainer> _dataContainerReader2Stub;
     
@@ -57,9 +57,9 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.StoragePr
 
     private TableDefinition _tableDefinition1;
     private TableDefinition _tableDefinition2;
-    private ObjectID _objectID1;
-    private ObjectID _objectID2;
-    private ObjectID _objectID3;
+    private IObjectID<DomainObject> _objectID1;
+    private IObjectID<DomainObject> _objectID2;
+    private IObjectID<DomainObject> _objectID3;
     
     public override void SetUp ()
     {
@@ -71,8 +71,8 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.StoragePr
       _objectReaderFactoryStrictMock = MockRepository.GenerateStrictMock<IObjectReaderFactory>();
       _dbCommandBuilder1Stub = MockRepository.GenerateStub<IDbCommandBuilder>();
       _dbCommandBuilder2Stub = MockRepository.GenerateStub<IDbCommandBuilder>();
-      _timestampReader1Stub = MockRepository.GenerateStub<IObjectReader<Tuple<ObjectID, object>>> ();
-      _timestampReader2Stub = MockRepository.GenerateStub<IObjectReader<Tuple<ObjectID, object>>> ();
+      _timestampReader1Stub = MockRepository.GenerateStub<IObjectReader<Tuple<IObjectID<DomainObject>, object>>> ();
+      _timestampReader2Stub = MockRepository.GenerateStub<IObjectReader<Tuple<IObjectID<DomainObject>, object>>> ();
       _dataContainerReader1Stub = MockRepository.GenerateStub<IObjectReader<DataContainer>> ();
       _dataContainerReader2Stub = MockRepository.GenerateStub<IObjectReader<DataContainer>> ();
 
@@ -311,10 +311,10 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.StoragePr
       _dbCommandBuilderFactoryStrictMock.VerifyAllExpectations();
 
       var innerCommand =
-          CheckDelegateBasedCommandAndReturnInnerCommand<IEnumerable<Tuple<ObjectID, object>>, IEnumerable<ObjectLookupResult<object>>> (result);
-      Assert.That (innerCommand, Is.TypeOf (typeof (MultiObjectLoadCommand<Tuple<ObjectID, object>>)));
+          CheckDelegateBasedCommandAndReturnInnerCommand<IEnumerable<Tuple<IObjectID<DomainObject>, object>>, IEnumerable<ObjectLookupResult<object>>> (result);
+      Assert.That (innerCommand, Is.TypeOf (typeof (MultiObjectLoadCommand<Tuple<IObjectID<DomainObject>, object>>)));
 
-      var commandBuildersAndReaders = ((MultiObjectLoadCommand<Tuple<ObjectID, object>>) innerCommand).DbCommandBuildersAndReaders;
+      var commandBuildersAndReaders = ((MultiObjectLoadCommand<Tuple<IObjectID<DomainObject>, object>>) innerCommand).DbCommandBuildersAndReaders;
       Assert.That (commandBuildersAndReaders.Length, Is.EqualTo (2));
       Assert.That (commandBuildersAndReaders[0].Item1, Is.SameAs (_dbCommandBuilder1Stub));
       Assert.That (commandBuildersAndReaders[0].Item2, Is.SameAs (_timestampReader1Stub));
@@ -334,7 +334,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.StoragePr
       _factory.CreateForMultiTimestampLookup (new[] { DomainObjectIDs.Official1 });
     }
 
-    private ObjectID CreateObjectID (IStorageEntityDefinition entityDefinition)
+    private IObjectID<DomainObject> CreateObjectID (IStorageEntityDefinition entityDefinition)
     {
       var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition (classType: typeof (Order), baseClass: null);
       classDefinition.SetStorageEntity (entityDefinition);

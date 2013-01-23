@@ -131,7 +131,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Unload
       var orderItem1 = OrderItem.GetObject (DomainObjectIDs.OrderItem1);
       var orderItem2 = OrderItem.GetObject (DomainObjectIDs.OrderItem2);
 
-      ObjectID newOrderItemID;
+      IObjectID<DomainObject> newOrderItemID;
       using (ClientTransaction.CreateRootTransaction ().EnterDiscardingScope ())
       {
         var orderInOtherTx = Order.GetObject (DomainObjectIDs.Order1);
@@ -162,7 +162,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Unload
       var employee = Employee.GetObject (DomainObjectIDs.Employee3);
       var computer = employee.Computer;
 
-      ObjectID newComputerID;
+      IObjectID<DomainObject> newComputerID;
       using (ClientTransaction.CreateRootTransaction ().EnterDiscardingScope ())
       {
         var employeeInOtherTx = Employee.GetObject (employee.ID);

@@ -269,7 +269,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       }
     }
 
-    public ObjectID ObjectID
+    public IObjectID<DomainObject> ObjectID
     {
       get
       {

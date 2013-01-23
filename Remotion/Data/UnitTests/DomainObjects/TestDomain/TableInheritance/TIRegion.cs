@@ -29,7 +29,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.TestDomain.TableInheritance
       return NewObject<TIRegion> ();
     }
 
-    public static TIRegion GetObject (ObjectID id)
+    public static TIRegion GetObject (IObjectID<DomainObject> id)
     {
       return GetObject<TIRegion> (id);
     }

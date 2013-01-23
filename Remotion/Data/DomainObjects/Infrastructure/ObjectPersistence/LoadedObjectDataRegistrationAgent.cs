@@ -36,7 +36,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
       private readonly ILoadedObjectDataRegistrationListener _registrationListener;
 
       private readonly List<DataContainer> _dataContainersToBeRegistered = new List<DataContainer> ();
-      private readonly List<ObjectID> _notFoundObjectIDs = new List<ObjectID> ();
+      private readonly List<IObjectID<DomainObject>> _notFoundObjectIDs = new List<IObjectID<DomainObject>> ();
 
       public RegisteredDataContainerGatheringVisitor (ILoadedObjectDataRegistrationListener registrationListener)
       {

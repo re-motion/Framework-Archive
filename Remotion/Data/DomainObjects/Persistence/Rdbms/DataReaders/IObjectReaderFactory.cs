@@ -30,8 +30,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
   {
     IObjectReader<DataContainer> CreateDataContainerReader ();
     IObjectReader<DataContainer> CreateDataContainerReader (IRdbmsStorageEntityDefinition entityDefinition, IEnumerable<ColumnDefinition> selectedColumns);
-    IObjectReader<ObjectID> CreateObjectIDReader (IRdbmsStorageEntityDefinition entityDefinition, IEnumerable<ColumnDefinition> selectedColumns);
-    IObjectReader<Tuple<ObjectID, object>> CreateTimestampReader (IRdbmsStorageEntityDefinition entityDefinition, IEnumerable<ColumnDefinition> selectedColumns);
+    IObjectReader<IObjectID<DomainObject>> CreateObjectIDReader (IRdbmsStorageEntityDefinition entityDefinition, IEnumerable<ColumnDefinition> selectedColumns);
+    IObjectReader<Tuple<IObjectID<DomainObject>, object>> CreateTimestampReader (IRdbmsStorageEntityDefinition entityDefinition, IEnumerable<ColumnDefinition> selectedColumns);
     IObjectReader<IQueryResultRow> CreateResultRowReader ();
   }
 }

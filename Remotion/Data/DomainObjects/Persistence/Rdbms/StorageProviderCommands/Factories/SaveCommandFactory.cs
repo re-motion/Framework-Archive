@@ -71,11 +71,11 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
       return new MultiDataContainerSaveCommand (CreateDbCommandsForSave (dataContainers));
     }
 
-    private IEnumerable<Tuple<ObjectID, IDbCommandBuilder>> CreateDbCommandsForSave (IEnumerable<DataContainer> dataContainers)
+    private IEnumerable<Tuple<IObjectID<DomainObject>, IDbCommandBuilder>> CreateDbCommandsForSave (IEnumerable<DataContainer> dataContainers)
     {
-      var insertCommands = new List<Tuple<ObjectID, IDbCommandBuilder>>();
-      var updateCommands = new List<Tuple<ObjectID, IDbCommandBuilder>>();
-      var deleteCommands = new List<Tuple<ObjectID, IDbCommandBuilder>>();
+      var insertCommands = new List<Tuple<IObjectID<DomainObject>, IDbCommandBuilder>>();
+      var updateCommands = new List<Tuple<IObjectID<DomainObject>, IDbCommandBuilder>>();
+      var deleteCommands = new List<Tuple<IObjectID<DomainObject>, IDbCommandBuilder>>();
 
       foreach (var dataContainer in dataContainers)
       {

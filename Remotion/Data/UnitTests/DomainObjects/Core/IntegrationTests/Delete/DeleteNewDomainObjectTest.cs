@@ -64,9 +64,9 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Delete
     [Test]
     public void DomainObjectID ()
     {
-      ObjectID oldID = _newOrder.ID;
+      IObjectID<DomainObject> oldID = _newOrder.ID;
       _newOrder.Delete ();
-      ObjectID newID = _newOrder.ID;
+      IObjectID<DomainObject> newID = _newOrder.ID;
       Assert.That (newID, Is.EqualTo (oldID));
     }
 
@@ -316,7 +316,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Delete
 
       _newOrder.Customer = newCustomer;
 
-      ObjectID newOrderID = _newOrder.ID;
+      IObjectID<DomainObject> newOrderID = _newOrder.ID;
 
       _newOrder.Delete ();
 
@@ -330,7 +330,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Delete
 
       _newOrder.Customer = newCustomer;
 
-      ObjectID newCustomerID = newCustomer.ID;
+      IObjectID<DomainObject> newCustomerID = newCustomer.ID;
 
       newCustomer.Delete ();
 

@@ -9,7 +9,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
   /// </summary>
   public interface IUnlockedParentTransactionContext : IDisposable
   {
-    void MarkNotInvalid (ObjectID objectID);
+    void MarkNotInvalid (IObjectID<DomainObject> objectID);
 
     void RegisterDataContainer (DataContainer dataContainer);
     void Discard (DataContainer dataContainer);

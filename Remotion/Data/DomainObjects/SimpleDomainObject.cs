@@ -26,7 +26,7 @@ namespace Remotion.Data.DomainObjects
 {
   /// <summary>
   /// Represents a <see cref="DomainObject"/> that can be instantiated (via <see cref="NewObject(Remotion.Reflection.ParamList)"/>), retrieved (via
-  /// <see cref="GetObject(ObjectID)"/>), and deleted via public methods.
+  /// <see cref="GetObject(IObjectID{DomainObject})"/>), and deleted via public methods.
   /// </summary>
   /// <typeparam name="TDomainObject">The type derived from <see cref="SimpleDomainObject{TDomainObject}"/>.</typeparam>
   /// <remarks>
@@ -91,20 +91,20 @@ namespace Remotion.Data.DomainObjects
     /// If the object's data can't be found, an 
     /// exception is thrown, and the object is marked <see cref="StateType.Invalid"/> in the <see cref="ClientTransaction"/>.
     /// </summary>
-    /// <param name="id">The <see cref="ObjectID"/> of the <see cref="SimpleDomainObject{TDomainObject}"/> that should be loaded. Must not be 
+    /// <param name="id">The <see cref="IObjectID{DomainObject}"/> of the <see cref="SimpleDomainObject{TDomainObject}"/> that should be loaded. Must not be 
     /// <see langword="null"/>.</param>
     /// <returns>The <see cref="DomainObject"/> with the specified <paramref name="id"/>.</returns>
     /// <remarks>
     /// <para>
-    /// This method is identical to <see cref="DomainObject.GetObject{T}(ObjectID)"/>, but can be called from any other class, whereas
-    /// <see cref="DomainObject.GetObject{T}(ObjectID)"/> can only be called from classes derived from <see cref="DomainObject"/>.
+    /// This method is identical to <see cref="DomainObject.GetObject{T}(IObjectID{DomainObject})"/>, but can be called from any other class, whereas
+    /// <see cref="DomainObject.GetObject{T}(IObjectID{DomainObject})"/> can only be called from classes derived from <see cref="DomainObject"/>.
     /// </para>
     /// </remarks>
-    /// <seealso cref="DomainObject.GetObject{T}(ObjectID)"/>
+    /// <seealso cref="DomainObject.GetObject{T}(IObjectID{DomainObject})"/>
     /// <exception cref="System.ArgumentNullException"><paramref name="id"/> is <see langword="null"/>.</exception>
     /// <exception cref="ObjectsNotFoundException">
     /// The object could not be found in the data source. Note that the <see cref="ClientTransaction"/> marks
-    /// not found objects as <see cref="StateType.Invalid"/>, so calling this API again witht he same <see cref="ObjectID"/> results in a 
+    /// not found objects as <see cref="StateType.Invalid"/>, so calling this API again witht he same <see cref="IObjectID{DomainObject}"/> results in a 
     /// <see cref="ObjectInvalidException"/> being thrown.
     /// </exception>
     /// <exception cref="ObjectInvalidException">The object is invalid in the <see cref="ClientTransaction"/>.</exception>
@@ -116,7 +116,7 @@ namespace Remotion.Data.DomainObjects
     /// <exception cref="MissingMethodException">The concrete <see cref="DomainObject"/> doesn't implement the required constructor.</exception>
     /// <exception cref="ObjectDeletedException">The object has already been deleted.</exception>
     /// <exception cref="InvalidCastException">The loaded <see cref="DomainObject"/> is not of the expected type <typeparamref name="TDomainObject"/>.</exception>
-    public static TDomainObject GetObject (ObjectID id)
+    public static TDomainObject GetObject (IObjectID<DomainObject> id)
     {
       return DomainObject.GetObject<TDomainObject> (id);
     }
@@ -126,20 +126,20 @@ namespace Remotion.Data.DomainObjects
     /// If the object's data can't be found, an 
     /// exception is thrown, and the object is marked <see cref="StateType.Invalid"/> in the <see cref="ClientTransaction"/>.
     /// </summary>
-    /// <param name="id">The <see cref="ObjectID"/> of the <see cref="SimpleDomainObject{TDomainObject}"/> that should be loaded. Must not be <see langword="null"/>.</param>
+    /// <param name="id">The <see cref="IObjectID{DomainObject}"/> of the <see cref="SimpleDomainObject{TDomainObject}"/> that should be loaded. Must not be <see langword="null"/>.</param>
     /// <param name="includeDeleted">Indicates if the method should return <see cref="SimpleDomainObject{TDomainObject}"/>s that are already deleted.</param>
     /// <returns>The <see cref="SimpleDomainObject{TDomainObject}"/> with the specified <paramref name="id"/>.</returns>
     /// <remarks>
     /// <para>
-    /// This method is identical to <see cref="DomainObject.GetObject{T}(ObjectID,bool)"/>, but can be called from any other class, whereas
-    /// <see cref="DomainObject.GetObject{T}(ObjectID,bool)"/> can only be called from classes derived from <see cref="DomainObject"/>.
+    /// This method is identical to <see cref="DomainObject.GetObject{T}(IObjectID{DomainObject},bool)"/>, but can be called from any other class, whereas
+    /// <see cref="DomainObject.GetObject{T}(IObjectID{DomainObject},bool)"/> can only be called from classes derived from <see cref="DomainObject"/>.
     /// </para>
     /// </remarks>
-    /// <seealso cref="DomainObject.GetObject{T}(ObjectID,bool)"/>
+    /// <seealso cref="DomainObject.GetObject{T}(IObjectID{DomainObject},bool)"/>
     /// <exception cref="System.ArgumentNullException"><paramref name="id"/> is <see langword="null"/>.</exception>
     /// <exception cref="ObjectsNotFoundException">
     /// The object could not be found in the data source. Note that the <see cref="ClientTransaction"/> marks
-    /// not found objects as <see cref="StateType.Invalid"/>, so calling this API again witht he same <see cref="ObjectID"/> results in a 
+    /// not found objects as <see cref="StateType.Invalid"/>, so calling this API again witht he same <see cref="IObjectID{DomainObject}"/> results in a 
     /// <see cref="ObjectInvalidException"/> being thrown.
     /// </exception>
     /// <exception cref="ObjectInvalidException">The object is invalid in the <see cref="ClientTransaction"/>.</exception>
@@ -152,7 +152,7 @@ namespace Remotion.Data.DomainObjects
     /// <exception cref="ObjectDeletedException">The object has already been deleted and the <paramref name="includeDeleted"/> flag is 
     /// <see langword="false" />.</exception>
     /// <exception cref="InvalidCastException">The loaded <see cref="DomainObject"/> is not of the expected type <typeparamref name="TDomainObject"/>.</exception>
-    public static TDomainObject GetObject (ObjectID id, bool includeDeleted)
+    public static TDomainObject GetObject (IObjectID<DomainObject> id, bool includeDeleted)
     {
       return DomainObject.GetObject<TDomainObject> (id, includeDeleted);
     }
@@ -162,7 +162,7 @@ namespace Remotion.Data.DomainObjects
     /// If an object cannot be found, it will be marked <see cref="StateType.Invalid"/> in the <see cref="ClientTransaction"/>, and the method will
     /// return a <see langword="null" /> reference in its place.
     /// </summary>
-    /// <param name="id">The <see cref="ObjectID"/> of the <see cref="DomainObject"/> that should be loaded. Must not be <see langword="null"/>.</param>
+    /// <param name="id">The <see cref="IObjectID{DomainObject}"/> of the <see cref="DomainObject"/> that should be loaded. Must not be <see langword="null"/>.</param>
     /// <returns>
     /// The <see cref="DomainObject"/> with the specified <paramref name="id"/>, or <see langword="null" /> if it couldn't be found.
     /// </returns>
@@ -173,7 +173,7 @@ namespace Remotion.Data.DomainObjects
     ///   An error occurred while accessing the data source.
     /// </exception>
     /// <exception cref="InvalidCastException">The loaded <see cref="DomainObject"/> is not of the expected type <typeparamref name="TDomainObject"/>.</exception>
-    public static TDomainObject TryGetObject (ObjectID id)
+    public static TDomainObject TryGetObject (IObjectID<DomainObject> id)
     {
       ArgumentUtility.CheckNotNull ("id", id);
       return DomainObject.TryGetObject<TDomainObject> (id);

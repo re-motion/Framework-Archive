@@ -69,7 +69,7 @@ namespace Remotion.Data.DomainObjects
       return GetEnumerator();
     }
 
-    public bool Contains (ObjectID objectID)
+    public bool Contains (IObjectID<DomainObject> objectID)
     {
       ArgumentUtility.CheckNotNull ("objectID", objectID);
       return _wrappedData.Contains (objectID);
@@ -86,7 +86,7 @@ namespace Remotion.Data.DomainObjects
       get { return (T) _wrappedData[index]; }
     }
 
-    public T this[ObjectID objectID]
+    public T this[IObjectID<DomainObject> objectID]
     {
       get
       {
@@ -95,7 +95,7 @@ namespace Remotion.Data.DomainObjects
       }
     }
 
-    public int IndexOf (ObjectID objectID)
+    public int IndexOf (IObjectID<DomainObject> objectID)
     {
       ArgumentUtility.CheckNotNull ("objectID", objectID);
       return _wrappedData.IndexOf (objectID);

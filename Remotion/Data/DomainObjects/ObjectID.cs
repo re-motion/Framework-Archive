@@ -54,7 +54,7 @@ namespace Remotion.Data.DomainObjects
     ///   The type of <paramref name="value"/> is not supported by the underlying <see cref="Remotion.Data.DomainObjects.Persistence.StorageProvider"/>.
     /// </exception>
     /// <exception cref="Mapping.MappingException"/>The specified type <typeparamref name="T"/> could not be found in the mapping configuration.
-    public static ObjectID<T> Create<T> (object value)
+    public static IObjectID<T> Create<T> (object value)
         where T : DomainObject
     {
       var classDefinition = MappingConfiguration.Current.GetTypeDefinition (typeof (T));
@@ -81,7 +81,7 @@ namespace Remotion.Data.DomainObjects
     ///   The type of <paramref name="value"/> is not supported by the underlying <see cref="Remotion.Data.DomainObjects.Persistence.StorageProvider"/>.
     /// </exception>
     /// <exception cref="Mapping.MappingException"/>The specified <paramref name="classType"/> could not be found in the mapping configuration.
-    public static ObjectID Create (Type classType, object value)
+    public static IObjectID<DomainObject> Create (Type classType, object value)
     {
       ArgumentUtility.CheckNotNull ("classType", classType);
 
@@ -111,7 +111,7 @@ namespace Remotion.Data.DomainObjects
     ///   The type of <paramref name="value"/> is not supported by the underlying <see cref="Remotion.Data.DomainObjects.Persistence.StorageProvider"/>.
     /// </exception>
     /// <exception cref="Mapping.MappingException"/>The specified <paramref name="classID"/> could not be found in the mapping configuration.
-    public static ObjectID Create (string classID, object value)
+    public static IObjectID<DomainObject> Create (string classID, object value)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("classID", classID);
 
@@ -141,7 +141,7 @@ namespace Remotion.Data.DomainObjects
     ///   The type of <paramref name="value"/> is not supported by the underlying <see cref="Remotion.Data.DomainObjects.Persistence.StorageProvider"/>.
     /// </exception>
     /// <exception cref="Mapping.MappingException"/>The specified <paramref name="classDefinition"/> could not be found in the mapping configuration.
-    public static ObjectID Create (ClassDefinition classDefinition, object value)
+    public static IObjectID<DomainObject> Create (ClassDefinition classDefinition, object value)
     {
       return classDefinition.IDCreator (value);
     }
@@ -199,7 +199,7 @@ namespace Remotion.Data.DomainObjects
     /// <remarks>
     /// If the probability that parsing fails is high, consider using <see cref="TryParse"/> instead, as it is more performant in the error case.
     /// </remarks>
-    public static ObjectID Parse (string objectIDString)
+    public static IObjectID<DomainObject> Parse (string objectIDString)
     {
       ArgumentUtility.CheckNotNull ("objectIDString", objectIDString);
       return ObjectIDStringSerializer.Instance.Parse (objectIDString);
@@ -220,7 +220,7 @@ namespace Remotion.Data.DomainObjects
     /// If you expect <paramref name="objectIDString"/> to always hold a valid <see cref="ObjectID"/> string, use <see cref="Parse"/> instead. Use
     /// this method only if an invalid string constitutes a supported use case.
     /// </remarks>
-    public static bool TryParse (string objectIDString, out ObjectID result)
+    public static bool TryParse (string objectIDString, out IObjectID<DomainObject> result)
     {
       ArgumentUtility.CheckNotNull ("objectIDString", objectIDString);
       return ObjectIDStringSerializer.Instance.TryParse (objectIDString, out result);
@@ -338,7 +338,7 @@ namespace Remotion.Data.DomainObjects
       ArgumentUtility.CheckNotNull ("obj", obj);
 
       var other = obj as ObjectID;
-      if (other == null)
+      if (object.Equals (other, null))
         throw new ArgumentException ("The argument must be of type ObjectID.", "obj");
 
       var leftValue = Value;

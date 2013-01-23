@@ -130,7 +130,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.CollectionDa
       Assert.That (PrivateInvoke.GetNonPublicField (_data, "_orderedObjectIDs"), Is.EqualTo (new[] { _order1.ID }));
       Assert.That (
           PrivateInvoke.GetNonPublicField (_data, "_objectsByID"),
-          Is.EqualTo (new[] { new KeyValuePair<ObjectID, DomainObject> (_order1.ID, _order1) }));
+          Is.EqualTo (new[] { new KeyValuePair<IObjectID<DomainObject>, DomainObject> (_order1.ID, _order1) }));
     }
 
     [Test]
@@ -498,7 +498,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.CollectionDa
     {
       Assert.That (PrivateInvoke.GetNonPublicField (_data, "_orderedObjectIDs"), Is.EqualTo (expectedData.Select (obj => obj.ID).ToArray()));
 
-      var keyValuePairs = expectedData.Select (obj => new KeyValuePair<ObjectID, DomainObject> (obj.ID, obj)).ToArray();
+      var keyValuePairs = expectedData.Select (obj => new KeyValuePair<IObjectID<DomainObject>, DomainObject> (obj.ID, obj)).ToArray();
       Assert.That (PrivateInvoke.GetNonPublicField (_data, "_objectsByID"), Is.EqualTo (keyValuePairs));
     }
   }

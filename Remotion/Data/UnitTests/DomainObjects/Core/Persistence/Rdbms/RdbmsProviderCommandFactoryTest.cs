@@ -38,9 +38,9 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms
   {
     private RdbmsProviderCommandFactory _factory;
 
-    private ObjectID _objectID1;
-    private ObjectID _objectID2;
-    private ObjectID _objectID3;
+    private IObjectID<DomainObject> _objectID1;
+    private IObjectID<DomainObject> _objectID2;
+    private IObjectID<DomainObject> _objectID3;
 
     public override void SetUp ()
     {

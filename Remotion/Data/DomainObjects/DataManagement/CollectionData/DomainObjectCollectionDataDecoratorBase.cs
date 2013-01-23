@@ -57,7 +57,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
       _wrappedData.EnsureDataComplete();
     }
 
-    public virtual bool ContainsObjectID (ObjectID objectID)
+    public virtual bool ContainsObjectID (IObjectID<DomainObject> objectID)
     {
       ArgumentUtility.CheckNotNull ("objectID", objectID);
       return _wrappedData.ContainsObjectID(objectID);
@@ -68,13 +68,13 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
       return _wrappedData.GetObject(index);
     }
 
-    public virtual DomainObject GetObject (ObjectID objectID)
+    public virtual DomainObject GetObject (IObjectID<DomainObject> objectID)
     {
       ArgumentUtility.CheckNotNull ("objectID", objectID);
       return _wrappedData.GetObject(objectID);
     }
 
-    public virtual int IndexOf (ObjectID objectID)
+    public virtual int IndexOf (IObjectID<DomainObject> objectID)
     {
       ArgumentUtility.CheckNotNull ("objectID", objectID);
       return _wrappedData.IndexOf(objectID);
@@ -97,7 +97,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
       return _wrappedData.Remove (domainObject);
     }
 
-    public virtual bool Remove (ObjectID objectID)
+    public virtual bool Remove (IObjectID<DomainObject> objectID)
     {
       ArgumentUtility.CheckNotNull ("objectID", objectID);
       return _wrappedData.Remove (objectID);

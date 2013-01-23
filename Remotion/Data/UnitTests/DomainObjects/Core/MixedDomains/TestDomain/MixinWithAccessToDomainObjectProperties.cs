@@ -36,7 +36,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.MixedDomains.TestDomain
     public bool OnDomainObjectReferenceInitializingCalled;
 
     [StorageClassNone]
-    public new ObjectID ID
+    public new IObjectID<DomainObject> ID
     {
       get { return base.ID; }
     }

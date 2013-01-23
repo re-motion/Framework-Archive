@@ -196,7 +196,7 @@ namespace Remotion.Data.DomainObjects
     }
 
     [EditorBrowsable (EditorBrowsableState.Never)]
-    public void ObjectsLoading (ClientTransaction clientTransaction, ReadOnlyCollection<ObjectID> objectIDs)
+    public void ObjectsLoading (ClientTransaction clientTransaction, ReadOnlyCollection<IObjectID<DomainObject>> objectIDs)
     {
       ArgumentUtility.CheckNotNull ("objectIDs", objectIDs);
 

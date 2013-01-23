@@ -34,7 +34,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.DataReade
 
     private ObjectIDReader _reader;
 
-    private ObjectID _objectID;
+    private IObjectID<DomainObject> _objectID;
 
     public override void SetUp ()
     {
