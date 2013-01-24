@@ -288,7 +288,7 @@ namespace Remotion.Data.DomainObjects
       get { return _classDefinition; }
     }
 
-    public ObjectID AsObjectID ()
+    ObjectID IObjectID<DomainObject>.AsObjectID ()
     {
       return this;
     }
@@ -451,6 +451,11 @@ namespace Remotion.Data.DomainObjects
     private ObjectID (SerializationInfo info, StreamingContext context)
         : base (info, context)
     {
+    }
+
+    ObjectID IObjectID<T>.AsObjectID ()
+    {
+      return this;
     }
   }
 }

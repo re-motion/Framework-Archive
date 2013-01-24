@@ -17,6 +17,7 @@
 using System;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects;
+using Remotion.Data.DomainObjects.DomainImplementation;
 using Remotion.Data.UnitTests.DomainObjects.TestDomain;
 using Remotion.Development.UnitTesting;
 
@@ -25,6 +26,17 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests
   [TestFixture]
   public class GenericObjectIDTest : ClientTransactionBaseTest
   {
+    private IObjectID<Order> _orderTypedID;
+    private ObjectID _untypedID;
+
+    public override void SetUp ()
+    {
+      base.SetUp ();
+
+      _orderTypedID = (IObjectID<Order>) DomainObjectIDs.Order1;
+      _untypedID = DomainObjectIDs.Order1;
+    }
+
     [Test]
     public void ObjectID_Create_FromType ()
     {
@@ -147,24 +159,71 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests
     [Test]
     public void AsObjectID ()
     {
-      var orderID = (IObjectID<Order>) DomainObjectIDs.Order1;
-
-      var result = orderID.AsObjectID();
+      var result = _orderTypedID.AsObjectID();
 
       Assert.That (VariableTypeInferrer.GetVariableType (result), Is.SameAs (typeof (ObjectID)));
-      Assert.That (result, Is.EqualTo (orderID));
+      Assert.That (result, Is.EqualTo (_orderTypedID));
     }
 
-    // TODO 4415
-    //[Test]
-    //public void ClientTransaction_GetEnlistedObject ()
-    //{
-    //  var orderID = (IObjectID<Order>) DomainObjectIDs.Order1;
+    [Test]
+    public void ClientTransaction_GetEnlistedDomainObject_InfersResultType ()
+    {
+      var typedResult = TestableClientTransaction.GetEnlistedDomainObject (_orderTypedID);
+      var untypedResult = TestableClientTransaction.GetEnlistedDomainObject (_untypedID);
 
-    //  var result = TestableClientTransaction.GetEnlistedDomainObject (orderID);
+      Assert.That (VariableTypeInferrer.GetVariableType (typedResult), Is.SameAs (typeof (Order)));
+      Assert.That (VariableTypeInferrer.GetVariableType (untypedResult), Is.SameAs (typeof (DomainObject)));
+    }
 
-    //  Assert.That (VariableTypeInferrer.GetVariableType (result), Is.SameAs (typeof (Order)));
-    //}
+    [Test]
+    public void LifetimeService_GetObject_InfersResultType ()
+    {
+      var typedResult = LifetimeService.GetObject (TestableClientTransaction, _orderTypedID, false);
+      var untypedResult = LifetimeService.GetObject (TestableClientTransaction, _untypedID, false);
+
+      Assert.That (VariableTypeInferrer.GetVariableType (typedResult), Is.SameAs (typeof (Order)));
+      Assert.That (VariableTypeInferrer.GetVariableType (untypedResult), Is.SameAs (typeof (DomainObject)));
+    }
+
+    [Test]
+    public void LifetimeService_GetObjects_InfersResultType ()
+    {
+      var typedResult = LifetimeService.GetObjects (TestableClientTransaction, _orderTypedID);
+      var untypedResult = LifetimeService.GetObjects (TestableClientTransaction, _untypedID);
+
+      Assert.That (VariableTypeInferrer.GetVariableType (typedResult), Is.SameAs (typeof (Order[])));
+      Assert.That (VariableTypeInferrer.GetVariableType (untypedResult), Is.SameAs (typeof (DomainObject[])));
+    }
+
+    [Test]
+    public void LifetimeService_TryGetObject_InfersResultType ()
+    {
+      var typedResult = LifetimeService.TryGetObject (TestableClientTransaction, _orderTypedID);
+      var untypedResult = LifetimeService.TryGetObject (TestableClientTransaction, _untypedID);
+
+      Assert.That (VariableTypeInferrer.GetVariableType (typedResult), Is.SameAs (typeof (Order)));
+      Assert.That (VariableTypeInferrer.GetVariableType (untypedResult), Is.SameAs (typeof (DomainObject)));
+    }
+
+    [Test]
+    public void LifetimeService_TryGetObjects_InfersResultType ()
+    {
+      var typedResult = LifetimeService.TryGetObjects (TestableClientTransaction, _orderTypedID);
+      var untypedResult = LifetimeService.TryGetObjects (TestableClientTransaction, _untypedID);
+
+      Assert.That (VariableTypeInferrer.GetVariableType (typedResult), Is.SameAs (typeof (Order[])));
+      Assert.That (VariableTypeInferrer.GetVariableType (untypedResult), Is.SameAs (typeof (DomainObject[])));
+    }
+
+    [Test]
+    public void LifetimeService_GetObjectReference_InfersResultType ()
+    {
+      var typedResult = LifetimeService.GetObjectReference (TestableClientTransaction, _orderTypedID);
+      var untypedResult = LifetimeService.GetObjectReference (TestableClientTransaction, _untypedID);
+
+      Assert.That (VariableTypeInferrer.GetVariableType (typedResult), Is.SameAs (typeof (Order)));
+      Assert.That (VariableTypeInferrer.GetVariableType (untypedResult), Is.SameAs (typeof (DomainObject)));
+    }
 
     [Test]
     public void Serialization ()
