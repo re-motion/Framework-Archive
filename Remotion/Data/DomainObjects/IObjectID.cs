@@ -21,9 +21,9 @@ using Remotion.Data.DomainObjects.Persistence.Configuration;
 namespace Remotion.Data.DomainObjects
 {
   /// <summary>
-  /// Provides a covariant interface for the typed <see cref="ObjectID{T}"/>.
+  /// Provides a covariant, typed interface for instanced of <see cref="ObjectID"/>.
   /// </summary>
-  /// <typeparam name="T">The class of the object.</typeparam>
+  /// <typeparam name="T">The class of the object identified by this <see cref="IObjectID{T}"/>.</typeparam>
   public interface IObjectID<out T> : IComparable
       where T : DomainObject
   {
@@ -46,12 +46,35 @@ namespace Remotion.Data.DomainObjects
     string ClassID { get; }
 
     /// <summary>
-    /// Gets the <see cref="Mapping.ClassDefinition"/> associated with this <see cref="ObjectID"/>.
+    /// Gets the <see cref="Mapping.ClassDefinition"/> associated with this <see cref="IObjectID{T}"/>.
     /// </summary>
     ClassDefinition ClassDefinition { get; }
 
+    /// <summary>
+    /// Returns this <see cref="IObjectID{T}"/> as an untyped <see cref="ObjectID"/>.
+    /// </summary>
+    /// <returns>An <see cref="ObjectID"/> instance identifying the same <see cref="DomainObject"/> as this <see cref="IObjectID{T}"/>.</returns>
+    ObjectID AsObjectID ();
+
+    /// <summary>
+    /// Returns the string representation of the current <see cref="IObjectID{T}"/>.
+    /// </summary>
+    /// <returns>A <see cref="String"/> that represents the current <see cref="IObjectID{T}"/>. The string can be parsed via 
+    /// <see cref="ObjectID.Parse"/>.</returns>
     string ToString ();
-    int GetHashCode ();
+
+    /// <summary>
+    /// Determines whether the specified <see cref="IObjectID{T}"/> is equal to the current <see cref="IObjectID{T}"/>.
+    /// </summary>
+    /// <param name="obj">The <see cref="ObjectID"/> to compare with the current <see cref="ObjectID"/>. </param>
+    /// <returns><see langword="true"/> if the specified <see cref="ObjectID"/> is equal to the current <see cref="ObjectID"/>; otherwise, 
+    /// <see langword="false"/>.</returns>
     bool Equals (object obj);
+
+    /// <summary>
+    /// Returns the hash code for this instance.
+    /// </summary>
+    /// <returns>A 32-bit signed integer hash code.</returns>
+    int GetHashCode ();
   }
 }

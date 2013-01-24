@@ -145,6 +145,28 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests
     }
 
     [Test]
+    public void AsObjectID ()
+    {
+      var orderID = (IObjectID<Order>) DomainObjectIDs.Order1;
+
+      var result = orderID.AsObjectID();
+
+      Assert.That (VariableTypeInferrer.GetVariableType (result), Is.SameAs (typeof (ObjectID)));
+      Assert.That (result, Is.EqualTo (orderID));
+    }
+
+    // TODO 4415
+    //[Test]
+    //public void ClientTransaction_GetEnlistedObject ()
+    //{
+    //  var orderID = (IObjectID<Order>) DomainObjectIDs.Order1;
+
+    //  var result = TestableClientTransaction.GetEnlistedDomainObject (orderID);
+
+    //  Assert.That (VariableTypeInferrer.GetVariableType (result), Is.SameAs (typeof (Order)));
+    //}
+
+    [Test]
     public void Serialization ()
     {
       var value = Guid.NewGuid();

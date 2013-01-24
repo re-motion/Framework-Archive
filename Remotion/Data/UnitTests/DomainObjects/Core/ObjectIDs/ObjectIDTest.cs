@@ -63,6 +63,13 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.ObjectIDs
     }
 
     [Test]
+    public void AsObjectID ()
+    {
+      var id = ObjectID.Create (_orderClassDefinition, new Guid ("{5D09030C-25C2-4735-B514-46333BD28AC8}"));
+      Assert.That (id.AsObjectID(), Is.SameAs (id));
+    }
+
+    [Test]
     public void SerializeGuidValue ()
     {
       var id = ObjectID.Create("Order", new Guid ("{5D09030C-25C2-4735-B514-46333BD28AC8}"));

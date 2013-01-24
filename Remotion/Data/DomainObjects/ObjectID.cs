@@ -54,7 +54,7 @@ namespace Remotion.Data.DomainObjects
     ///   The type of <paramref name="value"/> is not supported by the underlying <see cref="Remotion.Data.DomainObjects.Persistence.StorageProvider"/>.
     /// </exception>
     /// <exception cref="Mapping.MappingException"/>The specified type <typeparamref name="T"/> could not be found in the mapping configuration.
-    public static ObjectID<T> Create<T> (object value)
+    public static IObjectID<T> Create<T> (object value)
         where T : DomainObject
     {
       var classDefinition = MappingConfiguration.Current.GetTypeDefinition (typeof (T));
@@ -288,6 +288,11 @@ namespace Remotion.Data.DomainObjects
       get { return _classDefinition; }
     }
 
+    public ObjectID AsObjectID ()
+    {
+      return this;
+    }
+
     /// <summary>
     /// Returns the string representation of the current <see cref="ObjectID"/>.
     /// </summary>
@@ -311,10 +316,13 @@ namespace Remotion.Data.DomainObjects
 
       // Note: We assume that a hash code value of 0 means that it wasn't initialized. In the very unlikely situation that 
       // _classID.GetHashCode () == _value.GetHashCode (), the XOR operation would yield 0 and thus the hash code would be recalculated on each call.
+
+      // ReSharper disable NonReadonlyFieldInGetHashCode
       if (_cachedHashCode == 0)
         _cachedHashCode = _classDefinition.GetHashCode () ^ _value.GetHashCode ();
       
       return _cachedHashCode;
+      // ReSharper restore NonReadonlyFieldInGetHashCode
     }
 
     /// <summary>
@@ -357,7 +365,8 @@ namespace Remotion.Data.DomainObjects
     /// Determines whether the specified <see cref="ObjectID"/> is equal to the current <see cref="ObjectID"/>.
     /// </summary>
     /// <param name="obj">The <see cref="ObjectID"/> to compare with the current <see cref="ObjectID"/>. </param>
-    /// <returns><see langword="true"/> if the specified <see cref="ObjectID"/> is equal to the current <see cref="ObjectID"/>; otherwise, <see langword="false"/>.</returns>
+    /// <returns><see langword="true"/> if the specified <see cref="ObjectID"/> is equal to the current <see cref="ObjectID"/>; otherwise, 
+    /// <see langword="false"/>.</returns>
     public override bool Equals (object obj)
     {
       if (obj == null)
@@ -425,6 +434,10 @@ namespace Remotion.Data.DomainObjects
   /// Uniquely identifies a <see cref="DomainObject"/> of a given type <typeparamref name="T"/>.
   /// </summary>
   /// <typeparam name="T">The class of the object.</typeparam>
+  /// <remarks>
+  /// This class implements <see cref="IObjectID{T}"/>, which is a covariant interface. Due to covariance, holding on to <see cref="IObjectID{T}"/>
+  /// should be preferred over <see cref="ObjectID{T}"/>.
+  /// </remarks>
   [Serializable]
   public sealed class ObjectID<T> : ObjectID, IObjectID<T>
       where T : DomainObject
