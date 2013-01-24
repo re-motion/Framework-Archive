@@ -77,7 +77,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
       if (propertyAccessor.PropertyData.RelationEndPointDefinition.IsVirtual)
         return GetValueWithoutTypeCheck (propertyAccessor, transaction) == null;
-      else // for nonvirtual end points check out the IObjectID<DomainObject>, which is stored in the DataContainer; this allows IsNull to avoid loading the object
+      else // for nonvirtual end points check out the ObjectID, which is stored in the DataContainer; this allows IsNull to avoid loading the object
         return ValuePropertyAccessorStrategy.Instance.GetValueWithoutTypeCheck (propertyAccessor, transaction) == null;
     }
 

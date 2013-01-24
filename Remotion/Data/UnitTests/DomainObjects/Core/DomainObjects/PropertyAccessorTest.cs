@@ -610,7 +610,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DomainObjects
     public void GetOriginalRelatedObjectIDRelatedRealEndPoint ()
     {
       var order = Order.GetObject (DomainObjectIDs.Order1);
-      IObjectID<DomainObject> originalID = order.Customer.ID;
+      ObjectID originalID = order.Customer.ID;
       order.Customer = Customer.NewObject ();
       Assert.That (order.Properties["Remotion.Data.UnitTests.DomainObjects.TestDomain.Order.Customer"].GetOriginalRelatedObjectID (), Is.Not.EqualTo (order.Customer.ID));
       Assert.That (order.Properties["Remotion.Data.UnitTests.DomainObjects.TestDomain.Order.Customer"].GetOriginalRelatedObjectID (), Is.EqualTo (originalID));

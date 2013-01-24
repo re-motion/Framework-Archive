@@ -64,7 +64,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       throw CreateException();
     }
 
-    public void ObjectsLoading (ClientTransaction clientTransaction, ReadOnlyCollection<IObjectID<DomainObject>> objectIDs)
+    public void ObjectsLoading (ClientTransaction clientTransaction, ReadOnlyCollection<ObjectID> objectIDs)
     {
       throw CreateException();
     }
@@ -79,7 +79,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       throw CreateException();
     }
 
-    public void ObjectsNotFound (ClientTransaction clientTransaction, ReadOnlyCollection<IObjectID<DomainObject>> objectIDs)
+    public void ObjectsNotFound (ClientTransaction clientTransaction, ReadOnlyCollection<ObjectID> objectIDs)
     {
       throw CreateException ();
     }

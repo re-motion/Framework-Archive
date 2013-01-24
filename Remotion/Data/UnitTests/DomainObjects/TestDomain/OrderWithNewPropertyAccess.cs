@@ -30,7 +30,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.TestDomain
       return NewObject<OrderWithNewPropertyAccess>();
     }
 
-    public static OrderWithNewPropertyAccess GetObject (IObjectID<DomainObject> id)
+    public static OrderWithNewPropertyAccess GetObject (ObjectID id)
     {
       return GetObject<OrderWithNewPropertyAccess> (id);
     }

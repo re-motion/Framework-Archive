@@ -46,14 +46,14 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
       get { return _parentTransactionContext; }
     }
 
-    public virtual IObjectID<DomainObject> CreateNewObjectID (ClassDefinition classDefinition)
+    public virtual ObjectID CreateNewObjectID (ClassDefinition classDefinition)
     {
       ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
 
       return _parentTransactionContext.CreateNewObjectID (classDefinition);
     }
 
-    public virtual ILoadedObjectData LoadObjectData (IObjectID<DomainObject> id)
+    public virtual ILoadedObjectData LoadObjectData (ObjectID id)
     {
       ArgumentUtility.CheckNotNull ("id", id);
 
@@ -64,7 +64,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
       return GetLoadedObjectDataForParentObject (parentObject);
     }
 
-    public virtual IEnumerable<ILoadedObjectData> LoadObjectData (IEnumerable<IObjectID<DomainObject>> objectIDs)
+    public virtual IEnumerable<ILoadedObjectData> LoadObjectData (IEnumerable<ObjectID> objectIDs)
     {
       ArgumentUtility.CheckNotNull ("objectIDs", objectIDs);
 
@@ -164,7 +164,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
       }
     }
 
-    private ILoadedObjectData GetLoadedObjectDataForParentObject (Tuple<IObjectID<DomainObject>, DomainObject> parentObject)
+    private ILoadedObjectData GetLoadedObjectDataForParentObject (Tuple<ObjectID, DomainObject> parentObject)
     {
       if (parentObject.Item2 == null)
         return new NotFoundLoadedObjectData (parentObject.Item1);
@@ -184,7 +184,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
         return TransferParentObject (parentObject.ID);
     }
 
-    private FreshlyLoadedObjectData TransferParentObject (IObjectID<DomainObject> objectID)
+    private FreshlyLoadedObjectData TransferParentObject (ObjectID objectID)
     {
       // This will throw if objectID is invalid in the parent transaction, which is just what we want - we can't transfer invalid objects.
       var parentDataContainer = _parentTransactionContext.GetDataContainerWithLazyLoad (objectID, throwOnNotFound: true);

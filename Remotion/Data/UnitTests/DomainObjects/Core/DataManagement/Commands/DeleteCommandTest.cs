@@ -200,12 +200,12 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.Commands
       Assert.That (orderItem2Command.NewRelatedObject, Is.Null);
     }
 
-    private RelationEndPointModificationCommand GetEndPointModificationCommand (IEnumerable<IDataManagementCommand> commands, IObjectID<DomainObject> objectID)
+    private RelationEndPointModificationCommand GetEndPointModificationCommand (IEnumerable<IDataManagementCommand> commands, ObjectID objectID)
     {
       return commands
           .Select (UnwrapCommand)
           .OfType<RelationEndPointModificationCommand>()
-          .SingleOrDefault (cmd => object.Equals (cmd.DomainObject.ID, objectID));
+          .SingleOrDefault (cmd => cmd.DomainObject.ID == objectID);
     }
 
     private IDataManagementCommand UnwrapCommand (IDataManagementCommand c)

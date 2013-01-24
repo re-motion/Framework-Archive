@@ -35,7 +35,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Factories
 
     public DataContainer CreateCustomer1DataContainer ()
     {
-      IObjectID<DomainObject> id = _domainObjectIDs.Customer1;
+      ObjectID id = _domainObjectIDs.Customer1;
       ClassDefinition classDefinition = id.ClassDefinition;
       Dictionary<PropertyDefinition, object> persistentPropertyValues = new Dictionary<PropertyDefinition, object> ();
 
@@ -52,7 +52,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Factories
 
     public DataContainer CreateClassWithAllDataTypes1DataContainer ()
     {
-      IObjectID<DomainObject> id = ObjectID.Create("ClassWithAllDataTypes", new Guid ("{3F647D79-0CAF-4a53-BAA7-A56831F8CE2D}"));
+      ObjectID id = ObjectID.Create("ClassWithAllDataTypes", new Guid ("{3F647D79-0CAF-4a53-BAA7-A56831F8CE2D}"));
 
       ClassDefinition classDefinition = id.ClassDefinition;
       Dictionary<PropertyDefinition, object> persistentPropertyValues = new Dictionary<PropertyDefinition, object> ();
@@ -113,7 +113,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Factories
 
     public DataContainer CreatePartner1DataContainer ()
     {
-      IObjectID<DomainObject> id = _domainObjectIDs.Partner1;
+      ObjectID id = _domainObjectIDs.Partner1;
 
       ClassDefinition classDefinition = id.ClassDefinition;
       Dictionary<PropertyDefinition, object> persistentPropertyValues = new Dictionary<PropertyDefinition, object> ();
@@ -130,7 +130,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Factories
 
     public DataContainer CreateDistributor2DataContainer ()
     {
-      IObjectID<DomainObject> id = _domainObjectIDs.Distributor2;
+      ObjectID id = _domainObjectIDs.Distributor2;
 
       ClassDefinition classDefinition = id.ClassDefinition;
       Dictionary<PropertyDefinition, object> persistentPropertyValues = new Dictionary<PropertyDefinition, object> ();
@@ -148,7 +148,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Factories
 
     public DataContainer CreateOrder1DataContainer ()
     {
-      IObjectID<DomainObject> id = _domainObjectIDs.Order1;
+      ObjectID id = _domainObjectIDs.Order1;
 
       ClassDefinition classDefinition = id.ClassDefinition;
       Dictionary<PropertyDefinition, object> persistentPropertyValues = new Dictionary<PropertyDefinition, object> ();
@@ -166,7 +166,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Factories
 
     public DataContainer CreateOrder2DataContainer ()
     {
-      IObjectID<DomainObject> id = _domainObjectIDs.Order2;
+      ObjectID id = _domainObjectIDs.Order2;
 
       ClassDefinition classDefinition = id.ClassDefinition;
       Dictionary<PropertyDefinition, object> persistentPropertyValues = new Dictionary<PropertyDefinition, object> ();
@@ -183,7 +183,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Factories
 
     public DataContainer CreateOrderWithoutOrderItemDataContainer ()
     {
-      IObjectID<DomainObject> id = _domainObjectIDs.OrderWithoutOrderItem;
+      ObjectID id = _domainObjectIDs.OrderWithoutOrderItem;
 
       ClassDefinition classDefinition = id.ClassDefinition;
       Dictionary<PropertyDefinition, object> persistentPropertyValues = new Dictionary<PropertyDefinition, object> ();
@@ -200,7 +200,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Factories
 
     public DataContainer CreateOrderTicket1DataContainer ()
     {
-      IObjectID<DomainObject> id = _domainObjectIDs.OrderTicket1;
+      ObjectID id = _domainObjectIDs.OrderTicket1;
 
       ClassDefinition classDefinition = id.ClassDefinition;
       Dictionary<PropertyDefinition, object> persistentPropertyValues = new Dictionary<PropertyDefinition, object> ();
@@ -215,7 +215,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Factories
 
     public DataContainer CreateOrderTicket2DataContainer ()
     {
-      IObjectID<DomainObject> id = _domainObjectIDs.OrderTicket2;
+      ObjectID id = _domainObjectIDs.OrderTicket2;
 
       ClassDefinition classDefinition = id.ClassDefinition;
       Dictionary<PropertyDefinition, object> persistentPropertyValues = new Dictionary<PropertyDefinition, object> ();
@@ -230,7 +230,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Factories
 
     public DataContainer CreateClassWithGuidKeyDataContainer ()
     {
-      IObjectID<DomainObject> id = ObjectID.Create("ClassWithGuidKey", new Guid ("{7D1F5F2E-D111-433b-A675-300B55DC4756}"));
+      ObjectID id = ObjectID.Create("ClassWithGuidKey", new Guid ("{7D1F5F2E-D111-433b-A675-300B55DC4756}"));
 
       Dictionary<PropertyDefinition, object> persistentPropertyValues = new Dictionary<PropertyDefinition, object> ();
 
@@ -239,7 +239,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Factories
       return dataContainer;
     }
 
-    private DataContainer CreateExistingDataContainer (IObjectID<DomainObject> id, Dictionary<PropertyDefinition, object> persistentPropertyValues)
+    private DataContainer CreateExistingDataContainer (ObjectID id, Dictionary<PropertyDefinition, object> persistentPropertyValues)
     {
       return DataContainer.CreateForExisting (id, null, delegate (PropertyDefinition propertyDefinition)
       {

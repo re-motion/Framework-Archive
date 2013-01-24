@@ -78,7 +78,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.ObjectPersis
 
       Assert.That (() => _decorator.OnBeforeObjectRegistration (loadedObjectIDs), Throws.Exception.SameAs (exception));
 
-      _eventSinkWithMock.AssertWasNotCalled (mock => mock.RaiseObjectsLoadingEvent ( Arg<ReadOnlyCollection<IObjectID<DomainObject>>>.Is.Anything));
+      _eventSinkWithMock.AssertWasNotCalled (mock => mock.RaiseObjectsLoadingEvent ( Arg<ReadOnlyCollection<ObjectID>>.Is.Anything));
       _hierarchyManagerMock.VerifyAllExpectations ();
     }
 

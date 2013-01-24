@@ -60,9 +60,9 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
 
     private TestableClientTransaction _transactionWithMocks;
 
-    private IObjectID<DomainObject> _objectID1;
+    private ObjectID _objectID1;
     private DomainObject _fakeDomainObject1;
-    private IObjectID<DomainObject> _objectID2;
+    private ObjectID _objectID2;
     private DomainObject _fakeDomainObject2;
 
     public override void SetUp ()
@@ -685,7 +685,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
 
       listenerMock.AssertWasNotCalled (mock => mock.ObjectsLoading (
           Arg<ClientTransaction>.Is.Anything, 
-          Arg<ReadOnlyCollection<IObjectID<DomainObject>>>.Is.Anything));
+          Arg<ReadOnlyCollection<ObjectID>>.Is.Anything));
     }
 
     [Test]

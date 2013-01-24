@@ -28,7 +28,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.ObjectLifeti
   [TestFixture]
   public class ObjectInitializationContextTest : StandardMappingTest
   {
-    private IObjectID<DomainObject> _objectID;
+    private ObjectID _objectID;
     private IEnlistedDomainObjectManager _enlistedDomainObjectManagerMock;
     private IDataManager _dataManagerMock;
     private ClientTransaction _bindingClientTransaction;

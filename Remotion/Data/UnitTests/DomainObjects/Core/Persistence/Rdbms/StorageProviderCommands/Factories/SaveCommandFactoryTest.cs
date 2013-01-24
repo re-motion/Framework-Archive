@@ -312,7 +312,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.StoragePr
       Assert.That (tuples.Count, Is.EqualTo (0));
     }
 
-    private void StubTableDefinitionFinder (IObjectID<DomainObject> objectID, TableDefinition tableDefinition)
+    private void StubTableDefinitionFinder (ObjectID objectID, TableDefinition tableDefinition)
     {
       _tableDefinitionFinderStrictMock.Expect (mock => mock.GetTableDefinition (objectID)).Return (tableDefinition);
     }
@@ -369,7 +369,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.StoragePr
 
     private object GetObjectIDValue (DataContainer dataContainer, Type declaringType, string shortPropertyName)
     {
-      var objectID = (IObjectID<DomainObject>) GetPropertyValue (dataContainer, declaringType, shortPropertyName);
+      var objectID = (ObjectID) GetPropertyValue (dataContainer, declaringType, shortPropertyName);
       return objectID != null ? objectID.Value : null;
     }
 

@@ -30,7 +30,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.ObjectBinding.TestDomain
       return NewObject<SecurableBindableMixinDomainObjectWithOverriddenDisplayName> (ParamList.Create (objectSecurityStrategy));
     }
 
-    public static new SecurableBindableMixinDomainObjectWithOverriddenDisplayName GetObject (IObjectID<DomainObject> id)
+    public static new SecurableBindableMixinDomainObjectWithOverriddenDisplayName GetObject (ObjectID id)
     {
       return GetObject<SecurableBindableMixinDomainObjectWithOverriddenDisplayName> (id);
     }

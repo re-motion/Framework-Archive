@@ -181,7 +181,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     /// relation end point (i.e. the other side of the relation holds the foreign key).</exception>
     /// <exception cref="ClientTransactionsDifferException">The <see cref="DomainObject"/> cannot be used in the current <see cref="DomainObjects.ClientTransaction"/>.</exception>
     /// <exception cref="ObjectInvalidException">The object is invalid in the associated <see cref="ClientTransaction"/>.</exception>
-    public IObjectID<DomainObject> GetRelatedObjectID ()
+    public ObjectID GetRelatedObjectID ()
     {
       CheckTransactionalStatus (ClientTransaction);
 
@@ -191,7 +191,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       if (PropertyData.RelationEndPointDefinition.IsVirtual)
         throw new InvalidOperationException ("ObjectIDs only exist on the real side of a relation, not on the virtual side.");
 
-      return (IObjectID<DomainObject>) ValuePropertyAccessorStrategy.Instance.GetValueWithoutTypeCheck (this, ClientTransaction);
+      return (ObjectID) ValuePropertyAccessorStrategy.Instance.GetValueWithoutTypeCheck (this, ClientTransaction);
     }
 
     /// <summary>
@@ -235,7 +235,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     /// relation end point (i.e. the other side of the relation holds the foreign key).</exception>
     /// <exception cref="ClientTransactionsDifferException">The <see cref="DomainObject"/> cannot be used in the current <see cref="DomainObjects.ClientTransaction"/>.</exception>
     /// <exception cref="ObjectInvalidException">The object is invalid in the associated <see cref="ClientTransaction"/>.</exception>
-    public IObjectID<DomainObject> GetOriginalRelatedObjectID ()
+    public ObjectID GetOriginalRelatedObjectID ()
     {
       CheckTransactionalStatus (ClientTransaction);
 
@@ -245,7 +245,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       if (PropertyData.RelationEndPointDefinition.IsVirtual)
         throw new InvalidOperationException ("ObjectIDs only exist on the real side of a relation, not on the virtual side.");
 
-      return (IObjectID<DomainObject>) ValuePropertyAccessorStrategy.Instance.GetOriginalValueWithoutTypeCheck (this, ClientTransaction);
+      return (ObjectID) ValuePropertyAccessorStrategy.Instance.GetOriginalValueWithoutTypeCheck (this, ClientTransaction);
     }
 
     /// <summary>

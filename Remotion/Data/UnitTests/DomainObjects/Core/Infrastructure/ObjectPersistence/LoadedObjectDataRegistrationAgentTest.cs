@@ -63,7 +63,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.ObjectPersis
 
       _agent.RegisterIfRequired (alreadyExistingLoadedObject, true);
 
-      _registrationListenerMock.AssertWasNotCalled (mock => mock.OnBeforeObjectRegistration (Arg<ReadOnlyCollection<IObjectID<DomainObject>>>.Is.Anything));
+      _registrationListenerMock.AssertWasNotCalled (mock => mock.OnBeforeObjectRegistration (Arg<ReadOnlyCollection<ObjectID>>.Is.Anything));
       _dataManagerMock.AssertWasNotCalled (mock => mock.RegisterDataContainer (Arg<DataContainer>.Is.Anything));
     }
 
@@ -77,13 +77,13 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.ObjectPersis
       var loadedObjectIDs = new[] { dataContainer.ID };
       using (_mockRepository.Ordered ())
       {
-        _registrationListenerMock.Expect (mock => mock.OnBeforeObjectRegistration (Arg<ReadOnlyCollection<IObjectID<DomainObject>>>.List.Equal (loadedObjectIDs)));
+        _registrationListenerMock.Expect (mock => mock.OnBeforeObjectRegistration (Arg<ReadOnlyCollection<ObjectID>>.List.Equal (loadedObjectIDs)));
         _dataManagerMock
             .Expect (mock => mock.RegisterDataContainer (dataContainer))
             .WhenCalled (mi => CheckHasEnlistedDomainObject (dataContainer));
         _registrationListenerMock
             .Expect (mock => mock.OnAfterObjectRegistration (
-                Arg<ReadOnlyCollection<IObjectID<DomainObject>>>.List.Equal (loadedObjectIDs),
+                Arg<ReadOnlyCollection<ObjectID>>.List.Equal (loadedObjectIDs),
                 // Lazy matching because DataContainers don't have DomainObjects from the start
                 Arg<ReadOnlyCollection<DomainObject>>.Matches (list => list.SequenceEqual (new[] { dataContainer.DomainObject }))));
       }
@@ -104,7 +104,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.ObjectPersis
 
       _agent.RegisterIfRequired (nullLoadedObject, true);
 
-      _registrationListenerMock.AssertWasNotCalled (mock => mock.OnBeforeObjectRegistration (Arg<ReadOnlyCollection<IObjectID<DomainObject>>>.Is.Anything));
+      _registrationListenerMock.AssertWasNotCalled (mock => mock.OnBeforeObjectRegistration (Arg<ReadOnlyCollection<ObjectID>>.Is.Anything));
       _dataManagerMock.AssertWasNotCalled (mock => mock.RegisterDataContainer (Arg<DataContainer>.Is.Anything));
     }
 
@@ -117,7 +117,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.ObjectPersis
 
       _agent.RegisterIfRequired (alreadyExistingLoadedObject, true);
 
-      _registrationListenerMock.AssertWasNotCalled (mock => mock.OnBeforeObjectRegistration (Arg<ReadOnlyCollection<IObjectID<DomainObject>>>.Is.Anything));
+      _registrationListenerMock.AssertWasNotCalled (mock => mock.OnBeforeObjectRegistration (Arg<ReadOnlyCollection<ObjectID>>.Is.Anything));
       _dataManagerMock.AssertWasNotCalled (mock => mock.RegisterDataContainer (Arg<DataContainer>.Is.Anything));
     }
 
@@ -127,12 +127,12 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.ObjectPersis
       var notFoundLoadedObject = GetNotFoundLoadedObject ();
 
       _registrationListenerMock
-            .Expect (mock => mock.OnObjectsNotFound (Arg<ReadOnlyCollection<IObjectID<DomainObject>>>.List.Equal (new[] { notFoundLoadedObject.ObjectID })));
+            .Expect (mock => mock.OnObjectsNotFound (Arg<ReadOnlyCollection<ObjectID>>.List.Equal (new[] { notFoundLoadedObject.ObjectID })));
       _mockRepository.ReplayAll ();
 
       Assert.That (() => _agent.RegisterIfRequired (notFoundLoadedObject, false), Throws.Nothing);
 
-      _registrationListenerMock.AssertWasNotCalled (mock => mock.OnBeforeObjectRegistration (Arg<ReadOnlyCollection<IObjectID<DomainObject>>>.Is.Anything));
+      _registrationListenerMock.AssertWasNotCalled (mock => mock.OnBeforeObjectRegistration (Arg<ReadOnlyCollection<ObjectID>>.Is.Anything));
       _registrationListenerMock.VerifyAllExpectations();
 
       _dataManagerMock.AssertWasNotCalled (mock => mock.RegisterDataContainer (Arg<DataContainer>.Is.Anything));
@@ -144,7 +144,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.ObjectPersis
       var notFoundLoadedObject = GetNotFoundLoadedObject ();
 
       _registrationListenerMock
-          .Expect (mock => mock.OnObjectsNotFound (Arg<ReadOnlyCollection<IObjectID<DomainObject>>>.List.Equal (new[] { notFoundLoadedObject.ObjectID })));
+          .Expect (mock => mock.OnObjectsNotFound (Arg<ReadOnlyCollection<ObjectID>>.List.Equal (new[] { notFoundLoadedObject.ObjectID })));
       _mockRepository.ReplayAll ();
 
       Assert.That (
@@ -152,7 +152,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.ObjectPersis
           Throws.TypeOf<ObjectsNotFoundException> ().With.Message.EqualTo (
               string.Format ("Object(s) could not be found: '{0}'.", notFoundLoadedObject.ObjectID)));
 
-      _registrationListenerMock.AssertWasNotCalled (mock => mock.OnBeforeObjectRegistration (Arg<ReadOnlyCollection<IObjectID<DomainObject>>>.Is.Anything));
+      _registrationListenerMock.AssertWasNotCalled (mock => mock.OnBeforeObjectRegistration (Arg<ReadOnlyCollection<ObjectID>>.Is.Anything));
       _registrationListenerMock.VerifyAllExpectations();
 
       _dataManagerMock.AssertWasNotCalled (mock => mock.RegisterDataContainer (Arg<DataContainer>.Is.Anything));
@@ -182,8 +182,8 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.ObjectPersis
         _registrationListenerMock
             .Expect (
                 mock => mock.OnObjectsNotFound (
-                    Arg<ReadOnlyCollection<IObjectID<DomainObject>>>.List.Equal (new[] { notFoundLoadedObject1.ObjectID, notFoundLoadedObject2.ObjectID })));
-        _registrationListenerMock.Expect (mock => mock.OnBeforeObjectRegistration (Arg<ReadOnlyCollection<IObjectID<DomainObject>>>.List.Equal (loadedObjectIDs)));
+                    Arg<ReadOnlyCollection<ObjectID>>.List.Equal (new[] { notFoundLoadedObject1.ObjectID, notFoundLoadedObject2.ObjectID })));
+        _registrationListenerMock.Expect (mock => mock.OnBeforeObjectRegistration (Arg<ReadOnlyCollection<ObjectID>>.List.Equal (loadedObjectIDs)));
         _dataManagerMock
             .Expect (mock => mock.RegisterDataContainer (registerableDataContainer1))
             .WhenCalled (mi => CheckHasEnlistedDomainObject (registerableDataContainer1));
@@ -192,7 +192,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.ObjectPersis
             .WhenCalled (mi => CheckHasEnlistedDomainObject (registerableDataContainer2));
         _registrationListenerMock
             .Expect (mock => mock.OnAfterObjectRegistration (
-                Arg<ReadOnlyCollection<IObjectID<DomainObject>>>.List.Equal (loadedObjectIDs), 
+                Arg<ReadOnlyCollection<ObjectID>>.List.Equal (loadedObjectIDs), 
                 // Lazy matching because DataContainers don't have DomainObjects from the start
                 Arg<ReadOnlyCollection<DomainObject>>.Matches (list => list.SequenceEqual (
                     new[] { registerableDataContainer1.DomainObject, registerableDataContainer2.DomainObject }))));
@@ -236,7 +236,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.ObjectPersis
       _registrationListenerMock
           .Expect (
               mock => mock.OnObjectsNotFound (
-                  Arg<ReadOnlyCollection<IObjectID<DomainObject>>>.List.Equal (new[] { notFoundLoadedObject1.ObjectID, notFoundLoadedObject2.ObjectID })));
+                  Arg<ReadOnlyCollection<ObjectID>>.List.Equal (new[] { notFoundLoadedObject1.ObjectID, notFoundLoadedObject2.ObjectID })));
       _mockRepository.ReplayAll ();
 
       var allObjects =
@@ -255,7 +255,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.ObjectPersis
           Throws.TypeOf<ObjectsNotFoundException>().With.Message.EqualTo (
               string.Format ("Object(s) could not be found: '{0}', '{1}'.", notFoundLoadedObject1.ObjectID, notFoundLoadedObject2.ObjectID)));
 
-      _registrationListenerMock.AssertWasNotCalled (mock => mock.OnBeforeObjectRegistration (Arg<ReadOnlyCollection<IObjectID<DomainObject>>>.Is.Anything));
+      _registrationListenerMock.AssertWasNotCalled (mock => mock.OnBeforeObjectRegistration (Arg<ReadOnlyCollection<ObjectID>>.Is.Anything));
       _registrationListenerMock.VerifyAllExpectations ();
 
       _dataManagerMock.AssertWasNotCalled (mock => mock.RegisterDataContainer (Arg<DataContainer>.Is.Anything));
@@ -268,7 +268,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.ObjectPersis
 
       _agent.RegisterIfRequired (new ILoadedObjectData[0], true);
 
-      _registrationListenerMock.AssertWasNotCalled (mock => mock.OnBeforeObjectRegistration (Arg<ReadOnlyCollection<IObjectID<DomainObject>>>.Is.Anything));
+      _registrationListenerMock.AssertWasNotCalled (mock => mock.OnBeforeObjectRegistration (Arg<ReadOnlyCollection<ObjectID>>.Is.Anything));
       _dataManagerMock.AssertWasNotCalled (mock => mock.RegisterDataContainer (Arg<DataContainer>.Is.Anything));
     }
 
@@ -289,14 +289,14 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.ObjectPersis
 
       using (_mockRepository.Ordered ())
       {
-        _registrationListenerMock.Expect (mock => mock.OnBeforeObjectRegistration (Arg<ReadOnlyCollection<IObjectID<DomainObject>>>.List.Equal (loadedObjectIDs)));
+        _registrationListenerMock.Expect (mock => mock.OnBeforeObjectRegistration (Arg<ReadOnlyCollection<ObjectID>>.List.Equal (loadedObjectIDs)));
         _dataManagerMock.Expect (mock => mock.RegisterDataContainer (registerableDataContainer1));
         _dataManagerMock
             .Expect (mock => mock.RegisterDataContainer (registerableDataContainer2))
             .Throw (exception);
         _registrationListenerMock
             .Expect (mock => mock.OnAfterObjectRegistration (
-                Arg<ReadOnlyCollection<IObjectID<DomainObject>>>.List.Equal (loadedObjectIDs),
+                Arg<ReadOnlyCollection<ObjectID>>.List.Equal (loadedObjectIDs),
                 // Lazy matching because DataContainers don't have DomainObjects from the start
                 Arg<ReadOnlyCollection<DomainObject>>.Matches (list => list.SequenceEqual (new[] { registerableDataContainer1.DomainObject }))));
       }
@@ -321,13 +321,13 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.ObjectPersis
 
       using (_mockRepository.Ordered())
       {
-        _registrationListenerMock.Expect (mock => mock.OnBeforeObjectRegistration (Arg<ReadOnlyCollection<IObjectID<DomainObject>>>.List.Equal (loadedObjectIDs)));
+        _registrationListenerMock.Expect (mock => mock.OnBeforeObjectRegistration (Arg<ReadOnlyCollection<ObjectID>>.List.Equal (loadedObjectIDs)));
         _dataManagerMock
             .Expect (mock => mock.RegisterDataContainer (registerableDataContainer1))
             .Throw (exception);
         _registrationListenerMock
             .Expect (mock => mock.OnAfterObjectRegistration (
-                Arg<ReadOnlyCollection<IObjectID<DomainObject>>>.List.Equal (loadedObjectIDs), 
+                Arg<ReadOnlyCollection<ObjectID>>.List.Equal (loadedObjectIDs), 
                 Arg<ReadOnlyCollection<DomainObject>>.List.Equal (new DomainObject[0])));
       }
       _mockRepository.ReplayAll();

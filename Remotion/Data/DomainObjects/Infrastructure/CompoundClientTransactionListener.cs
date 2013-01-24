@@ -91,7 +91,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
         listener.NewObjectCreating (clientTransaction, type);
     }
 
-    public virtual void ObjectsLoading (ClientTransaction clientTransaction, ReadOnlyCollection<IObjectID<DomainObject>> objectIDs)
+    public virtual void ObjectsLoading (ClientTransaction clientTransaction, ReadOnlyCollection<ObjectID> objectIDs)
     {
       foreach (var listener in _listeners)
         listener.ObjectsLoading (clientTransaction, objectIDs);
@@ -109,7 +109,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
         listener.ObjectsLoaded (clientTransaction, domainObjects);
     }
 
-    public void ObjectsNotFound (ClientTransaction clientTransaction, ReadOnlyCollection<IObjectID<DomainObject>> objectIDs)
+    public void ObjectsNotFound (ClientTransaction clientTransaction, ReadOnlyCollection<ObjectID> objectIDs)
     {
       foreach (var listener in _listeners)
         listener.ObjectsNotFound (clientTransaction, objectIDs);

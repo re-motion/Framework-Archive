@@ -79,7 +79,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure
       return Group.FindByTenantID (CurrentFunction.TenantID).ToArray();
     }
 
-    protected override FormFunction CreateEditFunction (ITransactionMode transactionMode, IObjectID<DomainObject> objectID)
+    protected override FormFunction CreateEditFunction (ITransactionMode transactionMode, ObjectID objectID)
     {
       return new EditGroupFormFunction (transactionMode, objectID);
     }

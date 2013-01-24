@@ -58,7 +58,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation
   /// </description></item>
   /// <item><description>
   /// an object's data could not be found in the data source (e.g., when calling 
-  /// <see cref="LifetimeService.GetObject(Remotion.Data.DomainObjects.ClientTransaction,Remotion.Data.DomainObjects.IObjectID{Remotion.Data.DomainObjects.DomainObject},bool)"/>).
+  /// <see cref="LifetimeService.GetObject(Remotion.Data.DomainObjects.ClientTransaction,Remotion.Data.DomainObjects.ObjectID,bool)"/>).
   /// </description></item>
   /// </list>
   /// </para>
@@ -68,9 +68,9 @@ namespace Remotion.Data.DomainObjects.DomainImplementation
     private class MarkNotInvalidCommand : IDataManagementCommand
     {
       private readonly IDataManager _dataManager;
-      private readonly IObjectID<DomainObject> _objectID;
+      private readonly ObjectID _objectID;
 
-      public MarkNotInvalidCommand (IDataManager dataManager, IObjectID<DomainObject> objectID)
+      public MarkNotInvalidCommand (IDataManager dataManager, ObjectID objectID)
       {
         ArgumentUtility.CheckNotNull ("dataManager", dataManager);
         ArgumentUtility.CheckNotNull ("objectID", objectID);
@@ -111,10 +111,10 @@ namespace Remotion.Data.DomainObjects.DomainImplementation
     /// </summary>
     /// <param name="clientTransaction">A <see cref="ClientTransaction"/> identifying the hierarchy in which to resurrect the object. The object
     /// is resurrected in all transactions of the hierarchy.</param>
-    /// <param name="objectID">The <see cref="IObjectID{DomainObject}"/> of the object to resurrect.</param>
+    /// <param name="objectID">The <see cref="ObjectID"/> of the object to resurrect.</param>
     /// <exception cref="InvalidOperationException">The <see cref="DomainObject"/> identified by <paramref name="objectID"/> is not invalid in at 
     /// least one <see cref="ClientTransaction"/> of the transaction hierarchy identified by <paramref name="clientTransaction"/>.</exception>
-    public static void ResurrectInvalidObject (ClientTransaction clientTransaction, IObjectID<DomainObject> objectID)
+    public static void ResurrectInvalidObject (ClientTransaction clientTransaction, ObjectID objectID)
     {
       ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
       ArgumentUtility.CheckNotNull ("objectID", objectID);
@@ -129,12 +129,12 @@ namespace Remotion.Data.DomainObjects.DomainImplementation
     /// </summary>
     /// <param name="clientTransaction">A <see cref="ClientTransaction"/> identifying the hierarchy in which to resurrect the object. The object
     /// is resurrected in all transactions of the hierarchy.</param>
-    /// <param name="objectID">The <see cref="IObjectID{DomainObject}"/> of the object to resurrect.</param>
+    /// <param name="objectID">The <see cref="ObjectID"/> of the object to resurrect.</param>
     /// <returns><see langword="true" /> if the resurrection succeeded, <see langword="false" /> otherwise. Resurrection does not succeed if
     /// the <see cref="DomainObject"/> identified by <paramref name="objectID"/> is not invalid in at 
     /// least one <see cref="ClientTransaction"/> of the transaction hierarchy identified by <paramref name="clientTransaction"/>.
     /// </returns>
-    public static bool TryResurrectInvalidObject (ClientTransaction clientTransaction, IObjectID<DomainObject> objectID)
+    public static bool TryResurrectInvalidObject (ClientTransaction clientTransaction, ObjectID objectID)
     {
       ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
       ArgumentUtility.CheckNotNull ("objectID", objectID);
@@ -143,7 +143,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation
       return executor.TryExecuteCommandForTransactionHierarchy (clientTransaction);
     }
 
-    private static IDataManagementCommand CreateMarkNotInvalidCommand (ClientTransaction tx, IObjectID<DomainObject> objectID)
+    private static IDataManagementCommand CreateMarkNotInvalidCommand (ClientTransaction tx, ObjectID objectID)
     {
       if (!tx.IsInvalid (objectID))
       {

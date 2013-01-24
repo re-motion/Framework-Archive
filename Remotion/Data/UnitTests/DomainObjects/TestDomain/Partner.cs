@@ -28,7 +28,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.TestDomain
       return NewObject<Partner>();
     }
 
-    public new static Partner GetObject (IObjectID<DomainObject> id)
+    public new static Partner GetObject (ObjectID id)
     {
       return GetObject<Partner> (id);
     }

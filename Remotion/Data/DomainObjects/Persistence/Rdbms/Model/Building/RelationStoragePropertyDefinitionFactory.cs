@@ -106,7 +106,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
     {
       var storageTypeInfo = _storageTypeInformationProvider.GetStorageTypeForSerializedObjectID (true);
       var columnDefinition = new ColumnDefinition (relationColumnName, storageTypeInfo, false);
-      return new SerializedObjectIDStoragePropertyDefinition (new SimpleStoragePropertyDefinition (typeof (IObjectID<DomainObject>), columnDefinition));
+      return new SerializedObjectIDStoragePropertyDefinition (new SimpleStoragePropertyDefinition (typeof (ObjectID), columnDefinition));
     }
 
     private IRdbmsStoragePropertyDefinition CreateSameProviderRelationStoragePropertyDefinition (

@@ -25,15 +25,15 @@ using Remotion.Utilities;
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands
 {
   /// <summary>
-  /// Executes the command created by the given <see cref="IDbCommandBuilder"/> and parses the result into a sequence of <see cref="IObjectID{DomainObject}"/>
+  /// Executes the command created by the given <see cref="IDbCommandBuilder"/> and parses the result into a sequence of <see cref="ObjectID"/>
   /// instances.
   /// </summary>
-  public class MultiObjectIDLoadCommand : IStorageProviderCommand<IEnumerable<IObjectID<DomainObject>>, IRdbmsProviderCommandExecutionContext>
+  public class MultiObjectIDLoadCommand : IStorageProviderCommand<IEnumerable<ObjectID>, IRdbmsProviderCommandExecutionContext>
   {
     private readonly IEnumerable<IDbCommandBuilder> _dbCommandBuilders;
-    private readonly IObjectReader<IObjectID<DomainObject>> _objectIDReader;
+    private readonly IObjectReader<ObjectID> _objectIDReader;
 
-    public MultiObjectIDLoadCommand (IEnumerable<IDbCommandBuilder> dbCommandBuilders, IObjectReader<IObjectID<DomainObject>> objectIDReader)
+    public MultiObjectIDLoadCommand (IEnumerable<IDbCommandBuilder> dbCommandBuilders, IObjectReader<ObjectID> objectIDReader)
     {
       ArgumentUtility.CheckNotNull ("dbCommandBuilders", dbCommandBuilders);
       ArgumentUtility.CheckNotNull ("objectIDReader", objectIDReader);
@@ -47,18 +47,18 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands
       get { return _dbCommandBuilders; }
     }
 
-    public IObjectReader<IObjectID<DomainObject>> ObjectIDReader
+    public IObjectReader<ObjectID> ObjectIDReader
     {
       get { return _objectIDReader; }
     }
 
-    public IEnumerable<IObjectID<DomainObject>> Execute (IRdbmsProviderCommandExecutionContext executionContext)
+    public IEnumerable<ObjectID> Execute (IRdbmsProviderCommandExecutionContext executionContext)
     {
       ArgumentUtility.CheckNotNull ("executionContext", executionContext);
       return _dbCommandBuilders.SelectMany (b => LoadObjectIDsFromCommandBuilder (b, executionContext));
     }
 
-    private IEnumerable<IObjectID<DomainObject>> LoadObjectIDsFromCommandBuilder (
+    private IEnumerable<ObjectID> LoadObjectIDsFromCommandBuilder (
         IDbCommandBuilder commandBuilder, IRdbmsProviderCommandExecutionContext executionContext)
     {
       ArgumentUtility.CheckNotNull ("commandBuilder", commandBuilder);

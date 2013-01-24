@@ -107,7 +107,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.ObjectPersis
 
       var loadedObject = _dataProvider.GetLoadedObject (DomainObjectIDs.Order1);
 
-      _loadedDataContainerProviderMock.AssertWasNotCalled (mock => mock.GetDataContainerWithoutLoading (Arg<IObjectID<DomainObject>>.Is.Anything));
+      _loadedDataContainerProviderMock.AssertWasNotCalled (mock => mock.GetDataContainerWithoutLoading (Arg<ObjectID>.Is.Anything));
       _invalidDomainObjectManagerMock.VerifyAllExpectations();
 
       Assert.That (

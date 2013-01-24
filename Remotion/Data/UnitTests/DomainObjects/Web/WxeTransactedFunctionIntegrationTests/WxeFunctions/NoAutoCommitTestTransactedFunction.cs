@@ -33,7 +33,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Web.WxeTransactedFunctionIntegra
 
     // construction and disposing
 
-    public NoAutoCommitTestTransactedFunction (ITransactionMode transactionMode, IObjectID<DomainObject> objectWithAllDataTypes)
+    public NoAutoCommitTestTransactedFunction (ITransactionMode transactionMode, ObjectID objectWithAllDataTypes)
         : base (transactionMode, objectWithAllDataTypes)
     {
       Assertion.IsFalse (TransactionMode.AutoCommit);
@@ -42,9 +42,9 @@ namespace Remotion.Data.UnitTests.DomainObjects.Web.WxeTransactedFunctionIntegra
     // methods and properties
 
     [WxeParameter (1, true, WxeParameterDirection.In)]
-    public IObjectID<DomainObject> ObjectWithAllDataTypes
+    public ObjectID ObjectWithAllDataTypes
     {
-      get { return (IObjectID<DomainObject>) Variables["ObjectWithAllDataTypes"]; }
+      get { return (ObjectID) Variables["ObjectWithAllDataTypes"]; }
       set { Variables["ObjectWithAllDataTypes"] = value; }
     }
 

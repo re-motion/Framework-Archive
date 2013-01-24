@@ -21,6 +21,6 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectLifetime
   /// </summary>
   public interface IObjectInitializationContextProvider
   {
-    IObjectInitializationContext CreateContext (IObjectID<DomainObject> objectID, ClientTransaction bindingTransaction);
+    IObjectInitializationContext CreateContext (ObjectID objectID, ClientTransaction bindingTransaction);
   }
 }

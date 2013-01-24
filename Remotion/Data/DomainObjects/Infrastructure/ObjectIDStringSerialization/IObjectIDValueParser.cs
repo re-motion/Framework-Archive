@@ -17,7 +17,7 @@
 namespace Remotion.Data.DomainObjects.Infrastructure.ObjectIDStringSerialization
 {
   /// <summary>
-  /// Provides a common interface to parsing values of an <see cref="IObjectID{DomainObject}"/> from a <see cref="string"/>. This is used by <see cref="ObjectIDStringSerializer"/>.
+  /// Provides a common interface to parsing values of an <see cref="ObjectID"/> from a <see cref="string"/>. This is used by <see cref="ObjectIDStringSerializer"/>.
   /// </summary>
   public interface IObjectIDValueParser
   {

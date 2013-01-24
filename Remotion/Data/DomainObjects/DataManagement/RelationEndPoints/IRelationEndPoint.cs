@@ -28,7 +28,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
     RelationEndPointID ID { get; }
     ClientTransaction ClientTransaction { get; }
 
-    IObjectID<DomainObject> ObjectID { get; }
+    ObjectID ObjectID { get; }
     IRelationEndPointDefinition Definition { get; }
     RelationDefinition RelationDefinition { get; }
 

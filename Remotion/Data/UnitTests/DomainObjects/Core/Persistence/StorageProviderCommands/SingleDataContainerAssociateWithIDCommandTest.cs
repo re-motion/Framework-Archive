@@ -27,7 +27,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.StorageProvider
   [TestFixture]
   public class SingleDataContainerAssociateWithIDCommandTest : StandardMappingTest
   {
-    private IObjectID<DomainObject> _expectedID;
+    private ObjectID _expectedID;
     private IStorageProviderCommand<DataContainer, object> _innerCommandMock;
 
     private SingleDataContainerAssociateWithIDCommand<object> _associateCommand;

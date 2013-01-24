@@ -28,17 +28,17 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.Serializable
   [Serializable]
   public class SerializablePersistenceStrategyFake : IPersistenceStrategy
   {
-    public IObjectID<DomainObject> CreateNewObjectID (ClassDefinition classDefinition)
+    public ObjectID CreateNewObjectID (ClassDefinition classDefinition)
     {
       throw new NotImplementedException();
     }
 
-    public ILoadedObjectData LoadObjectData (IObjectID<DomainObject> id)
+    public ILoadedObjectData LoadObjectData (ObjectID id)
     {
       throw new NotImplementedException();
     }
 
-    public IEnumerable<ILoadedObjectData> LoadObjectData (IEnumerable<IObjectID<DomainObject>> objectIDs)
+    public IEnumerable<ILoadedObjectData> LoadObjectData (IEnumerable<ObjectID> objectIDs)
     {
       throw new NotImplementedException();
     }

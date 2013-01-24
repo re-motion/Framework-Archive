@@ -92,7 +92,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
       return true;
     }
 
-    public override bool Remove (IObjectID<DomainObject> objectID)
+    public override bool Remove (ObjectID objectID)
     {
       ArgumentUtility.CheckNotNull ("objectID", objectID);
 

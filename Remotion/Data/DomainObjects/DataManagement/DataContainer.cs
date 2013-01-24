@@ -47,12 +47,12 @@ namespace Remotion.Data.DomainObjects.DataManagement
     /// <see cref="ClientTransaction"/> and its <see cref="DomainObject"/> must <see cref="SetDomainObject">be set</see> before it can be used.
     /// </summary>
     /// <remarks>
-    /// The new <see cref="DataContainer"/> has a <see cref="State"/> of <see cref="StateType.New"/>. All <see cref="PropertyValue"/>s for the class specified by <see cref="IObjectID{DomainObject}.ClassID"/> are created.
+    /// The new <see cref="DataContainer"/> has a <see cref="State"/> of <see cref="StateType.New"/>. All <see cref="PropertyValue"/>s for the class specified by <see cref="ObjectID.ClassID"/> are created.
     /// </remarks>
-    /// <param name="id">The <see cref="IObjectID{DomainObject}"/> of the new <see cref="DataContainer"/> to create. Must not be <see langword="null"/>.</param>
+    /// <param name="id">The <see cref="ObjectID"/> of the new <see cref="DataContainer"/> to create. Must not be <see langword="null"/>.</param>
     /// <returns>The new <see cref="DataContainer"/>.</returns>
     /// <exception cref="System.ArgumentNullException"><paramref name="id"/> is <see langword="null"/>.</exception>
-    public static DataContainer CreateNew (IObjectID<DomainObject> id)
+    public static DataContainer CreateNew (ObjectID id)
     {
       ArgumentUtility.CheckNotNull ("id", id);
 
@@ -69,15 +69,15 @@ namespace Remotion.Data.DomainObjects.DataManagement
     /// </summary>
     /// <remarks>
     /// The new <see cref="DataContainer"/> has a <see cref="State"/> of <see cref="StateType.Unchanged"/>. All <see cref="PropertyValue"/>s for the 
-    /// class specified by <see cref="IObjectID{DomainObject}.ClassID"/> are created.
+    /// class specified by <see cref="ObjectID.ClassID"/> are created.
     /// </remarks>
-    /// <param name="id">The <see cref="IObjectID{DomainObject}"/> of the new <see cref="DataContainer"/> to create. Must not be <see langword="null"/>.</param>
+    /// <param name="id">The <see cref="ObjectID"/> of the new <see cref="DataContainer"/> to create. Must not be <see langword="null"/>.</param>
     /// <param name="timestamp">The timestamp value of the existing object in the data source.</param>
     /// <param name="valueLookup">A function object returning the value of a given property for the existing object.</param>
     /// <returns>The new <see cref="DataContainer"/>.</returns>
     /// <exception cref="System.ArgumentNullException"><paramref name="id"/> is <see langword="null"/>.</exception>
     /// <exception cref="Mapping.MappingException">ClassDefinition of <paramref name="id"/> does not exist in mapping.</exception>
-    public static DataContainer CreateForExisting (IObjectID<DomainObject> id, object timestamp, Func<PropertyDefinition, object> valueLookup)
+    public static DataContainer CreateForExisting (ObjectID id, object timestamp, Func<PropertyDefinition, object> valueLookup)
     {
       ArgumentUtility.CheckNotNull ("id", id);
 
@@ -87,13 +87,13 @@ namespace Remotion.Data.DomainObjects.DataManagement
       return new DataContainer (id, DataContainerStateType.Existing, timestamp, propertyValues);
     }
 
-    private static IEnumerable<PropertyValue> GetDefaultPropertyValues (IObjectID<DomainObject> id)
+    private static IEnumerable<PropertyValue> GetDefaultPropertyValues (ObjectID id)
     {
       return from propertyDefinition in id.ClassDefinition.GetPropertyDefinitions ()
              select new PropertyValue (propertyDefinition);
     }
 
-    private readonly IObjectID<DomainObject> _id;
+    private readonly ObjectID _id;
     private readonly Dictionary<PropertyDefinition, PropertyValue> _propertyValues;
 
     private ClientTransaction _clientTransaction;
@@ -110,7 +110,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
 
     // construction and disposing
 
-    private DataContainer (IObjectID<DomainObject> id, DataContainerStateType state, object timestamp, IEnumerable<PropertyValue> propertyValues)
+    private DataContainer (ObjectID id, DataContainerStateType state, object timestamp, IEnumerable<PropertyValue> propertyValues)
     {
       ArgumentUtility.CheckNotNull ("id", id);
       ArgumentUtility.CheckNotNull ("propertyValues", propertyValues);
@@ -338,12 +338,12 @@ namespace Remotion.Data.DomainObjects.DataManagement
     }
 
     /// <summary>
-    /// Gets the <see cref="IObjectID{DomainObject}"/> of the <see cref="DataContainer"/>.
+    /// Gets the <see cref="ObjectID"/> of the <see cref="DataContainer"/>.
     /// </summary>
     /// <remarks>
     /// This property can also be used when the <see cref="DataContainer"/> has been discarded.
     /// </remarks>
-    public IObjectID<DomainObject> ID
+    public ObjectID ID
     {
       get { return _id; }
     }
@@ -542,7 +542,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
     {
       ArgumentUtility.CheckNotNull ("domainObject", domainObject);
 
-      if (domainObject.ID != null && !object.Equals (domainObject.ID, _id))
+      if (domainObject.ID != null && domainObject.ID != _id)
         throw new ArgumentException ("The given DomainObject has another ID than this DataContainer.", "domainObject");
       if (_domainObject != null && _domainObject != domainObject)
         throw new InvalidOperationException ("This DataContainer has already been associated with a DomainObject.");
@@ -562,11 +562,11 @@ namespace Remotion.Data.DomainObjects.DataManagement
     /// <summary>
     /// Creates a copy of this data container and its state.
     /// </summary>
-    /// <returns>A copy of this data container with the same <see cref="IObjectID{DomainObject}"/> and the same property values. The copy's
+    /// <returns>A copy of this data container with the same <see cref="ObjectID"/> and the same property values. The copy's
     /// <see cref="ClientTransaction"/> and <see cref="DomainObject"/> are not set, so the returned <see cref="DataContainer"/> cannot be 
     /// used until it is registered with a <see cref="DomainObjects.ClientTransaction"/>. Its <see cref="DomainObject"/> is set via the
     /// <see cref="SetDomainObject"/> method.</returns>
-    public DataContainer Clone (IObjectID<DomainObject> id)
+    public DataContainer Clone (ObjectID id)
     {
       CheckNotDiscarded ();
 
@@ -667,7 +667,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
     {
       ArgumentUtility.CheckNotNull ("info", info);
 
-      _id = info.GetValueForHandle<IObjectID<DomainObject>> ();
+      _id = info.GetValueForHandle<ObjectID> ();
       _timestamp = info.GetValue<object>();
       _isDiscarded = info.GetBoolValue ();
 
@@ -719,9 +719,9 @@ namespace Remotion.Data.DomainObjects.DataManagement
     #endregion Serialization
 
     #region Obsolete
-    [Obsolete ("This method is obsolete. Use Clone (IObjectID<DomainObject> id) instead. (1.13.39)", true)]
+    [Obsolete ("This method is obsolete. Use Clone (ObjectID id) instead. (1.13.39)", true)]
 // ReSharper disable UnusedParameter.Global
-    public static DataContainer CreateAndCopyState (IObjectID<DomainObject> id, DataContainer stateSource)
+    public static DataContainer CreateAndCopyState (ObjectID id, DataContainer stateSource)
 // ReSharper restore UnusedParameter.Global
     {
       throw new NotImplementedException ();

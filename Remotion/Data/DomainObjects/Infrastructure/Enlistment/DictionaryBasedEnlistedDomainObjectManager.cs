@@ -27,7 +27,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.Enlistment
   [Serializable]
   public class DictionaryBasedEnlistedDomainObjectManager : IEnlistedDomainObjectManager
   {
-    private readonly Dictionary<IObjectID<DomainObject>, DomainObject> _enlistedObjects = new Dictionary<IObjectID<DomainObject>, DomainObject> ();
+    private readonly Dictionary<ObjectID, DomainObject> _enlistedObjects = new Dictionary<ObjectID, DomainObject> ();
 
     public int EnlistedDomainObjectCount
     {
@@ -39,7 +39,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.Enlistment
       return _enlistedObjects.Values;
     }
 
-    public DomainObject GetEnlistedDomainObject (IObjectID<DomainObject> objectID)
+    public DomainObject GetEnlistedDomainObject (ObjectID objectID)
     {
       ArgumentUtility.CheckNotNull ("objectID", objectID);
 

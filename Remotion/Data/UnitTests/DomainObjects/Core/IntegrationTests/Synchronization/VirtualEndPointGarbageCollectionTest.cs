@@ -262,7 +262,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Synchroniz
       Assert.That (oldCustomerOrders, Is.SameAs (customer.Orders));
     }
 
-    protected IObjectID<DomainObject> CreateCompanyAndSetIndustrialSectorInOtherTransaction (IObjectID<DomainObject> industrialSectorID)
+    protected ObjectID CreateCompanyAndSetIndustrialSectorInOtherTransaction (ObjectID industrialSectorID)
     {
       return RelationInconcsistenciesTestHelper.CreateObjectAndSetRelationInOtherTransaction<Company, IndustrialSector> (industrialSectorID, (c, s) =>
       {

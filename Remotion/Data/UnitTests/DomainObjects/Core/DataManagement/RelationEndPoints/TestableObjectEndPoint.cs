@@ -84,12 +84,12 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.RelationEndP
       throw new NotImplementedException();
     }
 
-    public override IObjectID<DomainObject> OppositeObjectID
+    public override ObjectID OppositeObjectID
     {
       get { throw new NotImplementedException (); }
     }
 
-    public override IObjectID<DomainObject> OriginalOppositeObjectID
+    public override ObjectID OriginalOppositeObjectID
     {
       get { throw new NotImplementedException (); }
     }

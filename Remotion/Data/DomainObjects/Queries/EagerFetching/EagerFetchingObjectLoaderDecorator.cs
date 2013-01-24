@@ -52,13 +52,13 @@ namespace Remotion.Data.DomainObjects.Queries.EagerFetching
       get { return _eagerFetcher; }
     }
 
-    public ILoadedObjectData LoadObject (IObjectID<DomainObject> id, bool throwOnNotFound)
+    public ILoadedObjectData LoadObject (ObjectID id, bool throwOnNotFound)
     {
       ArgumentUtility.CheckNotNull ("id", id);
       return _decoratedObjectLoader.LoadObject (id, throwOnNotFound);
     }
 
-    public ICollection<ILoadedObjectData> LoadObjects (IEnumerable<IObjectID<DomainObject>> idsToBeLoaded, bool throwOnNotFound)
+    public ICollection<ILoadedObjectData> LoadObjects (IEnumerable<ObjectID> idsToBeLoaded, bool throwOnNotFound)
     {
       ArgumentUtility.CheckNotNull ("idsToBeLoaded", idsToBeLoaded);
       return _decoratedObjectLoader.LoadObjects (idsToBeLoaded, throwOnNotFound);

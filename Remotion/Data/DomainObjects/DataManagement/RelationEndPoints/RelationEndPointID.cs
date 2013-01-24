@@ -27,19 +27,19 @@ using Remotion.Utilities;
 namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 {
   /// <summary>
-  /// Identifies a relation end point on a given object (<see cref="IObjectID{DomainObject}"/>) of a given kind (<see cref="Definition"/>).
+  /// Identifies a relation end point on a given object (<see cref="ObjectID"/>) of a given kind (<see cref="Definition"/>).
   /// </summary>
   [Serializable]
   public sealed class RelationEndPointID : IFlattenedSerializable, ISerializable
   {
-    public static RelationEndPointID Create (IObjectID<DomainObject> objectID, IRelationEndPointDefinition definition)
+    public static RelationEndPointID Create (ObjectID objectID, IRelationEndPointDefinition definition)
     {
       ArgumentUtility.CheckNotNull ("definition", definition);
 
       return new RelationEndPointID (objectID, definition);
     }
     
-    public static RelationEndPointID Create (IObjectID<DomainObject> objectID, string propertyIdentifier)
+    public static RelationEndPointID Create (ObjectID objectID, string propertyIdentifier)
     {
       ArgumentUtility.CheckNotNull ("objectID", objectID);
       ArgumentUtility.CheckNotNullOrEmpty ("propertyIdentifier", propertyIdentifier);
@@ -57,7 +57,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       return new RelationEndPointID (objectID, endPointDefinition);
     }
 
-    public static RelationEndPointID Create (IObjectID<DomainObject> objectID, Type declaringType, string shortPropertyName)
+    public static RelationEndPointID Create (ObjectID objectID, Type declaringType, string shortPropertyName)
     {
       ArgumentUtility.CheckNotNull ("objectID", objectID);
       ArgumentUtility.CheckNotNull ("declaringType", declaringType);
@@ -83,7 +83,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
           cache => cache.ResolveMandatoryPropertyAccessorData (propertyAccessExpression));
     }
 
-    public static RelationEndPointID CreateOpposite (IRelationEndPointDefinition sourceEndPointDefinition, IObjectID<DomainObject> oppositeObjectID)
+    public static RelationEndPointID CreateOpposite (IRelationEndPointDefinition sourceEndPointDefinition, ObjectID oppositeObjectID)
     {
       ArgumentUtility.CheckNotNull ("sourceEndPointDefinition", sourceEndPointDefinition);
 
@@ -92,7 +92,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
     }
 
     private static RelationEndPointID CreateViaPropertyAccessorData (
-        IObjectID<DomainObject> objectID, 
+        ObjectID objectID, 
         string argumentName, 
         Func<PropertyAccessorDataCache, PropertyAccessorData> dataGetter)
     {
@@ -115,7 +115,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       return new RelationEndPointID (objectID, data.RelationEndPointDefinition);
     }
 
-    public static IEnumerable<RelationEndPointID> GetAllRelationEndPointIDs (IObjectID<DomainObject> objectID)
+    public static IEnumerable<RelationEndPointID> GetAllRelationEndPointIDs (ObjectID objectID)
     {
       ArgumentUtility.CheckNotNull ("objectID", objectID);
       
@@ -144,10 +144,10 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
     }
 
     private readonly IRelationEndPointDefinition _definition;
-    private readonly IObjectID<DomainObject> _objectID;
+    private readonly ObjectID _objectID;
     private int _cachedHashCode;
 
-    private RelationEndPointID (IObjectID<DomainObject> objectID, IRelationEndPointDefinition definition)
+    private RelationEndPointID (ObjectID objectID, IRelationEndPointDefinition definition)
     {
       _objectID = objectID;
       _definition = definition;
@@ -158,7 +158,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       get { return _definition; }
     }
 
-    public IObjectID<DomainObject> ObjectID
+    public ObjectID ObjectID
     {
       get { return _objectID; }
     }
@@ -213,7 +213,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
     {
       ArgumentUtility.CheckNotNull ("info", info);
 
-      var objectID = (IObjectID<DomainObject>) info.GetValue ("ObjectID", typeof (IObjectID<DomainObject>));
+      var objectID = (ObjectID) info.GetValue ("ObjectID", typeof (ObjectID));
       var classDefinitionID = info.GetString ("ClassID");
       var propertyName = info.GetString ("PropertyName");
       
@@ -238,7 +238,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
     {
       var classDefinitionID = info.GetValueForHandle<string> ();
       var propertyName = info.GetValueForHandle<string> ();
-      var objectID = info.GetValueForHandle<IObjectID<DomainObject>> ();
+      var objectID = info.GetValueForHandle<ObjectID> ();
 
       var classDefinition = MappingConfiguration.Current.GetClassDefinition (classDefinitionID);
       var relationEndPointDefinition = classDefinition.GetMandatoryRelationEndPointDefinition (propertyName);

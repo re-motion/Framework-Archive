@@ -127,7 +127,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       get { return _dataManagerFactory; }
     }
 
-    public override IObjectID<DomainObject> OppositeObjectID
+    public override ObjectID OppositeObjectID
     {
       get { return GetOppositeObject ().GetSafeID(); }
     }
@@ -137,7 +137,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       return GetOppositeObject ();
     }
 
-    public override IObjectID<DomainObject> OriginalOppositeObjectID
+    public override ObjectID OriginalOppositeObjectID
     {
       get { return GetOriginalOppositeObject().GetSafeID(); }
     }

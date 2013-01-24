@@ -543,12 +543,12 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.SqlServer
       }
     }
 
-    private DataContainer LoadDataContainer (IObjectID<DomainObject> id)
+    private DataContainer LoadDataContainer (ObjectID id)
     {
       return Provider.LoadDataContainer (id).LocatedObject;
     }
 
-    private DataContainer LoadDataContainerWithSeparateProvider (IObjectID<DomainObject> id)
+    private DataContainer LoadDataContainerWithSeparateProvider (ObjectID id)
     {
       using (var separateProvider = CreateRdbmsProvider ())
       {
@@ -556,7 +556,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.SqlServer
       }
     }
 
-    private DataContainer ReloadDataContainer (IObjectID<DomainObject> id)
+    private DataContainer ReloadDataContainer (ObjectID id)
     {
       Provider.Disconnect();
 

@@ -137,7 +137,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests
     [Test]
     public void ImplicitCast_FromObjectID_ToIObjectID ()
     {
-      ObjectID objectID = (ObjectID) DomainObjectIDs.Order1;
+      ObjectID objectID = DomainObjectIDs.Order1;
 
       IObjectID<DomainObject> castID = objectID;
 

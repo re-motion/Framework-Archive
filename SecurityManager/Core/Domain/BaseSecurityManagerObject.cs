@@ -24,7 +24,7 @@ namespace Remotion.SecurityManager.Domain
   [Serializable]
   public abstract class BaseSecurityManagerObject : BindableDomainObject
   {
-    public static BaseSecurityManagerObject GetObject (IObjectID<DomainObject> id)
+    public static BaseSecurityManagerObject GetObject (ObjectID id)
     {
       return DomainObject.GetObject<BaseSecurityManagerObject> (id);
     }

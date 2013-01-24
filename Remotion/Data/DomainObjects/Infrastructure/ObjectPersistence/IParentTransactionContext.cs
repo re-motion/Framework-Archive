@@ -27,12 +27,12 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
   /// </summary>
   public interface IParentTransactionContext
   {
-    IObjectID<DomainObject> CreateNewObjectID (ClassDefinition classDefinition);
+    ObjectID CreateNewObjectID (ClassDefinition classDefinition);
 
-    DomainObject GetObject (IObjectID<DomainObject> objectID);
-    DomainObject[] GetObjects (IEnumerable<IObjectID<DomainObject>> objectIDs);
-    DomainObject TryGetObject (IObjectID<DomainObject> objectID);
-    DomainObject[] TryGetObjects (IEnumerable<IObjectID<DomainObject>> objectIDs);
+    DomainObject GetObject (ObjectID objectID);
+    DomainObject[] GetObjects (IEnumerable<ObjectID> objectIDs);
+    DomainObject TryGetObject (ObjectID objectID);
+    DomainObject[] TryGetObjects (IEnumerable<ObjectID> objectIDs);
 
     DomainObject ResolveRelatedObject (RelationEndPointID relationEndPointID);
     IEnumerable<DomainObject> ResolveRelatedObjects (RelationEndPointID relationEndPointID);
@@ -41,11 +41,11 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
     IEnumerable<IQueryResultRow> ExecuteCustomQuery (IQuery query);
     object ExecuteScalarQuery (IQuery query);
 
-    DataContainer GetDataContainerWithoutLoading (IObjectID<DomainObject> objectID);
-    DataContainer GetDataContainerWithLazyLoad (IObjectID<DomainObject> objectID, bool throwOnNotFound);
+    DataContainer GetDataContainerWithoutLoading (ObjectID objectID);
+    DataContainer GetDataContainerWithLazyLoad (ObjectID objectID, bool throwOnNotFound);
     IRelationEndPoint GetRelationEndPointWithoutLoading (RelationEndPointID relationEndPointID);
 
-    bool IsInvalid (IObjectID<DomainObject> objectID);
+    bool IsInvalid (ObjectID objectID);
 
     IUnlockedParentTransactionContext UnlockParentTransaction ();
   }

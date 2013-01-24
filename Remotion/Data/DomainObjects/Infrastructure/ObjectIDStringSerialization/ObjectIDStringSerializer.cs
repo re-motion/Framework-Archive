@@ -22,7 +22,7 @@ using Remotion.Utilities;
 namespace Remotion.Data.DomainObjects.Infrastructure.ObjectIDStringSerialization
 {
   /// <summary>
-  /// Provides a mechanism to serialize <see cref="IObjectID{DomainObject}"/> instances to and from strings.
+  /// Provides a mechanism to serialize <see cref="ObjectID"/> instances to and from strings.
   /// </summary>
   public class ObjectIDStringSerializer
   {
@@ -37,7 +37,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectIDStringSerialization
     }
 
     /// <summary>
-    /// Checks whether the given <paramref name="value"/> can be used as an <see cref="IObjectID{DomainObject}"/> value if the <see cref="IObjectID{DomainObject}"/> should
+    /// Checks whether the given <paramref name="value"/> can be used as an <see cref="ObjectID"/> value if the <see cref="ObjectID"/> should
     /// later be serialized to a <see cref="string"/>.
     /// </summary>
     /// <param name="value">The value.</param>
@@ -55,7 +55,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectIDStringSerialization
     /// <summary>
     /// Serializes the specified object ID into a <see cref="String"/> value that can later be re-parsed via <see cref="Parse"/> or <see cref="TryParse"/>.
     /// </summary>
-    public string Serialize (IObjectID<DomainObject> objectID)
+    public string Serialize (ObjectID objectID)
     {
       ArgumentUtility.CheckNotNull ("objectID", objectID);
 
@@ -69,7 +69,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectIDStringSerialization
     /// <summary>
     /// Parses the specified object ID string, throwing an <see cref="FormatException"/> if an error occurs.
     /// </summary>
-    public IObjectID<DomainObject> Parse (string objectIDString)
+    public ObjectID Parse (string objectIDString)
     {
       ArgumentUtility.CheckNotNull ("objectIDString", objectIDString);
       return ParseWithCustomErrorHandler (objectIDString, msg => { throw new FormatException (msg); });
@@ -78,7 +78,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectIDStringSerialization
     /// <summary>
     /// Parses the specified object ID string, indicating by a boolean return value whether the operation was completed successfully.
     /// </summary>
-    public bool TryParse (string objectIDString, out IObjectID<DomainObject> result)
+    public bool TryParse (string objectIDString, out ObjectID result)
     {
       ArgumentUtility.CheckNotNull ("objectIDString", objectIDString);
 
@@ -86,7 +86,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectIDStringSerialization
       return result != null;
     }
 
-    private IObjectID<DomainObject> ParseWithCustomErrorHandler (string objectIDString, Func<string, IObjectID<DomainObject>> errorHandler)
+    private ObjectID ParseWithCustomErrorHandler (string objectIDString, Func<string, ObjectID> errorHandler)
     {
       ArgumentUtility.CheckNotNull ("objectIDString", objectIDString);
 

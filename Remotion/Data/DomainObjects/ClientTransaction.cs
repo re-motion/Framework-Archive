@@ -462,7 +462,7 @@ public class ClientTransaction
   /// Returns the <see cref="DomainObject"/> enlisted for the given <paramref name="objectID"/> via <see cref="EnlistDomainObject"/>, or 
   /// <see langword="null"/> if no such object exists.
   /// </summary>
-  /// <param name="objectID">The <see cref="IObjectID{DomainObject}"/> for which to retrieve a <see cref="DomainObject"/>.</param>
+  /// <param name="objectID">The <see cref="ObjectID"/> for which to retrieve a <see cref="DomainObject"/>.</param>
   /// <returns>
   /// A <see cref="DomainObject"/> with the given <paramref name="objectID"/> previously enlisted via <see cref="EnlistDomainObject"/>,
   /// or <see langword="null"/> if no such object exists.
@@ -471,7 +471,7 @@ public class ClientTransaction
   /// The <see cref="DataContainer"/> of the returned object might not have been loaded yet. In that case, it will be loaded on first
   /// access of the object's properties, and this might trigger an <see cref="ObjectsNotFoundException"/> if the container cannot be loaded.
   /// </remarks>
-  public DomainObject GetEnlistedDomainObject (IObjectID<DomainObject> objectID)
+  public DomainObject GetEnlistedDomainObject (ObjectID objectID)
   {
     ArgumentUtility.CheckNotNull ("objectID", objectID);
     return _enlistedDomainObjectManager.GetEnlistedDomainObject (objectID);
@@ -499,7 +499,7 @@ public class ClientTransaction
   /// <returns>True if the object was newly enlisted; false if it had already been enlisted in this transaction.</returns>
   /// <remarks>
   /// <para>
-  /// Unlike <see cref="DomainObject.GetObject{T}(IObjectID{DomainObject})"/>, this method does not create a new <see cref="DomainObject"/> reference if the object
+  /// Unlike <see cref="DomainObject.GetObject{T}(ObjectID)"/>, this method does not create a new <see cref="DomainObject"/> reference if the object
   /// hasn't been loaded yet, but instead
   /// marks the given <see cref="DomainObject"/> for use in this transaction. After this, the same object reference can be used in both the
   /// transaction it was originally created in and the transactions it has been enlisted in.
@@ -511,7 +511,7 @@ public class ClientTransaction
   /// has been enlisted in transaction B before transaction's A commit, transaction B will not see the changes committed by transaction A.
   /// </para>
   /// <para>
-  /// If a certain <see cref="IObjectID{DomainObject}"/> has already been associated with a certain <see cref="DomainObject"/> in this transaction, it is not
+  /// If a certain <see cref="ObjectID"/> has already been associated with a certain <see cref="DomainObject"/> in this transaction, it is not
   /// possible to register another <see cref="DomainObject"/> reference with the same <see cref="DomainObject.ID"/>.
   /// </para>
   /// <para>The data for the <see cref="DomainObject"/> is not loaded immediately by this method, but will be retrieved when the object is first
@@ -519,7 +519,7 @@ public class ClientTransaction
   /// <see cref="ObjectsNotFoundException"/>.</para>
   /// </remarks>
   /// <exception cref="InvalidOperationException">The domain object cannot be enlisted, e.g., because another <see cref="DomainObject"/> with the same
-  /// <see cref="IObjectID{DomainObject}"/> has already been associated with this transaction..</exception>
+  /// <see cref="ObjectID"/> has already been associated with this transaction..</exception>
   /// <exception cref="ArgumentNullException">The <paramref name="domainObject"/> parameter is <see langword="null"/>.</exception>
   public bool EnlistDomainObject (DomainObject domainObject)
   {
@@ -557,7 +557,7 @@ public class ClientTransaction
   /// <param name="domainObjects">The domain objects to enlist.</param>
   /// <exception cref="ArgumentNullException">The <paramref name="domainObjects"/> parameter is <see langword="null"/>.</exception>
   /// <exception cref="InvalidOperationException">A domain object cannot be enlisted, because another <see cref="DomainObject"/> with the same
-  /// <see cref="IObjectID{DomainObject}"/> has already been associated with this transaction.</exception>
+  /// <see cref="ObjectID"/> has already been associated with this transaction.</exception>
   /// <remarks>This method also enlists objects that do not exist in the database; accessing such an object in the context of this transaction will
   /// result in an <see cref="ObjectsNotFoundException"/>.</remarks>
   public void EnlistDomainObjects (IEnumerable<DomainObject> domainObjects)
@@ -574,7 +574,7 @@ public class ClientTransaction
   /// <param name="domainObjects">The domain objects to enlist.</param>
   /// <exception cref="ArgumentNullException">The <paramref name="domainObjects"/> parameter is <see langword="null"/>.</exception>
   /// <exception cref="InvalidOperationException">A domain object cannot be enlisted, because another <see cref="DomainObject"/> with the same
-  /// <see cref="IObjectID{DomainObject}"/> has already been associated with this transaction.</exception>
+  /// <see cref="ObjectID"/> has already been associated with this transaction.</exception>
   /// <remarks>This method also enlists objects that do not exist in the database; accessing such an object in the context of this transaction will
   /// result in an <see cref="ObjectsNotFoundException"/>.</remarks>
   public void EnlistDomainObjects (params DomainObject[] domainObjects)
@@ -585,7 +585,7 @@ public class ClientTransaction
   }
 
   /// <summary>
-  /// Ensures that the data of the <see cref="DomainObject"/> with the given <see cref="IObjectID{DomainObject}"/> has been loaded into this 
+  /// Ensures that the data of the <see cref="DomainObject"/> with the given <see cref="ObjectID"/> has been loaded into this 
   /// <see cref="ClientTransaction"/>. If it hasn't, this method loads the object's data. If the object's data can't be found, an exception is thrown
   /// and the object is marked <see cref="StateType.Invalid"/> in the <see cref="ClientTransaction"/>.
   /// </summary>
@@ -594,10 +594,10 @@ public class ClientTransaction
   /// <exception cref="ObjectInvalidException">The given <paramref name="objectID"/> is invalid in this transaction.</exception>
   /// <exception cref="ObjectsNotFoundException">
   /// The object could not be found in the data source. Note that the <see cref="ClientTransaction"/> marks
-  /// not found objects as <see cref="StateType.Invalid"/>, so calling this API again witht he same <see cref="IObjectID{DomainObject}"/> results in a 
+  /// not found objects as <see cref="StateType.Invalid"/>, so calling this API again witht he same <see cref="ObjectID"/> results in a 
   /// <see cref="ObjectInvalidException"/> being thrown.
   /// </exception>
-  public void EnsureDataAvailable (IObjectID<DomainObject> objectID)
+  public void EnsureDataAvailable (ObjectID objectID)
   {
     ArgumentUtility.CheckNotNull ("objectID", objectID);
 
@@ -605,22 +605,22 @@ public class ClientTransaction
   }
 
   /// <summary>
-  /// Ensures that the data for the <see cref="DomainObject"/>s with the given <see cref="IObjectID{DomainObject}"/> values has been loaded into this 
+  /// Ensures that the data for the <see cref="DomainObject"/>s with the given <see cref="ObjectID"/> values has been loaded into this 
   /// <see cref="ClientTransaction"/>. If it hasn't, this method loads the objects' data, performing a bulk load operation.
   /// If an object's data can't be found, an exception is thrown, and the object is marked <see cref="StateType.Invalid"/> in the 
   /// <see cref="ClientTransaction"/>.
   /// </summary>
-  /// <param name="objectIDs">The <see cref="IObjectID{DomainObject}"/> values whose data must be loaded.</param>
+  /// <param name="objectIDs">The <see cref="ObjectID"/> values whose data must be loaded.</param>
   /// <exception cref="ArgumentNullException">The <paramref name="objectIDs"/> parameter is <see langword="null" />.</exception>
   /// <exception cref="ClientTransactionsDifferException">One of the given <paramref name="objectIDs"/> cannot be used in this 
   /// <see cref="ClientTransaction"/>.</exception>
   /// <exception cref="ObjectInvalidException">One of the given <paramref name="objectIDs"/> is invalid in this transaction.</exception>
   /// <exception cref="ObjectsNotFoundException">
   /// One or more objects could not be found in the data source. Note that the <see cref="ClientTransaction"/> marks
-  /// not found objects as <see cref="StateType.Invalid"/>, so calling this API again witht he same <see cref="IObjectID{DomainObject}"/> results in a 
+  /// not found objects as <see cref="StateType.Invalid"/>, so calling this API again witht he same <see cref="ObjectID"/> results in a 
   /// <see cref="ObjectInvalidException"/> being thrown.
   /// </exception>
-  public void EnsureDataAvailable (IEnumerable<IObjectID<DomainObject>> objectIDs)
+  public void EnsureDataAvailable (IEnumerable<ObjectID> objectIDs)
   {
     ArgumentUtility.CheckNotNull ("objectIDs", objectIDs);
 
@@ -628,7 +628,7 @@ public class ClientTransaction
   }
 
   /// <summary>
-  /// Ensures that the data of the <see cref="DomainObject"/> with the given <see cref="IObjectID{DomainObject}"/> has been loaded into this
+  /// Ensures that the data of the <see cref="DomainObject"/> with the given <see cref="ObjectID"/> has been loaded into this
   /// <see cref="ClientTransaction"/>. If it hasn't, this method loads the object's data. The method returns a value indicating whether the
   /// object's data was found. If an object's data can't be found, the object is marked <see cref="StateType.Invalid"/> in the 
   /// <see cref="ClientTransaction"/>.
@@ -638,7 +638,7 @@ public class ClientTransaction
   /// data couldn't be found.</returns>
   /// <exception cref="ArgumentNullException">The <paramref name="objectID"/> parameter is <see langword="null"/>.</exception>
   /// <exception cref="ObjectInvalidException">The given <paramref name="objectID"/> is invalid in this transaction.</exception>
-  public bool TryEnsureDataAvailable (IObjectID<DomainObject> objectID)
+  public bool TryEnsureDataAvailable (ObjectID objectID)
   {
     ArgumentUtility.CheckNotNull ("objectID", objectID);
 
@@ -647,19 +647,19 @@ public class ClientTransaction
   }
 
   /// <summary>
-  /// Ensures that the data for the <see cref="DomainObject"/>s with the given <see cref="IObjectID{DomainObject}"/> values has been loaded into this 
+  /// Ensures that the data for the <see cref="DomainObject"/>s with the given <see cref="ObjectID"/> values has been loaded into this 
   /// <see cref="ClientTransaction"/>. If it hasn't, this method loads the objects' data, performing a bulk load operation.
   /// The method returns a value indicating whether the data of all the objects was found.
   /// If an object's data can't be found, the object is marked <see cref="StateType.Invalid"/> in the <see cref="ClientTransaction"/>.
   /// </summary>
-  /// <param name="objectIDs">The <see cref="IObjectID{DomainObject}"/> values whose data must be loaded.</param>
+  /// <param name="objectIDs">The <see cref="ObjectID"/> values whose data must be loaded.</param>
   /// <returns><see langword="true" /> if the data is now available in the <see cref="ClientTransaction"/> for all objects, <see langword="false" /> 
   /// if the data couldn't be found for one or more objects.</returns>
   /// <exception cref="ArgumentNullException">The <paramref name="objectIDs"/> parameter is <see langword="null" />.</exception>
   /// <exception cref="ClientTransactionsDifferException">One of the given <paramref name="objectIDs"/> cannot be used in this 
   /// <see cref="ClientTransaction"/>.</exception>
   /// <exception cref="ObjectInvalidException">One of the given <paramref name="objectIDs"/> is invalid in this transaction.</exception>
-  public bool TryEnsureDataAvailable (IEnumerable<IObjectID<DomainObject>> objectIDs)
+  public bool TryEnsureDataAvailable (IEnumerable<ObjectID> objectIDs)
   {
     ArgumentUtility.CheckNotNull ("objectIDs", objectIDs);
 
@@ -668,11 +668,11 @@ public class ClientTransaction
   }
 
   /// <summary>
-  /// Creates a new <see cref="IObjectID{DomainObject}"/> for the given class definition.
+  /// Creates a new <see cref="ObjectID"/> for the given class definition.
   /// </summary>
-  /// <param name="classDefinition">The class definition to create a new <see cref="IObjectID{DomainObject}"/> for.</param>
+  /// <param name="classDefinition">The class definition to create a new <see cref="ObjectID"/> for.</param>
   /// <returns></returns>
-  protected internal IObjectID<DomainObject> CreateNewObjectID (ClassDefinition classDefinition)
+  protected internal ObjectID CreateNewObjectID (ClassDefinition classDefinition)
   {
     ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
 
@@ -923,13 +923,13 @@ public class ClientTransaction
   /// Gets a <see cref="DomainObject"/> that is already loaded or attempts to load it from the data source. If the object's data can't be found, an 
   /// exception is thrown, and the object is marked <see cref="StateType.Invalid"/> in the <see cref="ClientTransaction"/>.
   /// </summary>
-  /// <param name="id">The <see cref="IObjectID{DomainObject}"/> of the <see cref="DomainObject"/> that should be loaded. Must not be <see langword="null"/>.</param>
+  /// <param name="id">The <see cref="ObjectID"/> of the <see cref="DomainObject"/> that should be loaded. Must not be <see langword="null"/>.</param>
   /// <param name="includeDeleted">Indicates if the method should return <see cref="DomainObject"/>s that are already deleted.</param>
   /// <returns>The <see cref="DomainObject"/> with the specified <paramref name="id"/>.</returns>
   /// <exception cref="System.ArgumentNullException"><paramref name="id"/> is <see langword="null"/>.</exception>
   /// <exception cref="ObjectsNotFoundException">
   /// The object could not be found in the data source. Note that the <see cref="ClientTransaction"/> marks
-  /// not found objects as <see cref="StateType.Invalid"/>, so calling this API again witht he same <see cref="IObjectID{DomainObject}"/> results in a 
+  /// not found objects as <see cref="StateType.Invalid"/>, so calling this API again witht he same <see cref="ObjectID"/> results in a 
   /// <see cref="ObjectInvalidException"/> being thrown.
   /// </exception>
   /// <exception cref="ObjectInvalidException">The object is invalid in this transaction.</exception>
@@ -940,7 +940,7 @@ public class ClientTransaction
   /// </exception>
   /// <exception cref="ObjectDeletedException">The object has already been deleted and the <paramref name="includeDeleted"/> flag is 
   /// <see langword="false" />.</exception>
-  protected internal virtual DomainObject GetObject (IObjectID<DomainObject> id, bool includeDeleted)
+  protected internal virtual DomainObject GetObject (ObjectID id, bool includeDeleted)
   {
     ArgumentUtility.CheckNotNull ("id", id);
 
@@ -962,33 +962,32 @@ public class ClientTransaction
   ///   An error occurred while reading a <see cref="PropertyValue"/>.<br /> -or- <br />
   ///   An error occurred while accessing the data source.
   /// </exception>
-  protected internal virtual DomainObject TryGetObject (IObjectID<DomainObject> objectID)
+  protected internal virtual DomainObject TryGetObject (ObjectID objectID)
   {
     ArgumentUtility.CheckNotNull ("objectID", objectID);
     return _objectLifetimeAgent.TryGetObject (objectID);
   }
 
   /// <summary>
-  /// Gets a reference to a <see cref="DomainObject"/> with the given <see cref="IObjectID{DomainObject}"/> from this <see cref="ClientTransaction"/>. If the
-  /// transaction does not currently hold an object with this <see cref="IObjectID{DomainObject}"/>, an object reference representing that <see cref="IObjectID{DomainObject}"/> 
+  /// Gets a reference to a <see cref="DomainObject"/> with the given <see cref="ObjectID"/> from this <see cref="ClientTransaction"/>. If the
+  /// transaction does not currently hold an object with this <see cref="ObjectID"/>, an object reference representing that <see cref="ObjectID"/> 
   /// is created without calling a constructor and without loading the object's data from the data source. This method does not check whether an
-  /// object with the given <see cref="IObjectID{DomainObject}"/> actually exists in the data source, and it will also return invalid or deleted objects.
+  /// object with the given <see cref="ObjectID"/> actually exists in the data source, and it will also return invalid or deleted objects.
   /// </summary>
-  /// <param name="objectID">The <see cref="IObjectID{DomainObject}"/> to get an object reference for.</param>
-  /// <returns>An object with the given <see cref="IObjectID{DomainObject}"/>, possibly in <see cref="StateType.NotLoadedYet"/>, <see cref="StateType.Deleted"/>,
+  /// <param name="objectID">The <see cref="ObjectID"/> to get an object reference for.</param>
+  /// <returns>An object with the given <see cref="ObjectID"/>, possibly in <see cref="StateType.NotLoadedYet"/>, <see cref="StateType.Deleted"/>,
   /// or <see cref="StateType.Invalid"/> state.</returns>
   /// <remarks>
   /// <para>
   /// When an object with the given <paramref name="objectID"/> has already been enlisted in the transaction, that object is returned. Otherwise,
   /// an object in <see cref="StateType.NotLoadedYet"/> state is created and enlisted without loading its data from the data source. In such a case,
   /// the object's data is loaded when it's first needed; e.g., when one of its properties is accessed or when 
-  /// <see cref="EnsureDataAvailable(Remotion.Data.DomainObjects.IObjectID{Remotion.Data.DomainObjects.DomainObject})"/> is called for its 
-  /// <see cref="IObjectID{DomainObject}"/>. At that point, an
+  /// <see cref="EnsureDataAvailable(Remotion.Data.DomainObjects.ObjectID)"/> is called for its <see cref="ObjectID"/>. At that point, an
   /// <see cref="ObjectsNotFoundException"/> may be triggered when the object's data cannot be found.
   /// </para>
   /// </remarks>
   /// <exception cref="ArgumentNullException">The <paramref name="objectID"/> parameter is <see langword="null" />.</exception>
-  protected internal virtual DomainObject GetObjectReference (IObjectID<DomainObject> objectID)
+  protected internal virtual DomainObject GetObjectReference (ObjectID objectID)
   {
     ArgumentUtility.CheckNotNull ("objectID", objectID);
     return _objectLifetimeAgent.GetObjectReference (objectID);
@@ -999,22 +998,22 @@ public class ClientTransaction
   /// invalid (check with <see cref="IsInvalid"/>), an exception is throws.
   /// </summary>
   /// <param name="objectID">The object ID to get the <see cref="DomainObject"/> reference for.</param>
-  /// <returns>An object with the given <see cref="IObjectID{DomainObject}"/> in <see cref="StateType.Invalid"/> state.</returns>
+  /// <returns>An object with the given <see cref="ObjectID"/> in <see cref="StateType.Invalid"/> state.</returns>
   /// <exception cref="InvalidOperationException">The object is not currently in <see cref="StateType.Invalid"/> state.</exception>
-  protected internal virtual DomainObject GetInvalidObjectReference (IObjectID<DomainObject> objectID)
+  protected internal virtual DomainObject GetInvalidObjectReference (ObjectID objectID)
   {
     ArgumentUtility.CheckNotNull ("objectID", objectID);
     return _invalidDomainObjectManager.GetInvalidObjectReference (objectID);
   }
 
   /// <summary>
-  /// Determines whether the specified <see cref="IObjectID{DomainObject}"/> has been marked invalid in the scope of this <see cref="ClientTransaction"/>.
+  /// Determines whether the specified <see cref="ObjectID"/> has been marked invalid in the scope of this <see cref="ClientTransaction"/>.
   /// </summary>
-  /// <param name="objectID">The <see cref="IObjectID{DomainObject}"/> to check.</param>
+  /// <param name="objectID">The <see cref="ObjectID"/> to check.</param>
   /// <returns>
   /// 	<see langword="true"/> if the specified <paramref name="objectID"/> is invalid; otherwise, <see langword="false"/>.
   /// </returns>
-  public bool IsInvalid (IObjectID<DomainObject> objectID)
+  public bool IsInvalid (ObjectID objectID)
   {
     ArgumentUtility.CheckNotNull ("objectID", objectID);
     return _invalidDomainObjectManager.IsInvalid (objectID);
@@ -1043,10 +1042,10 @@ public class ClientTransaction
   /// <exception cref="ObjectInvalidException">One of the retrieved objects is invalid in this transaction.</exception>
   /// <exception cref="ObjectsNotFoundException">
   /// One or more objects could not be found in the data source. Note that the <see cref="ClientTransaction"/> marks
-  /// not found objects as <see cref="StateType.Invalid"/>, so calling this API again witht he same <see cref="IObjectID{DomainObject}"/> results in a 
+  /// not found objects as <see cref="StateType.Invalid"/>, so calling this API again witht he same <see cref="ObjectID"/> results in a 
   /// <see cref="ObjectInvalidException"/> being thrown.
   /// </exception>
-  protected internal T[] GetObjects<T> (IEnumerable<IObjectID<DomainObject>> objectIDs)
+  protected internal T[] GetObjects<T> (IEnumerable<ObjectID> objectIDs)
       where T : DomainObject
   {
     ArgumentUtility.CheckNotNull ("objectIDs", objectIDs);
@@ -1064,7 +1063,7 @@ public class ClientTransaction
   /// <paramref name="objectIDs"/>. This list can contain invalid and <see langword="null" /> <see cref="DomainObject"/> references.</returns>
   /// <exception cref="ArgumentNullException">The <paramref name="objectIDs"/> parameter is <see langword="null"/>.</exception>
   /// <exception cref="InvalidCastException">One of the retrieved objects doesn't fit the specified type <typeparamref name="T"/>.</exception>
-  protected internal T[] TryGetObjects<T> (IEnumerable<IObjectID<DomainObject>> objectIDs)
+  protected internal T[] TryGetObjects<T> (IEnumerable<ObjectID> objectIDs)
       where T : DomainObject
   {
     ArgumentUtility.CheckNotNull ("objectIDs", objectIDs);
@@ -1327,8 +1326,8 @@ public class ClientTransaction
     throw new NotImplementedException ();
   }
 
-  [Obsolete ("This method is now obsolete, use GetObject (IObjectID<DomainObject>, bool) instead. (1.13.42)", true)]
-  protected internal virtual DomainObject GetObject (IObjectID<DomainObject> id)
+  [Obsolete ("This method is now obsolete, use GetObject (ObjectID, bool) instead. (1.13.42)", true)]
+  protected internal virtual DomainObject GetObject (ObjectID id)
   {
     throw new NotImplementedException ();
   }
@@ -1346,13 +1345,13 @@ public class ClientTransaction
   }
 
   [Obsolete ("This method has been obsoleted. To intercept the loading of objects, replace the IObjectLoader of the transaction when its created.", true)]
-  protected virtual DomainObject LoadObject (IObjectID<DomainObject> id)
+  protected virtual DomainObject LoadObject (ObjectID id)
   {
     throw new NotImplementedException ();
   }
 
   [Obsolete ("This method has been obsoleted. To intercept the loading of objects, replace the IObjectLoader of the transaction when its created.", true)]
-  protected virtual DomainObject[] LoadObjects (IList<IObjectID<DomainObject>> idsToBeLoaded, bool throwOnNotFound)
+  protected virtual DomainObject[] LoadObjects (IList<ObjectID> idsToBeLoaded, bool throwOnNotFound)
   {
     throw new NotImplementedException ();
   }

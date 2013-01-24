@@ -30,7 +30,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Mapping.TestDomain.Integrat
       return NewObject<IndustrialSector> ();
     }
 
-    public new static IndustrialSector GetObject (IObjectID<DomainObject> id)
+    public new static IndustrialSector GetObject (ObjectID id)
     {
       return GetObject<IndustrialSector> (id);
     }

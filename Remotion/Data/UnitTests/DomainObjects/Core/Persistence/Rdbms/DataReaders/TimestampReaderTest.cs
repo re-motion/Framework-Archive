@@ -38,7 +38,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.DataReade
 
     private TimestampReader _reader;
     
-    private IObjectID<DomainObject> _fakeObjectIDResult;
+    private ObjectID _fakeObjectIDResult;
     private object _fakeTimestampResult;
 
     public override void SetUp ()

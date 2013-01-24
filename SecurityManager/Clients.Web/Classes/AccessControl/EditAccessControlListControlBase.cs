@@ -80,7 +80,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.AccessControl
       ControlCollection accessControlEntryControls = GetAccessControlEntryControls();
       accessControlEntryControls.Clear();
       
-      var collapsedStates = new Dictionary<IObjectID<DomainObject>, bool>();
+      var collapsedStates = new Dictionary<ObjectID, bool>();
       foreach (var editAccessControlEntryControl in _editAccessControlEntryControls)
         collapsedStates.Add (((AccessControlEntry) editAccessControlEntryControl.BusinessObject).ID, editAccessControlEntryControl.IsCollapsed);
 

@@ -42,7 +42,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.Serializable
       get { throw new NotImplementedException(); }
     }
 
-    public bool ContainsOriginalObjectID (IObjectID<DomainObject> objectID)
+    public bool ContainsOriginalObjectID (ObjectID objectID)
     {
       throw new NotImplementedException();
     }

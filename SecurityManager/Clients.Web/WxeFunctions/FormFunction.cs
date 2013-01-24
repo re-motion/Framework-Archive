@@ -43,16 +43,16 @@ namespace Remotion.SecurityManager.Clients.Web.WxeFunctions
     {
     }
 
-    protected FormFunction (ITransactionMode transactionMode, IObjectID<DomainObject> CurrentObjectID)
+    protected FormFunction (ITransactionMode transactionMode, ObjectID CurrentObjectID)
       : base (transactionMode, CurrentObjectID)
     {
     }
 
     // methods and properties
     [WxeParameter (1, false, WxeParameterDirection.In)]
-    public IObjectID<DomainObject> CurrentObjectID
+    public ObjectID CurrentObjectID
     {
-      get { return (IObjectID<DomainObject>) Variables["CurrentObjectID"]; }
+      get { return (ObjectID) Variables["CurrentObjectID"]; }
       set { Variables["CurrentObjectID"] = value; }
     }
 

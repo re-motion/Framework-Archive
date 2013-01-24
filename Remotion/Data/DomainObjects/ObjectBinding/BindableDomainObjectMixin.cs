@@ -37,7 +37,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
     public interface IDomainObject
     {
       Type GetPublicDomainObjectType ();
-      IObjectID<DomainObject> ID { get; }
+      ObjectID ID { get; }
       PropertyIndexer Properties { get; }
       StateType State { get; }
     }

@@ -23,7 +23,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.Serializable
   [Serializable]
   public class SerializableLoadedDataContainerProviderFake : ILoadedDataContainerProvider
   {
-    public DataContainer GetDataContainerWithoutLoading (IObjectID<DomainObject> objectID)
+    public DataContainer GetDataContainerWithoutLoading (ObjectID objectID)
     {
       throw new NotImplementedException();
     }

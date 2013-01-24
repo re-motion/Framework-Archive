@@ -24,9 +24,9 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
   /// </summary>
   public interface ILoadedObjectDataRegistrationListener
   {
-    void OnBeforeObjectRegistration (ReadOnlyCollection<IObjectID<DomainObject>> loadedObjectIDs);
+    void OnBeforeObjectRegistration (ReadOnlyCollection<ObjectID> loadedObjectIDs);
     // Calls to OnAfterObjectRegistration must be exactly matched with OnBeforeObjectRegistration; they must not be swallowed in case of exceptions.
-    void OnAfterObjectRegistration (ReadOnlyCollection<IObjectID<DomainObject>> objectIDsToBeLoaded, ReadOnlyCollection<DomainObject> actuallyLoadedDomainObjects);
-    void OnObjectsNotFound (ReadOnlyCollection<IObjectID<DomainObject>> notFoundObjectIDs);
+    void OnAfterObjectRegistration (ReadOnlyCollection<ObjectID> objectIDsToBeLoaded, ReadOnlyCollection<DomainObject> actuallyLoadedDomainObjects);
+    void OnObjectsNotFound (ReadOnlyCollection<ObjectID> notFoundObjectIDs);
   }
 }

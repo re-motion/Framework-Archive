@@ -723,7 +723,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.ObjectPersis
 
     private void CheckDataContainer (
         DataContainer dataContainer,
-        IObjectID<DomainObject> expectedID,
+        ObjectID expectedID,
         object expectedTimestamp,
         StateType expectedState,
         PropertyDefinition propertyDefinition,
@@ -740,7 +740,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.ObjectPersis
     }
 
     private DataContainer CreateChangedDataContainer (
-        IObjectID<DomainObject> objectID, int timestamp, PropertyDefinition propertyDefinition, object currentPropertyValue)
+        ObjectID objectID, int timestamp, PropertyDefinition propertyDefinition, object currentPropertyValue)
     {
       var parentDataContainer = DataContainerObjectMother.CreateExisting (objectID);
       parentDataContainer.SetTimestamp (timestamp);

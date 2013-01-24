@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Collections.Generic;
-using JetBrains.Annotations;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Utilities;
 using System.Linq;
@@ -24,8 +23,8 @@ using System.Linq;
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 {
   /// <summary>
-  /// The <see cref="ObjectIDStoragePropertyDefinition"/> represents an <see cref="IObjectID{DomainObject}"/> property that is stored as an ID column without a 
-  /// ClassID column. This can only be used when the <see cref="ClassDefinition"/> of the referenced <see cref="IObjectID{DomainObject}"/> is known in advance
+  /// The <see cref="ObjectIDStoragePropertyDefinition"/> represents an <see cref="ObjectID"/> property that is stored as an ID column without a 
+  /// ClassID column. This can only be used when the <see cref="ClassDefinition"/> of the referenced <see cref="ObjectID"/> is known in advance
   /// (i.e., if there is no inheritance involved).
   /// </summary>
   public class ObjectIDWithoutClassIDStoragePropertyDefinition : IObjectIDStoragePropertyDefinition
@@ -47,7 +46,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 
     public Type PropertyType
     {
-      get { return typeof (IObjectID<DomainObject>); }
+      get { return typeof (ObjectID); }
     }
 
     public IRdbmsStoragePropertyDefinition ValueProperty
@@ -78,7 +77,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 
     public IEnumerable<ColumnValue> SplitValue (object value)
     {
-      var objectID = ArgumentUtility.CheckType<IObjectID<DomainObject>> ("value", value);
+      var objectID = ArgumentUtility.CheckType<ObjectID> ("value", value);
       CheckClassDefinition (objectID, "value");
 
       var innerValue = GetValueOrNull (objectID);
@@ -87,7 +86,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 
     public IEnumerable<ColumnValue> SplitValueForComparison (object value)
     {
-      var objectID = ArgumentUtility.CheckType<IObjectID<DomainObject>> ("value", value);
+      var objectID = ArgumentUtility.CheckType<ObjectID> ("value", value);
       CheckClassDefinition (objectID, "value");
 
       var innerValue = GetValueOrNull (objectID);
@@ -101,7 +100,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
       var innerValues = values.Select (
           v =>
           {
-            var objectID = (IObjectID<DomainObject>) v;
+            var objectID = (ObjectID) v;
             CheckClassDefinition (objectID, "values");
             return GetValueOrNull (objectID);
           });
@@ -133,14 +132,13 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
       return new ForeignKeyConstraintDefinition (nameProvider (referencingColumns), referencedTableName, referencingColumns, referencedColumns);
     }
 
-    [AssertionMethod] 
-    private void CheckClassDefinition (IObjectID<DomainObject> objectID, string paramName)
+    private void CheckClassDefinition (ObjectID objectID, string paramName)
     {
       if (objectID != null && objectID.ClassDefinition != _classDefinition)
         throw new ArgumentException ("The specified ObjectID has an invalid ClassDefinition.", paramName);
     }
 
-    private object GetValueOrNull (IObjectID<DomainObject> objectID)
+    private object GetValueOrNull (ObjectID objectID)
     {
       return objectID == null ? null : objectID.Value;
     }

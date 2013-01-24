@@ -71,7 +71,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       get { return OriginalOppositeEndPoint == null ? OriginalOppositeObject : null; }
     }
 
-    public bool ContainsOriginalObjectID (IObjectID<DomainObject> objectID)
+    public bool ContainsOriginalObjectID (ObjectID objectID)
     {
       ArgumentUtility.CheckNotNull ("objectID", objectID);
 

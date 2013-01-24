@@ -27,8 +27,8 @@ namespace Remotion.Data.DomainObjects
       if (value is DomainObject)
         return ContainsObject ((DomainObject) value);
 
-      if (value is IObjectID<DomainObject>)
-        return Contains ((IObjectID<DomainObject>) value);
+      if (value is ObjectID)
+        return Contains ((ObjectID) value);
 
       return false;
     }
@@ -38,8 +38,8 @@ namespace Remotion.Data.DomainObjects
       if (value is DomainObject)
         return IndexOf ((DomainObject) value);
 
-      if (value is IObjectID<DomainObject>)
-        return IndexOf ((IObjectID<DomainObject>) value);
+      if (value is ObjectID)
+        return IndexOf ((ObjectID) value);
 
       return -1;
     }
@@ -60,8 +60,8 @@ namespace Remotion.Data.DomainObjects
       if (value is DomainObject)
         Remove ((DomainObject) value);
 
-      if (value is IObjectID<DomainObject>)
-        Remove ((IObjectID<DomainObject>) value);
+      if (value is ObjectID)
+        Remove ((ObjectID) value);
     }
 
     void IList.Insert (int index, object value)

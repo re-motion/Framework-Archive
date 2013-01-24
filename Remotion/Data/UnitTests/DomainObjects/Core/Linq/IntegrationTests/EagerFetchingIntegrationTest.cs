@@ -246,7 +246,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Linq.IntegrationTests
     public void EagerFetching_FetchNull_VirtualSide ()
     {
       var query = (from employee in QueryFactory.CreateLinqQuery<Employee> ()
-                   where object.Equals (employee.ID, DomainObjectIDs.Employee1)
+                   where employee.ID == DomainObjectIDs.Employee1
                    select employee).FetchOne (e => e.Computer);
 
       CheckQueryResult (query, DomainObjectIDs.Employee1);
@@ -259,7 +259,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Linq.IntegrationTests
     public void EagerFetching_FetchNull_NonVirtualSide ()
     {
       var query = (from computer in QueryFactory.CreateLinqQuery<Computer> ()
-                   where object.Equals (computer.ID, DomainObjectIDs.Computer4)
+                   where computer.ID == DomainObjectIDs.Computer4
                    select computer).FetchOne (c => c.Employee);
 
       CheckQueryResult (query, DomainObjectIDs.Computer4);
@@ -285,7 +285,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Linq.IntegrationTests
     public void EagerFetching_FetchEmptyCollection ()
     {
       var query = (from order in QueryFactory.CreateLinqQuery<Order> ()
-                   where object.Equals (order.ID, DomainObjectIDs.OrderWithoutOrderItem)
+                   where order.ID == DomainObjectIDs.OrderWithoutOrderItem
                    select order).FetchMany (o => o.OrderItems);
 
       CheckQueryResult (query, DomainObjectIDs.OrderWithoutOrderItem);
@@ -322,7 +322,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Linq.IntegrationTests
     public void EagerFetching_MixedProperty_ViaCastInFetchClause ()
     {
       var query = (from o in QueryFactory.CreateLinqQuery<TargetClassForPersistentMixin>()
-                   where object.Equals (o.ID, DomainObjectIDs.TargetClassForPersistentMixins2)
+                   where o.ID == DomainObjectIDs.TargetClassForPersistentMixins2
                    select o)
                    .FetchMany (o => ((IMixinAddingPersistentProperties) o).CollectionProperty1Side);
 
@@ -335,7 +335,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Linq.IntegrationTests
     public void EagerFetching_MixedProperty_ViaCastInSelect ()
     {
       var query = (from o in QueryFactory.CreateLinqQuery<TargetClassForPersistentMixin> ()
-                   where object.Equals (o.ID, DomainObjectIDs.TargetClassForPersistentMixins2)
+                   where o.ID == DomainObjectIDs.TargetClassForPersistentMixins2
                    select (IMixinAddingPersistentProperties) o)
                    .FetchMany (o => o.CollectionProperty1Side);
 
@@ -348,7 +348,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Linq.IntegrationTests
     public void EagerFetching_MixedProperty_ViaRedirection ()
     {
       var query = (from o in QueryFactory.CreateLinqQuery<TargetClassForPersistentMixin> ()
-                   where object.Equals (o.ID, DomainObjectIDs.TargetClassForPersistentMixins2)
+                   where o.ID == DomainObjectIDs.TargetClassForPersistentMixins2
                    select o)
                    .FetchMany (o => o.RedirectedCollectionProperty1Side);
 
@@ -361,7 +361,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Linq.IntegrationTests
     public void EagerFetching_MixedProperty_ViaLinqCast ()
     {
       var query = (from o in QueryFactory.CreateLinqQuery<TargetClassForPersistentMixin> ()
-                   where object.Equals (o.ID, DomainObjectIDs.TargetClassForPersistentMixins2)
+                   where o.ID == DomainObjectIDs.TargetClassForPersistentMixins2
                    select o)
                    .FetchMany (o => o.MixedMembers.CollectionProperty1Side);
 

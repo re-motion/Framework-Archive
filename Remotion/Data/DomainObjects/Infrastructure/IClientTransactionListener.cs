@@ -50,14 +50,14 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
     /// <summary>
     /// Indicates a new <see cref="DomainObject"/> instance is being created. This event is called while the <see cref="DomainObject"/> base 
-    /// constructor is executing before the subclass constructors have run and before the object has got its <see cref="IObjectID{DomainObject}"/> or 
+    /// constructor is executing before the subclass constructors have run and before the object has got its <see cref="ObjectID"/> or 
     /// <see cref="DataContainer"/>. If this method throws an exception, the object construction will be canceled and no side effects will remain.
     /// </summary>
     void NewObjectCreating (ClientTransaction clientTransaction, Type type);
 
-    void ObjectsLoading (ClientTransaction clientTransaction, ReadOnlyCollection<IObjectID<DomainObject>> objectIDs);
+    void ObjectsLoading (ClientTransaction clientTransaction, ReadOnlyCollection<ObjectID> objectIDs);
     void ObjectsLoaded (ClientTransaction clientTransaction, ReadOnlyCollection<DomainObject> domainObjects);
-    void ObjectsNotFound (ClientTransaction clientTransaction, ReadOnlyCollection<IObjectID<DomainObject>> objectIDs);
+    void ObjectsNotFound (ClientTransaction clientTransaction, ReadOnlyCollection<ObjectID> objectIDs);
 
     void ObjectsUnloading (ClientTransaction clientTransaction, ReadOnlyCollection<DomainObject> unloadedDomainObjects);
     void ObjectsUnloaded (ClientTransaction clientTransaction, ReadOnlyCollection<DomainObject> unloadedDomainObjects);

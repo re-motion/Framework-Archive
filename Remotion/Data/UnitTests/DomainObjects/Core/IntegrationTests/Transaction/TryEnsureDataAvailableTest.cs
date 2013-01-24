@@ -38,7 +38,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
 
       ListenerMock.AssertWasNotCalled (mock => mock.ObjectsLoading (
           Arg<ClientTransaction>.Is.Anything,
-          Arg<ReadOnlyCollection<IObjectID<DomainObject>>>.Is.Anything));
+          Arg<ReadOnlyCollection<ObjectID>>.Is.Anything));
       CheckLoaded (LoadedObject1);
       Assert.That (result, Is.True);
     }
@@ -52,7 +52,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
 
       ListenerMock.AssertWasCalled (mock => mock.ObjectsLoading (
           Arg.Is (TestableClientTransaction),
-          Arg<ReadOnlyCollection<IObjectID<DomainObject>>>.List.ContainsAll (new[] { NotLoadedObject1.ID })));
+          Arg<ReadOnlyCollection<ObjectID>>.List.ContainsAll (new[] { NotLoadedObject1.ID })));
       ListenerMock.AssertWasCalled (mock => mock.ObjectsLoaded (
           Arg.Is (TestableClientTransaction),
           Arg<ReadOnlyCollection<DomainObject>>.List.ContainsAll (new[] { NotLoadedObject1 })));
@@ -99,7 +99,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
 
       var result = TestableClientTransaction.TryEnsureDataAvailable (new[] { LoadedObject1.ID, LoadedObject2.ID });
 
-      ListenerMock.AssertWasNotCalled (mock => mock.ObjectsLoading (Arg<ClientTransaction>.Is.Anything, Arg<ReadOnlyCollection<IObjectID<DomainObject>>>.Is.Anything));
+      ListenerMock.AssertWasNotCalled (mock => mock.ObjectsLoading (Arg<ClientTransaction>.Is.Anything, Arg<ReadOnlyCollection<ObjectID>>.Is.Anything));
       Assert.That (result, Is.True);
     }
 
@@ -110,7 +110,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
 
       ListenerMock.AssertWasCalled (mock => mock.ObjectsLoading (
           Arg.Is (TestableClientTransaction),
-          Arg<ReadOnlyCollection<IObjectID<DomainObject>>>.List.Equivalent (new[] { NotLoadedObject1.ID, NotLoadedObject2.ID })));
+          Arg<ReadOnlyCollection<ObjectID>>.List.Equivalent (new[] { NotLoadedObject1.ID, NotLoadedObject2.ID })));
       Assert.That (result, Is.True);
     }
 
@@ -121,14 +121,14 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
 
       ListenerMock.AssertWasCalled (mock => mock.ObjectsLoading (
           Arg.Is (TestableClientTransaction),
-          Arg<ReadOnlyCollection<IObjectID<DomainObject>>>.List.Equivalent (new[] { NotLoadedObject1.ID, NotLoadedObject2.ID })));
+          Arg<ReadOnlyCollection<ObjectID>>.List.Equivalent (new[] { NotLoadedObject1.ID, NotLoadedObject2.ID })));
       ListenerMock.AssertWasCalled (mock => mock.ObjectsLoaded (
           Arg.Is (TestableClientTransaction),
           Arg<ReadOnlyCollection<DomainObject>>.List.Equivalent (new[] { NotLoadedObject1, NotLoadedObject2 })));
 
       ListenerMock.AssertWasNotCalled (mock => mock.ObjectsLoading (
           Arg<ClientTransaction>.Is.Anything,
-          Arg<ReadOnlyCollection<IObjectID<DomainObject>>>.List.ContainsAll (new[] { LoadedObject1.ID })));
+          Arg<ReadOnlyCollection<ObjectID>>.List.ContainsAll (new[] { LoadedObject1.ID })));
 
       Assert.That (result, Is.True);
     }

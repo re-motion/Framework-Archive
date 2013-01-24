@@ -39,7 +39,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.SqlServer
       DataContainer newDataContainer = CreateNewDataContainer (typeof (Computer));
       SetPropertyValue (newDataContainer, typeof (Computer), "SerialNumber", "123");
 
-      IObjectID<DomainObject> newID = newDataContainer.ID;
+      ObjectID newID = newDataContainer.ID;
 
       Provider.Save (new[] { newDataContainer });
 
@@ -53,7 +53,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.SqlServer
     public void AllDataTypes ()
     {
       DataContainer classWithAllDataTypes = CreateNewDataContainer (typeof (ClassWithAllDataTypes));
-      IObjectID<DomainObject> newID = classWithAllDataTypes.ID;
+      ObjectID newID = classWithAllDataTypes.ID;
 
       SetPropertyValue (classWithAllDataTypes, typeof (ClassWithAllDataTypes), "BooleanProperty", true);
       SetPropertyValue (classWithAllDataTypes, typeof (ClassWithAllDataTypes), "ByteProperty", (byte) 42);
@@ -148,7 +148,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.SqlServer
     public void AllDataTypes_DefaultValues ()
     {
       DataContainer classWithAllDataTypes = CreateNewDataContainer (typeof (ClassWithAllDataTypes));
-      IObjectID<DomainObject> newID = classWithAllDataTypes.ID;
+      ObjectID newID = classWithAllDataTypes.ID;
 
       SetPropertyValue (classWithAllDataTypes, typeof (ClassWithAllDataTypes), "DateProperty", new DateTime (1753, 1, 1));
       SetPropertyValue (classWithAllDataTypes, typeof (ClassWithAllDataTypes), "DateTimeProperty", new DateTime (
@@ -270,7 +270,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.SqlServer
     public void SaveNullBinary ()
     {
       DataContainer dataContainer = CreateNewDataContainer (typeof (ClassWithAllDataTypes));
-      IObjectID<DomainObject> newID = dataContainer.ID;
+      ObjectID newID = dataContainer.ID;
 
       SetDefaultValues (dataContainer);
       var propertyDefinition = GetPropertyDefinition (typeof (ClassWithAllDataTypes), "NullableBinaryProperty");
@@ -286,7 +286,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.SqlServer
     public void SaveEmptyBinary ()
     {
       DataContainer dataContainer = CreateNewDataContainer (typeof (ClassWithAllDataTypes));
-      IObjectID<DomainObject> newID = dataContainer.ID;
+      ObjectID newID = dataContainer.ID;
 
       SetDefaultValues (dataContainer);
       var propertyDefinition = GetPropertyDefinition (typeof (ClassWithAllDataTypes), "NullableBinaryProperty");
@@ -302,7 +302,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.SqlServer
     public void SaveLargeBinary ()
     {
       DataContainer dataContainer = CreateNewDataContainer (typeof (ClassWithAllDataTypes));
-      IObjectID<DomainObject> newID = dataContainer.ID;
+      ObjectID newID = dataContainer.ID;
 
       SetDefaultValues (dataContainer);
       var propertyDefinition = GetPropertyDefinition (typeof (ClassWithAllDataTypes), "BinaryProperty");
@@ -330,12 +330,12 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.SqlServer
       SetPropertyValue (classWithAllDataTypesContainer, typeof (ClassWithAllDataTypes), "DecimalProperty", 10m);
     }
 
-    private DataContainer LoadDataContainer (IObjectID<DomainObject> id)
+    private DataContainer LoadDataContainer (ObjectID id)
     {
       return Provider.LoadDataContainer (id).LocatedObject;
     }
 
-    private DataContainer LoadDataContainerWithSeparateProvider (IObjectID<DomainObject> id)
+    private DataContainer LoadDataContainerWithSeparateProvider (ObjectID id)
     {
       using (var separateProvider = CreateRdbmsProvider ())
       {
@@ -343,7 +343,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.SqlServer
       }
     }
 
-    private DataContainer ReloadDataContainer (IObjectID<DomainObject> id)
+    private DataContainer ReloadDataContainer (ObjectID id)
     {
       Provider.Disconnect();
 

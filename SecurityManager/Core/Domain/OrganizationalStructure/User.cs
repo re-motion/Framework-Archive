@@ -49,7 +49,7 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
       return NewObject<User> ();
     }
 
-    public static new User GetObject (IObjectID<DomainObject> id)
+    public static new User GetObject (ObjectID id)
     {
       return DomainObject.GetObject<User> (id);
     }
@@ -65,12 +65,12 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
       return result.SingleOrDefault();
     }
 
-    public static IQueryable<User> FindByTenantID (IObjectID<DomainObject> tenantID)
+    public static IQueryable<User> FindByTenantID (ObjectID tenantID)
     {
       ArgumentUtility.CheckNotNull ("tenantID", tenantID);
 
       return from u in QueryFactory.CreateLinqQuery<User>()
-             where object.Equals (u.Tenant.ID, tenantID)
+             where u.Tenant.ID == tenantID
              orderby u.LastName, u.FirstName
              select u;
     }

@@ -24,7 +24,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
       _freshlyLoadedDataContainer = freshlyLoadedDataContainer;
     }
 
-    public IObjectID<DomainObject> ObjectID
+    public ObjectID ObjectID
     {
       get { return _freshlyLoadedDataContainer.ID; }
     }

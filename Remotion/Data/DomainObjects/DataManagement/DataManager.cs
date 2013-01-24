@@ -211,7 +211,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
       _invalidDomainObjectManager.MarkInvalid (domainObject);
     }
 
-    public void MarkNotInvalid (IObjectID<DomainObject> objectID)
+    public void MarkNotInvalid (ObjectID objectID)
     {
       ArgumentUtility.CheckNotNull ("objectID", objectID);
 
@@ -248,7 +248,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
       _dataContainerMap.RollbackAllDataContainers();
     }
 
-    public DataContainer GetDataContainerWithoutLoading (IObjectID<DomainObject> objectID)
+    public DataContainer GetDataContainerWithoutLoading (ObjectID objectID)
     {
       ArgumentUtility.CheckNotNull ("objectID", objectID);
 
@@ -258,7 +258,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
       return DataContainers[objectID];
     }
 
-    public DataContainer GetDataContainerWithLazyLoad (IObjectID<DomainObject> objectID, bool throwOnNotFound)
+    public DataContainer GetDataContainerWithLazyLoad (ObjectID objectID, bool throwOnNotFound)
     {
       ArgumentUtility.CheckNotNull ("objectID", objectID);
 
@@ -273,7 +273,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
       return DataContainers[objectID];
     }
 
-    public IEnumerable<DataContainer> GetDataContainersWithLazyLoad (IEnumerable<IObjectID<DomainObject>> objectIDs, bool throwOnNotFound)
+    public IEnumerable<DataContainer> GetDataContainersWithLazyLoad (IEnumerable<ObjectID> objectIDs, bool throwOnNotFound)
     {
       ArgumentUtility.CheckNotNull ("objectIDs", objectIDs);
 
@@ -328,7 +328,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
         virtualObjectEndPoint.MarkDataComplete (domainObject);
     }
 
-    public DataContainer LoadLazyDataContainer (IObjectID<DomainObject> objectID)
+    public DataContainer LoadLazyDataContainer (ObjectID objectID)
     {
       ArgumentUtility.CheckNotNull ("objectID", objectID);
 
@@ -375,7 +375,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
       return new DeleteCommand (_clientTransaction, deletedObject, _transactionEventSink);
     }
 
-    public IDataManagementCommand CreateUnloadCommand (params IObjectID<DomainObject>[] objectIDs)
+    public IDataManagementCommand CreateUnloadCommand (params ObjectID[] objectIDs)
     {
       ArgumentUtility.CheckNotNull ("objectIDs", objectIDs);
 
@@ -452,7 +452,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
       return new ClientTransactionsDifferException (String.Format (message, args));
     }
 
-    private UnregisterDataContainerCommand CreateUnregisterDataContainerCommand (IObjectID<DomainObject> objectID)
+    private UnregisterDataContainerCommand CreateUnregisterDataContainerCommand (ObjectID objectID)
     {
       return new UnregisterDataContainerCommand (objectID, _dataContainerMap);
     }

@@ -52,7 +52,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
       return SafeInnerDataManager.GetRelationEndPointWithoutLoading (endPointID);
     }
 
-    public DataContainer GetDataContainerWithoutLoading (IObjectID<DomainObject> objectID)
+    public DataContainer GetDataContainerWithoutLoading (ObjectID objectID)
     {
       return SafeInnerDataManager.GetDataContainerWithoutLoading (objectID);
     }
@@ -82,12 +82,12 @@ namespace Remotion.Data.DomainObjects.DataManagement
       get { return SafeInnerDataManager.DomainObjectStateCache; }
     }
 
-    public DataContainer GetDataContainerWithLazyLoad (IObjectID<DomainObject> objectID, bool throwOnNotFound)
+    public DataContainer GetDataContainerWithLazyLoad (ObjectID objectID, bool throwOnNotFound)
     {
       return SafeInnerDataManager.GetDataContainerWithLazyLoad (objectID, throwOnNotFound);
     }
 
-    public IEnumerable<DataContainer> GetDataContainersWithLazyLoad (IEnumerable<IObjectID<DomainObject>> objectIDs, bool throwOnNotFound)
+    public IEnumerable<DataContainer> GetDataContainersWithLazyLoad (IEnumerable<ObjectID> objectIDs, bool throwOnNotFound)
     {
       return SafeInnerDataManager.GetDataContainersWithLazyLoad (objectIDs, throwOnNotFound);
     }
@@ -117,7 +117,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
       SafeInnerDataManager.MarkInvalid (domainObject);
     }
 
-    public void MarkNotInvalid (IObjectID<DomainObject> objectID)
+    public void MarkNotInvalid (ObjectID objectID)
     {
       SafeInnerDataManager.MarkNotInvalid (objectID);
     }
@@ -137,7 +137,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
       return SafeInnerDataManager.CreateDeleteCommand (deletedObject);
     }
 
-    public IDataManagementCommand CreateUnloadCommand (params IObjectID<DomainObject>[] objectIDs)
+    public IDataManagementCommand CreateUnloadCommand (params ObjectID[] objectIDs)
     {
       return SafeInnerDataManager.CreateUnloadCommand (objectIDs);
     }
@@ -162,7 +162,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
       SafeInnerDataManager.LoadLazyVirtualObjectEndPoint (endPointID);
     }
 
-    public DataContainer LoadLazyDataContainer (IObjectID<DomainObject> objectID)
+    public DataContainer LoadLazyDataContainer (ObjectID objectID)
     {
       return SafeInnerDataManager.LoadLazyDataContainer (objectID);
     }

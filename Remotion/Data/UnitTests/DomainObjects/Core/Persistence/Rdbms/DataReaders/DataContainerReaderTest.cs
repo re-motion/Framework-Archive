@@ -191,7 +191,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.DataReade
       Assert.That (result[0], Is.Null);
     }
 
-    private void ExpectPropertyCombinesForOrderTicket (IObjectID<DomainObject> objectID, object timestamp, string fileName, IObjectID<DomainObject> order)
+    private void ExpectPropertyCombinesForOrderTicket (ObjectID objectID, object timestamp, string fileName, ObjectID order)
     {
       _idPropertyStrictMock
           .Expect (mock => mock.CombineValue (Arg<IColumnValueProvider>.Is.Anything))
@@ -228,7 +228,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.DataReade
       _persistenceModelProviderStub.Stub (stub => stub.GetStoragePropertyDefinition (propertyDefinition)).Return (storagePropertyDefinitionStub);
     }
 
-    private void CheckLoadedDataContainer (DataContainer dataContainer, IObjectID<DomainObject> expectedID, int expectedTimestamp, string expectedFileName, IObjectID<DomainObject> expectedOrder)
+    private void CheckLoadedDataContainer (DataContainer dataContainer, ObjectID expectedID, int expectedTimestamp, string expectedFileName, ObjectID expectedOrder)
     {
       Assert.That (dataContainer.ID, Is.EqualTo (expectedID));
       Assert.That (dataContainer.Timestamp, Is.EqualTo (expectedTimestamp));

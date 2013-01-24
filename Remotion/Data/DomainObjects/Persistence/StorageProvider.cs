@@ -75,19 +75,19 @@ namespace Remotion.Data.DomainObjects.Persistence
       _disposed = true;
     }
 
-    public abstract ObjectLookupResult<DataContainer> LoadDataContainer (IObjectID<DomainObject> id);
+    public abstract ObjectLookupResult<DataContainer> LoadDataContainer (ObjectID id);
 
-    public abstract IEnumerable<ObjectLookupResult<DataContainer>> LoadDataContainers (IEnumerable<IObjectID<DomainObject>> ids);
+    public abstract IEnumerable<ObjectLookupResult<DataContainer>> LoadDataContainers (IEnumerable<ObjectID> ids);
 
     public abstract IEnumerable<DataContainer> LoadDataContainersByRelatedID (
-        RelationEndPointDefinition relationEndPointDefinition, SortExpressionDefinition sortExpressionDefinition, IObjectID<DomainObject> relatedID);
+        RelationEndPointDefinition relationEndPointDefinition, SortExpressionDefinition sortExpressionDefinition, ObjectID relatedID);
 
     public abstract void Save (IEnumerable<DataContainer> dataContainers);
     public abstract void UpdateTimestamps (IEnumerable<DataContainer> dataContainers);
     public abstract void BeginTransaction ();
     public abstract void Commit ();
     public abstract void Rollback ();
-    public abstract IObjectID<DomainObject> CreateNewObjectID (ClassDefinition classDefinition);
+    public abstract ObjectID CreateNewObjectID (ClassDefinition classDefinition);
     public abstract IEnumerable<DataContainer> ExecuteCollectionQuery (IQuery query);
     public abstract IEnumerable<IQueryResultRow> ExecuteCustomQuery (IQuery query);
     public abstract object ExecuteScalarQuery (IQuery query);

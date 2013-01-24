@@ -204,11 +204,11 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DomainObjects
       OrderTicket orderTicket = OrderTicket.NewObject (order);
       OrderItem orderItem = OrderItem.NewObject ();
 
-      IObjectID<DomainObject> ceoID = ceo.ID;
-      IObjectID<DomainObject> customerID = customer.ID;
-      IObjectID<DomainObject> orderID = order.ID;
-      IObjectID<DomainObject> orderTicketID = orderTicket.ID;
-      IObjectID<DomainObject> orderItemID = orderItem.ID;
+      ObjectID ceoID = ceo.ID;
+      ObjectID customerID = customer.ID;
+      ObjectID orderID = order.ID;
+      ObjectID orderTicketID = orderTicket.ID;
+      ObjectID orderItemID = orderItem.ID;
 
       ceo.Name = "Ford Prefect";
 
@@ -285,8 +285,8 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DomainObjects
       Employee supervisor = Employee.NewObject ();
       Employee subordinate = Employee.NewObject ();
 
-      IObjectID<DomainObject> supervisorID = supervisor.ID;
-      IObjectID<DomainObject> subordinateID = subordinate.ID;
+      ObjectID supervisorID = supervisor.ID;
+      ObjectID subordinateID = subordinate.ID;
 
       supervisor.Name = "Slartibartfast";
       subordinate.Name = "Zarniwoop";
@@ -321,7 +321,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DomainObjects
     {
       Computer computer = Computer.GetObject (DomainObjectIDs.Computer4);
       Employee newEmployee = Employee.NewObject ();
-      IObjectID<DomainObject> newEmployeeID = newEmployee.ID;
+      ObjectID newEmployeeID = newEmployee.ID;
 
       newEmployee.Computer = computer;
       newEmployee.Name = "Arthur Dent";

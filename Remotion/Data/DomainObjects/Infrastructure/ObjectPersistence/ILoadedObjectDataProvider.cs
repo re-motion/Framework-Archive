@@ -28,6 +28,6 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
     /// </summary>
     /// <param name="objectID">The object ID. Must not be <see langword="null" />.</param>
     /// <returns>An <see cref="ILoadedObjectData"/> for <paramref name="objectID"/>, or <see langword="null" /> if no such object is known.</returns>
-    ILoadedObjectData GetLoadedObject (IObjectID<DomainObject> objectID);
+    ILoadedObjectData GetLoadedObject (ObjectID objectID);
   }
 }

@@ -201,7 +201,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.Model.Bui
       Assert.That (((SerializedObjectIDStoragePropertyDefinition) result).SerializedIDProperty, Is.TypeOf<SimpleStoragePropertyDefinition> ());
       var serializedIDProperty = ((SimpleStoragePropertyDefinition) ((SerializedObjectIDStoragePropertyDefinition) result).SerializedIDProperty);
 
-      Assert.That (serializedIDProperty.PropertyType, Is.SameAs (typeof (IObjectID<DomainObject>)));
+      Assert.That (serializedIDProperty.PropertyType, Is.SameAs (typeof (ObjectID)));
       Assert.That (serializedIDProperty.ColumnDefinition.Name, Is.EqualTo ("FakeRelationColumnName"));
       Assert.That (serializedIDProperty.ColumnDefinition.StorageTypeInfo, Is.SameAs (_fakeStorageTypeInformation1));
       Assert.That (serializedIDProperty.ColumnDefinition.IsPartOfPrimaryKey, Is.False);

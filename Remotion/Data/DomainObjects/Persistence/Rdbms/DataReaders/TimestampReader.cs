@@ -28,7 +28,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
   /// The command whose data is converted must return an ID and a timestamp (as defined by the given <see cref="IRdbmsStoragePropertyDefinition"/>
   /// instances).
   /// </summary>
-  public class TimestampReader : IObjectReader<Tuple<IObjectID<DomainObject>, object>>
+  public class TimestampReader : IObjectReader<Tuple<ObjectID, object>>
   {
     private readonly IRdbmsStoragePropertyDefinition _idProperty;
     private readonly IRdbmsStoragePropertyDefinition _timestampProperty;
@@ -61,7 +61,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
       get { return _columnOrdinalProvider; }
     }
 
-    public Tuple<IObjectID<DomainObject>, object> Read (IDataReader dataReader)
+    public Tuple<ObjectID, object> Read (IDataReader dataReader)
     {
       ArgumentUtility.CheckNotNull ("dataReader", dataReader);
 
@@ -71,7 +71,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
         return null;
     }
 
-    public IEnumerable<Tuple<IObjectID<DomainObject>, object>> ReadSequence (IDataReader dataReader)
+    public IEnumerable<Tuple<ObjectID, object>> ReadSequence (IDataReader dataReader)
     {
       ArgumentUtility.CheckNotNull ("dataReader", dataReader);
 
@@ -82,9 +82,9 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
       }
     }
 
-    private Tuple<IObjectID<DomainObject>, object> GetTimestampTuple (IColumnValueProvider columnValueProvider)
+    private Tuple<ObjectID, object> GetTimestampTuple (IColumnValueProvider columnValueProvider)
     {
-      var objectIDValue = (IObjectID<DomainObject>) _idProperty.CombineValue (columnValueProvider);
+      var objectIDValue = (ObjectID) _idProperty.CombineValue (columnValueProvider);
       if (objectIDValue == null)
         return null;
 

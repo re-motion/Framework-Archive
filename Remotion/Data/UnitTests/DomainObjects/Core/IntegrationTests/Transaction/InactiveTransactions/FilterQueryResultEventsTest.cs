@@ -78,7 +78,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
             .WhenCalled (mi => Assert.That (ActiveSubTransaction.IsActive, Is.True));
       }
 
-      var result = ActiveSubTransaction.Execute (() => QueryFactory.CreateLinqQuery<Order>().Where (obj => object.Equals (obj.ID, _order1.ID)).ToList());
+      var result = ActiveSubTransaction.Execute (() => QueryFactory.CreateLinqQuery<Order>().Where (obj => obj.ID == _order1.ID).ToList());
 
       ExtensionStrictMock.VerifyAllExpectations();
       Assert.That (result, Is.EqualTo (new[] { _order4 }));

@@ -29,7 +29,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.TestDomain.InheritanceRootSample
       return NewObject<StorageGroupClass> ();
     }
 
-    public static StorageGroupClass GetObject (IObjectID<DomainObject> id)
+    public static StorageGroupClass GetObject (ObjectID id)
     {
       return GetObject<StorageGroupClass> (id);
     }

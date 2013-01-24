@@ -47,11 +47,11 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     void RaiseNewObjectCreatingEvent (Type type);
 
     // User event
-    void RaiseObjectsLoadingEvent (ReadOnlyCollection<IObjectID<DomainObject>> objectIDs);
+    void RaiseObjectsLoadingEvent (ReadOnlyCollection<ObjectID> objectIDs);
     // User event
     void RaiseObjectsLoadedEvent (ReadOnlyCollection<DomainObject> domainObjects);
     // Infrastructure event
-    void RaiseObjectsNotFoundEvent (ReadOnlyCollection<IObjectID<DomainObject>> objectIDs);
+    void RaiseObjectsNotFoundEvent (ReadOnlyCollection<ObjectID> objectIDs);
 
     // User event
     void RaiseObjectsUnloadingEvent (ReadOnlyCollection<DomainObject> unloadedDomainObjects);

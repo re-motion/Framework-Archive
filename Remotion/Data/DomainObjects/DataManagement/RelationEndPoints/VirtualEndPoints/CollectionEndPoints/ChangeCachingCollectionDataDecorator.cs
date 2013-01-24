@@ -162,8 +162,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     /// the <see cref="OriginalData"/> collection does not contain the item, an exception is thrown. If this collection does not contain the item, it 
     /// is only removed from the <see cref="OriginalData"/>. This operation may invalidate the state cache.
     /// </summary>
-    /// <param name="objectID">The <see cref="IObjectID{DomainObject}"/> of the <see cref="DomainObject"/> to be unregistered.</param>
-    public void UnregisterOriginalItem (IObjectID<DomainObject> objectID)
+    /// <param name="objectID">The <see cref="ObjectID"/> of the <see cref="DomainObject"/> to be unregistered.</param>
+    public void UnregisterOriginalItem (ObjectID objectID)
     {
       ArgumentUtility.CheckNotNull ("objectID", objectID);
 

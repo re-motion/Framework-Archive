@@ -25,17 +25,17 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.Serializable
   [Serializable]
   public class SerializableLoadedObjectDataRegistrationListenerFake : ILoadedObjectDataRegistrationListener
   {
-    public void OnBeforeObjectRegistration (ReadOnlyCollection<IObjectID<DomainObject>> loadedObjectIDs)
+    public void OnBeforeObjectRegistration (ReadOnlyCollection<ObjectID> loadedObjectIDs)
     {
       throw new NotImplementedException();
     }
 
-    public void OnAfterObjectRegistration (ReadOnlyCollection<IObjectID<DomainObject>> objectIDsToBeLoaded, ReadOnlyCollection<DomainObject> actuallyLoadedDomainObjects)
+    public void OnAfterObjectRegistration (ReadOnlyCollection<ObjectID> objectIDsToBeLoaded, ReadOnlyCollection<DomainObject> actuallyLoadedDomainObjects)
     {
       throw new NotImplementedException();
     }
 
-    public void OnObjectsNotFound (ReadOnlyCollection<IObjectID<DomainObject>> notFoundObjectIDs)
+    public void OnObjectsNotFound (ReadOnlyCollection<ObjectID> notFoundObjectIDs)
     {
       throw new NotImplementedException();
     }

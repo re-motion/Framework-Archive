@@ -21,15 +21,15 @@ using Remotion.Utilities;
 namespace Remotion.Data.DomainObjects.Persistence.StorageProviderCommands
 {
   /// <summary>
-  /// Executes a given <see cref="IStorageProviderCommand{T,TExecutionContext}"/> and associates the result with a given <see cref="IObjectID{DomainObject}"/>, 
-  /// checking whether the return value actually matches the expected <see cref="IObjectID{DomainObject}"/>.
+  /// Executes a given <see cref="IStorageProviderCommand{T,TExecutionContext}"/> and associates the result with a given <see cref="ObjectID"/>, 
+  /// checking whether the return value actually matches the expected <see cref="ObjectID"/>.
   /// </summary>
   public class SingleDataContainerAssociateWithIDCommand<TExecutionContext> : IStorageProviderCommand<ObjectLookupResult<DataContainer>, TExecutionContext>
   {
-    private readonly IObjectID<DomainObject> _expectedObjectID;
+    private readonly ObjectID _expectedObjectID;
     private readonly IStorageProviderCommand<DataContainer, TExecutionContext> _innerCommand;
 
-    public SingleDataContainerAssociateWithIDCommand (IObjectID<DomainObject> expectedObjectID, IStorageProviderCommand<DataContainer, TExecutionContext> innerCommand)
+    public SingleDataContainerAssociateWithIDCommand (ObjectID expectedObjectID, IStorageProviderCommand<DataContainer, TExecutionContext> innerCommand)
     {
       ArgumentUtility.CheckNotNull ("expectedObjectID", expectedObjectID);
       ArgumentUtility.CheckNotNull ("innerCommand", innerCommand);
@@ -38,7 +38,7 @@ namespace Remotion.Data.DomainObjects.Persistence.StorageProviderCommands
       _innerCommand = innerCommand;
     }
 
-    public IObjectID<DomainObject> ExpectedObjectID
+    public ObjectID ExpectedObjectID
     {
       get { return _expectedObjectID; }
     }
@@ -53,7 +53,7 @@ namespace Remotion.Data.DomainObjects.Persistence.StorageProviderCommands
       ArgumentUtility.CheckNotNull ("executionContext", executionContext);
 
       var dataContainer = InnerCommand.Execute (executionContext);
-      if (dataContainer != null && !object.Equals (dataContainer.ID, _expectedObjectID))
+      if (dataContainer != null && dataContainer.ID != _expectedObjectID)
       {
         var message = string.Format (
             "The ObjectID of the loaded DataContainer '{0}' and the expected ObjectID '{1}' differ.", dataContainer.ID, _expectedObjectID);

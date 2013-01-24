@@ -30,7 +30,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.TestDomain.TableInheritance
       return NewObject<TIOrder>();
     }
 
-    public static TIOrder GetObject (IObjectID<DomainObject> id)
+    public static TIOrder GetObject (ObjectID id)
     {
       return GetObject<TIOrder> (id);
     }

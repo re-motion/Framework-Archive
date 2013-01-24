@@ -32,7 +32,7 @@ namespace Remotion.Data.DomainObjects
     /// <see langword="null" />, the method returns <see langword="null" />.</param>
     /// <returns>The <paramref name="domainObjectOrNull"/>'s <see cref="DomainObject.ID"/>, or <see langword="null" /> if <paramref name="domainObjectOrNull"/>
     /// is <see langword="null" />.</returns>
-    public static IObjectID<DomainObject> GetSafeID (this DomainObject domainObjectOrNull)
+    public static ObjectID GetSafeID (this DomainObject domainObjectOrNull)
     {
       return domainObjectOrNull != null ? domainObjectOrNull.ID : null;
     }

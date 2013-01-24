@@ -39,7 +39,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
       _existingDataContainer = existingDataContainer;
     }
 
-    public IObjectID<DomainObject> ObjectID
+    public ObjectID ObjectID
     {
       get { return _existingDataContainer.ID; }
     }

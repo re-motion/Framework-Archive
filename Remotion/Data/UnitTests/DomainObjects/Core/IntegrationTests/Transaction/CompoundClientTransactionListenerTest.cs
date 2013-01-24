@@ -107,9 +107,9 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
 
       CheckNotification (listener => listener.NewObjectCreating (TestableClientTransaction, typeof (string)));
 
-      CheckNotification (listener => listener.ObjectsLoading (TestableClientTransaction, new ReadOnlyCollection<IObjectID<DomainObject>> (new IObjectID<DomainObject>[0])));
+      CheckNotification (listener => listener.ObjectsLoading (TestableClientTransaction, new ReadOnlyCollection<ObjectID> (new ObjectID[0])));
       CheckNotification (listener => listener.ObjectsLoaded (TestableClientTransaction, domainObjects));
-      CheckNotification (listener => listener.ObjectsNotFound (TestableClientTransaction, new ReadOnlyCollection<IObjectID<DomainObject>> (new IObjectID<DomainObject>[0])));
+      CheckNotification (listener => listener.ObjectsNotFound (TestableClientTransaction, new ReadOnlyCollection<ObjectID> (new ObjectID[0])));
 
       CheckNotification (listener => listener.ObjectsUnloading (TestableClientTransaction, domainObjects));
       CheckNotification (listener => listener.ObjectsUnloaded (TestableClientTransaction, domainObjects));

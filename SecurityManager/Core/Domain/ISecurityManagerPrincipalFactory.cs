@@ -32,10 +32,10 @@ namespace Remotion.SecurityManager.Domain
     /// <summary>
     /// Instantiates a threadsafe implementation of the <see cref="ISecurityManagerPrincipal"/> interface.
     /// </summary>
-    /// <param name="tenantID">The <see cref="IObjectID{DomainObject}"/> of the <see cref="Tenant"/>. Must not be <see langword="null" />.</param>
-    /// <param name="userID">The <see cref="IObjectID{DomainObject}"/> of the <see cref="User"/>. Must not be <see langword="null" />.</param>
-    /// <param name="substitutionID">The <see cref="IObjectID{DomainObject}"/> of the <see cref="Substitution"/>.</param>
+    /// <param name="tenantID">The <see cref="ObjectID"/> of the <see cref="Tenant"/>. Must not be <see langword="null" />.</param>
+    /// <param name="userID">The <see cref="ObjectID"/> of the <see cref="User"/>. Must not be <see langword="null" />.</param>
+    /// <param name="substitutionID">The <see cref="ObjectID"/> of the <see cref="Substitution"/>.</param>
     /// <returns>A threadsafe implementation of the <see cref="ISecurityManagerPrincipal"/> interface.</returns>
-    ISecurityManagerPrincipal CreateWithLocking (IObjectID<DomainObject> tenantID, IObjectID<DomainObject> userID, IObjectID<DomainObject> substitutionID);
+    ISecurityManagerPrincipal CreateWithLocking (ObjectID tenantID, ObjectID userID, ObjectID substitutionID);
   }
 }

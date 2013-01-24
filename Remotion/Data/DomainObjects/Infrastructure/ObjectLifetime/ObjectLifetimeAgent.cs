@@ -146,7 +146,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectLifetime
       }
     }
 
-    public DomainObject GetObjectReference (IObjectID<DomainObject> objectID)
+    public DomainObject GetObjectReference (ObjectID objectID)
     {
       ArgumentUtility.CheckNotNull ("objectID", objectID);
 
@@ -161,7 +161,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectLifetime
       return creator.CreateObjectReference (objectID, _clientTransaction);
     }
 
-    public DomainObject GetObject (IObjectID<DomainObject> objectID, bool includeDeleted)
+    public DomainObject GetObject (ObjectID objectID, bool includeDeleted)
     {
       ArgumentUtility.CheckNotNull ("objectID", objectID);
 
@@ -174,7 +174,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectLifetime
       return dataContainer.DomainObject;
     }
 
-    public DomainObject TryGetObject (IObjectID<DomainObject> objectID)
+    public DomainObject TryGetObject (ObjectID objectID)
     {
       ArgumentUtility.CheckNotNull ("objectID", objectID);
 
@@ -188,7 +188,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectLifetime
       return dataContainer.DomainObject;
     }
 
-    public T[] GetObjects<T> (IEnumerable<IObjectID<DomainObject>> objectIDs)
+    public T[] GetObjects<T> (IEnumerable<ObjectID> objectIDs)
     {
       ArgumentUtility.CheckNotNull ("objectIDs", objectIDs);
 
@@ -199,7 +199,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectLifetime
           .ToArray ();
     }
 
-    public T[] TryGetObjects<T> (IEnumerable<IObjectID<DomainObject>> objectIDs)
+    public T[] TryGetObjects<T> (IEnumerable<ObjectID> objectIDs)
         where T : DomainObject
     {
       ArgumentUtility.CheckNotNull ("objectIDs", objectIDs);
@@ -241,7 +241,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectLifetime
       fullCommand.NotifyAndPerform ();
     }
 
-    private void CleanupCreatedObject (IObjectID<DomainObject> objectID, DomainObject domainObject, Exception creationException)
+    private void CleanupCreatedObject (ObjectID objectID, DomainObject domainObject, Exception creationException)
     {
       try
       {

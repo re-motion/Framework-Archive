@@ -49,7 +49,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectLifetime
       get { return _dataManager; }
     }
 
-    public IObjectInitializationContext CreateContext (IObjectID<DomainObject> objectID, ClientTransaction bindingTransaction)
+    public IObjectInitializationContext CreateContext (ObjectID objectID, ClientTransaction bindingTransaction)
     {
       ArgumentUtility.CheckNotNull ("objectID", objectID);
 

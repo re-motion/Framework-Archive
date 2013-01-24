@@ -61,7 +61,7 @@ namespace Remotion.Data.DomainObjects.Persistence
       get { return _storageProviderManager; }
     }
 
-    public IObjectID<DomainObject> CreateNewObjectID (ClassDefinition classDefinition)
+    public ObjectID CreateNewObjectID (ClassDefinition classDefinition)
     {
       CheckDisposed();
       ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
@@ -108,7 +108,7 @@ namespace Remotion.Data.DomainObjects.Persistence
       }
     }
 
-    public ObjectLookupResult<DataContainer> LoadDataContainer (IObjectID<DomainObject> id)
+    public ObjectLookupResult<DataContainer> LoadDataContainer (ObjectID id)
     {
       CheckDisposed();
       ArgumentUtility.CheckNotNull ("id", id);
@@ -119,7 +119,7 @@ namespace Remotion.Data.DomainObjects.Persistence
       return result;
     }
 
-    public IEnumerable<ObjectLookupResult<DataContainer>> LoadDataContainers (IEnumerable<IObjectID<DomainObject>> ids)
+    public IEnumerable<ObjectLookupResult<DataContainer>> LoadDataContainers (IEnumerable<ObjectID> ids)
     {
       CheckDisposed();
       ArgumentUtility.CheckNotNull ("ids", ids);
@@ -230,7 +230,7 @@ namespace Remotion.Data.DomainObjects.Persistence
         DataContainer oppositeDataContainer)
     {
       var oppositeEndPointDefinition = (RelationEndPointDefinition) relationEndPointID.Definition.GetOppositeEndPointDefinition();
-      var objectID = (IObjectID<DomainObject>) oppositeDataContainer.GetValueWithoutEvents (oppositeEndPointDefinition.PropertyDefinition, ValueAccess.Current);
+      var objectID = (ObjectID) oppositeDataContainer.GetValueWithoutEvents (oppositeEndPointDefinition.PropertyDefinition, ValueAccess.Current);
 
       if (relationEndPointID.ObjectID.ClassID != objectID.ClassID)
       {
@@ -268,9 +268,9 @@ namespace Remotion.Data.DomainObjects.Persistence
         throw new ObjectDisposedException ("PersistenceManager", "A disposed PersistenceManager cannot be accessed.");
     }
 
-    private IEnumerable<KeyValuePair<string, List<IObjectID<DomainObject>>>> GroupIDsByProvider (IEnumerable<IObjectID<DomainObject>> ids)
+    private IEnumerable<KeyValuePair<string, List<ObjectID>>> GroupIDsByProvider (IEnumerable<ObjectID> ids)
     {
-      var result = new MultiDictionary<string, IObjectID<DomainObject>> ();
+      var result = new MultiDictionary<string, ObjectID> ();
       foreach (var id in ids)
         result[id.StorageProviderDefinition.Name].Add (id);
       return result;

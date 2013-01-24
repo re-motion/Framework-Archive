@@ -31,17 +31,17 @@ namespace Remotion.Data.UnitTests.DomainObjects.TestDomain
     public static event EventHandler StaticLoadHandler;
     public static event EventHandler StaticInitializationHandler;
 
-    public static TestDomainBase GetObject (IObjectID<DomainObject> id)
+    public static TestDomainBase GetObject (ObjectID id)
     {
       return GetObject<TestDomainBase> (id);
     }
 
-    public static TestDomainBase GetObject (IObjectID<DomainObject> id, bool includeDeleted)
+    public static TestDomainBase GetObject (ObjectID id, bool includeDeleted)
     {
       return GetObject<TestDomainBase> (id, includeDeleted);
     }
 
-    public static TestDomainBase TryGetObject (IObjectID<DomainObject> id)
+    public static TestDomainBase TryGetObject (ObjectID id)
     {
       return TryGetObject<TestDomainBase> (id);
     }
@@ -75,7 +75,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.TestDomain
     [NonSerialized]
     public ClientTransaction OnReferenceInitializingTx;
     [NonSerialized]
-    public IObjectID<DomainObject> OnReferenceInitializingID;
+    public ObjectID OnReferenceInitializingID;
     [NonSerialized]
     public ClientTransaction OnReferenceInitializingBindingTransaction;
 

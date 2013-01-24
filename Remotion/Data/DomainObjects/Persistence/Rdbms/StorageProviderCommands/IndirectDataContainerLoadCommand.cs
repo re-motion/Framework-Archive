@@ -23,7 +23,7 @@ using Remotion.Utilities;
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands
 {
   /// <summary>
-  /// Executes the given <see cref="IStorageProviderCommand{T, TExecutionContext}"/> to retrieve a sequence of <see cref="IObjectID{DomainObject}"/> values, then
+  /// Executes the given <see cref="IStorageProviderCommand{T, TExecutionContext}"/> to retrieve a sequence of <see cref="ObjectID"/> values, then
   /// looks up those values via the given <see cref="IStorageProviderCommandFactory{TExecutionContext}"/>. This command can be used to indirectly
   /// load <see cref="DataContainer"/> instances via two queries, where the first yields only IDs, for example for concrete table inheritance 
   /// relation lookup.
@@ -31,11 +31,11 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands
   public class IndirectDataContainerLoadCommand
       : IStorageProviderCommand<IEnumerable<ObjectLookupResult<DataContainer>>, IRdbmsProviderCommandExecutionContext>
   {
-    private readonly IStorageProviderCommand<IEnumerable<IObjectID<DomainObject>>, IRdbmsProviderCommandExecutionContext> _objectIDLoadCommand;
+    private readonly IStorageProviderCommand<IEnumerable<ObjectID>, IRdbmsProviderCommandExecutionContext> _objectIDLoadCommand;
     private readonly IStorageProviderCommandFactory<IRdbmsProviderCommandExecutionContext> _storageProviderCommandFactory;
 
     public IndirectDataContainerLoadCommand (
-        IStorageProviderCommand<IEnumerable<IObjectID<DomainObject>>, IRdbmsProviderCommandExecutionContext> objectIDLoadCommand,
+        IStorageProviderCommand<IEnumerable<ObjectID>, IRdbmsProviderCommandExecutionContext> objectIDLoadCommand,
         IStorageProviderCommandFactory<IRdbmsProviderCommandExecutionContext> storageProviderCommandFactory)
     {
       ArgumentUtility.CheckNotNull ("objectIDLoadCommand", objectIDLoadCommand);
@@ -45,7 +45,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands
       _storageProviderCommandFactory = storageProviderCommandFactory;
     }
 
-    public IStorageProviderCommand<IEnumerable<IObjectID<DomainObject>>, IRdbmsProviderCommandExecutionContext> ObjectIDLoadCommand
+    public IStorageProviderCommand<IEnumerable<ObjectID>, IRdbmsProviderCommandExecutionContext> ObjectIDLoadCommand
     {
       get { return _objectIDLoadCommand; }
     }

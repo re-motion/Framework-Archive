@@ -150,7 +150,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DomainObjects
     public void RollbackForNewObjectWithRelations ()
     {
       Order newOrder = Order.NewObject ();
-      IObjectID<DomainObject> newOrderID = newOrder.ID;
+      ObjectID newOrderID = newOrder.ID;
 
       Order order1 = Order.GetObject (DomainObjectIDs.Order1);
       OrderTicket orderTicket1 = OrderTicket.GetObject (DomainObjectIDs.OrderTicket1);
@@ -174,7 +174,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DomainObjects
     {
       Order order = Order.GetObject (DomainObjectIDs.Order1);
       OrderItem orderItem = OrderItem.NewObject (order);
-      IObjectID<DomainObject> orderItemID = orderItem.ID;
+      ObjectID orderItemID = orderItem.ID;
 
       Assert.That (orderItem.Order, Is.SameAs (order));
       Assert.That (order.OrderItems.Contains (orderItemID), Is.True);

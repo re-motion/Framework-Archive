@@ -71,12 +71,12 @@ namespace Remotion.Data.DomainObjects.Queries.EagerFetching
       RegisterEndPointData (relationEndPointDefinition, originatingObjects, groupedRelatedObjects);
     }
 
-    private IDictionary<IObjectID<DomainObject>, ILoadedObjectData> CorrelateRelatedObjects (
+    private IDictionary<ObjectID, ILoadedObjectData> CorrelateRelatedObjects (
         IEnumerable<LoadedObjectDataWithDataSourceData> relatedObjects,
         VirtualRelationEndPointDefinition relationEndPointDefinition)
     {
       var relatedObjectsWithForeignKey = GetForeignKeysForVirtualEndPointDefinition (relatedObjects, relationEndPointDefinition);
-      var dictionary = new Dictionary<IObjectID<DomainObject>, ILoadedObjectData>();
+      var dictionary = new Dictionary<ObjectID, ILoadedObjectData>();
       foreach (var tuple in relatedObjectsWithForeignKey.Where (tuple => tuple.Item1 != null))
       {
         try
@@ -100,7 +100,7 @@ namespace Remotion.Data.DomainObjects.Queries.EagerFetching
     private void RegisterEndPointData (
        IRelationEndPointDefinition relationEndPointDefinition,
        IEnumerable<ILoadedObjectData> originatingObjects,
-       IDictionary<IObjectID<DomainObject>, ILoadedObjectData> groupedRelatedObjects)
+       IDictionary<ObjectID, ILoadedObjectData> groupedRelatedObjects)
     {
       var relatedObjectsByOriginalObject = groupedRelatedObjects;
       foreach (var originalObject in originatingObjects)

@@ -930,7 +930,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement
 
       _objectLoaderMock
           .Expect (mock => mock.LoadObjects (
-              Arg<IEnumerable<IObjectID<DomainObject>>>.List.Equal (new[] { nonLoadedDataContainer1.ID, nonLoadedDataContainer2.ID }), 
+              Arg<IEnumerable<ObjectID>>.List.Equal (new[] { nonLoadedDataContainer1.ID, nonLoadedDataContainer2.ID }), 
               Arg.Is (throwOnNotFound)))
           .WhenCalled (
               mi =>
@@ -955,9 +955,9 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement
       _invalidDomainObjectManagerMock.Stub (stub => stub.IsInvalid (DomainObjectIDs.Order1)).Return (true);
 
       _objectLoaderMock
-          .Expect (mock => mock.LoadObjects (Arg<IEnumerable<IObjectID<DomainObject>>>.Is.Anything, Arg<bool>.Is.Anything))
+          .Expect (mock => mock.LoadObjects (Arg<IEnumerable<ObjectID>>.Is.Anything, Arg<bool>.Is.Anything))
           // evaluate args to trigger exception
-          .WhenCalled (mi => ((IEnumerable<IObjectID<DomainObject>>) mi.Arguments[0]).ToList())
+          .WhenCalled (mi => ((IEnumerable<ObjectID>) mi.Arguments[0]).ToList())
           .Return (null);
       _objectLoaderMock.Replay ();
 
@@ -980,7 +980,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement
 
       _objectLoaderMock
           .Expect (mock => mock.LoadObjects (
-              Arg<IEnumerable<IObjectID<DomainObject>>>.List.Equal (new[] { nonLoadedDataContainer.ID, notFoundID }),
+              Arg<IEnumerable<ObjectID>>.List.Equal (new[] { nonLoadedDataContainer.ID, notFoundID }),
               Arg.Is (throwOnNotFound)))
           .WhenCalled (
               mi =>
@@ -1008,7 +1008,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement
           new[] { loadedDataContainer.ID },
           true);
 
-      _objectLoaderMock.AssertWasNotCalled (mock => mock.LoadObjects (Arg<IEnumerable<IObjectID<DomainObject>>>.Is.Anything, Arg<bool>.Is.Anything));
+      _objectLoaderMock.AssertWasNotCalled (mock => mock.LoadObjects (Arg<IEnumerable<ObjectID>>.Is.Anything, Arg<bool>.Is.Anything));
       Assert.That (result, Is.EqualTo (new[] { loadedDataContainer }));
     }
 
@@ -1254,7 +1254,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement
     private PersistableData CreatePersistableData (DomainObject domainObject)
     {
       var dataContainer = TestableClientTransaction.DataManager.DataContainers[domainObject.ID];
-      return new PersistableData (domainObject, domainObject.State, dataContainer, _dataManager.RelationEndPoints.Where (ep => object.Equals (ep.ObjectID, domainObject.ID)));
+      return new PersistableData (domainObject, domainObject.State, dataContainer, _dataManager.RelationEndPoints.Where (ep => ep.ObjectID == domainObject.ID));
     }
 
     private void SetDomainObject (DataContainer dc)
@@ -1294,7 +1294,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement
       return PrepareLoadedDataContainer (dataManager, ObjectID.Create(typeof (Order), Guid.NewGuid()));
     }
 
-    private DataContainer PrepareLoadedDataContainer (DataManager dataManager, IObjectID<DomainObject> objectID)
+    private DataContainer PrepareLoadedDataContainer (DataManager dataManager, ObjectID objectID)
     {
       var loadedDomainObject = DomainObjectMother.CreateFakeObject (objectID);
       var loadedDataContainer = DataContainer.CreateForExisting (objectID, null, pd => pd.DefaultValue);
@@ -1303,7 +1303,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement
       return loadedDataContainer;
     }
 
-    private DataContainer PrepareNewDataContainer (DataManager dataManager, IObjectID<DomainObject> objectID)
+    private DataContainer PrepareNewDataContainer (DataManager dataManager, ObjectID objectID)
     {
       var loadedDomainObject = DomainObjectMother.CreateFakeObject (objectID);
       var loadedDataContainer = DataContainer.CreateNew (objectID);

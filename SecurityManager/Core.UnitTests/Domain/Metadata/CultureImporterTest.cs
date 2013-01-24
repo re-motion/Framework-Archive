@@ -182,8 +182,8 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
           </localizedNames>
           ";
 
-      IObjectID<DomainObject> clerkNameID;
-      IObjectID<DomainObject> confidentialityNameID;
+      ObjectID clerkNameID;
+      ObjectID confidentialityNameID;
       _importer.Import (GetXmlDocument (cultureXml));
       using (_transaction.EnterNonDiscardingScope ())
       {

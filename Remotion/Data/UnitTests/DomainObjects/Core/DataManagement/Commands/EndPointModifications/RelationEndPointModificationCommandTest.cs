@@ -32,7 +32,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.Commands.End
   public class RelationEndPointModificationCommandTest : StandardMappingTest
   {
     private TestableClientTransaction _transaction;
-    private IObjectID<DomainObject> _objectID;
+    private ObjectID _objectID;
     private Order _domainObject;
     private IRelationEndPointDefinition _endPointDefinition;
     

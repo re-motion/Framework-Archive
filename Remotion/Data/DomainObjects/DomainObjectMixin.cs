@@ -59,11 +59,11 @@ namespace Remotion.Data.DomainObjects
       where TNextCallRequirements : class, IDomainObjectNextCallRequirements
   {
     /// <summary>
-    /// Gets the <see cref="IObjectID{DomainObject}"/> of this mixin's target object.
+    /// Gets the <see cref="ObjectID"/> of this mixin's target object.
     /// </summary>
-    /// <value>The <see cref="IObjectID{DomainObject}"/> of this mixin's target object.</value>
+    /// <value>The <see cref="ObjectID"/> of this mixin's target object.</value>
     [StorageClassNone]
-    protected IObjectID<DomainObject> ID
+    protected ObjectID ID
     {
       get { return Target.ID; }
     }

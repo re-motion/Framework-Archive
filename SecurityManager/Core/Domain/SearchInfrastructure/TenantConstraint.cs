@@ -23,15 +23,15 @@ namespace Remotion.SecurityManager.Domain.SearchInfrastructure
 {
   public class TenantConstraint
   {
-    private readonly IObjectID<DomainObject> _value;
+    private readonly ObjectID _value;
 
-    public TenantConstraint (IObjectID<DomainObject> value)
+    public TenantConstraint (ObjectID value)
     {
       ArgumentUtility.CheckNotNull ("value", value);
       _value = value;
     }
 
-    public IObjectID<DomainObject> Value
+    public ObjectID Value
     {
       get { return _value; }
     }

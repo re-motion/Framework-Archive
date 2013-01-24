@@ -30,12 +30,12 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Mapping.TestDomain.Integrat
       return NewObject<Employee> ();
     }
 
-    public new static Employee GetObject (IObjectID<DomainObject> id)
+    public new static Employee GetObject (ObjectID id)
     {
       return GetObject<Employee> (id);
     }
 
-    public new static Employee GetObject (IObjectID<DomainObject> id, bool includeDeleted)
+    public new static Employee GetObject (ObjectID id, bool includeDeleted)
     {
       return GetObject<Employee> (id, includeDeleted);
     }

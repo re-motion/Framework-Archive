@@ -30,13 +30,13 @@ namespace Remotion.Data.DomainObjects.Persistence
   /// </summary>
   public interface IStorageProviderCommandFactory<in TExecutionContext>
   {
-    IStorageProviderCommand<ObjectLookupResult<DataContainer>, TExecutionContext> CreateForSingleIDLookup (IObjectID<DomainObject> objectID);
+    IStorageProviderCommand<ObjectLookupResult<DataContainer>, TExecutionContext> CreateForSingleIDLookup (ObjectID objectID);
 
     IStorageProviderCommand<IEnumerable<ObjectLookupResult<DataContainer>>, TExecutionContext> CreateForSortedMultiIDLookup (
-        IEnumerable<IObjectID<DomainObject>> objectIDs);
+        IEnumerable<ObjectID> objectIDs);
 
     IStorageProviderCommand<IEnumerable<DataContainer>, TExecutionContext> CreateForRelationLookup (
-        RelationEndPointDefinition foreignKeyEndPoint, IObjectID<DomainObject> foreignKeyValue, SortExpressionDefinition sortExpressionDefinition);
+        RelationEndPointDefinition foreignKeyEndPoint, ObjectID foreignKeyValue, SortExpressionDefinition sortExpressionDefinition);
 
     IStorageProviderCommand<IEnumerable<DataContainer>, TExecutionContext> CreateForDataContainerQuery (IQuery query);
     IStorageProviderCommand<IEnumerable<IQueryResultRow>, TExecutionContext> CreateForCustomQuery (IQuery query);
@@ -44,7 +44,7 @@ namespace Remotion.Data.DomainObjects.Persistence
     IStorageProviderCommand<object, IRdbmsProviderCommandExecutionContext> CreateForScalarQuery (IQuery query);
 
     IStorageProviderCommand<IEnumerable<ObjectLookupResult<object>>, TExecutionContext> CreateForMultiTimestampLookup (
-        IEnumerable<IObjectID<DomainObject>> objectIDs); 
+        IEnumerable<ObjectID> objectIDs); 
 
     IStorageProviderCommand<TExecutionContext> CreateForSave (IEnumerable<DataContainer> dataContainers);
   }

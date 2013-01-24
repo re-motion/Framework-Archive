@@ -33,7 +33,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
       _invalidObjectReference = invalidObjectReference;
     }
 
-    public IObjectID<DomainObject> ObjectID
+    public ObjectID ObjectID
     {
       get { return _invalidObjectReference.ID; }
     }

@@ -46,7 +46,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Mapping
     [Test]
     [ExpectedException (typeof (MappingException), ExpectedMessage =
         "Relation definition error: Property 'Remotion.Data.UnitTests.DomainObjects.Core.Mapping.TestDomain.Integration.Company.Name' of class 'Company' is of type "
-        + "'System.String', but non-virtual properties must be of type 'Remotion.Data.DomainObjects.IObjectID`1[Remotion.Data.DomainObjects.DomainObject]'.")]
+        + "'System.String', but non-virtual properties must be of type 'Remotion.Data.DomainObjects.ObjectID'.")]
     public void Initialization_PropertyOfWrongType ()
     {
       var companyDefinition = FakeMappingConfiguration.Current.TypeDefinitions[typeof (Company)];

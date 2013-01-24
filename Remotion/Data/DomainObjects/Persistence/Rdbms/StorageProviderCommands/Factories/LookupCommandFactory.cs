@@ -75,7 +75,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
       get { return _tableDefinitionFinder; }
     }
 
-    public virtual IStorageProviderCommand<ObjectLookupResult<DataContainer>, IRdbmsProviderCommandExecutionContext> CreateForSingleIDLookup (IObjectID<DomainObject> objectID)
+    public virtual IStorageProviderCommand<ObjectLookupResult<DataContainer>, IRdbmsProviderCommandExecutionContext> CreateForSingleIDLookup (ObjectID objectID)
     {
       ArgumentUtility.CheckNotNull ("objectID", objectID);
 
@@ -90,7 +90,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
     }
 
     public virtual IStorageProviderCommand<IEnumerable<ObjectLookupResult<DataContainer>>, IRdbmsProviderCommandExecutionContext> CreateForSortedMultiIDLookup (
-        IEnumerable<IObjectID<DomainObject>> objectIDs)
+        IEnumerable<ObjectID> objectIDs)
     {
       ArgumentUtility.CheckNotNull ("objectIDs", objectIDs);
 
@@ -110,7 +110,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
     }
 
     public virtual IStorageProviderCommand<IEnumerable<ObjectLookupResult<object>>, IRdbmsProviderCommandExecutionContext> CreateForMultiTimestampLookup (
-        IEnumerable<IObjectID<DomainObject>> objectIDs)
+        IEnumerable<ObjectID> objectIDs)
     {
       ArgumentUtility.CheckNotNull ("objectIDs", objectIDs);
 
@@ -124,7 +124,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
           let dbCommandBuilder = CreateIDLookupDbCommandBuilder (idsByTable.Key, selectedColumns, idsByTable)
           select Tuple.Create (dbCommandBuilder, timestampReader);
 
-      var loadCommand = new MultiObjectLoadCommand<Tuple<IObjectID<DomainObject>, object>> (dbCommandBuildersAndReaders);
+      var loadCommand = new MultiObjectLoadCommand<Tuple<ObjectID, object>> (dbCommandBuildersAndReaders);
       return DelegateBasedCommand.Create (
           loadCommand,
           lookupResults => lookupResults.Select (
@@ -140,7 +140,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
     protected virtual IDbCommandBuilder CreateIDLookupDbCommandBuilder (
         TableDefinition tableDefinition,
         IEnumerable<ColumnDefinition> selectedColumns,
-        IEnumerable<IObjectID<DomainObject>> objectIDs)
+        IEnumerable<ObjectID> objectIDs)
     {
       var checkedCastObjectIDs = objectIDs.Select (id =>
       {

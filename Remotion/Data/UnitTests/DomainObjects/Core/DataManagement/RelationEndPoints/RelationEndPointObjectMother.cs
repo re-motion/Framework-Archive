@@ -87,7 +87,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.RelationEndP
           dataManagerFactory);
     }
 
-    public static ObjectEndPoint CreateObjectEndPoint (RelationEndPointID endPointID, IObjectID<DomainObject> oppositeObjectID)
+    public static ObjectEndPoint CreateObjectEndPoint (RelationEndPointID endPointID, ObjectID oppositeObjectID)
     {
       if (endPointID.Definition.IsVirtual)
       {
@@ -105,7 +105,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.RelationEndP
       }
     }
 
-    public static RelationEndPointID CreateRelationEndPointID (IObjectID<DomainObject> objectID = null, string shortPropertyName = null)
+    public static RelationEndPointID CreateRelationEndPointID (ObjectID objectID = null, string shortPropertyName = null)
     {
       objectID = objectID ?? ObjectID.Create(typeof (Order), Guid.NewGuid());
       shortPropertyName = shortPropertyName ?? "OrderItems";

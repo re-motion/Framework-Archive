@@ -42,12 +42,12 @@ namespace Remotion.Data.UnitTests.DomainObjects
       get { return (IClientTransactionEventBroker) PrivateInvoke.GetNonPublicProperty (this, typeof (ClientTransaction), "eventBroker"); }
     }
 
-    public new DomainObject GetObject (IObjectID<DomainObject> id, bool includeDeleted)
+    public new DomainObject GetObject (ObjectID id, bool includeDeleted)
     {
       return base.GetObject (id, includeDeleted);
     }
 
-    public new DomainObject TryGetObject (IObjectID<DomainObject> id)
+    public new DomainObject TryGetObject (ObjectID id)
     {
       return base.TryGetObject (id);
     }

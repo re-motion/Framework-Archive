@@ -77,7 +77,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Linq.IntegrationTests
     {
       Company partner = Company.GetObject (DomainObjectIDs.Partner1);
       IQueryable<Company> result = (from c in QueryFactory.CreateLinqQuery<Company> ()
-                                    where object.Equals (c.ID, partner.ID)
+                                    where c.ID == partner.ID
                                     select c);
       CheckQueryResult (result, DomainObjectIDs.Partner1);
     }
@@ -312,7 +312,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Linq.IntegrationTests
       Employee employee = Employee.GetObject (DomainObjectIDs.Employee3);
       var computers =
           from c in QueryFactory.CreateLinqQuery<Computer>()
-          where object.Equals (c.Employee.ID, employee.ID)
+          where c.Employee.ID == employee.ID
           select c;
 
       CheckQueryResult (computers, DomainObjectIDs.Computer1);
@@ -321,7 +321,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Linq.IntegrationTests
     [Test]
     public void QueryWithContainsInWhere_OnEmptyCollection ()
     {
-      var possibleItems = new IObjectID<DomainObject>[] {  };
+      var possibleItems = new ObjectID[] {  };
       var orders =
           from o in QueryFactory.CreateLinqQuery<Order>()
           where possibleItems.Contains (o.ID)
@@ -345,9 +345,9 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Linq.IntegrationTests
     [Test]
     public void QueryWithWhereOnForeignKey_RealSide ()
     {
-      IObjectID<DomainObject> id = DomainObjectIDs.Order1;
+      ObjectID id = DomainObjectIDs.Order1;
       var query = from oi in QueryFactory.CreateLinqQuery<OrderItem>()
-                  where object.Equals (oi.Order.ID, id)
+                  where oi.Order.ID == id
                   select oi;
       CheckQueryResult (query, DomainObjectIDs.OrderItem1, DomainObjectIDs.OrderItem2);
     }
@@ -355,9 +355,9 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Linq.IntegrationTests
     [Test]
     public void QueryWithWhereOnForeignKey_VirtualSide ()
     {
-      IObjectID<DomainObject> id = DomainObjectIDs.Computer1;
+      ObjectID id = DomainObjectIDs.Computer1;
       var query = from e in QueryFactory.CreateLinqQuery<Employee>()
-                  where object.Equals (e.Computer.ID, id)
+                  where e.Computer.ID == id
                   select e;
       CheckQueryResult (query, DomainObjectIDs.Employee3);
     }

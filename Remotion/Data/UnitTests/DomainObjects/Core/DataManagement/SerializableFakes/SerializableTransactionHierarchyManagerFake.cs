@@ -52,7 +52,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.Serializable
       throw new NotImplementedException();
     }
 
-    public void OnBeforeSubTransactionObjectRegistration (ICollection<IObjectID<DomainObject>> loadedObjectIDs)
+    public void OnBeforeSubTransactionObjectRegistration (ICollection<ObjectID> loadedObjectIDs)
     {
       throw new NotImplementedException();
     }
@@ -82,12 +82,12 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.Serializable
       throw new NotImplementedException();
     }
 
-    public void OnBeforeObjectRegistration (ReadOnlyCollection<IObjectID<DomainObject>> loadedObjectIDs)
+    public void OnBeforeObjectRegistration (ReadOnlyCollection<ObjectID> loadedObjectIDs)
     {
       throw new NotImplementedException();
     }
 
-    public void OnAfterObjectRegistration (ReadOnlyCollection<IObjectID<DomainObject>> objectIDsToBeLoaded)
+    public void OnAfterObjectRegistration (ReadOnlyCollection<ObjectID> objectIDsToBeLoaded)
     {
       throw new NotImplementedException();
     }

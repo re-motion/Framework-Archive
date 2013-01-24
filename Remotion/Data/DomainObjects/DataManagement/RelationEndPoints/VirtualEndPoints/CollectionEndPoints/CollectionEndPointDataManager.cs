@@ -36,7 +36,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     private readonly HashSet<IRealObjectEndPoint> _originalOppositeEndPoints;
     private readonly HashSet<DomainObject> _originalItemsWithoutEndPoint;
-    private Dictionary<IObjectID<DomainObject>, IRealObjectEndPoint> _currentOppositeEndPoints;
+    private Dictionary<ObjectID, IRealObjectEndPoint> _currentOppositeEndPoints;
 
     public CollectionEndPointDataManager (RelationEndPointID endPointID, ICollectionEndPointChangeDetectionStrategy changeDetectionStrategy)
     {
@@ -51,7 +51,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
       _originalOppositeEndPoints = new HashSet<IRealObjectEndPoint>();
       _originalItemsWithoutEndPoint = new HashSet<DomainObject>();
-      _currentOppositeEndPoints = new Dictionary<IObjectID<DomainObject>, IRealObjectEndPoint>();
+      _currentOppositeEndPoints = new Dictionary<ObjectID, IRealObjectEndPoint>();
     }
 
     public RelationEndPointID EndPointID
@@ -94,7 +94,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       get { return _originalItemsWithoutEndPoint.ToArray(); }
     }
 
-    public bool ContainsOriginalObjectID (IObjectID<DomainObject> objectID)
+    public bool ContainsOriginalObjectID (ObjectID objectID)
     {
       ArgumentUtility.CheckNotNull ("objectID", objectID);
 

@@ -25,7 +25,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders
 {
   /// <summary>
   /// The <see cref="UnionSelectDbCommandBuilder"/> builds a command that allows retrieving a set of records where a foreign key column
-  /// matches a given <see cref="IObjectID{DomainObject}"/> value from a set of unioned tables.
+  /// matches a given <see cref="ObjectID"/> value from a set of unioned tables.
   /// </summary>
   public class UnionSelectDbCommandBuilder : DbCommandBuilder
   {

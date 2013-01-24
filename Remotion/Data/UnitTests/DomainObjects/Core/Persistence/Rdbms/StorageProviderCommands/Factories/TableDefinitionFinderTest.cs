@@ -96,7 +96,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.StoragePr
       _finder.GetTableDefinition (objectID);
     }
 
-    private IObjectID<DomainObject> CreateObjectID (IStorageEntityDefinition entityDefinition)
+    private ObjectID CreateObjectID (IStorageEntityDefinition entityDefinition)
     {
       var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition (classType: typeof (Order), baseClass: null);
       classDefinition.SetStorageEntity (entityDefinition);

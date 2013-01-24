@@ -97,7 +97,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure
     [Test]
     public void ObjectsLoading ()
     {
-      _listener.ObjectsLoading (TestableClientTransaction, new ReadOnlyCollection<IObjectID<DomainObject>> (new IObjectID<DomainObject>[0]));
+      _listener.ObjectsLoading (TestableClientTransaction, new ReadOnlyCollection<ObjectID> (new ObjectID[0]));
     }
 
     [Test]

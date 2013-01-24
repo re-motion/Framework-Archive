@@ -101,7 +101,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Linq.IntegrationTests
     public void ColumnMemberAccessOnCoalesceExpression ()
     {
       var query = from e in QueryFactory.CreateLinqQuery<Employee> ()
-                  where object.Equals ((e.Computer ?? (DomainObject) e).ID, DomainObjectIDs.Employee2)
+                  where (e.Computer ?? (DomainObject) e).ID == DomainObjectIDs.Employee2
                   select e;
 
       CheckQueryResult (query, DomainObjectIDs.Employee2);
@@ -111,7 +111,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Linq.IntegrationTests
     public void ColumnMemberAccessOnConditionalExpression ()
     {
       var query = from e in QueryFactory.CreateLinqQuery<Employee> ()
-                  where Equals ((Equals (e.Computer.ID, DomainObjectIDs.Computer1) ? e.Computer : (DomainObject) e).ID, DomainObjectIDs.Computer1)
+                  where (e.Computer.ID == DomainObjectIDs.Computer1 ? e.Computer : (DomainObject) e).ID == DomainObjectIDs.Computer1
                   select e;
 
       CheckQueryResult (query, DomainObjectIDs.Employee3);
@@ -130,9 +130,9 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Linq.IntegrationTests
 
     [Test]
     [ExpectedException (typeof (NotSupportedException), ExpectedMessage =
-        "Type 'IObjectID<T>' ist not supported by this storage provider.\r\n"
+        "Type 'ObjectID' ist not supported by this storage provider.\r\n"
         + "Please select the ID and ClassID values separately, then create an ObjectID with it in memory "
-        + "(e.g., 'select ObjectID.Create (o.ID.ClassID, o.ID.Value)').")]
+        + "(e.g., 'select new ObjectID (o.ID.ClassID, o.ID.Value)').")]
     public void Query_WithObjectID ()
     {
       var query =

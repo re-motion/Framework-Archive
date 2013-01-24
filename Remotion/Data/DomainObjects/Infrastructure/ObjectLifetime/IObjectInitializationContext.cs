@@ -22,7 +22,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectLifetime
   /// </summary>
   public interface IObjectInitializationContext
   {
-    IObjectID<DomainObject> ObjectID { get; }
+    ObjectID ObjectID { get; }
     ClientTransaction BindingTransaction { get; }
     DomainObject RegisteredObject { get; }
     

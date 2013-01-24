@@ -157,7 +157,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.RelationEndP
       Assert.That (deserializedAgent.VirtualEndPointProvider, Is.Not.Null);
     }
 
-    private IRealObjectEndPoint CreateRealObjectEndPointMock (IObjectID<DomainObject> originatingObjectID, string shortPropertyName, IObjectID<DomainObject> oppositeObjectID)
+    private IRealObjectEndPoint CreateRealObjectEndPointMock (ObjectID originatingObjectID, string shortPropertyName, ObjectID oppositeObjectID)
     {
       var endPointMock = MockRepository.GenerateStrictMock<IRealObjectEndPoint> ();
       var relationEndPointID = RelationEndPointID.Create (originatingObjectID, originatingObjectID.ClassDefinition.ClassType, shortPropertyName);

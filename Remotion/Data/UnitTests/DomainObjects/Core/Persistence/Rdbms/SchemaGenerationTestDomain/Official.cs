@@ -28,7 +28,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.SchemaGen
       return DomainObject.NewObject<Official> ();
     }
 
-    public static Official GetObject (IObjectID<DomainObject> id)
+    public static Official GetObject (ObjectID id)
     {
       return DomainObject.GetObject<Official> (id);
     }

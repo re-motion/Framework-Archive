@@ -81,7 +81,7 @@ namespace Remotion.Data.DomainObjects.Queries.EagerFetching
     protected void CheckClassDefinitionOfRelatedObject (
         IRelationEndPointDefinition relationEndPointDefinition,
         LoadedObjectDataWithDataSourceData relatedObject,
-        IRelationEndPointDefinition oppositeEndPointDefinition, IObjectID<DomainObject> relatedObjectID)
+        IRelationEndPointDefinition oppositeEndPointDefinition, ObjectID relatedObjectID)
     {
       ArgumentUtility.CheckNotNull ("relationEndPointDefinition", relationEndPointDefinition);
       ArgumentUtility.CheckNotNull ("relatedObject", relatedObject);
@@ -99,7 +99,7 @@ namespace Remotion.Data.DomainObjects.Queries.EagerFetching
       }
     }
 
-    protected IEnumerable<Tuple<IObjectID<DomainObject>, LoadedObjectDataWithDataSourceData>> GetForeignKeysForVirtualEndPointDefinition (
+    protected IEnumerable<Tuple<ObjectID, LoadedObjectDataWithDataSourceData>> GetForeignKeysForVirtualEndPointDefinition (
         IEnumerable<LoadedObjectDataWithDataSourceData> loadedObjectData, 
         VirtualRelationEndPointDefinition virtualEndPointDefinition)
     {
@@ -113,7 +113,7 @@ namespace Remotion.Data.DomainObjects.Queries.EagerFetching
                  data,
                  virtualEndPointDefinition,
                  oppositeEndPointDefinition)
-             let originatingObjectID = (IObjectID<DomainObject>) dataContainer.GetValueWithoutEvents (oppositeEndPointDefinition.PropertyDefinition, ValueAccess.Current)
+             let originatingObjectID = (ObjectID) dataContainer.GetValueWithoutEvents (oppositeEndPointDefinition.PropertyDefinition, ValueAccess.Current)
              select Tuple.Create (originatingObjectID, data);
     }
 

@@ -64,7 +64,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
       EnsureWriteable (clientTransaction, "NewObjectCreating");
     }
 
-    public virtual void ObjectsLoading (ClientTransaction clientTransaction, ReadOnlyCollection<IObjectID<DomainObject>> objectIDs)
+    public virtual void ObjectsLoading (ClientTransaction clientTransaction, ReadOnlyCollection<ObjectID> objectIDs)
     {
       // Allowed - this should be safe since the subtransaction can't have data for this object
       Assertion.DebugAssert (
@@ -77,7 +77,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
       // Handled by Begin event
     }
 
-    public virtual void ObjectsNotFound (ClientTransaction clientTransaction, ReadOnlyCollection<IObjectID<DomainObject>> objectIDs)
+    public virtual void ObjectsNotFound (ClientTransaction clientTransaction, ReadOnlyCollection<ObjectID> objectIDs)
     {
       // Handled by Begin event
     }

@@ -62,9 +62,9 @@ namespace Remotion.SecurityManager.Clients.Web.Classes
       get { return null; }
     }
 
-    protected IObjectID<DomainObject> CurrentTenantID
+    protected ObjectID CurrentTenantID
     {
-      get { return (IObjectID<DomainObject>) ViewState[s_currentTenantIDKey]; }
+      get { return (ObjectID) ViewState[s_currentTenantIDKey]; }
       set { ViewState[s_currentTenantIDKey] = value; }
     }
 
@@ -83,7 +83,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes
 
     protected override void OnPreRender (EventArgs e)
     {
-      if (!object.Equals (CurrentTenantID, CurrentFunction.TenantID))
+      if (CurrentTenantID != CurrentFunction.TenantID)
       {
         CurrentTenantID = CurrentFunction.TenantID;
         _hasTenantChanged = true;

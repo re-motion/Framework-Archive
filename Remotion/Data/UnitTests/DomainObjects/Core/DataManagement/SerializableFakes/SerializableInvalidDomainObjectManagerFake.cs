@@ -24,17 +24,17 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.Serializable
   [Serializable]
   public class SerializableInvalidDomainObjectManagerFake : IInvalidDomainObjectManager
   {
-    public IEnumerable<IObjectID<DomainObject>> InvalidObjectIDs
+    public IEnumerable<ObjectID> InvalidObjectIDs
     {
       get { throw new NotImplementedException(); }
     }
 
-    public bool IsInvalid (IObjectID<DomainObject> id)
+    public bool IsInvalid (ObjectID id)
     {
       throw new NotImplementedException();
     }
 
-    public DomainObject GetInvalidObjectReference (IObjectID<DomainObject> id)
+    public DomainObject GetInvalidObjectReference (ObjectID id)
     {
       throw new NotImplementedException();
     }
@@ -44,7 +44,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.Serializable
       throw new NotImplementedException();
     }
 
-    public bool MarkNotInvalid (IObjectID<DomainObject> objectID)
+    public bool MarkNotInvalid (ObjectID objectID)
     {
       throw new NotImplementedException();
     }

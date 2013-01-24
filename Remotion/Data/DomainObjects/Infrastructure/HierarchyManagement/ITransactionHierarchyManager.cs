@@ -31,10 +31,10 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
     
     void OnBeforeTransactionInitialize ();
     void OnTransactionDiscard ();
-    void OnBeforeObjectRegistration (ReadOnlyCollection<IObjectID<DomainObject>> loadedObjectIDs);
+    void OnBeforeObjectRegistration (ReadOnlyCollection<ObjectID> loadedObjectIDs);
     // Calls to OnAfterObjectRegistration must be exactly matched with OnBeforeObjectRegistration; they must not be swallowed in case of exceptions.
-    void OnAfterObjectRegistration (ReadOnlyCollection<IObjectID<DomainObject>> objectIDsToBeLoaded);
-    void OnBeforeSubTransactionObjectRegistration (ICollection<IObjectID<DomainObject>> loadedObjectIDs);
+    void OnAfterObjectRegistration (ReadOnlyCollection<ObjectID> objectIDsToBeLoaded);
+    void OnBeforeSubTransactionObjectRegistration (ICollection<ObjectID> loadedObjectIDs);
 
     ClientTransaction CreateSubTransaction (Func<ClientTransaction, ClientTransaction> subTransactionFactory);
     void RemoveSubTransaction ();

@@ -46,7 +46,7 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Logical
             endPointDefinition.PropertyName,
             endPointDefinition.ClassDefinition.ClassType.Name,
             endPointDefinition.PropertyInfo.PropertyType.Name,
-            typeof(IObjectID<DomainObject>).Name);
+            typeof(ObjectID).Name);
         }
       }
       return MappingValidationResult.CreateValidResult();

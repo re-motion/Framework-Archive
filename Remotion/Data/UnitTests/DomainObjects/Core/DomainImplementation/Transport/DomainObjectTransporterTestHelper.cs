@@ -23,10 +23,10 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DomainImplementation.Transp
 {
   public static class DomainObjectTransporterTestHelper
   {
-    public static byte[] GetBinaryDataFor (params IObjectID<DomainObject>[] ids)
+    public static byte[] GetBinaryDataFor (params ObjectID[] ids)
     {
       var transporter = new DomainObjectTransporter();
-      foreach (IObjectID<DomainObject> id in ids)
+      foreach (ObjectID id in ids)
         transporter.Load (id);
       return GetBinaryDataFor (transporter);
     }
@@ -40,7 +40,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DomainImplementation.Transp
       }
     }
 
-    public static List<DomainObject> ImportObjects (params IObjectID<DomainObject>[] objectsToImport)
+    public static List<DomainObject> ImportObjects (params ObjectID[] objectsToImport)
     {
       byte[] binaryData = GetBinaryDataFor (objectsToImport);
       return ImportObjects (binaryData);

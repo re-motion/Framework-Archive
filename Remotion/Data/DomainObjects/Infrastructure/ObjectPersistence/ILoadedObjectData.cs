@@ -5,7 +5,7 @@
   /// </summary>
   public interface ILoadedObjectData : INullObject
   {
-    IObjectID<DomainObject> ObjectID { get; }
+    ObjectID ObjectID { get; }
     DomainObject GetDomainObjectReference ();
 
     void Accept (ILoadedObjectVisitor visitor);

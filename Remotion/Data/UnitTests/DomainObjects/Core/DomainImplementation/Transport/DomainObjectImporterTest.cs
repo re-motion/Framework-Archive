@@ -53,7 +53,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DomainImplementation.Transp
       var imported = DomainObjectTransporterTestHelper.ImportObjects (loadedIDs);
 
       Assert.IsNotEmpty (imported);
-      List<IObjectID<DomainObject>> ids = imported.ConvertAll (obj => obj.ID);
+      List<ObjectID> ids = imported.ConvertAll (obj => obj.ID);
       Assert.That (ids, Is.EquivalentTo (loadedIDs));
     }
 
@@ -307,8 +307,8 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DomainImplementation.Transp
       byte[] binaryData = DomainObjectTransporterTestHelper.GetBinaryDataFor (transporter);
       var imported = DomainObjectTransporterTestHelper.ImportObjects (binaryData);
       
-      var loadedObject1 = (Computer) imported.Find (obj => object.Equals (obj.ID, DomainObjectIDs.Computer1));
-      var loadedObject2 = (Employee) imported.Find (obj => object.Equals (obj.ID, DomainObjectIDs.Employee4));
+      var loadedObject1 = (Computer) imported.Find (obj => obj.ID == DomainObjectIDs.Computer1);
+      var loadedObject2 = (Employee) imported.Find (obj => obj.ID == DomainObjectIDs.Employee4);
       Assert.That (loadedObject1.Employee, Is.SameAs (loadedObject2));
     }
 
@@ -325,8 +325,8 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DomainImplementation.Transp
 
       byte[] binaryData = DomainObjectTransporterTestHelper.GetBinaryDataFor (transporter);
       var imported = DomainObjectTransporterTestHelper.ImportObjects (binaryData);
-      var loadedObject1 = (Computer) imported.Find (obj => object.Equals (obj.ID, DomainObjectIDs.Computer2));
-      var loadedObject2 = (Employee) imported.Find (obj => object.Equals (obj.ID, DomainObjectIDs.Employee3));
+      var loadedObject1 = (Computer) imported.Find (obj => obj.ID == DomainObjectIDs.Computer2);
+      var loadedObject2 = (Employee) imported.Find (obj => obj.ID == DomainObjectIDs.Employee3);
       Assert.That (loadedObject2.Computer, Is.SameAs (loadedObject1));
     }
 
@@ -393,7 +393,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DomainImplementation.Transp
       }
     }
 
-    private byte[] GetBinaryDataForChangedObject (IObjectID<DomainObject> id, string propertyToTouch, object newValue)
+    private byte[] GetBinaryDataForChangedObject (ObjectID id, string propertyToTouch, object newValue)
     {
       var transporter = new DomainObjectTransporter();
       transporter.Load (id);

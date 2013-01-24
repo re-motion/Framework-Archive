@@ -120,7 +120,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       // because in this case the object won't be committed to the underlying backend (e.g. database).
 
       var committingEventNotRaised = _dataManager.GetNewChangedDeletedData ().ToList ();
-      var committingEventRaised = new HashSet<IObjectID<DomainObject>>();
+      var committingEventRaised = new HashSet<ObjectID>();
 
       // Repeat this until all objects in the commit set have got the event. The commit set can change while this loop is iterated.
       while (true)
@@ -161,7 +161,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       // because the object actually has never been changed from a ClientTransaction's perspective.
 
       var rollingBackEventNotRaised = _dataManager.GetNewChangedDeletedData ().ToList ();
-      var rollingBackEventRaised = new HashSet<IObjectID<DomainObject>> ();
+      var rollingBackEventRaised = new HashSet<ObjectID> ();
 
       // Repeat this until all objects in the rollback set have got the event. The rollback set can change while this loop is iterated.
       while (true)

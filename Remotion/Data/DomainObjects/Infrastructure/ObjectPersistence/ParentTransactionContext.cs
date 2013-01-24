@@ -61,31 +61,31 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
       get { return _parentInvalidDomainObjectManager; }
     }
 
-    public IObjectID<DomainObject> CreateNewObjectID (ClassDefinition classDefinition)
+    public ObjectID CreateNewObjectID (ClassDefinition classDefinition)
     {
       ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
       return _parentTransaction.CreateNewObjectID (classDefinition);
     }
 
-    public DomainObject GetObject (IObjectID<DomainObject> objectID)
+    public DomainObject GetObject (ObjectID objectID)
     {
       ArgumentUtility.CheckNotNull ("objectID", objectID);
       return _parentTransaction.GetObject (objectID, false);
     }
 
-    public DomainObject[] GetObjects (IEnumerable<IObjectID<DomainObject>> objectIDs)
+    public DomainObject[] GetObjects (IEnumerable<ObjectID> objectIDs)
     {
       ArgumentUtility.CheckNotNull ("objectIDs", objectIDs);
       return _parentTransaction.GetObjects<DomainObject> (objectIDs);
     }
 
-    public DomainObject TryGetObject (IObjectID<DomainObject> objectID)
+    public DomainObject TryGetObject (ObjectID objectID)
     {
       ArgumentUtility.CheckNotNull ("objectID", objectID);
       return _parentTransaction.TryGetObject (objectID);
     }
 
-    public DomainObject[] TryGetObjects (IEnumerable<IObjectID<DomainObject>> objectIDs)
+    public DomainObject[] TryGetObjects (IEnumerable<ObjectID> objectIDs)
     {
       ArgumentUtility.CheckNotNull ("objectIDs", objectIDs);
       return _parentTransaction.TryGetObjects<DomainObject> (objectIDs);
@@ -129,13 +129,13 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
       return _parentTransaction.QueryManager.GetScalar (query);
     }
 
-    public DataContainer GetDataContainerWithoutLoading (IObjectID<DomainObject> objectID)
+    public DataContainer GetDataContainerWithoutLoading (ObjectID objectID)
     {
       ArgumentUtility.CheckNotNull ("objectID", objectID);
       return _parentTransaction.DataManager.GetDataContainerWithoutLoading (objectID);
     }
 
-    public DataContainer GetDataContainerWithLazyLoad (IObjectID<DomainObject> objectID, bool throwOnNotFound)
+    public DataContainer GetDataContainerWithLazyLoad (ObjectID objectID, bool throwOnNotFound)
     {
       ArgumentUtility.CheckNotNull ("objectID", objectID);
       return _parentTransaction.DataManager.GetDataContainerWithLazyLoad (objectID, throwOnNotFound);
@@ -147,7 +147,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
       return _parentTransaction.DataManager.GetRelationEndPointWithoutLoading (relationEndPointID);
     }
 
-    public bool IsInvalid (IObjectID<DomainObject> objectID)
+    public bool IsInvalid (ObjectID objectID)
     {
       ArgumentUtility.CheckNotNull ("objectID", objectID);
       return _parentInvalidDomainObjectManager.IsInvalid (objectID);

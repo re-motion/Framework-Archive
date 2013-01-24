@@ -34,19 +34,19 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
   [Serializable]
   public class InactiveClientTransactionListenerWithLoadRules : InactiveClientTransactionListener
   {
-    private readonly HashSet<IObjectID<DomainObject>> _currentlyLoadingObjectIDs = new HashSet<IObjectID<DomainObject>>();
+    private readonly HashSet<ObjectID> _currentlyLoadingObjectIDs = new HashSet<ObjectID>();
 
     public bool IsInLoadMode
     {
       get { return _currentlyLoadingObjectIDs.Count != 0; }
     }
 
-    public ReadOnlyCollectionDecorator<IObjectID<DomainObject>> CurrentlyLoadingObjectIDs
+    public ReadOnlyCollectionDecorator<ObjectID> CurrentlyLoadingObjectIDs
     {
       get { return _currentlyLoadingObjectIDs.AsReadOnly(); }
     }
 
-    public virtual void AddCurrentlyLoadingObjectIDs (IEnumerable<IObjectID<DomainObject>> objectIds)
+    public virtual void AddCurrentlyLoadingObjectIDs (IEnumerable<ObjectID> objectIds)
     {
       ArgumentUtility.CheckNotNull ("objectIds", objectIds);
 
@@ -54,7 +54,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
       _currentlyLoadingObjectIDs.UnionWith (objectIds);
     }
 
-    public virtual void RemoveCurrentlyLoadingObjectIDs (IEnumerable<IObjectID<DomainObject>> objectIds)
+    public virtual void RemoveCurrentlyLoadingObjectIDs (IEnumerable<ObjectID> objectIds)
     {
       ArgumentUtility.CheckNotNull ("objectIds", objectIds);
 
@@ -158,7 +158,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
       base.DataContainerStateUpdated (clientTransaction, container, newDataContainerState);
     }
 
-    private void CheckModifiedObjectID (IObjectID<DomainObject> objectID, string modifiedPropertyIdentifier)
+    private void CheckModifiedObjectID (ObjectID objectID, string modifiedPropertyIdentifier)
     {
       if (!_currentlyLoadingObjectIDs.Contains (objectID))
       {
@@ -185,7 +185,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
       return new InvalidOperationException (message);
     }
 
-    private bool DataContainerExistsInSubTransaction (ClientTransaction clientTransaction, IObjectID<DomainObject> objectID)
+    private bool DataContainerExistsInSubTransaction (ClientTransaction clientTransaction, ObjectID objectID)
     {
       return clientTransaction.SubTransaction != null && clientTransaction.SubTransaction.DataManager.DataContainers[objectID] != null;
     }

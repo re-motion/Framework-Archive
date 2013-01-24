@@ -26,7 +26,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Synchroniz
 {
   public static class RelationInconcsistenciesTestHelper
   {
-    public static IObjectID<DomainObject> CreateObjectAndSetRelationInOtherTransaction (RelationEndPointDefinition endPointDefinition, IObjectID<DomainObject> relatedID)
+    public static ObjectID CreateObjectAndSetRelationInOtherTransaction (RelationEndPointDefinition endPointDefinition, ObjectID relatedID)
     {
       using (ClientTransaction.CreateRootTransaction ().EnterDiscardingScope ())
       {
@@ -38,7 +38,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Synchroniz
       }
     }
 
-    public static IObjectID<DomainObject> SetRelationInOtherTransaction (RelationEndPointID endPointID, IObjectID<DomainObject> relatedID)
+    public static ObjectID SetRelationInOtherTransaction (RelationEndPointID endPointID, ObjectID relatedID)
     {
       using (ClientTransaction.CreateRootTransaction ().EnterDiscardingScope ())
       {
@@ -50,13 +50,13 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Synchroniz
       }
     }
 
-    public static void SetForeignKeyProperty (DomainObject domainObject, RelationEndPointDefinition endPointDefinition, IObjectID<DomainObject> relatedID)
+    public static void SetForeignKeyProperty (DomainObject domainObject, RelationEndPointDefinition endPointDefinition, ObjectID relatedID)
     {
       var relatedObject = LifetimeService.GetObjectReference (ClientTransaction.Current, relatedID);
       DomainObjectTestHelper.GetProperties (domainObject)[endPointDefinition.PropertyName].SetValue (relatedObject);
     }
 
-    public static IObjectID<DomainObject> CreateObjectAndSetRelationInOtherTransaction<TCreated, TRelated> (IObjectID<DomainObject> relatedID, Action<TCreated, TRelated> setter)
+    public static ObjectID CreateObjectAndSetRelationInOtherTransaction<TCreated, TRelated> (ObjectID relatedID, Action<TCreated, TRelated> setter)
         where TCreated : DomainObject
         where TRelated : DomainObject
     {
@@ -70,7 +70,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Synchroniz
       }
     }
 
-    public static IObjectID<DomainObject> SetRelationInOtherTransaction<TOriginating, TRelated> (IObjectID<DomainObject> originatingID, IObjectID<DomainObject> relatedID, Action<TOriginating, TRelated> setter)
+    public static ObjectID SetRelationInOtherTransaction<TOriginating, TRelated> (ObjectID originatingID, ObjectID relatedID, Action<TOriginating, TRelated> setter)
         where TOriginating : DomainObject
         where TRelated : DomainObject
     {

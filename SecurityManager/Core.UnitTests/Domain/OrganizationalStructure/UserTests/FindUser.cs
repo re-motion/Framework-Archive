@@ -27,7 +27,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.User
   public class FindUser : UserTestBase
   {
     private DatabaseFixtures _dbFixtures;
-    private IObjectID<DomainObject> _expectedTenantID;
+    private ObjectID _expectedTenantID;
 
     public override void TestFixtureSetUp ()
     {

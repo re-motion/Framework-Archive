@@ -370,7 +370,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DomainObjects
     public void HasBeenTouched_FromManyPropertyReplaceWithNew ()
     {
       Order newOrder = Order.NewObject ();
-
+      
       Assert.IsFalse (newOrder.InternalDataContainer.HasValueBeenTouched (GetPropertyDefinition (typeof (Order), "Customer")), "newOrder ObjectID touched");
 
       CheckTouching (delegate { _oldCustomer.Orders[_oldCustomer.Orders.IndexOf (_order1)] = newOrder; }, _order1, "Customer",

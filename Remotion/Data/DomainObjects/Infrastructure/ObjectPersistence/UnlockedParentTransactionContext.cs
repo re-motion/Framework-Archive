@@ -41,7 +41,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
       }
     }
 
-    public void MarkNotInvalid (IObjectID<DomainObject> objectID)
+    public void MarkNotInvalid (ObjectID objectID)
     {
       ArgumentUtility.CheckNotNull ("objectID", objectID);
       CheckDisposed ();

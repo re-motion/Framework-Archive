@@ -46,8 +46,8 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence
       {
         ClassDefinition orderDefinition = MappingConfiguration.Current.GetTypeDefinition (typeof (Order));
         StorageProvider provider = new StorageProviderManager (NullPersistenceExtension.Instance)[orderDefinition.StorageEntityDefinition.StorageProviderDefinition.Name];
-        IObjectID<DomainObject> id1 = provider.CreateNewObjectID (orderDefinition);
-        IObjectID<DomainObject> id2 = provider.CreateNewObjectID (orderDefinition);
+        ObjectID id1 = provider.CreateNewObjectID (orderDefinition);
+        ObjectID id2 = provider.CreateNewObjectID (orderDefinition);
         Assert.That (id2, Is.EqualTo (id1));
       }
     }
@@ -63,7 +63,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence
         Guid fixedGuid = Guid.NewGuid ();
         ((IStorageProviderWithFixedGuid) provider).FixedGuid = fixedGuid;
 
-        IObjectID<DomainObject> id = provider.CreateNewObjectID (orderDefinition);
+        ObjectID id = provider.CreateNewObjectID (orderDefinition);
         Assert.That (id.Value, Is.EqualTo (fixedGuid));
       }
     }

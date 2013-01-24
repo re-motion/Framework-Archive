@@ -427,7 +427,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Linq
           .Return (_rdbmsStoragePropertyDefinitionStub);
       var columnDefinition = ColumnDefinitionObjectMother.CreateColumn ("Customer");
       _rdbmsStoragePropertyDefinitionStub.Stub (stub => stub.GetColumnsForComparison()).Return (new[] { columnDefinition });
-      _rdbmsStoragePropertyDefinitionStub.Stub (stub => stub.PropertyType).Return (typeof (IObjectID<DomainObject>));
+      _rdbmsStoragePropertyDefinitionStub.Stub (stub => stub.PropertyType).Return (typeof (ObjectID));
 
       var result = _storageSpecificExpressionResolver.ResolveJoin (entityExpression, leftEndPointDefinition, rightEndPointDefinition, "o");
 
@@ -440,10 +440,10 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Linq
 
       Assert.That (((SqlColumnExpression) result.LeftKey).ColumnName, Is.EqualTo ("Customer"));
       Assert.That (((SqlColumnExpression) result.LeftKey).OwningTableAlias, Is.EqualTo ("c"));
-      Assert.That (result.LeftKey.Type, Is.EqualTo (typeof (IObjectID<DomainObject>)));
+      Assert.That (result.LeftKey.Type, Is.EqualTo (typeof (ObjectID)));
       Assert.That (((SqlColumnExpression) result.LeftKey).IsPrimaryKey, Is.False);
       Assert.That (((SqlColumnExpression) result.RightKey).ColumnName, Is.EqualTo ("ID"));
-      Assert.That (result.RightKey.Type, Is.EqualTo (typeof (IObjectID<DomainObject>)));
+      Assert.That (result.RightKey.Type, Is.EqualTo (typeof (ObjectID)));
       Assert.That (((SqlColumnExpression) result.RightKey).OwningTableAlias, Is.EqualTo ("o"));
       Assert.That (((SqlColumnExpression) result.RightKey).IsPrimaryKey, Is.True);
     }
@@ -470,7 +470,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Linq
       _rdbmsStoragePropertyDefinitionStub
           .Stub (stub => stub.GetColumnsForComparison())
           .Return (new[] { ColumnDefinitionObjectMother.CreateColumn ("Customer") });
-      _rdbmsStoragePropertyDefinitionStub.Stub (stub => stub.PropertyType).Return (typeof (IObjectID<DomainObject>));
+      _rdbmsStoragePropertyDefinitionStub.Stub (stub => stub.PropertyType).Return (typeof (ObjectID));
 
       var result = _storageSpecificExpressionResolver.ResolveJoin (entityExpression, leftEndPointDefinition, rightEndPointDefinition, "o");
 

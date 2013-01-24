@@ -24,18 +24,18 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.TableInher
   [TestFixture]
   public class TableInheritanceIntegrationTest : TableInheritanceMappingTest
   {
-    private IObjectID<DomainObject> _rootFolderID;
-    private IObjectID<DomainObject> _folder1ID;
-    private IObjectID<DomainObject> _fileInRootFolderID;
-    private IObjectID<DomainObject> _fileInFolder1ID;
+    private ObjectID _rootFolderID;
+    private ObjectID _folder1ID;
+    private ObjectID _fileInRootFolderID;
+    private ObjectID _fileInFolder1ID;
 
-    private IObjectID<DomainObject> _derivedClassWithEntity1ID;
-    private IObjectID<DomainObject> _derivedClassWithEntity2ID;
-    private IObjectID<DomainObject> _derivedClassWithEntity3ID;
+    private ObjectID _derivedClassWithEntity1ID;
+    private ObjectID _derivedClassWithEntity2ID;
+    private ObjectID _derivedClassWithEntity3ID;
 
-    private IObjectID<DomainObject> _derivedClassWithEntityFromBaseClass1ID;
-    private IObjectID<DomainObject> _derivedClassWithEntityFromBaseClass2ID;
-    private IObjectID<DomainObject> _derivedClassWithEntityFromBaseClass3ID;
+    private ObjectID _derivedClassWithEntityFromBaseClass1ID;
+    private ObjectID _derivedClassWithEntityFromBaseClass2ID;
+    private ObjectID _derivedClassWithEntityFromBaseClass3ID;
 
     public override void SetUp ()
     {
@@ -168,7 +168,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.TableInher
     [Test]
     public void UnidirectionalRelationToClassWithoutDerivation ()
     {
-      IObjectID<DomainObject> client2 = CreateObjectID (typeof (TIClient), "{58535280-84EC-41d9-9F8F-BCAC64BB3709}");
+      ObjectID client2 = CreateObjectID (typeof (TIClient), "{58535280-84EC-41d9-9F8F-BCAC64BB3709}");
 
       DerivedClassWithEntityWithHierarchy derivedClassWithEntity1 = DerivedClassWithEntityWithHierarchy.GetObject (_derivedClassWithEntity1ID);
       Assert.That (derivedClassWithEntity1.ClientFromAbstractBaseClass.ID, Is.EqualTo (DomainObjectIDs.Client));
@@ -208,27 +208,27 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.TableInher
       }
     }
 
-    private IObjectID<DomainObject> CreateFolderObjectID (string guid)
+    private ObjectID CreateFolderObjectID (string guid)
     {
       return CreateObjectID (typeof (TIFolder), guid);
     }
 
-    private IObjectID<DomainObject> CreateFileObjectID (string guid)
+    private ObjectID CreateFileObjectID (string guid)
     {
       return CreateObjectID (typeof (TIFile), guid);
     }
 
-    private IObjectID<DomainObject> CreateDerivedClassWithEntityWithHierarchyObjectID (string guid)
+    private ObjectID CreateDerivedClassWithEntityWithHierarchyObjectID (string guid)
     {
       return CreateObjectID (typeof (DerivedClassWithEntityWithHierarchy), guid);
     }
 
-    private IObjectID<DomainObject> CreateDerivedClassWithEntityFromBaseClassWithHierarchyObjectID (string guid)
+    private ObjectID CreateDerivedClassWithEntityFromBaseClassWithHierarchyObjectID (string guid)
     {
       return CreateObjectID (typeof (DerivedClassWithEntityFromBaseClassWithHierarchy), guid);
     }
 
-    private IObjectID<DomainObject> CreateObjectID (Type classType, string guid)
+    private ObjectID CreateObjectID (Type classType, string guid)
     {
       return ObjectID.Create(classType, new Guid (guid));
     }

@@ -24,7 +24,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.Serializable
   [Serializable]
   public class SerializableObjectInitializationContextProviderFake : IObjectInitializationContextProvider
   {
-    public IObjectInitializationContext CreateContext (IObjectID<DomainObject> objectID, ClientTransaction bindingTransaction)
+    public IObjectInitializationContext CreateContext (ObjectID objectID, ClientTransaction bindingTransaction)
     {
       throw new NotImplementedException();
     }

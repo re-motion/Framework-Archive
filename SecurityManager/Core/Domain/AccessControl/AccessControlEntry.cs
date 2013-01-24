@@ -46,7 +46,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl
       return NewObject<AccessControlEntry>();
     }
 
-    public new static AccessControlEntry GetObject (IObjectID<DomainObject> id)
+    public new static AccessControlEntry GetObject (ObjectID id)
     {
       return GetObject<AccessControlEntry> (id);
     }
@@ -236,7 +236,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl
 
     private Permission FindPermission (AccessTypeDefinition accessType)
     {
-      return PermissionsInternal.Where (p => object.Equals (p.AccessType.ID, accessType.ID)).SingleOrDefault();
+      return PermissionsInternal.Where (p => p.AccessType.ID == accessType.ID).SingleOrDefault();
     }
 
     //TODO: Rewrite with test

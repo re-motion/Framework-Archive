@@ -26,7 +26,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectLifetime
   /// </summary>
   public class ObjectInitializationContext : IObjectInitializationContext
   {
-    private readonly IObjectID<DomainObject> _objectID;
+    private readonly ObjectID _objectID;
     private readonly ClientTransaction _bindingTransaction;
     private readonly IEnlistedDomainObjectManager _enlistedDomainObjectManager;
     private readonly IDataManager _dataManager;
@@ -34,7 +34,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectLifetime
     private DomainObject _registeredObject;
 
     public ObjectInitializationContext (
-        IObjectID<DomainObject> objectID,
+        ObjectID objectID,
         IEnlistedDomainObjectManager enlistedDomainObjectManager,
         IDataManager dataManager,
         ClientTransaction bindingTransaction)
@@ -49,7 +49,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectLifetime
       _enlistedDomainObjectManager = enlistedDomainObjectManager;
     }
 
-    public IObjectID<DomainObject> ObjectID
+    public ObjectID ObjectID
     {
       get { return _objectID; }
     }
@@ -78,7 +78,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectLifetime
     {
       ArgumentUtility.CheckNotNull ("domainObject", domainObject);
 
-      if (!object.Equals (domainObject.ID, _objectID))
+      if (domainObject.ID != _objectID)
         throw new ArgumentException (string.Format ("The given DomainObject must have ID '{0}'.", _objectID), "domainObject");
 
       if (BindingTransaction != null && (!domainObject.HasBindingTransaction || domainObject.GetBindingTransaction () != BindingTransaction))

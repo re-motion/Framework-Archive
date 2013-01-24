@@ -36,8 +36,8 @@ namespace Remotion.Data.DomainObjects.Linq
   public class MappingResolver : IMappingResolver
   {
     private readonly IStorageSpecificExpressionResolver _storageSpecificExpressionResolver;
-    private static readonly PropertyInfo s_classIDPropertyInfo = typeof (IObjectID<DomainObject>).GetProperty ("ClassID");
-    private static readonly PropertyInfo s_valuePropertyInfo = typeof (IObjectID<DomainObject>).GetProperty ("Value");
+    private static readonly PropertyInfo s_classIDPropertyInfo = typeof (ObjectID).GetProperty ("ClassID");
+    private static readonly PropertyInfo s_valuePropertyInfo = typeof (ObjectID).GetProperty ("Value");
     private static readonly PropertyInfo s_idPropertyInfo = typeof (DomainObject).GetProperty ("ID");
 
     public MappingResolver (IStorageSpecificExpressionResolver storageSpecificExpressionResolver)

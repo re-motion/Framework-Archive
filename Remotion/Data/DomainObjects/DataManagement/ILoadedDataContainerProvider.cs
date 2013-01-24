@@ -20,6 +20,6 @@ namespace Remotion.Data.DomainObjects.DataManagement
 {
   public interface ILoadedDataContainerProvider
   {
-    DataContainer GetDataContainerWithoutLoading (IObjectID<DomainObject> objectID);
+    DataContainer GetDataContainerWithoutLoading (ObjectID objectID);
   }
 }

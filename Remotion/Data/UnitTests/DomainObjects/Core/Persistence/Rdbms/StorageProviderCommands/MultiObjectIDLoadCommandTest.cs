@@ -39,9 +39,9 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.StoragePr
     private IDbCommand _dbCommandMock1;
     private IDbCommand _dbCommandMock2;
     private IDataReader _dataReaderMock;
-    private IObjectReader<IObjectID<DomainObject>> _objectIDReaderStub;
-    private IObjectID<DomainObject>[] _fakeResult;
-    private IObjectID<DomainObject> _objectID1;
+    private IObjectReader<ObjectID> _objectIDReaderStub;
+    private ObjectID[] _fakeResult;
+    private ObjectID _objectID1;
     private IRdbmsProviderCommandExecutionContext _commandExecutionContextStub;
     private MockRepository _repository;
 
@@ -55,7 +55,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.StoragePr
       _dbCommandBuilder2Mock = _repository.StrictMock<IDbCommandBuilder>();
 
       _commandExecutionContextStub = _repository.Stub<IRdbmsProviderCommandExecutionContext> ();
-      _objectIDReaderStub = _repository.Stub<IObjectReader<IObjectID<DomainObject>>> ();
+      _objectIDReaderStub = _repository.Stub<IObjectReader<ObjectID>> ();
 
       _dbCommandMock1 = _repository.StrictMock<IDbCommand>();
       _dbCommandMock2 = _repository.StrictMock<IDbCommand> ();
@@ -118,8 +118,8 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.StoragePr
     [Test]
     public void LoadObjectIDsFromCommandBuilder ()
     {
-      var enumerableStub = _repository.Stub<IEnumerable<IObjectID<DomainObject>>> ();
-      var enumeratorMock = _repository.StrictMock<IEnumerator<IObjectID<DomainObject>>> ();
+      var enumerableStub = _repository.Stub<IEnumerable<ObjectID>> ();
+      var enumeratorMock = _repository.StrictMock<IEnumerator<ObjectID>> ();
 
       using (_repository.Ordered ())
       {
@@ -138,7 +138,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.StoragePr
       var command = new MultiObjectIDLoadCommand (new[] { _dbCommandBuilder1Mock, _dbCommandBuilder2Mock }, _objectIDReaderStub);
 
       var result =
-          (IEnumerable<IObjectID<DomainObject>>)
+          (IEnumerable<ObjectID>)
           PrivateInvoke.InvokeNonPublicMethod (command, "LoadObjectIDsFromCommandBuilder", _dbCommandBuilder1Mock, _commandExecutionContextStub);
       result.ToArray ();
 

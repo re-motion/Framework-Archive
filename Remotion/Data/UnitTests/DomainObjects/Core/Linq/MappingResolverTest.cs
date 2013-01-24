@@ -259,7 +259,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Linq
       var property = typeof (Order).GetProperty ("ID");
       var entityExpression = new SqlEntityDefinitionExpression (
           typeof (Order), "c", null, new SqlColumnDefinitionExpression (typeof (string), "c", "Name", false));
-      var fakeIDColumnExpression = new SqlColumnDefinitionExpression (typeof (IObjectID<DomainObject>), "c", "ID", true);
+      var fakeIDColumnExpression = new SqlColumnDefinitionExpression (typeof (ObjectID), "c", "ID", true);
 
       _storageSpecificExpressionResolverStub
           .Stub (stub => stub.ResolveIDColumn (entityExpression, MappingConfiguration.Current.GetTypeDefinition (typeof (Order))))
@@ -351,7 +351,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Linq
     [Test]
     public void ResolveMemberExpression_OnColumnDefinition_WithValueProperty ()
     {
-      var property = typeof (IObjectID<DomainObject>).GetProperty ("Value");
+      var property = typeof (ObjectID).GetProperty ("Value");
       var columnExpression = new SqlColumnDefinitionExpression (typeof (string), "o", "Name", false);
       var fakeColumnExpression = new SqlColumnDefinitionExpression (typeof (string), "o", "Name", false);
 
@@ -365,7 +365,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Linq
     [Test]
     public void ResolveMemberExpression_OnColumnDefinition_WithClassIDProperty ()
     {
-      var property = typeof (IObjectID<DomainObject>).GetProperty ("ClassID");
+      var property = typeof (ObjectID).GetProperty ("ClassID");
       var columnExpression = new SqlColumnDefinitionExpression (typeof (string), "o", "Name", false);
       var fakeColumnExpression = new SqlColumnDefinitionExpression (typeof (string), "o", "Name", false);
       
@@ -423,7 +423,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Linq
       var result = _resolver.ResolveTypeCheck (sqlEntityExpression, typeof (StorageGroupClass));
 
       var idExpression = Expression.MakeMemberAccess (sqlEntityExpression, typeof (DomainObject).GetProperty ("ID"));
-      var classIDExpression = Expression.MakeMemberAccess (idExpression, typeof (IObjectID<DomainObject>).GetProperty ("ClassID"));
+      var classIDExpression = Expression.MakeMemberAccess (idExpression, typeof (ObjectID).GetProperty ("ClassID"));
       var expectedTree = Expression.Equal (classIDExpression, new SqlLiteralExpression ("StorageGroupClass"));
 
       ExpressionTreeComparer.CheckAreEqualTrees (result, expectedTree);
@@ -447,7 +447,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Linq
       var result = _resolver.ResolveTypeCheck (sqlEntityExpression, typeof (Customer));
 
       var idExpression = Expression.MakeMemberAccess (sqlEntityExpression, typeof (DomainObject).GetProperty ("ID"));
-      var classIDExpression = Expression.MakeMemberAccess (idExpression, typeof (IObjectID<DomainObject>).GetProperty ("ClassID"));
+      var classIDExpression = Expression.MakeMemberAccess (idExpression, typeof (ObjectID).GetProperty ("ClassID"));
       var expectedExpression = Expression.Equal (classIDExpression, new SqlLiteralExpression ("Customer"));
 
       ExpressionTreeComparer.CheckAreEqualTrees (result, expectedExpression);
@@ -455,7 +455,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Linq
 
     private SqlEntityDefinitionExpression CreateFakeEntityExpression (Type classType)
     {
-      var primaryKeyColumn = new SqlColumnDefinitionExpression (typeof (IObjectID<DomainObject>), "o", "ID", true);
+      var primaryKeyColumn = new SqlColumnDefinitionExpression (typeof (ObjectID), "o", "ID", true);
       var starColumn = new SqlColumnDefinitionExpression (classType, "o", "*", false);
       return new SqlEntityDefinitionExpression (classType, "o", null, primaryKeyColumn, starColumn);
     }

@@ -21,7 +21,7 @@ using Remotion.Utilities;
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.Factories
 {
   /// <summary>
-  /// The <see cref="TableDefinitionFinder"/> is responsible to get the <see cref="TableDefinition"/> for an <see cref="IObjectID{DomainObject}"/>-class definition.
+  /// The <see cref="TableDefinitionFinder"/> is responsible to get the <see cref="TableDefinition"/> for an <see cref="ObjectID"/>-class definition.
   /// </summary>
   public class TableDefinitionFinder : ITableDefinitionFinder
   {
@@ -34,7 +34,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
       _rdbmsPersistenceModelProvider = rdbmsPersistenceModelProvider;
     }
 
-    public TableDefinition GetTableDefinition (IObjectID<DomainObject> objectID)
+    public TableDefinition GetTableDefinition (ObjectID objectID)
     {
       return InlineRdbmsStorageEntityDefinitionVisitor.Visit<TableDefinition> (
           _rdbmsPersistenceModelProvider.GetEntityDefinition (objectID.ClassDefinition),

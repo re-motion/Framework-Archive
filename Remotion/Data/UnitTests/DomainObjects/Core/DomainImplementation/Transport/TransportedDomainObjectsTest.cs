@@ -79,7 +79,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DomainImplementation.Transp
 
       Assert.That (transportedObjects.DataTransaction, Is.Not.Null);
       Assert.IsNotEmpty (GetTransportedObjects (transportedObjects));
-      List<IObjectID<DomainObject>> ids = GetTransportedObjects (transportedObjects).ConvertAll (obj => obj.ID);
+      List<ObjectID> ids = GetTransportedObjects (transportedObjects).ConvertAll (obj => obj.ID);
       Assert.That (ids, Is.EquivalentTo (new[] { DomainObjectIDs.Order1, DomainObjectIDs.Order2, DomainObjectIDs.Company1 }));
     }
 
@@ -262,10 +262,10 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DomainImplementation.Transp
       transportedObjects.FinishTransport();
     }
 
-    private TransportedDomainObjects TransportAndDeleteObjects (params IObjectID<DomainObject>[] objectsToLoadAndDelete)
+    private TransportedDomainObjects TransportAndDeleteObjects (params ObjectID[] objectsToLoadAndDelete)
     {
       var transporter = new DomainObjectTransporter();
-      foreach (IObjectID<DomainObject> id in objectsToLoadAndDelete)
+      foreach (ObjectID id in objectsToLoadAndDelete)
         transporter.Load (id);
 
       ModifyDatabase (
@@ -281,10 +281,10 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DomainImplementation.Transp
       return Transport (transporter);
     }
 
-    private TransportedDomainObjects TransportAndChangeObjects (string propertyName, object newValue, params IObjectID<DomainObject>[] objectsToLoadAndDelete)
+    private TransportedDomainObjects TransportAndChangeObjects (string propertyName, object newValue, params ObjectID[] objectsToLoadAndDelete)
     {
       var transporter = new DomainObjectTransporter ();
-      foreach (IObjectID<DomainObject> id in objectsToLoadAndDelete)
+      foreach (ObjectID id in objectsToLoadAndDelete)
         transporter.Load (id);
 
       ModifyDatabase (

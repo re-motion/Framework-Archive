@@ -69,7 +69,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       get { return _id; }
     }
 
-    public IObjectID<DomainObject> ObjectID
+    public ObjectID ObjectID
     {
       get { return _id.ObjectID; }
     }

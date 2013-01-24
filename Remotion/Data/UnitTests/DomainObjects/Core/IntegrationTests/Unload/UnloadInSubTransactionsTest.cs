@@ -148,7 +148,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Unload
       var orderItem1 = OrderItem.GetObject (DomainObjectIDs.OrderItem1);
       var orderItem2 = OrderItem.GetObject (DomainObjectIDs.OrderItem2);
 
-      IObjectID<DomainObject> newOrderItemID;
+      ObjectID newOrderItemID;
       using (ClientTransaction.CreateRootTransaction ().EnterDiscardingScope ())
       {
         var orderInOtherTx = Order.GetObject (DomainObjectIDs.Order1);
@@ -255,7 +255,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Unload
       var order = Order.GetObject (DomainObjectIDs.Order1);
       var oldOrderTicket = order.OrderTicket;
 
-      IObjectID<DomainObject> newOrderTicketID;
+      ObjectID newOrderTicketID;
       using (ClientTransaction.CreateRootTransaction ().EnterDiscardingScope ())
       {
         var orderInOtherTx = Order.GetObject (DomainObjectIDs.Order1);
@@ -363,7 +363,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Unload
       SetDatabaseModifyable ();
       var computer1 = Computer.GetObject (DomainObjectIDs.Computer1);
 
-      IObjectID<DomainObject> newEmployeeID;
+      ObjectID newEmployeeID;
       using (ClientTransaction.CreateRootTransaction ().EnterDiscardingScope ())
       {
         var computerInOtherTx = Computer.GetObject (computer1.ID);
@@ -454,7 +454,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Unload
       var orderItem1 = OrderItem.GetObject (DomainObjectIDs.OrderItem1);
       var orderItem2 = OrderItem.GetObject (DomainObjectIDs.OrderItem2);
 
-      IObjectID<DomainObject> newOrderItemID;
+      ObjectID newOrderItemID;
       using (ClientTransaction.CreateRootTransaction ().EnterDiscardingScope ())
       {
         var orderInOtherTx = Order.GetObject (DomainObjectIDs.Order1);
@@ -525,16 +525,16 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Unload
                   });
 
           subListenerMock.Expect (mock => mock.RelationEndPointBecomingIncomplete (_subTransaction, endPointID));
-          subListenerMock.Expect (mock => mock.DataContainerMapUnregistering (Arg.Is (_subTransaction), Arg<DataContainer>.Matches (dc => object.Equals (dc.ID, orderItemA.ID))));
+          subListenerMock.Expect (mock => mock.DataContainerMapUnregistering (Arg.Is (_subTransaction), Arg<DataContainer>.Matches (dc => dc.ID == orderItemA.ID)));
           subListenerMock.Expect (mock => mock.RelationEndPointMapUnregistering (_subTransaction, oppositeEndPointIDA));
-          subListenerMock.Expect (mock => mock.DataContainerMapUnregistering (Arg.Is (_subTransaction), Arg<DataContainer>.Matches (dc => object.Equals (dc.ID, orderItemB.ID))));
+          subListenerMock.Expect (mock => mock.DataContainerMapUnregistering (Arg.Is (_subTransaction), Arg<DataContainer>.Matches (dc => dc.ID == orderItemB.ID)));
           subListenerMock.Expect (mock => mock.RelationEndPointMapUnregistering (_subTransaction, endPointID));
           subListenerMock.Expect (mock => mock.RelationEndPointMapUnregistering (_subTransaction, oppositeEndPointIDB));
 
           rootListenerMock.Expect (mock => mock.RelationEndPointBecomingIncomplete (rootTransaction, endPointID));
-          rootListenerMock.Expect (mock => mock.DataContainerMapUnregistering (Arg.Is (rootTransaction), Arg<DataContainer>.Matches (dc => object.Equals (dc.ID, orderItemA.ID))));
+          rootListenerMock.Expect (mock => mock.DataContainerMapUnregistering (Arg.Is (rootTransaction), Arg<DataContainer>.Matches (dc => dc.ID == orderItemA.ID)));
           rootListenerMock.Expect (mock => mock.RelationEndPointMapUnregistering (rootTransaction, oppositeEndPointIDA));
-          rootListenerMock.Expect (mock => mock.DataContainerMapUnregistering (Arg.Is (rootTransaction), Arg<DataContainer>.Matches (dc => object.Equals (dc.ID, orderItemB.ID))));
+          rootListenerMock.Expect (mock => mock.DataContainerMapUnregistering (Arg.Is (rootTransaction), Arg<DataContainer>.Matches (dc => dc.ID == orderItemB.ID)));
           rootListenerMock.Expect (mock => mock.RelationEndPointMapUnregistering (rootTransaction, endPointID));
           rootListenerMock.Expect (mock => mock.RelationEndPointMapUnregistering (rootTransaction, oppositeEndPointIDB));
 

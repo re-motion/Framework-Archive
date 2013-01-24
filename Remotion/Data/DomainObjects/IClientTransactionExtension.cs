@@ -111,11 +111,11 @@ namespace Remotion.Data.DomainObjects
     /// associated with the <see cref="ClientTransaction"/>.
     /// </summary>
     /// <param name="clientTransaction">The <see cref="ClientTransaction"/> instance for which the event is raised.</param>
-    /// <param name="objectIDs">A collection of <see cref="IObjectID{DomainObject}"/> values identifying the objects to be loaded.</param>
+    /// <param name="objectIDs">A collection of <see cref="ObjectID"/> values identifying the objects to be loaded.</param>
     /// <remarks>
     /// <note type="inotes">The implementation of this method should throw an exception if the operation must be cancelled.</note>
     /// </remarks>
-    void ObjectsLoading (ClientTransaction clientTransaction, ReadOnlyCollection<IObjectID<DomainObject>> objectIDs);
+    void ObjectsLoading (ClientTransaction clientTransaction, ReadOnlyCollection<ObjectID> objectIDs);
 
     /// <summary>
     /// Invoked when one or multiple <see cref="DomainObject"/>s were loaded. 

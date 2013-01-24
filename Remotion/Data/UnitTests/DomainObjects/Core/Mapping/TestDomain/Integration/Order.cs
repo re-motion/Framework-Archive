@@ -31,12 +31,12 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Mapping.TestDomain.Integrat
       return NewObject<Order> ();
     }
 
-    public new static Order GetObject (IObjectID<DomainObject> id)
+    public new static Order GetObject (ObjectID id)
     {
       return GetObject<Order> (id);
     }
 
-    public new static Order GetObject (IObjectID<DomainObject> id, bool includeDeleted)
+    public new static Order GetObject (ObjectID id, bool includeDeleted)
     {
       return GetObject<Order> (id, includeDeleted);
     }

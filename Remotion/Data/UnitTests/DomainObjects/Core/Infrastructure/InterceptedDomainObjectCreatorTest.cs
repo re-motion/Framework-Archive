@@ -180,7 +180,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure
           Is.Not.Null);
     }
 
-    private T CallWithInitializationContextAndTransaction<T> (Func<T> func, IObjectID<DomainObject> objectID)
+    private T CallWithInitializationContextAndTransaction<T> (Func<T> func, ObjectID objectID)
     {
       using (_transaction.EnterNonDiscardingScope ())
       {

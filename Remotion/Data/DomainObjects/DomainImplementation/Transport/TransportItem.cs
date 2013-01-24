@@ -58,21 +58,21 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
         yield return PackageDataContainer (container);
     }
 
-    private readonly IObjectID<DomainObject> _id;
+    private readonly ObjectID _id;
     private readonly Dictionary<string, object> _properties;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="TransportItem"/> class.
     /// </summary>
     /// <param name="id">The id of the <see cref="DomainObject"/> represented by this item.</param>
-    public TransportItem (IObjectID<DomainObject> id)
+    public TransportItem (ObjectID id)
     {
       ArgumentUtility.CheckNotNull ("id", id);
       _id = id;
       _properties = new Dictionary<string, object>();
     }
 
-    internal TransportItem (IObjectID<DomainObject> id, Dictionary<string, object> properties)
+    internal TransportItem (ObjectID id, Dictionary<string, object> properties)
     {
       ArgumentUtility.CheckNotNull ("id", id);
       ArgumentUtility.CheckNotNull ("properties", properties);
@@ -82,10 +82,10 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
     }
 
     /// <summary>
-    /// Gets the <see cref="IObjectID{DomainObject}"/> of the <see cref="DomainObject"/> represented by this item.
+    /// Gets the <see cref="ObjectID"/> of the <see cref="DomainObject"/> represented by this item.
     /// </summary>
-    /// <value>The <see cref="IObjectID{DomainObject}"/> of this item.</value>
-    public IObjectID<DomainObject> ID
+    /// <value>The <see cref="ObjectID"/> of this item.</value>
+    public ObjectID ID
     {
       get { return _id; }
     }

@@ -62,8 +62,8 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
     [Test]
     public void GetObject_MultipleSimpleObjects ()
     {
-      IObjectID<DomainObject> id1 = DomainObjectIDs.ClassWithAllDataTypes1;
-      IObjectID<DomainObject> id2 = DomainObjectIDs.ClassWithAllDataTypes2;
+      ObjectID id1 = DomainObjectIDs.ClassWithAllDataTypes1;
+      ObjectID id2 = DomainObjectIDs.ClassWithAllDataTypes2;
 
       DomainObject domainObject1 = LifetimeService.GetObject (TestableClientTransaction, id1, false);
       Assert.That (_eventReceiver.LoadedDomainObjectLists.Count, Is.EqualTo (1));
@@ -210,7 +210,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
 
       listenerMock.AssertWasCalled (mock => mock.ObjectsLoading (
           Arg.Is (TestableClientTransaction),
-          Arg<ReadOnlyCollection<IObjectID<DomainObject>>>.List.Equal (new[] { DomainObjectIDs.Order1, DomainObjectIDs.Order2, DomainObjectIDs.OrderItem1 })));
+          Arg<ReadOnlyCollection<ObjectID>>.List.Equal (new[] { DomainObjectIDs.Order1, DomainObjectIDs.Order2, DomainObjectIDs.OrderItem1 })));
 
       listenerMock.AssertWasCalled (mock => mock.ObjectsLoaded (
           Arg.Is (TestableClientTransaction),
@@ -247,7 +247,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
 
       listenerMock.AssertWasNotCalled (mock => mock.ObjectsLoading (
           Arg<ClientTransaction>.Is.Anything,
-          Arg<ReadOnlyCollection<IObjectID<DomainObject>>>.Is.Anything));
+          Arg<ReadOnlyCollection<ObjectID>>.Is.Anything));
       listenerMock.AssertWasNotCalled (mock => mock.ObjectsLoaded (
           Arg<ClientTransaction>.Is.Anything,
           Arg<ReadOnlyCollection<DomainObject>>.Is.Anything));
@@ -275,7 +275,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
 
       listenerMock.AssertWasNotCalled (mock => mock.ObjectsLoading (
           Arg<ClientTransaction>.Is.Anything,
-          Arg<ReadOnlyCollection<IObjectID<DomainObject>>>.Is.Anything));
+          Arg<ReadOnlyCollection<ObjectID>>.Is.Anything));
       listenerMock.AssertWasNotCalled (mock => mock.ObjectsLoaded (
           Arg<ClientTransaction>.Is.Anything,
           Arg<ReadOnlyCollection<DomainObject>>.Is.Anything));
@@ -407,7 +407,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
     [Test]
     public void TryGetObjects_WithMoreThan2100IDs ()
     {
-      var ids = new List<IObjectID<DomainObject>> ();
+      var ids = new List<ObjectID> ();
       ids.Add (DomainObjectIDs.Order1);
       ids.Add (DomainObjectIDs.Order2);
       ids.AddRange (Enumerable.Range (0, 4000).Select (i => ObjectID.Create(DomainObjectIDs.Order1.ClassDefinition, Guid.NewGuid ())));

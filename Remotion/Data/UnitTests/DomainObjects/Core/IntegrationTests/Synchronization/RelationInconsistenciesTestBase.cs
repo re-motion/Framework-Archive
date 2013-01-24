@@ -12,7 +12,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Synchroniz
 {
   public class RelationInconsistenciesTestBase : ClientTransactionBaseTest
   {
-    protected IObjectID<DomainObject> CreateCompanyAndSetIndustrialSectorInOtherTransaction (IObjectID<DomainObject> industrialSectorID)
+    protected ObjectID CreateCompanyAndSetIndustrialSectorInOtherTransaction (ObjectID industrialSectorID)
     {
       return RelationInconcsistenciesTestHelper.CreateObjectAndSetRelationInOtherTransaction<Company, IndustrialSector> (industrialSectorID, (c, s) =>
       {
@@ -21,17 +21,17 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Synchroniz
       });
     }
 
-    protected void SetIndustrialSectorInOtherTransaction (IObjectID<DomainObject> companyID, IObjectID<DomainObject> industrialSectorID)
+    protected void SetIndustrialSectorInOtherTransaction (ObjectID companyID, ObjectID industrialSectorID)
     {
       RelationInconcsistenciesTestHelper.SetRelationInOtherTransaction<Company, IndustrialSector> (companyID, industrialSectorID, (c, s) => c.IndustrialSector = s);
     }
 
-    protected IObjectID<DomainObject> CreateComputerAndSetEmployeeInOtherTransaction (IObjectID<DomainObject> employeeID)
+    protected ObjectID CreateComputerAndSetEmployeeInOtherTransaction (ObjectID employeeID)
     {
       return RelationInconcsistenciesTestHelper.CreateObjectAndSetRelationInOtherTransaction<Computer, Employee> (employeeID, (c, e) => c.Employee = e);
     }
 
-    protected void SetEmployeeInOtherTransaction (IObjectID<DomainObject> computerID, IObjectID<DomainObject> employeeID)
+    protected void SetEmployeeInOtherTransaction (ObjectID computerID, ObjectID employeeID)
     {
       RelationInconcsistenciesTestHelper.SetRelationInOtherTransaction<Computer, Employee> (computerID, employeeID, (c, e) => c.Employee = e);
     }
@@ -76,7 +76,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Synchroniz
 
     protected Company CreateCompanyInDatabaseAndLoad ()
     {
-      IObjectID<DomainObject> objectID;
+      ObjectID objectID;
       using (ClientTransaction.CreateRootTransaction ().EnterDiscardingScope ())
       {
         var company = Company.NewObject ();
@@ -89,7 +89,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Synchroniz
 
     protected IndustrialSector CreateIndustrialSectorInDatabaseAndLoad ()
     {
-      IObjectID<DomainObject> objectID;
+      ObjectID objectID;
       using (ClientTransaction.CreateRootTransaction ().EnterDiscardingScope ())
       {
         IndustrialSector industrialSector = IndustrialSector.NewObject ();
@@ -105,7 +105,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Synchroniz
 
     protected T CreateObjectInDatabaseAndLoad<T> () where T : DomainObject
     {
-      IObjectID<DomainObject> objectID;
+      ObjectID objectID;
       using (ClientTransaction.CreateRootTransaction ().EnterDiscardingScope ())
       {
         var domainObject = LifetimeService.NewObject (ClientTransaction.Current, typeof (T), ParamList.Empty);

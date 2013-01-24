@@ -106,7 +106,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       GetAssociatedEndPoint().EnsureDataComplete ();
     }
 
-    public bool ContainsObjectID (IObjectID<DomainObject> objectID)
+    public bool ContainsObjectID (ObjectID objectID)
     {
       ArgumentUtility.CheckNotNull ("objectID", objectID);
 
@@ -120,7 +120,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       return data.GetObject (index);
     }
 
-    public DomainObject GetObject (IObjectID<DomainObject> objectID)
+    public DomainObject GetObject (ObjectID objectID)
     {
       ArgumentUtility.CheckNotNull ("objectID", objectID);
 
@@ -128,7 +128,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       return data.GetObject (objectID);
     }
 
-    public int IndexOf (IObjectID<DomainObject> objectID)
+    public int IndexOf (ObjectID objectID)
     {
       ArgumentUtility.CheckNotNull ("objectID", objectID);
 
@@ -186,7 +186,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       return containsObjectID;
     }
 
-    public bool Remove (IObjectID<DomainObject> objectID)
+    public bool Remove (ObjectID objectID)
     {
       ArgumentUtility.CheckNotNull ("objectID", objectID);
 

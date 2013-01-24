@@ -288,7 +288,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement
     [ExpectedException (typeof (ArgumentNullException))]
     public void RemoveNullObjectID ()
     {
-      _collection.Remove ((IObjectID<DomainObject>) null);
+      _collection.Remove ((ObjectID) null);
     }
 
     [Test]

@@ -31,7 +31,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.MixedDomains
   [TestFixture]
   public class DomainObjectMixinHookTest : StandardMappingTest
   {
-    private IObjectID<DomainObject> _objectID;
+    private ObjectID _objectID;
 
     public override void SetUp ()
     {
@@ -180,7 +180,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.MixedDomains
       Assert.That (mixinInstance.OnDomainObjectReferenceInitializingCalled, Is.True);
     }
 
-    private ClientTransaction CreateTransactionWithStubbedLoading (IObjectID<DomainObject> id)
+    private ClientTransaction CreateTransactionWithStubbedLoading (ObjectID id)
     {
       return CreateTransactionWithStubbedLoading (DataContainer.CreateForExisting (id, null, pd => pd.DefaultValue));
     }
@@ -190,7 +190,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.MixedDomains
       var persistenceStrategyStub = MockRepository.GenerateStub<IFetchEnabledPersistenceStrategy>();
       persistenceStrategyStub.Stub (stub => stub.LoadObjectData (loadableDataContainer.ID)).Return (new FreshlyLoadedObjectData (loadableDataContainer));
       persistenceStrategyStub
-          .Stub (stub => stub.LoadObjectData (Arg<IEnumerable<IObjectID<DomainObject>>>.List.Equal (new[] { loadableDataContainer.ID })))
+          .Stub (stub => stub.LoadObjectData (Arg<IEnumerable<ObjectID>>.List.Equal (new[] { loadableDataContainer.ID })))
           .Return (new[] { new FreshlyLoadedObjectData (loadableDataContainer)});
       return ClientTransactionObjectMother.CreateTransactionWithPersistenceStrategy<ClientTransaction> (persistenceStrategyStub);
     }

@@ -92,7 +92,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.RealObjec
       var oppositeEndPointDefinition = endPoint.Definition.GetOppositeEndPointDefinition ();
 
       var newRelatedObjectID = newRelatedObject.GetSafeID();
-      if (object.Equals (endPoint.OppositeObjectID, newRelatedObjectID))
+      if (endPoint.OppositeObjectID == newRelatedObjectID)
         return new ObjectEndPointSetSameCommand (endPoint, _transactionEventSink);
       else if (oppositeEndPointDefinition.IsAnonymous)
         return new ObjectEndPointSetUnidirectionalCommand (endPoint, newRelatedObject, oppositeObjectSetter, _transactionEventSink);
@@ -110,7 +110,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.RealObjec
       }
     }
 
-    private IVirtualEndPoint GetOppositeEndPoint (IRealObjectEndPoint sourceEndPoint, IObjectID<DomainObject> oppositeObjectID)
+    private IVirtualEndPoint GetOppositeEndPoint (IRealObjectEndPoint sourceEndPoint, ObjectID oppositeObjectID)
     {
       var newOppositeID = RelationEndPointID.CreateOpposite (sourceEndPoint.Definition, oppositeObjectID);
       return (IVirtualEndPoint) _endPointProvider.GetRelationEndPointWithLazyLoad (newOppositeID);

@@ -124,7 +124,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       _extensionCollection.NewObjectCreating (_clientTransaction, type);
     }
 
-    public void RaiseObjectsLoadingEvent (ReadOnlyCollection<IObjectID<DomainObject>> objectIDs)
+    public void RaiseObjectsLoadingEvent (ReadOnlyCollection<ObjectID> objectIDs)
     {
       ArgumentUtility.CheckNotNull ("objectIDs", objectIDs);
 
@@ -148,7 +148,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       _listenerCollection.ObjectsLoaded (_clientTransaction, domainObjects);
     }
 
-    public void RaiseObjectsNotFoundEvent (ReadOnlyCollection<IObjectID<DomainObject>> objectIDs)
+    public void RaiseObjectsNotFoundEvent (ReadOnlyCollection<ObjectID> objectIDs)
     {
       _listenerCollection.ObjectsNotFound (_clientTransaction, objectIDs);
     }

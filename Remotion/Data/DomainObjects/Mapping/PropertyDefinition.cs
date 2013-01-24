@@ -52,7 +52,7 @@ namespace Remotion.Data.DomainObjects.Mapping
 
       _classDefinition = classDefinition;
       _propertyInfo = propertyInfo;
-      _propertyType = isObjectID ? typeof (IObjectID<DomainObject>): propertyInfo.PropertyType;
+      _propertyType = isObjectID ? typeof (ObjectID): propertyInfo.PropertyType;
       _propertyName = propertyName;
       _isObjectID = isObjectID;
       _isNullable = isNullable;

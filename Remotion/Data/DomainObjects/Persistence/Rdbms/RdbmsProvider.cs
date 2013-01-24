@@ -244,7 +244,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
       return command.Execute (this);
     }
 
-    public override ObjectLookupResult<DataContainer> LoadDataContainer (IObjectID<DomainObject> id)
+    public override ObjectLookupResult<DataContainer> LoadDataContainer (ObjectID id)
     {
       CheckDisposed();
       ArgumentUtility.CheckNotNull ("id", id);
@@ -256,7 +256,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
       return command.Execute (this);
     }
 
-    public override IEnumerable<ObjectLookupResult<DataContainer>> LoadDataContainers (IEnumerable<IObjectID<DomainObject>> ids)
+    public override IEnumerable<ObjectLookupResult<DataContainer>> LoadDataContainers (IEnumerable<ObjectID> ids)
     {
       CheckDisposed();
       ArgumentUtility.CheckNotNull ("ids", ids);
@@ -271,7 +271,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
     public override IEnumerable<DataContainer> LoadDataContainersByRelatedID (
         RelationEndPointDefinition relationEndPointDefinition,
         SortExpressionDefinition sortExpressionDefinition,
-        IObjectID<DomainObject> relatedID)
+        ObjectID relatedID)
     {
       CheckDisposed();
       ArgumentUtility.CheckNotNull ("relationEndPointDefinition", relationEndPointDefinition);
@@ -325,7 +325,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
       }
     }
 
-    public override IObjectID<DomainObject> CreateNewObjectID (ClassDefinition classDefinition)
+    public override ObjectID CreateNewObjectID (ClassDefinition classDefinition)
     {
       CheckDisposed();
       ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
@@ -435,7 +435,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
       _connection = null;
     }
 
-    private IObjectID<DomainObject> CheckStorageProvider (IObjectID<DomainObject> id, string argumentName)
+    private ObjectID CheckStorageProvider (ObjectID id, string argumentName)
     {
       if (id.StorageProviderDefinition != StorageProviderDefinition)
       {
@@ -463,7 +463,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
 
     private IEnumerable<DataContainer> CheckForDuplicates (IEnumerable<DataContainer> dataContainers, string operation)
     {
-      var loadedIDs = new HashSet<IObjectID<DomainObject>>();
+      var loadedIDs = new HashSet<ObjectID>();
       foreach (var dataContainer in dataContainers)
       {
         if (dataContainer != null)
@@ -498,7 +498,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
     }
 
     [Obsolete ("This method has been superseded by MultiDataContainerSaveCommand. Use that instead. (1.13.113)", true)]
-    protected void Save (DbCommandBuilder commandBuilder, IObjectID<DomainObject> id)
+    protected void Save (DbCommandBuilder commandBuilder, ObjectID id)
     {
       throw new NotImplementedException();
     }

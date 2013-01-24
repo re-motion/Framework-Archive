@@ -55,7 +55,7 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration
     {
     }
 
-    public void ObjectsLoading (ClientTransaction clientTransaction, ReadOnlyCollection<IObjectID<DomainObject>> objectIDs)
+    public void ObjectsLoading (ClientTransaction clientTransaction, ReadOnlyCollection<ObjectID> objectIDs)
     {
     }
 

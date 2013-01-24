@@ -90,7 +90,7 @@ namespace Remotion.Data.DomainObjects
       set { base[index] = value; }
     }
 
-    public new T this [IObjectID<DomainObject> id]
+    public new T this [ObjectID id]
     {
       get { return (T) base[id]; }
     }

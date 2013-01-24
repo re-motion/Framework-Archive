@@ -29,7 +29,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure
   {
     protected abstract IList GetValues ();
 
-    protected abstract FormFunction CreateEditFunction (ITransactionMode transactionMode, IObjectID<DomainObject> objectID);
+    protected abstract FormFunction CreateEditFunction (ITransactionMode transactionMode, ObjectID objectID);
 
     protected void HandleEditItemClick (BocList sender, BocListItemCommandClickEventArgs e)
     {

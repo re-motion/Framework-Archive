@@ -267,7 +267,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DomainObjects
     [Test]
     public void IndexOf_ID_Null ()
     {
-      Assert.That (_collection.IndexOf ((IObjectID<DomainObject>) null), Is.EqualTo (-1));
+      Assert.That (_collection.IndexOf ((ObjectID) null), Is.EqualTo (-1));
     }
 
     [Test]

@@ -70,7 +70,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
       ArgumentUtility.CheckNotNull ("reader", reader);
 
       string idString = reader.GetAttribute ("ID");
-      IObjectID<DomainObject> id = ObjectID.Parse (idString);
+      ObjectID id = ObjectID.Parse (idString);
 
       reader.Read ();
       List<KeyValuePair<string, object>> properties = DeserializeProperties (reader, id.ClassDefinition);
@@ -79,7 +79,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
       _transportItem = CreateTransportItem(id, properties);
     }
 
-    private TransportItem CreateTransportItem (IObjectID<DomainObject> id, List<KeyValuePair<string, object>> properties)
+    private TransportItem CreateTransportItem (ObjectID id, List<KeyValuePair<string, object>> properties)
     {
       var propertyDictionary = new Dictionary<string, object> ();
       for (int i = 0; i < properties.Count; ++i)
@@ -200,7 +200,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
         case "null":
           return null;
         case "ObjectID":
-          return typeof (IObjectID<DomainObject>);
+          return typeof (ObjectID);
         default:
           return ContextAwareTypeDiscoveryUtility.GetType (valueTypeAttribute, true);
       }
@@ -208,7 +208,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
 
      private static bool IsObjectID (Type valueType)
      {
-       return typeof (IObjectID<DomainObject>).IsAssignableFrom (valueType);
+       return typeof (ObjectID).IsAssignableFrom (valueType);
      }
   }
 }

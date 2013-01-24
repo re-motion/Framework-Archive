@@ -42,7 +42,7 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
           ((IBusinessObjectWithIdentity) user).DisplayName);
     }
 
-    private UserProxy (IObjectID<DomainObject> id, string uniqueIdentifier, string displayName)
+    private UserProxy (ObjectID id, string uniqueIdentifier, string displayName)
         : base (id, uniqueIdentifier, displayName)
     {
     }

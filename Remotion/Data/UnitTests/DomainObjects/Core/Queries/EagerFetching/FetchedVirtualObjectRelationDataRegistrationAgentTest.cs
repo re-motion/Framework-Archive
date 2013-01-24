@@ -284,7 +284,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Queries.EagerFetching
       Assert.That (deserializedInstance.VirtualEndPointProvider, Is.Not.Null);
     }
 
-    private LoadedObjectDataWithDataSourceData CreateFetchedOrderTicketData (OrderTicket fetchedObject, IObjectID<DomainObject> orderID)
+    private LoadedObjectDataWithDataSourceData CreateFetchedOrderTicketData (OrderTicket fetchedObject, ObjectID orderID)
     {
       var endPointID = RelationEndPointObjectMother.CreateRelationEndPointID (fetchedObject.ID, "Order");
       var loadedObjectDataStub = LoadedObjectDataObjectMother.CreateLoadedObjectDataStub (fetchedObject);
@@ -293,7 +293,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Queries.EagerFetching
     }
 
     private void ExpectGetEndPoint (
-        IObjectID<DomainObject> objectID,
+        ObjectID objectID,
         IRelationEndPointDefinition endPointDefinition,
         IVirtualEndPointProvider virtualEndPointProviderMock,
         IVirtualObjectEndPoint virtualObjectEndPointMock,

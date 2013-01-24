@@ -34,13 +34,13 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
     public int NumberOfCallsToLoadObject { get; set; }
     public int NumberOfCallsToLoadRelatedObject { get; set; }
 
-    public ILoadedObjectData LoadObject (IObjectID<DomainObject> id, bool throwOnNotFound)
+    public ILoadedObjectData LoadObject (ObjectID id, bool throwOnNotFound)
     {
       ++NumberOfCallsToLoadObject;
       return _decorated.LoadObject (id, throwOnNotFound);
     }
 
-    public ICollection<ILoadedObjectData> LoadObjects (IEnumerable<IObjectID<DomainObject>> idsToBeLoaded, bool throwOnNotFound)
+    public ICollection<ILoadedObjectData> LoadObjects (IEnumerable<ObjectID> idsToBeLoaded, bool throwOnNotFound)
     {
       return _decorated.LoadObjects (idsToBeLoaded, throwOnNotFound);
     }

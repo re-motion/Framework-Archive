@@ -218,7 +218,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DomainObjects
       return (T) LifetimeService.NewObject (_bindingTransaction, typeof (T), ParamList.CreateDynamic (args));
     }
 
-    private T GetBound<T> (IObjectID<DomainObject> id)
+    private T GetBound<T> (ObjectID id)
         where T : DomainObject
     {
       return (T) LifetimeService.GetObject (_bindingTransaction, id, true);

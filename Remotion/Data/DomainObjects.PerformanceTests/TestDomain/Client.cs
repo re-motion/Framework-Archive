@@ -27,7 +27,7 @@ namespace Remotion.Data.DomainObjects.PerformanceTests.TestDomain
       return DomainObject.NewObject<Client>();
     }
 
-    public static Client GetObject (IObjectID<DomainObject> id)
+    public static Client GetObject (ObjectID id)
     {
       return DomainObject.GetObject<Client> (id);
     }

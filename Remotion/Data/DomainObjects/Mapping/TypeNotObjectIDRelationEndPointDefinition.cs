@@ -20,7 +20,7 @@ namespace Remotion.Data.DomainObjects.Mapping
 {
   /// <summary>
   /// <see cref="TypeNotObjectIDRelationEndPointDefinition"/> represents an invalid relation endpoint where the property type represents no 
-  /// <see cref="IObjectID{DomainObject}"/>.
+  /// <see cref="ObjectID"/>.
   /// </summary>
   public class TypeNotObjectIDRelationEndPointDefinition : InvalidRelationEndPointDefinitionBase
   {

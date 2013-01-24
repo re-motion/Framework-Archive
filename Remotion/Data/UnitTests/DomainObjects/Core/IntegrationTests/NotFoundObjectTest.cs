@@ -30,8 +30,8 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests
   [TestFixture]
   public class NotFoundObjectTest : ClientTransactionBaseTest
   {
-    private IObjectID<DomainObject> _nonExistingObjectID;
-    private IObjectID<DomainObject> _nonExistingObjectIDForSubtransaction;
+    private ObjectID _nonExistingObjectID;
+    private ObjectID _nonExistingObjectIDForSubtransaction;
 
     public override void SetUp ()
     {
@@ -345,7 +345,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests
       var clientTable = (TableDefinition) GetTypeDefinition (typeof (Client)).StorageEntityDefinition;
       DisableConstraints (clientTable);
 
-      IObjectID<DomainObject> clientID = null;
+      ObjectID clientID = null;
       try
       {
         clientID = CreateClientWithNonExistingParentClient();
@@ -469,33 +469,33 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests
       DatabaseAgent.ExecuteCommand (commandText);
     }
 
-    private void CheckObjectIsMarkedInvalid (IObjectID<DomainObject> objectID)
+    private void CheckObjectIsMarkedInvalid (ObjectID objectID)
     {
       var instance = LifetimeService.GetObjectReference (ClientTransaction.Current, objectID);
       Assert.That (instance.State, Is.EqualTo (StateType.Invalid));
     }
 
-    private void CheckObjectIsNotMarkedInvalid (IObjectID<DomainObject> objectID)
+    private void CheckObjectIsNotMarkedInvalid (ObjectID objectID)
     {
       var instance = LifetimeService.GetObjectReference (ClientTransaction.Current, objectID);
       Assert.That (instance.State, Is.Not.EqualTo (StateType.Invalid));
     }
 
-    private IResolveConstraint ThrowsObjectNotFoundException (IObjectID<DomainObject> objectID)
+    private IResolveConstraint ThrowsObjectNotFoundException (ObjectID objectID)
     {
       var expected = string.Format ("Object(s) could not be found: '{0}'.", objectID);
       return Throws.TypeOf<ObjectsNotFoundException> ().With.Message.EqualTo (expected);
     }
 
-    private IResolveConstraint ThrowsObjectInvalidException (IObjectID<DomainObject> objectID)
+    private IResolveConstraint ThrowsObjectInvalidException (ObjectID objectID)
     {
       var expected = string.Format ("Object '{0}' is invalid in this transaction.", objectID);
       return Throws.TypeOf<ObjectInvalidException> ().With.Message.EqualTo (expected);
     }
 
-    private IObjectID<DomainObject> CreateClientWithNonExistingParentClient ()
+    private ObjectID CreateClientWithNonExistingParentClient ()
     {
-      IObjectID<DomainObject> newClientID;
+      ObjectID newClientID;
       using (ClientTransaction.CreateRootTransaction ().EnterDiscardingScope ())
       {
         var newClient = Client.NewObject ();
@@ -508,7 +508,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests
       return newClientID;
     }
 
-    private void CleanupClientWithNonExistingParentClient (IObjectID<DomainObject> clientID)
+    private void CleanupClientWithNonExistingParentClient (ObjectID clientID)
     {
       using (ClientTransaction.CreateRootTransaction ().EnterDiscardingScope ())
       {

@@ -29,10 +29,10 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SecurityManagerPrincipalTest
   [TestFixture]
   public class GetTenants : DomainTest
   {
-    private IObjectID<DomainObject> _rootTenantID;
-    private IObjectID<DomainObject> _childTenantID;
-    private IObjectID<DomainObject> _grandChildTenantID;
-    private IObjectID<DomainObject> _userID;
+    private ObjectID _rootTenantID;
+    private ObjectID _childTenantID;
+    private ObjectID _grandChildTenantID;
+    private ObjectID _userID;
 
     public override void SetUp ()
     {

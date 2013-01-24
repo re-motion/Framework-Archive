@@ -40,10 +40,10 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectLifetime
   [Serializable]
   public class ObjectCleanupException : DomainObjectException
   {
-    private readonly IObjectID<DomainObject> _objectID;
+    private readonly ObjectID _objectID;
     private readonly Exception _originalException;
 
-    public ObjectCleanupException (string message, IObjectID<DomainObject> objectID, Exception innerException, Exception originalException)
+    public ObjectCleanupException (string message, ObjectID objectID, Exception innerException, Exception originalException)
         : base (message, ArgumentUtility.CheckNotNull ("innerException", innerException))
     {
       ArgumentUtility.CheckNotNull ("objectID", objectID);
@@ -56,11 +56,11 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectLifetime
     protected ObjectCleanupException ([NotNull] SerializationInfo info, StreamingContext context)
         : base(info, context)
     {
-      _objectID = (IObjectID<DomainObject>) info.GetValue ("_objectID", typeof (IObjectID<DomainObject>));
+      _objectID = (ObjectID) info.GetValue ("_objectID", typeof (ObjectID));
       _originalException = (Exception) info.GetValue ("_originalException", typeof (Exception));
     }
 
-    public IObjectID<DomainObject> ObjectID
+    public ObjectID ObjectID
     {
       get { return _objectID; }
     }

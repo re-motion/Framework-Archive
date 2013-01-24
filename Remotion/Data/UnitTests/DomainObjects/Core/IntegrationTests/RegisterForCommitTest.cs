@@ -415,7 +415,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests
       Assert.That (timestampsBefore, Is.Not.EqualTo (timestampsAfter));
     }
 
-    private void ModifyAndCommitInOtherTransaction (IObjectID<DomainObject> objectID)
+    private void ModifyAndCommitInOtherTransaction (ObjectID objectID)
     {
       using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {

@@ -96,7 +96,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.NewObject
                   + "'. Rollback the transaction to get rid of the partially constructed instance." + Environment.NewLine
                   + "Message of original exception: Test exception." + Environment.NewLine
                   + "Message of exception occurring during cleanup: Thrown from Deleting!")
-              .And.Property ("ObjectID").Matches<IObjectID<DomainObject>> (id => throwingInstance != null && object.Equals (id, throwingInstance.ID))
+              .And.Property ("ObjectID").Matches<ObjectID> (id => throwingInstance != null && id == throwingInstance.ID)
               .And.InnerException.SameAs (_deleteException)
               .And.Property ("OriginalException").SameAs (_exception));
       }

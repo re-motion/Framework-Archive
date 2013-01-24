@@ -516,7 +516,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
     [Test]
     public void ObjectsLoading ()
     {
-      var objectIDs = new List<IObjectID<DomainObject>> { _order.ID }.AsReadOnly ();
+      var objectIDs = new List<ObjectID> { _order.ID }.AsReadOnly ();
 
       using (_mockRepository.Ordered ())
       {
