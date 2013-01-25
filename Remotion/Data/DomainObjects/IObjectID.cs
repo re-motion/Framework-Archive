@@ -21,7 +21,7 @@ using Remotion.Data.DomainObjects.Persistence.Configuration;
 namespace Remotion.Data.DomainObjects
 {
   /// <summary>
-  /// Provides a covariant, typed interface for instanced of <see cref="ObjectID"/>.
+  /// Provides a covariant, typed interface for instances of <see cref="ObjectID"/>.
   /// </summary>
   /// <typeparam name="T">The class of the object identified by this <see cref="IObjectID{T}"/>.</typeparam>
   public interface IObjectID<out T> : IComparable
