@@ -17,11 +17,12 @@
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using Remotion.Development.UnitTesting;
+using Remotion.FunctionalProgramming;
 using Remotion.Text;
 using Rhino.Mocks.Constraints;
-using Remotion.FunctionalProgramming;
-using System.Linq;
 
 namespace Remotion.Development.RhinoMocks.UnitTesting
 {
@@ -38,7 +39,7 @@ namespace Remotion.Development.RhinoMocks.UnitTesting
       var items = collection.Cast<object>().ToArray();
       var type = typeof (ListArg<>).Assembly.GetType ("Rhino.Mocks.ArgManager", true);
       var message = "equivalent to collection [" + SeparatedStringBuilder.Build (", ", items) + "]";
-      var constraint = new PredicateConstraintWithMessage<T> (c => c.Cast<object> ().SetEquals (items), message);
+      var constraint = new PredicateConstraintWithMessage<T> (c => c.Cast<object>().SetEquals (items), message);
       PrivateInvoke.InvokeNonPublicStaticMethod (type, "AddInArgument", constraint);
       return default (T);
     }
@@ -51,22 +52,32 @@ namespace Remotion.Development.RhinoMocks.UnitTesting
       return Equivalent (arg, (IEnumerable) items);
     }
 
-    class PredicateConstraintWithMessage<T> : PredicateConstraint<T>
+    /// <summary>
+    /// Similiar to <see cref="ListArg{T}.Equal"/> but without considering the order of the elements in the collection.
+    /// </summary>
+    public static T[] Equivalent<T> (this ListArg<IEnumerable<T>> arg, params T[] items)
+    {
+      var argManagerType = typeof (ListArg<>).Assembly.GetType ("Rhino.Mocks.ArgManager", true);
+      var message = "equivalent to collection [" + SeparatedStringBuilder.Build (", ", items) + "]";
+      var constraint = new PredicateConstraintWithMessage<IEnumerable<T>> (c => c.SetEquals (items), message);
+      PrivateInvoke.InvokeNonPublicStaticMethod (argManagerType, "AddInArgument", constraint);
+
+      return new T[0];
+    }
+
+    private class PredicateConstraintWithMessage<T> : PredicateConstraint<T>
     {
       private readonly string _message;
 
       public PredicateConstraintWithMessage (Predicate<T> predicate, string message)
-          : base(predicate)
+          : base (predicate)
       {
         _message = message;
       }
 
       public override string Message
       {
-        get
-        {
-          return _message;
-        }
+        get { return _message; }
       }
     }
   }
