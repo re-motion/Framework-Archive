@@ -33,7 +33,7 @@ namespace Remotion.Data.DomainObjects
   public abstract class ObjectID : IObjectID<DomainObject>, ISerializable
   {
     /// <summary>
-    /// Initializes a new instance of the <see cref="ObjectID{T}"/> class with the <see cref="Mapping.ClassDefinition"/> of <typeparamref name="T"/> 
+    /// Initializes a new instance of the <see cref="ObjectID"/> class with the <see cref="Mapping.ClassDefinition"/> of <typeparamref name="T"/> 
     /// and the given ID value.
     /// </summary>
     /// <typeparam name="T">The class of the object.</typeparam>
