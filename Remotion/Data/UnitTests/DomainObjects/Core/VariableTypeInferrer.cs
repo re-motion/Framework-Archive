@@ -1,4 +1,4 @@
-// This file is part of the re-motion Core Framework (www.re-motion.org)
+﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -14,32 +14,17 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
-using Remotion.Data.DomainObjects;
-using Remotion.Data.DomainObjects.Mapping;
-using Remotion.Mixins;
+using JetBrains.Annotations;
 
-namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence
+namespace Remotion.Data.UnitTests.DomainObjects.Core
 {
-  public class StorageProviderWithFixedGuidMixin : IStorageProviderWithFixedGuid
+  public static class VariableTypeInferrer
   {
-    private Guid _fixedGuid = Guid.NewGuid ();
-
-    [OverrideTarget]
-    public ObjectID CreateNewObjectID (ClassDefinition classDefinition)
+    public static Type GetVariableType<T> ([UsedImplicitly] T value)
     {
-      return ObjectID.Create(classDefinition, FixedGuid);
+      return typeof (T);
     }
-
-    public Guid FixedGuid
-    {
-      get { return _fixedGuid; }
-      set { _fixedGuid = value; }
-    }
-  }
-
-  public interface IStorageProviderWithFixedGuid
-  {
-    Guid FixedGuid { get; set; }
   }
 }
