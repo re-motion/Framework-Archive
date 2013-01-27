@@ -171,6 +171,14 @@
       <Project>{FBE0CBDD-82FF-4173-8536-47D3B5BC2E98}</Project>
       <Name>Security.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\TypePipe\Core\TypePipe.Core.csproj">
+      <Project>{98e7f7aa-12b2-4a6b-8922-52c8e53b378e}</Project>
+      <Name>TypePipe.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\TypePipe\UnitTests\TypePipe.UnitTests.csproj">
+      <Project>{81c58d26-ad10-4422-8ab1-999c34ca8d79}</Project>
+      <Name>TypePipe.UnitTests</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Web\Core\Web.Core.csproj">
       <Project>{DF8BA786-9679-4879-8757-16AE2709D83A}</Project>
       <Name>Web.Core</Name>
@@ -215,6 +223,7 @@
     <Compile Include="DomainObjects\Core\DataManagement\SerializableFakes\SerializableTransactionHierarchyManagerFake.cs" />
     <Compile Include="DomainObjects\Core\DomainImplementation\ResurrectionServiceTest.cs" />
     <Compile Include="DomainObjects\Core\Infrastructure\ClientTransactionListenerObjectMother.cs" />
+    <Compile Include="DomainObjects\Core\Infrastructure\Interception\InterceptedDomainObjectParticipantTest.cs" />
     <Compile Include="DomainObjects\Core\IntegrationTests\GenericObjectIDTest.cs" />
     <Compile Include="DomainObjects\Core\IntegrationTests\RegisterForCommitTest.cs" />
     <Compile Include="DomainObjects\Core\VariableTypeInferrer.cs" />
