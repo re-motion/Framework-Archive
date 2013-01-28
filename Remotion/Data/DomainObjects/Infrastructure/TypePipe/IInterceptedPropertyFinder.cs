@@ -23,13 +23,13 @@ using Remotion.Collections;
 namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
 {
   /// <summary>
-  /// Defines methods for working with intercepted properties declared by <see cref="DomainObject"/> derivatives.
+  /// Defines methods for retrieving properties and analyzing accessor methods declared by <see cref="DomainObject"/> derivatives.
   /// </summary>
   public interface IInterceptedPropertyFinder
   {
     IEnumerable<Tuple<PropertyInfo, string>> GetProperties (Type domainObjectType);
 
     bool IsOverridable (MethodInfo mostDerivedMethod);
-    bool IsAutomaticPropertyAccessor (MethodInfo mostDerivedAccessorOverride);
+    bool IsAutomaticPropertyAccessor (MethodInfo mostDerivedAccessor);
   }
 }
