@@ -39,11 +39,11 @@ using Rhino.Mocks;
 namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.TypePipe
 {
   [TestFixture]
-  public class InterceptedDomainObjectParticipantTest
+  public class DomainObjectParticipantTest
   {
     private ITypeDefinitionProvider _typeDefinitionProviderMock;
 
-    private InterceptedDomainObjectParticipant _participant;
+    private DomainObjectParticipant _participant;
     private IInterceptedPropertyFinder _interceptedPropertyFinderMock;
     private IRelatedMethodFinder _relatedMethodFinderMock;
 
@@ -56,7 +56,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.TypePipe
       _interceptedPropertyFinderMock = MockRepository.GenerateStrictMock<IInterceptedPropertyFinder>();
       _relatedMethodFinderMock = MockRepository.GenerateStrictMock<IRelatedMethodFinder>();
 
-      _participant = new InterceptedDomainObjectParticipant (_typeDefinitionProviderMock, _interceptedPropertyFinderMock, _relatedMethodFinderMock);
+      _participant = new DomainObjectParticipant (_typeDefinitionProviderMock, _interceptedPropertyFinderMock, _relatedMethodFinderMock);
 
       _proxyType = ProxyTypeObjectMother.Create (typeof (ConcreteBaseType));
     }

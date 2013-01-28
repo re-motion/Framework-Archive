@@ -220,7 +220,7 @@
     <Compile Include="DomainObjects\Core\DomainImplementation\ResurrectionServiceTest.cs" />
     <Compile Include="DomainObjects\Core\Infrastructure\ClientTransactionListenerObjectMother.cs" />
     <Compile Include="DomainObjects\Core\Infrastructure\TypePipe\ExpressionTreeComparer.cs" />
-    <Compile Include="DomainObjects\Core\Infrastructure\TypePipe\InterceptedDomainObjectParticipantTest.cs" />
+    <Compile Include="DomainObjects\Core\Infrastructure\TypePipe\DomainObjectParticipantTest.cs" />
     <Compile Include="DomainObjects\Core\Infrastructure\TypePipe\ProxyTypeObjectMother.cs" />
     <Compile Include="DomainObjects\Core\IntegrationTests\GenericObjectIDTest.cs" />
     <Compile Include="DomainObjects\Core\IntegrationTests\RegisterForCommitTest.cs" />

@@ -47,7 +47,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
   /// </list>
   /// Note that serialization is currently not supported.
   /// </remarks>
-  public class InterceptedDomainObjectParticipant : IParticipant
+  public class DomainObjectParticipant : IParticipant
   {
     private class CacheKeyProvider : ICacheKeyProvider
     {
@@ -95,7 +95,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
     private readonly IInterceptedPropertyFinder _interceptedPropertyFinder;
     private readonly IRelatedMethodFinder _relatedMethodFinder;
 
-    public InterceptedDomainObjectParticipant (
+    public DomainObjectParticipant (
         ITypeDefinitionProvider typeDefinitionProvider, IInterceptedPropertyFinder interceptedPropertyFinder, IRelatedMethodFinder relatedMethodFinder)
     {
       ArgumentUtility.CheckNotNull ("typeDefinitionProvider", typeDefinitionProvider);
