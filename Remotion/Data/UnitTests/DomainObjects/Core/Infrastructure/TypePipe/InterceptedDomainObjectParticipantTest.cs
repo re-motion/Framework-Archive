@@ -261,6 +261,44 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.TypePipe
     }
 
     [Test]
+    public void ModifyType_UsesLastArgumentForValue ()
+    {
+      var property = typeof (MyDomainObject).GetProperty ("Item");
+      var indexedSetter = property.GetSetMethod();
+      Assert.That (indexedSetter.GetParameters().Select (p => p.ParameterType), Is.EqualTo (new[] { typeof (int), typeof (int), typeof (double) }));
+
+      var fakeProperties = new[] { Tuple.Create (property, "abc") };
+      StubGetProperties (fakeProperties);
+      _relatedMethodFinderMock.Stub (stub => stub.GetMostDerivedOverride (Arg<MethodInfo>.Is.Anything, Arg<Type>.Is.Anything)).Return (indexedSetter);
+      _interceptedPropertyFinderMock.Stub (stub => stub.IsOverridable (Arg<MethodInfo>.Is.Anything)).Return (true);
+      _interceptedPropertyFinderMock.Stub (stub => stub.IsAutomaticPropertyAccessor (Arg<MethodInfo>.Is.Anything)).Return (true);
+
+      _participant.ModifyType (_proxyType);
+
+      Assert.That (_proxyType.AddedMethods, Has.Count.EqualTo (3));
+      var addedSetter = _proxyType.AddedMethods.Single (m => m.Name == "set_Item");
+
+      var propertyAccessor =
+          Expression.Call (
+              Expression.Property (new ThisExpression (_proxyType), "Properties"),
+              "get_Item",
+              null,
+              Expression.Constant ("abc"));
+      var expectedSetterBody =
+          Expression.Block (
+              Expression.Call (typeof (CurrentPropertyManager), "PreparePropertyAccess", null, Expression.Constant ("abc")),
+              Expression.TryFinally (
+                  Expression.Call (
+                      propertyAccessor,
+                      "SetValue",
+                      new[] { typeof (double) },
+                      Expression.Parameter (typeof (double), "value")),
+                  Expression.Call (typeof (CurrentPropertyManager), "PropertyAccessFinished", null)));
+
+      ExpressionTreeComparer.CheckAreEqualTrees (expectedSetterBody, addedSetter.Body);
+    }
+
+    [Test]
     [ExpectedException (typeof (NonInterceptableTypeException), ExpectedMessage =
         "Cannot instantiate type 'System.Int32' as it is abstract; for classes with automatic properties, InstantiableAttribute must be used.")]
     public void ModifyType_ThrowsForAbstractClassDefinition ()
@@ -294,6 +332,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.TypePipe
       protected internal string InternalProperty { get; [UsedImplicitly] set; }
       public string ReadOnlyProperty { get { return ""; } }
       [UsedImplicitly] public string WriteOnlyProperty { set { Dev.Null = value; } }
+      public virtual double this[int i1, int i2] { set { Dev.Null = i1; Dev.Null = i2; Dev.Null = value; } }
     }
 
     // TODO 5370: 'ConcreteBaseType' not needed after TypePipe integration with re-mix.
