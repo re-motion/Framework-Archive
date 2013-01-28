@@ -107,9 +107,7 @@ namespace Remotion.Utilities
     private static string GetDescription (Enum value, ResourceManager resourceManager, CultureInfo culture)
     {
       var str = resourceManager.GetString (value.GetType().FullName + "." + value.ToString(), culture);
-	  Console.WriteLine("DEBUG DEBUG DEBUG: " + str);
-	  if(str == null)
-		throw new Exception(str);
+	  Console.WriteLine("DEBUG DEBUG DEBUG: " + str + " / culture=" + culture + " / value=" + value);
       return str ?? value.ToString();
     }
 
