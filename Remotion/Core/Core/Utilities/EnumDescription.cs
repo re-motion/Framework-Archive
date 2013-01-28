@@ -106,7 +106,10 @@ namespace Remotion.Utilities
 
     private static string GetDescription (Enum value, ResourceManager resourceManager, CultureInfo culture)
     {
-      return resourceManager.GetString (value.GetType().FullName + "." + value.ToString(), culture) ?? value.ToString();
+      var str = resourceManager.GetString (value.GetType().FullName + "." + value.ToString(), culture);
+	  Console.WriteLine("DEBUG DEBUG DEBUG: " + str);
+	  throw new Exception(str);
+      return str ?? value.ToString();
     }
 
     private static ResourceManager GetResourceManagerFromCache (Type enumType)
