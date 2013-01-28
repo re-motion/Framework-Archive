@@ -108,7 +108,8 @@ namespace Remotion.Utilities
     {
       var str = resourceManager.GetString (value.GetType().FullName + "." + value.ToString(), culture);
 	  Console.WriteLine("DEBUG DEBUG DEBUG: " + str);
-	  throw new Exception(str);
+	  if(str == null)
+		throw new Exception(str);
       return str ?? value.ToString();
     }
 
