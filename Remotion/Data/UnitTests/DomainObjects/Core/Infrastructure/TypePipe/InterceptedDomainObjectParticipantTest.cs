@@ -14,20 +14,23 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
 using System.Linq;
 using Microsoft.Scripting.Ast;
 using NUnit.Framework;
+using Remotion.Collections;
 using Remotion.Data.DomainObjects;
-using Remotion.Data.DomainObjects.Infrastructure;
+using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.Data.DomainObjects.Infrastructure.Interception;
+using Remotion.Data.DomainObjects.Infrastructure.TypePipe;
+using Remotion.Development.UnitTesting;
 using Remotion.Development.UnitTesting.Reflection;
-using Remotion.TypePipe.MutableReflection;
 using Remotion.TypePipe.UnitTests;
 using Remotion.TypePipe.UnitTests.MutableReflection;
 using Rhino.Mocks;
 
-namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.Interception
+namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.TypePipe
 {
   [TestFixture]
   public class InterceptedDomainObjectParticipantTest
@@ -48,14 +51,19 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.Interception
     public void ModifyType ()
     {
       var proxyType = ProxyTypeObjectMother.Create (typeof (MyDomainObject));
-
+      var property = NormalizingMemberInfoFromExpressionUtility.GetProperty ((MyDomainObject o) => o.SomeProperty);
+      var getter = property.GetGetMethod();
+      var setter = property.GetSetMethod();
+      var fakeProperties = new[] { Tuple.Create (property, "propertyIdentifier") };
       var fakeDomainObjectType = ReflectionObjectMother.GetSomeType();
       _participantHelperMock.Expect (mock => mock.GetPublicDomainObjectType (proxyType.BaseType)).Return (fakeDomainObjectType);
+      _participantHelperMock.Expect (mock => mock.GetInterceptedProperties (fakeDomainObjectType)).Return (fakeProperties);
+      _participantHelperMock.Expect (mock => mock.GetMostDerivedMethodOverride (getter, proxyType)).Return(ReflectionObjectMother.getSome);
+      _participantHelperMock.Expect (mock => mock.GetMostDerivedMethodOverride (setter, proxyType));
 
       _participant.ModifyType (proxyType);
 
       _participantHelperMock.VerifyAllExpectations();
-
       Assert.That (proxyType.AddedInterfaces, Is.EqualTo (new[] { typeof (IInterceptedDomainObject) }));
       Assert.That (proxyType.AddedMethods, Has.Count.EqualTo (2));
 
@@ -65,6 +73,21 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.Interception
       Assert.That (getPublicDomainObjectTypeImplementation.Body, Is.TypeOf<ConstantExpression>().And.Property ("Value").SameAs (fakeDomainObjectType));
     }
 
-    private class MyDomainObject : DomainObject { }
+    [IgnoreForMappingConfiguration]
+    private class MyDomainObject : DomainObject
+    {
+      public string SomeProperty { get; set; }
+      protected string ProtectedProperty { get; set; }
+
+      public string ReadOnlyProperty
+      {
+        get { return ""; }
+      }
+
+      public string WriteOnlyProperty
+      {
+        set { Dev.Null = value; }
+      }
+    }
   }
 }

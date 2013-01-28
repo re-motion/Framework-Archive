@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,14 +22,13 @@ using System.Reflection;
 using System.Runtime.Serialization;
 using Microsoft.Scripting.Ast;
 using Remotion.Collections;
-using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.Infrastructure.Interception;
 using Remotion.TypePipe;
 using Remotion.TypePipe.Caching;
 using Remotion.TypePipe.MutableReflection;
-using Remotion.TypePipe.MutableReflection.Implementation;
 using Remotion.Utilities;
 
-namespace Remotion.Data.DomainObjects.Infrastructure.Interception
+namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
 {
   public class InterceptedDomainObjectParticipant : IParticipant
   {
@@ -82,12 +82,12 @@ namespace Remotion.Data.DomainObjects.Infrastructure.Interception
       // Add marker interface.
       proxyType.AddInterface (typeof (IInterceptedDomainObject));
 
-      //// Override infrastructure hooks on DomainObject.
-      //OverridePerformConstructorCheck (proxyType);
-      //OverrideGetPublicDomainObjectType (proxyType, domainObjectType);
+      // Override infrastructure hooks on DomainObject.
+      OverridePerformConstructorCheck (proxyType);
+      OverrideGetPublicDomainObjectType (proxyType, domainObjectType);
 
-      //// Intercept properties.
-      //var properties = _participantHelper.GetInterceptedProperties (domainObjectType);
+      // Intercept properties.
+      var properties = _participantHelper.GetInterceptedProperties (domainObjectType);
       //ProcessProperties (proxyType, properties);
 
       //// Implement ISerializable.
@@ -118,8 +118,10 @@ namespace Remotion.Data.DomainObjects.Infrastructure.Interception
 
     private void ProcessProperty (ProxyType proxyType, PropertyInfo property, string propertyIdentifier)
     {
-      var getMethod = property.GetGetMethod (true);
-      var setMethod = property.GetSetMethod (true);
+      //var getMethod = property.GetGetMethod (true);
+      //var setMethod = property.GetSetMethod (true);
+      var getMethod = property.GetGetMethod ();
+      var setMethod = property.GetSetMethod ();
 
       var mostDerivedGetOverride = getMethod != null ? _participantHelper.GetMostDerivedMethodOverride (getMethod, proxyType) : null;
       var mostDerivedSetOverride = setMethod != null ? _participantHelper.GetMostDerivedMethodOverride (setMethod, proxyType) : null;

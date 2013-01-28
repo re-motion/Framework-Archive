@@ -222,8 +222,8 @@
     <Compile Include="Infrastructure\IClientTransactionEventSink.cs" />
     <Compile Include="Infrastructure\IClientTransactionEventBroker.cs" />
     <Compile Include="ICommittingEventRegistrar.cs" />
-    <Compile Include="Infrastructure\Interception\InterceptedDomainObjectParticipant.cs" />
-    <Compile Include="Infrastructure\Interception\IParticipantHelper.cs" />
+    <Compile Include="Infrastructure\TypePipe\InterceptedDomainObjectParticipant.cs" />
+    <Compile Include="Infrastructure\TypePipe\IParticipantHelper.cs" />
     <Compile Include="Infrastructure\ObjectLifetime\IObjectInitializationContextProvider.cs" />
     <Compile Include="Infrastructure\ObjectLifetime\IObjectInitializationContext.cs" />
     <Compile Include="Infrastructure\ObjectLifetime\IObjectLifetimeAgent.cs" />
