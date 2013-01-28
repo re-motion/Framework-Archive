@@ -70,6 +70,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       return instance;
     }
 
+    // Public solely for TypePipe.PerformanceTests.
     public IConstructorLookupInfo GetConstructorLookupInfo (Type domainObjectType)
     {
       ArgumentUtility.CheckNotNull ("domainObjectType", domainObjectType);
