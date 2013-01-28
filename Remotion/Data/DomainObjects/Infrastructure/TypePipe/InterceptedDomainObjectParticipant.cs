@@ -33,6 +33,23 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
 {
   public class InterceptedDomainObjectParticipant : IParticipant
   {
+    private class CacheKeyProvider : ICacheKeyProvider
+    {
+      private readonly ITypeDefinitionProvider _typeDefinitionProvider;
+
+      public CacheKeyProvider (ITypeDefinitionProvider typeDefinitionProvider)
+      {
+        _typeDefinitionProvider = typeDefinitionProvider;
+      }
+
+      public object GetCacheKey (Type requestedType)
+      {
+        ArgumentUtility.CheckNotNull ("requestedType", requestedType);
+
+        return _typeDefinitionProvider.GetTypeDefinition (requestedType);
+      }
+    }
+
     private static readonly MethodInfo s_getPublicDomainObjectTypeImplementation = GetInfrastructureHook ("GetPublicDomainObjectTypeImplementation");
     private static readonly MethodInfo s_performConstructorCheck = GetInfrastructureHook ("PerformConstructorCheck");
 
@@ -74,7 +91,10 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
       _relatedMethodFinder = relatedMethodFinder;
     }
 
-    public ICacheKeyProvider PartialCacheKeyProvider { get; private set; }
+    public ICacheKeyProvider PartialCacheKeyProvider
+    {
+      get { return new CacheKeyProvider (_typeDefinitionProvider); }
+    }
 
     public void ModifyType (ProxyType proxyType)
     {

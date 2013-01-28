@@ -17,6 +17,7 @@
 using System;
 using System.Linq;
 using System.Reflection;
+using JetBrains.Annotations;
 using Microsoft.Scripting.Ast;
 using NUnit.Framework;
 using Remotion.Collections;
@@ -25,6 +26,7 @@ using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurati
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Infrastructure.Interception;
 using Remotion.Data.DomainObjects.Infrastructure.TypePipe;
+using Remotion.Data.UnitTests.DomainObjects.Core.Mapping;
 using Remotion.Development.UnitTesting;
 using Remotion.Development.UnitTesting.Reflection;
 using Remotion.TypePipe.Expressions;
@@ -56,6 +58,22 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.TypePipe
       _participant = new InterceptedDomainObjectParticipant (_typeDefinitionProviderMock, _interceptedPropertyFinderMock, _relatedMethodFinderMock);
 
       _proxyType = ProxyTypeObjectMother.Create (typeof (ConcreteBaseType));
+    }
+
+    [Test]
+    public void PartialCacheKeyProvider ()
+    {
+      var cacheKeyProvider = _participant.PartialCacheKeyProvider;
+      // Retrieving the property does not cause any calls to the mock objects.
+
+      var requestedType = ReflectionObjectMother.GetSomeType();
+      var fakeClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition();
+      _typeDefinitionProviderMock.Expect (mock => mock.GetTypeDefinition (requestedType)).Return (fakeClassDefinition);
+
+      var result = cacheKeyProvider.GetCacheKey (requestedType);
+
+      _typeDefinitionProviderMock.VerifyAllExpectations();
+      Assert.That (result, Is.SameAs (fakeClassDefinition));
     }
 
     [Test]
@@ -255,9 +273,9 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.TypePipe
     private class MyDomainObject : MyDomainObjectBase
     {
       public override string SomeProperty { get; set; }
-      protected internal string InternalProperty { get; set; }
+      protected internal string InternalProperty { get; [UsedImplicitly] set; }
       public string ReadOnlyProperty { get { return ""; } }
-      public string WriteOnlyProperty { set { Dev.Null = value; } }
+      [UsedImplicitly] public string WriteOnlyProperty { set { Dev.Null = value; } }
     }
 
     // TODO 5370: 'ConcreteBaseType' not needed after TypePipe integration with re-mix.
