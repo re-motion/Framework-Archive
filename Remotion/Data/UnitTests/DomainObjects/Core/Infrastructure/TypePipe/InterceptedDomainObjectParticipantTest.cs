@@ -17,17 +17,20 @@
 
 using System;
 using System.Linq;
+using System.Reflection;
 using Microsoft.Scripting.Ast;
 using NUnit.Framework;
 using Remotion.Collections;
 using Remotion.Data.DomainObjects;
 using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
+using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Infrastructure.Interception;
 using Remotion.Data.DomainObjects.Infrastructure.TypePipe;
 using Remotion.Development.UnitTesting;
 using Remotion.Development.UnitTesting.Reflection;
-using Remotion.TypePipe.UnitTests;
-using Remotion.TypePipe.UnitTests.MutableReflection;
+using Remotion.TypePipe.Expressions;
+using Remotion.TypePipe.MutableReflection;
+using Remotion.TypePipe.MutableReflection.Implementation;
 using Rhino.Mocks;
 
 namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.TypePipe
@@ -35,59 +38,132 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.TypePipe
   [TestFixture]
   public class InterceptedDomainObjectParticipantTest
   {
-    private IParticipantHelper _participantHelperMock;
+    private ITypeDefinitionProvider _typeDefinitionProviderMock;
 
     private InterceptedDomainObjectParticipant _participant;
+    private IInterceptedPropertyFinder _interceptedPropertyFinderMock;
+    private IRelatedMethodFinder _relatedMethodFinderMock;
+
+    private ProxyType _proxyType;
 
     [SetUp]
     public void SetUp ()
     {
-      _participantHelperMock = MockRepository.GenerateStrictMock<IParticipantHelper>();
+      _typeDefinitionProviderMock = MockRepository.GenerateStrictMock<ITypeDefinitionProvider>();
+      _interceptedPropertyFinderMock = MockRepository.GenerateStrictMock<IInterceptedPropertyFinder>();
+      _relatedMethodFinderMock = MockRepository.GenerateStrictMock<IRelatedMethodFinder>();
 
-      _participant = new InterceptedDomainObjectParticipant (_participantHelperMock);
+      _participant = new InterceptedDomainObjectParticipant (_typeDefinitionProviderMock, _interceptedPropertyFinderMock, _relatedMethodFinderMock);
+
+      _proxyType = ProxyTypeObjectMother.Create (typeof (ConcreteBaseType));
     }
 
     [Test]
-    public void ModifyType ()
+    public void ModifyType_AddMarkerInterface_OverridesHooks ()
     {
-      var proxyType = ProxyTypeObjectMother.Create (typeof (MyDomainObject));
-      var property = NormalizingMemberInfoFromExpressionUtility.GetProperty ((MyDomainObject o) => o.SomeProperty);
-      var getter = property.GetGetMethod();
-      var setter = property.GetSetMethod();
-      var fakeProperties = new[] { Tuple.Create (property, "propertyIdentifier") };
       var fakeDomainObjectType = ReflectionObjectMother.GetSomeType();
-      _participantHelperMock.Expect (mock => mock.GetPublicDomainObjectType (proxyType.BaseType)).Return (fakeDomainObjectType);
-      _participantHelperMock.Expect (mock => mock.GetInterceptedProperties (fakeDomainObjectType)).Return (fakeProperties);
-      _participantHelperMock.Expect (mock => mock.GetMostDerivedMethodOverride (getter, proxyType)).Return(ReflectionObjectMother.getSome);
-      _participantHelperMock.Expect (mock => mock.GetMostDerivedMethodOverride (setter, proxyType));
+      var fakeProperties = Enumerable.Empty<Tuple<PropertyInfo, string>>();
+      _typeDefinitionProviderMock.Expect (mock => mock.GetPublicDomainObjectType (typeof (ConcreteBaseType))).Return (fakeDomainObjectType);
+      _interceptedPropertyFinderMock.Expect (mock => mock.GetProperties (fakeDomainObjectType)).Return (fakeProperties);
 
-      _participant.ModifyType (proxyType);
+      _participant.ModifyType (_proxyType);
 
-      _participantHelperMock.VerifyAllExpectations();
-      Assert.That (proxyType.AddedInterfaces, Is.EqualTo (new[] { typeof (IInterceptedDomainObject) }));
-      Assert.That (proxyType.AddedMethods, Has.Count.EqualTo (2));
+      _typeDefinitionProviderMock.VerifyAllExpectations();
+      _interceptedPropertyFinderMock.VerifyAllExpectations();
+      Assert.That (_proxyType.AddedInterfaces, Is.EqualTo (new[] { typeof (IInterceptedDomainObject) }));
+      Assert.That (_proxyType.AddedMethods, Has.Count.EqualTo (2));
 
-      var performConstructorCheck = proxyType.AddedMethods.Single (m => m.Name == "PerformConstructorCheck");
+      var performConstructorCheck = _proxyType.AddedMethods.Single (m => m.Name == "PerformConstructorCheck");
+      var getPublicDomainObjectTypeImplementation = _proxyType.AddedMethods.Single (m => m.Name == "GetPublicDomainObjectTypeImplementation");
       Assert.That (performConstructorCheck.Body, Is.TypeOf<DefaultExpression>().And.Property ("Type").SameAs (typeof (void)));
-      var getPublicDomainObjectTypeImplementation = proxyType.AddedMethods.Single (m => m.Name == "GetPublicDomainObjectTypeImplementation");
       Assert.That (getPublicDomainObjectTypeImplementation.Body, Is.TypeOf<ConstantExpression>().And.Property ("Value").SameAs (fakeDomainObjectType));
     }
 
-    [IgnoreForMappingConfiguration]
-    private class MyDomainObject : DomainObject
+    [Test]
+    public void ModifyType_InterceptsProperties ()
     {
-      public string SomeProperty { get; set; }
+      var property = NormalizingMemberInfoFromExpressionUtility.GetProperty ((MyDomainObject o) => o.SomeProperty);
+      var getter = property.GetGetMethod();
+      var setter = property.GetSetMethod();
+      var getterBaseDefinition = getter.GetBaseDefinition();
+      var setterBaseDefinition = setter.GetBaseDefinition();
+      var getterOverride = typeof (ConcreteBaseType).GetMethod ("get_SomeProperty");
+      var setterOverride = typeof (ConcreteBaseType).GetMethod ("set_SomeProperty");
+      Assert.That (getter, Is.Not.EqualTo (getterBaseDefinition).And.Not.EqualTo (getterOverride));
+      Assert.That (setter, Is.Not.EqualTo (setterBaseDefinition).And.Not.EqualTo (setterOverride));
+
+      var fakeDomainObjectType = ReflectionObjectMother.GetSomeType();
+      var fakeProperties = new[] { Tuple.Create (property, "propertyIdentifier") };
+      _typeDefinitionProviderMock.Expect (mock => mock.GetPublicDomainObjectType (typeof (ConcreteBaseType))).Return (fakeDomainObjectType);
+      _interceptedPropertyFinderMock.Expect (mock => mock.GetProperties (fakeDomainObjectType)).Return (fakeProperties);
+      _relatedMethodFinderMock.Expect (mock => mock.GetMostDerivedOverride (getterBaseDefinition, _proxyType)).Return (getterOverride);
+      _relatedMethodFinderMock.Expect (mock => mock.GetMostDerivedOverride (setterBaseDefinition, _proxyType)).Return (setterOverride);
+      _interceptedPropertyFinderMock.Expect (mock => mock.IsOverridable (getterOverride)).Return (true);
+      _interceptedPropertyFinderMock.Expect (mock => mock.IsAutomaticPropertyAccessor (getterOverride)).Return (true);
+      _interceptedPropertyFinderMock.Expect (mock => mock.IsOverridable (setterOverride)).Return (true);
+      _interceptedPropertyFinderMock.Expect (mock => mock.IsAutomaticPropertyAccessor (setterOverride)).Return (true);
+
+      _participant.ModifyType (_proxyType);
+
+      _typeDefinitionProviderMock.VerifyAllExpectations();
+      _interceptedPropertyFinderMock.VerifyAllExpectations();
+      _relatedMethodFinderMock.VerifyAllExpectations();
+      Assert.That (_proxyType.AddedMethods, Has.Count.EqualTo (4));
+
+      var addedGetter = _proxyType.AddedMethods.Single (m => m.Name == "get_SomeProperty");
+      var addedSetter = _proxyType.AddedMethods.Single (m => m.Name == "set_SomeProperty");
+
+      var propertyAccessor =
+          Expression.Call (
+              Expression.Property (new ThisExpression (_proxyType), "Properties"),
+              "get_Item",
+              null,
+              Expression.Constant ("propertyIdentifier"));
+      var expectedGetterBody =
+          Expression.Block (
+              Expression.Call (typeof (CurrentPropertyManager), "PreparePropertyAccess", null, Expression.Constant ("propertyIdentifier")),
+              Expression.TryFinally (
+                  Expression.Call (
+                      propertyAccessor,
+                      "GetValue",
+                      new[] { typeof (string) }),
+                  Expression.Call (typeof (CurrentPropertyManager), "PropertyAccessFinished", null)));
+      var expectedSetterBody =
+          Expression.Block (
+              Expression.Call (typeof (CurrentPropertyManager), "PreparePropertyAccess", null, Expression.Constant ("propertyIdentifier")),
+              Expression.TryFinally (
+                  Expression.Call (
+                      propertyAccessor,
+                      "SetValue",
+                      new[] { typeof (string) },
+                      Expression.Parameter (typeof (string), "value")),
+                  Expression.Call (typeof (CurrentPropertyManager), "PropertyAccessFinished", null)));
+
+      ExpressionTreeComparer.CheckAreEqualTrees (expectedGetterBody, addedGetter.Body);
+      ExpressionTreeComparer.CheckAreEqualTrees (expectedSetterBody, addedSetter.Body);
+    }
+
+    // TODO 5370: This is only here for the accesser.GetBaseDefinition() in the call to RelatedMethoFinder.GetMostDerivedOverride.
+    [IgnoreForMappingConfiguration]
+    private class MyDomainObjectBase : DomainObject
+    {
+      public virtual string SomeProperty { get; set; }
+    }
+
+    [IgnoreForMappingConfiguration]
+    private class MyDomainObject : MyDomainObjectBase
+    {
+      public override string SomeProperty { get; set; }
+      public string ReadOnlyProperty { get { return ""; } }
+      public string WriteOnlyProperty { set { Dev.Null = value; } }
       protected string ProtectedProperty { get; set; }
+    }
 
-      public string ReadOnlyProperty
-      {
-        get { return ""; }
-      }
-
-      public string WriteOnlyProperty
-      {
-        set { Dev.Null = value; }
-      }
+    // TODO 5370: 'ConcreteBaseType' not needed after TypePipe integration with re-mix.
+    [IgnoreForMappingConfiguration]
+    private class ConcreteBaseType : MyDomainObject
+    {
+      public override string SomeProperty { get; set; }
     }
   }
 }

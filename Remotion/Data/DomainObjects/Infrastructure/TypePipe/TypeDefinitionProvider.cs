@@ -16,41 +16,30 @@
 // 
 
 using System;
-using System.Collections.Generic;
-using System.Reflection;
-using Remotion.Collections;
 using Remotion.Data.DomainObjects.Infrastructure.Interception;
 using Remotion.Data.DomainObjects.Mapping;
-using Remotion.TypePipe.MutableReflection.Implementation;
+using Remotion.Mixins;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
 {
   /// <summary>
-  /// An interface that adds an level of abstraction for configuration singletons and static helper functiones needed by 
-  /// <see cref="InterceptedDomainObjectParticipant"/>.
+  /// Implements <see cref="ITypeDefinitionProvider"/> by retrieving the <see cref="ClassDefinition"/> of the domain objec type from the current 
+  /// mapping configuration.
   /// </summary>
-  public interface IParticipantHelper
+  public class TypeDefinitionProvider : ITypeDefinitionProvider
   {
-    Type GetPublicDomainObjectType (Type concreteType);
-    ClassDefinition GetTypeDefinition (Type domainObjectType);
-
-    IEnumerable<Tuple<PropertyInfo, string>> GetInterceptedProperties (Type domainObjectType);
-
-    MethodInfo GetMostDerivedMethodOverride (MethodInfo method, Type typeToStartsearch);
-  }
-
-  public class ParticipantHelper : IParticipantHelper
-  {
-    private static readonly IRelatedMethodFinder s_relatedMethodFinder = new RelatedMethodFinder();
-
     public Type GetPublicDomainObjectType (Type concreteType)
     {
-      throw new NotImplementedException();
+      ArgumentUtility.CheckNotNull ("concreteType", concreteType);
+
+      return MixinTypeUtility.GetUnderlyingTargetType (concreteType);
     }
 
     public ClassDefinition GetTypeDefinition (Type domainObjectType)
     {
+      ArgumentUtility.CheckNotNull ("domainObjectType", domainObjectType);
+
       var classDefinition = MappingConfiguration.Current.GetTypeDefinition (domainObjectType);
       if (classDefinition.IsAbstract)
       {
@@ -61,21 +50,6 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
       }
 
       return classDefinition;
-    }
-
-    public IEnumerable<Tuple<PropertyInfo, string>> GetInterceptedProperties (Type domainObjectType)
-    {
-      ArgumentUtility.CheckNotNull ("domainObjectType", domainObjectType);
-
-      return new InterceptedPropertyCollector (domainObjectType, TypeConversionProvider.Current).GetProperties();
-    }
-
-    public MethodInfo GetMostDerivedMethodOverride (MethodInfo method, Type typeToStartsearch)
-    {
-      ArgumentUtility.CheckNotNull ("method", method);
-      ArgumentUtility.CheckNotNull ("typeToStartsearch", typeToStartsearch);
-
-      return s_relatedMethodFinder.GetMostDerivedOverride (method.GetBaseDefinition(), typeToStartsearch);
     }
   }
 }

@@ -223,7 +223,8 @@
     <Compile Include="Infrastructure\IClientTransactionEventBroker.cs" />
     <Compile Include="ICommittingEventRegistrar.cs" />
     <Compile Include="Infrastructure\TypePipe\InterceptedDomainObjectParticipant.cs" />
-    <Compile Include="Infrastructure\TypePipe\IParticipantHelper.cs" />
+    <Compile Include="Infrastructure\TypePipe\IInterceptedPropertyFinder.cs" />
+    <Compile Include="Infrastructure\TypePipe\ITypeDefinitionProvider.cs" />
     <Compile Include="Infrastructure\ObjectLifetime\IObjectInitializationContextProvider.cs" />
     <Compile Include="Infrastructure\ObjectLifetime\IObjectInitializationContext.cs" />
     <Compile Include="Infrastructure\ObjectLifetime\IObjectLifetimeAgent.cs" />
@@ -253,6 +254,7 @@
     <Compile Include="Infrastructure\ObjectPersistence\NullLoadedObjectData.cs" />
     <Compile Include="Infrastructure\ObjectPersistence\ParentTransactionContext.cs" />
     <Compile Include="Infrastructure\ObjectPersistence\UnlockedParentTransactionContext.cs" />
+    <Compile Include="Infrastructure\TypePipe\TypeDefinitionProvider.cs" />
     <Compile Include="IObjectID.cs" />
     <Compile Include="Linq\ExecutableQueries\CustomSequenceQueryAdapter.cs" />
     <Compile Include="Linq\DomainObjectQueryGenerator.cs" />

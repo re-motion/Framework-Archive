@@ -19,13 +19,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.Serialization;
 using Microsoft.Scripting.Ast;
 using Remotion.Collections;
 using Remotion.Data.DomainObjects.Infrastructure.Interception;
 using Remotion.TypePipe;
 using Remotion.TypePipe.Caching;
 using Remotion.TypePipe.MutableReflection;
+using Remotion.TypePipe.MutableReflection.Implementation;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
@@ -48,9 +48,6 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
     private static readonly MethodInfo s_propertyAccessFinished =
         MemberInfoFromExpressionUtility.GetMethod (() => CurrentPropertyManager.PropertyAccessFinished());
 
-    private static readonly MethodInfo s_getObjectDataForGeneratedTypes =
-        MemberInfoFromExpressionUtility.GetMethod (() => SerializationHelper.GetObjectDataForGeneratedTypes (null, new StreamingContext(), null, false));
-
     private static MethodInfo GetInfrastructureHook (string name)
     {
       var bindingFlags = BindingFlags.NonPublic | BindingFlags.Instance;
@@ -60,13 +57,20 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
       return method;
     }
 
-    private readonly IParticipantHelper _participantHelper;
+    private readonly ITypeDefinitionProvider _typeDefinitionProvider;
+    private readonly IInterceptedPropertyFinder _interceptedPropertyFinder;
+    private readonly IRelatedMethodFinder _relatedMethodFinder;
 
-    public InterceptedDomainObjectParticipant (IParticipantHelper participantHelper)
+    public InterceptedDomainObjectParticipant (
+        ITypeDefinitionProvider typeDefinitionProvider, IInterceptedPropertyFinder interceptedPropertyFinder, IRelatedMethodFinder relatedMethodFinder)
     {
-      ArgumentUtility.CheckNotNull ("participantHelper", participantHelper);
+      ArgumentUtility.CheckNotNull ("typeDefinitionProvider", typeDefinitionProvider);
+      ArgumentUtility.CheckNotNull ("interceptedPropertyFinder", interceptedPropertyFinder);
+      ArgumentUtility.CheckNotNull ("relatedMethodFinder", relatedMethodFinder);
 
-      _participantHelper = participantHelper;
+      _typeDefinitionProvider = typeDefinitionProvider;
+      _interceptedPropertyFinder = interceptedPropertyFinder;
+      _relatedMethodFinder = relatedMethodFinder;
     }
 
     public ICacheKeyProvider PartialCacheKeyProvider { get; private set; }
@@ -76,8 +80,9 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
       ArgumentUtility.CheckNotNull ("proxyType", proxyType);
       Assertion.IsTrue (typeof (DomainObject).IsAssignableFromFast (proxyType));
 
+      // TODO 5370: This will change when TypePipe is integrated with re-mix.
       var concreteBaseType = proxyType.BaseType;
-      var domainObjectType = _participantHelper.GetPublicDomainObjectType (concreteBaseType);
+      var domainObjectType = _typeDefinitionProvider.GetPublicDomainObjectType (concreteBaseType);
 
       // Add marker interface.
       proxyType.AddInterface (typeof (IInterceptedDomainObject));
@@ -87,17 +92,12 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
       OverrideGetPublicDomainObjectType (proxyType, domainObjectType);
 
       // Intercept properties.
-      var properties = _participantHelper.GetInterceptedProperties (domainObjectType);
-      //ProcessProperties (proxyType, properties);
+      var properties = _interceptedPropertyFinder.GetProperties (domainObjectType);
+      ProcessProperties (proxyType, properties);
 
-      //// Implement ISerializable.
-      //ImplementISerializable (proxyType);
-    }
-
-    private void ImplementISerializable (ProxyType proxyType)
-    {
-      //proxyType.AddInterface (typeof (ISerializable));
-      // TODO
+      // Implement ISerializable (see TypeGenerator).
+      // For now, serialization is not supported.
+      // TODO 5370: Use TypePipe serialization capabilities, after TypePipe is integrated with re-mix.
     }
 
     private void OverridePerformConstructorCheck (ProxyType proxyType)
@@ -123,24 +123,24 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
       var getMethod = property.GetGetMethod ();
       var setMethod = property.GetSetMethod ();
 
-      var mostDerivedGetOverride = getMethod != null ? _participantHelper.GetMostDerivedMethodOverride (getMethod, proxyType) : null;
-      var mostDerivedSetOverride = setMethod != null ? _participantHelper.GetMostDerivedMethodOverride (setMethod, proxyType) : null;
+      // TODO 5370: Check if this is still needed (probably not!) as proxyType.BaseType directly is the DoaminObject subclass created by the programmer.
+      var mostDerivedGetOverride = getMethod != null ? _relatedMethodFinder.GetMostDerivedOverride (getMethod.GetBaseDefinition(), proxyType) : null;
+      var mostDerivedSetOverride = setMethod != null ? _relatedMethodFinder.GetMostDerivedOverride (setMethod.GetBaseDefinition(), proxyType) : null;
 
-      // TODO: Only override if overridable? Still valid?
-      if (InterceptedPropertyCollector.IsOverridable (mostDerivedGetOverride))
+      if (_interceptedPropertyFinder.IsOverridable (mostDerivedGetOverride))
       {
-        var getter = proxyType.GetOrAddOverride (getMethod);
-        if (InterceptedPropertyCollector.IsAutomaticPropertyAccessor (mostDerivedGetOverride))
+        var getter = proxyType.GetOrAddOverride (mostDerivedGetOverride);
+        if (_interceptedPropertyFinder.IsAutomaticPropertyAccessor (mostDerivedGetOverride))
           getter.SetBody (ctx => ImplementByCalling (ctx.This, property.PropertyType, propertyIdentifier, s_propertyGetValue));
         else
           getter.SetBody (ctx => WrapAccessorBody (ctx.PreviousBody, propertyIdentifier));
       }
 
-      if (InterceptedPropertyCollector.IsOverridable (mostDerivedSetOverride))
+      if (_interceptedPropertyFinder.IsOverridable (mostDerivedSetOverride))
       {
         var setter = proxyType.GetOrAddOverride (setMethod);
-        if (InterceptedPropertyCollector.IsAutomaticPropertyAccessor (mostDerivedSetOverride))
-            // TODO: Last? (wouldn't are multi-indexed properties supported?)
+        if (_interceptedPropertyFinder.IsAutomaticPropertyAccessor (mostDerivedSetOverride))
+            // TODO: Last? (are multi-indexed properties really supported?)
           setter.SetBody (ctx => ImplementByCalling (ctx.This, property.PropertyType, propertyIdentifier, s_propertySetValue, ctx.Parameters.Last()));
         else
           setter.SetBody (ctx => WrapAccessorBody (ctx.PreviousBody, propertyIdentifier));
