@@ -47,9 +47,9 @@ namespace Remotion.Development.UnitTesting.Reflection
     private static readonly MethodInfo[] s_finalMethods = EnsureNoNulls (new[] { typeof(DomainType).GetMethod("FinalMethod") });
     private static readonly MethodInfo[] s_nonGenericMethods = EnsureNoNulls (new[] { typeof (object).GetMethod ("ToString"), typeof (string).GetMethod ("Concat", new[] { typeof (object) }) });
     private static readonly MethodInfo[] s_genericMethods = EnsureNoNulls (new[] { typeof (Enumerable).GetMethod ("Empty"), typeof (ReflectionObjectMother).GetMethod ("GetRandomElement", BindingFlags.NonPublic | BindingFlags.Static) });
-    private static readonly MethodInfo[] s_modifiableMethodInfos = EnsureNoNulls (new[] { typeof (object).GetMethod ("ToString"), typeof (object).GetMethod ("Equals", new[] { typeof (object ) }) });
     private static readonly MethodInfo[] s_abstractMethodInfos = EnsureNoNulls (new[] { typeof (MethodInfo).GetMethod ("GetBaseDefinition"), typeof (Type).GetMethod ("GetMethods", new[] { typeof (BindingFlags) }) });
     private static readonly ParameterInfo[] s_parameterInfos = EnsureNoNulls (typeof (Dictionary<,>).GetMethod ("TryGetValue").GetParameters());
+    private static readonly PropertyInfo[] s_properties = EnsureNoNulls (new[] { typeof (List<>).GetProperty ("Count"), typeof (Type).GetProperty ("IsArray") });
 
     public static Type GetSomeType ()
     {
@@ -205,11 +205,6 @@ namespace Remotion.Development.UnitTesting.Reflection
       return method;
     }
 
-    public static MethodInfo GetSomeModifiableMethod ()
-    {
-      return GetRandomElement (s_modifiableMethodInfos);
-    }
-
     public static MethodInfo[] GetMultipeMethods (int count)
     {
       var result = s_nonGenericMethods.Take (count).ToArray();
@@ -220,6 +215,11 @@ namespace Remotion.Development.UnitTesting.Reflection
     public static ParameterInfo GetSomeParameter ()
     {
       return GetRandomElement (s_parameterInfos);
+    }
+
+    public static PropertyInfo GetSomeProperty ()
+    {
+      return GetRandomElement (s_properties);
     }
 
     public static object GetDefaultValue (Type type)
@@ -240,7 +240,6 @@ namespace Remotion.Development.UnitTesting.Reflection
             .Concat (s_finalMethods)
             .Concat (s_nonGenericMethods)
             .Concat (s_genericMethods)
-            .Concat (s_modifiableMethodInfos)
             .Concat (s_abstractMethodInfos);
       }
     }

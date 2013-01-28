@@ -25,6 +25,7 @@ using Remotion.Data.DomainObjects.Infrastructure.Interception;
 using Remotion.TypePipe;
 using Remotion.TypePipe.Caching;
 using Remotion.TypePipe.MutableReflection;
+using Remotion.TypePipe.MutableReflection.BodyBuilding;
 using Remotion.TypePipe.MutableReflection.Implementation;
 using Remotion.Utilities;
 
@@ -112,47 +113,52 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
 
     private void ProcessProperties (ProxyType proxyType, IEnumerable<Tuple<PropertyInfo, string>> properties)
     {
-      foreach (var property in properties)
-        ProcessProperty (proxyType, property.Item1, property.Item2);
+      foreach (var propertyMapping in properties)
+      {
+        var property = propertyMapping.Item1;
+        var propertyIdentifier = propertyMapping.Item2;
+
+        var getter = property.GetGetMethod (true);
+        var setter = property.GetSetMethod (true);
+
+        ProcessAccessor (proxyType, getter, property.PropertyType, propertyIdentifier, s_propertyGetValue, ctx => new Expression[0]);
+        ProcessAccessor (proxyType, setter, property.PropertyType, propertyIdentifier, s_propertySetValue, ctx => new[] { ctx.Parameters.Last() });
+        // TODO: Last? (are multi-indexed properties really supported?)
+      }
     }
 
-    private void ProcessProperty (ProxyType proxyType, PropertyInfo property, string propertyIdentifier)
+    private void ProcessAccessor (
+        ProxyType proxyType,
+        MethodInfo accessor,
+        Type propertyType,
+        string propertyIdentifier,
+        MethodInfo accessorImplementationMethod,
+        Func<MethodBodyModificationContext, IEnumerable<Expression>> argumentProvider)
     {
-      //var getMethod = property.GetGetMethod (true);
-      //var setMethod = property.GetSetMethod (true);
-      var getMethod = property.GetGetMethod ();
-      var setMethod = property.GetSetMethod ();
+      if (accessor == null)
+        return;
 
-      // TODO 5370: Check if this is still needed (probably not!) as proxyType.BaseType directly is the DoaminObject subclass created by the programmer.
-      var mostDerivedGetOverride = getMethod != null ? _relatedMethodFinder.GetMostDerivedOverride (getMethod.GetBaseDefinition(), proxyType) : null;
-      var mostDerivedSetOverride = setMethod != null ? _relatedMethodFinder.GetMostDerivedOverride (setMethod.GetBaseDefinition(), proxyType) : null;
+      var mostDerivedAccessor = _relatedMethodFinder.GetMostDerivedOverride (accessor.GetBaseDefinition(), proxyType);
 
-      if (_interceptedPropertyFinder.IsOverridable (mostDerivedGetOverride))
+      if (_interceptedPropertyFinder.IsOverridable (mostDerivedAccessor))
       {
-        var getter = proxyType.GetOrAddOverride (mostDerivedGetOverride);
-        if (_interceptedPropertyFinder.IsAutomaticPropertyAccessor (mostDerivedGetOverride))
-          getter.SetBody (ctx => ImplementByCalling (ctx.This, property.PropertyType, propertyIdentifier, s_propertyGetValue));
+        var getter = proxyType.GetOrAddOverride (mostDerivedAccessor);
+        if (_interceptedPropertyFinder.IsAutomaticPropertyAccessor (mostDerivedAccessor))
+        {
+          var instantiatedMethod = accessorImplementationMethod.MakeGenericMethod (propertyType);
+          getter.SetBody (ctx => ImplementByCalling (ctx.This, propertyIdentifier, instantiatedMethod, argumentProvider (ctx)));
+        }
         else
           getter.SetBody (ctx => WrapAccessorBody (ctx.PreviousBody, propertyIdentifier));
-      }
-
-      if (_interceptedPropertyFinder.IsOverridable (mostDerivedSetOverride))
-      {
-        var setter = proxyType.GetOrAddOverride (setMethod);
-        if (_interceptedPropertyFinder.IsAutomaticPropertyAccessor (mostDerivedSetOverride))
-            // TODO: Last? (are multi-indexed properties really supported?)
-          setter.SetBody (ctx => ImplementByCalling (ctx.This, property.PropertyType, propertyIdentifier, s_propertySetValue, ctx.Parameters.Last()));
-        else
-          setter.SetBody (ctx => WrapAccessorBody (ctx.PreviousBody, propertyIdentifier));
       }
     }
 
     private Expression ImplementByCalling (
-        Expression @this, Type propertyType, string propertyIdentifier, MethodInfo propertyAccessorMethod, params Expression[] arguments)
+        Expression @this, string propertyIdentifier, MethodInfo accessorImplementationMethod, IEnumerable<Expression> arguments)
     {
       var propertyIndexer = Expression.Property (@this, s_properties);
       var propertyAccessor = Expression.Call (propertyIndexer, s_getPropertyAccessor, Expression.Constant (propertyIdentifier));
-      var body = Expression.Call (propertyAccessor, propertyAccessorMethod.MakeGenericMethod (propertyType), arguments);
+      var body = Expression.Call (propertyAccessor, accessorImplementationMethod, arguments);
 
       return WrapAccessorBody (body, propertyIdentifier);
     }
