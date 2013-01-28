@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using JetBrains.Annotations;
@@ -80,8 +81,10 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.TypePipe
     public void ModifyType_AddMarkerInterface_And_OverrideHooks ()
     {
       var fakeDomainObjectType = ReflectionObjectMother.GetSomeType();
+      var fakeClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition();
       var fakeProperties = Enumerable.Empty<Tuple<PropertyInfo, string>>();
       _typeDefinitionProviderMock.Expect (mock => mock.GetPublicDomainObjectType (typeof (ConcreteBaseType))).Return (fakeDomainObjectType);
+      _typeDefinitionProviderMock.Expect (mock => mock.GetTypeDefinition (fakeDomainObjectType)).Return (fakeClassDefinition);
       _interceptedPropertyFinderMock.Expect (mock => mock.GetProperties (fakeDomainObjectType)).Return (fakeProperties);
 
       _participant.ModifyType (_proxyType);
@@ -111,8 +114,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.TypePipe
       Assert.That (setter, Is.Not.EqualTo (setterBaseDefinition).And.Not.EqualTo (setterOverride));
 
       var fakeProperties = new[] { Tuple.Create (property, "abc") };
-      _typeDefinitionProviderMock.Stub (stub => stub.GetPublicDomainObjectType (Arg<Type>.Is.Anything));
-      _interceptedPropertyFinderMock.Stub (stub => stub.GetProperties (Arg<Type>.Is.Anything)).Return (fakeProperties);
+      StubGetProperties (fakeProperties);
       _relatedMethodFinderMock.Expect (mock => mock.GetMostDerivedOverride (getterBaseDefinition, _proxyType)).Return (getterOverride);
       _relatedMethodFinderMock.Expect (mock => mock.GetMostDerivedOverride (setterBaseDefinition, _proxyType)).Return (setterOverride);
       _interceptedPropertyFinderMock.Expect (mock => mock.IsOverridable (getterOverride)).Return (false);
@@ -133,8 +135,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.TypePipe
       var setter = property.GetSetMethod();
 
       var fakeProperties = new[] { Tuple.Create (property, "propertyIdentifier") };
-      _typeDefinitionProviderMock.Stub (stub => stub.GetPublicDomainObjectType (Arg<Type>.Is.Anything));
-      _interceptedPropertyFinderMock.Stub (stub => stub.GetProperties (Arg<Type>.Is.Anything)).Return (fakeProperties);
+      StubGetProperties (fakeProperties);
       _relatedMethodFinderMock.Stub (stub => stub.GetMostDerivedOverride (Arg<MethodInfo>.Is.Anything, Arg<Type>.Is.Anything)).Return (getter).Repeat.Once();
       _relatedMethodFinderMock.Stub (stub => stub.GetMostDerivedOverride (Arg<MethodInfo>.Is.Anything, Arg<Type>.Is.Anything)).Return (setter);
       _interceptedPropertyFinderMock.Stub (stub => stub.IsOverridable (Arg<MethodInfo>.Is.Anything)).Return (true);
@@ -184,8 +185,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.TypePipe
       var setter = property.GetSetMethod();
 
       var fakeProperties = new[] { Tuple.Create (property, "abc") };
-      _typeDefinitionProviderMock.Stub (stub => stub.GetPublicDomainObjectType (Arg<Type>.Is.Anything));
-      _interceptedPropertyFinderMock.Stub (stub => stub.GetProperties (Arg<Type>.Is.Anything)).Return (fakeProperties);
+      StubGetProperties (fakeProperties);
       _relatedMethodFinderMock.Stub (stub => stub.GetMostDerivedOverride (Arg<MethodInfo>.Is.Anything, Arg<Type>.Is.Anything)).Return (getter).Repeat.Once();
       _relatedMethodFinderMock.Stub (stub => stub.GetMostDerivedOverride (Arg<MethodInfo>.Is.Anything, Arg<Type>.Is.Anything)).Return (setter);
       _interceptedPropertyFinderMock.Stub (stub => stub.IsOverridable (Arg<MethodInfo>.Is.Anything)).Return (true);
@@ -227,8 +227,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.TypePipe
       Assert.That (setter.IsPublic, Is.False);
 
       var fakeProperties = new[] { Tuple.Create (property, "abc") };
-      _typeDefinitionProviderMock.Stub (stub => stub.GetPublicDomainObjectType (Arg<Type>.Is.Anything));
-      _interceptedPropertyFinderMock.Stub (stub => stub.GetProperties (Arg<Type>.Is.Anything)).Return (fakeProperties);
+      StubGetProperties (fakeProperties);
       _relatedMethodFinderMock.Expect (mock => mock.GetMostDerivedOverride (getter, _proxyType)).Return (getter);
       _relatedMethodFinderMock.Expect (mock => mock.GetMostDerivedOverride (setter, _proxyType)).Return (setter);
       _interceptedPropertyFinderMock.Stub (stub => stub.IsOverridable (Arg<MethodInfo>.Is.Anything)).Return (false);
@@ -250,8 +249,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.TypePipe
       Assert.That (writeOnlyProperty.GetGetMethod (true), Is.Null);
 
       var fakeProperties = new[] { Tuple.Create (readOnlyProperty, "abc"), Tuple.Create (writeOnlyProperty, "def") };
-      _typeDefinitionProviderMock.Stub (stub => stub.GetPublicDomainObjectType (Arg<Type>.Is.Anything));
-      _interceptedPropertyFinderMock.Stub (stub => stub.GetProperties (Arg<Type>.Is.Anything)).Return (fakeProperties);
+      StubGetProperties (fakeProperties);
       _relatedMethodFinderMock.Expect (mock => mock.GetMostDerivedOverride (getter, _proxyType)).Return (getter);
       _relatedMethodFinderMock.Expect (mock => mock.GetMostDerivedOverride (setter, _proxyType)).Return (setter);
       _interceptedPropertyFinderMock.Stub (stub => stub.IsOverridable (Arg<MethodInfo>.Is.Anything)).Return (false);
@@ -260,6 +258,26 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.TypePipe
 
       _relatedMethodFinderMock.VerifyAllExpectations();
       Assert.That (_proxyType.AddedMethods, Has.Count.EqualTo (2));
+    }
+
+    [Test]
+    [ExpectedException (typeof (NonInterceptableTypeException), ExpectedMessage =
+        "Cannot instantiate type 'System.Int32' as it is abstract; for classes with automatic properties, InstantiableAttribute must be used.")]
+    public void ModifyType_ThrowsForAbstractClassDefinition ()
+    {
+      var fakeClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition (classType: typeof (int), isAbstract: true);
+      _typeDefinitionProviderMock.Stub (stub => stub.GetPublicDomainObjectType (Arg<Type>.Is.Anything));
+      _typeDefinitionProviderMock.Stub (stub => stub.GetTypeDefinition (Arg<Type>.Is.Anything)).Return (fakeClassDefinition);
+
+      _participant.ModifyType (_proxyType);
+    }
+
+    private void StubGetProperties (IEnumerable<Tuple<PropertyInfo, string>> fakeProperties)
+    {
+      var fakeClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition();
+      _typeDefinitionProviderMock.Stub (stub => stub.GetPublicDomainObjectType (Arg<Type>.Is.Anything));
+      _typeDefinitionProviderMock.Stub (stub => stub.GetTypeDefinition (Arg<Type>.Is.Anything)).Return (fakeClassDefinition);
+      _interceptedPropertyFinderMock.Stub (stub => stub.GetProperties (Arg<Type>.Is.Anything)).Return (fakeProperties);
     }
 
     // TODO 5370: This is only here for the accesser.GetBaseDefinition() in the call to RelatedMethoFinder.GetMostDerivedOverride.

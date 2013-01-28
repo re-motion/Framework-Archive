@@ -16,7 +16,6 @@
 // 
 
 using System;
-using Remotion.Data.DomainObjects.Infrastructure.Interception;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Mixins;
 using Remotion.Utilities;
@@ -41,16 +40,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
     {
       ArgumentUtility.CheckNotNull ("domainObjectType", domainObjectType);
 
-      var classDefinition = MappingConfiguration.Current.GetTypeDefinition (domainObjectType);
-      if (classDefinition.IsAbstract)
-      {
-        var message = string.Format (
-            "Cannot instantiate type {0} as it is abstract; for classes with automatic properties, InstantiableAttribute must be used.",
-            classDefinition.ClassType.FullName);
-        throw new NonInterceptableTypeException (message, classDefinition.ClassType);
-      }
-
-      return classDefinition;
+      return MappingConfiguration.Current.GetTypeDefinition (domainObjectType);
     }
   }
 }

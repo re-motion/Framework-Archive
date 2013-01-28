@@ -104,6 +104,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
       // TODO 5370: This will change when TypePipe is integrated with re-mix.
       var concreteBaseType = proxyType.BaseType;
       var domainObjectType = _typeDefinitionProvider.GetPublicDomainObjectType (concreteBaseType);
+      CheckClassDefinition (domainObjectType);
 
       // Add marker interface.
       proxyType.AddInterface (typeof (IInterceptedDomainObject));
@@ -143,7 +144,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
 
         ProcessAccessor (proxyType, getter, property.PropertyType, propertyIdentifier, s_propertyGetValue, ctx => new Expression[0]);
         ProcessAccessor (proxyType, setter, property.PropertyType, propertyIdentifier, s_propertySetValue, ctx => new[] { ctx.Parameters.Last() });
-        // TODO: Last? (are multi-indexed properties really supported?)
+        // TODO xxx: Last? (are multi-indexed properties really supported?)
       }
     }
 
@@ -190,6 +191,19 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
           Expression.TryFinally (
               body,
               Expression.Call (s_propertyAccessFinished)));
+    }
+
+    private void CheckClassDefinition (Type domainObjectType)
+    {
+      // TODO xxx: Retrieve class definition just for checking that it is non-abstract?
+      var classDefinition = _typeDefinitionProvider.GetTypeDefinition (domainObjectType);
+      if (classDefinition.IsAbstract)
+      {
+        var message = string.Format (
+            "Cannot instantiate type '{0}' as it is abstract; for classes with automatic properties, InstantiableAttribute must be used.",
+            classDefinition.ClassType.FullName);
+        throw new NonInterceptableTypeException (message, classDefinition.ClassType);
+      }
     }
   }
 }
