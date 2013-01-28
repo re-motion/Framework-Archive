@@ -31,6 +31,22 @@ using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
 {
+  /// <summary>
+  /// A TypePipe <see cref="IParticipant"/> that specifies the code generation needs necessary for re-store.
+  /// The proxy base type (i.e. requested type) is assumed to be a subclass of <see cref="DomainObject"/>.
+  /// </summary>
+  /// <remarks>
+  /// This <see cref="IParticipant"/> applies the following modifications.
+  /// <list type="bullet">
+  ///   <item>Adds marker interface <see cref="IInterceptedDomainObject"/>.</item>
+  ///   <item>
+  ///     Overrides infrastructure methods <see cref="DomainObject.PerformConstructorCheck"/> and 
+  ///     <see cref="DomainObject.GetPublicDomainObjectTypeImplementation"/> on <see cref="DomainObject"/>.
+  ///   </item>
+  ///   <item>Implements or wraps intercepted properties (i.e. properties returned by <see cref="IInterceptedPropertyFinder"/>).</item>
+  /// </list>
+  /// Note that serialization is currently not supported.
+  /// </remarks>
   public class InterceptedDomainObjectParticipant : IParticipant
   {
     private class CacheKeyProvider : ICacheKeyProvider
