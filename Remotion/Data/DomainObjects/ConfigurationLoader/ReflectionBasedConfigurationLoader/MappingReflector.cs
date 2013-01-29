@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Linq;
+using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Mapping.Validation;
 using Remotion.Data.DomainObjects.Mapping.Validation.Logical;
@@ -62,7 +63,8 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
       _classIDProvider = classIDProvider;
       _domainModelConstraintProvider = domainModelConstraintProvider;
       _nameResolver = nameResolver;
-      _mappingObjectFactory = new ReflectionBasedMappingObjectFactory (_nameResolver, _classIDProvider, _domainModelConstraintProvider);
+      var ic = InterceptedDomainObjectCreator.Instance;
+      _mappingObjectFactory = new ReflectionBasedMappingObjectFactory (_nameResolver, _classIDProvider, _domainModelConstraintProvider, ic);
     }
 
     public ITypeDiscoveryService TypeDiscoveryService

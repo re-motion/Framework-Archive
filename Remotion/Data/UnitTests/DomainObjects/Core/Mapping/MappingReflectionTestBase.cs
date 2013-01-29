@@ -47,11 +47,10 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Mapping
       
       ClassIDProviderStub = MockRepository.GenerateStub<IClassIDProvider>();
       DomainModelConstraintProviderStub = MockRepository.GenerateStub<IDomainModelConstraintProvider>();
+      DomainObjectCreatorStub = MockRepository.GenerateStub<IDomainObjectCreator>();
 
       MappingObjectFactory = new ReflectionBasedMappingObjectFactory (
-          Configuration.NameResolver, ClassIDProviderStub, DomainModelConstraintProviderStub);
-
-      DomainObjectCreatorStub = MockRepository.GenerateStub<IDomainObjectCreator>();
+          Configuration.NameResolver, ClassIDProviderStub, DomainModelConstraintProviderStub, DomainObjectCreatorStub);
     }
 
     [TearDown]
