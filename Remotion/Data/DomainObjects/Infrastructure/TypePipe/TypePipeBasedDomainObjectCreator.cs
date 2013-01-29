@@ -16,6 +16,7 @@
 // 
 
 using System;
+using Remotion.Data.DomainObjects.Infrastructure.Interception;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Reflection;
 using Remotion.TypePipe;
@@ -42,6 +43,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
     {
       ArgumentUtility.CheckNotNull ("objectID", objectID);
       ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("objectID", objectID.ClassDefinition.ClassType, typeof (DomainObject));
+      CheckDomainType (objectID.ClassDefinition.ClassType);
       ValidateClassDefinition (objectID);
 
       var mixedType = DomainObjectMixinCodeGenerationBridge.GetConcreteType (objectID.ClassDefinition.ClassType);
@@ -59,6 +62,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
     {
       ArgumentUtility.CheckNotNull ("domainObjectType", domainObjectType);
       ArgumentUtility.CheckNotNull ("constructorParameters", constructorParameters);
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("domainObjectType", domainObjectType, typeof (DomainObject));
+      CheckDomainType (domainObjectType);
       ValidateClassDefinition (domainObjectType);
 
       var mixedType = DomainObjectMixinCodeGenerationBridge.GetConcreteType (domainObjectType);
@@ -67,6 +72,15 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
       DomainObjectMixinCodeGenerationBridge.OnDomainObjectCreated (instance);
 
       return instance;
+    }
+
+    private void CheckDomainType (Type domainObjectType)
+    {
+      if (domainObjectType.IsSealed)
+      {
+        var message = string.Format ("Cannot instantiate type '{0}' as it is sealed.", domainObjectType.FullName);
+        throw new NonInterceptableTypeException (message, domainObjectType);
+      }
     }
 
     private void ValidateClassDefinition (ObjectID objectID)

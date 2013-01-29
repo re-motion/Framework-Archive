@@ -151,7 +151,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.Interception
 
     [Test]
     [ExpectedException (typeof (NonInterceptableTypeException), ExpectedMessage =
-        "Cannot instantiate type Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.Interception.TestDomain.NonInstantiableSealedClass as it is sealed.")]
+        "Cannot instantiate type 'Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.Interception.TestDomain.NonInstantiableSealedClass' as it is sealed.")]
     public void SealedCannotBeInstantiated ()
     {
       NonInstantiableSealedClass.NewObject();
