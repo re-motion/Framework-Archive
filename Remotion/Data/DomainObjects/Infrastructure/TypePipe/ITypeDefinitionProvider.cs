@@ -17,12 +17,14 @@
 
 using System;
 using Remotion.Data.DomainObjects.Mapping;
+using Remotion.ServiceLocation;
 
 namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
 {
   /// <summary>
   /// Defines an interface for classes retrieving the non-abstract <see cref="ClassDefinition"/> for a domain object type.
   /// </summary>
+  [ConcreteImplementation (typeof (TypeDefinitionProvider))]
   public interface ITypeDefinitionProvider
   {
     // TODO 5370: Remove when re-mix is integrated.

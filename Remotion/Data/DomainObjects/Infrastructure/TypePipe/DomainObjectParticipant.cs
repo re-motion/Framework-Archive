@@ -22,6 +22,7 @@ using System.Reflection;
 using Microsoft.Scripting.Ast;
 using Remotion.Collections;
 using Remotion.Data.DomainObjects.Infrastructure.Interception;
+using Remotion.ServiceLocation;
 using Remotion.TypePipe;
 using Remotion.TypePipe.Caching;
 using Remotion.TypePipe.MutableReflection;
@@ -62,7 +63,11 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
       {
         ArgumentUtility.CheckNotNull ("requestedType", requestedType);
 
-        return _typeDefinitionProvider.GetTypeDefinition (requestedType);
+        // TODO 5370: This will change when TypePipe is integrated with re-mix.
+        var domainObjectType = _typeDefinitionProvider.GetPublicDomainObjectType (requestedType);
+        var classDefinition = _typeDefinitionProvider.GetTypeDefinition (domainObjectType);
+
+        return classDefinition;
       }
     }
 

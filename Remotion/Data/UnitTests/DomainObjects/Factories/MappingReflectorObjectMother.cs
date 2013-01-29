@@ -29,7 +29,11 @@ namespace Remotion.Data.UnitTests.DomainObjects.Factories
       ArgumentUtility.CheckNotNull ("typeDiscoveryService", typeDiscoveryService);
 
       return new MappingReflector (
-          typeDiscoveryService, new ClassIDProvider(), new DomainModelConstraintProvider(), new ReflectionBasedNameResolver());
+          typeDiscoveryService,
+          new ClassIDProvider(),
+          new DomainModelConstraintProvider(),
+          new ReflectionBasedNameResolver(),
+          new DomainObjectCreatorSwitch());
     }
   }
 }

@@ -62,7 +62,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
       ValidateClassDefinition (domainObjectType);
 
       var mixedType = DomainObjectMixinCodeGenerationBridge.GetConcreteType (domainObjectType);
-      var instance = (DomainObject) _objectFactory.CreateObject (mixedType, constructorParameters);
+      var instance = (DomainObject) _objectFactory.CreateObject (mixedType, constructorParameters, allowNonPublicConstructor: true);
 
       DomainObjectMixinCodeGenerationBridge.OnDomainObjectCreated (instance);
 

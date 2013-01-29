@@ -16,13 +16,16 @@
 // 
 using System;
 using Remotion.Data.DomainObjects.DataManagement;
+using Remotion.Data.DomainObjects.Infrastructure.TypePipe;
 using Remotion.Reflection;
+using Remotion.ServiceLocation;
 
 namespace Remotion.Data.DomainObjects.Infrastructure
 {
   /// <summary>
   /// Provides a common interface for classes creating new instances of <see cref="DomainObject"/> types.
   /// </summary>
+  [ConcreteImplementation (typeof (TypePipeBasedDomainObjectCreator), Lifetime = LifetimeKind.Singleton)]
   public interface IDomainObjectCreator
   {
     /// <summary>

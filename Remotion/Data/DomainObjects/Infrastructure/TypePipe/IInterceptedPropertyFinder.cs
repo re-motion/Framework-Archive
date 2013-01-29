@@ -19,12 +19,14 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using Remotion.Collections;
+using Remotion.ServiceLocation;
 
 namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
 {
   /// <summary>
   /// Defines methods for retrieving properties and analyzing accessor methods declared by <see cref="DomainObject"/> derivatives.
   /// </summary>
+  [ConcreteImplementation (typeof (InterceptedPropertyCollectorAdapter))]
   public interface IInterceptedPropertyFinder
   {
     IEnumerable<Tuple<PropertyInfo, string>> GetProperties (Type domainObjectType);
