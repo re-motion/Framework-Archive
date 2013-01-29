@@ -17,6 +17,7 @@
 using System;
 using System.ComponentModel.Design;
 using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
+using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Utilities;
 
@@ -24,6 +25,9 @@ namespace Remotion.Data.UnitTests.DomainObjects.Factories
 {
   public class MappingReflectorObjectMother
   {
+    //TODO 5370: Remove
+    public static readonly IDomainObjectCreator DomainObjectCreator = new DomainObjectCreatorSwitch();
+
     public static MappingReflector CreateMappingReflector (ITypeDiscoveryService typeDiscoveryService)
     {
       ArgumentUtility.CheckNotNull ("typeDiscoveryService", typeDiscoveryService);
@@ -33,7 +37,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Factories
           new ClassIDProvider(),
           new DomainModelConstraintProvider(),
           new ReflectionBasedNameResolver(),
-          new DomainObjectCreatorSwitch());
+          DomainObjectCreator);
     }
   }
 }
