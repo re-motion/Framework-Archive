@@ -24,15 +24,16 @@ using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.UnitTests.DomainObjects.Core.Mapping.MixinTestDomain;
-using Remotion.Data.UnitTests.DomainObjects.Core.Mapping.SortExpressions;
 using Remotion.Data.UnitTests.DomainObjects.Core.Mapping.TestDomain.Integration;
 using Remotion.Data.UnitTests.DomainObjects.Core.Mapping.TestDomain.Integration.MixedMapping;
 using Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.Model;
+using Remotion.Data.UnitTests.DomainObjects.Factories;
 using Remotion.Data.UnitTests.DomainObjects.TestDomain.TableInheritance;
 using Remotion.Mixins;
 using Remotion.Reflection;
 using Remotion.Utilities;
 using Rhino.Mocks;
+using Remotion.Development.UnitTesting.Enumerables;
 
 namespace Remotion.Data.UnitTests.DomainObjects.Core.Mapping
 {
@@ -712,7 +713,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Mapping
     {
       var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition ("Order");
 
-      classDefinition.MyPropertyDefinitions.ToArray();
+      classDefinition.MyPropertyDefinitions.ForceEnumeration();
     }
 
     [Test]
@@ -735,7 +736,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Mapping
     {
       var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition ("Order");
 
-      classDefinition.MyRelationEndPointDefinitions.ToArray();
+      classDefinition.MyRelationEndPointDefinitions.ForceEnumeration();
     }
 
     [Test]
@@ -944,7 +945,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Mapping
     [Test]
     public void CreatorIsFactoryBasedCreator ()
     {
-      Assert.That (_orderClass.InstanceCreator, Is.EqualTo (InterceptedDomainObjectCreator.Instance));
+      Assert.That (_orderClass.InstanceCreator, Is.SameAs (MappingReflectorObjectMother.DomainObjectCreator));
     }
 
     [Test]
