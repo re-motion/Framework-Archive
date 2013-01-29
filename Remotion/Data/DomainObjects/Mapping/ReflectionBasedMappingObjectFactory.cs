@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
+using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Reflection;
 using Remotion.Utilities;
 
@@ -47,7 +48,8 @@ namespace Remotion.Data.DomainObjects.Mapping
     {
       ArgumentUtility.CheckNotNull ("type", type);
 
-      var classReflector = new ClassReflector (type, this, _mappingNameResolver, _classIDProvider, _domainModelConstraintProvider);
+      var instanceCreator = InterceptedDomainObjectCreator.Instance;
+      var classReflector = new ClassReflector (type, this, _mappingNameResolver, _classIDProvider, _domainModelConstraintProvider, instanceCreator);
       return classReflector.GetMetadata (baseClass);
     }
 
