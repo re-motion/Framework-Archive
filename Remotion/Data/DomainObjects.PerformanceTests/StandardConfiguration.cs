@@ -20,7 +20,6 @@ using Remotion.Configuration;
 using Remotion.Data.DomainObjects.Configuration;
 using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.Data.DomainObjects.Development;
-using Remotion.Data.DomainObjects.Infrastructure.TypePipe;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Mapping.Configuration;
 using Remotion.Data.DomainObjects.Persistence;
@@ -31,8 +30,6 @@ using Remotion.Data.DomainObjects.Queries.Configuration;
 using Remotion.Reflection.TypeDiscovery;
 using Remotion.Reflection.TypeDiscovery.AssemblyFinding;
 using Remotion.Reflection.TypeDiscovery.AssemblyLoading;
-using Remotion.ServiceLocation;
-using Remotion.TypePipe;
 
 namespace Remotion.Data.DomainObjects.PerformanceTests
 {
@@ -60,7 +57,7 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
               new ClassIDProvider(),
               new DomainModelConstraintProvider(),
               new ReflectionBasedNameResolver(),
-              new TypePipeBasedDomainObjectCreator (SafeServiceLocator.Current.GetInstance<IObjectFactory>())),
+              new DomainObjectCreatorSwitch()),
           new PersistenceModelLoader (new StorageGroupBasedStorageProviderDefinitionFinder (DomainObjectsConfiguration.Current.Storage)));
       MappingConfiguration.SetCurrent (mappingConfiguration);
     }
