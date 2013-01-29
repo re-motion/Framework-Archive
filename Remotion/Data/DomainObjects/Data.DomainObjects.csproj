@@ -222,6 +222,7 @@
     <Compile Include="Infrastructure\IClientTransactionEventSink.cs" />
     <Compile Include="Infrastructure\IClientTransactionEventBroker.cs" />
     <Compile Include="ICommittingEventRegistrar.cs" />
+    <Compile Include="Infrastructure\ThrowingDomainObjectCreator.cs" />
     <Compile Include="Infrastructure\TypePipe\DomainObjectParticipant.cs" />
     <Compile Include="Infrastructure\TypePipe\IInterceptedPropertyFinder.cs" />
     <Compile Include="Infrastructure\TypePipe\InterceptedPropertyCollectorAdapter.cs" />
