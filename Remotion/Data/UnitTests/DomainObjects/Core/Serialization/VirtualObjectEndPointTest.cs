@@ -27,6 +27,7 @@ using Remotion.Development.UnitTesting;
 namespace Remotion.Data.UnitTests.DomainObjects.Core.Serialization
 {
   [TestFixture]
+  [UseLegacyCodeGeneration]
   public class VirtualObjectEndPointTest : ClientTransactionBaseTest
   {
     private VirtualObjectEndPoint _endPoint;
