@@ -690,8 +690,10 @@
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <ResGenTrackerSdkPath>%programfiles(x86)%\Microsoft SDKs\Windows\v7.1\bin</ResGenTrackerSdkPath>
-  <TrackFileAccess>false</TrackFileAccess>
+  <PropertyGroup>
+    <ResGenTrackerSdkPath>%programfiles(x86)%\Microsoft SDKs\Windows\v7.1\bin</ResGenTrackerSdkPath>
+    <TrackFileAccess>false</TrackFileAccess>
+  </PropertyGroup>
   <PropertyGroup>
     <PreBuildEvent>
     </PreBuildEvent>
