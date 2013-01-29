@@ -33,7 +33,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Serialization
         + ".* is not marked as serializable.", MatchType = MessageMatch.Regex)]
     public void DataContainerIsNotSerializable ()
     {
-      var objectID = ObjectID.Create("Customer", Guid.NewGuid ());
+      var objectID = new ObjectID("Customer", Guid.NewGuid ());
       DataContainer dataContainer = DataContainer.CreateNew (objectID);
 
       Serializer.SerializeAndDeserialize (dataContainer);
@@ -42,7 +42,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Serialization
     [Test]
     public void DataContainerIsFlattenedSerializable ()
     {
-      var objectID = ObjectID.Create("Customer", Guid.NewGuid ());
+      var objectID = new ObjectID("Customer", Guid.NewGuid ());
       DataContainer dataContainer = DataContainer.CreateNew (objectID);
       DataContainer deserializedDataContainer = FlattenedSerializer.SerializeAndDeserialize (dataContainer);
       Assert.That (deserializedDataContainer, Is.Not.SameAs (dataContainer));
@@ -89,7 +89,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Serialization
     [Test]
     public void DataContainer_WithoutProperties_Contents ()
     {
-      var objectID = ObjectID.Create(typeof (ClassWithoutProperties), Guid.NewGuid ());
+      var objectID = new ObjectID(typeof (ClassWithoutProperties), Guid.NewGuid ());
       DataContainer dataContainer = DataContainer.CreateNew (objectID);
       DataContainer deserializedDataContainer = FlattenedSerializer.SerializeAndDeserialize (dataContainer);
 

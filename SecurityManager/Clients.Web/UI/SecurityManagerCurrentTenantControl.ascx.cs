@@ -64,7 +64,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI
 
         CurrentTenantField.LoadUnboundValue (currentTenant, false);
 
-        bool isCurrentTenantTheOnlyTenantInTheCollection = tenants.Length == 1 && currentTenant != null && tenants[0].ID == currentTenant.ID;
+        bool isCurrentTenantTheOnlyTenantInTheCollection = tenants.Length == 1 && currentTenant != null && tenants[0].ID.Equals (currentTenant.ID);
         bool isCurrentTenantTheOnlyTenant = tenants.Length == 0 && currentTenant != null;
         bool hasExactlyOneTenant = isCurrentTenantTheOnlyTenantInTheCollection || isCurrentTenantTheOnlyTenant;
         IsTenantSelectionEnabled = !hasExactlyOneTenant;
@@ -109,9 +109,9 @@ namespace Remotion.SecurityManager.Clients.Web.UI
 
       var oldSecurityManagerPrincipal = SecurityManagerPrincipal.Current;
       var newSecurityManagerPrincipal = ApplicationInstance.SecurityManagerPrincipalFactory.CreateWithLocking (
-          ObjectID.Parse (tenantID),
-          oldSecurityManagerPrincipal.User.ID,
-          oldSecurityManagerPrincipal.Substitution != null ? oldSecurityManagerPrincipal.Substitution.ID : null);
+          ObjectID.Parse (tenantID).GetHandle<Tenant> (),
+          oldSecurityManagerPrincipal.User.Handle,
+          oldSecurityManagerPrincipal.Substitution != null ? oldSecurityManagerPrincipal.Substitution.Handle : null);
       ApplicationInstance.SetCurrentPrincipal (newSecurityManagerPrincipal);
 
       _isCurrentTenantFieldReadOnly = true;
@@ -132,9 +132,9 @@ namespace Remotion.SecurityManager.Clients.Web.UI
 
       var oldSecurityManagerPrincipal = SecurityManagerPrincipal.Current;
       var newSecurityManagerPrincipal = ApplicationInstance.SecurityManagerPrincipalFactory.CreateWithLocking (
-          oldSecurityManagerPrincipal.Tenant.ID,
-          oldSecurityManagerPrincipal.User.ID,
-          substitutionID != null ? ObjectID.Parse (substitutionID) : null);
+          oldSecurityManagerPrincipal.Tenant.Handle,
+          oldSecurityManagerPrincipal.User.Handle,
+          substitutionID != null ? ObjectID.Parse (substitutionID).GetHandle<Substitution>() : null);
       ApplicationInstance.SetCurrentPrincipal (newSecurityManagerPrincipal);
 
       _isCurrentSubstitutionFieldReadOnly = true;

@@ -75,6 +75,17 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DomainObjects
     }
 
     [Test]
+    public void SimpleDomainObject_SupportsGetObjectViaHandle ()
+    {
+      var instance = ClassDerivedFromSimpleDomainObject.NewObject ();
+      var handle = instance.GetHandle();
+
+      var gottenInstance = handle.GetObject();
+      
+      Assert.That (gottenInstance, Is.SameAs (instance));
+    }
+
+    [Test]
     public void TryGetObject ()
     {
       ClassDerivedFromSimpleDomainObject instance = ClassDerivedFromSimpleDomainObject.NewObject ();
@@ -90,7 +101,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DomainObjects
     [Test]
     public void TryGetObject_NotFound ()
     {
-      var id = ObjectID.Create(typeof (Order), Guid.NewGuid());
+      var id = new ObjectID(typeof (Order), Guid.NewGuid());
       var gottenInstance = ClassDerivedFromSimpleDomainObject.TryGetObject (id);
       Assert.That (gottenInstance, Is.Null);
     }

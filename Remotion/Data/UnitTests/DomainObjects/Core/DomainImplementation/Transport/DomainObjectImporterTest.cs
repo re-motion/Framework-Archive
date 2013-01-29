@@ -364,7 +364,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DomainImplementation.Transp
       TransportedDomainObjects result = importer.GetImportedObjects();
       Assert.That (
           result.TransportedObjects, 
-          Is.EquivalentTo (LifetimeService.GetObjects (result.DataTransaction, (IObjectID<Order>) DomainObjectIDs.Order1)));
+          Is.EquivalentTo (LifetimeService.GetObjects<Order> (result.DataTransaction, DomainObjectIDs.Order1)));
 
       strategyMock.VerifyAllExpectations();
     }

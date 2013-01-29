@@ -62,26 +62,23 @@ namespace Remotion.SecurityManager.Domain
     }
 
     private int _revision;
-    private readonly ObjectID _tenantID;
-    private readonly ObjectID _userID;
-    private readonly ObjectID _substitutionID;
+    private readonly IDomainObjectHandle<Tenant> _tenantHandle;
+    private readonly IDomainObjectHandle<User> _userHandle;
+    private readonly IDomainObjectHandle<Substitution> _substitutionHandle;
     private TenantProxy _tenantProxy;
     private UserProxy _userProxy;
     private SubstitutionProxy _substitutionProxy;
     private ISecurityPrincipal _securityPrincipal;
 
-    public SecurityManagerPrincipal (ObjectID tenantID, ObjectID userID, ObjectID substitutionID)
+    public SecurityManagerPrincipal (
+        IDomainObjectHandle<Tenant> tenantHandle, IDomainObjectHandle<User> userHandle, IDomainObjectHandle<Substitution> substitutionHandle)
     {
-      ArgumentUtility.CheckNotNull ("tenantID", tenantID);
-      ArgumentUtility.CheckNotNull ("userID", userID);
-      ArgumentUtility.CheckTypeIsAssignableFrom ("tenantID", tenantID.ClassDefinition.ClassType, typeof (Tenant));
-      ArgumentUtility.CheckTypeIsAssignableFrom ("userID", userID.ClassDefinition.ClassType, typeof (User));
-      if (substitutionID != null)
-        ArgumentUtility.CheckTypeIsAssignableFrom ("substitutionID", substitutionID.ClassDefinition.ClassType, typeof (Substitution));
+      ArgumentUtility.CheckNotNull ("tenantHandle", tenantHandle);
+      ArgumentUtility.CheckNotNull ("userHandle", userHandle);
 
-      _tenantID = tenantID;
-      _userID = userID;
-      _substitutionID = substitutionID;
+      _tenantHandle = tenantHandle;
+      _userHandle = userHandle;
+      _substitutionHandle = substitutionHandle;
 
       InitializeCache();
     }
@@ -205,7 +202,7 @@ namespace Remotion.SecurityManager.Domain
     {
       using (transaction.EnterNonDiscardingScope ())
       {
-        return OrganizationalStructure.Tenant.GetObject (_tenantID);
+        return OrganizationalStructure.Tenant.GetObject (_tenantHandle.ObjectID);
       }
     }
 
@@ -213,18 +210,18 @@ namespace Remotion.SecurityManager.Domain
     {
       using (transaction.EnterNonDiscardingScope ())
       {
-        return OrganizationalStructure.User.GetObject (_userID);
+        return OrganizationalStructure.User.GetObject (_userHandle.ObjectID);
       }
     }
 
     private Substitution GetSubstitution (ClientTransaction transaction)
     {
-      if (_substitutionID == null)
+      if (_substitutionHandle == null)
         return null;
 
       using (transaction.EnterNonDiscardingScope ())
       {
-        return (Substitution) OrganizationalStructure.Substitution.GetObject (_substitutionID);
+        return (Substitution) OrganizationalStructure.Substitution.GetObject (_substitutionHandle.ObjectID);
       }
     }
 

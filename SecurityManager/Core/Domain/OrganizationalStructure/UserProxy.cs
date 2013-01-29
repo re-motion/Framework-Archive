@@ -37,13 +37,13 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
       ArgumentUtility.CheckNotNull ("user", user);
 
       return new UserProxy (
-          user.ID,
+          user.GetHandle(),
           ((IBusinessObjectWithIdentity) user).UniqueIdentifier,
           ((IBusinessObjectWithIdentity) user).DisplayName);
     }
 
-    private UserProxy (ObjectID id, string uniqueIdentifier, string displayName)
-        : base (id, uniqueIdentifier, displayName)
+    private UserProxy (IDomainObjectHandle<User> handle, string uniqueIdentifier, string displayName)
+        : base (handle, uniqueIdentifier, displayName)
     {
     }
   }

@@ -205,6 +205,7 @@
     <Compile Include="..\..\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
+    <Compile Include="DomainObjects\ObjectIDExtensionsTest.cs" />
     <Compile Include="DomainObjects\Core\ClientTransactionExtensionObjectMother.cs" />
     <Compile Include="DomainObjects\Core\DataManagement\Commands\EndPointModifications\DataManagementCommandDecoratorBaseTest.cs" />
     <Compile Include="DomainObjects\Core\DataManagement\DataContainerIntegrationTest.cs" />
@@ -219,10 +220,10 @@
     <Compile Include="DomainObjects\Core\DataManagement\SerializableFakes\SerializableTransactionHierarchyManagerFake.cs" />
     <Compile Include="DomainObjects\Core\DomainImplementation\ResurrectionServiceTest.cs" />
     <Compile Include="DomainObjects\Core\Infrastructure\ClientTransactionListenerObjectMother.cs" />
+    <Compile Include="DomainObjects\Core\IntegrationTests\GenericHandleTest.cs" />
     <Compile Include="DomainObjects\Core\Infrastructure\TypePipe\ExpressionTreeComparer.cs" />
     <Compile Include="DomainObjects\Core\Infrastructure\TypePipe\DomainObjectParticipantTest.cs" />
     <Compile Include="DomainObjects\Core\Infrastructure\TypePipe\ProxyTypeObjectMother.cs" />
-    <Compile Include="DomainObjects\Core\IntegrationTests\GenericObjectIDTest.cs" />
     <Compile Include="DomainObjects\Core\IntegrationTests\RegisterForCommitTest.cs" />
     <Compile Include="DomainObjects\Core\VariableTypeInferrer.cs" />
     <Compile Include="DomainObjects\Core\Queries\QueryObjectMother.cs" />
@@ -230,6 +231,9 @@
     <Compile Include="DomainObjects\Database\DatabaseConfiguration.cs" />
     <Compile Include="DomainObjects\DomainObjectCreatorSwitch.cs" />
     <Compile Include="DomainObjects\UseLegacyCodeGenerationAttribute.cs" />
+    <Compile Include="DomainObjects\DomainObjectHandleExtensionsTest.cs" />
+    <Compile Include="DomainObjects\DomainObjectHandleTest.cs" />
+    <Compile Include="DomainObjects\Web\WxeParameterIntegrationTest.cs" />
     <Compile Include="UnitTesting\RootPersistenceStrategyMockFacade.cs" />
     <Compile Include="DomainObjects\Core\DomainImplementation\Transport\PostActionDisposableDecorator.cs" />
     <Compile Include="DomainObjects\Core\EventReceiver\ILoadEventReceiver.cs" />
