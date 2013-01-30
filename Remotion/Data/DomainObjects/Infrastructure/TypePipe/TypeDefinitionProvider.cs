@@ -23,7 +23,7 @@ using Remotion.Utilities;
 namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
 {
   /// <summary>
-  /// Implements <see cref="ITypeDefinitionProvider"/> by retrieving the <see cref="ClassDefinition"/> of the domain objec type from the current 
+  /// Implements <see cref="ITypeDefinitionProvider"/> by retrieving the <see cref="ClassDefinition"/> of the domain object type from the current 
   /// mapping configuration.
   /// </summary>
   public class TypeDefinitionProvider : ITypeDefinitionProvider

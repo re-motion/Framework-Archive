@@ -53,6 +53,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.Interception
       _baseType = baseType;
       _typeConversionProvider = typeConversionProvider;
 
+      // TODO Review: Inject ClassDefinition via ctor
       _classDefinition = MappingConfiguration.Current.GetTypeDefinition (
           _baseType,
           t => new NonInterceptableTypeException (string.Format ("Cannot instantiate type {0} as it is not part of the mapping.", t.FullName), t));

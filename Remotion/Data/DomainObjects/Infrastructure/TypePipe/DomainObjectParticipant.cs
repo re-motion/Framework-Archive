@@ -22,7 +22,6 @@ using System.Reflection;
 using Microsoft.Scripting.Ast;
 using Remotion.Collections;
 using Remotion.Data.DomainObjects.Infrastructure.Interception;
-using Remotion.ServiceLocation;
 using Remotion.TypePipe;
 using Remotion.TypePipe.Caching;
 using Remotion.TypePipe.MutableReflection;
@@ -138,7 +137,6 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
       var properties = _interceptedPropertyFinder.GetProperties (domainObjectType);
       ProcessProperties (proxyType, properties);
 
-      // Implement ISerializable (see TypeGenerator).
       // For now, serialization is not supported.
       // TODO 5370: Use TypePipe serialization capabilities, after TypePipe is integrated with re-mix.
     }
@@ -165,7 +163,6 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
 
         ProcessAccessor (proxyType, getter, property.PropertyType, propertyIdentifier, s_propertyGetValue, ctx => new Expression[0]);
         ProcessAccessor (proxyType, setter, property.PropertyType, propertyIdentifier, s_propertySetValue, ctx => new[] { ctx.Parameters.Last() });
-        // TODO xxx: Last? (are multi-indexed properties really supported?)
       }
     }
 
@@ -216,7 +213,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
 
     private void CheckClassDefinition (Type domainObjectType)
     {
-      // TODO xxx: Retrieve class definition just for checking that it is non-abstract?
+      // TODO Review: Move this check to the creator
       var classDefinition = _typeDefinitionProvider.GetTypeDefinition (domainObjectType);
       if (classDefinition.IsAbstract)
       {

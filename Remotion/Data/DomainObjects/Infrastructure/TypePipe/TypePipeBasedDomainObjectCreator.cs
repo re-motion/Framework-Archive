@@ -24,10 +24,10 @@ using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
 {
+  // TODO Review: Unit tests
   /// <summary>
   /// Creates new domain object instances via an instance of <see cref="IObjectFactory"/>.
   /// </summary>
-  // TODO xxx: Proper name?
   public class TypePipeBasedDomainObjectCreator : IDomainObjectCreator
   {
     private readonly IObjectFactory _objectFactory;
@@ -44,10 +44,12 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
       ArgumentUtility.CheckNotNull ("objectID", objectID);
       ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
       ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("objectID", objectID.ClassDefinition.ClassType, typeof (DomainObject));
+      
       CheckDomainType (objectID.ClassDefinition.ClassType);
-      ValidateClassDefinition (objectID);
+      objectID.ClassDefinition.ValidateCurrentMixinConfiguration();
 
       var mixedType = DomainObjectMixinCodeGenerationBridge.GetConcreteType (objectID.ClassDefinition.ClassType);
+      // TODO Review: Remove IObjectFactory.GetUninitializedObject, call FormatterServices + Prepare instead. Document breaking change.
       var instance = (DomainObject) _objectFactory.GetUninitializedObject (mixedType);
 
       instance.Initialize (objectID, clientTransaction as BindingClientTransaction);
@@ -63,8 +65,10 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
       ArgumentUtility.CheckNotNull ("domainObjectType", domainObjectType);
       ArgumentUtility.CheckNotNull ("constructorParameters", constructorParameters);
       ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("domainObjectType", domainObjectType, typeof (DomainObject));
+
       CheckDomainType (domainObjectType);
-      ValidateClassDefinition (domainObjectType);
+      var classDefinition = MappingConfiguration.Current.GetTypeDefinition (domainObjectType);
+      classDefinition.ValidateCurrentMixinConfiguration();
 
       var mixedType = DomainObjectMixinCodeGenerationBridge.GetConcreteType (domainObjectType);
       var instance = (DomainObject) _objectFactory.CreateObject (mixedType, constructorParameters, allowNonPublicConstructor: true);
@@ -81,17 +85,6 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
         var message = string.Format ("Cannot instantiate type '{0}' as it is sealed.", domainObjectType.FullName);
         throw new NonInterceptableTypeException (message, domainObjectType);
       }
-    }
-
-    private void ValidateClassDefinition (ObjectID objectID)
-    {
-      objectID.ClassDefinition.ValidateCurrentMixinConfiguration();
-    }
-
-    private static void ValidateClassDefinition (Type domainObjectType)
-    {
-      var classDefinition = MappingConfiguration.Current.GetTypeDefinition (domainObjectType);
-      classDefinition.ValidateCurrentMixinConfiguration();
     }
   }
 }

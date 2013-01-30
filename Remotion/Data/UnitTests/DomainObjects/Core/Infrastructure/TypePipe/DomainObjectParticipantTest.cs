@@ -80,30 +80,41 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.TypePipe
     }
 
     [Test]
-    public void ModifyType_AddMarkerInterface_And_OverrideHooks ()
+    public void ModifyType_RetrievesDomainObjectType_AndUsesItToGetInterceptedProperties ()
     {
-      var fakeDomainObjectType = ReflectionObjectMother.GetSomeType();
-      var fakeClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition();
-      var fakeProperties = Enumerable.Empty<Tuple<PropertyInfo, string>>();
+      var fakeDomainObjectType = ReflectionObjectMother.GetSomeType ();
+      var fakeClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition ();
+      var fakeProperties = Enumerable.Empty<Tuple<PropertyInfo, string>> ();
       _typeDefinitionProviderMock.Expect (mock => mock.GetPublicDomainObjectType (typeof (ConcreteBaseType))).Return (fakeDomainObjectType);
       _typeDefinitionProviderMock.Expect (mock => mock.GetTypeDefinition (fakeDomainObjectType)).Return (fakeClassDefinition);
       _interceptedPropertyFinderMock.Expect (mock => mock.GetProperties (fakeDomainObjectType)).Return (fakeProperties);
 
       _participant.ModifyType (_proxyType);
 
-      _typeDefinitionProviderMock.VerifyAllExpectations();
-      _interceptedPropertyFinderMock.VerifyAllExpectations();
-      Assert.That (_proxyType.AddedInterfaces, Is.EqualTo (new[] { typeof (IInterceptedDomainObject) }));
-      Assert.That (_proxyType.AddedMethods, Has.Count.EqualTo (2));
-
-      var performConstructorCheck = _proxyType.AddedMethods.Single (m => m.Name == "PerformConstructorCheck");
-      var getPublicDomainObjectTypeImplementation = _proxyType.AddedMethods.Single (m => m.Name == "GetPublicDomainObjectTypeImplementation");
-      Assert.That (performConstructorCheck.Body, Is.TypeOf<DefaultExpression>().And.Property ("Type").SameAs (typeof (void)));
-      Assert.That (getPublicDomainObjectTypeImplementation.Body, Is.TypeOf<ConstantExpression>().And.Property ("Value").SameAs (fakeDomainObjectType));
+      _typeDefinitionProviderMock.VerifyAllExpectations ();
+      _interceptedPropertyFinderMock.VerifyAllExpectations ();
     }
 
     [Test]
-    public void ModifyType_UsesCorrectMethodInOverrideHierarchy_And_SkipPropertyProcessingIfNotOverridable ()
+    public void ModifyType_AddsMarkerInterface_And_OverridesHooks ()
+    {
+      var fakeDomainObjectType = ReflectionObjectMother.GetSomeType ();
+      StubGetProperties (Enumerable.Empty<Tuple<PropertyInfo, string>> (), publicDomainObjectType: fakeDomainObjectType);
+
+      _participant.ModifyType (_proxyType);
+
+      Assert.That (_proxyType.AddedInterfaces, Is.EqualTo (new[] { typeof (IInterceptedDomainObject) }));
+      Assert.That (_proxyType.AddedMethods, Has.Count.EqualTo (2));
+      
+      var performConstructorCheck = _proxyType.AddedMethods.Single (m => m.Name == "PerformConstructorCheck");
+      Assert.That (performConstructorCheck.Body, Is.TypeOf<DefaultExpression>().And.Property ("Type").SameAs (typeof (void)));
+
+      var getPublicDomainObjectTypeImplementation = _proxyType.AddedMethods.Single (m => m.Name == "GetPublicDomainObjectTypeImplementation");
+      Assert.That (getPublicDomainObjectTypeImplementation.Body, Is.TypeOf<ConstantExpression> ().And.Property ("Value").SameAs (fakeDomainObjectType));
+    }
+
+    [Test]
+    public void ModifyType_UsesCorrectMethodInOverrideHierarchy_And_SkipsPropertyProcessingIfNotOverridable ()
     {
       var property = NormalizingMemberInfoFromExpressionUtility.GetProperty ((MyDomainObject o) => o.SomeProperty);
       var getter = property.GetGetMethod();
@@ -312,10 +323,10 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.TypePipe
       _participant.ModifyType (_proxyType);
     }
 
-    private void StubGetProperties (IEnumerable<Tuple<PropertyInfo, string>> fakeProperties)
+    private void StubGetProperties (IEnumerable<Tuple<PropertyInfo, string>> fakeProperties, Type publicDomainObjectType = null)
     {
       var fakeClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition();
-      _typeDefinitionProviderMock.Stub (stub => stub.GetPublicDomainObjectType (Arg<Type>.Is.Anything));
+      _typeDefinitionProviderMock.Stub (stub => stub.GetPublicDomainObjectType (Arg<Type>.Is.Anything)).Return (publicDomainObjectType);
       _typeDefinitionProviderMock.Stub (stub => stub.GetTypeDefinition (Arg<Type>.Is.Anything)).Return (fakeClassDefinition);
       _interceptedPropertyFinderMock.Stub (stub => stub.GetProperties (Arg<Type>.Is.Anything)).Return (fakeProperties);
     }

@@ -23,12 +23,15 @@ using Remotion.ServiceLocation;
 
 namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
 {
+  // TODO Review: Refactor to an IInterceptedPropertyAccessorFinder. Return only objects for overridable accessors. Use "Tell, Don't Ask" and 
+  // "Polymorphism Instead of Conditional" refactoring patterns.
   /// <summary>
   /// Defines methods for retrieving properties and analyzing accessor methods declared by <see cref="DomainObject"/> derivatives.
   /// </summary>
   [ConcreteImplementation (typeof (InterceptedPropertyCollectorAdapter))]
   public interface IInterceptedPropertyFinder
   {
+    // TODO Review: Pass ClassDefinition as argument
     IEnumerable<Tuple<PropertyInfo, string>> GetProperties (Type domainObjectType);
 
     bool IsOverridable (MethodInfo mostDerivedMethod);

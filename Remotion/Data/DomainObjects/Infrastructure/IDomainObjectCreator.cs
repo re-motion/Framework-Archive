@@ -25,6 +25,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
   /// <summary>
   /// Provides a common interface for classes creating new instances of <see cref="DomainObject"/> types.
   /// </summary>
+  // TODO Review: Change this back to legacy creator (chang the ctor to be a default constructor). Leave the unit tests to use the new codegen.
   [ConcreteImplementation (typeof (TypePipeBasedDomainObjectCreator), Lifetime = LifetimeKind.Singleton)]
   public interface IDomainObjectCreator
   {
