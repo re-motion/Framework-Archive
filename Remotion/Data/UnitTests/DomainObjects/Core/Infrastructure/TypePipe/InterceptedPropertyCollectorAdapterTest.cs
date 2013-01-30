@@ -76,8 +76,8 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.TypePipe
 
       var getterInterceptor = result.Single (ai => GetInterceptedAccessorMethod (ai).Equals (getter));
       var setterInterceptor = result.Single (ai => GetInterceptedAccessorMethod (ai).Equals (setter));
-      Assert.That (getterInterceptor, Is.TypeOf<ImplementingAccessorInterceptorBase>());
-      Assert.That (setterInterceptor, Is.TypeOf<ImplementingAccessorInterceptorBase>());
+      Assert.That (getterInterceptor, Is.TypeOf<ImplementingGetAccessorInterceptor>());
+      Assert.That (setterInterceptor, Is.TypeOf<ImplementingSetAccessorInterceptor>());
     }
 
     [Test]

@@ -14,7 +14,6 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -70,14 +69,15 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
         var getter = property.GetGetMethod (true);
         var setter = property.GetSetMethod (true);
 
-        AddAccessorInterceptor (interceptors, concreteBaseType, getter, propertyName);
-        AddAccessorInterceptor (interceptors, concreteBaseType, setter, propertyName);
+        AddAccessorInterceptor (interceptors, concreteBaseType, getter, propertyName, property.PropertyType, isGetter: true);
+        AddAccessorInterceptor (interceptors, concreteBaseType, setter, propertyName, property.PropertyType, isGetter: false);
       }
 
       return interceptors;
     }
 
-    private void AddAccessorInterceptor (List<IAccessorInterceptor> interceptors, Type concreteBaseType, MethodInfo accessor, string propertyName)
+    private void AddAccessorInterceptor (
+        List<IAccessorInterceptor> interceptors, Type concreteBaseType, MethodInfo accessor, string propertyName, Type propertyType, bool isGetter)
     {
       if (accessor == null)
         return;
@@ -86,15 +86,21 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
       if (!InterceptedPropertyCollector.IsOverridable (mostDerivedAccessor))
         return;
 
-      var interceptor = CreateAccessorInterceptor (mostDerivedAccessor, propertyName);
+      var interceptor = CreateAccessorInterceptor (mostDerivedAccessor, propertyName, propertyType, isGetter);
       interceptors.Add (interceptor);
     }
 
-    private static IAccessorInterceptor CreateAccessorInterceptor (MethodInfo interceptedAccessor, string propertyName)
+    private IAccessorInterceptor CreateAccessorInterceptor (MethodInfo interceptedAccessor, string propertyName, Type propertyType, bool isGetter)
     {
-      return InterceptedPropertyCollector.IsAutomaticPropertyAccessor (interceptedAccessor)
-                 ? null
-                 : new WrappingAccessorInterceptor (interceptedAccessor, propertyName);
+      if (InterceptedPropertyCollector.IsAutomaticPropertyAccessor (interceptedAccessor))
+      {
+        if (isGetter)
+          return new ImplementingGetAccessorInterceptor (interceptedAccessor, propertyName, propertyType);
+        else
+          return new ImplementingSetAccessorInterceptor (interceptedAccessor, propertyName, propertyType);
+      }
+      else
+        return new WrappingAccessorInterceptor (interceptedAccessor, propertyName);
     }
   }
 }
