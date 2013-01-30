@@ -45,7 +45,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
       ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
       ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("objectID", objectID.ClassDefinition.ClassType, typeof (DomainObject));
       
-      CheckDomainType (objectID.ClassDefinition.ClassType);
+      CheckDomainTypeAndClassDefinition (objectID.ClassDefinition.ClassType);
       objectID.ClassDefinition.ValidateCurrentMixinConfiguration();
 
       var mixedType = DomainObjectMixinCodeGenerationBridge.GetConcreteType (objectID.ClassDefinition.ClassType);
@@ -66,7 +66,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
       ArgumentUtility.CheckNotNull ("constructorParameters", constructorParameters);
       ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("domainObjectType", domainObjectType, typeof (DomainObject));
 
-      CheckDomainType (domainObjectType);
+      CheckDomainTypeAndClassDefinition (domainObjectType);
       var classDefinition = MappingConfiguration.Current.GetTypeDefinition (domainObjectType);
       classDefinition.ValidateCurrentMixinConfiguration();
 
@@ -78,12 +78,21 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
       return instance;
     }
 
-    private void CheckDomainType (Type domainObjectType)
+    private void CheckDomainTypeAndClassDefinition (Type domainObjectType)
     {
       if (domainObjectType.IsSealed)
       {
         var message = string.Format ("Cannot instantiate type '{0}' as it is sealed.", domainObjectType.FullName);
         throw new NonInterceptableTypeException (message, domainObjectType);
+      }
+
+      var classDefinition = MappingConfiguration.Current.GetTypeDefinition (domainObjectType);
+      if (classDefinition.IsAbstract)
+      {
+        var message1 = string.Format (
+            "Cannot instantiate type '{0}' as it is abstract; for classes with automatic properties, InstantiableAttribute must be used.",
+            classDefinition.ClassType.FullName);
+        throw new NonInterceptableTypeException (message1, classDefinition.ClassType);
       }
     }
   }
