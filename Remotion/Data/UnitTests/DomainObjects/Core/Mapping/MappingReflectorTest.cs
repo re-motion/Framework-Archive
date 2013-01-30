@@ -52,6 +52,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Mapping
     }
 
     [Test]
+    [Ignore ("TODO 5370")]
     public void Initialization_MappingObjectFactory_InstanceCreator_ResolvedViaServiceLocator ()
     {
       var defaultCreator = new MappingReflector().MappingObjectFactory.CreateClassDefinition (typeof (Order), null).InstanceCreator;
