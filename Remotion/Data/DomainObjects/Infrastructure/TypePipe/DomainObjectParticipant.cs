@@ -16,17 +16,12 @@
 // 
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using Microsoft.Scripting.Ast;
-using Remotion.Collections;
 using Remotion.Data.DomainObjects.Infrastructure.Interception;
 using Remotion.TypePipe;
 using Remotion.TypePipe.Caching;
 using Remotion.TypePipe.MutableReflection;
-using Remotion.TypePipe.MutableReflection.BodyBuilding;
-using Remotion.TypePipe.MutableReflection.Implementation;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
@@ -43,7 +38,9 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
   ///     Overrides infrastructure methods <see cref="DomainObject.PerformConstructorCheck"/> and 
   ///     <see cref="DomainObject.GetPublicDomainObjectTypeImplementation"/> on <see cref="DomainObject"/>.
   ///   </item>
-  ///   <item>Implements or wraps intercepted properties (i.e. properties returned by <see cref="IInterceptedPropertyFinder"/>).</item>
+  ///   <item>
+  ///     Implements or wraps intercepted properties (i.e., properties for which <see cref="IInterceptedPropertyFinder"/> returns interceptors).
+  ///   </item>
   /// </list>
   /// Note that serialization is currently not supported.
   /// </remarks>
@@ -73,19 +70,6 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
     private static readonly MethodInfo s_getPublicDomainObjectTypeImplementation = GetInfrastructureHook ("GetPublicDomainObjectTypeImplementation");
     private static readonly MethodInfo s_performConstructorCheck = GetInfrastructureHook ("PerformConstructorCheck");
 
-    private static readonly PropertyInfo s_properties = MemberInfoFromExpressionUtility.GetProperty ((DomainObject o) => o.Properties);
-    private static readonly MethodInfo s_getPropertyAccessor = MemberInfoFromExpressionUtility.GetMethod ((PropertyIndexer i) => i["propertyName"]);
-
-    private static readonly MethodInfo s_propertyGetValue =
-        MemberInfoFromExpressionUtility.GetGenericMethodDefinition ((PropertyAccessor o) => o.GetValue<object>());
-    private static readonly MethodInfo s_propertySetValue =
-        MemberInfoFromExpressionUtility.GetGenericMethodDefinition ((PropertyAccessor o) => o.SetValue<object> (null));
-
-    private static readonly MethodInfo s_preparePropertyAccess =
-        MemberInfoFromExpressionUtility.GetMethod (() => CurrentPropertyManager.PreparePropertyAccess ("propertyName"));
-    private static readonly MethodInfo s_propertyAccessFinished =
-        MemberInfoFromExpressionUtility.GetMethod (() => CurrentPropertyManager.PropertyAccessFinished());
-
     private static MethodInfo GetInfrastructureHook (string name)
     {
       var bindingFlags = BindingFlags.NonPublic | BindingFlags.Instance;
@@ -97,18 +81,14 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
 
     private readonly ITypeDefinitionProvider _typeDefinitionProvider;
     private readonly IInterceptedPropertyFinder _interceptedPropertyFinder;
-    private readonly IRelatedMethodFinder _relatedMethodFinder;
 
-    public DomainObjectParticipant (
-        ITypeDefinitionProvider typeDefinitionProvider, IInterceptedPropertyFinder interceptedPropertyFinder, IRelatedMethodFinder relatedMethodFinder)
+    public DomainObjectParticipant (ITypeDefinitionProvider typeDefinitionProvider, IInterceptedPropertyFinder interceptedPropertyFinder)
     {
       ArgumentUtility.CheckNotNull ("typeDefinitionProvider", typeDefinitionProvider);
       ArgumentUtility.CheckNotNull ("interceptedPropertyFinder", interceptedPropertyFinder);
-      ArgumentUtility.CheckNotNull ("relatedMethodFinder", relatedMethodFinder);
 
       _typeDefinitionProvider = typeDefinitionProvider;
       _interceptedPropertyFinder = interceptedPropertyFinder;
-      _relatedMethodFinder = relatedMethodFinder;
     }
 
     public ICacheKeyProvider PartialCacheKeyProvider
@@ -124,7 +104,6 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
       // TODO 5370: This will change when TypePipe is integrated with re-mix.
       var concreteBaseType = proxyType.BaseType;
       var domainObjectType = _typeDefinitionProvider.GetPublicDomainObjectType (concreteBaseType);
-      CheckClassDefinition (domainObjectType);
 
       // Add marker interface.
       proxyType.AddInterface (typeof (IInterceptedDomainObject));
@@ -134,8 +113,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
       OverrideGetPublicDomainObjectType (proxyType, domainObjectType);
 
       // Intercept properties.
-      var properties = _interceptedPropertyFinder.GetProperties (domainObjectType);
-      ProcessProperties (proxyType, properties);
+      InterceptProperties (proxyType, domainObjectType, concreteBaseType);
 
       // For now, serialization is not supported.
       // TODO 5370: Use TypePipe serialization capabilities, after TypePipe is integrated with re-mix.
@@ -151,77 +129,13 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
       proxyType.GetOrAddOverride (s_getPublicDomainObjectTypeImplementation).SetBody (ctx => Expression.Constant (publicDomainObjectType));
     }
 
-    private void ProcessProperties (ProxyType proxyType, IEnumerable<Tuple<PropertyInfo, string>> properties)
+    private void InterceptProperties (ProxyType proxyType, Type domainObjectType, Type concreteBaseType)
     {
-      foreach (var propertyMapping in properties)
-      {
-        var property = propertyMapping.Item1;
-        var propertyIdentifier = propertyMapping.Item2;
-
-        var getter = property.GetGetMethod (true);
-        var setter = property.GetSetMethod (true);
-
-        ProcessAccessor (proxyType, getter, property.PropertyType, propertyIdentifier, s_propertyGetValue, ctx => new Expression[0]);
-        ProcessAccessor (proxyType, setter, property.PropertyType, propertyIdentifier, s_propertySetValue, ctx => new[] { ctx.Parameters.Last() });
-      }
-    }
-
-    private void ProcessAccessor (
-        ProxyType proxyType,
-        MethodInfo accessor,
-        Type propertyType,
-        string propertyIdentifier,
-        MethodInfo accessorImplementationMethod,
-        Func<MethodBodyModificationContext, IEnumerable<Expression>> argumentProvider)
-    {
-      if (accessor == null)
-        return;
-
-      var mostDerivedAccessor = _relatedMethodFinder.GetMostDerivedOverride (accessor.GetBaseDefinition(), proxyType);
-
-      if (_interceptedPropertyFinder.IsOverridable (mostDerivedAccessor))
-      {
-        var getter = proxyType.GetOrAddOverride (mostDerivedAccessor);
-        if (_interceptedPropertyFinder.IsAutomaticPropertyAccessor (mostDerivedAccessor))
-        {
-          var instantiatedMethod = accessorImplementationMethod.MakeGenericMethod (propertyType);
-          getter.SetBody (ctx => ImplementByCalling (ctx.This, propertyIdentifier, instantiatedMethod, argumentProvider (ctx)));
-        }
-        else
-          getter.SetBody (ctx => WrapAccessorBody (ctx.PreviousBody, propertyIdentifier));
-      }
-    }
-
-    private Expression ImplementByCalling (
-        Expression @this, string propertyIdentifier, MethodInfo accessorImplementationMethod, IEnumerable<Expression> arguments)
-    {
-      var propertyIndexer = Expression.Property (@this, s_properties);
-      var propertyAccessor = Expression.Call (propertyIndexer, s_getPropertyAccessor, Expression.Constant (propertyIdentifier));
-      var body = Expression.Call (propertyAccessor, accessorImplementationMethod, arguments);
-
-      return WrapAccessorBody (body, propertyIdentifier);
-    }
-
-    private Expression WrapAccessorBody (Expression body, string propertyIdentifier)
-    {
-      return Expression.Block (
-          Expression.Call (s_preparePropertyAccess, Expression.Constant (propertyIdentifier)),
-          Expression.TryFinally (
-              body,
-              Expression.Call (s_propertyAccessFinished)));
-    }
-
-    private void CheckClassDefinition (Type domainObjectType)
-    {
-      // TODO Review: Move this check to the creator
       var classDefinition = _typeDefinitionProvider.GetTypeDefinition (domainObjectType);
-      if (classDefinition.IsAbstract)
-      {
-        var message = string.Format (
-            "Cannot instantiate type '{0}' as it is abstract; for classes with automatic properties, InstantiableAttribute must be used.",
-            classDefinition.ClassType.FullName);
-        throw new NonInterceptableTypeException (message, classDefinition.ClassType);
-      }
+      var accessorInterceptors = _interceptedPropertyFinder.GetPropertyInterceptors (classDefinition, concreteBaseType);
+
+      foreach (var interceptor in accessorInterceptors)
+        interceptor.Intercept (proxyType);
     }
   }
 }

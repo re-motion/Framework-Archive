@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using Remotion.Collections;
 using Remotion.Data.DomainObjects.Infrastructure.Interception;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.TypePipe.MutableReflection.Implementation;
@@ -31,27 +30,6 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
   public class InterceptedPropertyCollectorAdapter : IInterceptedPropertyFinder
   {
     private static readonly IRelatedMethodFinder s_relatedMethodFinder = new RelatedMethodFinder();
-
-    public IEnumerable<Tuple<PropertyInfo, string>> GetProperties (Type domainObjectType)
-    {
-      ArgumentUtility.CheckNotNull ("domainObjectType", domainObjectType);
-
-      return new InterceptedPropertyCollector (null, TypeConversionProvider.Current).GetProperties();
-    }
-
-    public bool IsOverridable (MethodInfo mostDerivedMethod)
-    {
-      ArgumentUtility.CheckNotNull ("mostDerivedMethod", mostDerivedMethod);
-
-      return InterceptedPropertyCollector.IsOverridable (mostDerivedMethod);
-    }
-
-    public bool IsAutomaticPropertyAccessor (MethodInfo mostDerivedAccessor)
-    {
-      ArgumentUtility.CheckNotNull ("mostDerivedAccessor", mostDerivedAccessor);
-
-      return InterceptedPropertyCollector.IsAutomaticPropertyAccessor (mostDerivedAccessor);
-    }
 
     public IEnumerable<IAccessorInterceptor> GetPropertyInterceptors (ClassDefinition classDefinition, Type concreteBaseType)
     {

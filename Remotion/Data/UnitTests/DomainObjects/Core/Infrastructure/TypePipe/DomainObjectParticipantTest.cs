@@ -15,25 +15,15 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using JetBrains.Annotations;
 using Microsoft.Scripting.Ast;
 using NUnit.Framework;
-using Remotion.Collections;
-using Remotion.Data.DomainObjects;
-using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
-using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Infrastructure.Interception;
 using Remotion.Data.DomainObjects.Infrastructure.TypePipe;
 using Remotion.Data.UnitTests.DomainObjects.Core.Mapping;
-using Remotion.Development.UnitTesting;
+using Remotion.Data.UnitTests.DomainObjects.TestDomain;
 using Remotion.Development.UnitTesting.Reflection;
-using Remotion.TypePipe.Expressions;
-using Remotion.TypePipe.Expressions.ReflectionAdapters;
 using Remotion.TypePipe.MutableReflection;
-using Remotion.TypePipe.MutableReflection.Implementation;
 using Rhino.Mocks;
 
 namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.TypePipe
@@ -45,7 +35,6 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.TypePipe
 
     private DomainObjectParticipant _participant;
     private IInterceptedPropertyFinder _interceptedPropertyFinderMock;
-    private IRelatedMethodFinder _relatedMethodFinderMock;
 
     private ProxyType _proxyType;
 
@@ -54,11 +43,10 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.TypePipe
     {
       _typeDefinitionProviderMock = MockRepository.GenerateStrictMock<ITypeDefinitionProvider>();
       _interceptedPropertyFinderMock = MockRepository.GenerateStrictMock<IInterceptedPropertyFinder>();
-      _relatedMethodFinderMock = MockRepository.GenerateStrictMock<IRelatedMethodFinder>();
 
-      _participant = new DomainObjectParticipant (_typeDefinitionProviderMock, _interceptedPropertyFinderMock, _relatedMethodFinderMock);
+      _participant = new DomainObjectParticipant (_typeDefinitionProviderMock, _interceptedPropertyFinderMock);
 
-      _proxyType = ProxyTypeObjectMother.Create (typeof (ConcreteBaseType));
+      _proxyType = ProxyTypeObjectMother.Create (typeof (Order));
     }
 
     [Test]
@@ -82,24 +70,24 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.TypePipe
     [Test]
     public void ModifyType_RetrievesDomainObjectType_AndUsesItToGetInterceptedProperties ()
     {
-      var fakeDomainObjectType = ReflectionObjectMother.GetSomeType ();
-      var fakeClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition ();
-      var fakeProperties = Enumerable.Empty<Tuple<PropertyInfo, string>> ();
-      _typeDefinitionProviderMock.Expect (mock => mock.GetPublicDomainObjectType (typeof (ConcreteBaseType))).Return (fakeDomainObjectType);
+      var fakeDomainObjectType = ReflectionObjectMother.GetSomeType();
+      var fakeClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition();
+      var fakeInterceptors = new IAccessorInterceptor[0];
+      _typeDefinitionProviderMock.Expect (mock => mock.GetPublicDomainObjectType (_proxyType.BaseType)).Return (fakeDomainObjectType);
       _typeDefinitionProviderMock.Expect (mock => mock.GetTypeDefinition (fakeDomainObjectType)).Return (fakeClassDefinition);
-      _interceptedPropertyFinderMock.Expect (mock => mock.GetProperties (fakeDomainObjectType)).Return (fakeProperties);
+      _interceptedPropertyFinderMock.Expect (mock => mock.GetPropertyInterceptors (fakeClassDefinition, _proxyType.BaseType)).Return (fakeInterceptors);
 
       _participant.ModifyType (_proxyType);
 
-      _typeDefinitionProviderMock.VerifyAllExpectations ();
-      _interceptedPropertyFinderMock.VerifyAllExpectations ();
+      _typeDefinitionProviderMock.VerifyAllExpectations();
+      _interceptedPropertyFinderMock.VerifyAllExpectations();
     }
 
     [Test]
     public void ModifyType_AddsMarkerInterface_And_OverridesHooks ()
     {
-      var fakeDomainObjectType = ReflectionObjectMother.GetSomeType ();
-      StubGetProperties (Enumerable.Empty<Tuple<PropertyInfo, string>> (), publicDomainObjectType: fakeDomainObjectType);
+      var fakeDomainObjectType = ReflectionObjectMother.GetSomeType();
+      StubGetPropertyInterceptors (fakeDomainObjectType);
 
       _participant.ModifyType (_proxyType);
 
@@ -114,245 +102,24 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.TypePipe
     }
 
     [Test]
-    public void ModifyType_UsesCorrectMethodInOverrideHierarchy_And_SkipsPropertyProcessingIfNotOverridable ()
+    public void ModifyType_ExecutesAccessorInterceptors ()
     {
-      var property = NormalizingMemberInfoFromExpressionUtility.GetProperty ((MyDomainObject o) => o.SomeProperty);
-      var getter = property.GetGetMethod();
-      var setter = property.GetSetMethod();
-      var getterBaseDefinition = getter.GetBaseDefinition();
-      var setterBaseDefinition = setter.GetBaseDefinition();
-      var getterOverride = typeof (ConcreteBaseType).GetMethod ("get_SomeProperty");
-      var setterOverride = typeof (ConcreteBaseType).GetMethod ("set_SomeProperty");
-      Assert.That (getter, Is.Not.EqualTo (getterBaseDefinition).And.Not.EqualTo (getterOverride));
-      Assert.That (setter, Is.Not.EqualTo (setterBaseDefinition).And.Not.EqualTo (setterOverride));
-
-      var fakeProperties = new[] { Tuple.Create (property, "abc") };
-      StubGetProperties (fakeProperties);
-      _relatedMethodFinderMock.Expect (mock => mock.GetMostDerivedOverride (getterBaseDefinition, _proxyType)).Return (getterOverride);
-      _relatedMethodFinderMock.Expect (mock => mock.GetMostDerivedOverride (setterBaseDefinition, _proxyType)).Return (setterOverride);
-      _interceptedPropertyFinderMock.Expect (mock => mock.IsOverridable (getterOverride)).Return (false);
-      _interceptedPropertyFinderMock.Expect (mock => mock.IsOverridable (setterOverride)).Return (false);
+      var accessorInterceptor = MockRepository.GenerateStrictMock<IAccessorInterceptor>();
+      accessorInterceptor.Expect (mock => mock.Intercept (_proxyType));
+      StubGetPropertyInterceptors (accessorInterceptors: new[] { accessorInterceptor });
 
       _participant.ModifyType (_proxyType);
 
-      _interceptedPropertyFinderMock.VerifyAllExpectations();
-      _relatedMethodFinderMock.VerifyAllExpectations();
-      Assert.That (_proxyType.AddedMethods, Has.Count.EqualTo (2));
+      accessorInterceptor.VerifyAllExpectations();
     }
 
-    [Test]
-    public void ModifyType_ImplementProperties ()
+    private void StubGetPropertyInterceptors (Type publicDomainObjectType = null, params IAccessorInterceptor[] accessorInterceptors)
     {
-      var property = NormalizingMemberInfoFromExpressionUtility.GetProperty ((ConcreteBaseType o) => o.SomeProperty);
-      var getter = property.GetGetMethod();
-      var setter = property.GetSetMethod();
-
-      var fakeProperties = new[] { Tuple.Create (property, "propertyIdentifier") };
-      StubGetProperties (fakeProperties);
-      _relatedMethodFinderMock.Stub (stub => stub.GetMostDerivedOverride (Arg<MethodInfo>.Is.Anything, Arg<Type>.Is.Anything)).Return (getter).Repeat.Once();
-      _relatedMethodFinderMock.Stub (stub => stub.GetMostDerivedOverride (Arg<MethodInfo>.Is.Anything, Arg<Type>.Is.Anything)).Return (setter);
-      _interceptedPropertyFinderMock.Stub (stub => stub.IsOverridable (Arg<MethodInfo>.Is.Anything)).Return (true);
-      _interceptedPropertyFinderMock.Stub (stub => stub.IsAutomaticPropertyAccessor (Arg<MethodInfo>.Is.Anything)).Return (true);
-
-      _participant.ModifyType (_proxyType);
-
-      Assert.That (_proxyType.AddedMethods, Has.Count.EqualTo (4));
-      var addedGetter = _proxyType.AddedMethods.Single (m => m.Name == "get_SomeProperty");
-      var addedSetter = _proxyType.AddedMethods.Single (m => m.Name == "set_SomeProperty");
-
-      var propertyAccessor =
-          Expression.Call (
-              Expression.Property (new ThisExpression (_proxyType), "Properties"),
-              "get_Item",
-              null,
-              Expression.Constant ("propertyIdentifier"));
-      var expectedGetterBody =
-          Expression.Block (
-              Expression.Call (typeof (CurrentPropertyManager), "PreparePropertyAccess", null, Expression.Constant ("propertyIdentifier")),
-              Expression.TryFinally (
-                  Expression.Call (
-                      propertyAccessor,
-                      "GetValue",
-                      new[] { typeof (string) }),
-                  Expression.Call (typeof (CurrentPropertyManager), "PropertyAccessFinished", null)));
-      var expectedSetterBody =
-          Expression.Block (
-              Expression.Call (typeof (CurrentPropertyManager), "PreparePropertyAccess", null, Expression.Constant ("propertyIdentifier")),
-              Expression.TryFinally (
-                  Expression.Call (
-                      propertyAccessor,
-                      "SetValue",
-                      new[] { typeof (string) },
-                      Expression.Parameter (typeof (string), "value")),
-                  Expression.Call (typeof (CurrentPropertyManager), "PropertyAccessFinished", null)));
-
-      ExpressionTreeComparer.CheckAreEqualTrees (expectedGetterBody, addedGetter.Body);
-      ExpressionTreeComparer.CheckAreEqualTrees (expectedSetterBody, addedSetter.Body);
-    }
-
-    [Test]
-    public void ModifyType_WrapProperties ()
-    {
-      var property = NormalizingMemberInfoFromExpressionUtility.GetProperty ((ConcreteBaseType o) => o.SomeProperty);
-      var getter = property.GetGetMethod();
-      var setter = property.GetSetMethod();
-
-      var fakeProperties = new[] { Tuple.Create (property, "abc") };
-      StubGetProperties (fakeProperties);
-      _relatedMethodFinderMock.Stub (stub => stub.GetMostDerivedOverride (Arg<MethodInfo>.Is.Anything, Arg<Type>.Is.Anything)).Return (getter).Repeat.Once();
-      _relatedMethodFinderMock.Stub (stub => stub.GetMostDerivedOverride (Arg<MethodInfo>.Is.Anything, Arg<Type>.Is.Anything)).Return (setter);
-      _interceptedPropertyFinderMock.Stub (stub => stub.IsOverridable (Arg<MethodInfo>.Is.Anything)).Return (true);
-      _interceptedPropertyFinderMock.Stub (stub => stub.IsAutomaticPropertyAccessor (Arg<MethodInfo>.Is.Anything)).Return (false);
-
-      _participant.ModifyType (_proxyType);
-
-      Assert.That (_proxyType.AddedMethods, Has.Count.EqualTo (4));
-      var addedGetter = _proxyType.AddedMethods.Single (m => m.Name == "get_SomeProperty");
-      var addedSetter = _proxyType.AddedMethods.Single (m => m.Name == "set_SomeProperty");
-
-      var expectedGetterBody =
-          Expression.Block (
-              Expression.Call (typeof (CurrentPropertyManager), "PreparePropertyAccess", null, Expression.Constant ("abc")),
-              Expression.TryFinally (
-                  Expression.Call (new ThisExpression (_proxyType), NonVirtualCallMethodInfoAdapter.Adapt (getter)),
-                  Expression.Call (typeof (CurrentPropertyManager), "PropertyAccessFinished", null)));
-      var expectedSetterBody =
-          Expression.Block (
-              Expression.Call (typeof (CurrentPropertyManager), "PreparePropertyAccess", null, Expression.Constant ("abc")),
-              Expression.TryFinally (
-                  Expression.Call (
-                      new ThisExpression (_proxyType),
-                      NonVirtualCallMethodInfoAdapter.Adapt (setter),
-                      Expression.Parameter (typeof (string), "value")),
-                  Expression.Call (typeof (CurrentPropertyManager), "PropertyAccessFinished", null)));
-
-      ExpressionTreeComparer.CheckAreEqualTrees (expectedGetterBody, addedGetter.Body);
-      ExpressionTreeComparer.CheckAreEqualTrees (expectedSetterBody, addedSetter.Body);
-    }
-
-    [Test]
-    public void ModifyType_NonPublicAccessorsAreConsidered ()
-    {
-      var property = NormalizingMemberInfoFromExpressionUtility.GetProperty ((MyDomainObject o) => o.InternalProperty);
-      var getter = property.GetGetMethod (true);
-      var setter = property.GetSetMethod (true);
-      Assert.That (getter.IsPublic, Is.False);
-      Assert.That (setter.IsPublic, Is.False);
-
-      var fakeProperties = new[] { Tuple.Create (property, "abc") };
-      StubGetProperties (fakeProperties);
-      _relatedMethodFinderMock.Expect (mock => mock.GetMostDerivedOverride (getter, _proxyType)).Return (getter);
-      _relatedMethodFinderMock.Expect (mock => mock.GetMostDerivedOverride (setter, _proxyType)).Return (setter);
-      _interceptedPropertyFinderMock.Stub (stub => stub.IsOverridable (Arg<MethodInfo>.Is.Anything)).Return (false);
-
-      _participant.ModifyType (_proxyType);
-
-      _relatedMethodFinderMock.VerifyAllExpectations();
-      Assert.That (_proxyType.AddedMethods, Has.Count.EqualTo (2));
-    }
-
-    [Test]
-    public void ModifyType_ReadOnlyProperty_And_WriteOnlyProperty_AreSupported ()
-    {
-      var readOnlyProperty = NormalizingMemberInfoFromExpressionUtility.GetProperty ((MyDomainObject o) => o.ReadOnlyProperty);
-      var writeOnlyProperty = typeof (MyDomainObject).GetProperty ("WriteOnlyProperty");
-      var getter = readOnlyProperty.GetGetMethod();
-      var setter = writeOnlyProperty.GetSetMethod();
-      Assert.That (readOnlyProperty.GetSetMethod (true), Is.Null);
-      Assert.That (writeOnlyProperty.GetGetMethod (true), Is.Null);
-
-      var fakeProperties = new[] { Tuple.Create (readOnlyProperty, "abc"), Tuple.Create (writeOnlyProperty, "def") };
-      StubGetProperties (fakeProperties);
-      _relatedMethodFinderMock.Expect (mock => mock.GetMostDerivedOverride (getter, _proxyType)).Return (getter);
-      _relatedMethodFinderMock.Expect (mock => mock.GetMostDerivedOverride (setter, _proxyType)).Return (setter);
-      _interceptedPropertyFinderMock.Stub (stub => stub.IsOverridable (Arg<MethodInfo>.Is.Anything)).Return (false);
-
-      _participant.ModifyType (_proxyType);
-
-      _relatedMethodFinderMock.VerifyAllExpectations();
-      Assert.That (_proxyType.AddedMethods, Has.Count.EqualTo (2));
-    }
-
-    [Test]
-    public void ModifyType_UsesLastArgumentForValue ()
-    {
-      var property = typeof (MyDomainObject).GetProperty ("Item");
-      var indexedSetter = property.GetSetMethod();
-      Assert.That (indexedSetter.GetParameters().Select (p => p.ParameterType), Is.EqualTo (new[] { typeof (int), typeof (int), typeof (double) }));
-
-      var fakeProperties = new[] { Tuple.Create (property, "abc") };
-      StubGetProperties (fakeProperties);
-      _relatedMethodFinderMock.Stub (stub => stub.GetMostDerivedOverride (Arg<MethodInfo>.Is.Anything, Arg<Type>.Is.Anything)).Return (indexedSetter);
-      _interceptedPropertyFinderMock.Stub (stub => stub.IsOverridable (Arg<MethodInfo>.Is.Anything)).Return (true);
-      _interceptedPropertyFinderMock.Stub (stub => stub.IsAutomaticPropertyAccessor (Arg<MethodInfo>.Is.Anything)).Return (true);
-
-      _participant.ModifyType (_proxyType);
-
-      Assert.That (_proxyType.AddedMethods, Has.Count.EqualTo (3));
-      var addedSetter = _proxyType.AddedMethods.Single (m => m.Name == "set_Item");
-
-      var propertyAccessor =
-          Expression.Call (
-              Expression.Property (new ThisExpression (_proxyType), "Properties"),
-              "get_Item",
-              null,
-              Expression.Constant ("abc"));
-      var expectedSetterBody =
-          Expression.Block (
-              Expression.Call (typeof (CurrentPropertyManager), "PreparePropertyAccess", null, Expression.Constant ("abc")),
-              Expression.TryFinally (
-                  Expression.Call (
-                      propertyAccessor,
-                      "SetValue",
-                      new[] { typeof (double) },
-                      Expression.Parameter (typeof (double), "value")),
-                  Expression.Call (typeof (CurrentPropertyManager), "PropertyAccessFinished", null)));
-
-      ExpressionTreeComparer.CheckAreEqualTrees (expectedSetterBody, addedSetter.Body);
-    }
-
-    [Test]
-    [ExpectedException (typeof (NonInterceptableTypeException), ExpectedMessage =
-        "Cannot instantiate type 'System.Int32' as it is abstract; for classes with automatic properties, InstantiableAttribute must be used.")]
-    public void ModifyType_ThrowsForAbstractClassDefinition ()
-    {
-      var fakeClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition (classType: typeof (int), isAbstract: true);
-      _typeDefinitionProviderMock.Stub (stub => stub.GetPublicDomainObjectType (Arg<Type>.Is.Anything));
-      _typeDefinitionProviderMock.Stub (stub => stub.GetTypeDefinition (Arg<Type>.Is.Anything)).Return (fakeClassDefinition);
-
-      _participant.ModifyType (_proxyType);
-    }
-
-    private void StubGetProperties (IEnumerable<Tuple<PropertyInfo, string>> fakeProperties, Type publicDomainObjectType = null)
-    {
+      publicDomainObjectType = publicDomainObjectType ?? ReflectionObjectMother.GetSomeType();
       var fakeClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition();
       _typeDefinitionProviderMock.Stub (stub => stub.GetPublicDomainObjectType (Arg<Type>.Is.Anything)).Return (publicDomainObjectType);
       _typeDefinitionProviderMock.Stub (stub => stub.GetTypeDefinition (Arg<Type>.Is.Anything)).Return (fakeClassDefinition);
-      _interceptedPropertyFinderMock.Stub (stub => stub.GetProperties (Arg<Type>.Is.Anything)).Return (fakeProperties);
-    }
-
-    // TODO 5370: This is only here for the accesser.GetBaseDefinition() in the call to RelatedMethoFinder.GetMostDerivedOverride.
-    [IgnoreForMappingConfiguration]
-    private class MyDomainObjectBase : DomainObject
-    {
-      public virtual string SomeProperty { get; set; }
-    }
-
-    [IgnoreForMappingConfiguration]
-    private class MyDomainObject : MyDomainObjectBase
-    {
-      public override string SomeProperty { get; set; }
-      protected internal string InternalProperty { get; [UsedImplicitly] set; }
-      public string ReadOnlyProperty { get { return ""; } }
-      [UsedImplicitly] public string WriteOnlyProperty { set { Dev.Null = value; } }
-      public virtual double this[int i1, int i2] { set { Dev.Null = i1; Dev.Null = i2; Dev.Null = value; } }
-    }
-
-    // TODO 5370: 'ConcreteBaseType' not needed after TypePipe integration with re-mix.
-    [IgnoreForMappingConfiguration]
-    private class ConcreteBaseType : MyDomainObject
-    {
-      public override string SomeProperty { get; set; }
+      _interceptedPropertyFinderMock.Stub (stub => stub.GetPropertyInterceptors (null, null)).IgnoreArguments().Return (accessorInterceptors);
     }
   }
 }

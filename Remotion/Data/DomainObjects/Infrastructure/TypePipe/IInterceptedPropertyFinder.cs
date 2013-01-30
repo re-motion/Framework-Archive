@@ -17,28 +17,18 @@
 
 using System;
 using System.Collections.Generic;
-using System.Reflection;
-using Remotion.Collections;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.ServiceLocation;
 
 namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
 {
-  // TODO Review: Refactor to an IInterceptedPropertyAccessorFinder. Return only objects for overridable accessors. Use "Tell, Don't Ask" and 
-  // "Polymorphism Instead of Conditional" refactoring patterns.
   /// <summary>
-  /// Retrieves <see cref="IAccessorInterceptor"/>s that can be used to implement or override accessor methods declared by <see cref="DomainObject"/>
-  /// derivatives.
+  /// Retrieves <see cref="IAccessorInterceptor"/>s that can be used to intercept (implement or override) accessor methods declared by 
+  /// <see cref="DomainObject"/> derivatives.
   /// </summary>
   [ConcreteImplementation (typeof (InterceptedPropertyCollectorAdapter))]
   public interface IInterceptedPropertyFinder
   {
-    // TODO Review: Pass ClassDefinition as argument
-    IEnumerable<Tuple<PropertyInfo, string>> GetProperties (Type domainObjectType);
-
-    bool IsOverridable (MethodInfo mostDerivedMethod);
-    bool IsAutomaticPropertyAccessor (MethodInfo mostDerivedAccessor);
-
     IEnumerable<IAccessorInterceptor> GetPropertyInterceptors (ClassDefinition classDefinition, Type concreteBaseType);
   }
 }
