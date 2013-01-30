@@ -205,6 +205,9 @@
     <Compile Include="..\..\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
+    <Compile Include="DomainObjects\Core\Infrastructure\TypePipe\ImplementingAccessorInterceptorBaseTest.cs" />
+    <Compile Include="DomainObjects\Core\Infrastructure\TypePipe\InterceptedPropertyCollectorAdapterTest.cs" />
+    <Compile Include="DomainObjects\Core\Infrastructure\TypePipe\WrappingAccessorInterceptorTest.cs" />
     <Compile Include="DomainObjects\ObjectIDExtensionsTest.cs" />
     <Compile Include="DomainObjects\Core\ClientTransactionExtensionObjectMother.cs" />
     <Compile Include="DomainObjects\Core\DataManagement\Commands\EndPointModifications\DataManagementCommandDecoratorBaseTest.cs" />

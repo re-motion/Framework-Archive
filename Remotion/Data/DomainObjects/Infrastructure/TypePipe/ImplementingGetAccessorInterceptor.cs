@@ -18,27 +18,34 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using Remotion.Collections;
-using Remotion.Data.DomainObjects.Mapping;
-using Remotion.ServiceLocation;
+using Microsoft.Scripting.Ast;
+using Remotion.TypePipe.MutableReflection.BodyBuilding;
+using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
 {
-  // TODO Review: Refactor to an IInterceptedPropertyAccessorFinder. Return only objects for overridable accessors. Use "Tell, Don't Ask" and 
-  // "Polymorphism Instead of Conditional" refactoring patterns.
   /// <summary>
-  /// Retrieves <see cref="IAccessorInterceptor"/>s that can be used to implement or override accessor methods declared by <see cref="DomainObject"/>
-  /// derivatives.
+  /// Implements a get accessor.
   /// </summary>
-  [ConcreteImplementation (typeof (InterceptedPropertyCollectorAdapter))]
-  public interface IInterceptedPropertyFinder
+  public class ImplementingGetAccessorInterceptor : ImplementingAccessorInterceptorBase
   {
-    // TODO Review: Pass ClassDefinition as argument
-    IEnumerable<Tuple<PropertyInfo, string>> GetProperties (Type domainObjectType);
+    private static readonly MethodInfo s_propertyGetValue =
+        MemberInfoFromExpressionUtility.GetGenericMethodDefinition ((PropertyAccessor o) => o.GetValue<object>());
 
-    bool IsOverridable (MethodInfo mostDerivedMethod);
-    bool IsAutomaticPropertyAccessor (MethodInfo mostDerivedAccessor);
+    public ImplementingGetAccessorInterceptor (MethodInfo interceptedAccessorMethod, string propertyName, Type propertyType)
+        : base(interceptedAccessorMethod, propertyName, propertyType)
+    {
+    }
 
-    IEnumerable<IAccessorInterceptor> GetPropertyInterceptors (ClassDefinition classDefinition, Type concreteBaseType);
+    protected override MethodInfo AccessorImplementationMethod
+    {
+      get { return s_propertyGetValue; }
+    }
+
+    protected override IEnumerable<Expression> GetArguments (MethodBodyModificationContext ctx)
+    {
+      // PropertyAccessor.GetValue<T> does not take any arguments.
+      return new Expression[0];
+    }
   }
 }
