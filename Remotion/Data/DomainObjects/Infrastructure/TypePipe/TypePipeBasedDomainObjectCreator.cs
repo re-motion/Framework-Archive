@@ -16,6 +16,7 @@
 // 
 
 using System;
+using System.Runtime.Serialization;
 using Remotion.Data.DomainObjects.Infrastructure.Interception;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Reflection;
@@ -49,8 +50,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
       objectID.ClassDefinition.ValidateCurrentMixinConfiguration();
 
       var mixedType = DomainObjectMixinCodeGenerationBridge.GetConcreteType (objectID.ClassDefinition.ClassType);
-      // TODO Review: Remove IObjectFactory.GetUninitializedObject, call FormatterServices + Prepare instead. Document breaking change.
-      var instance = (DomainObject) _objectFactory.GetUninitializedObject (mixedType);
+      var instance = (DomainObject) FormatterServices.GetSafeUninitializedObject (mixedType);
+      _objectFactory.PrepareExternalUninitializedObject (instance);
 
       instance.Initialize (objectID, clientTransaction as BindingClientTransaction);
 
