@@ -205,6 +205,7 @@
     <Compile Include="..\..\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
+    <Compile Include="DomainObjects\DomainObjectHandleConverterTest.cs" />
     <Compile Include="DomainObjects\Core\Infrastructure\TypePipe\ImplementingAccessorInterceptorBaseTest.cs" />
     <Compile Include="DomainObjects\Core\Infrastructure\TypePipe\InterceptedPropertyCollectorAdapterTest.cs" />
     <Compile Include="DomainObjects\Core\Infrastructure\TypePipe\TypePipeBasedDomainObjectCreatorTest.cs" />
@@ -888,9 +889,7 @@
     <Compile Include="DomainObjects\Core\Mapping\TestDomain\Integration\Order.cs" />
     <Compile Include="DomainObjects\Core\Mapping\TestDomain\Integration\OrderCollection.cs" />
     <Compile Include="DomainObjects\Core\Mapping\TestDomain\Integration\OrderItem.cs" />
-    <Compile Include="DomainObjects\Core\Mapping\TestDomain\Integration\OrderItemWithNewPropertyAccess.cs" />
     <Compile Include="DomainObjects\Core\Mapping\TestDomain\Integration\OrderTicket.cs" />
-    <Compile Include="DomainObjects\Core\Mapping\TestDomain\Integration\OrderWithNewPropertyAccess.cs" />
     <Compile Include="DomainObjects\Core\Mapping\TestDomain\Integration\Partner.cs" />
     <Compile Include="DomainObjects\Core\Mapping\TestDomain\Integration\Person.cs" />
     <Compile Include="DomainObjects\Core\Mapping\TestDomain\Integration\ReflectionBasedMappingSample\ClassHavingClassIDAttribute.cs" />

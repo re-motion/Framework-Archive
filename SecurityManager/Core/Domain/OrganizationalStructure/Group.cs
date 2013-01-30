@@ -79,11 +79,6 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
       return NewObject<Group>();
     }
 
-    public new static Group GetObject (ObjectID id)
-    {
-      return DomainObject.GetObject<Group> (id);
-    }
-
     public static IQueryable<Group> FindByTenantID (ObjectID tenantID)
     {
       ArgumentUtility.CheckNotNull ("tenantID", tenantID);
@@ -196,7 +191,7 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
 
     protected override string GetOwningGroup ()
     {
-      return UniqueIdentifier;
+      return Parent == null ? null : Parent.UniqueIdentifier;
     }
 
     /// <summary>

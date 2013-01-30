@@ -44,7 +44,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Serialization
     public void DataManager_Content ()
     {
       DataManager dataManager = TestableClientTransaction.DataManager;
-      Order order = Order.GetObject (DomainObjectIDs.Order1);
+      Order order = DomainObjectIDs.Order1.GetObject<Order> ();
       Dev.Null = order.OrderItems[0];
 
       Assert.That (dataManager.DomainObjectStateCache, Is.Not.Null);
@@ -69,7 +69,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Serialization
     public void DumpSerializedDataManager ()
     {
       DataManager dataManager = TestableClientTransaction.DataManager;
-      Order order = Order.GetObject (DomainObjectIDs.Order1);
+      Order order = DomainObjectIDs.Order1.GetObject<Order> ();
       Dev.Null = order.OrderItems[0];
 
       Order invalidOrder = Order.NewObject();
