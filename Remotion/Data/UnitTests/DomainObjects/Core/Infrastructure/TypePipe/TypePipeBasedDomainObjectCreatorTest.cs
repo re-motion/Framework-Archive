@@ -17,28 +17,30 @@
 using System;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects;
-using Remotion.Data.DomainObjects.Infrastructure;
+using Remotion.Data.DomainObjects.Infrastructure.TypePipe;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.ObjectLifetime;
 using Remotion.Data.UnitTests.DomainObjects.Core.MixedDomains.TestDomain;
 using Remotion.Data.UnitTests.DomainObjects.TestDomain;
 using Remotion.Mixins;
 using Remotion.Reflection;
+using Remotion.ServiceLocation;
+using Remotion.TypePipe;
 
-namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure
+namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.TypePipe
 {
   [TestFixture]
-  public class InterceptedDomainObjectCreatorTest : StandardMappingTest
+  public class TypePipeBasedDomainObjectCreatorTest : StandardMappingTest
   {
     private ClientTransaction _transaction;
-    private InterceptedDomainObjectCreator _interceptedDomainObjectCreator;
+    private TypePipeBasedDomainObjectCreator _interceptedDomainObjectCreator;
 
     public override void SetUp ()
     {
       base.SetUp();
 
       _transaction = ClientTransaction.CreateRootTransaction();
-      _interceptedDomainObjectCreator = InterceptedDomainObjectCreator.Instance;
+      _interceptedDomainObjectCreator = new TypePipeBasedDomainObjectCreator (SafeServiceLocator.Current.GetInstance<IObjectFactory>());
     }
 
     [Test]
@@ -55,8 +57,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure
     {
       var order = _interceptedDomainObjectCreator.CreateObjectReference (DomainObjectIDs.Order1, _transaction);
 
-      var factory = _interceptedDomainObjectCreator.Factory;
-      Assert.That (factory.WasCreatedByFactory ((((object) order).GetType())), Is.True);
+      Assert.That (((object) order).GetType().Name, Is.StringMatching (@"_Proxy\d"));
     }
 
     [Test]
@@ -69,7 +70,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure
     [Test]
     public void CreateObjectReference_PreparesMixins ()
     {
-      var objectID = new ObjectID(typeof (TargetClassForPersistentMixin), Guid.NewGuid());
+      var objectID = new ObjectID (typeof (TargetClassForPersistentMixin), Guid.NewGuid ());
       var instance = _interceptedDomainObjectCreator.CreateObjectReference (objectID, _transaction);
       Assert.That (Mixin.Get<MixinAddingPersistentProperties> (instance), Is.Not.Null);
     }
@@ -91,12 +92,12 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure
     [Test]
     public void CreateObjectReference_BindingTransaction ()
     {
-      var bindingTransaction = ClientTransaction.CreateBindingTransaction();
+      var bindingTransaction = ClientTransaction.CreateBindingTransaction ();
 
       var instance = _interceptedDomainObjectCreator.CreateObjectReference (DomainObjectIDs.Order1, bindingTransaction);
 
       Assert.That (instance.HasBindingTransaction, Is.True);
-      Assert.That (instance.GetBindingTransaction(), Is.SameAs (bindingTransaction));
+      Assert.That (instance.GetBindingTransaction (), Is.SameAs (bindingTransaction));
     }
 
     [Test]
@@ -110,9 +111,9 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure
     [ExpectedException (typeof (MappingException), ExpectedMessage = "mixin", MatchType = MessageMatch.Contains)]
     public void CreateObjectReference_ValidatesMixinConfiguration ()
     {
-      using (MixinConfiguration.BuildNew().EnterScope())
+      using (MixinConfiguration.BuildNew ().EnterScope ())
       {
-        var objectID = new ObjectID(typeof (TargetClassForPersistentMixin), Guid.NewGuid());
+        var objectID = new ObjectID (typeof (TargetClassForPersistentMixin), Guid.NewGuid ());
         _interceptedDomainObjectCreator.CreateObjectReference (objectID, _transaction);
       }
     }
@@ -138,7 +139,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure
           CallWithInitializationContextAndTransaction (
               () => _interceptedDomainObjectCreator.CreateNewObject (typeof (OrderItem), ParamList.Create ("A product")), DomainObjectIDs.OrderItem1);
 
-      Assert.That (_interceptedDomainObjectCreator.Factory.WasCreatedByFactory (((object) result).GetType ()), Is.True);
+      Assert.That (((object) result).GetType().Name, Is.StringMatching (@"_Proxy\d"));
       Assert.That (result, Is.AssignableTo<OrderItem> ());
       Assert.That (_transaction.Execute (() => ((OrderItem) result).Product), Is.EqualTo ("A product"));
     }
@@ -171,12 +172,12 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure
     {
       Assert.That (
           CallWithInitializationContextAndTransaction (
-              () => _interceptedDomainObjectCreator.CreateNewObject (typeof (DomainObjectWithPublicCtor2), ParamList.Empty), DomainObjectIDs.OrderItem1),
+              () => _interceptedDomainObjectCreator.CreateNewObject (typeof (DomainObjectWithPublicCtor), ParamList.Empty), DomainObjectIDs.OrderItem1),
           Is.Not.Null);
 
       Assert.That (
           CallWithInitializationContextAndTransaction (
-              () => _interceptedDomainObjectCreator.CreateNewObject (typeof (DomainObjectWithProtectedCtor2), ParamList.Empty), DomainObjectIDs.OrderItem2),
+              () => _interceptedDomainObjectCreator.CreateNewObject (typeof (DomainObjectWithProtectedCtor), ParamList.Empty), DomainObjectIDs.OrderItem2),
           Is.Not.Null);
     }
 
@@ -197,17 +198,17 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure
     }
 
     [DBTable]
-    public class DomainObjectWithPublicCtor2 : DomainObject
+    public class DomainObjectWithPublicCtor : DomainObject
     {
-      public DomainObjectWithPublicCtor2 ()
+      public DomainObjectWithPublicCtor ()
       {
       }
     }
 
     [DBTable]
-    public class DomainObjectWithProtectedCtor2 : DomainObject
+    public class DomainObjectWithProtectedCtor : DomainObject
     {
-      protected DomainObjectWithProtectedCtor2 ()
+      protected DomainObjectWithProtectedCtor ()
       {
       }
     }
