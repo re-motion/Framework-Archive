@@ -115,7 +115,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure
 
     private bool IsParentHierarchyValid (Group group)
     {
-      var groups = group.CreateSequence (g => g.Parent, g => g != null && g != CurrentFunction.Group && g.Parent != group).ToArray();
+      var groups = group.CreateSequence (g => g.Parent, g => g != null && g != CurrentFunction.CurrentObject && g.Parent != group).ToArray();
       if (groups.Length == 0)
         return false;
       if (groups.Last().Parent != null)

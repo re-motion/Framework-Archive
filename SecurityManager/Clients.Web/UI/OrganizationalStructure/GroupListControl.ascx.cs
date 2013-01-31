@@ -34,7 +34,7 @@ using Remotion.SecurityManager.Clients.Web.WxeFunctions;
 namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure
 {
   [WebMultiLingualResources (typeof (GroupListControlResources))]
-  public partial class GroupListControl : BaseListControl
+  public partial class GroupListControl : BaseListControl<Group>
   {
     public override IBusinessObjectDataSourceControl DataSource
     {
@@ -79,9 +79,9 @@ namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure
       return Group.FindByTenantID (CurrentFunction.TenantID).ToArray();
     }
 
-    protected override FormFunction CreateEditFunction (ITransactionMode transactionMode, ObjectID objectID)
+    protected override FormFunction<Group> CreateEditFunction (ITransactionMode transactionMode, Group editedObject)
     {
-      return new EditGroupFormFunction (transactionMode, objectID);
+      return new EditGroupFormFunction (transactionMode, editedObject.GetHandle());
     }
   }
 }
