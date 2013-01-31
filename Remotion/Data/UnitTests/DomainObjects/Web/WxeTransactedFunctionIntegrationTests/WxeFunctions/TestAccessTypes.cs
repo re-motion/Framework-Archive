@@ -15,34 +15,13 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using JetBrains.Annotations;
-using Remotion.Data.UnitTests.DomainObjects.TestDomain;
-using Remotion.Web.ExecutionEngine;
-using Remotion.Web.Security.ExecutionEngine;
-using Remotion.Web.Security.UI;
+using Remotion.Security;
 
 namespace Remotion.Data.UnitTests.DomainObjects.Web.WxeTransactedFunctionIntegrationTests.WxeFunctions
 {
-  [Serializable]
-  [WxeDemandTargetMethodPermission ("SecuredMethod", typeof (SecurableDomainObject), ParameterName = "SecurableParameter")]
-  public class FunctionWithSecuredDomainObjectParameter : WxeFunction
+  [AccessType]
+  public enum TestAccessTypes
   {
-    public FunctionWithSecuredDomainObjectParameter (ITransactionMode transactionMode)
-        : base (transactionMode)
-    {
-    }
-
-    [WxeParameter (1, false, WxeParameterDirection.In)]
-    public SecurableDomainObject SecurableParameter
-    {
-      get { return (SecurableDomainObject) Variables["SecurableParameter"]; }
-      set { Variables["SecurableParameter"] = value; }
-    }
-
-    [UsedImplicitly]
-    private void Step1 ()
-    {
-      // Nothing to do here - we just check whether execution throws an exception
-    }
+    Value
   }
 }
