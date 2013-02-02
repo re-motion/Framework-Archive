@@ -29,7 +29,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Web.WxeTransactedFunctionIntegra
     [Test]
     public void ExecuteWithSecurityCheck_ViaDomainObjectParameter_WithObjectHasAccessTrue_Succeeds ()
     {
-      var wxeFunction = CreateWxeFunctionWithSecurityOnDomainObject();
+      var wxeFunction = CreateWxeFunction();
       ObjectSecurityStrategyStub.Stub (stub => stub.HasAccess (SecurityProviderStub, SecurityPrincipalStub, TestAccessTypeValue)).Return (true);
 
       wxeFunction.Execute (Context);
@@ -38,7 +38,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Web.WxeTransactedFunctionIntegra
     [Test]
     public void ExecuteWithSecurityCheck_ViaDomainObjectParameter_WithObjectHasAccessFalse_Fails ()
     {
-      var wxeFunction = CreateWxeFunctionWithSecurityOnDomainObject ();
+      var wxeFunction = CreateWxeFunction ();
       ObjectSecurityStrategyStub.Stub (stub => stub.HasAccess (SecurityProviderStub, SecurityPrincipalStub, TestAccessTypeValue)).Return (false);
 
       Assert.That (() => wxeFunction.Execute (Context), Throws.TypeOf<WxeUnhandledException>().With.InnerException.TypeOf<PermissionDeniedException>());
@@ -64,7 +64,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Web.WxeTransactedFunctionIntegra
       Assert.That (WxeFunction.HasAccess (typeof (FunctionWithSecuredDomainObjectParameter)), Is.False);
     }
     
-    private FunctionWithSecuredDomainObjectParameter CreateWxeFunctionWithSecurityOnDomainObject ()
+    private FunctionWithSecuredDomainObjectParameter CreateWxeFunction ()
     {
       var securableDomainObject = CreateSecurableDomainObject();
 

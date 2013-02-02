@@ -36,7 +36,7 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
   [Instantiable]
   [DBTable]
   [SecurityManagerStorageGroup]
-  public abstract class User : OrganizationalStructureObject
+  public abstract class User : OrganizationalStructureObject, ISupportsGetObject
   {
     public enum Methods
     {
@@ -60,12 +60,12 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
       return result.SingleOrDefault();
     }
 
-    public static IQueryable<User> FindByTenantID (ObjectID tenantID)
+    public static IQueryable<User> FindByTenant (IDomainObjectHandle<Tenant> tenantHandle)
     {
-      ArgumentUtility.CheckNotNull ("tenantID", tenantID);
+      ArgumentUtility.CheckNotNull ("tenantHandle", tenantHandle);
 
       return from u in QueryFactory.CreateLinqQuery<User>()
-             where u.Tenant.ID == tenantID
+             where u.Tenant.ID == tenantHandle.ObjectID
              orderby u.LastName, u.FirstName
              select u;
     }

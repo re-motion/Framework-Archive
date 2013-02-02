@@ -31,6 +31,7 @@ namespace Remotion.TypePipe.UnitTests.MutableReflection.Implementation
     }
 
     public IEnumerable<ICustomAttributeData> CustomAttributeDatas;
+    public ParameterInfo[] Parameters;
 
     public override IEnumerable<ICustomAttributeData> GetCustomAttributeData ()
     {
@@ -39,7 +40,7 @@ namespace Remotion.TypePipe.UnitTests.MutableReflection.Implementation
 
     public override ParameterInfo[] GetParameters ()
     {
-      throw new NotImplementedException();
+      return Parameters;
     }
   }
 }

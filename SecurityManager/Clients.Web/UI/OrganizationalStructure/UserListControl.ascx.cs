@@ -76,7 +76,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure
 
     protected override IList GetValues ()
     {
-      return User.FindByTenantID (CurrentFunction.TenantID).ToArray();
+      return User.FindByTenant (CurrentFunction.TenantHandle).ToArray();
     }
 
     protected override FormFunction<User> CreateEditFunction (ITransactionMode transactionMode, User editedObject)

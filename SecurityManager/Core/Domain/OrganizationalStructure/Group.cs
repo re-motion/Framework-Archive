@@ -38,7 +38,7 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
   [Instantiable]
   [DBTable]
   [SecurityManagerStorageGroup]
-  public abstract class Group : OrganizationalStructureObject
+  public abstract class Group : OrganizationalStructureObject, ISupportsGetObject
   {
     // types
 
@@ -79,12 +79,12 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
       return NewObject<Group>();
     }
 
-    public static IQueryable<Group> FindByTenantID (ObjectID tenantID)
+    public static IQueryable<Group> FindByTenant (IDomainObjectHandle<Tenant> tenantHandle)
     {
-      ArgumentUtility.CheckNotNull ("tenantID", tenantID);
+      ArgumentUtility.CheckNotNull ("tenantHandle", tenantHandle);
 
       return from g in QueryFactory.CreateLinqQuery<Group>()
-                   where g.Tenant.ID == tenantID
+                   where g.Tenant.ID == tenantHandle.ObjectID
                    orderby g.Name, g.ShortName
                    select g;
     }
