@@ -86,7 +86,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes
 
     protected override void OnPreRender (EventArgs e)
     {
-      if (!CurrentTenantHandle.Equals (CurrentFunction.TenantHandle))
+      if (!CurrentFunction.TenantHandle.Equals (CurrentTenantHandle))
       {
         CurrentTenantHandle = CurrentFunction.TenantHandle;
         _hasTenantChanged = true;
