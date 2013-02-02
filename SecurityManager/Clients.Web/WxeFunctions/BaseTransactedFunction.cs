@@ -37,11 +37,6 @@ namespace Remotion.SecurityManager.Clients.Web.WxeFunctions
       Initialize();
     }
 
-    public ObjectID TenantID
-    {
-      get { return TenantHandle.ObjectID; }
-    }
-
     public IDomainObjectHandle<Tenant> TenantHandle
     {
       get
