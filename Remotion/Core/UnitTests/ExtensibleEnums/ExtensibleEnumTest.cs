@@ -34,6 +34,7 @@ namespace Remotion.UnitTests.ExtensibleEnums
     
     
     
+    
       Assert.That (EnumWithDifferentCtors.Values.IDOnly().ValueName, Is.EqualTo ("ValueName"));
       Assert.That (EnumWithDifferentCtors.Values.IDOnly().DeclarationSpace, Is.Null);
       Assert.That (EnumWithDifferentCtors.Values.IDOnly().ID, Is.EqualTo ("ValueName"));
