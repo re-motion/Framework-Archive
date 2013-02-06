@@ -203,7 +203,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.RelationEndP
     [Test]
     public void GetOppositeObject_Deleted ()
     {
-      var order1 = Order.GetObject (DomainObjectIDs.Order1);
+      var order1 = DomainObjectIDs.Order1.GetObject<Order> ();
       order1.Delete ();
       Assert.That (order1.State, Is.EqualTo (StateType.Deleted));
 
@@ -228,7 +228,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.RelationEndP
     [Test]
     public void GetOppositeObject_NotFound ()
     {
-      var objectID = ObjectID.Create(typeof (Order), Guid.NewGuid());
+      var objectID = new ObjectID(typeof (Order), Guid.NewGuid());
       RealObjectEndPointTestHelper.SetOppositeObjectID (_endPoint, objectID);
 
       var oppositeObject = _endPoint.GetOppositeObject ();
@@ -242,7 +242,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.RelationEndP
       RealObjectEndPointTestHelper.SetOppositeObjectID (_endPoint, DomainObjectIDs.Order1);
       _foreignKeyDataContainer.CommitState();
 
-      Assert.That (_endPoint.GetOriginalOppositeObject (), Is.SameAs (Order.GetObject (DomainObjectIDs.Order1)));
+      Assert.That (_endPoint.GetOriginalOppositeObject (), Is.SameAs (DomainObjectIDs.Order1.GetObject<Order> ()));
     }
 
     [Test]

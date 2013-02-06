@@ -36,7 +36,7 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
   [Instantiable]
   [DBTable]
   [SecurityManagerStorageGroup]
-  public abstract class Tenant : OrganizationalStructureObject
+  public abstract class Tenant : OrganizationalStructureObject, ISupportsGetObject
   {
     public enum Methods
     {
@@ -46,11 +46,6 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
     internal static Tenant NewObject ()
     {
       return NewObject<Tenant>();
-    }
-
-    public new static Tenant GetObject (ObjectID id)
-    {
-      return GetObject<Tenant> (id);
     }
 
     public static IQueryable<Tenant> FindAll ()
@@ -107,7 +102,7 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
 
     protected override string GetOwningTenant ()
     {
-      return UniqueIdentifier;
+      return Parent == null ? null : Parent.UniqueIdentifier;
     }
 
     /// <summary>

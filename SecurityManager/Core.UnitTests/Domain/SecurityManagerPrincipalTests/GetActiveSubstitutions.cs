@@ -25,11 +25,11 @@ using Remotion.SecurityManager.Domain.OrganizationalStructure;
 namespace Remotion.SecurityManager.UnitTests.Domain.SecurityManagerPrincipalTests
 {
   [TestFixture]
-  public class GetActiveSubstitutions : DomainTest
+  public class GetActiveSubstitutions : SecurityManagerPrincipalTestBase
   {
-    private IObjectID<Tenant> _tenantID;
-    private IObjectID<User> _userID;
-    private IObjectID<Substitution>[] _substitutionIDs;
+    private IDomainObjectHandle<Tenant> _tenantHandle;
+    private IDomainObjectHandle<User> _userHandle;
+    private ObjectID[] _substitutionIDs;
 
     public override void SetUp ()
     {
@@ -40,9 +40,9 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SecurityManagerPrincipalTest
       ClientTransaction.CreateRootTransaction ().EnterNonDiscardingScope ();
 
       User user = User.FindByUserName ("substituting.user");
-      _userID = user.GetTypedID();
-      _tenantID = user.Tenant.GetTypedID();
-      _substitutionIDs = user.GetActiveSubstitutions().Select (s => s.GetTypedID()).ToArray();
+      _userHandle = user.GetHandle();
+      _tenantHandle = user.Tenant.GetHandle();
+      _substitutionIDs = user.GetActiveSubstitutions().Select (s => s.ID).ToArray();
       Assert.That (_substitutionIDs.Length, Is.EqualTo (2));
     }
 
@@ -56,9 +56,9 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SecurityManagerPrincipalTest
     [Test]
     public void ExcludeInactiveSubstitutions ()
     {
-      SecurityManagerPrincipal principal = new SecurityManagerPrincipal (_tenantID, _userID, null);
+      SecurityManagerPrincipal principal = new SecurityManagerPrincipal (_tenantHandle, _userHandle, null);
 
-      Assert.That (principal.GetActiveSubstitutions().Select (t => t.ID), Is.EquivalentTo (_substitutionIDs));
+      Assert.That (principal.GetActiveSubstitutions().Select (s => s.ID), Is.EquivalentTo (_substitutionIDs));
     }
   }
 }

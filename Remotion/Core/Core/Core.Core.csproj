@@ -94,7 +94,7 @@
     <RemoveIntegerChecks>false</RemoveIntegerChecks>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarningLevel>4</WarningLevel>
-    <DebugType>none</DebugType>
+    <DebugType>pdbonly</DebugType>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
@@ -150,6 +150,7 @@
     <Compile Include="Context\ISafeContextStorageProvider.cs" />
     <Compile Include="Context\SafeContext.cs" />
     <Compile Include="Context\SafeContextKeys.cs" />
+    <Compile Include="IHandleAttribute.cs" />
     <Compile Include="Reflection\DelegateFactory.cs" />
     <Compile Include="Reflection\IDelegateFactory.cs" />
     <Compile Include="Reflection\MemberSignatures\EventSignature.cs" />

@@ -19,6 +19,7 @@ using System;
 using System.Linq;
 using Remotion.Context;
 using Remotion.Data.DomainObjects;
+using Remotion.Data.DomainObjects.DomainImplementation;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Security;
 using Remotion.Security;
@@ -47,37 +48,36 @@ namespace Remotion.SecurityManager.Domain
   [Serializable]
   public class SecurityManagerPrincipal : ISecurityManagerPrincipal
   {
-    private static readonly string s_currentKey = typeof (SecurityManagerPrincipal).AssemblyQualifiedName + "_Current";
-
     public static readonly ISecurityManagerPrincipal Null = new NullSecurityManagerPrincipal();
 
     public static ISecurityManagerPrincipal Current
     {
-      get { return (ISecurityManagerPrincipal) SafeContext.Instance.GetData (s_currentKey) ?? Null; }
+      get { return (ISecurityManagerPrincipal) SafeContext.Instance.GetData (SafeContextKeys.SecurityManagerPrincipalCurrent) ?? Null; }
       set
       {
         ArgumentUtility.CheckNotNull ("value", value);
-        SafeContext.Instance.SetData (s_currentKey, value);
+        SafeContext.Instance.SetData (SafeContextKeys.SecurityManagerPrincipalCurrent, value);
       }
     }
 
     private int _revision;
-    private readonly IObjectID<Tenant> _tenantID;
-    private readonly IObjectID<User> _userID;
-    private readonly IObjectID<Substitution> _substitutionID;
+    private readonly IDomainObjectHandle<Tenant> _tenantHandle;
+    private readonly IDomainObjectHandle<User> _userHandle;
+    private readonly IDomainObjectHandle<Substitution> _substitutionHandle;
     private TenantProxy _tenantProxy;
     private UserProxy _userProxy;
     private SubstitutionProxy _substitutionProxy;
     private ISecurityPrincipal _securityPrincipal;
 
-    public SecurityManagerPrincipal (IObjectID<Tenant> tenantID, IObjectID<User> userID, IObjectID<Substitution> substitutionID)
+    public SecurityManagerPrincipal (
+        IDomainObjectHandle<Tenant> tenantHandle, IDomainObjectHandle<User> userHandle, IDomainObjectHandle<Substitution> substitutionHandle)
     {
-      ArgumentUtility.CheckNotNull ("tenantID", tenantID);
-      ArgumentUtility.CheckNotNull ("userID", userID);
+      ArgumentUtility.CheckNotNull ("tenantHandle", tenantHandle);
+      ArgumentUtility.CheckNotNull ("userHandle", userHandle);
 
-      _tenantID = tenantID;
-      _userID = userID;
-      _substitutionID = substitutionID;
+      _tenantHandle = tenantHandle;
+      _userHandle = userHandle;
+      _substitutionHandle = substitutionHandle;
 
       InitializeCache();
     }
@@ -199,29 +199,20 @@ namespace Remotion.SecurityManager.Domain
 
     private Tenant GetTenant (ClientTransaction transaction)
     {
-      using (transaction.EnterNonDiscardingScope ())
-      {
-        return OrganizationalStructure.Tenant.GetObject (_tenantID.AsObjectID());
-      }
+      return _tenantHandle.GetObject (transaction);
     }
 
     private User GetUser (ClientTransaction transaction)
     {
-      using (transaction.EnterNonDiscardingScope ())
-      {
-        return OrganizationalStructure.User.GetObject (_userID.AsObjectID());
-      }
+      return _userHandle.GetObject (transaction);
     }
 
     private Substitution GetSubstitution (ClientTransaction transaction)
     {
-      if (_substitutionID == null)
+      if (_substitutionHandle == null)
         return null;
 
-      using (transaction.EnterNonDiscardingScope ())
-      {
-        return (Substitution) OrganizationalStructure.Substitution.GetObject (_substitutionID.AsObjectID());
-      }
+      return (Substitution) LifetimeService.GetObject (transaction, _substitutionHandle.ObjectID, false);
     }
 
     private ClientTransaction CreateClientTransaction ()

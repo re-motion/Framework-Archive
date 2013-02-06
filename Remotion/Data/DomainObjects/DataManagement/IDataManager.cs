@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
-using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
 
 namespace Remotion.Data.DomainObjects.DataManagement
@@ -30,20 +29,12 @@ namespace Remotion.Data.DomainObjects.DataManagement
     IDataContainerMapReadOnlyView DataContainers { get; }
     IRelationEndPointMapReadOnlyView RelationEndPoints { get; }
 
-    // TODO 4499: Remove
-    DomainObjectStateCache DomainObjectStateCache { get; }
+    StateType GetState (ObjectID objectID);
 
     DataContainer GetDataContainerWithLazyLoad (ObjectID objectID, bool throwOnNotFound);
     IEnumerable<DataContainer> GetDataContainersWithLazyLoad (IEnumerable<ObjectID> objectIDs, bool throwOnNotFound);
 
     IEnumerable<PersistableData> GetLoadedDataByObjectState (params StateType[] domainObjectStates);
-    // TODO 4498: Remove
-    IEnumerable<PersistableData> GetNewChangedDeletedData ();
-    // TODO 4411: Remove
-    IEnumerable<IRelationEndPoint> GetOppositeRelationEndPoints (DataContainer dataContainer);
-    
-    // TODO 4498: Remove
-    bool HasRelationChanged (DataContainer dataContainer);
 
     void RegisterDataContainer (DataContainer dataContainer);
     void Discard (DataContainer dataContainer);

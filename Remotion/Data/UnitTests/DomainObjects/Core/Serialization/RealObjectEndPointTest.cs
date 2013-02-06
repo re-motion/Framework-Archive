@@ -17,6 +17,7 @@
 using System;
 using System.Runtime.Serialization;
 using NUnit.Framework;
+using Remotion.Data.DomainObjects;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.RelationEndPoints;
 using Remotion.Data.UnitTests.DomainObjects.Factories;
@@ -26,6 +27,7 @@ using Remotion.Development.UnitTesting;
 namespace Remotion.Data.UnitTests.DomainObjects.Core.Serialization
 {
   [TestFixture]
+  [UseLegacyCodeGeneration]
   public class RealObjectEndPointTest : ClientTransactionBaseTest
   {
     private RealObjectEndPoint _endPoint;
@@ -35,7 +37,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Serialization
     {
       base.SetUp();
 
-      Computer.GetObject (DomainObjectIDs.Computer1);
+      DomainObjectIDs.Computer1.GetObject<Computer> ();
       var endPointID = RelationEndPointID.Create(DomainObjectIDs.Computer1, ReflectionMappingHelper.GetPropertyName (typeof (Computer), "Employee"));
       _endPoint = (RealObjectEndPoint) TestableClientTransaction.DataManager.GetRelationEndPointWithoutLoading (endPointID);
     }
@@ -79,7 +81,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Serialization
     [Test]
     public void ForeignKeyProperty ()
     {
-      OrderTicket.GetObject (DomainObjectIDs.OrderTicket1);
+      DomainObjectIDs.OrderTicket1.GetObject<OrderTicket> ();
       var id = RelationEndPointID.Create(DomainObjectIDs.OrderTicket1, typeof (OrderTicket) + ".Order");
       var endPoint = (RealObjectEndPoint) TestableClientTransaction.DataManager.GetRelationEndPointWithLazyLoad (id);
       Assert.That (endPoint.PropertyDefinition, Is.Not.Null);
@@ -93,7 +95,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Serialization
     [Test]
     public void ForeignKeyDataContainer_IntegrationWithDataManager ()
     {
-      OrderTicket.GetObject (DomainObjectIDs.OrderTicket1);
+      DomainObjectIDs.OrderTicket1.GetObject<OrderTicket> ();
       var id = RelationEndPointID.Create(DomainObjectIDs.OrderTicket1, typeof (OrderTicket) + ".Order");
 
       var deserializedDataManager = Serializer.SerializeAndDeserialize (TestableClientTransaction.DataManager);

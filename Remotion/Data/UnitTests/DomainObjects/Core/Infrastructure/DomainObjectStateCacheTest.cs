@@ -19,6 +19,7 @@ using NUnit.Framework;
 using Remotion.Collections;
 using Remotion.Data.DomainObjects;
 using Remotion.Data.DomainObjects.DataManagement;
+using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.DomainImplementation;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.UnitTests.DomainObjects.TestDomain;
@@ -85,6 +86,17 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure
     {
       _transaction.Execute (() => _existingOrder.OrderItems.Clear ());
       Assert.That (_cachingListener.GetState (_existingOrder.ID), Is.EqualTo (StateType.Changed));
+    }
+
+    [Test]
+    public void GetState_FromDataContainer_DoesNotLoadRelations ()
+    {
+      var dataManager = ClientTransactionTestHelper.GetIDataManager (_transaction);
+      Assert.That (dataManager.GetRelationEndPointWithoutLoading (RelationEndPointID.Resolve (_existingOrder, o => o.OrderTicket)), Is.Null);
+
+      _transaction.Execute (() => _existingOrder.OrderItems.Clear ());
+
+      Assert.That (dataManager.GetRelationEndPointWithoutLoading (RelationEndPointID.Resolve (_existingOrder, o => o.OrderTicket)), Is.Null);
     }
 
     [Test]
@@ -274,8 +286,12 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure
     }
 
     [Test]
+    [UseLegacyCodeGeneration]
     public void Serialization ()
     {
+      //TODO 5370: Remove
+      SetUp ();
+
       var deserializedTuple = Serializer.SerializeAndDeserialize (Tuple.Create (_cachingListener, _transaction, _existingOrder));
 
       var deserializedCache = deserializedTuple.Item1;

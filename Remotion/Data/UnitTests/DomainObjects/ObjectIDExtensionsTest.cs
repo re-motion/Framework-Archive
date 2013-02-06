@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Linq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects;
 using Remotion.Data.DomainObjects.DataManagement;
@@ -26,24 +27,24 @@ namespace Remotion.Data.UnitTests.DomainObjects
   [TestFixture]
   public class ObjectIDExtensionsTest : StandardMappingTest
   {
-    private IObjectID<Order> _orderID1;
-    private IObjectID<Order> _orderID2;
-    private IObjectID<Order> _notFoundOrderID;
+    private ObjectID _orderID1;
+    private ObjectID _objectID2;
+    private ObjectID _notFoundObjectID;
     private ClientTransaction _clientTransaction;
 
     public override void SetUp ()
     {
       base.SetUp ();
-      _orderID1 = DomainObjectIDs.Order1.AsObjectID<Order>();
-      _orderID2 = DomainObjectIDs.Order2.AsObjectID<Order> ();
-      _notFoundOrderID = ObjectID.Create<Order> (Guid.NewGuid());
+      _orderID1 = DomainObjectIDs.Order1;
+      _objectID2 = DomainObjectIDs.Order2;
+      _notFoundObjectID = new ObjectID (typeof (Order), Guid.NewGuid());
       _clientTransaction = ClientTransaction.CreateRootTransaction();
     }
 
     [Test]
     public void GetObject_LoadsObjectIntoGivenTransaction ()
     {
-      var result = _orderID1.GetObject (_clientTransaction);
+      var result = _orderID1.GetObject<Order> (_clientTransaction);
 
       CheckDomainObject (result, _clientTransaction, expectedID: _orderID1, expectedState: StateType.Unchanged);
     }
@@ -53,7 +54,7 @@ namespace Remotion.Data.UnitTests.DomainObjects
     {
       using (_clientTransaction.EnterNonDiscardingScope())
       {
-        var result = _orderID1.GetObject();
+        var result = _orderID1.GetObject<Order>();
         CheckDomainObject (result, _clientTransaction);
       }
     }
@@ -62,16 +63,16 @@ namespace Remotion.Data.UnitTests.DomainObjects
     public void GetObject_NoClientTransactionGiven_NoCurrentTransaction_Throws ()
     {
       Assert.That (
-          () => _orderID1.GetObject(),
+          () => _orderID1.GetObject<Order>(),
           Throws.InvalidOperationException.With.Message.EqualTo ("No ClientTransaction has been associated with the current thread."));
     }
 
     [Test]
     public void GetObject_IncludeDeletedTrue_LoadsDeletedObject ()
     {
-      _clientTransaction.Execute (() => _orderID1.GetObject().Delete());
+      _clientTransaction.Execute (() => _orderID1.GetObject<Order>().Delete());
 
-      var result = _orderID1.GetObject (_clientTransaction, includeDeleted: true);
+      var result = _orderID1.GetObject<Order> (_clientTransaction, includeDeleted: true);
 
       Assert.That (result, Is.Not.Null);
       CheckDomainObject (result, _clientTransaction, expectedState: StateType.Deleted);
@@ -80,28 +81,46 @@ namespace Remotion.Data.UnitTests.DomainObjects
     [Test]
     public void GetObject_IncludeDeletedFalse_ThrowsOnDeletedObject ()
     {
-      _clientTransaction.Execute (() => _orderID1.GetObject ().Delete ());
-      Assert.That (() => _orderID1.GetObject (_clientTransaction, includeDeleted: false), Throws.TypeOf<ObjectDeletedException>());
+      _clientTransaction.Execute (() => _orderID1.GetObject<Order> ().Delete ());
+      Assert.That (() => _orderID1.GetObject<Order> (_clientTransaction, includeDeleted: false), Throws.TypeOf<ObjectDeletedException>());
     }
 
     [Test]
     public void GetObject_IncludeDeletedUnspecified_ThrowsOnDeletedObject ()
     {
-      _clientTransaction.Execute (() => _orderID1.GetObject ().Delete ());
-      Assert.That (() => _orderID1.GetObject (_clientTransaction), Throws.TypeOf<ObjectDeletedException> ());
+      _clientTransaction.Execute (() => _orderID1.GetObject<Order> ().Delete ());
+      Assert.That (() => _orderID1.GetObject<Order> (_clientTransaction), Throws.TypeOf<ObjectDeletedException> ());
+    }
+
+    [Test]
+    public void GetObject_AcceptsBaseType ()
+    {
+      var result = _orderID1.GetObject<TestDomainBase> (_clientTransaction);
+
+      CheckDomainObject (result, _clientTransaction);
+    }
+
+    [Test]
+    public void GetObject_ThrowsOnUnrelatedType ()
+    {
+      Assert.That (
+          () => _orderID1.GetObject<OrderItem> (_clientTransaction),
+          Throws.TypeOf<ArgumentException> ().With.Message.EqualTo (
+              "The ObjectID 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' is not compatible with type "
+              + "'Remotion.Data.UnitTests.DomainObjects.TestDomain.OrderItem'.\r\nParameter name: id"));
     }
 
     [Test]
     public void TryGetObject_LoadsObjectIntoGivenTransaction ()
     {
-      var result = _orderID1.TryGetObject (_clientTransaction);
+      var result = _orderID1.TryGetObject<Order> (_clientTransaction);
       CheckDomainObject (result, _clientTransaction, expectedID: _orderID1, expectedState: StateType.Unchanged);
     }
 
     [Test]
     public void TryGetObject_AllowsNotFoundObjects ()
     {
-      var result = _notFoundOrderID.TryGetObject (_clientTransaction);
+      var result = _notFoundObjectID.TryGetObject<Order> (_clientTransaction);
       Assert.That (result, Is.Null);
     }
 
@@ -110,7 +129,7 @@ namespace Remotion.Data.UnitTests.DomainObjects
     {
       using (_clientTransaction.EnterNonDiscardingScope ())
       {
-        var result = _orderID1.TryGetObject ();
+        var result = _orderID1.GetObject<Order> ();
         CheckDomainObject (result, _clientTransaction);
       }
     }
@@ -119,14 +138,32 @@ namespace Remotion.Data.UnitTests.DomainObjects
     public void TryGetObject_NoClientTransactionGiven_NoCurrentTransaction_Throws ()
     {
       Assert.That (
-          () => _orderID1.TryGetObject (),
+          () => _orderID1.GetObject<Order> (),
           Throws.InvalidOperationException.With.Message.EqualTo ("No ClientTransaction has been associated with the current thread."));
+    }
+
+    [Test]
+    public void TryGetObject_AcceptsBaseType ()
+    {
+      var result = _orderID1.TryGetObject<TestDomainBase> (_clientTransaction);
+
+      CheckDomainObject (result, _clientTransaction);
+    }
+
+    [Test]
+    public void TryGetObject_ThrowsOnUnrelatedType ()
+    {
+      Assert.That (
+          () => _orderID1.TryGetObject<OrderItem> (_clientTransaction),
+          Throws.TypeOf<ArgumentException> ().With.Message.EqualTo (
+              "The ObjectID 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' is not compatible with type "
+              + "'Remotion.Data.UnitTests.DomainObjects.TestDomain.OrderItem'.\r\nParameter name: id"));
     }
 
     [Test]
     public void GetObjectReference_ReturnsReferenceFromGivenTransaction ()
     {
-      var result = _orderID1.GetObjectReference (_clientTransaction);
+      var result = _orderID1.GetObjectReference<Order> (_clientTransaction);
       CheckDomainObject (result, _clientTransaction, expectedID: _orderID1, expectedState: StateType.NotLoadedYet);
     }
 
@@ -135,7 +172,7 @@ namespace Remotion.Data.UnitTests.DomainObjects
     {
       using (_clientTransaction.EnterNonDiscardingScope ())
       {
-        var result = _orderID1.GetObjectReference ();
+        var result = _orderID1.GetObjectReference<Order> ();
         CheckDomainObject (result, _clientTransaction);
       }
     }
@@ -144,18 +181,36 @@ namespace Remotion.Data.UnitTests.DomainObjects
     public void GetObjectReference_NoClientTransactionGiven_NoCurrentTransaction_Throws ()
     {
       Assert.That (
-          () => _orderID1.GetObjectReference (),
+          () => _orderID1.GetObjectReference<Order> (),
           Throws.InvalidOperationException.With.Message.EqualTo ("No ClientTransaction has been associated with the current thread."));
+    }
+
+    [Test]
+    public void GetObjectReference_AcceptsBaseType ()
+    {
+      var result = _orderID1.GetObjectReference<TestDomainBase> (_clientTransaction);
+
+      CheckDomainObject (result, _clientTransaction);
+    }
+
+    [Test]
+    public void GetObjectReference_ThrowsOnUnrelatedType ()
+    {
+      Assert.That (
+          () => _orderID1.GetObjectReference<OrderItem> (_clientTransaction),
+          Throws.TypeOf<ArgumentException> ().With.Message.EqualTo (
+              "The ObjectID 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' is not compatible with type "
+              + "'Remotion.Data.UnitTests.DomainObjects.TestDomain.OrderItem'.\r\nParameter name: id"));
     }
 
     [Test]
     public void GetObjects_LoadsObjectsIntoGivenTransaction ()
     {
-      var results = new[] { _orderID1, _orderID2 }.GetObjects (_clientTransaction);
+      var results = new[] { _orderID1, _objectID2 }.GetObjects<Order> (_clientTransaction);
 
       Assert.That (results, Has.Length.EqualTo (2));
       CheckDomainObject (results[0], _clientTransaction, expectedID: _orderID1, expectedState: StateType.Unchanged);
-      CheckDomainObject (results[1], _clientTransaction, expectedID: _orderID2, expectedState: StateType.Unchanged);
+      CheckDomainObject (results[1], _clientTransaction, expectedID: _objectID2, expectedState: StateType.Unchanged);
     }
 
     [Test]
@@ -163,7 +218,7 @@ namespace Remotion.Data.UnitTests.DomainObjects
     {
       using (_clientTransaction.EnterNonDiscardingScope ())
       {
-        var results = new[] { _orderID1 }.GetObjects ();
+        var results = new[] { _orderID1 }.GetObjects<Order> ();
 
         CheckDomainObject (results[0], _clientTransaction);
       }
@@ -173,24 +228,42 @@ namespace Remotion.Data.UnitTests.DomainObjects
     public void GetObjects_NoClientTransactionGiven_NoCurrentTransaction_Throws ()
     {
       Assert.That (
-          () => new[] { _orderID1 }.GetObjects (),
+          () => new[] { _orderID1 }.GetObjects<Order> (),
           Throws.InvalidOperationException.With.Message.EqualTo ("No ClientTransaction has been associated with the current thread."));
     }
 
     [Test]
     public void GetObjects_WithNotFound_Throws()
     {
-      Assert.That (() => new[] { _notFoundOrderID }.GetObjects (_clientTransaction), Throws.TypeOf<ObjectsNotFoundException>());
+      Assert.That (() => new[] { _notFoundObjectID }.GetObjects<Order> (_clientTransaction), Throws.TypeOf<ObjectsNotFoundException> ());
+    }
+
+    [Test]
+    public void GetObjects_AcceptsBaseType ()
+    {
+      var results = new[] { _orderID1 }.GetObjects<TestDomainBase> (_clientTransaction);
+
+      CheckDomainObject (results.Single(), _clientTransaction);
+    }
+
+    [Test]
+    public void GetObjects_ThrowsOnUnrelatedType ()
+    {
+      Assert.That (
+          () => new[] { _orderID1 }.GetObjects<OrderItem> (_clientTransaction),
+          Throws.TypeOf<ArgumentException> ().With.Message.EqualTo (
+              "The ObjectID 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' is not compatible with type "
+              + "'Remotion.Data.UnitTests.DomainObjects.TestDomain.OrderItem'.\r\nParameter name: id"));
     }
 
     [Test]
     public void TryGetObjects_LoadsObjectsIntoGivenTransaction ()
     {
-      var results = new[] { _orderID1, _orderID2 }.TryGetObjects (_clientTransaction);
+      var results = new[] { _orderID1, _objectID2 }.TryGetObjects<Order> (_clientTransaction);
 
       Assert.That (results, Has.Length.EqualTo (2));
       CheckDomainObject (results[0], _clientTransaction, expectedID: _orderID1, expectedState: StateType.Unchanged);
-      CheckDomainObject (results[1], _clientTransaction, expectedID: _orderID2, expectedState: StateType.Unchanged);
+      CheckDomainObject (results[1], _clientTransaction, expectedID: _objectID2, expectedState: StateType.Unchanged);
     }
 
     [Test]
@@ -198,7 +271,7 @@ namespace Remotion.Data.UnitTests.DomainObjects
     {
       using (_clientTransaction.EnterNonDiscardingScope ())
       {
-        var results = new[] { _orderID1 }.TryGetObjects ();
+        var results = new[] { _orderID1 }.TryGetObjects<Order> ();
         CheckDomainObject (results[0], _clientTransaction);
       }
     }
@@ -207,21 +280,39 @@ namespace Remotion.Data.UnitTests.DomainObjects
     public void TryGetObjects_NoClientTransactionGiven_NoCurrentTransaction_Throws ()
     {
       Assert.That (
-          () => new[] { _orderID1 }.TryGetObjects (),
+          () => new[] { _orderID1 }.TryGetObjects<Order> (),
           Throws.InvalidOperationException.With.Message.EqualTo ("No ClientTransaction has been associated with the current thread."));
     }
 
     [Test]
     public void TryGetObjects_WithNotFound_Throws ()
     {
-      var results = new[] { _notFoundOrderID }.TryGetObjects (_clientTransaction);
+      var results = new[] { _notFoundObjectID }.TryGetObjects<Order> (_clientTransaction);
       Assert.That (results[0], Is.Null);
+    }
+
+    [Test]
+    public void TryGetObjects_AcceptsBaseType ()
+    {
+      var results = new[] { _orderID1 }.TryGetObjects<TestDomainBase> (_clientTransaction);
+
+      CheckDomainObject (results.Single (), _clientTransaction);
+    }
+
+    [Test]
+    public void TryGetObjects_ThrowsOnUnrelatedType ()
+    {
+      Assert.That (
+          () => new[] { _orderID1 }.TryGetObjects<OrderItem> (_clientTransaction),
+          Throws.TypeOf<ArgumentException> ().With.Message.EqualTo (
+              "The ObjectID 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' is not compatible with type "
+              + "'Remotion.Data.UnitTests.DomainObjects.TestDomain.OrderItem'.\r\nParameter name: id"));
     }
 
     private void CheckDomainObject (
         DomainObject result,
         ClientTransaction expectedClientTransaction,
-        IObjectID<DomainObject> expectedID = null,
+        ObjectID expectedID = null,
         StateType? expectedState = null)
     {
       Assert.That (expectedClientTransaction.IsEnlisted (result), Is.True);

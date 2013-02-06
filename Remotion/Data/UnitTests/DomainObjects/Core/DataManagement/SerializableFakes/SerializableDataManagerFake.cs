@@ -83,9 +83,9 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.Serializable
       get { throw new NotImplementedException(); }
     }
 
-    public DomainObjectStateCache DomainObjectStateCache
+    public StateType GetState (ObjectID objectID)
     {
-      get { throw new NotImplementedException(); }
+      throw new NotImplementedException();
     }
 
     public DataContainer GetDataContainerWithLazyLoad (ObjectID objectID, bool throwOnNotFound)
@@ -99,21 +99,6 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.Serializable
     }
 
     public IEnumerable<PersistableData> GetLoadedDataByObjectState (params StateType[] domainObjectStates)
-    {
-      throw new NotImplementedException();
-    }
-
-    public IEnumerable<PersistableData> GetNewChangedDeletedData ()
-    {
-      throw new NotImplementedException();
-    }
-
-    public IEnumerable<IRelationEndPoint> GetOppositeRelationEndPoints (DataContainer dataContainer)
-    {
-      throw new NotImplementedException();
-    }
-
-    public bool HasRelationChanged (DataContainer dataContainer)
     {
       throw new NotImplementedException();
     }

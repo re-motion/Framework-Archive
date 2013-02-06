@@ -94,7 +94,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.StoragePr
     [Test]
     public void CreateForRelationLookup_TableDefinition_NoSortExpression ()
     {
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithTable (typeof (Order), TestDomainStorageProviderDefinition);
+      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithTable (classType: typeof (Order), storageProviderDefinition: TestDomainStorageProviderDefinition);
       var relationEndPointDefinition = CreateForeignKeyEndPointDefinition (classDefinition);
       var oppositeTable = (TableDefinition) relationEndPointDefinition.ClassDefinition.StorageEntityDefinition;
 
@@ -299,7 +299,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.StoragePr
       var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition (classType: typeof (Order), baseClass: null);
       classDefinition.SetStorageEntity (entityDefinition);
 
-      return ObjectID.Create(classDefinition, Guid.NewGuid());
+      return new ObjectID(classDefinition, Guid.NewGuid());
     }
 
     private IStorageProviderCommand<TIn, IRdbmsProviderCommandExecutionContext> CheckDelegateBasedCommandAndReturnInnerCommand<TIn, TResult> (

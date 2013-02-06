@@ -35,11 +35,11 @@ namespace Remotion.SecurityManager.UnitTests.Domain
       {
         var dbFixtures = new DatabaseFixtures();
         var tenant = dbFixtures.CreateAndCommitOrganizationalStructureWithTwoTenants (ClientTransaction.Current);
-        var user = User.FindByTenantID (tenant.ID).First();
+        var user = User.FindByTenant (tenant.GetHandle()).First();
 
         var factory = new SecurityManagerPrincipalFactory();
 
-        var principal = factory.CreateWithLocking (tenant.GetTypedID(), user.GetTypedID(), null);
+        var principal = factory.CreateWithLocking (tenant.GetHandle(), user.GetHandle(), null);
 
         Assert.That (principal, Is.TypeOf<LockingSecurityManagerPrincipalDecorator>());
         var innerPrincipal = PrivateInvoke.GetNonPublicField (principal, "_innerPrincipal");

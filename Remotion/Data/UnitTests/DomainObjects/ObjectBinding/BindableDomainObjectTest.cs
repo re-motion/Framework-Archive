@@ -83,6 +83,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.ObjectBinding
     }
 
     [Test]
+    [UseLegacyCodeGeneration]
     public void Serialization ()
     {
       var instance = SampleBindableDomainObject.NewObject ();
@@ -94,6 +95,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.ObjectBinding
     }
 
     [Test]
+    [UseLegacyCodeGeneration]
     public void Serialization_ViaISerializable ()
     {
       var instance = SampleBindableDomainObject_ImplementingISerializable.NewObject ();
@@ -113,7 +115,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.ObjectBinding
       ClientTransaction.Current.Commit ();
       using (ClientTransaction.CreateRootTransaction ().EnterDiscardingScope ())
       {
-        var instance = SampleBindableDomainObject.GetObject (newInstance.ID);
+        var instance = newInstance.ID.GetObject<SampleBindableDomainObject> ();
         var implementation = (BindableDomainObjectImplementation) PrivateInvoke.GetNonPublicField (instance, "_implementation");
         Assert.That (implementation, Is.Not.Null);
         Assert.That (implementation.BusinessObjectClass, Is.Not.Null);
@@ -127,7 +129,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.ObjectBinding
       var implementation1 = (BindableDomainObjectImplementation) PrivateInvoke.GetNonPublicField (instance1, "_implementation");
       using (ClientTransaction.Current.CreateSubTransaction ().EnterDiscardingScope ())
       {
-        var instance2 = SampleBindableDomainObject.GetObject (instance1.ID);
+        var instance2 = instance1.ID.GetObject<SampleBindableDomainObject> ();
         var implementation2 = (BindableDomainObjectImplementation) PrivateInvoke.GetNonPublicField (instance2, "_implementation");
         Assert.That (implementation2, Is.SameAs (implementation1));
       }
@@ -137,7 +139,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.ObjectBinding
     public void ObjectReference ()
     {
       var classDefinition = MappingConfiguration.Current.GetTypeDefinition (typeof (SampleBindableDomainObject));
-      var instance = classDefinition.InstanceCreator.CreateObjectReference (ObjectID.Create(classDefinition, Guid.NewGuid()), TestableClientTransaction);
+      var instance = classDefinition.InstanceCreator.CreateObjectReference (new ObjectID(classDefinition, Guid.NewGuid()), TestableClientTransaction);
       
       var implementation = (BindableDomainObjectImplementation) PrivateInvoke.GetNonPublicField (instance, "_implementation");
       Assert.That (implementation, Is.Not.Null);

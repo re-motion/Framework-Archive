@@ -27,6 +27,7 @@ using Remotion.Development.UnitTesting;
 namespace Remotion.Data.UnitTests.DomainObjects.Core.Serialization
 {
   [TestFixture]
+  [UseLegacyCodeGeneration]
   public class DataManagerTest : ClientTransactionBaseTest
   {
     [Test]
@@ -43,17 +44,15 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Serialization
     public void DataManager_Content ()
     {
       DataManager dataManager = TestableClientTransaction.DataManager;
-      Order order = Order.GetObject (DomainObjectIDs.Order1);
+      Order order = DomainObjectIDs.Order1.GetObject<Order> ();
       Dev.Null = order.OrderItems[0];
 
-      Assert.That (dataManager.DomainObjectStateCache, Is.Not.Null);
       Assert.That (dataManager.DataContainers.Count, Is.Not.EqualTo (0));
       Assert.That (dataManager.RelationEndPoints.Count, Is.Not.EqualTo (0));
 
       Tuple<ClientTransaction, DataManager> deserializedData =
           Serializer.SerializeAndDeserialize (Tuple.Create (ClientTransaction.Current, dataManager));
 
-      Assert.That (deserializedData.Item2.DomainObjectStateCache, Is.Not.Null);
       Assert.That (deserializedData.Item2.TransactionEventSink, Is.Not.Null);
       Assert.That (deserializedData.Item2.DataContainerEventListener, Is.Not.Null);
 
@@ -68,7 +67,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Serialization
     public void DumpSerializedDataManager ()
     {
       DataManager dataManager = TestableClientTransaction.DataManager;
-      Order order = Order.GetObject (DomainObjectIDs.Order1);
+      Order order = DomainObjectIDs.Order1.GetObject<Order> ();
       Dev.Null = order.OrderItems[0];
 
       Order invalidOrder = Order.NewObject();

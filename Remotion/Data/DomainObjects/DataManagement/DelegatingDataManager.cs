@@ -77,9 +77,9 @@ namespace Remotion.Data.DomainObjects.DataManagement
       get { return SafeInnerDataManager.RelationEndPoints; }
     }
 
-    public DomainObjectStateCache DomainObjectStateCache
+    public StateType GetState (ObjectID objectID)
     {
-      get { return SafeInnerDataManager.DomainObjectStateCache; }
+      return SafeInnerDataManager.GetState (objectID);
     }
 
     public DataContainer GetDataContainerWithLazyLoad (ObjectID objectID, bool throwOnNotFound)
@@ -95,21 +95,6 @@ namespace Remotion.Data.DomainObjects.DataManagement
     public IEnumerable<PersistableData> GetLoadedDataByObjectState (params StateType[] domainObjectStates)
     {
       return SafeInnerDataManager.GetLoadedDataByObjectState (domainObjectStates);
-    }
-
-    public IEnumerable<PersistableData> GetNewChangedDeletedData ()
-    {
-      return SafeInnerDataManager.GetNewChangedDeletedData();
-    }
-
-    public IEnumerable<IRelationEndPoint> GetOppositeRelationEndPoints (DataContainer dataContainer)
-    {
-      return SafeInnerDataManager.GetOppositeRelationEndPoints (dataContainer);
-    }
-
-    public bool HasRelationChanged (DataContainer dataContainer)
-    {
-      return SafeInnerDataManager.HasRelationChanged (dataContainer);
     }
 
     public void MarkInvalid (DomainObject domainObject)

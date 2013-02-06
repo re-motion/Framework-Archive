@@ -93,7 +93,7 @@
     <RemoveIntegerChecks>false</RemoveIntegerChecks>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarningLevel>4</WarningLevel>
-    <DebugType>none</DebugType>
+    <DebugType>pdbonly</DebugType>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
@@ -140,6 +140,10 @@
       <Project>{FDCCDB1E-0962-41DA-99A1-2DB390C48748}</Project>
       <Name>ObjectBinding.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\TypePipe\Core\TypePipe.Core.csproj">
+      <Project>{98e7f7aa-12b2-4a6b-8922-52c8e53b378e}</Project>
+      <Name>TypePipe.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Core\Data.Core.csproj">
       <Project>{70273934-12F1-49AF-975A-303BAEFE1CAE}</Project>
       <Name>Data.Core</Name>
@@ -156,6 +160,15 @@
     <Compile Include="ClientTransactionExtensionBase.cs" />
     <Compile Include="ClientTransactionExtensions.cs" />
     <Compile Include="ClientTransactionFactory.cs" />
+    <Compile Include="DomainObjectHandleConverter.cs" />
+    <Compile Include="Infrastructure\DomainObjectHandleAttribute.cs" />
+    <Compile Include="Infrastructure\ObjectLifetime\ObjectReferenceInitializationContext.cs" />
+    <Compile Include="Infrastructure\TypePipe\IAccessorInterceptor.cs" />
+    <Compile Include="Infrastructure\TypePipe\ImplementingAccessorInterceptorBase.cs" />
+    <Compile Include="Infrastructure\TypePipe\ImplementingGetAccessorInterceptor.cs" />
+    <Compile Include="Infrastructure\TypePipe\ImplementingSetAccessorInterceptor.cs" />
+    <Compile Include="Infrastructure\TypePipe\WrappingAccessorInterceptor.cs" />
+    <Compile Include="ObjectIDExtensions.cs" />
     <Compile Include="DataManagement\Commands\EndPointModifications\DataManagementCommandDecoratorBase.cs" />
     <Compile Include="DomainImplementation\Cloning\CloneContext.cs" />
     <Compile Include="DomainImplementation\Cloning\CompleteCloneStrategy.cs" />
@@ -206,6 +219,7 @@
     <Compile Include="DomainImplementation\ResurrectionService.cs" />
     <Compile Include="DomainImplementation\Transport\IDomainObjectImporterCallback.cs" />
     <Compile Include="DomainObjectCommittingEventArgs.cs" />
+    <Compile Include="DomainObjectHandle.cs" />
     <Compile Include="Infrastructure\CommitRollbackAgent.cs" />
     <Compile Include="Infrastructure\ClientTransactionComponentFactoryBase.cs" />
     <Compile Include="Infrastructure\ClientTransactionEventBroker.cs" />
@@ -218,13 +232,16 @@
     <Compile Include="Infrastructure\IClientTransactionEventSink.cs" />
     <Compile Include="Infrastructure\IClientTransactionEventBroker.cs" />
     <Compile Include="ICommittingEventRegistrar.cs" />
-    <Compile Include="Infrastructure\ObjectLifetime\IObjectInitializationContextProvider.cs" />
+    <Compile Include="Infrastructure\ThrowingDomainObjectCreator.cs" />
+    <Compile Include="Infrastructure\TypePipe\DomainObjectParticipant.cs" />
+    <Compile Include="Infrastructure\TypePipe\IInterceptedPropertyFinder.cs" />
+    <Compile Include="Infrastructure\TypePipe\InterceptedPropertyCollectorAdapter.cs" />
+    <Compile Include="Infrastructure\TypePipe\ITypeDefinitionProvider.cs" />
     <Compile Include="Infrastructure\ObjectLifetime\IObjectInitializationContext.cs" />
     <Compile Include="Infrastructure\ObjectLifetime\IObjectLifetimeAgent.cs" />
     <Compile Include="Infrastructure\NotFoundObjectsClientTransactionListener.cs" />
     <Compile Include="Infrastructure\ObjectLifetime\ObjectCleanupException.cs" />
-    <Compile Include="Infrastructure\ObjectLifetime\ObjectInitializationContext.cs" />
-    <Compile Include="Infrastructure\ObjectLifetime\ObjectInitializationContextProvider.cs" />
+    <Compile Include="Infrastructure\ObjectLifetime\NewObjectInitializationContext.cs" />
     <Compile Include="Infrastructure\ObjectLifetime\ObjectLifetimeAgent.cs" />
     <Compile Include="Infrastructure\ObjectPersistence\AlreadyExistingLoadedObjectData.cs" />
     <Compile Include="Infrastructure\ObjectPersistence\LoadedObjectDataRegistrationListener.cs" />
@@ -247,7 +264,9 @@
     <Compile Include="Infrastructure\ObjectPersistence\NullLoadedObjectData.cs" />
     <Compile Include="Infrastructure\ObjectPersistence\ParentTransactionContext.cs" />
     <Compile Include="Infrastructure\ObjectPersistence\UnlockedParentTransactionContext.cs" />
-    <Compile Include="IObjectID.cs" />
+    <Compile Include="Infrastructure\TypePipe\TypeDefinitionProvider.cs" />
+    <Compile Include="Infrastructure\TypePipe\TypePipeBasedDomainObjectCreator.cs" />
+    <Compile Include="IDomainObjectHandle.cs" />
     <Compile Include="ISupportsGetObject.cs" />
     <Compile Include="Linq\ExecutableQueries\CustomSequenceQueryAdapter.cs" />
     <Compile Include="Linq\DomainObjectQueryGenerator.cs" />
@@ -263,7 +282,7 @@
     <Compile Include="Linq\SqlQueryGeneratorResult.cs" />
     <Compile Include="Mapping\IMappingConfiguration.cs" />
     <Compile Include="Mapping\MappingConfigurationValidationHelper.cs" />
-    <Compile Include="ObjectIDExtensions.cs" />
+    <Compile Include="DomainObjectHandleExtensions.cs" />
     <Compile Include="Persistence\Model\IPersistenceModelValidatorFactory.cs" />
     <Compile Include="Persistence\Rdbms\DataReaders\QueryResultRow.cs" />
     <Compile Include="Persistence\Rdbms\DataReaders\QueryResultRowReader.cs" />

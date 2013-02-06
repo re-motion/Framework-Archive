@@ -24,15 +24,16 @@ using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.UnitTests.DomainObjects.Core.Mapping.MixinTestDomain;
-using Remotion.Data.UnitTests.DomainObjects.Core.Mapping.SortExpressions;
 using Remotion.Data.UnitTests.DomainObjects.Core.Mapping.TestDomain.Integration;
 using Remotion.Data.UnitTests.DomainObjects.Core.Mapping.TestDomain.Integration.MixedMapping;
 using Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.Model;
+using Remotion.Data.UnitTests.DomainObjects.Factories;
 using Remotion.Data.UnitTests.DomainObjects.TestDomain.TableInheritance;
 using Remotion.Mixins;
 using Remotion.Reflection;
 using Remotion.Utilities;
 using Rhino.Mocks;
+using Remotion.Development.UnitTesting.Enumerables;
 
 namespace Remotion.Data.UnitTests.DomainObjects.Core.Mapping
 {
@@ -99,16 +100,14 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Mapping
 
       var classDefinition = new ClassDefinition ("Order", typeof (Order), false, null, null, persistentMixinFinder, instanceCreator);
 
-      Assert.That (classDefinition.IDCreator, Is.Not.Null);
+      Assert.That (classDefinition.HandleCreator, Is.Not.Null);
 
       var tableDefinition = TableDefinitionObjectMother.Create (_storageProviderDefinition);
       classDefinition.SetStorageEntity (tableDefinition);
 
-      var value = Guid.NewGuid();
-      var result = classDefinition.IDCreator (value);
-      Assert.That (result, Is.TypeOf<ObjectID<Order>> ());
-      Assert.That (result.Value, Is.EqualTo (value));
-      Assert.That (result.ClassDefinition, Is.SameAs (classDefinition));
+      var result = classDefinition.HandleCreator (DomainObjectIDs.Order1);
+      Assert.That (result, Is.TypeOf<DomainObjectHandle<Order>> ());
+      Assert.That (result.ObjectID, Is.EqualTo (DomainObjectIDs.Order1));
     }
 
     [Test]
@@ -119,10 +118,10 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Mapping
 
       var classDefinition = new ClassDefinition ("Order", typeof (string), false, null, null, persistentMixinFinder, instanceCreator);
 
-      Assert.That (classDefinition.IDCreator, Is.Not.Null);
+      Assert.That (classDefinition.HandleCreator, Is.Not.Null);
       Assert.That (
-          () => classDefinition.IDCreator (Guid.NewGuid()), 
-          Throws.InvalidOperationException.With.Message.EqualTo ("ObjectIDs cannot be created when the ClassType does not derive from DomainObject."));
+          () => classDefinition.HandleCreator (DomainObjectIDs.Order1),
+          Throws.InvalidOperationException.With.Message.EqualTo ("Handles cannot be created when the ClassType does not derive from DomainObject."));
     }
 
     [Test]
@@ -712,7 +711,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Mapping
     {
       var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition ("Order");
 
-      classDefinition.MyPropertyDefinitions.ToArray();
+      classDefinition.MyPropertyDefinitions.ForceEnumeration();
     }
 
     [Test]
@@ -735,7 +734,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Mapping
     {
       var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition ("Order");
 
-      classDefinition.MyRelationEndPointDefinitions.ToArray();
+      classDefinition.MyRelationEndPointDefinitions.ForceEnumeration();
     }
 
     [Test]
@@ -944,7 +943,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Mapping
     [Test]
     public void CreatorIsFactoryBasedCreator ()
     {
-      Assert.That (_orderClass.InstanceCreator, Is.EqualTo (InterceptedDomainObjectCreator.Instance));
+      Assert.That (_orderClass.InstanceCreator, Is.SameAs (MappingReflectorObjectMother.DomainObjectCreator));
     }
 
     [Test]

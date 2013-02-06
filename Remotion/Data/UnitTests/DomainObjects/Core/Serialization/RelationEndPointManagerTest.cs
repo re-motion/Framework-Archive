@@ -17,6 +17,7 @@
 using System;
 using System.Runtime.Serialization;
 using NUnit.Framework;
+using Remotion.Data.DomainObjects;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.UnitTests.DomainObjects.Factories;
 using Remotion.Data.UnitTests.DomainObjects.TestDomain;
@@ -25,6 +26,7 @@ using Remotion.Development.UnitTesting;
 namespace Remotion.Data.UnitTests.DomainObjects.Core.Serialization
 {
   [TestFixture]
+  [UseLegacyCodeGeneration]
   public class RelationEndPointManagerTest : ClientTransactionBaseTest
   {
     private RelationEndPointManager _relationEndPointManager;
@@ -55,7 +57,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Serialization
     [Test]
     public void RelationEndPointManager_Content ()
     {
-      Dev.Null = Order.GetObject (DomainObjectIDs.Order1).OrderItems;
+      Dev.Null = DomainObjectIDs.Order1.GetObject<Order> ().OrderItems;
       Assert.That (_relationEndPointManager.RelationEndPoints.Count, Is.EqualTo (7));
 
       var deserializedManager = (RelationEndPointManager) DataManagerTestHelper.GetRelationEndPointManager (

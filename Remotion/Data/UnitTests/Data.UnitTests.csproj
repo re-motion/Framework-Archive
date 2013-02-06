@@ -171,9 +171,17 @@
       <Project>{FBE0CBDD-82FF-4173-8536-47D3B5BC2E98}</Project>
       <Name>Security.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\TypePipe\Core\TypePipe.Core.csproj">
+      <Project>{98e7f7aa-12b2-4a6b-8922-52c8e53b378e}</Project>
+      <Name>TypePipe.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Web\Core\Web.Core.csproj">
       <Project>{DF8BA786-9679-4879-8757-16AE2709D83A}</Project>
       <Name>Web.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Web\Security\Web.Security.csproj">
+      <Project>{9b6f6d1a-a7ea-4ee8-b36e-e31cf7e518e3}</Project>
+      <Name>Web.Security</Name>
     </ProjectReference>
     <ProjectReference Include="..\DomainObjects.RdbmsTools\Data.DomainObjects.RdbmsTools.csproj">
       <Project>{A6505EE0-0F6B-4CB6-ACC7-1C05C0E236BC}</Project>
@@ -201,6 +209,15 @@
     <Compile Include="..\..\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
+    <Compile Include="DomainObjects\Core\Infrastructure\DomainObjectHandleAttributeTest.cs" />
+    <Compile Include="DomainObjects\Core\Infrastructure\ObjectLifetime\ObjectReferenceInitializationContextTest.cs" />
+    <Compile Include="DomainObjects\DomainObjectHandleConverterTest.cs" />
+    <Compile Include="DomainObjects\Core\Infrastructure\TypePipe\ImplementingAccessorInterceptorBaseTest.cs" />
+    <Compile Include="DomainObjects\Core\Infrastructure\TypePipe\InterceptedPropertyCollectorAdapterTest.cs" />
+    <Compile Include="DomainObjects\Core\Infrastructure\TypePipe\TypePipeBasedDomainObjectCreatorTest.cs" />
+    <Compile Include="DomainObjects\Core\Infrastructure\TypePipe\WrappingAccessorInterceptorTest.cs" />
+    <Compile Include="DomainObjects\Core\Infrastructure\Interception\DefaultServiceLocatorConfigurationTest.cs" />
+    <Compile Include="DomainObjects\ObjectIDExtensionsTest.cs" />
     <Compile Include="DomainObjects\Core\ClientTransactionExtensionObjectMother.cs" />
     <Compile Include="DomainObjects\Core\DataManagement\Commands\EndPointModifications\DataManagementCommandDecoratorBaseTest.cs" />
     <Compile Include="DomainObjects\Core\DataManagement\DataContainerIntegrationTest.cs" />
@@ -210,18 +227,33 @@
     <Compile Include="DomainObjects\Core\DataManagement\SerializableFakes\SerializableDataManagerFake.cs" />
     <Compile Include="DomainObjects\Core\DataManagement\SerializableFakes\SerializableEnlistedDomainObjectManagerFake.cs" />
     <Compile Include="DomainObjects\Core\DataManagement\SerializableFakes\SerializableLoadedObjectDataRegistrationListenerFake.cs" />
-    <Compile Include="DomainObjects\Core\DataManagement\SerializableFakes\SerializableObjectInitializationContextProviderFake.cs" />
     <Compile Include="DomainObjects\Core\DataManagement\SerializableFakes\SerializablePersistenceStrategyFake.cs" />
     <Compile Include="DomainObjects\Core\DataManagement\SerializableFakes\SerializableTransactionHierarchyManagerFake.cs" />
     <Compile Include="DomainObjects\Core\DomainImplementation\ResurrectionServiceTest.cs" />
     <Compile Include="DomainObjects\Core\Infrastructure\ClientTransactionListenerObjectMother.cs" />
-    <Compile Include="DomainObjects\Core\IntegrationTests\GenericObjectIDTest.cs" />
+    <Compile Include="DomainObjects\Core\IntegrationTests\GenericHandleTest.cs" />
+    <Compile Include="DomainObjects\Core\Infrastructure\TypePipe\ExpressionTreeComparer.cs" />
+    <Compile Include="DomainObjects\Core\Infrastructure\TypePipe\DomainObjectParticipantTest.cs" />
+    <Compile Include="DomainObjects\Core\Infrastructure\TypePipe\ProxyTypeObjectMother.cs" />
     <Compile Include="DomainObjects\Core\IntegrationTests\RegisterForCommitTest.cs" />
     <Compile Include="DomainObjects\Core\VariableTypeInferrer.cs" />
     <Compile Include="DomainObjects\Core\Queries\QueryObjectMother.cs" />
     <Compile Include="DomainObjects\Core\Queries\QueryResultObjectMother.cs" />
     <Compile Include="DomainObjects\Database\DatabaseConfiguration.cs" />
-    <Compile Include="DomainObjects\ObjectIDExtensionsTest.cs" />
+    <Compile Include="DomainObjects\DomainObjectCreatorSwitch.cs" />
+    <Compile Include="DomainObjects\UseLegacyCodeGenerationAttribute.cs" />
+    <Compile Include="DomainObjects\DomainObjectHandleExtensionsTest.cs" />
+    <Compile Include="DomainObjects\DomainObjectHandleTest.cs" />
+    <Compile Include="DomainObjects\Web\WxeParameterIntegrationTest.cs" />
+    <Compile Include="DomainObjects\Web\WxeTransactedFunctionIntegrationTests\DomainObjectParametersTest.cs" />
+    <Compile Include="DomainObjects\Web\WxeTransactedFunctionIntegrationTests\SecuredFunctionViaDomainObjectHandleParameterTest.cs" />
+    <Compile Include="DomainObjects\Web\WxeTransactedFunctionIntegrationTests\SecuredFunctionTestBase.cs" />
+    <Compile Include="DomainObjects\Web\WxeTransactedFunctionIntegrationTests\SecuredFunctionViaDomainObjectParameterTest.cs" />
+    <Compile Include="DomainObjects\Web\WxeTransactedFunctionIntegrationTests\WxeFunctions\DomainObjectHandleParameterTestTransactedFunction.cs" />
+    <Compile Include="DomainObjects\Web\WxeTransactedFunctionIntegrationTests\WxeFunctions\FunctionWithSecuredDomainObjectHandleParameter.cs" />
+    <Compile Include="DomainObjects\Web\WxeTransactedFunctionIntegrationTests\WxeFunctions\FunctionWithSecuredDomainObjectParameter.cs" />
+    <Compile Include="DomainObjects\Web\WxeTransactedFunctionIntegrationTests\WxeFunctions\SecurableDomainObject.cs" />
+    <Compile Include="DomainObjects\Web\WxeTransactedFunctionIntegrationTests\WxeFunctions\TestAccessTypes.cs" />
     <Compile Include="UnitTesting\RootPersistenceStrategyMockFacade.cs" />
     <Compile Include="DomainObjects\Core\DomainImplementation\Transport\PostActionDisposableDecorator.cs" />
     <Compile Include="DomainObjects\Core\EventReceiver\ILoadEventReceiver.cs" />
@@ -237,8 +269,7 @@
     <Compile Include="DomainObjects\Core\Infrastructure\Interception\TestDomain\NonInstantiableClassWithMixinWithPersistentAutoProperties.cs" />
     <Compile Include="DomainObjects\Core\Infrastructure\NotFoundObjectsClientTransactionListenerTest.cs" />
     <Compile Include="DomainObjects\Core\Infrastructure\ObjectLifetime\ObjectCleanupExceptionTest.cs" />
-    <Compile Include="DomainObjects\Core\Infrastructure\ObjectLifetime\ObjectInitializationContextProviderTest.cs" />
-    <Compile Include="DomainObjects\Core\Infrastructure\ObjectLifetime\ObjectInitializationContextTest.cs" />
+    <Compile Include="DomainObjects\Core\Infrastructure\ObjectLifetime\NewObjectInitializationContextTest.cs" />
     <Compile Include="DomainObjects\Core\Infrastructure\ObjectLifetime\ObjectLifetimeAgentTest.cs" />
     <Compile Include="DomainObjects\Core\Infrastructure\ObjectLifetime\ObjectLifetimeAgentTestHelper.cs" />
     <Compile Include="DomainObjects\Core\Infrastructure\ObjectPersistence\LoadedObjectDataRegistrationListenerTest.cs" />
@@ -423,7 +454,6 @@
     <Compile Include="DomainObjects\Core\Persistence\ObjectsNotFoundExceptionTest.cs" />
     <Compile Include="DomainObjects\Core\Queries\EagerFetching\EagerFetcherTest.cs" />
     <Compile Include="DomainObjects\ObjectBinding\BindableDomainObjectGetObjectServiceTest.cs" />
-    <Compile Include="DomainObjects\Web\WxeTransactedFunctionIntegrationTests\ParameterEnlistingTest.cs" />
     <Compile Include="DomainObjects\Web\WxeTransactedFunctionIntegrationTests\ResetTest.cs" />
     <Compile Include="DomainObjects\Web\WxeTransactedFunctionIntegrationTests\SerializationTest.cs" />
     <Compile Include="DomainObjects\Web\WxeTransactedFunctionIntegrationTests\ThreadAbortExceptionTest.cs" />
@@ -871,9 +901,7 @@
     <Compile Include="DomainObjects\Core\Mapping\TestDomain\Integration\Order.cs" />
     <Compile Include="DomainObjects\Core\Mapping\TestDomain\Integration\OrderCollection.cs" />
     <Compile Include="DomainObjects\Core\Mapping\TestDomain\Integration\OrderItem.cs" />
-    <Compile Include="DomainObjects\Core\Mapping\TestDomain\Integration\OrderItemWithNewPropertyAccess.cs" />
     <Compile Include="DomainObjects\Core\Mapping\TestDomain\Integration\OrderTicket.cs" />
-    <Compile Include="DomainObjects\Core\Mapping\TestDomain\Integration\OrderWithNewPropertyAccess.cs" />
     <Compile Include="DomainObjects\Core\Mapping\TestDomain\Integration\Partner.cs" />
     <Compile Include="DomainObjects\Core\Mapping\TestDomain\Integration\Person.cs" />
     <Compile Include="DomainObjects\Core\Mapping\TestDomain\Integration\ReflectionBasedMappingSample\ClassHavingClassIDAttribute.cs" />

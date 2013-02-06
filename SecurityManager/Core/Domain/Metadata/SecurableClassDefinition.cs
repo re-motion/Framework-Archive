@@ -33,7 +33,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
   [Serializable]
   [Instantiable]
   [DBTable]
-  public abstract class SecurableClassDefinition : MetadataObject
+  public abstract class SecurableClassDefinition : MetadataObject, ISupportsGetObject
   {
     // types
 
@@ -42,11 +42,6 @@ namespace Remotion.SecurityManager.Domain.Metadata
     public static SecurableClassDefinition NewObject ()
     {
       return NewObject<SecurableClassDefinition>();
-    }
-
-    public new static SecurableClassDefinition GetObject (ObjectID id)
-    {
-      return GetObject<SecurableClassDefinition> (id);
     }
 
     public static SecurableClassDefinition FindByName (string name)

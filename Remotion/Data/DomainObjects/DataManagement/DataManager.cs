@@ -100,12 +100,6 @@ namespace Remotion.Data.DomainObjects.DataManagement
       get { return _relationEndPointManager.RelationEndPoints; }
     }
 
-    // TODO 4499: Remove
-    public DomainObjectStateCache DomainObjectStateCache
-    {
-      get { return _domainObjectStateCache; }
-    }
-
     public IEnumerable<PersistableData> GetLoadedDataByObjectState (params StateType[] domainObjectStates)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("domainObjectStates", domainObjectStates);
@@ -120,34 +114,6 @@ namespace Remotion.Data.DomainObjects.DataManagement
                                 dataContainer.AssociatedRelationEndPointIDs.Select (GetRelationEndPointWithoutLoading).Where (ep => ep != null)
                             select new PersistableData (domainObject, state, dataContainer, associatedEndPointSequence);
       return matchingObjects;
-    }
-
-    // TODO 4498: Remove
-    public IEnumerable<PersistableData> GetNewChangedDeletedData ()
-    {
-      return GetLoadedDataByObjectState (StateType.Changed, StateType.Deleted, StateType.New);
-    }
-
-    // TODO 4411: Remove
-    public IEnumerable<IRelationEndPoint> GetOppositeRelationEndPoints (DataContainer dataContainer)
-    {
-      ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
-
-      return from endPointID in dataContainer.AssociatedRelationEndPointIDs
-             let endPoint = GetRelationEndPointWithLazyLoad (endPointID)
-             let oppositeRelationEndPointIDs = endPoint.GetOppositeRelationEndPointIDs ()
-             from oppositeEndPointID in oppositeRelationEndPointIDs
-             select GetRelationEndPointWithLazyLoad (oppositeEndPointID);
-    }
-
-    // TODO 4498: Remove
-    public bool HasRelationChanged (DataContainer dataContainer)
-    {
-      ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
-
-      return dataContainer.AssociatedRelationEndPointIDs
-          .Select (GetRelationEndPointWithoutLoading)
-          .Any (endPoint => endPoint != null && endPoint.HasChanged);
     }
 
     public void RegisterDataContainer (DataContainer dataContainer)
@@ -256,6 +222,11 @@ namespace Remotion.Data.DomainObjects.DataManagement
         throw new ObjectInvalidException (objectID);
 
       return DataContainers[objectID];
+    }
+
+    public StateType GetState (ObjectID objectID)
+    {
+      return _domainObjectStateCache.GetState (objectID);
     }
 
     public DataContainer GetDataContainerWithLazyLoad (ObjectID objectID, bool throwOnNotFound)

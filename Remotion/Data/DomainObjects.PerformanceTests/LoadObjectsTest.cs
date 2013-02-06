@@ -45,8 +45,8 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
     {
       base.TestFixtureSetUp();
 
-      _clientID = ObjectID.Create("Client", new Guid ("6F20355F-FA99-4c4e-B432-02C41F7BD390"));
-      _fileID = ObjectID.Create("File", Guid.NewGuid());
+      _clientID = new ObjectID("Client", new Guid ("6F20355F-FA99-4c4e-B432-02C41F7BD390"));
+      _fileID = new ObjectID("File", Guid.NewGuid());
 
       using (ClientTransaction.CreateRootTransaction ().EnterNonDiscardingScope ())
       {
@@ -69,7 +69,7 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
       {
         using (ClientTransaction.CreateRootTransaction().EnterScope (AutoRollbackBehavior.None))
         {
-          Client client = Client.GetObject (_clientID);
+          Client client = _clientID.GetObject<Client>();
 
           stopwatch.Start();
 
@@ -97,7 +97,7 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
       {
         using (ClientTransaction.CreateRootTransaction ().EnterScope (AutoRollbackBehavior.None))
         {
-          Client client = Client.GetObject (_clientID);
+          Client client = _clientID.GetObject<Client>();
 
           stopwatch.Start();
 

@@ -17,12 +17,14 @@
 using System;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Reflection;
+using Remotion.ServiceLocation;
 
 namespace Remotion.Data.DomainObjects.Infrastructure
 {
   /// <summary>
   /// Provides a common interface for classes creating new instances of <see cref="DomainObject"/> types.
   /// </summary>
+  [ConcreteImplementation (typeof (InterceptedDomainObjectCreator), Lifetime = LifetimeKind.Singleton)]
   public interface IDomainObjectCreator
   {
     /// <summary>
@@ -43,10 +45,12 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     /// </summary>
     /// <param name="domainObjectType">Type of the domain object.</param>
     /// <param name="constructorParameters">The constructor parameters.</param>
+    /// <param name="clientTransaction">The transaction to create the object reference with. The reference is automatically enlisted in the given
+    /// transaction. If the transaction is a binding transaction, the reference is automatically bound to it.</param>
     /// <returns>A <see cref="DomainObject"/> instance of the given <paramref name="domainObjectType"/> with its constructor executed.</returns>
     /// <remarks>
     /// The returned object might be an instance of a proxy type compatible with <paramref name="domainObjectType"/>.
     /// </remarks>
-    DomainObject CreateNewObject (Type domainObjectType, ParamList constructorParameters);
+    DomainObject CreateNewObject (Type domainObjectType, ParamList constructorParameters, ClientTransaction clientTransaction);
   }
 }

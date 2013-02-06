@@ -15,6 +15,9 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Linq;
+using JetBrains.Annotations;
+using Remotion.Collections;
 using Remotion.Security;
 using Remotion.Utilities;
 using Remotion.Web.ExecutionEngine;
@@ -30,8 +33,8 @@ namespace Remotion.Web.Security.ExecutionEngine
 
     // member fields
 
-    private Type _functionType;
-    private WxeDemandTargetPermissionAttribute _attribute;
+    private readonly Type _functionType;
+    private readonly WxeDemandTargetPermissionAttribute _attribute;
 
     // construction and disposing
 
@@ -84,7 +87,9 @@ namespace Remotion.Web.Security.ExecutionEngine
     {
       WxeParameterDeclaration[] parameterDeclarations = WxeVariablesContainer.GetParameterDeclarations (_functionType);
       WxeParameterDeclaration parameterDeclaration = GetParameterDeclaration (parameterDeclarations);
-      if (!typeof (ISecurableObject).IsAssignableFrom (parameterDeclaration.Type))
+
+      var actualParameterType = GetActualParameterType (parameterDeclaration.Type);
+      if (!typeof (ISecurableObject).IsAssignableFrom (actualParameterType))
       {
         throw new WxeException (string.Format (
             "The parameter '{1}' specified by the {0} applied to WxeFunction '{2}' does not implement interface '{3}'.",
@@ -92,14 +97,9 @@ namespace Remotion.Web.Security.ExecutionEngine
       }
 
       if (SecurableClass == null)
-        return parameterDeclaration.Type;
+        return actualParameterType;
 
-      if (!parameterDeclaration.Type.IsAssignableFrom (SecurableClass))
-      {
-        throw new WxeException (string.Format (
-            "The parameter '{1}' specified by the {0} applied to WxeFunction '{2}' is of type '{3}', which is not a base type of type '{4}'.",
-            _attribute.GetType ().Name, parameterDeclaration.Name, _functionType.FullName, parameterDeclaration.Type.FullName, SecurableClass.FullName));
-      }
+      CheckParameterDeclarationMatchesSecurableClass (actualParameterType, parameterDeclaration.Name);
 
       return SecurableClass;
     }
@@ -109,7 +109,10 @@ namespace Remotion.Web.Security.ExecutionEngine
       ArgumentUtility.CheckNotNullAndType ("function", function, _functionType);
       
       WxeParameterDeclaration parameterDeclaration = GetParameterDeclaration (function.VariablesContainer.ParameterDeclarations);
-      object parameterValue = function.Variables[parameterDeclaration.Name];
+      var tuple = GetActualParameterTypeAndValue (parameterDeclaration.Type, function.Variables[parameterDeclaration.Name]);
+      var actualParameterType = tuple.Item1;
+      var parameterValue = tuple.Item2;
+
       if (parameterValue == null)
       {
         throw new WxeException (string.Format (
@@ -125,13 +128,8 @@ namespace Remotion.Web.Security.ExecutionEngine
             _attribute.GetType ().Name, parameterDeclaration.Name, _functionType.FullName, typeof (ISecurableObject).FullName));
       }
 
-      if (SecurableClass != null && !parameterDeclaration.Type.IsAssignableFrom (SecurableClass))
-      {
-        throw new WxeException (string.Format (
-            "The parameter '{1}' specified by the {0} applied to WxeFunction '{2}' is not derived from type '{3}'.",
-            _attribute.GetType ().Name, parameterDeclaration.Name, _functionType.FullName, SecurableClass.FullName));
-      }
-
+      if (SecurableClass != null)
+        CheckParameterDeclarationMatchesSecurableClass (actualParameterType, parameterDeclaration.Name);
       return securableObject;
     }
 
@@ -168,6 +166,7 @@ namespace Remotion.Web.Security.ExecutionEngine
       }
     }
 
+    [AssertionMethod]
     private void CheckSecurabeClassNotNull (Type functionType, Type securableClass)
     {
       if (securableClass == null)
@@ -176,6 +175,47 @@ namespace Remotion.Web.Security.ExecutionEngine
             "The {0} applied to WxeFunction '{1}' does not specify a type implementing interface '{2}'.",
             _attribute.GetType ().Name, functionType.FullName, typeof (ISecurableObject).FullName));
       }
+    }
+
+    private void CheckParameterDeclarationMatchesSecurableClass (Type parameterType, string parameterName)
+    {
+      if (!parameterType.IsAssignableFrom (SecurableClass))
+      {
+        throw new WxeException (
+            string.Format (
+                "The parameter '{1}' specified by the {0} applied to WxeFunction '{2}' is of type '{3}', which is not a base type of type '{4}'.",
+                _attribute.GetType ().Name,
+                parameterName,
+                _functionType.FullName,
+                parameterType.FullName,
+                SecurableClass.FullName));
+      }
+    }
+
+    private static Type GetActualParameterType (Type declaredParameterType)
+    {
+      var handleAttribute = GetHandleAttribute (declaredParameterType);
+      if (handleAttribute != null)
+        return handleAttribute.GetReferencedType (declaredParameterType);
+      
+      return declaredParameterType;
+    }
+
+    private static Tuple<Type, object> GetActualParameterTypeAndValue (Type declaredParameterType, object parameterValue)
+    {
+      if (parameterValue == null)
+        return Tuple.Create (declaredParameterType, (object) null);
+        
+      var handleAttribute = GetHandleAttribute (declaredParameterType);
+      if (handleAttribute != null)
+        return Tuple.Create (handleAttribute.GetReferencedType (declaredParameterType), handleAttribute.GetReferencedInstance (parameterValue));
+
+      return Tuple.Create (declaredParameterType, parameterValue);
+    }
+
+    private static IHandleAttribute GetHandleAttribute (Type declaredParameterType)
+    {
+      return ((IHandleAttribute[]) declaredParameterType.GetCustomAttributes (typeof (IHandleAttribute), true)).FirstOrDefault ();
     }
   }
 }

@@ -80,15 +80,15 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement
     }
 
     [Test]
-    public void DomainObjectStateCache ()
+    public void GetState ()
     {
-      var order1 = Order.GetObject (DomainObjectIDs.Order1);
-      Assert.That (_dataManager.DomainObjectStateCache.GetState (order1.ID), Is.EqualTo (StateType.Unchanged));
+      var order1 = DomainObjectIDs.Order1.GetObject<Order> ();
+      Assert.That (_dataManager.GetState (order1.ID), Is.EqualTo (StateType.Unchanged));
 
       var propertyName = GetPropertyDefinition (typeof (Order), "OrderNumber");
       _dataManager.DataContainers[order1.ID].SetValue (propertyName, 100);
 
-      Assert.That (_dataManager.DomainObjectStateCache.GetState (order1.ID), Is.EqualTo (StateType.Changed));
+      Assert.That (_dataManager.GetState (order1.ID), Is.EqualTo (StateType.Changed));
     }
 
     [Test]
@@ -106,49 +106,6 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement
       CheckPersistableDataSequence (new[] { CreatePersistableData (unchangedInstance) }, unchangedObjects);
       CheckPersistableDataSequence (new[] { CreatePersistableData (changedInstance), CreatePersistableData (newInstance) }, changedOrNewObjects);
       CheckPersistableDataSequence (new[] { CreatePersistableData (deletedInstance), CreatePersistableData (unchangedInstance) }, deletedOrUnchangedObjects);
-    }
-
-    [Test]
-    public void GetNewChangedDeletedData_Empty ()
-    {
-      var changedDomainObjects = _dataManager.GetNewChangedDeletedData ();
-      Assert.That (changedDomainObjects.ToArray(), Is.Empty);
-    }
-
-    [Test]
-    public void GetNewChangedDeletedData ()
-    {
-      var changedInstance = DomainObjectMother.GetChangedObject (TestableClientTransaction, DomainObjectIDs.OrderItem1);
-      var newInstance = DomainObjectMother.GetNewObject ();
-      var deletedInstance = DomainObjectMother.GetDeletedObject (TestableClientTransaction, DomainObjectIDs.ClassWithAllDataTypes1);
-
-      DomainObjectMother.GetUnchangedObject (TestableClientTransaction, DomainObjectIDs.Order1);
-      DomainObjectMother.GetInvalidObject (TestableClientTransaction);
-      DomainObjectMother.GetNotLoadedObject (TestableClientTransaction, DomainObjectIDs.Order2);
-
-      var changedDomainObjects = _dataManager.GetNewChangedDeletedData ();
-      
-      var expected = new[] { 
-          CreatePersistableData (changedInstance), 
-          CreatePersistableData (newInstance),
-          CreatePersistableData (deletedInstance) };
-
-      CheckPersistableDataSequence(expected, changedDomainObjects);
-    }
-
-    [Test]
-    public void GetNewChangedDeletedData_ReturnsObjectsChangedByRelation ()
-    {
-      var orderWithChangedRelation = Order.GetObject (DomainObjectIDs.Order1);
-
-      orderWithChangedRelation.OrderTicket = null;
-      Assert.That (orderWithChangedRelation.State, Is.EqualTo (StateType.Changed));
-      Assert.That (orderWithChangedRelation.InternalDataContainer.State, Is.EqualTo (StateType.Unchanged));
-
-      var data = _dataManager.GetNewChangedDeletedData ();
-      
-      var expected = CreatePersistableData (orderWithChangedRelation);
-      CheckHasPersistableDataItem (expected, data.ToDictionary (item => item.DomainObject));
     }
 
     [Test]
@@ -579,7 +536,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement
     [Test]
     public void CreateDeleteCommand ()
     {
-      var deletedObject = Order.GetObject (DomainObjectIDs.Order1);
+      var deletedObject = DomainObjectIDs.Order1.GetObject<Order> ();
 
       var command = _dataManager.CreateDeleteCommand (deletedObject);
 
@@ -602,7 +559,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement
     [Test]
     public void CreateDeleteCommand_DeletedObject ()
     {
-      var deletedObject = Order.GetObject (DomainObjectIDs.Order1);
+      var deletedObject = DomainObjectIDs.Order1.GetObject<Order> ();
       deletedObject.Delete ();
       Assert.That (deletedObject.State, Is.EqualTo (StateType.Deleted));
 
@@ -757,82 +714,6 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement
     }
 
     [Test]
-    public void HasRelationChanged_True ()
-    {
-      var dataContainer = DataContainer.CreateNew (DomainObjectIDs.Order1);
-      ClientTransactionTestHelper.RegisterDataContainer (_dataManager.ClientTransaction, dataContainer);
-
-      var endPointID = RelationEndPointObjectMother.CreateRelationEndPointID (dataContainer.ID, "Official");
-      var endPoint = (RealObjectEndPoint) _dataManager.GetRelationEndPointWithoutLoading (endPointID);
-      RealObjectEndPointTestHelper.SetOppositeObjectID (endPoint, DomainObjectIDs.Official1);
-      Assert.That (endPoint.HasChanged, Is.True);
-
-      var result = _dataManager.HasRelationChanged (dataContainer);
-
-      Assert.That (result, Is.True);
-    }
-
-    [Test]
-    public void HasRelationChanged_False ()
-    {
-      var dataContainer = DataContainer.CreateNew (DomainObjectIDs.Order1);
-      ClientTransactionTestHelper.RegisterDataContainer (_dataManager.ClientTransaction, dataContainer);
-
-      var result = _dataManager.HasRelationChanged (dataContainer);
-
-      Assert.That (result, Is.False);
-    }
-
-    [Test]
-    public void HasRelationChanged_IgnoresUnregisteredEndPoints ()
-    {
-      var dataContainer = DataContainer.CreateNew (DomainObjectIDs.Order1);
-      ClientTransactionTestHelper.RegisterDataContainer (_dataManager.ClientTransaction, dataContainer);
-
-      var endPointID = RelationEndPointObjectMother.CreateRelationEndPointID (dataContainer.ID, "Official");
-      var endPoint = (RealObjectEndPoint) _dataManager.GetRelationEndPointWithoutLoading (endPointID);
-      RealObjectEndPointTestHelper.SetOppositeObjectID (endPoint, DomainObjectIDs.Official1);
-      Assert.That (endPoint.HasChanged, Is.True);
-
-      DataManagerTestHelper.RemoveEndPoint (_dataManager, endPointID);
-
-      Assert.That (_dataManager.HasRelationChanged (dataContainer), Is.False);
-    }
-
-    [Test]
-    public void GetOppositeRelationEndPoints ()
-    {
-      var dataContainer = Order.GetObject (DomainObjectIDs.Order1).InternalDataContainer;
-
-      var endPoints = _dataManager.GetOppositeRelationEndPoints (dataContainer).ToArray ();
-
-      var expectedIDs = new[] {
-        RelationEndPointObjectMother.CreateRelationEndPointID (DomainObjectIDs.OrderItem1, "Order"),
-        RelationEndPointObjectMother.CreateRelationEndPointID (DomainObjectIDs.OrderItem2, "Order"),
-        RelationEndPointObjectMother.CreateRelationEndPointID (DomainObjectIDs.OrderTicket1, "Order"),
-        RelationEndPointObjectMother.CreateRelationEndPointID (DomainObjectIDs.Official1, "Orders"),
-        RelationEndPointObjectMother.CreateRelationEndPointID (DomainObjectIDs.Customer1, "Orders")
-      };
-      var expectedEndPoints = expectedIDs.Select (id => _dataManager.GetRelationEndPointWithLazyLoad (id)).ToArray();
-      Assert.That (endPoints, Is.EquivalentTo (expectedEndPoints));
-    }
-
-    [Test]
-    public void GetOppositeRelationEndPoints_WithNulls ()
-    {
-      var order = Order.GetObject (DomainObjectIDs.Order1);
-      order.OrderTicket = null;
-      var dataContainer = order.InternalDataContainer;
-      
-      var endPoints = _dataManager.GetOppositeRelationEndPoints (dataContainer).ToArray ();
-
-      var nullEndPoint = endPoints.OfType<NullObjectEndPoint>().Single();
-      var expectedEndPointDefinition = 
-          Configuration.GetTypeDefinition (typeof (OrderTicket)).GetRelationEndPointDefinition (typeof (OrderTicket).FullName + ".Order");
-      Assert.That (nullEndPoint.Definition, Is.EqualTo (expectedEndPointDefinition));
-    }
-
-    [Test]
     public void GetDataContainerWithoutLoading_NotLoaded ()
     {
       var result = _dataManagerWithMocks.GetDataContainerWithoutLoading (DomainObjectIDs.Order1);
@@ -893,7 +774,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement
     [Test]
     public void GetDataContainerWithLazyLoad_NotFound ()
     {
-      var notFoundID = ObjectID.Create(typeof (Order), Guid.NewGuid ());
+      var notFoundID = new ObjectID(typeof (Order), Guid.NewGuid ());
 
       var throwOnNotFound = BooleanObjectMother.GetRandomBoolean ();
 
@@ -974,7 +855,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement
       var loadedDataContainer = PrepareLoadedDataContainer (_dataManagerWithMocks);
       var nonLoadedDataContainer = PrepareNonLoadedDataContainer();
 
-      var notFoundID = ObjectID.Create(typeof (Order), Guid.NewGuid());
+      var notFoundID = new ObjectID(typeof (Order), Guid.NewGuid());
 
       var throwOnNotFound = BooleanObjectMother.GetRandomBoolean ();
 
@@ -1291,7 +1172,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement
 
     private DataContainer PrepareLoadedDataContainer (DataManager dataManager)
     {
-      return PrepareLoadedDataContainer (dataManager, ObjectID.Create(typeof (Order), Guid.NewGuid()));
+      return PrepareLoadedDataContainer (dataManager, new ObjectID(typeof (Order), Guid.NewGuid()));
     }
 
     private DataContainer PrepareLoadedDataContainer (DataManager dataManager, ObjectID objectID)

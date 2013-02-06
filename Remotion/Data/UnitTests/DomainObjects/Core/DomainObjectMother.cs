@@ -58,7 +58,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
 
     public static DomainObject CreateFakeObject (ObjectID id = null)
     {
-      return LifetimeService.GetObjectReference (ClientTransaction.CreateRootTransaction (), id ?? ObjectID.Create(typeof (Order), Guid.NewGuid()));
+      return LifetimeService.GetObjectReference (ClientTransaction.CreateRootTransaction (), id ?? new ObjectID(typeof (Order), Guid.NewGuid()));
     }
 
     public static T GetObjectReference<T> (ClientTransaction clientTransaction, ObjectID objectID) where T : DomainObject
@@ -109,7 +109,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
       return newInstance;
     }
 
-    public static DomainObject GetDeletedObject (TestableClientTransaction transaction, ObjectID objectID)
+    public static DomainObject GetDeletedObject (ClientTransaction transaction, ObjectID objectID)
     {
       var deletedInstance = LifetimeService.GetObjectReference (transaction, objectID);
       LifetimeService.DeleteObject (transaction, deletedInstance);
@@ -119,7 +119,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
 
     public static DomainObject GetNotLoadedNonExistingObject (ClientTransaction transaction)
     {
-      var objectID = ObjectID.Create(typeof (ClassWithAllDataTypes), Guid.NewGuid());
+      var objectID = new ObjectID(typeof (ClassWithAllDataTypes), Guid.NewGuid());
       return GetNotLoadedObject (transaction, objectID);
     }
   }

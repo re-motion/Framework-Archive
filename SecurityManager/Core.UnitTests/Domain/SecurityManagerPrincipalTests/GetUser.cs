@@ -29,7 +29,7 @@ using Rhino.Mocks;
 namespace Remotion.SecurityManager.UnitTests.Domain.SecurityManagerPrincipalTests
 {
   [TestFixture]
-  public class GetUser : DomainTest
+  public class GetUser : SecurityManagerPrincipalTestBase
   {
     private User _user;
     private Tenant _tenant;
@@ -45,7 +45,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SecurityManagerPrincipalTest
       _user = User.FindByUserName ("substituting.user");
       _tenant = _user.Tenant;
 
-      _principal = new SecurityManagerPrincipal (_tenant.GetTypedID(), _user.GetTypedID(), null);
+      _principal = CreateSecurityManagerPrincipal (_tenant, _user, null);
     }
 
     public override void TearDown ()
