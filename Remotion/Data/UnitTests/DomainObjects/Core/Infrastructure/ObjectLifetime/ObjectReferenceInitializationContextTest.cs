@@ -17,7 +17,6 @@
 using System;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects;
-using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.Infrastructure.Enlistment;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectLifetime;
 using Remotion.Development.UnitTesting.ObjectMothers;
@@ -26,15 +25,14 @@ using Rhino.Mocks;
 namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.ObjectLifetime
 {
   [TestFixture]
-  public class ObjectInitializationContextTest : StandardMappingTest
+  public class ObjectReferenceInitializationContextTest : StandardMappingTest
   {
     private ObjectID _objectID;
     private IEnlistedDomainObjectManager _enlistedDomainObjectManagerMock;
-    private IDataManager _dataManagerMock;
     private ClientTransaction _bindingClientTransaction;
 
-    private ObjectInitializationContext _contextWithBindingTransaction;
-    private ObjectInitializationContext _contextWithoutBindingTransaction;
+    private ObjectReferenceInitializationContext _contextWithBindingTransaction;
+    private ObjectReferenceInitializationContext _contextWithoutBindingTransaction;
 
     private DomainObject _boundObject;
     private DomainObject _unboundObject;
@@ -45,12 +43,10 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.ObjectLifeti
 
       _objectID = DomainObjectIDs.Order1;
       _enlistedDomainObjectManagerMock = MockRepository.GenerateStrictMock<IEnlistedDomainObjectManager> ();
-      _dataManagerMock = MockRepository.GenerateStrictMock<IDataManager> ();
       _bindingClientTransaction = ClientTransactionObjectMother.CreateBinding();
 
-      _contextWithBindingTransaction = new ObjectInitializationContext (
-          _objectID, _enlistedDomainObjectManagerMock, _dataManagerMock, _bindingClientTransaction);
-      _contextWithoutBindingTransaction = new ObjectInitializationContext (_objectID, _enlistedDomainObjectManagerMock, _dataManagerMock, null);
+      _contextWithBindingTransaction = new ObjectReferenceInitializationContext (_objectID, _enlistedDomainObjectManagerMock, _bindingClientTransaction);
+      _contextWithoutBindingTransaction = new ObjectReferenceInitializationContext (_objectID, _enlistedDomainObjectManagerMock, null);
 
       _boundObject = DomainObjectMother.GetObjectReference (_bindingClientTransaction, _objectID);
       _unboundObject = DomainObjectMother.CreateFakeObject (_objectID);
@@ -61,7 +57,6 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.ObjectLifeti
     {
       Assert.That (_contextWithBindingTransaction.ObjectID, Is.EqualTo (_objectID));
       Assert.That (_contextWithBindingTransaction.EnlistedDomainObjectManager, Is.SameAs (_enlistedDomainObjectManagerMock));
-      Assert.That (_contextWithBindingTransaction.DataManager, Is.SameAs (_dataManagerMock));
       Assert.That (_contextWithBindingTransaction.BindingTransaction, Is.SameAs (_bindingClientTransaction));
       Assert.That (_contextWithBindingTransaction.RegisteredObject, Is.Null);
     }
@@ -78,20 +73,10 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.ObjectLifeti
       _enlistedDomainObjectManagerMock
           .Expect (mock => mock.EnlistDomainObject (_boundObject))
           .Return (BooleanObjectMother.GetRandomBoolean());
-      StubEmptyDataContainersCollection (_dataManagerMock);
-      _dataManagerMock
-          .Expect (mock => mock.RegisterDataContainer (Arg<DataContainer>.Is.Anything))
-          .WhenCalled (mi =>
-          {
-            var dc = (DataContainer) mi.Arguments[0];
-            Assert.That (dc.ID, Is.EqualTo (_objectID));
-            Assert.That (dc.DomainObject, Is.SameAs (_boundObject));
-          });
 
       _contextWithBindingTransaction.RegisterObject (_boundObject);
 
       _enlistedDomainObjectManagerMock.VerifyAllExpectations();
-      _dataManagerMock.VerifyAllExpectations();
 
       Assert.That (_contextWithBindingTransaction.RegisteredObject, Is.SameAs (_boundObject));
     }
@@ -102,8 +87,6 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.ObjectLifeti
       _enlistedDomainObjectManagerMock
           .Stub (stub => stub.EnlistDomainObject (_unboundObject))
           .Return (BooleanObjectMother.GetRandomBoolean ());
-      StubEmptyDataContainersCollection (_dataManagerMock);
-      _dataManagerMock.Stub (stub => stub.RegisterDataContainer (Arg<DataContainer>.Is.Anything));
 
       _contextWithoutBindingTransaction.RegisterObject (_unboundObject);
     }
@@ -112,8 +95,6 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.ObjectLifeti
     public void RegisterObject_Twice ()
     {
       _enlistedDomainObjectManagerMock.Stub (mock => mock.EnlistDomainObject (_boundObject)).Return (BooleanObjectMother.GetRandomBoolean ());
-      StubEmptyDataContainersCollection (_dataManagerMock);
-      _dataManagerMock.Stub (mock => mock.RegisterDataContainer (Arg<DataContainer>.Is.Anything));
 
       _contextWithBindingTransaction.RegisterObject (_boundObject);
 
@@ -122,7 +103,6 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.ObjectLifeti
           Throws.InvalidOperationException.With.Message.EqualTo ("Only one object can be registered using this context."));
 
       _enlistedDomainObjectManagerMock.VerifyAllExpectations ();
-      _dataManagerMock.VerifyAllExpectations ();
 
       Assert.That (_contextWithBindingTransaction.RegisteredObject, Is.SameAs (_boundObject));
     }
@@ -172,11 +152,6 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.ObjectLifeti
           () => _contextWithBindingTransaction.RegisterObject (differentlyBoundObject),
           Throws.ArgumentException.With.Message.EqualTo (
               "The given DomainObject must have BindingClientTransaction '" + _bindingClientTransaction + "'.\r\nParameter name: domainObject"));
-    }
-
-    private void StubEmptyDataContainersCollection (IDataManager dataManagerMock)
-    {
-      dataManagerMock.Stub (stub => stub.DataContainers).Return (MockRepository.GenerateStub<IDataContainerMapReadOnlyView> ());
     }
   }
 }
