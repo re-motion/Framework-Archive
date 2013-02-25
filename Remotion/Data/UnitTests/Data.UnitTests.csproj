@@ -215,6 +215,7 @@
     <Compile Include="DomainObjects\Core\Infrastructure\ObjectLifetime\ObjectReferenceInitializationContextTest.cs" />
     <Compile Include="DomainObjects\Core\IntegrationTests\DomainObjectAssociatedTransactionHierarchyTest.cs" />
     <Compile Include="DomainObjects\Core\IntegrationTests\NewObject\RecursiveNewObjectCallTest.cs" />
+    <Compile Include="DomainObjects\Core\IntegrationTests\Transaction\BoundDomainObjectsTest.cs" />
     <Compile Include="DomainObjects\DomainObjectHandleConverterTest.cs" />
     <Compile Include="DomainObjects\Core\Infrastructure\TypePipe\ImplementingAccessorInterceptorBaseTest.cs" />
     <Compile Include="DomainObjects\Core\Infrastructure\TypePipe\InterceptedPropertyCollectorAdapterTest.cs" />
