@@ -35,6 +35,10 @@ namespace Remotion.Data.DomainObjects
     /// <param name="inactiveTransactionBehavior">Defines what should happen when this <see cref="ClientTransaction"/> is currently not active, e.g., 
     /// due to an active subtransaction. The default behavior is <see cref="InactiveTransactionBehavior.Throw"/>, i.e., to throw an exception.</param>
     /// <returns>The result of <paramref name="func"/>.</returns>
+    /// <exception cref="InvalidOperationException">
+    /// The <paramref name="clientTransaction"/> is not the <see cref="ClientTransaction.ActiveTransaction"/> of the hierarchy and 
+    /// <paramref name="inactiveTransactionBehavior"/> is set to <see cref="InactiveTransactionBehavior.Throw"/>.
+    /// </exception>
     public static T ExecuteInScope<T> (
         this ClientTransaction clientTransaction,
         Func<T> func,
@@ -68,6 +72,10 @@ namespace Remotion.Data.DomainObjects
     /// <param name="action">The delegate to be executed.</param>
     /// <param name="inactiveTransactionBehavior">Defines what should happen when this <see cref="ClientTransaction"/> is currently not active, e.g., 
     /// due to an active subtransaction. The default behavior is <see cref="InactiveTransactionBehavior.Throw"/>, i.e., to throw an exception.</param>
+    /// <exception cref="InvalidOperationException">
+    /// The <paramref name="clientTransaction"/> is not the <see cref="ClientTransaction.ActiveTransaction"/> of the hierarchy and 
+    /// <paramref name="inactiveTransactionBehavior"/> is set to <see cref="InactiveTransactionBehavior.Throw"/>.
+    /// </exception>
     public static void ExecuteInScope (
         this ClientTransaction clientTransaction,
         Action action,

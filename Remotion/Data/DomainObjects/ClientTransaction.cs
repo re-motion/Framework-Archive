@@ -248,7 +248,7 @@ public class ClientTransaction
   /// </summary>
   public ClientTransaction ActiveTransaction
   {
-    get { throw new NotImplementedException(); }
+    get { return LeafTransaction; }
   }
 
   /// <summary>
@@ -399,6 +399,9 @@ public class ClientTransaction
   /// <see cref="ClientTransactionScope.Leave"/> method is called or the scope is disposed of, the previous scope is reactivated.
   /// </para>
   /// </remarks>
+  /// <exception cref="InvalidOperationException">
+  /// This <see cref="ClientTransaction"/> is not the <see cref="ActiveTransaction"/> of the hierarchy.
+  /// </exception>
   public virtual ClientTransactionScope EnterDiscardingScope ()
   {
     return EnterScope (AutoRollbackBehavior.Discard);
@@ -411,14 +414,30 @@ public class ClientTransaction
   /// <returns>A new <see cref="ClientTransactionScope"/> for this transaction.</returns>
   /// <param name="rollbackBehavior">The automatic rollback behavior to be performed when the scope's <see cref="ClientTransactionScope.Leave"/>
   /// method is called.</param>
+  /// <param name="inactiveTransactionBehavior">Defines what should happen when this <see cref="ClientTransaction"/> is currently not active, e.g., 
+  /// due to an active subtransaction. The default behavior is <see cref="InactiveTransactionBehavior.Throw"/>, i.e., to throw an exception.</param>
   /// <remarks>
   /// <para>
   /// The new <see cref="ClientTransactionScope"/> stores the previous <see cref="ClientTransactionScope.ActiveScope"/>. When this scope's
   /// <see cref="ClientTransactionScope.Leave"/> method is called or the scope is disposed of, the previous scope is reactivated.
   /// </para>
   /// </remarks>
-  public virtual ClientTransactionScope EnterScope (AutoRollbackBehavior rollbackBehavior)
+  /// <exception cref="InvalidOperationException">
+  /// This <see cref="ClientTransaction"/> is not the <see cref="ActiveTransaction"/> of the hierarchy and 
+  /// <paramref name="inactiveTransactionBehavior"/> is set to <see cref="InactiveTransactionBehavior.Throw"/>.
+  /// </exception>
+  public virtual ClientTransactionScope EnterScope (
+      AutoRollbackBehavior rollbackBehavior, 
+      InactiveTransactionBehavior inactiveTransactionBehavior = InactiveTransactionBehavior.Throw)
   {
+    // TODO 5447: Implement inactiveTransactionBehavior.MakeActive. The hierarchy manager needs to be involved here somehow. And the scope needs to know how the reset the active transaction when disposed.
+    if (ActiveTransaction != this)
+    {
+      throw new InvalidOperationException (
+          "The Current transaction cannot be an inactive transaction. Specify InactiveTransactionBehavior.MakeActive in order to temporarily make "
+          + "this transaction active in order to use it as the Current transaction.");
+    }
+
     return new ClientTransactionScope (this, rollbackBehavior);
   }
 
@@ -449,6 +468,10 @@ public class ClientTransaction
   /// <see cref="ClientTransactionScope.Leave"/> method is called or the scope is disposed of, the previous scope is reactivated.
   /// </para>
   /// </remarks>
+  /// <exception cref="InvalidOperationException">
+  /// This <see cref="ClientTransaction"/> is not the <see cref="ActiveTransaction"/> of the hierarchy and 
+  /// <paramref name="inactiveTransactionBehavior"/> is set to <see cref="InactiveTransactionBehavior.Throw"/>.
+  /// </exception>
   public virtual ClientTransactionScope EnterNonDiscardingScope (InactiveTransactionBehavior inactiveTransactionBehavior = InactiveTransactionBehavior.Throw)
   {
     // TODO 5447: Use inactiveTransactionBehavior parameter.
@@ -788,10 +811,7 @@ public class ClientTransaction
   /// </remarks>
   public virtual void Commit ()
   {
-    using (EnterNonDiscardingScope ())
-    {
-      _commitRollbackAgent.CommitData();
-    }
+    _commitRollbackAgent.CommitData();
   }
 
   /// <summary>
@@ -838,10 +858,7 @@ public class ClientTransaction
   /// </remarks>
   public virtual void Rollback ()
   {
-    using (EnterNonDiscardingScope ())
-    {
-      _commitRollbackAgent.RollbackData();
-    }
+    _commitRollbackAgent.RollbackData();
   }
 
   /// <summary>

@@ -25,11 +25,11 @@ using Remotion.Reflection;
 namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.HierarchyBoundObjects
 {
   [TestFixture]
-  [Ignore ("TODO 5447")]
   public class OperationsInRootTransactionTest : HierarchyBoundObjectsTestBase
   {
     private ClientTransaction _rootTransaction;
     private Order _order1LoadedInRootTransaction;
+    private Order _objectReferenceFromRootTransaction;
 
     public override void SetUp ()
     {
@@ -37,6 +37,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.HierarchyB
 
       _rootTransaction = ClientTransaction.CreateRootTransaction();
       _order1LoadedInRootTransaction = DomainObjectIDs.Order1.GetObject<Order> (_rootTransaction);
+      _objectReferenceFromRootTransaction = DomainObjectIDs.Order2.GetObjectReference<Order> (_rootTransaction);
     }
 
     [Test]
@@ -51,7 +52,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.HierarchyB
     {
       Assert.That (_order1LoadedInRootTransaction.State, Is.EqualTo (StateType.Unchanged));
       Assert.That (_order1LoadedInRootTransaction.OrderNumber, Is.EqualTo (1));
-      Assert.That (_order1LoadedInRootTransaction.OrderItems, Has.Length.EqualTo (2));
+      Assert.That (_order1LoadedInRootTransaction.OrderItems, Has.Count.EqualTo (2));
       
       Assert.That (_rootTransaction.HasChanged (), Is.False);
 
@@ -90,25 +91,21 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.HierarchyB
     [Test]
     public void EnsureDataAvailable_AffectsAssociatedRootTransaction ()
     {
-      var order = DomainObjectIDs.Order1.GetObjectReference<Order> (_rootTransaction);
+      Assert.That (GetStateFromTransaction (_objectReferenceFromRootTransaction, _rootTransaction), Is.EqualTo (StateType.NotLoadedYet));
 
-      Assert.That (GetStateFromTransaction (order, _rootTransaction), Is.EqualTo (StateType.NotLoadedYet));
+      _objectReferenceFromRootTransaction.EnsureDataAvailable();
 
-      order.EnsureDataAvailable();
-
-      Assert.That (GetStateFromTransaction (order, _rootTransaction), Is.EqualTo (StateType.Unchanged));
+      Assert.That (GetStateFromTransaction (_objectReferenceFromRootTransaction, _rootTransaction), Is.EqualTo (StateType.Unchanged));
     }
 
     [Test]
     public void TryEnsureDataAvailable_AffectsAssociatedRootTransaction ()
     {
-      var order = DomainObjectIDs.Order1.GetObjectReference<Order> (_rootTransaction);
+      Assert.That (GetStateFromTransaction (_objectReferenceFromRootTransaction, _rootTransaction), Is.EqualTo (StateType.NotLoadedYet));
 
-      Assert.That (GetStateFromTransaction (order, _rootTransaction), Is.EqualTo (StateType.NotLoadedYet));
+      _objectReferenceFromRootTransaction.TryEnsureDataAvailable ();
 
-      order.TryEnsureDataAvailable ();
-
-      Assert.That (GetStateFromTransaction (order, _rootTransaction), Is.EqualTo (StateType.Unchanged));
+      Assert.That (GetStateFromTransaction (_objectReferenceFromRootTransaction, _rootTransaction), Is.EqualTo (StateType.Unchanged));
     }
 
     [Test]

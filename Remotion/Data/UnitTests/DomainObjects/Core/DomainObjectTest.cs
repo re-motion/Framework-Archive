@@ -307,10 +307,29 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
     }
 
     [Test]
-    public void DefaultTransactionContext_Current ()
+    public void DefaultTransactionContext_SameAsAssociatedRootTransaction ()
     {
       var order = _transaction.ExecuteInScope (() => Order.NewObject ());
-      Assert.That (_transaction.ExecuteInScope (() => order.DefaultTransactionContext.ClientTransaction), Is.SameAs (_transaction));
+      Assert.That (order.DefaultTransactionContext.ClientTransaction, Is.SameAs (_transaction));
+    }
+
+    [Test]
+    public void DefaultTransactionContext_SameAsAssociatedLeafTransaction ()
+    {
+      var order = _transaction.ExecuteInScope (() => Order.NewObject ());
+      var subTransaction = _transaction.CreateSubTransaction();
+      Assert.That (order.DefaultTransactionContext.ClientTransaction, Is.SameAs (subTransaction));
+    }
+
+    [Test]
+    public void DefaultTransactionContext_SameAsActivatedTransaction ()
+    {
+      var order = _transaction.ExecuteInScope (() => Order.NewObject ());
+      _transaction.CreateSubTransaction ();
+
+      Assert.That (
+          _transaction.ExecuteInScope (() => order.DefaultTransactionContext.ClientTransaction, InactiveTransactionBehavior.MakeActive),
+          Is.SameAs (_transaction));
     }
 
     [Test]
@@ -319,15 +338,6 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
       var bindingTransaction = ClientTransaction.CreateBindingTransaction ();
       var order = bindingTransaction.ExecuteInScope (() => Order.NewObject ());
       Assert.That (order.DefaultTransactionContext.ClientTransaction, Is.SameAs (bindingTransaction));
-    }
-
-    [Test]
-    [ExpectedException (typeof (InvalidOperationException),
-        ExpectedMessage = "No ClientTransaction has been associated with the current thread or this object.")]
-    public void DefaultTransactionContext_Null ()
-    {
-      var order = _transaction.ExecuteInScope (() => Order.NewObject ());
-      Dev.Null = order.DefaultTransactionContext;
     }
 
     [Test]

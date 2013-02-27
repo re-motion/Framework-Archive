@@ -293,12 +293,31 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
     [Test]
     public void LeafTransaction_MultipleSteps ()
     {
-      var fakeSub1 = ClientTransactionObjectMother.Create ();
-      var fakeSub2 = ClientTransactionObjectMother.CreateWithSub (fakeSub1);
-      _hierarchyManagerMock.Stub (mock => mock.SubTransaction).Return (fakeSub2);
+      var fakeLeaf = ClientTransactionObjectMother.Create ();
+      var fakeMiddle = ClientTransactionObjectMother.CreateWithSub (fakeLeaf);
+      _hierarchyManagerMock.Stub (mock => mock.SubTransaction).Return (fakeMiddle);
       _hierarchyManagerMock.Replay();
 
-      Assert.That (_transactionWithMocks.LeafTransaction, Is.SameAs (fakeSub1));
+      Assert.That (_transactionWithMocks.LeafTransaction, Is.SameAs (fakeLeaf));
+    }
+
+    [Test]
+    public void ActiveTransaction_SameAsRootTransaction()
+    {
+      _hierarchyManagerMock.Stub (mock => mock.SubTransaction).Return (null);
+
+      Assert.That (_transactionWithMocks.ActiveTransaction, Is.SameAs (_transactionWithMocks));
+    }
+
+    [Test]
+    public void ActiveTransaction_SameAsLeafTransaction ()
+    {
+      var fakeLeaf = ClientTransactionObjectMother.Create ();
+      var fakeMiddle = ClientTransactionObjectMother.CreateWithSub (fakeLeaf);
+      _hierarchyManagerMock.Stub (mock => mock.SubTransaction).Return (fakeMiddle);
+      _hierarchyManagerMock.Replay ();
+
+      Assert.That (_transactionWithMocks.ActiveTransaction, Is.SameAs (fakeLeaf));
     }
 
     [Test]
@@ -762,6 +781,29 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
 
       _eventBrokerMock.AssertWasNotCalled (mock => mock.RaiseTransactionDiscardEvent());
       _hierarchyManagerMock.AssertWasNotCalled (mock => mock.OnTransactionDiscard ());
+    }
+
+    [Test]
+    public void EnterScope_ActiveTransaction ()
+    {
+      _hierarchyManagerMock.Stub (stub => stub.SubTransaction).Return (null);
+      _hierarchyManagerMock.Replay ();
+
+      var scope = _transactionWithMocks.EnterScope (AutoRollbackBehavior.Rollback);
+
+      Assert.That (scope, Is.Not.Null);
+      Assert.That (scope.AutoRollbackBehavior, Is.EqualTo (AutoRollbackBehavior.Rollback));
+      Assert.That (scope.ScopedTransaction, Is.SameAs (_transactionWithMocks));
+    }
+
+    [Test]
+    public void EnterScope_InactiveTransaction ()
+    {
+      var fakeSub = ClientTransactionObjectMother.Create();
+      _hierarchyManagerMock.Stub (stub => stub.SubTransaction).Return (fakeSub);
+      _hierarchyManagerMock.Replay();
+
+      Assert.That (() => _transactionWithMocks.EnterScope (AutoRollbackBehavior.None), Throws.InvalidOperationException);
     }
 
     [Test]

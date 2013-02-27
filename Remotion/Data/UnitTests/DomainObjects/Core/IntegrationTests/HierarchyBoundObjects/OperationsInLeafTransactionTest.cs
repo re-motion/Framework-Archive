@@ -25,13 +25,13 @@ using Remotion.Reflection;
 namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.HierarchyBoundObjects
 {
   [TestFixture]
-  [Ignore ("TODO 5447")]
   public class OperationsInLeafTransactionTest : HierarchyBoundObjectsTestBase
   {
     private ClientTransaction _rootTransaction;
     private ClientTransaction _middleTransaction;
     private ClientTransaction _leafTransaction;
     private Order _order1LoadedInMiddleTransaction;
+    private Order _objectReferenceFromMiddleTransaction;
 
     public override void SetUp ()
     {
@@ -42,6 +42,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.HierarchyB
       _leafTransaction = _middleTransaction.CreateSubTransaction ();
 
       _order1LoadedInMiddleTransaction = DomainObjectIDs.Order1.GetObject<Order> (_middleTransaction);
+      _objectReferenceFromMiddleTransaction = DomainObjectIDs.Order2.GetObjectReference<Order> (_rootTransaction);
     }
 
     [Test]
@@ -54,9 +55,9 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.HierarchyB
     [Test]
     public void AccessingPropertiesAndState_AffectsActiveLeafTransaction ()
     {
-      Assert.That (_order1LoadedInMiddleTransaction.State, Is.EqualTo (StateType.Unchanged));
+      Assert.That (_order1LoadedInMiddleTransaction.State, Is.EqualTo (StateType.NotLoadedYet));
       Assert.That (_order1LoadedInMiddleTransaction.OrderNumber, Is.EqualTo (1));
-      Assert.That (_order1LoadedInMiddleTransaction.OrderItems, Has.Length.EqualTo (2));
+      Assert.That (_order1LoadedInMiddleTransaction.OrderItems, Has.Count.EqualTo (2));
 
       Assert.That (_leafTransaction.HasChanged (), Is.False);
 
@@ -90,31 +91,27 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.HierarchyB
     [Test]
     public void EnsureDataAvailable_AffectsActiveLeafTransaction ()
     {
-      var order = DomainObjectIDs.Order1.GetObjectReference<Order> (_middleTransaction);
+      Assert.That (GetStateFromTransaction (_objectReferenceFromMiddleTransaction, _leafTransaction), Is.EqualTo (StateType.NotLoadedYet));
 
-      Assert.That (GetStateFromTransaction (order, _leafTransaction), Is.EqualTo (StateType.NotLoadedYet));
+      _objectReferenceFromMiddleTransaction.EnsureDataAvailable ();
 
-      order.EnsureDataAvailable ();
-
-      Assert.That (GetStateFromTransaction (order, _leafTransaction), Is.EqualTo (StateType.Unchanged));
+      Assert.That (GetStateFromTransaction (_objectReferenceFromMiddleTransaction, _leafTransaction), Is.EqualTo (StateType.Unchanged));
     }
 
     [Test]
     public void TryEnsureDataAvailable_AffectsActiveLeafTransaction ()
     {
-      var order = DomainObjectIDs.Order1.GetObjectReference<Order> (_middleTransaction);
+      Assert.That (GetStateFromTransaction (_objectReferenceFromMiddleTransaction, _leafTransaction), Is.EqualTo (StateType.NotLoadedYet));
 
-      Assert.That (GetStateFromTransaction (order, _leafTransaction), Is.EqualTo (StateType.NotLoadedYet));
+      _objectReferenceFromMiddleTransaction.TryEnsureDataAvailable ();
 
-      order.TryEnsureDataAvailable ();
-
-      Assert.That (GetStateFromTransaction (order, _leafTransaction), Is.EqualTo (StateType.Unchanged));
+      Assert.That (GetStateFromTransaction (_objectReferenceFromMiddleTransaction, _leafTransaction), Is.EqualTo (StateType.Unchanged));
     }
 
     [Test]
     public void Delete_AffectsActiveLeafTransaction ()
     {
-      Assert.That (GetStateFromTransaction (_order1LoadedInMiddleTransaction, _leafTransaction), Is.EqualTo (StateType.Unchanged));
+      Assert.That (GetStateFromTransaction (_order1LoadedInMiddleTransaction, _leafTransaction), Is.EqualTo (StateType.NotLoadedYet));
 
       _order1LoadedInMiddleTransaction.Delete ();
 
@@ -138,7 +135,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.HierarchyB
     [Test]
     public void RegisterForCommit_AffectsActiveLeafTransaction ()
     {
-      Assert.That (GetStateFromTransaction (_order1LoadedInMiddleTransaction, _leafTransaction), Is.EqualTo (StateType.Unchanged));
+      Assert.That (GetStateFromTransaction (_order1LoadedInMiddleTransaction, _leafTransaction), Is.EqualTo (StateType.NotLoadedYet));
 
       _order1LoadedInMiddleTransaction.RegisterForCommit ();
 
