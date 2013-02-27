@@ -140,7 +140,6 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.HierarchyB
 
       Assert.That (() => _rootTransaction.EnterDiscardingScope (), Throws.InvalidOperationException.With.Message.EqualTo ("..."));
       Assert.That (() => _rootTransaction.EnterNonDiscardingScope (), Throws.InvalidOperationException.With.Message.EqualTo ("..."));
-      Assert.That (() => _rootTransaction.Execute (() => { }), Throws.InvalidOperationException.With.Message.EqualTo ("..."));
     }
 
     [Test]
@@ -174,7 +173,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.HierarchyB
     }
 
     [Test]
-    public void Scope_ForDifferentTransactionsInTheHierarchy ()
+    public void Scope_NestedForDifferentTransactionsInTheHierarchy ()
     {
       var middleTransaction = _rootTransaction.CreateSubTransaction ();
       var subTransaction = middleTransaction.CreateSubTransaction ();
@@ -209,7 +208,5 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.HierarchyB
       Assert.That (_rootTransaction.ActiveTransaction, Is.SameAs (subTransaction));
       Assert.That (_order1LoadedInRootTransaction.DefaultTransactionContext.ClientTransaction, Is.SameAs (subTransaction));
     }
-
-    // TODO 5447: Add Execute integration tests
   }
 }

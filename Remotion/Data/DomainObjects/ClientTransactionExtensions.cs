@@ -31,9 +31,15 @@ namespace Remotion.Data.DomainObjects
     /// <typeparam name="T">The type of the value returned by the delegate.</typeparam>
     /// <param name="clientTransaction">The <see cref="ClientTransaction"/> in whose context to execute the delegate.</param>
     /// <param name="func">The delegate to be executed.</param>
+    /// <param name="inactiveTransactionBehavior">Defines what should happen when this <see cref="ClientTransaction"/> is currently not active, e.g., 
+    /// due to an active subtransaction. The default behavior is <see cref="InactiveTransactionBehavior.Throw"/>, i.e., to throw an exception.</param>
     /// <returns>The result of <paramref name="func"/>.</returns>
-    public static T Execute<T> (this ClientTransaction clientTransaction, Func<T> func)
+    public static T Execute<T> (
+        this ClientTransaction clientTransaction,
+        Func<T> func,
+        InactiveTransactionBehavior inactiveTransactionBehavior = InactiveTransactionBehavior.Throw)
     {
+      // TODO 5447: Implement inactiveTransactionBehavior.
       ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
       ArgumentUtility.CheckNotNull ("func", func);
 
@@ -58,8 +64,14 @@ namespace Remotion.Data.DomainObjects
     /// </summary>
     /// <param name="clientTransaction">The <see cref="ClientTransaction"/> in whose context to execute the delegate.</param>
     /// <param name="action">The delegate to be executed.</param>
-    public static void Execute (this ClientTransaction clientTransaction, Action action)
+    /// <param name="inactiveTransactionBehavior">Defines what should happen when this <see cref="ClientTransaction"/> is currently not active, e.g., 
+    /// due to an active subtransaction. The default behavior is <see cref="InactiveTransactionBehavior.Throw"/>, i.e., to throw an exception.</param>
+    public static void Execute (
+        this ClientTransaction clientTransaction,
+        Action action,
+        InactiveTransactionBehavior inactiveTransactionBehavior = InactiveTransactionBehavior.Throw)
     {
+      // TODO 5447: Implement inactiveTransactionBehavior.
       ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
       ArgumentUtility.CheckNotNull ("action", action);
 

@@ -214,6 +214,7 @@
     <Compile Include="DomainObjects\Core\Infrastructure\ObjectLifetime\ObjectInititalizationContextScopeTest.cs" />
     <Compile Include="DomainObjects\Core\Infrastructure\ObjectLifetime\ObjectReferenceInitializationContextTest.cs" />
     <Compile Include="DomainObjects\Core\IntegrationTests\DomainObjectAssociatedTransactionHierarchyTest.cs" />
+    <Compile Include="DomainObjects\Core\IntegrationTests\HierarchyBoundObjects\ExecuteInScopeTest.cs" />
     <Compile Include="DomainObjects\Core\IntegrationTests\HierarchyBoundObjects\ScopeTest.cs" />
     <Compile Include="DomainObjects\Core\IntegrationTests\HierarchyBoundObjects\HierarchyBoundObjectsTestBase.cs" />
     <Compile Include="DomainObjects\Core\IntegrationTests\HierarchyBoundObjects\OperationsInLeafTransactionTest.cs" />
