@@ -46,14 +46,14 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
     [Test]
     public void CreateSubTransaction_SetsParentReadonly ()
     {
-      Assert.That (TestableClientTransaction.IsActive, Is.True);
+      Assert.That (TestableClientTransaction.IsWriteable, Is.True);
       ClientTransaction subTransaction = TestableClientTransaction.CreateSubTransaction();
-      Assert.That (TestableClientTransaction.IsActive, Is.False);
-      Assert.That (subTransaction.IsActive, Is.True);
+      Assert.That (TestableClientTransaction.IsWriteable, Is.False);
+      Assert.That (subTransaction.IsWriteable, Is.True);
 
       ClientTransaction subTransaction2 = subTransaction.CreateSubTransaction();
-      Assert.That (subTransaction.IsActive, Is.False);
-      Assert.That (subTransaction2.IsActive, Is.True);
+      Assert.That (subTransaction.IsWriteable, Is.False);
+      Assert.That (subTransaction2.IsWriteable, Is.True);
     }
 
     [Test]

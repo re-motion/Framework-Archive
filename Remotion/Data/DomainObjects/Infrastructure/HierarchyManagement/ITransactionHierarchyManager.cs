@@ -26,7 +26,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
   public interface ITransactionHierarchyManager
   {
     ClientTransaction ParentTransaction { get; }
-    bool IsActive { get; }
+    bool IsWriteable { get; }
     ClientTransaction SubTransaction { get; }
     
     void OnBeforeTransactionInitialize ();

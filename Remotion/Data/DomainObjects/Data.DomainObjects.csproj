@@ -160,6 +160,7 @@
     <Compile Include="ClientTransactionExtensionBase.cs" />
     <Compile Include="ClientTransactionExtensions.cs" />
     <Compile Include="ClientTransactionFactory.cs" />
+    <Compile Include="InactiveTransactionBehavior.cs" />
     <Compile Include="DomainObjectHandleConverter.cs" />
     <Compile Include="Infrastructure\DomainObjectHandleAttribute.cs" />
     <Compile Include="Infrastructure\ObjectLifetime\ObjectInititalizationContextScope.cs" />

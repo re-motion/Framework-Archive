@@ -178,10 +178,10 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
         IEnumerable<TValue> expectedOriginalValue)
         where TDomainObject : DomainObject
     {
-      var isInactiveTransaction = !clientTransaction.IsActive;
+      var isInactiveTransaction = !clientTransaction.IsWriteable;
       if (isInactiveTransaction)
       {
-        ClientTransactionTestHelper.SetIsActive (clientTransaction, true);
+        ClientTransactionTestHelper.SetIsWriteable (clientTransaction, true);
       }
 
       try
@@ -198,7 +198,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
       {
         if (isInactiveTransaction)
         {
-          ClientTransactionTestHelper.SetIsActive (clientTransaction, false);
+          ClientTransactionTestHelper.SetIsWriteable (clientTransaction, false);
         }
       }
     }

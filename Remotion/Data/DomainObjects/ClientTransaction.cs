@@ -242,6 +242,16 @@ public class ClientTransaction
   }
 
   /// <summary>
+  /// Gets the active transaction in the associated <see cref="ClientTransaction"/> hierarchy, i.e., the transaction that is currently being used
+  /// to execute <see cref="DomainObject"/> operations. The active transaction is usually the <see cref="LeafTransaction"/>, but can be explicitly
+  /// changed, e.g., using the <see cref="EnterNonDiscardingScope"/> API by passing in the <see cref="InactiveTransactionBehavior.MakeActive"/> flag.
+  /// </summary>
+  public ClientTransaction ActiveTransaction
+  {
+    get { throw new NotImplementedException(); }
+  }
+
+  /// <summary>
   /// Gets the persistence strategy associated with this <see cref="ClientTransaction"/>. The <see cref="PersistenceStrategy"/> is used to load
   /// data from the underlying data source without actually registering the data in this transaction, and it can be used to store data in the
   /// underlying data source.
@@ -261,15 +271,15 @@ public class ClientTransaction
   }
 
   /// <summary>
-  /// Indicates whether this transaction is active, i.e., it has no <see cref="SubTransaction"/>.
-  /// Inactive transactions can only be used to read and load data, not change it.
+  /// Indicates whether this transaction can written, i.e., it has no <see cref="SubTransaction"/>.
+  /// Transactions with an open <see cref="SubTransaction"/> can only be used to read and load data, not change it.
   /// </summary>
-  /// <value><see langword="true" /> if this instance is active; otherwise, <see langword="false" />.</value>
+  /// <value><see langword="true" /> if this instance is writeable; otherwise, <see langword="false" />.</value>
   /// <remarks>
   /// <para>
-  /// Transactions are made inactive while there exist open subtransactions for them. An inactive transaction can only be used for
-  /// operations that do not cause any change of transaction state. Reading, loading, and querying objects is okay with inactive transactions,
-  /// but any method that would cause a state change will throw an exception.
+  /// Transactions are made read-only while there exist open subtransactions for them. Such a transaction can only be used for
+  /// operations that do not cause any change of transaction state. Reading, loading, and querying objects is allowed, but any method that would 
+  /// cause a state change will throw an exception.
   /// </para>
   /// <para>
   /// Most of the time, this property returns <see langword="true" /> as long as <see cref="SubTransaction"/> is <see langword="null" />. However,
@@ -280,9 +290,9 @@ public class ClientTransaction
   /// a <see cref="SubTransaction"/> exists.
   /// </para>
   /// </remarks>
-  public bool IsActive
+  public bool IsWriteable
   {
-    get { return _hierarchyManager.IsActive; }
+    get { return _hierarchyManager.IsWriteable; }
   }
 
   /// <summary>
@@ -417,6 +427,8 @@ public class ClientTransaction
   /// <see cref="ClientTransactionScope.ActiveScope"/> for the current thread. When the scope is left, this transaction is not discarded and the
   /// parent transaction (if any) is not made writeable.
   /// </summary>
+  /// <param name="inactiveTransactionBehavior">Defines what should happen when this <see cref="ClientTransaction"/> is currently not active, e.g., 
+  /// due to an active subtransaction. The default behavior is <see cref="InactiveTransactionBehavior.Throw"/>, i.e., to throw an exception.</param>
   /// <returns>A new <see cref="ClientTransactionScope"/> for this transaction with no automatic rollback behavior.</returns>
   /// <remarks>
   /// <para>
@@ -427,12 +439,19 @@ public class ClientTransaction
   /// transaction will be discarded and cannot be used for a second time.
   /// </para>
   /// <para>
+  /// By default, it is not possible to create a scope for an inactive transaction (e.g., a transaction with an active subtransaction), as it would
+  /// be strange to have an inactive transaction as the <see cref="Current"/> transaction. By specifying 
+  /// <see cref="InactiveTransactionBehavior.MakeActive"/> as the <paramref name="inactiveTransactionBehavior"/> parameter, however, the inactive
+  /// transaction is temporarily made active until the scope is left.
+  /// </para>
+  /// <para>
   /// The new <see cref="ClientTransactionScope"/> stores the previous <see cref="ClientTransactionScope.ActiveScope"/>. When this scope's
   /// <see cref="ClientTransactionScope.Leave"/> method is called or the scope is disposed of, the previous scope is reactivated.
   /// </para>
   /// </remarks>
-  public virtual ClientTransactionScope EnterNonDiscardingScope ()
+  public virtual ClientTransactionScope EnterNonDiscardingScope (InactiveTransactionBehavior inactiveTransactionBehavior = InactiveTransactionBehavior.Throw)
   {
+    // TODO 5447: Use inactiveTransactionBehavior parameter.
     return EnterScope (AutoRollbackBehavior.None);
   }
 
@@ -1297,6 +1316,12 @@ public class ClientTransaction
   public void EnlistDomainObjects (params DomainObject[] domainObjects)
   {
     throw new NotImplementedException ();
+  }
+
+  [Obsolete ("This property was renamed to IsWriteable. (1.13.188)", true)]
+  public bool IsActive 
+  {
+    get { throw new NotImplementedException(); }
   }
   // ReSharper restore UnusedParameter.Global
 }

@@ -22,7 +22,6 @@ using Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement;
 using Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.SerializableFakes;
 using Remotion.Development.UnitTesting;
 using Rhino.Mocks;
-using Rhino.Mocks.Interfaces;
 
 namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.HierarchyManagement
 {
@@ -62,7 +61,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.HierarchyMan
       Assert.That (_manager.ParentTransaction, Is.SameAs (_parentTransaction));
       Assert.That (_manager.ParentHierarchyManager, Is.SameAs (_parentHierarchyManagerStrictMock));
       Assert.That (_manager.ParentEventSink, Is.SameAs (_parentEventSinkWithStrictMock));
-      Assert.That (_manager.IsActive, Is.True);
+      Assert.That (_manager.IsWriteable, Is.True);
       Assert.That (_manager.SubTransaction, Is.Null);
     }
 
@@ -74,7 +73,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.HierarchyMan
       Assert.That (_managerWithNullParent.ParentTransaction, Is.Null);
       Assert.That (_managerWithNullParent.ParentHierarchyManager, Is.Null);
       Assert.That (_managerWithNullParent.ParentEventSink, Is.Null);
-      Assert.That (_managerWithNullParent.IsActive, Is.True);
+      Assert.That (_managerWithNullParent.IsWriteable, Is.True);
       Assert.That (_managerWithNullParent.SubTransaction, Is.Null);
     }
 
@@ -92,7 +91,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.HierarchyMan
     public void OnBeforeTransactionInitialize ()
     {
       _parentEventSinkWithStrictMock.Expect (mock => mock.RaiseSubTransactionInitializeEvent ( _thisTransaction));
-      ClientTransactionTestHelper.SetIsActive (_parentTransaction, false); // required by assertion in InactiveClientTransactionListener
+      ClientTransactionTestHelper.SetIsWriteable (_parentTransaction, false); // required by assertion in InactiveClientTransactionListener
 
       _manager.OnBeforeTransactionInitialize();
 
@@ -233,7 +232,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.HierarchyMan
       _thisEventSinkWithStrictMock.Expect (mock => mock.RaiseSubTransactionCreatingEvent ())
           .WhenCalled (mi =>
           {
-            Assert.That (_manager.IsActive, Is.True);
+            Assert.That (_manager.IsWriteable, Is.True);
             subTransactionCreatingCalled = true;
           });
 
@@ -242,8 +241,8 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.HierarchyMan
       {
         Assert.That (tx, Is.SameAs (_thisTransaction));
         Assert.That (subTransactionCreatingCalled, Is.True);
-        Assert.That (_manager.IsActive, Is.False, "IsActive needs to be set before the factory is called.");
-        ClientTransactionTestHelper.SetIsActive (_thisTransaction, false); // required by assertion in InactiveClientTransactionListener
+        Assert.That (_manager.IsWriteable, Is.False, "IsWriteable needs to be set before the factory is called.");
+        ClientTransactionTestHelper.SetIsWriteable (_thisTransaction, false); // required by assertion in InactiveClientTransactionListener
         return fakeSubTransaction;
       };
 
@@ -253,7 +252,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.HierarchyMan
 
       Assert.That (result, Is.Not.Null.And.SameAs (fakeSubTransaction));
       Assert.That (_manager.SubTransaction, Is.SameAs (fakeSubTransaction));
-      Assert.That (_manager.IsActive, Is.False);
+      Assert.That (_manager.IsWriteable, Is.False);
     }
 
     [Test]
@@ -272,7 +271,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.HierarchyMan
       _thisEventSinkWithStrictMock.VerifyAllExpectations();
 
       Assert.That (_manager.SubTransaction, Is.Null);
-      Assert.That (_manager.IsActive, Is.True);
+      Assert.That (_manager.IsWriteable, Is.True);
     }
 
     [Test]
@@ -291,7 +290,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.HierarchyMan
       _thisEventSinkWithStrictMock.VerifyAllExpectations();
 
       Assert.That (_manager.SubTransaction, Is.Null);
-      Assert.That (_manager.IsActive, Is.True);
+      Assert.That (_manager.IsWriteable, Is.True);
     }
 
     [Test]
@@ -310,18 +309,18 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.HierarchyMan
       _thisEventSinkWithStrictMock.VerifyAllExpectations();
 
       Assert.That (_manager.SubTransaction, Is.Null);
-      Assert.That (_manager.IsActive, Is.True);
+      Assert.That (_manager.IsWriteable, Is.True);
     }
 
     [Test]
     public void RemoveSubTransaction_NoSubtransaction ()
     {
-      Assert.That (_manager.IsActive, Is.True);
+      Assert.That (_manager.IsWriteable, Is.True);
       Assert.That (_manager.SubTransaction, Is.Null);
 
       _manager.RemoveSubTransaction();
 
-      Assert.That (_manager.IsActive, Is.True);
+      Assert.That (_manager.IsWriteable, Is.True);
       Assert.That (_manager.SubTransaction, Is.Null);
     }
 
@@ -330,28 +329,28 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.HierarchyMan
     {
       FakeManagerWithSubtransaction (_manager);
 
-      Assert.That (_manager.IsActive, Is.False);
+      Assert.That (_manager.IsWriteable, Is.False);
       Assert.That (_manager.SubTransaction, Is.Not.Null);
 
       _manager.RemoveSubTransaction ();
 
-      Assert.That (_manager.IsActive, Is.True);
+      Assert.That (_manager.IsWriteable, Is.True);
       Assert.That (_manager.SubTransaction, Is.Null);
     }
 
     [Test]
     public void Unlock_Active ()
     {
-      Assert.That (_manager.IsActive, Is.True);
+      Assert.That (_manager.IsWriteable, Is.True);
       Assert.That (_manager.SubTransaction, Is.Null);
 
       Assert.That (
           () => _manager.Unlock(),
           Throws.InvalidOperationException.With.Message.EqualTo (
               _thisTransaction + " cannot be made writeable twice. A common reason for this error is that a subtransaction is accessed "
-              + "while its parent transaction is engaged in a load operation. During such an operation, the subtransaction cannot be used."));
+              + "while its parent transaction is engaged in an infrastructure operation. During such an operation, the subtransaction cannot be used."));
 
-      Assert.That (_manager.IsActive, Is.True);
+      Assert.That (_manager.IsWriteable, Is.True);
       Assert.That (_manager.SubTransaction, Is.Null);
     }
 
@@ -360,36 +359,36 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.HierarchyMan
     {
       FakeManagerWithSubtransaction (_manager);
       
-      Assert.That (_manager.IsActive, Is.False);
+      Assert.That (_manager.IsWriteable, Is.False);
       Assert.That (_manager.SubTransaction, Is.Not.Null);
 
       var result = _manager.Unlock();
 
       Assert.That (result, Is.Not.Null);
-      Assert.That (_manager.IsActive, Is.True);
+      Assert.That (_manager.IsWriteable, Is.True);
       Assert.That (_manager.SubTransaction, Is.Not.Null);
 
       result.Dispose();
 
-      Assert.That (_manager.IsActive, Is.False);
+      Assert.That (_manager.IsWriteable, Is.False);
       Assert.That (_manager.SubTransaction, Is.Not.Null);
 
       result.Dispose ();
 
-      Assert.That (_manager.IsActive, Is.False);
+      Assert.That (_manager.IsWriteable, Is.False);
       Assert.That (_manager.SubTransaction, Is.Not.Null);
     }
 
     [Test]
     public void UnlockIfRequired_Active ()
     {
-      Assert.That (_manager.IsActive, Is.True);
+      Assert.That (_manager.IsWriteable, Is.True);
       Assert.That (_manager.SubTransaction, Is.Null);
 
       var result = _manager.UnlockIfRequired();
       Assert.That (result, Is.Null);
 
-      Assert.That (_manager.IsActive, Is.True);
+      Assert.That (_manager.IsWriteable, Is.True);
       Assert.That (_manager.SubTransaction, Is.Null);
     }
 
@@ -398,23 +397,23 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.HierarchyMan
     {
       FakeManagerWithSubtransaction (_manager);
 
-      Assert.That (_manager.IsActive, Is.False);
+      Assert.That (_manager.IsWriteable, Is.False);
       Assert.That (_manager.SubTransaction, Is.Not.Null);
 
       var result = _manager.UnlockIfRequired ();
 
       Assert.That (result, Is.Not.Null);
-      Assert.That (_manager.IsActive, Is.True);
+      Assert.That (_manager.IsWriteable, Is.True);
       Assert.That (_manager.SubTransaction, Is.Not.Null);
 
       result.Dispose ();
 
-      Assert.That (_manager.IsActive, Is.False);
+      Assert.That (_manager.IsWriteable, Is.False);
       Assert.That (_manager.SubTransaction, Is.Not.Null);
 
       result.Dispose ();
 
-      Assert.That (_manager.IsActive, Is.False);
+      Assert.That (_manager.IsWriteable, Is.False);
       Assert.That (_manager.SubTransaction, Is.Not.Null);
     }
 
@@ -429,7 +428,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.HierarchyMan
           new SerializableClientTransactionEventSinkFake());
       var deserializedInstance = Serializer.SerializeAndDeserialize (instance);
 
-      Assert.That (deserializedInstance.IsActive, Is.True);
+      Assert.That (deserializedInstance.IsWriteable, Is.True);
       Assert.That (deserializedInstance.SubTransaction, Is.Null);
       Assert.That (deserializedInstance.ThisTransaction, Is.Not.Null);
       Assert.That (deserializedInstance.ParentTransaction, Is.Not.Null);
@@ -438,7 +437,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.HierarchyMan
 
     private void FakeManagerWithSubtransaction (TransactionHierarchyManager transactionHierarchyManager)
     {
-      TransactionHierarchyManagerTestHelper.SetIsActive (transactionHierarchyManager, false);
+      TransactionHierarchyManagerTestHelper.SetIsWriteable (transactionHierarchyManager, false);
       var fakeSubTransaction = ClientTransactionObjectMother.Create ();
       TransactionHierarchyManagerTestHelper.SetSubtransaction (transactionHierarchyManager, fakeSubTransaction);
     }

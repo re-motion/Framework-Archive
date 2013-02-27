@@ -210,7 +210,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
       // Safe assuming the subtransaction does not have a complete end-point for the same ID (subtransaction needs to be loaded later)
       // (or when it has been unlocked - during subtx.Commit)
       Assertion.IsTrue (
-          clientTransaction.IsActive
+          clientTransaction.IsWriteable
           || clientTransaction.SubTransaction == null
           || IsNullOrIncomplete (clientTransaction.SubTransaction.DataManager.RelationEndPoints[endPoint.ID]));
     }
@@ -220,7 +220,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
       // Safe assuming the subtransaction does not have a complete end-point for the same ID (subtransaction needs to be unloaded first)
       // (or when it has been unlocked - during subtx.Commit)
       Assertion.IsTrue (
-          clientTransaction.IsActive
+          clientTransaction.IsWriteable
           || clientTransaction.SubTransaction == null
           || IsNullOrIncomplete (clientTransaction.SubTransaction.DataManager.RelationEndPoints[endPointID]));
     }
@@ -248,7 +248,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
       // Safe assuming the subtransaction cannot already have a DataContainer for the same object (subtransaction needs to be loaded later)
       // (or when it has been unlocked - during subtx.Commit)
       Assertion.IsTrue (
-          clientTransaction.IsActive
+          clientTransaction.IsWriteable
           || clientTransaction.SubTransaction == null
           || clientTransaction.SubTransaction.DataManager.DataContainers[container.ID] == null);
     }
@@ -258,7 +258,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
       // Safe assuming the subtransaction does not have a DataContainer for the same object (subtransaction needs to be unloaded first)
       // (or when it has been unlocked - during subtx.Commit)
       Assertion.IsTrue (
-          clientTransaction.IsActive
+          clientTransaction.IsWriteable
           || clientTransaction.SubTransaction == null 
           || clientTransaction.SubTransaction.DataManager.DataContainers[container.ID] == null);
     }
@@ -280,7 +280,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
 
     private void EnsureWriteable (ClientTransaction clientTransaction, string operation)
     {
-      if (!clientTransaction.IsActive)
+      if (!clientTransaction.IsWriteable)
       {
         string message = string.Format (
             "The operation cannot be executed because the ClientTransaction is inactive. "

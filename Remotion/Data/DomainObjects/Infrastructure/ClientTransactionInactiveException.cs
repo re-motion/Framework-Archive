@@ -21,7 +21,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 {
   /// <summary>
   /// Thrown when code tries to modify a <see cref="ClientTransaction"/>'s state and the <see cref="ClientTransaction"/> is inactive 
-  /// (see <see cref="ClientTransaction.IsActive"/>) due to an active <see cref="ClientTransaction.SubTransaction"/>. While there is a
+  /// (see <see cref="ClientTransaction.IsWriteable"/>) due to an active <see cref="ClientTransaction.SubTransaction"/>. While there is a
   /// <see cref="ClientTransaction.SubTransaction"/>, the parent <see cref="ClientTransaction"/> can only be read.
   /// </summary>
   [Serializable]

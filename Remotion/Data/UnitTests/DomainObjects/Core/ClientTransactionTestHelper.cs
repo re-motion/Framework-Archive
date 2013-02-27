@@ -189,10 +189,10 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
       dataManager.RegisterDataContainer (dataContainer);
     }
 
-    public static void SetIsActive (ClientTransaction transaction, bool value)
+    public static void SetIsWriteable (ClientTransaction transaction, bool value)
     {
       var hierarchyManager = (TransactionHierarchyManager) GetHierarchyManager (transaction);
-      TransactionHierarchyManagerTestHelper.SetIsActive (hierarchyManager, value);
+      TransactionHierarchyManagerTestHelper.SetIsWriteable (hierarchyManager, value);
     }
 
     public static void SetActiveSubTransaction (ClientTransaction clientTransaction, ClientTransaction subTransaction)

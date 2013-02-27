@@ -31,7 +31,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
   public class TransactionHierarchyManager : ITransactionHierarchyManager
   {
     /// <summary>
-    /// Temporarily makes an inactive <see cref="ClientTransaction"/> writeable. This can destroy the integrity of a <see cref="ClientTransaction"/> 
+    /// Temporarily makes a read-only <see cref="ClientTransaction"/> writeable. This can destroy the integrity of a <see cref="ClientTransaction"/> 
     /// hierarchy. Use at your own risk.
     /// </summary>
     private class TransactionUnlocker : IDisposable
@@ -43,17 +43,17 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
       {
         ArgumentUtility.CheckNotNull ("hierarchyManager", hierarchyManager);
 
-        if (hierarchyManager._isActive)
+        if (hierarchyManager._isWriteable)
         {
           string message = string.Format (
               "{0} cannot be made writeable twice. A common reason for this error is that a subtransaction is accessed "
-              + "while its parent transaction is engaged in a load operation. During such an operation, the subtransaction cannot be used.",
+              + "while its parent transaction is engaged in an infrastructure operation. During such an operation, the subtransaction cannot be used.",
               hierarchyManager.ThisTransaction);
           throw new InvalidOperationException (message);
         }
 
         _hierarchyManager = hierarchyManager;
-        _hierarchyManager._isActive = true;
+        _hierarchyManager._isWriteable = true;
         _isDisposed = false;
       }
 
@@ -61,8 +61,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
       {
         if (!_isDisposed)
         {
-          Assertion.IsTrue (_hierarchyManager.IsActive);
-          _hierarchyManager._isActive = false;
+          Assertion.IsTrue (_hierarchyManager.IsWriteable);
+          _hierarchyManager._isWriteable = false;
           _isDisposed = true;
         }
       }
@@ -77,7 +77,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
     private readonly InactiveClientTransactionListenerWithLoadRules _inactiveClientTransactionListener;
     private readonly NewObjectHierarchyInvalidationClientTransactionListener _newObjectHierarchyInvalidationClientTransactionListener;
 
-    private bool _isActive = true;
+    private bool _isWriteable = true;
     private ClientTransaction _subTransaction;
 
     public TransactionHierarchyManager (
@@ -125,9 +125,9 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
       get { return _parentHierarchyManager; }
     }
 
-    public bool IsActive
+    public bool IsWriteable
     {
-      get { return _isActive; }
+      get { return _isWriteable; }
     }
 
     public ClientTransaction SubTransaction
@@ -200,7 +200,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
     {
       _thisEventSink.RaiseSubTransactionCreatingEvent ();
 
-      _isActive = false;
+      _isWriteable = false;
 
       ClientTransaction subTransaction;
       try
@@ -211,7 +211,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
       }
       catch
       {
-        _isActive = true;
+        _isWriteable = true;
         throw;
       }
 
@@ -224,7 +224,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
     public void RemoveSubTransaction ()
     {
       _subTransaction = null;
-      _isActive = true;
+      _isWriteable = true;
     }
 
     public IDisposable Unlock ()
@@ -234,7 +234,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
 
     public IDisposable UnlockIfRequired ()
     {
-      return IsActive ? null : new TransactionUnlocker (this);
+      return IsWriteable ? null : new TransactionUnlocker (this);
     }
   }
 }

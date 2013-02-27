@@ -121,7 +121,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     /// <remarks>Implementations that do not support read-only transactions should always return false.</remarks>
     public virtual bool IsReadOnly
     {
-      get { return !_wrappedInstance.IsActive; }
+      get { return !_wrappedInstance.IsWriteable; }
     }
 
     /// <summary>

@@ -202,7 +202,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
     {
       var hierarchyManagerStub = MockRepository.GenerateStub<ITransactionHierarchyManager> ();
       hierarchyManagerStub.Stub (stub => stub.SubTransaction).Return (sub);
-      hierarchyManagerStub.Stub (stub => stub.IsActive).Return (false);
+      hierarchyManagerStub.Stub (stub => stub.IsWriteable).Return (false);
       return CreateWithComponents<ClientTransaction> (transactionHierarchyManager: hierarchyManagerStub);
     }
 

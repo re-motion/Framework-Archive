@@ -670,12 +670,12 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
     [Test]
     public void CreateSubTransaction_WithDefaultFactory ()
     {
-      Assert.That (_transaction.IsActive, Is.True);
+      Assert.That (_transaction.IsWriteable, Is.True);
       
       var subTransaction = _transaction.CreateSubTransaction ();
       Assert.That (subTransaction, Is.TypeOf (typeof (ClientTransaction)));
       Assert.That (subTransaction.ParentTransaction, Is.SameAs (_transaction));
-      Assert.That (_transaction.IsActive, Is.False);
+      Assert.That (_transaction.IsWriteable, Is.False);
       Assert.That (_transaction.SubTransaction, Is.SameAs (subTransaction));
 
       Assert.That (subTransaction.Extensions, Is.Empty);
@@ -747,7 +747,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
     public void Discard_Twice ()
     {
       var parentTransaction = ClientTransaction.CreateRootTransaction ();
-      ClientTransactionTestHelper.SetIsActive (parentTransaction, false);
+      ClientTransactionTestHelper.SetIsWriteable (parentTransaction, false);
       ClientTransactionTestHelper.SetActiveSubTransaction (parentTransaction, _transactionWithMocks);
 
       _eventBrokerMock.Stub (stub => stub.RaiseTransactionDiscardEvent());

@@ -78,7 +78,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
       Assert.That (ActiveSubTransaction.IsDiscarded, Is.True);
 
       Assert.That (InactiveRootTransaction.SubTransaction, Is.Null);
-      Assert.That (InactiveRootTransaction.IsActive, Is.True);
+      Assert.That (InactiveRootTransaction.IsWriteable, Is.True);
     }
 
     private void CheckTransactionHierarchy ()
@@ -92,9 +92,9 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
       Assert.That (InactiveMiddleTransaction.IsDiscarded, Is.False);
       Assert.That (InactiveRootTransaction.IsDiscarded, Is.False);
 
-      Assert.That (ActiveSubTransaction.IsActive, Is.True);
-      Assert.That (InactiveMiddleTransaction.IsActive, Is.False);
-      Assert.That (InactiveRootTransaction.IsActive, Is.False);
+      Assert.That (ActiveSubTransaction.IsWriteable, Is.True);
+      Assert.That (InactiveMiddleTransaction.IsWriteable, Is.False);
+      Assert.That (InactiveRootTransaction.IsWriteable, Is.False);
     }
 
     private IClientTransactionExtension CreateAndAddExtensionMock ()

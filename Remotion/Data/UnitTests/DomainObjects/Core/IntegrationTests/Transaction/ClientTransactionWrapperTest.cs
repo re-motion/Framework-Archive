@@ -96,10 +96,10 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
     public void Release ()
     {
       ITransaction child = _transaction.CreateChild();
-      Assert.That (((ClientTransactionWrapper) _transaction).WrappedInstance.IsActive, Is.False);
+      Assert.That (((ClientTransactionWrapper) _transaction).WrappedInstance.IsWriteable, Is.False);
       Assert.That (((ClientTransactionWrapper) child).WrappedInstance.IsDiscarded, Is.False);
       child.Release();
-      Assert.That (((ClientTransactionWrapper) _transaction).WrappedInstance.IsActive, Is.True);
+      Assert.That (((ClientTransactionWrapper) _transaction).WrappedInstance.IsWriteable, Is.True);
       Assert.That (((ClientTransactionWrapper) child).WrappedInstance.IsDiscarded, Is.True);
     }
 

@@ -214,8 +214,11 @@
     <Compile Include="DomainObjects\Core\Infrastructure\ObjectLifetime\ObjectInititalizationContextScopeTest.cs" />
     <Compile Include="DomainObjects\Core\Infrastructure\ObjectLifetime\ObjectReferenceInitializationContextTest.cs" />
     <Compile Include="DomainObjects\Core\IntegrationTests\DomainObjectAssociatedTransactionHierarchyTest.cs" />
+    <Compile Include="DomainObjects\Core\IntegrationTests\HierarchyBoundObjects\ScopeTest.cs" />
+    <Compile Include="DomainObjects\Core\IntegrationTests\HierarchyBoundObjects\HierarchyBoundObjectsTestBase.cs" />
+    <Compile Include="DomainObjects\Core\IntegrationTests\HierarchyBoundObjects\OperationsInLeafTransactionTest.cs" />
     <Compile Include="DomainObjects\Core\IntegrationTests\NewObject\RecursiveNewObjectCallTest.cs" />
-    <Compile Include="DomainObjects\Core\IntegrationTests\Transaction\BoundDomainObjectsTest.cs" />
+    <Compile Include="DomainObjects\Core\IntegrationTests\HierarchyBoundObjects\OperationsInRootTransactionTest.cs" />
     <Compile Include="DomainObjects\DomainObjectHandleConverterTest.cs" />
     <Compile Include="DomainObjects\Core\Infrastructure\TypePipe\ImplementingAccessorInterceptorBaseTest.cs" />
     <Compile Include="DomainObjects\Core\Infrastructure\TypePipe\InterceptedPropertyCollectorAdapterTest.cs" />

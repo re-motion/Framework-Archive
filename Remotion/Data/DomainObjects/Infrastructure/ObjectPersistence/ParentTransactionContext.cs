@@ -39,7 +39,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
       ArgumentUtility.CheckNotNull ("parentTransaction", parentTransaction);
       ArgumentUtility.CheckNotNull ("parentInvalidDomainObjectManager", parentInvalidDomainObjectManager);
 
-      if (parentTransaction.IsActive)
+      if (parentTransaction.IsWriteable)
       {
         throw new ArgumentException (
             "In order for the parent transaction access to work correctly, the parent transaction needs to be inactive. "

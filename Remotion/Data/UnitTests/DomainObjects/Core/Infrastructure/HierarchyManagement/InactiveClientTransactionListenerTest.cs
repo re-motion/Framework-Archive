@@ -85,7 +85,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.HierarchyMan
     [Test]
     public void ClientTransactionInactive_ThrowingMethods ()
     {
-      ClientTransactionTestHelper.SetIsActive (_clientTransaction, false);
+      ClientTransactionTestHelper.SetIsWriteable (_clientTransaction, false);
 
       foreach (var method in _throwingMethods)
       {
@@ -98,7 +98,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.HierarchyMan
     [Test]
     public void ClientTransactionInactive_NotThrowingMethods ()
     {
-      ClientTransactionTestHelper.SetIsActive (_clientTransaction, true);
+      ClientTransactionTestHelper.SetIsWriteable (_clientTransaction, true);
 
       foreach (var method in _neverThrowingMethods)
       {
@@ -112,7 +112,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.HierarchyMan
     [Test]
     public void ClientTransactionNotInactive_NoMethodThrows ()
     {
-      ClientTransactionTestHelper.SetIsActive (_clientTransaction, true);
+      ClientTransactionTestHelper.SetIsWriteable (_clientTransaction, true);
 
       foreach (var method in _allMethods)
       {

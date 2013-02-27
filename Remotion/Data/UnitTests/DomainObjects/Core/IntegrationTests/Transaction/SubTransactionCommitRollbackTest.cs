@@ -38,11 +38,11 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
     [Test]
     public void DiscardMakesParentWriteable ()
     {
-      Assert.That (_subTransaction.ParentTransaction.IsActive, Is.False);
+      Assert.That (_subTransaction.ParentTransaction.IsWriteable, Is.False);
       Assert.That (_subTransaction.IsDiscarded, Is.False);
       _subTransaction.Discard ();
       Assert.That (_subTransaction.IsDiscarded, Is.True);
-      Assert.That (_subTransaction.ParentTransaction.IsActive, Is.True);
+      Assert.That (_subTransaction.ParentTransaction.IsWriteable, Is.True);
     }
 
     [Test]
@@ -133,12 +133,12 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
     {
       using (_subTransaction.EnterDiscardingScope ())
       {
-        Assert.That (TestableClientTransaction.IsActive, Is.False);
+        Assert.That (TestableClientTransaction.IsWriteable, Is.False);
         ClassWithAllDataTypes classWithAllDataTypes = ClassWithAllDataTypes.NewObject ();
         Assert.That (classWithAllDataTypes.Int32Property, Is.Not.EqualTo (7));
         classWithAllDataTypes.Int32Property = 7;
         _subTransaction.Commit ();
-        Assert.That (TestableClientTransaction.IsActive, Is.False);
+        Assert.That (TestableClientTransaction.IsWriteable, Is.False);
       }
     }
     

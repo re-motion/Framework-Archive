@@ -32,7 +32,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.Serializable
       get { throw new NotImplementedException(); }
     }
 
-    public bool IsActive
+    public bool IsWriteable
     {
       get { throw new NotImplementedException(); }
     }

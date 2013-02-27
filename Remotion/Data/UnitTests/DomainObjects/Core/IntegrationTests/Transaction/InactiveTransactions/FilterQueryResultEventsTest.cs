@@ -59,7 +59,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
                     Arg.Is (InactiveRootTransaction),
                     Arg<QueryResult<DomainObject>>.Matches (qr => qr.ToArray().SequenceEqual (new[] { _order1 }))))
             .Return (new QueryResult<DomainObject> (_queryStub, new[] { _order2 }))
-            .WhenCalled (mi => Assert.That (InactiveRootTransaction.IsActive, Is.False));
+            .WhenCalled (mi => Assert.That (InactiveRootTransaction.IsWriteable, Is.False));
 
         ExtensionStrictMock
             .Expect (
@@ -67,7 +67,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
                     Arg.Is (InactiveMiddleTransaction),
                     Arg<QueryResult<DomainObject>>.Matches (qr => qr.ToArray ().SequenceEqual (new[] { _order2 }))))
             .Return (new QueryResult<DomainObject> (_queryStub, new[] { _order3 }))
-            .WhenCalled (mi => Assert.That (InactiveMiddleTransaction.IsActive, Is.False));
+            .WhenCalled (mi => Assert.That (InactiveMiddleTransaction.IsWriteable, Is.False));
 
         ExtensionStrictMock
             .Expect (
@@ -75,7 +75,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
                     Arg.Is (ActiveSubTransaction),
                     Arg<QueryResult<DomainObject>>.Matches (qr => qr.ToArray ().SequenceEqual (new[] { _order3 }))))
             .Return (new QueryResult<DomainObject> (_queryStub, new[] { _order4 }))
-            .WhenCalled (mi => Assert.That (ActiveSubTransaction.IsActive, Is.True));
+            .WhenCalled (mi => Assert.That (ActiveSubTransaction.IsWriteable, Is.True));
       }
 
       var result = ActiveSubTransaction.Execute (() => QueryFactory.CreateLinqQuery<Order>().Where (obj => obj.ID == _order1.ID).ToList());
@@ -105,7 +105,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
                     Arg<IQuery>.Is.Anything,
                     Arg<IEnumerable<IQueryResultRow>>.Matches (qrrs => qrrs.Select (qrr => qrr.GetConvertedValue<int>(0)).Single() == 1)))
             .Return (new[] { fakeQueryResultRow1 })
-            .WhenCalled (mi => Assert.That (InactiveRootTransaction.IsActive, Is.False));
+            .WhenCalled (mi => Assert.That (InactiveRootTransaction.IsWriteable, Is.False));
 
         ListenerDynamicMock
             .Expect (
@@ -114,7 +114,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
                     Arg<IQuery>.Is.Anything,
                     Arg<IEnumerable<IQueryResultRow>>.List.Equal (new[] { fakeQueryResultRow1 })))
             .Return (new[] { fakeQueryResultRow2 })
-            .WhenCalled (mi => Assert.That (InactiveMiddleTransaction.IsActive, Is.False));
+            .WhenCalled (mi => Assert.That (InactiveMiddleTransaction.IsWriteable, Is.False));
 
         ListenerDynamicMock
             .Expect (
@@ -123,7 +123,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
                     Arg<IQuery>.Is.Anything,
                     Arg<IEnumerable<IQueryResultRow>>.List.Equal (new[] { fakeQueryResultRow2 })))
             .Return (new[] { fakeQueryResultRow3 })
-            .WhenCalled (mi => Assert.That (ActiveSubTransaction.IsActive, Is.True));
+            .WhenCalled (mi => Assert.That (ActiveSubTransaction.IsWriteable, Is.True));
       }
       ListenerDynamicMock.Replay ();
 

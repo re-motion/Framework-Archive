@@ -48,39 +48,39 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
                 mock => mock.ObjectsLoading (
                     Arg.Is (InactiveRootTransaction),
                     Arg<ReadOnlyCollection<ObjectID>>.List.Equal (new[] { _order.ID })))
-            .WhenCalled (mi => Assert.That (InactiveRootTransaction.IsActive, Is.False));
+            .WhenCalled (mi => Assert.That (InactiveRootTransaction.IsWriteable, Is.False));
         ExtensionStrictMock
             .Expect (
                 mock => mock.ObjectsLoaded (
                     Arg.Is (InactiveRootTransaction),
                     Arg<ReadOnlyCollection<DomainObject>>.List.Equal (new[] { _order })))
-            .WhenCalled (mi => Assert.That (InactiveRootTransaction.IsActive, Is.False));
+            .WhenCalled (mi => Assert.That (InactiveRootTransaction.IsWriteable, Is.False));
 
         ExtensionStrictMock
             .Expect (
                 mock => mock.ObjectsLoading (
                     Arg.Is (InactiveMiddleTransaction),
                     Arg<ReadOnlyCollection<ObjectID>>.List.Equal (new[] { _order.ID })))
-            .WhenCalled (mi => Assert.That (InactiveMiddleTransaction.IsActive, Is.False));
+            .WhenCalled (mi => Assert.That (InactiveMiddleTransaction.IsWriteable, Is.False));
         ExtensionStrictMock
             .Expect (
                 mock => mock.ObjectsLoaded (
                     Arg.Is (InactiveMiddleTransaction),
                     Arg<ReadOnlyCollection<DomainObject>>.List.Equal (new[] { _order })))
-            .WhenCalled (mi => Assert.That (InactiveMiddleTransaction.IsActive, Is.False));
+            .WhenCalled (mi => Assert.That (InactiveMiddleTransaction.IsWriteable, Is.False));
 
         ExtensionStrictMock
             .Expect (
                 mock => mock.ObjectsLoading (
                     Arg.Is (ActiveSubTransaction),
                     Arg<ReadOnlyCollection<ObjectID>>.List.Equal (new[] { _order.ID })))
-            .WhenCalled (mi => Assert.That (ActiveSubTransaction.IsActive, Is.True));
+            .WhenCalled (mi => Assert.That (ActiveSubTransaction.IsWriteable, Is.True));
         ExtensionStrictMock
             .Expect (
                 mock => mock.ObjectsLoaded (
                     Arg.Is (ActiveSubTransaction),
                     Arg<ReadOnlyCollection<DomainObject>>.List.Equal (new[] { _order })))
-            .WhenCalled (mi => Assert.That (ActiveSubTransaction.IsActive, Is.True));
+            .WhenCalled (mi => Assert.That (ActiveSubTransaction.IsWriteable, Is.True));
       }
 
       ActiveSubTransaction.Execute (() => _order.EnsureDataAvailable());
