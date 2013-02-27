@@ -442,7 +442,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
     public void GetInvalidObjectReference ()
     {
       var invalidObject = DomainObjectMother.CreateObjectInTransaction<Order> (_transaction);
-      _transaction.Execute (invalidObject.Delete);
+      _transaction.ExecuteInScope (invalidObject.Delete);
 
       Assert.That (invalidObject.TransactionContext[_transaction].State, Is.EqualTo (StateType.Invalid));
 
@@ -465,7 +465,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
       var domainObject = DomainObjectMother.CreateObjectInTransaction<Order> (_transaction);
       Assert.That (_transaction.IsInvalid (domainObject.ID), Is.False);
 
-      _transaction.Execute (domainObject.Delete);
+      _transaction.ExecuteInScope (domainObject.Delete);
 
       Assert.That (_transaction.IsInvalid (domainObject.ID), Is.True);
     }
@@ -594,7 +594,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
     public void EnsureDataComplete_EndPoint_Complete ()
     {
       var endPointID = RelationEndPointObjectMother.CreateRelationEndPointID (DomainObjectIDs.Customer1, "Orders");
-      _transaction.Execute (() => DomainObjectIDs.Customer1.GetObject<Customer> ().Orders);
+      _transaction.ExecuteInScope (() => DomainObjectIDs.Customer1.GetObject<Customer> ().Orders);
 
       Assert.That (_dataManager.GetRelationEndPointWithoutLoading (endPointID), Is.Not.Null);
 
@@ -606,7 +606,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
     public void EnsureDataComplete_EndPoint_Incomplete ()
     {
       var endPointID = RelationEndPointObjectMother.CreateRelationEndPointID (DomainObjectIDs.Customer1, "Orders");
-      _transaction.Execute (() => DomainObjectIDs.Customer1.GetObject<Customer> ().Orders);
+      _transaction.ExecuteInScope (() => DomainObjectIDs.Customer1.GetObject<Customer> ().Orders);
       
       var endPoint = (ICollectionEndPoint) _dataManager.GetRelationEndPointWithoutLoading (endPointID);
       Assert.That (endPoint, Is.Not.Null);
@@ -620,23 +620,23 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
     [Test]
     public void GetEnlistedDomainObjects ()
     {
-      var order1 = _transaction.Execute(() => Order.NewObject ());
-      var order2 = _transaction.Execute (() => Order.NewObject ());
+      var order1 = _transaction.ExecuteInScope(() => Order.NewObject ());
+      var order2 = _transaction.ExecuteInScope (() => Order.NewObject ());
       Assert.That (_transaction.GetEnlistedDomainObjects ().ToArray (), Is.EquivalentTo (new[] { order1, order2 }));
     }
 
     [Test]
     public void EnlistedDomainObjectCount ()
     {
-      _transaction.Execute (() => Order.NewObject ());
-      _transaction.Execute (() => Order.NewObject ());
+      _transaction.ExecuteInScope (() => Order.NewObject ());
+      _transaction.ExecuteInScope (() => Order.NewObject ());
       Assert.That (_transaction.EnlistedDomainObjectCount, Is.EqualTo (2));
     }
 
     [Test]
     public void IsEnlisted ()
     {
-      var order = _transaction.Execute (() => Order.NewObject ());
+      var order = _transaction.ExecuteInScope (() => Order.NewObject ());
       Assert.That (_transaction.IsEnlisted (order), Is.True);
       Assert.That (ClientTransaction.CreateRootTransaction().IsEnlisted (order), Is.False);
     }
@@ -644,7 +644,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
     [Test]
     public void GetEnlistedDomainObject ()
     {
-      var order = _transaction.Execute (() => Order.NewObject ());
+      var order = _transaction.ExecuteInScope (() => Order.NewObject ());
       Assert.That (_transaction.GetEnlistedDomainObject (order.ID), Is.SameAs (order));
     }
 
@@ -652,10 +652,10 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
     [Obsolete ("TODO 2072 - Remove")]
     public void CopyCollectionEventHandlers ()
     {
-      var order = _transaction.Execute (() => _objectID1.GetObject<Order> ());
+      var order = _transaction.ExecuteInScope (() => _objectID1.GetObject<Order> ());
       
       bool orderItemAdded = false;
-      _transaction.Execute (() => order.OrderItems.Added += delegate { orderItemAdded = true; });
+      _transaction.ExecuteInScope (() => order.OrderItems.Added += delegate { orderItemAdded = true; });
 
       var otherTransaction = ClientTransaction.CreateRootTransaction ();
       Assert.That (orderItemAdded, Is.False);
@@ -663,7 +663,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
       var orderInOtherTransaction = order.GetHandle().GetObject (otherTransaction);
       otherTransaction.CopyCollectionEventHandlers (order, _transaction);
 
-      otherTransaction.Execute (() => orderInOtherTransaction.OrderItems.Add (OrderItem.NewObject ()));
+      otherTransaction.ExecuteInScope (() => orderInOtherTransaction.OrderItems.Add (OrderItem.NewObject ()));
       Assert.That (orderItemAdded, Is.True);
     }
 
@@ -767,44 +767,44 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
     [Test]
     public void GetRelatedObject ()
     {
-      Order order = _transaction.Execute (() => _objectID1.GetObject<Order> ());
+      Order order = _transaction.ExecuteInScope (() => _objectID1.GetObject<Order> ());
 
       var endPointID = RelationEndPointID.Create (order.ID, "Remotion.Data.UnitTests.DomainObjects.TestDomain.Order.OrderTicket");
-      _transaction.Execute (() => order.OrderTicket = DomainObjectIDs.OrderTicket2.GetObject<OrderTicket> ());
+      _transaction.ExecuteInScope (() => order.OrderTicket = DomainObjectIDs.OrderTicket2.GetObject<OrderTicket> ());
       
       DomainObject orderTicket = ClientTransactionTestHelper.CallGetRelatedObject (_transaction, endPointID);
 
       Assert.That (orderTicket, Is.Not.Null);
-      Assert.That (orderTicket, Is.SameAs (_transaction.Execute (() => DomainObjectIDs.OrderTicket2.GetObject<OrderTicket> ())));
+      Assert.That (orderTicket, Is.SameAs (_transaction.ExecuteInScope (() => DomainObjectIDs.OrderTicket2.GetObject<OrderTicket> ())));
     }
 
     [Test]
     public void GetRelatedObject_Deleted ()
     {
-      Location location = _transaction.Execute (() => DomainObjectIDs.Location1.GetObject<Location>());
+      Location location = _transaction.ExecuteInScope (() => DomainObjectIDs.Location1.GetObject<Location>());
 
-      var client = _transaction.Execute (() => location.Client);
-      _transaction.Execute (() => location.Client.Delete());
+      var client = _transaction.ExecuteInScope (() => location.Client);
+      _transaction.ExecuteInScope (() => location.Client.Delete());
 
       var endPointID = RelationEndPointID.Create (location.ID, "Remotion.Data.UnitTests.DomainObjects.TestDomain.Location.Client");
       var result = ClientTransactionTestHelper.CallGetRelatedObject (_transaction, endPointID);
 
       Assert.That (result, Is.SameAs (client));
-      Assert.That (_transaction.Execute (() => result.State), Is.EqualTo (StateType.Deleted));
+      Assert.That (_transaction.ExecuteInScope (() => result.State), Is.EqualTo (StateType.Deleted));
     }
 
     [Test]
     public void GetRelatedObject_Invalid ()
     {
-      Location location = _transaction.Execute (() => DomainObjectIDs.Location1.GetObject<Location>());
-      Client newClient = _transaction.Execute (() => Client.NewObject ());
-      _transaction.Execute (() => location.Client = newClient);
-      _transaction.Execute (() => location.Client.Delete ());
+      Location location = _transaction.ExecuteInScope (() => DomainObjectIDs.Location1.GetObject<Location>());
+      Client newClient = _transaction.ExecuteInScope (() => Client.NewObject ());
+      _transaction.ExecuteInScope (() => location.Client = newClient);
+      _transaction.ExecuteInScope (() => location.Client.Delete ());
 
       var endPointID = RelationEndPointID.Create (location.ID, "Remotion.Data.UnitTests.DomainObjects.TestDomain.Location.Client");
       var result = ClientTransactionTestHelper.CallGetRelatedObject (_transaction, endPointID);
       Assert.That (result, Is.SameAs (newClient));
-      Assert.That (_transaction.Execute (() => result.State), Is.EqualTo (StateType.Invalid));
+      Assert.That (_transaction.ExecuteInScope (() => result.State), Is.EqualTo (StateType.Invalid));
     }
 
     [Test]
@@ -812,7 +812,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
         ExpectedMessage = "The given end-point ID does not denote a related object (cardinality one).\r\nParameter name: relationEndPointID")]
     public void GetRelatedObject_WrongCardinality ()
     {
-      Order order = _transaction.Execute (() => _objectID1.GetObject<Order> ());
+      Order order = _transaction.ExecuteInScope (() => _objectID1.GetObject<Order> ());
 
       ClientTransactionTestHelper.CallGetRelatedObject (
           _transaction, 
@@ -822,15 +822,15 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
     [Test]
     public void GetOriginalRelatedObject ()
     {
-      Order order = _transaction.Execute (() => _objectID1.GetObject<Order> ());
+      Order order = _transaction.ExecuteInScope (() => _objectID1.GetObject<Order> ());
       var endPointID = RelationEndPointID.Create (order.ID, "Remotion.Data.UnitTests.DomainObjects.TestDomain.Order.OrderTicket");
 
-      _transaction.Execute (() => order.OrderTicket = DomainObjectIDs.OrderTicket2.GetObject<OrderTicket> ());
+      _transaction.ExecuteInScope (() => order.OrderTicket = DomainObjectIDs.OrderTicket2.GetObject<OrderTicket> ());
 
       DomainObject orderTicket = ClientTransactionTestHelper.CallGetOriginalRelatedObject (_transaction, endPointID);
 
       Assert.That (orderTicket, Is.Not.Null);
-      Assert.That (orderTicket, Is.SameAs (_transaction.Execute (() => DomainObjectIDs.OrderTicket1.GetObject<OrderTicket> ())));
+      Assert.That (orderTicket, Is.SameAs (_transaction.ExecuteInScope (() => DomainObjectIDs.OrderTicket1.GetObject<OrderTicket> ())));
     }
 
     [Test]
@@ -838,7 +838,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
         ExpectedMessage = "The given end-point ID does not denote a related object (cardinality one).\r\nParameter name: relationEndPointID")]
     public void GetOriginalRelatedObject_WrongCardinality ()
     {
-      Order order = _transaction.Execute (() => _objectID1.GetObject<Order> ());
+      Order order = _transaction.ExecuteInScope (() => _objectID1.GetObject<Order> ());
 
       ClientTransactionTestHelper.CallGetOriginalRelatedObject (
           _transaction,
@@ -848,11 +848,11 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
     [Test]
     public void GetRelatedObjects ()
     {
-      Order order = _transaction.Execute (() => _objectID1.GetObject<Order> ());
+      Order order = _transaction.ExecuteInScope (() => _objectID1.GetObject<Order> ());
       
       var endPointID = RelationEndPointID.Create (order.ID, "Remotion.Data.UnitTests.DomainObjects.TestDomain.Order.OrderItems");
       var endPoint = ((ICollectionEndPoint) ClientTransactionTestHelper.GetDataManager (_transaction).GetRelationEndPointWithLazyLoad (endPointID));
-      endPoint.CreateAddCommand (_transaction.Execute (() => DomainObjectIDs.OrderItem3.GetObject<OrderItem>())).ExpandToAllRelatedObjects ().Perform ();
+      endPoint.CreateAddCommand (_transaction.ExecuteInScope (() => DomainObjectIDs.OrderItem3.GetObject<OrderItem>())).ExpandToAllRelatedObjects ().Perform ();
 
       var orderItems = ClientTransactionTestHelper.CallGetRelatedObjects (_transaction, endPointID);
 
@@ -862,9 +862,9 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
           Is.EquivalentTo (
               new[]
               {
-                  _transaction.Execute (() => DomainObjectIDs.OrderItem1.GetObject<OrderItem>()),
-                  _transaction.Execute (() => DomainObjectIDs.OrderItem2.GetObject<OrderItem>()),
-                  _transaction.Execute (() => DomainObjectIDs.OrderItem3.GetObject<OrderItem>())
+                  _transaction.ExecuteInScope (() => DomainObjectIDs.OrderItem1.GetObject<OrderItem>()),
+                  _transaction.ExecuteInScope (() => DomainObjectIDs.OrderItem2.GetObject<OrderItem>()),
+                  _transaction.ExecuteInScope (() => DomainObjectIDs.OrderItem3.GetObject<OrderItem>())
               }));
     }
 
@@ -873,7 +873,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
         ExpectedMessage = "The given end-point ID does not denote a related object collection (cardinality many).\r\nParameter name: relationEndPointID")]
     public void GetRelatedObjects_WrongCardinality ()
     {
-      Order order = _transaction.Execute (() => _objectID1.GetObject<Order> ());
+      Order order = _transaction.ExecuteInScope (() => _objectID1.GetObject<Order> ());
 
       ClientTransactionTestHelper.CallGetRelatedObjects (
           _transaction,
@@ -883,11 +883,11 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
     [Test]
     public void GetOriginalRelatedObjects ()
     {
-      Order order = _transaction.Execute (() => _objectID1.GetObject<Order> ());
+      Order order = _transaction.ExecuteInScope (() => _objectID1.GetObject<Order> ());
 
       var endPointID = RelationEndPointID.Create (order.ID, "Remotion.Data.UnitTests.DomainObjects.TestDomain.Order.OrderItems");
       var endPoint = ((ICollectionEndPoint) ClientTransactionTestHelper.GetDataManager (_transaction).GetRelationEndPointWithLazyLoad (endPointID));
-      endPoint.CreateAddCommand (_transaction.Execute (() => DomainObjectIDs.OrderItem3.GetObject<OrderItem>())).ExpandToAllRelatedObjects ().Perform ();
+      endPoint.CreateAddCommand (_transaction.ExecuteInScope (() => DomainObjectIDs.OrderItem3.GetObject<OrderItem>())).ExpandToAllRelatedObjects ().Perform ();
 
       var orderItems = ClientTransactionTestHelper.CallGetOriginalRelatedObjects (_transaction, endPointID);
 
@@ -897,8 +897,8 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
         Is.EquivalentTo (
             new[]
               {
-                  _transaction.Execute (() => DomainObjectIDs.OrderItem1.GetObject<OrderItem>()),
-                  _transaction.Execute (() => DomainObjectIDs.OrderItem2.GetObject<OrderItem>())
+                  _transaction.ExecuteInScope (() => DomainObjectIDs.OrderItem1.GetObject<OrderItem>()),
+                  _transaction.ExecuteInScope (() => DomainObjectIDs.OrderItem2.GetObject<OrderItem>())
               }));
     }
 
@@ -907,7 +907,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
         ExpectedMessage = "The given end-point ID does not denote a related object collection (cardinality many).\r\nParameter name: relationEndPointID")]
     public void GetOriginalRelatedObjects_WrongCardinality ()
     {
-      Order order = _transaction.Execute (() => _objectID1.GetObject<Order> ());
+      Order order = _transaction.ExecuteInScope (() => _objectID1.GetObject<Order> ());
 
       ClientTransactionTestHelper.CallGetOriginalRelatedObjects (
           _transaction,

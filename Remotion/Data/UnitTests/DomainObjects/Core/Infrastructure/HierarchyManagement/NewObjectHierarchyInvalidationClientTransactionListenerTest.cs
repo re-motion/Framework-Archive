@@ -99,7 +99,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.HierarchyMan
     {
       var middleTopTransaction = CreateSubTransactionAndClearListeners (_rootTransaction);
 
-      var domainObject = middleTopTransaction.Execute (() => Order.NewObject());
+      var domainObject = middleTopTransaction.ExecuteInScope (() => Order.NewObject());
       var dataContainer = DataManagementService.GetDataManager (middleTopTransaction).GetDataContainerWithoutLoading (domainObject.ID);
       Assert.That (dataContainer, Is.Not.Null);
 
@@ -119,7 +119,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.HierarchyMan
     {
       var middleTopTransaction = CreateSubTransactionAndClearListeners (_rootTransaction);
 
-      var domainObject = middleTopTransaction.Execute (() => DomainObjectIDs.Order1.GetObject<Order> ());
+      var domainObject = middleTopTransaction.ExecuteInScope (() => DomainObjectIDs.Order1.GetObject<Order> ());
       var dataContainer = DataManagementService.GetDataManager (middleTopTransaction).GetDataContainerWithoutLoading (domainObject.ID);
       Assert.That (dataContainer, Is.Not.Null);
 

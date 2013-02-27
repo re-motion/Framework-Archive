@@ -53,7 +53,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.Commands
 
       _deleteOrder1Command = new DeleteCommand (_transaction, _order1, _transactionEventSinkWithMock);
       
-      _orderItemsCollection = _transaction.Execute (() => _order1.OrderItems);
+      _orderItemsCollection = _transaction.ExecuteInScope (() => _order1.OrderItems);
     }
 
     [Test]
@@ -143,7 +143,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.Commands
     {
       _deleteOrder1Command.Perform ();
 
-      _transaction.Execute (() => Assert.That (_order1.OrderItems, Is.Empty));
+      _transaction.ExecuteInScope (() => Assert.That (_order1.OrderItems, Is.Empty));
     }
 
     [Test]
@@ -151,13 +151,13 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.Commands
     {
       _deleteOrder1Command.Perform ();
 
-      _transaction.Execute (() => Assert.That (_order1.State, Is.EqualTo (StateType.Deleted)));
+      _transaction.ExecuteInScope (() => Assert.That (_order1.State, Is.EqualTo (StateType.Deleted)));
     }
 
     [Test]
     public void Perform_DiscardsNewDataContainer ()
     {
-      var newOrder = _transaction.Execute (() => Order.NewObject ());
+      var newOrder = _transaction.ExecuteInScope (() => Order.NewObject ());
       var deleteNewOrderCommand = new DeleteCommand (_transaction, newOrder, _transactionEventSinkWithMock);
 
       deleteNewOrderCommand.Perform ();

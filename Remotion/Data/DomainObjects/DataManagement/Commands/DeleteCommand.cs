@@ -77,7 +77,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands
 
     public void Begin ()
     {
-      _clientTransaction.Execute (delegate
+      _clientTransaction.ExecuteInScope (delegate
       {
         _transactionEventSink.RaiseObjectDeletingEvent (_deletedObject);
         _endPointDeleteCommands.Begin ();
@@ -96,7 +96,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands
 
     public void End ()
     {
-      _clientTransaction.Execute (delegate
+      _clientTransaction.ExecuteInScope (delegate
       {
         _endPointDeleteCommands.End ();
         _transactionEventSink.RaiseObjectDeletedEvent (_deletedObject);

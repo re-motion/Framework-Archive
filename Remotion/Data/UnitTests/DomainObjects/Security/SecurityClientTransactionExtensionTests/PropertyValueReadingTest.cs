@@ -203,7 +203,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Security.SecurityClientTransacti
       _testHelper.ExpectObjectSecurityStrategyHasAccess (securableObject, TestAccessTypes.First, true);
       _testHelper.ReplayAll ();
 
-      Dev.Null = _testHelper.Transaction.Execute(() => securableObject.StringProperty);
+      Dev.Null = _testHelper.Transaction.ExecuteInScope(() => securableObject.StringProperty);
 
       _testHelper.VerifyAll ();
     }
@@ -215,7 +215,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Security.SecurityClientTransacti
       _testHelper.AddExtension (_extension);
       _testHelper.ReplayAll ();
 
-      Dev.Null = _testHelper.Transaction.Execute (() => securableObject.ID);
+      Dev.Null = _testHelper.Transaction.ExecuteInScope (() => securableObject.ID);
 
       _testHelper.VerifyAll ();
     }

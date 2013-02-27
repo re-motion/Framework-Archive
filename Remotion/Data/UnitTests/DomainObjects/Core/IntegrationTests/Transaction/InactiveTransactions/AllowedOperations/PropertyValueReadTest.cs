@@ -39,7 +39,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
     {
       ActiveSubTransaction.EnsureDataAvailable (_order1.ID);
 
-      var value = InactiveRootTransaction.Execute (() => _order1.OrderNumber);
+      var value = InactiveRootTransaction.ExecuteInScope (() => _order1.OrderNumber);
 
       Assert.That (value, Is.EqualTo (1));
     }
@@ -49,7 +49,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
     {
       ActiveSubTransaction.EnsureDataAvailable (_order1.ID);
 
-      var value = InactiveMiddleTransaction.Execute (() => _order1.OrderNumber);
+      var value = InactiveMiddleTransaction.ExecuteInScope (() => _order1.OrderNumber);
 
       Assert.That (value, Is.EqualTo (1));
     }
@@ -61,7 +61,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
       CheckDataNotLoaded (InactiveMiddleTransaction, DomainObjectIDs.Order1);
       CheckDataNotLoaded (ActiveSubTransaction, DomainObjectIDs.Order1);
 
-      var value = InactiveRootTransaction.Execute (() => _order1.OrderNumber);
+      var value = InactiveRootTransaction.ExecuteInScope (() => _order1.OrderNumber);
       
       Assert.That (value, Is.EqualTo (1));
 
@@ -77,7 +77,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
       CheckDataNotLoaded (InactiveMiddleTransaction, DomainObjectIDs.Order1);
       CheckDataNotLoaded (ActiveSubTransaction, DomainObjectIDs.Order1);
 
-      var value = InactiveMiddleTransaction.Execute (() => _order1.OrderNumber);
+      var value = InactiveMiddleTransaction.ExecuteInScope (() => _order1.OrderNumber);
 
       Assert.That (value, Is.EqualTo (1));
 

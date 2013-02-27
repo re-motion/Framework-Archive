@@ -66,11 +66,11 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
       _extensionStrictMock = MockRepository.GenerateStrictMock<IClientTransactionExtension> ();
 
       _inactiveRootTransaction = ClientTransaction.CreateRootTransaction ();
-      _inactiveRootTransaction.Execute (InitializeInactiveRootTransaction);
+      _inactiveRootTransaction.ExecuteInScope (InitializeInactiveRootTransaction);
       _inactiveMiddleTransaction = InactiveRootTransaction.CreateSubTransaction ();
-      _inactiveMiddleTransaction.Execute (InitializeInactiveMiddleTransaction);
+      _inactiveMiddleTransaction.ExecuteInScope (InitializeInactiveMiddleTransaction);
       _activeSubTransaction = InactiveMiddleTransaction.CreateSubTransaction ();
-      _activeSubTransaction.Execute (InitializeActiveSubTransaction);
+      _activeSubTransaction.ExecuteInScope (InitializeActiveSubTransaction);
     }
 
     protected virtual void InitializeInactiveRootTransaction ()

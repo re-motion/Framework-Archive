@@ -118,13 +118,13 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     public T Execute<T> (Func<DomainObject, ClientTransaction, T> func)
     {
       ArgumentUtility.CheckNotNull ("func", func);
-      return ClientTransaction.Execute (() => func (_domainObject, _associatedTransaction));
+      return ClientTransaction.ExecuteInScope (() => func (_domainObject, _associatedTransaction));
     }
 
     public void Execute (Action<DomainObject, ClientTransaction> action)
     {
       ArgumentUtility.CheckNotNull ("action", action);
-      ClientTransaction.Execute (() => action (_domainObject, _associatedTransaction));
+      ClientTransaction.ExecuteInScope (() => action (_domainObject, _associatedTransaction));
     }
 
     [Obsolete ("This method has been replaced by RegisterForCommit. (1.13.181.0)", true)]

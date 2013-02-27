@@ -148,7 +148,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.TypePipe
       Assert.That (result.RootTransaction, Is.SameAs (_transaction));
       Assert.That (_transaction.IsDiscarded, Is.False);
       Assert.That (_transaction.IsEnlisted (result), Is.True);
-      Assert.That (_transaction.Execute (() => ((OrderItem) result).Product), Is.EqualTo ("A product"));
+      Assert.That (_transaction.ExecuteInScope (() => ((OrderItem) result).Product), Is.EqualTo ("A product"));
       Assert.That (ObjectInititalizationContextScope.CurrentObjectInitializationContext, Is.Null);
     }
 

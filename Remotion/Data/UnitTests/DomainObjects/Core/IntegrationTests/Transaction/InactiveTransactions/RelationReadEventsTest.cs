@@ -40,11 +40,11 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
     {
       base.SetUp();
 
-      _loadedOrder = ActiveSubTransaction.Execute (() => DomainObjectIDs.Order1.GetObject<Order> ());
-      _relatedCustomer = ActiveSubTransaction.Execute (() => DomainObjectIDs.Customer1.GetObject<Customer> ());
-      _relatedOrderTicket = ActiveSubTransaction.Execute (() => DomainObjectIDs.OrderTicket1.GetObject<OrderTicket> ());
-      _relatedOrderItem1 = ActiveSubTransaction.Execute (() => DomainObjectIDs.OrderItem1.GetObject<OrderItem>());
-      _relatedOrderItem2 = ActiveSubTransaction.Execute (() => DomainObjectIDs.OrderItem2.GetObject<OrderItem>());
+      _loadedOrder = ActiveSubTransaction.ExecuteInScope (() => DomainObjectIDs.Order1.GetObject<Order> ());
+      _relatedCustomer = ActiveSubTransaction.ExecuteInScope (() => DomainObjectIDs.Customer1.GetObject<Customer> ());
+      _relatedOrderTicket = ActiveSubTransaction.ExecuteInScope (() => DomainObjectIDs.OrderTicket1.GetObject<OrderTicket> ());
+      _relatedOrderItem1 = ActiveSubTransaction.ExecuteInScope (() => DomainObjectIDs.OrderItem1.GetObject<OrderItem>());
+      _relatedOrderItem2 = ActiveSubTransaction.ExecuteInScope (() => DomainObjectIDs.OrderItem2.GetObject<OrderItem>());
 
       InstallListenerMock();
       InstallExtensionMock();
@@ -57,7 +57,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
       var endPointDefinition = GetEndPointDefinition (typeof (Order), "Customer");
       ExpectRelationReadEvents (ActiveSubTransaction, _loadedOrder, endPointDefinition, _relatedCustomer);
 
-      Dev.Null = ActiveSubTransaction.Execute (() => _loadedOrder.Customer);
+      Dev.Null = ActiveSubTransaction.ExecuteInScope (() => _loadedOrder.Customer);
 
       AssertNoRelationReadEvents (InactiveMiddleTransaction);
       AssertNoRelationReadEvents (InactiveRootTransaction);
@@ -72,7 +72,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
       var endPointDefinition = GetEndPointDefinition (typeof (Order), "OrderTicket");
       ExpectRelationReadEvents (ActiveSubTransaction, _loadedOrder, endPointDefinition, _relatedOrderTicket);
 
-      Dev.Null = ActiveSubTransaction.Execute (() => _loadedOrder.OrderTicket);
+      Dev.Null = ActiveSubTransaction.ExecuteInScope (() => _loadedOrder.OrderTicket);
 
       AssertNoRelationReadEvents (InactiveMiddleTransaction);
       AssertNoRelationReadEvents (InactiveRootTransaction);
@@ -87,7 +87,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
       var endPointDefinition = GetEndPointDefinition (typeof (Order), "OrderItems");
       ExpectRelationReadEvents (ActiveSubTransaction, _loadedOrder, endPointDefinition, new[] { _relatedOrderItem1, _relatedOrderItem2 });
 
-      ActiveSubTransaction.Execute (() => _loadedOrder.OrderItems.EnsureDataComplete());
+      ActiveSubTransaction.ExecuteInScope (() => _loadedOrder.OrderItems.EnsureDataComplete());
 
       AssertNoRelationReadEvents (InactiveMiddleTransaction);
       AssertNoRelationReadEvents (InactiveRootTransaction);

@@ -47,7 +47,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
       ActiveSubTransaction.EnsureDataComplete (_relationEndPointID);
       ActiveSubTransaction.EnsureDataAvailable (DomainObjectIDs.Customer1);
 
-      var customer = InactiveRootTransaction.Execute (() => _order1.Customer);
+      var customer = InactiveRootTransaction.ExecuteInScope (() => _order1.Customer);
 
       Assert.That (customer.ID, Is.EqualTo (DomainObjectIDs.Customer1));
     }
@@ -58,7 +58,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
       ActiveSubTransaction.EnsureDataComplete (_relationEndPointID);
       ActiveSubTransaction.EnsureDataAvailable (DomainObjectIDs.Customer1);
 
-      var customer = InactiveMiddleTransaction.Execute (() => _order1.Customer);
+      var customer = InactiveMiddleTransaction.ExecuteInScope (() => _order1.Customer);
 
       Assert.That (customer.ID, Is.EqualTo (DomainObjectIDs.Customer1));
     }
@@ -82,7 +82,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
       CheckEndPointNull (InactiveMiddleTransaction, _oppositeRelationEndPointID);
       CheckEndPointNull (ActiveSubTransaction, _oppositeRelationEndPointID);
 
-      var customer = InactiveRootTransaction.Execute (() => _order1.Customer);
+      var customer = InactiveRootTransaction.ExecuteInScope (() => _order1.Customer);
       
       Assert.That (customer.ID, Is.EqualTo (DomainObjectIDs.Customer1));
 
@@ -122,7 +122,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
       CheckEndPointNull (InactiveMiddleTransaction, _oppositeRelationEndPointID);
       CheckEndPointNull (ActiveSubTransaction, _oppositeRelationEndPointID);
 
-      var customer = InactiveMiddleTransaction.Execute (() => _order1.Customer);
+      var customer = InactiveMiddleTransaction.ExecuteInScope (() => _order1.Customer);
 
       Assert.That (customer.ID, Is.EqualTo (DomainObjectIDs.Customer1));
 

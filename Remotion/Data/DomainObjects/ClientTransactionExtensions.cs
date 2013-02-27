@@ -26,7 +26,8 @@ namespace Remotion.Data.DomainObjects
   {
     /// <summary>
     /// Executes the specified delegate in the context of the <see cref="ClientTransaction"/>, returning the result of the delegate. While the
-    /// delegate is being executed, the <see cref="ClientTransaction"/> is made the <see cref="ClientTransaction.Current"/> transaction.
+    /// delegate is being executed, the <see cref="ClientTransaction"/> is made the <see cref="ClientTransaction.Current"/> transaction, as if 
+    ///  <see cref="ClientTransaction.EnterNonDiscardingScope"/> had been called.
     /// </summary>
     /// <typeparam name="T">The type of the value returned by the delegate.</typeparam>
     /// <param name="clientTransaction">The <see cref="ClientTransaction"/> in whose context to execute the delegate.</param>
@@ -34,7 +35,7 @@ namespace Remotion.Data.DomainObjects
     /// <param name="inactiveTransactionBehavior">Defines what should happen when this <see cref="ClientTransaction"/> is currently not active, e.g., 
     /// due to an active subtransaction. The default behavior is <see cref="InactiveTransactionBehavior.Throw"/>, i.e., to throw an exception.</param>
     /// <returns>The result of <paramref name="func"/>.</returns>
-    public static T Execute<T> (
+    public static T ExecuteInScope<T> (
         this ClientTransaction clientTransaction,
         Func<T> func,
         InactiveTransactionBehavior inactiveTransactionBehavior = InactiveTransactionBehavior.Throw)
@@ -60,13 +61,14 @@ namespace Remotion.Data.DomainObjects
 
     /// <summary>
     /// Executes the specified delegate in the context of the <see cref="ClientTransaction"/>. While the
-    /// delegate is being executed, the <see cref="ClientTransaction"/> is made the <see cref="ClientTransaction.Current"/> transaction.
+    /// delegate is being executed, the <see cref="ClientTransaction"/> is made the <see cref="ClientTransaction.Current"/> transaction, as if 
+    ///  <see cref="ClientTransaction.EnterNonDiscardingScope"/> had been called.
     /// </summary>
     /// <param name="clientTransaction">The <see cref="ClientTransaction"/> in whose context to execute the delegate.</param>
     /// <param name="action">The delegate to be executed.</param>
     /// <param name="inactiveTransactionBehavior">Defines what should happen when this <see cref="ClientTransaction"/> is currently not active, e.g., 
     /// due to an active subtransaction. The default behavior is <see cref="InactiveTransactionBehavior.Throw"/>, i.e., to throw an exception.</param>
-    public static void Execute (
+    public static void ExecuteInScope (
         this ClientTransaction clientTransaction,
         Action action,
         InactiveTransactionBehavior inactiveTransactionBehavior = InactiveTransactionBehavior.Throw)
@@ -86,6 +88,18 @@ namespace Remotion.Data.DomainObjects
       {
         action ();
       }
+    }
+
+    [Obsolete ("This API has been renamed to ExecuteInScope. (1.13.188.0)", true)]
+    public static T Execute<T> (this ClientTransaction clientTransaction, Func<T> func)
+    {
+      throw new NotImplementedException ();
+    }
+
+    [Obsolete ("This API has been renamed to ExecuteInScope. (1.13.188.0)", true )]
+    public static void Execute (this ClientTransaction clientTransaction, Action action)
+    {
+      throw new NotImplementedException();
     }
   }
 }

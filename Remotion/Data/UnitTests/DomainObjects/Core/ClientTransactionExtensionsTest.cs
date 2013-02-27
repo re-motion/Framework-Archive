@@ -33,32 +33,32 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
     }
 
     [Test]
-    public void Execute_Action_RunsDelegate ()
+    public void ExecuteInScope_Action_RunsDelegate ()
     {
       bool delegateRun = false;
       Action action = () => delegateRun = true;
 
-      _transaction.Execute (action);
+      _transaction.ExecuteInScope (action);
 
       Assert.That (delegateRun, Is.True);
     }
 
     [Test]
-    public void Execute_Action_SetsCurrentTx ()
+    public void ExecuteInScope_Action_SetsCurrentTx ()
     {
       Assert.That (ClientTransaction.Current, Is.Null);
       
       ClientTransaction currentInDelegate = null;
       Action action = () => currentInDelegate = ClientTransaction.Current;
 
-      _transaction.Execute (action);
+      _transaction.ExecuteInScope (action);
 
       Assert.That (currentInDelegate, Is.SameAs (_transaction));
       Assert.That (ClientTransaction.Current, Is.Null);
     }
 
     [Test]
-    public void Execute_Action_ReusesScopeIfPossible ()
+    public void ExecuteInScope_Action_ReusesScopeIfPossible ()
     {
       using (var scope = _transaction.EnterNonDiscardingScope ())
       {
@@ -67,7 +67,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
         ClientTransactionScope scopeInDelegate = null;
         Action action = () => scopeInDelegate = ClientTransactionScope.ActiveScope;
 
-        _transaction.Execute (action);
+        _transaction.ExecuteInScope (action);
 
         Assert.That (scopeInDelegate, Is.SameAs (scope));
         Assert.That (ClientTransactionScope.ActiveScope, Is.SameAs (scope));
@@ -75,16 +75,16 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
     }
 
     [Test]
-    public void Execute_Func_RunsDelegate ()
+    public void ExecuteInScope_Func_RunsDelegate ()
     {
       Func<int> func = () => 17;
-      var result = _transaction.Execute (func);
+      var result = _transaction.ExecuteInScope (func);
 
       Assert.That (result, Is.EqualTo (17));
     }
 
     [Test]
-    public void Execute_Func_SetsCurrentTx ()
+    public void ExecuteInScope_Func_SetsCurrentTx ()
     {
       Assert.That (ClientTransaction.Current, Is.Null);
 
@@ -95,14 +95,14 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
         return 4;
       };
 
-      _transaction.Execute (func);
+      _transaction.ExecuteInScope (func);
 
       Assert.That (currentInDelegate, Is.SameAs (_transaction));
       Assert.That (ClientTransaction.Current, Is.Null);
     }
 
     [Test]
-    public void Execute_Func_ReusesScopeIfPossible ()
+    public void ExecuteInScope_Func_ReusesScopeIfPossible ()
     {
       using (var scope = _transaction.EnterNonDiscardingScope ())
       {
@@ -115,7 +115,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
           return 4;
         };
 
-        _transaction.Execute (func);
+        _transaction.ExecuteInScope (func);
 
         Assert.That (scopeInDelegate, Is.SameAs (scope));
         Assert.That (ClientTransactionScope.ActiveScope, Is.SameAs (scope));

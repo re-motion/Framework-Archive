@@ -50,7 +50,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.Commands.End
 
       _transaction = new TestableClientTransaction ();
       _objectID = DomainObjectIDs.Order1;
-      _domainObject = _transaction.Execute (() => Order.NewObject ());
+      _domainObject = _transaction.ExecuteInScope (() => Order.NewObject ());
       _endPointDefinition = GetEndPointDefinition (typeof (Order), "OrderTicket");
       
       _endPointMock = MockRepository.GenerateMock<IRelationEndPoint> ();
@@ -59,8 +59,8 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.Commands.End
       _endPointMock.Stub (mock => mock.Definition).Return (_endPointDefinition);
       _endPointMock.Stub (mock => mock.GetDomainObject()).Return (_domainObject);
 
-      _oldRelatedObject = _transaction.Execute (() => OrderTicket.NewObject ());
-      _newRelatedObject = _transaction.Execute (() => OrderTicket.NewObject ());
+      _oldRelatedObject = _transaction.ExecuteInScope (() => OrderTicket.NewObject ());
+      _newRelatedObject = _transaction.ExecuteInScope (() => OrderTicket.NewObject ());
 
       _transactionEventSinkWithMock = MockRepository.GenerateStrictMock<IClientTransactionEventSink>();
 

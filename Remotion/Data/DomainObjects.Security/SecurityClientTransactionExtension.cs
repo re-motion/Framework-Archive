@@ -66,7 +66,7 @@ namespace Remotion.Data.DomainObjects.Security
       var queryResultList = new List<T> (queryResult.AsEnumerable ());
       var securityClient = GetSecurityClient ();
       
-      clientTransaction.Execute (() =>
+      clientTransaction.ExecuteInScope (() =>
       {
         for (int i = queryResultList.Count - 1; i >= 0; i--)
         {
@@ -112,7 +112,7 @@ namespace Remotion.Data.DomainObjects.Security
       try
       {
         _isActive = true;
-        clientTransaction.Execute (() => securityClient.CheckConstructorAccess (type));
+        clientTransaction.ExecuteInScope (() => securityClient.CheckConstructorAccess (type));
       }
       finally
       {
@@ -141,7 +141,7 @@ namespace Remotion.Data.DomainObjects.Security
       try
       {
         _isActive = true;
-        clientTransaction.Execute (() => securityClient.CheckAccess (securableObject, AccessType.Get (GeneralAccessTypes.Delete)));
+        clientTransaction.ExecuteInScope (() => securityClient.CheckAccess (securableObject, AccessType.Get (GeneralAccessTypes.Delete)));
       }
       finally
       {
@@ -186,7 +186,7 @@ namespace Remotion.Data.DomainObjects.Security
       {
         _isActive = true;
         var methodInformation = propertyInfo.GetGetMethod (true) ?? new NullMethodInformation();
-        clientTransaction.Execute (() => securityClient.CheckPropertyReadAccess (securableObject, methodInformation));
+        clientTransaction.ExecuteInScope (() => securityClient.CheckPropertyReadAccess (securableObject, methodInformation));
       }
       finally
       {
@@ -240,7 +240,7 @@ namespace Remotion.Data.DomainObjects.Security
       {
         _isActive = true;
         var methodInformation = propertyInfo.GetSetMethod (true) ?? new NullMethodInformation ();
-        clientTransaction.Execute (() => securityClient.CheckPropertyWriteAccess (securableObject, methodInformation));
+        clientTransaction.ExecuteInScope (() => securityClient.CheckPropertyWriteAccess (securableObject, methodInformation));
       }
       finally
       {

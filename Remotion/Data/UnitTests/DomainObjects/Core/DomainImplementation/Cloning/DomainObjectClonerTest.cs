@@ -413,7 +413,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DomainImplementation.Clonin
       _classWithClonerCallback.ReferencedObject = referencedObject;
 
       var clone = _cloner.CreateClone (_classWithClonerCallback, new CompleteCloneStrategy ());
-      var clonedReferencedObject = cloneTransaction.Execute (() => clone.ReferencedObject);
+      var clonedReferencedObject = cloneTransaction.ExecuteInScope (() => clone.ReferencedObject);
 
       Assert.That (clonedReferencedObject.CallbackInvoked, Is.True);
       Assert.That (clonedReferencedObject.CallbackOriginal, Is.SameAs (referencedObject));
@@ -466,7 +466,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DomainImplementation.Clonin
         CallbackCloneTransaction = cloneTransaction;
         CallbackCurrentTransaction = ClientTransaction.Current;
         CallbackOriginal = original;
-        PropertyValueInCallback = cloneTransaction.Execute (() => Property);
+        PropertyValueInCallback = cloneTransaction.ExecuteInScope (() => Property);
       }
     }
   }

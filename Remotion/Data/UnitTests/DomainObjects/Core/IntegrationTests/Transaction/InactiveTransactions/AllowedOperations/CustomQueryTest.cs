@@ -30,7 +30,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
     [Test]
     public void QueryInInactiveRootTransaction_IsAllowed ()
     {
-      var resultSet = InactiveRootTransaction.Execute (
+      var resultSet = InactiveRootTransaction.ExecuteInScope (
           () => QueryFactory.CreateLinqQuery<Order> ().Where (obj => obj.OrderNumber == 1).Select (o => new { o.OrderNumber }).ToList());
 
       Assert.That (resultSet, Has.Count.EqualTo (1));
@@ -40,7 +40,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
     [Test]
     public void QueryInInactiveMiddleTransaction_IsAllowed ()
     {
-      var resultSet = InactiveMiddleTransaction.Execute (
+      var resultSet = InactiveMiddleTransaction.ExecuteInScope (
           () => QueryFactory.CreateLinqQuery<Order> ().Where (obj => obj.OrderNumber == 1).Select (o => new { o.OrderNumber }).ToList ());
 
       Assert.That (resultSet, Has.Count.EqualTo (1));

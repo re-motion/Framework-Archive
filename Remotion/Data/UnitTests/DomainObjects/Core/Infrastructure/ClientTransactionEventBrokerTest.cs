@@ -70,9 +70,9 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure
 
       _eventBroker = new ClientTransactionEventBroker (_clientTransaction);
 
-      _domainObject1 = _clientTransaction.Execute (() => DomainObjectIDs.Order1.GetObject<Order> ());
-      _domainObject2 = _clientTransaction.Execute (() => DomainObjectIDs.Order2.GetObject<Order> ());
-      _invalidDomainObject = _clientTransaction.Execute (
+      _domainObject1 = _clientTransaction.ExecuteInScope (() => DomainObjectIDs.Order1.GetObject<Order> ());
+      _domainObject2 = _clientTransaction.ExecuteInScope (() => DomainObjectIDs.Order2.GetObject<Order> ());
+      _invalidDomainObject = _clientTransaction.ExecuteInScope (
           () =>
           {
             var order = Order.NewObject ();

@@ -103,12 +103,12 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
 
     public void Begin ()
     {
-      _modifiedEndPoint.ClientTransaction.Execute (ScopedBegin);
+      _modifiedEndPoint.ClientTransaction.ExecuteInScope (ScopedBegin);
     }
 
     public void End ()
     {
-      _modifiedEndPoint.ClientTransaction.Execute (ScopedEnd);
+      _modifiedEndPoint.ClientTransaction.ExecuteInScope (ScopedEnd);
     }
 
     protected virtual void ScopedBegin ()

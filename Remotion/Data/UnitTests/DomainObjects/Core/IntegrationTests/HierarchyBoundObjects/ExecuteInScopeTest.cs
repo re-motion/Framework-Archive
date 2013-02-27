@@ -40,12 +40,12 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.HierarchyB
     }
 
     [Test]
-    public void Execute_ForLeafTransaction_AffectsCurrentTransaction ()
+    public void ExecuteInScope_ForLeafTransaction_AffectsCurrentTransaction ()
     {
       var subTransaction = _rootTransaction.CreateSubTransaction();
 
-      subTransaction.Execute (() => Assert.That (ClientTransaction.Current, Is.SameAs (subTransaction)));
-      subTransaction.Execute (
+      subTransaction.ExecuteInScope (() => Assert.That (ClientTransaction.Current, Is.SameAs (subTransaction)));
+      subTransaction.ExecuteInScope (
           () =>
           {
             Assert.That (ClientTransaction.Current, Is.SameAs (subTransaction));
@@ -54,12 +54,12 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.HierarchyB
     }
 
     [Test]
-    public void Execute_AffectsNewObject ()
+    public void ExecuteInScope_AffectsNewObject ()
     {
       Assert.That (() => Order.NewObject (), Throws.InvalidOperationException.With.Message.EqualTo ("..."));
 
       var leafTransaction = _rootTransaction.CreateSubTransaction ();
-      leafTransaction.Execute (() =>
+      leafTransaction.ExecuteInScope (() =>
       {
         var instance = Order.NewObject ();
         Assert.That (instance.RootTransaction, Is.SameAs (_rootTransaction));
@@ -68,14 +68,14 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.HierarchyB
     }
 
     [Test]
-    public void Execute_AffectsGetObject ()
+    public void ExecuteInScope_AffectsGetObject ()
     {
       Assert.That (
           () => DomainObjectIDs.ClassWithAllDataTypes1.GetObject<ClassWithAllDataTypes> (),
           Throws.InvalidOperationException.With.Message.EqualTo ("..."));
 
       var clientTransaction = _rootTransaction.CreateSubTransaction ();
-      clientTransaction.Execute (
+      clientTransaction.ExecuteInScope (
           () =>
           {
             var instance = DomainObjectIDs.ClassWithAllDataTypes1.GetObject<ClassWithAllDataTypes>();
@@ -85,13 +85,13 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.HierarchyB
     }
 
     [Test]
-    public void Execute_AffectsQuery ()
+    public void ExecuteInScope_AffectsQuery ()
     {
       var query = from cwadt in QueryFactory.CreateLinqQuery<ClassWithAllDataTypes> () select cwadt;
       Assert.That (() => query.ToArray (), Throws.InvalidOperationException.With.Message.EqualTo ("..."));
 
       var clientTransaction = _rootTransaction.CreateSubTransaction ();
-      clientTransaction.Execute (
+      clientTransaction.ExecuteInScope (
           () =>
           {
             var result = query.ToArray().First();
@@ -101,11 +101,11 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.HierarchyB
     }
 
     [Test]
-    public void Execute_ForOtherHierarchy_DoesNotAffectDefaultContext ()
+    public void ExecuteInScope_ForOtherHierarchy_DoesNotAffectDefaultContext ()
     {
       _order1LoadedInRootTransaction.OrderNumber = 2;
 
-      ClientTransaction.CreateRootTransaction ().Execute (() =>
+      ClientTransaction.CreateRootTransaction ().ExecuteInScope (() =>
       {
         Assert.That (ClientTransaction.Current, Is.Not.SameAs (_rootTransaction));
 
@@ -116,16 +116,16 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.HierarchyB
     }
 
     [Test]
-    public void Execute_ForNonLeafTransaction_Throws ()
+    public void ExecuteInScope_ForNonLeafTransaction_Throws ()
     {
       _rootTransaction.CreateSubTransaction ();
 
-      Assert.That (() => _rootTransaction.Execute (() => { }), Throws.InvalidOperationException.With.Message.EqualTo ("..."));
-      Assert.That (() => _rootTransaction.Execute (() => 7), Throws.InvalidOperationException.With.Message.EqualTo ("..."));
+      Assert.That (() => _rootTransaction.ExecuteInScope (() => { }), Throws.InvalidOperationException.With.Message.EqualTo ("..."));
+      Assert.That (() => _rootTransaction.ExecuteInScope (() => 7), Throws.InvalidOperationException.With.Message.EqualTo ("..."));
     }
 
     [Test]
-    public void Execute_ForNonLeafTransaction_AllowedWithRightBehaviorFlag_AndInfluencesDefaultContext ()
+    public void ExecuteInScope_ForNonLeafTransaction_AllowedWithRightBehaviorFlag_AndInfluencesDefaultContext ()
     {
       var subTransaction = _rootTransaction.CreateSubTransaction();
 
@@ -137,7 +137,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.HierarchyB
 
       _order1LoadedInRootTransaction.OrderNumber = 2;
 
-      _rootTransaction.Execute (
+      _rootTransaction.ExecuteInScope (
           () =>
           {
             Assert.That (_rootTransaction.ActiveTransaction, Is.SameAs (_rootTransaction));
@@ -157,7 +157,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.HierarchyB
     }
 
     [Test]
-    public void Execute_NestedForDifferentTransactionsInTheHierarchy ()
+    public void ExecuteInScope_NestedForDifferentTransactionsInTheHierarchy ()
     {
       var middleTransaction = _rootTransaction.CreateSubTransaction ();
       var subTransaction = middleTransaction.CreateSubTransaction ();
@@ -165,18 +165,18 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.HierarchyB
       Assert.That (_rootTransaction.ActiveTransaction, Is.SameAs (subTransaction));
       Assert.That (_order1LoadedInRootTransaction.DefaultTransactionContext.ClientTransaction, Is.SameAs (subTransaction));
 
-      middleTransaction.Execute (() =>
+      middleTransaction.ExecuteInScope (() =>
       {
         Assert.That (_rootTransaction.ActiveTransaction, Is.SameAs (middleTransaction));
         Assert.That (_order1LoadedInRootTransaction.DefaultTransactionContext.ClientTransaction, Is.SameAs (middleTransaction));
 
-        _rootTransaction.Execute (
+        _rootTransaction.ExecuteInScope (
             () =>
             {
               Assert.That (_rootTransaction.ActiveTransaction, Is.SameAs (_rootTransaction));
               Assert.That (_order1LoadedInRootTransaction.DefaultTransactionContext.ClientTransaction, Is.SameAs (_rootTransaction));
 
-              subTransaction.Execute (
+              subTransaction.ExecuteInScope (
                   () =>
                   {
                     Assert.That (_rootTransaction.ActiveTransaction, Is.SameAs (subTransaction));

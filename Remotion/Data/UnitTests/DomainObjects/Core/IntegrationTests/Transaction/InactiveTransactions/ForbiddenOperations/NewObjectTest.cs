@@ -33,7 +33,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
       CheckTransactionIsEmpty (InactiveMiddleTransaction);
       CheckTransactionIsEmpty (ActiveSubTransaction);
 
-      CheckForbidden (() => InactiveRootTransaction.Execute (() => Order.NewObject ()), "NewObjectCreating");
+      CheckForbidden (() => InactiveRootTransaction.ExecuteInScope (() => Order.NewObject ()), "NewObjectCreating");
 
       CheckTransactionIsEmpty (InactiveRootTransaction);
       CheckTransactionIsEmpty (InactiveMiddleTransaction);
@@ -47,7 +47,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
       CheckTransactionIsEmpty (InactiveMiddleTransaction);
       CheckTransactionIsEmpty (ActiveSubTransaction);
 
-      CheckForbidden (() => InactiveMiddleTransaction.Execute (() => Order.NewObject ()), "NewObjectCreating");
+      CheckForbidden (() => InactiveMiddleTransaction.ExecuteInScope (() => Order.NewObject ()), "NewObjectCreating");
 
       CheckTransactionIsEmpty (InactiveRootTransaction);
       CheckTransactionIsEmpty (InactiveMiddleTransaction);
