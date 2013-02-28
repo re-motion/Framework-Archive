@@ -779,7 +779,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
     }
 
     [Test]
-    public void EnterScope_InactiveTransaction_WithMakeActive_SetsTransactionActiveAndReturnsAScope_ThatIntegratesActivatedScope ()
+    public void EnterScope_InactiveTransaction_WithMakeActive_SetsTransactionActiveAndReturnsAScope_ThatUndoesActivation ()
     {
       var hierarchyMock = MockRepository.GenerateStrictMock<IClientTransactionHierarchy> ();
       _hierarchyManagerMock.Stub (stub => stub.TransactionHierarchy).Return (hierarchyMock);
@@ -796,7 +796,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
 
       hierarchyMock.VerifyAllExpectations();
 
-      // Check that result scope integrates activated scope
+      // Check that result scope integrates and disposes activation scope for undo.
 
       activatedScopeMock.Expect (mock => mock.Dispose());
 

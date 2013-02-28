@@ -420,12 +420,17 @@ public class ClientTransaction
 
     if (ActiveTransaction != this)
     {
+      // TODO 5447: Before uncommenting this, implement inactiveTransactionBehavior in the callers - EnterNonDiscardingScope, ExecuteInScope.
+      // TODO 5447: Then, change all calls of APIs within re-motion to pass in the flag.
+      //if (inactiveTransactionBehavior == InactiveTransactionBehavior.Throw)
+      //{
+      //  throw new InvalidOperationException (
+      //      "The Current transaction cannot be an inactive transaction. Specify InactiveTransactionBehavior.MakeActive in order to temporarily make "
+      //      + "this transaction active in order to use it as the Current transaction.");
+      //}
+
       var scope = _hierarchyManager.TransactionHierarchy.ActivateTransaction (this);
       scopeLeaveAction = scope.Dispose;
-
-      //throw new InvalidOperationException (
-      //    "The Current transaction cannot be an inactive transaction. Specify InactiveTransactionBehavior.MakeActive in order to temporarily make "
-      //    + "this transaction active in order to use it as the Current transaction.");
     }
 
     return new ClientTransactionScope (this, rollbackBehavior, scopeLeaveAction);
@@ -462,7 +467,8 @@ public class ClientTransaction
   /// This <see cref="ClientTransaction"/> is not the <see cref="ActiveTransaction"/> of the hierarchy and 
   /// <paramref name="inactiveTransactionBehavior"/> is set to <see cref="InactiveTransactionBehavior.Throw"/>.
   /// </exception>
-  public virtual ClientTransactionScope EnterNonDiscardingScope (InactiveTransactionBehavior inactiveTransactionBehavior = InactiveTransactionBehavior.Throw)
+  public virtual ClientTransactionScope EnterNonDiscardingScope (
+      InactiveTransactionBehavior inactiveTransactionBehavior = InactiveTransactionBehavior.Throw)
   {
     // TODO 5447: Use inactiveTransactionBehavior parameter.
     return EnterScope (AutoRollbackBehavior.None);
