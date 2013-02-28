@@ -366,7 +366,8 @@ namespace Remotion.Data.DomainObjects
     {
       get 
       {
-        return TransactionContext[RootTransaction.LeafTransaction];
+        // TODO 5447: return TransactionContext[RootTransaction.LeafTransaction];
+        return GetDefaultTransactionContext();
       }
     }
 

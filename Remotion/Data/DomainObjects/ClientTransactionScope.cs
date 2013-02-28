@@ -25,7 +25,7 @@ namespace Remotion.Data.DomainObjects
   /// </summary>
   /// <remarks>
   /// <para>
-  /// When an instance of this class is created via <see cref="ClientTransaction.EnterScope(DomainObjects.AutoRollbackBehavior)"/>, it sets the
+  /// When an instance of this class is created via <see cref="ClientTransaction.EnterScope"/>, it sets the
   /// <see cref="ClientTransactionScope.ActiveScope"/> property to the newly created intance. The new instance stores the previous active scope, and
   /// when its <see cref="Leave"/> method is called, it resets <see cref="ClientTransactionScope.ActiveScope"/> to that value (executing the 
   /// <see cref="AutoRollbackBehavior"/> as applicable). Employ a <c>using</c> block to associate a new <see cref="ClientTransaction"/> with the

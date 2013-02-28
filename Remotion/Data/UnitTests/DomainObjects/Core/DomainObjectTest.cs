@@ -307,6 +307,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
     }
 
     [Test]
+    [Ignore ("TODO 5447")]
     public void DefaultTransactionContext_SameAsAssociatedRootTransaction ()
     {
       var order = _transaction.ExecuteInScope (() => Order.NewObject ());
@@ -314,6 +315,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
     }
 
     [Test]
+    [Ignore ("TODO 5447")]
     public void DefaultTransactionContext_SameAsAssociatedLeafTransaction ()
     {
       var order = _transaction.ExecuteInScope (() => Order.NewObject ());
@@ -322,6 +324,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
     }
 
     [Test]
+    [Ignore ("TODO 5447")]
     public void DefaultTransactionContext_SameAsActivatedTransaction ()
     {
       var order = _transaction.ExecuteInScope (() => Order.NewObject ());

@@ -335,10 +335,8 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
                         Arg.Is (_transaction),
                         Arg<ReadOnlyCollection<ObjectID>>.List.Equal (new[] { DomainObjectIDs.ClassWithAllDataTypes1 })));
 
-        clientTransactionEventReceiver.Loaded (null, null);
-        LastCall.Constraints (
-            Rhino_Is.Same (_transaction),
-            Property.ValueConstraint ("DomainObjects", Property.Value ("Count", 1)));
+        clientTransactionEventReceiver.Expect (
+            mock => mock.Loaded (Arg.Is (_transaction), Arg<ClientTransactionEventArgs>.Matches (args => args.DomainObjects.Count == 1)));
         _extensionMock.Expect (
             mock => mock.ObjectsLoaded (
                 Arg.Is (_transaction),

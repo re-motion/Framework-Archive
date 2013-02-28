@@ -25,6 +25,7 @@ using Remotion.Data.UnitTests.DomainObjects.TestDomain;
 namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.HierarchyBoundObjects
 {
   [TestFixture]
+  [Ignore ("TODO 5447")]
   public class ScopeTest : HierarchyBoundObjectsTestBase
   {
     private ClientTransaction _rootTransaction;

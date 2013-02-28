@@ -248,6 +248,7 @@ public class ClientTransaction
   /// </summary>
   public ClientTransaction ActiveTransaction
   {
+    // TODO 5447: Should come from hierarchy manager.
     get { return LeafTransaction; }
   }
 
@@ -431,12 +432,13 @@ public class ClientTransaction
       InactiveTransactionBehavior inactiveTransactionBehavior = InactiveTransactionBehavior.Throw)
   {
     // TODO 5447: Implement inactiveTransactionBehavior.MakeActive. The hierarchy manager needs to be involved here somehow. And the scope needs to know how the reset the active transaction when disposed.
-    if (ActiveTransaction != this)
-    {
-      throw new InvalidOperationException (
-          "The Current transaction cannot be an inactive transaction. Specify InactiveTransactionBehavior.MakeActive in order to temporarily make "
-          + "this transaction active in order to use it as the Current transaction.");
-    }
+    // TODO 5447
+    //if (ActiveTransaction != this)
+    //{
+    //  throw new InvalidOperationException (
+    //      "The Current transaction cannot be an inactive transaction. Specify InactiveTransactionBehavior.MakeActive in order to temporarily make "
+    //      + "this transaction active in order to use it as the Current transaction.");
+    //}
 
     return new ClientTransactionScope (this, rollbackBehavior);
   }
