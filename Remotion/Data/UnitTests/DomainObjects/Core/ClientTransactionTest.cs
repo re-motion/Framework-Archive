@@ -265,10 +265,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
     public void RootTransaction ()
     {
       var fakeRootTransaction = ClientTransactionObjectMother.Create();
-      var transactionHierarchyStub = MockRepository.GenerateStub<IClientTransactionHierarchy>();
-      transactionHierarchyStub.Stub (stub => stub.RootTransaction).Return (fakeRootTransaction);
-      
-      _hierarchyManagerMock.Stub (mock => mock.TransactionHierarchy).Return (transactionHierarchyStub);
+      _hierarchyManagerMock.Stub (mock => mock.TransactionHierarchy.RootTransaction).Return (fakeRootTransaction);
       _hierarchyManagerMock.Replay ();
 
       Assert.That (_transactionWithMocks.RootTransaction, Is.SameAs (fakeRootTransaction));
@@ -278,10 +275,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
     public void LeafTransaction ()
     {
       var fakeLeafTransaction = ClientTransactionObjectMother.Create ();
-      var transactionHierarchyStub = MockRepository.GenerateStub<IClientTransactionHierarchy> ();
-      transactionHierarchyStub.Stub (stub => stub.LeafTransaction).Return (fakeLeafTransaction);
-
-      _hierarchyManagerMock.Stub (mock => mock.TransactionHierarchy).Return (transactionHierarchyStub);
+      _hierarchyManagerMock.Stub (mock => mock.TransactionHierarchy.LeafTransaction).Return (fakeLeafTransaction);
       _hierarchyManagerMock.Replay ();
 
       Assert.That (_transactionWithMocks.LeafTransaction, Is.SameAs (fakeLeafTransaction));
@@ -290,14 +284,11 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
     [Test]
     public void ActiveTransaction ()
     {
-      var fakeLeafTransaction = ClientTransactionObjectMother.Create ();
-      var transactionHierarchyStub = MockRepository.GenerateStub<IClientTransactionHierarchy> ();
-      transactionHierarchyStub.Stub (stub => stub.ActiveTransaction).Return (fakeLeafTransaction);
-
-      _hierarchyManagerMock.Stub (mock => mock.TransactionHierarchy).Return (transactionHierarchyStub);
+      var fakeActiveTransaction = ClientTransactionObjectMother.Create ();
+      _hierarchyManagerMock.Stub (mock => mock.TransactionHierarchy.ActiveTransaction).Return (fakeActiveTransaction);
       _hierarchyManagerMock.Replay ();
 
-      Assert.That (_transactionWithMocks.ActiveTransaction, Is.SameAs (fakeLeafTransaction));
+      Assert.That (_transactionWithMocks.ActiveTransaction, Is.SameAs (fakeActiveTransaction));
     }
 
     [Test]
@@ -766,7 +757,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
     [Test]
     public void EnterScope_ActiveTransaction ()
     {
-      _hierarchyManagerMock.Stub (stub => stub.SubTransaction).Return (null);
+      _hierarchyManagerMock.Stub (stub => stub.TransactionHierarchy.ActiveTransaction).Return (_transactionWithMocks);
       _hierarchyManagerMock.Replay ();
 
       var scope = _transactionWithMocks.EnterScope (AutoRollbackBehavior.Rollback);
@@ -778,13 +769,40 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
 
     [Test]
     [Ignore ("TODO 5447")]
-    public void EnterScope_InactiveTransaction ()
+    public void EnterScope_InactiveTransaction_ThrowsByDefault ()
     {
       var fakeSub = ClientTransactionObjectMother.Create();
-      _hierarchyManagerMock.Stub (stub => stub.SubTransaction).Return (fakeSub);
+      _hierarchyManagerMock.Stub (stub => stub.TransactionHierarchy.ActiveTransaction).Return (fakeSub);
       _hierarchyManagerMock.Replay();
 
       Assert.That (() => _transactionWithMocks.EnterScope (AutoRollbackBehavior.None), Throws.InvalidOperationException);
+    }
+
+    [Test]
+    public void EnterScope_InactiveTransaction_WithMakeActive_SetsTransactionActiveAndReturnsAScope_ThatIntegratesActivatedScope ()
+    {
+      var hierarchyMock = MockRepository.GenerateStrictMock<IClientTransactionHierarchy> ();
+      _hierarchyManagerMock.Stub (stub => stub.TransactionHierarchy).Return (hierarchyMock);
+      _hierarchyManagerMock.Replay();
+
+      var fakeSub = ClientTransactionObjectMother.Create ();
+      hierarchyMock.Stub (stub => stub.ActiveTransaction).Return (fakeSub);
+      
+      var activatedScopeMock = MockRepository.GenerateStrictMock<IDisposable>();
+      hierarchyMock.Expect (mock => mock.ActivateTransaction (_transactionWithMocks)).Return (activatedScopeMock);
+      hierarchyMock.Replay ();
+
+      var result = _transactionWithMocks.EnterScope (AutoRollbackBehavior.None, InactiveTransactionBehavior.MakeActive);
+
+      hierarchyMock.VerifyAllExpectations();
+
+      // Check that result scope integrates activated scope
+
+      activatedScopeMock.Expect (mock => mock.Dispose());
+
+      result.Leave();
+
+      activatedScopeMock.VerifyAllExpectations();
     }
 
     [Test]

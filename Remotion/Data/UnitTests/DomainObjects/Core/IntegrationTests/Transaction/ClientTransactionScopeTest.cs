@@ -394,8 +394,8 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
       transactionMock
           .Expect (mock => mock.EnterScope (AutoRollbackBehavior.Discard))
           .Return (
-          (ClientTransactionScope)
-          PrivateInvoke.CreateInstanceNonPublicCtor (typeof (ClientTransactionScope), transactionMock, AutoRollbackBehavior.Discard));
+              (ClientTransactionScope) PrivateInvoke.CreateInstanceNonPublicCtor (
+                  typeof (ClientTransactionScope), transactionMock, AutoRollbackBehavior.Discard, (Action) (() => { })));
       transactionMock.Expect (mock => mock.Discard ());
 
       transactionMock.Replay();
@@ -405,6 +405,24 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
       }
 
       transactionMock.VerifyAllExpectations();
+    }
+
+    [Test]
+    public void Leave_ExecutesLeaveAction_AfterAutoRollbackBehavior ()
+    {
+      var scopedTransaction = ClientTransactionObjectMother.Create();
+      var leaveActionExecuted = false;
+      Action leaveAction = () =>
+      {
+        Assert.That (scopedTransaction.IsDiscarded, Is.True);
+        leaveActionExecuted = true;
+      };
+      var scope = (ClientTransactionScope) PrivateInvoke.CreateInstanceNonPublicCtor (
+          typeof (ClientTransactionScope), scopedTransaction, AutoRollbackBehavior.Discard, leaveAction);
+
+      scope.Leave();
+
+      Assert.That (leaveActionExecuted, Is.True);
     }
 
     [Test]
