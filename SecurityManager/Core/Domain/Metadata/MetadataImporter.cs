@@ -93,7 +93,8 @@ namespace Remotion.SecurityManager.Domain.Metadata
 
     public void Import (XmlDocument metadataXmlDocument)
     {
-      using (_transaction.EnterNonDiscardingScope())
+      // TODO 5447: Use MakeActive flag.
+      using (_transaction.EnterNonDiscardingScope ())
       {
         SecurityMetadataSchema metadataSchema = new SecurityMetadataSchema();
         if (!metadataXmlDocument.Schemas.Contains (metadataSchema.SchemaUri))

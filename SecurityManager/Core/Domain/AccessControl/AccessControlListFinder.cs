@@ -38,7 +38,8 @@ namespace Remotion.SecurityManager.Domain.AccessControl
       ArgumentUtility.CheckNotNull ("context", context);
 
       SecurableClassDefinition classDefinition;
-      using (transaction.EnterNonDiscardingScope())
+      // TODO 5447: Use MakeActive flag.
+      using (transaction.EnterNonDiscardingScope ())
       {
         classDefinition = SecurableClassDefinition.FindByName (context.Class);
       }
@@ -59,7 +60,8 @@ namespace Remotion.SecurityManager.Domain.AccessControl
       ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
       ArgumentUtility.CheckNotNull ("context", context);
 
-      using (transaction.EnterNonDiscardingScope())
+      // TODO 5447: Use MakeActive flag.
+      using (transaction.EnterNonDiscardingScope ())
       {
         AccessControlList foundAccessControlList = null;
 

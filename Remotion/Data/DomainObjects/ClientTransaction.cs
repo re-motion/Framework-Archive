@@ -1022,19 +1022,16 @@ public class ClientTransaction
     if (relationEndPointID.Definition.Cardinality != CardinalityType.One)
       throw new ArgumentException ("The given end-point ID does not denote a related object (cardinality one).", "relationEndPointID");
 
-    using (EnterNonDiscardingScope ())
-    {
-      DomainObject domainObject = GetObject (relationEndPointID.ObjectID, true);
+    DomainObject domainObject = GetObject (relationEndPointID.ObjectID, true);
 
-      _eventBroker.RaiseRelationReadingEvent (domainObject, relationEndPointID.Definition, ValueAccess.Current);
+    _eventBroker.RaiseRelationReadingEvent (domainObject, relationEndPointID.Definition, ValueAccess.Current);
 
-      var objectEndPoint = (IObjectEndPoint) DataManager.GetRelationEndPointWithLazyLoad (relationEndPointID);
-      DomainObject relatedObject = objectEndPoint.GetOppositeObject ();
+    var objectEndPoint = (IObjectEndPoint) DataManager.GetRelationEndPointWithLazyLoad (relationEndPointID);
+    DomainObject relatedObject = objectEndPoint.GetOppositeObject ();
 
-      _eventBroker.RaiseRelationReadEvent (domainObject, relationEndPointID.Definition, relatedObject, ValueAccess.Current);
+    _eventBroker.RaiseRelationReadEvent (domainObject, relationEndPointID.Definition, relatedObject, ValueAccess.Current);
 
-      return relatedObject;
-    }
+    return relatedObject;
   }
 
   /// <summary>
@@ -1051,19 +1048,16 @@ public class ClientTransaction
     if (relationEndPointID.Definition.Cardinality != CardinalityType.One)
       throw new ArgumentException ("The given end-point ID does not denote a related object (cardinality one).", "relationEndPointID");
 
-    using (EnterNonDiscardingScope ())
-    {
-      DomainObject domainObject = GetObject (relationEndPointID.ObjectID, true);
+    DomainObject domainObject = GetObject (relationEndPointID.ObjectID, true);
 
-      _eventBroker.RaiseRelationReadingEvent (domainObject, relationEndPointID.Definition, ValueAccess.Original);
+    _eventBroker.RaiseRelationReadingEvent (domainObject, relationEndPointID.Definition, ValueAccess.Original);
 
-      var objectEndPoint = (IObjectEndPoint) _dataManager.GetRelationEndPointWithLazyLoad (relationEndPointID);
-      DomainObject relatedObject = objectEndPoint.GetOriginalOppositeObject ();
+    var objectEndPoint = (IObjectEndPoint) _dataManager.GetRelationEndPointWithLazyLoad (relationEndPointID);
+    DomainObject relatedObject = objectEndPoint.GetOriginalOppositeObject ();
 
-      _eventBroker.RaiseRelationReadEvent (domainObject, relationEndPointID.Definition, relatedObject, ValueAccess.Original);
+    _eventBroker.RaiseRelationReadEvent (domainObject, relationEndPointID.Definition, relatedObject, ValueAccess.Original);
 
-      return relatedObject;
-    }
+    return relatedObject;
   }
 
   /// <summary>
@@ -1080,20 +1074,17 @@ public class ClientTransaction
     if (relationEndPointID.Definition.Cardinality != CardinalityType.Many)
       throw new ArgumentException ("The given end-point ID does not denote a related object collection (cardinality many).", "relationEndPointID");
 
-    using (EnterNonDiscardingScope ())
-    {
-      DomainObject domainObject = GetObject (relationEndPointID.ObjectID, true);
+    DomainObject domainObject = GetObject (relationEndPointID.ObjectID, true);
 
-      _eventBroker.RaiseRelationReadingEvent (domainObject, relationEndPointID.Definition, ValueAccess.Current);
+    _eventBroker.RaiseRelationReadingEvent (domainObject, relationEndPointID.Definition, ValueAccess.Current);
 
-      var collectionEndPoint = (ICollectionEndPoint) _dataManager.GetRelationEndPointWithLazyLoad (relationEndPointID);
-      var relatedObjects = collectionEndPoint.Collection;
-      var readOnlyRelatedObjects = new ReadOnlyDomainObjectCollectionAdapter<DomainObject> (relatedObjects);
+    var collectionEndPoint = (ICollectionEndPoint) _dataManager.GetRelationEndPointWithLazyLoad (relationEndPointID);
+    var relatedObjects = collectionEndPoint.Collection;
+    var readOnlyRelatedObjects = new ReadOnlyDomainObjectCollectionAdapter<DomainObject> (relatedObjects);
 
-      _eventBroker.RaiseRelationReadEvent (domainObject, relationEndPointID.Definition, readOnlyRelatedObjects, ValueAccess.Current);
+    _eventBroker.RaiseRelationReadEvent (domainObject, relationEndPointID.Definition, readOnlyRelatedObjects, ValueAccess.Current);
 
-      return relatedObjects;
-    }
+    return relatedObjects;
   }
 
   /// <summary>
@@ -1110,20 +1101,17 @@ public class ClientTransaction
     if (relationEndPointID.Definition.Cardinality != CardinalityType.Many)
       throw new ArgumentException ("The given end-point ID does not denote a related object collection (cardinality many).", "relationEndPointID");
 
-    using (EnterNonDiscardingScope ())
-    {
-      DomainObject domainObject = GetObject (relationEndPointID.ObjectID, true);
+    DomainObject domainObject = GetObject (relationEndPointID.ObjectID, true);
 
-      _eventBroker.RaiseRelationReadingEvent (domainObject, relationEndPointID.Definition, ValueAccess.Original);
+    _eventBroker.RaiseRelationReadingEvent (domainObject, relationEndPointID.Definition, ValueAccess.Original);
 
-      var collectionEndPoint = (ICollectionEndPoint) _dataManager.GetRelationEndPointWithLazyLoad (relationEndPointID);
-      var relatedObjects = collectionEndPoint.GetCollectionWithOriginalData();
-      var readOnlyRelatedObjects = new ReadOnlyDomainObjectCollectionAdapter<DomainObject> (relatedObjects);
+    var collectionEndPoint = (ICollectionEndPoint) _dataManager.GetRelationEndPointWithLazyLoad (relationEndPointID);
+    var relatedObjects = collectionEndPoint.GetCollectionWithOriginalData();
+    var readOnlyRelatedObjects = new ReadOnlyDomainObjectCollectionAdapter<DomainObject> (relatedObjects);
 
-      _eventBroker.RaiseRelationReadEvent (domainObject, relationEndPointID.Definition, readOnlyRelatedObjects, ValueAccess.Original);
+    _eventBroker.RaiseRelationReadEvent (domainObject, relationEndPointID.Definition, readOnlyRelatedObjects, ValueAccess.Original);
 
-      return relatedObjects;
-    }
+    return relatedObjects;
   }  
 
   /// <summary>

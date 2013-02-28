@@ -36,6 +36,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
     {
       // Rollback the state of all objects not matched by the filter - we don't want those objects to be committed to the transaction
 
+      // TODO 5447: Use MakeActive flag.
       using (clientTransaction.EnterNonDiscardingScope ()) // filter must be executed in scope of clientTransaction
       {
         foreach (var domainObject in domainObjects)

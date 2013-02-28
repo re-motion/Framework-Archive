@@ -58,7 +58,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
       instance.Initialize (objectID, objectInitializationContext.RootTransaction);
       objectInitializationContext.RegisterObject (instance);
 
-      using (clientTransaction.EnterNonDiscardingScope())
+      // TODO 5447: Use MakeActive flag.
+      using (clientTransaction.EnterNonDiscardingScope ())
       {
         instance.RaiseReferenceInitializatingEvent();
       }
@@ -78,6 +79,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
       classDefinition.ValidateCurrentMixinConfiguration();
 
       var mixedType = DomainObjectMixinCodeGenerationBridge.GetConcreteType (domainObjectType);
+      // TODO 5447: Use MakeActive flag.
       using (clientTransaction.EnterNonDiscardingScope ())
       {
         using (new ObjectInititalizationContextScope (objectInitializationContext))
