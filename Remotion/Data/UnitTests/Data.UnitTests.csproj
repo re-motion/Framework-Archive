@@ -210,6 +210,7 @@
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
     <Compile Include="DomainObjects\Core\Infrastructure\DomainObjectHandleAttributeTest.cs" />
+    <Compile Include="DomainObjects\Core\Infrastructure\HierarchyManagement\ClientTransactionHierarchyTest.cs" />
     <Compile Include="DomainObjects\Core\Infrastructure\ObjectInititalizationContextScopeHelper.cs" />
     <Compile Include="DomainObjects\Core\Infrastructure\ObjectLifetime\ObjectInititalizationContextScopeTest.cs" />
     <Compile Include="DomainObjects\Core\Infrastructure\ObjectLifetime\ObjectReferenceInitializationContextTest.cs" />

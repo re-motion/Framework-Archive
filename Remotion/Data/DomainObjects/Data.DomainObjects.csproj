@@ -163,6 +163,8 @@
     <Compile Include="InactiveTransactionBehavior.cs" />
     <Compile Include="DomainObjectHandleConverter.cs" />
     <Compile Include="Infrastructure\DomainObjectHandleAttribute.cs" />
+    <Compile Include="Infrastructure\HierarchyManagement\ClientTransactionHierarchy.cs" />
+    <Compile Include="Infrastructure\HierarchyManagement\IClientTransactionHierarchy.cs" />
     <Compile Include="Infrastructure\ObjectLifetime\ObjectInititalizationContextScope.cs" />
     <Compile Include="Infrastructure\ObjectLifetime\ObjectReferenceInitializationContext.cs" />
     <Compile Include="Infrastructure\TypePipe\IAccessorInterceptor.cs" />
