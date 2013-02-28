@@ -18,6 +18,7 @@ using System;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects;
 using Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement;
+using Remotion.Development.UnitTesting;
 
 namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.HierarchyManagement
 {
@@ -247,6 +248,16 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.HierarchyMan
           () => scope1.Dispose(),
           Throws.InvalidOperationException.With.Message.EqualTo ("The scopes returned by ActivateTransaction must be disposed inside out."));
       Assert.That (_hierarchy.ActiveTransaction, Is.SameAs (subTransaction));
+    }
+
+    [Test]
+    public void Serializable ()
+    {
+      var deserialized = Serializer.SerializeAndDeserialize (_hierarchy);
+
+      Assert.That (deserialized.ActiveTransaction, Is.Not.Null);
+      Assert.That (deserialized.RootTransaction, Is.Not.Null);
+      Assert.That (deserialized.LeafTransaction, Is.Not.Null);
     }
   }
 }

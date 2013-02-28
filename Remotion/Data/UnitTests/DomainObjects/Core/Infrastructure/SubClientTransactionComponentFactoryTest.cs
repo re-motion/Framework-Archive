@@ -57,6 +57,9 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure
       _parentInvalidDomainObjectManagerStub = MockRepository.GenerateStub<IInvalidDomainObjectManager> ();
       _parentEnlistedDomainObjectManagerStub = MockRepository.GenerateStub<IEnlistedDomainObjectManager> ();
       _parentTransactionHierarchyManagerStub = MockRepository.GenerateStub<ITransactionHierarchyManager> ();
+      _parentTransactionHierarchyManagerStub
+          .Stub (stub => stub.TransactionHierarchy)
+          .Return (MockRepository.GenerateStub<IClientTransactionHierarchy>());
       _parentEventSink = MockRepository.GenerateStub<IClientTransactionEventSink>();
     
       _factory = SubClientTransactionComponentFactory.Create (

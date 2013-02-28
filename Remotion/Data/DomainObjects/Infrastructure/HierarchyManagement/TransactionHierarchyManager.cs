@@ -73,6 +73,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
     private readonly ClientTransaction _parentTransaction;
     private readonly ITransactionHierarchyManager _parentHierarchyManager;
     private readonly IClientTransactionEventSink _parentEventSink;
+    private readonly IClientTransactionHierarchy _transactionHierarchy;
 
     private readonly InactiveClientTransactionListenerWithLoadRules _inactiveClientTransactionListener;
     private readonly NewObjectHierarchyInvalidationClientTransactionListener _newObjectHierarchyInvalidationClientTransactionListener;
@@ -81,18 +82,14 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
     private ClientTransaction _subTransaction;
 
     public TransactionHierarchyManager (ClientTransaction thisTransaction, IClientTransactionEventSink thisEventSink)
+        : this (
+            thisTransaction,
+            thisEventSink,
+            new ClientTransactionHierarchy (ArgumentUtility.CheckNotNull ("thisTransaction", thisTransaction)),
+            null,
+            null,
+            null)
     {
-      ArgumentUtility.CheckNotNull ("thisTransaction", thisTransaction);
-      ArgumentUtility.CheckNotNull ("thisEventSink", thisEventSink);
-
-      _thisTransaction = thisTransaction;
-      _thisEventSink = thisEventSink;
-      _parentTransaction = null;
-      _parentHierarchyManager = null;
-      _parentEventSink = null;
-
-      _inactiveClientTransactionListener = new InactiveClientTransactionListenerWithLoadRules ();
-      _newObjectHierarchyInvalidationClientTransactionListener = new NewObjectHierarchyInvalidationClientTransactionListener();
     }
 
     public TransactionHierarchyManager (
@@ -101,15 +98,46 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
         ClientTransaction parentTransaction,
         ITransactionHierarchyManager parentHierarchyManager,
         IClientTransactionEventSink parentEventSink)
-      : this (thisTransaction, thisEventSink)
+        : this (
+            thisTransaction,
+            thisEventSink,
+            parentHierarchyManager.TransactionHierarchy,
+            parentTransaction,
+            ArgumentUtility.CheckNotNull ("parentHierarchyManager", parentHierarchyManager),
+            parentEventSink)
     {
       ArgumentUtility.CheckNotNull ("parentTransaction", parentTransaction);
-      ArgumentUtility.CheckNotNull ("parentHierarchyManager", parentHierarchyManager);
       ArgumentUtility.CheckNotNull ("parentEventSink", parentEventSink);
 
       _parentTransaction = parentTransaction;
       _parentHierarchyManager = parentHierarchyManager;
       _parentEventSink = parentEventSink;
+    }
+
+    private TransactionHierarchyManager (
+        ClientTransaction thisTransaction,
+        IClientTransactionEventSink thisEventSink,
+        IClientTransactionHierarchy transactionHierarchy,
+        ClientTransaction parentTransaction,
+        ITransactionHierarchyManager parentHierarchyManager,
+        IClientTransactionEventSink parentEventSink)
+    {
+      ArgumentUtility.CheckNotNull ("thisTransaction", thisTransaction);
+      ArgumentUtility.CheckNotNull ("thisEventSink", thisEventSink);
+      ArgumentUtility.CheckNotNull ("transactionHierarchy", transactionHierarchy);
+      
+
+      _thisTransaction = thisTransaction;
+      _thisEventSink = thisEventSink;
+
+      _parentTransaction = parentTransaction;
+      _parentHierarchyManager = parentHierarchyManager;
+      _parentEventSink = parentEventSink;
+
+      _transactionHierarchy = transactionHierarchy;
+
+      _inactiveClientTransactionListener = new InactiveClientTransactionListenerWithLoadRules ();
+      _newObjectHierarchyInvalidationClientTransactionListener = new NewObjectHierarchyInvalidationClientTransactionListener ();
     }
 
     public ClientTransaction ThisTransaction
@@ -120,6 +148,11 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
     public IClientTransactionEventSink ThisEventSink
     {
       get { return _thisEventSink; }
+    }
+
+    public IClientTransactionHierarchy TransactionHierarchy
+    {
+      get { return _transactionHierarchy; }
     }
 
     public ClientTransaction ParentTransaction
@@ -227,6 +260,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
         throw;
       }
 
+      _transactionHierarchy.AppendLeafTransaction (subTransaction);
       _subTransaction = subTransaction;
 
       _thisEventSink.RaiseSubTransactionCreatedEvent (subTransaction);
@@ -235,8 +269,14 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
 
     public void RemoveSubTransaction ()
     {
-      _subTransaction = null;
-      _isWriteable = true;
+      if (_subTransaction != null)
+      {
+        Assertion.IsTrue (_transactionHierarchy.LeafTransaction == _subTransaction);
+        _transactionHierarchy.RemoveLeafTransaction();
+
+        _subTransaction = null;
+        _isWriteable = true;
+      }
     }
 
     public IDisposable Unlock ()

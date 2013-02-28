@@ -20,6 +20,7 @@ using Remotion.Data.DomainObjects;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement;
 using Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.SerializableFakes;
+using Remotion.Data.UnitTests.UnitTesting;
 using Remotion.Development.UnitTesting;
 using Rhino.Mocks;
 
@@ -37,6 +38,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.HierarchyMan
 
     private TransactionHierarchyManager _manager;
     private TransactionHierarchyManager _managerWithoutParent;
+    private IClientTransactionHierarchy _hierarchyStrictMock;
 
     public override void SetUp ()
     {
@@ -44,8 +46,11 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.HierarchyMan
 
       _thisTransaction = ClientTransactionObjectMother.Create ();
       _thisEventSinkWithStrictMock = MockRepository.GenerateStrictMock<IClientTransactionEventSink>();
+      _hierarchyStrictMock = MockRepository.GenerateStrictMock<IClientTransactionHierarchy>();
+
       _parentTransaction = ClientTransactionObjectMother.Create ();
       _parentHierarchyManagerStrictMock = MockRepository.GenerateStrictMock<ITransactionHierarchyManager>();
+      _parentHierarchyManagerStrictMock.Stub (stub => stub.TransactionHierarchy).Return (_hierarchyStrictMock);
       _parentEventSinkWithStrictMock = MockRepository.GenerateStrictMock<IClientTransactionEventSink>();
 
       _manager = new TransactionHierarchyManager (
@@ -63,6 +68,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.HierarchyMan
       Assert.That (_manager.ParentEventSink, Is.SameAs (_parentEventSinkWithStrictMock));
       Assert.That (_manager.IsWriteable, Is.True);
       Assert.That (_manager.SubTransaction, Is.Null);
+      Assert.That (_manager.TransactionHierarchy, Is.SameAs (_hierarchyStrictMock));
     }
 
     [Test]
@@ -75,6 +81,9 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.HierarchyMan
       Assert.That (_managerWithoutParent.ParentEventSink, Is.Null);
       Assert.That (_managerWithoutParent.IsWriteable, Is.True);
       Assert.That (_managerWithoutParent.SubTransaction, Is.Null);
+      Assert.That (
+          _managerWithoutParent.TransactionHierarchy,
+          Is.TypeOf<ClientTransactionHierarchy>().With.Property<ClientTransactionHierarchy> (h => h.RootTransaction).SameAs (_thisTransaction));
     }
 
     [Test]
@@ -123,11 +132,9 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.HierarchyMan
     [Test]
     public void OnTransactionDiscard_WithSubTransaction ()
     {
-      _thisEventSinkWithStrictMock.Stub (mock => mock.RaiseSubTransactionCreatingEvent ());
-      _thisEventSinkWithStrictMock.Stub (mock => mock.RaiseSubTransactionCreatedEvent ( Arg<ClientTransaction>.Is.Anything));
+      FakeManagerWithSubtransaction (_manager);
+      ClientTransaction fakeSubTransaction = _manager.SubTransaction;
 
-      ClientTransaction fakeSubTransaction = ClientTransactionObjectMother.CreateWithParent (_thisTransaction);
-      _manager.CreateSubTransaction (tx => fakeSubTransaction);
       Assert.That (_manager.SubTransaction, Is.SameAs (fakeSubTransaction));
       Assert.That (fakeSubTransaction.IsDiscarded, Is.False);
 
@@ -228,9 +235,10 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.HierarchyMan
     [Test]
     public void CreateSubTransaction ()
     {
+      var counter = new OrderedExpectationCounter();
       bool subTransactionCreatingCalled = false;
       _thisEventSinkWithStrictMock.Expect (mock => mock.RaiseSubTransactionCreatingEvent ())
-          .WhenCalled (mi =>
+          .WhenCalledOrdered (counter, mi =>
           {
             Assert.That (_manager.IsWriteable, Is.True);
             subTransactionCreatingCalled = true;
@@ -246,13 +254,16 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.HierarchyMan
         return fakeSubTransaction;
       };
 
-      _thisEventSinkWithStrictMock.Expect (mock => mock.RaiseSubTransactionCreatedEvent ( fakeSubTransaction));
+      _hierarchyStrictMock.Expect (mock => mock.AppendLeafTransaction (fakeSubTransaction)).Ordered (counter);
+      _thisEventSinkWithStrictMock.Expect (mock => mock.RaiseSubTransactionCreatedEvent (fakeSubTransaction)).Ordered (counter);
 
       var result = _manager.CreateSubTransaction (factory);
 
       Assert.That (result, Is.Not.Null.And.SameAs (fakeSubTransaction));
       Assert.That (_manager.SubTransaction, Is.SameAs (fakeSubTransaction));
       Assert.That (_manager.IsWriteable, Is.False);
+
+      _hierarchyStrictMock.VerifyAllExpectations();
     }
 
     [Test]
@@ -317,6 +328,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.HierarchyMan
     {
       Assert.That (_manager.IsWriteable, Is.True);
       Assert.That (_manager.SubTransaction, Is.Null);
+      _hierarchyStrictMock.Stub (stub => stub.LeafTransaction).Return (_thisTransaction);
 
       _manager.RemoveSubTransaction();
 
@@ -332,10 +344,14 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.HierarchyMan
       Assert.That (_manager.IsWriteable, Is.False);
       Assert.That (_manager.SubTransaction, Is.Not.Null);
 
+      _hierarchyStrictMock.Stub (stub => stub.LeafTransaction).Return (_manager.SubTransaction);
+      _hierarchyStrictMock.Expect (mock => mock.RemoveLeafTransaction());
+
       _manager.RemoveSubTransaction ();
 
       Assert.That (_manager.IsWriteable, Is.True);
       Assert.That (_manager.SubTransaction, Is.Null);
+      _hierarchyStrictMock.VerifyAllExpectations();
     }
 
     [Test]
@@ -438,7 +454,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.HierarchyMan
     private void FakeManagerWithSubtransaction (TransactionHierarchyManager transactionHierarchyManager)
     {
       TransactionHierarchyManagerTestHelper.SetIsWriteable (transactionHierarchyManager, false);
-      var fakeSubTransaction = ClientTransactionObjectMother.Create ();
+      var fakeSubTransaction = ClientTransactionObjectMother.CreateWithParent (transactionHierarchyManager.ThisTransaction);
       TransactionHierarchyManagerTestHelper.SetSubtransaction (transactionHierarchyManager, fakeSubTransaction);
     }
   }

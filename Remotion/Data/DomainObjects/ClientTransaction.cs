@@ -213,14 +213,7 @@ public class ClientTransaction
   /// <value>The root transaction of this <see cref="ClientTransaction"/>.</value>
   public ClientTransaction RootTransaction 
   { 
-    get
-    {
-      var current = this;
-      while (current.ParentTransaction != null)
-        current = current.ParentTransaction;
-
-      return current;
-    }
+    get { return _hierarchyManager.TransactionHierarchy.RootTransaction; }
   }
 
   /// <summary>
@@ -231,14 +224,7 @@ public class ClientTransaction
   /// <value>The leaf transaction of this <see cref="ClientTransaction"/>.</value>
   public ClientTransaction LeafTransaction
   {
-    get
-    {
-      var current = this;
-      while (current.SubTransaction != null)
-        current = current.SubTransaction;
-
-      return current;
-    }
+    get { return _hierarchyManager.TransactionHierarchy.LeafTransaction; }
   }
 
   /// <summary>
@@ -248,8 +234,7 @@ public class ClientTransaction
   /// </summary>
   public ClientTransaction ActiveTransaction
   {
-    // TODO 5447: Should come from hierarchy manager.
-    get { return LeafTransaction; }
+    get { return _hierarchyManager.TransactionHierarchy.ActiveTransaction; }
   }
 
   /// <summary>

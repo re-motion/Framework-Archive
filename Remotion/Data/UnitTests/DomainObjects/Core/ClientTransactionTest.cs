@@ -262,62 +262,42 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
     }
 
     [Test]
-    public void RootTransaction_Same ()
+    public void RootTransaction ()
     {
-      _hierarchyManagerMock.Stub (mock => mock.ParentTransaction).Return (null);
+      var fakeRootTransaction = ClientTransactionObjectMother.Create();
+      var transactionHierarchyStub = MockRepository.GenerateStub<IClientTransactionHierarchy>();
+      transactionHierarchyStub.Stub (stub => stub.RootTransaction).Return (fakeRootTransaction);
+      
+      _hierarchyManagerMock.Stub (mock => mock.TransactionHierarchy).Return (transactionHierarchyStub);
       _hierarchyManagerMock.Replay ();
 
-      Assert.That (_transactionWithMocks.RootTransaction, Is.SameAs (_transactionWithMocks));
+      Assert.That (_transactionWithMocks.RootTransaction, Is.SameAs (fakeRootTransaction));
     }
 
     [Test]
-    public void RootTransaction_MultipleSteps ()
+    public void LeafTransaction ()
     {
-      var fakeParent1 = ClientTransactionObjectMother.Create ();
-      var fakeParent2 = ClientTransactionObjectMother.CreateWithParent (fakeParent1);
-      _hierarchyManagerMock.Stub (mock => mock.ParentTransaction).Return (fakeParent2);
+      var fakeLeafTransaction = ClientTransactionObjectMother.Create ();
+      var transactionHierarchyStub = MockRepository.GenerateStub<IClientTransactionHierarchy> ();
+      transactionHierarchyStub.Stub (stub => stub.LeafTransaction).Return (fakeLeafTransaction);
+
+      _hierarchyManagerMock.Stub (mock => mock.TransactionHierarchy).Return (transactionHierarchyStub);
       _hierarchyManagerMock.Replay ();
 
-      Assert.That (_transactionWithMocks.RootTransaction, Is.SameAs (fakeParent1));
+      Assert.That (_transactionWithMocks.LeafTransaction, Is.SameAs (fakeLeafTransaction));
     }
 
     [Test]
-    public void LeafTransaction_Same ()
+    public void ActiveTransaction ()
     {
-      _hierarchyManagerMock.Stub (mock => mock.SubTransaction).Return (null);
+      var fakeLeafTransaction = ClientTransactionObjectMother.Create ();
+      var transactionHierarchyStub = MockRepository.GenerateStub<IClientTransactionHierarchy> ();
+      transactionHierarchyStub.Stub (stub => stub.ActiveTransaction).Return (fakeLeafTransaction);
+
+      _hierarchyManagerMock.Stub (mock => mock.TransactionHierarchy).Return (transactionHierarchyStub);
       _hierarchyManagerMock.Replay ();
 
-      Assert.That (_transactionWithMocks.LeafTransaction, Is.SameAs (_transactionWithMocks));
-    }
-
-    [Test]
-    public void LeafTransaction_MultipleSteps ()
-    {
-      var fakeLeaf = ClientTransactionObjectMother.Create ();
-      var fakeMiddle = ClientTransactionObjectMother.CreateWithSub (fakeLeaf);
-      _hierarchyManagerMock.Stub (mock => mock.SubTransaction).Return (fakeMiddle);
-      _hierarchyManagerMock.Replay();
-
-      Assert.That (_transactionWithMocks.LeafTransaction, Is.SameAs (fakeLeaf));
-    }
-
-    [Test]
-    public void ActiveTransaction_SameAsRootTransaction()
-    {
-      _hierarchyManagerMock.Stub (mock => mock.SubTransaction).Return (null);
-
-      Assert.That (_transactionWithMocks.ActiveTransaction, Is.SameAs (_transactionWithMocks));
-    }
-
-    [Test]
-    public void ActiveTransaction_SameAsLeafTransaction ()
-    {
-      var fakeLeaf = ClientTransactionObjectMother.Create ();
-      var fakeMiddle = ClientTransactionObjectMother.CreateWithSub (fakeLeaf);
-      _hierarchyManagerMock.Stub (mock => mock.SubTransaction).Return (fakeMiddle);
-      _hierarchyManagerMock.Replay ();
-
-      Assert.That (_transactionWithMocks.ActiveTransaction, Is.SameAs (fakeLeaf));
+      Assert.That (_transactionWithMocks.ActiveTransaction, Is.SameAs (fakeLeafTransaction));
     }
 
     [Test]
