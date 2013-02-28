@@ -80,24 +80,36 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
     private bool _isWriteable = true;
     private ClientTransaction _subTransaction;
 
-    public TransactionHierarchyManager (
-        ClientTransaction thisTransaction,
-        IClientTransactionEventSink thisEventSink,
-        ClientTransaction parentTransaction,
-        ITransactionHierarchyManager parentHierarchyManager,
-        IClientTransactionEventSink parentEventSink)
+    public TransactionHierarchyManager (ClientTransaction thisTransaction, IClientTransactionEventSink thisEventSink)
     {
       ArgumentUtility.CheckNotNull ("thisTransaction", thisTransaction);
       ArgumentUtility.CheckNotNull ("thisEventSink", thisEventSink);
 
       _thisTransaction = thisTransaction;
       _thisEventSink = thisEventSink;
-      _parentTransaction = parentTransaction;
-      _parentHierarchyManager = parentHierarchyManager;
-      _parentEventSink = parentEventSink;
+      _parentTransaction = null;
+      _parentHierarchyManager = null;
+      _parentEventSink = null;
 
       _inactiveClientTransactionListener = new InactiveClientTransactionListenerWithLoadRules ();
       _newObjectHierarchyInvalidationClientTransactionListener = new NewObjectHierarchyInvalidationClientTransactionListener();
+    }
+
+    public TransactionHierarchyManager (
+        ClientTransaction thisTransaction,
+        IClientTransactionEventSink thisEventSink,
+        ClientTransaction parentTransaction,
+        ITransactionHierarchyManager parentHierarchyManager,
+        IClientTransactionEventSink parentEventSink)
+      : this (thisTransaction, thisEventSink)
+    {
+      ArgumentUtility.CheckNotNull ("parentTransaction", parentTransaction);
+      ArgumentUtility.CheckNotNull ("parentHierarchyManager", parentHierarchyManager);
+      ArgumentUtility.CheckNotNull ("parentEventSink", parentEventSink);
+
+      _parentTransaction = parentTransaction;
+      _parentHierarchyManager = parentHierarchyManager;
+      _parentEventSink = parentEventSink;
     }
 
     public ClientTransaction ThisTransaction
