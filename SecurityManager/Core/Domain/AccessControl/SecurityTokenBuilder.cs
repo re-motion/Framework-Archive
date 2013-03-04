@@ -172,9 +172,10 @@ namespace Remotion.SecurityManager.Domain.AccessControl
 
     private IList<AbstractRoleDefinition> GetAbstractRoles (IEnumerable<EnumWrapper> abstractRoleNames)
     {
-      IList<AbstractRoleDefinition> abstractRolesCollection = AbstractRoleDefinition.Find (abstractRoleNames);
+      var abstractRoleNamesCollection = abstractRoleNames.ConvertToCollection();
+      IList<AbstractRoleDefinition> abstractRolesCollection = AbstractRoleDefinition.Find (abstractRoleNamesCollection);
 
-      EnumWrapper? missingAbstractRoleName = FindFirstMissingAbstractRole (abstractRoleNames, abstractRolesCollection);
+      EnumWrapper? missingAbstractRoleName = FindFirstMissingAbstractRole (abstractRoleNamesCollection, abstractRolesCollection);
       if (missingAbstractRoleName != null)
         throw CreateAccessControlException ("The abstract role '{0}' could not be found.", missingAbstractRoleName);
 
