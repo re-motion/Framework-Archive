@@ -25,7 +25,6 @@ using Remotion.Reflection;
 namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.HierarchyBoundObjects
 {
   [TestFixture]
-  [Ignore ("TODO 5447")]
   public class OperationsInLeafTransactionTest : HierarchyBoundObjectsTestBase
   {
     private ClientTransaction _rootTransaction;

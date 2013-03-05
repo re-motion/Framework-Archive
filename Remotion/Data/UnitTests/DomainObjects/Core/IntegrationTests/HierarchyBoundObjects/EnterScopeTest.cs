@@ -19,14 +19,14 @@ using System;
 using System.Linq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects;
+using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.UnitTests.DomainObjects.TestDomain;
 
 namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.HierarchyBoundObjects
 {
   [TestFixture]
-  [Ignore ("TODO 5447")]
-  public class ScopeTest : HierarchyBoundObjectsTestBase
+  public class EnterScopeTest : HierarchyBoundObjectsTestBase
   {
     private ClientTransaction _rootTransaction;
     private Order _order1LoadedInRootTransaction;
@@ -62,7 +62,9 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.HierarchyB
     [Test]
     public void Scope_AffectsNewObject ()
     {
-      Assert.That (() => Order.NewObject (), Throws.InvalidOperationException.With.Message.EqualTo ("..."));
+      Assert.That (
+          () => Order.NewObject(),
+          Throws.InvalidOperationException.With.Message.EqualTo ("No ClientTransaction has been associated with the current thread."));
 
       var leafTransaction = _rootTransaction.CreateSubTransaction ();
       using (leafTransaction.EnterDiscardingScope ())
@@ -78,7 +80,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.HierarchyB
     {
       Assert.That (
           () => DomainObjectIDs.ClassWithAllDataTypes1.GetObject<ClassWithAllDataTypes> (),
-          Throws.InvalidOperationException.With.Message.EqualTo ("..."));
+          Throws.InvalidOperationException.With.Message.EqualTo ("No ClientTransaction has been associated with the current thread."));
 
       var clientTransaction = _rootTransaction.CreateSubTransaction ();
       using (clientTransaction.EnterNonDiscardingScope ())
@@ -93,7 +95,9 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.HierarchyB
     public void Scope_AffectsQuery ()
     {
       var query = from cwadt in QueryFactory.CreateLinqQuery<ClassWithAllDataTypes> () select cwadt;
-      Assert.That (() => query.ToArray (), Throws.InvalidOperationException.With.Message.EqualTo ("..."));
+      Assert.That (
+          () => query.ToArray(),
+          Throws.InvalidOperationException.With.Message.EqualTo ("No ClientTransaction has been associated with the current thread."));
 
       var clientTransaction = _rootTransaction.CreateSubTransaction ();
       using (clientTransaction.EnterNonDiscardingScope ())
@@ -138,8 +142,16 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.HierarchyB
     {
       _rootTransaction.CreateSubTransaction ();
 
-      Assert.That (() => _rootTransaction.EnterDiscardingScope (), Throws.InvalidOperationException.With.Message.EqualTo ("..."));
-      Assert.That (() => _rootTransaction.EnterNonDiscardingScope (), Throws.InvalidOperationException.With.Message.EqualTo ("..."));
+      Assert.That (
+          () => _rootTransaction.EnterDiscardingScope(),
+          Throws.InvalidOperationException.With.Message.EqualTo (
+              "The Current transaction cannot be an inactive transaction. Specify InactiveTransactionBehavior.MakeActive in order to temporarily "
+              + "make this transaction active in order to use it as the Current transaction."));
+      Assert.That (
+          () => _rootTransaction.EnterNonDiscardingScope(),
+          Throws.InvalidOperationException.With.Message.EqualTo (
+              "The Current transaction cannot be an inactive transaction. Specify InactiveTransactionBehavior.MakeActive in order to temporarily "
+              + "make this transaction active in order to use it as the Current transaction."));
     }
 
     [Test]
@@ -166,7 +178,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.HierarchyB
         Assert.That (_order1LoadedInRootTransaction.OrderNumber, Is.EqualTo (1));
         Assert.That (_order1LoadedInRootTransaction.State, Is.EqualTo (StateType.Unchanged));
 
-        Assert.That (() => _order1LoadedInRootTransaction.OrderNumber = 3, Throws.InvalidOperationException.With.Message.EqualTo ("..."));
+        Assert.That (() => _order1LoadedInRootTransaction.OrderNumber = 3, Throws.TypeOf <ClientTransactionInactiveException>());
       }
 
       Assert.That (_order1LoadedInRootTransaction.OrderNumber, Is.EqualTo (2));

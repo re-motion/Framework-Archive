@@ -25,7 +25,6 @@ using Rhino.Mocks;
 namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.HierarchyBoundObjects
 {
   [TestFixture]
-  [Ignore ("TODO 5447")]
   public class LoadEventsTest : HierarchyBoundObjectsTestBase
   {
     private ClientTransaction _rootTransaction;

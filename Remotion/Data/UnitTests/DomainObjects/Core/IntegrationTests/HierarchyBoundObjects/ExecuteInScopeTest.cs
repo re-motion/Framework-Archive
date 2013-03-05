@@ -19,13 +19,13 @@ using System;
 using System.Linq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects;
+using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.UnitTests.DomainObjects.TestDomain;
 
 namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.HierarchyBoundObjects
 {
   [TestFixture]
-  [Ignore ("TODO 5447")]
   public class ExecuteInScopeTest : HierarchyBoundObjectsTestBase
   {
     private ClientTransaction _rootTransaction;
@@ -56,7 +56,9 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.HierarchyB
     [Test]
     public void ExecuteInScope_AffectsNewObject ()
     {
-      Assert.That (() => Order.NewObject (), Throws.InvalidOperationException.With.Message.EqualTo ("..."));
+      Assert.That (
+          () => Order.NewObject(),
+          Throws.InvalidOperationException.With.Message.EqualTo ("No ClientTransaction has been associated with the current thread."));
 
       var leafTransaction = _rootTransaction.CreateSubTransaction ();
       leafTransaction.ExecuteInScope (() =>
@@ -72,7 +74,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.HierarchyB
     {
       Assert.That (
           () => DomainObjectIDs.ClassWithAllDataTypes1.GetObject<ClassWithAllDataTypes> (),
-          Throws.InvalidOperationException.With.Message.EqualTo ("..."));
+          Throws.InvalidOperationException.With.Message.EqualTo ("No ClientTransaction has been associated with the current thread."));
 
       var clientTransaction = _rootTransaction.CreateSubTransaction ();
       clientTransaction.ExecuteInScope (
@@ -88,7 +90,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.HierarchyB
     public void ExecuteInScope_AffectsQuery ()
     {
       var query = from cwadt in QueryFactory.CreateLinqQuery<ClassWithAllDataTypes> () select cwadt;
-      Assert.That (() => query.ToArray (), Throws.InvalidOperationException.With.Message.EqualTo ("..."));
+      Assert.That (() => query.ToArray (), Throws.InvalidOperationException.With.Message.EqualTo ("No ClientTransaction has been associated with the current thread."));
 
       var clientTransaction = _rootTransaction.CreateSubTransaction ();
       clientTransaction.ExecuteInScope (
@@ -120,8 +122,16 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.HierarchyB
     {
       _rootTransaction.CreateSubTransaction ();
 
-      Assert.That (() => _rootTransaction.ExecuteInScope (() => { }), Throws.InvalidOperationException.With.Message.EqualTo ("..."));
-      Assert.That (() => _rootTransaction.ExecuteInScope (() => 7), Throws.InvalidOperationException.With.Message.EqualTo ("..."));
+      Assert.That (
+          () => _rootTransaction.ExecuteInScope (() => { }),
+          Throws.InvalidOperationException.With.Message.EqualTo (
+              "The Current transaction cannot be an inactive transaction. Specify InactiveTransactionBehavior.MakeActive in order to temporarily "
+               + "make this transaction active in order to use it as the Current transaction."));
+      Assert.That (
+          () => _rootTransaction.ExecuteInScope (() => 7),
+          Throws.InvalidOperationException.With.Message.EqualTo (
+              "The Current transaction cannot be an inactive transaction. Specify InactiveTransactionBehavior.MakeActive in order to temporarily "
+              + "make this transaction active in order to use it as the Current transaction."));
     }
 
     [Test]
@@ -149,7 +159,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.HierarchyB
             Assert.That (_order1LoadedInRootTransaction.OrderNumber, Is.EqualTo (1));
             Assert.That (_order1LoadedInRootTransaction.State, Is.EqualTo (StateType.Unchanged));
 
-            Assert.That (() => _order1LoadedInRootTransaction.OrderNumber = 3, Throws.InvalidOperationException.With.Message.EqualTo ("..."));
+            Assert.That (() => _order1LoadedInRootTransaction.OrderNumber = 3, Throws.TypeOf<ClientTransactionInactiveException>());
           },
           inactiveTransactionBehavior: InactiveTransactionBehavior.MakeActive);
 
