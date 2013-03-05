@@ -101,24 +101,12 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
       return Enumerable.Empty<Exception> ();
     }
 
-    public void Begin ()
-    {
-      // TODO 5447: Remove ExecuteInScope, ScopedBegin/End
-      _modifiedEndPoint.ClientTransaction.ExecuteInScope (ScopedBegin);
-    }
-
-    public void End ()
-    {
-      // TODO 5447: Remove ExecuteInScope, ScopedBegin/End
-      _modifiedEndPoint.ClientTransaction.ExecuteInScope (ScopedEnd);
-    }
-
-    protected virtual void ScopedBegin ()
+    public virtual void Begin ()
     {
       RaiseClientTransactionBeginNotification (_oldRelatedObject, _newRelatedObject);
     }
 
-    protected virtual void ScopedEnd ()
+    public virtual void End ()
     {
       RaiseClientTransactionEndNotification (_oldRelatedObject, _newRelatedObject);
     }
@@ -140,6 +128,11 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
     {
       var oppositeEndPointID = RelationEndPointID.CreateOpposite (originatingEndPoint.Definition, oppositeObject.GetSafeID());
       return endPointProvider.GetRelationEndPointWithLazyLoad (oppositeEndPointID);
+    }
+
+    protected ClientTransactionScope EnterTransactionScope ()
+    {
+      return ModifiedEndPoint.ClientTransaction.EnterNonDiscardingScope();
     }
   }
 }
