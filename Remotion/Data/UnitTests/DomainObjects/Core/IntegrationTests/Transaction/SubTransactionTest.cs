@@ -153,8 +153,9 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
     }
 
     [Test]
-    [ExpectedException (typeof (ClientTransactionInactiveException), ExpectedMessage = 
-      "The operation cannot be executed because the ClientTransaction is inactive. Offending transaction modification: SubTransactionCreating.")]
+    [ExpectedException (typeof (ClientTransactionReadOnlyException), ExpectedMessage =
+        "The operation cannot be executed because the ClientTransaction is read-only, probably because it has an open subtransaction. "
+        + "Offending transaction modification: SubTransactionCreating.")]
     public void NoTwoSubTransactionsAtSameTime ()
     {
       TestableClientTransaction.CreateSubTransaction();

@@ -159,7 +159,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.HierarchyB
             Assert.That (_order1LoadedInRootTransaction.OrderNumber, Is.EqualTo (1));
             Assert.That (_order1LoadedInRootTransaction.State, Is.EqualTo (StateType.Unchanged));
 
-            Assert.That (() => _order1LoadedInRootTransaction.OrderNumber = 3, Throws.TypeOf<ClientTransactionInactiveException>());
+            Assert.That (() => _order1LoadedInRootTransaction.OrderNumber = 3, Throws.TypeOf<ClientTransactionReadOnlyException>());
           },
           inactiveTransactionBehavior: InactiveTransactionBehavior.MakeActive);
 

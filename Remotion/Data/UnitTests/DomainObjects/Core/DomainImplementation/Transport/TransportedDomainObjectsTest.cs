@@ -260,7 +260,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DomainImplementation.Transp
 
       Assert.That (
           () => transportedObjects.FinishTransport(),
-          Throws.TypeOf<ClientTransactionInactiveException>());
+          Throws.TypeOf<ClientTransactionReadOnlyException>());
     }
 
     [Test]

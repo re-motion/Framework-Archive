@@ -75,7 +75,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
     private readonly IClientTransactionEventSink _parentEventSink;
     private readonly IClientTransactionHierarchy _transactionHierarchy;
 
-    private readonly InactiveClientTransactionListenerWithLoadRules _inactiveClientTransactionListener;
+    private readonly ReadOnlyClientTransactionListenerWithLoadRules _readOnlyClientTransactionListener;
     private readonly NewObjectHierarchyInvalidationClientTransactionListener _newObjectHierarchyInvalidationClientTransactionListener;
 
     private bool _isWriteable = true;
@@ -136,7 +136,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
 
       _transactionHierarchy = transactionHierarchy;
 
-      _inactiveClientTransactionListener = new InactiveClientTransactionListenerWithLoadRules ();
+      _readOnlyClientTransactionListener = new ReadOnlyClientTransactionListenerWithLoadRules ();
       _newObjectHierarchyInvalidationClientTransactionListener = new NewObjectHierarchyInvalidationClientTransactionListener ();
     }
 
@@ -180,9 +180,9 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
       get { return _subTransaction; }
     }
 
-    public InactiveClientTransactionListenerWithLoadRules InactiveClientTransactionListener
+    public ReadOnlyClientTransactionListenerWithLoadRules ReadOnlyClientTransactionListener
     {
-      get { return _inactiveClientTransactionListener; }
+      get { return _readOnlyClientTransactionListener; }
     }
 
     public NewObjectHierarchyInvalidationClientTransactionListener NewObjectHierarchyInvalidationClientTransactionListener
@@ -193,7 +193,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
     public void InstallListeners (IClientTransactionEventBroker eventBroker)
     {
       ArgumentUtility.CheckNotNull ("eventBroker", eventBroker);
-      eventBroker.AddListener (_inactiveClientTransactionListener);
+      eventBroker.AddListener (_readOnlyClientTransactionListener);
       eventBroker.AddListener (_newObjectHierarchyInvalidationClientTransactionListener);
     }
 
@@ -217,20 +217,20 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
       ArgumentUtility.CheckNotNull ("loadedObjectIDs", loadedObjectIDs);
       if (_parentHierarchyManager != null)
         _parentHierarchyManager.OnBeforeSubTransactionObjectRegistration (loadedObjectIDs);
-      _inactiveClientTransactionListener.AddCurrentlyLoadingObjectIDs (loadedObjectIDs);
+      _readOnlyClientTransactionListener.AddCurrentlyLoadingObjectIDs (loadedObjectIDs);
     }
 
     public void OnAfterObjectRegistration (ReadOnlyCollection<ObjectID> objectIDsToBeLoaded)
     {
       ArgumentUtility.CheckNotNull ("objectIDsToBeLoaded", objectIDsToBeLoaded);
-      _inactiveClientTransactionListener.RemoveCurrentlyLoadingObjectIDs (objectIDsToBeLoaded);
+      _readOnlyClientTransactionListener.RemoveCurrentlyLoadingObjectIDs (objectIDsToBeLoaded);
     }
 
     public void OnBeforeSubTransactionObjectRegistration (ICollection<ObjectID> loadedObjectIDs)
     {
       ArgumentUtility.CheckNotNull ("loadedObjectIDs", loadedObjectIDs);
 
-      var conflictingIDs = loadedObjectIDs.Intersect (_inactiveClientTransactionListener.CurrentlyLoadingObjectIDs).ConvertToCollection ();
+      var conflictingIDs = loadedObjectIDs.Intersect (_readOnlyClientTransactionListener.CurrentlyLoadingObjectIDs).ConvertToCollection ();
       if (conflictingIDs.Any ())
       {
         var message =

@@ -90,7 +90,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.HierarchyMan
     public void InstallListeners ()
     {
       var eventBrokerMock = MockRepository.GenerateStrictMock<IClientTransactionEventBroker>();
-      eventBrokerMock.Expect (mock => mock.AddListener (Arg<InactiveClientTransactionListener>.Is.TypeOf));
+      eventBrokerMock.Expect (mock => mock.AddListener (Arg<ReadOnlyClientTransactionListener>.Is.TypeOf));
       eventBrokerMock.Expect (mock => mock.AddListener (Arg<NewObjectHierarchyInvalidationClientTransactionListener>.Is.TypeOf));
 
       _manager.InstallListeners (eventBrokerMock);
@@ -100,7 +100,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.HierarchyMan
     public void OnBeforeTransactionInitialize ()
     {
       _parentEventSinkWithStrictMock.Expect (mock => mock.RaiseSubTransactionInitializeEvent ( _thisTransaction));
-      ClientTransactionTestHelper.SetIsWriteable (_parentTransaction, false); // required by assertion in InactiveClientTransactionListener
+      ClientTransactionTestHelper.SetIsWriteable (_parentTransaction, false); // required by assertion in ReadOnlyClientTransactionListener
 
       _manager.OnBeforeTransactionInitialize();
 
@@ -156,35 +156,35 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.HierarchyMan
     [Test]
     public void OnBeforeObjectRegistration_WithoutParent ()
     {
-      Assert.That (_managerWithoutParent.InactiveClientTransactionListener.CurrentlyLoadingObjectIDs, Is.Empty);
+      Assert.That (_managerWithoutParent.ReadOnlyClientTransactionListener.CurrentlyLoadingObjectIDs, Is.Empty);
 
       _managerWithoutParent.OnBeforeObjectRegistration (Array.AsReadOnly (new[] { DomainObjectIDs.Order1, DomainObjectIDs.Order2 }));
 
       Assert.That (
-          _managerWithoutParent.InactiveClientTransactionListener.CurrentlyLoadingObjectIDs, 
+          _managerWithoutParent.ReadOnlyClientTransactionListener.CurrentlyLoadingObjectIDs, 
           Is.EquivalentTo (new[] { DomainObjectIDs.Order1, DomainObjectIDs.Order2 }));
 
       _managerWithoutParent.OnBeforeObjectRegistration (Array.AsReadOnly (new[] { DomainObjectIDs.Order3 }));
 
       Assert.That (
-          _managerWithoutParent.InactiveClientTransactionListener.CurrentlyLoadingObjectIDs,
+          _managerWithoutParent.ReadOnlyClientTransactionListener.CurrentlyLoadingObjectIDs,
           Is.EquivalentTo (new[] { DomainObjectIDs.Order1, DomainObjectIDs.Order2, DomainObjectIDs.Order3 }));
     }
 
     [Test]
     public void OnBeforeObjectRegistration_WithParent ()
     {
-      Assert.That (_manager.InactiveClientTransactionListener.CurrentlyLoadingObjectIDs, Is.Empty);
+      Assert.That (_manager.ReadOnlyClientTransactionListener.CurrentlyLoadingObjectIDs, Is.Empty);
 
       _parentHierarchyManagerStrictMock
           .Expect (mock => mock.OnBeforeSubTransactionObjectRegistration (new[] { DomainObjectIDs.Order1, DomainObjectIDs.Order2 }))
-          .WhenCalled (mi => Assert.That (_manager.InactiveClientTransactionListener.CurrentlyLoadingObjectIDs, Is.Empty));
+          .WhenCalled (mi => Assert.That (_manager.ReadOnlyClientTransactionListener.CurrentlyLoadingObjectIDs, Is.Empty));
 
       _manager.OnBeforeObjectRegistration (Array.AsReadOnly (new[] { DomainObjectIDs.Order1, DomainObjectIDs.Order2 }));
 
       _parentHierarchyManagerStrictMock.VerifyAllExpectations();
       Assert.That (
-          _manager.InactiveClientTransactionListener.CurrentlyLoadingObjectIDs,
+          _manager.ReadOnlyClientTransactionListener.CurrentlyLoadingObjectIDs,
           Is.EquivalentTo (new[] { DomainObjectIDs.Order1, DomainObjectIDs.Order2 }));
     }
 
@@ -194,20 +194,20 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.HierarchyMan
       _managerWithoutParent.OnBeforeObjectRegistration (
           Array.AsReadOnly (new[] { DomainObjectIDs.Order1, DomainObjectIDs.Order2, DomainObjectIDs.Order3 }));
       Assert.That (
-          _managerWithoutParent.InactiveClientTransactionListener.CurrentlyLoadingObjectIDs,
+          _managerWithoutParent.ReadOnlyClientTransactionListener.CurrentlyLoadingObjectIDs,
           Is.EquivalentTo (new[] { DomainObjectIDs.Order1, DomainObjectIDs.Order2, DomainObjectIDs.Order3 }));
 
       _managerWithoutParent.OnAfterObjectRegistration (
           Array.AsReadOnly (new[] { DomainObjectIDs.Order1, DomainObjectIDs.Order2 }));
 
       Assert.That (
-          _managerWithoutParent.InactiveClientTransactionListener.CurrentlyLoadingObjectIDs,
+          _managerWithoutParent.ReadOnlyClientTransactionListener.CurrentlyLoadingObjectIDs,
           Is.EquivalentTo (new[] { DomainObjectIDs.Order3 }));
 
       _managerWithoutParent.OnAfterObjectRegistration (
           Array.AsReadOnly (new[] { DomainObjectIDs.Order3 }));
 
-      Assert.That (_managerWithoutParent.InactiveClientTransactionListener.CurrentlyLoadingObjectIDs, Is.Empty);
+      Assert.That (_managerWithoutParent.ReadOnlyClientTransactionListener.CurrentlyLoadingObjectIDs, Is.Empty);
     }
 
     [Test]
@@ -250,7 +250,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.HierarchyMan
         Assert.That (tx, Is.SameAs (_thisTransaction));
         Assert.That (subTransactionCreatingCalled, Is.True);
         Assert.That (_manager.IsWriteable, Is.False, "IsWriteable needs to be set before the factory is called.");
-        ClientTransactionTestHelper.SetIsWriteable (_thisTransaction, false); // required by assertion in InactiveClientTransactionListener
+        ClientTransactionTestHelper.SetIsWriteable (_thisTransaction, false); // required by assertion in ReadOnlyClientTransactionListener
         return fakeSubTransaction;
       };
 
@@ -355,7 +355,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.HierarchyMan
     }
 
     [Test]
-    public void Unlock_Active ()
+    public void Unlock_Writeable ()
     {
       Assert.That (_manager.IsWriteable, Is.True);
       Assert.That (_manager.SubTransaction, Is.Null);
@@ -371,7 +371,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.HierarchyMan
     }
 
     [Test]
-    public void Unlock_Inactive ()
+    public void Unlock_ReadOnly ()
     {
       FakeManagerWithSubtransaction (_manager);
       
@@ -396,7 +396,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.HierarchyMan
     }
 
     [Test]
-    public void UnlockIfRequired_Active ()
+    public void UnlockIfRequired_Writeable ()
     {
       Assert.That (_manager.IsWriteable, Is.True);
       Assert.That (_manager.SubTransaction, Is.Null);
@@ -409,7 +409,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.HierarchyMan
     }
 
     [Test]
-    public void UnlockIfRequired_Inactive ()
+    public void UnlockIfRequired_ReadOnly ()
     {
       FakeManagerWithSubtransaction (_manager);
 
