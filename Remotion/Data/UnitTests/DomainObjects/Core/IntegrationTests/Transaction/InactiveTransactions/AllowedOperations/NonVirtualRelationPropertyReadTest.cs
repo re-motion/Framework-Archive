@@ -17,7 +17,6 @@
 
 using System;
 using NUnit.Framework;
-using Remotion.Data.DomainObjects;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.DomainImplementation;
 using Remotion.Data.UnitTests.DomainObjects.TestDomain;
@@ -47,7 +46,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
       ActiveSubTransaction.EnsureDataComplete (_relationEndPointID);
       ActiveSubTransaction.EnsureDataAvailable (DomainObjectIDs.Customer1);
 
-      var customer = InactiveRootTransaction.ExecuteInScope (() => _order1.Customer);
+      var customer = ExecuteInInactiveRootTransaction (() => _order1.Customer);
 
       Assert.That (customer.ID, Is.EqualTo (DomainObjectIDs.Customer1));
     }
@@ -58,7 +57,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
       ActiveSubTransaction.EnsureDataComplete (_relationEndPointID);
       ActiveSubTransaction.EnsureDataAvailable (DomainObjectIDs.Customer1);
 
-      var customer = InactiveMiddleTransaction.ExecuteInScope (() => _order1.Customer);
+      var customer = ExecuteInInactiveMiddleTransaction (() => _order1.Customer);
 
       Assert.That (customer.ID, Is.EqualTo (DomainObjectIDs.Customer1));
     }
@@ -82,7 +81,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
       CheckEndPointNull (InactiveMiddleTransaction, _oppositeRelationEndPointID);
       CheckEndPointNull (ActiveSubTransaction, _oppositeRelationEndPointID);
 
-      var customer = InactiveRootTransaction.ExecuteInScope (() => _order1.Customer);
+      var customer = ExecuteInInactiveRootTransaction (() => _order1.Customer);
       
       Assert.That (customer.ID, Is.EqualTo (DomainObjectIDs.Customer1));
 
@@ -122,7 +121,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
       CheckEndPointNull (InactiveMiddleTransaction, _oppositeRelationEndPointID);
       CheckEndPointNull (ActiveSubTransaction, _oppositeRelationEndPointID);
 
-      var customer = InactiveMiddleTransaction.ExecuteInScope (() => _order1.Customer);
+      var customer = ExecuteInInactiveMiddleTransaction (() => _order1.Customer);
 
       Assert.That (customer.ID, Is.EqualTo (DomainObjectIDs.Customer1));
 

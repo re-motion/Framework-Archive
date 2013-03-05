@@ -50,7 +50,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
     public void DiscardRendersSubTransactionUnusable ()
     {
       _subTransaction.Discard ();
-      using (_subTransaction.EnterDiscardingScope ())
+      using (_subTransaction.EnterNonDiscardingScope (InactiveTransactionBehavior.MakeActive))
       {
         Order.NewObject ();
       }

@@ -103,11 +103,13 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
 
     public void Begin ()
     {
+      // TODO 5447: Remove ExecuteInScope, ScopedBegin/End
       _modifiedEndPoint.ClientTransaction.ExecuteInScope (ScopedBegin);
     }
 
     public void End ()
     {
+      // TODO 5447: Remove ExecuteInScope, ScopedBegin/End
       _modifiedEndPoint.ClientTransaction.ExecuteInScope (ScopedEnd);
     }
 

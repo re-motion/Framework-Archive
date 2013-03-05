@@ -17,7 +17,6 @@
 using System;
 using System.Linq;
 using NUnit.Framework;
-using Remotion.Data.DomainObjects;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.UnitTests.DomainObjects.TestDomain;
 
@@ -31,7 +30,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
     {
       ActiveSubTransaction.EnsureDataAvailable (DomainObjectIDs.Order1);
 
-      var resultSet = InactiveRootTransaction.ExecuteInScope (() => QueryFactory.CreateLinqQuery<Order>().Where (obj => obj.OrderNumber == 1).ToList());
+      var resultSet = ExecuteInInactiveRootTransaction (() => QueryFactory.CreateLinqQuery<Order>().Where (obj => obj.OrderNumber == 1).ToList());
 
       Assert.That (resultSet, Has.Count.EqualTo (1));
       Assert.That (resultSet[0].ID, Is.EqualTo (DomainObjectIDs.Order1));
@@ -42,7 +41,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
     {
       ActiveSubTransaction.EnsureDataAvailable (DomainObjectIDs.Order1);
 
-      var resultSet = InactiveMiddleTransaction.ExecuteInScope (() => QueryFactory.CreateLinqQuery<Order> ().Where (obj => obj.OrderNumber == 1).ToList ());
+      var resultSet = ExecuteInInactiveMiddleTransaction ( () => QueryFactory.CreateLinqQuery<Order>().Where (obj => obj.OrderNumber == 1).ToList());
 
       Assert.That (resultSet, Has.Count.EqualTo (1));
       Assert.That (resultSet[0].ID, Is.EqualTo (DomainObjectIDs.Order1));
@@ -55,7 +54,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
       CheckDataNotLoaded (InactiveMiddleTransaction, DomainObjectIDs.Order1);
       CheckDataNotLoaded (ActiveSubTransaction, DomainObjectIDs.Order1);
 
-      var resultSet = InactiveRootTransaction.ExecuteInScope (() => QueryFactory.CreateLinqQuery<Order> ().Where (obj => obj.OrderNumber == 1).ToList ());
+      var resultSet = ExecuteInInactiveRootTransaction (() => QueryFactory.CreateLinqQuery<Order>().Where (obj => obj.OrderNumber == 1).ToList());
 
       Assert.That (resultSet, Has.Count.EqualTo (1));
       Assert.That (resultSet[0].ID, Is.EqualTo (DomainObjectIDs.Order1));
@@ -72,7 +71,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
       CheckDataNotLoaded (InactiveMiddleTransaction, DomainObjectIDs.Order1);
       CheckDataNotLoaded (ActiveSubTransaction, DomainObjectIDs.Order1);
 
-      var resultSet = InactiveMiddleTransaction.ExecuteInScope (() => QueryFactory.CreateLinqQuery<Order> ().Where (obj => obj.OrderNumber == 1).ToList ());
+      var resultSet = ExecuteInInactiveMiddleTransaction (() => QueryFactory.CreateLinqQuery<Order>().Where (obj => obj.OrderNumber == 1).ToList());
 
       Assert.That (resultSet, Has.Count.EqualTo (1));
       Assert.That (resultSet[0].ID, Is.EqualTo (DomainObjectIDs.Order1));

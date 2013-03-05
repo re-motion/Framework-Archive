@@ -32,7 +32,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
     {
       base.SetUp ();
 
-      _loadedClassWithAllDataTypes = ActiveSubTransaction.ExecuteInScope (() => DomainObjectIDs.ClassWithAllDataTypes1.GetObject<ClassWithAllDataTypes> ());
+      _loadedClassWithAllDataTypes = ExecuteInActiveSubTransaction (() => DomainObjectIDs.ClassWithAllDataTypes1.GetObject<ClassWithAllDataTypes> ());
     }
 
     protected override void InitializeInactiveRootTransaction ()
@@ -48,7 +48,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
       CheckState (InactiveMiddleTransaction, _loadedClassWithAllDataTypes, StateType.Unchanged);
       CheckState (ActiveSubTransaction, _loadedClassWithAllDataTypes, StateType.Unchanged);
 
-      CheckForbidden (() => InactiveRootTransaction.ExecuteInScope (() => _loadedClassWithAllDataTypes.Delete()), "ObjectDeleting");
+      CheckForbidden (() => ExecuteInInactiveRootTransaction (() => _loadedClassWithAllDataTypes.Delete()), "ObjectDeleting");
 
       CheckState (InactiveRootTransaction, _loadedClassWithAllDataTypes, StateType.Unchanged);
       CheckState (InactiveMiddleTransaction, _loadedClassWithAllDataTypes, StateType.Unchanged);
@@ -62,7 +62,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
       CheckState (InactiveMiddleTransaction, _loadedClassWithAllDataTypes, StateType.Unchanged);
       CheckState (ActiveSubTransaction, _loadedClassWithAllDataTypes, StateType.Unchanged);
 
-      CheckForbidden (() => InactiveMiddleTransaction.ExecuteInScope (() => _loadedClassWithAllDataTypes.Delete ()), "ObjectDeleting");
+      CheckForbidden (() => ExecuteInInactiveMiddleTransaction (() => _loadedClassWithAllDataTypes.Delete()), "ObjectDeleting");
 
       CheckState (InactiveRootTransaction, _loadedClassWithAllDataTypes, StateType.Unchanged);
       CheckState (InactiveMiddleTransaction, _loadedClassWithAllDataTypes, StateType.Unchanged);
@@ -76,7 +76,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
       CheckState (InactiveMiddleTransaction, _orderNewInRootTransaction, StateType.NotLoadedYet);
       CheckState (ActiveSubTransaction, _orderNewInRootTransaction, StateType.NotLoadedYet);
 
-      CheckForbidden (() => InactiveRootTransaction.ExecuteInScope (() => _orderNewInRootTransaction.Delete ()), "ObjectDeleting");
+      CheckForbidden (() => ExecuteInInactiveRootTransaction (() => _orderNewInRootTransaction.Delete()), "ObjectDeleting");
 
       CheckState (InactiveRootTransaction, _orderNewInRootTransaction, StateType.New);
       CheckState (InactiveMiddleTransaction, _orderNewInRootTransaction, StateType.NotLoadedYet);
@@ -90,7 +90,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
       CheckState (InactiveMiddleTransaction, _orderNewInRootTransaction, StateType.NotLoadedYet);
       CheckState (ActiveSubTransaction, _orderNewInRootTransaction, StateType.NotLoadedYet);
 
-      CheckForbidden (() => InactiveMiddleTransaction.ExecuteInScope (() => _orderNewInRootTransaction.Delete ()), "ObjectDeleting");
+      CheckForbidden (() => ExecuteInInactiveMiddleTransaction (() => _orderNewInRootTransaction.Delete()), "ObjectDeleting");
 
       CheckState (InactiveRootTransaction, _orderNewInRootTransaction, StateType.New);
       CheckState (InactiveMiddleTransaction, _orderNewInRootTransaction, StateType.Unchanged);

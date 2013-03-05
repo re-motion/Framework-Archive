@@ -90,8 +90,7 @@ namespace Remotion.SecurityManager
           return new AccessType[0];
         }
 
-        // TODO 5447: Use MakeActive flag.
-        using (transaction.EnterNonDiscardingScope ())
+        using (transaction.EnterNonDiscardingScope (InactiveTransactionBehavior.MakeActive))
         {
           AccessInformation accessInformation = acl.GetAccessTypes (token);
           return Array.ConvertAll<AccessTypeDefinition, AccessType> (accessInformation.AllowedAccessTypes, ConvertToAccessType);

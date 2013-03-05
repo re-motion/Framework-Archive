@@ -34,8 +34,8 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
     {
       base.SetUp ();
 
-      _order1 = ActiveSubTransaction.ExecuteInScope (() => DomainObjectIDs.Order1.GetObject<Order> ());
-      _endPointID = ActiveSubTransaction.ExecuteInScope (() => _order1.OrderItems.AssociatedEndPointID);
+      _order1 = ExecuteInActiveSubTransaction (() => DomainObjectIDs.Order1.GetObject<Order> ());
+      _endPointID = ExecuteInActiveSubTransaction (() => _order1.OrderItems.AssociatedEndPointID);
     }
 
     [Test]

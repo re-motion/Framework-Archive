@@ -125,14 +125,13 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     }
 
     /// <summary>
-    /// Enters a new scope for the given transaction, making it the active transaction while the scope exists.
+    /// Enters a new scope for the given transaction, making it the current transaction while the scope exists.
     /// </summary>
     /// <returns>The scope keeping the transaction active.</returns>
     /// <remarks>The scope must not discard the transaction when it is left.</remarks>
     public virtual ITransactionScope EnterScope ()
     {
-      // TODO 5447: Use MakeActive flag.
-      return _wrappedInstance.EnterNonDiscardingScope ();
+      return _wrappedInstance.EnterNonDiscardingScope (InactiveTransactionBehavior.MakeActive);
     }
 
     /// <summary>Registers the <paramref name="objects"/> with the transaction.</summary>

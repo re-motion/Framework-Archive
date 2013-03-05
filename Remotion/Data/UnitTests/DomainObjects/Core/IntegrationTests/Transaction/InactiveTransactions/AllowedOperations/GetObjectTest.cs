@@ -32,7 +32,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
       CheckDataNotLoaded (InactiveMiddleTransaction, DomainObjectIDs.Order1);
       CheckDataNotLoaded (ActiveSubTransaction, DomainObjectIDs.Order1);
 
-      var order1 = InactiveRootTransaction.ExecuteInScope (() => DomainObjectIDs.Order1.GetObject<Order> ());
+      var order1 = ExecuteInInactiveRootTransaction (() => DomainObjectIDs.Order1.GetObject<Order> ());
 
       Assert.That (order1.ID, Is.EqualTo (DomainObjectIDs.Order1));
 
@@ -48,7 +48,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
       CheckDataNotLoaded (InactiveMiddleTransaction, DomainObjectIDs.Order1);
       CheckDataNotLoaded (ActiveSubTransaction, DomainObjectIDs.Order1);
 
-      var order1 = InactiveMiddleTransaction.ExecuteInScope (() => DomainObjectIDs.Order1.GetObject<Order> ());
+      var order1 = ExecuteInInactiveMiddleTransaction (() => DomainObjectIDs.Order1.GetObject<Order>());
 
       Assert.That (order1.ID, Is.EqualTo (DomainObjectIDs.Order1));
 

@@ -738,7 +738,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
     {
       var parentTransaction = ClientTransaction.CreateRootTransaction ();
       ClientTransactionTestHelper.SetIsWriteable (parentTransaction, false);
-      ClientTransactionTestHelper.SetActiveSubTransaction (parentTransaction, _transactionWithMocks);
+      ClientTransactionTestHelper.SetSubTransaction (parentTransaction, _transactionWithMocks);
 
       _eventBrokerMock.Stub (stub => stub.RaiseTransactionDiscardEvent());
       _hierarchyManagerMock.Stub (mock => mock.OnTransactionDiscard ());
@@ -805,6 +805,76 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
       activatedScopeMock.VerifyAllExpectations();
     }
 
+    [Test]
+    public void EnterNonDiscardingScope_SetsTransactionCurrent ()
+    {
+      Assert.That (ClientTransaction.Current, Is.Not.SameAs (_transaction));
+
+      var scope = _transaction.EnterNonDiscardingScope ();
+
+      Assert.That (ClientTransaction.Current, Is.SameAs (_transaction));
+
+      scope.Leave();
+
+      Assert.That (ClientTransaction.Current, Is.Not.SameAs (_transaction));
+      Assert.That (_transaction.IsDiscarded, Is.False);
+    }
+
+    [Test]
+    public void EnterNonDiscardingScope_ThrowsForInactiveTransaction ()
+    {
+      Assert.That (ClientTransaction.Current, Is.Not.SameAs (_transaction));
+      ClientTransactionTestHelper.MakeInactive (_transaction);
+
+      Assert.That (() => _transaction.EnterNonDiscardingScope (), Throws.InvalidOperationException);
+
+      Assert.That (ClientTransaction.Current, Is.Not.SameAs (_transaction));
+    }
+
+    [Test]
+    public void EnterNonDiscardingScope_WithMakeActive_ActivatesInactiveTransaction ()
+    {
+      Assert.That (ClientTransaction.Current, Is.Not.SameAs (_transaction));
+      ClientTransactionTestHelper.MakeInactive (_transaction);
+
+      var scope = _transaction.EnterNonDiscardingScope (InactiveTransactionBehavior.MakeActive);
+
+      Assert.That (ClientTransaction.Current, Is.SameAs (_transaction));
+      Assert.That (_transaction.ActiveTransaction, Is.SameAs (_transaction));
+
+      scope.Leave ();
+
+      Assert.That (ClientTransaction.Current, Is.Not.SameAs (_transaction));
+      Assert.That (_transaction.ActiveTransaction, Is.Not.SameAs (_transaction));
+    }
+
+    [Test]
+    public void EnterDiscardingScope_SetsTransactionCurrent_AndDiscardsTransactionUponLeave ()
+    {
+      Assert.That (ClientTransaction.Current, Is.Not.SameAs (_transaction));
+
+      var scope = _transaction.EnterDiscardingScope ();
+
+      Assert.That (ClientTransaction.Current, Is.SameAs (_transaction));
+
+      scope.Leave ();
+
+      Assert.That (ClientTransaction.Current, Is.Not.SameAs (_transaction));
+      Assert.That (_transaction.IsDiscarded, Is.True);
+    }
+
+    [Test]
+    public void EnterDiscardingScope_ThrowsForInactiveTransaction ()
+    {
+      Assert.That (ClientTransaction.Current, Is.Not.SameAs (_transaction));
+      ClientTransactionTestHelper.MakeInactive (_transaction);
+
+      Assert.That (() => _transaction.EnterDiscardingScope (), Throws.InvalidOperationException);
+
+      Assert.That (ClientTransaction.Current, Is.Not.SameAs (_transaction));
+      Assert.That (_transaction.IsDiscarded, Is.False);
+    }
+    
     [Test]
     public void GetRelatedObject ()
     {

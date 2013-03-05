@@ -134,6 +134,16 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure
     }
 
     [Test]
+    public void CreateObjectReference_CallsReferenceInitializing_InRightTransaction_WithActivatedInactiveTransaction ()
+    {
+      ClientTransactionTestHelper.MakeInactive (_transaction);
+
+      var domainObject = (Order) _interceptedDomainObjectCreator.CreateObjectReference (_order1InitializationContext, _transaction);
+      Assert.That (domainObject.OnReferenceInitializingTx, Is.SameAs (_transaction));
+      Assert.That (domainObject.OnReferenceInitializingActiveTx, Is.SameAs (_transaction));
+    }
+
+    [Test]
     public void CreateNewObject ()
     {
       var initializationContext = CreateNewObjectInitializationContext (_transaction, DomainObjectIDs.OrderItem1);

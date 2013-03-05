@@ -59,7 +59,9 @@ namespace Remotion.SecurityManager.Domain.Metadata
 
     public void Import (XmlDocument document)
     {
-      // TODO 5447: Use MakeActive flag.
+      if (_transaction.ActiveTransaction != _transaction)
+        throw new InvalidOperationException ("Cannot import into an inactive transaction (e.g., a transaction that has an active subtransaction).");
+
       using (_transaction.EnterNonDiscardingScope ())
       {
         SecurityMetadataLocalizationSchema schema = new SecurityMetadataLocalizationSchema();

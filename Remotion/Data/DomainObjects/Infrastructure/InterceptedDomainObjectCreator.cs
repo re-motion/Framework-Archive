@@ -56,8 +56,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       instance.Initialize (objectID, objectInitializationContext.RootTransaction);
       objectInitializationContext.RegisterObject (instance);
 
-      // TODO 5447: Use MakeActive flag.
-      using (clientTransaction.EnterNonDiscardingScope ())
+      using (clientTransaction.EnterNonDiscardingScope (InactiveTransactionBehavior.MakeActive))
       {
         instance.RaiseReferenceInitializatingEvent ();
       }
@@ -72,7 +71,6 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       ArgumentUtility.CheckNotNull ("constructorParameters", constructorParameters);
 
       var constructorLookupInfo = GetConstructorLookupInfo (objectInitializationContext.ObjectID.ClassDefinition.ClassType);
-      // TODO 5447: Use MakeActive flag.
       using (clientTransaction.EnterNonDiscardingScope ())
       {
         using (new ObjectInititalizationContextScope (objectInitializationContext))

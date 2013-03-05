@@ -32,8 +32,8 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
     {
       base.SetUp ();
 
-      _invalidOrder = ActiveSubTransaction.ExecuteInScope (() => Order.NewObject ());
-      ActiveSubTransaction.ExecuteInScope (() => _invalidOrder.Delete());
+      _invalidOrder = ExecuteInActiveSubTransaction (() => Order.NewObject ());
+      ExecuteInActiveSubTransaction (() => _invalidOrder.Delete());
     }
 
     [Test]

@@ -48,7 +48,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
       ActiveSubTransaction.EnsureDataComplete (_relationEndPointID);
       ActiveSubTransaction.EnsureDataAvailable (DomainObjectIDs.OrderTicket1);
 
-      var orderTicket = InactiveRootTransaction.ExecuteInScope (() => _order1.OrderTicket);
+      var orderTicket = ExecuteInInactiveRootTransaction (() => _order1.OrderTicket);
 
       Assert.That (orderTicket.ID, Is.EqualTo (DomainObjectIDs.OrderTicket1));
     }
@@ -60,7 +60,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
       ActiveSubTransaction.EnsureDataComplete (_relationEndPointID);
       ActiveSubTransaction.EnsureDataAvailable (DomainObjectIDs.OrderTicket1);
 
-      var orderTicket = InactiveMiddleTransaction.ExecuteInScope (() => _order1.OrderTicket);
+      var orderTicket = ExecuteInInactiveMiddleTransaction (() => _order1.OrderTicket);
 
       Assert.That (orderTicket.ID, Is.EqualTo (DomainObjectIDs.OrderTicket1));
     }
@@ -84,7 +84,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
       CheckEndPointNull (InactiveMiddleTransaction, _oppositeRelationEndPointID);
       CheckEndPointNull (ActiveSubTransaction, _oppositeRelationEndPointID);
 
-      var orderTicket = InactiveRootTransaction.ExecuteInScope (() => _order1.OrderTicket);
+      var orderTicket = ExecuteInInactiveRootTransaction (() => _order1.OrderTicket);
       
       Assert.That (orderTicket.ID, Is.EqualTo (DomainObjectIDs.OrderTicket1));
 
@@ -124,7 +124,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
       CheckEndPointNull (InactiveMiddleTransaction, _oppositeRelationEndPointID);
       CheckEndPointNull (ActiveSubTransaction, _oppositeRelationEndPointID);
 
-      var orderTicket = InactiveMiddleTransaction.ExecuteInScope (() => _order1.OrderTicket);
+      var orderTicket = ExecuteInInactiveMiddleTransaction (() => _order1.OrderTicket);
 
       Assert.That (orderTicket.ID, Is.EqualTo (DomainObjectIDs.OrderTicket1));
 

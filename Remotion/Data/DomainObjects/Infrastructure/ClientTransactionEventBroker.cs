@@ -465,9 +465,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
     private ClientTransactionScope EnterScopeOnDemand ()
     {
-      // TODO 5447: Use MakeActive flag.
-      if (ClientTransaction.Current != _clientTransaction)
-        return _clientTransaction.EnterNonDiscardingScope ();
+      if (ClientTransaction.Current != _clientTransaction || ClientTransaction.Current.ActiveTransaction != _clientTransaction)
+        return _clientTransaction.EnterNonDiscardingScope (InactiveTransactionBehavior.MakeActive);
       return null;
     }
   }

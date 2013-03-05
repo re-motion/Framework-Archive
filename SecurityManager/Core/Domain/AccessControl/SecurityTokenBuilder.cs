@@ -49,8 +49,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl
       ArgumentUtility.CheckNotNull ("principal", principal);
       ArgumentUtility.CheckNotNull ("context", context);
 
-      // TODO 5447: Use MakeActive flag.
-      using (transaction.EnterNonDiscardingScope ())
+      using (transaction.EnterNonDiscardingScope (InactiveTransactionBehavior.MakeActive))
       {
         Principal principalUser = CreatePrincipal (principal);
         Tenant owningTenant = GetTenant (context.OwnerTenant);

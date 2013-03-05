@@ -18,7 +18,6 @@
 using System;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects;
-using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.UnitTests.DomainObjects.TestDomain;
 
 namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transaction.InactiveTransactions.ForbiddenOperations
@@ -33,7 +32,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
       CheckTransactionIsEmpty (InactiveMiddleTransaction);
       CheckTransactionIsEmpty (ActiveSubTransaction);
 
-      CheckForbidden (() => InactiveRootTransaction.ExecuteInScope (() => Order.NewObject ()), "NewObjectCreating");
+      CheckForbidden (() => ExecuteInInactiveRootTransaction (() => Order.NewObject()), "NewObjectCreating");
 
       CheckTransactionIsEmpty (InactiveRootTransaction);
       CheckTransactionIsEmpty (InactiveMiddleTransaction);
@@ -47,7 +46,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
       CheckTransactionIsEmpty (InactiveMiddleTransaction);
       CheckTransactionIsEmpty (ActiveSubTransaction);
 
-      CheckForbidden (() => InactiveMiddleTransaction.ExecuteInScope (() => Order.NewObject ()), "NewObjectCreating");
+      CheckForbidden (() => ExecuteInInactiveMiddleTransaction (() => Order.NewObject()), "NewObjectCreating");
 
       CheckTransactionIsEmpty (InactiveRootTransaction);
       CheckTransactionIsEmpty (InactiveMiddleTransaction);

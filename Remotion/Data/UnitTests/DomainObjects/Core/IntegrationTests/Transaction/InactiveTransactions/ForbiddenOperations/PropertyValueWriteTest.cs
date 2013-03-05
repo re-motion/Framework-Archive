@@ -31,8 +31,8 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
     {
       base.SetUp ();
 
-      _order1 = ActiveSubTransaction.ExecuteInScope (() => DomainObjectIDs.Order1.GetObject<Order> ());
-      ActiveSubTransaction.ExecuteInScope (() => _order1.OrderNumber = 13);
+      _order1 = ExecuteInActiveSubTransaction (() => DomainObjectIDs.Order1.GetObject<Order> ());
+      ExecuteInActiveSubTransaction (() => _order1.OrderNumber = 13);
     }
 
     [Test]
@@ -42,7 +42,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
       CheckProperty (InactiveMiddleTransaction, _order1, o => o.OrderNumber, 1, 1);
       CheckProperty (ActiveSubTransaction, _order1, o => o.OrderNumber, 13, 1);
 
-      CheckForbidden (() => InactiveRootTransaction.ExecuteInScope (() => _order1.OrderNumber = 27), "PropertyValueChanging");
+      CheckForbidden (() => ExecuteInInactiveRootTransaction (() => _order1.OrderNumber = 27), "PropertyValueChanging");
 
       CheckProperty (InactiveRootTransaction, _order1, o => o.OrderNumber, 1, 1);
       CheckProperty (InactiveMiddleTransaction, _order1, o => o.OrderNumber, 1, 1);
@@ -56,7 +56,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
       CheckProperty (InactiveMiddleTransaction, _order1, o => o.OrderNumber, 1, 1);
       CheckProperty (ActiveSubTransaction, _order1, o => o.OrderNumber, 13, 1);
 
-      CheckForbidden (() => InactiveMiddleTransaction.ExecuteInScope (() => _order1.OrderNumber = 27), "PropertyValueChanging");
+      CheckForbidden (() => ExecuteInInactiveMiddleTransaction (() => _order1.OrderNumber = 27), "PropertyValueChanging");
 
       CheckProperty (InactiveRootTransaction, _order1, o => o.OrderNumber, 1, 1);
       CheckProperty (InactiveMiddleTransaction, _order1, o => o.OrderNumber, 1, 1);

@@ -60,6 +60,8 @@ namespace Remotion.Data.UnitTests.DomainObjects.TestDomain
     [NonSerialized]
     public ClientTransaction OnReferenceInitializingTx;
     [NonSerialized]
+    public ClientTransaction OnReferenceInitializingActiveTx;
+    [NonSerialized]
     public ObjectID OnReferenceInitializingID;
     [NonSerialized]
     public ClientTransaction OnReferenceInitializingBindingTransaction;
@@ -169,6 +171,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.TestDomain
 
       OnReferenceInitializingCalled = true;
       OnReferenceInitializingTx = ClientTransaction.Current;
+      OnReferenceInitializingActiveTx = ClientTransaction.Current.ActiveTransaction;
       OnReferenceInitializingID = ID;
       OnReferenceInitializingBindingTransaction = HasBindingTransaction ? GetBindingTransaction() : null;
 

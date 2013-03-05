@@ -18,7 +18,6 @@
 using System;
 using System.Linq;
 using NUnit.Framework;
-using Remotion.Data.DomainObjects;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.DomainImplementation;
 using Remotion.Data.UnitTests.DomainObjects.TestDomain;
@@ -50,7 +49,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
       ActiveSubTransaction.EnsureDataAvailable (DomainObjectIDs.OrderItem1);
       ActiveSubTransaction.EnsureDataAvailable (DomainObjectIDs.OrderItem2);
 
-      var orderItems = InactiveRootTransaction.ExecuteInScope (() => _order1.OrderItems.ToList ());
+      var orderItems = ExecuteInInactiveRootTransaction (() => _order1.OrderItems.ToList ());
 
       Assert.That (orderItems.Select (oi => oi.ID), Is.EquivalentTo (new[] { DomainObjectIDs.OrderItem1, DomainObjectIDs.OrderItem2 }));
     }
@@ -63,7 +62,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
       ActiveSubTransaction.EnsureDataAvailable (DomainObjectIDs.OrderItem1);
       ActiveSubTransaction.EnsureDataAvailable (DomainObjectIDs.OrderItem2);
 
-      var orderItems = InactiveMiddleTransaction.ExecuteInScope (() => _order1.OrderItems.ToList ());
+      var orderItems = ExecuteInInactiveMiddleTransaction (() => _order1.OrderItems.ToList ());
 
       Assert.That (orderItems.Select (oi => oi.ID), Is.EquivalentTo (new[] { DomainObjectIDs.OrderItem1, DomainObjectIDs.OrderItem2 }));
     }
@@ -87,7 +86,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
       CheckEndPointNull (InactiveMiddleTransaction, _oppositeRelationEndPointID);
       CheckEndPointNull (ActiveSubTransaction, _oppositeRelationEndPointID);
 
-      var orderItems = InactiveRootTransaction.ExecuteInScope (() => _order1.OrderItems.ToList());
+      var orderItems = ExecuteInInactiveRootTransaction (() => _order1.OrderItems.ToList ());
 
       Assert.That (orderItems.Select (oi => oi.ID), Is.EquivalentTo (new[] { DomainObjectIDs.OrderItem1, DomainObjectIDs.OrderItem2 }));
 
@@ -127,7 +126,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
       CheckEndPointNull (InactiveMiddleTransaction, _oppositeRelationEndPointID);
       CheckEndPointNull (ActiveSubTransaction, _oppositeRelationEndPointID);
 
-      var orderItems = InactiveMiddleTransaction.ExecuteInScope (() => _order1.OrderItems.ToList ());
+      var orderItems = ExecuteInInactiveMiddleTransaction (() => _order1.OrderItems.ToList ());
 
       Assert.That (orderItems.Select (oi => oi.ID), Is.EquivalentTo (new[] { DomainObjectIDs.OrderItem1, DomainObjectIDs.OrderItem2 }));
 

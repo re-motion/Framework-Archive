@@ -83,7 +83,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
             .WhenCalled (mi => Assert.That (ActiveSubTransaction.IsWriteable, Is.True));
       }
 
-      ActiveSubTransaction.ExecuteInScope (() => _order.EnsureDataAvailable());
+      ExecuteInActiveSubTransaction (() => _order.EnsureDataAvailable());
 
       ExtensionStrictMock.VerifyAllExpectations();
     }

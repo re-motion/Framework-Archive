@@ -38,10 +38,10 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
     {
       base.SetUp ();
 
-      _order1 = ActiveSubTransaction.ExecuteInScope (() => DomainObjectIDs.Order1.GetObject<Order> ());
-      _order2 = ActiveSubTransaction.ExecuteInScope (() => DomainObjectIDs.Order2.GetObject<Order> ());
-      _order3 = ActiveSubTransaction.ExecuteInScope (() => DomainObjectIDs.Order3.GetObject<Order> ());
-      _order4 = ActiveSubTransaction.ExecuteInScope (() => DomainObjectIDs.Order4.GetObject<Order> ());
+      _order1 = ExecuteInActiveSubTransaction (() => DomainObjectIDs.Order1.GetObject<Order> ());
+      _order2 = ExecuteInActiveSubTransaction (() => DomainObjectIDs.Order2.GetObject<Order> ());
+      _order3 = ExecuteInActiveSubTransaction (() => DomainObjectIDs.Order3.GetObject<Order> ());
+      _order4 = ExecuteInActiveSubTransaction (() => DomainObjectIDs.Order4.GetObject<Order> ());
 
       _queryStub = MockRepository.GenerateStub<IQuery>();
 
@@ -78,7 +78,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
             .WhenCalled (mi => Assert.That (ActiveSubTransaction.IsWriteable, Is.True));
       }
 
-      var result = ActiveSubTransaction.ExecuteInScope (() => QueryFactory.CreateLinqQuery<Order>().Where (obj => obj.ID == _order1.ID).ToList());
+      var result = ExecuteInActiveSubTransaction (() => QueryFactory.CreateLinqQuery<Order>().Where (obj => obj.ID == _order1.ID).ToList());
 
       ExtensionStrictMock.VerifyAllExpectations();
       Assert.That (result, Is.EqualTo (new[] { _order4 }));

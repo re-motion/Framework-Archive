@@ -34,13 +34,13 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
     {
       base.SetUp ();
 
-      _order1 = ActiveSubTransaction.ExecuteInScope (() => DomainObjectIDs.Order1.GetObject<Order> ());
-      _orderTicket1 = ActiveSubTransaction.ExecuteInScope (() => DomainObjectIDs.OrderTicket1.GetObject<OrderTicket> ());
-      _orderTicket2 = ActiveSubTransaction.ExecuteInScope (() => DomainObjectIDs.OrderTicket2.GetObject<OrderTicket> ());
-      _orderTicket3 = ActiveSubTransaction.ExecuteInScope (() => DomainObjectIDs.OrderTicket3.GetObject<OrderTicket> ());
+      _order1 = ExecuteInActiveSubTransaction (() => DomainObjectIDs.Order1.GetObject<Order> ());
+      _orderTicket1 = ExecuteInActiveSubTransaction (() => DomainObjectIDs.OrderTicket1.GetObject<OrderTicket> ());
+      _orderTicket2 = ExecuteInActiveSubTransaction (() => DomainObjectIDs.OrderTicket2.GetObject<OrderTicket> ());
+      _orderTicket3 = ExecuteInActiveSubTransaction (() => DomainObjectIDs.OrderTicket3.GetObject<OrderTicket> ());
 
-      ActiveSubTransaction.ExecuteInScope (() => _order1.OrderTicket = _orderTicket2);
-      ActiveSubTransaction.ExecuteInScope (() => _orderTicket3.Order.EnsureDataAvailable());
+      ExecuteInActiveSubTransaction (() => _order1.OrderTicket = _orderTicket2);
+      ExecuteInActiveSubTransaction (() => _orderTicket3.Order.EnsureDataAvailable());
     }
 
     [Test]
@@ -50,7 +50,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
       CheckProperty (InactiveMiddleTransaction, _order1, o => o.OrderTicket, _orderTicket1, _orderTicket1);
       CheckProperty (ActiveSubTransaction, _order1, o => o.OrderTicket, _orderTicket2, _orderTicket1);
 
-      CheckForbidden (() => InactiveRootTransaction.ExecuteInScope (() => _order1.OrderTicket = _orderTicket3), "RelationChanging");
+      CheckForbidden (() => ExecuteInInactiveRootTransaction (() => _order1.OrderTicket = _orderTicket3), "RelationChanging");
 
       CheckProperty (InactiveRootTransaction, _order1, o => o.OrderTicket, _orderTicket1, _orderTicket1);
       CheckProperty (InactiveMiddleTransaction, _order1, o => o.OrderTicket, _orderTicket1, _orderTicket1);
@@ -64,7 +64,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
       CheckProperty (InactiveMiddleTransaction, _order1, o => o.OrderTicket, _orderTicket1, _orderTicket1);
       CheckProperty (ActiveSubTransaction, _order1, o => o.OrderTicket, _orderTicket2, _orderTicket1);
 
-      CheckForbidden (() => InactiveMiddleTransaction.ExecuteInScope (() => _order1.OrderTicket = _orderTicket3), "RelationChanging");
+      CheckForbidden (() => ExecuteInInactiveMiddleTransaction (() => _order1.OrderTicket = _orderTicket3), "RelationChanging");
 
       CheckProperty (InactiveRootTransaction, _order1, o => o.OrderTicket, _orderTicket1, _orderTicket1);
       CheckProperty (InactiveMiddleTransaction, _order1, o => o.OrderTicket, _orderTicket1, _orderTicket1);

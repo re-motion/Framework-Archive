@@ -44,22 +44,12 @@ namespace Remotion.Data.DomainObjects
         Func<T> func,
         InactiveTransactionBehavior inactiveTransactionBehavior = InactiveTransactionBehavior.Throw)
     {
-      // TODO 5447: Implement inactiveTransactionBehavior.
       ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
       ArgumentUtility.CheckNotNull ("func", func);
 
-      IDisposable scope = null;
-      if (ClientTransaction.Current != clientTransaction)
-        scope = clientTransaction.EnterNonDiscardingScope();
-      
-      try
-        {
-          return func();
-        }
-      finally
+      using (CreateScopeIfRequired (clientTransaction, inactiveTransactionBehavior))
       {
-        if (scope != null)
-          scope.Dispose();
+        return func();
       }
     }
 
@@ -81,21 +71,21 @@ namespace Remotion.Data.DomainObjects
         Action action,
         InactiveTransactionBehavior inactiveTransactionBehavior = InactiveTransactionBehavior.Throw)
     {
-      // TODO 5447: Implement inactiveTransactionBehavior.
       ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
       ArgumentUtility.CheckNotNull ("action", action);
 
-      if (ClientTransaction.Current != clientTransaction)
+      using (CreateScopeIfRequired (clientTransaction, inactiveTransactionBehavior))
       {
-        using (clientTransaction.EnterNonDiscardingScope())
-        {
-          action();
-        }
+        action();
       }
-      else
-      {
-        action ();
-      }
+    }
+
+    private static IDisposable CreateScopeIfRequired (ClientTransaction clientTransaction, InactiveTransactionBehavior inactiveTransactionBehavior)
+    {
+      if (ClientTransaction.Current == clientTransaction && clientTransaction.ActiveTransaction == clientTransaction)
+        return null;
+
+      return clientTransaction.EnterNonDiscardingScope (inactiveTransactionBehavior);
     }
 
     [Obsolete ("This API has been renamed to ExecuteInScope. (1.13.188.0)", true)]

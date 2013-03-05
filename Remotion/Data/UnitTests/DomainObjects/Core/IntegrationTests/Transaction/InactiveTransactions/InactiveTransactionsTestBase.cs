@@ -66,11 +66,11 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
       _extensionStrictMock = MockRepository.GenerateStrictMock<IClientTransactionExtension> ();
 
       _inactiveRootTransaction = ClientTransaction.CreateRootTransaction ();
-      _inactiveRootTransaction.ExecuteInScope (InitializeInactiveRootTransaction);
+      ExecuteInInactiveRootTransaction (InitializeInactiveRootTransaction);
       _inactiveMiddleTransaction = InactiveRootTransaction.CreateSubTransaction ();
-      _inactiveMiddleTransaction.ExecuteInScope (InitializeInactiveMiddleTransaction);
+      ExecuteInInactiveMiddleTransaction (InitializeInactiveMiddleTransaction);
       _activeSubTransaction = InactiveMiddleTransaction.CreateSubTransaction ();
-      _activeSubTransaction.ExecuteInScope (InitializeActiveSubTransaction);
+      ExecuteInActiveSubTransaction (InitializeActiveSubTransaction);
     }
 
     protected virtual void InitializeInactiveRootTransaction ()
@@ -201,6 +201,36 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
           ClientTransactionTestHelper.SetIsWriteable (clientTransaction, false);
         }
       }
+    }
+
+    protected void ExecuteInInactiveMiddleTransaction (Action action)
+    {
+      InactiveMiddleTransaction.ExecuteInScope (action, InactiveTransactionBehavior.MakeActive);
+    }
+
+    protected T ExecuteInInactiveMiddleTransaction<T> (Func<T> func)
+    {
+      return InactiveMiddleTransaction.ExecuteInScope (func, InactiveTransactionBehavior.MakeActive);
+    }
+
+    protected void ExecuteInInactiveRootTransaction (Action action)
+    {
+      InactiveRootTransaction.ExecuteInScope (action, InactiveTransactionBehavior.MakeActive);
+    }
+
+    protected T ExecuteInInactiveRootTransaction<T> (Func<T> func)
+    {
+      return InactiveRootTransaction.ExecuteInScope (func, InactiveTransactionBehavior.MakeActive);
+    }
+
+    protected void ExecuteInActiveSubTransaction (Action action)
+    {
+      ActiveSubTransaction.ExecuteInScope (action);
+    }
+
+    protected T ExecuteInActiveSubTransaction<T> (Func<T> func)
+    {
+      return ActiveSubTransaction.ExecuteInScope (func);
     }
   }
 }

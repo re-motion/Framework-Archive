@@ -376,7 +376,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.HierarchyMan
     private ClientTransaction CreateFakeSubTransaction (ClientTransaction clientTransaction)
     {
       var fakeSubTransaction = ClientTransactionObjectMother.Create ();
-      ClientTransactionTestHelper.SetActiveSubTransaction (clientTransaction, fakeSubTransaction);
+      ClientTransactionTestHelper.SetSubTransaction (clientTransaction, fakeSubTransaction);
       return fakeSubTransaction;
     }
   }
