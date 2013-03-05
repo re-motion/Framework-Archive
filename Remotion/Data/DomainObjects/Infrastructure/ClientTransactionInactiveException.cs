@@ -25,6 +25,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
   /// <see cref="ClientTransaction.SubTransaction"/>, the parent <see cref="ClientTransaction"/> can only be read.
   /// </summary>
   [Serializable]
+  // TODO 5447: Rename to ClientTransactionReadOnlyException
   public class ClientTransactionInactiveException : DomainObjectException
   {
     /// <summary>

@@ -366,18 +366,8 @@ namespace Remotion.Data.DomainObjects
     {
       get 
       {
-        // TODO 5447: return TransactionContext[RootTransaction.LeafTransaction];
-        return GetDefaultTransactionContext();
+        return TransactionContext[RootTransaction.ActiveTransaction];
       }
-    }
-
-    private IDomainObjectTransactionContext GetDefaultTransactionContext ()
-    {
-      var clientTransaction = HasBindingTransaction ? GetBindingTransaction() : ClientTransaction.Current;
-      if (clientTransaction == null)
-        throw new InvalidOperationException ("No ClientTransaction has been associated with the current thread or this object.");
-
-      return TransactionContext[clientTransaction];
     }
 
     /// <summary>

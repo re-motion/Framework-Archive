@@ -307,7 +307,6 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
     }
 
     [Test]
-    [Ignore ("TODO 5447")]
     public void DefaultTransactionContext_SameAsAssociatedRootTransaction ()
     {
       var order = _transaction.ExecuteInScope (() => Order.NewObject ());
@@ -315,7 +314,6 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
     }
 
     [Test]
-    [Ignore ("TODO 5447")]
     public void DefaultTransactionContext_SameAsAssociatedLeafTransaction ()
     {
       var order = _transaction.ExecuteInScope (() => Order.NewObject ());
@@ -324,7 +322,6 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
     }
 
     [Test]
-    [Ignore ("TODO 5447")]
     public void DefaultTransactionContext_SameAsActivatedTransaction ()
     {
       var order = _transaction.ExecuteInScope (() => Order.NewObject ());
@@ -344,26 +341,25 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
     }
 
     [Test]
-    [ExpectedException (typeof (ClientTransactionsDifferException), ExpectedMessage = 
-        @"Cannot delete DomainObject 'Order|.*|System\.Guid', because it belongs to a different ClientTransaction.",
-        MatchType = MessageMatch.Regex)]
-    public void Delete_ChecksTransaction ()
+    public void Delete_UsesActiveTransaction_NotCurrentTransaction ()
     {
       var order = DomainObjectMother.CreateObjectInOtherTransaction<Order> ();
       Assert.That (_transaction.IsEnlisted (order), Is.False);
       _transaction.ExecuteInScope (order.Delete);
+
+      Assert.That (_transaction.IsEnlisted (order), Is.False);
+      Assert.That (order.State, Is.EqualTo (StateType.Invalid));
     }
 
     [Test]
-    [ExpectedException (typeof (ClientTransactionsDifferException), ExpectedMessage = "Domain object '.*' cannot be used in the given transaction "
-        + "as it was loaded or created in another transaction. Enter a scope for the transaction, or enlist the object in "
-        + "the transaction. \\(If no transaction was explicitly given, ClientTransaction.Current was used.\\)", MatchType = MessageMatch.Regex)]
-    public void PropertyAccess_ThrowsWhenNotEnlisted ()
+    public void PropertyAccess_UsesActiveTransaction_NotCurrentTransaction ()
     {
       Order order = _transaction.ExecuteInScope (() => Order.NewObject ());
+      order.OrderNumber = 10;
+      
       var otherTransaction = ClientTransaction.CreateRootTransaction ();
       Assert.That (otherTransaction.IsEnlisted (order), Is.False);
-      Dev.Null = otherTransaction.ExecuteInScope (() => order.OrderNumber);
+      Assert.That (otherTransaction.ExecuteInScope (() => order.OrderNumber), Is.EqualTo (10));
     }
 
     [Test]

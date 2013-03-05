@@ -768,7 +768,6 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
     }
 
     [Test]
-    [Ignore ("TODO 5447")]
     public void EnterScope_InactiveTransaction_ThrowsByDefault ()
     {
       var fakeSub = ClientTransactionObjectMother.Create();

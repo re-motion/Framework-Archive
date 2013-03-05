@@ -87,34 +87,11 @@ namespace Remotion.Data.UnitTests.DomainObjects.ObjectBinding.BindableDomainObje
     }
 
     [Test]
-    public void SearchAvailableObjectsUsesCurrentTransaction ()
+    public void SearchAvailableObjectsUsesAssociatedTransaction ()
     {
-      var outerTransaction = ClientTransaction.Current;
-
       var transaction = _searchServiceTestHelper.CreateTransactionWithStubbedQuery<ClientTransaction> (_stubbedQueryID);
-      using (transaction.EnterDiscardingScope())
-      {
-        IBusinessObject[] results = _property.SearchAvailableObjects (_referencingBusinessObject, new DefaultSearchArguments (_stubbedQueryID));
 
-        Assert.That (results, Is.Not.Null);
-        Assert.That (results.Length > 0, Is.True);
-
-        var resultDomainObject = (DomainObject) results[0];
-        Assert.That (outerTransaction.IsEnlisted (resultDomainObject), Is.False);
-        Assert.That (ClientTransaction.Current.IsEnlisted (resultDomainObject), Is.True);
-      }
-    }
-
-    [Test]
-    public void SearchAvailableObjectsUsesBindingTransaction ()
-    {
-      var bindingTransaction = _searchServiceTestHelper.CreateTransactionWithStubbedQuery<BindingClientTransaction> (_stubbedQueryID);
-
-      IBusinessObject boundObject;
-      using (bindingTransaction.EnterNonDiscardingScope())
-      {
-        boundObject = (IBusinessObject) SampleBindableMixinDomainObject.NewObject();
-      }
+      IBusinessObject boundObject = (IBusinessObject) transaction.ExecuteInScope (() => SampleBindableMixinDomainObject.NewObject());
 
       IBusinessObject[] results = _property.SearchAvailableObjects (boundObject, new DefaultSearchArguments (_stubbedQueryID));
       Assert.That (results, Is.Not.Null);
@@ -122,7 +99,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.ObjectBinding.BindableDomainObje
 
       var resultDomainObject = (DomainObject) results[0];
       Assert.That (ClientTransaction.Current.IsEnlisted (resultDomainObject), Is.False);
-      Assert.That (bindingTransaction.IsEnlisted (resultDomainObject), Is.True);
+      Assert.That (transaction.IsEnlisted (resultDomainObject), Is.True);
     }
 
     [Test]

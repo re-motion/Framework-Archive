@@ -48,11 +48,8 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DomainImplementation.Clonin
       _order1 = DomainObjectIDs.Order1.GetObject<Order> ();
       _computer1 = DomainObjectIDs.Computer1.GetObject<Computer> ();
 
-      using (ClientTransaction.CreateBindingTransaction ().EnterNonDiscardingScope ())
-      {
-        _boundSource = ClassWithAllDataTypes.NewObject ();
-        _boundSource.Int32Property = 123;
-      }
+      _boundSource = ClientTransaction.CreateRootTransaction().ExecuteInScope (() => ClassWithAllDataTypes.NewObject());
+      _boundSource.Int32Property = 123;
 
       _classWithClonerCallback =
           (ClassWithClonerCallback) LifetimeService.NewObject (TestableClientTransaction, typeof (ClassWithClonerCallback), ParamList.Empty);
@@ -237,17 +234,6 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DomainImplementation.Clonin
       using (ClientTransactionScope.EnterNullScope ())
       {
         _cloner.CreateValueClone (_boundSource);
-      }
-    }
-
-    [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "No ClientTransaction has been associated with the current thread or this object.")]
-    public void NullTransaction_ForSourceTransaction ()
-    {
-      _cloner.CloneTransaction = TestableClientTransaction;
-      using (ClientTransactionScope.EnterNullScope ())
-      {
-        _cloner.CreateValueClone (_computer1);
       }
     }
 
