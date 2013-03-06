@@ -789,7 +789,6 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
       
       var activatedScopeMock = MockRepository.GenerateStrictMock<IDisposable>();
       hierarchyMock.Expect (mock => mock.ActivateTransaction (_transactionWithMocks)).Return (activatedScopeMock);
-      hierarchyMock.Replay ();
 
       var result = _transactionWithMocks.EnterScope (AutoRollbackBehavior.None, InactiveTransactionBehavior.MakeActive);
 
@@ -802,6 +801,23 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
       result.Leave();
 
       activatedScopeMock.VerifyAllExpectations();
+    }
+
+    [Test]
+    public void EnterScope_ActiveTransaction_WithMakeActive_ActivatesTransaction ()
+    {
+      var hierarchyMock = MockRepository.GenerateStrictMock<IClientTransactionHierarchy> ();
+      _hierarchyManagerMock.Stub (stub => stub.TransactionHierarchy).Return (hierarchyMock);
+      _hierarchyManagerMock.Replay ();
+
+      hierarchyMock.Stub (stub => stub.ActiveTransaction).Return (_transactionWithMocks);
+      
+      var activatedScopeStub = MockRepository.GenerateStub<IDisposable> ();
+      hierarchyMock.Expect (mock => mock.ActivateTransaction (_transactionWithMocks)).Return (activatedScopeStub);
+
+      _transactionWithMocks.EnterScope (AutoRollbackBehavior.Rollback, InactiveTransactionBehavior.MakeActive);
+
+      hierarchyMock.VerifyAllExpectations ();
     }
 
     [Test]

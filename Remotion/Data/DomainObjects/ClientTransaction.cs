@@ -397,17 +397,17 @@ public class ClientTransaction
   {
     Action scopeLeaveAction = () => { };
 
-    if (ActiveTransaction != this)
+    if (inactiveTransactionBehavior == InactiveTransactionBehavior.MakeActive)
     {
-      if (inactiveTransactionBehavior == InactiveTransactionBehavior.Throw)
-      {
-        throw new InvalidOperationException (
-            "The Current transaction cannot be an inactive transaction. Specify InactiveTransactionBehavior.MakeActive in order to temporarily make "
-            + "this transaction active in order to use it as the Current transaction.");
-      }
-
       var scope = _hierarchyManager.TransactionHierarchy.ActivateTransaction (this);
       scopeLeaveAction = scope.Dispose;
+    }
+    else if (ActiveTransaction != this)
+    {
+      Assertion.IsTrue (inactiveTransactionBehavior == InactiveTransactionBehavior.Throw);
+      throw new InvalidOperationException (
+          "The Current transaction cannot be an inactive transaction. Specify InactiveTransactionBehavior.MakeActive in order to temporarily make "
+          + "this transaction active in order to use it as the Current transaction.");
     }
 
     return new ClientTransactionScope (this, rollbackBehavior, scopeLeaveAction);
