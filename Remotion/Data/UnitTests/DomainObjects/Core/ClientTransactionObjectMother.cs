@@ -206,11 +206,6 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
       return CreateWithComponents<ClientTransaction> (transactionHierarchyManager: hierarchyManagerStub);
     }
 
-    public static BindingClientTransaction CreateBinding ()
-    {
-      return (BindingClientTransaction) ClientTransaction.CreateBindingTransaction();
-    }
-
     public static ClientTransaction CreateInactiveTransaction ()
     {
       var inactiveTransaction = ClientTransaction.CreateRootTransaction();

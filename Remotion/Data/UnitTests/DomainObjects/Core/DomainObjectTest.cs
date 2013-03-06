@@ -19,7 +19,6 @@ using System.Reflection;
 using System.Runtime.Serialization;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects;
-using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DomainImplementation;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectLifetime;
@@ -59,21 +58,6 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
       var instance = _transaction.ExecuteInScope (() => Order.NewObject ());
 
       Assert.That (instance.RootTransaction, Is.SameAs (_transaction));
-    }
-
-    [Test]
-    public void Ctor_SetsBindingTransaction ()
-    {
-      var bindingTransaction = ClientTransaction.CreateBindingTransaction ();
-      var boundInstance = bindingTransaction.ExecuteInScope (() => Order.NewObject ());
-
-      Assert.That (boundInstance.HasBindingTransaction, Is.True);
-      Assert.That (boundInstance.GetBindingTransaction(), Is.SameAs (bindingTransaction));
-
-      var nonBindingTransaction = ClientTransaction.CreateRootTransaction ();
-      var nonBoundInstance = nonBindingTransaction.ExecuteInScope (() => Order.NewObject ());
-
-      Assert.That (nonBoundInstance.HasBindingTransaction, Is.False);
     }
 
     [Test]
@@ -191,50 +175,22 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
     }
 
     [Test]
-    public void HasBindingTransaction_BoundObject ()
-    {
-      var bindingTransaction = ClientTransaction.CreateBindingTransaction ();
-      
-      var obj = bindingTransaction.ExecuteInScope (() => Order.NewObject ());
-      Assert.That (obj.HasBindingTransaction, Is.True);
-    }
-
-    [Test]
-    public void HasBindingTransaction_UnboundObject ()
-    {
-      var obj = _transaction.ExecuteInScope (() => Order.NewObject ());
-      Assert.That (obj.HasBindingTransaction, Is.False);
-    }
-
-    [Test]
-    public void GetBindingTransaction_BoundObject ()
-    {
-      var bindingTransaction = ClientTransaction.CreateBindingTransaction ();
-      var obj = bindingTransaction.ExecuteInScope (() => Order.NewObject ());
-      Assert.That (obj.GetBindingTransaction(), Is.SameAs (bindingTransaction));
-    }
-
-    [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "This object has not been bound to a specific transaction, it "
-        + "uses the current transaction when it is accessed. Use HasBindingTransaction to check whether an object has been bound or not.")]
-    public void GetBindingTransaction_UnboundObject ()
-    {
-      var obj = _transaction.ExecuteInScope (() => Order.NewObject ());
-      Dev.Null = obj.GetBindingTransaction();
-    }
-
-    [Test]
-    public void RaiseReferenceInitializatingEvent_IDAndBindingTransaction ()
+    public void RaiseReferenceInitializatingEvent_IDAndActiveTransaction ()
     {
       var domainObject = _transaction.ExecuteInScope (() => Order.NewObject()); // indirect call of RaiseReferenceInitializatingEvent
       Assert.That (domainObject.OnReferenceInitializingCalled, Is.True);
-
       Assert.That (domainObject.OnReferenceInitializingID, Is.EqualTo (domainObject.ID));
-      Assert.That (domainObject.OnReferenceInitializingBindingTransaction, Is.Null);
+      Assert.That (domainObject.OnReferenceInitializingActiveTx, Is.SameAs (_transaction));
 
-      var bindingTransaction = ClientTransaction.CreateBindingTransaction ();
-      var boundDomainObject = (Order) LifetimeService.GetObjectReference (bindingTransaction, DomainObjectIDs.Order1);
-      Assert.That (boundDomainObject.OnReferenceInitializingBindingTransaction, Is.SameAs (bindingTransaction));
+      ClientTransactionTestHelper.MakeInactive (_transaction);
+
+      Assert.That (_transaction.ActiveTransaction, Is.Not.SameAs (_transaction));
+
+      // Note that GetObjectReference makes _transaction the active transaction.
+      var objectReference = (Order) LifetimeService.GetObjectReference (_transaction, DomainObjectIDs.Order1);
+      Assert.That (objectReference.OnReferenceInitializingCalled, Is.True);
+      Assert.That (objectReference.OnReferenceInitializingID, Is.EqualTo (objectReference.ID));
+      Assert.That (objectReference.OnReferenceInitializingActiveTx, Is.SameAs (_transaction));
     }
 
     [Test]
@@ -330,14 +286,6 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
       Assert.That (
           _transaction.ExecuteInScope (() => order.DefaultTransactionContext.ClientTransaction, InactiveTransactionBehavior.MakeActive),
           Is.SameAs (_transaction));
-    }
-
-    [Test]
-    public void DefaultTransactionContext_Bound ()
-    {
-      var bindingTransaction = ClientTransaction.CreateBindingTransaction ();
-      var order = bindingTransaction.ExecuteInScope (() => Order.NewObject ());
-      Assert.That (order.DefaultTransactionContext.ClientTransaction, Is.SameAs (bindingTransaction));
     }
 
     [Test]

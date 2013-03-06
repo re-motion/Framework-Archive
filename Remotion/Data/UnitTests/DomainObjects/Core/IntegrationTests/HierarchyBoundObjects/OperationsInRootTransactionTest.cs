@@ -18,9 +18,11 @@
 using System;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects;
+using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DomainImplementation;
 using Remotion.Data.UnitTests.DomainObjects.TestDomain;
 using Remotion.Reflection;
+using System.Linq;
 
 namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.HierarchyBoundObjects
 {
@@ -77,6 +79,49 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.HierarchyB
 
       Assert.That (_order1LoadedInRootTransaction.Properties[typeof (Order), "OrderNumber"].GetValue<int> (), Is.EqualTo (2));
       Assert.That (GetStateFromTransaction (_order1LoadedInRootTransaction, _rootTransaction), Is.EqualTo (StateType.Changed));
+    }
+
+    [Test]
+    public void LoadedRelatedObjects_AreAssociatedWithSameRootTransaction ()
+    {
+      Assert.That (_order1LoadedInRootTransaction.OrderTicket.RootTransaction, Is.SameAs (_rootTransaction));
+      Assert.That (_order1LoadedInRootTransaction.OrderItems[0].RootTransaction, Is.SameAs (_rootTransaction));
+    }
+
+    [Test]
+    public void SetRelatedObject_SucceedsWithItemFromSameRootTransaction ()
+    {
+      OrderTicket orderTicket = _rootTransaction.ExecuteInScope (() => OrderTicket.NewObject());
+      _order1LoadedInRootTransaction.OrderTicket = orderTicket;
+      Assert.That (_order1LoadedInRootTransaction.OrderTicket, Is.SameAs (orderTicket));
+    }
+
+    [Test]
+    [ExpectedException (typeof (ClientTransactionsDifferException))]
+    public void SetRelatedObject_FailsWithItemFromOtherRootTransaction ()
+    {
+      using (ClientTransaction.CreateRootTransaction ().EnterNonDiscardingScope ())
+      {
+        _order1LoadedInRootTransaction.OrderTicket = OrderTicket.NewObject ();
+      }
+    }
+
+    [Test]
+    public void InsertRelatedObject_SucceedsWithItemFromSameRootTransaction ()
+    {
+      OrderItem orderItem = _rootTransaction.ExecuteInScope (() => OrderItem.NewObject());
+      _order1LoadedInRootTransaction.OrderItems.Add (orderItem);
+      Assert.That (_order1LoadedInRootTransaction.OrderItems.Last(), Is.SameAs (orderItem));
+    }
+
+    [Test]
+    [ExpectedException (typeof (ClientTransactionsDifferException))]
+    public void InsertRelatedObject_FailsWithItemFromOtherRootTransaction ()
+    {
+      using (ClientTransaction.CreateRootTransaction ().EnterNonDiscardingScope ())
+      {
+        _order1LoadedInRootTransaction.OrderItems.Add (OrderItem.NewObject ());
+      }
     }
 
     [Test]

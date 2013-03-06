@@ -122,26 +122,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.ObjectBinding.BindableDomainObje
 
       Assert.That (businessObjects, Is.Not.Null);
       Assert.That (((DomainObject) businessObjects[0]).ID, Is.EqualTo (fakeResultData.ObjectID));
-    }
-
-    [Test]
-    public void SearchAvailableObjectsWithNullSearchArguments_BindingTransaction ()
-    {
-      var transaction = _searchServiceTestHelper.CreateStubbableTransaction<BindingClientTransaction>();
-
-      var fakeResultData = _searchServiceTestHelper.CreateFakeResultData (transaction);
-      _searchServiceTestHelper.StubSearchAllObjectsQueryResult (typeof (OppositeBidirectionalBindableDomainObject), new[] { fakeResultData });
-
-      IBusinessObject boundReferencingObject;
-      using (transaction.EnterNonDiscardingScope())
-      {
-        boundReferencingObject = (IBusinessObject) SampleBindableMixinDomainObject.NewObject();
-      }
-
-      IBusinessObject[] businessObjects = _property.SearchAvailableObjects (boundReferencingObject, null);
-
-      Assert.That (businessObjects, Is.Not.Null);
-      Assert.That (((DomainObject) businessObjects[0]).GetBindingTransaction(), Is.SameAs (transaction));
+      Assert.That (((DomainObject) businessObjects[0]).RootTransaction, Is.SameAs (_clientTransaction));
     }
 
     [Test]

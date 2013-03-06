@@ -52,66 +52,12 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.RelationEndP
         @"Cannot xx DomainObject 'OrderItem\|.*@|System.Guid' from/to collection of property "
         + @"'Remotion.Data.UnitTests.DomainObjects.TestDomain.Order.OrderItems' of DomainObject 'Order\|.*\|System.Guid'. The objects do not belong "
         + @"to the same ClientTransaction.", MatchType = MessageMatch.Regex)]
-    public void CheckClientTransaction_Differ_NoObjectInBindingTransaction ()
+    public void CheckClientTransaction_Differ_ObjectsInDifferentTransactions ()
     {
       var owningObject = DomainObjectMother.CreateObjectInTransaction<Order> (TestableClientTransaction);
       var relatedObject = DomainObjectMother.CreateObjectInTransaction<OrderItem> (ClientTransaction.CreateRootTransaction ());
 
       var endPointStub = CreateRelationEndPointStub (TestableClientTransaction, owningObject);
-
-      CallCheckClientTransaction (endPointStub, relatedObject);
-    }
-
-    [Test]
-    [ExpectedException (typeof (ClientTransactionsDifferException), ExpectedMessage =
-        @"Cannot xx DomainObject 'OrderItem\|.*@|System.Guid' from/to collection of property "
-        + @"'Remotion.Data.UnitTests.DomainObjects.TestDomain.Order.OrderItems' of DomainObject 'Order\|.*\|System.Guid'. The objects do not belong "
-        + @"to the same ClientTransaction. The OrderItem object is bound to a BindingClientTransaction.", MatchType = MessageMatch.Regex)]
-    public void CheckClientTransaction_Differ_RelatedObjectInBindingTransaction ()
-    {
-      var bindingTransaction = ClientTransaction.CreateBindingTransaction ();
-
-      var owningObject = DomainObjectMother.CreateObjectInTransaction<Order> (TestableClientTransaction);
-      var relatedObject = DomainObjectMother.CreateObjectInTransaction<OrderItem> (bindingTransaction);
-
-      var endPointStub = CreateRelationEndPointStub (TestableClientTransaction, owningObject);
-
-      CallCheckClientTransaction (endPointStub, relatedObject);
-    }
-
-    [Test]
-    [ExpectedException (typeof (ClientTransactionsDifferException), ExpectedMessage =
-        @"Cannot xx DomainObject 'OrderItem\|.*@|System.Guid' from/to collection of property "
-        + @"'Remotion.Data.UnitTests.DomainObjects.TestDomain.Order.OrderItems' of DomainObject 'Order\|.*\|System.Guid'. The objects do not belong "
-        + @"to the same ClientTransaction. The Order object owning the property is bound to a BindingClientTransaction.",
-        MatchType = MessageMatch.Regex)]
-    public void CheckClientTransaction_Differ_OwningObjectInBindingTransaction ()
-    {
-      var bindingTransaction = ClientTransaction.CreateBindingTransaction ();
-
-      var owningObject = DomainObjectMother.CreateObjectInTransaction<Order> (bindingTransaction);
-      var relatedObject = DomainObjectMother.CreateObjectInTransaction<OrderItem> (ClientTransaction.CreateRootTransaction ());
-
-      var endPointStub = CreateRelationEndPointStub (bindingTransaction, owningObject);
-
-      CallCheckClientTransaction (endPointStub, relatedObject);
-    }
-
-    [Test]
-    [ExpectedException (typeof (ClientTransactionsDifferException), ExpectedMessage =
-        @"Cannot xx DomainObject 'OrderItem\|.*@|System.Guid' from/to collection of property "
-        + @"'Remotion.Data.UnitTests.DomainObjects.TestDomain.Order.OrderItems' of DomainObject 'Order\|.*\|System.Guid'. The objects do not belong "
-        + @"to the same ClientTransaction. The OrderItem object is bound to a BindingClientTransaction. The Order object owning the property is "
-        + @"also bound, but to a different BindingClientTransaction.",
-        MatchType = MessageMatch.Regex)]
-    public void CheckClientTransaction_Differ_BothObjectsInBindingTransactions ()
-    {
-      var bindingTransaction1 = ClientTransaction.CreateBindingTransaction ();
-      var bindingTransaction2 = ClientTransaction.CreateBindingTransaction ();
-      var owningObject = DomainObjectMother.CreateObjectInTransaction<Order> (bindingTransaction1);
-      var relatedObject = DomainObjectMother.CreateObjectInTransaction<OrderItem> (bindingTransaction2);
-
-      var endPointStub = CreateRelationEndPointStub (bindingTransaction1, owningObject);
 
       CallCheckClientTransaction (endPointStub, relatedObject);
     }

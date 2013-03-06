@@ -64,7 +64,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DomainImplementation.Clonin
     [Test]
     public void CloneTransaction_ManualSet ()
     {
-      ClientTransaction cloneTransaction = ClientTransaction.CreateBindingTransaction ();
+      ClientTransaction cloneTransaction = ClientTransactionObjectMother.Create();
       _cloner.CloneTransaction = cloneTransaction;
       Assert.That (_cloner.CloneTransaction, Is.SameAs (cloneTransaction));
     }
@@ -72,7 +72,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DomainImplementation.Clonin
     [Test]
     public void CloneTransaction_Reset ()
     {
-      ClientTransaction cloneTransaction = ClientTransaction.CreateBindingTransaction ();
+      ClientTransaction cloneTransaction = ClientTransactionObjectMother.Create();
       _cloner.CloneTransaction = cloneTransaction;
       _cloner.CloneTransaction = null;
       Assert.That (_cloner.CloneTransaction, Is.SameAs (TestableClientTransaction));
@@ -119,30 +119,14 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DomainImplementation.Clonin
     }
 
     [Test]
-    public void CreateCloneHull_BindsObjectToBindingClientTransaction ()
+    public void CreateCloneHull_BindsAndEnlistsObjectToCloneTransaction ()
     {
-      var cloneTransaction = ClientTransaction.CreateBindingTransaction ();
+      var cloneTransaction = ClientTransaction.CreateRootTransaction();
       _cloner.CloneTransaction = cloneTransaction;
+      
       DomainObject clone = _cloner.CreateCloneHull (_classWithAllDataTypes);
-      Assert.That (clone.HasBindingTransaction, Is.True);
-      Assert.That (clone.GetBindingTransaction (), Is.SameAs (cloneTransaction));
-    }
 
-    [Test]
-    public void CreateCloneHull_DoesntBindObjectToOtherClientTransaction ()
-    {
-      var cloneTransaction = ClientTransaction.CreateRootTransaction ();
-      _cloner.CloneTransaction = cloneTransaction;
-      DomainObject clone = _cloner.CreateCloneHull (_classWithAllDataTypes);
-      Assert.That (clone.HasBindingTransaction, Is.False);
-    }
-
-    [Test]
-    public void CreateCloneHull_EnlistsObjectInCorrectTransaction ()
-    {
-      var cloneTransaction = ClientTransaction.CreateRootTransaction ();
-      _cloner.CloneTransaction = cloneTransaction;
-      DomainObject clone = _cloner.CreateCloneHull (_classWithAllDataTypes);
+      Assert.That (clone.RootTransaction, Is.SameAs (cloneTransaction));
       Assert.That (cloneTransaction.IsEnlisted (clone), Is.True);
     }
     
@@ -338,7 +322,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DomainImplementation.Clonin
     [Test]
     public void CreateClone_CallsStrategy_WithCorrectTransactions ()
     {
-      ClientTransaction sourceTransaction = ClientTransaction.CreateBindingTransaction ();
+      ClientTransaction sourceTransaction = ClientTransaction.CreateRootTransaction ();
       ClientTransaction cloneTransaction = ClientTransaction.CreateRootTransaction ();
 
       _cloner.CloneTransaction = cloneTransaction;

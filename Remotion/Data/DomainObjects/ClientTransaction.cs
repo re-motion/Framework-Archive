@@ -68,27 +68,6 @@ public class ClientTransaction
   }
 
   /// <summary>
-  /// Creates a new root <see cref="ClientTransaction"/> that binds all <see cref="DomainObject"/> instances that are created in its context. A bound
-  /// <see cref="DomainObject"/> is always accessed in the context of its binding transaction, it never uses <see cref="Current"/>.
-  /// </summary>
-  /// <returns>A new binding <see cref="ClientTransaction"/> instance.</returns>
-  /// <remarks>
-  /// <para>
-  /// The object returned by this method can be extended with <b>Mixins</b> by configuring the <see cref="MixinConfiguration.ActiveConfiguration"/>
-  /// to include a mixin for type <see cref="RootPersistenceStrategy"/>. Declaratively, this can be achieved by attaching an
-  /// <see cref="ExtendsAttribute"/> instance for <see cref="ClientTransaction"/> or <see cref="RootPersistenceStrategy"/> to a mixin class.
-  /// </para>
-  /// <para>
-  /// Binding transactions cannot have subtransactions.
-  /// </para>
-  /// </remarks>
-  public static ClientTransaction CreateBindingTransaction ()
-  {
-    var componentFactory = RootClientTransactionComponentFactory.Create(); // binding transactions behave like root transactions
-    return ObjectFactory.Create<BindingClientTransaction> (true, ParamList.Create (componentFactory));
-  }
-
-  /// <summary>
   /// Gets the <see cref="ClientTransaction"/> currently associated with this thread, or <see langword="null"/> if no such transaction exists.
   /// </summary>
   /// <value>The current <see cref="ClientTransaction"/> for the active thread, or <see langword="null"/> if no transaction is associated with it.</value>
@@ -1320,6 +1299,12 @@ public class ClientTransaction
   public bool IsActive 
   {
     get { throw new NotImplementedException(); }
+  }
+
+  [Obsolete ("This API is obsolete, all ClientTransactions now bind their DomainObjects. Use CreateRootTransaction instead. (1.13.189.0)", true)]
+  public static ClientTransaction CreateBindingTransaction ()
+  {
+    throw new NotImplementedException ();
   }
   // ReSharper restore UnusedParameter.Global
 }
