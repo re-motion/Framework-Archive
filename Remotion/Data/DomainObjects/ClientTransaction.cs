@@ -498,6 +498,11 @@ public class ClientTransaction
   /// <returns>
   /// <see langword="true" /> if the specified domain object can be used in the context of this transaction; otherwise, <see langword="false" />.
   /// </returns>
+  /// <remarks>
+  /// Note that comparing the <see cref="RootTransaction"/> to the <see cref="DomainObject.RootTransaction"/> of <paramref name="domainObject"/> is 
+  /// faster and usually yields the same result as this method. Only infrastructure code needing to guard against incorrectly setup 
+  /// <see cref="DomainObject"/> instances needs to use <see cref="IsEnlisted"/>.
+  /// </remarks>
   public bool IsEnlisted (DomainObject domainObject)
   {
     ArgumentUtility.CheckNotNull ("domainObject", domainObject);
