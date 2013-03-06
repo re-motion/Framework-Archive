@@ -535,7 +535,6 @@
     <Compile Include="DataManagement\RelationEndPoints\IObjectEndPoint.cs" />
     <Compile Include="DataManagement\RelationEndPoints\RelationEndPointExtensions.cs" />
     <Compile Include="DataManagement\RelationEndPoints\RealObjectEndPoint.cs" />
-    <Compile Include="DataManagement\RelationEndPoints\RelationEndPointValueChecker.cs" />
     <Compile Include="DataManagement\StateValueSet.cs" />
     <Compile Include="DataManagement\RelationEndPoints\VirtualObjectEndPoint.cs" />
     <Compile Include="DomainImplementation\RepositoryAccessor.cs" />

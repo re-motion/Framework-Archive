@@ -1194,7 +1194,6 @@
     <Compile Include="DomainObjects\Core\DataManagement\RelationEndPoints\RelationEndPointExtensionsTest.cs" />
     <Compile Include="DomainObjects\Core\DataManagement\RelationEndPoints\RealObjectEndPointTest.cs" />
     <Compile Include="DomainObjects\Core\DataManagement\RelationEndPoints\RelationEndPointObjectMother.cs" />
-    <Compile Include="DomainObjects\Core\DataManagement\RelationEndPoints\RelationEndPointValueCheckerTest.cs" />
     <Compile Include="DomainObjects\Core\DataManagement\TestDomain\CollectionWithProtectedCtor.cs" />
     <Compile Include="DomainObjects\Core\DataManagement\TestDomain\DomainObjectWithCollectionMissingCtor.cs" />
     <Compile Include="DomainObjects\Core\DataManagement\TestDomain\CollectionNotDerivedFromDomainObjectCollection.cs" />

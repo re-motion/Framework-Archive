@@ -142,7 +142,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       ArgumentUtility.CheckNotNull ("objects", objects);
 
       var domainObjects = objects.OfType<DomainObject>().Distinct();
-      var incompatibleObjects = domainObjects.Where (obj => !_wrappedInstance.IsEnlisted (obj)).ToArray();
+      var incompatibleObjects = domainObjects.Where (obj => _wrappedInstance.RootTransaction != obj.RootTransaction).ToArray();
       if (incompatibleObjects.Length > 0)
       {
         var message = string.Format (
