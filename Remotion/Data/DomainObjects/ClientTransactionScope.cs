@@ -117,7 +117,7 @@ namespace Remotion.Data.DomainObjects
     /// </remarks>
     public static ClientTransactionScope EnterNullScope ()
     {
-      return new ClientTransactionScope (null, DomainObjects.AutoRollbackBehavior.None, () => {});
+      return new ClientTransactionScope (null, DomainObjects.AutoRollbackBehavior.None, null);
     }
 
     private readonly ClientTransactionScope _previousScope;
@@ -125,21 +125,21 @@ namespace Remotion.Data.DomainObjects
 
     private bool _hasBeenLeft = false;
     private AutoRollbackBehavior _autoRollbackBehavior;
-    private Action _leaveAction;
+    private readonly IDisposable _attachedScope;
 
     /// <summary>
     /// Associates a <see cref="ClientTransaction"/> with the current thread, specifying the scope's automatic rollback behavior.
     /// </summary>
     /// <param name="scopedCurrentTransaction">The <see cref="ClientTransaction"/> object used as the current transaction until the scope is left.</param>
     /// <param name="autoRollbackBehavior">The automatic rollback behavior to be exhibited by this scope.</param>
-    /// <param name="leaveAction">An action to be executed when the scope is left.</param>
+    /// <param name="attachedScope">A second scope to be closed when this scope is left.</param>
     /// <remarks>
     /// <para>
     /// The <see cref="ClientTransactionScope"/> constructor stores the previous <see cref="ClientTransactionScope.ActiveScope"/>. When this scope's
     /// <see cref="Leave"/> method is called or the scope is disposed of, the previous scope is reactivated.
     /// </para>
     /// </remarks>
-    internal ClientTransactionScope (ClientTransaction scopedCurrentTransaction, AutoRollbackBehavior autoRollbackBehavior, Action leaveAction)
+    internal ClientTransactionScope (ClientTransaction scopedCurrentTransaction, AutoRollbackBehavior autoRollbackBehavior, IDisposable attachedScope)
     {
       _autoRollbackBehavior = autoRollbackBehavior;
 
@@ -147,7 +147,7 @@ namespace Remotion.Data.DomainObjects
 
       ClientTransactionScope.SetActiveScope (this);
       _scopedTransaction = scopedCurrentTransaction;
-      _leaveAction = leaveAction;
+      _attachedScope = attachedScope;
     }
 
     /// <summary>
@@ -208,7 +208,8 @@ namespace Remotion.Data.DomainObjects
         throw new InvalidOperationException ("This ClientTransactionScope is not the active scope. Leave the active scope before leaving this one.");
 
       ExecuteAutoRollbackBehavior ();
-      _leaveAction ();
+      if (_attachedScope != null)
+        _attachedScope.Dispose();
       ClientTransactionScope.SetActiveScope (_previousScope);
       _hasBeenLeft = true;
     }

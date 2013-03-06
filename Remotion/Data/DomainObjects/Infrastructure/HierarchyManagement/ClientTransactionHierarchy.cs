@@ -87,13 +87,30 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
       var previousActivatedTransaction = _activatedTransaction;
       _activatedTransaction = clientTransaction;
 
-      return new DelegateBasedDisposable (() =>
-      {
-        if (_activatedTransaction != clientTransaction)
-          throw new InvalidOperationException ("The scopes returned by ActivateTransaction must be disposed inside out."); 
+      return new ActivationScope (this, clientTransaction, previousActivatedTransaction);
+    }
 
-        _activatedTransaction = previousActivatedTransaction; 
-      });
+    private sealed class ActivationScope : IDisposable
+    {
+      private readonly ClientTransactionHierarchy _hierarchy;
+      private readonly ClientTransaction _expectedActivatedTransaction;
+      private readonly ClientTransaction _previousActivatedTransaction;
+
+      public ActivationScope (
+          ClientTransactionHierarchy hierarchy, ClientTransaction expectedActivatedTransaction, ClientTransaction previousActivatedTransaction)
+      {
+        _hierarchy = hierarchy;
+        _expectedActivatedTransaction = expectedActivatedTransaction;
+        _previousActivatedTransaction = previousActivatedTransaction;
+      }
+
+      public void Dispose ()
+      {
+        if (_hierarchy._activatedTransaction != _expectedActivatedTransaction)
+          throw new InvalidOperationException ("The scopes returned by ActivateTransaction must be disposed inside out.");
+
+        _hierarchy._activatedTransaction = _previousActivatedTransaction;
+      }
     }
   }
 }

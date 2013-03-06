@@ -395,12 +395,11 @@ public class ClientTransaction
       AutoRollbackBehavior rollbackBehavior, 
       InactiveTransactionBehavior inactiveTransactionBehavior = InactiveTransactionBehavior.Throw)
   {
-    Action scopeLeaveAction = () => { };
+    IDisposable activationScope = null;
 
     if (inactiveTransactionBehavior == InactiveTransactionBehavior.MakeActive)
     {
-      var scope = _hierarchyManager.TransactionHierarchy.ActivateTransaction (this);
-      scopeLeaveAction = scope.Dispose;
+      activationScope = _hierarchyManager.TransactionHierarchy.ActivateTransaction (this);
     }
     else if (ActiveTransaction != this)
     {
@@ -410,7 +409,7 @@ public class ClientTransaction
           + "this transaction active in order to use it as the Current transaction.");
     }
 
-    return new ClientTransactionScope (this, rollbackBehavior, scopeLeaveAction);
+    return new ClientTransactionScope (this, rollbackBehavior, activationScope);
   }
 
   /// <summary>

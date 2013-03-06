@@ -387,15 +387,27 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
     }
 
     [Test]
-    public void AutoDiscardBehavior ()
+    public void Leave_NullAttachedScope_NoExceptionThrown ()
+    {
+      var scopedTransaction = ClientTransactionObjectMother.Create ();
+
+      var scope =
+          (ClientTransactionScope)
+          PrivateInvoke.CreateInstanceNonPublicCtor (typeof (ClientTransactionScope), scopedTransaction, AutoRollbackBehavior.None, null);
+
+      Assert.That (() => scope.Leave (), Throws.Nothing);
+    }
+
+    [Test]
+    public void Leave_ExecutesAutoDiscardBehavior ()
     {
       var transactionMock = ClientTransactionObjectMother.CreateStrictMock();
 
       transactionMock
           .Expect (mock => mock.EnterScope (AutoRollbackBehavior.Discard))
           .Return (
-              (ClientTransactionScope) PrivateInvoke.CreateInstanceNonPublicCtor (
-                  typeof (ClientTransactionScope), transactionMock, AutoRollbackBehavior.Discard, (Action) (() => { })));
+              (ClientTransactionScope)
+              PrivateInvoke.CreateInstanceNonPublicCtor (typeof (ClientTransactionScope), transactionMock, AutoRollbackBehavior.Discard, null));
       transactionMock.Expect (mock => mock.Discard ());
 
       transactionMock.Replay();
@@ -408,21 +420,18 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Transactio
     }
 
     [Test]
-    public void Leave_ExecutesLeaveAction_AfterAutoRollbackBehavior ()
+    public void Leave_ExecutesAttachedScope_AfterAutoDiscardBehavior ()
     {
-      var scopedTransaction = ClientTransactionObjectMother.Create();
-      var leaveActionExecuted = false;
-      Action leaveAction = () =>
-      {
-        Assert.That (scopedTransaction.IsDiscarded, Is.True);
-        leaveActionExecuted = true;
-      };
+      var scopedTransaction = ClientTransactionObjectMother.Create ();
+      var attachedScopeMock = MockRepository.GenerateStrictMock<IDisposable> ();
+      attachedScopeMock.Expect (mock => mock.Dispose ()).WhenCalled (mock => Assert.That (scopedTransaction.IsDiscarded, Is.True));
+
       var scope = (ClientTransactionScope) PrivateInvoke.CreateInstanceNonPublicCtor (
-          typeof (ClientTransactionScope), scopedTransaction, AutoRollbackBehavior.Discard, leaveAction);
+          typeof (ClientTransactionScope), scopedTransaction, AutoRollbackBehavior.Discard, attachedScopeMock);
 
-      scope.Leave();
+      scope.Leave ();
 
-      Assert.That (leaveActionExecuted, Is.True);
+      attachedScopeMock.VerifyAllExpectations ();
     }
 
     [Test]
