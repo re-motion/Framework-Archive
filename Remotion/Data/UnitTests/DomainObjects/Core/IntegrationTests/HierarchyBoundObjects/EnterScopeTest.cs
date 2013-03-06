@@ -39,6 +39,17 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.HierarchyB
       _order1LoadedInRootTransaction = DomainObjectIDs.Order1.GetObject<Order> (_rootTransaction);
     }
 
+    public override void TearDown ()
+    {
+      base.TearDown ();
+
+      // Cleanup scopes left open by some test.
+      while (ClientTransactionScope.ActiveScope != null)
+      {
+        ClientTransactionScope.ActiveScope.Leave();
+      }
+    }
+
     [Test]
     public void OpeningScopeForLeafTransaction_AffectsCurrentTransaction ()
     {
