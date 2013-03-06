@@ -260,5 +260,27 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.HierarchyB
       Assert.That (ClientTransaction.Current, Is.Null);
       Assert.That (_rootTransaction.ActiveTransaction, Is.SameAs (subTransaction));
     }
+
+    [Test]
+    public void LeaveOuterScope_WithoutLeavingInnerScope_MakeActiveFlags_Throws ()
+    {
+      var rootScope = _rootTransaction.EnterNonDiscardingScope (InactiveTransactionBehavior.MakeActive);
+        Assert.That (ClientTransaction.Current, Is.SameAs (_rootTransaction));
+        Assert.That (_rootTransaction.ActiveTransaction, Is.SameAs (_rootTransaction));
+
+      var subTransaction = _rootTransaction.CreateSubTransaction ();
+      subTransaction.EnterNonDiscardingScope (InactiveTransactionBehavior.MakeActive);
+
+      Assert.That (ClientTransaction.Current, Is.SameAs (subTransaction));
+      Assert.That (_rootTransaction.ActiveTransaction, Is.SameAs (subTransaction));
+
+      Assert.That (
+          () => rootScope.Leave(),
+          Throws.TypeOf<InvalidOperationException>()
+                .With.Message.EqualTo ("This ClientTransactionScope is not the active scope. Leave the active scope before leaving this one."));
+
+      Assert.That (ClientTransaction.Current, Is.SameAs (subTransaction));
+      Assert.That (_rootTransaction.ActiveTransaction, Is.SameAs (subTransaction));
+    }
   }
 }
