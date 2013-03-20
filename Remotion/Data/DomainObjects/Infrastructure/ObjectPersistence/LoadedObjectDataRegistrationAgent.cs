@@ -110,13 +110,21 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
     public void RegisterIfRequired (IEnumerable<ILoadedObjectData> loadedObjects, bool throwOnNotFound)
     {
+      var collector = new DataContainersPendingRegistrationCollector();
+      BeginRegisterIfRequired (loadedObjects, throwOnNotFound, collector);
+      EndRegisterIfRequired (collector);
+    }
+
+    public void BeginRegisterIfRequired (
+        IEnumerable<ILoadedObjectData> loadedObjects, bool throwOnNotFound, DataContainersPendingRegistrationCollector pendingDataContainerCollector)
+    {
       ArgumentUtility.CheckNotNull ("loadedObjects", loadedObjects);
 
-      var visitor = new RegisteredDataContainerGatheringVisitor ();
+      var visitor = new RegisteredDataContainerGatheringVisitor();
       foreach (var loadedObject in loadedObjects)
         loadedObject.Accept (visitor);
 
-      if (visitor.NotFoundObjectIDs.Any ())
+      if (visitor.NotFoundObjectIDs.Any())
       {
         _registrationListener.OnObjectsNotFound (visitor.NotFoundObjectIDs);
 
@@ -125,9 +133,13 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
       }
 
       PrepareDataContainers (visitor.DataContainersToBeRegistered);
+      pendingDataContainerCollector.AddDataContainers (visitor.DataContainersToBeRegistered);
+    }
 
-      // TODO 5397: Split operation here.
-      RegisterPreparedDataContainers (visitor.DataContainersToBeRegistered);
+    public void EndRegisterIfRequired (DataContainersPendingRegistrationCollector pendingDataContainerCollector)
+    {
+      ArgumentUtility.CheckNotNull ("pendingDataContainerCollector", pendingDataContainerCollector);
+      RegisterPreparedDataContainers (pendingDataContainerCollector.DataContainersPendingRegistration.ToList());
     }
 
     private void PrepareDataContainers (IList<DataContainer> dataContainersToBeRegistered)

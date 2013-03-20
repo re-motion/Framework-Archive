@@ -61,33 +61,39 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
     {
       ArgumentUtility.CheckNotNull ("query", query);
 
+      var pendingRegistrationCollector = new DataContainersPendingRegistrationCollector ();
+
       var loadedObjectData = _persistenceStrategy.ExecuteCollectionQuery (query, LoadedObjectDataProvider).ConvertToCollection();
+      LoadedObjectDataRegistrationAgent.BeginRegisterIfRequired (loadedObjectData, true, pendingRegistrationCollector);
 
-      // TODO 5397: var context = new PendingLoadedObjectDataRegistrationContext();
-      // TODO 5397: context.AddObjectsPendingRegistration (loadedObjectData);
-      LoadedObjectDataRegistrationAgent.RegisterIfRequired (loadedObjectData, true); // TODO 5397: Remove this.
-
-      // TODO 5397: Pass in the context.
-      _eagerFetcher.PerformEagerFetching (loadedObjectData, query.EagerFetchQueries, this);
-      // TODO 5397: LoadedObjectDataRegistrationAgent.RegisterIfRequired (context.ObjectsPendingRegistration, true);
+      try
+      {
+        _eagerFetcher.PerformEagerFetching (loadedObjectData, query.EagerFetchQueries, this, pendingRegistrationCollector);
+      }
+      finally
+      {
+        // Note: It's important to run the call to EndRegister within a finally block, otherwise we'd leak "currently loading objects" in the case
+        // of exceptions.
+        LoadedObjectDataRegistrationAgent.EndRegisterIfRequired (pendingRegistrationCollector);
+      }
 
       return loadedObjectData;
     }
 
-    // TODO 5397: Add context parameter.
-    public ICollection<LoadedObjectDataWithDataSourceData> GetOrLoadFetchQueryResult (IQuery query)
+    public ICollection<LoadedObjectDataWithDataSourceData> GetOrLoadFetchQueryResult (
+        IQuery query, 
+        DataContainersPendingRegistrationCollector pendingRegistrationCollector)
     {
       ArgumentUtility.CheckNotNull ("query", query);
-
+      ArgumentUtility.CheckNotNull ("pendingRegistrationCollector", pendingRegistrationCollector);
+      
       var loadedObjectDataWithSource = _persistenceStrategy.ExecuteFetchQuery (query, LoadedObjectDataProvider).ConvertToCollection();
+      
       var loadedObjectData = loadedObjectDataWithSource.Select (data => data.LoadedObjectData).ConvertToCollection ();
+      LoadedObjectDataRegistrationAgent.BeginRegisterIfRequired (loadedObjectData, true, pendingRegistrationCollector);
 
-      // TODO 5397: context.AddObjectsPendingRegistration (loadedObjectData);
-      LoadedObjectDataRegistrationAgent.RegisterIfRequired (loadedObjectData, true);
-
-      // TODO 5397: Pass in context.
-      _eagerFetcher.PerformEagerFetching (loadedObjectData, query.EagerFetchQueries, this);
-
+      _eagerFetcher.PerformEagerFetching (loadedObjectData, query.EagerFetchQueries, this, pendingRegistrationCollector);
+      
       return loadedObjectDataWithSource;
     }
   }

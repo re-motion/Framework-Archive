@@ -24,7 +24,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.Serializable
   [Serializable]
   public class SerializableFetchEnabledObjectLoaderFake : SerializableObjectLoaderFake, IFetchEnabledObjectLoader
   {
-    public ICollection<LoadedObjectDataWithDataSourceData> GetOrLoadFetchQueryResult (IQuery query)
+    public ICollection<LoadedObjectDataWithDataSourceData> GetOrLoadFetchQueryResult (IQuery query, DataContainersPendingRegistrationCollector pendingRegistrationCollector)
     {
       throw new NotImplementedException();
     }

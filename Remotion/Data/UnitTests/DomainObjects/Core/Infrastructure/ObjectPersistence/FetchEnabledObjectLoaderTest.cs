@@ -49,6 +49,8 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.ObjectPersis
     private IRelationEndPointDefinition _orderTicketEndPointDefinition;
     private IRelationEndPointDefinition _customerEndPointDefinition;
 
+    private IQuery _queryWithFetchQueries;
+
     public override void SetUp ()
     {
       base.SetUp ();
@@ -73,60 +75,108 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.ObjectPersis
 
       _orderTicketEndPointDefinition = GetEndPointDefinition (typeof (Order), "OrderTicket");
       _customerEndPointDefinition = GetEndPointDefinition (typeof (Order), "Customer");
+
+      var fetchQuery1 = CreateFakeQuery ();
+      var fetchQuery2 = CreateFakeQuery ();
+      _queryWithFetchQueries = CreateFakeQuery (
+          Tuple.Create (_orderTicketEndPointDefinition, fetchQuery1),
+          Tuple.Create (_customerEndPointDefinition, fetchQuery2));
     }
 
     [Test]
-    public void GetOrLoadCollectionQueryResult_PerformsEagerFetching ()
+    public void GetOrLoadCollectionQueryResult_PerformsEagerFetching_AndRegistersLoadedObjects ()
     {
-      var fetchQuery1 = CreateFakeQuery ();
-      var fetchQuery2 = CreateFakeQuery ();
-      var fakeQuery = CreateFakeQuery (
-          Tuple.Create (_orderTicketEndPointDefinition, fetchQuery1),
-          Tuple.Create (_customerEndPointDefinition, fetchQuery2));
+      DataContainersPendingRegistrationCollector collector = null;
 
-      _persistenceStrategyMock
-          .Expect (mock => mock.ExecuteCollectionQuery (fakeQuery, _loadedObjectDataProviderStub))
-          .Return (new[] { _resultItem1, _resultItem2 });
-      _loadedObjectDataRegistrationAgentMock
+      using (_mockRepository.Ordered())
+      {
+        _persistenceStrategyMock
+            .Expect (mock => mock.ExecuteCollectionQuery (_queryWithFetchQueries, _loadedObjectDataProviderStub))
+            .Return (new[] { _resultItem1, _resultItem2 });
+        _loadedObjectDataRegistrationAgentMock
           .Expect (
-              mock => mock.RegisterIfRequired (
-                  Arg<IEnumerable<ILoadedObjectData>>.List.Equal (new[] { _resultItem1, _resultItem2 }), 
-                  Arg.Is (true)));
-      _eagerFetcherMock.Expect (
-          mock => mock.PerformEagerFetching (new[] { _resultItem1, _resultItem2 }, fakeQuery.EagerFetchQueries, _fetchEnabledObjectLoader));
+              mock => mock.BeginRegisterIfRequired (
+                  Arg.Is (new[] { _resultItem1, _resultItem2 }), Arg.Is (true), Arg<DataContainersPendingRegistrationCollector>.Is.NotNull))
+          .WhenCalled (mi => collector = (DataContainersPendingRegistrationCollector) mi.Arguments[2]);
+        _eagerFetcherMock
+            .Expect (
+                mock => mock.PerformEagerFetching (
+                    Arg.Is (new[] { _resultItem1, _resultItem2 }),
+                    Arg.Is (_queryWithFetchQueries.EagerFetchQueries),
+                    Arg.Is (_fetchEnabledObjectLoader),
+                    Arg<DataContainersPendingRegistrationCollector>.Matches (c => c == collector)));
+        _loadedObjectDataRegistrationAgentMock
+            .Expect (mock => mock.EndRegisterIfRequired (Arg<DataContainersPendingRegistrationCollector>.Matches (c => c == collector)));
+      }
       _mockRepository.ReplayAll();
 
-      var result = _fetchEnabledObjectLoader.GetOrLoadCollectionQueryResult (fakeQuery);
+      var result = _fetchEnabledObjectLoader.GetOrLoadCollectionQueryResult (_queryWithFetchQueries);
 
       _mockRepository.VerifyAll ();
       Assert.That (result, Is.EqualTo (new[] {_resultItem1, _resultItem2 }));
     }
 
     [Test]
-    public void GetOrLoadFetchQueryResult ()
+    public void GetOrLoadCollectionQueryResult_EndsRegistration_EvenWhenAnExceptionIsThrown ()
     {
-      var fetchQuery1 = CreateFakeQuery();
-      var fetchQuery2 = CreateFakeQuery();
-      var fakeQuery = CreateFakeQuery (
-          Tuple.Create (_orderTicketEndPointDefinition, fetchQuery1), 
-          Tuple.Create (_customerEndPointDefinition, fetchQuery2));
+      var exception = new Exception ("Test");
+
+      DataContainersPendingRegistrationCollector collector = null;
 
       _persistenceStrategyMock
-          .Expect (mock => mock.ExecuteFetchQuery (fakeQuery, _loadedObjectDataProviderStub))
-          .Return (new[] { _resultItemWithSourceData1, _resultItemWithSourceData2 });
+          .Expect (mock => mock.ExecuteCollectionQuery (_queryWithFetchQueries, _loadedObjectDataProviderStub))
+          .Return (new[] { _resultItem1, _resultItem2 });
       _loadedObjectDataRegistrationAgentMock
-          .Expect (mock => mock.RegisterIfRequired (
-              Arg<IEnumerable<ILoadedObjectData>>.List.Equal (new[] { _resultItemWithSourceData1.LoadedObjectData, _resultItemWithSourceData2.LoadedObjectData }),
-              Arg.Is (true)));
+          .Expect (
+              mock => mock.BeginRegisterIfRequired (
+                  Arg.Is (new[] { _resultItem1, _resultItem2 }), Arg.Is (true), Arg<DataContainersPendingRegistrationCollector>.Is.NotNull))
+          .WhenCalled (mi => collector = (DataContainersPendingRegistrationCollector) mi.Arguments[2]);
       _eagerFetcherMock
-          .Expect (mock => mock.PerformEagerFetching (
-              Arg<ICollection<ILoadedObjectData>>.List.Equal (new[] { _resultItemWithSourceData1.LoadedObjectData, _resultItemWithSourceData2.LoadedObjectData }),
-              Arg.Is (fakeQuery.EagerFetchQueries),
-              Arg.Is (_fetchEnabledObjectLoader)));
+          .Expect (
+              mock => mock.PerformEagerFetching (
+                  Arg.Is (new[] { _resultItem1, _resultItem2 }),
+                  Arg.Is (_queryWithFetchQueries.EagerFetchQueries),
+                  Arg.Is (_fetchEnabledObjectLoader),
+                  Arg<DataContainersPendingRegistrationCollector>.Matches (c => c == collector)))
+          .Throw (exception);
+      _loadedObjectDataRegistrationAgentMock
+          .Expect (mock => mock.EndRegisterIfRequired (Arg<DataContainersPendingRegistrationCollector>.Matches (c => c == collector)));
+      _mockRepository.ReplayAll ();
+
+      Assert.That (() => _fetchEnabledObjectLoader.GetOrLoadCollectionQueryResult (_queryWithFetchQueries), Throws.Exception.SameAs (exception));
+
+      _mockRepository.VerifyAll ();
+    }
+
+    [Test]
+    public void GetOrLoadFetchQueryResult ()
+    {
+      var pendingRegistrationCollector = new DataContainersPendingRegistrationCollector();
+
+      using (_mockRepository.Ordered())
+      {
+        _persistenceStrategyMock
+            .Expect (mock => mock.ExecuteFetchQuery (_queryWithFetchQueries, _loadedObjectDataProviderStub))
+            .Return (new[] { _resultItemWithSourceData1, _resultItemWithSourceData2 });
+        _loadedObjectDataRegistrationAgentMock
+            .Expect (
+                mock => mock.BeginRegisterIfRequired (
+                    new[] { _resultItemWithSourceData1.LoadedObjectData, _resultItemWithSourceData2.LoadedObjectData },
+                    true,
+                    pendingRegistrationCollector));
+        _eagerFetcherMock
+            .Expect (
+                mock => mock.PerformEagerFetching (
+                    Arg<ICollection<ILoadedObjectData>>.List.Equal (
+                        new[] { _resultItemWithSourceData1.LoadedObjectData, _resultItemWithSourceData2.LoadedObjectData }),
+                    Arg.Is (_queryWithFetchQueries.EagerFetchQueries),
+                    Arg.Is (_fetchEnabledObjectLoader),
+                    Arg.Is (pendingRegistrationCollector)));
+      }
 
       _mockRepository.ReplayAll ();
 
-      var result = _fetchEnabledObjectLoader.GetOrLoadFetchQueryResult (fakeQuery);
+      var result = _fetchEnabledObjectLoader.GetOrLoadFetchQueryResult (_queryWithFetchQueries, pendingRegistrationCollector);
 
       _mockRepository.VerifyAll ();
       Assert.That (result, Is.EqualTo (new[] { _resultItemWithSourceData1, _resultItemWithSourceData2 }));

@@ -340,6 +340,152 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.ObjectPersis
     }
 
     [Test]
+    public void BeginRegisterIfRequired_RaisesBeginEvent_AndSetsDomainObjects_ButDoesNotRegister ()
+    {
+      var freshlyLoadedObject = GetFreshlyLoadedObject ();
+      var registerableDataContainer = freshlyLoadedObject.FreshlyLoadedDataContainer;
+      Assert.That (registerableDataContainer.HasDomainObject, Is.False);
+
+      var alreadyExistingLoadedObject = GetAlreadyExistingLoadedObject ();
+      var nullLoadedObject = GetNullLoadedObject ();
+      var invalidLoadedObject = GetInvalidLoadedObject ();
+
+      var loadedObjectIDs = new[] { registerableDataContainer.ID };
+
+      _registrationListenerMock.Expect (mock => mock.OnBeforeObjectRegistration (Arg<ReadOnlyCollection<ObjectID>>.List.Equal (loadedObjectIDs)));
+      _mockRepository.ReplayAll ();
+
+      var allObjects =
+          new ILoadedObjectData[]
+          {
+              freshlyLoadedObject,
+              alreadyExistingLoadedObject,
+              nullLoadedObject,
+              invalidLoadedObject
+          };
+      var collector = new DataContainersPendingRegistrationCollector ();
+      _agent.BeginRegisterIfRequired (allObjects, false, collector);
+
+      _mockRepository.VerifyAll ();
+      CheckHasEnlistedDomainObject (registerableDataContainer);
+
+      Assert.That (collector.DataContainersPendingRegistration, Is.EquivalentTo (new[] { registerableDataContainer }));
+    }
+
+    [Test]
+    public void BeginRegisterIfRequired_WithNotFoundObjects_AndThrowOnNotFoundFalse_RaisesOnNotFoundAndProceeds ()
+    {
+      var freshlyLoadedObject = GetFreshlyLoadedObject ();
+      var registerableDataContainer = freshlyLoadedObject.FreshlyLoadedDataContainer;
+      Assert.That (registerableDataContainer.HasDomainObject, Is.False);
+
+      var notFoundLoadedObject = GetNotFoundLoadedObject ();
+
+      var loadedObjectIDs = new[] { registerableDataContainer.ID };
+
+      using (_mockRepository.Ordered())
+      {
+        _registrationListenerMock
+            .Expect (
+                mock => mock.OnObjectsNotFound (
+                    Arg<ReadOnlyCollection<ObjectID>>.List.Equal (new[] { notFoundLoadedObject.ObjectID })));
+        _registrationListenerMock.Expect (mock => mock.OnBeforeObjectRegistration (Arg<ReadOnlyCollection<ObjectID>>.List.Equal (loadedObjectIDs)));
+      }
+      _mockRepository.ReplayAll ();
+
+      var allObjects =
+          new ILoadedObjectData[]
+          {
+              freshlyLoadedObject,
+              notFoundLoadedObject
+          };
+      var collector = new DataContainersPendingRegistrationCollector ();
+      _agent.BeginRegisterIfRequired (allObjects, false, collector);
+
+      _mockRepository.VerifyAll ();
+      CheckHasEnlistedDomainObject (registerableDataContainer);
+
+      Assert.That (collector.DataContainersPendingRegistration, Is.EqualTo (new[] { registerableDataContainer }));
+    }
+
+    [Test]
+    public void BeginRegisterIfRequired_WithNotFoundObjects_AndThrowOnNotFoundTrue_RaisesdOnNotFoundAndThrows ()
+    {
+      var freshlyLoadedObject = GetFreshlyLoadedObject ();
+      var registerableDataContainer = freshlyLoadedObject.FreshlyLoadedDataContainer;
+      Assert.That (registerableDataContainer.HasDomainObject, Is.False);
+
+      var notFoundLoadedObject = GetNotFoundLoadedObject ();
+
+      _registrationListenerMock
+          .Expect (
+              mock => mock.OnObjectsNotFound (
+                  Arg<ReadOnlyCollection<ObjectID>>.List.Equal (new[] { notFoundLoadedObject.ObjectID })));
+      _mockRepository.ReplayAll ();
+
+      var allObjects =
+          new ILoadedObjectData[]
+          {
+              freshlyLoadedObject,
+              notFoundLoadedObject
+          };
+      var collector = new DataContainersPendingRegistrationCollector ();
+      Assert.That (() => _agent.BeginRegisterIfRequired (allObjects, true, collector), Throws.TypeOf<ObjectsNotFoundException> ());
+
+      _mockRepository.VerifyAll ();
+      Assert.That (registerableDataContainer.HasDomainObject, Is.False);
+      Assert.That (collector.DataContainersPendingRegistration, Is.Empty);
+    }
+
+    [Test]
+    public void EndRegisterIfRequired_RegistersDataContainers_AndRaisesEndEvent ()
+    {
+      var dataContainer1 = DataContainerObjectMother.Create (DomainObjectMother.CreateFakeObject (DomainObjectIDs.Order1));
+      var dataContainer2 = DataContainerObjectMother.Create (DomainObjectMother.CreateFakeObject (DomainObjectIDs.Order2));
+
+      using (_mockRepository.Ordered ())
+      {
+        _dataManagerMock.Expect (mock => mock.RegisterDataContainer (dataContainer1));
+        _dataManagerMock.Expect (mock => mock.RegisterDataContainer (dataContainer2));
+        
+        _registrationListenerMock
+            .Expect (mock => mock.OnAfterObjectRegistration (
+                Arg<ReadOnlyCollection<ObjectID>>.List.Equal (new[] { dataContainer1.ID, dataContainer2.ID }),
+                Arg<ReadOnlyCollection<DomainObject>>.List.Equal (new[] { dataContainer1.DomainObject, dataContainer2.DomainObject })));
+      }
+      _mockRepository.ReplayAll();
+
+      _agent.EndRegisterIfRequired (CreateCollector (dataContainer1, dataContainer2));
+
+      _mockRepository.VerifyAll();
+    }
+
+    [Test]
+    public void EndRegisterIfRequired_RaisesEndEvent_EvenWhenRegistrationThrows ()
+    {
+      var dataContainer1 = DataContainerObjectMother.Create (DomainObjectMother.CreateFakeObject (DomainObjectIDs.Order1));
+      var dataContainer2 = DataContainerObjectMother.Create (DomainObjectMother.CreateFakeObject (DomainObjectIDs.Order2));
+
+      var exception = new Exception ("Test");
+
+      using (_mockRepository.Ordered ())
+      {
+        _dataManagerMock.Expect (mock => mock.RegisterDataContainer (dataContainer1));
+        _dataManagerMock.Expect (mock => mock.RegisterDataContainer (dataContainer2)).Throw (exception);
+
+        _registrationListenerMock
+            .Expect (mock => mock.OnAfterObjectRegistration (
+                Arg<ReadOnlyCollection<ObjectID>>.List.Equal (new[] { dataContainer1.ID, dataContainer2.ID }),
+                Arg<ReadOnlyCollection<DomainObject>>.List.Equal (new[] { dataContainer1.DomainObject })));
+      }
+      _mockRepository.ReplayAll ();
+
+      Assert.That (() => _agent.EndRegisterIfRequired (CreateCollector (dataContainer1, dataContainer2)), Throws.Exception.SameAs (exception));
+
+      _mockRepository.VerifyAll ();
+    }
+
+    [Test]
     public void Serializable ()
     {
       var clientTransaction = ClientTransaction.CreateRootTransaction();
@@ -360,6 +506,13 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.ObjectPersis
       var id = new ObjectID(typeof (Order), Guid.NewGuid());
       var dataContainer = DataContainer.CreateForExisting (id, null, pd => pd.DefaultValue);
       return new FreshlyLoadedObjectData (dataContainer);
+    }
+
+    private static DataContainersPendingRegistrationCollector CreateCollector (params DataContainer[] dataContainers)
+    {
+      var collector = new DataContainersPendingRegistrationCollector ();
+      collector.AddDataContainers (dataContainers);
+      return collector;
     }
 
     private AlreadyExistingLoadedObjectData GetAlreadyExistingLoadedObject ()

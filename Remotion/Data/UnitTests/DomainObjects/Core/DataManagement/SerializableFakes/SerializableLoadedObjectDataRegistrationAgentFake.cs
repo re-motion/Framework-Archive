@@ -17,6 +17,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
 
 namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.SerializableFakes
@@ -32,6 +34,16 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.Serializable
     public void RegisterIfRequired (IEnumerable<ILoadedObjectData> loadedObjects, bool throwOnNotFound)
     {
       throw new System.NotImplementedException();
+    }
+
+    public void BeginRegisterIfRequired (IEnumerable<ILoadedObjectData> loadedObjects, bool throwOnNotFound, DataContainersPendingRegistrationCollector pendingDataContainerCollector)
+    {
+      throw new NotImplementedException();
+    }
+
+    public void EndRegisterIfRequired (DataContainersPendingRegistrationCollector pendingDataContainerCollector)
+    {
+      throw new NotImplementedException();
     }
   }
 }
