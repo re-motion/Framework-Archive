@@ -31,17 +31,17 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.Serializable
       throw new System.NotImplementedException();
     }
 
-    public void RegisterIfRequired (IEnumerable<ILoadedObjectData> loadedObjects, bool throwOnNotFound)
+    public IEnumerable<ILoadedObjectData> RegisterIfRequired (IEnumerable<ILoadedObjectData> loadedObjects, bool throwOnNotFound)
     {
       throw new System.NotImplementedException();
     }
 
-    public void BeginRegisterIfRequired (IEnumerable<ILoadedObjectData> loadedObjects, bool throwOnNotFound, DataContainersPendingRegistrationCollector pendingDataContainerCollector)
+    public IEnumerable<ILoadedObjectData> BeginRegisterIfRequired (IEnumerable<ILoadedObjectData> loadedObjects, bool throwOnNotFound, LoadedObjectDataPendingRegistrationCollector pendingLoadedObjectDataCollector)
     {
       throw new NotImplementedException();
     }
 
-    public void EndRegisterIfRequired (DataContainersPendingRegistrationCollector pendingDataContainerCollector)
+    public void EndRegisterIfRequired (LoadedObjectDataPendingRegistrationCollector pendingLoadedObjectDataCollector)
     {
       throw new NotImplementedException();
     }

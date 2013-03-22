@@ -58,7 +58,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Queries.EagerFetching
     private Customer _fetchedCustomer;
     private LoadedObjectDataWithDataSourceData _fetchedCustomerData;
 
-    private DataContainersPendingRegistrationCollector _pendingRegistrationCollector;
+    private LoadedObjectDataPendingRegistrationCollector _pendingRegistrationCollector;
 
     public override void SetUp ()
     {
@@ -93,7 +93,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Queries.EagerFetching
       _fetchedCustomer = DomainObjectMother.CreateFakeObject<Customer>();
       _fetchedCustomerData = LoadedObjectDataObjectMother.CreateLoadedObjectDataWithDataSourceData (_fetchedCustomer);
 
-      _pendingRegistrationCollector = new DataContainersPendingRegistrationCollector();
+      _pendingRegistrationCollector = new LoadedObjectDataPendingRegistrationCollector();
     }
 
     [Test]

@@ -190,7 +190,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.EagerFetch
 
     private void AddOrderFetchAgainQuery (IQuery orderItemsFetchQuery, string originalOrderWhereCondition)
     {
-      var relationEndPointDefinition = GetEndPointDefinition (typeof (Order), "OrderItems");
+      var relationEndPointDefinition = GetEndPointDefinition (typeof (OrderItem), "Order");
 
       var ordersFetchQuery = QueryFactory.CreateCollectionQuery (
           "test fetch",

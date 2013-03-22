@@ -27,24 +27,26 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
   /// This is used by <see cref="FetchEnabledObjectLoader"/> in order to ensure that all fetch requests are performed before any OnLoaded events are 
   /// raised.
   /// </summary>
-  public class DataContainersPendingRegistrationCollector
+  public class LoadedObjectDataPendingRegistrationCollector
   {
-    private readonly Dictionary<ObjectID, DataContainer> _dataContainersPendingRegistration = new Dictionary<ObjectID, DataContainer> ();
+    private readonly Dictionary<ObjectID, FreshlyLoadedObjectData> _dataPendingRegistration = new Dictionary<ObjectID, FreshlyLoadedObjectData> ();
 
-    public ReadOnlyCollectionDecorator<DataContainer> DataContainersPendingRegistration
+    public ReadOnlyCollectionDecorator<FreshlyLoadedObjectData> DataPendingRegistration
     {
-      get { return _dataContainersPendingRegistration.Values.AsReadOnly(); }
+      get { return _dataPendingRegistration.Values.AsReadOnly(); }
     }
 
-    public void AddDataContainers (IEnumerable<DataContainer> pendingDataContainers)
+    public FreshlyLoadedObjectData Add (FreshlyLoadedObjectData pendingData)
     {
-      ArgumentUtility.CheckNotNull ("pendingDataContainers", pendingDataContainers);
+      ArgumentUtility.CheckNotNull ("pendingData", pendingData);
 
-      foreach (var pendingDataContainer in pendingDataContainers)
-      {
-        if (!_dataContainersPendingRegistration.ContainsKey (pendingDataContainer.ID))
-          _dataContainersPendingRegistration.Add (pendingDataContainer.ID, pendingDataContainer);
-      }
+      FreshlyLoadedObjectData existingData;
+
+      if (_dataPendingRegistration.TryGetValue (pendingData.ObjectID, out existingData))
+        return existingData;
+
+      _dataPendingRegistration.Add (pendingData.ObjectID, pendingData);
+      return pendingData;
     }
   }
 }

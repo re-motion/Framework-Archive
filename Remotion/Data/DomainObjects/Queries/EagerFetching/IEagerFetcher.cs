@@ -29,6 +29,6 @@ namespace Remotion.Data.DomainObjects.Queries.EagerFetching
         ICollection<ILoadedObjectData> originatingObjects,
         IEnumerable<KeyValuePair<IRelationEndPointDefinition, IQuery>> fetchQueries,
         IFetchEnabledObjectLoader fetchResultLoader,
-        DataContainersPendingRegistrationCollector pendingRegistrationCollector);
+        LoadedObjectDataPendingRegistrationCollector pendingRegistrationCollector);
   }
 }

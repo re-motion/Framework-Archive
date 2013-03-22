@@ -26,7 +26,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.Serializable
   [Serializable]
   public class SerializableEagerFetcherFake : IEagerFetcher
   {
-    public void PerformEagerFetching (ICollection<ILoadedObjectData> originatingObjects, IEnumerable<KeyValuePair<IRelationEndPointDefinition, IQuery>> fetchQueries, IFetchEnabledObjectLoader fetchResultLoader, DataContainersPendingRegistrationCollector pendingRegistrationCollector)
+    public void PerformEagerFetching (ICollection<ILoadedObjectData> originatingObjects, IEnumerable<KeyValuePair<IRelationEndPointDefinition, IQuery>> fetchQueries, IFetchEnabledObjectLoader fetchResultLoader, LoadedObjectDataPendingRegistrationCollector pendingRegistrationCollector)
     {
       throw new NotImplementedException();
     }

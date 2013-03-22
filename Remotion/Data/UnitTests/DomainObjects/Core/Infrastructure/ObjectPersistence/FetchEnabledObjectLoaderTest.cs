@@ -86,7 +86,9 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.ObjectPersis
     [Test]
     public void GetOrLoadCollectionQueryResult_PerformsEagerFetching_AndRegistersLoadedObjects ()
     {
-      DataContainersPendingRegistrationCollector collector = null;
+      LoadedObjectDataPendingRegistrationCollector collector = null;
+
+      var consolidatedResultItems = new[] { CreateEquivalentData (_resultItem1), CreateEquivalentData (_resultItem2) };
 
       using (_mockRepository.Ordered())
       {
@@ -96,24 +98,25 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.ObjectPersis
         _loadedObjectDataRegistrationAgentMock
           .Expect (
               mock => mock.BeginRegisterIfRequired (
-                  Arg.Is (new[] { _resultItem1, _resultItem2 }), Arg.Is (true), Arg<DataContainersPendingRegistrationCollector>.Is.NotNull))
-          .WhenCalled (mi => collector = (DataContainersPendingRegistrationCollector) mi.Arguments[2]);
+                  Arg.Is (new[] { _resultItem1, _resultItem2 }), Arg.Is (true), Arg<LoadedObjectDataPendingRegistrationCollector>.Is.NotNull))
+          .WhenCalled (mi => collector = (LoadedObjectDataPendingRegistrationCollector) mi.Arguments[2])
+          .Return (consolidatedResultItems);
         _eagerFetcherMock
             .Expect (
                 mock => mock.PerformEagerFetching (
-                    Arg.Is (new[] { _resultItem1, _resultItem2 }),
+                    Arg.Is (consolidatedResultItems),
                     Arg.Is (_queryWithFetchQueries.EagerFetchQueries),
                     Arg.Is (_fetchEnabledObjectLoader),
-                    Arg<DataContainersPendingRegistrationCollector>.Matches (c => c == collector)));
+                    Arg<LoadedObjectDataPendingRegistrationCollector>.Matches (c => c == collector)));
         _loadedObjectDataRegistrationAgentMock
-            .Expect (mock => mock.EndRegisterIfRequired (Arg<DataContainersPendingRegistrationCollector>.Matches (c => c == collector)));
+            .Expect (mock => mock.EndRegisterIfRequired (Arg<LoadedObjectDataPendingRegistrationCollector>.Matches (c => c == collector)));
       }
       _mockRepository.ReplayAll();
 
       var result = _fetchEnabledObjectLoader.GetOrLoadCollectionQueryResult (_queryWithFetchQueries);
 
       _mockRepository.VerifyAll ();
-      Assert.That (result, Is.EqualTo (new[] {_resultItem1, _resultItem2 }));
+      Assert.That (result, Is.EqualTo (consolidatedResultItems));
     }
 
     [Test]
@@ -121,7 +124,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.ObjectPersis
     {
       var exception = new Exception ("Test");
 
-      DataContainersPendingRegistrationCollector collector = null;
+      LoadedObjectDataPendingRegistrationCollector collector = null;
 
       _persistenceStrategyMock
           .Expect (mock => mock.ExecuteCollectionQuery (_queryWithFetchQueries, _loadedObjectDataProviderStub))
@@ -129,18 +132,19 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.ObjectPersis
       _loadedObjectDataRegistrationAgentMock
           .Expect (
               mock => mock.BeginRegisterIfRequired (
-                  Arg.Is (new[] { _resultItem1, _resultItem2 }), Arg.Is (true), Arg<DataContainersPendingRegistrationCollector>.Is.NotNull))
-          .WhenCalled (mi => collector = (DataContainersPendingRegistrationCollector) mi.Arguments[2]);
+                  Arg.Is (new[] { _resultItem1, _resultItem2 }), Arg.Is (true), Arg<LoadedObjectDataPendingRegistrationCollector>.Is.NotNull))
+          .WhenCalled (mi => collector = (LoadedObjectDataPendingRegistrationCollector) mi.Arguments[2])
+          .Return (new[] { _resultItem1, _resultItem2 });
       _eagerFetcherMock
           .Expect (
               mock => mock.PerformEagerFetching (
                   Arg.Is (new[] { _resultItem1, _resultItem2 }),
                   Arg.Is (_queryWithFetchQueries.EagerFetchQueries),
                   Arg.Is (_fetchEnabledObjectLoader),
-                  Arg<DataContainersPendingRegistrationCollector>.Matches (c => c == collector)))
+                  Arg<LoadedObjectDataPendingRegistrationCollector>.Matches (c => c == collector)))
           .Throw (exception);
       _loadedObjectDataRegistrationAgentMock
-          .Expect (mock => mock.EndRegisterIfRequired (Arg<DataContainersPendingRegistrationCollector>.Matches (c => c == collector)));
+          .Expect (mock => mock.EndRegisterIfRequired (Arg<LoadedObjectDataPendingRegistrationCollector>.Matches (c => c == collector)));
       _mockRepository.ReplayAll ();
 
       Assert.That (() => _fetchEnabledObjectLoader.GetOrLoadCollectionQueryResult (_queryWithFetchQueries), Throws.Exception.SameAs (exception));
@@ -151,7 +155,13 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.ObjectPersis
     [Test]
     public void GetOrLoadFetchQueryResult ()
     {
-      var pendingRegistrationCollector = new DataContainersPendingRegistrationCollector();
+      var pendingRegistrationCollector = new LoadedObjectDataPendingRegistrationCollector();
+      var consolidatedResultItems =
+          new[]
+          {
+              CreateEquivalentData (_resultItemWithSourceData1.LoadedObjectData),
+              CreateEquivalentData (_resultItemWithSourceData2.LoadedObjectData)
+          };
 
       using (_mockRepository.Ordered())
       {
@@ -161,14 +171,15 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.ObjectPersis
         _loadedObjectDataRegistrationAgentMock
             .Expect (
                 mock => mock.BeginRegisterIfRequired (
-                    new[] { _resultItemWithSourceData1.LoadedObjectData, _resultItemWithSourceData2.LoadedObjectData },
-                    true,
-                    pendingRegistrationCollector));
+                    Arg<IEnumerable<ILoadedObjectData>>.List.Equal (
+                        new[] { _resultItemWithSourceData1.LoadedObjectData, _resultItemWithSourceData2.LoadedObjectData }),
+                    Arg.Is (true),
+                    Arg.Is (pendingRegistrationCollector)))
+            .Return (consolidatedResultItems);
         _eagerFetcherMock
             .Expect (
                 mock => mock.PerformEagerFetching (
-                    Arg<ICollection<ILoadedObjectData>>.List.Equal (
-                        new[] { _resultItemWithSourceData1.LoadedObjectData, _resultItemWithSourceData2.LoadedObjectData }),
+                    Arg<ICollection<ILoadedObjectData>>.List.Equal (consolidatedResultItems),
                     Arg.Is (_queryWithFetchQueries.EagerFetchQueries),
                     Arg.Is (_fetchEnabledObjectLoader),
                     Arg.Is (pendingRegistrationCollector)));
@@ -179,7 +190,19 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.ObjectPersis
       var result = _fetchEnabledObjectLoader.GetOrLoadFetchQueryResult (_queryWithFetchQueries, pendingRegistrationCollector);
 
       _mockRepository.VerifyAll ();
-      Assert.That (result, Is.EqualTo (new[] { _resultItemWithSourceData1, _resultItemWithSourceData2 }));
+      Assert.That (
+          result,
+          Is.EqualTo (
+              new[]
+              {
+                  new LoadedObjectDataWithDataSourceData (consolidatedResultItems[0], _resultItemWithSourceData1.DataSourceData),
+                  new LoadedObjectDataWithDataSourceData (consolidatedResultItems[1], _resultItemWithSourceData2.DataSourceData)
+              }));
+    }
+
+    private ILoadedObjectData CreateEquivalentData (ILoadedObjectData loadedObjectData)
+    {
+      return LoadedObjectDataObjectMother.CreateLoadedObjectDataStub (loadedObjectData.ObjectID);
     }
 
     [Test]
