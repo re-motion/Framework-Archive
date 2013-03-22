@@ -75,6 +75,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
       }
       finally
       {
+        // Even with an exception during eager fetching, go ahead and register everything.
         LoadedObjectDataRegistrationAgent.EndRegisterIfRequired (pendingRegistrationCollector);
       }
 
