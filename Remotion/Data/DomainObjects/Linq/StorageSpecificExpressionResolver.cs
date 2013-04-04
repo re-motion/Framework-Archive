@@ -91,7 +91,7 @@ namespace Remotion.Data.DomainObjects.Linq
       ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
 
       // In ResolveEntity above, we defined that we take the ID column as the primary key.
-      return originatingEntity.PrimaryKeyColumn;
+      return ((SqlColumnExpression) originatingEntity.PrimaryKey);
     }
 
     public Expression ResolveValueColumn (SqlColumnExpression idColumn)

@@ -180,7 +180,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Linq
 
       var result = _storageSpecificExpressionResolver.ResolveIDColumn (entityExpression, _classDefinition);
 
-      Assert.That (result, Is.SameAs (entityExpression.PrimaryKeyColumn));
+      Assert.That (result, Is.SameAs (entityExpression.PrimaryKey));
     }
 
     [Test]
@@ -474,7 +474,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Linq
 
       var result = _storageSpecificExpressionResolver.ResolveJoin (entityExpression, leftEndPointDefinition, rightEndPointDefinition, "o");
 
-      Assert.That (result.LeftKey, Is.SameAs (entityExpression.PrimaryKeyColumn));
+      Assert.That (result.LeftKey, Is.SameAs (entityExpression.PrimaryKey));
       Assert.That (((SqlColumnExpression) result.RightKey).IsPrimaryKey, Is.False);
     }
 
