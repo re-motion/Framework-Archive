@@ -67,7 +67,7 @@ namespace Remotion.Data.DomainObjects.Linq
           classDefinition.ClassType,
           tableAlias,
           null,
-          tableColumns.Single (c => c.ColumnName == idColumnDefinition.Name),
+          e => GetColumnFromEntity (entityDefinition.ObjectIDProperty.PropertyType, idColumnDefinition, e),
           tableColumns);
     }
 
@@ -91,7 +91,7 @@ namespace Remotion.Data.DomainObjects.Linq
       ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
 
       // In ResolveEntity above, we defined that we take the ID column as the primary key.
-      return ((SqlColumnExpression) originatingEntity.PrimaryKey);
+      return ((SqlColumnExpression) originatingEntity.GetIdentityExpression());
     }
 
     public Expression ResolveValueColumn (SqlColumnExpression idColumn)
