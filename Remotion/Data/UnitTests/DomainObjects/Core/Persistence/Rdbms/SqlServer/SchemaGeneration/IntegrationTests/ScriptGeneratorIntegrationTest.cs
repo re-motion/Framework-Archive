@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
 using System.Linq;
 using NUnit.Framework;
@@ -21,7 +22,7 @@ using Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGeneration;
 using Remotion.Development.UnitTesting.Resources;
 
-namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.SqlServer.SchemaGeneration
+namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.SqlServer.SchemaGeneration.IntegrationTests
 {
   [TestFixture]
   public class ScriptGeneratorIntegrationTest : SchemaGenerationTestBase
@@ -68,10 +69,15 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.SqlServer
     }
 
     [Test]
+    [Ignore ("TODO 5511")]
     public void GetScriptForFirstStorageProvider ()
     {
       var scripts = _standardScriptGenerator.GetScripts (MappingConfiguration.GetTypeDefinitions ())
           .Single (s => s.StorageProviderDefinition == SchemaGenerationFirstStorageProviderDefinition);
+
+      Console.WriteLine (scripts.SetUpScript);
+      Console.WriteLine ("--------------------");
+      Console.WriteLine (scripts.TearDownScript);
 
       Assert.That (scripts.SetUpScript, Is.EqualTo (_firstStorageProviderSetupDBScript));
       Assert.That (scripts.TearDownScript, Is.EqualTo (_firstStorageProviderTearDownDBScript));
