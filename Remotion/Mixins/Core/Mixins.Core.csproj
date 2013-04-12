@@ -131,6 +131,12 @@
     <Compile Include="CodeGeneration\Serialization\SerializationInfoConcreteMixinTypeIdentifierSerializer.cs" />
     <Compile Include="CodeGeneration\TypeFactoryImplementation.cs" />
     <Compile Include="CodeGeneration\TypeImportException.cs" />
+    <Compile Include="CodeGeneration\TypePipe\IMixinParticipantHelper.cs" />
+    <Compile Include="CodeGeneration\TypePipe\IConfigurationProvider.cs" />
+    <Compile Include="CodeGeneration\TypePipe\ITargetTypeModifier.cs" />
+    <Compile Include="CodeGeneration\TypePipe\MixinInfo.cs" />
+    <Compile Include="CodeGeneration\TypePipe\MixinParticipant.cs" />
+    <Compile Include="CodeGeneration\TypePipe\TargetTypeModifierContext.cs" />
     <Compile Include="ComposedInterfaceAttribute.cs" />
     <Compile Include="ComposedObject.cs" />
     <Compile Include="ConfigurationException.cs" />
