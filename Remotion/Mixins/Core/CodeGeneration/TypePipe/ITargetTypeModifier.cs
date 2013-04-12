@@ -26,16 +26,16 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
   {
     TargetTypeModifierContext CreateContext (MutableType targetType);
 
-    void ImplementInterfaces (TargetTypeModifierContext context, IEnumerable<Type> interfacesToImplement);
-    void AddFields (TargetTypeModifierContext context);
-    void AddStaticInitializations (TargetTypeModifierContext context);
-    void ImplementIInitializableMixinTarget (TargetTypeModifierContext context);
-    void ImplementIMixinTarget (TargetTypeModifierContext context);
-    void ImplementIntroducedInterfaces (TargetTypeModifierContext context);
-    void ImplementRequiredDuckMethods (TargetTypeModifierContext context);
-    void AddMixedTypeAttribute (TargetTypeModifierContext context);
-    void AddDebuggerAttributes (TargetTypeModifierContext context);
-    void ImplementOverrides (TargetTypeModifierContext context);
-    void ImplementOverridingMethods (TargetTypeModifierContext context);
+    void ImplementInterfaces (TargetTypeModifierContext ctx, IEnumerable<Type> interfacesToImplement);
+    void AddFields (TargetTypeModifierContext ctx, Type nextCallProxyType);
+    void AddStaticInitializations (TargetTypeModifierContext ctx);
+    void ImplementIInitializableMixinTarget (TargetTypeModifierContext ctx);
+    void ImplementIMixinTarget (TargetTypeModifierContext ctx);
+    void ImplementIntroducedInterfaces (TargetTypeModifierContext ctx);
+    void ImplementRequiredDuckMethods (TargetTypeModifierContext ctx);
+    void AddMixedTypeAttribute (TargetTypeModifierContext ctx);
+    void AddDebuggerAttributes (TargetTypeModifierContext ctx);
+    void ImplementOverrides (TargetTypeModifierContext ctx);
+    void ImplementOverridingMethods (TargetTypeModifierContext ctx);
   }
 }

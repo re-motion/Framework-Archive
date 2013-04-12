@@ -15,12 +15,14 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Reflection;
 using Remotion.TypePipe.MutableReflection;
 using Remotion.Utilities;
 
 namespace Remotion.Mixins.CodeGeneration.TypePipe
 {
   // TODO 5370: Docs.
+  // TODO 5370: Tests.
   public class TargetTypeModifierContext
   {
     private readonly MutableType _targetType;
@@ -36,5 +38,10 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     {
       get { return _targetType; }
     }
+
+    public MutableFieldInfo ClassContextField { get; set; }
+    public MutableFieldInfo MixinArrayInitializerField { get; set; }
+    public MutableFieldInfo ExtensionsField { get; set; }
+    public MutableFieldInfo FirstField { get; set; }
   }
 }

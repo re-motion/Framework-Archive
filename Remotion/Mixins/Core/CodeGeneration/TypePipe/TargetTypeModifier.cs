@@ -16,6 +16,9 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Reflection;
+using Remotion.Mixins.Context;
 using Remotion.TypePipe.MutableReflection;
 using Remotion.Utilities;
 
@@ -24,67 +27,88 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
   // TODO 5370: Docs.
   public class TargetTypeModifier : ITargetTypeModifier
   {
+    private static readonly ConstructorInfo s_debuggerBrowsableAttributeCtor =
+        MemberInfoFromExpressionUtility.GetConstructor (() => new DebuggerBrowsableAttribute (DebuggerBrowsableState.Never));
+
     public TargetTypeModifierContext CreateContext (MutableType targetType)
     {
       throw new NotImplementedException();
     }
 
-    public void ImplementInterfaces (TargetTypeModifierContext context, IEnumerable<Type> interfacesToImplement)
+    public void ImplementInterfaces (TargetTypeModifierContext ctx, IEnumerable<Type> interfacesToImplement)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull ("ctx", ctx);
       ArgumentUtility.CheckNotNull ("interfacesToImplement", interfacesToImplement);
 
       foreach (var ifc in interfacesToImplement)
-        context.TargetType.AddInterface (ifc);
+        ctx.TargetType.AddInterface (ifc);
     }
 
-    public void AddFields (TargetTypeModifierContext context)
+    public void AddFields (TargetTypeModifierContext ctx, Type nextCallProxyType)
     {
+      ArgumentUtility.CheckNotNull ("ctx", ctx);
+      ArgumentUtility.CheckNotNull ("nextCallProxyType", nextCallProxyType);
+
+      var tt = ctx.TargetType;
+      var privateStatic = FieldAttributes.Private | FieldAttributes.Static;
+      ctx.ClassContextField = AddDebuggerInvisibleField (tt, "__classContext", typeof (ClassContext), privateStatic);
+      ctx.MixinArrayInitializerField = AddDebuggerInvisibleField (tt, "__mixinArrayInitializer", typeof (MixinArrayInitializer), privateStatic);
+      ctx.ExtensionsField = AddDebuggerInvisibleField (tt, "__extensions", typeof (object[]), FieldAttributes.Private);
+      ctx.FirstField = AddDebuggerInvisibleField (tt, "__first", nextCallProxyType, FieldAttributes.Private);
     }
 
-    public void AddStaticInitializations (TargetTypeModifierContext context)
-    {
-      throw new NotImplementedException();
-    }
-
-    public void ImplementIInitializableMixinTarget (TargetTypeModifierContext context)
-    {
-      throw new NotImplementedException();
-    }
-
-    public void ImplementIMixinTarget (TargetTypeModifierContext context)
-    {
-      throw new NotImplementedException();
-    }
-
-    public void ImplementIntroducedInterfaces (TargetTypeModifierContext context)
+    public void AddStaticInitializations (TargetTypeModifierContext ctx)
     {
       throw new NotImplementedException();
     }
 
-    public void ImplementRequiredDuckMethods (TargetTypeModifierContext context)
+    public void ImplementIInitializableMixinTarget (TargetTypeModifierContext ctx)
     {
       throw new NotImplementedException();
     }
 
-    public void AddMixedTypeAttribute (TargetTypeModifierContext context)
+    public void ImplementIMixinTarget (TargetTypeModifierContext ctx)
     {
       throw new NotImplementedException();
     }
 
-    public void AddDebuggerAttributes (TargetTypeModifierContext context)
+    public void ImplementIntroducedInterfaces (TargetTypeModifierContext ctx)
     {
       throw new NotImplementedException();
     }
 
-    public void ImplementOverrides (TargetTypeModifierContext context)
+    public void ImplementRequiredDuckMethods (TargetTypeModifierContext ctx)
     {
       throw new NotImplementedException();
     }
 
-    public void ImplementOverridingMethods (TargetTypeModifierContext context)
+    public void AddMixedTypeAttribute (TargetTypeModifierContext ctx)
     {
       throw new NotImplementedException();
+    }
+
+    public void AddDebuggerAttributes (TargetTypeModifierContext ctx)
+    {
+      throw new NotImplementedException();
+    }
+
+    public void ImplementOverrides (TargetTypeModifierContext ctx)
+    {
+      throw new NotImplementedException();
+    }
+
+    public void ImplementOverridingMethods (TargetTypeModifierContext ctx)
+    {
+      throw new NotImplementedException();
+    }
+
+    private MutableFieldInfo AddDebuggerInvisibleField (MutableType targetType, string name, Type type, FieldAttributes attributes)
+    {
+      var field = targetType.AddField (name, attributes, type);
+      var debuggerAttribute = new CustomAttributeDeclaration (s_debuggerBrowsableAttributeCtor, new object[] { DebuggerBrowsableState.Never });
+      field.AddCustomAttribute (debuggerAttribute);
+
+      return field;
     }
   }
 }
