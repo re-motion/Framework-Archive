@@ -136,6 +136,7 @@
     <Compile Include="CodeGeneration\TypePipe\ITargetTypeModifier.cs" />
     <Compile Include="CodeGeneration\TypePipe\MixinInfo.cs" />
     <Compile Include="CodeGeneration\TypePipe\MixinParticipant.cs" />
+    <Compile Include="CodeGeneration\TypePipe\TargetTypeModifier.cs" />
     <Compile Include="CodeGeneration\TypePipe\TargetTypeModifierContext.cs" />
     <Compile Include="ComposedInterfaceAttribute.cs" />
     <Compile Include="ComposedObject.cs" />

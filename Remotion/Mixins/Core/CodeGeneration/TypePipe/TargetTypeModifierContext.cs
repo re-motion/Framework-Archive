@@ -20,6 +20,7 @@ using Remotion.Utilities;
 
 namespace Remotion.Mixins.CodeGeneration.TypePipe
 {
+  // TODO 5370: Docs.
   public class TargetTypeModifierContext
   {
     private readonly MutableType _targetType;
@@ -31,6 +32,9 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       _targetType = targetType;
     }
 
-    private MutableType TargetType { get; }
+    public MutableType TargetType
+    {
+      get { return _targetType; }
+    }
   }
 }
