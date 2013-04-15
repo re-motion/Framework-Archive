@@ -39,9 +39,11 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       get { return _concreteTarget; }
     }
 
-    public MutableFieldInfo ClassContextField { get; set; }
-    public MutableFieldInfo MixinArrayInitializerField { get; set; }
-    public MutableFieldInfo ExtensionsField { get; set; }
-    public MutableFieldInfo FirstField { get; set; }
+    public FieldInfo ClassContextField { get; set; }
+    public FieldInfo MixinArrayInitializerField { get; set; }
+    public FieldInfo ExtensionsField { get; set; }
+    public FieldInfo FirstField { get; set; }
+
+    public ConstructorInfo NextCallProxyConstructor { get; set; }
   }
 }

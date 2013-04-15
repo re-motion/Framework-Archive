@@ -26,7 +26,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 {
   // TODO 5370: docs
   // TODO 5370: tests
-  public class ComplexExpressionBuilder : IComplexExpressionBuilder
+  public class ExpressionBuilder : IExpressionBuilder
   {
     private static readonly MethodInfo s_initializeMethod =
         MemberInfoFromExpressionUtility.GetMethod ((IInitializableMixinTarget o) => o.Initialize());
@@ -46,6 +46,8 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       ArgumentUtility.CheckNotNull ("this", @this);
       ArgumentUtility.CheckNotNull ("extensionsField", extensionsField);
 
+      // if (__extensions == null)
+      //   ((IInitializableMixinTarget) this).Initialize();
 
       return Expression.IfThen (
           Expression.Equal (Expression.Field (@this, extensionsField), Expression.Constant (null)),

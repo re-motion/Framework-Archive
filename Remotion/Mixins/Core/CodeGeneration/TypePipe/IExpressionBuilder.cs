@@ -24,7 +24,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 {
   // TODO 5370: docs
   // TODO 5370: tests
-  public interface IComplexExpressionBuilder
+  public interface IExpressionBuilder
   {
     Expression CreateNewClassContextExpression (ClassContext classContext);
     Expression CreateInitializationExpression (ThisExpression @this, FieldInfo extensionsField);

@@ -19,29 +19,54 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
 using Microsoft.Scripting.Ast;
+using Remotion.Mixins.CodeGeneration.DynamicProxy;
 using Remotion.Mixins.Context;
+using Remotion.Mixins.Utilities;
+using Remotion.TypePipe.Expressions;
 using Remotion.TypePipe.MutableReflection;
+using Remotion.TypePipe.MutableReflection.BodyBuilding;
 using Remotion.Utilities;
 using System.Linq;
+using Remotion.FunctionalProgramming;
 
 namespace Remotion.Mixins.CodeGeneration.TypePipe
 {
   // TODO 5370: Docs.
   public class TargetTypeModifier : ITargetTypeModifier
   {
-    private readonly IComplexExpressionBuilder _complexExpressionBuilder;
-
     private static readonly ConstructorInfo s_debuggerBrowsableAttributeCtor =
         MemberInfoFromExpressionUtility.GetConstructor (() => new DebuggerBrowsableAttribute (DebuggerBrowsableState.Never));
 
     private static readonly ConstructorInfo s_mixinArrayInitializerCtor =
         MemberInfoFromExpressionUtility.GetConstructor (() => new MixinArrayInitializer (null, Type.EmptyTypes));
+    private static readonly MethodInfo s_createMixinArrayMethod =
+        MemberInfoFromExpressionUtility.GetMethod ((MixinArrayInitializer o) => o.CreateMixinArray (new object[0]));
+    private static readonly MethodInfo s_checkMixinArrayMethod =
+        MemberInfoFromExpressionUtility.GetMethod ((MixinArrayInitializer o) => o.CheckMixinArray (new object[0]));
 
-    public TargetTypeModifier (IComplexExpressionBuilder complexExpressionBuilder)
+    private static readonly MethodInfo s_initializeTargetMethod =
+        MemberInfoFromExpressionUtility.GetMethod ((IInitializableMixinTarget o) => o.Initialize());
+    private static readonly MethodInfo s_initializeTargetAfterDeserializationMethod =
+        MemberInfoFromExpressionUtility.GetMethod ((IInitializableMixinTarget o) => o.InitializeAfterDeserialization(new object[0]));
+    private static readonly MethodInfo s_initializeMixinMethod =
+        MemberInfoFromExpressionUtility.GetMethod ((IInitializableMixin o) => o.Initialize (null, null, false));
+
+    private static readonly PropertyInfo s_currentMixedObjectInstantiationScopeProperty =
+        MemberInfoFromExpressionUtility.GetProperty (() => MixedObjectInstantiationScope.Current);
+    private static readonly PropertyInfo s_suppliedMixinInstancesProperty =
+        MemberInfoFromExpressionUtility.GetProperty ((MixedObjectInstantiationScope o) => o.SuppliedMixinInstances);
+
+    private static readonly Expression s_false = Expression.Constant (false);
+    private static readonly Expression s_true = Expression.Constant (true);
+
+
+    private readonly IExpressionBuilder _expressionBuilder;
+
+    public TargetTypeModifier (IExpressionBuilder expressionBuilder)
     {
-      ArgumentUtility.CheckNotNull ("complexExpressionBuilder", complexExpressionBuilder);
+      ArgumentUtility.CheckNotNull ("expressionBuilder", expressionBuilder);
 
-      _complexExpressionBuilder = complexExpressionBuilder;
+      _expressionBuilder = expressionBuilder;
     }
 
     public TargetTypeModifierContext CreateContext (MutableType targetType)
@@ -84,7 +109,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
               typeof (void),
               Expression.Assign (
                   Expression.Field (null, context.ClassContextField),
-                  _complexExpressionBuilder.CreateNewClassContextExpression (classContext)),
+                  _expressionBuilder.CreateNewClassContextExpression (classContext)),
               Expression.Assign (
                   Expression.Field (null, context.MixinArrayInitializerField),
                   Expression.New (
@@ -99,12 +124,29 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     {
       ArgumentUtility.CheckNotNull ("context", context);
 
-      context.ConcreteTarget.AddInitialization (ctx => _complexExpressionBuilder.CreateInitializationExpression (ctx.This, context.ExtensionsField));
+      context.ConcreteTarget.AddInitialization (ctx => _expressionBuilder.CreateInitializationExpression (ctx.This, context.ExtensionsField));
     }
 
-    public void ImplementIInitializableMixinTarget (TargetTypeModifierContext context)
+    public void ImplementIInitializableMixinTarget (TargetTypeModifierContext context, IEnumerable<Type> expectedMixinTypes)
     {
-      throw new NotImplementedException();
+      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull ("expectedMixinTypes", expectedMixinTypes);
+
+      // TODO Review2:  or use AddExplicitOverride?
+      var mixinTypes = expectedMixinTypes.ToList();
+      var ct = context.ConcreteTarget;
+
+      ct.GetOrAddOverride (s_initializeTargetMethod).SetBody (
+          ctx => Expression.Block (
+              ImplementSettingFirstNextCallProxy (ctx.This, context.FirstField, context.NextCallProxyConstructor),
+              ImplementCreatingMixinInstances (ctx.This, context.MixinArrayInitializerField, context.ExtensionsField),
+              ImplementInitializingMixins (ctx.This, mixinTypes, context.ExtensionsField, context.NextCallProxyConstructor, deserialization: s_false)));
+
+      ct.GetOrAddOverride (s_initializeTargetAfterDeserializationMethod).SetBody (
+          ctx => Expression.Block (
+              ImplementSettingFirstNextCallProxy (ctx.This, context.FirstField, context.NextCallProxyConstructor),
+              ImplementSettingMixinInstances (ctx.This, ctx.Parameters[0], context.MixinArrayInitializerField, context.ExtensionsField),
+              ImplementInitializingMixins (ctx.This, mixinTypes, context.ExtensionsField, context.NextCallProxyConstructor, deserialization: s_true)));
     }
 
     public void ImplementIMixinTarget (TargetTypeModifierContext context)
@@ -149,6 +191,69 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       field.AddCustomAttribute (debuggerAttribute);
 
       return field;
+    }
+
+
+    private Expression ImplementSettingFirstNextCallProxy (ThisExpression @this, FieldInfo firstField, ConstructorInfo nextCallProxyConstructor)
+    {
+      // __first = <NewNextCallProxy (0)>;
+
+      return Expression.Assign (
+          Expression.Field (@this, firstField),
+          NewNextCallProxy (nextCallProxyConstructor, @this, depth: 0));
+    }
+
+    private Expression ImplementCreatingMixinInstances (ThisExpression @this, FieldInfo mixinArrayInitializerField, FieldInfo extensionsField)
+    {
+      // __extensions = __mixinArrayInitializer.CreateMixinArray (MixedObjectInstantiationScope.Current.SuppliedMixinInstances);
+
+      return Expression.Assign (
+          Expression.Field (@this, extensionsField),
+          Expression.Call (
+              Expression.Field (null, mixinArrayInitializerField),
+              s_createMixinArrayMethod,
+              Expression.Property (Expression.Property (null, s_currentMixedObjectInstantiationScopeProperty), s_suppliedMixinInstancesProperty)));
+    }
+
+    private Expression ImplementSettingMixinInstances (
+        ThisExpression @this, Expression mixinInstancs, FieldInfo mixinArrayInitializerField, FieldInfo extensionsField)
+    {
+      // __mixinArrayInitializer.CheckMixinArray (<arguments[0]>);
+      // __extensions = <arguments[0]>;
+
+      return Expression.Block (
+          Expression.Call (Expression.Field (null, mixinArrayInitializerField), s_checkMixinArrayMethod, mixinInstancs),
+          Expression.Assign (Expression.Field (@this, extensionsField), mixinInstancs));
+    }
+
+    private Expression ImplementInitializingMixins (
+        ThisExpression @this, List<Type> mixinTypes, FieldInfo extensionsField, ConstructorInfo nextCallProxyConstructor, Expression deserialization)
+    {
+      var mixinInitExpressions = new List<Expression>();
+
+      for (int i = 0; i < mixinTypes.Count; i++)
+      {
+        if (typeof (IInitializableMixin).IsAssignableFrom (mixinTypes[i]))
+        {
+          // ((IInitializableMixin) __extensions[i]).Initialize (mixinTargetInstance, <NewNextCallProxy (i + 1)>, deserialization);
+          var initExpression = Expression.Call (
+              Expression.Convert (
+                  Expression.ArrayAccess (Expression.Field (@this, extensionsField), Expression.Constant (i)),
+                  typeof (IInitializableMixin)),
+              s_initializeMixinMethod,
+              @this,
+              NewNextCallProxy (nextCallProxyConstructor, @this, i + 1),
+              deserialization);
+          mixinInitExpressions.Add (initExpression);
+        }
+      }
+
+      return Expression.Block (mixinInitExpressions);
+    }
+
+    private Expression NewNextCallProxy (ConstructorInfo nextCallProxyConstructor, ThisExpression @this, int depth)
+    {
+      return Expression.New (nextCallProxyConstructor, @this, Expression.Constant (depth));
     }
   }
 }

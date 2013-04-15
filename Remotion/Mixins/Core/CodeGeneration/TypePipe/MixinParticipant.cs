@@ -16,6 +16,7 @@
 // 
 
 using System;
+using System.Linq;
 using Remotion.TypePipe;
 using Remotion.TypePipe.Caching;
 using Remotion.TypePipe.Implementation;
@@ -55,8 +56,8 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       var mixinInfos = _helper.GetConcreteMixinTypes (targetClassDefinition.Mixins);
       var interfacesToImplement = _configurationProvider.GetInterfacesToImplement (targetClassDefinition, mixinInfos);
 
-      // TODO: What does this class do ... ?
-      // InitializationCodeGenerator
+      // TODO: NextCallProxy?!?
+      
 
       //var context = _targetTypeModifier.CreateContext (typeAssemblyContext.ProxyType);
       //_targetTypeModifier.ImplementInterfaces (context, interfacesToImplement);

@@ -31,7 +31,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     void AddFields (TargetTypeModifierContext context, Type nextCallProxyType);
     void AddTypeInitializations (TargetTypeModifierContext context, ClassContext classContext, IEnumerable<Type> concreteMixinTypes);
     void AddInitializations (TargetTypeModifierContext context);
-    void ImplementIInitializableMixinTarget (TargetTypeModifierContext context);
+    void ImplementIInitializableMixinTarget (TargetTypeModifierContext context, IEnumerable<Type> expectedMixinTypes);
     void ImplementIMixinTarget (TargetTypeModifierContext context);
     void ImplementIntroducedInterfaces (TargetTypeModifierContext context);
     void ImplementRequiredDuckMethods (TargetTypeModifierContext context);
