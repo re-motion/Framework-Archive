@@ -24,10 +24,8 @@ using Remotion.Mixins.Context;
 using Remotion.Mixins.Utilities;
 using Remotion.TypePipe.Expressions;
 using Remotion.TypePipe.MutableReflection;
-using Remotion.TypePipe.MutableReflection.BodyBuilding;
 using Remotion.Utilities;
 using System.Linq;
-using Remotion.FunctionalProgramming;
 
 namespace Remotion.Mixins.CodeGeneration.TypePipe
 {
@@ -48,6 +46,11 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
         MemberInfoFromExpressionUtility.GetMethod ((IInitializableMixinTarget o) => o.Initialize());
     private static readonly MethodInfo s_initializeTargetAfterDeserializationMethod =
         MemberInfoFromExpressionUtility.GetMethod ((IInitializableMixinTarget o) => o.InitializeAfterDeserialization(new object[0]));
+
+    private static readonly PropertyInfo s_classContextProperty = MemberInfoFromExpressionUtility.GetProperty ((IMixinTarget o) => o.ClassContext);
+    private static readonly PropertyInfo s_mixinProperty = MemberInfoFromExpressionUtility.GetProperty ((IMixinTarget o) => o.Mixins);
+    private static readonly PropertyInfo s_firstProperty = MemberInfoFromExpressionUtility.GetProperty ((IMixinTarget o) => o.FirstNextCallProxy);
+
     private static readonly MethodInfo s_initializeMixinMethod =
         MemberInfoFromExpressionUtility.GetMethod ((IInitializableMixin o) => o.Initialize (null, null, false));
 
@@ -132,10 +135,10 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       ArgumentUtility.CheckNotNull ("context", context);
       ArgumentUtility.CheckNotNull ("expectedMixinTypes", expectedMixinTypes);
 
-      // TODO Review2:  or use AddExplicitOverride?
       var mixinTypes = expectedMixinTypes.ToList();
       var ct = context.ConcreteTarget;
 
+      // TODO Review2:  or use AddExplicitOverride?
       ct.GetOrAddOverride (s_initializeTargetMethod).SetBody (
           ctx => Expression.Block (
               ImplementSettingFirstNextCallProxy (ctx.This, context.FirstField, context.NextCallProxyConstructor),
