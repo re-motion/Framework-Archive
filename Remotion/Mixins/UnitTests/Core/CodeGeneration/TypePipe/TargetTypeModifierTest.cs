@@ -15,12 +15,12 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
-using System.Reflection.Emit;
 using Microsoft.Scripting.Ast;
 using NUnit.Framework;
+using Remotion.Development.TypePipe.UnitTesting.Expressions;
+using Remotion.Development.TypePipe.UnitTesting.ObjectMothers.MutableReflection;
 using Remotion.Development.UnitTesting.Reflection;
 using Remotion.Mixins.CodeGeneration;
 using Remotion.Mixins.CodeGeneration.TypePipe;
@@ -94,10 +94,8 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
     [Test]
     public void AddTypeInitializations ()
     {
-      // TODO 5370: replace with  Object mother
-      _context.ClassContextField = new MutableFieldInfo (_concreteTarget, "x", typeof (ClassContext), FieldAttributes.Private | FieldAttributes.Static);
-      _context.MixinArrayInitializerField = new MutableFieldInfo (
-          _concreteTarget, "b", typeof (MixinArrayInitializer), FieldAttributes.Private | FieldAttributes.Static);
+      _context.ClassContextField = MutableFieldInfoObjectMother.Create (type: typeof (ClassContext), attributes: FieldAttributes.Static);
+      _context.MixinArrayInitializerField = MutableFieldInfoObjectMother.Create (type: typeof (MixinArrayInitializer), attributes: FieldAttributes.Static);
       var targetType = ReflectionObjectMother.GetSomeType();
       var mixinType = ReflectionObjectMother.GetSomeOtherType();
       var composedInterface = ReflectionObjectMother.GetSomeInterfaceType();
@@ -111,6 +109,17 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
       _complexExpressionBuilderMock.VerifyAllExpectations();
       Assert.That (_concreteTarget.TypeInitializer, Is.Not.Null);
       var typeInitializations = _concreteTarget.MutableTypeInitializer.Body;
+
+      var expectedTypeInitializations = Expression.Block (
+          typeof (void),
+          Expression.Assign (Expression.Field (null, _context.ClassContextField), fakeClassContextExpression),
+          Expression.Assign (
+              Expression.Field (null, _context.MixinArrayInitializerField),
+              Expression.New (
+                  typeof (MixinArrayInitializer).GetConstructors().Single(),
+                  Expression.Constant (classContext.Type),
+                  Expression.Constant (new[] { concreteMixinType }))));
+      ExpressionTreeComparer.CheckAreEqualTrees (expectedTypeInitializations, typeInitializations);
     }
 
     [Test]

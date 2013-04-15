@@ -81,6 +81,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
       var staticInitializations =
           Expression.Block (
+              typeof (void),
               Expression.Assign (
                   Expression.Field (null, context.ClassContextField),
                   _complexExpressionBuilder.CreateNewClassContextExpression (classContext)),
