@@ -18,86 +18,125 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
+using Microsoft.Scripting.Ast;
 using Remotion.Mixins.Context;
 using Remotion.TypePipe.MutableReflection;
 using Remotion.Utilities;
+using System.Linq;
 
 namespace Remotion.Mixins.CodeGeneration.TypePipe
 {
   // TODO 5370: Docs.
   public class TargetTypeModifier : ITargetTypeModifier
   {
+    private readonly IComplexExpressionBuilder _complexExpressionBuilder;
+
     private static readonly ConstructorInfo s_debuggerBrowsableAttributeCtor =
         MemberInfoFromExpressionUtility.GetConstructor (() => new DebuggerBrowsableAttribute (DebuggerBrowsableState.Never));
 
-    public TargetTypeModifierContext CreateContext (MutableType targetType)
+    private static readonly ConstructorInfo s_mixinArrayInitializerCtor =
+        MemberInfoFromExpressionUtility.GetConstructor (() => new MixinArrayInitializer (null, Type.EmptyTypes));
+
+    public TargetTypeModifier (IComplexExpressionBuilder complexExpressionBuilder)
     {
-      throw new NotImplementedException();
+      ArgumentUtility.CheckNotNull ("complexExpressionBuilder", complexExpressionBuilder);
+
+      _complexExpressionBuilder = complexExpressionBuilder;
     }
 
-    public void ImplementInterfaces (TargetTypeModifierContext ctx, IEnumerable<Type> interfacesToImplement)
+    public TargetTypeModifierContext CreateContext (MutableType targetType)
     {
-      ArgumentUtility.CheckNotNull ("ctx", ctx);
+      ArgumentUtility.CheckNotNull ("targetType", targetType);
+
+      return new TargetTypeModifierContext (targetType);
+    }
+
+    public void ImplementInterfaces (TargetTypeModifierContext context, IEnumerable<Type> interfacesToImplement)
+    {
+      ArgumentUtility.CheckNotNull ("context", context);
       ArgumentUtility.CheckNotNull ("interfacesToImplement", interfacesToImplement);
 
       foreach (var ifc in interfacesToImplement)
-        ctx.TargetType.AddInterface (ifc);
+        context.ConcreteTarget.AddInterface (ifc);
     }
 
-    public void AddFields (TargetTypeModifierContext ctx, Type nextCallProxyType)
+    public void AddFields (TargetTypeModifierContext context, Type nextCallProxyType)
     {
-      ArgumentUtility.CheckNotNull ("ctx", ctx);
+      ArgumentUtility.CheckNotNull ("context", context);
       ArgumentUtility.CheckNotNull ("nextCallProxyType", nextCallProxyType);
 
-      var tt = ctx.TargetType;
+      var tt = context.ConcreteTarget;
       var privateStatic = FieldAttributes.Private | FieldAttributes.Static;
-      ctx.ClassContextField = AddDebuggerInvisibleField (tt, "__classContext", typeof (ClassContext), privateStatic);
-      ctx.MixinArrayInitializerField = AddDebuggerInvisibleField (tt, "__mixinArrayInitializer", typeof (MixinArrayInitializer), privateStatic);
-      ctx.ExtensionsField = AddDebuggerInvisibleField (tt, "__extensions", typeof (object[]), FieldAttributes.Private);
-      ctx.FirstField = AddDebuggerInvisibleField (tt, "__first", nextCallProxyType, FieldAttributes.Private);
+      context.ClassContextField = AddDebuggerInvisibleField (tt, "__classContext", typeof (ClassContext), privateStatic);
+      context.MixinArrayInitializerField = AddDebuggerInvisibleField (tt, "__mixinArrayInitializer", typeof (MixinArrayInitializer), privateStatic);
+      context.ExtensionsField = AddDebuggerInvisibleField (tt, "__extensions", typeof (object[]), FieldAttributes.Private);
+      context.FirstField = AddDebuggerInvisibleField (tt, "__first", nextCallProxyType, FieldAttributes.Private);
     }
 
-    public void AddStaticInitializations (TargetTypeModifierContext ctx)
+    public void AddTypeInitializations (TargetTypeModifierContext context, ClassContext classContext, IEnumerable<Type> concreteMixinTypes)
+    {
+      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull ("classContext", classContext);
+      ArgumentUtility.CheckNotNull ("concreteMixinTypes", concreteMixinTypes);
+
+      var staticInitializations =
+          Expression.Block (
+              Expression.Assign (
+                  Expression.Field (null, context.ClassContextField),
+                  _complexExpressionBuilder.CreateNewClassContextExpression (classContext)),
+              Expression.Assign (
+                  Expression.Field (null, context.MixinArrayInitializerField),
+                  Expression.New (
+                      s_mixinArrayInitializerCtor,
+                      Expression.Constant (classContext.Type),
+                      Expression.Constant (concreteMixinTypes.ToArray()))));
+
+      context.ConcreteTarget.AddTypeInitialization (ctx => staticInitializations);
+    }
+
+    public void AddInitializations (TargetTypeModifierContext context)
+    {
+      ArgumentUtility.CheckNotNull ("context", context);
+
+      context.ConcreteTarget.AddInitialization (ctx => _complexExpressionBuilder.CreateInitializationExpression (ctx.This, context.ExtensionsField));
+    }
+
+    public void ImplementIInitializableMixinTarget (TargetTypeModifierContext context)
     {
       throw new NotImplementedException();
     }
 
-    public void ImplementIInitializableMixinTarget (TargetTypeModifierContext ctx)
+    public void ImplementIMixinTarget (TargetTypeModifierContext context)
     {
       throw new NotImplementedException();
     }
 
-    public void ImplementIMixinTarget (TargetTypeModifierContext ctx)
+    public void ImplementIntroducedInterfaces (TargetTypeModifierContext context)
     {
       throw new NotImplementedException();
     }
 
-    public void ImplementIntroducedInterfaces (TargetTypeModifierContext ctx)
+    public void ImplementRequiredDuckMethods (TargetTypeModifierContext context)
     {
       throw new NotImplementedException();
     }
 
-    public void ImplementRequiredDuckMethods (TargetTypeModifierContext ctx)
+    public void AddMixedTypeAttribute (TargetTypeModifierContext context)
     {
       throw new NotImplementedException();
     }
 
-    public void AddMixedTypeAttribute (TargetTypeModifierContext ctx)
+    public void AddDebuggerAttributes (TargetTypeModifierContext context)
     {
       throw new NotImplementedException();
     }
 
-    public void AddDebuggerAttributes (TargetTypeModifierContext ctx)
+    public void ImplementOverrides (TargetTypeModifierContext context)
     {
       throw new NotImplementedException();
     }
 
-    public void ImplementOverrides (TargetTypeModifierContext ctx)
-    {
-      throw new NotImplementedException();
-    }
-
-    public void ImplementOverridingMethods (TargetTypeModifierContext ctx)
+    public void ImplementOverridingMethods (TargetTypeModifierContext context)
     {
       throw new NotImplementedException();
     }

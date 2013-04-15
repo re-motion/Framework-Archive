@@ -14,34 +14,39 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
 using System.Reflection;
-using Remotion.TypePipe.MutableReflection;
+using Microsoft.Scripting.Ast;
+using Remotion.Mixins.Context;
 using Remotion.Utilities;
+using System.Linq;
 
 namespace Remotion.Mixins.CodeGeneration.TypePipe
 {
-  // TODO 5370: Docs.
-  // TODO 5370: Tests.
-  public class TargetTypeModifierContext
+
+  // TODO 5370: tests
+  // TODO 5370: docs
+  public class ExpressionClassContextSerializer : ClassContextSerializerBase
   {
-    private readonly MutableType _concreteTarget;
+    private static readonly ConstructorInfo s_constructor =
+        MemberInfoFromExpressionUtility.GetConstructor (() => new ClassContext (null, new MixinContext[0], Type.EmptyTypes));
 
-    public TargetTypeModifierContext (MutableType concreteTarget)
+    public Expression CreateNewExpression ()
     {
-      ArgumentUtility.CheckNotNull ("concreteTarget", concreteTarget);
-
-      _concreteTarget = concreteTarget;
+      return Expression.New (
+          s_constructor,
+          Expression.Constant (Type),
+          Expression.NewArrayInit (typeof (MixinContext), MixinContexts.Select (CreateMixinContextExpression)),
+          Expression.Constant (ComposedInterfaces.ToArray()));
     }
 
-    public MutableType ConcreteTarget
+    private Expression CreateMixinContextExpression (MixinContext mixinContext)
     {
-      get { return _concreteTarget; }
-    }
+      var serializer = new ExpressionMixinContextSerializer();
+      mixinContext.Serialize (serializer);
 
-    public MutableFieldInfo ClassContextField { get; set; }
-    public MutableFieldInfo MixinArrayInitializerField { get; set; }
-    public MutableFieldInfo ExtensionsField { get; set; }
-    public MutableFieldInfo FirstField { get; set; }
+      return serializer.CreateNewExpression();
+    }
   }
 }

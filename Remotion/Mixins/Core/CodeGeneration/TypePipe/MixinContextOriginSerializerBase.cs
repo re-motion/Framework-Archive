@@ -14,34 +14,55 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System;
+
 using System.Reflection;
-using Remotion.TypePipe.MutableReflection;
+using Remotion.Mixins.Context.Serialization;
 using Remotion.Utilities;
 
 namespace Remotion.Mixins.CodeGeneration.TypePipe
 {
-  // TODO 5370: Docs.
-  // TODO 5370: Tests.
-  public class TargetTypeModifierContext
+  // TODO 5370: docs
+  // TODO 5370: tests
+  public class MixinContextOriginSerializerBase : IMixinContextOriginSerializer
   {
-    private readonly MutableType _concreteTarget;
+    private string _kind;
+    private Assembly _assembly;
+    private string _locaction;
 
-    public TargetTypeModifierContext (MutableType concreteTarget)
+    public string Kind
     {
-      ArgumentUtility.CheckNotNull ("concreteTarget", concreteTarget);
-
-      _concreteTarget = concreteTarget;
+      get { return _kind; }
     }
 
-    public MutableType ConcreteTarget
+    public Assembly Assembly
     {
-      get { return _concreteTarget; }
+      get { return _assembly; }
     }
 
-    public MutableFieldInfo ClassContextField { get; set; }
-    public MutableFieldInfo MixinArrayInitializerField { get; set; }
-    public MutableFieldInfo ExtensionsField { get; set; }
-    public MutableFieldInfo FirstField { get; set; }
+    public string Locaction
+    {
+      get { return _locaction; }
+    }
+
+    public void AddKind (string kind)
+    {
+      ArgumentUtility.CheckNotNullOrEmpty ("kind", kind);
+
+      _kind = kind;
+    }
+
+    public void AddAssembly (Assembly assembly)
+    {
+      ArgumentUtility.CheckNotNull ("assembly", assembly);
+
+      _assembly = assembly;
+    }
+
+    public void AddLocation (string location)
+    {
+      ArgumentUtility.CheckNotNullOrEmpty ("location", location);
+
+      _locaction = location;
+    }
   }
 }

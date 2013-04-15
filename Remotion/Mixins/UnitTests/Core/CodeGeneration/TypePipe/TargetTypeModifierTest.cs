@@ -15,8 +15,11 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
+using System.Reflection.Emit;
+using Microsoft.Scripting.Ast;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting.Reflection;
 using Remotion.Mixins.CodeGeneration;
@@ -25,26 +28,40 @@ using Remotion.Mixins.Context;
 using Remotion.TypePipe.MutableReflection;
 using Remotion.TypePipe.MutableReflection.Implementation;
 using System.Linq;
+using Rhino.Mocks;
+using Remotion.Development.UnitTesting.Enumerables;
 
 namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
 {
   [TestFixture]
   public class TargetTypeModifierTest
   {
+    private IComplexExpressionBuilder _complexExpressionBuilderMock;
+
     private TargetTypeModifier _modifier;
 
-    private Type _requestedType;
-    private MutableType _targetType;
-    private TargetTypeModifierContext _ctx;
+    private Type _target;
+    private MutableType _concreteTarget;
+    private TargetTypeModifierContext _context;
 
     [SetUp]
     public void SetUp ()
     {
-      _modifier = new TargetTypeModifier();
+      _complexExpressionBuilderMock = MockRepository.GenerateStrictMock<IComplexExpressionBuilder>();
 
-      _requestedType = ReflectionObjectMother.GetSomeSubclassableType();
-      _targetType = new MutableTypeFactory().CreateProxy (_requestedType);
-      _ctx = new TargetTypeModifierContext (_targetType);
+      _modifier = new TargetTypeModifier (_complexExpressionBuilderMock);
+
+      _target = ReflectionObjectMother.GetSomeSubclassableType();
+      _concreteTarget = new MutableTypeFactory().CreateProxy (_target);
+      _context = new TargetTypeModifierContext (_concreteTarget);
+    }
+
+    [Test]
+    public void CreateContext ()
+    {
+      var result = _modifier.CreateContext (_concreteTarget);
+
+      Assert.That (result.ConcreteTarget, Is.SameAs (_concreteTarget));
     }
 
     [Test]
@@ -52,9 +69,9 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
     {
       var ifc = ReflectionObjectMother.GetSomeInterfaceType();
 
-      _modifier.ImplementInterfaces (_ctx, new[] { ifc });
+      _modifier.ImplementInterfaces (_context, new[] { ifc });
 
-      Assert.That (_targetType.AddedInterfaces, Is.EqualTo (new[] { ifc }));
+      Assert.That (_concreteTarget.AddedInterfaces, Is.EqualTo (new[] { ifc }));
     }
 
     [Test]
@@ -62,21 +79,49 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
     {
       var nextCallProxyType = ReflectionObjectMother.GetSomeType();
 
-      _modifier.AddFields (_ctx, nextCallProxyType);
+      _modifier.AddFields (_context, nextCallProxyType);
 
       var privateStaticAttributes = FieldAttributes.Private | FieldAttributes.Static;
-      CheckField (_ctx.ClassContextField, "__classContext", typeof (ClassContext), privateStaticAttributes);
-      CheckField (_ctx.MixinArrayInitializerField, "__mixinArrayInitializer", typeof (MixinArrayInitializer), privateStaticAttributes);
-      CheckField (_ctx.ExtensionsField, "__extensions", typeof (object[]), FieldAttributes.Private);
-      CheckField (_ctx.FirstField, "__first", nextCallProxyType, FieldAttributes.Private);
+      CheckField (_context.ClassContextField, "__classContext", typeof (ClassContext), privateStaticAttributes);
+      CheckField (_context.MixinArrayInitializerField, "__mixinArrayInitializer", typeof (MixinArrayInitializer), privateStaticAttributes);
+      CheckField (_context.ExtensionsField, "__extensions", typeof (object[]), FieldAttributes.Private);
+      CheckField (_context.FirstField, "__first", nextCallProxyType, FieldAttributes.Private);
 
-      var expctedFields = new[] { _ctx.ClassContextField, _ctx.MixinArrayInitializerField, _ctx.ExtensionsField, _ctx.FirstField };
-      Assert.That (_targetType.AddedFields, Is.EqualTo (expctedFields));
+      var expctedFields = new[] { _context.ClassContextField, _context.MixinArrayInitializerField, _context.ExtensionsField, _context.FirstField };
+      Assert.That (_concreteTarget.AddedFields, Is.EqualTo (expctedFields));
+    }
+
+    [Test]
+    public void AddTypeInitializations ()
+    {
+      // TODO 5370: replace with  Object mother
+      _context.ClassContextField = new MutableFieldInfo (_concreteTarget, "x", typeof (ClassContext), FieldAttributes.Private | FieldAttributes.Static);
+      _context.MixinArrayInitializerField = new MutableFieldInfo (
+          _concreteTarget, "b", typeof (MixinArrayInitializer), FieldAttributes.Private | FieldAttributes.Static);
+      var targetType = ReflectionObjectMother.GetSomeType();
+      var mixinType = ReflectionObjectMother.GetSomeOtherType();
+      var composedInterface = ReflectionObjectMother.GetSomeInterfaceType();
+      var classContext = ClassContextObjectMother.Create (targetType, new[] { mixinType }, new[] { composedInterface });
+      var concreteMixinType = ReflectionObjectMother.GetSomeType();
+      var fakeClassContextExpression = Expression.Constant (null, typeof (ClassContext));
+      _complexExpressionBuilderMock.Expect (mock => mock.CreateNewClassContextExpression (classContext)).Return (fakeClassContextExpression);
+
+      _modifier.AddTypeInitializations (_context, classContext, new[] { concreteMixinType }.AsOneTime());
+
+      _complexExpressionBuilderMock.VerifyAllExpectations();
+      Assert.That (_concreteTarget.TypeInitializer, Is.Not.Null);
+      var typeInitializations = _concreteTarget.MutableTypeInitializer.Body;
+    }
+
+    [Test]
+    public void AddInitializations ()
+    {
+      
     }
 
     private void CheckField (MutableFieldInfo field, string name, Type type, FieldAttributes attributes)
     {
-      Assert.That (field.MutableDeclaringType, Is.SameAs (_targetType));
+      Assert.That (field.MutableDeclaringType, Is.SameAs (_concreteTarget));
       Assert.That (field.Name, Is.EqualTo (name));
       Assert.That (field.FieldType, Is.SameAs (type));
       Assert.That (field.Attributes, Is.EqualTo (attributes));

@@ -55,18 +55,22 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       var mixinInfos = _helper.GetConcreteMixinTypes (targetClassDefinition.Mixins);
       var interfacesToImplement = _configurationProvider.GetInterfacesToImplement (targetClassDefinition, mixinInfos);
 
-      var ctx = _targetTypeModifier.CreateContext (typeAssemblyContext.ProxyType);
-      _targetTypeModifier.ImplementInterfaces (ctx, interfacesToImplement);
-      _targetTypeModifier.AddFields (ctx, null); // TODO
-      _targetTypeModifier.AddStaticInitializations (ctx);
-      _targetTypeModifier.ImplementIInitializableMixinTarget (ctx);
-      _targetTypeModifier.ImplementIMixinTarget (ctx);
-      _targetTypeModifier.ImplementIntroducedInterfaces (ctx);
-      _targetTypeModifier.ImplementRequiredDuckMethods (ctx);
-      _targetTypeModifier.AddMixedTypeAttribute (ctx);
-      _targetTypeModifier.AddDebuggerAttributes (ctx);
-      _targetTypeModifier.ImplementOverrides (ctx);
-      _targetTypeModifier.ImplementOverridingMethods (ctx);
+      // TODO: What does this class do ... ?
+      // InitializationCodeGenerator
+
+      //var context = _targetTypeModifier.CreateContext (typeAssemblyContext.ProxyType);
+      //_targetTypeModifier.ImplementInterfaces (context, interfacesToImplement);
+      //_targetTypeModifier.AddFields (context, null); // TODO
+      //_targetTypeModifier.AddTypeInitializations (context, null, null); // TODO
+      //_targetTypeModifier.AddInitializations();
+      //_targetTypeModifier.ImplementIInitializableMixinTarget (context);
+      //_targetTypeModifier.ImplementIMixinTarget (context);
+      //_targetTypeModifier.ImplementIntroducedInterfaces (context);
+      //_targetTypeModifier.ImplementRequiredDuckMethods (context);
+      //_targetTypeModifier.AddMixedTypeAttribute (context);
+      //_targetTypeModifier.AddDebuggerAttributes (context);
+      //_targetTypeModifier.ImplementOverrides (context);
+      //_targetTypeModifier.ImplementOverridingMethods (context);
     }
 
     public void RebuildState (LoadedTypesContext loadedTypesContext)

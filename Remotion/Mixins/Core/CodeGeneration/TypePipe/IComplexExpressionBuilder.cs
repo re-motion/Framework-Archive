@@ -14,34 +14,19 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System;
+
 using System.Reflection;
-using Remotion.TypePipe.MutableReflection;
-using Remotion.Utilities;
+using Microsoft.Scripting.Ast;
+using Remotion.Mixins.Context;
+using Remotion.TypePipe.Expressions;
 
 namespace Remotion.Mixins.CodeGeneration.TypePipe
 {
-  // TODO 5370: Docs.
-  // TODO 5370: Tests.
-  public class TargetTypeModifierContext
+  // TODO 5370: docs
+  // TODO 5370: tests
+  public interface IComplexExpressionBuilder
   {
-    private readonly MutableType _concreteTarget;
-
-    public TargetTypeModifierContext (MutableType concreteTarget)
-    {
-      ArgumentUtility.CheckNotNull ("concreteTarget", concreteTarget);
-
-      _concreteTarget = concreteTarget;
-    }
-
-    public MutableType ConcreteTarget
-    {
-      get { return _concreteTarget; }
-    }
-
-    public MutableFieldInfo ClassContextField { get; set; }
-    public MutableFieldInfo MixinArrayInitializerField { get; set; }
-    public MutableFieldInfo ExtensionsField { get; set; }
-    public MutableFieldInfo FirstField { get; set; }
+    Expression CreateNewClassContextExpression (ClassContext classContext);
+    Expression CreateInitializationExpression (ThisExpression @this, FieldInfo extensionsField);
   }
 }
