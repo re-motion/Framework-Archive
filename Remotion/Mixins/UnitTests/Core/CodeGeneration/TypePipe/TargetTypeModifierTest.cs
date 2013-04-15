@@ -20,16 +20,19 @@ using System.Reflection;
 using Microsoft.Scripting.Ast;
 using NUnit.Framework;
 using Remotion.Development.TypePipe.UnitTesting.Expressions;
+using Remotion.Development.TypePipe.UnitTesting.ObjectMothers.Expressions;
 using Remotion.Development.TypePipe.UnitTesting.ObjectMothers.MutableReflection;
 using Remotion.Development.UnitTesting.Reflection;
 using Remotion.Mixins.CodeGeneration;
 using Remotion.Mixins.CodeGeneration.TypePipe;
 using Remotion.Mixins.Context;
+using Remotion.TypePipe.Expressions;
 using Remotion.TypePipe.MutableReflection;
 using Remotion.TypePipe.MutableReflection.Implementation;
 using System.Linq;
 using Rhino.Mocks;
 using Remotion.Development.UnitTesting.Enumerables;
+using Remotion.Development.UnitTesting;
 
 namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
 {
@@ -101,7 +104,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
       var composedInterface = ReflectionObjectMother.GetSomeInterfaceType();
       var classContext = ClassContextObjectMother.Create (targetType, new[] { mixinType }, new[] { composedInterface });
       var concreteMixinType = ReflectionObjectMother.GetSomeType();
-      var fakeClassContextExpression = Expression.Constant (null, typeof (ClassContext));
+      var fakeClassContextExpression = ExpressionTreeObjectMother.GetSomeExpression (typeof (ClassContext));
       _complexExpressionBuilderMock.Expect (mock => mock.CreateNewClassContextExpression (classContext)).Return (fakeClassContextExpression);
 
       _modifier.AddTypeInitializations (_context, classContext, new[] { concreteMixinType }.AsOneTime());
@@ -125,7 +128,17 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
     [Test]
     public void AddInitializations ()
     {
-      
+      _context.ExtensionsField = MutableFieldInfoObjectMother.Create();
+      var fakeInitialization = ExpressionTreeObjectMother.GetSomeExpression();
+      _complexExpressionBuilderMock
+          .Expect (mock => mock.CreateInitializationExpression (Arg<ThisExpression>.Is.Anything, Arg.Is (_context.ExtensionsField)))
+          .WhenCalled (mi => Assert.That (mi.Arguments[0].As<ThisExpression>().Type, Is.SameAs (_concreteTarget)))
+          .Return (fakeInitialization);
+
+      _modifier.AddInitializations (_context);
+
+      _complexExpressionBuilderMock.VerifyAllExpectations();
+      Assert.That (_concreteTarget.Initializations, Is.EqualTo (new[] { fakeInitialization }));
     }
 
     private void CheckField (MutableFieldInfo field, string name, Type type, FieldAttributes attributes)
