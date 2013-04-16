@@ -48,6 +48,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
     private TargetTypeModifier _modifier;
 
     private Type _target;
+    private ClassContext _classContext;
     private MutableType _concreteTarget;
     private TargetTypeModifierContext _context;
 
@@ -59,15 +60,17 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
       _modifier = new TargetTypeModifier (_expressionBuilderMock);
 
       _target = ReflectionObjectMother.GetSomeSubclassableType();
+      _classContext = ClassContextObjectMother.Create();
       _concreteTarget = new MutableTypeFactory().CreateProxy (_target);
-      _context = new TargetTypeModifierContext (_concreteTarget);
+      _context = new TargetTypeModifierContext (_classContext, _concreteTarget);
     }
 
     [Test]
     public void CreateContext ()
     {
-      var result = _modifier.CreateContext (_concreteTarget);
+      var result = _modifier.CreateContext (_classContext, _concreteTarget);
 
+      Assert.That (result.ClassContext, Is.SameAs (_classContext));
       Assert.That (result.ConcreteTarget, Is.SameAs (_concreteTarget));
     }
 
@@ -163,8 +166,12 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
       _modifier.ImplementIInitializableMixinTarget (_context, expectedMixinTypes.AsOneTime());
 
       Assert.That (_concreteTarget.AddedMethods, Has.Count.EqualTo (2));
-      var initializeMethod = _concreteTarget.AddedMethods.Single (m => m.Name == "Initialize");
-      var initializeAfterDeserializationMethod = _concreteTarget.AddedMethods.Single (m => m.Name == "InitializeAfterDeserialization");
+      var initializeMethod = _concreteTarget.AddedMethods.Single (m => m.Name.EndsWith ("Initialize"));
+      var initializeAfterDeserializationMethod = _concreteTarget.AddedMethods.Single (m => m.Name.EndsWith ("InitializeAfterDeserialization"));
+
+      CheckExplicitOverride (initializeMethod, "Remotion.Mixins.CodeGeneration.DynamicProxy.IInitializableMixinTarget.Initialize");
+      CheckExplicitOverride (
+          initializeAfterDeserializationMethod, "Remotion.Mixins.CodeGeneration.DynamicProxy.IInitializableMixinTarget.InitializeAfterDeserialization");
 
       var @this = new ThisExpression (_concreteTarget);
       var createMixinInstances = Expression.Assign (
@@ -202,6 +209,14 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
       var initializeAfterDeserializationBody = expectedInitializeBody.Replace (
           new Dictionary<Expression, Expression> { { createMixinInstances, setMixinInstances }, { deserialization, Expression.Constant (true) } });
       ExpressionTreeComparer.CheckAreEqualTrees (initializeAfterDeserializationBody, initializeAfterDeserializationMethod.Body);
+    }
+
+    private void CheckExplicitOverride (MutableMethodInfo explicitOverride, string expectedName)
+    {
+      var expectedAttributes = MethodAttributes.Private | MethodAttributes.Virtual | MethodAttributes.HideBySig | MethodAttributes.VtableLayoutMask;
+      Assert.That (explicitOverride.Name, Is.EqualTo (expectedName));
+      Assert.That (explicitOverride.Attributes, Is.EqualTo (expectedAttributes));
+      Assert.That (explicitOverride.AddedExplicitBaseDefinitions, Has.Count.EqualTo (1));
     }
 
     private void CheckField (FieldInfo field, string name, Type type, FieldAttributes attributes)

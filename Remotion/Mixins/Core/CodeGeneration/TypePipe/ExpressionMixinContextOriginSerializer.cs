@@ -36,6 +36,8 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     public Expression CreateNewExpression ()
     {
+      // new MixinContextOrigin (Kind, Assembly.Load (Assembly.FullName), Location)
+
       return Expression.New (
           s_constructor,
           Expression.Constant (Kind),

@@ -34,6 +34,8 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     public Expression CreateNewExpression ()
     {
+      // new ClassContext (Type, new MixinContext[] { ... }, ComposedInterfaces)
+
       return Expression.New (
           s_constructor,
           Expression.Constant (Type),

@@ -25,7 +25,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
   // TODO 5370: Docs.
   public interface ITargetTypeModifier
   {
-    TargetTypeModifierContext CreateContext (MutableType targetType);
+    TargetTypeModifierContext CreateContext (ClassContext classContext, MutableType targetType);
 
     void ImplementInterfaces (TargetTypeModifierContext context, IEnumerable<Type> interfacesToImplement);
     void AddFields (TargetTypeModifierContext context, Type nextCallProxyType);

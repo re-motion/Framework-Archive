@@ -33,10 +33,12 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     public Expression CreateNewExpression ()
     {
+      // new MixinContext (MixinKind, MixinType, IntroducedMemberVisibility, ExplicitDependencies, new MixinContextOrigin (...))
+
       return Expression.New (
           s_constructor,
-          Expression.Constant (MixinType),
           Expression.Constant (MixinKind),
+          Expression.Constant (MixinType),
           Expression.Constant (IntroducedMemberVisibility),
           Expression.Constant (ExplicitDependencies.ToArray()),
           CreateOriginExpression (Origin));

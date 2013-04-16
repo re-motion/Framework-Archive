@@ -72,11 +72,11 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       _expressionBuilder = expressionBuilder;
     }
 
-    public TargetTypeModifierContext CreateContext (MutableType targetType)
+    public TargetTypeModifierContext CreateContext (ClassContext classContext, MutableType targetType)
     {
       ArgumentUtility.CheckNotNull ("targetType", targetType);
 
-      return new TargetTypeModifierContext (targetType);
+      return new TargetTypeModifierContext (classContext, targetType);
     }
 
     public void ImplementInterfaces (TargetTypeModifierContext context, IEnumerable<Type> interfacesToImplement)
@@ -93,12 +93,12 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       ArgumentUtility.CheckNotNull ("context", context);
       ArgumentUtility.CheckNotNull ("nextCallProxyType", nextCallProxyType);
 
-      var tt = context.ConcreteTarget;
+      var ct = context.ConcreteTarget;
       var privateStatic = FieldAttributes.Private | FieldAttributes.Static;
-      context.ClassContextField = AddDebuggerInvisibleField (tt, "__classContext", typeof (ClassContext), privateStatic);
-      context.MixinArrayInitializerField = AddDebuggerInvisibleField (tt, "__mixinArrayInitializer", typeof (MixinArrayInitializer), privateStatic);
-      context.ExtensionsField = AddDebuggerInvisibleField (tt, "__extensions", typeof (object[]), FieldAttributes.Private);
-      context.FirstField = AddDebuggerInvisibleField (tt, "__first", nextCallProxyType, FieldAttributes.Private);
+      context.ClassContextField = AddDebuggerInvisibleField (ct, "__classContext", typeof (ClassContext), privateStatic);
+      context.MixinArrayInitializerField = AddDebuggerInvisibleField (ct, "__mixinArrayInitializer", typeof (MixinArrayInitializer), privateStatic);
+      context.ExtensionsField = AddDebuggerInvisibleField (ct, "__extensions", typeof (object[]), FieldAttributes.Private);
+      context.FirstField = AddDebuggerInvisibleField (ct, "__first", nextCallProxyType, FieldAttributes.Private);
     }
 
     public void AddTypeInitializations (TargetTypeModifierContext context, ClassContext classContext, IEnumerable<Type> concreteMixinTypes)
@@ -107,20 +107,11 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       ArgumentUtility.CheckNotNull ("classContext", classContext);
       ArgumentUtility.CheckNotNull ("concreteMixinTypes", concreteMixinTypes);
 
-      var staticInitializations =
-          Expression.Block (
+      context.ConcreteTarget.AddTypeInitialization (
+          ctx => Expression.Block (
               typeof (void),
-              Expression.Assign (
-                  Expression.Field (null, context.ClassContextField),
-                  _expressionBuilder.CreateNewClassContextExpression (classContext)),
-              Expression.Assign (
-                  Expression.Field (null, context.MixinArrayInitializerField),
-                  Expression.New (
-                      s_mixinArrayInitializerCtor,
-                      Expression.Constant (classContext.Type),
-                      Expression.Constant (concreteMixinTypes.ToArray()))));
-
-      context.ConcreteTarget.AddTypeInitialization (ctx => staticInitializations);
+              InitializeClassContextField (context.ClassContextField, classContext),
+              InitializeMixinArrayInitializerField (context.MixinArrayInitializerField, classContext.Type, concreteMixinTypes)));
     }
 
     public void AddInitializations (TargetTypeModifierContext context)
@@ -138,14 +129,15 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       var mixinTypes = expectedMixinTypes.ToList();
       var ct = context.ConcreteTarget;
 
-      // TODO Review2:  or use AddExplicitOverride?
-      ct.GetOrAddOverride (s_initializeTargetMethod).SetBody (
+      ct.AddExplicitOverride (
+          s_initializeTargetMethod,
           ctx => Expression.Block (
               ImplementSettingFirstNextCallProxy (ctx.This, context.FirstField, context.NextCallProxyConstructor),
               ImplementCreatingMixinInstances (ctx.This, context.MixinArrayInitializerField, context.ExtensionsField),
               ImplementInitializingMixins (ctx.This, mixinTypes, context.ExtensionsField, context.NextCallProxyConstructor, deserialization: s_false)));
 
-      ct.GetOrAddOverride (s_initializeTargetAfterDeserializationMethod).SetBody (
+      ct.AddExplicitOverride (
+          s_initializeTargetAfterDeserializationMethod,
           ctx => Expression.Block (
               ImplementSettingFirstNextCallProxy (ctx.This, context.FirstField, context.NextCallProxyConstructor),
               ImplementSettingMixinInstances (ctx.This, ctx.Parameters[0], context.MixinArrayInitializerField, context.ExtensionsField),
@@ -154,7 +146,29 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     public void ImplementIMixinTarget (TargetTypeModifierContext context)
     {
-      throw new NotImplementedException();
+      ArgumentUtility.CheckNotNull ("context", context);
+
+      var ct = context.ConcreteTarget;
+      var initialization = _expressionBuilder.CreateInitializationExpression (new ThisExpression (ct), context.ExtensionsField);
+
+      // TODO Review2: The original implementaiton used explicit (qualified name) for "property implementation".
+      var classContextDebuggerDisplay = "Class context for " + context.ClassContext.Type;
+      // Note: classContext is a static field!!
+      ImplementReadOnlyProperty (ct, context.ClassContextField, initialization, s_classContextProperty, "ClassContext", classContextDebuggerDisplay);
+      ImplementReadOnlyProperty (ct, context.ExtensionsField, initialization, s_classContextProperty, "Mixins", "Count = {__extensions.Length}");
+      ImplementReadOnlyProperty (ct, context.FirstField, initialization, s_classContextProperty, "FirstNextCallProxy", "Generated proxy");
+
+    }
+
+    private void ImplementReadOnlyProperty (
+        MutableType concreteTarget,
+        FieldInfo backingField,
+        Expression initialization,
+        PropertyInfo property,
+        string nameString,
+        string debuggerDisplayString)
+    {
+
     }
 
     public void ImplementIntroducedInterfaces (TargetTypeModifierContext context)
@@ -196,14 +210,31 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       return field;
     }
 
+    private BinaryExpression InitializeClassContextField (FieldInfo classContextField, ClassContext classContext)
+    {
+      // __classContext = new ClassContext (...);
+
+      return Expression.Assign (Expression.Field (null, classContextField), _expressionBuilder.CreateNewClassContextExpression (classContext));
+    }
+
+    private static BinaryExpression InitializeMixinArrayInitializerField (
+        FieldInfo mixinArrayInitializerField, Type targetType, IEnumerable<Type> concreteMixinTypes)
+    {
+      // __mixinArrayInitializer = new MixinArrayInitializer (targetType, concreteMixinTypes);
+
+      return Expression.Assign (
+          Expression.Field (null, mixinArrayInitializerField),
+          Expression.New (
+              s_mixinArrayInitializerCtor,
+              Expression.Constant (targetType),
+              Expression.Constant (concreteMixinTypes.ToArray())));
+    }
 
     private Expression ImplementSettingFirstNextCallProxy (ThisExpression @this, FieldInfo firstField, ConstructorInfo nextCallProxyConstructor)
     {
       // __first = <NewNextCallProxy (0)>;
 
-      return Expression.Assign (
-          Expression.Field (@this, firstField),
-          NewNextCallProxy (nextCallProxyConstructor, @this, depth: 0));
+      return Expression.Assign (Expression.Field (@this, firstField), NewNextCallProxy (nextCallProxyConstructor, @this, depth: 0));
     }
 
     private Expression ImplementCreatingMixinInstances (ThisExpression @this, FieldInfo mixinArrayInitializerField, FieldInfo extensionsField)

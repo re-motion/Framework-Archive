@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Reflection;
+using Remotion.Mixins.Context;
 using Remotion.TypePipe.MutableReflection;
 using Remotion.Utilities;
 
@@ -25,13 +26,21 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
   // TODO 5370: Tests.
   public class TargetTypeModifierContext
   {
+    private readonly ClassContext _classContext;
     private readonly MutableType _concreteTarget;
 
-    public TargetTypeModifierContext (MutableType concreteTarget)
+    public TargetTypeModifierContext (ClassContext classContext, MutableType concreteTarget)
     {
+      ArgumentUtility.CheckNotNull ("classContext", classContext);
       ArgumentUtility.CheckNotNull ("concreteTarget", concreteTarget);
 
+      _classContext = classContext;
       _concreteTarget = concreteTarget;
+    }
+
+    public ClassContext ClassContext
+    {
+      get { return _classContext; }
     }
 
     public MutableType ConcreteTarget
