@@ -16,6 +16,7 @@
 // 
 
 using System.Diagnostics;
+using System.Reflection;
 using Remotion.Mixins.Definitions;
 using Remotion.TypePipe.MutableReflection;
 
@@ -28,6 +29,8 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     void AddDebuggerBrowsableAttribute (IMutableMember member, DebuggerBrowsableState debuggerBrowsableState);
 
     void AddDebuggerDisplayAttribute (IMutableMember member, string debuggerDisplayString, string debuggerDisplayNameString);
+
+    void AddIntroducedMemberAttribute (IMutableMember member, MemberInfo interfaceMember, MemberDefinitionBase implementingMember);
 
     void ReplicateAttributes (IAttributableDefinition source, IMutableMember destination);
   }

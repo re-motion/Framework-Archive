@@ -35,10 +35,15 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     private static readonly PropertyInfo s_debuggerDisplayAttributeNameProperty =
         MemberInfoFromExpressionUtility.GetProperty ((DebuggerDisplayAttribute o) => o.Name);
 
+    private static readonly ConstructorInfo s_introducedMemberAttributeConstructor =
+        MemberInfoFromExpressionUtility.GetConstructor (() => new IntroducedMemberAttribute (null, "mixinMemberName", null, "interfaceMemberName"));
+
     public void AddDebuggerBrowsableAttribute (IMutableMember member, DebuggerBrowsableState debuggerBrowsableState)
     {
-      var debuggerAttribute = new CustomAttributeDeclaration (s_debuggerBrowsableAttributeConstructor, new object[] { debuggerBrowsableState });
-      member.AddCustomAttribute (debuggerAttribute);
+      ArgumentUtility.CheckNotNull ("member", member);
+
+      var attribute = new CustomAttributeDeclaration (s_debuggerBrowsableAttributeConstructor, new object[] { debuggerBrowsableState });
+      member.AddCustomAttribute (attribute);
     }
 
     public void AddDebuggerDisplayAttribute (IMutableMember member, string debuggerDisplayString, string debuggerDisplayNameString)
@@ -47,16 +52,30 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       ArgumentUtility.CheckNotNullOrEmpty ("debuggerDisplayString", debuggerDisplayString);
       ArgumentUtility.CheckNotNullOrEmpty ("debuggerDisplayNameString", debuggerDisplayNameString);
 
-      var debuggerDisplayAttribute = new CustomAttributeDeclaration (
+      var attribute = new CustomAttributeDeclaration (
           s_debuggerDisplayAttributeConstructor,
           new object[] { debuggerDisplayString },
           new NamedArgumentDeclaration (s_debuggerDisplayAttributeNameProperty, debuggerDisplayNameString));
-      member.AddCustomAttribute (debuggerDisplayAttribute);
+      member.AddCustomAttribute (attribute);
+    }
+
+    public void AddIntroducedMemberAttribute (IMutableMember member, MemberInfo interfaceMember, MemberDefinitionBase implementingMember)
+    {
+      ArgumentUtility.CheckNotNull ("member", member);
+      ArgumentUtility.CheckNotNull ("interfaceMember", interfaceMember);
+      ArgumentUtility.CheckNotNull ("implementingMember", implementingMember);
+
+      var attribute = new CustomAttributeDeclaration (
+          s_introducedMemberAttributeConstructor,
+          new object[] { implementingMember.DeclaringClass.Type, implementingMember.Name, interfaceMember.DeclaringType, interfaceMember.Name });
+      member.AddCustomAttribute (attribute);
     }
 
     public void ReplicateAttributes (IAttributableDefinition source, IMutableMember destination)
     {
-      throw new System.NotImplementedException();
+      ArgumentUtility.CheckNotNull ("source", source);
+      ArgumentUtility.CheckNotNull ("destination", destination);
+
     }
   }
 }

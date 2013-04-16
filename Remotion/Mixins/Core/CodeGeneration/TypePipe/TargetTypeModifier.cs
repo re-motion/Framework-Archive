@@ -176,6 +176,8 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
           ImplementIntroducedMethod (ct, extensionsField, implementer, method.InterfaceMember, method.ImplementingMember, method.Visibility);
         foreach (var property in introduction.IntroducedProperties)
           ImplementIntroducedProperty (ct, extensionsField, implementer, property);
+        foreach (var @event in introduction.IntroducedEvents)
+          ImplementIntroducedEvent (ct, extensionsField, implementer, @event);
       }
     }
 
@@ -184,7 +186,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
         FieldInfo extensionsField,
         Expression implementer,
         MethodInfo interfaceMethod,
-        IAttributableDefinition implementingMethod,
+        MethodDefinition implementingMethod,
         MemberVisibility visibility)
     {
       var implementation = Expression.Block (
@@ -196,6 +198,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
               : concreteTarget.AddExplicitOverride (interfaceMethod, ctx => Expression.Default (ctx.ReturnType));
       method.SetBody (ctx => implementation);
 
+      _attributeGenerator.AddIntroducedMemberAttribute (method, interfaceMethod, implementingMethod);
       _attributeGenerator.ReplicateAttributes (implementingMethod, method);
 
       return method;
@@ -217,12 +220,30 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
                   concreteTarget, extensionsField, implementer, interfaceProperty.GetSetMethod(), implementingProperty.SetMethod, visibility)
               : null;
 
-      var name = visibility == MemberVisibility.Public
-              ? interfaceProperty.Name
-              : MemberImplementationUtility.GetNameForExplicitImplementation (interfaceProperty);
+      var name = GetIntroducedMemberName (visibility, interfaceProperty);
       var property = concreteTarget.AddProperty (name, PropertyAttributes.None, getMethod, setMethod);
 
+      _attributeGenerator.AddIntroducedMemberAttribute (property, interfaceProperty, implementingProperty);
       _attributeGenerator.ReplicateAttributes (implementingProperty, property);
+    }
+
+    public virtual void ImplementIntroducedEvent (
+        MutableType concreteTarget, FieldInfo extensionsField, Expression implementer, EventIntroductionDefinition introducedEvent)
+    {
+      var interfaceEvent = introducedEvent.InterfaceMember;
+      var implementingEvent = introducedEvent.ImplementingMember;
+      var visibility = introducedEvent.Visibility;
+
+      var addMethod = ImplementIntroducedMethod (
+          concreteTarget, extensionsField, implementer, interfaceEvent.GetAddMethod(), implementingEvent.AddMethod, visibility);
+      var removeMethod = ImplementIntroducedMethod (
+          concreteTarget, extensionsField, implementer, interfaceEvent.GetRemoveMethod(), implementingEvent.RemoveMethod, visibility);
+
+      var name = GetIntroducedMemberName (visibility, interfaceEvent);
+      var @event = concreteTarget.AddEvent (name, EventAttributes.None, addMethod, removeMethod);
+
+      _attributeGenerator.AddIntroducedMemberAttribute (@event, interfaceEvent, implementingEvent);
+      _attributeGenerator.ReplicateAttributes (implementingEvent, @event);
     }
 
     public void ImplementRequiredDuckMethods (TargetTypeModifierContext context)
@@ -370,6 +391,13 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
               Expression.Field (new ThisExpression (concreteTarget), extensionsField),
               Expression.Constant (introduction.Implementer.MixinIndex)),
           introduction.InterfaceType);
+    }
+
+    private string GetIntroducedMemberName (MemberVisibility visibility, MemberInfo interfaceMember)
+    {
+      return visibility == MemberVisibility.Public
+                 ? interfaceMember.Name
+                 : MemberImplementationUtility.GetNameForExplicitImplementation (interfaceMember);
     }
   }
 }
