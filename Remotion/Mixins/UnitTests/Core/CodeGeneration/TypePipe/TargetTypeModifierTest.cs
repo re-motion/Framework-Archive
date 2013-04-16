@@ -18,21 +18,18 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
-using System.Runtime.Serialization;
 using Microsoft.Scripting.Ast;
 using NUnit.Framework;
 using Remotion.Development.TypePipe.UnitTesting.Expressions;
 using Remotion.Development.TypePipe.UnitTesting.ObjectMothers.Expressions;
 using Remotion.Development.TypePipe.UnitTesting.ObjectMothers.MutableReflection.Implementation;
-using Remotion.Development.UnitTesting;
 using Remotion.Development.UnitTesting.Reflection;
 using Remotion.Mixins.CodeGeneration;
 using Remotion.Mixins.CodeGeneration.DynamicProxy;
 using Remotion.Mixins.CodeGeneration.TypePipe;
 using Remotion.Mixins.Context;
 using Remotion.Mixins.Definitions;
-using Remotion.Mixins.Definitions.Building;
-using Remotion.Mixins.MixerTools;
+using Remotion.Mixins.UnitTests.Core.Definitions.TestDomain;
 using Remotion.Mixins.Utilities;
 using Remotion.TypePipe.Expressions;
 using Remotion.TypePipe.MutableReflection;
@@ -92,7 +89,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
     {
       var nextCallProxyType = ReflectionObjectMother.GetSomeType();
       _attributeGeneratorMock
-          .Expect (mock => mock.AddDebuggerBrowsableAttribute (Arg<IMutableMember>.Is.Anything, Arg.Is (DebuggerBrowsableState.Never)))
+          .Expect (mock => mock.AddDebuggerBrowsableAttribute (Arg<MutableFieldInfo>.Is.Anything, Arg.Is (DebuggerBrowsableState.Never)))
           .Repeat.Times (4);
 
       _modifier.AddFields (_context, nextCallProxyType);
@@ -241,12 +238,6 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
     }
 
     [Test]
-    public void name ()
-    {
-      ClassContextObjectMother.Create (_target, typeof (IntroducingMixin));
-    }
-
-    [Test]
     public void ImplementIntroducedInterfaces ([Values (MemberVisibility.Private, MemberVisibility.Public)] MemberVisibility visibility)
     {
       var classContext = MixinConfiguration
@@ -286,6 +277,34 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
       var expectedImplementer = Expression.Convert (
           Expression.ArrayAccess (_context.ExtensionsField, Expression.Constant (1)), typeof (IIntroducedInterface));
       ExpressionTreeComparer.CheckAreEqualTrees (expectedImplementer, implementer);
+    }
+
+    [TestCase (MemberVisibility.Public, "Method", MethodAttributes.Public | MethodAttributes.Virtual)]
+    [TestCase (MemberVisibility.Private, "Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe.TargetTypeModifierTest.IIntroducedInterface.Method",
+        MethodAttributes.Private | MethodAttributes.Virtual)]
+    public void ImplementIntroducedMethod (MemberVisibility visibility, string expectedName, MethodAttributes expectedAttributes)
+    {
+      var extensionsField = ExpressionTreeObjectMother.GetSomeExpression (typeof (object[]));
+      var implementer = ExpressionTreeObjectMother.GetSomeExpression (typeof (IIntroducedInterface));
+      var interfaceMethod = NormalizingMemberInfoFromExpressionUtility.GetMethod ((IIntroducedInterface o) => o.Method());
+      var mixinMethod = NormalizingMemberInfoFromExpressionUtility.GetMethod ((IntroducingMixin o) => o.Method());
+      var implementingMethod = new MethodDefinition (mixinMethod, new TestClassDefinition (typeof (IntroducingMixin)));
+      _concreteTarget.AddInterface (typeof (IIntroducedInterface));
+      var fakeInitialization = ExpressionTreeObjectMother.GetSomeExpression();
+      _expressionBuilderMock.Expect (mock => mock.CreateInitializationExpression (_concreteTarget, extensionsField)).Return (fakeInitialization);
+      _attributeGeneratorMock
+          .Expect (mock => mock.AddIntroducedMemberAttribute (Arg<MutableMethodInfo>.Is.Anything, Arg.Is (interfaceMethod), Arg.Is(implementingMethod)));
+      _attributeGeneratorMock.Expect (mock => mock.ReplicateAttributes (Arg.Is (implementingMethod), Arg<MutableMethodInfo>.Is.Anything));
+
+      var result = _modifier.ImplementIntroducedMethod (_concreteTarget, extensionsField, implementer, interfaceMethod, implementingMethod, visibility);
+
+      _expressionBuilderMock.VerifyAllExpectations();
+      _attributeGeneratorMock.VerifyAllExpectations();
+      Assert.That (_concreteTarget.AddedMethods, Is.EqualTo (new[] { result }));
+      Assert.That (result.Name, Is.EqualTo (expectedName));
+      Assert.That (result.Attributes.IsSet (expectedAttributes), Is.True);
+      var expectedBody = Expression.Block (fakeInitialization, Expression.Call (implementer, interfaceMethod));
+      ExpressionTreeComparer.CheckAreEqualTrees (expectedBody, result.Body);
     }
 
     private void CheckField (Expression fieldExpression, string expectedName, Type expectedType, FieldAttributes expectedAttributes)
@@ -329,7 +348,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
     private void ExpectAddDebuggerDisplayAttribute (IAttributeGenerator attributeGeneratorMock, string debuggerDisplayString, string debuggerDisplayName)
     {
       attributeGeneratorMock.Expect (
-          mock => mock.AddDebuggerDisplayAttribute (Arg<IMutableMember>.Is.Anything, Arg.Is (debuggerDisplayString), Arg.Is (debuggerDisplayName)));
+          mock => mock.AddDebuggerDisplayAttribute (Arg<MutablePropertyInfo>.Is.Anything, Arg.Is (debuggerDisplayString), Arg.Is (debuggerDisplayName)));
     }
 
     public interface IIntroducedInterface
