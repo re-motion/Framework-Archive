@@ -47,7 +47,6 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
 
     private TargetTypeModifier _modifier;
 
-    private Type _target;
     private ClassContext _classContext;
     private MutableType _concreteTarget;
     private TargetTypeModifierContext _context;
@@ -59,9 +58,8 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
 
       _modifier = new TargetTypeModifier (_expressionBuilderMock);
 
-      _target = ReflectionObjectMother.GetSomeSubclassableType();
       _classContext = ClassContextObjectMother.Create();
-      _concreteTarget = new MutableTypeFactory().CreateProxy (_target);
+      _concreteTarget = new MutableTypeFactory().CreateProxy (_classContext.Type);
       _context = new TargetTypeModifierContext (_classContext, _concreteTarget);
     }
 
@@ -238,25 +236,26 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
       var firstNextCallProperty = _concreteTarget.AddedProperties.Single (p => p.Name.EndsWith ("FirstNextCallProxy"));
 
       CheckExplicitPropertyImplementation (
-          classContextProperty, "Remotion.Mixins.IMixinTarget.ClassContext", _context.ClassContextField, Expression.Empty());
+          classContextProperty,
+          "Remotion.Mixins.IMixinTarget.ClassContext",
+          _context.ClassContextField,
+          Expression.Empty(),
+          "ClassContext",
+          "Class context for " + _classContext.Type.Name);
       CheckExplicitPropertyImplementation (
-          mixinProperty, "Remotion.Mixins.IMixinTarget.Mixins", _context.ExtensionsField, fakeInitialization);
+          mixinProperty,
+          "Remotion.Mixins.IMixinTarget.Mixins",
+          _context.ExtensionsField,
+          fakeInitialization,
+          "Mixins",
+          "Count = {__extensions.Length}");
       CheckExplicitPropertyImplementation (
-          firstNextCallProperty, "Remotion.Mixins.IMixinTarget.FirstNextCallProxy", _context.FirstField, fakeInitialization);
-    }
-
-    private void CheckExplicitPropertyImplementation (
-        MutablePropertyInfo property, string expectedName, FieldInfo expectedBackingField, Expression initialization)
-    {
-      Assert.That (property.Name, Is.EqualTo (expectedName));
-      Assert.That (property.Attributes, Is.EqualTo (PropertyAttributes.None));
-      Assert.That (property.MutableSetMethod, Is.Null);
-      Assert.That (property.MutableGetMethod, Is.Not.Null);
-
-      var expectedGetMethodName = expectedName.Insert (expectedName.LastIndexOf ('.') + 1, "get_");
-      var instanceExpression = expectedBackingField.IsStatic ? null : new ThisExpression (_concreteTarget);
-      var expectedGetMethodBody = Expression.Block (initialization, Expression.Field (instanceExpression, expectedBackingField));
-      CheckExplicitMethodImplementation (property.MutableGetMethod, expectedGetMethodName, expectedGetMethodBody);
+          firstNextCallProperty,
+          "Remotion.Mixins.IMixinTarget.FirstNextCallProxy",
+          _context.FirstField,
+          fakeInitialization,
+          "FirstNextCallProxy",
+          "Generated proxy");
     }
 
     private void SetClassContext (TargetTypeModifierContext context, ClassContext classContext)
@@ -284,6 +283,31 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
       Assert.That (explicitOverride.IsVirtual, Is.True);
       Assert.That (explicitOverride.AddedExplicitBaseDefinitions, Has.Count.EqualTo (1));
       ExpressionTreeComparer.CheckAreEqualTrees (expectedBody, explicitOverride.Body);
+    }
+
+    private void CheckExplicitPropertyImplementation (
+        MutablePropertyInfo property,
+        string expectedName,
+        FieldInfo expectedBackingField,
+        Expression expectedInitialization,
+        string expectedDebuggerDisplayName,
+        string expectedDebuggerDisplayString)
+    {
+      Assert.That (property.Name, Is.EqualTo (expectedName));
+      Assert.That (property.Attributes, Is.EqualTo (PropertyAttributes.None));
+      Assert.That (property.MutableSetMethod, Is.Null);
+      Assert.That (property.MutableGetMethod, Is.Not.Null);
+
+      var expectedGetMethodName = expectedName.Insert (expectedName.LastIndexOf ('.') + 1, "get_");
+      var instanceExpression = expectedBackingField.IsStatic ? null : new ThisExpression (_concreteTarget);
+      var expectedGetMethodBody = Expression.Block (expectedInitialization, Expression.Field (instanceExpression, expectedBackingField));
+      CheckExplicitMethodImplementation (property.MutableGetMethod, expectedGetMethodName, expectedGetMethodBody);
+
+      var debuggerBrowsableAttribute = property.AddedCustomAttributes.Single();
+      Assert.That (debuggerBrowsableAttribute.Type, Is.SameAs (typeof (DebuggerDisplayAttribute)));
+      Assert.That (debuggerBrowsableAttribute.ConstructorArguments, Is.EqualTo (new[] { expectedDebuggerDisplayString }));
+      var namedArgument = debuggerBrowsableAttribute.NamedArguments.Single();
+      Assert.That (namedArgument.Value, Is.EqualTo (expectedDebuggerDisplayName));
     }
 
     private class ClassImplementingIInitializableMixin : IInitializableMixin

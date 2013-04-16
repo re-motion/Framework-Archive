@@ -156,7 +156,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       var ct = context.ConcreteTarget;
       var initialization = _expressionBuilder.CreateInitializationExpression (new ThisExpression (ct), context.ExtensionsField);
       var noInitialization = Expression.Empty();
-      var classContextDebuggerDisplay = "Class context for " + context.ClassContext.Type;
+      var classContextDebuggerDisplay = "Class context for " + context.ClassContext.Type.Name;
 
       ImplementReadOnlyProperty (ct, context.ClassContextField, noInitialization, s_classContextProperty, "ClassContext", classContextDebuggerDisplay);
       ImplementReadOnlyProperty (ct, context.ExtensionsField, initialization, s_mixinProperty, "Mixins", "Count = {__extensions.Length}");
