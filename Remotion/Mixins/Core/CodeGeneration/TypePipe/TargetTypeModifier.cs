@@ -24,6 +24,7 @@ using Remotion.Mixins.Context;
 using Remotion.Mixins.Utilities;
 using Remotion.TypePipe.Expressions;
 using Remotion.TypePipe.MutableReflection;
+using Remotion.TypePipe.MutableReflection.Implementation;
 using Remotion.Utilities;
 using System.Linq;
 
@@ -32,8 +33,13 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
   // TODO 5370: Docs.
   public class TargetTypeModifier : ITargetTypeModifier
   {
-    private static readonly ConstructorInfo s_debuggerBrowsableAttributeCtor =
+    private static readonly ConstructorInfo s_debuggerBrowsableAttributeConstructor =
         MemberInfoFromExpressionUtility.GetConstructor (() => new DebuggerBrowsableAttribute (DebuggerBrowsableState.Never));
+
+    private static readonly ConstructorInfo s_debuggerDisplayAttributeConstructor =
+        MemberInfoFromExpressionUtility.GetConstructor (() => new DebuggerDisplayAttribute ("display message"));
+    private static readonly PropertyInfo s_debuggerDisplayAttributeNameProperty =
+        MemberInfoFromExpressionUtility.GetProperty ((DebuggerDisplayAttribute o) => o.Name);
 
     private static readonly ConstructorInfo s_mixinArrayInitializerCtor =
         MemberInfoFromExpressionUtility.GetConstructor (() => new MixinArrayInitializer (null, Type.EmptyTypes));
@@ -49,7 +55,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     private static readonly PropertyInfo s_classContextProperty = MemberInfoFromExpressionUtility.GetProperty ((IMixinTarget o) => o.ClassContext);
     private static readonly PropertyInfo s_mixinProperty = MemberInfoFromExpressionUtility.GetProperty ((IMixinTarget o) => o.Mixins);
-    private static readonly PropertyInfo s_firstProperty = MemberInfoFromExpressionUtility.GetProperty ((IMixinTarget o) => o.FirstNextCallProxy);
+    private static readonly PropertyInfo s_firstNextCallProperty = MemberInfoFromExpressionUtility.GetProperty ((IMixinTarget o) => o.FirstNextCallProxy);
 
     private static readonly MethodInfo s_initializeMixinMethod =
         MemberInfoFromExpressionUtility.GetMethod ((IInitializableMixin o) => o.Initialize (null, null, false));
@@ -101,17 +107,16 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       context.FirstField = AddDebuggerInvisibleField (ct, "__first", nextCallProxyType, FieldAttributes.Private);
     }
 
-    public void AddTypeInitializations (TargetTypeModifierContext context, ClassContext classContext, IEnumerable<Type> concreteMixinTypes)
+    public void AddTypeInitializations (TargetTypeModifierContext context, IEnumerable<Type> concreteMixinTypes)
     {
       ArgumentUtility.CheckNotNull ("context", context);
-      ArgumentUtility.CheckNotNull ("classContext", classContext);
       ArgumentUtility.CheckNotNull ("concreteMixinTypes", concreteMixinTypes);
 
       context.ConcreteTarget.AddTypeInitialization (
           ctx => Expression.Block (
               typeof (void),
-              InitializeClassContextField (context.ClassContextField, classContext),
-              InitializeMixinArrayInitializerField (context.MixinArrayInitializerField, classContext.Type, concreteMixinTypes)));
+              InitializeClassContextField (context.ClassContextField, context.ClassContext),
+              InitializeMixinArrayInitializerField (context.MixinArrayInitializerField, context.ClassContext.Type, concreteMixinTypes)));
     }
 
     public void AddInitializations (TargetTypeModifierContext context)
@@ -150,25 +155,12 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
       var ct = context.ConcreteTarget;
       var initialization = _expressionBuilder.CreateInitializationExpression (new ThisExpression (ct), context.ExtensionsField);
-
-      // TODO Review2: The original implementaiton used explicit (qualified name) for "property implementation".
+      var noInitialization = Expression.Empty();
       var classContextDebuggerDisplay = "Class context for " + context.ClassContext.Type;
-      // Note: classContext is a static field!!
-      ImplementReadOnlyProperty (ct, context.ClassContextField, initialization, s_classContextProperty, "ClassContext", classContextDebuggerDisplay);
-      ImplementReadOnlyProperty (ct, context.ExtensionsField, initialization, s_classContextProperty, "Mixins", "Count = {__extensions.Length}");
-      ImplementReadOnlyProperty (ct, context.FirstField, initialization, s_classContextProperty, "FirstNextCallProxy", "Generated proxy");
 
-    }
-
-    private void ImplementReadOnlyProperty (
-        MutableType concreteTarget,
-        FieldInfo backingField,
-        Expression initialization,
-        PropertyInfo property,
-        string nameString,
-        string debuggerDisplayString)
-    {
-
+      ImplementReadOnlyProperty (ct, context.ClassContextField, noInitialization, s_classContextProperty, "ClassContext", classContextDebuggerDisplay);
+      ImplementReadOnlyProperty (ct, context.ExtensionsField, initialization, s_mixinProperty, "Mixins", "Count = {__extensions.Length}");
+      ImplementReadOnlyProperty (ct, context.FirstField, initialization, s_firstNextCallProperty, "FirstNextCallProxy", "Generated proxy");
     }
 
     public void ImplementIntroducedInterfaces (TargetTypeModifierContext context)
@@ -204,7 +196,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     private MutableFieldInfo AddDebuggerInvisibleField (MutableType targetType, string name, Type type, FieldAttributes attributes)
     {
       var field = targetType.AddField (name, attributes, type);
-      var debuggerAttribute = new CustomAttributeDeclaration (s_debuggerBrowsableAttributeCtor, new object[] { DebuggerBrowsableState.Never });
+      var debuggerAttribute = new CustomAttributeDeclaration (s_debuggerBrowsableAttributeConstructor, new object[] { DebuggerBrowsableState.Never });
       field.AddCustomAttribute (debuggerAttribute);
 
       return field;
@@ -288,6 +280,27 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     private Expression NewNextCallProxy (ConstructorInfo nextCallProxyConstructor, ThisExpression @this, int depth)
     {
       return Expression.New (nextCallProxyConstructor, @this, Expression.Constant (depth));
+    }
+
+    private void ImplementReadOnlyProperty (
+        MutableType concreteTarget,
+        FieldInfo backingField,
+        Expression initialization,
+        PropertyInfo interfaceProperty,
+        string nameString,
+        string debuggerDisplayString)
+    {
+      var name = MemberImplementationUtility.GetNameForExplicitImplementation (interfaceProperty);
+      var getMethod = concreteTarget.AddExplicitOverride (
+          interfaceProperty.GetGetMethod(),
+          ctx => Expression.Block (initialization, Expression.Field (backingField.IsStatic ? null : ctx.This, backingField)));
+      var property = concreteTarget.AddProperty (name, PropertyAttributes.None, getMethod, setMethod: null);
+
+      var debuggerDisplayAttribute = new CustomAttributeDeclaration (
+          s_debuggerDisplayAttributeConstructor,
+          new object[] { debuggerDisplayString },
+          new NamedArgumentDeclaration (s_debuggerDisplayAttributeNameProperty, nameString));
+      property.AddCustomAttribute (debuggerDisplayAttribute);
     }
   }
 }

@@ -91,14 +91,18 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
 
       _modifier.AddFields (_context, nextCallProxyType);
 
-      var privateStaticAttributes = FieldAttributes.Private | FieldAttributes.Static;
-      CheckField (_context.ClassContextField, "__classContext", typeof (ClassContext), privateStaticAttributes);
-      CheckField (_context.MixinArrayInitializerField, "__mixinArrayInitializer", typeof (MixinArrayInitializer), privateStaticAttributes);
-      CheckField (_context.ExtensionsField, "__extensions", typeof (object[]), FieldAttributes.Private);
-      CheckField (_context.FirstField, "__first", nextCallProxyType, FieldAttributes.Private);
-
       var expctedFields = new[] { _context.ClassContextField, _context.MixinArrayInitializerField, _context.ExtensionsField, _context.FirstField };
       Assert.That (_concreteTarget.AddedFields, Is.EqualTo (expctedFields));
+      var classContextField = _concreteTarget.AddedFields.Single (f => f == _context.ClassContextField);
+      var mixinArrayInitializerField = _concreteTarget.AddedFields.Single (f => f == _context.MixinArrayInitializerField);
+      var extensionsField = _concreteTarget.AddedFields.Single (f => f == _context.ExtensionsField);
+      var firstField = _concreteTarget.AddedFields.Single (f => f == _context.FirstField);
+
+      var privateStaticAttributes = FieldAttributes.Private | FieldAttributes.Static;
+      CheckField (classContextField, "__classContext", typeof (ClassContext), privateStaticAttributes);
+      CheckField (mixinArrayInitializerField, "__mixinArrayInitializer", typeof (MixinArrayInitializer), privateStaticAttributes);
+      CheckField (extensionsField, "__extensions", typeof (object[]), FieldAttributes.Private);
+      CheckField (firstField, "__first", nextCallProxyType, FieldAttributes.Private);
     }
 
     [Test]
@@ -109,12 +113,12 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
       var targetType = ReflectionObjectMother.GetSomeType();
       var mixinType = ReflectionObjectMother.GetSomeOtherType();
       var composedInterface = ReflectionObjectMother.GetSomeInterfaceType();
-      var classContext = ClassContextObjectMother.Create (targetType, new[] { mixinType }, new[] { composedInterface });
+      SetClassContext (_context, ClassContextObjectMother.Create (targetType, new[] { mixinType }, new[] { composedInterface }));
       var concreteMixinType = ReflectionObjectMother.GetSomeType();
       var fakeClassContextExpression = ExpressionTreeObjectMother.GetSomeExpression (typeof (ClassContext));
-      _expressionBuilderMock.Expect (mock => mock.CreateNewClassContextExpression (classContext)).Return (fakeClassContextExpression);
+      _expressionBuilderMock.Expect (mock => mock.CreateNewClassContextExpression (_context.ClassContext)).Return (fakeClassContextExpression);
 
-      _modifier.AddTypeInitializations (_context, classContext, new[] { concreteMixinType }.AsOneTime());
+      _modifier.AddTypeInitializations (_context, new[] { concreteMixinType }.AsOneTime());
 
       _expressionBuilderMock.VerifyAllExpectations();
       Assert.That (_concreteTarget.TypeInitializer, Is.Not.Null);
@@ -127,7 +131,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
               Expression.Field (null, _context.MixinArrayInitializerField),
               Expression.New (
                   typeof (MixinArrayInitializer).GetConstructors().Single(),
-                  Expression.Constant (classContext.Type),
+                  Expression.Constant (targetType),
                   Expression.Constant (new[] { concreteMixinType }))));
       ExpressionTreeComparer.CheckAreEqualTrees (expectedTypeInitializations, typeInitializations);
     }
@@ -151,7 +155,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
     [Test]
     public void ImplementIInitializableMixinTarget ()
     {
-      var parameters = new[]{ CustomParameterInfoObjectMother.Create (type: _concreteTarget), CustomParameterInfoObjectMother.Create (type: typeof (int)) };
+      var parameters = new[] { CustomParameterInfoObjectMother.Create (type: _concreteTarget), CustomParameterInfoObjectMother.Create (type: typeof (int)) };
       var nextCallProxyType = CustomTypeObjectMother.Create();
       var nextCallProxyTypeConstructor = CustomConstructorInfoObjectMother.Create (nextCallProxyType, parameters: parameters);
       ((TestableCustomType) nextCallProxyType).Constructors = new ConstructorInfo[] { nextCallProxyTypeConstructor };
@@ -168,10 +172,6 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
       Assert.That (_concreteTarget.AddedMethods, Has.Count.EqualTo (2));
       var initializeMethod = _concreteTarget.AddedMethods.Single (m => m.Name.EndsWith ("Initialize"));
       var initializeAfterDeserializationMethod = _concreteTarget.AddedMethods.Single (m => m.Name.EndsWith ("InitializeAfterDeserialization"));
-
-      CheckExplicitOverride (initializeMethod, "Remotion.Mixins.CodeGeneration.DynamicProxy.IInitializableMixinTarget.Initialize");
-      CheckExplicitOverride (
-          initializeAfterDeserializationMethod, "Remotion.Mixins.CodeGeneration.DynamicProxy.IInitializableMixinTarget.InitializeAfterDeserialization");
 
       var @this = new ThisExpression (_concreteTarget);
       var createMixinInstances = Expression.Assign (
@@ -197,7 +197,6 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
                   @this,
                   Expression.New (_context.NextCallProxyConstructor, @this, Expression.Constant (2)),
                   deserialization)));
-      ExpressionTreeComparer.CheckAreEqualTrees (expectedInitializeBody, initializeMethod.Body);
 
       var setMixinInstances = Expression.Block (
           Expression.Call (
@@ -206,30 +205,85 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
               Type.EmptyTypes,
               Expression.Parameter (typeof (object[]), "mixinInstances")),
           Expression.Assign (Expression.Field (@this, _context.ExtensionsField), Expression.Parameter (typeof (object[]), "mixinInstances")));
-      var initializeAfterDeserializationBody = expectedInitializeBody.Replace (
+      var expectedInitializeAfterDeserializationBody = expectedInitializeBody.Replace (
           new Dictionary<Expression, Expression> { { createMixinInstances, setMixinInstances }, { deserialization, Expression.Constant (true) } });
-      ExpressionTreeComparer.CheckAreEqualTrees (initializeAfterDeserializationBody, initializeAfterDeserializationMethod.Body);
+
+      CheckExplicitMethodImplementation (
+          initializeMethod, "Remotion.Mixins.CodeGeneration.DynamicProxy.IInitializableMixinTarget.Initialize", expectedInitializeBody);
+      CheckExplicitMethodImplementation (
+          initializeAfterDeserializationMethod,
+          "Remotion.Mixins.CodeGeneration.DynamicProxy.IInitializableMixinTarget.InitializeAfterDeserialization",
+          expectedInitializeAfterDeserializationBody);
     }
 
-    private void CheckExplicitOverride (MutableMethodInfo explicitOverride, string expectedName)
+    [Test]
+    public void ImplementIMixinTarget ()
     {
-      var expectedAttributes = MethodAttributes.Private | MethodAttributes.Virtual | MethodAttributes.HideBySig | MethodAttributes.VtableLayoutMask;
-      Assert.That (explicitOverride.Name, Is.EqualTo (expectedName));
-      Assert.That (explicitOverride.Attributes, Is.EqualTo (expectedAttributes));
-      Assert.That (explicitOverride.AddedExplicitBaseDefinitions, Has.Count.EqualTo (1));
+      _context.ClassContextField = CustomFieldInfoObjectMother.Create (type: typeof (ClassContext), attributes: FieldAttributes.Static);
+      _context.ExtensionsField = CustomFieldInfoObjectMother.Create (_concreteTarget, type: typeof (object[]));
+      _context.FirstField = CustomFieldInfoObjectMother.Create (_concreteTarget);
+      _concreteTarget.AddInterface (typeof (IMixinTarget));
+      var fakeInitialization = ExpressionTreeObjectMother.GetSomeExpression();
+      _expressionBuilderMock
+          .Expect (mock => mock.CreateInitializationExpression (Arg<ThisExpression>.Is.Anything, Arg.Is (_context.ExtensionsField)))
+          .WhenCalled (mi => Assert.That (mi.Arguments[0].As<ThisExpression>().Type, Is.SameAs (_concreteTarget)))
+          .Return (fakeInitialization);
+
+      _modifier.ImplementIMixinTarget (_context);
+
+      _expressionBuilderMock.VerifyAllExpectations();
+      Assert.That (_concreteTarget.AddedProperties, Has.Count.EqualTo (3));
+      var classContextProperty = _concreteTarget.AddedProperties.Single (p => p.Name.EndsWith ("ClassContext"));
+      var mixinProperty = _concreteTarget.AddedProperties.Single (p => p.Name.EndsWith ("Mixins"));
+      var firstNextCallProperty = _concreteTarget.AddedProperties.Single (p => p.Name.EndsWith ("FirstNextCallProxy"));
+
+      CheckExplicitPropertyImplementation (
+          classContextProperty, "Remotion.Mixins.IMixinTarget.ClassContext", _context.ClassContextField, Expression.Empty());
+      CheckExplicitPropertyImplementation (
+          mixinProperty, "Remotion.Mixins.IMixinTarget.Mixins", _context.ExtensionsField, fakeInitialization);
+      CheckExplicitPropertyImplementation (
+          firstNextCallProperty, "Remotion.Mixins.IMixinTarget.FirstNextCallProxy", _context.FirstField, fakeInitialization);
     }
 
-    private void CheckField (FieldInfo field, string name, Type type, FieldAttributes attributes)
+    private void CheckExplicitPropertyImplementation (
+        MutablePropertyInfo property, string expectedName, FieldInfo expectedBackingField, Expression initialization)
+    {
+      Assert.That (property.Name, Is.EqualTo (expectedName));
+      Assert.That (property.Attributes, Is.EqualTo (PropertyAttributes.None));
+      Assert.That (property.MutableSetMethod, Is.Null);
+      Assert.That (property.MutableGetMethod, Is.Not.Null);
+
+      var expectedGetMethodName = expectedName.Insert (expectedName.LastIndexOf ('.') + 1, "get_");
+      var instanceExpression = expectedBackingField.IsStatic ? null : new ThisExpression (_concreteTarget);
+      var expectedGetMethodBody = Expression.Block (initialization, Expression.Field (instanceExpression, expectedBackingField));
+      CheckExplicitMethodImplementation (property.MutableGetMethod, expectedGetMethodName, expectedGetMethodBody);
+    }
+
+    private void SetClassContext (TargetTypeModifierContext context, ClassContext classContext)
+    {
+      PrivateInvoke.SetNonPublicField (context, "_classContext", classContext);
+    }
+
+    private void CheckField (MutableFieldInfo field, string expectedName, Type expectedType, FieldAttributes expectedAttributes)
     {
       Assert.That (field.DeclaringType, Is.SameAs (_concreteTarget));
-      Assert.That (field.Name, Is.EqualTo (name));
-      Assert.That (field.FieldType, Is.SameAs (type));
-      Assert.That (field.Attributes, Is.EqualTo (attributes));
+      Assert.That (field.Name, Is.EqualTo (expectedName));
+      Assert.That (field.FieldType, Is.SameAs (expectedType));
+      Assert.That (field.Attributes, Is.EqualTo (expectedAttributes));
 
-      var debuggerBrowsableAttribute = ((MutableFieldInfo) field).AddedCustomAttributes.Single();
+      var debuggerBrowsableAttribute = field.AddedCustomAttributes.Single();
       Assert.That (debuggerBrowsableAttribute.Type, Is.SameAs (typeof (DebuggerBrowsableAttribute)));
       Assert.That (debuggerBrowsableAttribute.ConstructorArguments, Is.EqualTo (new[] { DebuggerBrowsableState.Never }));
       Assert.That (debuggerBrowsableAttribute.NamedArguments, Is.Empty);
+    }
+
+    private void CheckExplicitMethodImplementation (MutableMethodInfo explicitOverride, string expectedName, Expression expectedBody)
+    {
+      Assert.That (explicitOverride.Name, Is.EqualTo (expectedName));
+      Assert.That (explicitOverride.IsPrivate, Is.True);
+      Assert.That (explicitOverride.IsVirtual, Is.True);
+      Assert.That (explicitOverride.AddedExplicitBaseDefinitions, Has.Count.EqualTo (1));
+      ExpressionTreeComparer.CheckAreEqualTrees (expectedBody, explicitOverride.Body);
     }
 
     private class ClassImplementingIInitializableMixin : IInitializableMixin
