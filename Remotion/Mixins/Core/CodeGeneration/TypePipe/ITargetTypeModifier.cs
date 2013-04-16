@@ -34,7 +34,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     void AddInitializations (TargetTypeModifierContext context);
     void ImplementIInitializableMixinTarget (TargetTypeModifierContext context, IEnumerable<Type> expectedMixinTypes);
     void ImplementIMixinTarget (TargetTypeModifierContext context);
-    void ImplementIntroducedInterfaces (TargetTypeModifierContext context, TargetClassDefinition targetClassDefinition);
+    void ImplementIntroducedInterfaces (TargetTypeModifierContext context, IEnumerable<InterfaceIntroductionDefinition> introducedInterfaces);
     void ImplementRequiredDuckMethods (TargetTypeModifierContext context);
     void AddMixedTypeAttribute (TargetTypeModifierContext context);
     void AddDebuggerAttributes (TargetTypeModifierContext context);

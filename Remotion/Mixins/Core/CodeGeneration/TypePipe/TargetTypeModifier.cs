@@ -161,16 +161,16 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       ImplementReadOnlyProperty (ct, context.FirstField, initialization, s_firstNextCallProperty, "FirstNextCallProxy", "Generated proxy");
     }
 
-    public void ImplementIntroducedInterfaces (TargetTypeModifierContext context, TargetClassDefinition targetClassDefinition)
+    public void ImplementIntroducedInterfaces (TargetTypeModifierContext context, IEnumerable<InterfaceIntroductionDefinition> introducedInterfaces)
     {
       ArgumentUtility.CheckNotNull ("context", context);
 
       var ct = context.ConcreteTarget;
       var extensionsField = context.ExtensionsField;
 
-      foreach (var introduction in targetClassDefinition.ReceivedInterfaces)
+      foreach (var introduction in introducedInterfaces)
       {
-        var implementer = GetIntroducedInterfaceImplementer (ct, extensionsField, introduction);
+        var implementer = GetIntroducedInterfaceImplementer (extensionsField, introduction);
 
         foreach (var method in introduction.IntroducedMethods)
           ImplementIntroducedMethod (ct, extensionsField, implementer, method.InterfaceMember, method.ImplementingMember, method.Visibility);
@@ -374,8 +374,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       _attributeGenerator.AddDebuggerDisplayAttribute (property, debuggerDisplayString, debuggerDisplayNameString);
     }
 
-    private Expression GetIntroducedInterfaceImplementer (
-        MutableType concreteTarget, Expression extensionsField, InterfaceIntroductionDefinition introduction)
+    private Expression GetIntroducedInterfaceImplementer (Expression extensionsField, InterfaceIntroductionDefinition introduction)
     {
       // ((InterfaceType) __extensions[implementerIndex])
 

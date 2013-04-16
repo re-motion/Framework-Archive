@@ -18,16 +18,21 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
+using System.Runtime.Serialization;
 using Microsoft.Scripting.Ast;
 using NUnit.Framework;
 using Remotion.Development.TypePipe.UnitTesting.Expressions;
 using Remotion.Development.TypePipe.UnitTesting.ObjectMothers.Expressions;
 using Remotion.Development.TypePipe.UnitTesting.ObjectMothers.MutableReflection.Implementation;
+using Remotion.Development.UnitTesting;
 using Remotion.Development.UnitTesting.Reflection;
 using Remotion.Mixins.CodeGeneration;
 using Remotion.Mixins.CodeGeneration.DynamicProxy;
 using Remotion.Mixins.CodeGeneration.TypePipe;
 using Remotion.Mixins.Context;
+using Remotion.Mixins.Definitions;
+using Remotion.Mixins.Definitions.Building;
+using Remotion.Mixins.MixerTools;
 using Remotion.Mixins.Utilities;
 using Remotion.TypePipe.Expressions;
 using Remotion.TypePipe.MutableReflection;
@@ -58,7 +63,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
 
       _modifier = new TargetTypeModifier (_expressionBuilderMock, _attributeGeneratorMock);
 
-      _target = ReflectionObjectMother.GetSomeSubclassableType();
+      _target = typeof (Target);
       _concreteTarget = new MutableTypeFactory().CreateProxy (_target);
       _context = new TargetTypeModifierContext (_target, _concreteTarget);
     }
@@ -235,6 +240,54 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
           firstNextCallProperty, "Remotion.Mixins.IMixinTarget.FirstNextCallProxy", _context.FirstField, fakeInitialization);
     }
 
+    [Test]
+    public void name ()
+    {
+      ClassContextObjectMother.Create (_target, typeof (IntroducingMixin));
+    }
+
+    [Test]
+    public void ImplementIntroducedInterfaces ([Values (MemberVisibility.Private, MemberVisibility.Public)] MemberVisibility visibility)
+    {
+      var classContext = MixinConfiguration
+          .BuildNew()
+          .ForClass<Target>()
+          .AddMixin<DummyMixin>()
+          .AddMixin<IntroducingMixin>().WithIntroducedMemberVisibility (visibility)
+          .BuildClassContext();
+      var targetClassDefinition = TargetClassDefinitionFactory.CreateAndValidate (classContext);
+      var receivedInterface = targetClassDefinition.ReceivedInterfaces.Single();
+      var methodIntroduciton = receivedInterface.IntroducedMethods.Single();
+      var propertyIntroduction = receivedInterface.IntroducedProperties.Single();
+      var eventIntroduction = receivedInterface.IntroducedEvents.Single();
+      _context.ExtensionsField = ExpressionTreeObjectMother.GetSomeExpression (typeof (object[]));
+
+      Expression implementer = null;
+      var modifierPartialMock = MockRepository.GeneratePartialMock<TargetTypeModifier> (_expressionBuilderMock, _attributeGeneratorMock);
+      modifierPartialMock
+          .Expect (
+              mock => mock.ImplementIntroducedMethod (
+                  Arg.Is (_concreteTarget),
+                  Arg.Is (_context.ExtensionsField),
+                  Arg<Expression>.Is.Anything,
+                  Arg.Is (methodIntroduciton.InterfaceMember),
+                  Arg.Is (methodIntroduciton.ImplementingMember),
+                  Arg.Is (visibility)))
+          .Return (null)
+          .WhenCalled (mi => implementer = (Expression) mi.Arguments[2]);
+      modifierPartialMock.Expect (mock => mock.ImplementIntroducedProperty (
+          Arg.Is(_concreteTarget), Arg.Is(_context.ExtensionsField), Arg<Expression>.Matches (e => e == implementer), Arg.Is (propertyIntroduction)));
+      modifierPartialMock.Expect (mock => mock.ImplementIntroducedEvent (
+          Arg.Is(_concreteTarget), Arg.Is(_context.ExtensionsField), Arg<Expression>.Matches (e => e == implementer), Arg.Is (eventIntroduction)));
+
+      modifierPartialMock.ImplementIntroducedInterfaces (_context, new[] { receivedInterface }.AsOneTime());
+
+      modifierPartialMock.VerifyAllExpectations();
+      var expectedImplementer = Expression.Convert (
+          Expression.ArrayAccess (_context.ExtensionsField, Expression.Constant (1)), typeof (IIntroducedInterface));
+      ExpressionTreeComparer.CheckAreEqualTrees (expectedImplementer, implementer);
+    }
+
     private void CheckField (Expression fieldExpression, string expectedName, Type expectedType, FieldAttributes expectedAttributes)
     {
       var memberExpression = (MemberExpression) fieldExpression;
@@ -278,6 +331,24 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
       attributeGeneratorMock.Expect (
           mock => mock.AddDebuggerDisplayAttribute (Arg<IMutableMember>.Is.Anything, Arg.Is (debuggerDisplayString), Arg.Is (debuggerDisplayName)));
     }
+
+    public interface IIntroducedInterface
+    {
+      void Method ();
+      string Property { get; }
+      event Action Event;
+    }
+
+    public class IntroducingMixin : IIntroducedInterface
+    {
+      public void Method () { throw new NotImplementedException(); }
+      public string Property { get { throw new NotImplementedException(); } }
+      public event Action Event;
+    }
+
+    public class Target { }
+
+    public class DummyMixin { }
 
     private class ClassImplementingIInitializableMixin : IInitializableMixin
     {
