@@ -22,7 +22,6 @@ using Microsoft.Scripting.Ast;
 using NUnit.Framework;
 using Remotion.Development.TypePipe.UnitTesting.Expressions;
 using Remotion.Development.TypePipe.UnitTesting.ObjectMothers.Expressions;
-using Remotion.Development.TypePipe.UnitTesting.ObjectMothers.MutableReflection;
 using Remotion.Development.TypePipe.UnitTesting.ObjectMothers.MutableReflection.Implementation;
 using Remotion.Development.UnitTesting.Reflection;
 using Remotion.Mixins.CodeGeneration;
@@ -94,25 +93,19 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
       _modifier.AddFields (_context, nextCallProxyType);
 
       _attributeGeneratorMock.VerifyAllExpectations();
-      var expctedFields = new[] { _context.ClassContextField, _context.MixinArrayInitializerField, _context.ExtensionsField, _context.FirstField };
-      Assert.That (_concreteTarget.AddedFields, Is.EqualTo (expctedFields));
-      var classContextField = _concreteTarget.AddedFields.Single (f => f == _context.ClassContextField);
-      var mixinArrayInitializerField = _concreteTarget.AddedFields.Single (f => f == _context.MixinArrayInitializerField);
-      var extensionsField = _concreteTarget.AddedFields.Single (f => f == _context.ExtensionsField);
-      var firstField = _concreteTarget.AddedFields.Single (f => f == _context.FirstField);
-
+      Assert.That (_concreteTarget.AddedFields, Has.Count.EqualTo (4));
       var privateStaticAttributes = FieldAttributes.Private | FieldAttributes.Static;
-      CheckField (classContextField, "__classContext", typeof (ClassContext), privateStaticAttributes);
-      CheckField (mixinArrayInitializerField, "__mixinArrayInitializer", typeof (MixinArrayInitializer), privateStaticAttributes);
-      CheckField (extensionsField, "__extensions", typeof (object[]), FieldAttributes.Private);
-      CheckField (firstField, "__first", nextCallProxyType, FieldAttributes.Private);
+      CheckField (_context.ClassContextField, "__classContext", typeof (ClassContext), privateStaticAttributes);
+      CheckField (_context.MixinArrayInitializerField, "__mixinArrayInitializer", typeof (MixinArrayInitializer), privateStaticAttributes);
+      CheckField (_context.ExtensionsField, "__extensions", typeof (object[]), FieldAttributes.Private);
+      CheckField (_context.FirstField, "__first", nextCallProxyType, FieldAttributes.Private);
     }
 
     [Test]
     public void AddTypeInitializations ()
     {
-      _context.ClassContextField = CustomFieldInfoObjectMother.Create (type: typeof (ClassContext), attributes: FieldAttributes.Static);
-      _context.MixinArrayInitializerField = CustomFieldInfoObjectMother.Create (type: typeof (MixinArrayInitializer), attributes: FieldAttributes.Static);
+      _context.ClassContextField = ExpressionTreeObjectMother.GetSomeWritableExpression (typeof (ClassContext));
+      _context.MixinArrayInitializerField = ExpressionTreeObjectMother.GetSomeWritableExpression (typeof (MixinArrayInitializer));
       var classContext = ClassContextObjectMother.Create();
       var concreteMixinType = ReflectionObjectMother.GetSomeType();
       var fakeClassContextExpression = ExpressionTreeObjectMother.GetSomeExpression (typeof (ClassContext));
@@ -126,9 +119,9 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
 
       var expectedTypeInitializations = Expression.Block (
           typeof (void),
-          Expression.Assign (Expression.Field (null, _context.ClassContextField), fakeClassContextExpression),
+          Expression.Assign (_context.ClassContextField, fakeClassContextExpression),
           Expression.Assign (
-              Expression.Field (null, _context.MixinArrayInitializerField),
+              _context.MixinArrayInitializerField,
               Expression.New (
                   typeof (MixinArrayInitializer).GetConstructors().Single(),
                   Expression.Constant (_target),
@@ -139,7 +132,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
     [Test]
     public void AddInitializations ()
     {
-      _context.ExtensionsField = MutableFieldInfoObjectMother.Create();
+      _context.ExtensionsField = ExpressionTreeObjectMother.GetSomeExpression();
       var fakeInitialization = ExpressionTreeObjectMother.GetSomeExpression();
       _expressionBuilderMock.Expect (mock => mock.CreateInitializationExpression (_concreteTarget, _context.ExtensionsField)).Return (fakeInitialization);
 
@@ -152,15 +145,13 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
     [Test]
     public void ImplementIInitializableMixinTarget ()
     {
-      var parameters =
-          new[] { CustomParameterInfoObjectMother.Create (type: _concreteTarget), CustomParameterInfoObjectMother.Create (type: typeof (int)) };
+      var parameters = new[] { CustomParameterInfoObjectMother.Create (type: _concreteTarget), CustomParameterInfoObjectMother.Create (type: typeof (int)) };
       var nextCallProxyType = CustomTypeObjectMother.Create();
       var nextCallProxyTypeConstructor = CustomConstructorInfoObjectMother.Create (nextCallProxyType, parameters: parameters);
       ((TestableCustomType) nextCallProxyType).Constructors = new ConstructorInfo[] { nextCallProxyTypeConstructor };
-      _context.MixinArrayInitializerField = CustomFieldInfoObjectMother.Create (
-          _concreteTarget, type: typeof (MixinArrayInitializer), attributes: FieldAttributes.Static);
-      _context.FirstField = CustomFieldInfoObjectMother.Create (_concreteTarget, type: nextCallProxyType);
-      _context.ExtensionsField = CustomFieldInfoObjectMother.Create (_concreteTarget, type: typeof (object[]));
+      _context.MixinArrayInitializerField = ExpressionTreeObjectMother.GetSomeExpression (typeof (MixinArrayInitializer));
+      _context.ExtensionsField = ExpressionTreeObjectMother.GetSomeWritableExpression (typeof (object[]));
+      _context.FirstField = ExpressionTreeObjectMother.GetSomeWritableExpression (nextCallProxyType);
       _context.NextCallProxyConstructor = nextCallProxyTypeConstructor;
       _concreteTarget.AddInterface (typeof (IInitializableMixinTarget));
       var expectedMixinTypes = new[] { typeof (object), typeof (ClassImplementingIInitializableMixin) };
@@ -173,22 +164,22 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
 
       var @this = new ThisExpression (_concreteTarget);
       var createMixinInstances = Expression.Assign (
-          Expression.Field (@this, _context.ExtensionsField),
+          _context.ExtensionsField,
           Expression.Call (
-              Expression.Field (null, _context.MixinArrayInitializerField),
+              _context.MixinArrayInitializerField,
               "CreateMixinArray",
               Type.EmptyTypes,
               Expression.Property (Expression.Property (null, typeof (MixedObjectInstantiationScope), "Current"), "SuppliedMixinInstances")));
       var deserialization = Expression.Constant (false);
       var expectedInitializeBody = Expression.Block (
           Expression.Assign (
-              Expression.Field (@this, _context.FirstField),
+              _context.FirstField,
               Expression.New (_context.NextCallProxyConstructor, @this, Expression.Constant (0))),
           createMixinInstances,
           Expression.Block (
               Expression.Call (
                   Expression.Convert (
-                      Expression.ArrayAccess (Expression.Field (@this, _context.ExtensionsField), Expression.Constant (1)),
+                      Expression.ArrayAccess (_context.ExtensionsField, Expression.Constant (1)),
                       typeof (IInitializableMixin)),
                   "Initialize",
                   Type.EmptyTypes,
@@ -198,11 +189,11 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
 
       var setMixinInstances = Expression.Block (
           Expression.Call (
-              Expression.Field (null, _context.MixinArrayInitializerField),
+              _context.MixinArrayInitializerField,
               "CheckMixinArray",
               Type.EmptyTypes,
               Expression.Parameter (typeof (object[]), "mixinInstances")),
-          Expression.Assign (Expression.Field (@this, _context.ExtensionsField), Expression.Parameter (typeof (object[]), "mixinInstances")));
+          Expression.Assign (_context.ExtensionsField, Expression.Parameter (typeof (object[]), "mixinInstances")));
       var expectedInitializeAfterDeserializationBody = expectedInitializeBody.Replace (
           new Dictionary<Expression, Expression> { { createMixinInstances, setMixinInstances }, { deserialization, Expression.Constant (true) } });
 
@@ -217,9 +208,9 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
     [Test]
     public void ImplementIMixinTarget ()
     {
-      _context.ClassContextField = CustomFieldInfoObjectMother.Create (type: typeof (ClassContext), attributes: FieldAttributes.Static);
-      _context.ExtensionsField = CustomFieldInfoObjectMother.Create (_concreteTarget, type: typeof (object[]));
-      _context.FirstField = CustomFieldInfoObjectMother.Create (_concreteTarget, type: typeof (object));
+      _context.ClassContextField = ExpressionTreeObjectMother.GetSomeExpression (typeof (ClassContext));
+      _context.ExtensionsField = ExpressionTreeObjectMother.GetSomeExpression (typeof (object[]));
+      _context.FirstField = ExpressionTreeObjectMother.GetSomeExpression (typeof (object));
       _concreteTarget.AddInterface (typeof (IMixinTarget));
       var fakeInitialization = ExpressionTreeObjectMother.GetSomeExpression();
       _expressionBuilderMock.Expect (mock => mock.CreateInitializationExpression (_concreteTarget, _context.ExtensionsField)).Return (fakeInitialization);
@@ -244,8 +235,16 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
           firstNextCallProperty, "Remotion.Mixins.IMixinTarget.FirstNextCallProxy", _context.FirstField, fakeInitialization);
     }
 
-    private void CheckField (MutableFieldInfo field, string expectedName, Type expectedType, FieldAttributes expectedAttributes)
+    private void CheckField (Expression fieldExpression, string expectedName, Type expectedType, FieldAttributes expectedAttributes)
     {
+      var memberExpression = (MemberExpression) fieldExpression;
+      var field = (FieldInfo) memberExpression.Member;
+
+      if (field.IsStatic)
+        Assert.That (memberExpression.Expression, Is.Null);
+      else
+        Assert.That (memberExpression.Expression, Is.TypeOf<ThisExpression>().And.Property ("Type").SameAs (_concreteTarget));
+
       Assert.That (field.DeclaringType, Is.SameAs (_concreteTarget));
       Assert.That (field.Name, Is.EqualTo (expectedName));
       Assert.That (field.FieldType, Is.SameAs (expectedType));
@@ -262,7 +261,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
     }
 
     private void CheckExplicitPropertyImplementation (
-        MutablePropertyInfo property, string expectedName, FieldInfo expectedBackingField, Expression expectedInitialization)
+        MutablePropertyInfo property, string expectedName, Expression expectedBackingField, Expression expectedInitialization)
     {
       Assert.That (property.Name, Is.EqualTo (expectedName));
       Assert.That (property.Attributes, Is.EqualTo (PropertyAttributes.None));
@@ -270,8 +269,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
       Assert.That (property.MutableGetMethod, Is.Not.Null);
 
       var expectedGetMethodName = expectedName.Insert (expectedName.LastIndexOf ('.') + 1, "get_");
-      var instanceExpression = expectedBackingField.IsStatic ? null : new ThisExpression (_concreteTarget);
-      var expectedGetMethodBody = Expression.Block (expectedInitialization, Expression.Field (instanceExpression, expectedBackingField));
+      var expectedGetMethodBody = Expression.Block (expectedInitialization, expectedBackingField);
       CheckExplicitMethodImplementation (property.MutableGetMethod, expectedGetMethodName, expectedGetMethodBody);
     }
 

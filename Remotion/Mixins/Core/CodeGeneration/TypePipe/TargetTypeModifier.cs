@@ -135,14 +135,14 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
           s_initializeTargetMethod,
           ctx => Expression.Block (
               ImplementSettingFirstNextCallProxy (ctx.This, context.FirstField, context.NextCallProxyConstructor),
-              ImplementCreatingMixinInstances (ctx.This, context.MixinArrayInitializerField, context.ExtensionsField),
+              ImplementCreatingMixinInstances (context.MixinArrayInitializerField, context.ExtensionsField),
               ImplementInitializingMixins (ctx.This, mixinTypes, context.ExtensionsField, context.NextCallProxyConstructor, deserialization: s_false)));
 
       ct.AddExplicitOverride (
           s_initializeTargetAfterDeserializationMethod,
           ctx => Expression.Block (
               ImplementSettingFirstNextCallProxy (ctx.This, context.FirstField, context.NextCallProxyConstructor),
-              ImplementSettingMixinInstances (ctx.This, ctx.Parameters[0], context.MixinArrayInitializerField, context.ExtensionsField),
+              ImplementSettingMixinInstances (ctx.Parameters[0], context.MixinArrayInitializerField, context.ExtensionsField),
               ImplementInitializingMixins (ctx.This, mixinTypes, context.ExtensionsField, context.NextCallProxyConstructor, deserialization: s_true)));
     }
 
@@ -183,7 +183,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     public virtual MutableMethodInfo ImplementIntroducedMethod (
         MutableType concreteTarget,
-        FieldInfo extensionsField,
+        Expression extensionsField,
         Expression implementer,
         MethodInfo interfaceMethod,
         MethodDefinition implementingMethod,
@@ -205,7 +205,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     }
 
     public virtual void ImplementIntroducedProperty (
-        MutableType concreteTarget, FieldInfo extensionsField, Expression implementer, PropertyIntroductionDefinition introducedProperty)
+        MutableType concreteTarget, Expression extensionsField, Expression implementer, PropertyIntroductionDefinition introducedProperty)
     {
       var interfaceProperty = introducedProperty.InterfaceMember;
       var implementingProperty = introducedProperty.ImplementingMember;
@@ -228,7 +228,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     }
 
     public virtual void ImplementIntroducedEvent (
-        MutableType concreteTarget, FieldInfo extensionsField, Expression implementer, EventIntroductionDefinition introducedEvent)
+        MutableType concreteTarget, Expression extensionsField, Expression implementer, EventIntroductionDefinition introducedEvent)
     {
       var interfaceEvent = introducedEvent.InterfaceMember;
       var implementingEvent = introducedEvent.ImplementingMember;
@@ -271,66 +271,63 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       throw new NotImplementedException();
     }
 
-    private MutableFieldInfo AddDebuggerInvisibleField (MutableType targetType, string name, Type type, FieldAttributes attributes)
+    private Expression AddDebuggerInvisibleField (MutableType concreteTarget, string name, Type type, FieldAttributes attributes)
     {
-      var field = targetType.AddField (name, attributes, type);
+      var field = concreteTarget.AddField (name, attributes, type);
       _attributeGenerator.AddDebuggerBrowsableAttribute (field, DebuggerBrowsableState.Never);
 
-      return field;
+      var instance = field.IsStatic ? null : new ThisExpression (concreteTarget);
+      return Expression.Field (instance, field);
     }
 
-    private BinaryExpression InitializeClassContextField (FieldInfo classContextField, ClassContext classContext)
+    private BinaryExpression InitializeClassContextField (Expression classContextField, ClassContext classContext)
     {
       // __classContext = new ClassContext (...);
 
-      return Expression.Assign (Expression.Field (null, classContextField), _expressionBuilder.CreateNewClassContextExpression (classContext));
+      return Expression.Assign (classContextField, _expressionBuilder.CreateNewClassContextExpression (classContext));
     }
 
     private static BinaryExpression InitializeMixinArrayInitializerField (
-        FieldInfo mixinArrayInitializerField, Type targetType, IEnumerable<Type> concreteMixinTypes)
+        Expression mixinArrayInitializerField, Type targetType, IEnumerable<Type> concreteMixinTypes)
     {
       // __mixinArrayInitializer = new MixinArrayInitializer (targetType, concreteMixinTypes);
 
       return Expression.Assign (
-          Expression.Field (null, mixinArrayInitializerField),
-          Expression.New (
-              s_mixinArrayInitializerCtor,
-              Expression.Constant (targetType),
-              Expression.Constant (concreteMixinTypes.ToArray())));
+          mixinArrayInitializerField,
+          Expression.New (s_mixinArrayInitializerCtor, Expression.Constant (targetType), Expression.Constant (concreteMixinTypes.ToArray())));
     }
 
-    private Expression ImplementSettingFirstNextCallProxy (ThisExpression @this, FieldInfo firstField, ConstructorInfo nextCallProxyConstructor)
+    private Expression ImplementSettingFirstNextCallProxy (ThisExpression @this, Expression firstField, ConstructorInfo nextCallProxyConstructor)
     {
       // __first = <NewNextCallProxy (0)>;
 
-      return Expression.Assign (Expression.Field (@this, firstField), NewNextCallProxy (nextCallProxyConstructor, @this, depth: 0));
+      return Expression.Assign (firstField, NewNextCallProxy (nextCallProxyConstructor, @this, depth: 0));
     }
 
-    private Expression ImplementCreatingMixinInstances (ThisExpression @this, FieldInfo mixinArrayInitializerField, FieldInfo extensionsField)
+    private Expression ImplementCreatingMixinInstances (Expression mixinArrayInitializerField, Expression extensionsField)
     {
       // __extensions = __mixinArrayInitializer.CreateMixinArray (MixedObjectInstantiationScope.Current.SuppliedMixinInstances);
 
       return Expression.Assign (
-          Expression.Field (@this, extensionsField),
+          extensionsField,
           Expression.Call (
-              Expression.Field (null, mixinArrayInitializerField),
+              mixinArrayInitializerField,
               s_createMixinArrayMethod,
               Expression.Property (Expression.Property (null, s_currentMixedObjectInstantiationScopeProperty), s_suppliedMixinInstancesProperty)));
     }
 
-    private Expression ImplementSettingMixinInstances (
-        ThisExpression @this, Expression mixinInstancs, FieldInfo mixinArrayInitializerField, FieldInfo extensionsField)
+    private Expression ImplementSettingMixinInstances (Expression mixinInstancs, Expression mixinArrayInitializerField, Expression extensionsField)
     {
       // __mixinArrayInitializer.CheckMixinArray (<arguments[0]>);
       // __extensions = <arguments[0]>;
 
       return Expression.Block (
-          Expression.Call (Expression.Field (null, mixinArrayInitializerField), s_checkMixinArrayMethod, mixinInstancs),
-          Expression.Assign (Expression.Field (@this, extensionsField), mixinInstancs));
+          Expression.Call (mixinArrayInitializerField, s_checkMixinArrayMethod, mixinInstancs),
+          Expression.Assign (extensionsField, mixinInstancs));
     }
 
     private Expression ImplementInitializingMixins (
-        ThisExpression @this, List<Type> mixinTypes, FieldInfo extensionsField, ConstructorInfo nextCallProxyConstructor, Expression deserialization)
+        ThisExpression @this, List<Type> mixinTypes, Expression extensionsField, ConstructorInfo nextCallProxyConstructor, Expression deserialization)
     {
       var mixinInitExpressions = new List<Expression>();
 
@@ -342,7 +339,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
           var initExpression = Expression.Call (
               Expression.Convert (
-                  Expression.ArrayAccess (Expression.Field (@this, extensionsField), Expression.Constant (i)),
+                  Expression.ArrayAccess (extensionsField, Expression.Constant (i)),
                   typeof (IInitializableMixin)),
               s_initializeMixinMethod,
               @this,
@@ -365,31 +362,25 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     private void ImplementReadOnlyProperty (
         MutableType concreteTarget,
-        FieldInfo backingField,
+        Expression backingField,
         Expression initialization,
         PropertyInfo interfaceProperty,
         string debuggerDisplayNameString,
         string debuggerDisplayString)
     {
       var name = MemberImplementationUtility.GetNameForExplicitImplementation (interfaceProperty);
-      var getMethod = concreteTarget.AddExplicitOverride (
-          interfaceProperty.GetGetMethod(),
-          ctx => Expression.Block (initialization, Expression.Field (backingField.IsStatic ? null : ctx.This, backingField)));
-
+      var getMethod = concreteTarget.AddExplicitOverride (interfaceProperty.GetGetMethod(), ctx => Expression.Block (initialization, backingField));
       var property = concreteTarget.AddProperty (name, PropertyAttributes.None, getMethod, setMethod: null);
-
       _attributeGenerator.AddDebuggerDisplayAttribute (property, debuggerDisplayString, debuggerDisplayNameString);
     }
 
     private Expression GetIntroducedInterfaceImplementer (
-        MutableType concreteTarget, FieldInfo extensionsField, InterfaceIntroductionDefinition introduction)
+        MutableType concreteTarget, Expression extensionsField, InterfaceIntroductionDefinition introduction)
     {
       // ((InterfaceType) __extensions[implementerIndex])
 
       return Expression.Convert (
-          Expression.ArrayAccess (
-              Expression.Field (new ThisExpression (concreteTarget), extensionsField),
-              Expression.Constant (introduction.Implementer.MixinIndex)),
+          Expression.ArrayAccess (extensionsField, Expression.Constant (introduction.Implementer.MixinIndex)),
           introduction.InterfaceType);
     }
 

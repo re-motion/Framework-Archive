@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Reflection;
+using Microsoft.Scripting.Ast;
 using Remotion.TypePipe.MutableReflection;
 using Remotion.Utilities;
 
@@ -47,10 +48,10 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       get { return _concreteTarget; }
     }
 
-    public FieldInfo ClassContextField { get; set; }
-    public FieldInfo MixinArrayInitializerField { get; set; }
-    public FieldInfo ExtensionsField { get; set; }
-    public FieldInfo FirstField { get; set; }
+    public Expression ClassContextField { get; set; }
+    public Expression MixinArrayInitializerField { get; set; }
+    public Expression ExtensionsField { get; set; }
+    public Expression FirstField { get; set; }
 
     public ConstructorInfo NextCallProxyConstructor { get; set; }
   }

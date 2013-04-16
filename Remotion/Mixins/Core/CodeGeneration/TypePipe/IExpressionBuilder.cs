@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 
-using System.Reflection;
 using Microsoft.Scripting.Ast;
 using Remotion.Mixins.Context;
 using Remotion.TypePipe.MutableReflection;
@@ -27,6 +26,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
   public interface IExpressionBuilder
   {
     Expression CreateNewClassContextExpression (ClassContext classContext);
-    Expression CreateInitializationExpression (MutableType concreteTarget, FieldInfo extensionsField);
+
+    Expression CreateInitializationExpression (MutableType concreteTarget, Expression extensionsField);
   }
 }

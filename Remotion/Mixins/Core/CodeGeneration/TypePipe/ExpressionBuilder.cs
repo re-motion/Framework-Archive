@@ -42,7 +42,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       return serializer.CreateNewExpression();
     }
 
-    public Expression CreateInitializationExpression (MutableType concreteTarget, FieldInfo extensionsField)
+    public Expression CreateInitializationExpression (MutableType concreteTarget, Expression extensionsField)
     {
       ArgumentUtility.CheckNotNull ("concreteTarget", concreteTarget);
       ArgumentUtility.CheckNotNull ("extensionsField", extensionsField);
@@ -50,10 +50,9 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       // if (__extensions == null)
       //   ((IInitializableMixinTarget) this).Initialize();
 
-      var @this = new ThisExpression (concreteTarget);
       return Expression.IfThen (
-          Expression.Equal (Expression.Field (@this, extensionsField), Expression.Constant (null)),
-          Expression.Call (@this, s_initializeMethod));
+          Expression.Equal (extensionsField, Expression.Constant (null)),
+          Expression.Call (new ThisExpression (concreteTarget), s_initializeMethod));
     }
   }
 }
