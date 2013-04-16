@@ -131,11 +131,13 @@
     <Compile Include="CodeGeneration\Serialization\SerializationInfoConcreteMixinTypeIdentifierSerializer.cs" />
     <Compile Include="CodeGeneration\TypeFactoryImplementation.cs" />
     <Compile Include="CodeGeneration\TypeImportException.cs" />
+    <Compile Include="CodeGeneration\TypePipe\AttributeGenerator.cs" />
     <Compile Include="CodeGeneration\TypePipe\ClassContextSerializerBase.cs" />
     <Compile Include="CodeGeneration\TypePipe\ExpressionBuilder.cs" />
     <Compile Include="CodeGeneration\TypePipe\ExpressionClassContextSerializer.cs" />
     <Compile Include="CodeGeneration\TypePipe\ExpressionMixinContextOriginSerializer.cs" />
     <Compile Include="CodeGeneration\TypePipe\ExpressionMixinContextSerializer.cs" />
+    <Compile Include="CodeGeneration\TypePipe\IAttributeGenerator.cs" />
     <Compile Include="CodeGeneration\TypePipe\IExpressionBuilder.cs" />
     <Compile Include="CodeGeneration\TypePipe\IMixinParticipantHelper.cs" />
     <Compile Include="CodeGeneration\TypePipe\IConfigurationProvider.cs" />

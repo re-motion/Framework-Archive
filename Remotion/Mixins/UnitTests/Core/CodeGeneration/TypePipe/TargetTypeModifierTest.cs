@@ -43,6 +43,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
   public class TargetTypeModifierTest
   {
     private IExpressionBuilder _expressionBuilderMock;
+    private IAttributeGenerator _attributeGeneratorMock;
 
     private TargetTypeModifier _modifier;
 
@@ -54,8 +55,9 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
     public void SetUp ()
     {
       _expressionBuilderMock = MockRepository.GenerateStrictMock<IExpressionBuilder>();
+      _attributeGeneratorMock = MockRepository.GenerateStrictMock<IAttributeGenerator>();
 
-      _modifier = new TargetTypeModifier (_expressionBuilderMock);
+      _modifier = new TargetTypeModifier (_expressionBuilderMock, _attributeGeneratorMock);
 
       _target = ReflectionObjectMother.GetSomeSubclassableType();
       _concreteTarget = new MutableTypeFactory().CreateProxy (_target);
@@ -85,9 +87,13 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
     public void AddFields ()
     {
       var nextCallProxyType = ReflectionObjectMother.GetSomeType();
+      _attributeGeneratorMock
+          .Expect (mock => mock.AddDebuggerBrowsableAttribute (Arg<IMutableMember>.Is.Anything, Arg.Is (DebuggerBrowsableState.Never)))
+          .Repeat.Times (4);
 
       _modifier.AddFields (_context, nextCallProxyType);
 
+      _attributeGeneratorMock.VerifyAllExpectations();
       var expctedFields = new[] { _context.ClassContextField, _context.MixinArrayInitializerField, _context.ExtensionsField, _context.FirstField };
       Assert.That (_concreteTarget.AddedFields, Is.EqualTo (expctedFields));
       var classContextField = _concreteTarget.AddedFields.Single (f => f == _context.ClassContextField);
@@ -217,36 +223,25 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
       _concreteTarget.AddInterface (typeof (IMixinTarget));
       var fakeInitialization = ExpressionTreeObjectMother.GetSomeExpression();
       _expressionBuilderMock.Expect (mock => mock.CreateInitializationExpression (_concreteTarget, _context.ExtensionsField)).Return (fakeInitialization);
+      ExpectAddDebuggerDisplayAttribute (_attributeGeneratorMock, "Class context for " + _target.Name, "ClassContext");
+      ExpectAddDebuggerDisplayAttribute (_attributeGeneratorMock, "Count = {__extensions.Length}", "Mixins");
+      ExpectAddDebuggerDisplayAttribute (_attributeGeneratorMock, "Generated proxy", "FirstNextCallProxy");
 
       _modifier.ImplementIMixinTarget (_context);
 
       _expressionBuilderMock.VerifyAllExpectations();
+      _attributeGeneratorMock.VerifyAllExpectations();
       Assert.That (_concreteTarget.AddedProperties, Has.Count.EqualTo (3));
       var classContextProperty = _concreteTarget.AddedProperties.Single (p => p.Name.EndsWith ("ClassContext"));
       var mixinProperty = _concreteTarget.AddedProperties.Single (p => p.Name.EndsWith ("Mixins"));
       var firstNextCallProperty = _concreteTarget.AddedProperties.Single (p => p.Name.EndsWith ("FirstNextCallProxy"));
 
       CheckExplicitPropertyImplementation (
-          classContextProperty,
-          "Remotion.Mixins.IMixinTarget.ClassContext",
-          _context.ClassContextField,
-          Expression.Empty(),
-          "ClassContext",
-          "Class context for " + _target.Name);
+          classContextProperty, "Remotion.Mixins.IMixinTarget.ClassContext", _context.ClassContextField, Expression.Empty());
       CheckExplicitPropertyImplementation (
-          mixinProperty,
-          "Remotion.Mixins.IMixinTarget.Mixins",
-          _context.ExtensionsField,
-          fakeInitialization,
-          "Mixins",
-          "Count = {__extensions.Length}");
+          mixinProperty, "Remotion.Mixins.IMixinTarget.Mixins", _context.ExtensionsField, fakeInitialization);
       CheckExplicitPropertyImplementation (
-          firstNextCallProperty,
-          "Remotion.Mixins.IMixinTarget.FirstNextCallProxy",
-          _context.FirstField,
-          fakeInitialization,
-          "FirstNextCallProxy",
-          "Generated proxy");
+          firstNextCallProperty, "Remotion.Mixins.IMixinTarget.FirstNextCallProxy", _context.FirstField, fakeInitialization);
     }
 
     private void CheckField (MutableFieldInfo field, string expectedName, Type expectedType, FieldAttributes expectedAttributes)
@@ -255,11 +250,6 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
       Assert.That (field.Name, Is.EqualTo (expectedName));
       Assert.That (field.FieldType, Is.SameAs (expectedType));
       Assert.That (field.Attributes, Is.EqualTo (expectedAttributes));
-
-      var debuggerBrowsableAttribute = field.AddedCustomAttributes.Single();
-      Assert.That (debuggerBrowsableAttribute.Type, Is.SameAs (typeof (DebuggerBrowsableAttribute)));
-      Assert.That (debuggerBrowsableAttribute.ConstructorArguments, Is.EqualTo (new[] { DebuggerBrowsableState.Never }));
-      Assert.That (debuggerBrowsableAttribute.NamedArguments, Is.Empty);
     }
 
     private void CheckExplicitMethodImplementation (MutableMethodInfo explicitOverride, string expectedName, Expression expectedBody)
@@ -272,12 +262,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
     }
 
     private void CheckExplicitPropertyImplementation (
-        MutablePropertyInfo property,
-        string expectedName,
-        FieldInfo expectedBackingField,
-        Expression expectedInitialization,
-        string expectedDebuggerDisplayName,
-        string expectedDebuggerDisplayString)
+        MutablePropertyInfo property, string expectedName, FieldInfo expectedBackingField, Expression expectedInitialization)
     {
       Assert.That (property.Name, Is.EqualTo (expectedName));
       Assert.That (property.Attributes, Is.EqualTo (PropertyAttributes.None));
@@ -288,12 +273,12 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
       var instanceExpression = expectedBackingField.IsStatic ? null : new ThisExpression (_concreteTarget);
       var expectedGetMethodBody = Expression.Block (expectedInitialization, Expression.Field (instanceExpression, expectedBackingField));
       CheckExplicitMethodImplementation (property.MutableGetMethod, expectedGetMethodName, expectedGetMethodBody);
+    }
 
-      var debuggerBrowsableAttribute = property.AddedCustomAttributes.Single();
-      Assert.That (debuggerBrowsableAttribute.Type, Is.SameAs (typeof (DebuggerDisplayAttribute)));
-      Assert.That (debuggerBrowsableAttribute.ConstructorArguments, Is.EqualTo (new[] { expectedDebuggerDisplayString }));
-      var namedArgument = debuggerBrowsableAttribute.NamedArguments.Single();
-      Assert.That (namedArgument.Value, Is.EqualTo (expectedDebuggerDisplayName));
+    private void ExpectAddDebuggerDisplayAttribute (IAttributeGenerator attributeGeneratorMock, string debuggerDisplayString, string debuggerDisplayName)
+    {
+      attributeGeneratorMock.Expect (
+          mock => mock.AddDebuggerDisplayAttribute (Arg<IMutableMember>.Is.Anything, Arg.Is (debuggerDisplayString), Arg.Is (debuggerDisplayName)));
     }
 
     private class ClassImplementingIInitializableMixin : IInitializableMixin

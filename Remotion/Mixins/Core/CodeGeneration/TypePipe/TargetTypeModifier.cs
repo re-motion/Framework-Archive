@@ -34,14 +34,6 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
   // TODO 5370: Docs.
   public class TargetTypeModifier : ITargetTypeModifier
   {
-    private static readonly ConstructorInfo s_debuggerBrowsableAttributeConstructor =
-        MemberInfoFromExpressionUtility.GetConstructor (() => new DebuggerBrowsableAttribute (DebuggerBrowsableState.Never));
-
-    private static readonly ConstructorInfo s_debuggerDisplayAttributeConstructor =
-        MemberInfoFromExpressionUtility.GetConstructor (() => new DebuggerDisplayAttribute ("display message"));
-    private static readonly PropertyInfo s_debuggerDisplayAttributeNameProperty =
-        MemberInfoFromExpressionUtility.GetProperty ((DebuggerDisplayAttribute o) => o.Name);
-
     private static readonly ConstructorInfo s_mixinArrayInitializerCtor =
         MemberInfoFromExpressionUtility.GetConstructor (() => new MixinArrayInitializer (null, Type.EmptyTypes));
     private static readonly MethodInfo s_createMixinArrayMethod =
@@ -71,12 +63,15 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
 
     private readonly IExpressionBuilder _expressionBuilder;
+    private readonly IAttributeGenerator _attributeGenerator;
 
-    public TargetTypeModifier (IExpressionBuilder expressionBuilder)
+    public TargetTypeModifier (IExpressionBuilder expressionBuilder, IAttributeGenerator attributeGenerator)
     {
       ArgumentUtility.CheckNotNull ("expressionBuilder", expressionBuilder);
+      ArgumentUtility.CheckNotNull ("attributeGenerator", attributeGenerator);
 
       _expressionBuilder = expressionBuilder;
+      _attributeGenerator = attributeGenerator;
     }
 
     public TargetTypeModifierContext CreateContext (Type target, MutableType concreteTarget)
@@ -171,20 +166,63 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       ArgumentUtility.CheckNotNull ("context", context);
 
       var ct = context.ConcreteTarget;
+      var extensionsField = context.ExtensionsField;
+
       foreach (var introduction in targetClassDefinition.ReceivedInterfaces)
       {
-        var implementer = GetIntroducedInterfaceImplementer (ct, context.ExtensionsField, introduction);
+        var implementer = GetIntroducedInterfaceImplementer (ct, extensionsField, introduction);
 
         foreach (var method in introduction.IntroducedMethods)
-          ImplementIntroducedMethod (ct, implementer, method);
-
+          ImplementIntroducedMethod (ct, extensionsField, implementer, method.InterfaceMember, method.ImplementingMember, method.Visibility);
+        foreach (var property in introduction.IntroducedProperties)
+          ImplementIntroducedProperty (ct, extensionsField, implementer, property);
       }
-
     }
 
-    private void ImplementIntroducedMethod (MutableType concreteType, Expression implementer, MethodIntroductionDefinition method)
+    public virtual MutableMethodInfo ImplementIntroducedMethod (
+        MutableType concreteTarget,
+        FieldInfo extensionsField,
+        Expression implementer,
+        MethodInfo interfaceMethod,
+        IAttributableDefinition implementingMethod,
+        MemberVisibility visibility)
     {
-      throw new NotImplementedException();
+      var implementation = Expression.Block (
+          _expressionBuilder.CreateInitializationExpression (concreteTarget, extensionsField),
+          Expression.Call (implementer, interfaceMethod));
+
+      var method = visibility == MemberVisibility.Public
+              ? concreteTarget.GetOrAddOverride (interfaceMethod)
+              : concreteTarget.AddExplicitOverride (interfaceMethod, ctx => Expression.Default (ctx.ReturnType));
+      method.SetBody (ctx => implementation);
+
+      _attributeGenerator.ReplicateAttributes (implementingMethod, method);
+
+      return method;
+    }
+
+    public virtual void ImplementIntroducedProperty (
+        MutableType concreteTarget, FieldInfo extensionsField, Expression implementer, PropertyIntroductionDefinition introducedProperty)
+    {
+      var interfaceProperty = introducedProperty.InterfaceMember;
+      var implementingProperty = introducedProperty.ImplementingMember;
+      var visibility = introducedProperty.Visibility;
+
+      var getMethod = introducedProperty.IntroducesGetMethod
+              ? ImplementIntroducedMethod (
+                  concreteTarget, extensionsField, implementer, interfaceProperty.GetGetMethod(), implementingProperty.GetMethod, visibility)
+              : null;
+      var setMethod = introducedProperty.IntroducesSetMethod
+              ? ImplementIntroducedMethod (
+                  concreteTarget, extensionsField, implementer, interfaceProperty.GetSetMethod(), implementingProperty.SetMethod, visibility)
+              : null;
+
+      var name = visibility == MemberVisibility.Public
+              ? interfaceProperty.Name
+              : MemberImplementationUtility.GetNameForExplicitImplementation (interfaceProperty);
+      var property = concreteTarget.AddProperty (name, PropertyAttributes.None, getMethod, setMethod);
+
+      _attributeGenerator.ReplicateAttributes (implementingProperty, property);
     }
 
     public void ImplementRequiredDuckMethods (TargetTypeModifierContext context)
@@ -215,8 +253,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     private MutableFieldInfo AddDebuggerInvisibleField (MutableType targetType, string name, Type type, FieldAttributes attributes)
     {
       var field = targetType.AddField (name, attributes, type);
-      var debuggerAttribute = new CustomAttributeDeclaration (s_debuggerBrowsableAttributeConstructor, new object[] { DebuggerBrowsableState.Never });
-      field.AddCustomAttribute (debuggerAttribute);
+      _attributeGenerator.AddDebuggerBrowsableAttribute (field, DebuggerBrowsableState.Never);
 
       return field;
     }
@@ -310,20 +347,17 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
         FieldInfo backingField,
         Expression initialization,
         PropertyInfo interfaceProperty,
-        string nameString,
+        string debuggerDisplayNameString,
         string debuggerDisplayString)
     {
       var name = MemberImplementationUtility.GetNameForExplicitImplementation (interfaceProperty);
       var getMethod = concreteTarget.AddExplicitOverride (
           interfaceProperty.GetGetMethod(),
           ctx => Expression.Block (initialization, Expression.Field (backingField.IsStatic ? null : ctx.This, backingField)));
+
       var property = concreteTarget.AddProperty (name, PropertyAttributes.None, getMethod, setMethod: null);
 
-      var debuggerDisplayAttribute = new CustomAttributeDeclaration (
-          s_debuggerDisplayAttributeConstructor,
-          new object[] { debuggerDisplayString },
-          new NamedArgumentDeclaration (s_debuggerDisplayAttributeNameProperty, nameString));
-      property.AddCustomAttribute (debuggerDisplayAttribute);
+      _attributeGenerator.AddDebuggerDisplayAttribute (property, debuggerDisplayString, debuggerDisplayNameString);
     }
 
     private Expression GetIntroducedInterfaceImplementer (
