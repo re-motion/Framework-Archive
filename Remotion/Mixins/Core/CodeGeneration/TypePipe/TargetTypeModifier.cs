@@ -21,6 +21,7 @@ using System.Reflection;
 using Microsoft.Scripting.Ast;
 using Remotion.Mixins.CodeGeneration.DynamicProxy;
 using Remotion.Mixins.Context;
+using Remotion.Mixins.Definitions;
 using Remotion.Mixins.Utilities;
 using Remotion.TypePipe.Expressions;
 using Remotion.TypePipe.MutableReflection;
@@ -124,7 +125,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     {
       ArgumentUtility.CheckNotNull ("context", context);
 
-      context.ConcreteTarget.AddInitialization (ctx => _expressionBuilder.CreateInitializationExpression (ctx.This, context.ExtensionsField));
+      context.ConcreteTarget.AddInitialization (ctx => _expressionBuilder.CreateInitializationExpression (ctx.DeclaringType, context.ExtensionsField));
     }
 
     public void ImplementIInitializableMixinTarget (TargetTypeModifierContext context, IEnumerable<Type> expectedMixinTypes)
@@ -155,19 +156,34 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       ArgumentUtility.CheckNotNull ("context", context);
 
       var ct = context.ConcreteTarget;
-      var initialization = _expressionBuilder.CreateInitializationExpression (new ThisExpression (ct), context.ExtensionsField);
       var noInitialization = Expression.Empty();
       var classContextDebuggerDisplay = "Class context for " + context.Target.Name;
+      // Initialize this instance in case we're being called before the ctor has finished running.
+      var initialization = _expressionBuilder.CreateInitializationExpression (ct, context.ExtensionsField);
 
       ImplementReadOnlyProperty (ct, context.ClassContextField, noInitialization, s_classContextProperty, "ClassContext", classContextDebuggerDisplay);
       ImplementReadOnlyProperty (ct, context.ExtensionsField, initialization, s_mixinProperty, "Mixins", "Count = {__extensions.Length}");
       ImplementReadOnlyProperty (ct, context.FirstField, initialization, s_firstNextCallProperty, "FirstNextCallProxy", "Generated proxy");
     }
 
-    public void ImplementIntroducedInterfaces (TargetTypeModifierContext context)
+    public void ImplementIntroducedInterfaces (TargetTypeModifierContext context, TargetClassDefinition targetClassDefinition)
     {
       ArgumentUtility.CheckNotNull ("context", context);
 
+      var ct = context.ConcreteTarget;
+      foreach (var introduction in targetClassDefinition.ReceivedInterfaces)
+      {
+        var implementer = GetIntroducedInterfaceImplementer (ct, context.ExtensionsField, introduction);
+
+        foreach (var method in introduction.IntroducedMethods)
+          ImplementIntroducedMethod (ct, implementer, method);
+
+      }
+
+    }
+
+    private void ImplementIntroducedMethod (MutableType concreteType, Expression implementer, MethodIntroductionDefinition method)
+    {
       throw new NotImplementedException();
     }
 
@@ -265,6 +281,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
         if (typeof (IInitializableMixin).IsAssignableFrom (mixinTypes[i]))
         {
           // ((IInitializableMixin) __extensions[i]).Initialize (mixinTargetInstance, <NewNextCallProxy (i + 1)>, deserialization);
+
           var initExpression = Expression.Call (
               Expression.Convert (
                   Expression.ArrayAccess (Expression.Field (@this, extensionsField), Expression.Constant (i)),
@@ -273,6 +290,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
               @this,
               NewNextCallProxy (nextCallProxyConstructor, @this, i + 1),
               deserialization);
+
           mixinInitExpressions.Add (initExpression);
         }
       }
@@ -282,6 +300,8 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     private Expression NewNextCallProxy (ConstructorInfo nextCallProxyConstructor, ThisExpression @this, int depth)
     {
+      // new NextCallProxy (this, depth)
+
       return Expression.New (nextCallProxyConstructor, @this, Expression.Constant (depth));
     }
 
@@ -304,6 +324,18 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
           new object[] { debuggerDisplayString },
           new NamedArgumentDeclaration (s_debuggerDisplayAttributeNameProperty, nameString));
       property.AddCustomAttribute (debuggerDisplayAttribute);
+    }
+
+    private Expression GetIntroducedInterfaceImplementer (
+        MutableType concreteTarget, FieldInfo extensionsField, InterfaceIntroductionDefinition introduction)
+    {
+      // ((InterfaceType) __extensions[implementerIndex])
+
+      return Expression.Convert (
+          Expression.ArrayAccess (
+              Expression.Field (new ThisExpression (concreteTarget), extensionsField),
+              Expression.Constant (introduction.Implementer.MixinIndex)),
+          introduction.InterfaceType);
     }
   }
 }

@@ -18,7 +18,7 @@
 using System.Reflection;
 using Microsoft.Scripting.Ast;
 using Remotion.Mixins.Context;
-using Remotion.TypePipe.Expressions;
+using Remotion.TypePipe.MutableReflection;
 
 namespace Remotion.Mixins.CodeGeneration.TypePipe
 {
@@ -27,6 +27,6 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
   public interface IExpressionBuilder
   {
     Expression CreateNewClassContextExpression (ClassContext classContext);
-    Expression CreateInitializationExpression (ThisExpression @this, FieldInfo extensionsField);
+    Expression CreateInitializationExpression (MutableType concreteTarget, FieldInfo extensionsField);
   }
 }

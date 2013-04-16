@@ -36,7 +36,6 @@ using Remotion.TypePipe.MutableReflection.Implementation;
 using System.Linq;
 using Rhino.Mocks;
 using Remotion.Development.UnitTesting.Enumerables;
-using Remotion.Development.UnitTesting;
 
 namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
 {
@@ -136,10 +135,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
     {
       _context.ExtensionsField = MutableFieldInfoObjectMother.Create();
       var fakeInitialization = ExpressionTreeObjectMother.GetSomeExpression();
-      _expressionBuilderMock
-          .Expect (mock => mock.CreateInitializationExpression (Arg<ThisExpression>.Is.Anything, Arg.Is (_context.ExtensionsField)))
-          .WhenCalled (mi => Assert.That (mi.Arguments[0].As<ThisExpression>().Type, Is.SameAs (_concreteTarget)))
-          .Return (fakeInitialization);
+      _expressionBuilderMock.Expect (mock => mock.CreateInitializationExpression (_concreteTarget, _context.ExtensionsField)).Return (fakeInitialization);
 
       _modifier.AddInitializations (_context);
 
@@ -150,7 +146,8 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
     [Test]
     public void ImplementIInitializableMixinTarget ()
     {
-      var parameters = new[] { CustomParameterInfoObjectMother.Create (type: _concreteTarget), CustomParameterInfoObjectMother.Create (type: typeof (int)) };
+      var parameters =
+          new[] { CustomParameterInfoObjectMother.Create (type: _concreteTarget), CustomParameterInfoObjectMother.Create (type: typeof (int)) };
       var nextCallProxyType = CustomTypeObjectMother.Create();
       var nextCallProxyTypeConstructor = CustomConstructorInfoObjectMother.Create (nextCallProxyType, parameters: parameters);
       ((TestableCustomType) nextCallProxyType).Constructors = new ConstructorInfo[] { nextCallProxyTypeConstructor };
@@ -216,13 +213,10 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
     {
       _context.ClassContextField = CustomFieldInfoObjectMother.Create (type: typeof (ClassContext), attributes: FieldAttributes.Static);
       _context.ExtensionsField = CustomFieldInfoObjectMother.Create (_concreteTarget, type: typeof (object[]));
-      _context.FirstField = CustomFieldInfoObjectMother.Create (_concreteTarget);
+      _context.FirstField = CustomFieldInfoObjectMother.Create (_concreteTarget, type: typeof (object));
       _concreteTarget.AddInterface (typeof (IMixinTarget));
       var fakeInitialization = ExpressionTreeObjectMother.GetSomeExpression();
-      _expressionBuilderMock
-          .Expect (mock => mock.CreateInitializationExpression (Arg<ThisExpression>.Is.Anything, Arg.Is (_context.ExtensionsField)))
-          .WhenCalled (mi => Assert.That (mi.Arguments[0].As<ThisExpression>().Type, Is.SameAs (_concreteTarget)))
-          .Return (fakeInitialization);
+      _expressionBuilderMock.Expect (mock => mock.CreateInitializationExpression (_concreteTarget, _context.ExtensionsField)).Return (fakeInitialization);
 
       _modifier.ImplementIMixinTarget (_context);
 

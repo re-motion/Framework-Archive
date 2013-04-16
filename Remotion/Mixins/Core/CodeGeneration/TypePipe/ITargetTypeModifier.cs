@@ -18,6 +18,7 @@
 using System;
 using System.Collections.Generic;
 using Remotion.Mixins.Context;
+using Remotion.Mixins.Definitions;
 using Remotion.TypePipe.MutableReflection;
 
 namespace Remotion.Mixins.CodeGeneration.TypePipe
@@ -33,7 +34,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     void AddInitializations (TargetTypeModifierContext context);
     void ImplementIInitializableMixinTarget (TargetTypeModifierContext context, IEnumerable<Type> expectedMixinTypes);
     void ImplementIMixinTarget (TargetTypeModifierContext context);
-    void ImplementIntroducedInterfaces (TargetTypeModifierContext context);
+    void ImplementIntroducedInterfaces (TargetTypeModifierContext context, TargetClassDefinition targetClassDefinition);
     void ImplementRequiredDuckMethods (TargetTypeModifierContext context);
     void AddMixedTypeAttribute (TargetTypeModifierContext context);
     void AddDebuggerAttributes (TargetTypeModifierContext context);

@@ -20,6 +20,7 @@ using Microsoft.Scripting.Ast;
 using Remotion.Mixins.CodeGeneration.DynamicProxy;
 using Remotion.Mixins.Context;
 using Remotion.TypePipe.Expressions;
+using Remotion.TypePipe.MutableReflection;
 using Remotion.Utilities;
 
 namespace Remotion.Mixins.CodeGeneration.TypePipe
@@ -41,14 +42,15 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       return serializer.CreateNewExpression();
     }
 
-    public Expression CreateInitializationExpression (ThisExpression @this, FieldInfo extensionsField)
+    public Expression CreateInitializationExpression (MutableType concreteTarget, FieldInfo extensionsField)
     {
-      ArgumentUtility.CheckNotNull ("this", @this);
+      ArgumentUtility.CheckNotNull ("concreteTarget", concreteTarget);
       ArgumentUtility.CheckNotNull ("extensionsField", extensionsField);
 
       // if (__extensions == null)
       //   ((IInitializableMixinTarget) this).Initialize();
 
+      var @this = new ThisExpression (concreteTarget);
       return Expression.IfThen (
           Expression.Equal (Expression.Field (@this, extensionsField), Expression.Constant (null)),
           Expression.Call (@this, s_initializeMethod));
