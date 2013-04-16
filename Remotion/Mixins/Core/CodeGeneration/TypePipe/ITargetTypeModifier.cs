@@ -25,11 +25,11 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
   // TODO 5370: Docs.
   public interface ITargetTypeModifier
   {
-    TargetTypeModifierContext CreateContext (ClassContext classContext, MutableType targetType);
+    TargetTypeModifierContext CreateContext (Type target, MutableType concreteTarget);
 
     void ImplementInterfaces (TargetTypeModifierContext context, IEnumerable<Type> interfacesToImplement);
     void AddFields (TargetTypeModifierContext context, Type nextCallProxyType);
-    void AddTypeInitializations (TargetTypeModifierContext context, IEnumerable<Type> concreteMixinTypes);
+    void AddTypeInitializations (TargetTypeModifierContext context, ClassContext classContext, IEnumerable<Type> concreteMixinTypes);
     void AddInitializations (TargetTypeModifierContext context);
     void ImplementIInitializableMixinTarget (TargetTypeModifierContext context, IEnumerable<Type> expectedMixinTypes);
     void ImplementIMixinTarget (TargetTypeModifierContext context);

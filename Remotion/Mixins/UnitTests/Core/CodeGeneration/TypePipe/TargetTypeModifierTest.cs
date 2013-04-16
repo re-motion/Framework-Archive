@@ -47,7 +47,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
 
     private TargetTypeModifier _modifier;
 
-    private ClassContext _classContext;
+    private Type _target;
     private MutableType _concreteTarget;
     private TargetTypeModifierContext _context;
 
@@ -58,17 +58,17 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
 
       _modifier = new TargetTypeModifier (_expressionBuilderMock);
 
-      _classContext = ClassContextObjectMother.Create();
-      _concreteTarget = new MutableTypeFactory().CreateProxy (_classContext.Type);
-      _context = new TargetTypeModifierContext (_classContext, _concreteTarget);
+      _target = ReflectionObjectMother.GetSomeSubclassableType();
+      _concreteTarget = new MutableTypeFactory().CreateProxy (_target);
+      _context = new TargetTypeModifierContext (_target, _concreteTarget);
     }
 
     [Test]
     public void CreateContext ()
     {
-      var result = _modifier.CreateContext (_classContext, _concreteTarget);
+      var result = _modifier.CreateContext (_target, _concreteTarget);
 
-      Assert.That (result.ClassContext, Is.SameAs (_classContext));
+      Assert.That (result.Target, Is.SameAs (_target));
       Assert.That (result.ConcreteTarget, Is.SameAs (_concreteTarget));
     }
 
@@ -108,15 +108,12 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
     {
       _context.ClassContextField = CustomFieldInfoObjectMother.Create (type: typeof (ClassContext), attributes: FieldAttributes.Static);
       _context.MixinArrayInitializerField = CustomFieldInfoObjectMother.Create (type: typeof (MixinArrayInitializer), attributes: FieldAttributes.Static);
-      var targetType = ReflectionObjectMother.GetSomeType();
-      var mixinType = ReflectionObjectMother.GetSomeOtherType();
-      var composedInterface = ReflectionObjectMother.GetSomeInterfaceType();
-      SetClassContext (_context, ClassContextObjectMother.Create (targetType, new[] { mixinType }, new[] { composedInterface }));
+      var classContext = ClassContextObjectMother.Create();
       var concreteMixinType = ReflectionObjectMother.GetSomeType();
       var fakeClassContextExpression = ExpressionTreeObjectMother.GetSomeExpression (typeof (ClassContext));
-      _expressionBuilderMock.Expect (mock => mock.CreateNewClassContextExpression (_context.ClassContext)).Return (fakeClassContextExpression);
+      _expressionBuilderMock.Expect (mock => mock.CreateNewClassContextExpression (classContext)).Return (fakeClassContextExpression);
 
-      _modifier.AddTypeInitializations (_context, new[] { concreteMixinType }.AsOneTime());
+      _modifier.AddTypeInitializations (_context, classContext, new[] { concreteMixinType }.AsOneTime());
 
       _expressionBuilderMock.VerifyAllExpectations();
       Assert.That (_concreteTarget.TypeInitializer, Is.Not.Null);
@@ -129,7 +126,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
               Expression.Field (null, _context.MixinArrayInitializerField),
               Expression.New (
                   typeof (MixinArrayInitializer).GetConstructors().Single(),
-                  Expression.Constant (targetType),
+                  Expression.Constant (_target),
                   Expression.Constant (new[] { concreteMixinType }))));
       ExpressionTreeComparer.CheckAreEqualTrees (expectedTypeInitializations, typeInitializations);
     }
@@ -241,7 +238,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
           _context.ClassContextField,
           Expression.Empty(),
           "ClassContext",
-          "Class context for " + _classContext.Type.Name);
+          "Class context for " + _target.Name);
       CheckExplicitPropertyImplementation (
           mixinProperty,
           "Remotion.Mixins.IMixinTarget.Mixins",
@@ -256,11 +253,6 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
           fakeInitialization,
           "FirstNextCallProxy",
           "Generated proxy");
-    }
-
-    private void SetClassContext (TargetTypeModifierContext context, ClassContext classContext)
-    {
-      PrivateInvoke.SetNonPublicField (context, "_classContext", classContext);
     }
 
     private void CheckField (MutableFieldInfo field, string expectedName, Type expectedType, FieldAttributes expectedAttributes)

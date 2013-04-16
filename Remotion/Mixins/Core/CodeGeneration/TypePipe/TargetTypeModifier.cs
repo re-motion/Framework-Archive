@@ -78,11 +78,12 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       _expressionBuilder = expressionBuilder;
     }
 
-    public TargetTypeModifierContext CreateContext (ClassContext classContext, MutableType targetType)
+    public TargetTypeModifierContext CreateContext (Type target, MutableType concreteTarget)
     {
-      ArgumentUtility.CheckNotNull ("targetType", targetType);
+      ArgumentUtility.CheckNotNull ("target", target);
+      ArgumentUtility.CheckNotNull ("concreteTarget", concreteTarget);
 
-      return new TargetTypeModifierContext (classContext, targetType);
+      return new TargetTypeModifierContext (target, concreteTarget);
     }
 
     public void ImplementInterfaces (TargetTypeModifierContext context, IEnumerable<Type> interfacesToImplement)
@@ -107,7 +108,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       context.FirstField = AddDebuggerInvisibleField (ct, "__first", nextCallProxyType, FieldAttributes.Private);
     }
 
-    public void AddTypeInitializations (TargetTypeModifierContext context, IEnumerable<Type> concreteMixinTypes)
+    public void AddTypeInitializations (TargetTypeModifierContext context, ClassContext classContext, IEnumerable<Type> concreteMixinTypes)
     {
       ArgumentUtility.CheckNotNull ("context", context);
       ArgumentUtility.CheckNotNull ("concreteMixinTypes", concreteMixinTypes);
@@ -115,8 +116,8 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       context.ConcreteTarget.AddTypeInitialization (
           ctx => Expression.Block (
               typeof (void),
-              InitializeClassContextField (context.ClassContextField, context.ClassContext),
-              InitializeMixinArrayInitializerField (context.MixinArrayInitializerField, context.ClassContext.Type, concreteMixinTypes)));
+              InitializeClassContextField (context.ClassContextField, classContext),
+              InitializeMixinArrayInitializerField (context.MixinArrayInitializerField, context.Target, concreteMixinTypes)));
     }
 
     public void AddInitializations (TargetTypeModifierContext context)
@@ -156,7 +157,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       var ct = context.ConcreteTarget;
       var initialization = _expressionBuilder.CreateInitializationExpression (new ThisExpression (ct), context.ExtensionsField);
       var noInitialization = Expression.Empty();
-      var classContextDebuggerDisplay = "Class context for " + context.ClassContext.Type.Name;
+      var classContextDebuggerDisplay = "Class context for " + context.Target.Name;
 
       ImplementReadOnlyProperty (ct, context.ClassContextField, noInitialization, s_classContextProperty, "ClassContext", classContextDebuggerDisplay);
       ImplementReadOnlyProperty (ct, context.ExtensionsField, initialization, s_mixinProperty, "Mixins", "Count = {__extensions.Length}");
@@ -165,6 +166,8 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     public void ImplementIntroducedInterfaces (TargetTypeModifierContext context)
     {
+      ArgumentUtility.CheckNotNull ("context", context);
+
       throw new NotImplementedException();
     }
 
