@@ -19,15 +19,12 @@ using System;
 using System.Collections.Generic;
 using Remotion.Mixins.Context;
 using Remotion.Mixins.Definitions;
-using Remotion.TypePipe.MutableReflection;
 
 namespace Remotion.Mixins.CodeGeneration.TypePipe
 {
   // TODO 5370: Docs.
   public interface ITargetTypeModifier
   {
-    TargetTypeModifierContext CreateContext (Type target, MutableType concreteTarget);
-
     void ImplementInterfaces (TargetTypeModifierContext context, IEnumerable<Type> interfacesToImplement);
     void AddFields (TargetTypeModifierContext context, Type nextCallProxyType);
     void AddTypeInitializations (TargetTypeModifierContext context, ClassContext classContext, IEnumerable<Type> concreteMixinTypes);

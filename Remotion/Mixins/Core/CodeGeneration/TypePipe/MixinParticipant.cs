@@ -59,6 +59,8 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       // TODO: NextCallProxy?!?
       
 
+      // TODO: Add TargetClassDefiniton to context
+
       //var context = _targetTypeModifier.CreateContext (typeAssemblyContext.ProxyType);
       //_targetTypeModifier.ImplementInterfaces (context, interfacesToImplement);
       //_targetTypeModifier.AddFields (context, null); // TODO

@@ -15,12 +15,14 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Linq;
 using System.Reflection;
 using Microsoft.Scripting.Ast;
 using Remotion.Mixins.CodeGeneration.DynamicProxy;
 using Remotion.Mixins.Context;
 using Remotion.TypePipe.Expressions;
 using Remotion.TypePipe.MutableReflection;
+using Remotion.TypePipe.MutableReflection.BodyBuilding;
 using Remotion.Utilities;
 
 namespace Remotion.Mixins.CodeGeneration.TypePipe
@@ -32,7 +34,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     private static readonly MethodInfo s_initializeMethod =
         MemberInfoFromExpressionUtility.GetMethod ((IInitializableMixinTarget o) => o.Initialize());
 
-    public Expression CreateNewClassContextExpression (ClassContext classContext)
+    public Expression CreateNewClassContext (ClassContext classContext)
     {
       ArgumentUtility.CheckNotNull ("classContext", classContext);
 
@@ -42,7 +44,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       return serializer.CreateNewExpression();
     }
 
-    public Expression CreateInitializationExpression (MutableType concreteTarget, Expression extensionsField)
+    public Expression CreateInitialization (MutableType concreteTarget, Expression extensionsField)
     {
       ArgumentUtility.CheckNotNull ("concreteTarget", concreteTarget);
       ArgumentUtility.CheckNotNull ("extensionsField", extensionsField);
@@ -53,6 +55,22 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       return Expression.IfThen (
           Expression.Equal (extensionsField, Expression.Constant (null)),
           Expression.Call (new ThisExpression (concreteTarget), s_initializeMethod));
+    }
+
+    public Expression CreateInitializingDelegation (
+        MethodBodyModificationContext bodyContext, Expression extensionsField, Expression instance, MethodInfo methodToCall)
+    {
+      ArgumentUtility.CheckNotNull ("bodyContext", bodyContext);
+      ArgumentUtility.CheckNotNull ("extensionsField", extensionsField);
+      ArgumentUtility.CheckNotNull ("instance", instance);
+      ArgumentUtility.CheckNotNull ("methodToCall", methodToCall);
+
+      // <CreateInitialization>
+      // instance.MethodToCall(<parameters>);
+
+      return Expression.Block (
+          CreateInitialization (bodyContext.DeclaringType, extensionsField),
+          Expression.Call (instance, methodToCall, bodyContext.Parameters.Cast<Expression>()));
     }
   }
 }

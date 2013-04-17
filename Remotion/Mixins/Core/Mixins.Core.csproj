@@ -141,6 +141,7 @@
     <Compile Include="CodeGeneration\TypePipe\IExpressionBuilder.cs" />
     <Compile Include="CodeGeneration\TypePipe\IMixinParticipantHelper.cs" />
     <Compile Include="CodeGeneration\TypePipe\IConfigurationProvider.cs" />
+    <Compile Include="CodeGeneration\TypePipe\INextCallProxyGenerator.cs" />
     <Compile Include="CodeGeneration\TypePipe\ITargetTypeModifier.cs" />
     <Compile Include="CodeGeneration\TypePipe\MixinContextOriginSerializerBase.cs" />
     <Compile Include="CodeGeneration\TypePipe\MixinContextSerializerBase.cs" />

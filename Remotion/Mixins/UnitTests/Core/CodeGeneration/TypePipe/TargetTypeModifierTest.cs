@@ -18,22 +18,24 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
+using JetBrains.Annotations;
 using Microsoft.Scripting.Ast;
 using NUnit.Framework;
 using Remotion.Development.TypePipe.UnitTesting.Expressions;
 using Remotion.Development.TypePipe.UnitTesting.ObjectMothers.Expressions;
 using Remotion.Development.TypePipe.UnitTesting.ObjectMothers.MutableReflection;
 using Remotion.Development.TypePipe.UnitTesting.ObjectMothers.MutableReflection.Implementation;
+using Remotion.Development.UnitTesting;
 using Remotion.Development.UnitTesting.Reflection;
 using Remotion.Mixins.CodeGeneration;
 using Remotion.Mixins.CodeGeneration.DynamicProxy;
 using Remotion.Mixins.CodeGeneration.TypePipe;
 using Remotion.Mixins.Context;
 using Remotion.Mixins.Definitions;
-using Remotion.Mixins.UnitTests.Core.Definitions.TestDomain;
 using Remotion.Mixins.Utilities;
 using Remotion.TypePipe.Expressions;
 using Remotion.TypePipe.MutableReflection;
+using Remotion.TypePipe.MutableReflection.BodyBuilding;
 using Remotion.TypePipe.MutableReflection.Implementation;
 using System.Linq;
 using Rhino.Mocks;
@@ -52,6 +54,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
     private Type _target;
     private MutableType _concreteTarget;
     private TargetTypeModifierContext _context;
+    private INextCallProxyGenerator _nextCallProxyGenerator;
 
     [SetUp]
     public void SetUp ()
@@ -62,17 +65,11 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
       _modifier = new TargetTypeModifier (_expressionBuilderMock, _attributeGeneratorMock);
 
       _target = typeof (Target);
-      _concreteTarget = new MutableTypeFactory().CreateProxy (_target);
-      _context = new TargetTypeModifierContext (_target, _concreteTarget);
-    }
-
-    [Test]
-    public void CreateContext ()
-    {
-      var result = _modifier.CreateContext (_target, _concreteTarget);
-
-      Assert.That (result.Target, Is.SameAs (_target));
-      Assert.That (result.ConcreteTarget, Is.SameAs (_concreteTarget));
+      var classContext = ClassContextObjectMother.Create (_target);
+      var targetClassDefinition = TargetClassDefinitionFactory.CreateAndValidate (classContext);
+      _nextCallProxyGenerator = MockRepository.GenerateStrictMock<INextCallProxyGenerator>();
+      _concreteTarget = new MutableTypeFactory ().CreateProxy (_target);
+      _context = new TargetTypeModifierContext (targetClassDefinition, _nextCallProxyGenerator, _concreteTarget);
     }
 
     [Test]
@@ -112,7 +109,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
       var classContext = ClassContextObjectMother.Create();
       var concreteMixinType = ReflectionObjectMother.GetSomeType();
       var fakeClassContextExpression = ExpressionTreeObjectMother.GetSomeExpression (typeof (ClassContext));
-      _expressionBuilderMock.Expect (mock => mock.CreateNewClassContextExpression (classContext)).Return (fakeClassContextExpression);
+      _expressionBuilderMock.Expect (mock => mock.CreateNewClassContext (classContext)).Return (fakeClassContextExpression);
 
       _modifier.AddTypeInitializations (_context, classContext, new[] { concreteMixinType }.AsOneTime());
 
@@ -137,7 +134,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
     {
       _context.ExtensionsField = ExpressionTreeObjectMother.GetSomeExpression();
       var fakeInitialization = ExpressionTreeObjectMother.GetSomeExpression();
-      _expressionBuilderMock.Expect (mock => mock.CreateInitializationExpression (_concreteTarget, _context.ExtensionsField)).Return (fakeInitialization);
+      _expressionBuilderMock.Expect (mock => mock.CreateInitialization (_concreteTarget, _context.ExtensionsField)).Return (fakeInitialization);
 
       _modifier.AddInitializations (_context);
 
@@ -216,7 +213,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
       _context.FirstField = ExpressionTreeObjectMother.GetSomeExpression (typeof (object));
       _concreteTarget.AddInterface (typeof (IMixinTarget));
       var fakeInitialization = ExpressionTreeObjectMother.GetSomeExpression();
-      _expressionBuilderMock.Expect (mock => mock.CreateInitializationExpression (_concreteTarget, _context.ExtensionsField)).Return (fakeInitialization);
+      _expressionBuilderMock.Expect (mock => mock.CreateInitialization (_concreteTarget, _context.ExtensionsField)).Return (fakeInitialization);
       ExpectAddDebuggerDisplayAttribute (_attributeGeneratorMock, "Class context for " + _target.Name, "ClassContext");
       ExpectAddDebuggerDisplayAttribute (_attributeGeneratorMock, "Count = {__extensions.Length}", "Mixins");
       ExpectAddDebuggerDisplayAttribute (_attributeGeneratorMock, "Generated proxy", "FirstNextCallProxy");
@@ -278,14 +275,17 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
         MethodAttributes.Private | MethodAttributes.Virtual)]
     public void ImplementIntroducedMethod (MemberVisibility visibility, string expectedName, MethodAttributes expectedAttributes)
     {
-      var extensionsField = ExpressionTreeObjectMother.GetSomeExpression (typeof (object[]));
-      var implementer = ExpressionTreeObjectMother.GetSomeExpression (typeof (IIntroducedInterface));
+      var extensionsField = ExpressionTreeObjectMother.GetSomeExpression();
+      var implementer = ExpressionTreeObjectMother.GetSomeExpression();
       var methodIntroduction = GetReceivedInterfacesForTargetWith<IntroducingMixin> (visibility).IntroducedMethods.Single();
       var interfaceMethod = methodIntroduction.InterfaceMember;
       var implementingMethod = methodIntroduction.ImplementingMember;
       _concreteTarget.AddInterface (typeof (IIntroducedInterface));
-      var fakeInitialization = ExpressionTreeObjectMother.GetSomeExpression();
-      _expressionBuilderMock.Expect (mock => mock.CreateInitializationExpression (_concreteTarget, extensionsField)).Return (fakeInitialization);
+      var fakeDelegation = ExpressionTreeObjectMother.GetSomeExpression (typeof (void));
+      _expressionBuilderMock
+          .Expect (mock => mock.CreateInitializingDelegation (
+                  Arg<MethodBodyModificationContext>.Is.Anything, Arg.Is (extensionsField), Arg.Is (implementer), Arg.Is (interfaceMethod)))
+          .Return (fakeDelegation);
       _attributeGeneratorMock
           .Expect (mock => mock.AddIntroducedMemberAttribute (Arg<MutableMethodInfo>.Is.Anything, Arg.Is (interfaceMethod), Arg.Is (implementingMethod)));
       _attributeGeneratorMock.Expect (mock => mock.ReplicateAttributes (Arg.Is (implementingMethod), Arg<MutableMethodInfo>.Is.Anything));
@@ -298,8 +298,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
       Assert.That (_concreteTarget.AddedMethods, Is.EqualTo (new[] { result }));
       Assert.That (result.Name, Is.EqualTo (expectedName));
       Assert.That (result.Attributes.IsSet (expectedAttributes), Is.True);
-      var expectedBody = Expression.Block (fakeInitialization, Expression.Call (implementer, interfaceMethod));
-      ExpressionTreeComparer.CheckAreEqualTrees (expectedBody, result.Body);
+      Assert.That (result.Body, Is.SameAs (fakeDelegation));
     }
 
     [TestCase (MemberVisibility.Public, "ReadOnlyProperty")]
@@ -406,6 +405,13 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
     }
 
     [Test]
+    public void ImplementRequiredDuckMethods ()
+    {
+      // TODO 5370.
+      //SetTargetClassDefinition
+    }
+
+    [Test]
     public void ImplementAttributes ()
     {
       var member = _concreteTarget;
@@ -482,6 +488,20 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
       _attributeGeneratorMock.AssertWasNotCalled (mock => mock.AddDebuggerDisplayAttribute (null, "", ""), mi => mi.IgnoreArguments());
     }
 
+    [Test]
+    public void ImplementOverrides ()
+    {
+      // TODO 5370.
+      //SetTargetClassDefinition
+    }
+
+    [Test]
+    public void ImplementOverridingMethods ()
+    {
+      // TODO 5370.
+      //SetTargetClassDefinition
+    }
+
     private void CheckField (Expression fieldExpression, string expectedName, Type expectedType, FieldAttributes expectedAttributes)
     {
       var memberExpression = (MemberExpression) fieldExpression;
@@ -526,6 +546,11 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
           mock => mock.AddDebuggerDisplayAttribute (Arg<MutablePropertyInfo>.Is.Anything, Arg.Is (debuggerDisplayString), Arg.Is (debuggerDisplayName)));
     }
 
+    private void SetTargetClassDefinition (TargetTypeModifierContext context, TargetClassDefinition targetClassDefinition)
+    {
+      PrivateInvoke.SetNonPublicField (context, "_targetClassDefinition", targetClassDefinition);
+    }
+
     private InterfaceIntroductionDefinition GetReceivedInterfacesForTargetWith<T> (MemberVisibility visibility)
     {
       var targetClassDefinition = GetTargetClassDefinitionWith<T> (visibility);
@@ -549,7 +574,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
     {
       void Method ();
       string ReadOnlyProperty { get;}
-      event Action Event;
+      [UsedImplicitly] event Action Event;
     }
 
     [IntroducedAttribute]

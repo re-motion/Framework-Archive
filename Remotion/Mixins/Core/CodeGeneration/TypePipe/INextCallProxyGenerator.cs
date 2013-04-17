@@ -16,22 +16,14 @@
 // 
 
 using System.Reflection;
-using Microsoft.Scripting.Ast;
-using Remotion.Mixins.Context;
-using Remotion.TypePipe.MutableReflection;
-using Remotion.TypePipe.MutableReflection.BodyBuilding;
+using Remotion.Mixins.Definitions;
 
 namespace Remotion.Mixins.CodeGeneration.TypePipe
 {
   // TODO 5370: docs
   // TODO 5370: tests
-  public interface IExpressionBuilder
+  public interface INextCallProxyGenerator
   {
-    Expression CreateNewClassContext (ClassContext classContext);
-
-    Expression CreateInitialization (MutableType concreteTarget, Expression extensionsField);
-
-    Expression CreateInitializingDelegation (
-        MethodBodyModificationContext bodyContext, Expression extensionsField, Expression instance, MethodInfo methodToCall);
+    MethodInfo GetProxyMethodForOverriddenMethod (MethodDefinition method);
   }
 }

@@ -17,6 +17,7 @@
 using System;
 using System.Reflection;
 using Microsoft.Scripting.Ast;
+using Remotion.Mixins.Definitions;
 using Remotion.TypePipe.MutableReflection;
 using Remotion.Utilities;
 
@@ -26,21 +27,35 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
   // TODO 5370: Tests.
   public class TargetTypeModifierContext
   {
-    private readonly Type _target;
+    private readonly TargetClassDefinition _targetClassDefinition;
+    private readonly INextCallProxyGenerator _nextCallProxyGenerator;
     private readonly MutableType _concreteTarget;
 
-    public TargetTypeModifierContext (Type target, MutableType concreteTarget)
+    public TargetTypeModifierContext (
+        TargetClassDefinition targetClassDefinition, INextCallProxyGenerator nextCallProxyGenerator, MutableType concreteTarget)
     {
-      ArgumentUtility.CheckNotNull ("target", target);
+      ArgumentUtility.CheckNotNull ("targetClassDefinition", targetClassDefinition);
+      ArgumentUtility.CheckNotNull ("nextCallProxyGenerator", nextCallProxyGenerator);
       ArgumentUtility.CheckNotNull ("concreteTarget", concreteTarget);
 
-      _target = target;
       _concreteTarget = concreteTarget;
+      _targetClassDefinition = targetClassDefinition;
+      _nextCallProxyGenerator = nextCallProxyGenerator;
+    }
+
+    public TargetClassDefinition TargetClassDefinition
+    {
+      get { return _targetClassDefinition; }
+    }
+
+    public INextCallProxyGenerator NextCallProxyGenerator
+    {
+      get { return _nextCallProxyGenerator; }
     }
 
     public Type Target
     {
-      get { return _target; }
+      get { return _targetClassDefinition.Type; }
     }
 
     public MutableType ConcreteTarget
@@ -53,6 +68,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     public Expression ExtensionsField { get; set; }
     public Expression FirstField { get; set; }
 
-    public ConstructorInfo NextCallProxyConstructor { get; set; }
+    // TODO 5370: Make one interface.
+    public ConstructorInfo NextCallProxyConstructor { get; set; } // tODO: to method that creates expression.
   }
 }

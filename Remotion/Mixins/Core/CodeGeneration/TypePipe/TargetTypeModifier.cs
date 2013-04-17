@@ -74,14 +74,6 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       _attributeGenerator = attributeGenerator;
     }
 
-    public TargetTypeModifierContext CreateContext (Type target, MutableType concreteTarget)
-    {
-      ArgumentUtility.CheckNotNull ("target", target);
-      ArgumentUtility.CheckNotNull ("concreteTarget", concreteTarget);
-
-      return new TargetTypeModifierContext (target, concreteTarget);
-    }
-
     public void ImplementInterfaces (TargetTypeModifierContext context, IEnumerable<Type> interfacesToImplement)
     {
       ArgumentUtility.CheckNotNull ("context", context);
@@ -120,7 +112,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     {
       ArgumentUtility.CheckNotNull ("context", context);
 
-      context.ConcreteTarget.AddInitialization (ctx => _expressionBuilder.CreateInitializationExpression (ctx.DeclaringType, context.ExtensionsField));
+      context.ConcreteTarget.AddInitialization (ctx => _expressionBuilder.CreateInitialization (ctx.DeclaringType, context.ExtensionsField));
     }
 
     public void ImplementIInitializableMixinTarget (TargetTypeModifierContext context, IEnumerable<Type> expectedMixinTypes)
@@ -154,7 +146,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       var noInitialization = Expression.Empty();
       var classContextDebuggerDisplay = "Class context for " + context.Target.Name;
       // Initialize this instance in case we're being called before the ctor has finished running.
-      var initialization = _expressionBuilder.CreateInitializationExpression (ct, context.ExtensionsField);
+      var initialization = _expressionBuilder.CreateInitialization (ct, context.ExtensionsField);
 
       ImplementReadOnlyProperty (ct, context.ClassContextField, noInitialization, s_classContextProperty, "ClassContext", classContextDebuggerDisplay);
       ImplementReadOnlyProperty (ct, context.ExtensionsField, initialization, s_mixinProperty, "Mixins", "Count = {__extensions.Length}");
@@ -189,14 +181,11 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
         MethodDefinition implementingMethod,
         MemberVisibility visibility)
     {
-      var implementation = Expression.Block (
-          _expressionBuilder.CreateInitializationExpression (concreteTarget, extensionsField),
-          Expression.Call (implementer, interfaceMethod));
-
       var method = visibility == MemberVisibility.Public
               ? concreteTarget.GetOrAddOverride (interfaceMethod)
               : concreteTarget.AddExplicitOverride (interfaceMethod, ctx => Expression.Default (ctx.ReturnType));
-      method.SetBody (ctx => implementation);
+
+      method.SetBody (ctx => _expressionBuilder.CreateInitializingDelegation (ctx, extensionsField, implementer, interfaceMethod));
 
       _attributeGenerator.AddIntroducedMemberAttribute (method, interfaceMethod, implementingMethod);
       _attributeGenerator.ReplicateAttributes (implementingMethod, method);
@@ -211,14 +200,17 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       var implementingProperty = introducedProperty.ImplementingMember;
       var visibility = introducedProperty.Visibility;
 
-      var getMethod = introducedProperty.IntroducesGetMethod
-              ? ImplementIntroducedMethod (
-                  concreteTarget, extensionsField, implementer, interfaceProperty.GetGetMethod(), implementingProperty.GetMethod, visibility)
-              : null;
-      var setMethod = introducedProperty.IntroducesSetMethod
-              ? ImplementIntroducedMethod (
-                  concreteTarget, extensionsField, implementer, interfaceProperty.GetSetMethod(), implementingProperty.SetMethod, visibility)
-              : null;
+      MutableMethodInfo getMethod = null, setMethod = null;
+      if (introducedProperty.IntroducesGetMethod)
+      {
+        getMethod = ImplementIntroducedMethod (
+            concreteTarget, extensionsField, implementer, interfaceProperty.GetGetMethod(), implementingProperty.GetMethod, visibility);
+      }
+      if (introducedProperty.IntroducesSetMethod)
+      {
+        setMethod = ImplementIntroducedMethod (
+            concreteTarget, extensionsField, implementer, interfaceProperty.GetSetMethod(), implementingProperty.SetMethod, visibility);
+      }
 
       var name = GetIntroducedMemberName (visibility, interfaceProperty);
       var property = concreteTarget.AddProperty (name, PropertyAttributes.None, getMethod, setMethod);
@@ -248,7 +240,24 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     public void ImplementRequiredDuckMethods (TargetTypeModifierContext context)
     {
-      throw new NotImplementedException();
+      ArgumentUtility.CheckNotNull ("context", context);
+
+      var configuration = context.TargetClassDefinition;
+      foreach (var faceRequirement in configuration.RequiredTargetCallTypes)
+      {
+        if (faceRequirement.Type.IsInterface && !configuration.ImplementedInterfaces.Contains (faceRequirement.Type)
+            && !configuration.ReceivedInterfaces.ContainsKey (faceRequirement.Type))
+        {
+          foreach (var requiredMethod in faceRequirement.Methods)
+          {
+            Assertion.IsTrue (
+                requiredMethod.ImplementingMethod.DeclaringClass == configuration,
+                "Duck typing is only supported with members from the base type.");
+
+            ImplementRequiredDuckMethod (context.ConcreteTarget, requiredMethod);
+          }
+        }
+      }
     }
 
     public void ImplementAttributes (
@@ -302,12 +311,70 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     public void ImplementOverrides (TargetTypeModifierContext context)
     {
-      throw new NotImplementedException();
+      ArgumentUtility.CheckNotNull ("context", context);
+
+      foreach (var memberDefinition in context.TargetClassDefinition.GetAllMembers())
+      {
+        if (memberDefinition.Overrides.Count > 0)
+        {
+          var memberOverride = ImplementOverride (context, memberDefinition);
+          ImplementAttributes (memberOverride, memberDefinition, context.TargetClassDefinition);
+        }
+      }
+    }
+
+    public virtual IMutableMember ImplementOverride (TargetTypeModifierContext context, MemberDefinitionBase member)
+    {
+      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull ("member", member);
+
+      if (member is MethodDefinition)
+        return ImplementMethodOverride (context, (MethodDefinition) member);
+      if (member is PropertyDefinition)
+        return ImplementPropertyOverride (context, (PropertyDefinition) member);
+      Assertion.IsNotNull (member is EventDefinition, "Only methods, properties, and events can be overridden.");
+      return ImplementEventOverride (context, (EventDefinition) member);
+    }
+
+    public virtual MutableMethodInfo ImplementMethodOverride (TargetTypeModifierContext context, MethodDefinition method)
+    {
+      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull ("method", method);
+
+      var proxyMethod = context.NextCallProxyGenerator.GetProxyMethodForOverriddenMethod (method);
+      var methodOverride = context.ConcreteTarget.GetOrAddOverride (method.MethodInfo);
+      methodOverride.SetBody (ctx => _expressionBuilder.CreateInitializingDelegation (ctx, context.ExtensionsField, context.FirstField, proxyMethod));
+
+      return methodOverride;
+    }
+
+    public virtual IMutableMember ImplementPropertyOverride (TargetTypeModifierContext context, PropertyDefinition property)
+    {
+      MutableMethodInfo getMethodOverride = null, setMethodOverride = null;
+      if (property.GetMethod != null && property.GetMethod.Overrides.Count > 0)
+        getMethodOverride = ImplementMethodOverride (context, property.GetMethod);
+      if (property.SetMethod != null && property.SetMethod.Overrides.Count > 0)
+        setMethodOverride = ImplementMethodOverride (context, property.SetMethod);
+
+      return context.ConcreteTarget.AddProperty (property.Name, PropertyAttributes.None, getMethodOverride, setMethodOverride);
+    }
+
+    public virtual IMutableMember ImplementEventOverride (TargetTypeModifierContext context, EventDefinition @event)
+    {
+      MutableMethodInfo addMethodOverride = null, removeMethodOverride = null;
+      if (@event.AddMethod.Overrides.Count > 0)
+        addMethodOverride = ImplementMethodOverride (context, @event.AddMethod);
+      if (@event.RemoveMethod.Overrides.Count > 0)
+        removeMethodOverride = ImplementMethodOverride (context, @event.RemoveMethod);
+
+      return context.ConcreteTarget.AddEvent (@event.Name, EventAttributes.None, addMethodOverride, removeMethodOverride);
     }
 
     public void ImplementOverridingMethods (TargetTypeModifierContext context)
     {
-      throw new NotImplementedException();
+      ArgumentUtility.CheckNotNull ("context", context);
+
+      
     }
 
     private Expression AddDebuggerInvisibleField (MutableType concreteTarget, string name, Type type, FieldAttributes attributes)
@@ -323,7 +390,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     {
       // __classContext = new ClassContext (...);
 
-      return Expression.Assign (classContextField, _expressionBuilder.CreateNewClassContextExpression (classContext));
+      return Expression.Assign (classContextField, _expressionBuilder.CreateNewClassContext (classContext));
     }
 
     private static BinaryExpression InitializeMixinArrayInitializerField (
@@ -427,6 +494,13 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       return visibility == MemberVisibility.Public
                  ? interfaceMember.Name
                  : MemberImplementationUtility.GetNameForExplicitImplementation (interfaceMember);
+    }
+
+    private void ImplementRequiredDuckMethod (MutableType concreteTarget, RequiredMethodDefinition requiredMethod)
+    {
+      concreteTarget.AddExplicitOverride (
+          requiredMethod.InterfaceMethod,
+          ctx => Expression.Call (ctx.This, requiredMethod.ImplementingMethod.MethodInfo, ctx.Parameters.Cast<Expression>()));
     }
   }
 }
