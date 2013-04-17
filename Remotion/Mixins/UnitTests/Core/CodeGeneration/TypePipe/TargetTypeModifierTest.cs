@@ -30,7 +30,6 @@ using Remotion.Mixins.CodeGeneration.DynamicProxy;
 using Remotion.Mixins.CodeGeneration.TypePipe;
 using Remotion.Mixins.Context;
 using Remotion.Mixins.Definitions;
-using Remotion.Mixins.UnitTests.Core.Definitions.TestDomain;
 using Remotion.Mixins.Utilities;
 using Remotion.TypePipe.Expressions;
 using Remotion.TypePipe.MutableReflection;
@@ -241,7 +240,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
     [Test]
     public void ImplementIntroducedInterfaces ([Values (MemberVisibility.Private, MemberVisibility.Public)] MemberVisibility visibility)
     {
-      var receivedInterface = GetReceivedInterfacesForTargetAndIntroducingMixin (visibility);
+      var receivedInterface = GetReceivedInterfacesForTargetWith<IntroducingMixin> (visibility);
       var methodIntroduciton = receivedInterface.IntroducedMethods.Single();
       var propertyIntroduction = receivedInterface.IntroducedProperties.Single();
       var eventIntroduction = receivedInterface.IntroducedEvents.Single();
@@ -280,7 +279,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
     {
       var extensionsField = ExpressionTreeObjectMother.GetSomeExpression (typeof (object[]));
       var implementer = ExpressionTreeObjectMother.GetSomeExpression (typeof (IIntroducedInterface));
-      var methodIntroduction = GetReceivedInterfacesForTargetAndIntroducingMixin (visibility).IntroducedMethods.Single();
+      var methodIntroduction = GetReceivedInterfacesForTargetWith<IntroducingMixin> (visibility).IntroducedMethods.Single();
       var interfaceMethod = methodIntroduction.InterfaceMember;
       var implementingMethod = methodIntroduction.ImplementingMember;
       _concreteTarget.AddInterface (typeof (IIntroducedInterface));
@@ -302,30 +301,23 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
       ExpressionTreeComparer.CheckAreEqualTrees (expectedBody, result.Body);
     }
 
-    // TODO: Read-only, write-only properties
-    [TestCase (MemberVisibility.Public, "Property")]
-    [TestCase (MemberVisibility.Private, "Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe.TargetTypeModifierTest.IIntroducedInterface.Property")]
-    public void ImplementIntroducedProperty (MemberVisibility visibility, string expectedName)
+    [TestCase (MemberVisibility.Public, "ReadOnlyProperty")]
+    [TestCase (MemberVisibility.Private, "Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe.TargetTypeModifierTest.IIntroducedInterface.ReadOnlyProperty")]
+    public void ImplementIntroducedProperty_ReadOnlyProperty (MemberVisibility visibility, string expectedName)
     {
       var extensionsField = ExpressionTreeObjectMother.GetSomeExpression (typeof (object[]));
       var implementer = ExpressionTreeObjectMother.GetSomeExpression (typeof (IIntroducedInterface));
-      var propertyIntroduction = GetReceivedInterfacesForTargetAndIntroducingMixin (visibility).IntroducedProperties.Single();
+      var propertyIntroduction = GetReceivedInterfacesForTargetWith<IntroducingMixin> (visibility).IntroducedProperties.Single();
       var interfaceProperty = propertyIntroduction.InterfaceMember;
       var implementingProperty = propertyIntroduction.ImplementingMember;
       _concreteTarget.AddInterface (typeof (IIntroducedInterface));
       var modifierPartialMock = MockRepository.GeneratePartialMock<TargetTypeModifier> (_expressionBuilderMock, _attributeGeneratorMock);
       var fakeGetMethod = MutableMethodInfoObjectMother.Create (_concreteTarget, returnType: typeof (int));
-      var fakeSetMethod = MutableMethodInfoObjectMother.Create (_concreteTarget, parameters: new[] { new ParameterDeclaration (typeof (int)) });
       modifierPartialMock
           .Expect (
               mock => mock.ImplementIntroducedMethod (
                   _concreteTarget, extensionsField, implementer, interfaceProperty.GetGetMethod(), implementingProperty.GetMethod, visibility))
           .Return (fakeGetMethod);
-      modifierPartialMock
-          .Expect (
-              mock => mock.ImplementIntroducedMethod (
-                  _concreteTarget, extensionsField, implementer, interfaceProperty.GetSetMethod(), implementingProperty.SetMethod, visibility))
-          .Return (fakeSetMethod);
       _attributeGeneratorMock
           .Expect (mock => mock.AddIntroducedMemberAttribute (Arg<MutableMethodInfo>.Is.Anything, Arg.Is (interfaceProperty), Arg.Is (implementingProperty)));
       _attributeGeneratorMock.Expect (mock => mock.ReplicateAttributes (Arg.Is (implementingProperty), Arg<MutableMethodInfo>.Is.Anything));
@@ -338,7 +330,78 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
       var addedProperty = _concreteTarget.AddedProperties.Single();
       Assert.That (addedProperty.Name, Is.EqualTo (expectedName));
       Assert.That (addedProperty.MutableGetMethod, Is.SameAs (fakeGetMethod));
+      Assert.That (addedProperty.MutableSetMethod, Is.Null);
+    }
+
+    [TestCase (MemberVisibility.Public, "WriteOnlyProperty")]
+    [TestCase (MemberVisibility.Private,
+        "Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe.TargetTypeModifierTest.IIntroducedInterfaceWithWriteOnlyProperty.WriteOnlyProperty")]
+    public void ImplementIntroducedProperty_WriteOnlyProperty (MemberVisibility visibility, string expectedName)
+    {
+      var extensionsField = ExpressionTreeObjectMother.GetSomeExpression (typeof (object[]));
+      var implementer = ExpressionTreeObjectMother.GetSomeExpression (typeof (IIntroducedInterface));
+      var propertyIntroduction = GetReceivedInterfacesForTargetWith<IntroducingMixinWithWriteOnlyProperty> (visibility).IntroducedProperties.Single();
+      var interfaceProperty = propertyIntroduction.InterfaceMember;
+      var implementingProperty = propertyIntroduction.ImplementingMember;
+      _concreteTarget.AddInterface (typeof (IIntroducedInterface));
+      var modifierPartialMock = MockRepository.GeneratePartialMock<TargetTypeModifier> (_expressionBuilderMock, _attributeGeneratorMock);
+      var fakeSetMethod = MutableMethodInfoObjectMother.Create (_concreteTarget, parameters: new[] { new ParameterDeclaration (typeof (int)) });
+      modifierPartialMock
+          .Expect (
+              mock => mock.ImplementIntroducedMethod (
+                  _concreteTarget, extensionsField, implementer, interfaceProperty.GetSetMethod(), implementingProperty.SetMethod, visibility))
+          .Return (fakeSetMethod);
+      _attributeGeneratorMock
+          .Expect (mock => mock.AddIntroducedMemberAttribute (Arg<MutableMethodInfo>.Is.Anything, Arg.Is (interfaceProperty), Arg.Is (implementingProperty)));
+      _attributeGeneratorMock.Expect (mock => mock.ReplicateAttributes (Arg.Is (implementingProperty), Arg<MutableMethodInfo>.Is.Anything));
+
+      modifierPartialMock.ImplementIntroducedProperty (_concreteTarget, extensionsField, implementer, propertyIntroduction);
+
+      modifierPartialMock.VerifyAllExpectations ();
+      _attributeGeneratorMock.VerifyAllExpectations ();
+      Assert.That (_concreteTarget.AddedProperties, Has.Count.EqualTo (1));
+      var addedProperty = _concreteTarget.AddedProperties.Single ();
+      Assert.That (addedProperty.Name, Is.EqualTo (expectedName));
+      Assert.That (addedProperty.MutableGetMethod, Is.Null);
       Assert.That (addedProperty.MutableSetMethod, Is.SameAs (fakeSetMethod));
+    }
+
+    [TestCase (MemberVisibility.Public, "Event")]
+    [TestCase (MemberVisibility.Private, "Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe.TargetTypeModifierTest.IIntroducedInterface.Event")]
+    public void ImplementIntroducedEvent (MemberVisibility visibility, string expectedName)
+    {
+      var extensionsField = ExpressionTreeObjectMother.GetSomeExpression (typeof (object[]));
+      var implementer = ExpressionTreeObjectMother.GetSomeExpression (typeof (IIntroducedInterface));
+      var eventIntroduction = GetReceivedInterfacesForTargetWith<IntroducingMixin> (visibility).IntroducedEvents.Single ();
+      var interfaceEvent = eventIntroduction.InterfaceMember;
+      var implementingEvent = eventIntroduction.ImplementingMember;
+      _concreteTarget.AddInterface (typeof (IIntroducedInterface));
+      var modifierPartialMock = MockRepository.GeneratePartialMock<TargetTypeModifier> (_expressionBuilderMock, _attributeGeneratorMock);
+      var fakeAddMethod = MutableMethodInfoObjectMother.Create (_concreteTarget, parameters: new[] { new ParameterDeclaration (typeof (Action)) });
+      var fakeRemoveMethod = MutableMethodInfoObjectMother.Create (_concreteTarget, parameters: new[] { new ParameterDeclaration (typeof (Action)) });
+      modifierPartialMock
+          .Expect (
+              mock => mock.ImplementIntroducedMethod (
+                  _concreteTarget, extensionsField, implementer, interfaceEvent.GetAddMethod(), implementingEvent.AddMethod, visibility))
+          .Return (fakeAddMethod);
+      modifierPartialMock
+          .Expect (
+              mock => mock.ImplementIntroducedMethod (
+                  _concreteTarget, extensionsField, implementer, interfaceEvent.GetRemoveMethod(), implementingEvent.RemoveMethod, visibility))
+          .Return (fakeRemoveMethod);
+      _attributeGeneratorMock
+          .Expect (mock => mock.AddIntroducedMemberAttribute (Arg<MutableMethodInfo>.Is.Anything, Arg.Is (interfaceEvent), Arg.Is (implementingEvent)));
+      _attributeGeneratorMock.Expect (mock => mock.ReplicateAttributes (Arg.Is (implementingEvent), Arg<MutableMethodInfo>.Is.Anything));
+
+      modifierPartialMock.ImplementIntroducedEvent (_concreteTarget, extensionsField, implementer, eventIntroduction);
+
+      modifierPartialMock.VerifyAllExpectations();
+      _attributeGeneratorMock.VerifyAllExpectations();
+      Assert.That (_concreteTarget.AddedEvents, Has.Count.EqualTo (1));
+      var addedEvent = _concreteTarget.AddedEvents.Single();
+      Assert.That (addedEvent.Name, Is.EqualTo (expectedName));
+      Assert.That (addedEvent.MutableAddMethod, Is.SameAs (fakeAddMethod));
+      Assert.That (addedEvent.MutableRemoveMethod, Is.SameAs (fakeRemoveMethod));
     }
 
     private void CheckField (Expression fieldExpression, string expectedName, Type expectedType, FieldAttributes expectedAttributes)
@@ -385,13 +448,13 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
           mock => mock.AddDebuggerDisplayAttribute (Arg<MutablePropertyInfo>.Is.Anything, Arg.Is (debuggerDisplayString), Arg.Is (debuggerDisplayName)));
     }
 
-    private InterfaceIntroductionDefinition GetReceivedInterfacesForTargetAndIntroducingMixin (MemberVisibility visibility)
+    private InterfaceIntroductionDefinition GetReceivedInterfacesForTargetWith<T> (MemberVisibility visibility)
     {
       var classContext = MixinConfiguration
           .BuildNew()
           .ForClass<Target>()
           .AddMixin<DummyMixin> () // Force introduction.Implementer.MixinIndex to be something other than '0'.
-          .AddMixin<IntroducingMixin>().WithIntroducedMemberVisibility (visibility)
+          .AddMixin<T>().WithIntroducedMemberVisibility (visibility)
           .BuildClassContext();
       var targetClassDefinition = TargetClassDefinitionFactory.CreateAndValidate (classContext);
       var receivedInterface = targetClassDefinition.ReceivedInterfaces.Single();
@@ -402,15 +465,25 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
     public interface IIntroducedInterface
     {
       void Method ();
-      string Property { get; set; }
+      string ReadOnlyProperty { get;}
       event Action Event;
     }
 
     public class IntroducingMixin : IIntroducedInterface
     {
       public void Method () { throw new NotImplementedException(); }
-      public string Property { get { throw new NotImplementedException (); } set { throw new NotImplementedException(); } }
+      public string ReadOnlyProperty { get { throw new NotImplementedException(); } }
       public event Action Event;
+    }
+
+    public interface IIntroducedInterfaceWithWriteOnlyProperty
+    {
+      string WriteOnlyProperty { set; }
+    }
+
+    public class IntroducingMixinWithWriteOnlyProperty : IIntroducedInterfaceWithWriteOnlyProperty
+    {
+      public string WriteOnlyProperty { set { throw new NotImplementedException (); } }
     }
 
     public class Target { }
