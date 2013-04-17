@@ -40,6 +40,6 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     void AddDebuggerDisplayAttribute (TargetTypeModifierContext context, TargetClassDefinition targetClassDefinition);
 
     void ImplementOverrides (TargetTypeModifierContext context);
-    void ImplementOverridingMethods (TargetTypeModifierContext context);
+    void ImplementOverridingMethods (TargetTypeModifierContext context, IList<ConcreteMixinType> concreteMixinTypes);
   }
 }

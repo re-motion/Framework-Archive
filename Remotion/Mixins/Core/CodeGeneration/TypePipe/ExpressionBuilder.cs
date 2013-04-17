@@ -57,8 +57,19 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
           Expression.Call (new ThisExpression (concreteTarget), s_initializeMethod));
     }
 
+    public Expression CreateDelegation (MethodBodyContextBase bodyContext, Expression instance, MethodInfo methodToCall)
+    {
+      ArgumentUtility.CheckNotNull ("bodyContext", bodyContext);
+      ArgumentUtility.CheckNotNull ("instance", instance);
+      ArgumentUtility.CheckNotNull ("methodToCall", methodToCall);
+
+      // instance.MethodToCall(<parameters>);
+
+      return Expression.Call (instance, methodToCall, bodyContext.Parameters.Cast<Expression>());
+    }
+
     public Expression CreateInitializingDelegation (
-        MethodBodyModificationContext bodyContext, Expression extensionsField, Expression instance, MethodInfo methodToCall)
+        MethodBodyContextBase bodyContext, Expression extensionsField, Expression instance, MethodInfo methodToCall)
     {
       ArgumentUtility.CheckNotNull ("bodyContext", bodyContext);
       ArgumentUtility.CheckNotNull ("extensionsField", extensionsField);
@@ -66,11 +77,11 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       ArgumentUtility.CheckNotNull ("methodToCall", methodToCall);
 
       // <CreateInitialization>
-      // instance.MethodToCall(<parameters>);
+      // <CreateDelegation>
 
       return Expression.Block (
           CreateInitialization (bodyContext.DeclaringType, extensionsField),
-          Expression.Call (instance, methodToCall, bodyContext.Parameters.Cast<Expression>()));
+          CreateDelegation (bodyContext, instance, methodToCall));
     }
   }
 }

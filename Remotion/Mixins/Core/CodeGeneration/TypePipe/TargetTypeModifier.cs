@@ -370,11 +370,28 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       return context.ConcreteTarget.AddEvent (@event.Name, EventAttributes.None, addMethodOverride, removeMethodOverride);
     }
 
-    public void ImplementOverridingMethods (TargetTypeModifierContext context)
+    public void ImplementOverridingMethods (TargetTypeModifierContext context, IList<ConcreteMixinType> concreteMixinTypes)
     {
       ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull ("concreteMixinTypes", concreteMixinTypes);
 
-      
+      var overriders = context.TargetClassDefinition.GetAllMethods().Where (methodDefinition => methodDefinition.Base != null);
+      foreach (var overrider in overriders)
+      {
+        var mixin = overrider.Base.DeclaringClass as MixinDefinition;
+        Assertion.IsNotNull (mixin, "We only support mixins as overriders of target class members.");
+        var concreteMixinType = concreteMixinTypes[mixin.MixinIndex];
+        Assertion.IsNotNull (concreteMixinType, "If a mixin method is overridden, a concrete type must have been created for it.");
+
+        var methodInOverrideInterface = concreteMixinType.GetOverrideInterfaceMethod (overrider.Base.MethodInfo);
+
+        // It's necessary to explicitly implement some members defined by the concrete mixins' override interfaces: implicit implementation doesn't
+        // work if the overrider is non-public or generic. Because it's simpler, we just implement all the members explicitly.
+        var methodToCall = overrider.MethodInfo;
+        context.ConcreteTarget.AddExplicitOverride (
+            methodInOverrideInterface,
+            ctx => _expressionBuilder.CreateDelegation (ctx, ctx.This, methodToCall));
+      }
     }
 
     private Expression AddDebuggerInvisibleField (MutableType concreteTarget, string name, Type type, FieldAttributes attributes)
