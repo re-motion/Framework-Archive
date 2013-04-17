@@ -16,7 +16,6 @@
 // Additional permissions are listed in the file re-motion_exceptions.txt.
 // 
 using System;
-using Remotion.Web.ExecutionEngine.Infrastructure;
 using Remotion.Web.Security.ExecutionEngine;
 using Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure;
 using Remotion.SecurityManager.Domain.OrganizationalStructure;
@@ -26,16 +25,8 @@ namespace Remotion.SecurityManager.Clients.Web.WxeFunctions.OrganizationalStruct
 {
   [WxeDemandTargetStaticMethodPermission (GroupType.Methods.Search)]
   [Serializable]
-  public class GroupTypeListFormFunction : BaseTransactedFunction
+  public class GroupTypeListFormFunction : BaseListTransactedFunction
   {
-    // types
-
-    // static members and constants
-
-    // member fields
-
-    // construction and disposing
-
     public GroupTypeListFormFunction ()
     {
     }
@@ -45,8 +36,6 @@ namespace Remotion.SecurityManager.Clients.Web.WxeFunctions.OrganizationalStruct
       : base (transactionMode, args)
     {
     }
-
-    // methods and properties
 
     WxeResourcePageStep Step1 = new WxeResourcePageStep (typeof (GroupTypeListForm), "UI/OrganizationalStructure/GroupTypeListForm.aspx");
   }
