@@ -74,7 +74,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       _attributeGenerator = attributeGenerator;
     }
 
-    public void ImplementInterfaces (TargetTypeModifierContext context, IEnumerable<Type> interfacesToImplement)
+    public void AddInterfaces (TargetTypeModifierContext context, IEnumerable<Type> interfacesToImplement)
     {
       ArgumentUtility.CheckNotNull ("context", context);
       ArgumentUtility.CheckNotNull ("interfacesToImplement", interfacesToImplement);
@@ -96,16 +96,16 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       context.FirstField = AddDebuggerInvisibleField (ct, "__first", nextCallProxyType, FieldAttributes.Private);
     }
 
-    public void AddTypeInitializations (TargetTypeModifierContext context, ClassContext classContext, IEnumerable<Type> concreteMixinTypes)
+    public void AddTypeInitializations (TargetTypeModifierContext context, ClassContext classContext, IEnumerable<Type> expectedMixinTypes)
     {
       ArgumentUtility.CheckNotNull ("context", context);
-      ArgumentUtility.CheckNotNull ("concreteMixinTypes", concreteMixinTypes);
+      ArgumentUtility.CheckNotNull ("expectedMixinTypes", expectedMixinTypes);
 
       context.ConcreteTarget.AddTypeInitialization (
           ctx => Expression.Block (
               typeof (void),
               InitializeClassContextField (context.ClassContextField, classContext),
-              InitializeMixinArrayInitializerField (context.MixinArrayInitializerField, context.Target, concreteMixinTypes)));
+              InitializeMixinArrayInitializerField (context.MixinArrayInitializerField, context.Target, expectedMixinTypes)));
     }
 
     public void AddInitializations (TargetTypeModifierContext context)
@@ -413,7 +413,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     private static BinaryExpression InitializeMixinArrayInitializerField (
         Expression mixinArrayInitializerField, Type targetType, IEnumerable<Type> concreteMixinTypes)
     {
-      // __mixinArrayInitializer = new MixinArrayInitializer (targetType, concreteMixinTypes);
+      // __mixinArrayInitializer = new MixinArrayInitializer (targetType, expectedMixinTypes);
 
       return Expression.Assign (
           mixinArrayInitializerField,

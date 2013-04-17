@@ -16,15 +16,12 @@
 // 
 
 using System;
-using System.Collections.Generic;
-using Remotion.Mixins.Definitions;
 
 namespace Remotion.Mixins.CodeGeneration.TypePipe
 {
-  // TODO 5370: Docs.
-  // TODO 5370: Better name.
-  public interface IMixinParticipantHelper
+  // TODO 5370: docs  
+  public interface ITargetTypeModifierFacade
   {
-    IEnumerable<MixinInfo> GetConcreteMixinTypes (IEnumerable<MixinDefinition> mixinDefinitions);
+    void ModifyTargetType (TargetTypeModifierContext context);
   }
 }

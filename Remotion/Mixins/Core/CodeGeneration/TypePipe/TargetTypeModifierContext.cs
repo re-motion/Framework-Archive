@@ -15,11 +15,14 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Reflection;
 using Microsoft.Scripting.Ast;
 using Remotion.Mixins.Definitions;
 using Remotion.TypePipe.MutableReflection;
 using Remotion.Utilities;
+using System.Linq;
 
 namespace Remotion.Mixins.CodeGeneration.TypePipe
 {
@@ -28,24 +31,49 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
   public class TargetTypeModifierContext
   {
     private readonly TargetClassDefinition _targetClassDefinition;
+    private readonly ReadOnlyCollection<ConcreteMixinType> _concreteMixinTypes;
+    private readonly ReadOnlyCollection<Type> _interfacesToImplement;
     private readonly INextCallProxyGenerator _nextCallProxyGenerator;
     private readonly MutableType _concreteTarget;
 
     public TargetTypeModifierContext (
-        TargetClassDefinition targetClassDefinition, INextCallProxyGenerator nextCallProxyGenerator, MutableType concreteTarget)
+        TargetClassDefinition targetClassDefinition,
+        IEnumerable<ConcreteMixinType> concreteMixinTypes,
+        IEnumerable<Type> interfacesToImplement,
+        INextCallProxyGenerator nextCallProxyGenerator,
+        MutableType concreteTarget)
     {
       ArgumentUtility.CheckNotNull ("targetClassDefinition", targetClassDefinition);
+      ArgumentUtility.CheckNotNull ("concreteMixinTypes", concreteMixinTypes);
+      ArgumentUtility.CheckNotNull ("interfacesToImplement", interfacesToImplement);
       ArgumentUtility.CheckNotNull ("nextCallProxyGenerator", nextCallProxyGenerator);
       ArgumentUtility.CheckNotNull ("concreteTarget", concreteTarget);
-
-      _concreteTarget = concreteTarget;
+      
       _targetClassDefinition = targetClassDefinition;
+      _concreteMixinTypes = concreteMixinTypes.ToList().AsReadOnly();
+      _interfacesToImplement = interfacesToImplement.ToList().AsReadOnly();
       _nextCallProxyGenerator = nextCallProxyGenerator;
+      _concreteTarget = concreteTarget;
     }
 
     public TargetClassDefinition TargetClassDefinition
     {
       get { return _targetClassDefinition; }
+    }
+
+    public IEnumerable<Type> MixinTypes
+    {
+      get { return _targetClassDefinition.Mixins.Select (m => m.Type); }
+    }
+
+    public ReadOnlyCollection<ConcreteMixinType> ConcreteMixinTypes
+    {
+      get { return _concreteMixinTypes; }
+    }
+
+    public ReadOnlyCollection<Type> InterfacesToImplement
+    {
+      get { return _interfacesToImplement; }
     }
 
     public INextCallProxyGenerator NextCallProxyGenerator

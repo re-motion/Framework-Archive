@@ -28,19 +28,19 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
   public class MixinParticipant : IParticipant
   {
     private readonly IConfigurationProvider _configurationProvider;
-    private readonly IMixinParticipantHelper _helper;
-    private readonly ITargetTypeModifier _targetTypeModifier;
+    private readonly IMixinTypeGenerator _mixinTypeGenerator;
+    private readonly ITargetTypeModifierFacade _targetTypeModifierFacade;
 
     public MixinParticipant (
-        IConfigurationProvider configurationProvider, IMixinParticipantHelper helper, ITargetTypeModifier targetTypeModifier)
+        IConfigurationProvider configurationProvider, IMixinTypeGenerator mixinTypeGenerator, ITargetTypeModifierFacade targetTypeModifierFacade)
     {
       ArgumentUtility.CheckNotNull ("configurationProvider", configurationProvider);
-      ArgumentUtility.CheckNotNull ("helper", helper);
-      ArgumentUtility.CheckNotNull ("targetTypeModifier", targetTypeModifier);
+      ArgumentUtility.CheckNotNull ("mixinTypeGenerator", mixinTypeGenerator);
+      ArgumentUtility.CheckNotNull ("targetTypeModifierFacade", targetTypeModifierFacade);
 
       _configurationProvider = configurationProvider;
-      _helper = helper;
-      _targetTypeModifier = targetTypeModifier;
+      _mixinTypeGenerator = mixinTypeGenerator;
+      _targetTypeModifierFacade = targetTypeModifierFacade;
     }
 
     public ICacheKeyProvider PartialCacheKeyProvider
@@ -53,27 +53,14 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       ArgumentUtility.CheckNotNull ("typeAssemblyContext", typeAssemblyContext);
 
       var targetClassDefinition = _configurationProvider.GetTargetClassDefinition (typeAssemblyContext.RequestedType);
-      var mixinInfos = _helper.GetConcreteMixinTypes (targetClassDefinition.Mixins);
+      var mixinInfos = _mixinTypeGenerator.GetConcreteMixinTypes (targetClassDefinition.Mixins).ToList();
+      var concreteMixinTypes = mixinInfos.Select (m => m.ConcreteMixinTypeOrNull);
       var interfacesToImplement = _configurationProvider.GetInterfacesToImplement (targetClassDefinition, mixinInfos);
+      INextCallProxyGenerator nextCallProxyGenerator = null;
 
-      // TODO: NextCallProxy?!?
-      
-
-      // TODO: Add TargetClassDefiniton to context
-
-      //var context = _targetTypeModifier.CreateContext (typeAssemblyContext.ProxyType);
-      //_targetTypeModifier.ImplementInterfaces (context, interfacesToImplement);
-      //_targetTypeModifier.AddFields (context, null); // TODO
-      //_targetTypeModifier.AddTypeInitializations (context, null, null); // TODO
-      //_targetTypeModifier.AddInitializations();
-      //_targetTypeModifier.ImplementIInitializableMixinTarget (context);
-      //_targetTypeModifier.ImplementIMixinTarget (context);
-      //_targetTypeModifier.ImplementIntroducedInterfaces (context);
-      //_targetTypeModifier.ImplementRequiredDuckMethods (context);
-      //_targetTypeModifier.AddMixedTypeAttribute (context);
-      //_targetTypeModifier.AddDebuggerDisplayAttribute (context);
-      //_targetTypeModifier.ImplementOverrides (context);
-      //_targetTypeModifier.ImplementOverridingMethods (context);
+      var context = new TargetTypeModifierContext (
+          targetClassDefinition, concreteMixinTypes, interfacesToImplement, nextCallProxyGenerator, typeAssemblyContext.ProxyType);
+      _targetTypeModifierFacade.ModifyTargetType (context);
     }
 
     public void RebuildState (LoadedTypesContext loadedTypesContext)

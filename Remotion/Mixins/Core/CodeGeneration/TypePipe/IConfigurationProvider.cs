@@ -17,11 +17,11 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using Remotion.Mixins.Definitions;
 
 namespace Remotion.Mixins.CodeGeneration.TypePipe
 {
+  // TODO 5370: docs
   public interface IConfigurationProvider
   {
     TargetClassDefinition GetTargetClassDefinition (Type requestedType);

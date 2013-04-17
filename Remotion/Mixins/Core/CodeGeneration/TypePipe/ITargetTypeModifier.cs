@@ -25,9 +25,9 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
   // TODO 5370: Docs.
   public interface ITargetTypeModifier
   {
-    void ImplementInterfaces (TargetTypeModifierContext context, IEnumerable<Type> interfacesToImplement);
+    void AddInterfaces (TargetTypeModifierContext context, IEnumerable<Type> interfacesToImplement);
     void AddFields (TargetTypeModifierContext context, Type nextCallProxyType);
-    void AddTypeInitializations (TargetTypeModifierContext context, ClassContext classContext, IEnumerable<Type> concreteMixinTypes);
+    void AddTypeInitializations (TargetTypeModifierContext context, ClassContext classContext, IEnumerable<Type> expectedMixinTypes);
     void AddInitializations (TargetTypeModifierContext context);
 
     void ImplementIInitializableMixinTarget (TargetTypeModifierContext context, IEnumerable<Type> expectedMixinTypes);

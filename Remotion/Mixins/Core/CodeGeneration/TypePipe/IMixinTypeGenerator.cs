@@ -16,17 +16,15 @@
 // 
 
 using System;
-using System.Reflection;
+using System.Collections.Generic;
 using Remotion.Mixins.Definitions;
 
 namespace Remotion.Mixins.CodeGeneration.TypePipe
 {
-  // TODO 5370: docs
-  // TODO 5370: tests
-  public interface INextCallProxyGenerator
+  // TODO 5370: Docs.
+  // TODO 5370: Better name.
+  public interface IMixinTypeGenerator
   {
-    Type Type { get; }
-
-    MethodInfo GetProxyMethodForOverriddenMethod (MethodDefinition method);
+    IEnumerable<MixinInfo> GetConcreteMixinTypes (IEnumerable<MixinDefinition> mixinDefinitions);
   }
 }
