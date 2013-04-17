@@ -22,6 +22,7 @@ using Remotion.Mixins.Context;
 using Remotion.Mixins.Definitions;
 using Remotion.TypePipe.MutableReflection;
 using Remotion.Utilities;
+using System.Linq;
 
 namespace Remotion.Mixins.CodeGeneration.TypePipe
 {
@@ -79,6 +80,19 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       ArgumentUtility.CheckNotNull ("classContext", classContext);
       ArgumentUtility.CheckNotNull ("orderedMixinTypes", orderedMixinTypes);
       
+      // TODO
+    }
+
+    public void AddAttribute (IMutableMember member, ICustomAttributeData attributeData)
+    {
+      ArgumentUtility.CheckNotNull ("member", member);
+      ArgumentUtility.CheckNotNull ("attributeData", attributeData);
+
+      var attribute = new CustomAttributeDeclaration (
+          attributeData.Constructor,
+          attributeData.ConstructorArguments.ToArray(),
+          attributeData.NamedArguments.Select (CreateNamedArgumentDeclaration).ToArray());
+      member.AddCustomAttribute (attribute);
     }
 
     public void ReplicateAttributes (IAttributableDefinition source, IMutableMember destination)
@@ -86,6 +100,44 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       ArgumentUtility.CheckNotNull ("source", source);
       ArgumentUtility.CheckNotNull ("destination", destination);
 
+      // TODO
+    }
+
+    public bool ShouldBeReplicated (AttributeDefinition attribute, IAttributeIntroductionTarget targetConfiguration, TargetClassDefinition targetClassDefinition)
+    {
+      ArgumentUtility.CheckNotNull ("attribute", attribute);
+      ArgumentUtility.CheckNotNull ("targetConfiguration", targetConfiguration);
+      ArgumentUtility.CheckNotNull ("targetClassDefinition", targetClassDefinition);
+
+      return !attribute.IsCopyTemplate
+             && (!CanInheritAttributesFromBase (targetConfiguration)
+                 || (!AttributeUtility.IsAttributeInherited (attribute.AttributeType) && !IsSuppressedByMixin (attribute, targetClassDefinition)));
+    }
+
+    public virtual bool IsSuppressedByMixin (AttributeDefinition attribute, TargetClassDefinition targetClassDefinition)
+    {
+      var declaringEntity = attribute.DeclaringDefinition.CustomAttributeProvider;
+      var suppressAttributesAttributes =
+          from suppressAttribute in targetClassDefinition.ReceivedAttributes[typeof (SuppressAttributesAttribute)]
+          let suppressAttributeInstance = (SuppressAttributesAttribute) suppressAttribute.Attribute.Instance
+          let suppressingEntity = suppressAttribute.Attribute.DeclaringDefinition.CustomAttributeProvider
+          where suppressAttributeInstance.IsSuppressed (attribute.AttributeType, declaringEntity, suppressingEntity)
+          select suppressAttributeInstance;
+      return suppressAttributesAttributes.Any();
+    }
+
+    private bool CanInheritAttributesFromBase (IAttributeIntroductionTarget configuration)
+    {
+      // Only methods and base classes can supply attributes for inheritance.
+      return configuration is TargetClassDefinition || configuration is MethodDefinition;
+    }
+
+    private NamedArgumentDeclaration CreateNamedArgumentDeclaration (ICustomAttributeNamedArgument namedArgument)
+    {
+      if (namedArgument.MemberInfo is FieldInfo)
+        return new NamedArgumentDeclaration ((FieldInfo) namedArgument.MemberInfo, namedArgument.Value);
+      else
+        return new NamedArgumentDeclaration ((PropertyInfo) namedArgument.MemberInfo, namedArgument.Value);
     }
   }
 }

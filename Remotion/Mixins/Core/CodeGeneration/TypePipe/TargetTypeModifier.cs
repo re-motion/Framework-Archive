@@ -251,9 +251,30 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       throw new NotImplementedException();
     }
 
-    public void ImplementAttributes (TargetTypeModifierContext context)
+    public void ImplementAttributes (
+        TargetTypeModifierContext context, IAttributeIntroductionTarget targetConfiguration, TargetClassDefinition targetClassDefinition)
     {
-      throw new NotImplementedException();
+      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull ("targetConfiguration", targetConfiguration);
+
+      ImplementAttributes (context.ConcreteTarget, targetConfiguration, targetClassDefinition);
+    }
+
+    public virtual void ImplementAttributes (
+        IMutableMember member, IAttributeIntroductionTarget targetConfiguration, TargetClassDefinition targetClassDefinition)
+    {
+      ArgumentUtility.CheckNotNull ("member", member);
+      ArgumentUtility.CheckNotNull ("targetConfiguration", targetConfiguration);
+      ArgumentUtility.CheckNotNull ("targetClassDefinition", targetClassDefinition);
+
+      foreach (var attribute in targetConfiguration.CustomAttributes)
+      {
+        if (_attributeGenerator.ShouldBeReplicated (attribute, targetConfiguration, targetClassDefinition))
+          _attributeGenerator.AddAttribute (member, attribute.Data);
+      }
+
+      foreach (var introducedAttribute in targetConfiguration.ReceivedAttributes)
+        _attributeGenerator.AddAttribute (member, introducedAttribute.Attribute.Data);
     }
 
     public void AddMixedTypeAttribute (TargetTypeModifierContext context, TargetClassDefinition targetClassDefinition)

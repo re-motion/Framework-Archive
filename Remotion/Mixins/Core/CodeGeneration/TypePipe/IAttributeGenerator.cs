@@ -37,6 +37,11 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     void AddMixedTypeAttribute (IMutableMember member, ClassContext classContext, IEnumerable<Type> orderedMixinTypes);
 
+    void AddAttribute (IMutableMember member, ICustomAttributeData attributeData);
+
     void ReplicateAttributes (IAttributableDefinition source, IMutableMember destination);
+
+    bool ShouldBeReplicated (
+        AttributeDefinition attribute, IAttributeIntroductionTarget targetConfiguration, TargetClassDefinition targetClassDefinition);
   }
 }

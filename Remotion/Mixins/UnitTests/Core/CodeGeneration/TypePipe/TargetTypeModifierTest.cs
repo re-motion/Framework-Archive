@@ -405,6 +405,13 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
       Assert.That (addedEvent.MutableRemoveMethod, Is.SameAs (fakeRemoveMethod));
     }
 
+    //[Test]
+    //public void ImplementAttributes ()
+    //{
+
+    //  _modifier.ImplementAttributes(_concreteTarget, )
+    //}
+
     [Test]
     public void AddMixedTypeAttribute ()
     {
@@ -544,6 +551,13 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
     }
 
     public class Target { }
+
+
+    public class TargetWithAttribute { }
+
+    public class ReplicatingAttribute : Attribute { }
+    public class NonReplicatingAttribute : Attribute { }
+    public class IntroducesAttribute : Attribute { }
 
     public class DummyMixin { }
 
