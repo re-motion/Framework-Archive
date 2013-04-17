@@ -405,12 +405,31 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
       Assert.That (addedEvent.MutableRemoveMethod, Is.SameAs (fakeRemoveMethod));
     }
 
-    //[Test]
-    //public void ImplementAttributes ()
-    //{
+    [Test]
+    public void ImplementAttributes ()
+    {
+      var member = _concreteTarget;
+      var classContext = ClassContextObjectMother.Create (typeof (TargetWithAttributes), typeof (IntroducingMixin));
+      var targetClassDefinition = TargetClassDefinitionFactory.CreateAndValidate (classContext);
+      IAttributeIntroductionTarget targetConfiguration = targetClassDefinition;
+      Assert.That (targetConfiguration.CustomAttributes, Has.Count.EqualTo (2));
+      Assert.That (targetConfiguration.ReceivedAttributes, Has.Count.EqualTo (1));
+      var replicatingAttribute = targetConfiguration.CustomAttributes[0];
+      var nonReplicatingAttribute = targetConfiguration.CustomAttributes[1];
+      var attributeIntroduction = targetConfiguration.ReceivedAttributes.Single();
+      _attributeGeneratorMock
+          .Expect (mock => mock.ShouldBeReplicated (replicatingAttribute, targetConfiguration, targetClassDefinition))
+          .Return (true);
+      _attributeGeneratorMock
+          .Expect (mock => mock.ShouldBeReplicated (nonReplicatingAttribute, targetConfiguration, targetClassDefinition))
+          .Return (false);
+      _attributeGeneratorMock.Expect (mock => mock.AddAttribute (member, replicatingAttribute.Data));
+      _attributeGeneratorMock.Expect (mock => mock.AddAttribute (member, attributeIntroduction.Attribute.Data));
 
-    //  _modifier.ImplementAttributes(_concreteTarget, )
-    //}
+      _modifier.ImplementAttributes (_concreteTarget, targetConfiguration, targetClassDefinition);
+
+      _attributeGeneratorMock.VerifyAllExpectations();
+    }
 
     [Test]
     public void AddMixedTypeAttribute ()
@@ -533,6 +552,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
       event Action Event;
     }
 
+    [IntroducedAttribute]
     public class IntroducingMixin : IIntroducedInterface
     {
       public void Method () { throw new NotImplementedException(); }
@@ -552,12 +572,13 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
 
     public class Target { }
 
-
-    public class TargetWithAttribute { }
+    [ReplicatingAttribute]
+    [NonReplicatingAttribute]
+    public class TargetWithAttributes { }
 
     public class ReplicatingAttribute : Attribute { }
     public class NonReplicatingAttribute : Attribute { }
-    public class IntroducesAttribute : Attribute { }
+    public class IntroducedAttribute : Attribute { }
 
     public class DummyMixin { }
 
