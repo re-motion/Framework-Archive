@@ -26,6 +26,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
   {
     TargetClassDefinition GetTargetClassDefinition (Type requestedType);
 
-    IEnumerable<Type> GetInterfacesToImplement (TargetClassDefinition targetClassDefinition, IEnumerable<MixinInfo> mixinInfos);
+    IEnumerable<Type> GetInterfacesToImplement (
+        TargetClassDefinition targetClassDefinition, IEnumerable<ConcreteMixinType> concreteMixinTypesWithNulls);
   }
 }

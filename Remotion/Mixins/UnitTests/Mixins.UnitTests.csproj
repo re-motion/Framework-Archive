@@ -77,7 +77,6 @@
     <Compile Include="Core\CodeGeneration\ConcreteMixinTypeObjectMother.cs" />
     <Compile Include="Core\CodeGeneration\LockingCodeGenerationCacheDecoratorTest.cs" />
     <Compile Include="Core\CodeGeneration\LockingCodeGenerationModuleInfoDecoratorTest.cs" />
-    <Compile Include="Core\CodeGeneration\TypePipe\TargetTypeModifierTest.cs" />
     <Compile Include="Core\TypeGenerationHelper.cs" />
     <Compile Include="Core\CodeGenerationTypeMother.cs" />
     <Compile Include="Core\CodeGeneration\AttributeBasedMetadataImporterTest.cs" />
@@ -692,7 +691,9 @@
       <Name>Mixins.Samples</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Core\CodeGeneration\TypePipe\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

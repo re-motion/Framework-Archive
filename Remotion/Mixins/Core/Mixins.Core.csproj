@@ -147,10 +147,8 @@
     <Compile Include="CodeGeneration\TypePipe\ITargetTypeModifierFacade.cs" />
     <Compile Include="CodeGeneration\TypePipe\MixinContextOriginSerializerBase.cs" />
     <Compile Include="CodeGeneration\TypePipe\MixinContextSerializerBase.cs" />
-    <Compile Include="CodeGeneration\TypePipe\MixinInfo.cs" />
     <Compile Include="CodeGeneration\TypePipe\MixinParticipant.cs" />
     <Compile Include="CodeGeneration\TypePipe\TargetTypeModifier.cs" />
-    <Compile Include="CodeGeneration\TypePipe\TargetTypeModifierContext.cs" />
     <Compile Include="CodeGeneration\TypePipe\TargetTypeModifierFacade.cs" />
     <Compile Include="ComposedInterfaceAttribute.cs" />
     <Compile Include="ComposedObject.cs" />

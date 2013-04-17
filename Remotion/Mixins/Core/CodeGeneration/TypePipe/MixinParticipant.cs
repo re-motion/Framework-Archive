@@ -53,14 +53,12 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       ArgumentUtility.CheckNotNull ("typeAssemblyContext", typeAssemblyContext);
 
       var targetClassDefinition = _configurationProvider.GetTargetClassDefinition (typeAssemblyContext.RequestedType);
-      var mixinInfos = _mixinTypeGenerator.GetConcreteMixinTypes (targetClassDefinition.Mixins).ToList();
-      var concreteMixinTypes = mixinInfos.Select (m => m.ConcreteMixinTypeOrNull);
-      var interfacesToImplement = _configurationProvider.GetInterfacesToImplement (targetClassDefinition, mixinInfos);
+      var concreteMixinTypesWithNulls = _mixinTypeGenerator.GetConcreteMixinTypes (targetClassDefinition.Mixins).ToList();
+      var interfacesToImplement = _configurationProvider.GetInterfacesToImplement (targetClassDefinition, concreteMixinTypesWithNulls);
       INextCallProxyGenerator nextCallProxyGenerator = null;
 
-      var context = new TargetTypeModifierContext (
-          targetClassDefinition, concreteMixinTypes, interfacesToImplement, nextCallProxyGenerator, typeAssemblyContext.ProxyType);
-      _targetTypeModifierFacade.ModifyTargetType (context);
+      _targetTypeModifierFacade.ModifyTargetType (
+          typeAssemblyContext.ProxyType, targetClassDefinition, nextCallProxyGenerator, interfacesToImplement, concreteMixinTypesWithNulls);
     }
 
     public void RebuildState (LoadedTypesContext loadedTypesContext)

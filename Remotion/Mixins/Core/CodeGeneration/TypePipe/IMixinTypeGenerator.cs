@@ -25,6 +25,6 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
   // TODO 5370: Better name.
   public interface IMixinTypeGenerator
   {
-    IEnumerable<MixinInfo> GetConcreteMixinTypes (IEnumerable<MixinDefinition> mixinDefinitions);
+    IEnumerable<ConcreteMixinType> GetConcreteMixinTypes (IEnumerable<MixinDefinition> mixinDefinitions);
   }
 }

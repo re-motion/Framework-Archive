@@ -16,12 +16,20 @@
 // 
 
 using System;
+using System.Collections.Generic;
+using Remotion.Mixins.Definitions;
+using Remotion.TypePipe.MutableReflection;
 
 namespace Remotion.Mixins.CodeGeneration.TypePipe
 {
   // TODO 5370: docs  
   public interface ITargetTypeModifierFacade
   {
-    void ModifyTargetType (TargetTypeModifierContext context);
+    void ModifyTargetType (
+        MutableType concreteTarget,
+        TargetClassDefinition targetClassDefinition,
+        INextCallProxyGenerator nextCallProxyGenerator,
+        IEnumerable<Type> interfacesToImplement,
+        IList<ConcreteMixinType> concreteMixinTypesWithNulls);
   }
 }

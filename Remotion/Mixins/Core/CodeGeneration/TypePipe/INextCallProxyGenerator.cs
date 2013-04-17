@@ -27,6 +27,9 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
   {
     Type Type { get; }
 
+    // TODO 5370: Make method that returns expression.
+    ConstructorInfo Constructor { get; }
+
     MethodInfo GetProxyMethodForOverriddenMethod (MethodDefinition method);
   }
 }

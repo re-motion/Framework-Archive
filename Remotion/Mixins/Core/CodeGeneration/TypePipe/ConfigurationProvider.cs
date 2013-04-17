@@ -35,16 +35,17 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       return TargetClassDefinitionFactory.CreateAndValidate (classContext);
     }
 
-    public IEnumerable<Type> GetInterfacesToImplement (TargetClassDefinition targetClassDefinition, IEnumerable<MixinInfo> mixinInfos)
+    public IEnumerable<Type> GetInterfacesToImplement (
+        TargetClassDefinition targetClassDefinition, IEnumerable<ConcreteMixinType> concreteMixinTypesWithNulls)
     {
       ArgumentUtility.CheckNotNull ("targetClassDefinition", targetClassDefinition);
-      ArgumentUtility.CheckNotNull ("mixinInfos", mixinInfos);
+      ArgumentUtility.CheckNotNull ("concreteMixinTypesWithNulls", concreteMixinTypesWithNulls);
 
       var implementedInterfaceFinder = new ImplementedInterfaceFinder (
           targetClassDefinition.ImplementedInterfaces,
           targetClassDefinition.ReceivedInterfaces,
           targetClassDefinition.RequiredTargetCallTypes,
-          mixinInfos.Select (m => m.ConcreteMixinTypeOrNull).Where (t => t != null));
+          concreteMixinTypesWithNulls.Where (t => t != null));
 
       return implementedInterfaceFinder.GetInterfacesToImplement();
     }

@@ -17,6 +17,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using Remotion.Mixins.Context;
 using Remotion.Mixins.Definitions;
 
@@ -25,21 +26,21 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
   // TODO 5370: Docs.
   public interface ITargetTypeModifier
   {
-    void AddInterfaces (TargetTypeModifierContext context, IEnumerable<Type> interfacesToImplement);
-    void AddFields (TargetTypeModifierContext context, Type nextCallProxyType);
-    void AddTypeInitializations (TargetTypeModifierContext context, ClassContext classContext, IEnumerable<Type> expectedMixinTypes);
-    void AddInitializations (TargetTypeModifierContext context);
+    void AddInterfaces (IEnumerable<Type> interfacesToImplement);
+    void AddFields (Type nextCallProxyType);
+    void AddTypeInitializations (ClassContext classContext, IEnumerable<Type> expectedMixinTypes);
+    void AddInitializations ();
 
-    void ImplementIInitializableMixinTarget (TargetTypeModifierContext context, IEnumerable<Type> expectedMixinTypes);
-    void ImplementIMixinTarget (TargetTypeModifierContext context);
-    void ImplementIntroducedInterfaces (TargetTypeModifierContext context, IEnumerable<InterfaceIntroductionDefinition> introducedInterfaces);
-    void ImplementRequiredDuckMethods (TargetTypeModifierContext context);
-    void ImplementAttributes (TargetTypeModifierContext context, IAttributeIntroductionTarget targetConfiguration, TargetClassDefinition targetClassDefinition);
+    void ImplementIInitializableMixinTarget (IList<Type> expectedMixinTypes, ConstructorInfo nextCallProxyConstructor);
+    void ImplementIMixinTarget (string targetClassName);
+    void ImplementIntroducedInterfaces (IEnumerable<InterfaceIntroductionDefinition> introducedInterfaces);
+    void ImplementRequiredDuckMethods (TargetClassDefinition targetClassDefinition);
+    void ImplementAttributes (IAttributeIntroductionTarget targetConfiguration, TargetClassDefinition targetClassDefinition);
 
-    void AddMixedTypeAttribute (TargetTypeModifierContext context, TargetClassDefinition targetClassDefinition);
-    void AddDebuggerDisplayAttribute (TargetTypeModifierContext context, TargetClassDefinition targetClassDefinition);
+    void AddMixedTypeAttribute (TargetClassDefinition targetClassDefinition);
+    void AddDebuggerDisplayAttribute (TargetClassDefinition targetClassDefinition);
 
-    void ImplementOverrides (TargetTypeModifierContext context);
-    void ImplementOverridingMethods (TargetTypeModifierContext context, IList<ConcreteMixinType> concreteMixinTypes);
+    void ImplementOverrides (TargetClassDefinition targetClassDefinition, INextCallProxyGenerator nextCallProxyGenerator);
+    void ImplementOverridingMethods (TargetClassDefinition targetClassDefinition, IList<ConcreteMixinType> concreteMixinTypesWithNulls);
   }
 }

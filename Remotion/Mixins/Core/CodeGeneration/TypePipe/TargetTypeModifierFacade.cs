@@ -15,7 +15,10 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Utilities;
+using System.Collections.Generic;
+using Remotion.Mixins.Definitions;
+using Remotion.TypePipe.MutableReflection;
+using System.Linq;
 
 namespace Remotion.Mixins.CodeGeneration.TypePipe
 {
@@ -23,34 +26,39 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
   // TODO 5370: tests
   public class TargetTypeModifierFacade : ITargetTypeModifierFacade
   {
-    private readonly ITargetTypeModifier _targetTypeModifier;
-
-    public TargetTypeModifierFacade (ITargetTypeModifier targetTypeModifier)
+    public void ModifyTargetType (
+        MutableType concreteTarget,
+        TargetClassDefinition targetClassDefinition,
+        INextCallProxyGenerator nextCallProxyGenerator,
+        IEnumerable<Type> interfacesToImplement,
+        IList<ConcreteMixinType> concreteMixinTypesWithNulls)
     {
-      ArgumentUtility.CheckNotNull ("targetTypeModifier", targetTypeModifier);
 
-      _targetTypeModifier = targetTypeModifier;
+      var modifier = new TargetTypeModifier (concreteTarget, new ExpressionBuilder(), new AttributeGenerator());
+      var expectedMixinTypes = GetExpectedMixinTypes (targetClassDefinition, concreteMixinTypesWithNulls);
+
+      modifier.AddInterfaces (interfacesToImplement);
+      modifier.AddFields (nextCallProxyGenerator.Type);
+      modifier.AddTypeInitializations (targetClassDefinition.ConfigurationContext, expectedMixinTypes);
+      modifier.AddInitializations();
+      
+      modifier.ImplementIInitializableMixinTarget (expectedMixinTypes, nextCallProxyGenerator.Constructor);
+      modifier.ImplementIMixinTarget (targetClassDefinition.Name);
+      modifier.ImplementIntroducedInterfaces (targetClassDefinition.ReceivedInterfaces);
+      modifier.ImplementRequiredDuckMethods (targetClassDefinition);
+      
+      modifier.AddMixedTypeAttribute (targetClassDefinition);
+      modifier.AddDebuggerDisplayAttribute (targetClassDefinition);
+      
+      modifier.ImplementOverrides (targetClassDefinition, nextCallProxyGenerator);
+      modifier.ImplementOverridingMethods (targetClassDefinition, concreteMixinTypesWithNulls);
     }
 
-    public void ModifyTargetType (TargetTypeModifierContext context)
+    private static List<Type> GetExpectedMixinTypes (
+        TargetClassDefinition targetClassDefinition, IList<ConcreteMixinType> concreteMixinTypesWithNulls)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
-
-      _targetTypeModifier.AddInterfaces (context, context.InterfacesToImplement);
-      _targetTypeModifier.AddFields (context, context.NextCallProxyGenerator.Type);
-      _targetTypeModifier.AddTypeInitializations (context, context.TargetClassDefinition.ConfigurationContext, context.MixinTypes);
-      _targetTypeModifier.AddInitializations (context);
-
-      _targetTypeModifier.ImplementIInitializableMixinTarget (context, context.MixinTypes);
-      _targetTypeModifier.ImplementIMixinTarget (context);
-      _targetTypeModifier.ImplementIntroducedInterfaces (context, context.TargetClassDefinition.ReceivedInterfaces);
-      _targetTypeModifier.ImplementRequiredDuckMethods (context);
-
-      _targetTypeModifier.AddMixedTypeAttribute (context, context.TargetClassDefinition);
-      _targetTypeModifier.AddDebuggerDisplayAttribute (context, context.TargetClassDefinition);
-
-      _targetTypeModifier.ImplementOverrides (context);
-      _targetTypeModifier.ImplementOverridingMethods (context, context.ConcreteMixinTypes);
+      // Get derived mixin type or the original mixin type if there is no derived.
+      return concreteMixinTypesWithNulls.Select ((m, i) => m != null ? m.GeneratedType : targetClassDefinition.Mixins[i].Type).ToList();
     }
   }
 }
