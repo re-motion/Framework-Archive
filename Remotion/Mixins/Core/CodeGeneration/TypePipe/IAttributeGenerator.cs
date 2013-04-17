@@ -15,8 +15,11 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 
+using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
+using Remotion.Mixins.Context;
 using Remotion.Mixins.Definitions;
 using Remotion.TypePipe.MutableReflection;
 
@@ -28,9 +31,11 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
   {
     void AddDebuggerBrowsableAttribute (IMutableMember member, DebuggerBrowsableState debuggerBrowsableState);
 
-    void AddDebuggerDisplayAttribute (IMutableMember member, string debuggerDisplayString, string debuggerDisplayNameString);
+    void AddDebuggerDisplayAttribute (IMutableMember member, string debuggerDisplayString, string debuggerDisplayNameStringOrNull);
 
     void AddIntroducedMemberAttribute (IMutableMember member, MemberInfo interfaceMember, MemberDefinitionBase implementingMember);
+
+    void AddMixedTypeAttribute (IMutableMember member, ClassContext classContext, IEnumerable<Type> orderedMixinTypes);
 
     void ReplicateAttributes (IAttributableDefinition source, IMutableMember destination);
   }

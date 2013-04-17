@@ -251,14 +251,32 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       throw new NotImplementedException();
     }
 
-    public void AddMixedTypeAttribute (TargetTypeModifierContext context)
+    public void ImplementAttributes (TargetTypeModifierContext context)
     {
       throw new NotImplementedException();
     }
 
-    public void AddDebuggerAttributes (TargetTypeModifierContext context)
+    public void AddMixedTypeAttribute (TargetTypeModifierContext context, TargetClassDefinition targetClassDefinition)
     {
-      throw new NotImplementedException();
+      ArgumentUtility.CheckNotNull ("context", context);
+
+      var classContext = targetClassDefinition.ConfigurationContext;
+      var orderedMixinTypes = targetClassDefinition.Mixins.Select (m => m.Type);
+
+      _attributeGenerator.AddMixedTypeAttribute (context.ConcreteTarget, classContext, orderedMixinTypes);
+    }
+
+    public void AddDebuggerDisplayAttribute (TargetTypeModifierContext context, TargetClassDefinition targetClassDefinition)
+    {
+      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull ("targetClassDefinition", targetClassDefinition);
+
+      if (!targetClassDefinition.ReceivedAttributes.ContainsKey (typeof (DebuggerDisplayAttribute))
+          && !targetClassDefinition.CustomAttributes.ContainsKey (typeof (DebuggerDisplayAttribute)))
+      {
+        var debuggerDisplayString = "{ToString(),nq} (mixed)";
+        _attributeGenerator.AddDebuggerDisplayAttribute (context.ConcreteTarget, debuggerDisplayString, debuggerDisplayNameStringOrNull: null);
+      }
     }
 
     public void ImplementOverrides (TargetTypeModifierContext context)

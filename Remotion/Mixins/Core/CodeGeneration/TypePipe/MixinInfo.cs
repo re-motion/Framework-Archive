@@ -25,28 +25,20 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
   public class MixinInfo
   {
     private readonly MixinDefinition _definition;
-    private readonly Type _type;
     private readonly ConcreteMixinType _concreteMixinType;
 
-    public MixinInfo (MixinDefinition definition, Type type, ConcreteMixinType concreteMixinType)
+    public MixinInfo (MixinDefinition definition, ConcreteMixinType concreteMixinType)
     {
       ArgumentUtility.CheckNotNull ("definition", definition);
-      ArgumentUtility.CheckNotNull ("type", type);
       // Concrete mixin type may be null.
 
       _definition = definition;
-      _type = type;
       _concreteMixinType = concreteMixinType;
     }
 
     public MixinDefinition Definition
     {
       get { return _definition; }
-    }
-
-    public Type Type
-    {
-      get { return _type; }
     }
 
     public ConcreteMixinType ConcreteMixinTypeOrNull

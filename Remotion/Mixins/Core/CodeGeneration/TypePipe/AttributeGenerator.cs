@@ -15,8 +15,10 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
+using Remotion.Mixins.Context;
 using Remotion.Mixins.Definitions;
 using Remotion.TypePipe.MutableReflection;
 using Remotion.Utilities;
@@ -46,16 +48,16 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       member.AddCustomAttribute (attribute);
     }
 
-    public void AddDebuggerDisplayAttribute (IMutableMember member, string debuggerDisplayString, string debuggerDisplayNameString)
+    public void AddDebuggerDisplayAttribute (IMutableMember member, string debuggerDisplayString, string debuggerDisplayNameStringOrNull)
     {
       ArgumentUtility.CheckNotNull ("member", member);
       ArgumentUtility.CheckNotNullOrEmpty ("debuggerDisplayString", debuggerDisplayString);
-      ArgumentUtility.CheckNotNullOrEmpty ("debuggerDisplayNameString", debuggerDisplayNameString);
+      // Debugger display name may be null.
 
       var attribute = new CustomAttributeDeclaration (
           s_debuggerDisplayAttributeConstructor,
           new object[] { debuggerDisplayString },
-          new NamedArgumentDeclaration (s_debuggerDisplayAttributeNameProperty, debuggerDisplayNameString));
+          new NamedArgumentDeclaration (s_debuggerDisplayAttributeNameProperty, debuggerDisplayNameStringOrNull));
       member.AddCustomAttribute (attribute);
     }
 
@@ -69,6 +71,14 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
           s_introducedMemberAttributeConstructor,
           new object[] { implementingMember.DeclaringClass.Type, implementingMember.Name, interfaceMember.DeclaringType, interfaceMember.Name });
       member.AddCustomAttribute (attribute);
+    }
+
+    public void AddMixedTypeAttribute (IMutableMember member, ClassContext classContext, IEnumerable<Type> orderedMixinTypes)
+    {
+      ArgumentUtility.CheckNotNull ("member", member);
+      ArgumentUtility.CheckNotNull ("classContext", classContext);
+      ArgumentUtility.CheckNotNull ("orderedMixinTypes", orderedMixinTypes);
+      
     }
 
     public void ReplicateAttributes (IAttributableDefinition source, IMutableMember destination)

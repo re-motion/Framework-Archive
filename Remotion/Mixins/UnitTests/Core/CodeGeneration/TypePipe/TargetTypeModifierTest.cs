@@ -30,6 +30,7 @@ using Remotion.Mixins.CodeGeneration.DynamicProxy;
 using Remotion.Mixins.CodeGeneration.TypePipe;
 using Remotion.Mixins.Context;
 using Remotion.Mixins.Definitions;
+using Remotion.Mixins.UnitTests.Core.Definitions.TestDomain;
 using Remotion.Mixins.Utilities;
 using Remotion.TypePipe.Expressions;
 using Remotion.TypePipe.MutableReflection;
@@ -404,6 +405,57 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
       Assert.That (addedEvent.MutableRemoveMethod, Is.SameAs (fakeRemoveMethod));
     }
 
+    [Test]
+    public void AddMixedTypeAttribute ()
+    {
+      var targetClassDefinition = GetTargetClassDefinitionWith<IntroducingMixin>();
+      var expectedOrderedMixinTypes = new[] { typeof (DummyMixin), typeof (IntroducingMixin) };
+      _attributeGeneratorMock
+          .Expect (
+              mock => mock.AddMixedTypeAttribute (
+                  Arg.Is (_concreteTarget),
+                  Arg.Is (targetClassDefinition.ConfigurationContext),
+                  Arg<IEnumerable<Type>>.List.Equal (expectedOrderedMixinTypes)));
+
+      _modifier.AddMixedTypeAttribute (_context, targetClassDefinition);
+
+      _attributeGeneratorMock.VerifyAllExpectations();
+    }
+
+    [Test]
+    public void AddDebuggerAttributes ()
+    {
+      var targetClassDefinition = GetTargetClassDefinitionWith<IntroducingMixin>();
+      _attributeGeneratorMock.Expect (mock => mock.AddDebuggerDisplayAttribute (_concreteTarget, "{ToString(),nq} (mixed)", null));
+
+      _modifier.AddDebuggerDisplayAttribute (_context, targetClassDefinition);
+
+      _attributeGeneratorMock.VerifyAllExpectations();
+    }
+
+    [Test]
+    public void AddDebuggerAttributes_TargetAlreadyHasDebuggerDisplayAttribute ()
+    {
+      var classContext = ClassContextObjectMother.Create (typeof (TypeWithDebuggerDisplayAttribute));
+      var targetClassDefinition = TargetClassDefinitionFactory.CreateAndValidate (classContext);
+
+      _modifier.AddDebuggerDisplayAttribute (_context, targetClassDefinition);
+
+      _attributeGeneratorMock.AssertWasNotCalled (mock => mock.AddDebuggerDisplayAttribute (null, "", ""), mi => mi.IgnoreArguments());
+    }
+
+    [Test]
+    public void AddDebuggerAttributes_DebuggerDisplayAttributeIsAlreadyIntroduced ()
+    {
+      var mixin = typeof (TypeWithDebuggerDisplayAttribute);
+      var classContext = ClassContextObjectMother.Create (typeof (Target), mixin);
+      var targetClassDefinition = TargetClassDefinitionFactory.CreateAndValidate (classContext);
+
+      _modifier.AddDebuggerDisplayAttribute (_context, targetClassDefinition);
+
+      _attributeGeneratorMock.AssertWasNotCalled (mock => mock.AddDebuggerDisplayAttribute (null, "", ""), mi => mi.IgnoreArguments());
+    }
+
     private void CheckField (Expression fieldExpression, string expectedName, Type expectedType, FieldAttributes expectedAttributes)
     {
       var memberExpression = (MemberExpression) fieldExpression;
@@ -450,16 +502,21 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
 
     private InterfaceIntroductionDefinition GetReceivedInterfacesForTargetWith<T> (MemberVisibility visibility)
     {
-      var classContext = MixinConfiguration
-          .BuildNew()
-          .ForClass<Target>()
-          .AddMixin<DummyMixin> () // Force introduction.Implementer.MixinIndex to be something other than '0'.
-          .AddMixin<T>().WithIntroducedMemberVisibility (visibility)
-          .BuildClassContext();
-      var targetClassDefinition = TargetClassDefinitionFactory.CreateAndValidate (classContext);
+      var targetClassDefinition = GetTargetClassDefinitionWith<T> (visibility);
       var receivedInterface = targetClassDefinition.ReceivedInterfaces.Single();
 
       return receivedInterface;
+    }
+
+    private TargetClassDefinition GetTargetClassDefinitionWith<T> (MemberVisibility visibility = MemberVisibility.Public)
+    {
+      var classContext = MixinConfiguration
+          .BuildNew()
+          .ForClass<Target>()
+          .AddMixin<DummyMixin>() // Force introduction.Implementer.MixinIndex to be something other than '0'.
+          .AddMixin<T>().WithIntroducedMemberVisibility (visibility)
+          .BuildClassContext();
+      return TargetClassDefinitionFactory.CreateAndValidate (classContext);
     }
 
     public interface IIntroducedInterface
@@ -489,6 +546,9 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
     public class Target { }
 
     public class DummyMixin { }
+
+    [DebuggerDisplay ("dummy")]
+    public class TypeWithDebuggerDisplayAttribute { }
 
     private class ClassImplementingIInitializableMixin : IInitializableMixin
     {

@@ -69,7 +69,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       //_targetTypeModifier.ImplementIntroducedInterfaces (context);
       //_targetTypeModifier.ImplementRequiredDuckMethods (context);
       //_targetTypeModifier.AddMixedTypeAttribute (context);
-      //_targetTypeModifier.AddDebuggerAttributes (context);
+      //_targetTypeModifier.AddDebuggerDisplayAttribute (context);
       //_targetTypeModifier.ImplementOverrides (context);
       //_targetTypeModifier.ImplementOverridingMethods (context);
     }
