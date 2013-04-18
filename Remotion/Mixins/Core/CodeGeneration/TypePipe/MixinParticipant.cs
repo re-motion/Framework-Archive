@@ -32,7 +32,12 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     private readonly INextCallProxyGenerator _nextCallProxyGenerator;
     private readonly ITargetTypeModifierFacade _targetTypeModifierFacade;
 
-    public MixinParticipant (
+    public MixinParticipant ()
+        : this (new ConfigurationProvider(), new MixinTypeGeneratorFacade(), new NextCallProxyGenerator(), new TargetTypeModifierFacade())
+    {
+    }
+
+    private MixinParticipant (
         IConfigurationProvider configurationProvider,
         IMixinTypeGeneratorFacade mixinTypeGeneratorFacade,
         INextCallProxyGenerator nextCallProxyGenerator,
@@ -51,7 +56,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     public ICacheKeyProvider PartialCacheKeyProvider
     {
-      get { throw new System.NotImplementedException(); }
+      get { return null; }
     }
 
     public void Participate (ITypeAssemblyContext typeAssemblyContext)

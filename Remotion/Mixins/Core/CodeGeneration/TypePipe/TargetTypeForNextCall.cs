@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,6 +23,7 @@ using Microsoft.Scripting.Ast;
 using Remotion.TypePipe.Expressions;
 using Remotion.TypePipe.MutableReflection;
 using Remotion.Utilities;
+using ReflectionUtility = Remotion.Mixins.Utilities.ReflectionUtility;
 
 namespace Remotion.Mixins.CodeGeneration.TypePipe
 {
@@ -69,22 +69,20 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       return _baseCallMethods[overriddenMethod];
     }
 
-    private MethodInfo ImplementBaseCallMethod (MethodInfo method)
+    private MethodInfo ImplementBaseCallMethod (MethodInfo baseMethod)
     {
-      Assertion.IsTrue (Utilities.ReflectionUtility.IsPublicOrProtected (method));
+      Assertion.IsTrue (ReflectionUtility.IsPublicOrProtected (baseMethod));
+      if (baseMethod.IsAbstract)
+      {
+        var message = string.Format ("The given method {0}.{1} is abstract.", baseMethod.DeclaringType.FullName, baseMethod.Name);
+        throw new ArgumentException (message, "baseMethod");
+      }
 
       var attributes = MethodAttributes.Public | MethodAttributes.HideBySig;
-      var name = "__base__" + method.Name;
-      var md = MethodDeclaration.CreateEquivalent (method);
+      var name = "__base__" + baseMethod.Name;
+      var md = MethodDeclaration.CreateEquivalent (baseMethod);
 
-      return _concreteTarget.AddMethod (name, attributes, md, ctx =>
-      {
-        var baseMethod = ctx.BaseMethod;
-        if (baseMethod.IsGenericMethod)
-          baseMethod = baseMethod.MakeTypePipeGenericMethod (ctx.GenericParameters.ToArray ());
-
-        return ctx.CallBase (baseMethod);
-      });
+      return _concreteTarget.AddMethod (name, attributes, md, ctx => ctx.CallBase (baseMethod, ctx.Parameters.Cast<Expression>()));
     }
 
     //public MethodInfo GetPublicMethodWrapper (MethodDefinition methodToBeWrapped)
