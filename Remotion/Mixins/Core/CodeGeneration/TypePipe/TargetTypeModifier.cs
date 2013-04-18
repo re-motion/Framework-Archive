@@ -394,7 +394,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
       return Expression.Assign (
           _mixinArrayInitializerField,
-          Expression.New (s_mixinArrayInitializerCtor, Expression.Constant (targetType), Expression.Constant (concreteMixinTypes.ToArray())));
+          Expression.New (s_mixinArrayInitializerCtor, Expression.Constant (targetType), Expression.ArrayConstant (concreteMixinTypes)));
     }
 
     private Expression ImplementSettingFirstNextCallProxy (ThisExpression @this, ConstructorInfo nextCallProxyConstructor)

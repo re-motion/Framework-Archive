@@ -42,8 +42,8 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       return Expression.New (
           s_constructor,
           Expression.Constant (MixinType),
-          Expression.New (s_hashSetConstructor, Expression.Constant (Overriders.ToArray())),
-          Expression.New (s_hashSetConstructor, Expression.Constant (Overridden.ToArray())));
+          Expression.New (s_hashSetConstructor, Expression.ArrayConstant (Overriders)),
+          Expression.New (s_hashSetConstructor, Expression.ArrayConstant (Overridden)));
     }
   }
 }

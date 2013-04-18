@@ -39,7 +39,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
           s_constructor,
           Expression.Constant (Type),
           Expression.NewArrayInit (typeof (MixinContext), MixinContexts.Select (CreateMixinContextExpression)),
-          Expression.Constant (ComposedInterfaces.ToArray()));
+          Expression.ArrayConstant (ComposedInterfaces));
     }
 
     private Expression CreateMixinContextExpression (MixinContext mixinContext)

@@ -40,7 +40,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
           Expression.Constant (MixinKind),
           Expression.Constant (MixinType),
           Expression.Constant (IntroducedMemberVisibility),
-          Expression.Constant (ExplicitDependencies.ToArray()),
+          Expression.ArrayConstant (ExplicitDependencies),
           CreateOriginExpression (Origin));
     }
 

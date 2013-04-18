@@ -21,10 +21,7 @@ using System.Linq;
 using System.Reflection;
 using Microsoft.Scripting.Ast;
 using Remotion.Collections;
-using Remotion.Mixins.CodeGeneration.DynamicProxy;
 using Remotion.Mixins.Utilities;
-using Remotion.Reflection.CodeGeneration;
-using Remotion.Reflection.CodeGeneration.DPExtensions;
 using Remotion.TypePipe.Expressions;
 using Remotion.TypePipe.Implementation;
 using Remotion.TypePipe.MutableReflection;
@@ -45,7 +42,10 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     public MixinTypeGenerator (
         ConcreteMixinTypeIdentifier identifier, MutableType type, IAttributeGenerator attributeGenerator, IExpressionBuilder expressionBuilder)
     {
-      // TODO 5370
+      ArgumentUtility.CheckNotNull ("identifier", identifier);
+      ArgumentUtility.CheckNotNull ("type", type);
+      ArgumentUtility.CheckNotNull ("attributeGenerator", attributeGenerator);
+      ArgumentUtility.CheckNotNull ("expressionBuilder", expressionBuilder);
 
       _identifier = identifier;
       _type = type;
