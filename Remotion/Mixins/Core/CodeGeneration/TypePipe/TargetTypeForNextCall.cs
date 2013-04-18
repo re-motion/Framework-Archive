@@ -17,6 +17,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using Microsoft.Scripting.Ast;
@@ -31,6 +32,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
   public class TargetTypeForNextCall : ITargetTypeForNextCall
   {
     private readonly MutableType _concreteTarget;
+    private readonly Expression _extensionsField;
     private readonly Dictionary<MethodInfo, MethodInfo> _baseCallMethods = new Dictionary<MethodInfo, MethodInfo>();
 
     public TargetTypeForNextCall (MutableType concreteTarget)
@@ -38,15 +40,20 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       ArgumentUtility.CheckNotNull ("concreteTarget", concreteTarget);
 
       _concreteTarget = concreteTarget;
+      _extensionsField = AddDebuggerInvisibleExtensionsField();
+    }
+
+    private Expression AddDebuggerInvisibleExtensionsField ()
+    {
+      var field = _concreteTarget.AddField ("__extensions", FieldAttributes.Private, typeof (object[]));
+      new AttributeGenerator().AddDebuggerBrowsableAttribute(field, DebuggerBrowsableState.Never);
+
+      return Expression.Field (new ThisExpression (_concreteTarget), field);
     }
 
     public Expression ExtensionsField
     {
-      get
-      {
-        var field = _concreteTarget.AddedFields.Single (f => f.Name == "__extensions");
-        return Expression.Field (new ThisExpression (_concreteTarget), field);
-      }
+      get { return _extensionsField; }
     }
 
     public MethodInfo GetBaseCallMethod (MethodInfo overriddenMethod)

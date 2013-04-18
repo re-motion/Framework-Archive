@@ -94,10 +94,12 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     {
       ArgumentUtility.CheckNotNull ("nextCallProxyType", nextCallProxyType);
 
+      // '__extensions' field of type 'object[]' has already been added by TargetTypeForNextCall.
+      _extensionsField = GetFieldExpression (_concreteTarget.AddedFields.Single (f => f.Name == "__extensions"));
+
       var privateStatic = FieldAttributes.Private | FieldAttributes.Static;
       _classContextField = AddDebuggerInvisibleField ("__classContext", typeof (ClassContext), privateStatic);
       _mixinArrayInitializerField = AddDebuggerInvisibleField ("__mixinArrayInitializer", typeof (MixinArrayInitializer), privateStatic);
-      _extensionsField = AddDebuggerInvisibleField ("__extensions", typeof (object[]), FieldAttributes.Private);
       _firstField = AddDebuggerInvisibleField ("__first", nextCallProxyType, FieldAttributes.Private);
     }
 
@@ -377,6 +379,11 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       var field = _concreteTarget.AddField (name, attributes, type);
       _attributeGenerator.AddDebuggerBrowsableAttribute (field, DebuggerBrowsableState.Never);
 
+      return GetFieldExpression (field);
+    }
+
+    private Expression GetFieldExpression (MutableFieldInfo field)
+    {
       var instance = field.IsStatic ? null : new ThisExpression (_concreteTarget);
       return Expression.Field (instance, field);
     }
