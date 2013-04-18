@@ -18,13 +18,13 @@
 using System;
 using System.Collections.Generic;
 using Remotion.Mixins.Definitions;
+using Remotion.TypePipe.Implementation;
 
 namespace Remotion.Mixins.CodeGeneration.TypePipe
 {
   // TODO 5370: Docs.
-  // TODO 5370: Better name.
-  public interface IMixinTypeGenerator
+  public interface IMixinTypeGeneratorFacade
   {
-    IEnumerable<ConcreteMixinType> GenerateConcreteMixinTypes (IEnumerable<MixinDefinition> mixinDefinitions);
+    IEnumerable<ConcreteMixinType> GenerateConcreteMixinTypesWithNulls (ITypeAssemblyContext context, IEnumerable<MixinDefinition> mixins);
   }
 }

@@ -18,8 +18,10 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
+using Remotion.Mixins.CodeGeneration.DynamicProxy;
 using Remotion.Mixins.Context;
 using Remotion.Mixins.Definitions;
+using Remotion.Reflection.CodeGeneration;
 using Remotion.TypePipe.MutableReflection;
 using Remotion.Utilities;
 using System.Linq;
@@ -40,6 +42,18 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     private static readonly ConstructorInfo s_introducedMemberAttributeConstructor =
         MemberInfoFromExpressionUtility.GetConstructor (() => new IntroducedMemberAttribute (null, "mixinMemberName", null, "interfaceMemberName"));
+
+    private static readonly ConstructorInfo s_concreteMixedTypeAttributeConstructor =
+        MemberInfoFromExpressionUtility.GetConstructor (() => new ConcreteMixedTypeAttribute (new object[0], new Type[0]));
+
+    private static readonly ConstructorInfo s_concreteMixinTypeAttributeConstructor =
+        MemberInfoFromExpressionUtility.GetConstructor (() => new ConcreteMixinTypeAttribute (new object[0]));
+
+    private static readonly ConstructorInfo s_overrideInterfaceMappingAttributeConstructor =
+        MemberInfoFromExpressionUtility.GetConstructor (() => new OverrideInterfaceMappingAttribute (null, "methodName", "methodSignature"));
+
+    private static readonly ConstructorInfo s_generatedMethodWrapperAttributeConstructor =
+        MemberInfoFromExpressionUtility.GetConstructor (() => new GeneratedMethodWrapperAttribute (null, "methodName", "methodSignature"));
 
     public void AddDebuggerBrowsableAttribute (IMutableMember member, DebuggerBrowsableState debuggerBrowsableState)
     {
@@ -74,13 +88,50 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       member.AddCustomAttribute (attribute);
     }
 
-    public void AddMixedTypeAttribute (IMutableMember member, ClassContext classContext, IEnumerable<Type> orderedMixinTypes)
+    public void AddConcreteMixedTypeAttribute (IMutableMember member, ClassContext classContext, IEnumerable<Type> orderedMixinTypes)
     {
       ArgumentUtility.CheckNotNull ("member", member);
       ArgumentUtility.CheckNotNull ("classContext", classContext);
       ArgumentUtility.CheckNotNull ("orderedMixinTypes", orderedMixinTypes);
-      
-      // TODO
+
+      // TODO 5370: just the easiest way to get to the data.
+      var attributeData = ConcreteMixedTypeAttribute.FromClassContext (classContext, orderedMixinTypes.ToArray());
+      var attribute = new CustomAttributeDeclaration (
+          s_concreteMixedTypeAttributeConstructor, new object[] { attributeData.ClassContextData, attributeData.OrderedMixinTypes });
+      member.AddCustomAttribute (attribute);
+    }
+
+    public void AddConcreteMixinTypeAttribute (IMutableMember member, ConcreteMixinTypeIdentifier concreteMixinTypeIdentifier)
+    {
+      ArgumentUtility.CheckNotNull ("member", member);
+      ArgumentUtility.CheckNotNull ("concreteMixinTypeIdentifier", concreteMixinTypeIdentifier);
+
+      // TODO 5370: just the easiest way to get to the data.
+      var attributeData = ConcreteMixinTypeAttribute.Create (concreteMixinTypeIdentifier).ConcreteMixinTypeIdentifierData;
+      var attribute = new CustomAttributeDeclaration (s_concreteMixinTypeAttributeConstructor, new object[] { attributeData });
+      member.AddCustomAttribute (attribute);
+    }
+
+    public void AddOverrideInterfaceMappingAttribute (IMutableMember member, MethodInfo overriddenMethod)
+    {
+      ArgumentUtility.CheckNotNull ("member", member);
+      ArgumentUtility.CheckNotNull ("overriddenMethod", overriddenMethod);
+
+      var attribute = new CustomAttributeDeclaration (
+          s_overrideInterfaceMappingAttributeConstructor,
+          new object[] { overriddenMethod.DeclaringType, overriddenMethod.Name, overriddenMethod.ToString() });
+      member.AddCustomAttribute (attribute);
+    }
+
+    public void AddGeneratedMethodWrapperAttribute (IMutableMember member, MethodInfo methodToBeWrapped)
+    {
+      ArgumentUtility.CheckNotNull ("member", member);
+      ArgumentUtility.CheckNotNull ("methodToBeWrapped", methodToBeWrapped);
+
+      var attribute = new CustomAttributeDeclaration (
+          s_generatedMethodWrapperAttributeConstructor,
+          new object[] { methodToBeWrapped.DeclaringType, methodToBeWrapped.Name, methodToBeWrapped.ToString() });
+      member.AddCustomAttribute (attribute);
     }
 
     public void AddAttribute (IMutableMember member, ICustomAttributeData attributeData)

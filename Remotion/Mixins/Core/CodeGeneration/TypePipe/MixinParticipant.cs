@@ -28,23 +28,23 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
   public class MixinParticipant : IParticipant
   {
     private readonly IConfigurationProvider _configurationProvider;
-    private readonly IMixinTypeGenerator _mixinTypeGenerator;
+    private readonly IMixinTypeGeneratorFacade _mixinTypeGeneratorFacade;
     private readonly INextCallProxyGenerator _nextCallProxyGenerator;
     private readonly ITargetTypeModifierFacade _targetTypeModifierFacade;
 
     public MixinParticipant (
         IConfigurationProvider configurationProvider,
-        IMixinTypeGenerator mixinTypeGenerator,
+        IMixinTypeGeneratorFacade mixinTypeGeneratorFacade,
         INextCallProxyGenerator nextCallProxyGenerator,
         ITargetTypeModifierFacade targetTypeModifierFacade)
     {
       ArgumentUtility.CheckNotNull ("configurationProvider", configurationProvider);
-      ArgumentUtility.CheckNotNull ("mixinTypeGenerator", mixinTypeGenerator);
+      ArgumentUtility.CheckNotNull ("mixinTypeGeneratorFacade", mixinTypeGeneratorFacade);
       ArgumentUtility.CheckNotNull ("nextCallProxyGenerator", nextCallProxyGenerator);
       ArgumentUtility.CheckNotNull ("targetTypeModifierFacade", targetTypeModifierFacade);
 
       _configurationProvider = configurationProvider;
-      _mixinTypeGenerator = mixinTypeGenerator;
+      _mixinTypeGeneratorFacade = mixinTypeGeneratorFacade;
       _nextCallProxyGenerator = nextCallProxyGenerator;
       _targetTypeModifierFacade = targetTypeModifierFacade;
     }
@@ -62,7 +62,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       var concreteTarget = typeAssemblyContext.ProxyType;
 
       var targetClassDefinition = _configurationProvider.GetTargetClassDefinition (target);
-      var concreteMixinTypesWithNulls = _mixinTypeGenerator.GenerateConcreteMixinTypes (targetClassDefinition.Mixins).ToList();
+      var concreteMixinTypesWithNulls = _mixinTypeGeneratorFacade.GenerateConcreteMixinTypesWithNulls (typeAssemblyContext, targetClassDefinition.Mixins).ToList();
       var interfacesToImplement = _configurationProvider.GetInterfacesToImplement (targetClassDefinition, concreteMixinTypesWithNulls);
       var targetTypeForNextCall = _nextCallProxyGenerator.GetTargetTypeWrapper (concreteTarget);
       var nextCallProxy = _nextCallProxyGenerator.Create (

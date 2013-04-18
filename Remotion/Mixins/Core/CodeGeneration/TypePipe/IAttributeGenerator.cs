@@ -35,7 +35,13 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     void AddIntroducedMemberAttribute (IMutableMember member, MemberInfo interfaceMember, MemberDefinitionBase implementingMember);
 
-    void AddMixedTypeAttribute (IMutableMember member, ClassContext classContext, IEnumerable<Type> orderedMixinTypes);
+    void AddConcreteMixedTypeAttribute (IMutableMember member, ClassContext classContext, IEnumerable<Type> orderedMixinTypes);
+
+    void AddConcreteMixinTypeAttribute (IMutableMember member, ConcreteMixinTypeIdentifier concreteMixinTypeIdentifier);
+
+    void AddOverrideInterfaceMappingAttribute (IMutableMember member, MethodInfo overriddenMethod);
+
+    void AddGeneratedMethodWrapperAttribute (IMutableMember member, MethodInfo methodToBeWrapped);
 
     void AddAttribute (IMutableMember member, ICustomAttributeData attributeData);
 

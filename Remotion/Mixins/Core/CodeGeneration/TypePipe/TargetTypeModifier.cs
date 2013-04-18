@@ -275,7 +275,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       var classContext = targetClassDefinition.ConfigurationContext;
       var orderedMixinTypes = targetClassDefinition.Mixins.Select (m => m.Type);
 
-      _attributeGenerator.AddMixedTypeAttribute (_concreteTarget, classContext, orderedMixinTypes);
+      _attributeGenerator.AddConcreteMixedTypeAttribute (_concreteTarget, classContext, orderedMixinTypes);
     }
 
     public void AddDebuggerDisplayAttribute (TargetClassDefinition targetClassDefinition)

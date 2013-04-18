@@ -133,14 +133,16 @@
     <Compile Include="CodeGeneration\TypeImportException.cs" />
     <Compile Include="CodeGeneration\TypePipe\AttributeGenerator.cs" />
     <Compile Include="CodeGeneration\TypePipe\ClassContextSerializerBase.cs" />
+    <Compile Include="CodeGeneration\TypePipe\ConcreteMixinTypeIdentifierSerializerBase.cs" />
     <Compile Include="CodeGeneration\TypePipe\ConfigurationProvider.cs" />
     <Compile Include="CodeGeneration\TypePipe\ExpressionBuilder.cs" />
     <Compile Include="CodeGeneration\TypePipe\ExpressionClassContextSerializer.cs" />
+    <Compile Include="CodeGeneration\TypePipe\ExpressionConcreteMixinTypeIdentifierSerializer.cs" />
     <Compile Include="CodeGeneration\TypePipe\ExpressionMixinContextOriginSerializer.cs" />
     <Compile Include="CodeGeneration\TypePipe\ExpressionMixinContextSerializer.cs" />
     <Compile Include="CodeGeneration\TypePipe\IAttributeGenerator.cs" />
     <Compile Include="CodeGeneration\TypePipe\IExpressionBuilder.cs" />
-    <Compile Include="CodeGeneration\TypePipe\IMixinTypeGenerator.cs" />
+    <Compile Include="CodeGeneration\TypePipe\IMixinTypeGeneratorFacade.cs" />
     <Compile Include="CodeGeneration\TypePipe\IConfigurationProvider.cs" />
     <Compile Include="CodeGeneration\TypePipe\INextCallMethodGenerator.cs" />
     <Compile Include="CodeGeneration\TypePipe\INextCallProxy.cs" />
@@ -151,11 +153,14 @@
     <Compile Include="CodeGeneration\TypePipe\MixinContextOriginSerializerBase.cs" />
     <Compile Include="CodeGeneration\TypePipe\MixinContextSerializerBase.cs" />
     <Compile Include="CodeGeneration\TypePipe\MixinParticipant.cs" />
+    <Compile Include="CodeGeneration\TypePipe\MixinTypeGenerator.cs" />
+    <Compile Include="CodeGeneration\TypePipe\MixinTypeGeneratorFacade.cs" />
     <Compile Include="CodeGeneration\TypePipe\NextCallMethodGenerator.cs" />
     <Compile Include="CodeGeneration\TypePipe\NextCallProxy.cs" />
     <Compile Include="CodeGeneration\TypePipe\NextCallProxyGenerator.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="CodeGeneration\TypePipe\OverrideInterfaceGenerator2.cs" />
     <Compile Include="CodeGeneration\TypePipe\TargetTypeForNextCall.cs" />
     <Compile Include="CodeGeneration\TypePipe\TargetTypeModifier.cs" />
     <Compile Include="CodeGeneration\TypePipe\TargetTypeModifierFacade.cs" />
