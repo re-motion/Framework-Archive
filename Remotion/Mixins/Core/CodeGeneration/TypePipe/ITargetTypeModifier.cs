@@ -40,7 +40,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     void AddMixedTypeAttribute (TargetClassDefinition targetClassDefinition);
     void AddDebuggerDisplayAttribute (TargetClassDefinition targetClassDefinition);
 
-    void ImplementOverrides (TargetClassDefinition targetClassDefinition, INextCallProxyGenerator nextCallProxyGenerator);
+    void ImplementOverrides (TargetClassDefinition targetClassDefinition, INextCallProxy nextCallProxy);
     void ImplementOverridingMethods (TargetClassDefinition targetClassDefinition, IList<ConcreteMixinType> concreteMixinTypesWithNulls);
   }
 }

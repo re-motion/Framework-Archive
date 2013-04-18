@@ -28,7 +28,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     void ModifyTargetType (
         MutableType concreteTarget,
         TargetClassDefinition targetClassDefinition,
-        INextCallProxyGenerator nextCallProxyGenerator,
+        INextCallProxy nextCallProxy,
         IEnumerable<Type> interfacesToImplement,
         IList<ConcreteMixinType> concreteMixinTypesWithNulls);
   }

@@ -29,7 +29,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     public void ModifyTargetType (
         MutableType concreteTarget,
         TargetClassDefinition targetClassDefinition,
-        INextCallProxyGenerator nextCallProxyGenerator,
+        INextCallProxy nextCallProxy,
         IEnumerable<Type> interfacesToImplement,
         IList<ConcreteMixinType> concreteMixinTypesWithNulls)
     {
@@ -38,11 +38,11 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       var expectedMixinTypes = GetExpectedMixinTypes (targetClassDefinition, concreteMixinTypesWithNulls);
 
       modifier.AddInterfaces (interfacesToImplement);
-      modifier.AddFields (nextCallProxyGenerator.Type);
+      modifier.AddFields (nextCallProxy.Type);
       modifier.AddTypeInitializations (targetClassDefinition.ConfigurationContext, expectedMixinTypes);
       modifier.AddInitializations();
       
-      modifier.ImplementIInitializableMixinTarget (expectedMixinTypes, nextCallProxyGenerator.Constructor);
+      modifier.ImplementIInitializableMixinTarget (expectedMixinTypes, nextCallProxy.Constructor);
       modifier.ImplementIMixinTarget (targetClassDefinition.Name);
       modifier.ImplementIntroducedInterfaces (targetClassDefinition.ReceivedInterfaces);
       modifier.ImplementRequiredDuckMethods (targetClassDefinition);
@@ -50,7 +50,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       modifier.AddMixedTypeAttribute (targetClassDefinition);
       modifier.AddDebuggerDisplayAttribute (targetClassDefinition);
       
-      modifier.ImplementOverrides (targetClassDefinition, nextCallProxyGenerator);
+      modifier.ImplementOverrides (targetClassDefinition, nextCallProxy);
       modifier.ImplementOverridingMethods (targetClassDefinition, concreteMixinTypesWithNulls);
     }
 

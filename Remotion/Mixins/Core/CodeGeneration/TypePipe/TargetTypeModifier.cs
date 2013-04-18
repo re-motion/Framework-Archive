@@ -290,7 +290,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       }
     }
 
-    public void ImplementOverrides (TargetClassDefinition targetClassDefinition, INextCallProxyGenerator nextCallProxyGenerator)
+    public void ImplementOverrides (TargetClassDefinition targetClassDefinition, INextCallProxy nextCallProxy)
     {
       ArgumentUtility.CheckNotNull ("targetClassDefinition", targetClassDefinition);
 
@@ -298,55 +298,55 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       {
         if (member.Overrides.Count > 0)
         {
-          var memberOverride = ImplementOverride (member, nextCallProxyGenerator);
+          var memberOverride = ImplementOverride (member, nextCallProxy);
           ImplementAttributes (memberOverride, member, targetClassDefinition);
         }
       }
     }
 
-    public virtual IMutableMember ImplementOverride (MemberDefinitionBase member, INextCallProxyGenerator nextCallProxyGenerator)
+    public virtual IMutableMember ImplementOverride (MemberDefinitionBase member, INextCallProxy nextCallProxy)
     {
       ArgumentUtility.CheckNotNull ("member", member);
 
       if (member is MethodDefinition)
-        return ImplementMethodOverride ((MethodDefinition) member, nextCallProxyGenerator);
+        return ImplementMethodOverride ((MethodDefinition) member, nextCallProxy);
       if (member is PropertyDefinition)
-        return ImplementPropertyOverride ((PropertyDefinition) member, nextCallProxyGenerator);
+        return ImplementPropertyOverride ((PropertyDefinition) member, nextCallProxy);
       Assertion.IsNotNull (member is EventDefinition, "Only methods, properties, and events can be overridden.");
-      return ImplementEventOverride ((EventDefinition) member, nextCallProxyGenerator);
+      return ImplementEventOverride ((EventDefinition) member, nextCallProxy);
     }
 
-    public virtual MutableMethodInfo ImplementMethodOverride (MethodDefinition method, INextCallProxyGenerator nextCallProxyGenerator)
+    public virtual MutableMethodInfo ImplementMethodOverride (MethodDefinition method, INextCallProxy nextCallProxy)
     {
       ArgumentUtility.CheckNotNull ("method", method);
 
-      var proxyMethod = nextCallProxyGenerator.GetProxyMethodForOverriddenMethod (method);
+      var proxyMethod = nextCallProxy.GetProxyMethodForOverriddenMethod (method);
       var methodOverride = _concreteTarget.GetOrAddOverride (method.MethodInfo);
       methodOverride.SetBody (ctx => _expressionBuilder.CreateInitializingDelegation (ctx, _extensionsField, _firstField, proxyMethod));
 
       return methodOverride;
     }
 
-    public virtual IMutableMember ImplementPropertyOverride (PropertyDefinition property, INextCallProxyGenerator nextCallProxyGenerator)
+    public virtual IMutableMember ImplementPropertyOverride (PropertyDefinition property, INextCallProxy nextCallProxy)
     {
       ArgumentUtility.CheckNotNull ("property", property);
 
       MutableMethodInfo getMethodOverride = null, setMethodOverride = null;
       if (property.GetMethod != null && property.GetMethod.Overrides.Count > 0)
-        getMethodOverride = ImplementMethodOverride (property.GetMethod, nextCallProxyGenerator);
+        getMethodOverride = ImplementMethodOverride (property.GetMethod, nextCallProxy);
       if (property.SetMethod != null && property.SetMethod.Overrides.Count > 0)
-        setMethodOverride = ImplementMethodOverride (property.SetMethod, nextCallProxyGenerator);
+        setMethodOverride = ImplementMethodOverride (property.SetMethod, nextCallProxy);
 
       return _concreteTarget.AddProperty (property.Name, PropertyAttributes.None, getMethodOverride, setMethodOverride);
     }
 
-    public virtual IMutableMember ImplementEventOverride (EventDefinition @event, INextCallProxyGenerator nextCallProxyGenerator)
+    public virtual IMutableMember ImplementEventOverride (EventDefinition @event, INextCallProxy nextCallProxy)
     {
       MutableMethodInfo addMethodOverride = null, removeMethodOverride = null;
       if (@event.AddMethod.Overrides.Count > 0)
-        addMethodOverride = ImplementMethodOverride (@event.AddMethod, nextCallProxyGenerator);
+        addMethodOverride = ImplementMethodOverride (@event.AddMethod, nextCallProxy);
       if (@event.RemoveMethod.Overrides.Count > 0)
-        removeMethodOverride = ImplementMethodOverride (@event.RemoveMethod, nextCallProxyGenerator);
+        removeMethodOverride = ImplementMethodOverride (@event.RemoveMethod, nextCallProxy);
 
       return _concreteTarget.AddEvent (@event.Name, EventAttributes.None, addMethodOverride, removeMethodOverride);
     }

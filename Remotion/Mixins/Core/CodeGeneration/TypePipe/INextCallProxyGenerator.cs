@@ -14,22 +14,17 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-
 using System;
-using System.Reflection;
+using System.Collections.Generic;
 using Remotion.Mixins.Definitions;
+using Remotion.TypePipe.Implementation;
 
 namespace Remotion.Mixins.CodeGeneration.TypePipe
 {
   // TODO 5370: docs
-  // TODO 5370: tests
   public interface INextCallProxyGenerator
   {
-    Type Type { get; }
-
-    // TODO 5370: Make method that returns expression.
-    ConstructorInfo Constructor { get; }
-
-    MethodInfo GetProxyMethodForOverriddenMethod (MethodDefinition method);
+    INextCallProxy Create (
+        TypeAssemblyContext context, TargetClassDefinition targetClassDefinition, IList<ConcreteMixinType> concreteMixinTypesWithNulls);
   }
 }

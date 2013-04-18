@@ -15,24 +15,20 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 
+using System;
 using System.Reflection;
-using Microsoft.Scripting.Ast;
-using Remotion.Mixins.Context;
-using Remotion.TypePipe.MutableReflection;
-using Remotion.TypePipe.MutableReflection.BodyBuilding;
+using Remotion.Mixins.Definitions;
 
 namespace Remotion.Mixins.CodeGeneration.TypePipe
 {
   // TODO 5370: docs
-  public interface IExpressionBuilder
+  public interface INextCallProxy
   {
-    Expression CreateNewClassContext (ClassContext classContext);
+    Type Type { get; }
 
-    Expression CreateInitialization (MutableType concreteTarget, Expression extensionsField);
+    // TODO 5370: Make method that returns expression.
+    ConstructorInfo Constructor { get; }
 
-    Expression CreateDelegation (MethodBodyContextBase bodyContext, Expression instance, MethodInfo methodToCall);
-
-    Expression CreateInitializingDelegation (
-        MethodBodyContextBase bodyContext, Expression extensionsField, Expression instance, MethodInfo methodToCall);
+    MethodInfo GetProxyMethodForOverriddenMethod (MethodDefinition method);
   }
 }
