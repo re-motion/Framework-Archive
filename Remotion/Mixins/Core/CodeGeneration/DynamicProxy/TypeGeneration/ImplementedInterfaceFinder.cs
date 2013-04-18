@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Serialization;
 using Remotion.Mixins.Definitions;
 using Remotion.Utilities;
 
@@ -62,7 +61,8 @@ namespace Remotion.Mixins.CodeGeneration.DynamicProxy.TypeGeneration
       interfaces.UnionWith (_concreteMixinTypes.Select (concreteMixinType => concreteMixinType.GeneratedOverrideInterface));
       interfaces.Add (typeof (IMixinTarget));
       interfaces.Add (typeof (IInitializableMixinTarget));
-      interfaces.Add (typeof (ISerializable));
+      // TODO 5370 ??
+      //interfaces.Add (typeof (ISerializable));
 
       return interfaces.ToArray ();
     }
