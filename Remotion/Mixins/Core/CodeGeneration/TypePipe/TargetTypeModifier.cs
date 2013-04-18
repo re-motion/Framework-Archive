@@ -450,7 +450,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
         }
       }
 
-      return Expression.Block (mixinInitExpressions);
+      return Expression.BlockOrEmpty (mixinInitExpressions);
     }
 
     private Expression NewNextCallProxy (ConstructorInfo nextCallProxyConstructor, ThisExpression @this, int depth)
