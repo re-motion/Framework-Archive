@@ -10,14 +10,12 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Remotion.SecurityManager</RootNamespace>
     <AssemblyName>Remotion.SecurityManager</AssemblyName>
-    <FileUpgradeFlags>
-    </FileUpgradeFlags>
+    <FileUpgradeFlags></FileUpgradeFlags>
     <OldToolsVersion>3.5</OldToolsVersion>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\remotion.snk</AssemblyOriginatorKeyFile>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
-    <UpgradeBackupLocation>
-    </UpgradeBackupLocation>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <UpgradeBackupLocation></UpgradeBackupLocation>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -44,8 +42,7 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Debug\Remotion.SecurityManager.XML</DocumentationFile>
     <NoWarn>1591;0419</NoWarn>
-    <WarningsAsErrors>
-    </WarningsAsErrors>
+    <WarningsAsErrors></WarningsAsErrors>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
@@ -72,16 +69,13 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Configuration\SecurityManagerConfiguration.xsd">
-      <SubType>
-      </SubType>
+      <SubType></SubType>
     </EmbeddedResource>
     <None Include="..\SecurityManager AGPL.licenseheader">
       <Link>SecurityManager AGPL.licenseheader</Link>
     </None>
-    <None Include="Database\SecurityManagerCreateDB.sql">
-    </None>
-    <None Include="Database\SecurityManagerSetupDB.sql">
-    </None>
+    <None Include="Database\SecurityManagerCreateDB.sql"></None>
+    <None Include="Database\SecurityManagerSetupDB.sql"></None>
     <Compile Include="..\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
@@ -430,8 +424,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Database\SecurityManagerSetupDBSpecialTables.sql">
-    </None>
+    <None Include="Database\SecurityManagerSetupDBSpecialTables.sql"></None>
     <None Include="Doc\include\GettingStartedWithRestrict.aml" />
     <None Include="GenerateSetupDBScript.cmd" />
     <None Include="..\..\remotion.snk">
@@ -458,8 +451,7 @@
       <LastGenOutput>Substitution.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <Content Include="Database\SecurityManagerSetupConstraints.sql">
-    </Content>
+    <Content Include="Database\SecurityManagerSetupConstraints.sql"></Content>
     <None Include="Database\SecurityManagerTearDownDB.sql" />
     <Content Include="Database\SecurityManagerTearDownDBSpecialTables.sql" />
     <Content Include="Doc\Whats_New.Remotion.SecurityManager.txt" />

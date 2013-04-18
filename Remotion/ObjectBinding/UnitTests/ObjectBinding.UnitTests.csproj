@@ -10,14 +10,12 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Remotion.ObjectBinding.UnitTests</RootNamespace>
     <AssemblyName>Remotion.ObjectBinding.UnitTests</AssemblyName>
-    <FileUpgradeFlags>
-    </FileUpgradeFlags>
+    <FileUpgradeFlags></FileUpgradeFlags>
     <OldToolsVersion>3.5</OldToolsVersion>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\..\remotion.snk</AssemblyOriginatorKeyFile>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
-    <UpgradeBackupLocation>
-    </UpgradeBackupLocation>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <UpgradeBackupLocation></UpgradeBackupLocation>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -310,8 +308,7 @@
     <Compile Include="Core\BusinessObjectStringFormatterServiceTests\GetPropertyString_WithBooleanProperty.cs" />
     <Compile Include="Core\BusinessObjectStringFormatterServiceTests\GetPropertyString_WithEnumerationProperty.cs" />
     <Compile Include="Core\Design\BindableObject\BindableObjectTypeFinderTest.cs" />
-    <Compile Include="Core\Design\DropDownEditorBaseTest.cs">
-    </Compile>
+    <Compile Include="Core\Design\DropDownEditorBaseTest.cs"></Compile>
     <Compile Include="Core\Design\MockDropDownEditorBase.cs" />
     <Compile Include="Core\Globalization\ClassWithResources.Designer.cs">
       <AutoGen>True</AutoGen>
