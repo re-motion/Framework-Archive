@@ -17,12 +17,16 @@
 using System;
 using Remotion.Mixins.Utilities;
 using Remotion.Reflection;
+using Remotion.ServiceLocation;
+using Remotion.TypePipe;
 using Remotion.Utilities;
 
 namespace Remotion.Mixins.CodeGeneration
 {
   public class ObjectFactoryImplementation : IObjectFactoryImplementation
   {
+    private static readonly IPipelineRegistry s_pipelineRegistry = SafeServiceLocator.Current.GetInstance<IPipelineRegistry>();
+
     public object CreateInstance (
         bool allowNonPublicConstructors, 
         Type targetOrConcreteType, 
@@ -40,21 +44,41 @@ namespace Remotion.Mixins.CodeGeneration
 
       var classContext = MixinConfiguration.ActiveConfiguration.GetContext (targetOrConcreteType);
 
-      IConstructorLookupInfo constructorLookupInfo;
+      // TODO 5370
+      //IConstructorLookupInfo constructorLookupInfo;
+      //if (classContext == null)
+      //{
+      //  if (preparedMixins.Length > 0)
+      //    throw new ArgumentException (string.Format ("There is no mixin configuration for type {0}, so no mixin instances must be specified.",
+      //        targetOrConcreteType.FullName), "preparedMixins");
+
+      //  constructorLookupInfo = new MixedTypeConstructorLookupInfo (targetOrConcreteType, targetOrConcreteType, allowNonPublicConstructors);
+      //}
+      //else
+      //  constructorLookupInfo = ConcreteTypeBuilder.Current.GetConstructorLookupInfo (classContext, allowNonPublicConstructors);
+
+      //using (new MixedObjectInstantiationScope (preparedMixins))
+      //{
+      //  return constructorParameters.InvokeConstructor (constructorLookupInfo);
+      //}
+
       if (classContext == null)
       {
         if (preparedMixins.Length > 0)
           throw new ArgumentException (string.Format ("There is no mixin configuration for type {0}, so no mixin instances must be specified.",
               targetOrConcreteType.FullName), "preparedMixins");
 
-        constructorLookupInfo = new MixedTypeConstructorLookupInfo (targetOrConcreteType, targetOrConcreteType, allowNonPublicConstructors);
+        var constructorLookupInfo = new MixedTypeConstructorLookupInfo (targetOrConcreteType, targetOrConcreteType, allowNonPublicConstructors);
+
+        using (new MixedObjectInstantiationScope (preparedMixins))
+        {
+          return constructorParameters.InvokeConstructor (constructorLookupInfo);
+        }
       }
-      else
-        constructorLookupInfo = ConcreteTypeBuilder.Current.GetConstructorLookupInfo (classContext, allowNonPublicConstructors);
 
       using (new MixedObjectInstantiationScope (preparedMixins))
       {
-        return constructorParameters.InvokeConstructor (constructorLookupInfo);
+        return s_pipelineRegistry.DefaultPipeline.CreateObject (classContext.Type, constructorParameters, allowNonPublicConstructors);
       }
     }
   }
