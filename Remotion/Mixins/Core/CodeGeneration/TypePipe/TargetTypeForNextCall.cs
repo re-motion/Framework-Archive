@@ -45,7 +45,8 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     private Expression AddDebuggerInvisibleExtensionsField ()
     {
-      var field = _concreteTarget.AddField ("__extensions", FieldAttributes.Private, typeof (object[]));
+      // TODO 5370: Better option than making this field public?
+      var field = _concreteTarget.AddField ("__extensions", FieldAttributes.Public, typeof (object[]));
       new AttributeGenerator().AddDebuggerBrowsableAttribute(field, DebuggerBrowsableState.Never);
 
       return Expression.Field (new ThisExpression (_concreteTarget), field);

@@ -440,7 +440,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
       for (int i = 0; i < expectedMixinTypes.Count; i++)
       {
-        if (typeof (IInitializableMixin).IsAssignableFrom (expectedMixinTypes[i]))
+        if (typeof (IInitializableMixin).IsTypePipeAssignableFrom (expectedMixinTypes[i]))
         {
           // ((IInitializableMixin) __extensions[i]).Initialize (mixinTargetInstance, <NewNextCallProxy (i + 1)>, deserialization);
 
