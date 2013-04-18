@@ -16,8 +16,11 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
+using Microsoft.Scripting.Ast;
 using Remotion.Mixins.Definitions;
+using Remotion.TypePipe.MutableReflection;
 using Remotion.Utilities;
 
 namespace Remotion.Mixins.CodeGeneration.TypePipe
@@ -25,19 +28,31 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
   // TODO 5370
   public class NextCallProxy : INextCallProxy
   {
-    private readonly Type _type;
+    private readonly MutableType _type;
     private readonly ConstructorInfo _constructor;
-    private readonly Dictionary<MethodDefinition, MethodInfo> _overriddenMethodToImplementationMap;
+    private readonly TargetClassDefinition _targetClassDefinition;
+    private readonly IExpressionBuilder _expressionBuilder;
+    private readonly INextCallMethodGenerator _nextCallMethodGenerator;
+    private readonly Dictionary<MethodDefinition, MethodInfo> _overriddenMethodToImplementationMap = new Dictionary<MethodDefinition, MethodInfo>();
 
-    public NextCallProxy (Type type, ConstructorInfo constructor, Dictionary<MethodDefinition, MethodInfo> overriddenMethodToImplementationMap)
+    public NextCallProxy (
+        MutableType type,
+        MutableConstructorInfo constructor,
+        TargetClassDefinition targetClassDefinition,
+        IExpressionBuilder expressionBuilder,
+        INextCallMethodGenerator nextCallMethodGenerator)
     {
       ArgumentUtility.CheckNotNull ("type", type);
       ArgumentUtility.CheckNotNull ("constructor", constructor);
-      ArgumentUtility.CheckNotNull ("overriddenMethodToImplementationMap", overriddenMethodToImplementationMap);
+      ArgumentUtility.CheckNotNull ("targetClassDefinition", targetClassDefinition);
+      ArgumentUtility.CheckNotNull ("expressionBuilder", expressionBuilder);
+      ArgumentUtility.CheckNotNull ("nextCallMethodGenerator", nextCallMethodGenerator);
 
       _type = type;
       _constructor = constructor;
-      _overriddenMethodToImplementationMap = overriddenMethodToImplementationMap;
+      _targetClassDefinition = targetClassDefinition;
+      _expressionBuilder = expressionBuilder;
+      _nextCallMethodGenerator = nextCallMethodGenerator;
     }
 
     public Type Type
@@ -55,6 +70,99 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       Assertion.IsTrue (_overriddenMethodToImplementationMap.ContainsKey (method),
                         "The method " + method.Name + " must be registered with the NextCallProxyGenerator.");
       return _overriddenMethodToImplementationMap[method];
+    }
+
+    public void ImplementBaseCallsForOverriddenMethodsOnTarget ()
+    {
+      foreach (var method in _targetClassDefinition.GetAllMethods().Where (method => method.Overrides.Count > 0))
+        ImplementBaseCallForOverridenMethodOnTarget (method);
+    }
+
+    private void ImplementBaseCallForOverridenMethodOnTarget (MethodDefinition methodDefinitionOnTarget)
+    {
+      Assertion.IsTrue (methodDefinitionOnTarget.DeclaringClass == _targetClassDefinition);
+
+      var attributes = MethodAttributes.Public | MethodAttributes.HideBySig | MethodAttributes.Virtual;
+      var md = MethodDeclaration.CreateEquivalent (methodDefinitionOnTarget.MethodInfo);
+      var methodOverride = _type.AddMethod (
+          methodDefinitionOnTarget.FullName,
+          attributes,
+          md,
+          ctx => _nextCallMethodGenerator.CreateBaseCallToNextInChain (ctx, methodDefinitionOnTarget));
+
+      _overriddenMethodToImplementationMap.Add (methodDefinitionOnTarget, methodOverride);
+
+      // If the base type of the emitter (object) already has the method being overridden (ToString, Equals, etc.), mixins could use the base 
+      // implementation of the method rather than coming via the next call interface. Therefore, we need to override that base method and point it
+      // towards our next call above.
+      Assertion.IsTrue (
+          _type.BaseType == typeof (object),
+          "This code assumes that only non-generic methods could match on the base type, which holds for object.");
+      // Since object has no generic methods, we can use the exact parameter types to find the equivalent method.
+      var equivalentMethodOnProxyBase = _type.BaseType.GetMethod (
+          methodDefinitionOnTarget.Name,
+          BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance,
+          null,
+          methodOverride.GetParameters ().Select (p => p.ParameterType).ToArray (),
+          null);
+      if (equivalentMethodOnProxyBase != null && equivalentMethodOnProxyBase.IsVirtual)
+      {
+        _type.GetOrAddOverride (equivalentMethodOnProxyBase)
+             .SetBody (ctx => _expressionBuilder.CreateDelegation (ctx, ctx.This, methodOverride));
+      }
+    }
+
+    public void ImplementBaseCallsForRequirements ()
+    {
+      foreach (var requiredType in _targetClassDefinition.RequiredNextCallTypes)
+        foreach (var requiredMethod in requiredType.Methods)
+          ImplementBaseCallForRequirement (requiredMethod);
+    }
+
+    private void ImplementBaseCallForRequirement (RequiredMethodDefinition requiredMethod)
+    {
+      if (requiredMethod.ImplementingMethod.DeclaringClass == _targetClassDefinition)
+        ImplementBaseCallForRequirementOnTarget (requiredMethod);
+      else
+        ImplementBaseCallForRequirementOnMixin (requiredMethod);
+    }
+
+    // Required base call method implemented by "this" -> either overridden or not
+    // If overridden, delegate to next in chain, else simply delegate to "this" field
+    private void ImplementBaseCallForRequirementOnTarget (RequiredMethodDefinition requiredMethod)
+    {
+      var methodImplementation = _type.AddExplicitOverride (requiredMethod.InterfaceMethod, ctx => Expression.Default (ctx.ReturnType));
+      // TODO 5370: refactor if-else away.
+      if (requiredMethod.ImplementingMethod.Overrides.Count == 0) // this is not an overridden method, call method directly on _this
+      {
+        methodImplementation.SetBody (ctx => _nextCallMethodGenerator.CreateBaseCallToTarget (ctx, requiredMethod.ImplementingMethod));
+      }
+      else // this is an override, go to next in chain
+      {
+        // a base call for this might already have been implemented as an overriden method, but we explicitly implement the call chains anyway: it's
+        // slightly easier and better for performance
+        Assertion.IsFalse (_targetClassDefinition.Methods.ContainsKey (requiredMethod.InterfaceMethod));
+        methodImplementation.SetBody (ctx => _nextCallMethodGenerator.CreateBaseCallToNextInChain (ctx, requiredMethod.ImplementingMethod));
+      }
+    }
+
+    // Required base call method implemented by extension -> either as an overridde or not
+    // If an overridde, delegate to next in chain, else simply delegate to the extension implementing it field
+    private void ImplementBaseCallForRequirementOnMixin (RequiredMethodDefinition requiredMethod)
+    {
+      var methodImplementation = _type.AddExplicitOverride (requiredMethod.InterfaceMethod, ctx => Expression.Default (ctx.ReturnType));
+      // TODO 5370: refactor if-else away.
+      if (requiredMethod.ImplementingMethod.Base == null) // this is not an override, call method directly on extension
+      {
+        methodImplementation.SetBody (ctx => _nextCallMethodGenerator.CreateBaseCallToTarget (ctx, requiredMethod.ImplementingMethod));
+      }
+      else // this is an override, go to next in chain
+      {
+        // a base call for this has already been implemented as an overriden method, but we explicitly implement the call chains anyway: it's
+        // slightly easier and better for performance
+        Assertion.IsTrue (_overriddenMethodToImplementationMap.ContainsKey (requiredMethod.ImplementingMethod.Base));
+        methodImplementation.SetBody (ctx => _nextCallMethodGenerator.CreateBaseCallToNextInChain (ctx, requiredMethod.ImplementingMethod.Base));
+      }
     }
   }
 }

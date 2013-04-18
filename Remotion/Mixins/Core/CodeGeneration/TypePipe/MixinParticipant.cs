@@ -62,11 +62,11 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       var concreteTarget = typeAssemblyContext.ProxyType;
 
       var targetClassDefinition = _configurationProvider.GetTargetClassDefinition (target);
-      var concreteMixinTypesWithNulls = _mixinTypeGenerator.GetConcreteMixinTypes (targetClassDefinition.Mixins).ToList();
+      var concreteMixinTypesWithNulls = _mixinTypeGenerator.GenerateConcreteMixinTypes (targetClassDefinition.Mixins).ToList();
       var interfacesToImplement = _configurationProvider.GetInterfacesToImplement (targetClassDefinition, concreteMixinTypesWithNulls);
-      _nextCallProxyGenerator.Create (null, null, null);
-      INextCallProxy nextCallProxy = null;
-      //var nextCallProxyGenerator = _nextCallProxyGenerator.Create (concreteTarget, concreteMixinTypesWithNulls);
+      var targetTypeForNextCall = _nextCallProxyGenerator.GetTargetTypeWrapper (concreteTarget);
+      var nextCallProxy = _nextCallProxyGenerator.Create (
+          typeAssemblyContext, targetClassDefinition, concreteMixinTypesWithNulls, targetTypeForNextCall);
 
       _targetTypeModifierFacade.ModifyTargetType (
           concreteTarget, targetClassDefinition, nextCallProxy, interfacesToImplement, concreteMixinTypesWithNulls);

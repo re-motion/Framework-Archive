@@ -15,22 +15,16 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections.Generic;
-using Remotion.Mixins.Definitions;
-using Remotion.TypePipe.Implementation;
-using Remotion.TypePipe.MutableReflection;
+using System.Reflection;
+using Microsoft.Scripting.Ast;
 
 namespace Remotion.Mixins.CodeGeneration.TypePipe
 {
-  // TODO 5370: docs
-  public interface INextCallProxyGenerator
+  // TODO 5370
+  public interface ITargetTypeForNextCall
   {
-    ITargetTypeForNextCall GetTargetTypeWrapper (MutableType concreteTarget);
+    Expression ExtensionsField { get; }
 
-    INextCallProxy Create (
-        ITypeAssemblyContext context,
-        TargetClassDefinition targetClassDefinition,
-        IList<ConcreteMixinType> concreteMixinTypesWithNulls,
-        ITargetTypeForNextCall targetTypeForNextCall);
+    MethodInfo GetBaseCallMethod (MethodInfo methodInfo);
   }
 }

@@ -14,23 +14,18 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
-using System.Collections.Generic;
+using Microsoft.Scripting.Ast;
 using Remotion.Mixins.Definitions;
-using Remotion.TypePipe.Implementation;
-using Remotion.TypePipe.MutableReflection;
+using Remotion.TypePipe.MutableReflection.BodyBuilding;
 
 namespace Remotion.Mixins.CodeGeneration.TypePipe
 {
-  // TODO 5370: docs
-  public interface INextCallProxyGenerator
+  // TODO 5370
+  public interface INextCallMethodGenerator
   {
-    ITargetTypeForNextCall GetTargetTypeWrapper (MutableType concreteTarget);
-
-    INextCallProxy Create (
-        ITypeAssemblyContext context,
-        TargetClassDefinition targetClassDefinition,
-        IList<ConcreteMixinType> concreteMixinTypesWithNulls,
-        ITargetTypeForNextCall targetTypeForNextCall);
+    Expression CreateBaseCallToTarget (MethodBodyContextBase ctx, MethodDefinition implementingMethod);
+    Expression CreateBaseCallToNextInChain (MethodBodyContextBase ctx, MethodDefinition methodDefinitionOnTarget);
   }
 }

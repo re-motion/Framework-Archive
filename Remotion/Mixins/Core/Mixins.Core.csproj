@@ -142,14 +142,21 @@
     <Compile Include="CodeGeneration\TypePipe\IExpressionBuilder.cs" />
     <Compile Include="CodeGeneration\TypePipe\IMixinTypeGenerator.cs" />
     <Compile Include="CodeGeneration\TypePipe\IConfigurationProvider.cs" />
+    <Compile Include="CodeGeneration\TypePipe\INextCallMethodGenerator.cs" />
     <Compile Include="CodeGeneration\TypePipe\INextCallProxy.cs" />
     <Compile Include="CodeGeneration\TypePipe\INextCallProxyGenerator.cs" />
+    <Compile Include="CodeGeneration\TypePipe\ITargetTypeForNextCall.cs" />
     <Compile Include="CodeGeneration\TypePipe\ITargetTypeModifier.cs" />
     <Compile Include="CodeGeneration\TypePipe\ITargetTypeModifierFacade.cs" />
     <Compile Include="CodeGeneration\TypePipe\MixinContextOriginSerializerBase.cs" />
     <Compile Include="CodeGeneration\TypePipe\MixinContextSerializerBase.cs" />
     <Compile Include="CodeGeneration\TypePipe\MixinParticipant.cs" />
+    <Compile Include="CodeGeneration\TypePipe\NextCallMethodGenerator.cs" />
     <Compile Include="CodeGeneration\TypePipe\NextCallProxy.cs" />
+    <Compile Include="CodeGeneration\TypePipe\NextCallProxyGenerator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="CodeGeneration\TypePipe\TargetTypeForNextCall.cs" />
     <Compile Include="CodeGeneration\TypePipe\TargetTypeModifier.cs" />
     <Compile Include="CodeGeneration\TypePipe\TargetTypeModifierFacade.cs" />
     <Compile Include="ComposedInterfaceAttribute.cs" />
