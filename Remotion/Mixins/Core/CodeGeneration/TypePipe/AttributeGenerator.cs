@@ -151,7 +151,8 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       ArgumentUtility.CheckNotNull ("source", source);
       ArgumentUtility.CheckNotNull ("destination", destination);
 
-      // TODO
+      foreach (var attribute in source.CustomAttributes)
+        AddAttribute (destination, attribute.Data);
     }
 
     public bool ShouldBeReplicated (AttributeDefinition attribute, IAttributeIntroductionTarget targetConfiguration, TargetClassDefinition targetClassDefinition)
