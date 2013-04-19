@@ -89,7 +89,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       _attributeGenerator.AddDebuggerDisplayAttribute (_type, debuggerDisplayString, null);
     }
 
-    public OverrideInterfaceGenerator2 GenerateOverrides (ITypeAssemblyContext context)
+    public OverrideInterface GenerateOverrides (ITypeAssemblyContext context)
     {
       var overrideInterfaceGenerator = OverrideInterfaceGenerator2.CreateNestedGenerator (context, _type, "IOverriddenMethods");
 
@@ -102,7 +102,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
         AddCallToOverrider (methodOverride, targetReference, methodToCall);
       }
 
-      return overrideInterfaceGenerator;
+      return new OverrideInterface (overrideInterfaceGenerator.Type, overrideInterfaceGenerator.GetInterfaceMethodsForOverriddenMethods());
     }
 
     private Expression GetTargetReference ()

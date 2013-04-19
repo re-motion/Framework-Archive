@@ -161,6 +161,7 @@
     <Compile Include="CodeGeneration\TypePipe\NextCallProxyGenerator.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="CodeGeneration\TypePipe\OverrideInterface.cs" />
     <Compile Include="CodeGeneration\TypePipe\OverrideInterfaceGenerator2.cs" />
     <Compile Include="CodeGeneration\TypePipe\TargetTypeForNextCall.cs" />
     <Compile Include="CodeGeneration\TypePipe\TargetTypeModifier.cs" />
