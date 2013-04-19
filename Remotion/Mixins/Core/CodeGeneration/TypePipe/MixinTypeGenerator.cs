@@ -60,7 +60,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     public void AddFields ()
     {
-      var field = _type.AddField ("__identifier", FieldAttributes.Private | FieldAttributes.Static, typeof (ConcreteMixinTypeIdentifier));
+      var field = _type.AddField ("__identifier", FieldAttributes.Public | FieldAttributes.Static, typeof (ConcreteMixinTypeIdentifier));
       _identifierField = Expression.Field (null, field);
     }
 
