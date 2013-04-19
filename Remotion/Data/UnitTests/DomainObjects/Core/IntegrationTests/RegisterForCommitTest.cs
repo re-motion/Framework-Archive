@@ -26,7 +26,6 @@ using Remotion.Data.UnitTests.DomainObjects.Core.EventReceiver;
 using Remotion.Data.UnitTests.DomainObjects.TestDomain;
 using Remotion.Development.RhinoMocks.UnitTesting;
 using Rhino.Mocks;
-using Remotion.Data.UnitTests.UnitTesting;
 using System.Linq;
 using Remotion.FunctionalProgramming;
 
@@ -87,7 +86,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests
       domainObject.Delete();
       Assert.That (domainObject.State, Is.EqualTo (StateType.Deleted));
 
-      Assert.That (() => domainObject.RegisterForCommit (), Throws.TypeOf<ObjectDeletedException>());
+      Assert.That (() => domainObject.RegisterForCommit (), Throws.Nothing);
 
       Assert.That (domainObject.State, Is.EqualTo (StateType.Deleted));
       CheckNotMarkedAsChanged (domainObject);

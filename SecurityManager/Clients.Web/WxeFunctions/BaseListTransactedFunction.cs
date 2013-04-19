@@ -16,27 +16,26 @@
 // Additional permissions are listed in the file re-motion_exceptions.txt.
 // 
 using System;
-using Remotion.Web.Security.ExecutionEngine;
-using Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure;
-using Remotion.SecurityManager.Domain.OrganizationalStructure;
 using Remotion.Web.ExecutionEngine;
 
-namespace Remotion.SecurityManager.Clients.Web.WxeFunctions.OrganizationalStructure
+namespace Remotion.SecurityManager.Clients.Web.WxeFunctions
 {
-  [WxeDemandTargetStaticMethodPermission (Tenant.Methods.Search)]
   [Serializable]
-  public class TenantListFormFunction : BaseListTransactedFunction
+  public abstract class BaseListTransactedFunction : BaseTransactedFunction
   {
-    public TenantListFormFunction ()
+    protected BaseListTransactedFunction ()
+        : this (WxeTransactionMode.CreateRootWithAutoCommit)
     {
     }
 
-    // TODO: Make protected once a way is found to solve the "WxeDemandTargetStaticMethodPermission being typed on fixed class" problem
-    public TenantListFormFunction (ITransactionMode transactionMode, params object[] args)
-      : base (transactionMode, args)
+    protected BaseListTransactedFunction (ITransactionMode transactionMode, params object[] args)
+        : base (transactionMode, args)
     {
     }
 
-    WxeResourcePageStep Step1 = new WxeResourcePageStep (typeof (TenantListForm), "UI/OrganizationalStructure/TenantListForm.aspx");
+    public void Reset ()
+    {
+      TransactionStrategy.Reset();
+    }
   }
 }
