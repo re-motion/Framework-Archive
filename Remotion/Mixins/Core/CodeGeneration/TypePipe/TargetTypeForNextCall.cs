@@ -18,7 +18,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Reflection;
 using Microsoft.Scripting.Ast;
 using Remotion.TypePipe.Expressions;
@@ -90,7 +89,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       var name = "__base__" + baseMethod.Name;
       var md = MethodDeclaration.CreateEquivalent (baseMethod);
 
-      return _concreteTarget.AddMethod (name, attributes, md, ctx => ctx.CallBase (baseMethod, ctx.Parameters.Cast<Expression>()));
+      return _concreteTarget.AddMethod (name, attributes, md, ctx => ctx.DelegateToBase (baseMethod));
     }
 
     //public MethodInfo GetPublicMethodWrapper (MethodDefinition methodToBeWrapped)

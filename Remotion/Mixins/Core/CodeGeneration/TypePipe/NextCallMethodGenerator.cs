@@ -21,7 +21,6 @@ using Microsoft.Scripting.Ast;
 using Remotion.Mixins.Definitions;
 using Remotion.TypePipe.MutableReflection.BodyBuilding;
 using Remotion.Utilities;
-using System.Linq;
 
 namespace Remotion.Mixins.CodeGeneration.TypePipe
 {
@@ -57,7 +56,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       for (int potentialDepth = 0; potentialDepth < _targetClassDefinition.Mixins.Count; ++potentialDepth)
       {
         var nextInChain = GetNextInChain (methodDefinitionOnTarget, potentialDepth);
-        var baseCallIfDepthMatches = AddBaseCallToTargetIfDepthMatches (nextInChain, potentialDepth, ctx.Parameters.Cast<Expression>());
+        var baseCallIfDepthMatches = AddBaseCallToTargetIfDepthMatches (ctx, nextInChain, potentialDepth);
         expressions.Add (baseCallIfDepthMatches);
       }
       var baseCall = CreateBaseCallToTarget (ctx, methodDefinitionOnTarget);
@@ -76,39 +75,40 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       return methodDefinitionOnTarget;
     }
 
-    private Expression AddBaseCallToTargetIfDepthMatches (MethodDefinition target, int requestedDepth, IEnumerable<Expression> argExpressions)
+    private Expression AddBaseCallToTargetIfDepthMatches (MethodBodyContextBase ctx, MethodDefinition target, int requestedDepth)
     {
       return Expression.IfThen (
               Expression.Equal (_depthField, Expression.Constant (requestedDepth)),
-              CreateBaseCallStatement (target, argExpressions));
+              CreateBaseCallStatement (ctx, target));
     }
 
     public Expression CreateBaseCallToTarget (MethodBodyContextBase ctx, MethodDefinition target)
     {
-      return CreateBaseCallStatement (target, ctx.Parameters.Cast<Expression>());
+      return CreateBaseCallStatement (ctx, target);
     }
 
-    private Expression CreateBaseCallStatement (MethodDefinition target, IEnumerable<Expression> argExpressions)
+    private Expression CreateBaseCallStatement (MethodBodyContextBase ctx, MethodDefinition target)
     {
       if (target.DeclaringClass == _targetClassDefinition)
-        return CreateBaseCallToTargetClassStatement (target, argExpressions);
+        return CreateBaseCallToTargetClassStatement (ctx, target);
       else
-        return CreateBaseCallToMixinStatement (target, argExpressions);
+        return CreateBaseCallToMixinStatement (ctx, target);
     }
 
-    private Expression CreateBaseCallToTargetClassStatement (MethodDefinition target, IEnumerable<Expression> argExpressions)
+    private Expression CreateBaseCallToTargetClassStatement (MethodBodyContextBase ctx, MethodDefinition target)
     {
-      MethodInfo baseCallMethod = _targetTypeForNextCall.GetBaseCallMethod (target.MethodInfo);
-      return Expression.Call (_thisField, baseCallMethod, argExpressions);
+      var baseCallMethod = _targetTypeForNextCall.GetBaseCallMethod (target.MethodInfo);
+
+      return ctx.DelegateTo (_thisField, baseCallMethod);
     }
 
-    private Expression CreateBaseCallToMixinStatement (MethodDefinition target, IEnumerable<Expression> argExpressions)
+    private Expression CreateBaseCallToMixinStatement (MethodBodyContextBase ctx, MethodDefinition target)
     {
       var mixin = (MixinDefinition) target.DeclaringClass;
       var baseCallMethod = GetMixinMethodToCall (mixin.MixinIndex, target);
       var mixinReference = GetMixinReference (mixin, baseCallMethod.DeclaringType);
 
-      return Expression.Call (mixinReference, baseCallMethod, argExpressions);
+      return ctx.DelegateTo (mixinReference, baseCallMethod);
     }
 
     private MethodInfo GetMixinMethodToCall (int mixinIndex, MethodDefinition mixinMethod)
