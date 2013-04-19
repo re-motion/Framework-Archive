@@ -245,12 +245,11 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       }
     }
 
-    public void ImplementAttributes (IAttributeIntroductionTarget targetConfiguration, TargetClassDefinition targetClassDefinition)
+    public void ImplementAttributes (TargetClassDefinition targetClassDefinition)
     {
-      ArgumentUtility.CheckNotNull ("targetConfiguration", targetConfiguration);
       ArgumentUtility.CheckNotNull ("targetClassDefinition", targetClassDefinition);
 
-      ImplementAttributes (_concreteTarget, targetConfiguration, targetClassDefinition);
+      ImplementAttributes (_concreteTarget, targetClassDefinition, targetClassDefinition);
     }
 
     public virtual void ImplementAttributes (

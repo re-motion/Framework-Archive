@@ -35,7 +35,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     void ImplementIMixinTarget (string targetClassName);
     void ImplementIntroducedInterfaces (IEnumerable<InterfaceIntroductionDefinition> introducedInterfaces);
     void ImplementRequiredDuckMethods (TargetClassDefinition targetClassDefinition);
-    void ImplementAttributes (IAttributeIntroductionTarget targetConfiguration, TargetClassDefinition targetClassDefinition);
+    void ImplementAttributes (TargetClassDefinition targetClassDefinition);
 
     void AddMixedTypeAttribute (TargetClassDefinition targetClassDefinition);
     void AddDebuggerDisplayAttribute (TargetClassDefinition targetClassDefinition);

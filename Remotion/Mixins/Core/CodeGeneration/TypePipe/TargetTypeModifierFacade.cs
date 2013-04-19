@@ -46,6 +46,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       modifier.ImplementIMixinTarget (targetClassDefinition.Name);
       modifier.ImplementIntroducedInterfaces (targetClassDefinition.ReceivedInterfaces);
       modifier.ImplementRequiredDuckMethods (targetClassDefinition);
+      modifier.ImplementAttributes (targetClassDefinition);
       
       modifier.AddMixedTypeAttribute (targetClassDefinition);
       modifier.AddDebuggerDisplayAttribute (targetClassDefinition);
