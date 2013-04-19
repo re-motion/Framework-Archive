@@ -63,7 +63,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       ArgumentUtility.CheckNotNull ("instance", instance);
       ArgumentUtility.CheckNotNull ("methodToCall", methodToCall);
 
-      // instance.MethodToCall(<parameters>);
+      // instance.MethodToCall<GenericParameters>(<parameters>);
 
       if (methodToCall.IsGenericMethodDefinition)
         methodToCall = methodToCall.MakeTypePipeGenericMethod (bodyContext.GenericParameters.ToArray());

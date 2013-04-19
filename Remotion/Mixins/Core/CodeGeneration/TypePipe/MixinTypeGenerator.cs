@@ -120,8 +120,8 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     private void AddCallToOverrider (MutableMethodInfo methodOverride, Expression targetReference, MethodInfo targetMethod)
     {
-      // Maybe inster cast to targetMethod.DeclaringType.
-      methodOverride.SetBody (ctx => _expressionBuilder.CreateDelegation (ctx, targetReference, targetMethod));
+      var castedTargetReference = Expression.Convert (targetReference, targetMethod.DeclaringType);
+      methodOverride.SetBody (ctx => _expressionBuilder.CreateDelegation (ctx, castedTargetReference, targetMethod));
     }
 
     public Dictionary<MethodInfo, MethodInfo> GenerateMethodWrappers ()
