@@ -56,8 +56,8 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       AddRequiredInterfaces (nextCallProxyType, targetClassDefinition);
       // tODO 5370: Old code woul add SerializableAttribute.
 
-      var thisField = AddField (nextCallProxyType, "__this", concreteTarget);
-      var depthField = AddField (nextCallProxyType, "__depth", typeof (int));
+      var thisField = AddPublicField (nextCallProxyType, "__this", concreteTarget);
+      var depthField = AddPublicField (nextCallProxyType, "__depth", typeof (int));
 
       var constructor = AddConstructor (nextCallProxyType, concreteTarget, thisField, depthField);
 
@@ -87,9 +87,9 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
         nextCallProxy.AddInterface (ifc);
     }
 
-    private static Expression AddField (MutableType nextCallProxyType, string name, Type type)
+    private static Expression AddPublicField (MutableType nextCallProxyType, string name, Type type)
     {
-      var field = nextCallProxyType.AddField (name, FieldAttributes.Private, type);
+      var field = nextCallProxyType.AddField (name, FieldAttributes.Public, type);
       return Expression.Field (new ThisExpression (nextCallProxyType), field);
     }
 
