@@ -65,6 +65,9 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
       // instance.MethodToCall(<parameters>);
 
+      if (methodToCall.IsGenericMethodDefinition)
+        methodToCall = methodToCall.MakeTypePipeGenericMethod (bodyContext.GenericParameters.ToArray());
+
       return Expression.Call (instance, methodToCall, bodyContext.Parameters.Cast<Expression>());
     }
 
