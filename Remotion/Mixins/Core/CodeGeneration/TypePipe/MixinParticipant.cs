@@ -24,7 +24,7 @@ using Remotion.Utilities;
 
 namespace Remotion.Mixins.CodeGeneration.TypePipe
 {
-  // TODO 5370: Docs.
+  // TODO 5370.
   public class MixinParticipant : IParticipant
   {
     private readonly IConfigurationProvider _configurationProvider;
@@ -56,7 +56,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     public ICacheKeyProvider PartialCacheKeyProvider
     {
-      get { return null; }
+      get { return new MixinParticipantCacheKeyProvider(); }
     }
 
     public void Participate (ITypeAssemblyContext typeAssemblyContext)
