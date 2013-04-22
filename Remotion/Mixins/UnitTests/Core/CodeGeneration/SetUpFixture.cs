@@ -15,23 +15,23 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.IO;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
-using Remotion.Mixins.CodeGeneration.DynamicProxy;
-using Remotion.Mixins.CodeGeneration;
+using Remotion.Mixins.CodeGeneration.TypePipe;
 using Remotion.Text;
-using Remotion.Utilities;
+using Remotion.TypePipe;
+using Remotion.TypePipe.Configuration;
 
 namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
 {
   [SetUpFixture]
   public class SetUpFixture
   {
-    private static ConcreteTypeBuilder s_savedTypeBuilder;
+    private static bool s_skipDeletion;
 
-    private static bool _skipDeletion = false;
-    private ResetCheckingModuleManager _moduleManager;
+    private static IPipeline s_pipeline;
+
+    private AssemblyTrackingCodeManager _assemblyTrackingCodeManager;
 
     /// <summary>
     /// Signals that the <see cref="SetUpFixture"/> should not delete the files it generates. Call this ad-hoc in a test to keep the files and inspect
@@ -39,73 +39,58 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
     /// </summary>
     public static void SkipDeletion ()
     {
-      _skipDeletion = true;
+      s_skipDeletion = true;
+    }
+
+    public static IPipeline Pipeline
+    {
+      get
+      {
+        if (s_pipeline == null)
+          throw new InvalidOperationException ("SetUp must be executed first.");
+        return s_pipeline;
+      }
     }
 
     [SetUp]
-    public void SetUp()
+    public void SetUp ()
     {
-      ResetGeneratedAssemblies ();
-      _moduleManager = new ResetCheckingModuleManager (false);
-      s_savedTypeBuilder = new ConcreteTypeBuilder (_moduleManager, new GuidNameProvider(), new GuidNameProvider());
+      var assemblyTrackingPipelineFactory = new AssemblyTrackingPipelineFactory();
+      s_pipeline = assemblyTrackingPipelineFactory.CreatePipeline (
+          "re-mix-tests", new[] { new MixinParticipant() }, new AppConfigBasedConfigurationProvider());
+      _assemblyTrackingCodeManager = assemblyTrackingPipelineFactory.AssemblyTrackingCodeManager;
     }
 
     [TearDown]
     public void TearDown()
     {
 #if !NO_PEVERIFY
-      string[] paths;
       try
       {
-        _moduleManager.AllowReset = true;
-        paths = s_savedTypeBuilder.SaveGeneratedConcreteTypes ();
+        _assemblyTrackingCodeManager.FlushCodeToDisk();
       }
       catch (Exception ex)
       {
         Assert.Fail ("Error when saving assemblies: {0}", ex);
-        throw;
       }
 
-      foreach (string path in paths)
+      foreach (string path in _assemblyTrackingCodeManager.SavedAssemblies)
         PEVerifier.CreateDefault ().VerifyPEFile (path);
-
 #endif
 
-      if (!_skipDeletion)
-        ResetGeneratedAssemblies (); // delete assemblies if everything went fine
-      else
-        Console.WriteLine ("Assemblies saved to: " + Environment.NewLine + SeparatedStringBuilder.Build (Environment.NewLine, paths));
-      
-      s_savedTypeBuilder = null;
-    }
-
-    public static ConcreteTypeBuilder SavedTypeBuilder
-    {
-      get
+      if (!s_skipDeletion)
       {
-        if (s_savedTypeBuilder == null)
-          throw new InvalidOperationException ("SetUp must be executed first.");
-        return s_savedTypeBuilder;
+        _assemblyTrackingCodeManager.DeleteSavedAssemblies(); // Delete assemblies if everything went fine.
       }
-    }
+      else
+      {
+        Console.WriteLine (
+            "Assemblies saved to: " + Environment.NewLine
+            + SeparatedStringBuilder.Build (Environment.NewLine, _assemblyTrackingCodeManager.SavedAssemblies));
+      }
 
-    private void ResetGeneratedAssemblies ()
-    {
-      string weakModulePath = ModuleManager.DefaultWeakModulePath.Replace ("{counter}", "*");
-      string strongModulePath = ModuleManager.DefaultStrongModulePath.Replace ("{counter}", "*");
-      string weakPdbPath = Path.GetFileNameWithoutExtension (weakModulePath) + ".pdb";
-      string strongPdbPath = Path.GetFileNameWithoutExtension (strongModulePath) + ".pdb";
-
-      DeleteFiles (weakModulePath);
-      DeleteFiles (strongModulePath);
-      DeleteFiles (weakPdbPath);
-      DeleteFiles (strongPdbPath);
-    }
-
-    private void DeleteFiles (string searchPattern)
-    {
-      foreach (string file in Directory.GetFiles (Environment.CurrentDirectory, searchPattern))
-        FileUtility.DeleteAndWaitForCompletion (file);
+      s_pipeline = null;
+      _assemblyTrackingCodeManager = null;
     }
   }
 }

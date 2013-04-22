@@ -78,8 +78,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.DynamicProxy
       }
     }
 
-    [TestFixtureSetUp]
-    public void TestFixtureSetUp ()
+    public override void TestFixtureSetUp ()
     {
       DeleteSavedAssemblies ();
 
