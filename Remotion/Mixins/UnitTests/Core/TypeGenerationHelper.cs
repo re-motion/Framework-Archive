@@ -14,28 +14,41 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
 using System.Linq;
-using Remotion.Mixins.CodeGeneration;
+using Remotion.Mixins.CodeGeneration.TypePipe;
 using Remotion.Mixins.Context;
+using Remotion.TypePipe;
+using Remotion.Utilities;
 
 namespace Remotion.Mixins.UnitTests.Core
 {
   public class TypeGenerationHelper
   {
+    private static readonly IPipeline s_pipeline = PipelineFactory.Create ("TypeGenerationHelper", new MixinParticipant());
+
     public static Type ForceTypeGeneration (Type targetType)
     {
+      ArgumentUtility.CheckNotNull ("targetType", targetType);
+
       var classContext = MixinConfiguration.ActiveConfiguration.GetContext (targetType)
                          ?? new ClassContext (targetType, Enumerable.Empty<MixinContext>(), Enumerable.Empty<Type>());
-      return ConcreteTypeBuilder.Current.GetConcreteType (classContext);
+
+      // TODO 5370
+      //return ConcreteTypeBuilder.Current.GetConcreteType (classContext);
+
+      return s_pipeline.ReflectionService.GetAssembledType (classContext.Type);
     }
 
     public static object ForceTypeGenerationAndCreateInstance (Type targetType)
     {
+      ArgumentUtility.CheckNotNull ("targetType", targetType);
+
       return Activator.CreateInstance (ForceTypeGeneration (targetType));
     }
 
-    public static T ForceTypeGenerationAndCreateInstance<T>()
+    public static T ForceTypeGenerationAndCreateInstance<T> ()
     {
       return (T) ForceTypeGenerationAndCreateInstance (typeof (T));
     }
