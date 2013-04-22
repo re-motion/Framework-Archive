@@ -179,6 +179,12 @@ namespace Remotion.Data.DomainObjects.Linq
         return Expression.Constant (false);
     }
 
+    public Expression TryGetOptimizedIdentity (SqlEntityRefMemberExpression entityRefMemberExpression)
+    {
+      // TODO 4878: Implement
+      return null;
+    }
+
     private ClassDefinition GetClassDefinition (Type type)
     {
       var classDefinition = MappingConfiguration.Current.GetTypeDefinition (
