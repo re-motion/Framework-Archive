@@ -15,19 +15,21 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using Remotion.Development.UnitTesting;
 using Remotion.TypePipe.Implementation;
 using Remotion.TypePipe.MutableReflection;
 using Remotion.Utilities;
 
-namespace Remotion.Mixins.UnitTests.Core
+namespace Remotion.Development.TypePipe
 {
   // TODO 5370
   public class AssemblyTrackingCodeManager : ICodeManager
   {
-    private readonly List<string> _savedAssemblies = new List<string> ();
+    private readonly List<string> _savedAssemblies = new List<string>();
     private readonly ICodeManager _codeManager;
 
     public AssemblyTrackingCodeManager (ICodeManager codeManager)
@@ -42,13 +44,21 @@ namespace Remotion.Mixins.UnitTests.Core
       get { return _savedAssemblies; }
     }
 
+    public void PeVerifySavedAssemblies ()
+    {
+      foreach (var assemblyPath in _savedAssemblies)
+        PEVerifier.CreateDefault().VerifyPEFile (assemblyPath);
+    }
+
     public void DeleteSavedAssemblies ()
     {
-      foreach (var savedAssemblyPath in _savedAssemblies)
+      foreach (var assemblyPath in _savedAssemblies)
       {
-        FileUtility.DeleteAndWaitForCompletion (savedAssemblyPath);
-        FileUtility.DeleteAndWaitForCompletion (Path.ChangeExtension (savedAssemblyPath, "pdb"));
+        FileUtility.DeleteAndWaitForCompletion (assemblyPath);
+        FileUtility.DeleteAndWaitForCompletion (Path.ChangeExtension (assemblyPath, "pdb"));
       }
+
+      _savedAssemblies.Clear();
     }
 
     public string AssemblyDirectory

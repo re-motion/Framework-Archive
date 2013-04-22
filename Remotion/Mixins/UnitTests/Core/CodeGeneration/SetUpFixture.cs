@@ -16,7 +16,7 @@
 // 
 using System;
 using NUnit.Framework;
-using Remotion.Development.UnitTesting;
+using Remotion.Development.TypePipe;
 using Remotion.Mixins.CodeGeneration.TypePipe;
 using Remotion.Text;
 using Remotion.TypePipe;
@@ -74,8 +74,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
         Assert.Fail ("Error when saving assemblies: {0}", ex);
       }
 
-      foreach (string path in _assemblyTrackingCodeManager.SavedAssemblies)
-        PEVerifier.CreateDefault ().VerifyPEFile (path);
+      _assemblyTrackingCodeManager.PeVerifySavedAssemblies();
 #endif
 
       if (!s_skipDeletion)

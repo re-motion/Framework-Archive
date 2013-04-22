@@ -129,6 +129,8 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="TypePipe\AssemblyTrackingCodeManager.cs" />
+    <Compile Include="TypePipe\AssemblyTrackingPipelineFactory.cs" />
     <Compile Include="TypePipe\DebuggerWorkaroundCodeGenerator.cs" />
     <Compile Include="TypePipe\DebuggerWorkaroundPipelineFactory.cs" />
     <Compile Include="UnitTesting\AppDomainRunner.cs" />

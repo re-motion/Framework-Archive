@@ -15,12 +15,13 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 
+using System;
 using Remotion.TypePipe;
 using Remotion.TypePipe.Caching;
 using Remotion.TypePipe.Implementation;
 using Remotion.TypePipe.Implementation.Synchronization;
 
-namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
+namespace Remotion.Development.TypePipe
 {
   // TODO 5370
   public class AssemblyTrackingPipelineFactory : PipelineFactory
