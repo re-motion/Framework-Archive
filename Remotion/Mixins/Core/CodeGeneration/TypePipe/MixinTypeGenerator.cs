@@ -60,6 +60,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     public void AddInterfaces ()
     {
+      _type.AddInterface (typeof (ISerializable));
       _type.AddInterface (typeof (IGeneratedMixinType));
     }
 
