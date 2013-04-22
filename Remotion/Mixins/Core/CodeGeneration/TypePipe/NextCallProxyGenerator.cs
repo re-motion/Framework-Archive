@@ -101,6 +101,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
           new[] { new ParameterDeclaration (concreteTarget, "this"), new ParameterDeclaration (typeof (int), "depth") },
           ctx =>
           Expression.Block (
+              ctx.CallBaseConstructor(),
               Expression.Assign (thisField, ctx.Parameters[0]),
               Expression.Assign (depthField, ctx.Parameters[1])));
     }
