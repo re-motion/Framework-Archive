@@ -19,8 +19,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
-using Microsoft.Scripting.Ast;
-using Remotion.TypePipe.Expressions;
 using Remotion.TypePipe.MutableReflection;
 using Remotion.Utilities;
 using ReflectionUtility = Remotion.Mixins.Utilities.ReflectionUtility;
@@ -31,7 +29,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
   public class TargetTypeForNextCall : ITargetTypeForNextCall
   {
     private readonly MutableType _concreteTarget;
-    private readonly Expression _extensionsField;
+    private readonly FieldInfo _extensionsField;
     private readonly Dictionary<MethodInfo, MethodInfo> _baseCallMethods = new Dictionary<MethodInfo, MethodInfo>();
 
     public TargetTypeForNextCall (MutableType concreteTarget)
@@ -42,16 +40,16 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       _extensionsField = AddDebuggerInvisibleExtensionsField();
     }
 
-    private Expression AddDebuggerInvisibleExtensionsField ()
+    private FieldInfo AddDebuggerInvisibleExtensionsField ()
     {
       // TODO 5370: Better option than making this field public?
       var field = _concreteTarget.AddField ("__extensions", FieldAttributes.Public, typeof (object[]));
       new AttributeGenerator().AddDebuggerBrowsableAttribute(field, DebuggerBrowsableState.Never);
 
-      return Expression.Field (new ThisExpression (_concreteTarget), field);
+      return field;
     }
 
-    public Expression ExtensionsField
+    public FieldInfo ExtensionsField
     {
       get { return _extensionsField; }
     }

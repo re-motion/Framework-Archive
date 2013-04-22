@@ -16,14 +16,13 @@
 // 
 using System;
 using System.Reflection;
-using Microsoft.Scripting.Ast;
 
 namespace Remotion.Mixins.CodeGeneration.TypePipe
 {
   // TODO 5370
   public interface ITargetTypeForNextCall
   {
-    Expression ExtensionsField { get; }
+    FieldInfo ExtensionsField { get; }
 
     MethodInfo GetBaseCallMethod (MethodInfo methodInfo);
   }

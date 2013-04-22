@@ -130,8 +130,12 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     private Expression GetMixinReference (MixinDefinition mixin, Type concreteMixinType)
     {
+      // (ConcreteMixinType) __this.__extensions[mixin.MixinIndex]
+
       return Expression.Convert (
-          Expression.ArrayAccess (_targetTypeForNextCall.ExtensionsField, Expression.Constant (mixin.MixinIndex)),
+          Expression.ArrayAccess (
+              Expression.Field (_thisField, _targetTypeForNextCall.ExtensionsField),
+              Expression.Constant (mixin.MixinIndex)),
           concreteMixinType);
     }
   }
