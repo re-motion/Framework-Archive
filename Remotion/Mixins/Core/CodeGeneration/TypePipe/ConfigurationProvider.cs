@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Remotion.Mixins.CodeGeneration.DynamicProxy.TypeGeneration;
+using Remotion.Mixins.Context;
 using Remotion.Mixins.Definitions;
 using Remotion.Utilities;
 
@@ -32,6 +33,9 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       ArgumentUtility.CheckNotNull ("requestedType", requestedType);
 
       var classContext = MixinConfiguration.ActiveConfiguration.GetContext (requestedType);
+      if (classContext == null)
+        return null;
+
       return TargetClassDefinitionFactory.CreateAndValidate (classContext);
     }
 
