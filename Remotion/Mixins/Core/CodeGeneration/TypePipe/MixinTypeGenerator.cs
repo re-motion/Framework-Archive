@@ -19,8 +19,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.Serialization;
 using Microsoft.Scripting.Ast;
 using Remotion.Collections;
+using Remotion.Mixins.CodeGeneration.DynamicProxy;
 using Remotion.Mixins.Utilities;
 using Remotion.TypePipe.Expressions;
 using Remotion.TypePipe.Implementation;
@@ -32,6 +34,9 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
   // TODO 5370
   public class MixinTypeGenerator
   {
+    private static readonly MethodInfo s_getObjectDataForGeneratedTypesMethod = MemberInfoFromExpressionUtility.GetMethod (
+        () => MixinSerializationHelper.GetObjectDataForGeneratedTypes (null, new StreamingContext(), null, null, false));
+
     private readonly ConcreteMixinTypeIdentifier _identifier;
     private readonly MutableType _type;
     private readonly IAttributeGenerator _attributeGenerator;
@@ -75,7 +80,17 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     public void ImplementGetObjectData ()
     {
-      // TODO 5370
+      SerializationImplementer2.ImplementGetObjectDataByDelegation (
+          _type,
+          (ctx, baseIsISerializable) =>
+          Expression.Call (
+              null,
+              s_getObjectDataForGeneratedTypesMethod,
+              ctx.Parameters[0],
+              ctx.Parameters[1],
+              ctx.This,
+              _identifierField,
+              Expression.Constant (!baseIsISerializable)));
     }
 
     public void AddMixinTypeAttribute ()

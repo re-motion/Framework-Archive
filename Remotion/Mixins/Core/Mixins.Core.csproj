@@ -163,6 +163,7 @@
     </Compile>
     <Compile Include="CodeGeneration\TypePipe\OverrideInterface.cs" />
     <Compile Include="CodeGeneration\TypePipe\OverrideInterfaceGenerator2.cs" />
+    <Compile Include="CodeGeneration\TypePipe\SerializationImplementer2.cs" />
     <Compile Include="CodeGeneration\TypePipe\TargetTypeForNextCall.cs" />
     <Compile Include="CodeGeneration\TypePipe\TargetTypeModifier.cs" />
     <Compile Include="CodeGeneration\TypePipe\TargetTypeModifierFacade.cs" />
