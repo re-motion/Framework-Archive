@@ -141,7 +141,7 @@ namespace Remotion.Data.DomainObjects.Linq
 
       Expression rightKey = GetJoinColumn (rightEndPoint, rightEntity);
 
-      return new ResolvedJoinInfo (resolvedSimpleTableInfo, leftKey, rightKey);
+      return new ResolvedJoinInfo (resolvedSimpleTableInfo, Expression.Equal (leftKey, rightKey));
     }
 
     private IEnumerable<SqlColumnDefinitionExpression> CreateSqlColumnDefinitions (IRdbmsStoragePropertyDefinition storageProperty, string tableAlias)

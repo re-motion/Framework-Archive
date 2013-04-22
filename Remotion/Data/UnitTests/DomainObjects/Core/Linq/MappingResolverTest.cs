@@ -60,7 +60,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Linq
       _orderTable = new SqlTable (new ResolvedSimpleTableInfo (typeof (Order), "Order", "o"), JoinSemantics.Inner);
       _fakeSimpleTableInfo = new ResolvedSimpleTableInfo (typeof (Order), "OrderTable", "o");
       _fakeColumnDefinitionExpression = new SqlColumnDefinitionExpression (typeof (int), "o", "ColumnName", false);
-      _fakeJoinInfo = new ResolvedJoinInfo (_fakeSimpleTableInfo, Expression.Constant ("left"), Expression.Constant ("right"));
+      _fakeJoinInfo = new ResolvedJoinInfo (_fakeSimpleTableInfo, Expression.Constant (true));
     }
 
     [Test]

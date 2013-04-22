@@ -58,7 +58,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Linq
       _storageSpecificExpressionResolver = new StorageSpecificExpressionResolver (
           _rdbmsPersistenceModelProviderStub, _storageNameProviderStub, _storageTypeInformationProviderStub);
 
-      _classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins (typeof (Order));
+      _classDefinition = ClassDefinitionObjectMother.CreateClassDefinition (classType: typeof (Order));
       _classDefinition.SetStorageEntity (
           TableDefinitionObjectMother.Create (
               TestDomainStorageProviderDefinition,
@@ -403,50 +403,51 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Linq
     }
 
     [Test]
-    public void ResolveJoin_LeftSideIsReal_RightSideIsVirtual ()
+    public void ResolveJoin_LeftSideHoldsForeignKey ()
     {
+      // Order.Customer
       var propertyDefinition = CreatePropertyDefinition (_classDefinition, "Customer", "Customer");
       _classDefinition.SetPropertyDefinitions (new PropertyDefinitionCollection (new[] { propertyDefinition }, true));
 
-      var leftEndPointDefinition = new RelationEndPointDefinition (propertyDefinition, false);
-      var rightEndPointDefinition = new AnonymousRelationEndPointDefinition (_classDefinition);
-      var entityExpression = CreateEntityDefinition (typeof (Customer), "c");
+      var columnDefinition = ColumnDefinitionObjectMother.CreateColumn ("Customer");
+      _rdbmsStoragePropertyDefinitionStub.Stub (stub => stub.GetColumnsForComparison ()).Return (new[] { columnDefinition });
+      _rdbmsStoragePropertyDefinitionStub.Stub (stub => stub.PropertyType).Return (typeof (ObjectID));
 
-      var entityDefinition = TableDefinitionObjectMother.Create (
-          TestDomainStorageProviderDefinition,
-          new EntityNameDefinition (null, "OrderTable"),
-          new EntityNameDefinition (null, "OrderView"));
-      _rdbmsPersistenceModelProviderStub
-          .Stub (stub => stub.GetEntityDefinition (leftEndPointDefinition.ClassDefinition))
-          .Return (entityDefinition);
+      var leftEndPointDefinition = new RelationEndPointDefinition (propertyDefinition, false);
       _rdbmsPersistenceModelProviderStub
           .Stub (stub => stub.GetStoragePropertyDefinition (leftEndPointDefinition.PropertyDefinition))
           .Return (_rdbmsStoragePropertyDefinitionStub);
-      var columnDefinition = ColumnDefinitionObjectMother.CreateColumn ("Customer");
-      _rdbmsStoragePropertyDefinitionStub.Stub (stub => stub.GetColumnsForComparison()).Return (new[] { columnDefinition });
-      _rdbmsStoragePropertyDefinitionStub.Stub (stub => stub.PropertyType).Return (typeof (ObjectID));
 
-      var result = _storageSpecificExpressionResolver.ResolveJoin (entityExpression, leftEndPointDefinition, rightEndPointDefinition, "o");
+      // Customer.Order
+      var customerClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition (classType: typeof (Customer));
+      var customerTableDefinition = TableDefinitionObjectMother.Create (
+          TestDomainStorageProviderDefinition, 
+          new EntityNameDefinition (null, "CustomerTable"), 
+          new EntityNameDefinition (null, "CustomerView"));
+      _rdbmsPersistenceModelProviderStub
+          .Stub (stub => stub.GetEntityDefinition (customerClassDefinition))
+          .Return (customerTableDefinition);
+
+      var rightEndPointDefinition = new AnonymousRelationEndPointDefinition (customerClassDefinition);
+
+      var originatingEntity = CreateEntityDefinition (typeof (Order), "o");
+
+      var result = _storageSpecificExpressionResolver.ResolveJoin (originatingEntity, leftEndPointDefinition, rightEndPointDefinition, "c");
 
       Assert.That (result, Is.Not.Null);
-      Assert.That (result.ItemType, Is.EqualTo (typeof (Order)));
+      Assert.That (result.ItemType, Is.EqualTo (typeof (Customer)));
       Assert.That (result.ForeignTableInfo, Is.TypeOf (typeof (ResolvedSimpleTableInfo)));
-      Assert.That (((ResolvedSimpleTableInfo) result.ForeignTableInfo).TableName, Is.EqualTo ("OrderView"));
-      Assert.That (((ResolvedSimpleTableInfo) result.ForeignTableInfo).TableAlias, Is.EqualTo ("o"));
-      Assert.That (((ResolvedSimpleTableInfo) result.ForeignTableInfo).ItemType, Is.SameAs (typeof (Order)));
+      Assert.That (((ResolvedSimpleTableInfo) result.ForeignTableInfo).TableName, Is.EqualTo ("CustomerView"));
+      Assert.That (((ResolvedSimpleTableInfo) result.ForeignTableInfo).TableAlias, Is.EqualTo ("c"));
 
-      Assert.That (((SqlColumnExpression) result.LeftKey).ColumnName, Is.EqualTo ("Customer"));
-      Assert.That (((SqlColumnExpression) result.LeftKey).OwningTableAlias, Is.EqualTo ("c"));
-      Assert.That (result.LeftKey.Type, Is.EqualTo (typeof (ObjectID)));
-      Assert.That (((SqlColumnExpression) result.LeftKey).IsPrimaryKey, Is.False);
-      Assert.That (((SqlColumnExpression) result.RightKey).ColumnName, Is.EqualTo ("ID"));
-      Assert.That (result.RightKey.Type, Is.EqualTo (typeof (ObjectID)));
-      Assert.That (((SqlColumnExpression) result.RightKey).OwningTableAlias, Is.EqualTo ("o"));
-      Assert.That (((SqlColumnExpression) result.RightKey).IsPrimaryKey, Is.True);
+      var expected = Expression.Equal (
+          new SqlColumnDefinitionExpression (typeof (ObjectID), "o", "Customer", false),
+          new SqlColumnDefinitionExpression (typeof (ObjectID), "c", "ID", true));
+      ExpressionTreeComparer.CheckAreEqualTrees (expected, result.JoinCondition);
     }
 
     [Test]
-    public void ResolveJoin_LeftSideIsVirtual_RightSideIsReal ()
+    public void ResolveJoin_LeftSideHoldsNoForeignKey ()
     {
       var propertyDefinition = CreatePropertyDefinition (_classDefinition, "Customer", "Customer");
       _classDefinition.SetPropertyDefinitions (new PropertyDefinitionCollection (new[] { propertyDefinition }, true));
@@ -470,8 +471,11 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Linq
 
       var result = _storageSpecificExpressionResolver.ResolveJoin (entityExpression, leftEndPointDefinition, rightEndPointDefinition, "o");
 
-      ExpressionTreeComparer.CheckAreEqualTrees (entityExpression.GetIdentityExpression(), result.LeftKey);
-      Assert.That (((SqlColumnExpression) result.RightKey).IsPrimaryKey, Is.False);
+      ExpressionTreeComparer.CheckAreEqualTrees (
+          Expression.Equal (
+            entityExpression.GetIdentityExpression(), // c.ID
+            new SqlColumnDefinitionExpression (typeof (ObjectID), "o", "Customer", false)),
+          result.JoinCondition);
     }
 
     private PropertyDefinition CreatePropertyDefinition (ClassDefinition classDefinition, string propertyName, string columnName)
