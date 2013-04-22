@@ -22,6 +22,7 @@ using Remotion.Reflection;
 
 namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTypeCodeGeneration
 {
+  [Ignore ("TODO 5370")]
   [TestFixture]
   public class OverrideTest : CodeGenerationBaseTest
   {

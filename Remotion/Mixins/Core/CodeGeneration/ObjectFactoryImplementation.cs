@@ -78,7 +78,7 @@ namespace Remotion.Mixins.CodeGeneration
 
       using (new MixedObjectInstantiationScope (preparedMixins))
       {
-        return s_pipelineRegistry.DefaultPipeline.CreateObject (classContext.Type, constructorParameters, allowNonPublicConstructors);
+        return s_pipelineRegistry.DefaultPipeline.Create (classContext.Type, constructorParameters, allowNonPublicConstructors);
       }
     }
   }

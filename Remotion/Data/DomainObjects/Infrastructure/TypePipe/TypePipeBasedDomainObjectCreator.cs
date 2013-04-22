@@ -95,7 +95,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
       {
         using (new ObjectInititalizationContextScope (objectInitializationContext))
         {
-          var instance = (DomainObject) _pipeline.CreateObject (mixedType, constructorParameters, allowNonPublicConstructor: true);
+          var instance = (DomainObject) _pipeline.Create (mixedType, constructorParameters, allowNonPublicConstructor: true);
           DomainObjectMixinCodeGenerationBridge.OnDomainObjectCreated (instance);
           return instance;
         }
