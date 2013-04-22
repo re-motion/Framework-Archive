@@ -40,22 +40,18 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     private readonly ConcreteMixinTypeIdentifier _identifier;
     private readonly MutableType _type;
     private readonly IAttributeGenerator _attributeGenerator;
-    private readonly IExpressionBuilder _expressionBuilder;
 
     private Expression _identifierField;
 
-    public MixinTypeGenerator (
-        ConcreteMixinTypeIdentifier identifier, MutableType type, IAttributeGenerator attributeGenerator, IExpressionBuilder expressionBuilder)
+    public MixinTypeGenerator (ConcreteMixinTypeIdentifier identifier, MutableType type, IAttributeGenerator attributeGenerator)
     {
       ArgumentUtility.CheckNotNull ("identifier", identifier);
       ArgumentUtility.CheckNotNull ("type", type);
       ArgumentUtility.CheckNotNull ("attributeGenerator", attributeGenerator);
-      ArgumentUtility.CheckNotNull ("expressionBuilder", expressionBuilder);
 
       _identifier = identifier;
       _type = type;
       _attributeGenerator = attributeGenerator;
-      _expressionBuilder = expressionBuilder;
     }
 
     public void AddInterfaces ()
@@ -137,7 +133,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     private void AddCallToOverrider (MutableMethodInfo methodOverride, Expression targetReference, MethodInfo targetMethod)
     {
       var castedTargetReference = Expression.Convert (targetReference, targetMethod.DeclaringType);
-      methodOverride.SetBody (ctx => _expressionBuilder.CreateDelegation (ctx, castedTargetReference, targetMethod));
+      methodOverride.SetBody (ctx => ctx.DelegateTo (castedTargetReference, targetMethod));
     }
 
     public Dictionary<MethodInfo, MethodInfo> GenerateMethodWrappers ()
@@ -149,7 +145,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     }
 
 
-    private readonly Cache<MethodInfo, MethodInfo> _publicMethodWrappers = new Cache<MethodInfo, MethodInfo> ();
+    private readonly Cache<MethodInfo, MethodInfo> _publicMethodWrappers = new Cache<MethodInfo, MethodInfo>();
     private MethodInfo GetPublicMethodWrapper (MethodInfo methodToBeWrapped)
     {
       ArgumentUtility.CheckNotNull ("methodToBeWrapped", methodToBeWrapped);
@@ -162,7 +158,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       var name = "__wrap__" + methodToBeWrapped.Name;
       var attributes = MethodAttributes.Public | MethodAttributes.HideBySig;
       var md = MethodDeclaration.CreateEquivalent (methodToBeWrapped);
-      var wrapper = _type.AddMethod (name, attributes, md, ctx => _expressionBuilder.CreateDelegation (ctx, ctx.This, methodToBeWrapped));
+      var wrapper = _type.AddMethod (name, attributes, md, ctx => ctx.DelegateTo (ctx.This, methodToBeWrapped));
 
       _attributeGenerator.AddGeneratedMethodWrapperAttribute (wrapper, methodToBeWrapped);
 

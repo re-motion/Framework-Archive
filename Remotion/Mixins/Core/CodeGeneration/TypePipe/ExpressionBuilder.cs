@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Linq;
 using System.Reflection;
 using Microsoft.Scripting.Ast;
 using Remotion.Mixins.CodeGeneration.DynamicProxy;
@@ -57,20 +56,6 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
           Expression.Call (new ThisExpression (concreteTarget), s_initializeMethod));
     }
 
-    public Expression CreateDelegation (MethodBodyContextBase bodyContext, Expression instance, MethodInfo methodToCall)
-    {
-      ArgumentUtility.CheckNotNull ("bodyContext", bodyContext);
-      ArgumentUtility.CheckNotNull ("instance", instance);
-      ArgumentUtility.CheckNotNull ("methodToCall", methodToCall);
-
-      // instance.MethodToCall<GenericParameters>(<parameters>);
-
-      if (methodToCall.IsGenericMethodDefinition)
-        methodToCall = methodToCall.MakeTypePipeGenericMethod (bodyContext.GenericParameters.ToArray());
-
-      return Expression.Call (instance, methodToCall, bodyContext.Parameters.Cast<Expression>());
-    }
-
     public Expression CreateInitializingDelegation (
         MethodBodyContextBase bodyContext, Expression extensionsField, Expression instance, MethodInfo methodToCall)
     {
@@ -80,11 +65,11 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       ArgumentUtility.CheckNotNull ("methodToCall", methodToCall);
 
       // <CreateInitialization>
-      // <CreateDelegation>
+      // instance<GenericParameters>.MethodToCall(<parameters>);
 
       return Expression.Block (
           CreateInitialization (bodyContext.DeclaringType, extensionsField),
-          CreateDelegation (bodyContext, instance, methodToCall));
+          bodyContext.DelegateTo (instance, methodToCall));
     }
   }
 }

@@ -25,6 +25,7 @@ using Remotion.Mixins.Definitions;
 using Remotion.Mixins.Utilities;
 using Remotion.TypePipe.Expressions;
 using Remotion.TypePipe.MutableReflection;
+using Remotion.TypePipe.MutableReflection.BodyBuilding;
 using Remotion.TypePipe.MutableReflection.Implementation;
 using Remotion.Utilities;
 using System.Linq;
@@ -369,7 +370,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
         // It's necessary to explicitly implement some members defined by the concrete mixins' override interfaces: implicit implementation doesn't
         // work if the overrider is non-public or generic. Because it's simpler, we just implement all the members explicitly.
         var methodToCall = overrider.MethodInfo;
-        _concreteTarget.AddExplicitOverride (methodInOverrideInterface, ctx => _expressionBuilder.CreateDelegation (ctx, ctx.This, methodToCall));
+        _concreteTarget.AddExplicitOverride (methodInOverrideInterface, ctx => (Expression) ctx.DelegateTo (ctx.This, methodToCall));
       }
     }
 

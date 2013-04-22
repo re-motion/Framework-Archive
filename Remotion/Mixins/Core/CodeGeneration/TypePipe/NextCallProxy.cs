@@ -21,6 +21,7 @@ using System.Reflection;
 using Microsoft.Scripting.Ast;
 using Remotion.Mixins.Definitions;
 using Remotion.TypePipe.MutableReflection;
+using Remotion.TypePipe.MutableReflection.BodyBuilding;
 using Remotion.Utilities;
 
 namespace Remotion.Mixins.CodeGeneration.TypePipe
@@ -108,7 +109,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       if (equivalentMethodOnProxyBase != null && equivalentMethodOnProxyBase.IsVirtual)
       {
         _type.GetOrAddOverride (equivalentMethodOnProxyBase)
-             .SetBody (ctx => _expressionBuilder.CreateDelegation (ctx, ctx.This, methodOverride));
+             .SetBody (ctx => ctx.DelegateTo (ctx.This, methodOverride));
       }
     }
 

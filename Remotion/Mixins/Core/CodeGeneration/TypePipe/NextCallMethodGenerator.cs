@@ -40,6 +40,12 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
         Expression depthField,
         IList<ConcreteMixinType> concreteMixinTypesWithNulls)
     {
+      ArgumentUtility.CheckNotNull ("targetClassDefinition", targetClassDefinition);
+      ArgumentUtility.CheckNotNull ("targetTypeForNextCall", targetTypeForNextCall);
+      ArgumentUtility.CheckNotNull ("thisField", thisField);
+      ArgumentUtility.CheckNotNull ("depthField", depthField);
+      ArgumentUtility.CheckNotNull ("concreteMixinTypesWithNulls", concreteMixinTypesWithNulls);
+
       _targetClassDefinition = targetClassDefinition;
       _targetTypeForNextCall = targetTypeForNextCall;
       _thisField = thisField;

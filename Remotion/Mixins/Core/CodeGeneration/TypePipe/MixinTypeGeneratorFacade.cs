@@ -47,7 +47,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     {
       var mixinProxyType = context.CreateProxy (concreteMixinTypeIdentifier.MixinType);
 
-      var generator = new MixinTypeGenerator (concreteMixinTypeIdentifier, mixinProxyType, new AttributeGenerator(), new ExpressionBuilder());
+      var generator = new MixinTypeGenerator (concreteMixinTypeIdentifier, mixinProxyType, new AttributeGenerator());
       generator.AddInterfaces();
       generator.AddFields();
       generator.AddTypeInitializer();
