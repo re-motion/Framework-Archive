@@ -18,6 +18,7 @@ using System;
 using NUnit.Framework;
 using Remotion.Development.TypePipe;
 using Remotion.Mixins.CodeGeneration.TypePipe;
+using Remotion.ServiceLocation;
 using Remotion.Text;
 using Remotion.TypePipe;
 using Remotion.TypePipe.Configuration;
@@ -27,19 +28,16 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
   [SetUpFixture]
   public class SetUpFixture
   {
-    private static bool s_skipDeletion;
+    private static readonly IPipelineRegistry s_pipelineRegistry = SafeServiceLocator.Current.GetInstance<IPipelineRegistry>();
 
     private static IPipeline s_pipeline;
+    private static bool s_skipDeletion;
 
     private AssemblyTrackingCodeManager _assemblyTrackingCodeManager;
 
-    /// <summary>
-    /// Signals that the <see cref="SetUpFixture"/> should not delete the files it generates. Call this ad-hoc in a test to keep the files and inspect
-    /// them with Reflector or ildasm.
-    /// </summary>
-    public static void SkipDeletion ()
+    public static IPipelineRegistry PipelineRegistry
     {
-      s_skipDeletion = true;
+      get { return s_pipelineRegistry; }
     }
 
     public static IPipeline Pipeline
@@ -52,6 +50,15 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
       }
     }
 
+    /// <summary>
+    /// Signals that the <see cref="SetUpFixture"/> should not delete the files it generates. Call this ad-hoc in a test to keep the files and inspect
+    /// them with Reflector or ildasm.
+    /// </summary>
+    public static void SkipDeletion ()
+    {
+      s_skipDeletion = true;
+    }
+
     [SetUp]
     public void SetUp ()
     {
@@ -59,6 +66,8 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
       s_pipeline = assemblyTrackingPipelineFactory.CreatePipeline (
           "re-mix-tests", new[] { new MixinParticipant() }, new AppConfigBasedConfigurationProvider());
       _assemblyTrackingCodeManager = assemblyTrackingPipelineFactory.AssemblyTrackingCodeManager;
+
+      s_pipelineRegistry.Register (s_pipeline);
     }
 
     [TearDown]
@@ -88,8 +97,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
             + SeparatedStringBuilder.Build (Environment.NewLine, _assemblyTrackingCodeManager.SavedAssemblies));
       }
 
-      s_pipeline = null;
-      _assemblyTrackingCodeManager = null;
+      s_pipelineRegistry.Unregister (s_pipeline.ParticipantConfigurationID);
     }
   }
 }

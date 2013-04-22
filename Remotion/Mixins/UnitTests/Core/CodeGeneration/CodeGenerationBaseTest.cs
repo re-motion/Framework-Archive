@@ -18,7 +18,6 @@ using System;
 using NUnit.Framework;
 using Remotion.Mixins.CodeGeneration;
 using Remotion.Reflection;
-using Remotion.ServiceLocation;
 using Remotion.TypePipe;
 using Remotion.Utilities;
 
@@ -26,32 +25,29 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
 {
   public abstract class CodeGenerationBaseTest
   {
-    private static readonly IPipelineRegistry s_pipelineRegistry = SafeServiceLocator.Current.GetInstance<IPipelineRegistry>();
-
     private string _previousDefaultPipelineIdentifier;
 
-    [TestFixtureSetUp]
-    public virtual void TestFixtureSetUp ()
-    {
-      s_pipelineRegistry.Register (Pipeline);
-    }
-
     [SetUp]
-    public virtual void SetUp()
+    public virtual void SetUp ()
     {
-      _previousDefaultPipelineIdentifier = s_pipelineRegistry.DefaultPipeline.ParticipantConfigurationID;
-      s_pipelineRegistry.SetDefaultPipeline (Pipeline.ParticipantConfigurationID);
+      _previousDefaultPipelineIdentifier = PipelineRegistry.DefaultPipeline.ParticipantConfigurationID;
+      PipelineRegistry.SetDefaultPipeline (Pipeline.ParticipantConfigurationID);
     }
 
     [TearDown]
-    public virtual void TearDown()
+    public virtual void TearDown ()
     {
-      s_pipelineRegistry.SetDefaultPipeline (_previousDefaultPipelineIdentifier);
+      PipelineRegistry.SetDefaultPipeline (_previousDefaultPipelineIdentifier);
     }
 
     protected ConcreteTypeBuilder SavedTypeBuilder
     {
       get { throw new NotImplementedException ("TODO 5370 ABABABABABAABABABABABABABAABABABABABABABAABABABABABABABAABAB"); }
+    }
+
+    protected IPipelineRegistry PipelineRegistry
+    {
+      get { return SetUpFixture.PipelineRegistry; }
     }
 
     protected IPipeline Pipeline
