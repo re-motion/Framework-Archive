@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 
+using System;
 using System.Collections.Generic;
 using Remotion.Collections;
 using Remotion.TypePipe.Implementation;
@@ -42,17 +43,17 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
         concreteMixinType = new ConcreteMixinType (
             identifier, mixinProxyType, overrideInterface.Type, overrideInterface.InterfaceMethodsByOverriddenMethods, methodWrappers);
 
-        //context.GenerationCompleted += generatedTypeContext =>
-        //{
-        //  var substitutedOverrideInterface = overrideInterface.SubstituteForRealReflectionObjects (generatedTypeContext);
-        //  concreteMixinTypeCache.Add (identifier, substitutedOverrideInterface);
-        //};
+        context.GenerationCompleted += generatedTypeContext =>
+        {
+          var completedConcreteMixinType = concreteMixinType.SubstituteMutableReflectionObjects (generatedTypeContext);
+          concreteMixinTypeCache.Add (identifier, completedConcreteMixinType);
+        };
       }
 
       return concreteMixinType;
     }
 
-    public static void AddLoadedOverrideInterface (IDictionary<string, object> participantState, ConcreteMixinType concreteMixinType)
+    public static void AddLoadedConcreteMixinType (IDictionary<string, object> participantState, ConcreteMixinType concreteMixinType)
     {
       var concreteMixinTypeCache = GetOrCreateConcreteMixinTypeCache (participantState);
 

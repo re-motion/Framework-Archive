@@ -96,7 +96,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       {
         var conreteMixinType = _concreteTypeMetadataImporter.GetMetadataForMixinType (additionalType);
         if (conreteMixinType != null)
-          MixinParticipantStateUtility.AddLoadedOverrideInterface (loadedTypesContext.State, conreteMixinType);
+          MixinParticipantStateUtility.AddLoadedConcreteMixinType (loadedTypesContext.State, conreteMixinType);
       }
     }
   }

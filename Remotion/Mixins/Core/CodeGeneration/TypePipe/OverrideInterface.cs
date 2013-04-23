@@ -17,10 +17,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using Remotion.TypePipe.CodeGeneration;
-using Remotion.TypePipe.MutableReflection;
 using Remotion.Utilities;
 
 namespace Remotion.Mixins.CodeGeneration.TypePipe
@@ -48,15 +45,6 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     public Dictionary<MethodInfo, MethodInfo> InterfaceMethodsByOverriddenMethods
     {
       get { return _interfaceMethodsByOverriddenMethods; }
-    }
-
-    public OverrideInterface SubstituteForRealReflectionObjects (GeneratedTypeContext context)
-    {
-      var type = context.GetGeneratedType ((MutableType) _type);
-      var mapping = _interfaceMethodsByOverriddenMethods.ToDictionary (
-          pair => pair.Key, pair => context.GetGeneratedMethod ((MutableMethodInfo) pair.Value));
-
-      return new OverrideInterface (type, mapping);
     }
   }
 }
