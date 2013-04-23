@@ -42,25 +42,29 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       return method.IsPublic || method.IsFamily || method.IsFamilyOrAssembly;
     }
 
-    public static MutableMethodInfo ImplementGetObjectDataByDelegation (
+    public static void ImplementGetObjectDataByDelegation (
         MutableType mutableType, Func<MethodBodyContextBase, bool, Expression> delegatingExpressionFunc)
     {
       ArgumentUtility.CheckNotNull ("mutableType", mutableType);
       ArgumentUtility.CheckNotNull ("delegatingExpressionFunc", delegatingExpressionFunc);
 
       var baseIsISerializable = typeof (ISerializable).IsTypePipeAssignableFrom (mutableType.BaseType);
-      var method = mutableType.GetOrAddOverride (s_getObjectDataMethod);
-      method.SetBody (
+      // TODO Review: Why not simple explicit implementation of the interface?
+      // Create public re-implementation.
+      var attributes = MethodAttributes.Public | MethodAttributes.Virtual | MethodAttributes.NewSlot | MethodAttributes.Final;
+      var md = MethodDeclaration.CreateEquivalent (s_getObjectDataMethod);
+
+      mutableType.AddMethod (
+          s_getObjectDataMethod.Name,
+          attributes,
+          md,
           ctx =>
           {
             var baseCall = baseIsISerializable ? ImplementBaseGetObjectDataCall (ctx) : Expression.Empty();
             var delegatingExpression = delegatingExpressionFunc (ctx, baseIsISerializable) ?? Expression.Empty();
 
             return Expression.Block (baseCall, delegatingExpression);
-
           });
-
-      return method;
     }
 
     private static Expression ImplementBaseGetObjectDataCall (MethodBodyContextBase ctx)
