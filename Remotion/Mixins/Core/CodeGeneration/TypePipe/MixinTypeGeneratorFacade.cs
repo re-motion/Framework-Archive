@@ -24,7 +24,7 @@ using System.Linq;
 
 namespace Remotion.Mixins.CodeGeneration.TypePipe
 {
-  public class MixinTypeGeneratorFacade : IMixinTypeGeneratorFacade
+  public class MixinTypeGeneratorFacade : IMixinTypeProvider
   {
     // TODO Review: Replace with method operating on single MixinDefinition,
     public IEnumerable<ConcreteMixinType> GenerateConcreteMixinTypesWithNulls (ITypeAssemblyContext context, IEnumerable<MixinDefinition> mixins)

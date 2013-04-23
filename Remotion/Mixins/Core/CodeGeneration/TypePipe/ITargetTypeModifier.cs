@@ -17,30 +17,19 @@
 
 using System;
 using System.Collections.Generic;
-using System.Reflection;
-using Remotion.Mixins.Context;
 using Remotion.Mixins.Definitions;
+using Remotion.TypePipe.MutableReflection;
 
 namespace Remotion.Mixins.CodeGeneration.TypePipe
 {
-  // TODO 5370: Docs.
+  // TODO 5370: docs  
   public interface ITargetTypeModifier
   {
-    void AddInterfaces (IEnumerable<Type> interfacesToImplement);
-    void AddFields (Type nextCallProxyType);
-    void AddTypeInitializations (ClassContext classContext, IEnumerable<Type> expectedMixinTypes);
-    void AddInitializations ();
-
-    void ImplementIInitializableMixinTarget (IList<Type> expectedMixinTypes, ConstructorInfo nextCallProxyConstructor);
-    void ImplementIMixinTarget (string targetClassName);
-    void ImplementIntroducedInterfaces (IEnumerable<InterfaceIntroductionDefinition> introducedInterfaces);
-    void ImplementRequiredDuckMethods (TargetClassDefinition targetClassDefinition);
-    void ImplementAttributes (TargetClassDefinition targetClassDefinition);
-
-    void AddMixedTypeAttribute (TargetClassDefinition targetClassDefinition);
-    void AddDebuggerDisplayAttribute (TargetClassDefinition targetClassDefinition);
-
-    void ImplementOverrides (TargetClassDefinition targetClassDefinition, INextCallProxy nextCallProxy);
-    void ImplementOverridingMethods (TargetClassDefinition targetClassDefinition, IList<ConcreteMixinType> concreteMixinTypesWithNulls);
+    void ModifyTargetType (
+        MutableType concreteTarget,
+        TargetClassDefinition targetClassDefinition,
+        INextCallProxy nextCallProxy,
+        IEnumerable<Type> interfacesToImplement,
+        IList<ConcreteMixinType> concreteMixinTypesWithNulls);
   }
 }

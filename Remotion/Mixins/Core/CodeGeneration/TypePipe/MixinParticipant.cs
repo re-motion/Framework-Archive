@@ -28,9 +28,9 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
   public class MixinParticipant : IParticipant
   {
     private readonly IConfigurationProvider _configurationProvider;
-    private readonly IMixinTypeGeneratorFacade _mixinTypeGeneratorFacade;
+    private readonly IMixinTypeProvider _mixinTypeProvider;
     private readonly INextCallProxyGenerator _nextCallProxyGenerator;
-    private readonly ITargetTypeModifierFacade _targetTypeModifierFacade;
+    private readonly ITargetTypeModifier _targetTypeModifier;
     private readonly IConcreteTypeMetadataImporter _concreteTypeMetadataImporter;
 
     public MixinParticipant ()
@@ -38,28 +38,28 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
             new ConfigurationProvider(),
             new MixinTypeGeneratorFacade(),
             new NextCallProxyGenerator(),
-            new TargetTypeModifierFacade(),
+            new TargetTypeGeneratorFacade(),
             new AttributeBasedMetadataImporter())
     {
     }
 
     private MixinParticipant (
         IConfigurationProvider configurationProvider,
-        IMixinTypeGeneratorFacade mixinTypeGeneratorFacade,
+        IMixinTypeProvider mixinTypeProvider,
         INextCallProxyGenerator nextCallProxyGenerator,
-        ITargetTypeModifierFacade targetTypeModifierFacade,
+        ITargetTypeModifier targetTypeModifier,
         IConcreteTypeMetadataImporter concreteTypeMetadataImporter)
     {
       ArgumentUtility.CheckNotNull ("configurationProvider", configurationProvider);
-      ArgumentUtility.CheckNotNull ("mixinTypeGeneratorFacade", mixinTypeGeneratorFacade);
+      ArgumentUtility.CheckNotNull ("mixinTypeProvider", mixinTypeProvider);
       ArgumentUtility.CheckNotNull ("nextCallProxyGenerator", nextCallProxyGenerator);
-      ArgumentUtility.CheckNotNull ("targetTypeModifierFacade", targetTypeModifierFacade);
+      ArgumentUtility.CheckNotNull ("targetTypeModifier", targetTypeModifier);
       ArgumentUtility.CheckNotNull ("concreteTypeMetadataImporter", concreteTypeMetadataImporter);
 
       _configurationProvider = configurationProvider;
-      _mixinTypeGeneratorFacade = mixinTypeGeneratorFacade;
+      _mixinTypeProvider = mixinTypeProvider;
       _nextCallProxyGenerator = nextCallProxyGenerator;
-      _targetTypeModifierFacade = targetTypeModifierFacade;
+      _targetTypeModifier = targetTypeModifier;
       _concreteTypeMetadataImporter = concreteTypeMetadataImporter;
     }
 
@@ -79,13 +79,13 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       if (targetClassDefinition == null)
         return;
 
-      var concreteMixinTypesWithNulls = _mixinTypeGeneratorFacade.GenerateConcreteMixinTypesWithNulls (typeAssemblyContext, targetClassDefinition.Mixins).ToList();
+      var concreteMixinTypesWithNulls = _mixinTypeProvider.GenerateConcreteMixinTypesWithNulls (typeAssemblyContext, targetClassDefinition.Mixins).ToList();
       var interfacesToImplement = _configurationProvider.GetInterfacesToImplement (targetClassDefinition, concreteMixinTypesWithNulls);
       var targetTypeForNextCall = _nextCallProxyGenerator.GetTargetTypeWrapper (concreteTarget);
       var nextCallProxy = _nextCallProxyGenerator.Create (
           typeAssemblyContext, targetClassDefinition, concreteMixinTypesWithNulls, targetTypeForNextCall);
 
-      _targetTypeModifierFacade.ModifyTargetType (
+      _targetTypeModifier.ModifyTargetType (
           concreteTarget, targetClassDefinition, nextCallProxy, interfacesToImplement, concreteMixinTypesWithNulls);
     }
 

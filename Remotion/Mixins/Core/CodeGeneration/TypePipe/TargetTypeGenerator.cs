@@ -32,7 +32,7 @@ using System.Linq;
 namespace Remotion.Mixins.CodeGeneration.TypePipe
 {
   // TODO 5370: Docs.
-  public class TargetTypeModifier : ITargetTypeModifier
+  public class TargetTypeGenerator : ITargetTypeGenerator
   {
     private static readonly ConstructorInfo s_mixinArrayInitializerCtor =
         MemberInfoFromExpressionUtility.GetConstructor (() => new MixinArrayInitializer (null, Type.EmptyTypes));
@@ -71,7 +71,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     private Expression _extensionsField;
     private Expression _firstField;
 
-    public TargetTypeModifier (MutableType concreteTarget, IExpressionBuilder expressionBuilder, IAttributeGenerator attributeGenerator)
+    public TargetTypeGenerator (MutableType concreteTarget, IExpressionBuilder expressionBuilder, IAttributeGenerator attributeGenerator)
     {
       ArgumentUtility.CheckNotNull ("concreteTarget", concreteTarget);
       ArgumentUtility.CheckNotNull ("expressionBuilder", expressionBuilder);

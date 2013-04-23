@@ -23,7 +23,7 @@ using Remotion.TypePipe.Implementation;
 namespace Remotion.Mixins.CodeGeneration.TypePipe
 {
   // TODO 5370: Docs.
-  public interface IMixinTypeGeneratorFacade
+  public interface IMixinTypeProvider
   {
     IEnumerable<ConcreteMixinType> GenerateConcreteMixinTypesWithNulls (ITypeAssemblyContext context, IEnumerable<MixinDefinition> mixins);
   }

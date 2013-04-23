@@ -24,7 +24,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 {
   // TODO 5370: docs
   // TODO 5370: tests
-  public class TargetTypeModifierFacade : ITargetTypeModifierFacade
+  public class TargetTypeGeneratorFacade : ITargetTypeModifier
   {
     public void ModifyTargetType (
         MutableType concreteTarget,
@@ -34,7 +34,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
         IList<ConcreteMixinType> concreteMixinTypesWithNulls)
     {
 
-      var modifier = new TargetTypeModifier (concreteTarget, new ExpressionBuilder(), new AttributeGenerator());
+      var modifier = new TargetTypeGenerator (concreteTarget, new ExpressionBuilder(), new AttributeGenerator());
       var expectedMixinTypes = GetExpectedMixinTypes (targetClassDefinition, concreteMixinTypesWithNulls);
 
       modifier.AddInterfaces (interfacesToImplement);
