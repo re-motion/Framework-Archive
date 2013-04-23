@@ -22,6 +22,7 @@ using Remotion.ServiceLocation;
 using Remotion.Text;
 using Remotion.TypePipe;
 using Remotion.TypePipe.Configuration;
+using Remotion.TypePipe.Serialization;
 
 namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
 {
@@ -63,8 +64,8 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
     public void SetUp ()
     {
       var assemblyTrackingPipelineFactory = new AssemblyTrackingPipelineFactory();
-      s_pipeline = assemblyTrackingPipelineFactory.CreatePipeline (
-          "re-mix-tests", new[] { new MixinParticipant() }, new AppConfigBasedConfigurationProvider());
+      var participants = new IParticipant[] { new MixinParticipant(), new SerializationParticipant() };
+      s_pipeline = assemblyTrackingPipelineFactory.CreatePipeline ("re-mix-tests", participants, new AppConfigBasedConfigurationProvider());
       _assemblyTrackingCodeManager = assemblyTrackingPipelineFactory.AssemblyTrackingCodeManager;
 
       s_pipelineRegistry.Register (s_pipeline);
