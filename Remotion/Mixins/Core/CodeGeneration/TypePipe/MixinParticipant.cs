@@ -31,9 +31,15 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     private readonly IMixinTypeGeneratorFacade _mixinTypeGeneratorFacade;
     private readonly INextCallProxyGenerator _nextCallProxyGenerator;
     private readonly ITargetTypeModifierFacade _targetTypeModifierFacade;
+    private readonly IConcreteTypeMetadataImporter _concreteTypeMetadataImporter;
 
     public MixinParticipant ()
-        : this (new ConfigurationProvider(), new MixinTypeGeneratorFacade(), new NextCallProxyGenerator(), new TargetTypeModifierFacade())
+        : this (
+            new ConfigurationProvider(),
+            new MixinTypeGeneratorFacade(),
+            new NextCallProxyGenerator(),
+            new TargetTypeModifierFacade(),
+            new AttributeBasedMetadataImporter())
     {
     }
 
@@ -41,22 +47,25 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
         IConfigurationProvider configurationProvider,
         IMixinTypeGeneratorFacade mixinTypeGeneratorFacade,
         INextCallProxyGenerator nextCallProxyGenerator,
-        ITargetTypeModifierFacade targetTypeModifierFacade)
+        ITargetTypeModifierFacade targetTypeModifierFacade,
+        IConcreteTypeMetadataImporter concreteTypeMetadataImporter)
     {
       ArgumentUtility.CheckNotNull ("configurationProvider", configurationProvider);
       ArgumentUtility.CheckNotNull ("mixinTypeGeneratorFacade", mixinTypeGeneratorFacade);
       ArgumentUtility.CheckNotNull ("nextCallProxyGenerator", nextCallProxyGenerator);
       ArgumentUtility.CheckNotNull ("targetTypeModifierFacade", targetTypeModifierFacade);
+      ArgumentUtility.CheckNotNull ("concreteTypeMetadataImporter", concreteTypeMetadataImporter);
 
       _configurationProvider = configurationProvider;
       _mixinTypeGeneratorFacade = mixinTypeGeneratorFacade;
       _nextCallProxyGenerator = nextCallProxyGenerator;
       _targetTypeModifierFacade = targetTypeModifierFacade;
+      _concreteTypeMetadataImporter = concreteTypeMetadataImporter;
     }
 
     public ICacheKeyProvider PartialCacheKeyProvider
     {
-      get { return new MixinParticipantCacheKeyProvider(); }
+      get { return new MixinParticipantCacheKeyProvider (_concreteTypeMetadataImporter); }
     }
 
     public void Participate (ITypeAssemblyContext typeAssemblyContext)
@@ -82,7 +91,13 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     public void RebuildState (LoadedTypesContext loadedTypesContext)
     {
-      throw new System.NotImplementedException();
+      // TODO Review
+      foreach (var additionalType in loadedTypesContext.AdditionalTypes)
+      {
+        var conreteMixinType = _concreteTypeMetadataImporter.GetMetadataForMixinType (additionalType);
+        if (conreteMixinType != null)
+          MixinParticipantStateUtility.AddLoadedOverrideInterface (loadedTypesContext.State, conreteMixinType);
+      }
     }
   }
 }

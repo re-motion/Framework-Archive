@@ -25,6 +25,15 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
   // TODO 5370.
   public class MixinParticipantCacheKeyProvider : ICacheKeyProvider
   {
+    private readonly IConcreteTypeMetadataImporter _concreteTypeMetadataImporter;
+
+    public MixinParticipantCacheKeyProvider (IConcreteTypeMetadataImporter concreteTypeMetadataImporter)
+    {
+      ArgumentUtility.CheckNotNull ("concreteTypeMetadataImporter", concreteTypeMetadataImporter);
+
+      _concreteTypeMetadataImporter = concreteTypeMetadataImporter;
+    }
+
     public object GetCacheKey (Type requestedType)
     {
       // Using Debug.Assert because it will be compiled away.
@@ -43,10 +52,23 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       ArgumentUtility.CheckNotNull ("requestedType", requestedType);
       ArgumentUtility.CheckNotNull ("assembledType", assembledType);
 
-      var classContext = MixinTypeUtility.GetClassContextForConcreteType (assembledType);
-      Debug.Assert (classContext != null);
+      return _concreteTypeMetadataImporter.GetMetadataForMixedType (assembledType);
 
-      return classContext;
+      // TODO Review
+      // 1) easiest version is above.
+
+      // 2) this caches
+      //var classContext = MixinTypeUtility.GetClassContextForConcreteType (assembledType);
+      //Debug.Assert (classContext != null);
+
+      //return classContext;
+
+      // 3) implement ourselves
+      //var attribute = (ConcreteMixedTypeAttribute) concreteMixedType.GetCustomAttributes (typeof (ConcreteMixedTypeAttribute), false).SingleOrDefault ();
+      //if (attribute != null)
+      //  return attribute.GetClassContext ();
+      //else
+      //  return null;
     }
   }
 }

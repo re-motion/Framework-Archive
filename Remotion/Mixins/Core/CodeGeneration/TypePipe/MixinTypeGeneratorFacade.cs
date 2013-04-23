@@ -20,7 +20,6 @@ using Remotion.Mixins.Definitions;
 using Remotion.TypePipe.Implementation;
 using Remotion.Utilities;
 using System.Linq;
-using Remotion.Collections;
 
 namespace Remotion.Mixins.CodeGeneration.TypePipe
 {
@@ -56,47 +55,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       generator.AddMixinTypeAttribute();
       generator.AddDebuggerAttributes();
 
-      var overrideInterface = GetOrGenerateOverrideInterface (context, concreteMixinTypeIdentifier, generator);
-      var methodWrappers = generator.GenerateMethodWrappers();
-
-      return new ConcreteMixinType (
-          concreteMixinTypeIdentifier, mixinProxyType, overrideInterface.Type, overrideInterface.InterfaceMethodsByOverriddenMethods, methodWrappers);
-    }
-
-    private static OverrideInterface GetOrGenerateOverrideInterface (
-        ITypeAssemblyContext context, ConcreteMixinTypeIdentifier key, MixinTypeGenerator mixinTypeGenerator)
-    {
-      // TODO 5370: Locking?
-
-      var concreteMixinTypeCache = GetOrCreateCacheConcreteMixinTypeCache (context.State);
-
-      OverrideInterface overrideInterface;
-      if (!concreteMixinTypeCache.TryGetValue (key, out overrideInterface))
-      {
-        overrideInterface = mixinTypeGenerator.GenerateOverrides (context);
-
-        context.GenerationCompleted += generatedTypeContext =>
-        {
-          var substitutedOverrideInterface = overrideInterface.SubstituteForRealReflectionObjects (generatedTypeContext);
-          concreteMixinTypeCache.Add (key, substitutedOverrideInterface);
-        };
-      }
-
-      return overrideInterface;
-    }
-
-    private static Dictionary<ConcreteMixinTypeIdentifier, OverrideInterface> GetOrCreateCacheConcreteMixinTypeCache (
-        IDictionary<string, object> participantState)
-    {
-      const string key = "ConcreteMixinTypes";
-      var concreteMixinTypeCache = (Dictionary<ConcreteMixinTypeIdentifier, OverrideInterface>) participantState.GetValueOrDefault (key);
-      if (concreteMixinTypeCache == null)
-      {
-        concreteMixinTypeCache = new Dictionary<ConcreteMixinTypeIdentifier, OverrideInterface>();
-        participantState.Add (key, concreteMixinTypeCache);
-      }
-
-      return concreteMixinTypeCache;
+      return MixinParticipantStateUtility.GetOrGenerateOverrideInterface (context, mixinProxyType, concreteMixinTypeIdentifier, generator);
     }
   }
 }
