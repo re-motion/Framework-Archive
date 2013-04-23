@@ -459,6 +459,107 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Linq
       ExpressionTreeComparer.CheckAreEqualTrees (result, expectedExpression);
     }
 
+    [Test]
+    public void TryResolveOptimizedIdentity_ForForeignKeyRelationProperty_ResolvesRelationEndPoint ()
+    {
+      var entityExpression = CreateFakeEntityExpression (typeof (Order));
+      var property = typeof (Order).GetProperty ("Customer");
+      var entityRefMemberExpression = new SqlEntityRefMemberExpression (entityExpression, property);
+
+      var endPointDefinition = (RelationEndPointDefinition) GetEndPointDefinition (property);
+      var fakeResolvedIdentity = Expression.Constant (0);
+      _storageSpecificExpressionResolverStub
+          .Stub (stub => stub.ResolveEntityIdentityViaForeignKey (entityExpression, endPointDefinition))
+          .Return (fakeResolvedIdentity);
+
+      var result = _resolver.TryResolveOptimizedIdentity (entityRefMemberExpression);
+
+      Assert.That (result, Is.SameAs (fakeResolvedIdentity));
+    }
+
+    [Test]
+    public void TryResolveOptimizedIdentity_ForVirtualRelationProperty_ReturnsNull ()
+    {
+      var entityExpression = CreateFakeEntityExpression (typeof (Order));
+      var property = typeof (Order).GetProperty ("OrderTicket");
+      var entityRefMemberExpression = new SqlEntityRefMemberExpression (entityExpression, property);
+
+      var result = _resolver.TryResolveOptimizedIdentity (entityRefMemberExpression);
+
+      _storageSpecificExpressionResolverStub.AssertWasNotCalled (
+          stub => stub.ResolveEntityIdentityViaForeignKey (Arg<SqlEntityExpression>.Is.Anything, Arg<RelationEndPointDefinition>.Is.Anything));
+      Assert.That (result, Is.Null);
+    }
+
+    [Test]
+    public void TryResolveOptimizedIdentity_WithMixedRelationProperty ()
+    {
+      var entityExpression = CreateFakeEntityExpression (typeof (TargetClassForPersistentMixin));
+      var memberInfo = typeof (IMixinAddingPersistentProperties).GetProperty ("RelationProperty");
+      var entityRefMemberExpression = new SqlEntityRefMemberExpression (entityExpression, memberInfo);
+
+      var endPointDefinition = GetEndPointDefinition (typeof (TargetClassForPersistentMixin), typeof (MixinAddingPersistentProperties), memberInfo.Name);
+      var fakeResolvedIdentity = Expression.Constant (0);
+      _storageSpecificExpressionResolverStub
+          .Stub (stub => stub.ResolveEntityIdentityViaForeignKey (entityExpression, (RelationEndPointDefinition) endPointDefinition))
+          .Return (fakeResolvedIdentity);
+
+      var result = _resolver.TryResolveOptimizedIdentity (entityRefMemberExpression);
+
+      Assert.That (result, Is.SameAs (fakeResolvedIdentity));
+    }
+
+    [Test]
+    public void TryResolveOptimizedIdentity_WithDerivedClassRelationProperty ()
+    {
+      var entityExpression = CreateFakeEntityExpression (typeof (Partner));
+      var memberInfo = typeof (Partner).GetProperty ("ContactPerson");
+      var entityRefMemberExpression = new SqlEntityRefMemberExpression (entityExpression, memberInfo);
+
+      var leftEndPoint = GetEndPointDefinition (memberInfo);
+      var fakeResolvedIdentity = Expression.Constant (0);
+      _storageSpecificExpressionResolverStub
+          .Stub (stub => stub.ResolveEntityIdentityViaForeignKey (entityExpression, (RelationEndPointDefinition) leftEndPoint))
+          .Return (fakeResolvedIdentity);
+
+      var result = _resolver.TryResolveOptimizedIdentity (entityRefMemberExpression);
+
+      Assert.That (result, Is.SameAs (fakeResolvedIdentity));
+    }
+    
+    [Test]
+    [ExpectedException (typeof (UnmappedItemException), ExpectedMessage =
+        "The type 'Remotion.Data.UnitTests.DomainObjects.Core.MixedDomains.TestDomain.IMixinAddingPersistentProperties' "
+        + "does not identify a queryable table.")]
+    public void TryResolveOptimizedIdentity_UnknownType ()
+    {
+      var entityExpression = CreateFakeEntityExpression (typeof (IMixinAddingPersistentProperties));
+      var memberInfo = typeof (IMixinAddingPersistentProperties).GetProperty ("RelationProperty");
+      var entityRefMemberExpression = new SqlEntityRefMemberExpression (entityExpression, memberInfo);
+
+      _resolver.TryResolveOptimizedIdentity (entityRefMemberExpression);
+    }
+
+    [Test]
+    [ExpectedException (typeof (UnmappedItemException), ExpectedMessage = "The member 'Order.OrderNumber' does not identify a relation.")]
+    public void TryResolveOptimizedIdentity_NoRelation_CardinalityOne_ThrowsException ()
+    {
+      var entityExpression = CreateFakeEntityExpression (typeof (Order));
+      var entityRefMemberExpression = new SqlEntityRefMemberExpression (entityExpression, typeof (Order).GetProperty ("OrderNumber"));
+
+      _resolver.TryResolveOptimizedIdentity (entityRefMemberExpression);
+    }
+
+    [Test]
+    [ExpectedException (typeof (UnmappedItemException), ExpectedMessage = "The member 'Student.Scores' does not identify a relation.")]
+    public void TryResolveOptimizedIdentity_NoRelation_CardinalityMany_ThrowsExcpetion ()
+    {
+      var entityExpression = CreateFakeEntityExpression (typeof (Order));
+      var entityRefMemberExpression = new SqlEntityRefMemberExpression (entityExpression, typeof (Student).GetProperty ("Scores"));
+
+      _resolver.TryResolveOptimizedIdentity (entityRefMemberExpression);
+    }
+
     private SqlEntityDefinitionExpression CreateFakeEntityExpression (Type classType)
     {
       var starColumn = new SqlColumnDefinitionExpression (classType, "o", "*", false);

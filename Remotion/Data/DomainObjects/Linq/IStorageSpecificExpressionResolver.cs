@@ -37,5 +37,6 @@ namespace Remotion.Data.DomainObjects.Linq
 
     ResolvedJoinInfo ResolveJoin (
         SqlEntityExpression originatingEntity, IRelationEndPointDefinition leftEndPoint, IRelationEndPointDefinition rightEndPoint, string tableAlias);
+    Expression ResolveEntityIdentityViaForeignKey (SqlEntityExpression originatingEntity, RelationEndPointDefinition foreignKeyEndPoint);
   }
 }

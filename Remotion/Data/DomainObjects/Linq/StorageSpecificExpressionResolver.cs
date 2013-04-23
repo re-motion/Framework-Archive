@@ -144,6 +144,14 @@ namespace Remotion.Data.DomainObjects.Linq
       return new ResolvedJoinInfo (resolvedSimpleTableInfo, Expression.Equal (leftKey, rightKey));
     }
 
+    public Expression ResolveEntityIdentityViaForeignKey (SqlEntityExpression originatingEntity, RelationEndPointDefinition foreignKeyEndPoint)
+    {
+      ArgumentUtility.CheckNotNull ("originatingEntity", originatingEntity);
+      ArgumentUtility.CheckNotNull ("foreignKeyEndPoint", foreignKeyEndPoint);
+
+      return GetJoinColumn (foreignKeyEndPoint, originatingEntity);
+    }
+
     private IEnumerable<SqlColumnDefinitionExpression> CreateSqlColumnDefinitions (IRdbmsStoragePropertyDefinition storageProperty, string tableAlias)
     {
       // HACK: re-linq currently doesn't support compound columns. Therefore, we can't represent compound re-store columns (e.g., ObjectIDs) as 

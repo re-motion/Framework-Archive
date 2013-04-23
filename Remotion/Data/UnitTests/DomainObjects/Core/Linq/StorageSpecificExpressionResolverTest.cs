@@ -478,6 +478,30 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Linq
           result.JoinCondition);
     }
 
+    [Test]
+    public void ResolveEntityIdentityViaForeignKey()
+    {
+      // Order.Customer
+      var propertyDefinition = CreatePropertyDefinition (_classDefinition, "Customer", "Customer");
+      _classDefinition.SetPropertyDefinitions (new PropertyDefinitionCollection (new[] { propertyDefinition }, true));
+
+      var columnDefinition = ColumnDefinitionObjectMother.CreateColumn ("Customer");
+      _rdbmsStoragePropertyDefinitionStub.Stub (stub => stub.GetColumnsForComparison ()).Return (new[] { columnDefinition });
+      _rdbmsStoragePropertyDefinitionStub.Stub (stub => stub.PropertyType).Return (typeof (ObjectID));
+
+      var foreignKeyEndPointDefinition = new RelationEndPointDefinition (propertyDefinition, false);
+      _rdbmsPersistenceModelProviderStub
+          .Stub (stub => stub.GetStoragePropertyDefinition (foreignKeyEndPointDefinition.PropertyDefinition))
+          .Return (_rdbmsStoragePropertyDefinitionStub);
+
+      var originatingEntity = CreateEntityDefinition (typeof (Order), "o");
+
+      var result = _storageSpecificExpressionResolver.ResolveEntityIdentityViaForeignKey (originatingEntity, foreignKeyEndPointDefinition);
+
+      var expected = new SqlColumnDefinitionExpression (typeof (ObjectID), "o", "Customer", false);
+      ExpressionTreeComparer.CheckAreEqualTrees (expected, result);
+    }
+
     private PropertyDefinition CreatePropertyDefinition (ClassDefinition classDefinition, string propertyName, string columnName)
     {
       var propertyDefinition = new PropertyDefinition (
