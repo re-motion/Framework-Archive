@@ -16,6 +16,7 @@
 // 
 
 using System;
+using System.Diagnostics;
 using Remotion.TypePipe.Caching;
 using Remotion.Utilities;
 
@@ -42,7 +43,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
 
     public object GetCacheKey (Type requestedType)
     {
-      ArgumentUtility.CheckNotNull ("requestedType", requestedType);
+      // Using Debug.Assert because it will be compiled away.
+      Debug.Assert (requestedType != null);
 
       // TODO 5370: This will change when TypePipe is integrated with re-mix.
       var domainObjectType = _typeDefinitionProvider.GetPublicDomainObjectType (requestedType);

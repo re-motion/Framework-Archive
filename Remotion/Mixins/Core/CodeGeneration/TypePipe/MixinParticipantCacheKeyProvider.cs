@@ -18,6 +18,7 @@
 using System;
 using System.Diagnostics;
 using Remotion.TypePipe.Caching;
+using Remotion.Utilities;
 
 namespace Remotion.Mixins.CodeGeneration.TypePipe
 {
@@ -29,12 +30,21 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       // Using Debug.Assert because it will be compiled away.
       Debug.Assert (requestedType != null);
 
-      return MixinConfiguration.ActiveConfiguration.GetContext (requestedType);
+      var classContext = MixinConfiguration.ActiveConfiguration.GetContext (requestedType);
+      Debug.Assert (classContext != null);
+
+      return classContext;
     }
 
     public object RebuildCacheKey (Type requestedType, Type assembledType)
     {
-      throw new NotImplementedException ("TODO 5370: MixinParticipantCacheKeyProvider.RebuildCacheKey - ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ");
+      ArgumentUtility.CheckNotNull ("requestedType", requestedType);
+      ArgumentUtility.CheckNotNull ("assembledType", assembledType);
+
+      var classContext = MixinTypeUtility.GetClassContextForConcreteType (assembledType);
+      Debug.Assert (classContext != null);
+
+      return classContext;
     }
   }
 }
