@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
+using Remotion.Collections;
 using Remotion.Mixins.Definitions;
 using Remotion.TypePipe.Implementation;
 using Remotion.Utilities;
@@ -23,9 +24,9 @@ using System.Linq;
 
 namespace Remotion.Mixins.CodeGeneration.TypePipe
 {
-  // TODO 5370
   public class MixinTypeGeneratorFacade : IMixinTypeGeneratorFacade
   {
+    // TODO Review: Replace with method operating on single MixinDefinition,
     public IEnumerable<ConcreteMixinType> GenerateConcreteMixinTypesWithNulls (ITypeAssemblyContext context, IEnumerable<MixinDefinition> mixins)
     {
       ArgumentUtility.CheckNotNull ("context", context);
@@ -34,12 +35,45 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       return mixins.Select (m => GenerateConcreteMixinTypeOrNull (context, m));
     }
 
+    // TODO 5370: Make non-static, add to interface.
+    public static void AddLoadedConcreteMixinType (IDictionary<string, object> participantState, ConcreteMixinType concreteMixinType)
+    {
+      var concreteMixinTypeCache = GetOrCreateConcreteMixinTypeCache (participantState);
+
+      // TODO Review
+      // what if identifier already present?
+      if (!concreteMixinTypeCache.ContainsKey (concreteMixinType.Identifier))
+      {
+        concreteMixinTypeCache.Add (concreteMixinType.Identifier, concreteMixinType);
+      }
+    }
+
     private ConcreteMixinType GenerateConcreteMixinTypeOrNull (ITypeAssemblyContext context, MixinDefinition mixin)
     {
       if (!mixin.NeedsDerivedMixinType())
         return null;
 
-      return GenerateConcreteMixinType (context, mixin.GetConcreteMixinTypeIdentifier());
+      var concreteMixinTypeIdentifier = mixin.GetConcreteMixinTypeIdentifier();
+      return GetOrGenerateConcreteMixinType (context, concreteMixinTypeIdentifier);
+    }
+
+    private ConcreteMixinType GetOrGenerateConcreteMixinType (ITypeAssemblyContext context, ConcreteMixinTypeIdentifier concreteMixinTypeIdentifier)
+    {
+      var concreteMixinTypeCache = GetOrCreateConcreteMixinTypeCache (context.State);
+
+      ConcreteMixinType concreteMixinType;
+      if (!concreteMixinTypeCache.TryGetValue (concreteMixinTypeIdentifier, out concreteMixinType))
+      {
+        concreteMixinType = GenerateConcreteMixinType (context, concreteMixinTypeIdentifier);
+
+        context.GenerationCompleted += generatedTypeContext =>
+        {
+          var completedConcreteMixinType = concreteMixinType.SubstituteMutableReflectionObjects (generatedTypeContext);
+          concreteMixinTypeCache.Add (concreteMixinTypeIdentifier, completedConcreteMixinType);
+        };
+      }
+
+      return concreteMixinType;
     }
 
     private ConcreteMixinType GenerateConcreteMixinType (ITypeAssemblyContext context, ConcreteMixinTypeIdentifier concreteMixinTypeIdentifier)
@@ -55,7 +89,26 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       generator.AddMixinTypeAttribute();
       generator.AddDebuggerAttributes();
 
-      return MixinParticipantStateUtility.GetOrGenerateOverrideInterface (context, mixinProxyType, concreteMixinTypeIdentifier, generator);
+      var overrideInterface = generator.GenerateOverrides (context);
+      var methodWrappers = generator.GenerateMethodWrappers();
+
+      return new ConcreteMixinType (
+          concreteMixinTypeIdentifier, mixinProxyType, overrideInterface.Type, overrideInterface.InterfaceMethodsByOverriddenMethods, methodWrappers);
+    }
+
+    // TODO 5370: Make non-static.
+    private static IDictionary<ConcreteMixinTypeIdentifier, ConcreteMixinType> GetOrCreateConcreteMixinTypeCache (
+        IDictionary<string, object> participantState)
+    {
+      const string key = "ConcreteMixinTypes";
+      var concreteMixinTypeCache = (Dictionary<ConcreteMixinTypeIdentifier, ConcreteMixinType>) participantState.GetValueOrDefault (key);
+      if (concreteMixinTypeCache == null)
+      {
+        concreteMixinTypeCache = new Dictionary<ConcreteMixinTypeIdentifier, ConcreteMixinType>();
+        participantState.Add (key, concreteMixinTypeCache);
+      }
+
+      return concreteMixinTypeCache;
     }
   }
 }

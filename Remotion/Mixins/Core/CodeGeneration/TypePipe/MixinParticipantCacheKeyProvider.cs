@@ -39,12 +39,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       // Using Debug.Assert because it will be compiled away.
       Debug.Assert (requestedType != null);
 
-      var classContext = MixinConfiguration.ActiveConfiguration.GetContext (requestedType);
-      // Can this be null with the new feature that avoids 'uninteresting' types.
-      // TODO Review
-      Assertion.IsNotNull (classContext, "TODO Review");
-
-      return classContext;
+      return MixinConfiguration.ActiveConfiguration.GetContext (requestedType);
     }
 
     public object RebuildCacheKey (Type requestedType, Type assembledType)
@@ -53,22 +48,6 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       ArgumentUtility.CheckNotNull ("assembledType", assembledType);
 
       return _concreteTypeMetadataImporter.GetMetadataForMixedType (assembledType);
-
-      // TODO Review
-      // 1) easiest version is above.
-
-      // 2) this caches
-      //var classContext = MixinTypeUtility.GetClassContextForConcreteType (assembledType);
-      //Debug.Assert (classContext != null);
-
-      //return classContext;
-
-      // 3) implement ourselves
-      //var attribute = (ConcreteMixedTypeAttribute) concreteMixedType.GetCustomAttributes (typeof (ConcreteMixedTypeAttribute), false).SingleOrDefault ();
-      //if (attribute != null)
-      //  return attribute.GetClassContext ();
-      //else
-      //  return null;
     }
   }
 }

@@ -91,12 +91,13 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     public void RebuildState (LoadedTypesContext loadedTypesContext)
     {
-      // TODO Review
+      ArgumentUtility.CheckNotNull ("loadedTypesContext", loadedTypesContext);
+
       foreach (var additionalType in loadedTypesContext.AdditionalTypes)
       {
         var conreteMixinType = _concreteTypeMetadataImporter.GetMetadataForMixinType (additionalType);
         if (conreteMixinType != null)
-          MixinParticipantStateUtility.AddLoadedConcreteMixinType (loadedTypesContext.State, conreteMixinType);
+          MixinTypeGeneratorFacade.AddLoadedConcreteMixinType (loadedTypesContext.State, conreteMixinType);
       }
     }
   }
