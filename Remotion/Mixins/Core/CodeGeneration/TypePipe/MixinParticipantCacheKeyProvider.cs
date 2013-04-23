@@ -31,7 +31,9 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       Debug.Assert (requestedType != null);
 
       var classContext = MixinConfiguration.ActiveConfiguration.GetContext (requestedType);
-      Debug.Assert (classContext != null);
+      // Can this be null with the new feature that avoids 'uninteresting' types.
+      // TODO Review
+      Assertion.IsNotNull (classContext, "TODO Review");
 
       return classContext;
     }
