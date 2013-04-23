@@ -74,7 +74,9 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     private static MutableType CreateNextCallProxyType (ITypeAssemblyContext context, MutableType concreteTarget)
     {
       var name = concreteTarget.Name + "_NextCallProxy";
-      return context.CreateType (name, concreteTarget.Namespace, TypeAttributes.Public | TypeAttributes.Sealed, typeof (object));
+      var attributes = TypeAttributes.Public | TypeAttributes.Sealed | TypeAttributes.Serializable;
+
+      return context.CreateType (name, concreteTarget.Namespace, attributes, typeof (object));
     }
 
     private static void AddRequiredInterfaces (MutableType nextCallProxy, TargetClassDefinition targetClassDefinition)
