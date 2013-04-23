@@ -16,7 +16,6 @@
 // 
 
 using System;
-using System.Collections.Generic;
 using Remotion.Mixins.Definitions;
 using Remotion.TypePipe.Implementation;
 
@@ -25,6 +24,6 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
   // TODO 5370: Docs.
   public interface IMixinTypeProvider
   {
-    IEnumerable<ConcreteMixinType> GenerateConcreteMixinTypesWithNulls (ITypeAssemblyContext context, IEnumerable<MixinDefinition> mixins);
+    ConcreteMixinType GetConcreteMixinTypeOrNull (ITypeAssemblyContext context, MixinDefinition mixin);
   }
 }

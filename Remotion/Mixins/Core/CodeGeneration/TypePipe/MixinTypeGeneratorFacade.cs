@@ -20,19 +20,22 @@ using Remotion.Collections;
 using Remotion.Mixins.Definitions;
 using Remotion.TypePipe.Implementation;
 using Remotion.Utilities;
-using System.Linq;
 
 namespace Remotion.Mixins.CodeGeneration.TypePipe
 {
+  // TODO 5370
   public class MixinTypeGeneratorFacade : IMixinTypeProvider
   {
-    // TODO Review: Replace with method operating on single MixinDefinition,
-    public IEnumerable<ConcreteMixinType> GenerateConcreteMixinTypesWithNulls (ITypeAssemblyContext context, IEnumerable<MixinDefinition> mixins)
+    public ConcreteMixinType GetConcreteMixinTypeOrNull (ITypeAssemblyContext context, MixinDefinition mixin)
     {
       ArgumentUtility.CheckNotNull ("context", context);
-      ArgumentUtility.CheckNotNull ("mixins", mixins);
+      ArgumentUtility.CheckNotNull ("mixin", mixin);
 
-      return mixins.Select (m => GenerateConcreteMixinTypeOrNull (context, m));
+      if (!mixin.NeedsDerivedMixinType())
+        return null;
+
+      var concreteMixinTypeIdentifier = mixin.GetConcreteMixinTypeIdentifier();
+      return GetOrGenerateConcreteMixinType (context, concreteMixinTypeIdentifier);
     }
 
     // TODO 5370: Make non-static, add to interface.
@@ -46,15 +49,6 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       {
         concreteMixinTypeCache.Add (concreteMixinType.Identifier, concreteMixinType);
       }
-    }
-
-    private ConcreteMixinType GenerateConcreteMixinTypeOrNull (ITypeAssemblyContext context, MixinDefinition mixin)
-    {
-      if (!mixin.NeedsDerivedMixinType())
-        return null;
-
-      var concreteMixinTypeIdentifier = mixin.GetConcreteMixinTypeIdentifier();
-      return GetOrGenerateConcreteMixinType (context, concreteMixinTypeIdentifier);
     }
 
     private ConcreteMixinType GetOrGenerateConcreteMixinType (ITypeAssemblyContext context, ConcreteMixinTypeIdentifier concreteMixinTypeIdentifier)

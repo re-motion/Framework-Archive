@@ -79,7 +79,8 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       if (targetClassDefinition == null)
         return;
 
-      var concreteMixinTypesWithNulls = _mixinTypeProvider.GenerateConcreteMixinTypesWithNulls (typeAssemblyContext, targetClassDefinition.Mixins).ToList();
+      var concreteMixinTypesWithNulls =
+          targetClassDefinition.Mixins.Select (m => _mixinTypeProvider.GetConcreteMixinTypeOrNull (typeAssemblyContext, m)).ToList();
       var interfacesToImplement = _configurationProvider.GetInterfacesToImplement (targetClassDefinition, concreteMixinTypesWithNulls);
       var targetTypeForNextCall = _nextCallProxyGenerator.GetTargetTypeWrapper (concreteTarget);
       var nextCallProxy = _nextCallProxyGenerator.Create (
