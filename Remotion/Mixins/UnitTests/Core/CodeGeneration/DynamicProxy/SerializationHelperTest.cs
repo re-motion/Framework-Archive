@@ -26,6 +26,7 @@ using Remotion.Mixins.UnitTests.Core.TestDomain;
 namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.DynamicProxy
 {
   [TestFixture]
+  [Ignore ("TODO 5370: Delete")]
   public class SerializationHelperTest
   {
     private SerializationInfo _serializationInfo;

@@ -33,6 +33,7 @@ using Remotion.ServiceLocation;
 namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.DynamicProxy
 {
   [TestFixture]
+  [Ignore ("TODO 5370: Delete")]
   public class ModuleManagerTest : CodeGenerationBaseTest
   {
     private ModuleManager _emptyModuleManager;

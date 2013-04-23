@@ -36,6 +36,7 @@ using ClassOverridingSingleMixinMethod = Remotion.Mixins.UnitTests.Core.CodeGene
 namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
 {
   [TestFixture]
+  [Ignore ("TODO 5370: Delete")]
   public class ConcreteTypeBuilderTest : CodeGenerationBaseTest
   {
     private IModuleManager _moduleManagerMockForLoading;
