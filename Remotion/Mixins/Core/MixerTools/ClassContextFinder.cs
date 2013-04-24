@@ -24,6 +24,7 @@ using Remotion.Logging;
 
 namespace Remotion.Mixins.MixerTools
 {
+  // Change to be an ITypeDiscoveryService decorator
   public class ClassContextFinder : IClassContextFinder
   {
     private static readonly ILog s_log = LogManager.GetLogger (typeof (ClassContextFinder));

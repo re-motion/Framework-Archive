@@ -27,6 +27,8 @@ using Remotion.Mixins.Validation;
 using Remotion.Reflection.TypeDiscovery;
 using Remotion.Reflection.TypeDiscovery.AssemblyFinding;
 using Remotion.Reflection.TypeDiscovery.AssemblyLoading;
+using Remotion.ServiceLocation;
+using Remotion.TypePipe;
 using Remotion.Utilities;
 using System.Linq;
 
@@ -46,6 +48,11 @@ namespace Remotion.Mixins.MixerTools
         string assemblyOutputDirectory, 
         IConcreteMixedTypeNameProvider typeNameProvider)
     {
+      
+      // TODO 5370:
+      // create pipeline with default participants (from default pipeline) via RemotionPipelineFactory
+      // assert that re-mix participant is part of the participants list
+      // Log an info message with participant list
       var builderFactory = new ConcreteTypeBuilderFactory (typeNameProvider, signedAssemblyName, unsignedAssemblyName);
 
       // Use a custom TypeDiscoveryService with the LoadAllAssemblyLoaderFilter so that mixed types within system assemblies are also considered.
@@ -117,6 +124,7 @@ namespace Remotion.Mixins.MixerTools
 
     // The MixinConfiguration is passed to Execute in order to be able to call PrepareOutputDirectory before analyzing the configuration (and potentially
     // locking old generated files).
+    // TODO 5370: Remove MixinConfiguration parameter.
     public void Execute (MixinConfiguration configuration)
     {
       ArgumentUtility.CheckNotNull ("configuration", configuration);
