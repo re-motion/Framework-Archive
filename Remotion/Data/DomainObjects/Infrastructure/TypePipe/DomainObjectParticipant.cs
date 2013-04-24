@@ -21,7 +21,6 @@ using Microsoft.Scripting.Ast;
 using Remotion.Data.DomainObjects.Infrastructure.Interception;
 using Remotion.TypePipe;
 using Remotion.TypePipe.Caching;
-using Remotion.TypePipe.CodeGeneration;
 using Remotion.TypePipe.Implementation;
 using Remotion.TypePipe.MutableReflection;
 using Remotion.Utilities;
@@ -80,7 +79,9 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
     public void Participate (ITypeAssemblyContext typeAssemblyContext)
     {
       ArgumentUtility.CheckNotNull ("typeAssemblyContext", typeAssemblyContext);
-      Assertion.IsTrue (typeof (DomainObject).IsTypePipeAssignableFrom (typeAssemblyContext.ProxyType.BaseType));
+
+      if (!typeof (DomainObject).IsTypePipeAssignableFrom (typeAssemblyContext.RequestedType))
+        return;
 
       // TODO 5370: This will change when TypePipe is integrated with re-mix.
       var proxyType = typeAssemblyContext.ProxyType;
@@ -103,7 +104,18 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
 
     public void RebuildState (LoadedTypesContext loadedTypesContext)
     {
-      // Do nothing.
+      // Does nothing.
+    }
+
+    public void HandleNonSubclassableType (Type requestedType)
+    {
+      ArgumentUtility.CheckNotNull ("requestedType", requestedType);
+
+      if (typeof (DomainObject).IsTypePipeAssignableFrom (requestedType))
+      {
+        var message = string.Format ("The requested type '{0}' is derived from DomainObject but cannot be subclassed.", requestedType.Name);
+        throw new NotSupportedException (message);
+      }
     }
 
     private void OverridePerformConstructorCheck (MutableType proxyType)

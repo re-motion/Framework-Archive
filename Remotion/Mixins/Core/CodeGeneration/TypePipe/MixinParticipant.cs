@@ -98,5 +98,16 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
           MixinTypeGeneratorFacade.AddLoadedConcreteMixinType (loadedTypesContext.State, conreteMixinType);
       }
     }
+
+    public void HandleNonSubclassableType (Type requestedType)
+    {
+      ArgumentUtility.CheckNotNull ("requestedType", requestedType);
+
+      var targetClassDefinition = _configurationProvider.GetTargetClassDefinition (requestedType);
+      Assertion.IsNull (
+          targetClassDefinition,
+          "There should be no mixin configuration for a non-subclassable type; "
+          + "and if there was (i.e., user error) an configuration validation exception should have been thrown.");
+    }
   }
 }

@@ -15,19 +15,18 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Scripting.Ast;
 using NUnit.Framework;
+using Remotion.Data.DomainObjects;
 using Remotion.Data.DomainObjects.Infrastructure.Interception;
 using Remotion.Data.DomainObjects.Infrastructure.TypePipe;
 using Remotion.Data.UnitTests.DomainObjects.Core.Mapping;
 using Remotion.Data.UnitTests.DomainObjects.TestDomain;
+using Remotion.Development.TypePipe.UnitTesting.ObjectMothers.Implementation;
 using Remotion.Development.UnitTesting.Reflection;
-using Remotion.TypePipe.CodeGeneration;
 using Remotion.TypePipe.Implementation;
 using Remotion.TypePipe.MutableReflection;
-using Remotion.TypePipe.MutableReflection.Implementation;
 using Rhino.Mocks;
 using Remotion.Development.UnitTesting;
 
@@ -52,9 +51,8 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.TypePipe
 
       _participant = new DomainObjectParticipant (_typeDefinitionProviderMock, _interceptedPropertyFinderMock);
 
-      _proxyType = MutableTypeObjectMother.Create (typeof (Order));
-      _typeAssemblyContext = new TypeAssemblyContext (
-          "configuration id", typeof (Order), _proxyType, new MutableTypeFactory(), new Dictionary<string, object>());
+      _typeAssemblyContext = TypeAssemblyContextObjectMother.Create (requestedType: typeof (Order));
+      _proxyType = _typeAssemblyContext.ProxyType;
     }
 
     [Test]
@@ -113,9 +111,33 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.TypePipe
     }
 
     [Test]
+    public void Participate_NonDomainObject_Nop ()
+    {
+      var context = TypeAssemblyContextObjectMother.Create (requestedType: typeof (object));
+
+      _participant.Participate (context);
+
+      _typeDefinitionProviderMock.AssertWasNotCalled (mock => mock.GetPublicDomainObjectType (Arg<Type>.Is.Anything));
+    }
+
+    [Test]
     public void RebuildState ()
     {
       Assert.That (() => _participant.RebuildState (null), Throws.Nothing);
+    }
+
+    [Test]
+    public void HandleNonSubclassableType ()
+    {
+      Assert.That (() => _participant.HandleNonSubclassableType (typeof (object)), Throws.Nothing);
+    }
+
+    [Test]
+    [ExpectedException (typeof (NotSupportedException), ExpectedMessage =
+        "The requested type 'NonSubclassableDomainObject' is derived from DomainObject but cannot be subclassed.")]
+    public void HandleNonSubclassableType_UnsubclassableDomainObject ()
+    {
+      _participant.HandleNonSubclassableType (typeof (NonSubclassableDomainObject));
     }
 
     private void StubGetPropertyInterceptors (Type publicDomainObjectType = null, params IAccessorInterceptor[] accessorInterceptors)
@@ -126,5 +148,8 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.TypePipe
       _typeDefinitionProviderMock.Stub (stub => stub.GetTypeDefinition (Arg<Type>.Is.Anything)).Return (fakeClassDefinition);
       _interceptedPropertyFinderMock.Stub (stub => stub.GetPropertyInterceptors (null, null)).IgnoreArguments().Return (accessorInterceptors);
     }
+
+    [DBTable]
+    public sealed class NonSubclassableDomainObject : DomainObject { }
   }
 }
