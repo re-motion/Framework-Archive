@@ -67,8 +67,6 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
       var participants = new IParticipant[] { new MixinParticipant(), new SerializationParticipant() };
       s_pipeline = assemblyTrackingPipelineFactory.CreatePipeline ("re-mix-tests", participants, new AppConfigBasedConfigurationProvider());
       _assemblyTrackingCodeManager = assemblyTrackingPipelineFactory.AssemblyTrackingCodeManager;
-
-      s_pipelineRegistry.Register (s_pipeline);
     }
 
     [TearDown]
@@ -97,8 +95,6 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
             "Assemblies saved to: " + Environment.NewLine
             + SeparatedStringBuilder.Build (Environment.NewLine, _assemblyTrackingCodeManager.SavedAssemblies));
       }
-
-      s_pipelineRegistry.Unregister (s_pipeline.ParticipantConfigurationID);
     }
   }
 }
