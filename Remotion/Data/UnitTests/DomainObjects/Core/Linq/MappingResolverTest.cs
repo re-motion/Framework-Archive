@@ -228,7 +228,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Linq
       var propertyDefinition = GetPropertyDefinition (property);
 
       _storageSpecificExpressionResolverStub
-          .Stub (stub => stub.ResolveColumn (entityExpression, propertyDefinition))
+          .Stub (stub => stub.ResolveProperty (entityExpression, propertyDefinition))
           .Return (_fakeColumnDefinitionExpression);
 
       var sqlColumnExpression = (SqlColumnExpression) _resolver.ResolveMemberExpression (entityExpression, property);
@@ -244,7 +244,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Linq
       var propertyDefinition = GetPropertyDefinition (typeof (StorageGroupClass), property.DeclaringType, property.Name);
 
       _storageSpecificExpressionResolverStub
-          .Stub (stub => stub.ResolveColumn (entityExpression, propertyDefinition))
+          .Stub (stub => stub.ResolveProperty (entityExpression, propertyDefinition))
           .Return (_fakeColumnDefinitionExpression);
 
       var result = _resolver.ResolveMemberExpression (entityExpression, property);
@@ -260,7 +260,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Linq
       var propertyDefinition = GetPropertyDefinition (property);
 
       _storageSpecificExpressionResolverStub
-          .Stub (stub => stub.ResolveColumn (entityExpression, propertyDefinition))
+          .Stub (stub => stub.ResolveProperty (entityExpression, propertyDefinition))
           .Return (_fakeColumnDefinitionExpression);
 
       var result = _resolver.ResolveMemberExpression (entityExpression, property);
@@ -276,7 +276,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Linq
       var fakeIDColumnExpression = new SqlColumnDefinitionExpression (typeof (ObjectID), "c", "ID", true);
 
       _storageSpecificExpressionResolverStub
-          .Stub (stub => stub.ResolveIDColumn (entityExpression, MappingConfiguration.Current.GetTypeDefinition (typeof (Order))))
+          .Stub (stub => stub.ResolveIDProperty (entityExpression, MappingConfiguration.Current.GetTypeDefinition (typeof (Order))))
           .Return (fakeIDColumnExpression);
 
       var result = (SqlColumnExpression) _resolver.ResolveMemberExpression (entityExpression, property);
@@ -354,34 +354,6 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Linq
       var entityExpression = CreateFakeEntityExpression (typeof (Order));
 
       _resolver.ResolveMemberExpression (entityExpression, property);
-    }
-
-    [Test]
-    public void ResolveMemberExpression_OnColumnDefinition_WithValueProperty ()
-    {
-      var property = typeof (ObjectID).GetProperty ("Value");
-      var columnExpression = new SqlColumnDefinitionExpression (typeof (string), "o", "Name", false);
-      var fakeColumnExpression = new SqlColumnDefinitionExpression (typeof (string), "o", "Name", false);
-
-      _storageSpecificExpressionResolverStub.Stub (stub => stub.ResolveValueColumn (columnExpression)).Return (fakeColumnExpression);
-
-      var result = _resolver.ResolveMemberExpression (columnExpression, property);
-
-      Assert.That (result, Is.SameAs (fakeColumnExpression));
-    }
-
-    [Test]
-    public void ResolveMemberExpression_OnColumnDefinition_WithClassIDProperty ()
-    {
-      var property = typeof (ObjectID).GetProperty ("ClassID");
-      var columnExpression = new SqlColumnDefinitionExpression (typeof (string), "o", "Name", false);
-      var fakeColumnExpression = new SqlColumnDefinitionExpression (typeof (string), "o", "Name", false);
-      
-      _storageSpecificExpressionResolverStub.Stub (stub => stub.ResolveClassIDColumn (columnExpression)).Return (fakeColumnExpression);
-
-      var result = _resolver.ResolveMemberExpression (columnExpression, property);
-
-      Assert.That (result, Is.SameAs(fakeColumnExpression));
     }
 
     [Test]

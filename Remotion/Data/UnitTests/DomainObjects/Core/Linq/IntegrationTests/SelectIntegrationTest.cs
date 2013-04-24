@@ -98,7 +98,19 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Linq.IntegrationTests
     }
 
     [Test]
-    public void ColumnMemberAccessOnCoalesceExpression ()
+    public void CoalesceExpression_ColumnMember ()
+    {
+      var query = from e in QueryFactory.CreateLinqQuery<Employee> ()
+                  where (e.Computer ?? (DomainObject) e).ID.Value == DomainObjectIDs.Employee2.Value
+                  select e;
+
+      CheckQueryResult (query, DomainObjectIDs.Employee2);
+    }
+
+
+    [Test]
+    [Ignore ("TODO 4878")]
+    public void CoalesceExpression_CompoundMember ()
     {
       var query = from e in QueryFactory.CreateLinqQuery<Employee> ()
                   where (e.Computer ?? (DomainObject) e).ID == DomainObjectIDs.Employee2
@@ -108,7 +120,18 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Linq.IntegrationTests
     }
 
     [Test]
-    public void ColumnMemberAccessOnConditionalExpression ()
+    public void ConditionalExpression_ColumnMember ()
+    {
+      var query = from e in QueryFactory.CreateLinqQuery<Employee> ()
+                  where (e.Computer.ID.Value == DomainObjectIDs.Computer1.Value ? e.Computer : (DomainObject) e).ID.Value == DomainObjectIDs.Computer1.Value
+                  select e;
+
+      CheckQueryResult (query, DomainObjectIDs.Employee3);
+    }
+
+    [Test]
+    [Ignore ("TODO 4878")]
+    public void ConditionalExpression_CompoundMember ()
     {
       var query = from e in QueryFactory.CreateLinqQuery<Employee> ()
                   where (e.Computer.ID == DomainObjectIDs.Computer1 ? e.Computer : (DomainObject) e).ID == DomainObjectIDs.Computer1
@@ -129,18 +152,14 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Linq.IntegrationTests
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException), ExpectedMessage =
-        "Type 'ObjectID' ist not supported by this storage provider.\r\n"
-        + "Please select the ID and ClassID values separately, then create an ObjectID with it in memory "
-        + "(e.g., 'select new ObjectID (o.ID.ClassID, o.ID.Value)').")]
     public void Query_WithObjectID ()
     {
-      var query =
-          from o in QueryFactory.CreateLinqQuery<Order> ()
-          where o.OrderNumber == 1
-          select o.ID;
+      var result =
+          (from o in QueryFactory.CreateLinqQuery<Order> ()
+           where o.OrderNumber == 1
+           select o.ID).Single();
 
-      query.ToArray ();
+      Assert.That (result, Is.EqualTo (DomainObjectIDs.Order1));
     }
 
   }

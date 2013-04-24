@@ -87,8 +87,35 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.DataReade
 
       var result = _queryResultRow.GetConvertedValue (1, typeof (string));
 
+      _storageTypeInformationMock.VerifyAllExpectations ();
       Assert.That (result, Is.EqualTo (fakeResult));
-      _storageTypeInformationMock.VerifyAllExpectations();
+    }
+
+    [Test]
+    public void GetConvertedValue_Object ()
+    {
+      var fakeResult = "fake";
+      _dataReaderStub.Stub (stub => stub[1]).Return (fakeResult);
+
+      var result = _queryResultRow.GetConvertedValue (1, typeof (object));
+
+      _storageTypeInformationMock.VerifyAllExpectations ();
+      Assert.That (result, Is.EqualTo (fakeResult));
+
+      _storageTypeInformationProviderStub.AssertWasNotCalled (stub => stub.GetStorageType (typeof (object)));
+    }
+
+    [Test]
+    public void GetConvertedValue_Object_WithDBNull ()
+    {
+      _dataReaderStub.Stub (stub => stub[1]).Return (DBNull.Value);
+
+      var result = _queryResultRow.GetConvertedValue (1, typeof (object));
+
+      _storageTypeInformationMock.VerifyAllExpectations ();
+      Assert.That (result, Is.Null);
+
+      _storageTypeInformationProviderStub.AssertWasNotCalled (stub => stub.GetStorageType (typeof (object)));
     }
 
     [Test]

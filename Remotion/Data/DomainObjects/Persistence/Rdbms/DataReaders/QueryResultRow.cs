@@ -64,25 +64,34 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
     {
       ArgumentUtility.CheckNotNull ("type", type);
 
-      IStorageTypeInformation storageTypeInformation;
+      var storageTypeInformation = GetStorageTypeInformationForReading (type);
+      return storageTypeInformation.Read (_dataReader, position);
+    }
+
+    private IStorageTypeInformation GetStorageTypeInformationForReading (Type type)
+    {
+      // Allow reading of values with type "object".
+      if (type == typeof (object))
+        return new StorageTypeInformation (typeof (object), "undefined", DbType.Object, true, typeof (object), new DefaultConverter (typeof (object)));
+
       try
       {
-        storageTypeInformation = _storageTypeInformationProvider.GetStorageType (type);
+        return _storageTypeInformationProvider.GetStorageType (type);
       }
       catch (NotSupportedException ex)
       {
         if (typeof (ObjectID).IsAssignableFrom (type))
         {
           throw new NotSupportedException (
-              "Type 'ObjectID' ist not supported by this storage provider." 
-              + Environment.NewLine 
+              "Type 'ObjectID' ist not supported by this storage provider."
+              + Environment.NewLine
               + "Please select the ID and ClassID values separately, then create an ObjectID with it in memory "
-              + "(e.g., 'select new ObjectID (o.ID.ClassID, o.ID.Value)').", ex);
+              + "(e.g., 'select new ObjectID (o.ID.ClassID, o.ID.Value)').",
+              ex);
         }
 
         throw;
       }
-      return storageTypeInformation.Read (_dataReader, position);
     }
 
     public T GetConvertedValue<T> (int position)

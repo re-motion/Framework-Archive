@@ -38,7 +38,6 @@ namespace Remotion.Data.DomainObjects.Linq
   {
     private readonly IStorageSpecificExpressionResolver _storageSpecificExpressionResolver;
     private static readonly PropertyInfo s_classIDPropertyInfo = typeof (ObjectID).GetProperty ("ClassID");
-    private static readonly PropertyInfo s_valuePropertyInfo = typeof (ObjectID).GetProperty ("Value");
     private static readonly PropertyInfo s_idPropertyInfo = typeof (DomainObject).GetProperty ("ID");
 
     public MappingResolver (IStorageSpecificExpressionResolver storageSpecificExpressionResolver)
@@ -89,7 +88,7 @@ namespace Remotion.Data.DomainObjects.Linq
       var entityClassDefinition = GetClassDefinition (originatingEntity.Type);
 
       if (property.Name == "ID" && property.DeclaringType == typeof (DomainObject))
-        return _storageSpecificExpressionResolver.ResolveIDColumn (originatingEntity, entityClassDefinition);
+        return _storageSpecificExpressionResolver.ResolveIDProperty (originatingEntity, entityClassDefinition);
 
       var propertyInfoAdapter = PropertyInfoAdapter.Create (property);
       var allClassDefinitions = new[] { entityClassDefinition }.Concat (entityClassDefinition.GetAllDerivedClasses ());
@@ -112,12 +111,6 @@ namespace Remotion.Data.DomainObjects.Linq
     {
       ArgumentUtility.CheckNotNull ("sqlColumnExpression", sqlColumnExpression);
       ArgumentUtility.CheckNotNull ("memberInfo", memberInfo);
-
-      if (memberInfo == s_valuePropertyInfo)
-        return _storageSpecificExpressionResolver.ResolveValueColumn (sqlColumnExpression);
-
-      if (memberInfo == s_classIDPropertyInfo)
-        return _storageSpecificExpressionResolver.ResolveClassIDColumn(sqlColumnExpression);
 
       throw new UnmappedItemException (
           string.Format ("The member '{0}.{1}' does not identify a mapped property.", memberInfo.ReflectedType.Name, memberInfo.Name));
@@ -207,7 +200,7 @@ namespace Remotion.Data.DomainObjects.Linq
 
       var propertyDefinition = classDefinition.ResolveProperty (propertyInfoAdapter);
       if (propertyDefinition != null)
-        return _storageSpecificExpressionResolver.ResolveColumn (originatingEntity, propertyDefinition);
+        return _storageSpecificExpressionResolver.ResolveProperty (originatingEntity, propertyDefinition);
 
       return null;
     }
