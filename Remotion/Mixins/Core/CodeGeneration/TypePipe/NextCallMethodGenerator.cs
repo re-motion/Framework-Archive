@@ -119,10 +119,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     private MethodInfo GetMixinMethodToCall (int mixinIndex, MethodDefinition mixinMethod)
     {
-      if (mixinMethod.MethodInfo.IsPublic)
-        return mixinMethod.MethodInfo;
-      else
-        return _mixinInfos[mixinIndex].GetMethodWrapper (mixinMethod.MethodInfo);
+      return _mixinInfos[mixinIndex].GetMethodWrapper (mixinMethod.MethodInfo);
     }
 
     private Expression GetMixinReference (MixinDefinition mixin, Type concreteMixinType)

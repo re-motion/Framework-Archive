@@ -46,7 +46,8 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     public MethodInfo GetMethodWrapper (MethodInfo wrappedMethod)
     {
-      throw new NotSupportedException ("TODO 5370");
+      // For a non-derived mixin type we do not need a wrapper!
+      return wrappedMethod;
     }
 
     public MethodInfo GetOverrideInterfaceMethod (MethodInfo mixinMethod)
