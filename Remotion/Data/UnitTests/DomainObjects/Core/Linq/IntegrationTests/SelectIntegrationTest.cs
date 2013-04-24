@@ -112,8 +112,8 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Linq.IntegrationTests
         "There was an error preparing or resolving query "
         + "'from Employee e in DomainObjectQueryable<Employee> "
         + "where (([e].Computer ?? Convert([e])).ID = Employee|c3b2bbc3-e083-4974-bac7-9cee1fb85a5e|System.Guid) select [e]' for SQL generation. "
-        + "Cannot use a complex expression ('new ObjectID(ClassID = [t1].[ClassID] AS ClassID, Value = [t1].[ID] AS Value)') in a place where SQL "
-        + "requires a single value.")]
+        + "Cannot use a complex expression ('new ObjectID(ClassID = [t1].[ClassID] AS ClassID, Value = Convert([t1].[ID] AS Value))') in a place "
+        + "where SQL requires a single value.")]
     public void CoalesceExpression_CompoundMember ()
     {
       var query = from e in QueryFactory.CreateLinqQuery<Employee> ()
@@ -139,7 +139,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Linq.IntegrationTests
         + "'from Employee e in DomainObjectQueryable<Employee> "
         + "where (IIF(([e].Computer.ID = Computer|c7c26bf5-871d-48c7-822a-e9b05aac4e5a|System.Guid), Convert([e].Computer), Convert([e])).ID = "
         + "Computer|c7c26bf5-871d-48c7-822a-e9b05aac4e5a|System.Guid) select [e]' for SQL generation. Cannot use a complex expression "
-        + "('new ObjectID(ClassID = [t1].[ClassID] AS ClassID, Value = [t1].[ID] AS Value)') in a place where SQL requires a single value.")]
+        + "('new ObjectID(ClassID = [t1].[ClassID] AS ClassID, Value = Convert([t1].[ID] AS Value))') in a place where SQL requires a single value.")]
     public void ConditionalExpression_CompoundMember ()
     {
       var query = from e in QueryFactory.CreateLinqQuery<Employee> ()

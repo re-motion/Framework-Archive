@@ -35,14 +35,24 @@ namespace Remotion.Data.UnitTests.DomainObjects.Factories
       return new ColumnDefinition (GetUniqueColumnName(), StorageTypeInformationObjectMother.CreateStorageTypeInformation(), false);
     }
 
-    public static ColumnDefinition CreateColumn (string columnName)
+    public static ColumnDefinition CreateColumn (string columnName, IStorageTypeInformation storageTypeInformation = null)
     {
-      return new ColumnDefinition (columnName, StorageTypeInformationObjectMother.CreateStorageTypeInformation(), false);
+      return new ColumnDefinition (columnName, storageTypeInformation ?? StorageTypeInformationObjectMother.CreateStorageTypeInformation (), false);
     }
 
     public static ColumnDefinition CreateColumn (IStorageTypeInformation storageTypeInformation)
     {
       return new ColumnDefinition (GetUniqueColumnName(), storageTypeInformation, false);
+    }
+
+    public static ColumnDefinition CreateStringColumn (string columnName)
+    {
+      return CreateColumn (columnName, StorageTypeInformationObjectMother.CreateVarchar100StorageTypeInformation());
+    }
+
+    public static ColumnDefinition CreateGuidColumn (string columnName)
+    {
+      return CreateColumn (columnName, StorageTypeInformationObjectMother.CreateUniqueIdentifierStorageTypeInformation());
     }
 
     private static string GetUniqueColumnName ()

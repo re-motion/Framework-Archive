@@ -35,9 +35,19 @@ namespace Remotion.Data.UnitTests.DomainObjects.Factories
       return new SimpleStoragePropertyDefinition (typeof (object), ColumnDefinitionObjectMother.CreateColumn ());
     }
 
-    public static SimpleStoragePropertyDefinition CreateStorageProperty (string columnName)
+    public static SimpleStoragePropertyDefinition CreateStorageProperty (string columnName, IStorageTypeInformation storageTypeInformation = null)
     {
-      return new SimpleStoragePropertyDefinition (typeof (object), ColumnDefinitionObjectMother.CreateColumn (columnName));
+      return new SimpleStoragePropertyDefinition (typeof (object), ColumnDefinitionObjectMother.CreateColumn (columnName, storageTypeInformation));
+    }
+
+    public static SimpleStoragePropertyDefinition CreateStringStorageProperty (string columnName)
+    {
+      return new SimpleStoragePropertyDefinition (typeof (object), ColumnDefinitionObjectMother.CreateStringColumn (columnName));
+    }
+
+    public static SimpleStoragePropertyDefinition CreateGuidStorageProperty (string columnName)
+    {
+      return new SimpleStoragePropertyDefinition (typeof (object), ColumnDefinitionObjectMother.CreateGuidColumn (columnName));
     }
   }
 }
