@@ -103,16 +103,16 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       _firstField = AddDebuggerInvisibleField ("__first", nextCallProxyType, FieldAttributes.Private);
     }
 
-    public void AddTypeInitializations (ClassContext classContext, IEnumerable<Type> expectedMixinTypes)
+    public void AddTypeInitializations (ClassContext classContext, IEnumerable<Type> mixinTypes)
     {
       ArgumentUtility.CheckNotNull ("classContext", classContext);
-      ArgumentUtility.CheckNotNull ("expectedMixinTypes", expectedMixinTypes);
+      ArgumentUtility.CheckNotNull ("mixinTypes", mixinTypes);
 
       _concreteTarget.AddTypeInitialization (
           ctx => Expression.Block (
               typeof (void),
               InitializeClassContextField (classContext),
-              InitializeMixinArrayInitializerField (classContext.Type, expectedMixinTypes)));
+              InitializeMixinArrayInitializerField (classContext.Type, mixinTypes)));
     }
 
     public void AddInitializations ()
@@ -120,23 +120,23 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       _concreteTarget.AddInitialization (ctx => _expressionBuilder.CreateInitialization (ctx.DeclaringType, _extensionsField));
     }
 
-    public void ImplementIInitializableMixinTarget (IList<Type> expectedMixinTypes, ConstructorInfo nextCallProxyConstructor)
+    public void ImplementIInitializableMixinTarget (IList<Type> mixinTypes, ConstructorInfo nextCallProxyConstructor)
     {
-      ArgumentUtility.CheckNotNull ("expectedMixinTypes", expectedMixinTypes);
+      ArgumentUtility.CheckNotNull ("mixinTypes", mixinTypes);
 
       _concreteTarget.AddExplicitOverride (
           s_initializeTargetMethod,
           ctx => Expression.Block (
               ImplementSettingFirstNextCallProxy (ctx.This, nextCallProxyConstructor),
               ImplementCreatingMixinInstances (),
-              ImplementInitializingMixins (ctx.This, expectedMixinTypes, nextCallProxyConstructor, deserialization: s_false)));
+              ImplementInitializingMixins (ctx.This, mixinTypes, nextCallProxyConstructor, deserialization: s_false)));
 
       _concreteTarget.AddExplicitOverride (
           s_initializeTargetAfterDeserializationMethod,
           ctx => Expression.Block (
               ImplementSettingFirstNextCallProxy (ctx.This, nextCallProxyConstructor),
               ImplementSettingMixinInstances (ctx.Parameters[0]),
-              ImplementInitializingMixins (ctx.This, expectedMixinTypes, nextCallProxyConstructor, deserialization: s_true)));
+              ImplementInitializingMixins (ctx.This, mixinTypes, nextCallProxyConstructor, deserialization: s_true)));
     }
 
     public void ImplementIMixinTarget (string targetClassName)
@@ -352,19 +352,17 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       return _concreteTarget.AddEvent (@event.Name, EventAttributes.None, addMethodOverride, removeMethodOverride);
     }
 
-    public void ImplementOverridingMethods (TargetClassDefinition targetClassDefinition, IList<ConcreteMixinType> concreteMixinTypesWithNulls)
+    public void ImplementOverridingMethods (TargetClassDefinition targetClassDefinition, IList<IMixinInfo> mixinInfos)
     {
-      ArgumentUtility.CheckNotNull ("concreteMixinTypesWithNulls", concreteMixinTypesWithNulls);
+      ArgumentUtility.CheckNotNull ("mixinInfos", mixinInfos);
 
       var overriders = targetClassDefinition.GetAllMethods().Where (methodDefinition => methodDefinition.Base != null);
       foreach (var overrider in overriders)
       {
         var mixin = overrider.Base.DeclaringClass as MixinDefinition;
         Assertion.IsNotNull (mixin, "We only support mixins as overriders of target class members.");
-        var concreteMixinType = concreteMixinTypesWithNulls[mixin.MixinIndex];
-        Assertion.IsNotNull (concreteMixinType, "If a mixin method is overridden, a concrete type must have been created for it.");
-
-        var methodInOverrideInterface = concreteMixinType.GetOverrideInterfaceMethod (overrider.Base.MethodInfo);
+        var mixinInfo = mixinInfos[mixin.MixinIndex];
+        var methodInOverrideInterface = mixinInfo.GetOverrideInterfaceMethod (overrider.Base.MethodInfo);
 
         // It's necessary to explicitly implement some members defined by the concrete mixins' override interfaces: implicit implementation doesn't
         // work if the overrider is non-public or generic. Because it's simpler, we just implement all the members explicitly.
@@ -396,7 +394,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     private BinaryExpression InitializeMixinArrayInitializerField (Type targetType, IEnumerable<Type> concreteMixinTypes)
     {
-      // __mixinArrayInitializer = new MixinArrayInitializer (targetClassName, expectedMixinTypes);
+      // __mixinArrayInitializer = new MixinArrayInitializer (targetClassName, mixinTypes);
 
       return Expression.Assign (
           _mixinArrayInitializerField,

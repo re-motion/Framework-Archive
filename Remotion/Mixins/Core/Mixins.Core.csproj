@@ -135,6 +135,7 @@
     <Compile Include="CodeGeneration\TypePipe\ClassContextSerializerBase.cs" />
     <Compile Include="CodeGeneration\TypePipe\ConcreteMixinTypeIdentifierSerializerBase.cs" />
     <Compile Include="CodeGeneration\TypePipe\ConfigurationProvider.cs" />
+    <Compile Include="CodeGeneration\TypePipe\DerivedMixinInfo.cs" />
     <Compile Include="CodeGeneration\TypePipe\ExpressionBuilder.cs" />
     <Compile Include="CodeGeneration\TypePipe\ExpressionClassContextSerializer.cs" />
     <Compile Include="CodeGeneration\TypePipe\ExpressionConcreteMixinTypeIdentifierSerializer.cs" />
@@ -142,6 +143,7 @@
     <Compile Include="CodeGeneration\TypePipe\ExpressionMixinContextSerializer.cs" />
     <Compile Include="CodeGeneration\TypePipe\IAttributeGenerator.cs" />
     <Compile Include="CodeGeneration\TypePipe\IExpressionBuilder.cs" />
+    <Compile Include="CodeGeneration\TypePipe\IMixinInfo.cs" />
     <Compile Include="CodeGeneration\TypePipe\IMixinTypeProvider.cs" />
     <Compile Include="CodeGeneration\TypePipe\IConfigurationProvider.cs" />
     <Compile Include="CodeGeneration\TypePipe\INextCallMethodGenerator.cs" />
@@ -163,6 +165,7 @@
     </Compile>
     <Compile Include="CodeGeneration\TypePipe\OverrideInterface.cs" />
     <Compile Include="CodeGeneration\TypePipe\OverrideInterfaceGenerator2.cs" />
+    <Compile Include="CodeGeneration\TypePipe\RegularMixinInfo.cs" />
     <Compile Include="CodeGeneration\TypePipe\SerializationImplementer2.cs" />
     <Compile Include="CodeGeneration\TypePipe\TargetTypeForNextCall.cs" />
     <Compile Include="CodeGeneration\TypePipe\TargetTypeGenerator.cs" />

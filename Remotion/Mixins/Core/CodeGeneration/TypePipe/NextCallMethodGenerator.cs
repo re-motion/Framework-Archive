@@ -31,26 +31,26 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     private readonly ITargetTypeForNextCall _targetTypeForNextCall;
     private readonly Expression _thisField;
     private readonly Expression _depthField;
-    private readonly IList<ConcreteMixinType> _concreteMixinTypesWithNulls;
+    private readonly IList<IMixinInfo> _mixinInfos;
 
     public NextCallMethodGenerator (
         TargetClassDefinition targetClassDefinition,
         ITargetTypeForNextCall targetTypeForNextCall,
         Expression thisField,
         Expression depthField,
-        IList<ConcreteMixinType> concreteMixinTypesWithNulls)
+        IList<IMixinInfo> mixinInfos)
     {
       ArgumentUtility.CheckNotNull ("targetClassDefinition", targetClassDefinition);
       ArgumentUtility.CheckNotNull ("targetTypeForNextCall", targetTypeForNextCall);
       ArgumentUtility.CheckNotNull ("thisField", thisField);
       ArgumentUtility.CheckNotNull ("depthField", depthField);
-      ArgumentUtility.CheckNotNull ("concreteMixinTypesWithNulls", concreteMixinTypesWithNulls);
+      ArgumentUtility.CheckNotNull ("mixinInfos", mixinInfos);
 
       _targetClassDefinition = targetClassDefinition;
       _targetTypeForNextCall = targetTypeForNextCall;
       _thisField = thisField;
       _depthField = depthField;
-      _concreteMixinTypesWithNulls = concreteMixinTypesWithNulls;
+      _mixinInfos = mixinInfos;
     }
 
     public Expression CreateBaseCallToNextInChain (MethodBodyContextBase ctx, MethodDefinition methodDefinitionOnTarget)
@@ -122,10 +122,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       if (mixinMethod.MethodInfo.IsPublic)
         return mixinMethod.MethodInfo;
       else
-      {
-        Assertion.IsNotNull (_concreteMixinTypesWithNulls[mixinIndex]);
-        return _concreteMixinTypesWithNulls[mixinIndex].GetMethodWrapper (mixinMethod.MethodInfo);
-      }
+        return _mixinInfos[mixinIndex].GetMethodWrapper (mixinMethod.MethodInfo);
     }
 
     private Expression GetMixinReference (MixinDefinition mixin, Type concreteMixinType)

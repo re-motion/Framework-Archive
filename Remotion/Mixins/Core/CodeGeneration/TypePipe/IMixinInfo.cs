@@ -14,23 +14,21 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
 using System.Collections.Generic;
-using Remotion.Mixins.Definitions;
-using Remotion.TypePipe.Implementation;
-using Remotion.TypePipe.MutableReflection;
+using System.Reflection;
 
 namespace Remotion.Mixins.CodeGeneration.TypePipe
 {
-  // TODO 5370: docs
-  public interface INextCallProxyGenerator
+  // TODO 5370
+  public interface IMixinInfo
   {
-    ITargetTypeForNextCall GetTargetTypeWrapper (MutableType concreteTarget);
+    Type MixinType { get; }
 
-    INextCallProxy Create (
-        ITypeAssemblyContext context,
-        TargetClassDefinition targetClassDefinition,
-        IList<IMixinInfo> mixinInfos,
-        ITargetTypeForNextCall targetTypeForNextCall);
+    IEnumerable<Type> GetInterfacesToImplement ();
+
+    MethodInfo GetMethodWrapper (MethodInfo wrappedMethod);
+    MethodInfo GetOverrideInterfaceMethod (MethodInfo mixinMethod);
   }
 }

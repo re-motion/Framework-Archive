@@ -28,10 +28,10 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
   {
     void AddInterfaces (IEnumerable<Type> interfacesToImplement);
     void AddFields (Type nextCallProxyType);
-    void AddTypeInitializations (ClassContext classContext, IEnumerable<Type> expectedMixinTypes);
+    void AddTypeInitializations (ClassContext classContext, IEnumerable<Type> mixinTypes);
     void AddInitializations ();
 
-    void ImplementIInitializableMixinTarget (IList<Type> expectedMixinTypes, ConstructorInfo nextCallProxyConstructor);
+    void ImplementIInitializableMixinTarget (IList<Type> mixinTypes, ConstructorInfo nextCallProxyConstructor);
     void ImplementIMixinTarget (string targetClassName);
     void ImplementIntroducedInterfaces (IEnumerable<InterfaceIntroductionDefinition> introducedInterfaces);
     void ImplementRequiredDuckMethods (TargetClassDefinition targetClassDefinition);
@@ -41,6 +41,6 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     void AddDebuggerDisplayAttribute (TargetClassDefinition targetClassDefinition);
 
     void ImplementOverrides (TargetClassDefinition targetClassDefinition, INextCallProxy nextCallProxy);
-    void ImplementOverridingMethods (TargetClassDefinition targetClassDefinition, IList<ConcreteMixinType> concreteMixinTypesWithNulls);
+    void ImplementOverridingMethods (TargetClassDefinition targetClassDefinition, IList<IMixinInfo> mixinInfos);
   }
 }

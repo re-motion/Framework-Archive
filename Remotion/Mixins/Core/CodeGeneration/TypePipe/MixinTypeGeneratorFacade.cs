@@ -26,16 +26,18 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
   // TODO 5370
   public class MixinTypeGeneratorFacade : IMixinTypeProvider
   {
-    public ConcreteMixinType GetConcreteMixinTypeOrNull (ITypeAssemblyContext context, MixinDefinition mixin)
+    public IMixinInfo GetMixinInfo (ITypeAssemblyContext context, MixinDefinition mixin)
     {
       ArgumentUtility.CheckNotNull ("context", context);
       ArgumentUtility.CheckNotNull ("mixin", mixin);
 
       if (!mixin.NeedsDerivedMixinType())
-        return null;
+        return new RegularMixinInfo (mixin.Type);
 
       var concreteMixinTypeIdentifier = mixin.GetConcreteMixinTypeIdentifier();
-      return GetOrGenerateConcreteMixinType (context, concreteMixinTypeIdentifier);
+      var concreteMixinType = GetOrGenerateConcreteMixinType (context, concreteMixinTypeIdentifier);
+
+      return new DerivedMixinInfo (concreteMixinType);
     }
 
     // TODO 5370: Make non-static, add to interface.

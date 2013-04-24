@@ -14,23 +14,44 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
 using System.Collections.Generic;
-using Remotion.Mixins.Definitions;
-using Remotion.TypePipe.Implementation;
-using Remotion.TypePipe.MutableReflection;
+using System.Reflection;
+using Remotion.Utilities;
 
 namespace Remotion.Mixins.CodeGeneration.TypePipe
 {
-  // TODO 5370: docs
-  public interface INextCallProxyGenerator
+  // TODO 5370
+  public class RegularMixinInfo : IMixinInfo
   {
-    ITargetTypeForNextCall GetTargetTypeWrapper (MutableType concreteTarget);
+    private readonly Type _mixinType;
 
-    INextCallProxy Create (
-        ITypeAssemblyContext context,
-        TargetClassDefinition targetClassDefinition,
-        IList<IMixinInfo> mixinInfos,
-        ITargetTypeForNextCall targetTypeForNextCall);
+    public RegularMixinInfo (Type mixinType)
+    {
+      ArgumentUtility.CheckNotNull ("mixinType", mixinType);
+
+      _mixinType = mixinType;
+    }
+
+    public Type MixinType
+    {
+      get { return _mixinType; }
+    }
+
+    public IEnumerable<Type> GetInterfacesToImplement ()
+    {
+      return Type.EmptyTypes;
+    }
+
+    public MethodInfo GetMethodWrapper (MethodInfo wrappedMethod)
+    {
+      throw new NotSupportedException ("TODO 5370");
+    }
+
+    public MethodInfo GetOverrideInterfaceMethod (MethodInfo mixinMethod)
+    {
+      throw new NotSupportedException ("If a mixin method is overridden, a concrete type must have been created for it.");
+    }
   }
 }

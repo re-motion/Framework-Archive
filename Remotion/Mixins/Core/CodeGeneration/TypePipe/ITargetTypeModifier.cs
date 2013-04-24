@@ -30,6 +30,6 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
         TargetClassDefinition targetClassDefinition,
         INextCallProxy nextCallProxy,
         IEnumerable<Type> interfacesToImplement,
-        IList<ConcreteMixinType> concreteMixinTypesWithNulls);
+        IList<IMixinInfo> mixinInfos);
   }
 }

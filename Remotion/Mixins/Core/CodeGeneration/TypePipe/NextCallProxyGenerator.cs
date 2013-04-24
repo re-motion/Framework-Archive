@@ -42,12 +42,12 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     public INextCallProxy Create (
         ITypeAssemblyContext context,
         TargetClassDefinition targetClassDefinition,
-        IList<ConcreteMixinType> concreteMixinTypesWithNulls,
+        IList<IMixinInfo> mixinInfos,
         ITargetTypeForNextCall targetTypeForNextCall)
     {
       ArgumentUtility.CheckNotNull ("context", context);
       ArgumentUtility.CheckNotNull ("targetClassDefinition", targetClassDefinition);
-      ArgumentUtility.CheckNotNull ("concreteMixinTypesWithNulls", concreteMixinTypesWithNulls);
+      ArgumentUtility.CheckNotNull ("mixinInfos", mixinInfos);
       ArgumentUtility.CheckNotNull ("targetTypeForNextCall", targetTypeForNextCall);
 
       var concreteTarget = context.ProxyType;
@@ -62,7 +62,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       var constructor = AddConstructor (nextCallProxyType, concreteTarget, thisField, depthField);
 
       var nextCallMethodGenerator = new NextCallMethodGenerator (
-          targetClassDefinition, targetTypeForNextCall, thisField, depthField, concreteMixinTypesWithNulls);
+          targetClassDefinition, targetTypeForNextCall, thisField, depthField, mixinInfos);
       var nextCallProxy = new NextCallProxy (nextCallProxyType, constructor, targetClassDefinition, new ExpressionBuilder(), nextCallMethodGenerator);
 
       nextCallProxy.ImplementBaseCallsForOverriddenMethodsOnTarget();
