@@ -19,6 +19,8 @@ using NUnit.Framework;
 using Remotion.Development.TypePipe;
 using Remotion.Development.UnitTesting;
 using Remotion.Diagnostics;
+using Remotion.Reflection.TypeDiscovery;
+using Remotion.TypePipe;
 using Remotion.TypePipe.CodeGeneration.ReflectionEmit;
 using Remotion.TypePipe.Configuration;
 using Rhino.Mocks;
@@ -55,5 +57,17 @@ namespace Remotion.Development.UnitTests.Core.TypePipe
       var debuggerWorkaroundCodeGenerator = (DebuggerWorkaroundCodeGenerator) result;
       Assert.That (debuggerWorkaroundCodeGenerator.MaximumTypesPerAssembly, Is.EqualTo (7));
     }
+
+    [Test]
+    public void Integration_CreatedPipeline_AddsNonApplicationAssemblyAttribute_OnModuleCreation ()
+    {
+      // Creates new in-memory assembly.
+      var defaultPipeline = _factory.CreatePipeline ("dummy id", new IParticipant[0], new AppConfigBasedConfigurationProvider());
+      var type = defaultPipeline.ReflectionService.GetAssembledType (typeof (RequestedType));
+
+      Assert.That (type.Assembly.IsDefined (typeof (NonApplicationAssemblyAttribute), false), Is.True);
+    }
+
+    public class RequestedType { }
   }
 }
