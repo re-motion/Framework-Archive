@@ -54,14 +54,14 @@ namespace Remotion.Utilities
     {
       ArgumentUtility.CheckNotNull ("sourceType", sourceType);
 
-      return _type.IsAssignableFrom (sourceType) || _underlyingType == sourceType;
+      return _type == sourceType || _underlyingType == sourceType;
     }
 
     public override bool CanConvertTo (ITypeDescriptorContext context, Type destinationType)
     {
       ArgumentUtility.CheckNotNull ("destinationType", destinationType);
 
-      return destinationType.IsAssignableFrom (_type) || Nullable.GetUnderlyingType (destinationType) == _type;
+      return destinationType == _type || Nullable.GetUnderlyingType (destinationType) == _type;
     }
 
     public override object ConvertFrom (ITypeDescriptorContext context, CultureInfo culture, object value)

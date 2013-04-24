@@ -72,8 +72,6 @@ namespace Remotion.UnitTests.Utilities
       Assert.That (_converterForString.CanConvertFrom (_typeDescriptorContext, typeof (string)), Is.True);
       // from non-nullable to nullable
       Assert.That (_converterForNullableInt.CanConvertFrom (_typeDescriptorContext, typeof (int)), Is.True);
-      // from derived to base type
-      Assert.That (_converterForObject.CanConvertFrom (_typeDescriptorContext, typeof (string)), Is.True);
     }
 
     [Test]
@@ -83,6 +81,8 @@ namespace Remotion.UnitTests.Utilities
       Assert.That (_converterForString.CanConvertFrom (_typeDescriptorContext, typeof (int)), Is.False);
       // from base to derived type
       Assert.That (_converterForString.CanConvertFrom (_typeDescriptorContext, typeof (object)), Is.False);
+      // from derived to base type
+      Assert.That (_converterForObject.CanConvertFrom (_typeDescriptorContext, typeof (string)), Is.False);
       // from nullable to non-nullable
       Assert.That (_converterForInt.CanConvertFrom (_typeDescriptorContext, typeof (int?)), Is.False);
     }
@@ -94,8 +94,6 @@ namespace Remotion.UnitTests.Utilities
       Assert.That (_converterForString.CanConvertTo (_typeDescriptorContext, typeof (string)), Is.True);
       // from non-nullable to nullable
       Assert.That (_converterForInt.CanConvertTo (_typeDescriptorContext, typeof (int?)), Is.True);
-      // from derived to base type
-      Assert.That (_converterForString.CanConvertTo (_typeDescriptorContext, typeof (object)), Is.True);
     }
 
     [Test]
@@ -105,7 +103,9 @@ namespace Remotion.UnitTests.Utilities
       Assert.That (_converterForString.CanConvertTo (_typeDescriptorContext, typeof (int)), Is.False);
       // from base to derived type
       Assert.That (_converterForObject.CanConvertTo (_typeDescriptorContext, typeof (string)), Is.False);
-     // from nullable to non-nullable
+      // from derived to base type
+      Assert.That (_converterForString.CanConvertTo (_typeDescriptorContext, typeof (object)), Is.False);
+      // from nullable to non-nullable
       Assert.That (_converterForNullableInt.CanConvertTo (_typeDescriptorContext, typeof (int)), Is.False);
     }
 
@@ -188,10 +188,10 @@ namespace Remotion.UnitTests.Utilities
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException), ExpectedMessage = "This TypeConverter cannot convert to type 'System.Int32'.")]
+    [ExpectedException (typeof (NotSupportedException), ExpectedMessage = "This TypeConverter cannot convert to type 'System.Object'.")]
     public void ConvertTo_ValueIsNotNullAndCannotConvertToDestinationType ()
     {
-      _converterForString.ConvertTo (_typeDescriptorContext, CultureInfo.CurrentCulture, "test", typeof (int));
+      _converterForString.ConvertTo (_typeDescriptorContext, CultureInfo.CurrentCulture, "test", typeof (object));
     }
 
     [Test]
