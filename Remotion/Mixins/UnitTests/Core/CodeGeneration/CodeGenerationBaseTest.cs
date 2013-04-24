@@ -25,19 +25,19 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
 {
   public abstract class CodeGenerationBaseTest
   {
-    private string _previousDefaultPipelineIdentifier;
+    private IPipeline _previousDefaultPipeline;
 
     [SetUp]
     public virtual void SetUp ()
     {
-      _previousDefaultPipelineIdentifier = PipelineRegistry.DefaultPipeline.ParticipantConfigurationID;
-      PipelineRegistry.SetDefaultPipeline (Pipeline.ParticipantConfigurationID);
+      _previousDefaultPipeline = PipelineRegistry.DefaultPipeline;
+      PipelineRegistry.SetDefaultPipeline (Pipeline);
     }
 
     [TearDown]
     public virtual void TearDown ()
     {
-      PipelineRegistry.SetDefaultPipeline (_previousDefaultPipelineIdentifier);
+      PipelineRegistry.SetDefaultPipeline (_previousDefaultPipeline);
     }
 
     protected ConcreteTypeBuilder SavedTypeBuilder
