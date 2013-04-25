@@ -174,7 +174,6 @@
     <Compile Include="ExtensibleEnums\TestDomain\ExtensibleEnumWithDuplicateAttributeExtensions.cs" />
     <Compile Include="FunctionalProgramming\Element.cs" />
     <Compile Include="FunctionalProgramming\EnumerableExtensionsTest.cs" />
-    <Compile Include="Collections\ReadOnlyDictionaryTest.cs" />
     <Compile Include="Collections\SetBasedCacheKeyTest.cs" />
     <Compile Include="Configuration\TypeDiscovery\ByNameRootAssemblyElementCollectionTest.cs" />
     <Compile Include="Configuration\TypeDiscovery\ByFileRootAssemblyElementCollectionTest.cs" />
