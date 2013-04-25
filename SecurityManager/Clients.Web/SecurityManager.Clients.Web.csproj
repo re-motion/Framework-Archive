@@ -12,12 +12,14 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Remotion.SecurityManager.Clients.Web</RootNamespace>
     <AssemblyName>Remotion.SecurityManager.Clients.Web</AssemblyName>
-    <FileUpgradeFlags></FileUpgradeFlags>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
     <OldToolsVersion>4.0</OldToolsVersion>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\remotion.snk</AssemblyOriginatorKeyFile>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <UpgradeBackupLocation></UpgradeBackupLocation>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
     <UseIISExpress>false</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
@@ -34,7 +36,8 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Remotion.SecurityManager.Clients.Web.XML</DocumentationFile>
     <NoWarn>1591;0419</NoWarn>
-    <WarningsAsErrors></WarningsAsErrors>
+    <WarningsAsErrors>
+    </WarningsAsErrors>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
@@ -69,7 +72,7 @@
     <Reference Include="System.Web.Abstractions">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
-    <Reference Include="System.Web.Extensions, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Xml" />
   </ItemGroup>
@@ -859,8 +862,8 @@
   </Target>
   -->
   <Target Name="AfterBuild">
-    <Delete Files="@(MappingFiles-&gt;'$(MSBuildProjectDirectory)\$(OutputPath)\%(FileName)%(Extension)')" />
-    <Copy SourceFiles="@(MappingFiles-&gt;'%(Fullpath)')" DestinationFiles="@(MappingFiles-&gt;'$(MSBuildProjectDirectory)\$(OutputPath)\%(FileName)%(Extension)')" />
+    <Delete Files="@(MappingFiles->'$(MSBuildProjectDirectory)\$(OutputPath)\%(FileName)%(Extension)')" />
+    <Copy SourceFiles="@(MappingFiles->'%(Fullpath)')" DestinationFiles="@(MappingFiles->'$(MSBuildProjectDirectory)\$(OutputPath)\%(FileName)%(Extension)')" />
   </Target>
   <ProjectExtensions>
     <VisualStudio>
@@ -873,7 +876,8 @@
           <IISUrl>http://localhost/dev/Remotion/Net4.5/SecurityManager/Clients.Web</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
-          <CustomServerUrl></CustomServerUrl>
+          <CustomServerUrl>
+          </CustomServerUrl>
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>

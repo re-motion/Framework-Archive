@@ -15,13 +15,10 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections;
 using System.ComponentModel;
-using System.Reflection;
 using System.Web.UI;
 using Remotion.Utilities;
 using Remotion.Web.Utilities;
-using AttributeCollection = System.Web.UI.AttributeCollection;
 
 namespace Remotion.Web.UI.Controls
 {
@@ -32,7 +29,6 @@ namespace Remotion.Web.UI.Controls
   public class WebUpdatePanel : UpdatePanel, IAttributeAccessor
   {
     private string _cssClass = "";
-    private AttributeCollection _attributeCollection;
     private StateBag _attributeStateBag;
     private WebUpdatePanelRenderMode _renderMode;
     private InternalControlMemberCaller _memberCaller = new InternalControlMemberCaller();
@@ -56,26 +52,6 @@ namespace Remotion.Web.UI.Controls
     public CssStyleCollection Style
     {
       get { return Attributes.CssStyle; }
-    }
-
-    [Browsable (false)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    public AttributeCollection Attributes
-    {
-      get
-      {
-        if (_attributeCollection == null)
-        {
-          if (_attributeStateBag == null)
-          {
-            _attributeStateBag = new StateBag (true);
-            if (IsTrackingViewState)
-              ((IStateManager) _attributeStateBag).TrackViewState();
-          }
-          _attributeCollection = new AttributeCollection (_attributeStateBag);
-        }
-        return _attributeCollection;
-      }
     }
 
     [Description ("Indicates whether the UpdatePanel should render as a block tag (<div>), an inline tag (<span>), or a table section (tbody, thead, tfoot).")]
