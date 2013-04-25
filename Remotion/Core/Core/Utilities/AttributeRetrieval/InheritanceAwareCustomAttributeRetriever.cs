@@ -18,6 +18,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Reflection;
 
 namespace Remotion.Utilities.AttributeRetrieval
@@ -40,14 +41,26 @@ namespace Remotion.Utilities.AttributeRetrieval
         new DoubleCheckedLockingContainer<Func<MethodInfo, MethodInfo>> (
             () =>
             {
-              var method = typeof (MethodInfo).GetMethod (
+              var runtimeMethodInfoType = Type.GetType ("System.Reflection.RuntimeMethodInfo");
+              Assertion.IsNotNull (runtimeMethodInfoType, "The internal type RuntimeMethodInfo has been removed. We need to patch this implementation.");
+             
+              var method = runtimeMethodInfoType.GetMethod (
                   "GetParentDefinition",
                   BindingFlags.Instance | BindingFlags.NonPublic,
                   null,
                   Type.EmptyTypes,
                   null);
-              Assertion.IsNotNull (method, "The internal method MethodInfo.GetParentDefinition has been removed. We need to patch this implementation.");
-              return (Func<MethodInfo, MethodInfo>) Delegate.CreateDelegate (typeof (Func<MethodInfo, MethodInfo>), method);
+              Assertion.IsNotNull (method, "The internal method RuntimeMethodInfo.GetParentDefinition has been removed. We need to patch this implementation.");
+
+              var parameterExpression = Expression.Parameter (typeof (MethodInfo));
+              var lambdaExpression = Expression.Lambda (
+                  Expression.Convert (
+                      Expression.Call (
+                          Expression.Convert (parameterExpression, runtimeMethodInfoType), method),
+                      typeof (MethodInfo)),
+                  parameterExpression);
+
+              return (Func<MethodInfo, MethodInfo>) lambdaExpression.Compile();
             });
 
     protected abstract TCustomAttributeProvider GetBaseMember (TCustomAttributeProvider memberInfo);
