@@ -17,10 +17,9 @@
 
 using System;
 using System.Reflection;
-using Microsoft.Scripting.Ast;
 using Remotion.Mixins.Context;
+using Remotion.TypePipe.Dlr.Ast;
 using Remotion.Utilities;
-using System.Linq;
 
 namespace Remotion.Mixins.CodeGeneration.TypePipe
 {

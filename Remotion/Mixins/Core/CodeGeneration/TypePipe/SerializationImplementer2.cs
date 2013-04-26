@@ -18,8 +18,8 @@
 using System;
 using System.Reflection;
 using System.Runtime.Serialization;
-using Microsoft.Scripting.Ast;
 using Remotion.Reflection.CodeGeneration;
+using Remotion.TypePipe.Dlr.Ast;
 using Remotion.TypePipe.MutableReflection;
 using Remotion.TypePipe.MutableReflection.BodyBuilding;
 using Remotion.Utilities;

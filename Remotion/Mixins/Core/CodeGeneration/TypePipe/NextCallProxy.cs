@@ -18,10 +18,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Microsoft.Scripting.Ast;
 using Remotion.Mixins.Definitions;
+using Remotion.TypePipe.Dlr.Ast;
 using Remotion.TypePipe.MutableReflection;
-using Remotion.TypePipe.MutableReflection.BodyBuilding;
 using Remotion.Utilities;
 
 namespace Remotion.Mixins.CodeGeneration.TypePipe
@@ -32,6 +31,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     private readonly MutableType _type;
     private readonly ConstructorInfo _constructor;
     private readonly TargetClassDefinition _targetClassDefinition;
+    // TOOD 5370: Remove
     private readonly IExpressionBuilder _expressionBuilder;
     private readonly INextCallMethodGenerator _nextCallMethodGenerator;
     private readonly Dictionary<MethodDefinition, MethodInfo> _overriddenMethodToImplementationMap = new Dictionary<MethodDefinition, MethodInfo>();

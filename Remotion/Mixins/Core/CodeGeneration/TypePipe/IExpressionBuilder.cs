@@ -16,8 +16,8 @@
 // 
 
 using System.Reflection;
-using Microsoft.Scripting.Ast;
 using Remotion.Mixins.Context;
+using Remotion.TypePipe.Dlr.Ast;
 using Remotion.TypePipe.MutableReflection;
 using Remotion.TypePipe.MutableReflection.BodyBuilding;
 

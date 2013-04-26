@@ -16,8 +16,8 @@
 // 
 
 using System;
-using Microsoft.Scripting.Ast;
 using Remotion.Mixins.Definitions;
+using Remotion.TypePipe.Dlr.Ast;
 using Remotion.TypePipe.MutableReflection.BodyBuilding;
 
 namespace Remotion.Mixins.CodeGeneration.TypePipe
