@@ -155,7 +155,7 @@
     <Compile Include="CodeGeneration\TypePipe\MixinContextOriginSerializerBase.cs" />
     <Compile Include="CodeGeneration\TypePipe\MixinContextSerializerBase.cs" />
     <Compile Include="CodeGeneration\TypePipe\MixinParticipant.cs" />
-    <Compile Include="CodeGeneration\TypePipe\MixinParticipantCacheKeyProvider.cs" />
+    <Compile Include="CodeGeneration\TypePipe\MixinParticipantTypeIdentifierProvider.cs" />
     <Compile Include="CodeGeneration\TypePipe\MixinTypeGenerator.cs" />
     <Compile Include="CodeGeneration\TypePipe\MixinTypeGeneratorFacade.cs" />
     <Compile Include="CodeGeneration\TypePipe\NextCallMethodGenerator.cs" />

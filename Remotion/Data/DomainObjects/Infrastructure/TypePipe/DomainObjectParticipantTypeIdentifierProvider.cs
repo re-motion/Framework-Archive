@@ -23,13 +23,13 @@ using Remotion.Utilities;
 namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
 {
   /// <summary>
-  /// The <see cref="ICacheKeyProvider"/> used by the <see cref="DomainObjectParticipant"/>.
+  /// The <see cref="ITypeIdentifierProvider"/> used by the <see cref="DomainObjectParticipant"/>.
   /// </summary>
-  public class DomainObjectParticipantCacheKeyProvider : ICacheKeyProvider
+  public class DomainObjectParticipantTypeIdentifierProvider : ITypeIdentifierProvider
   {
     private readonly ITypeDefinitionProvider _typeDefinitionProvider;
 
-    public DomainObjectParticipantCacheKeyProvider (ITypeDefinitionProvider typeDefinitionProvider)
+    public DomainObjectParticipantTypeIdentifierProvider (ITypeDefinitionProvider typeDefinitionProvider)
     {
       ArgumentUtility.CheckNotNull ("typeDefinitionProvider", typeDefinitionProvider);
 
@@ -41,7 +41,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
       get { return _typeDefinitionProvider; }
     }
 
-    public object GetCacheKey (Type requestedType)
+    public object GetID (Type requestedType)
     {
       // Using Debug.Assert because it will be compiled away.
       Debug.Assert (requestedType != null);
@@ -53,14 +53,14 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
       return classDefinition;
     }
 
-    public object RebuildCacheKey (Type requestedType, Type assembledType)
+    public object RebuildID (Type requestedType, Type assembledType)
     {
       ArgumentUtility.CheckNotNull ("requestedType", requestedType);
       ArgumentUtility.CheckNotNull ("assembledType", assembledType);
 
       // Assembled type does not carry any relevant data.
 
-      return GetCacheKey (requestedType);
+      return GetID (requestedType);
     }
   }
 }

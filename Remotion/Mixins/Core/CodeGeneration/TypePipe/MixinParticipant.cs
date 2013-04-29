@@ -63,9 +63,9 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       _concreteTypeMetadataImporter = concreteTypeMetadataImporter;
     }
 
-    public ICacheKeyProvider PartialCacheKeyProvider
+    public ITypeIdentifierProvider PartialTypeIdentifierProvider
     {
-      get { return new MixinParticipantCacheKeyProvider (_concreteTypeMetadataImporter); }
+      get { return new MixinParticipantTypeIdentifierProvider (_concreteTypeMetadataImporter); }
     }
 
     public void Participate (ITypeAssemblyContext typeAssemblyContext)

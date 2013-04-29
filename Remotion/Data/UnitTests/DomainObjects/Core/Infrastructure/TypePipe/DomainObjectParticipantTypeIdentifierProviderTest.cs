@@ -24,22 +24,22 @@ using Rhino.Mocks;
 namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.TypePipe
 {
   [TestFixture]
-  public class DomainObjectParticipantCacheKeyProviderTest
+  public class DomainObjectParticipantTypeIdentifierProviderTest
   {
     private ITypeDefinitionProvider _typeDefinitionProviderMock;
 
-    private DomainObjectParticipantCacheKeyProvider _provider;
+    private DomainObjectParticipantTypeIdentifierProvider _provider;
 
     [SetUp]
     public void SetUp ()
     {
       _typeDefinitionProviderMock = MockRepository.GenerateStrictMock<ITypeDefinitionProvider> ();
 
-      _provider = new DomainObjectParticipantCacheKeyProvider (_typeDefinitionProviderMock);
+      _provider = new DomainObjectParticipantTypeIdentifierProvider (_typeDefinitionProviderMock);
     }
 
     [Test]
-    public void GetCacheKey ()
+    public void GetID ()
     {
       var requestedType = ReflectionObjectMother.GetSomeType();
       var fakePublicDomainType = ReflectionObjectMother.GetSomeOtherType();
@@ -47,14 +47,14 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.TypePipe
       _typeDefinitionProviderMock.Expect (mock => mock.GetPublicDomainObjectType (requestedType)).Return (fakePublicDomainType);
       _typeDefinitionProviderMock.Expect (mock => mock.GetTypeDefinition (fakePublicDomainType)).Return (fakeClassDefinition);
 
-      var result = _provider.GetCacheKey (requestedType);
+      var result = _provider.GetID (requestedType);
 
       _typeDefinitionProviderMock.VerifyAllExpectations();
       Assert.That (result, Is.SameAs (fakeClassDefinition));
     }
 
     [Test]
-    public void RebuildCacheKey ()
+    public void RebuildID ()
     {
       var requestedType = ReflectionObjectMother.GetSomeType();
       var assembledType = ReflectionObjectMother.GetSomeOtherType();
@@ -63,7 +63,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.TypePipe
       _typeDefinitionProviderMock.Expect (mock => mock.GetPublicDomainObjectType (requestedType)).Return (fakePublicDomainType);
       _typeDefinitionProviderMock.Expect (mock => mock.GetTypeDefinition (fakePublicDomainType)).Return (fakeClassDefinition);
 
-      var result = _provider.RebuildCacheKey (requestedType, assembledType);
+      var result = _provider.RebuildID (requestedType, assembledType);
 
       _typeDefinitionProviderMock.VerifyAllExpectations();
       Assert.That (result, Is.SameAs (fakeClassDefinition));

@@ -56,12 +56,12 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.TypePipe
     }
 
     [Test]
-    public void PartialCacheKeyProvider ()
+    public void PartialTypeIdentifierProvider ()
     {
-      var cacheKeyProvider = _participant.PartialCacheKeyProvider;
+      var cacheKeyProvider = _participant.PartialTypeIdentifierProvider;
 
-      Assert.That (cacheKeyProvider, Is.TypeOf<DomainObjectParticipantCacheKeyProvider>());
-      Assert.That (cacheKeyProvider.As<DomainObjectParticipantCacheKeyProvider>().TypeDefinitionProvider, Is.SameAs (_typeDefinitionProviderMock));
+      Assert.That (cacheKeyProvider, Is.TypeOf<DomainObjectParticipantTypeIdentifierProvider>());
+      Assert.That (cacheKeyProvider.As<DomainObjectParticipantTypeIdentifierProvider>().TypeDefinitionProvider, Is.SameAs (_typeDefinitionProviderMock));
     }
 
     [Test]

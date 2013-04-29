@@ -71,9 +71,9 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
       _interceptedPropertyFinder = interceptedPropertyFinder;
     }
 
-    public ICacheKeyProvider PartialCacheKeyProvider
+    public ITypeIdentifierProvider PartialTypeIdentifierProvider
     {
-      get { return new DomainObjectParticipantCacheKeyProvider (_typeDefinitionProvider); }
+      get { return new DomainObjectParticipantTypeIdentifierProvider (_typeDefinitionProvider); }
     }
 
     public void Participate (ITypeAssemblyContext typeAssemblyContext)

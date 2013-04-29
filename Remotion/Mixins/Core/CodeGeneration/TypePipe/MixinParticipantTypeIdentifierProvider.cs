@@ -23,18 +23,18 @@ using Remotion.Utilities;
 namespace Remotion.Mixins.CodeGeneration.TypePipe
 {
   // TODO 5370.
-  public class MixinParticipantCacheKeyProvider : ICacheKeyProvider
+  public class MixinParticipantTypeIdentifierProvider : ITypeIdentifierProvider
   {
     private readonly IConcreteTypeMetadataImporter _concreteTypeMetadataImporter;
 
-    public MixinParticipantCacheKeyProvider (IConcreteTypeMetadataImporter concreteTypeMetadataImporter)
+    public MixinParticipantTypeIdentifierProvider (IConcreteTypeMetadataImporter concreteTypeMetadataImporter)
     {
       ArgumentUtility.CheckNotNull ("concreteTypeMetadataImporter", concreteTypeMetadataImporter);
 
       _concreteTypeMetadataImporter = concreteTypeMetadataImporter;
     }
 
-    public object GetCacheKey (Type requestedType)
+    public object GetID (Type requestedType)
     {
       // Using Debug.Assert because it will be compiled away.
       Debug.Assert (requestedType != null);
@@ -42,7 +42,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       return MixinConfiguration.ActiveConfiguration.GetContext (requestedType);
     }
 
-    public object RebuildCacheKey (Type requestedType, Type assembledType)
+    public object RebuildID (Type requestedType, Type assembledType)
     {
       ArgumentUtility.CheckNotNull ("requestedType", requestedType);
       ArgumentUtility.CheckNotNull ("assembledType", assembledType);
