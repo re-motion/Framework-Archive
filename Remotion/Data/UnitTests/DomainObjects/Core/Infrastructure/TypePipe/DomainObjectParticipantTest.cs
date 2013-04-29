@@ -74,7 +74,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.TypePipe
       _typeDefinitionProviderMock.Expect (mock => mock.GetTypeDefinition (fakeDomainObjectType)).Return (fakeClassDefinition);
       _interceptedPropertyFinderMock.Expect (mock => mock.GetPropertyInterceptors (fakeClassDefinition, _proxyType.BaseType)).Return (fakeInterceptors);
 
-      _participant.Participate (_typeAssemblyContext);
+      _participant.Participate (null, _typeAssemblyContext);
 
       _typeDefinitionProviderMock.VerifyAllExpectations();
       _interceptedPropertyFinderMock.VerifyAllExpectations();
@@ -86,7 +86,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.TypePipe
       var fakeDomainObjectType = ReflectionObjectMother.GetSomeType();
       StubGetPropertyInterceptors (fakeDomainObjectType);
 
-      _participant.Participate (_typeAssemblyContext);
+      _participant.Participate (null, _typeAssemblyContext);
 
       Assert.That (_proxyType.AddedInterfaces, Is.EqualTo (new[] { typeof (IInterceptedDomainObject) }));
       Assert.That (_proxyType.AddedMethods, Has.Count.EqualTo (2));
@@ -105,7 +105,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.TypePipe
       accessorInterceptor.Expect (mock => mock.Intercept (_proxyType));
       StubGetPropertyInterceptors (accessorInterceptors: new[] { accessorInterceptor });
 
-      _participant.Participate (_typeAssemblyContext);
+      _participant.Participate (null, _typeAssemblyContext);
 
       accessorInterceptor.VerifyAllExpectations();
     }
@@ -115,7 +115,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.TypePipe
     {
       var context = TypeAssemblyContextObjectMother.Create (requestedType: typeof (object));
 
-      _participant.Participate (context);
+      _participant.Participate (null, context);
 
       _typeDefinitionProviderMock.AssertWasNotCalled (mock => mock.GetPublicDomainObjectType (Arg<Type>.Is.Anything));
     }
