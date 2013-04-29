@@ -64,7 +64,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.CommandTests
       _httpContext.Response.ContentEncoding = Encoding.UTF8;
 
       _functionType = typeof (TestFunction);
-      _functionTypeName = WebTypeUtility.GetQualifiedName (_functionType);
+      _functionTypeName = _functionType.FullName + "," + _functionType.Assembly.GetName().Name;
 
       _mocks = new MockRepository();
       _mockWebSecurityAdapter = _mocks.StrictMock<IWebSecurityAdapter>();

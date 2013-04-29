@@ -59,7 +59,7 @@ public class NavigationCommandTest
     HttpContextHelper.SetCurrent (_currentHttpContext);
 
     _functionType = typeof (TestFunction);
-    _functionTypeName = WebTypeUtility.GetQualifiedName (_functionType);
+    _functionTypeName = _functionType.FullName + "," + _functionType.Assembly.GetName().Name;
     _wxeFunctionParameter1Value = "Value1";
     _wxeFunctionParameters = "\"Value1\"";
 
@@ -90,6 +90,11 @@ public class NavigationCommandTest
     _noneCommand.Type = CommandType.None;
 
     _writer = new HtmlTextWriterSingleTagMock();
+  }
+
+  private string GetQualifiedName (Type type)
+  {
+    return type.FullName + "," + type.Assembly.GetName().Name;
   }
 
   [TearDown]

@@ -46,7 +46,7 @@ public class WxeContextTest
     _currentHttpContext = WxeContextMock.CreateHttpContext (queryString);
 
     _functionType = typeof (TestFunction);
-    _functionTypeName = WebTypeUtility.GetQualifiedName (_functionType);
+    _functionTypeName = _functionType.FullName + "," + _functionType.Assembly.GetName().Name;
     _resource = "~/Test.wxe";
 
     UrlMappingConfiguration.Current.Mappings.Add (new UrlMappingEntry (_functionType, _resource));
