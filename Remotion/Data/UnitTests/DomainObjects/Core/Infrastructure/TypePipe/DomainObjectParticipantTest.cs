@@ -96,7 +96,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.TypePipe
       Assert.That (performConstructorCheck.Body, Is.TypeOf<DefaultExpression>().And.Property ("Type").SameAs (typeof (void)));
 
       var getPublicDomainObjectTypeImplementation = _proxyType.AddedMethods.Single (m => m.Name == "GetPublicDomainObjectTypeImplementation");
-      Assert.That (getPublicDomainObjectTypeImplementation.Body, Is.TypeOf<ConstantExpression> ().And.Property ("Value").SameAs (fakeDomainObjectType));
+      Assert.That (getPublicDomainObjectTypeImplementation.Body, Is.AssignableTo<ConstantExpression> ().And.Property ("Value").SameAs (fakeDomainObjectType));
     }
 
     [Test]

@@ -112,7 +112,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
 
     private void OverrideGetPublicDomainObjectType (MutableType proxyType, Type publicDomainObjectType)
     {
-      proxyType.GetOrAddOverride (s_getPublicDomainObjectTypeImplementation).SetBody (ctx => Expression.Constant (publicDomainObjectType));
+      proxyType.GetOrAddOverride (s_getPublicDomainObjectTypeImplementation).SetBody (ctx => Expression.Constant (publicDomainObjectType, typeof (Type)));
     }
 
     private void InterceptProperties (MutableType proxyType, Type domainObjectType, Type concreteBaseType)
