@@ -18,6 +18,7 @@
 using System;
 using System.Diagnostics;
 using Remotion.TypePipe.Caching;
+using Remotion.TypePipe.Dlr.Ast;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
@@ -53,14 +54,11 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
       return classDefinition;
     }
 
-    public object RebuildID (Type requestedType, Type assembledType)
+    public Expression GetExpressionForID (object id)
     {
-      ArgumentUtility.CheckNotNull ("requestedType", requestedType);
-      ArgumentUtility.CheckNotNull ("assembledType", assembledType);
+      ArgumentUtility.CheckNotNull ("id", id);
 
-      // Assembled type does not carry any relevant data.
-
-      return GetID (requestedType);
+      throw new NotImplementedException ("TODO 5552");
     }
   }
 }

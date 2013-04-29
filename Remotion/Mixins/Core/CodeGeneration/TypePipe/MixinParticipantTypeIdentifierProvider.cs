@@ -18,6 +18,7 @@
 using System;
 using System.Diagnostics;
 using Remotion.TypePipe.Caching;
+using Remotion.TypePipe.Dlr.Ast;
 using Remotion.Utilities;
 
 namespace Remotion.Mixins.CodeGeneration.TypePipe
@@ -42,12 +43,19 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       return MixinConfiguration.ActiveConfiguration.GetContext (requestedType);
     }
 
-    public object RebuildID (Type requestedType, Type assembledType)
+    public Expression GetExpressionForID (object id)
     {
-      ArgumentUtility.CheckNotNull ("requestedType", requestedType);
-      ArgumentUtility.CheckNotNull ("assembledType", assembledType);
+      ArgumentUtility.CheckNotNull ("id", id);
 
-      return _concreteTypeMetadataImporter.GetMetadataForMixedType (assembledType);
+      throw new NotImplementedException ("TODO 5552");
     }
+
+    //public object RebuildID (Type requestedType, Type assembledType)
+    //{
+    //  ArgumentUtility.CheckNotNull ("requestedType", requestedType);
+    //  ArgumentUtility.CheckNotNull ("assembledType", assembledType);
+
+    //  return _concreteTypeMetadataImporter.GetMetadataForMixedType (assembledType);
+    //}
   }
 }

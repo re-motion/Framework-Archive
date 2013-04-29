@@ -53,20 +53,20 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.TypePipe
       Assert.That (result, Is.SameAs (fakeClassDefinition));
     }
 
-    [Test]
-    public void RebuildID ()
-    {
-      var requestedType = ReflectionObjectMother.GetSomeType();
-      var assembledType = ReflectionObjectMother.GetSomeOtherType();
-      var fakePublicDomainType = ReflectionObjectMother.GetSomeOtherType();
-      var fakeClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition();
-      _typeDefinitionProviderMock.Expect (mock => mock.GetPublicDomainObjectType (requestedType)).Return (fakePublicDomainType);
-      _typeDefinitionProviderMock.Expect (mock => mock.GetTypeDefinition (fakePublicDomainType)).Return (fakeClassDefinition);
+    //[Test]
+    //public void RebuildID ()
+    //{
+    //  var requestedType = ReflectionObjectMother.GetSomeType();
+    //  var assembledType = ReflectionObjectMother.GetSomeOtherType();
+    //  var fakePublicDomainType = ReflectionObjectMother.GetSomeOtherType();
+    //  var fakeClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition();
+    //  _typeDefinitionProviderMock.Expect (mock => mock.GetPublicDomainObjectType (requestedType)).Return (fakePublicDomainType);
+    //  _typeDefinitionProviderMock.Expect (mock => mock.GetTypeDefinition (fakePublicDomainType)).Return (fakeClassDefinition);
 
-      var result = _provider.RebuildID (requestedType, assembledType);
+    //  var result = _provider.RebuildID (requestedType, assembledType);
 
-      _typeDefinitionProviderMock.VerifyAllExpectations();
-      Assert.That (result, Is.SameAs (fakeClassDefinition));
-    }
+    //  _typeDefinitionProviderMock.VerifyAllExpectations();
+    //  Assert.That (result, Is.SameAs (fakeClassDefinition));
+    //}
   }
 }
