@@ -185,7 +185,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>53520</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost/dev/Remotion/trunk/Web/ExecutionEngine.CodeGenerator.TestVB</IISUrl>
+          <IISUrl>http://localhost/dev/Remotion/Net4.5/Web/ExecutionEngine.CodeGenerator.TestVB</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
