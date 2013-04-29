@@ -17,6 +17,7 @@
 
 using System;
 using System.Linq;
+using Remotion.Mixins.Context;
 using Remotion.TypePipe;
 using Remotion.TypePipe.Caching;
 using Remotion.TypePipe.Implementation;
@@ -68,17 +69,15 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       get { return new MixinParticipantTypeIdentifierProvider (_concreteTypeMetadataImporter); }
     }
 
-    public void Participate (ITypeAssemblyContext typeAssemblyContext)
+    public void Participate (object id, ITypeAssemblyContext typeAssemblyContext)
     {
       ArgumentUtility.CheckNotNull ("typeAssemblyContext", typeAssemblyContext);
 
-      var target = typeAssemblyContext.RequestedType;
-      var concreteTarget = typeAssemblyContext.ProxyType;
-
-      var targetClassDefinition = _configurationProvider.GetTargetClassDefinition (target);
+      var targetClassDefinition = _configurationProvider.GetTargetClassDefinition ((ClassContext) id);
       if (targetClassDefinition == null)
         return;
 
+      var concreteTarget = typeAssemblyContext.ProxyType;
       var mixinInfos = targetClassDefinition.Mixins.Select (m => _mixinTypeProvider.GetMixinInfo (typeAssemblyContext, m)).ToList();
       var interfacesToImplement = _configurationProvider.GetInterfacesToImplement (targetClassDefinition, mixinInfos);
       var targetTypeForNextCall = _nextCallProxyGenerator.GetTargetTypeWrapper (concreteTarget);

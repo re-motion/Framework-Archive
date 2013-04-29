@@ -17,6 +17,7 @@
 
 using System;
 using System.Collections.Generic;
+using Remotion.Mixins.Context;
 using Remotion.Mixins.Definitions;
 
 namespace Remotion.Mixins.CodeGeneration.TypePipe
@@ -24,6 +25,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
   // TODO 5370: docs
   public interface IConfigurationProvider
   {
+    TargetClassDefinition GetTargetClassDefinition (ClassContext classContext);
     TargetClassDefinition GetTargetClassDefinition (Type requestedType);
 
     IEnumerable<Type> GetInterfacesToImplement (TargetClassDefinition targetClassDefinition, IEnumerable<IMixinInfo> mixinInfos);

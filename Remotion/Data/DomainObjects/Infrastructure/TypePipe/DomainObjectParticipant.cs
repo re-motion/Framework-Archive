@@ -76,7 +76,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
       get { return new DomainObjectParticipantTypeIdentifierProvider (_typeDefinitionProvider); }
     }
 
-    public void Participate (ITypeAssemblyContext typeAssemblyContext)
+    public void Participate (object id, ITypeAssemblyContext typeAssemblyContext)
     {
       ArgumentUtility.CheckNotNull ("typeAssemblyContext", typeAssemblyContext);
 
@@ -84,6 +84,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
         return;
 
       // TODO 5370: This will change when TypePipe is integrated with re-mix.
+      // TODO : use 'id' i.e. the domainobjectType?!
       var proxyType = typeAssemblyContext.ProxyType;
       var concreteBaseType = typeAssemblyContext.RequestedType;
       var domainObjectType = _typeDefinitionProvider.GetPublicDomainObjectType (concreteBaseType);

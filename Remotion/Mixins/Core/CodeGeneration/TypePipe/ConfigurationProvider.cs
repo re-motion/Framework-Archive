@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using Remotion.Mixins.CodeGeneration.DynamicProxy.TypeGeneration;
+using Remotion.Mixins.Context;
 using Remotion.Mixins.Definitions;
 using Remotion.Utilities;
 
@@ -26,15 +27,20 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
   // TODO 5370: tests
   public class ConfigurationProvider : IConfigurationProvider
   {
+    public TargetClassDefinition GetTargetClassDefinition (ClassContext classContext)
+    {
+      if (classContext == null)
+        return null;
+
+      return TargetClassDefinitionFactory.CreateAndValidate (classContext);
+    }
+
     public TargetClassDefinition GetTargetClassDefinition (Type requestedType)
     {
       ArgumentUtility.CheckNotNull ("requestedType", requestedType);
 
       var classContext = MixinConfiguration.ActiveConfiguration.GetContext (requestedType);
-      if (classContext == null)
-        return null;
-
-      return TargetClassDefinitionFactory.CreateAndValidate (classContext);
+      return GetTargetClassDefinition (classContext);
     }
 
     public IEnumerable<Type> GetInterfacesToImplement (TargetClassDefinition targetClassDefinition, IEnumerable<IMixinInfo> mixinInfos)
