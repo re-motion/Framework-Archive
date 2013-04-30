@@ -68,6 +68,7 @@ namespace Remotion.Development.Web.UnitTesting.UI.Controls
 
     public object SaveViewStateRecursive ()
     {
+      // TODO 5534: Check with MK, which ViewStateMode value should be passed to SaveViewStateRecursive?
       return PrivateInvoke.InvokeNonPublicMethod (_control, typeof (Control), "SaveViewStateRecursive", new object[0]);
     }
 
