@@ -169,6 +169,22 @@ namespace Remotion.Data.DomainObjects.Linq
       return _storageSpecificExpressionResolver.ResolveEntityIdentityViaForeignKey (entityRefMemberExpression.OriginatingEntity, foreignKeyEndPoint);
     }
 
+    public Expression TryResolveOptimizedMemberExpression (SqlEntityRefMemberExpression entityRefMemberExpression, MemberInfo memberInfo)
+    {
+      ArgumentUtility.CheckNotNull ("entityRefMemberExpression", entityRefMemberExpression);
+      ArgumentUtility.CheckNotNull ("memberInfo", memberInfo);
+
+      if (memberInfo.DeclaringType != typeof (DomainObject) || memberInfo.Name != "ID")
+        return null;
+
+      var endPointDefinition = GetEndPointDefinition (entityRefMemberExpression.OriginatingEntity, entityRefMemberExpression.MemberInfo);
+      var foreignKeyEndPoint = endPointDefinition as RelationEndPointDefinition;
+      if (foreignKeyEndPoint == null)
+        return null;
+
+      return _storageSpecificExpressionResolver.ResolveIDPropertyViaForeignKey (entityRefMemberExpression.OriginatingEntity, foreignKeyEndPoint);
+    }
+
     private ClassDefinition GetClassDefinition (Type type)
     {
       var classDefinition = MappingConfiguration.Current.GetTypeDefinition (
@@ -196,7 +212,15 @@ namespace Remotion.Data.DomainObjects.Linq
     {
       var endPointDefinition = classDefinition.ResolveRelationEndPoint (propertyInfoAdapter);
       if (endPointDefinition != null)
+      {
+        if (endPointDefinition.Cardinality != CardinalityType.One)
+        {
+          var message = string.Format (
+              "Cannot resolve a collection-valued end-point definition. ('{0}.{1}')", originatingEntity.Type, propertyInfoAdapter.Name);
+          throw new NotSupportedException (message);
+        }
         return new SqlEntityRefMemberExpression (originatingEntity, propertyInfoAdapter.PropertyInfo);
+      }
 
       var propertyDefinition = classDefinition.ResolveProperty (propertyInfoAdapter);
       if (propertyDefinition != null)
