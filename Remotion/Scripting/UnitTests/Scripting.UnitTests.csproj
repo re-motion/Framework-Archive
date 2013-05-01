@@ -63,6 +63,7 @@
     <Reference Include="IronPython">
       <HintPath>..\..\..\prereq\Assemblies\IronPython-2.7\Net40\IronPython.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Dynamic">
       <HintPath>..\..\..\prereq\Assemblies\IronPython-2.7\Net40\Microsoft.Dynamic.dll</HintPath>
     </Reference>
