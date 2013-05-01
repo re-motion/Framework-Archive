@@ -407,7 +407,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>27872</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost/dev/Remotion/Net4.5/Remotion/Data/DomainObjects.Web.Test</IISUrl>
+          <IISUrl>http://localhost/dev/Remotion/net45/Remotion/Data/DomainObjects.Web.Test</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

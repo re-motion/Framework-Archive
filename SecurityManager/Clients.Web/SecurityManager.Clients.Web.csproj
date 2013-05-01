@@ -873,7 +873,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>3039</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost/dev/Remotion/Net4.5/SecurityManager/Clients.Web</IISUrl>
+          <IISUrl>http://localhost/dev/Remotion/net45/SecurityManager/Clients.Web</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

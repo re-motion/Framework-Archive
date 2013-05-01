@@ -479,7 +479,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>50369</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost/dev/Remotion/Net4.5/Remotion/web/Test</IISUrl>
+          <IISUrl>http://localhost/dev/Remotion/net45/Remotion/web/Test</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

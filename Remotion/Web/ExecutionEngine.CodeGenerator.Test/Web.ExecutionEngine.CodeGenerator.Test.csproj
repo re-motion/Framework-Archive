@@ -139,7 +139,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>53514</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost/dev/Remotion/Net4.5/Web/ExecutionEngine.CodeGenerator.Test</IISUrl>
+          <IISUrl>http://localhost/dev/Remotion/net45/Web/ExecutionEngine.CodeGenerator.Test</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl></CustomServerUrl>
