@@ -80,7 +80,7 @@ namespace Remotion.Web.ExecutionEngine
       UrlMapping.UrlMappingEntry mappingEntry = UrlMapping.UrlMappingConfiguration.Current.Mappings[functionType];
       if (mappingEntry == null)
       {
-        string functionTypeName = functionType.FullName + "," + functionType.Assembly.GetName().Name;
+        string functionTypeName = WebTypeUtility.GetQualifiedName (functionType);
         internalUrlParameters.Set (WxeHandler.Parameters.WxeFunctionType, functionTypeName);
       }
 

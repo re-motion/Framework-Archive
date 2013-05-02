@@ -57,8 +57,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
     public static ColumnValueTable Combine (ColumnValueTable table1, ColumnValueTable table2)
     {
       var combinedColumns = table1.Columns.Concat (table2.Columns);
-      var combinedRows = EnumerableExtensions.Zip (table1.Rows, table2.Rows)
-        .Select(tuple => tuple.Item1.Concat (tuple.Item2));
+      var combinedRows = table1.Rows.Zip (table2.Rows, (valueRow, classIDRow) => valueRow.Concat (classIDRow));
 
       return new ColumnValueTable (combinedColumns, combinedRows);
     }

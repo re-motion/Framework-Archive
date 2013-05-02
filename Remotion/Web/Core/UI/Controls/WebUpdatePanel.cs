@@ -26,12 +26,11 @@ namespace Remotion.Web.UI.Controls
   /// Extends the ASP.NET <see cref="UpdatePanel"/> with support for HTML attributes, allowing specification of a <see cref="CssClass"/> 
   /// or inline styles.
   /// </summary>
-  public class WebUpdatePanel : UpdatePanel, IAttributeAccessor
+  public class WebUpdatePanel : UpdatePanel
   {
     private string _cssClass = "";
-    private StateBag _attributeStateBag;
     private WebUpdatePanelRenderMode _renderMode;
-    private InternalControlMemberCaller _memberCaller = new InternalControlMemberCaller();
+    private readonly InternalControlMemberCaller _memberCaller = new InternalControlMemberCaller();
 
     public WebUpdatePanel ()
     {
@@ -73,21 +72,11 @@ namespace Remotion.Web.UI.Controls
     {
       if (savedState != null)
       {
-        var triplet = (Triplet) savedState;
+        var pair = (Pair) savedState;
 
-        base.LoadViewState (triplet.First);
+        base.LoadViewState (pair.First);
 
-        if (triplet.Second != null)
-        {
-          if (_attributeStateBag == null)
-          {
-            _attributeStateBag = new StateBag (true);
-            ((IStateManager) _attributeStateBag).TrackViewState();
-          }
-          ((IStateManager) _attributeStateBag).LoadViewState (triplet.Second);
-        }
-
-        _cssClass = StringUtility.NullToEmpty ((string) triplet.Third);
+        _cssClass = StringUtility.NullToEmpty ((string) pair.Second);
       }
     }
 
@@ -95,25 +84,15 @@ namespace Remotion.Web.UI.Controls
     {
       object baseViewState = base.SaveViewState();
 
-      object attributesViewState = null;
-      if (_attributeStateBag != null)
-        attributesViewState = ((IStateManager) _attributeStateBag).SaveViewState();
-
-      if ((baseViewState == null) && (attributesViewState == null) && string.IsNullOrEmpty (_cssClass))
+      if ((baseViewState == null) && string.IsNullOrEmpty (_cssClass))
         return null;
-      return new Triplet (baseViewState, attributesViewState, _cssClass);
+      return new Pair (baseViewState, _cssClass);
     }
 
     protected virtual void AddAttributesToRender (HtmlTextWriter writer)
     {
       if (!string.IsNullOrEmpty (_cssClass))
         writer.AddAttribute (HtmlTextWriterAttribute.Class, _cssClass);
-
-      if (_attributeStateBag != null)
-      {
-        foreach (string key in Attributes.Keys)
-          writer.AddAttribute (key, Attributes[key]);
-      }
     }
 
     protected override void RenderChildren (HtmlTextWriter writer)
@@ -162,18 +141,6 @@ namespace Remotion.Web.UI.Controls
           throw new InvalidOperationException(string.Format ("The RenderMode '{0}' is not valid.", _renderMode));
       }
 #pragma warning restore 612,618
-    }
-
-    string IAttributeAccessor.GetAttribute (string name)
-    {
-      if (_attributeStateBag == null)
-        return null;
-      return (string) _attributeStateBag[name];
-    }
-
-    void IAttributeAccessor.SetAttribute (string name, string value)
-    {
-      Attributes[name] = value;
     }
   }
 }
