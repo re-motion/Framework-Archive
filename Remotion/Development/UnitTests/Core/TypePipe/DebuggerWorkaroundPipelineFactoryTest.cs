@@ -15,15 +15,17 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Reflection;
 using NUnit.Framework;
 using Remotion.Development.TypePipe;
 using Remotion.Development.UnitTesting;
+using Remotion.Development.UnitTesting.ObjectMothers;
 using Remotion.Diagnostics;
 using Remotion.Reflection.TypeDiscovery;
 using Remotion.TypePipe;
 using Remotion.TypePipe.CodeGeneration.ReflectionEmit;
 using Remotion.TypePipe.Configuration;
-using Rhino.Mocks;
+using Remotion.TypePipe.Implementation;
 
 namespace Remotion.Development.UnitTests.Core.TypePipe
 {
@@ -48,10 +50,11 @@ namespace Remotion.Development.UnitTests.Core.TypePipe
     [Test]
     public void NewReflectionEmitCodeGenerator ()
     {
-      var configurationProviderStub = MockRepository.GenerateStrictMock<IConfigurationProvider>();
+      var forceStrongNaming = BooleanObjectMother.GetRandomBoolean();
+      var keyFilePath = "keyFilePath";
       _factory.MaximumTypesPerAssembly = 7;
 
-      var result = _factory.Invoke<IReflectionEmitCodeGenerator> ("NewReflectionEmitCodeGenerator", configurationProviderStub);
+      var result = _factory.Invoke<IReflectionEmitCodeGenerator> ("NewReflectionEmitCodeGenerator", forceStrongNaming, keyFilePath);
 
       Assert.That (result, Is.TypeOf<DebuggerWorkaroundCodeGenerator>());
       var debuggerWorkaroundCodeGenerator = (DebuggerWorkaroundCodeGenerator) result;
@@ -61,11 +64,20 @@ namespace Remotion.Development.UnitTests.Core.TypePipe
     [Test]
     public void Integration_CreatedPipeline_AddsNonApplicationAssemblyAttribute_OnModuleCreation ()
     {
-      // Creates new in-memory assembly.
-      var defaultPipeline = _factory.CreatePipeline ("dummy id", new IParticipant[0], new AppConfigBasedSettingsProvider());
+      // Creates new in-memory assembly (avoid no-modification optimization).
+      var settings = new PipelineSettings ("dummy id");
+      var defaultPipeline = _factory.CreatePipeline (settings, new[] { new ModifyingParticipant() });
       var type = defaultPipeline.ReflectionService.GetAssembledType (typeof (RequestedType));
 
       Assert.That (type.Assembly.IsDefined (typeof (NonApplicationAssemblyAttribute), false), Is.True);
+    }
+
+    public class ModifyingParticipant : SimpleParticipantBase
+    {
+      public override void Participate (object id, ITypeAssemblyContext typeAssemblyContext)
+      {
+        typeAssemblyContext.ProxyType.AddField ("test", FieldAttributes.Private, typeof (int));
+      }
     }
 
     public class RequestedType { }
