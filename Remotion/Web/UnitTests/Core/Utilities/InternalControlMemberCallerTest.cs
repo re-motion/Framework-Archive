@@ -158,6 +158,7 @@ namespace Remotion.Web.UnitTests.Core.Utilities
     }
 
     [Test]
+    [Ignore("TODO RM-1928")]
     public void SaveViewStateRecursive ()
     {
       _parent.ValueInViewState = "ParentValue";

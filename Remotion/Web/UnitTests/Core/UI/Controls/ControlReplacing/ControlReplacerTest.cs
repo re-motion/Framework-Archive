@@ -27,6 +27,7 @@ using Rhino.Mocks;
 namespace Remotion.Web.UnitTests.Core.UI.Controls.ControlReplacing
 {
   [TestFixture]
+  [Ignore("TODO RM-5537")]
   public class ControlReplacerTest : TestBase
   {
     [Test]
