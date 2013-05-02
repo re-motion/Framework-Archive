@@ -43,7 +43,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       return MixinConfiguration.ActiveConfiguration.GetContext (requestedType);
     }
 
-    public Expression GetExpressionForID (object id)
+    public Expression GetExpression (object id)
     {
       ArgumentUtility.CheckNotNull ("id", id);
 

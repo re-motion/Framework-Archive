@@ -54,7 +54,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
       return classDefinition;
     }
 
-    public Expression GetExpressionForID (object id)
+    public Expression GetExpression (object id)
     {
       ArgumentUtility.CheckNotNull ("id", id);
 
