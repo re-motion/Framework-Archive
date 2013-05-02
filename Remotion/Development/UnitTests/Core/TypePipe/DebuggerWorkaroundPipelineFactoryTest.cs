@@ -62,7 +62,7 @@ namespace Remotion.Development.UnitTests.Core.TypePipe
     public void Integration_CreatedPipeline_AddsNonApplicationAssemblyAttribute_OnModuleCreation ()
     {
       // Creates new in-memory assembly.
-      var defaultPipeline = _factory.CreatePipeline ("dummy id", new IParticipant[0], new AppConfigBasedConfigurationProvider());
+      var defaultPipeline = _factory.CreatePipeline ("dummy id", new IParticipant[0], new AppConfigBasedSettingsProvider());
       var type = defaultPipeline.ReflectionService.GetAssembledType (typeof (RequestedType));
 
       Assert.That (type.Assembly.IsDefined (typeof (NonApplicationAssemblyAttribute), false), Is.True);

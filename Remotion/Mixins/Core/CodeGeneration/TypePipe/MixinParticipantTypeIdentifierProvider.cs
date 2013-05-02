@@ -45,17 +45,17 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     public Expression GetExpression (object id)
     {
-      ArgumentUtility.CheckNotNull ("id", id);
-
       throw new NotImplementedException ("TODO 5552");
     }
 
-    //public object RebuildID (Type requestedType, Type assembledType)
-    //{
-    //  ArgumentUtility.CheckNotNull ("requestedType", requestedType);
-    //  ArgumentUtility.CheckNotNull ("assembledType", assembledType);
+    public Expression GetFlattenedSerializeExpression (object id)
+    {
+      throw new NotImplementedException ("TODO 5552");
+    }
 
-    //  return _concreteTypeMetadataImporter.GetMetadataForMixedType (assembledType);
-    //}
+    public object DeserializeID (object flattenedID)
+    {
+      throw new NotImplementedException ("TODO 5552");
+    }
   }
 }
