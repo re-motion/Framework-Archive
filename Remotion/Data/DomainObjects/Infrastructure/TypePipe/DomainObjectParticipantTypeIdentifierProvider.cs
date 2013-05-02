@@ -58,7 +58,18 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
     {
       ArgumentUtility.CheckNotNull ("id", id);
 
-      throw new NotImplementedException ("TODO 5552");
+      throw new NotImplementedException ("TODO 5370");
+    }
+
+    public Expression GetFlattenedSerializeExpression (object id)
+    {
+      throw new NotImplementedException ("TODO 5370");
+      
+    }
+
+    public object DeserializeID (object flattenedID)
+    {
+      throw new NotImplementedException ("TODO 5370");
     }
   }
 }
