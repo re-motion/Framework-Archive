@@ -265,6 +265,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.Legacy.UI.Controls.BocReferenceVa
     }
 
     [Test]
+    [Ignore ("TODO: RM-5570")]
     public void RenderNullReferenceValueWithIcon ()
     {
       Control.Stub (stub => stub.IsIconEnabled()).Return (true);
@@ -405,6 +406,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.Legacy.UI.Controls.BocReferenceVa
     }
 
     [Test]
+    [Ignore ("TODO: RM-5570")]
     public void RenderReferenceValueWithIcon ()
     {
       SetValue ();

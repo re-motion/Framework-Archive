@@ -33,6 +33,7 @@ using Rhino.Mocks;
 namespace Remotion.ObjectBinding.UnitTests.Web.Legacy.UI.Controls.BocBooleanValueImplementation.Rendering
 {
   [TestFixture]
+  [Ignore ("TODO: RM-5570")]
   public class BocBooleanValueQuirksModeRendererTest : RendererTestBase
   {
     private const string c_defaultControlWidth = "100pt";
