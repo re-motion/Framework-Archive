@@ -140,7 +140,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DomainImplementation.Transp
       {
         return
             @"<?xml version=""1.0""?>
-<ArrayOfXmlTransportItem xmlns:xsd=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">
+<ArrayOfXmlTransportItem xmlns:xsd=""http://www.w3.org/2001/XMLSchema"" xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"">
   <XmlTransportItem ID=""Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid"">
     <Properties>
       <Property Name=""Remotion.Data.UnitTests.DomainObjects.TestDomain.Order.OrderNumber"">

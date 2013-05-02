@@ -52,7 +52,7 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting
     private string GetExpectedXmlString ()
     {
       return @"<?xml version=""1.0""?>
-<ArrayOfInt xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">
+<ArrayOfInt xmlns:xsd=""http://www.w3.org/2001/XMLSchema"" xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"">
   <int>1</int>
   <int>2</int>
   <int>3</int>
