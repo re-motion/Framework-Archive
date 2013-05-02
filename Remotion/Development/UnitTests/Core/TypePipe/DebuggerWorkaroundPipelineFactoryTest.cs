@@ -15,17 +15,15 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Reflection;
 using NUnit.Framework;
 using Remotion.Development.TypePipe;
+using Remotion.Development.TypePipe.UnitTesting;
 using Remotion.Development.UnitTesting;
 using Remotion.Development.UnitTesting.ObjectMothers;
 using Remotion.Diagnostics;
 using Remotion.Reflection.TypeDiscovery;
-using Remotion.TypePipe;
 using Remotion.TypePipe.CodeGeneration.ReflectionEmit;
 using Remotion.TypePipe.Configuration;
-using Remotion.TypePipe.Implementation;
 
 namespace Remotion.Development.UnitTests.Core.TypePipe
 {
@@ -70,14 +68,6 @@ namespace Remotion.Development.UnitTests.Core.TypePipe
       var type = defaultPipeline.ReflectionService.GetAssembledType (typeof (RequestedType));
 
       Assert.That (type.Assembly.IsDefined (typeof (NonApplicationAssemblyAttribute), false), Is.True);
-    }
-
-    public class ModifyingParticipant : SimpleParticipantBase
-    {
-      public override void Participate (object id, ITypeAssemblyContext typeAssemblyContext)
-      {
-        typeAssemblyContext.ProxyType.AddField ("test", FieldAttributes.Private, typeof (int));
-      }
     }
 
     public class RequestedType { }
