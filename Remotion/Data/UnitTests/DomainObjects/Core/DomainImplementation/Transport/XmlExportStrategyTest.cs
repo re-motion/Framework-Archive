@@ -14,6 +14,8 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
+using System;
 using System.IO;
 using System.Text;
 using NUnit.Framework;
@@ -28,6 +30,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DomainImplementation.Transp
   public class XmlExportStrategyTest : ClientTransactionBaseTest
   {
     [Test]
+    [Ignore("TODO RM-5580")]
     public void Export_SerializesData ()
     {
       DataContainer container1 = DomainObjectIDs.Order1.GetObject<Order> ().InternalDataContainer;
@@ -41,6 +44,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DomainImplementation.Transp
       {
         XmlExportStrategy.Instance.Export (stream, items);
         string actualString = Encoding.UTF8.GetString (stream.ToArray());
+
         Assert.That (actualString, Is.EqualTo (XmlSerializationStrings.XmlForOrder1Order2));
       }
     }
