@@ -40,6 +40,7 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting
     }
 
     [Test]
+    [Ignore("TODO RM-5580")]
     public void XmlSerialize ()
     {
       int[] array = new int[] {1, 2, 3};
