@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Microsoft.Practices.ServiceLocation;
 using NUnit.Framework;
 using Remotion.ServiceLocation;
 
@@ -62,11 +63,25 @@ namespace Remotion.UnitTests.ServiceLocation
     {
       _configuration.Register (typeof (IService), typeof (Service), LifetimeKind.Instance);
 
-      Assert.That (_configuration.Registrations, Has.Count.EqualTo (1));
+      Assert.That (_configuration.Registrations, Has.Length.EqualTo (1));
       Assert.That (_configuration.Registrations[0].ServiceType, Is.SameAs (typeof (IService)));
       Assert.That (_configuration.Registrations[0].ImplementationInfos, Is.EqualTo (new[] { new ServiceImplementationInfo(typeof (Service), LifetimeKind.Instance) }));
 
       Assert.That (_configuration.BootstrapServiceLocator.GetInstance<IService> (), Is.Not.Null.And.TypeOf<Service> ());
+    }
+
+    [Test]
+    public void Reset ()
+    {
+      _configuration.Register (typeof (IService), typeof (Service), LifetimeKind.Instance);
+
+      Assert.That (_configuration.Registrations, Is.Not.Empty);
+      Assert.That (_configuration.BootstrapServiceLocator.GetInstance<IService> (), Is.Not.Null.And.TypeOf<Service> ());
+
+      _configuration.Reset();
+
+      Assert.That (_configuration.Registrations, Is.Empty);
+      Assert.That (() => _configuration.BootstrapServiceLocator.GetInstance<IService> (), Throws.TypeOf<ActivationException>());
     }
 
     public interface IService { }

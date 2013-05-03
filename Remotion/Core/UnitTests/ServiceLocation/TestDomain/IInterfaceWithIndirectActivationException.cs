@@ -15,18 +15,19 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 
-using System;
-using System.Collections.ObjectModel;
-using Microsoft.Practices.ServiceLocation;
 using Remotion.ServiceLocation;
 
-namespace Remotion.UnitTests.Configuration.ServiceLocation
+namespace Remotion.UnitTests.ServiceLocation.TestDomain
 {
-  public class FakeServiceLocatorProvider : IServiceLocatorProvider
+  [ConcreteImplementation (typeof (ClassWithIndirectActivationException))]
+  public interface IInterfaceWithIndirectActivationException
   {
-    public IServiceLocator GetServiceLocator (ReadOnlyCollection<ServiceConfigurationEntry> bootstrapConfiguration)
+  }
+
+  public class ClassWithIndirectActivationException : IInterfaceWithIndirectActivationException
+  {
+    public ClassWithIndirectActivationException (IInterfaceWithoutImplementation innerDependency)
     {
-      throw new NotImplementedException();
     }
   }
 }

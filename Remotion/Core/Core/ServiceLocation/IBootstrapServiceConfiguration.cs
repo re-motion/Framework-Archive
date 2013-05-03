@@ -23,12 +23,13 @@ namespace Remotion.ServiceLocation
   /// <summary>
   /// Defines an API for registering services before the actual container or <see cref="IServiceLocator"/> has been built.
   /// </summary>
+  /// <threadsafety static="true" instance="true" />
   public interface IBootstrapServiceConfiguration
   {
     /// <summary>
     /// Returns the <see cref="ServiceConfigurationEntry"/> instances registered so far.
     /// </summary>
-    ReadOnlyCollection<ServiceConfigurationEntry> Registrations { get; }
+    ServiceConfigurationEntry[] Registrations { get; }
 
     /// <summary>
     /// Registers the given <see cref="ServiceConfigurationEntry"/> with this <see cref="IBootstrapServiceConfiguration"/>.
@@ -43,5 +44,10 @@ namespace Remotion.ServiceLocation
     /// <param name="implementationType">The concrete implementation of the service type.</param>
     /// <param name="lifetime">The lifetime of the instances of <paramref name="implementationType"/>.</param>
     void Register (Type serviceType, Type implementationType, LifetimeKind lifetime);
+
+    /// <summary>
+    /// Removes all registered <see cref="ServiceConfigurationEntry"/> data.
+    /// </summary>
+    void Reset();
   }
 }
