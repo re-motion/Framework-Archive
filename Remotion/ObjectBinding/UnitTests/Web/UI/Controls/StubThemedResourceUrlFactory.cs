@@ -15,15 +15,16 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Remotion.Web;
 using Remotion.Web.Infrastructure;
 
-namespace Remotion.Web.UnitTests.Core.UI.Controls
+namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls
 {
-  public class StubResourceUrlResolverFactory : IThemedResourceUrlResolverFactory
+  public class StubThemedResourceUrlFactory : IThemedResourceUrlFactory
   {
-    public IThemedResourceUrlResolver CreateResourceUrlResolver ()
+    public IResourceUrl CreateResourceUrl (ResourceType resourceType, string relativeUrl)
     {
-      return new StubResourceUrlResolver();
+      return new StaticResourceUrl ("/" + relativeUrl);
     }
   }
 }

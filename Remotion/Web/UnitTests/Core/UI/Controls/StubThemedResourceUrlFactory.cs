@@ -15,18 +15,15 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.ServiceLocation;
+using Remotion.Web.Infrastructure;
 
-namespace Remotion.Web.Infrastructure.Factories
+namespace Remotion.Web.UnitTests.Core.UI.Controls
 {
-  /// <summary>
-  /// Responsible for creating a <see cref="ThemedResourceUrlResolver"/> used for resolving the themed resources provided by the <b>Remotion.Web</b> assembly.
-  /// </summary>
-  public class ThemedResourceUrlResolverFactory : IThemedResourceUrlResolverFactory
+  public class StubThemedResourceUrlFactory : IThemedResourceUrlFactory
   {
-    public IThemedResourceUrlResolver CreateResourceUrlResolver ()
+    public IResourceUrl CreateResourceUrl (ResourceType resourceType, string relativeUrl)
     {
-      return new ThemedResourceUrlResolver (SafeServiceLocator.Current.GetInstance<ResourceTheme>());
+      return new StaticResourceUrl ("/" + relativeUrl);
     }
   }
 }
