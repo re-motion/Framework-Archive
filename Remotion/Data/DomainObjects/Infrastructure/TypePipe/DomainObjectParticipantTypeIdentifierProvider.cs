@@ -61,15 +61,10 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
       throw new NotImplementedException ("TODO 5370");
     }
 
-    public Expression GetFlattenedExpressionForSerialization (object id)
+    public Expression GetFlatValueExpressionForSerialization (object id)
     {
       throw new NotImplementedException ("TODO 5370");
       
-    }
-
-    public object DeserializeFlattenedID (object flattenedID)
-    {
-      throw new NotImplementedException ("TODO 5370");
     }
   }
 }

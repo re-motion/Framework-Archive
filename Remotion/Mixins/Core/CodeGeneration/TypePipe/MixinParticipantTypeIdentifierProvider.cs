@@ -48,7 +48,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       throw new NotImplementedException ("TODO 5370");
     }
 
-    public Expression GetFlattenedExpressionForSerialization (object id)
+    public Expression GetFlatValueExpressionForSerialization (object id)
     {
       throw new NotImplementedException ("TODO 5370");
     }
