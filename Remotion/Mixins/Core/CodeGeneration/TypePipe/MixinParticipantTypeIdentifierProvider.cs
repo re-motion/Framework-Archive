@@ -48,12 +48,12 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       throw new NotImplementedException ("TODO 5370");
     }
 
-    public Expression GetFlattenedSerializeExpression (object id)
+    public Expression GetFlattenedExpressionForSerialization (object id)
     {
       throw new NotImplementedException ("TODO 5370");
     }
 
-    public object DeserializeID (object flattenedID)
+    public object DeserializeFlattenedID (object flattenedID)
     {
       throw new NotImplementedException ("TODO 5370");
     }
