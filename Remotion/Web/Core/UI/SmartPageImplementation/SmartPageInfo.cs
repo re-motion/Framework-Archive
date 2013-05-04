@@ -317,9 +317,9 @@ namespace Remotion.Web.UI.SmartPageImplementation
         var scriptUrl = resourceUrlFactory.CreateResourceUrl (typeof (SmartPageInfo), ResourceType.Html, c_scriptFileUrl);
         HtmlHeadAppender.Current.RegisterJavaScriptInclude (s_scriptFileKey, scriptUrl);
 
-        var themedResourceUrlResolver = SafeServiceLocator.Current.GetInstance<IThemedResourceUrlResolverFactory>().CreateResourceUrlResolver();
-        string url3 = themedResourceUrlResolver.GetResourceUrl (_page, ResourceType.Html, c_styleFileUrl);
-        HtmlHeadAppender.Current.RegisterStylesheetLink (s_styleFileKey, url3, HtmlHeadAppender.Priority.Library);
+        var infrastructureResourceUrlFactory = SafeServiceLocator.Current.GetInstance<IInfrastructureResourceUrlFactory>();
+        var styleUrl = infrastructureResourceUrlFactory.CreateThemedResourceUrl (ResourceType.Html, c_styleFileUrl);
+        HtmlHeadAppender.Current.RegisterStylesheetLink (s_styleFileKey, styleUrl, HtmlHeadAppender.Priority.Library);
       }
 
       var scriptManager = ScriptManager.GetCurrent (_page.WrappedInstance);
@@ -615,7 +615,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
     }
 
     /// <summary>
-    ///   Implements <see cref="M:Remotion.Web.UI.ISmartNavigablePage.SetFocus(System.String)">ISmartNavigablePage.SetFocus(String)</see>.
+    ///   Sets the focus ID.
     /// </summary>
     public void SetFocus (string id)
     {

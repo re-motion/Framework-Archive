@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
 using Remotion.ServiceLocation;
 using Remotion.Web.UI.Controls;
@@ -22,11 +23,29 @@ namespace Remotion.Web.Infrastructure
 {
   /// <summary>
   /// Defines a method for resolving resource urls for the current <see cref="ResourceTheme"/>.
-  /// The <see cref="IThemedResourceUrlResolver"/> is only intended for use with controls located in <b>Remotion.Web</b> that do not have their own renderers.
+  /// The <see cref="IInfrastructureResourceUrlFactory"/> is only intended for use with controls located in <b>Remotion.Web</b> that do not have their own renderers.
   /// </summary>
-  [ConcreteImplementation(typeof(ThemedResourceUrlResolver),Lifetime = LifetimeKind.Singleton)]
+  [ConcreteImplementation (typeof (InfrastructureResourceUrlFactory), Lifetime = LifetimeKind.Singleton)]
+  public interface IInfrastructureResourceUrlFactory
+  {
+    IResourceUrl CreateThemedResourceUrl (ResourceType resourceType, string relativeUrl);
+  }
+
+  #region Obsolete interfaces
+
+  [Obsolete ("Use IInfrastructureResourceUrlFactory instead. (Version 1.13.197)",  true)]
+  public interface IThemedResourceUrlResolverFactory
+  {
+    [Obsolete ("Retrieve an instance of type IInfrastructureResourceUrlFactory instead via the IoC container. (Version 1.13.197)", true)]
+    IThemedResourceUrlResolver CreateResourceUrlResolver ();
+  }
+
+  [Obsolete ("Use IInfrastructureResourceUrlFactory instead. (Version 1.13.197)",  true)]
   public interface IThemedResourceUrlResolver
   {
+    [Obsolete ("Use IInfrastructureResourceUrlFactory.CreateResourceUrl(...) instead. (Version 1.13.197)",  true)]
     string GetResourceUrl (IControl control, ResourceType resourceType, string relativeUrl);
   }
+
+  #endregion
 }

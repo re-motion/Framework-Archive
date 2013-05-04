@@ -89,7 +89,7 @@
   <ItemGroup>
     <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\prereq\Assemblies\Microsoft.Practices.ServiceLocation.dll</HintPath>
+      <HintPath>..\..\..\prereq\Assemblies\CommonServiceLocator-1.0\net-3.5\Microsoft.Practices.ServiceLocation.dll</HintPath>
     </Reference>
     <Reference Include="System">
       <Name>System</Name>
@@ -174,9 +174,7 @@
     <Compile Include="ExecutionEngine\WxeTransactionMode.cs" />
     <Compile Include="Infrastructure\ClientScriptManagerWrapper.cs" />
     <Compile Include="Infrastructure\ControlWrapper.cs" />
-    <Compile Include="Infrastructure\Factories\ThemedResourceUrlResolverFactory.cs" />
     <Compile Include="Infrastructure\IClientScriptManager.cs" />
-    <Compile Include="Infrastructure\IThemedResourceUrlResolverFactory.cs" />
     <Compile Include="Infrastructure\PageWrapper.cs" />
     <Compile Include="ResourceTheme.cs" />
     <Compile Include="ResourceType.cs" />
@@ -226,7 +224,7 @@
     <Compile Include="UI\Controls\DatePickerButton.cs" />
     <Compile Include="UI\Controls\HtmlHeadElement.cs" />
     <Compile Include="UI\Controls\IControlItem.cs" />
-    <Compile Include="Infrastructure\IThemedResourceUrlResolver.cs" />
+    <Compile Include="Infrastructure\IInfrastructureResourceUrlFactory.cs" />
     <Compile Include="UI\Controls\ListMenuLineBreaks.cs" />
     <Compile Include="UI\Controls\MenuMode.cs" />
     <Compile Include="UI\Controls\DatePickerButtonImplementation\Rendering\IDatePickerPageRenderer.cs" />
@@ -253,7 +251,7 @@
     <Compile Include="UI\Controls\TabbedMultiViewImplementation\ITabbedMultiView.cs" />
     <Compile Include="UI\Controls\TabbedMultiViewImplementation\Rendering\TabbedMultiViewRenderer.cs" />
     <Compile Include="UI\Controls\TabbedMenuImplementation\IMenuTab.cs" />
-    <Compile Include="Infrastructure\ThemedResourceUrlResolver.cs" />
+    <Compile Include="Infrastructure\InfrastructureResourceUrlFactory.cs" />
     <Compile Include="UI\Controls\TitleTag.cs" />
     <Compile Include="UI\Controls\WebButtonImplementation\IWebButton.cs" />
     <Compile Include="UI\Controls\WebButtonImplementation\Rendering\WebButtonRenderer.cs" />
@@ -937,7 +935,9 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Infrastructure\Factories\" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent></PreBuildEvent>

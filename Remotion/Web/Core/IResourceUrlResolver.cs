@@ -23,13 +23,14 @@ namespace Remotion.Web
   /// <summary>
   ///   Resolve the relative image URL into an absolute image url.
   /// </summary>
+  [Obsolete ("Use IResourceUrlFactory instead. (Version 1.13.197)", true)]
   public interface IResourceUrlResolver
   {
     /// <summary>
     ///   Resolves a relative URL into an absolute URL.
     /// </summary>
     /// <param name="control"> 
-    ///   The current <see cref="Control"/>. Used to detect design time.
+    ///   The current <see cref="IControl"/>. Used to detect design time.
     /// </param>
     /// <param name="fileName">
     ///   The relative URL to be resolved into an absolute URL.
@@ -44,9 +45,6 @@ namespace Remotion.Web
     /// <returns>
     ///   The absulute URL.
     /// </returns>
-    string GetResourceUrl (Control control, Type definingType, ResourceType resourceType, string fileName);
-
     string GetResourceUrl (IControl control, Type definingType, ResourceType resourceType, string fileName);
-    string GetResourceUrl (IControl control, Type type, ResourceType resourceType, ResourceTheme theme, string fileName);
   }
 }
