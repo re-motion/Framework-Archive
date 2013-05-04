@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Diagnostics;
 using System.IO;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
@@ -77,6 +78,7 @@ namespace Remotion.Mixins.UnitTests.Core.MixerTools
     }
 
     [Test]
+    [Ignore ("TODO RM-5590")]
     public void RunDefault ()
     {
       _parameters.AssemblyOutputDirectory = "MixerRunnerTest";
@@ -98,8 +100,8 @@ namespace Remotion.Mixins.UnitTests.Core.MixerTools
         compiler.Compile();
 
         var runner = new MixerRunner (_parameters);
+        Debugger.Launch();
         runner.Run ();
-
         Assert.That (Directory.Exists (_parameters.AssemblyOutputDirectory), Is.True);
         Assert.That (File.Exists (unsignedAssemblyPath), Is.True);
       }
