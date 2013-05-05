@@ -1,4 +1,4 @@
-// This file is part of the re-motion Core Framework (www.re-motion.org)
+﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -14,34 +14,33 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System;
-using Remotion.Utilities;
 
-namespace Remotion.Web.Factories
+using System;
+using Remotion.Web;
+using Remotion.Web.Resources;
+
+namespace Remotion.Development.Web.UnitTesting.Resources
 {
   /// <summary>
-  /// Responsible for creating objects that implement <see cref="IResourceUrl"/>.
-  /// <seealso cref="ResourceUrl"/>
-  /// <seealso cref="ThemedResourceUrl"/>
+  /// Fake implementation of the <see cref="IResourceUrlFactory"/> interface, intended for use in unit testing.
   /// </summary>
-  public class ResourceUrlFactory : IResourceUrlFactory
+  public class FakeResourceUrlFactory : IResourceUrlFactory
   {
-    private readonly ResourceTheme _resourceTheme;
+    private readonly IResourcePathBuilder _builder = new FakeResourcePathBuilder();
+    private readonly ResourceTheme _resourceTheme=  new ResourceTheme ("Fake");
 
-    public ResourceUrlFactory (ResourceTheme resourceTheme)
+    public FakeResourceUrlFactory ()
     {
-      ArgumentUtility.CheckNotNull ("resourceTheme", resourceTheme);
-      _resourceTheme = resourceTheme;
     }
 
     public IResourceUrl CreateResourceUrl (Type definingType, ResourceType resourceType, string relativeUrl)
     {
-      return new ResourceUrl (definingType, resourceType, relativeUrl);
+      return new ResourceUrl (_builder, definingType, resourceType, relativeUrl);
     }
 
     public IResourceUrl CreateThemedResourceUrl (Type definingType, ResourceType resourceType, string relativeUrl)
     {
-      return new ThemedResourceUrl (definingType, resourceType, _resourceTheme, relativeUrl);
+      return new ThemedResourceUrl (_builder, definingType, resourceType, _resourceTheme, relativeUrl);
     }
   }
 }

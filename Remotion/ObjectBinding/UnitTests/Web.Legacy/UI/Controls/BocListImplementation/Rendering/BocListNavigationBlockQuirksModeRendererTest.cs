@@ -17,6 +17,7 @@
 using System;
 using System.Xml;
 using NUnit.Framework;
+using Remotion.Development.Web.UnitTesting.Resources;
 using Remotion.ObjectBinding.UnitTests.Web.UI.Controls;
 using Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocListImplementation.Rendering;
 using Remotion.ObjectBinding.Web.Legacy.UI.Controls.BocListImplementation.Rendering;
@@ -31,7 +32,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.Legacy.UI.Controls.BocListImpleme
   public class BocListNavigationBlockQuirksModeRendererTest : BocListRendererTestBase
   {
     private BocListQuirksModeCssClassDefinition _bocListQuirksModeCssClassDefinition;
-    private IResourceUrlFactory _resourceUrlFactoryStub;
+    private IResourceUrlFactory _resourceUrlFactory;
     private const string c_pageInfo = "Page {0} of {1}";
     private const string c_tripleBlank = HtmlHelper.WhiteSpace + HtmlHelper.WhiteSpace + HtmlHelper.WhiteSpace;
 
@@ -43,9 +44,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.Legacy.UI.Controls.BocListImpleme
       List.Stub (mock => mock.HasNavigator).Return (true);
 
       _bocListQuirksModeCssClassDefinition = new BocListQuirksModeCssClassDefinition();
-      _resourceUrlFactoryStub = MockRepository.GenerateStub<IResourceUrlFactory>();
-      _resourceUrlFactoryStub.Stub (_ => _.CreateResourceUrl (null, null, null)).IgnoreArguments().Return (null)
-                             .WhenCalled (invocation => invocation.ReturnValue = GetStubbedUrlFromMethodInvocation (invocation));
+      _resourceUrlFactory = new FakeResourceUrlFactory();
     }
 
     [Test]
@@ -54,7 +53,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.Legacy.UI.Controls.BocListImpleme
       List.Stub (mock => mock.CurrentPageIndex).Return (0);
       List.Stub (mock => mock.PageCount).Return (1);
 
-      var renderer = new BocListNavigationBlockQuirksModeRenderer (_resourceUrlFactoryStub, _bocListQuirksModeCssClassDefinition);
+      var renderer = new BocListNavigationBlockQuirksModeRenderer (_resourceUrlFactory, _bocListQuirksModeCssClassDefinition);
       renderer.Render (new BocListRenderingContext(HttpContext, Html.Writer, List, new BocColumnRenderer[0]));
 
       var document = Html.GetResultDocument();
@@ -93,7 +92,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.Legacy.UI.Controls.BocListImpleme
       List.Stub (mock => mock.CurrentPageIndex).Return (0);
       List.Stub (mock => mock.PageCount).Return (2);
 
-      var renderer = new BocListNavigationBlockQuirksModeRenderer (_resourceUrlFactoryStub, _bocListQuirksModeCssClassDefinition);
+      var renderer = new BocListNavigationBlockQuirksModeRenderer (_resourceUrlFactory, _bocListQuirksModeCssClassDefinition);
       renderer.Render (new BocListRenderingContext(HttpContext, Html.Writer, List, new BocColumnRenderer[0]));
 
       var document = Html.GetResultDocument();
@@ -132,7 +131,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.Legacy.UI.Controls.BocListImpleme
       List.Stub (mock => mock.CurrentPageIndex).Return (1);
       List.Stub (mock => mock.PageCount).Return (2);
 
-      var renderer = new BocListNavigationBlockQuirksModeRenderer (_resourceUrlFactoryStub, _bocListQuirksModeCssClassDefinition);
+      var renderer = new BocListNavigationBlockQuirksModeRenderer (_resourceUrlFactory, _bocListQuirksModeCssClassDefinition);
       renderer.Render (new BocListRenderingContext(HttpContext, Html.Writer, List, new BocColumnRenderer[0]));
 
       var document = Html.GetResultDocument();
@@ -171,7 +170,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.Legacy.UI.Controls.BocListImpleme
       List.Stub (mock => mock.CurrentPageIndex).Return (1);
       List.Stub (mock => mock.PageCount).Return (3);
 
-      var renderer = new BocListNavigationBlockQuirksModeRenderer (_resourceUrlFactoryStub, _bocListQuirksModeCssClassDefinition);
+      var renderer = new BocListNavigationBlockQuirksModeRenderer (_resourceUrlFactory, _bocListQuirksModeCssClassDefinition);
       renderer.Render (new BocListRenderingContext(HttpContext, Html.Writer, List, new BocColumnRenderer[0]));
 
       var document = Html.GetResultDocument();
@@ -217,17 +216,6 @@ namespace Remotion.ObjectBinding.UnitTests.Web.Legacy.UI.Controls.BocListImpleme
     private void AssertInactiveIcon (XmlNode icon, string command)
     {
       Html.AssertAttribute (icon, "src", string.Format ("/Move{0}Inactive.gif", command), HtmlHelper.AttributeValueCompareMode.Contains);
-    }
-
-    private IResourceUrl GetStubbedUrlFromMethodInvocation (MethodInvocation invocation)
-    {
-      // ReSharper disable RedundantCast
-      string url = string.Format (
-          "/res/Remotion.ObjectBinding.Web.Legacy/{0}/{1}",
-          ((ResourceType) invocation.Arguments[1]).Name,
-          (string) invocation.Arguments[2]);
-      // ReSharper restore RedundantCast
-      return new StaticResourceUrl (url);
     }
   }
 }

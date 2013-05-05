@@ -1,4 +1,4 @@
-// This file is part of the re-motion Core Framework (www.re-motion.org)
+﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -14,21 +14,21 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
-using NUnit.Framework;
-using Remotion.Web.Design;
+using System.Web;
 
-namespace Remotion.Web.UnitTests.Core.Design
+namespace Remotion.Web.Infrastructure
 {
-  [TestFixture]
-  public class DesignTimeResourceUrlTest
+  public class HttpContextProvider : IHttpContextProvider
   {
-    [Test]
-    public void GetUrl ()
+    public HttpContextBase GetCurrentHttpContext ()
     {
-      var resourceUrl = new DesignTimeResourceUrl (typeof (ResourceUrlTest), ResourceType.Html, "theRelativeUrl.js");
+      var context = HttpContext.Current;
+      if (context == null)
+        throw new InvalidOperationException ("No current HttpContext is set.");
 
-      Assert.That (resourceUrl.GetUrl (), Is.EqualTo (@"C:\Remotion.Resources\Remotion.Web.UnitTests\Html\theRelativeUrl.js"));
+      return new HttpContextWrapper (context);
     }
   }
 }

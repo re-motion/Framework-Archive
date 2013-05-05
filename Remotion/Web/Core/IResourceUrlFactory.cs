@@ -16,14 +16,16 @@
 // 
 using System;
 using Remotion.ServiceLocation;
-using Remotion.Web.Factories;
+using Remotion.Web.Resources;
 
 namespace Remotion.Web
 {
   /// <summary>
-  /// Defines methods for creating objects that implement <see cref="IResourceUrl"/>.
-  /// <seealso cref="ResourceUrlFactory"/>
+  /// Defines methods for creating objects that implement <see cref="IResourceUrl"/>. 
+  /// Use <see cref="T:Remotion.Development.Web.UnitTesting.Resources.FakeResourceUrlFactory"/> for unit testing.
   /// </summary>
+  /// <seealso cref="ResourceUrlFactory"/>
+  /// <seealso cref="T:Remotion.Development.Web.UnitTesting.Resources.FakeResourceUrlFactory"/>
   [ConcreteImplementation (typeof(ResourceUrlFactory), Lifetime = LifetimeKind.Singleton)]
   public interface IResourceUrlFactory
   {
@@ -43,6 +45,7 @@ namespace Remotion.Web
     ///     <c>REMOTIONRESOURCES</c>, or if the variable does not exist, <c>C:\Remotion.Resources</c>.
     ///   </para>
     /// </remarks>
+    /// <seealso cref="IResourcePathBuilder"/>
     IResourceUrl CreateResourceUrl (Type definingType, ResourceType resourceType, string relativeUrl);
 
     /// <summary>
@@ -63,6 +66,7 @@ namespace Remotion.Web
     ///     <c>REMOTIONRESOURCES</c>, or if the variable does not exist, <c>C:\Remotion.Resources</c>.
     ///   </para>
     /// </remarks>
+    /// <seealso cref="IResourcePathBuilder"/>
     IResourceUrl CreateThemedResourceUrl (Type definingType, ResourceType resourceType, string relativeUrl);
   }
 }
