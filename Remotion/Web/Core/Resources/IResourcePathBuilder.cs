@@ -1,4 +1,4 @@
-// This file is part of the re-motion Core Framework (www.re-motion.org)
+﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -14,21 +14,16 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
-using NUnit.Framework;
-using Remotion.Web.Design;
+using System.Reflection;
+using Remotion.ServiceLocation;
 
-namespace Remotion.Web.UnitTests.Core.Design
+namespace Remotion.Web.Resources
 {
-  [TestFixture]
-  public class DesignTimeResourceUrlTest
+  [ConcreteImplementation (typeof (ResourcePathBuilder), Lifetime = LifetimeKind.Singleton)]
+  public interface IResourcePathBuilder
   {
-    [Test]
-    public void GetUrl ()
-    {
-      var resourceUrl = new DesignTimeResourceUrl (typeof (ResourceUrlTest), ResourceType.Html, "theRelativeUrl.js");
-
-      Assert.That (resourceUrl.GetUrl (), Is.EqualTo (@"C:\Remotion.Resources\Remotion.Web.UnitTests\Html\theRelativeUrl.js"));
-    }
+    string BuildAbsolutePath (Assembly assembly, params string[] assemblyRelativePathParts);
   }
 }

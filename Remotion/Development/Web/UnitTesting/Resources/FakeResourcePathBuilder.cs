@@ -1,4 +1,4 @@
-// This file is part of the re-motion Core Framework (www.re-motion.org)
+﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -14,27 +14,22 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using Remotion.Utilities;
 
-namespace Remotion.Web
+using System;
+using Remotion.Web.Resources;
+
+namespace Remotion.Development.Web.UnitTesting.Resources
 {
-  /// <summary>
-  /// Represents the absolute URL for a resource file that is not constructed using the <see cref="ResourceUrlResolver"/> infrastrcuture.
-  /// </summary>
-  public class StaticResourceUrl : IResourceUrl
+  public class FakeResourcePathBuilder : ResourcePathBuilderBase
   {
-    private readonly string _url;
-
-    public StaticResourceUrl (string url)
+    protected override string GetResourceRoot ()
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("url", url);
-
-      _url = url;
+      return "/fake";
     }
 
-    public string GetUrl ()
+    protected override string BuildPath (string[] completePath)
     {
-      return _url;
+      return string.Join ("/", completePath);
     }
   }
 }

@@ -14,21 +14,28 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
 using NUnit.Framework;
-using Remotion.Web.Design;
+using Remotion.Web.Resources;
+using Rhino.Mocks;
 
-namespace Remotion.Web.UnitTests.Core.Design
+namespace Remotion.Web.UnitTests.Core.Resources
 {
   [TestFixture]
-  public class DesignTimeThemedResourceUrlTest
+  public class ThemedResourceUrlTest
   {
     [Test]
     public void GetUrl ()
     {
-      var resourceUrl = new DesignTimeThemedResourceUrl (typeof (ResourceUrlTest), ResourceType.Html, new ResourceTheme.NovaBlue(), "theRelativeUrl.js");
+      var resourceUrlBuilderStub = MockRepository.GenerateStub<IResourcePathBuilder>();
+      var resourceUrl = new ThemedResourceUrl (resourceUrlBuilderStub, typeof (ResourceUrlTest), ResourceType.Html, new ResourceTheme.NovaBlue(), "theRelativeUrl.js");
 
-      Assert.That (resourceUrl.GetUrl (), Is.EqualTo (@"C:\Remotion.Resources\Remotion.Web.UnitTests\Themes\NovaBlue\Html\theRelativeUrl.js"));
+      resourceUrlBuilderStub
+          .Stub (_ => _.BuildAbsolutePath (typeof (ResourceUrlTest).Assembly, new[] { "Themes", "NovaBlue", "Html", "theRelativeUrl.js" }))
+          .Return ("expectedUrl");
+
+      Assert.That (resourceUrl.GetUrl(), Is.EqualTo ("expectedUrl"));
     }
   }
 }

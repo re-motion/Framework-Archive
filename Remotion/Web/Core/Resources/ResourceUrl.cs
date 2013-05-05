@@ -14,31 +14,38 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
 using Remotion.Utilities;
 
-namespace Remotion.Web
+namespace Remotion.Web.Resources
 {
   /// <summary>
   /// Represents the absolute URL for a resource file that does not change with the <see cref="ResourceTheme"/>.
   /// </summary>
   public class ResourceUrl : IResourceUrl
   {
+    private readonly IResourcePathBuilder _resourcePathBuilder;
     private readonly Type _definingType;
     private readonly ResourceType _resourceType;
     private readonly string _relativeUrl;
-    private readonly ResourcePathBuilder _resourcePathBuilder;
 
-    public ResourceUrl (Type definingType, ResourceType resourceType, string relativeUrl)
+    public ResourceUrl (IResourcePathBuilder resourcePathBuilder, Type definingType, ResourceType resourceType, string relativeUrl)
     {
+      ArgumentUtility.CheckNotNull ("resourcePathBuilder", resourcePathBuilder);
       ArgumentUtility.CheckNotNull ("definingType", definingType);
       ArgumentUtility.CheckNotNull ("resourceType", resourceType);
       ArgumentUtility.CheckNotNull ("relativeUrl", relativeUrl);
 
+      _resourcePathBuilder = resourcePathBuilder;
       _definingType = definingType;
       _resourceType = resourceType;
       _relativeUrl = relativeUrl;
-      _resourcePathBuilder = new ResourcePathBuilder();
+    }
+
+    public IResourcePathBuilder ResourcePathBuilder
+    {
+      get { return _resourcePathBuilder; }
     }
 
     public Type DefiningType
