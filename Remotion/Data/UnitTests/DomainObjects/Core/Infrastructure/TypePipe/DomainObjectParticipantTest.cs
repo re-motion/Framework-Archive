@@ -52,7 +52,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.TypePipe
 
       _participant = new DomainObjectParticipant (_typeDefinitionProviderMock, _interceptedPropertyFinderMock);
 
-      _proxyTypeAssemblyContext = TypeAssemblyContextObjectMother.Create (requestedType: typeof (Order));
+      _proxyTypeAssemblyContext = ProxyTypeAssemblyContextObjectMother.Create (requestedType: typeof (Order));
       _proxyType = _proxyTypeAssemblyContext.ProxyType;
     }
 
@@ -114,7 +114,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.TypePipe
     [Test]
     public void Participate_NonDomainObject_Nop ()
     {
-      var context = TypeAssemblyContextObjectMother.Create (requestedType: typeof (object));
+      var context = ProxyTypeAssemblyContextObjectMother.Create (requestedType: typeof (object));
 
       _participant.Participate (null, context);
 
