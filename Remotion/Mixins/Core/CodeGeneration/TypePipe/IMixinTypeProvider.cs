@@ -17,6 +17,7 @@
 
 using System;
 using Remotion.Mixins.Definitions;
+using Remotion.TypePipe.CodeGeneration;
 using Remotion.TypePipe.Implementation;
 
 namespace Remotion.Mixins.CodeGeneration.TypePipe

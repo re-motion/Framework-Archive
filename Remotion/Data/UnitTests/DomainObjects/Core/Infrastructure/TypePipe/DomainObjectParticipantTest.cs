@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Linq;
+using Remotion.TypePipe.CodeGeneration;
 using Remotion.TypePipe.Dlr.Ast;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects;

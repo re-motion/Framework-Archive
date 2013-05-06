@@ -22,7 +22,7 @@ using Remotion.Development.UnitTesting;
 using Remotion.Development.UnitTesting.ObjectMothers;
 using Remotion.Diagnostics;
 using Remotion.Reflection.TypeDiscovery;
-using Remotion.TypePipe.CodeGeneration.ReflectionEmit;
+using Remotion.TypePipe.CodeGeneration.Implementation.ReflectionEmit;
 using Remotion.TypePipe.Configuration;
 
 namespace Remotion.Development.UnitTests.Core.TypePipe

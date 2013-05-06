@@ -19,8 +19,8 @@ using System.Reflection;
 using NUnit.Framework;
 using Remotion.Development.TypePipe;
 using Remotion.Diagnostics;
-using Remotion.TypePipe.CodeGeneration.ReflectionEmit;
-using Remotion.TypePipe.CodeGeneration.ReflectionEmit.Abstractions;
+using Remotion.TypePipe.CodeGeneration.Implementation.ReflectionEmit;
+using Remotion.TypePipe.CodeGeneration.Implementation.ReflectionEmit.Abstractions;
 using Rhino.Mocks;
 
 namespace Remotion.Development.UnitTests.Core.TypePipe

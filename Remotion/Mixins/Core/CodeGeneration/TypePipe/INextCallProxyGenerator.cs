@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using Remotion.Mixins.Definitions;
+using Remotion.TypePipe.CodeGeneration;
 using Remotion.TypePipe.Implementation;
 using Remotion.TypePipe.MutableReflection;
 
