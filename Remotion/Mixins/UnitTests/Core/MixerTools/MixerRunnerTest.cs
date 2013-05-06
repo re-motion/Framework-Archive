@@ -77,7 +77,6 @@ namespace Remotion.Mixins.UnitTests.Core.MixerTools
     }
 
     [Test]
-    [Ignore ("TODO RM-5590")]
     public void RunDefault ()
     {
       _parameters.AssemblyOutputDirectory = "MixerRunnerTest";
