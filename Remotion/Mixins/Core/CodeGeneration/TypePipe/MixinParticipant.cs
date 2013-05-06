@@ -98,7 +98,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       }
     }
 
-    public Type GetOrCreateAdditionalType (object id, IAdditionalTypeAssemblyContext additionalTypeAssemblyContext)
+    public Type GetOrCreateAdditionalType (object additionalTypeID, IAdditionalTypeAssemblyContext additionalTypeAssemblyContext)
     {
       throw new NotImplementedException("TODO 5370");
     }
