@@ -77,17 +77,17 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
       get { return new DomainObjectParticipantTypeIdentifierProvider (_typeDefinitionProvider); }
     }
 
-    public override void Participate (object id, ITypeAssemblyContext typeAssemblyContext)
+    public override void Participate (object id, IProxyTypeAssemblyContext proxyTypeAssemblyContext)
     {
-      ArgumentUtility.CheckNotNull ("typeAssemblyContext", typeAssemblyContext);
+      ArgumentUtility.CheckNotNull ("proxyTypeAssemblyContext", proxyTypeAssemblyContext);
 
-      if (!typeof (DomainObject).IsTypePipeAssignableFrom (typeAssemblyContext.RequestedType))
+      if (!typeof (DomainObject).IsTypePipeAssignableFrom (proxyTypeAssemblyContext.RequestedType))
         return;
 
       // TODO 5370: This will change when TypePipe is integrated with re-mix.
       // TODO : use 'id' i.e. the domainobjectType?!
-      var proxyType = typeAssemblyContext.ProxyType;
-      var concreteBaseType = typeAssemblyContext.RequestedType;
+      var proxyType = proxyTypeAssemblyContext.ProxyType;
+      var concreteBaseType = proxyTypeAssemblyContext.RequestedType;
       var domainObjectType = _typeDefinitionProvider.GetPublicDomainObjectType (concreteBaseType);
 
       // Add marker interface.

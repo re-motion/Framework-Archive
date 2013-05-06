@@ -29,7 +29,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     ITargetTypeForNextCall GetTargetTypeWrapper (MutableType concreteTarget);
 
     INextCallProxy Create (
-        ITypeAssemblyContext context,
+        IProxyTypeAssemblyContext context,
         TargetClassDefinition targetClassDefinition,
         IList<IMixinInfo> mixinInfos,
         ITargetTypeForNextCall targetTypeForNextCall);

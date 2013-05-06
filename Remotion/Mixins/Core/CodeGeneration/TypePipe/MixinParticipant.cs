@@ -70,19 +70,19 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       get { return new MixinParticipantTypeIdentifierProvider (_concreteTypeMetadataImporter); }
     }
 
-    public void Participate (object id, ITypeAssemblyContext typeAssemblyContext)
+    public void Participate (object id, IProxyTypeAssemblyContext proxyTypeAssemblyContext)
     {
-      ArgumentUtility.CheckNotNull ("typeAssemblyContext", typeAssemblyContext);
+      ArgumentUtility.CheckNotNull ("proxyTypeAssemblyContext", proxyTypeAssemblyContext);
 
       var targetClassDefinition = _configurationProvider.GetTargetClassDefinition ((ClassContext) id);
       if (targetClassDefinition == null)
         return;
 
-      var concreteTarget = typeAssemblyContext.ProxyType;
-      var mixinInfos = targetClassDefinition.Mixins.Select (m => _mixinTypeProvider.GetMixinInfo (typeAssemblyContext, m)).ToList();
+      var concreteTarget = proxyTypeAssemblyContext.ProxyType;
+      var mixinInfos = targetClassDefinition.Mixins.Select (m => _mixinTypeProvider.GetMixinInfo (proxyTypeAssemblyContext, m)).ToList();
       var interfacesToImplement = _configurationProvider.GetInterfacesToImplement (targetClassDefinition, mixinInfos);
       var targetTypeForNextCall = _nextCallProxyGenerator.GetTargetTypeWrapper (concreteTarget);
-      var nextCallProxy = _nextCallProxyGenerator.Create (typeAssemblyContext, targetClassDefinition, mixinInfos, targetTypeForNextCall);
+      var nextCallProxy = _nextCallProxyGenerator.Create (proxyTypeAssemblyContext, targetClassDefinition, mixinInfos, targetTypeForNextCall);
 
       _targetTypeModifier.ModifyTargetType (concreteTarget, targetClassDefinition, nextCallProxy, interfacesToImplement, mixinInfos);
     }

@@ -41,7 +41,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     }
 
     public INextCallProxy Create (
-        ITypeAssemblyContext context,
+        IProxyTypeAssemblyContext context,
         TargetClassDefinition targetClassDefinition,
         IList<IMixinInfo> mixinInfos,
         ITargetTypeForNextCall targetTypeForNextCall)
@@ -72,7 +72,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       return nextCallProxy;
     }
 
-    private static MutableType CreateNextCallProxyType (ITypeAssemblyContext context, MutableType concreteTarget)
+    private static MutableType CreateNextCallProxyType (IProxyTypeAssemblyContext context, MutableType concreteTarget)
     {
       var name = concreteTarget.Name + "_NextCallProxy";
       var attributes = TypeAttributes.Public | TypeAttributes.Sealed | TypeAttributes.Serializable;

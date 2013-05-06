@@ -102,7 +102,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       _attributeGenerator.AddDebuggerDisplayAttribute (_type, debuggerDisplayString, null);
     }
 
-    public OverrideInterface GenerateOverrides (ITypeAssemblyContext context)
+    public OverrideInterface GenerateOverrides (IProxyTypeAssemblyContext context)
     {
       var overrideInterfaceGenerator = OverrideInterfaceGenerator2.CreateNestedGenerator (context, _type, "IOverriddenMethods");
 

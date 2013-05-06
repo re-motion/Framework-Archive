@@ -27,7 +27,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
   // TODO 5370
   public class MixinTypeGeneratorFacade : IMixinTypeProvider
   {
-    public IMixinInfo GetMixinInfo (ITypeAssemblyContext context, MixinDefinition mixin)
+    public IMixinInfo GetMixinInfo (IProxyTypeAssemblyContext context, MixinDefinition mixin)
     {
       ArgumentUtility.CheckNotNull ("context", context);
       ArgumentUtility.CheckNotNull ("mixin", mixin);
@@ -54,7 +54,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       }
     }
 
-    private ConcreteMixinType GetOrGenerateConcreteMixinType (ITypeAssemblyContext context, ConcreteMixinTypeIdentifier concreteMixinTypeIdentifier)
+    private ConcreteMixinType GetOrGenerateConcreteMixinType (IProxyTypeAssemblyContext context, ConcreteMixinTypeIdentifier concreteMixinTypeIdentifier)
     {
       var concreteMixinTypeCache = GetOrCreateConcreteMixinTypeCache (context.State);
 
@@ -73,7 +73,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       return concreteMixinType;
     }
 
-    private ConcreteMixinType GenerateConcreteMixinType (ITypeAssemblyContext context, ConcreteMixinTypeIdentifier concreteMixinTypeIdentifier)
+    private ConcreteMixinType GenerateConcreteMixinType (IProxyTypeAssemblyContext context, ConcreteMixinTypeIdentifier concreteMixinTypeIdentifier)
     {
       var mixinProxyType = context.CreateProxy (concreteMixinTypeIdentifier.MixinType);
 

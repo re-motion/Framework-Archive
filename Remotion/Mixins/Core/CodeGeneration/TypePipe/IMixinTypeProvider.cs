@@ -25,6 +25,6 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
   // TODO 5370: Docs.
   public interface IMixinTypeProvider
   {
-    IMixinInfo GetMixinInfo (ITypeAssemblyContext context, MixinDefinition mixin);
+    IMixinInfo GetMixinInfo (IProxyTypeAssemblyContext context, MixinDefinition mixin);
   }
 }

@@ -28,7 +28,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
   // TODO 5370
   public class OverrideInterfaceGenerator2
   {
-    public static OverrideInterfaceGenerator2 CreateNestedGenerator (ITypeAssemblyContext context, MutableType outerType, string typeName)
+    public static OverrideInterfaceGenerator2 CreateNestedGenerator (IProxyTypeAssemblyContext context, MutableType outerType, string typeName)
     {
       ArgumentUtility.CheckNotNull ("outerType", outerType);
       ArgumentUtility.CheckNotNullOrEmpty ("typeName", typeName);
