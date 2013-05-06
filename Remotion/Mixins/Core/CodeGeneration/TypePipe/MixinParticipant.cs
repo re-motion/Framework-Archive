@@ -21,7 +21,6 @@ using Remotion.Mixins.Context;
 using Remotion.TypePipe;
 using Remotion.TypePipe.Caching;
 using Remotion.TypePipe.CodeGeneration;
-using Remotion.TypePipe.Implementation;
 using Remotion.Utilities;
 
 namespace Remotion.Mixins.CodeGeneration.TypePipe
@@ -99,7 +98,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       }
     }
 
-    public Type GetOrCreateAdditionalType (object id, AdditionalTypeAssemblyContext additionalTypeAssemblyContext)
+    public Type GetOrCreateAdditionalType (object id, IAdditionalTypeAssemblyContext additionalTypeAssemblyContext)
     {
       throw new NotImplementedException("TODO 5370");
     }
