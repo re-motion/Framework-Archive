@@ -108,7 +108,7 @@ namespace Remotion.Mixins.CodeGeneration
       }
     }
 
-    public ConcreteMixinType SubstituteMutableReflectionObjects (GeneratedTypeContext context)
+    public ConcreteMixinType SubstituteMutableReflectionObjects (GeneratedTypesContext context)
     {
       var identifier = SubstituteConcreteMixinIdentifier (context, _identifier);
       var generatedType = Substitute (context, _generatedType);
@@ -119,7 +119,7 @@ namespace Remotion.Mixins.CodeGeneration
       return new ConcreteMixinType (identifier, generatedType, generatedOverrideInterface, overrideInterfaceMethodsByMixinMethod, methodWrappers);
     }
 
-    private static ConcreteMixinTypeIdentifier SubstituteConcreteMixinIdentifier (GeneratedTypeContext context, ConcreteMixinTypeIdentifier identifier)
+    private static ConcreteMixinTypeIdentifier SubstituteConcreteMixinIdentifier (GeneratedTypesContext context, ConcreteMixinTypeIdentifier identifier)
     {
       var mixinType = Substitute (context, identifier.MixinType);
       var overriders = identifier.Overriders.Select (m => Substitute (context, m));
@@ -128,12 +128,12 @@ namespace Remotion.Mixins.CodeGeneration
       return new ConcreteMixinTypeIdentifier (mixinType, new HashSet<MethodInfo> (overriders), new HashSet<MethodInfo> (overridden));
     }
 
-    private static Dictionary<MethodInfo, MethodInfo> Substitute (GeneratedTypeContext context, Dictionary<MethodInfo, MethodInfo> dictionary)
+    private static Dictionary<MethodInfo, MethodInfo> Substitute (GeneratedTypesContext context, Dictionary<MethodInfo, MethodInfo> dictionary)
     {
       return dictionary.ToDictionary (p => Substitute (context, p.Key), p => Substitute (context, p.Value));
     }
 
-    private static T Substitute<T> (GeneratedTypeContext context, T member)
+    private static T Substitute<T> (GeneratedTypesContext context, T member)
         where T : MemberInfo
     {
       var mutableMember = member as IMutableMember;
