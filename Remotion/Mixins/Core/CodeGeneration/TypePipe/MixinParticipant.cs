@@ -98,6 +98,11 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       }
     }
 
+    public Type GetOrCreateAdditionalType (object id, AdditionalTypeGenerationContext additionalTypeGenerationContext)
+    {
+      throw new NotImplementedException("TODO 5370");
+    }
+
     public void HandleNonSubclassableType (Type requestedType)
     {
       ArgumentUtility.CheckNotNull ("requestedType", requestedType);

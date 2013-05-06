@@ -45,7 +45,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
   /// </list>
   /// Note that serialization is currently not supported.
   /// </remarks>
-  public class DomainObjectParticipant : IParticipant
+  public class DomainObjectParticipant : SimpleParticipantBase
   {
     private static readonly MethodInfo s_getPublicDomainObjectTypeImplementation = GetInfrastructureHook ("GetPublicDomainObjectTypeImplementation");
     private static readonly MethodInfo s_performConstructorCheck = GetInfrastructureHook ("PerformConstructorCheck");
@@ -71,12 +71,12 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
       _interceptedPropertyFinder = interceptedPropertyFinder;
     }
 
-    public ITypeIdentifierProvider PartialTypeIdentifierProvider
+    public override ITypeIdentifierProvider PartialTypeIdentifierProvider
     {
       get { return new DomainObjectParticipantTypeIdentifierProvider (_typeDefinitionProvider); }
     }
 
-    public void Participate (object id, ITypeAssemblyContext typeAssemblyContext)
+    public override void Participate (object id, ITypeAssemblyContext typeAssemblyContext)
     {
       ArgumentUtility.CheckNotNull ("typeAssemblyContext", typeAssemblyContext);
 
@@ -103,12 +103,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
       // TODO 5370: Use TypePipe serialization capabilities, after TypePipe is integrated with re-mix.
     }
 
-    public void RebuildState (LoadedTypesContext loadedTypesContext)
-    {
-      // Does nothing.
-    }
-
-    public void HandleNonSubclassableType (Type requestedType)
+    public override void HandleNonSubclassableType (Type requestedType)
     {
       ArgumentUtility.CheckNotNull ("requestedType", requestedType);
 

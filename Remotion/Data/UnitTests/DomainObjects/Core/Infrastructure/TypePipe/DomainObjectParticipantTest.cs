@@ -121,12 +121,6 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.TypePipe
     }
 
     [Test]
-    public void RebuildState ()
-    {
-      Assert.That (() => _participant.RebuildState (null), Throws.Nothing);
-    }
-
-    [Test]
     public void HandleNonSubclassableType ()
     {
       Assert.That (() => _participant.HandleNonSubclassableType (typeof (object)), Throws.Nothing);
