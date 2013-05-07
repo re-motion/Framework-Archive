@@ -30,6 +30,8 @@ namespace Remotion.Web.Utilities
   /// <summary> Utility class for client-side scripts. </summary>
   public class ScriptUtility : IScriptUtility
   {
+    private readonly IInfrastructureResourceUrlFactory _infrastructureResourceUrlFactory;
+
     #region Obsolete
 
     /// <summary>
@@ -201,8 +203,11 @@ namespace Remotion.Web.Utilities
       return output.ToString ();
     }
 
-    public ScriptUtility ()
+    public ScriptUtility (IInfrastructureResourceUrlFactory infrastructureResourceUrlFactory)
     {
+      ArgumentUtility.CheckNotNull ("infrastructureResourceUrlFactory", infrastructureResourceUrlFactory);
+      
+      _infrastructureResourceUrlFactory = infrastructureResourceUrlFactory;
     }
 
     public void RegisterJavaScriptInclude (IControl control, HtmlHeadAppender htmlHeadAppender)
@@ -213,13 +218,12 @@ namespace Remotion.Web.Utilities
       string key = typeof (ScriptUtility).FullName + "_StyleUtility";
       if (!htmlHeadAppender.IsRegistered (key))
       {
-        var themedResourceUrlResolver = SafeServiceLocator.Current.GetInstance<IThemedResourceUrlResolverFactory>().CreateResourceUrlResolver();
-        string url = themedResourceUrlResolver.GetResourceUrl (control, ResourceType.Html, "StyleUtility.js");
+        var url = _infrastructureResourceUrlFactory.CreateThemedResourceUrl (ResourceType.Html, "StyleUtility.js");
 
         htmlHeadAppender.RegisterUtilitiesJavaScriptInclude ();
         htmlHeadAppender.RegisterJavaScriptInclude (key, url);
 
-        control.Page.ClientScript.RegisterClientScriptBlock (control, typeof(ScriptUtility), key, "StyleUtility.AddBrowserSwitch();");        
+        control.Page.ClientScript.RegisterClientScriptBlock (control, typeof(ScriptUtility), key, "StyleUtility.AddBrowserSwitch();");
       }
     }
 

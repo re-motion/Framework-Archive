@@ -19,7 +19,9 @@ using System.Linq;
 using NUnit.Framework;
 using Remotion.ServiceLocation;
 using Remotion.Web.Compilation;
+using Remotion.Web.Infrastructure;
 using Remotion.Web.Legacy;
+using Remotion.Web.Resources;
 using Remotion.Web.UI.Controls.Hotkey;
 using Remotion.Web.UI.Controls.TabbedMenuImplementation.Rendering;
 using Remotion.Web.UI.Controls.WebTabStripImplementation.Rendering;
@@ -40,7 +42,9 @@ namespace Remotion.Web.UnitTests.Legacy
                                   typeof (IMenuTabRenderer), 
                                   typeof (ResourceTheme),
                                   typeof (IControlBuilderCodeProcessor),
-                                  typeof (IHotkeyFormatter)
+                                  typeof (IHotkeyFormatter),
+                                  typeof (IResourcePathBuilder),
+                                  typeof (IHttpContextProvider),
                               };
 
       var allServiceTypes = DefaultServiceConfigurationDiscoveryService.GetDefaultConfiguration (new[] { typeof (IResourceUrl).Assembly })

@@ -19,7 +19,6 @@ using System.Globalization;
 using System.IO;
 using System.Threading;
 using System.Web;
-using log4net.Config;
 using Microsoft.Practices.ServiceLocation;
 using Remotion.Logging;
 using Remotion.ObjectBinding;
@@ -40,7 +39,7 @@ using Remotion.Web.Legacy;
 
 namespace OBWTest
 {
-  public class Global : HttpApplication // , IResourceUrlResolver
+  public class Global : HttpApplication
   {
     private WaiConformanceLevel _waiConformanceLevelBackup;
 
@@ -57,11 +56,6 @@ namespace OBWTest
     {
       get { return XmlReflectionBusinessObjectStorageProvider.Current; }
     }
-
-    //  public string GetResourceUrl (Type definingType, ResourceType resourceType, string relativeUrl)
-    //  {
-    //    return this.Request.ApplicationPath + "/" + resourceType.Name + "/" + relativeUrl;
-    //  }
 
     protected void Application_Start (Object sender, EventArgs e)
     {

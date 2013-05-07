@@ -22,9 +22,10 @@ using System.Web.UI.WebControls;
 using System.Xml;
 using NUnit.Framework;
 using System.Web;
+using Remotion.Development.Web.UnitTesting.Resources;
 using Remotion.Web.Infrastructure;
-using Remotion.Web.Legacy.UI.Controls;
 using Remotion.Web.Legacy.UI.Controls.Rendering;
+using Remotion.Web.Resources;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.DropDownMenuImplementation;
@@ -69,7 +70,7 @@ namespace Remotion.Web.UnitTests.Legacy.UI.Controls
       IClientScriptManager scriptManagerMock = MockRepository.GenerateMock<IClientScriptManager> ();
       _control.Page.Stub (stub => stub.ClientScript).Return (scriptManagerMock);
 
-      _resourceUrlFactory = MockRepository.GenerateStub<IResourceUrlFactory>();
+      _resourceUrlFactory = new FakeResourceUrlFactory();
     }
 
     [TearDown]
@@ -303,8 +304,7 @@ namespace Remotion.Web.UnitTests.Legacy.UI.Controls
     {
       Type type = typeof (DropDownMenuQuirksModeRenderer);
       string initializationScriptKey = type.FullName + "_Startup";
-      string styleSheetUrl = ResourceUrlResolver.GetResourceUrl (
-          _control, _httpContext, type, ResourceType.Html, "DropDownMenu.css");
+      string styleSheetUrl = "/fake/Remotion.Web.Legacy/Html/DropDownMenu.css";
       string initializationScript = string.Format ("DropDownMenu_InitializeGlobals ('{0}');", styleSheetUrl);
 
       string menuInfoKey = _control.UniqueID;
@@ -462,7 +462,7 @@ namespace Remotion.Web.UnitTests.Legacy.UI.Controls
     private void AssertImage (XmlNode parent)
     {
       var img = parent.GetAssertedChildElement ("img", 0);
-      img.AssertAttributeValueEquals ("src", "/res/Remotion.Web.Legacy/Image/DropDownMenuArrow.gif");
+      img.AssertAttributeValueEquals ("src", "/fake/Remotion.Web.Legacy/Image/DropDownMenuArrow.gif");
       img.AssertAttributeValueEquals ("alt", "");
       img.AssertStyleAttribute ("vertical-align", "middle");
       img.AssertStyleAttribute ("border-style", "none");

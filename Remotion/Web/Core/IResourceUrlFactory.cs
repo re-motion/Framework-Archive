@@ -16,28 +16,57 @@
 // 
 using System;
 using Remotion.ServiceLocation;
-using Remotion.Web.Factories;
+using Remotion.Web.Resources;
 
 namespace Remotion.Web
 {
   /// <summary>
-  /// Defines methods for creating objects that implement <see cref="IResourceUrl"/>.
-  /// <seealso cref="ResourceUrlFactory"/>
+  /// Defines methods for creating objects that implement <see cref="IResourceUrl"/>. 
+  /// Use <see cref="T:Remotion.Development.Web.UnitTesting.Resources.FakeResourceUrlFactory"/> for unit testing.
   /// </summary>
+  /// <seealso cref="ResourceUrlFactory"/>
+  /// <seealso cref="T:Remotion.Development.Web.UnitTesting.Resources.FakeResourceUrlFactory"/>
   [ConcreteImplementation (typeof(ResourceUrlFactory), Lifetime = LifetimeKind.Singleton)]
   public interface IResourceUrlFactory
   {
     /// <summary>
     /// Creates an <see cref="IResourceUrl"/> object that is independent of the selected <see cref="ResourceTheme"/>.
     /// </summary>
+    /// <remarks>
+    ///   <para>
+    ///     The default implementation (<see cref="ResourceUrl"/>) uses the URL 
+    ///     &lt;resource root&gt;/&lt;definingType.Assembly&gt;/&lt;ResourceType&gt;/relativeUrl.
+    ///   </para><para>
+    ///     The <b>resource root</b> is loaded from the application configuration,
+    ///     <see cref="Remotion.Web.Configuration.WebConfiguration.Resources">WebConfiguration.Resources</see>, and 
+    ///     defaults to <c>/&lt;AppDir&gt;/res</c>, e.g. <c>/WebApplication/res/Remotion.Web/Html/Utilities.js</c>.
+    ///   </para><para>
+    ///     During design time, the <b>resource root</b> is mapped to the environment variable
+    ///     <c>REMOTIONRESOURCES</c>, or if the variable does not exist, <c>C:\Remotion.Resources</c>.
+    ///   </para>
+    /// </remarks>
+    /// <seealso cref="IResourcePathBuilder"/>
     IResourceUrl CreateResourceUrl (Type definingType, ResourceType resourceType, string relativeUrl);
 
     /// <summary>
     /// Creates an <see cref="IResourceUrl"/> object that depends on the selected <see cref="ResourceTheme"/>.
     /// </summary>
     /// <remarks>
-    /// It is the reponsibilty of the implementation to provide the <see cref="ResourceTheme"/>.
+    ///   <para>
+    ///     It is the reponsibilty of the implementation to provide the <see cref="ResourceTheme"/>.
+    ///   </para><para>
+    ///     The default implementation (<see cref="ThemedResourceUrl"/>) uses the URL 
+    ///     &lt;resource root&gt;/&lt;definingType.Assembly&gt;/&lt;ResourceTheme&gt;/&lt;ResourceType&gt;/relativeUrl.
+    ///   </para><para>
+    ///     The <b>resource root</b> is loaded from the application configuration,
+    ///     <see cref="Remotion.Web.Configuration.WebConfiguration.Resources">WebConfiguration.Resources</see>, and 
+    ///     defaults to <c>/&lt;AppDir&gt;/res</c>, e.g. <c>/WebApplication/res/Remotion.Web/NovaBlue/Image/Help.gif</c>.
+    ///   </para><para>
+    ///     During design time, the <b>resource root</b> is mapped to the environment variable
+    ///     <c>REMOTIONRESOURCES</c>, or if the variable does not exist, <c>C:\Remotion.Resources</c>.
+    ///   </para>
     /// </remarks>
+    /// <seealso cref="IResourcePathBuilder"/>
     IResourceUrl CreateThemedResourceUrl (Type definingType, ResourceType resourceType, string relativeUrl);
   }
 }

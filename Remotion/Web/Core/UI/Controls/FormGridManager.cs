@@ -51,9 +51,6 @@ namespace Remotion.Web.UI.Controls
     /// <remarks> The symbol names map directly to the image's file names. </remarks>
     protected enum FormGridImage
     {
-      /// <summary> A blank image to be used as a spacer. </summary>
-      Spacer,
-    
       /// <summary> Used for field's with a mandatory input. </summary>
       RequiredField,
     
@@ -1025,7 +1022,8 @@ namespace Remotion.Web.UI.Controls
     private ResourceManagerSet _cachedResourceManager;
 
     private bool _formGridListPopulated = false;
-    private IThemedResourceUrlResolver _themedResourceUrlResolver;
+    private IInfrastructureResourceUrlFactory _infrastructureResourceUrlFactory;
+    private IResourceUrlFactory _resourceUrlFactory;
 
     // construction and disposing
 
@@ -1246,18 +1244,28 @@ namespace Remotion.Web.UI.Controls
       string key = typeof (FormGridManager).FullName + "_Style";
       if (!HtmlHeadAppender.Current.IsRegistered (key))
       {
-        string url = ThemedResourceUrlResolver.GetResourceUrl (this, ResourceType.Html, "FormGrid.css");
+        var url = InfrastructureResourceUrlFactory.CreateThemedResourceUrl (ResourceType.Html, "FormGrid.css");
         HtmlHeadAppender.Current.RegisterStylesheetLink (key, url, HtmlHeadAppender.Priority.Library);
       }
     }
 
-    private IThemedResourceUrlResolver ThemedResourceUrlResolver
+    private IResourceUrlFactory ResourceUrlFactory
     {
       get
       {
-        if (_themedResourceUrlResolver == null)
-          _themedResourceUrlResolver = SafeServiceLocator.Current.GetInstance<IThemedResourceUrlResolverFactory>().CreateResourceUrlResolver();
-        return _themedResourceUrlResolver;
+        if (_resourceUrlFactory == null)
+          _resourceUrlFactory = SafeServiceLocator.Current.GetInstance<IResourceUrlFactory>();
+        return _resourceUrlFactory;
+      }
+    }
+
+    private IInfrastructureResourceUrlFactory InfrastructureResourceUrlFactory
+    {
+      get
+      {
+        if (_infrastructureResourceUrlFactory == null)
+          _infrastructureResourceUrlFactory = SafeServiceLocator.Current.GetInstance<IInfrastructureResourceUrlFactory>();
+        return _infrastructureResourceUrlFactory;
       }
     }
 
@@ -2885,12 +2893,7 @@ namespace Remotion.Web.UI.Controls
     {
       string relativeUrl = image + ImageExtension;
 
-      string imageUrl = ThemedResourceUrlResolver.GetResourceUrl (this, ResourceType.Image, relativeUrl);
-
-      if (imageUrl != null)
-        return imageUrl;
-      else
-        return relativeUrl;  
+      return InfrastructureResourceUrlFactory.CreateThemedResourceUrl (ResourceType.Image, relativeUrl).GetUrl();
     }
 
     /// <summary> Builds the input required marker. </summary>
@@ -2955,11 +2958,9 @@ namespace Remotion.Web.UI.Controls
     protected Control GetBlankMarker()
     {
       Image spacer = new Image();
-      spacer.ImageUrl = GetImageUrl (FormGridImage.Spacer);
-  #if !NET11
+      spacer.ImageUrl = IconInfo.CreateSpacer (ResourceUrlFactory).Url;
       spacer.GenerateEmptyAlternateText = true;
-  #endif
-      return spacer;  
+      return spacer;
     }
 
     /// <summary>

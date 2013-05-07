@@ -100,15 +100,15 @@
   <ItemGroup>
     <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\prereq\Assemblies\Microsoft.Practices.ServiceLocation.dll</HintPath>
+      <HintPath>..\..\..\prereq\Assemblies\CommonServiceLocator-1.0\net-2.0\Microsoft.Practices.ServiceLocation.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework, Version=2.6.2.12296, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\prereq\Assemblies\nunit-2.6\nunit.framework.dll</HintPath>
+      <HintPath>..\..\..\prereq\Assemblies\NUnit-2.6\net-2.0\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="Rhino.Mocks, Version=2.8.7.11026, Culture=neutral, PublicKeyToken=0b3305902db7183f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\prereq\Assemblies\Rhino.Mocks.dll</HintPath>
+      <HintPath>..\..\..\prereq\Assemblies\Rhino.Mocks-3.6\net-3.5\Rhino.Mocks.dll</HintPath>
     </Reference>
     <Reference Include="System">
       <Name>System</Name>
@@ -117,7 +117,6 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
-    <Reference Include="System.Data" />
     <Reference Include="System.Design" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web">
@@ -173,9 +172,13 @@
     <Compile Include="Core\Compilation\DefaultControlBuilderCodeProcessorTest.cs" />
     <Compile Include="Core\Context\HttpContextStorageProviderTest.cs" />
     <Compile Include="Core\Context\SafeContextWebIntegrationTest.cs" />
-    <Compile Include="Core\Design\DesignTimeResourceUrlTest.cs" />
-    <Compile Include="Core\Design\DesignTimeThemedResourceUrlTest.cs" />
-    <Compile Include="Core\Factories\ResourceUrlFactoryTest.cs" />
+    <Compile Include="Core\Infrastructure\IHttpContextProviderTest.cs" />
+    <Compile Include="Core\Infrastructure\IInfrastructureResourceUrlFactoryTest.cs" />
+    <Compile Include="Core\IResourceUrlFactoryTest.cs" />
+    <Compile Include="Core\Resources\IResourcePathBuilderTest.cs" />
+    <Compile Include="Core\Resources\ResourcePathBuilderTest.cs" />
+    <Compile Include="Core\Resources\ResourceUrlFactoryTest.cs" />
+    <Compile Include="Core\Resources\TestableResourcePathBuilder.cs" />
     <Compile Include="Core\Security\Domain\HandleInheritingAttribute.cs" />
     <Compile Include="Core\Security\Domain\DerivedHandleWithAttribute.cs" />
     <Compile Include="Core\Security\Domain\Handle.cs" />
@@ -186,7 +189,7 @@
     <Compile Include="Core\Services\WebServiceFactoryTests\CreateWebService.cs" />
     <Compile Include="Core\Services\WebServiceFactoryTests\CreateScriptService.cs" />
     <Compile Include="Core\Services\WebServiceFactoryTests\CreateJsonService.cs" />
-    <Compile Include="Core\ThemedResourceUrlTest.cs" />
+    <Compile Include="Core\Resources\ThemedResourceUrlTest.cs" />
     <Compile Include="Core\ExecutionEngine\Infrastructure\ChildTransactionStrategyTest.cs" />
     <Compile Include="Core\ExecutionEngine\Infrastructure\ChildTransactionExecutionListenerTest.cs" />
     <Compile Include="Core\ExecutionEngine\Infrastructure\CreateChildIfParentTransactionModeTest.cs" />
@@ -212,7 +215,7 @@
     <Compile Include="Core\ExecutionEngine\WxeContextFactory.cs" />
     <Compile Include="Core\ExecutionEngine\WxeFunctionTests\Execute.cs" />
     <Compile Include="Core\ExecutionEngine\WxeTransactionModeTest.cs" />
-    <Compile Include="Core\ResourceUrlTest.cs" />
+    <Compile Include="Core\Resources\ResourceUrlTest.cs" />
     <Compile Include="Core\UI\Controls\CommandInfoTest.cs" />
     <Compile Include="Core\UI\Controls\CommandTests\CommonCommandTest.cs" />
     <Compile Include="Core\UI\Controls\DatePickerButtonImplementation\Rendering\IDatePickerButtonRendererTest.cs" />
@@ -230,8 +233,7 @@
     <Compile Include="Core\UI\Controls\StyleSheetBlockTest.cs" />
     <Compile Include="Core\UI\Controls\StyleSheetImportRuleTest.cs" />
     <Compile Include="Core\UI\Controls\JavaScriptIncludeTest.cs" />
-    <Compile Include="Core\UI\Controls\StubResourceUrlResolver.cs" />
-    <Compile Include="Core\UI\Controls\StubResourceUrlResolverFactory.cs" />
+    <Compile Include="Core\UI\Controls\StubInfrastructureResourceUrlFactory.cs" />
     <Compile Include="Core\UI\Controls\TabbedMenuImplementation\Rendering\IMenuTabRendererTest.cs" />
     <Compile Include="Core\UI\Controls\TabbedMenuImplementation\Rendering\ITabbedMenuRendererTest.cs" />
     <Compile Include="Core\UI\Controls\TabbedMultiViewImplementation\Rendering\ITabbedMultiViewRendererTest.cs" />
@@ -515,6 +517,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Core\Design\" />
     <Folder Include="Core\UI\Controls\Hotkey\TextWithHotkeyTests\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

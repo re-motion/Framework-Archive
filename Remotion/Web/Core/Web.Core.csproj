@@ -98,7 +98,7 @@
   <ItemGroup>
     <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\prereq\Assemblies\Microsoft.Practices.ServiceLocation.dll</HintPath>
+      <HintPath>..\..\..\prereq\Assemblies\CommonServiceLocator-1.0\net-2.0\Microsoft.Practices.ServiceLocation.dll</HintPath>
     </Reference>
     <Reference Include="System">
       <Name>System</Name>
@@ -139,22 +139,26 @@
     <Compile Include="Compilation\DefaultControlBuilderCodeProcessor.cs" />
     <Compile Include="Compilation\ResourceExpressionBuilder.cs" />
     <Compile Include="Context\HttpContextStorageProvider.cs" />
-    <Compile Include="Design\DesignTimeThemedResourceUrl.cs" />
-    <Compile Include="Design\DesignTimeResourceUrl.cs" />
+    <Compile Include="Design\DesignTimeResourcePathBuilder.cs" />
     <Compile Include="ExecutionEngine\IWxeCallOptions.cs" />
     <Compile Include="ExecutionEngine\WxeCallArgumentsWithoutSender.cs" />
     <Compile Include="ExecutionEngine\WxeCallOptionsBase.cs" />
+    <Compile Include="Infrastructure\HttpContextProvider.cs" />
     <Compile Include="Infrastructure\IBuildManager.cs" />
+    <Compile Include="Infrastructure\IHttpContextProvider.cs" />
+    <Compile Include="Resources\IResourcePathBuilder.cs" />
+    <Compile Include="Resources\ResourcePathBuilder.cs" />
+    <Compile Include="Resources\ResourcePathBuilderBase.cs" />
     <Compile Include="Services\IconProxy.cs" />
     <Compile Include="Services\IWebServiceFactory.cs" />
     <Compile Include="Services\WebServiceFactory.cs" />
     <Compile Include="Services\WebServiceUtility.cs" />
-    <Compile Include="StaticResourceUrl.cs" />
+    <Compile Include="Resources\StaticResourceUrl.cs" />
     <Compile Include="IResourceUrlFactory.cs" />
-    <Compile Include="Factories\ResourceUrlFactory.cs">
+    <Compile Include="Resources\ResourceUrlFactory.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ThemedResourceUrl.cs" />
+    <Compile Include="Resources\ThemedResourceUrl.cs" />
     <Compile Include="ExecutionEngine\Infrastructure\ChildTransactionStrategy.cs" />
     <Compile Include="ExecutionEngine\Infrastructure\ChildTransactionExecutionListener.cs" />
     <Compile Include="ExecutionEngine\Infrastructure\CreateChildIfParentTransactionMode.cs" />
@@ -183,13 +187,11 @@
     <Compile Include="ExecutionEngine\WxeTransactionMode.cs" />
     <Compile Include="Infrastructure\ClientScriptManagerWrapper.cs" />
     <Compile Include="Infrastructure\ControlWrapper.cs" />
-    <Compile Include="Infrastructure\Factories\ThemedResourceUrlResolverFactory.cs" />
     <Compile Include="Infrastructure\IClientScriptManager.cs" />
-    <Compile Include="Infrastructure\IThemedResourceUrlResolverFactory.cs" />
     <Compile Include="Infrastructure\PageWrapper.cs" />
     <Compile Include="ResourceTheme.cs" />
     <Compile Include="ResourceType.cs" />
-    <Compile Include="ResourceUrl.cs" />
+    <Compile Include="Resources\ResourceUrl.cs" />
     <Compile Include="IResourceUrl.cs" />
     <Compile Include="UI\AsyncUnhandledException.cs" />
     <Compile Include="UI\Controls\CommandInfo.cs" />
@@ -235,7 +237,7 @@
     <Compile Include="UI\Controls\DatePickerButton.cs" />
     <Compile Include="UI\Controls\HtmlHeadElement.cs" />
     <Compile Include="UI\Controls\IControlItem.cs" />
-    <Compile Include="Infrastructure\IThemedResourceUrlResolver.cs" />
+    <Compile Include="Infrastructure\IInfrastructureResourceUrlFactory.cs" />
     <Compile Include="UI\Controls\ListMenuLineBreaks.cs" />
     <Compile Include="UI\Controls\MenuMode.cs" />
     <Compile Include="UI\Controls\DatePickerButtonImplementation\Rendering\IDatePickerPageRenderer.cs" />
@@ -262,7 +264,7 @@
     <Compile Include="UI\Controls\TabbedMultiViewImplementation\ITabbedMultiView.cs" />
     <Compile Include="UI\Controls\TabbedMultiViewImplementation\Rendering\TabbedMultiViewRenderer.cs" />
     <Compile Include="UI\Controls\TabbedMenuImplementation\IMenuTab.cs" />
-    <Compile Include="Infrastructure\ThemedResourceUrlResolver.cs" />
+    <Compile Include="Infrastructure\InfrastructureResourceUrlFactory.cs" />
     <Compile Include="UI\Controls\TitleTag.cs" />
     <Compile Include="UI\Controls\WebButtonImplementation\IWebButton.cs" />
     <Compile Include="UI\Controls\WebButtonImplementation\Rendering\WebButtonRenderer.cs" />
@@ -455,10 +457,10 @@
     <Compile Include="ExecutionEngine\WxeUserCancelException.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="IResourceUrlResolver.cs">
+    <Compile Include="Obsolete.IResourceUrlResolver.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ResourceUrlResolver.cs">
+    <Compile Include="Obsolete.ResourceUrlResolver.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="UI\Controls\Command.cs">
@@ -846,7 +848,7 @@
     <Content Include="Res\Themes\ClassicBlue\Image\DropDownMenuSeparator.gif" />
     <Content Include="Res\Themes\ClassicBlue\Image\Help.gif" />
     <Content Include="Res\Themes\ClassicBlue\Image\RequiredField.gif" />
-    <Content Include="Res\Themes\ClassicBlue\Image\Spacer.gif" />
+    <Content Include="Res\Image\Spacer.gif" />
     <Content Include="Res\Themes\ClassicBlue\Image\TabbedMainMenuTabTopLeftCorner.gif" />
     <Content Include="Res\Themes\ClassicBlue\Image\TabbedMainMenuTabTopRightCorner.gif" />
     <Content Include="Res\Themes\ClassicBlue\Image\TreeViewF.gif" />
@@ -876,7 +878,6 @@
     <Content Include="Res\Themes\NovaBlue\Image\DropDownMenuSeparator.gif" />
     <Content Include="Res\Themes\NovaBlue\Image\Help.gif" />
     <Content Include="Res\Themes\NovaBlue\Image\RequiredField.gif" />
-    <Content Include="Res\Themes\NovaBlue\Image\Spacer.gif" />
     <Content Include="Res\Themes\NovaBlue\Image\TabbedMainMenuTabTopLeftCorner.gif" />
     <Content Include="Res\Themes\NovaBlue\Image\TabbedMainMenuTabTopRightCorner.gif" />
     <Content Include="Res\Themes\NovaBlue\Image\TabbedMenuTabBackground.gif" />

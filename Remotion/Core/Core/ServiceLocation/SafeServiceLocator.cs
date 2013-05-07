@@ -53,6 +53,8 @@ namespace Remotion.ServiceLocation
   /// </remarks>
   public static class SafeServiceLocator
   {
+    private static readonly BootstrapServiceConfiguration s_bootstrapServiceConfiguration = new BootstrapServiceConfiguration();
+
     // This is a DoubleCheckedLockingContainer rather than a static field (maybe wrapped in a nested class to improve laziness) because we want
     // any exceptions thrown by GetDefaultServiceLocator to bubble up to the caller normally. (Exceptions during static field initialization get
     // wrapped in a TypeInitializationException.)
@@ -62,8 +64,14 @@ namespace Remotion.ServiceLocation
     /// <summary>
     /// Gets the currently configured <see cref="IServiceLocator"/>. 
     /// If no service locator is configured or <see cref="ServiceLocator.Current"/> returns <see langword="null" />, 
-    /// an <see cref="IServiceLocator"/> will be returned.
+    /// a default <see cref="IServiceLocator"/> will be returned as defined by the <see cref="ServiceLocationConfiguration"/>.
     /// </summary>
+    /// <remarks>
+    /// When this property is accessed while the default <see cref="IServiceLocator"/> instance is built (triggered through an outer access to this
+    /// property), it will return a bootstrapping service locator that behaves just like <see cref="DefaultServiceLocator"/>. This means that the
+    /// code building the default <see cref="IServiceLocator"/> can indeed access the <see cref="Current"/> property without triggering any
+    /// exceptions. To configure the bootstrapping <see cref="IServiceLocator"/>, use the <see cref="BootstrapConfiguration"/> property.
+    /// </remarks>
     public static IServiceLocator Current
     {
       // Have debugger step through to avoid breaking on the NullReferenceException that might be thrown below.
@@ -82,10 +90,35 @@ namespace Remotion.ServiceLocation
       }
     }
 
+    /// <summary>
+    /// Allows clients to register services that are available while the <see cref="IServiceLocator"/> is built.
+    /// These service registrations are also passed on to the <see cref="IServiceLocatorProvider"/> so that they can be incorporated in the
+    /// final <see cref="IServiceLocator"/>.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// When the <see cref="Current"/> property is accessed for the first time, and no provider has been set  via 
+    /// <see cref="ServiceLocator.SetLocatorProvider"/>, a default <see cref="IServiceLocator"/> is built as defined by the 
+    /// <see cref="ServiceLocationConfiguration"/>. Building the default provider, which may include construction of an IoC container, can be a
+    /// complex operation. When the code building the default locator accesses the <see cref="Current"/> property, it will get a reference to a
+    /// bootstrapping <see cref="IServiceLocator"/>, which behaves just like the <see cref="DefaultServiceLocator"/> (i.e., it evaluates
+    /// <see cref="ConcreteImplementationAttribute"/> declarations and such).
+    /// The <see cref="BootstrapConfiguration"/> allows clients to register additional services with the bootstrapping <see cref="IServiceLocator"/>.
+    /// </para>
+    /// </remarks>
+    public static IBootstrapServiceConfiguration BootstrapConfiguration
+    {
+      get { return s_bootstrapServiceConfiguration; }
+    }
+
     private static IServiceLocator GetDefaultServiceLocator ()
     {
+      // Temporarily set the bootstrapper to allow for reentrancy to SafeServiceLocator.Current.
+      // Since we're called from s_defaultServiceLocator.Value's getter, we can be sure that our return value will overwrite the bootstrapper.
+      s_defaultServiceLocator.Value = s_bootstrapServiceConfiguration.BootstrapServiceLocator;
+
       var serviceLocatorProvider = ServiceLocationConfiguration.Current.CreateServiceLocatorProvider();
-      return serviceLocatorProvider.GetServiceLocator ();
+      return serviceLocatorProvider.GetServiceLocator (Array.AsReadOnly (s_bootstrapServiceConfiguration.Registrations));
     }
   }
 }
