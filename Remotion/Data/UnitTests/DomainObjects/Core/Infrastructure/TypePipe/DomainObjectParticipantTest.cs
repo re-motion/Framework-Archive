@@ -17,7 +17,6 @@
 using System;
 using System.Linq;
 using Remotion.Development.TypePipe.UnitTesting.ObjectMothers.CodeGeneration;
-using Remotion.TypePipe.CodeGeneration.Implementation;
 using Remotion.TypePipe.Dlr.Ast;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects;
