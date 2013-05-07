@@ -17,7 +17,7 @@
 using System;
 using System.Linq;
 using Remotion.Development.TypePipe.UnitTesting.ObjectMothers.CodeGeneration;
-using Remotion.TypePipe.CodeGeneration;
+using Remotion.TypePipe.CodeGeneration.Implementation;
 using Remotion.TypePipe.Dlr.Ast;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects;
@@ -26,7 +26,6 @@ using Remotion.Data.DomainObjects.Infrastructure.TypePipe;
 using Remotion.Data.UnitTests.DomainObjects.Core.Mapping;
 using Remotion.Data.UnitTests.DomainObjects.TestDomain;
 using Remotion.Development.UnitTesting.Reflection;
-using Remotion.TypePipe.Implementation;
 using Remotion.TypePipe.MutableReflection;
 using Rhino.Mocks;
 using Remotion.Development.UnitTesting;
