@@ -20,6 +20,7 @@ using Remotion.Mixins.Definitions;
 using Remotion.TypePipe.CodeGeneration;
 using Remotion.TypePipe.Implementation;
 using Remotion.TypePipe.MutableReflection;
+using Remotion.TypePipe.TypeAssembly;
 
 namespace Remotion.Mixins.CodeGeneration.TypePipe
 {

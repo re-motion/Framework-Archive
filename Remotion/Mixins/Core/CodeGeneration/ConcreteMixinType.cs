@@ -19,6 +19,7 @@ using System.Reflection;
 using System.Collections.Generic;
 using Remotion.TypePipe.CodeGeneration;
 using Remotion.TypePipe.MutableReflection;
+using Remotion.TypePipe.TypeAssembly;
 using Remotion.Utilities;
 using System.Linq;
 

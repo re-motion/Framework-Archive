@@ -24,6 +24,7 @@ using Remotion.TypePipe;
 using Remotion.TypePipe.Caching;
 using Remotion.TypePipe.Implementation;
 using Remotion.TypePipe.MutableReflection;
+using Remotion.TypePipe.TypeAssembly;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe

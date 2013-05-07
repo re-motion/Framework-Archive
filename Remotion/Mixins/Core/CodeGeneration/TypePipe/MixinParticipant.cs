@@ -21,6 +21,7 @@ using Remotion.Mixins.Context;
 using Remotion.TypePipe;
 using Remotion.TypePipe.Caching;
 using Remotion.TypePipe.CodeGeneration;
+using Remotion.TypePipe.TypeAssembly;
 using Remotion.Utilities;
 
 namespace Remotion.Mixins.CodeGeneration.TypePipe

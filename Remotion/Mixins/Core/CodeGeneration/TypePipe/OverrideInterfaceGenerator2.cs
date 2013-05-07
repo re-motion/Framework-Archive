@@ -21,6 +21,7 @@ using System.Reflection;
 using Remotion.TypePipe.CodeGeneration;
 using Remotion.TypePipe.Implementation;
 using Remotion.TypePipe.MutableReflection;
+using Remotion.TypePipe.TypeAssembly;
 using Remotion.Utilities;
 
 namespace Remotion.Mixins.CodeGeneration.TypePipe

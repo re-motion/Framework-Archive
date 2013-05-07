@@ -27,6 +27,7 @@ using Remotion.Data.UnitTests.DomainObjects.Core.Mapping;
 using Remotion.Data.UnitTests.DomainObjects.TestDomain;
 using Remotion.Development.UnitTesting.Reflection;
 using Remotion.TypePipe.MutableReflection;
+using Remotion.TypePipe.TypeAssembly.Implementation;
 using Rhino.Mocks;
 using Remotion.Development.UnitTesting;
 

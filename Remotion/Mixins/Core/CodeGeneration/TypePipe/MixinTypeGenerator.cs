@@ -28,6 +28,7 @@ using Remotion.TypePipe.Dlr.Ast;
 using Remotion.TypePipe.Expressions;
 using Remotion.TypePipe.Implementation;
 using Remotion.TypePipe.MutableReflection;
+using Remotion.TypePipe.TypeAssembly;
 using Remotion.Utilities;
 
 namespace Remotion.Mixins.CodeGeneration.TypePipe
