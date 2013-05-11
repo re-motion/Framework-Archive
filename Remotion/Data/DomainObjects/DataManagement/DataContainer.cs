@@ -56,7 +56,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
     {
       ArgumentUtility.CheckNotNull ("id", id);
 
-      var propertyValues = GetDefaultPropertyValues(id);
+      var propertyValues = id.ClassDefinition.GetPropertyDefinitions().ToDictionary (pd => pd, pd => new PropertyValue (pd, pd.DefaultValue));
       return new DataContainer (id, DataContainerStateType.New, null, propertyValues);
     }
 
@@ -81,16 +81,8 @@ namespace Remotion.Data.DomainObjects.DataManagement
     {
       ArgumentUtility.CheckNotNull ("id", id);
 
-      var propertyValues = from propertyDefinition in id.ClassDefinition.GetPropertyDefinitions ()
-                           select new PropertyValue (propertyDefinition, valueLookup (propertyDefinition));
-
+      var propertyValues = id.ClassDefinition.GetPropertyDefinitions().ToDictionary (pd => pd, pd => new PropertyValue (pd, valueLookup (pd)));
       return new DataContainer (id, DataContainerStateType.Existing, timestamp, propertyValues);
-    }
-
-    private static IEnumerable<PropertyValue> GetDefaultPropertyValues (ObjectID id)
-    {
-      return from propertyDefinition in id.ClassDefinition.GetPropertyDefinitions ()
-             select new PropertyValue (propertyDefinition);
     }
 
     private readonly ObjectID _id;
@@ -110,23 +102,16 @@ namespace Remotion.Data.DomainObjects.DataManagement
 
     // construction and disposing
 
-    private DataContainer (ObjectID id, DataContainerStateType state, object timestamp, IEnumerable<PropertyValue> propertyValues)
+    private DataContainer (ObjectID id, DataContainerStateType state, object timestamp, Dictionary<PropertyDefinition, PropertyValue> propertyValues)
     {
       ArgumentUtility.CheckNotNull ("id", id);
       ArgumentUtility.CheckNotNull ("propertyValues", propertyValues);
-
-      // TODO: Remove this check, it doesn't provide any value
-      if (id.ClassDefinition != MappingConfiguration.Current.GetClassDefinition (id.ClassID))
-      {
-        string message = string.Format ("The ClassDefinition '{0}' of the ObjectID '{1}' is not part of the current mapping.", id.ClassDefinition, id);
-        throw new ArgumentException (message, "id");
-      }
 
       _id = id;
       _timestamp = timestamp;
       _state = state;
 
-      _propertyValues = propertyValues.ToDictionary (pv => pv.Definition);
+      _propertyValues = propertyValues;
     }
 
     public bool HasBeenMarkedChanged
@@ -141,9 +126,9 @@ namespace Remotion.Data.DomainObjects.DataManagement
 
       var propertyValue = GetPropertyValue (propertyDefinition);
       
-      RaisePropertyValueReadingNotification  (propertyValue.Definition, valueAccess);
+      RaisePropertyValueReadingNotification (propertyDefinition, valueAccess);
       object value = GetValueWithoutEvents (propertyValue, valueAccess);
-     RaisePropertyValueReadNotification (propertyValue.Definition, value, valueAccess);
+     RaisePropertyValueReadNotification (propertyDefinition, value, valueAccess);
       
       return value;
     }
@@ -528,10 +513,10 @@ namespace Remotion.Data.DomainObjects.DataManagement
       source.CheckNotDiscarded ();
       CheckSourceForSetDataFromSubTransaction(source);
 
-      foreach (var propertyValue in _propertyValues.Values)
+      foreach (var kvp in _propertyValues)
       {
-        var sourcePropertyValue = source.GetPropertyValue (propertyValue.Definition);
-        propertyValue.SetDataFromSubTransaction (sourcePropertyValue);
+        var sourcePropertyValue = source.GetPropertyValue (kvp.Key);
+        kvp.Value.SetDataFromSubTransaction (sourcePropertyValue);
       }
 
       _hasBeenChanged = null;
@@ -570,8 +555,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
     {
       CheckNotDiscarded ();
 
-      var clonePropertyValues = from kvp in _propertyValues
-                                select new PropertyValue (kvp.Key, kvp.Value.Value);
+      var clonePropertyValues = _propertyValues.ToDictionary (kvp => kvp.Key, kvp => new PropertyValue (kvp.Key, kvp.Value.Value));
 
       var clone = new DataContainer (id, _state, _timestamp, clonePropertyValues);
 
@@ -679,7 +663,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
         {
           var propertyName = info.GetValueForHandle<string>();
           var propertyDefinition = ClassDefinition.GetPropertyDefinition (propertyName);
-          var propertyValue = new PropertyValue (propertyDefinition);
+          var propertyValue = new PropertyValue (propertyDefinition, propertyDefinition.DefaultValue);
           propertyValue.DeserializeFromFlatStructure (info);
           _propertyValues.Add (propertyDefinition, propertyValue);
         }

@@ -77,32 +77,28 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement
     public void PropertyValue_WithValueType_Allowed ()
     {
       PropertyDefinition propertyDefinition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo ("test", typeof (DateTime), false);
-      var propertyValue = new PropertyValue (propertyDefinition, DateTime.Now);
-      Assert.That (propertyValue.Definition.PropertyType, Is.EqualTo (typeof (DateTime)));
+      Assert.That (() => new PropertyValue (propertyDefinition, DateTime.Now), Throws.Nothing);
     }
 
     [Test]
     public void PropertyValue_WithString_Allowed ()
     {
       PropertyDefinition propertyDefinition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo ("test", typeof (string), true);
-      var propertyValue = new PropertyValue (propertyDefinition, null);
-      Assert.That (propertyValue.Definition.PropertyType, Is.EqualTo (typeof (string)));
+      Assert.That (() => new PropertyValue (propertyDefinition, null), Throws.Nothing);
     }
 
     [Test]
     public void PropertyValue_WithType_Allowed ()
     {
       PropertyDefinition propertyDefinition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo ("test", typeof (Type), true);
-      var propertyValue = new PropertyValue (propertyDefinition, null);
-      Assert.That (propertyValue.Definition.PropertyType, Is.EqualTo (typeof (Type)));
+      Assert.That (() => new PropertyValue (propertyDefinition, null), Throws.Nothing);
     }
 
     [Test]
     public void PropertyValue_WithExtensibleEnum_Allowed ()
     {
       PropertyDefinition propertyDefinition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo ("test", typeof (Color), true);
-      var propertyValue = new PropertyValue (propertyDefinition, null);
-      Assert.That (propertyValue.Definition.PropertyType, Is.EqualTo (typeof (Color)));
+      Assert.That (() => new PropertyValue (propertyDefinition, null), Throws.Nothing);
     }
 
     [Test]
@@ -126,7 +122,6 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement
     {
       PropertyValue propertyValue = CreateIntPropertyValue ("test", 5);
 
-      Assert.AreEqual ("test", propertyValue.Name, "Name after initialization");
       Assert.AreEqual (5, propertyValue.Value, "Value after initialization");
       Assert.AreEqual (5, propertyValue.OriginalValue, "OriginalValue after initialization");
       Assert.IsFalse (propertyValue.HasChanged, "HasChanged after initialization");
@@ -134,7 +129,6 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement
 
       propertyValue.Value = 5;
 
-      Assert.AreEqual ("test", propertyValue.Name, "Name after change #1");
       Assert.AreEqual (5, propertyValue.Value, "Value after change #1");
       Assert.AreEqual (5, propertyValue.OriginalValue, "OriginalValue after change #1");
       Assert.IsFalse (propertyValue.HasChanged, "HasChanged after change #1");
@@ -142,7 +136,6 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement
 
       propertyValue.Value = 10;
 
-      Assert.AreEqual ("test", propertyValue.Name, "Name after change #2");
       Assert.AreEqual (10, propertyValue.Value, "Value after change #2");
       Assert.AreEqual (5, propertyValue.OriginalValue, "OriginalValue after change #2");
       Assert.IsTrue (propertyValue.HasChanged, "HasChanged after change #2");
@@ -150,7 +143,6 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement
 
       propertyValue.Value = 20;
 
-      Assert.AreEqual ("test", propertyValue.Name, "Name after change #3");
       Assert.AreEqual (20, propertyValue.Value, "Value after change #3");
       Assert.AreEqual (5, propertyValue.OriginalValue, "OriginalValue after change #3");
       Assert.IsTrue (propertyValue.HasChanged, "HasChanged after change #3");
@@ -158,7 +150,6 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement
 
       propertyValue.Value = 5;
 
-      Assert.AreEqual ("test", propertyValue.Name, "Name after change #4");
       Assert.AreEqual (5, propertyValue.Value, "Value after change #4");
       Assert.AreEqual (5, propertyValue.OriginalValue, "OriginalValue after change #4");
       Assert.IsFalse (propertyValue.HasChanged, "HasChanged after change #4");
@@ -170,7 +161,6 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement
     {
       PropertyValue propertyValue = CreateNullableIntPropertyValue ("test", null);
 
-      Assert.AreEqual ("test", propertyValue.Name, "Name after initialization");
       Assert.IsNull (propertyValue.Value, "Value after initialization");
       Assert.IsNull (propertyValue.OriginalValue, "OriginalValue after initialization");
       Assert.IsFalse (propertyValue.HasChanged, "HasChanged after initialization");
@@ -178,7 +168,6 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement
 
       propertyValue.Value = null;
 
-      Assert.AreEqual ("test", propertyValue.Name, "Name after change #1");
       Assert.IsNull (propertyValue.Value, "Value after change #1");
       Assert.IsNull (propertyValue.OriginalValue, "OriginalValue after change #1");
       Assert.IsFalse (propertyValue.HasChanged, "HasChanged after change #1");
@@ -186,7 +175,6 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement
 
       propertyValue.Value = 10;
 
-      Assert.AreEqual ("test", propertyValue.Name, "Name after change #2");
       Assert.AreEqual (10, propertyValue.Value, "Value after change #2");
       Assert.IsNull (propertyValue.OriginalValue, "OriginalValue after change #2");
       Assert.IsTrue (propertyValue.HasChanged, "HasChanged after change #2");
@@ -194,7 +182,6 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement
 
       propertyValue.Value = null;
 
-      Assert.AreEqual ("test", propertyValue.Name, "Name after change #3");
       Assert.IsNull (propertyValue.Value, "Value after change #3");
       Assert.IsNull (propertyValue.OriginalValue, "OriginalValue after change #3");
       Assert.IsFalse (propertyValue.HasChanged, "HasChanged after change #3");
@@ -206,7 +193,6 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement
     {
       PropertyValue propertyValue = CreateStringPropertyValue ("test", null);
 
-      Assert.AreEqual ("test", propertyValue.Name, "Name after initialization");
       Assert.IsNull (propertyValue.Value, "Value after initialization");
       Assert.IsNull (propertyValue.OriginalValue, "OriginalValue after initialization");
       Assert.IsFalse (propertyValue.HasChanged, "HasChanged after initialization");
@@ -214,7 +200,6 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement
 
       propertyValue.Value = null;
 
-      Assert.AreEqual ("test", propertyValue.Name, "Name after change #1");
       Assert.IsNull (propertyValue.Value, "Value after change #1");
       Assert.IsNull (propertyValue.OriginalValue, "OriginalValue after change #1");
       Assert.IsFalse (propertyValue.HasChanged, "HasChanged after change #1");
@@ -222,7 +207,6 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement
 
       propertyValue.Value = "Test Value";
 
-      Assert.AreEqual ("test", propertyValue.Name, "Name after change #2");
       Assert.AreEqual ("Test Value", propertyValue.Value, "Value after change #2");
       Assert.IsNull (propertyValue.OriginalValue, "OriginalValue after change #2");
       Assert.IsTrue (propertyValue.HasChanged, "HasChanged after change #2");
@@ -230,7 +214,6 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement
 
       propertyValue.Value = null;
 
-      Assert.AreEqual ("test", propertyValue.Name, "Name after change #3");
       Assert.IsNull (propertyValue.Value, "Value after change #3");
       Assert.IsNull (propertyValue.OriginalValue, "OriginalValue after change #3");
       Assert.IsFalse (propertyValue.HasChanged, "HasChanged after change #3");
@@ -596,7 +579,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement
     }
 
     [Test]
-    [Ignore ("TODO 954: Fix this bug! https://dev.rubicon-it.com/jira/browse/COMMONS-954")]
+    [Ignore ("TODO 954: Fix this bug! https://www.re-motion.org/jira/browse/RM-954")]
     public void BinaryDataBug ()
     {
       PropertyDefinition definition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo ("testProperty2", typeof (byte[]), true);
@@ -607,7 +590,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement
       Assert.That (((byte[]) propertyValue.Value)[0], Is.EqualTo (7));
       Assert.That (((byte[]) propertyValue.OriginalValue)[0], Is.EqualTo (1));
 
-      PrivateInvoke.InvokeNonPublicMethod (propertyValue, "Rollback");
+      propertyValue.RollbackState();
       Assert.That (propertyValue.HasChanged, Is.False);
       Assert.That (((byte[]) propertyValue.Value)[0], Is.EqualTo (1));
 
@@ -615,18 +598,9 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement
       Assert.That (propertyValue.HasChanged, Is.True);
       Assert.That (((byte[]) propertyValue.Value)[0], Is.EqualTo (7));
 
-      PrivateInvoke.InvokeNonPublicMethod (propertyValue, "Commit");
+      propertyValue.CommitState();
       Assert.That (propertyValue.HasChanged, Is.False);
       Assert.That (((byte[]) propertyValue.Value)[0], Is.EqualTo (7));
-    }
-
-    [Test]
-    public void DefaultPropertyValueWithEnumNotDefiningZero ()
-    {
-      PropertyDefinition definition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo ("testProperty", typeof (EnumNotDefiningZero), false);
-      var propertyValue = new PropertyValue (definition);
-      Assert.That (propertyValue.Value, Is.EqualTo (definition.DefaultValue));
-      Assert.That (propertyValue.OriginalValue, Is.EqualTo (definition.DefaultValue));
     }
 
     [Test]
