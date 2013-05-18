@@ -265,7 +265,6 @@ namespace Remotion.ObjectBinding.UnitTests.Web.Legacy.UI.Controls.BocReferenceVa
     }
 
     [Test]
-    [Ignore ("TODO: RM-5570")]
     public void RenderNullReferenceValueWithIcon ()
     {
       Control.Stub (stub => stub.IsIconEnabled()).Return (true);
@@ -405,7 +404,6 @@ namespace Remotion.ObjectBinding.UnitTests.Web.Legacy.UI.Controls.BocReferenceVa
     }
 
     [Test]
-    [Ignore ("TODO: RM-5570")]
     public void RenderReferenceValueWithIcon ()
     {
       SetValue();
@@ -628,7 +626,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.Legacy.UI.Controls.BocReferenceVa
 
         var icon = link.GetAssertedChildElement ("img", 0);
         icon.AssertAttributeValueEquals ("src", "~/Images/Remotion.ObjectBinding.UnitTests.Web.Domain.TypeWithReference.gif");
-        icon.AssertStyleAttribute ("border-width", "0px");
+        icon.AssertStyleAttribute ("border-style", "none");
       }
       else
       {
@@ -643,7 +641,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.Legacy.UI.Controls.BocReferenceVa
 
         var icon = iconParent.GetAssertedChildElement ("img", 0);
         icon.AssertAttributeValueEquals ("src", "~/Images/NullIcon.gif");
-        icon.AssertStyleAttribute ("border-width", "0px");
+        icon.AssertStyleAttribute ("border-style", "none");
       }
     }
 

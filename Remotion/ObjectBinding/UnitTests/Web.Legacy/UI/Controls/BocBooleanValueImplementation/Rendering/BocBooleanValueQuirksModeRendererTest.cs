@@ -34,7 +34,6 @@ using Rhino.Mocks;
 namespace Remotion.ObjectBinding.UnitTests.Web.Legacy.UI.Controls.BocBooleanValueImplementation.Rendering
 {
   [TestFixture]
-  [Ignore ("TODO: RM-5570")]
   public class BocBooleanValueQuirksModeRendererTest : RendererTestBase
   {
     private const string c_defaultControlWidth = "100pt";
@@ -289,7 +288,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.Legacy.UI.Controls.BocBooleanValu
         CheckLinkAttributes (link);
 
       var image = Html.GetAssertedChildElement (link, "img", 0);
-      checkImageAttributes (image, iconUrl, description);
+      CheckImageAttributes (image, iconUrl, description);
 
       var label = Html.GetAssertedChildElement (outerSpan, "span", offset + 1);
       Html.AssertAttribute (label, "id", "_Boc_Label");
@@ -326,12 +325,12 @@ namespace Remotion.ObjectBinding.UnitTests.Web.Legacy.UI.Controls.BocBooleanValu
       Html.AssertStyleAttribute (outerSpan, "white-space", "nowrap");
     }
 
-    private void checkImageAttributes (XmlNode image, string iconUrl, string description)
+    private void CheckImageAttributes (XmlNode image, string iconUrl, string description)
     {
       Html.AssertAttribute (image, "id", "_Boc_Image");
       Html.AssertAttribute (image, "src", iconUrl);
       Html.AssertAttribute (image, "alt", description);
-      Html.AssertStyleAttribute (image, "border-width", "0px");
+      Html.AssertStyleAttribute (image, "border-style", "none");
       Html.AssertStyleAttribute (image, "vertical-align", "middle");
     }
 
