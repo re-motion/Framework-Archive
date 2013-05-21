@@ -133,6 +133,9 @@
     <Compile Include="CodeGeneration\TypeImportException.cs" />
     <Compile Include="CodeGeneration\TypePipe\AttributeGenerator.cs" />
     <Compile Include="CodeGeneration\TypePipe\ClassContextSerializerBase.cs" />
+    <Compile Include="CodeGeneration\TypePipe\CodeGenerationClassContextSerializer.cs" />
+    <Compile Include="CodeGeneration\TypePipe\CodeGenerationMixinContextOriginSerializer.cs" />
+    <Compile Include="CodeGeneration\TypePipe\CodeGenerationMixinContextSerializer.cs" />
     <Compile Include="CodeGeneration\TypePipe\ConcreteMixinTypeIdentifierSerializerBase.cs" />
     <Compile Include="CodeGeneration\TypePipe\ConfigurationProvider.cs" />
     <Compile Include="CodeGeneration\TypePipe\DerivedMixinInfo.cs" />

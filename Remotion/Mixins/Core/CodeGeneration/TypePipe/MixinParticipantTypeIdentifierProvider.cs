@@ -17,6 +17,7 @@
 
 using System;
 using System.Diagnostics;
+using Remotion.Mixins.Context;
 using Remotion.TypePipe.Caching;
 using Remotion.TypePipe.Dlr.Ast;
 using Remotion.Utilities;
@@ -45,16 +46,21 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     public Expression GetExpression (object id)
     {
-      throw new NotImplementedException ("TODO 5370");
+      var classContext = ArgumentUtility.CheckNotNullAndType<ClassContext> ("id", id);
+      var classContextCodeGenerator = new CodeGenerationClassContextSerializer();
+      classContext.Serialize (classContextCodeGenerator);
+      return Expression.Convert (classContextCodeGenerator.GetConstructorInvocationExpression(), typeof (object));
     }
 
     public Expression GetFlatValueExpressionForSerialization (object id)
     {
+      // TODO 5370: Use logic from SerializationInfoClassContextSerializer here.
       throw new NotImplementedException ("TODO 5370");
     }
 
     public object DeserializeFlattenedID (object flattenedID)
     {
+      // TODO 5370: Use logic from SerializationInfoClassContextDeserializer here.
       throw new NotImplementedException ("TODO 5370");
     }
   }
