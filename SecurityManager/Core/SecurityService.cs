@@ -24,6 +24,7 @@ using Remotion.Security;
 using Remotion.SecurityManager.Domain;
 using Remotion.SecurityManager.Domain.AccessControl;
 using Remotion.SecurityManager.Domain.Metadata;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 
 namespace Remotion.SecurityManager
@@ -34,53 +35,47 @@ namespace Remotion.SecurityManager
 
     private readonly IAccessControlListFinder _accessControlListFinder;
     private readonly ISecurityTokenBuilder _securityTokenBuilder;
-
-    public SecurityService ()
-        : this (new AccessControlListFinder(), new SecurityTokenBuilder())
-    {
-    }
-
-    public SecurityService (IAccessControlListFinder accessControlListFinder, ISecurityTokenBuilder securityTokenBuilder)
-        : this ("SecurityManager", new NameValueCollection(), accessControlListFinder, securityTokenBuilder)
-    {
-    }
-
+    private readonly IAccessResolver _accessResolver;
 
     public SecurityService (string name, NameValueCollection config)
-        : this (name, config, new AccessControlListFinder(), new SecurityTokenBuilder())
+        : this (name,
+                config,
+                SafeServiceLocator.Current.GetInstance<IAccessControlListFinder>(),
+                SafeServiceLocator.Current.GetInstance<ISecurityTokenBuilder>(),
+                SafeServiceLocator.Current.GetInstance<IAccessResolver>())
     {
     }
 
     public SecurityService (
-        string name, NameValueCollection config, IAccessControlListFinder accessControlListFinder, ISecurityTokenBuilder securityTokenBuilder)
+        string name,
+        NameValueCollection config,
+        IAccessControlListFinder accessControlListFinder,
+        ISecurityTokenBuilder securityTokenBuilder,
+        IAccessResolver accessResolver)
         : base (name, config)
     {
       ArgumentUtility.CheckNotNull ("accessControlListFinder", accessControlListFinder);
       ArgumentUtility.CheckNotNull ("securityTokenBuilder", securityTokenBuilder);
+      ArgumentUtility.CheckNotNull ("accessResolver", accessResolver);
 
       _accessControlListFinder = accessControlListFinder;
       _securityTokenBuilder = securityTokenBuilder;
+      _accessResolver = accessResolver;
     }
 
     public AccessType[] GetAccess (ISecurityContext context, ISecurityPrincipal principal)
     {
-      return GetAccess (ClientTransaction.CreateRootTransaction(), context, principal);
-    }
-
-    public AccessType[] GetAccess (ClientTransaction transaction, ISecurityContext context, ISecurityPrincipal principal)
-    {
-      ArgumentUtility.CheckNotNull ("transaction", transaction);
       ArgumentUtility.CheckNotNull ("context", context);
       ArgumentUtility.CheckNotNull ("principal", principal);
 
       using (new SecurityFreeSection())
       {
-        AccessControlList acl;
+        IDomainObjectHandle<AccessControlList> acl;
         SecurityToken token;
         try
         {
-          acl = _accessControlListFinder.Find (transaction, context);
-          token = _securityTokenBuilder.CreateToken (transaction, principal, context);
+          acl = _accessControlListFinder.Find (context);
+          token = _securityTokenBuilder.CreateToken (principal, context);
         }
         catch (AccessControlException e)
         {
@@ -88,22 +83,13 @@ namespace Remotion.SecurityManager
           return new AccessType[0];
         }
 
-        using (transaction.EnterNonDiscardingScope())
-        {
-          AccessInformation accessInformation = acl.GetAccessTypes (token);
-          return Array.ConvertAll (accessInformation.AllowedAccessTypes, ConvertToAccessType);
-        }
+        return _accessResolver.GetAccessTypes (acl, token);
       }
     }
 
     public int GetRevision ()
     {
       return (int) ClientTransaction.CreateRootTransaction().QueryManager.GetScalar (Revision.GetGetRevisionQuery());
-    }
-
-    private AccessType ConvertToAccessType (AccessTypeDefinition accessTypeDefinition)
-    {
-      return AccessType.Get (EnumWrapper.Get (accessTypeDefinition.Name));
     }
 
     bool INullObject.IsNull

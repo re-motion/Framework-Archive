@@ -1,4 +1,4 @@
-// This file is part of re-strict (www.re-motion.org)
+﻿// This file is part of re-strict (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // This program is free software; you can redistribute it and/or modify
@@ -23,9 +23,9 @@ using Remotion.ServiceLocation;
 
 namespace Remotion.SecurityManager.Domain.AccessControl
 {
-  [ConcreteImplementation (typeof (AccessControlListFinder), Lifetime = LifetimeKind.Singleton)]
-  public interface IAccessControlListFinder
+  [ConcreteImplementation (typeof (AccessResolver), Lifetime = LifetimeKind.Singleton)]
+  public interface IAccessResolver
   {
-    IDomainObjectHandle<AccessControlList> Find (ISecurityContext context);
+    AccessType[] GetAccessTypes (IDomainObjectHandle<AccessControlList> acl, SecurityToken token);
   }
 }

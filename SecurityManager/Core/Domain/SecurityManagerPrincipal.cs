@@ -48,6 +48,26 @@ namespace Remotion.SecurityManager.Domain
   [Serializable]
   public sealed class SecurityManagerPrincipal : ISecurityManagerPrincipal
   {
+    [Serializable]
+    private sealed class Data
+    {
+      public readonly int Revision;
+      public readonly TenantProxy TenantProxy;
+      public readonly UserProxy UserProxy;
+      public readonly SubstitutionProxy SubstitutionProxy;
+      public readonly ISecurityPrincipal SecurityPrincipal;
+
+      public Data (
+          int revision, TenantProxy tenantProxy, UserProxy userProxy, SubstitutionProxy substitutionProxy, ISecurityPrincipal securityPrincipal)
+      {
+        Revision = revision;
+        TenantProxy = tenantProxy;
+        UserProxy = userProxy;
+        SubstitutionProxy = substitutionProxy;
+        SecurityPrincipal = securityPrincipal;
+      }
+    }
+
     public static readonly ISecurityManagerPrincipal Null = new NullSecurityManagerPrincipal();
 
     [NotNull]
@@ -61,21 +81,19 @@ namespace Remotion.SecurityManager.Domain
       }
     }
 
-    private readonly object _syncRoot = new object();
-    private int _revision;
+    private readonly object _syncRoot;
+    private volatile Data _cachedData;
     private readonly IDomainObjectHandle<Tenant> _tenantHandle;
     private readonly IDomainObjectHandle<User> _userHandle;
     private readonly IDomainObjectHandle<Substitution> _substitutionHandle;
-    private TenantProxy _tenantProxy;
-    private UserProxy _userProxy;
-    private SubstitutionProxy _substitutionProxy;
-    private ISecurityPrincipal _securityPrincipal;
 
     public SecurityManagerPrincipal (
         IDomainObjectHandle<Tenant> tenantHandle, IDomainObjectHandle<User> userHandle, IDomainObjectHandle<Substitution> substitutionHandle)
     {
       ArgumentUtility.CheckNotNull ("tenantHandle", tenantHandle);
       ArgumentUtility.CheckNotNull ("userHandle", userHandle);
+
+      _syncRoot = new object();
 
       _tenantHandle = tenantHandle;
       _userHandle = userHandle;
@@ -86,17 +104,22 @@ namespace Remotion.SecurityManager.Domain
 
     public TenantProxy Tenant
     {
-      get { return _tenantProxy; }
+      get { return _cachedData.TenantProxy; }
     }
 
     public UserProxy User
     {
-      get { return _userProxy; }
+      get { return _cachedData.UserProxy; }
     }
 
     public SubstitutionProxy Substitution
     {
-      get { return _substitutionProxy; }
+      get { return _cachedData.SubstitutionProxy; }
+    }
+
+    public ISecurityPrincipal GetSecurityPrincipal ()
+    {
+      return _cachedData.SecurityPrincipal;
     }
 
     public void Refresh ()
@@ -104,7 +127,7 @@ namespace Remotion.SecurityManager.Domain
       lock (_syncRoot)
       {
         var revision = GetRevision();
-        if (revision != _revision)
+        if (revision != _cachedData.Revision)
           InitializeCache (revision);
       }
     }
@@ -128,11 +151,6 @@ namespace Remotion.SecurityManager.Domain
       return GetUser (CreateClientTransaction()).GetActiveSubstitutions()
           .Select (CreateSubstitutionProxy)
           .ToArray();
-    }
-
-    public ISecurityPrincipal GetSecurityPrincipal ()
-    {
-      return _securityPrincipal;
     }
 
     private SecurityPrincipal CreateSecurityPrincipal (ClientTransaction transaction)
@@ -189,17 +207,13 @@ namespace Remotion.SecurityManager.Domain
     {
       var transaction = CreateClientTransaction();
 
-      var newTenantProxy = CreateTenantProxy (GetTenant (transaction));
-      var newUserProxy = CreateUserProxy (GetUser (transaction));
+      var tenantProxy = CreateTenantProxy (GetTenant (transaction));
+      var userProxy = CreateUserProxy (GetUser (transaction));
       var substitution = GetSubstitution (transaction);
-      var newSubstitutionProxy = substitution != null ? CreateSubstitutionProxy (substitution) : null;
-      var newSecurityPrincipal = CreateSecurityPrincipal (transaction);
+      var substitutionProxy = substitution != null ? CreateSubstitutionProxy (substitution) : null;
+      var securityPrincipal = CreateSecurityPrincipal (transaction);
 
-      _revision = revision;
-      _tenantProxy = newTenantProxy;
-      _userProxy = newUserProxy;
-      _substitutionProxy = newSubstitutionProxy;
-      _securityPrincipal = newSecurityPrincipal;
+      _cachedData = new Data (revision, tenantProxy, userProxy, substitutionProxy, securityPrincipal);
     }
 
     private Tenant GetTenant (ClientTransaction transaction)

@@ -18,6 +18,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Remotion.Data.DomainObjects;
+using Remotion.FunctionalProgramming;
 using Remotion.SecurityManager.Domain.AccessControl;
 using Remotion.SecurityManager.Domain.Metadata;
 using Remotion.SecurityManager.Domain.OrganizationalStructure;
@@ -49,10 +51,10 @@ namespace Remotion.SecurityManager.AclTools.Expansion.Infrastructure
       ArgumentUtility.CheckNotNull ("ace", ace);
 
       var aclProbe = new AclProbe ();
-      User owningUser = CreateOwningUserEntry (aclProbe, user, ace);
-      Group owningGroup = CreateOwningGroupEntry (aclProbe, role, ace);
-      Tenant owningTenant = CreateOwningTenantEntry (aclProbe, user, ace);
-      IList<AbstractRoleDefinition> abstractRoles = CreateAbstractRolesEntry (aclProbe, ace);
+      var owningUser = CreateOwningUserEntry (aclProbe, user, ace);
+      var owningGroup = CreateOwningGroupEntry (aclProbe, role, ace);
+      var owningTenant = CreateOwningTenantEntry (aclProbe, user, ace);
+      var abstractRoles = CreateAbstractRolesEntry (aclProbe, ace);
 
 
       // Create a new Principal which has only the one role we are currently probing for.
@@ -64,19 +66,19 @@ namespace Remotion.SecurityManager.AclTools.Expansion.Infrastructure
       // always have the access rights returned; this is just not the information we want to present in the 
       // ACL-expansion, where we distinguish which role gives rise to which access rights).
 
-      Principal principal = new Principal (user.Tenant, user, new[] {role});
-      aclProbe._securityToken = new SecurityToken (principal, owningTenant, owningGroup, owningUser, abstractRoles);
+      var principal = Principal.Create (user.Tenant, user, EnumerableUtility.Singleton (role));
+      aclProbe._securityToken = SecurityToken.Create(principal, owningTenant, owningGroup, owningUser, abstractRoles);
 
       return aclProbe;
     }
      
-    private static IList<AbstractRoleDefinition> CreateAbstractRolesEntry (AclProbe aclProbe, AccessControlEntry ace)
+    private static IList<IDomainObjectHandle<AbstractRoleDefinition>> CreateAbstractRolesEntry (AclProbe aclProbe, AccessControlEntry ace)
     {
-      IList<AbstractRoleDefinition> abstractRoles = new List<AbstractRoleDefinition> ();
+      var abstractRoles = new List<IDomainObjectHandle<AbstractRoleDefinition>> ();
       if (ace.SpecificAbstractRole != null)
       {
         var abstractRole = ace.SpecificAbstractRole;
-        abstractRoles.Add (abstractRole);
+        abstractRoles.Add (abstractRole.GetHandle());
         aclProbe.AccessConditions.AbstractRole = abstractRole;
       }
       return abstractRoles;

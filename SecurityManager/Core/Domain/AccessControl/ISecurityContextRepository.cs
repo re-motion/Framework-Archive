@@ -17,15 +17,36 @@
 // 
 
 using System;
+using JetBrains.Annotations;
 using Remotion.Data.DomainObjects;
 using Remotion.Security;
+using Remotion.SecurityManager.Domain.Metadata;
+using Remotion.SecurityManager.Domain.OrganizationalStructure;
 using Remotion.ServiceLocation;
 
 namespace Remotion.SecurityManager.Domain.AccessControl
 {
-  [ConcreteImplementation (typeof (AccessControlListFinder), Lifetime = LifetimeKind.Singleton)]
-  public interface IAccessControlListFinder
+  /// <summary>
+  /// Defines the API required for resolving the information provided via the <see cref="ISecurityContext"/>.
+  /// </summary>
+  /// <seealso cref="SecurityContextRepository"/>
+  /// <threadsafety static="true" instance="true"/>
+  [ConcreteImplementation (typeof (SecurityContextRepository), Lifetime = LifetimeKind.Singleton)]
+  public interface ISecurityContextRepository
   {
-    IDomainObjectHandle<AccessControlList> Find (ISecurityContext context);
+    [NotNull]
+    IDomainObjectHandle<Tenant> GetTenant (string uniqueIdentifier);
+
+    [NotNull]
+    IDomainObjectHandle<Group> GetGroup (string uniqueIdentifier);
+
+    [NotNull]
+    IDomainObjectHandle<User> GetUser (string userName);
+
+    [NotNull]
+    IDomainObjectHandle<AbstractRoleDefinition> GetAbstractRole (EnumWrapper name);
+
+    [NotNull]
+    SecurableClassDefinitionData GetClass (string name);
   }
 }

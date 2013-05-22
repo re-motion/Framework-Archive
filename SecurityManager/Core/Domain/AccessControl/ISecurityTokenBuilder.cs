@@ -16,13 +16,14 @@
 // Additional permissions are listed in the file re-motion_exceptions.txt.
 // 
 using System;
-using Remotion.Data.DomainObjects;
 using Remotion.Security;
+using Remotion.ServiceLocation;
 
 namespace Remotion.SecurityManager.Domain.AccessControl
 {
+  [ConcreteImplementation (typeof (SecurityTokenBuilder), Lifetime = LifetimeKind.Singleton)]
   public interface ISecurityTokenBuilder
   {
-    SecurityToken CreateToken (ClientTransaction transaction, ISecurityPrincipal principal, ISecurityContext context);
+    SecurityToken CreateToken (ISecurityPrincipal principal, ISecurityContext context);
   }
 }

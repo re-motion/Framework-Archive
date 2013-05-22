@@ -17,15 +17,22 @@
 // 
 
 using System;
-using Remotion.Data.DomainObjects;
+using JetBrains.Annotations;
 using Remotion.Security;
+using Remotion.SecurityManager.Domain.OrganizationalStructure;
 using Remotion.ServiceLocation;
 
 namespace Remotion.SecurityManager.Domain.AccessControl
 {
-  [ConcreteImplementation (typeof (AccessControlListFinder), Lifetime = LifetimeKind.Singleton)]
-  public interface IAccessControlListFinder
+  /// <summary>
+  /// Defines the API required for resolving the information provided via the <see cref="ISecurityPrincipal"/>.
+  /// </summary>
+  /// <seealso cref="SecurityPrincipalRepository"/>
+  /// <threadsafety static="true" instance="true"/>
+  [ConcreteImplementation (typeof (SecurityPrincipalRepository), Lifetime = LifetimeKind.Singleton)]
+  public interface ISecurityPrincipalRepository
   {
-    IDomainObjectHandle<AccessControlList> Find (ISecurityContext context);
+    [NotNull]
+    User GetUser (string userName);
   }
 }
