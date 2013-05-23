@@ -198,32 +198,29 @@ namespace Remotion.SecurityManager.Domain.AccessControl
     private ILookup<ObjectID, StatefulAccessControlListData> LoadStatefulAccessControlLists ()
     {
       var result = from acl in QueryFactory.CreateLinqQuery<StatefulAccessControlList>()
-                   from sc in acl.GetStateCombinationsForQuery().DefaultIfEmpty()
+                   from sc in acl.GetStateCombinationsForQuery()
                    from su in sc.GetStateUsagesForQuery().DefaultIfEmpty()
                    select new { Class = acl.GetClassForQuery(), Acl = acl, State = su.StateDefinition }
                    into row
                    select new
                           {
                               Class = row.Class.ID,
-                              Acl = new
-                                    {
-                                        Handle = row.Acl.ID.GetHandle<StatefulAccessControlList>(),
-                                        HasState = row.State != null,
-                                        StatePropertyID = row.State.StateProperty.ID.Value,
-                                        StatePropertyClassID = row.State.StateProperty.ID.ClassID,
-                                        StatePropertyName = row.State.StateProperty.Name,
-                                        StateValue = row.State.Name
-                                    }
+                              Acl = row.Acl.ID.GetHandle<StatefulAccessControlList>(),
+                              HasState = row.State != null,
+                              StatePropertyID = row.State.StateProperty.ID.Value,
+                              StatePropertyClassID = row.State.StateProperty.ID.ClassID,
+                              StatePropertyName = row.State.StateProperty.Name,
+                              StateValue = row.State.Name
                           };
 
       return result.AsEnumerable()
                    .GroupBy (
-                       o => new { o.Class, Acl = o.Acl.Handle },
-                       o => o.Acl.HasState
+                       row => new { row.Class, row.Acl },
+                       row => row.HasState
                                 ? new State (
-                                      new ObjectID (o.Acl.StatePropertyClassID, o.Acl.StatePropertyID).GetHandle<StatePropertyDefinition>(),
-                                      o.Acl.StatePropertyName,
-                                      o.Acl.StateValue)
+                                      new ObjectID (row.StatePropertyClassID, row.StatePropertyID).GetHandle<StatePropertyDefinition>(),
+                                      row.StatePropertyName,
+                                      row.StateValue)
                                 : null)
                    .ToLookup (g => g.Key.Class, g => new StatefulAccessControlListData (g.Key.Acl, g.Where (s => s != null).ToArray().AsReadOnly()));
     }
