@@ -18,7 +18,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using JetBrains.Annotations;
 using Remotion.Collections;
 using Remotion.Data.DomainObjects;
@@ -123,26 +122,25 @@ namespace Remotion.SecurityManager.Domain.AccessControl
   /// Cache-based implementation of the <see cref="ISecurityContextRepository"/> interface.
   /// </summary>
   /// <threadsafety static="true" instance="true"/>
-  public class SecurityContextRepository : ISecurityContextRepository
+  public sealed class SecurityContextRepository : RepositoryBase<SecurityContextRepository.Data>, ISecurityContextRepository
   {
-    private class Data
+    public class Data : RevisionBasedData
     {
-      public readonly int Revision;
       public readonly Dictionary<string, IDomainObjectHandle<Tenant>> Tenants;
       public readonly Dictionary<string, IDomainObjectHandle<Group>> Groups;
       public readonly Dictionary<string, IDomainObjectHandle<User>> Users;
       public readonly Dictionary<EnumWrapper, IDomainObjectHandle<AbstractRoleDefinition>> AbstractRoles;
       public readonly Dictionary<string, SecurableClassDefinitionData> Classes;
 
-      public Data (
+      internal Data (
           int revision,
           Dictionary<string, IDomainObjectHandle<Tenant>> tenants,
           Dictionary<string, IDomainObjectHandle<Group>> groups,
           Dictionary<string, IDomainObjectHandle<User>> users,
           Dictionary<EnumWrapper, IDomainObjectHandle<AbstractRoleDefinition>> abstractRoles,
           Dictionary<string, SecurableClassDefinitionData> classes)
+        :base (revision)
       {
-        Revision = revision;
         Tenants = tenants;
         Groups = groups;
         Users = users;
@@ -151,13 +149,8 @@ namespace Remotion.SecurityManager.Domain.AccessControl
       }
     }
 
-    private long _nextRevisionCheckInUtcTicks;
-    private readonly TimeSpan _revisionCheckInterval = TimeSpan.FromSeconds (1);
-
-    private readonly object _syncRoot = new object();
-    private volatile Data _cachedData;
-
-    public SecurityContextRepository ()
+    public SecurityContextRepository (IRevisionProvider revisionProvider)
+      : base (revisionProvider)
     {
     }
 
@@ -216,56 +209,39 @@ namespace Remotion.SecurityManager.Domain.AccessControl
       return @class;
     }
 
-    private Data GetCachedData ()
+    protected override Data LoadData (int revision)
     {
-      if (DateTime.UtcNow.Ticks >= Interlocked.Read (ref _nextRevisionCheckInUtcTicks) || _cachedData == null)
+      using (new SecurityFreeSection())
       {
-        Interlocked.Exchange (ref _nextRevisionCheckInUtcTicks, DateTime.UtcNow.Add (_revisionCheckInterval).Ticks);
-        Refresh();
-      }
-      return _cachedData;
-    }
+        using (ClientTransaction.CreateRootTransaction().EnterNonDiscardingScope())
+        {
+          var tenants = QueryFactory.CreateLinqQuery<Tenant>()
+                                    .Select (t => new { Key = t.UniqueIdentifier, Value = t.ID })
+                                    .ToDictionary (t => t.Key, t => t.Value.GetHandle<Tenant>());
 
-    private void Refresh ()
-    {
-      lock (_syncRoot)
-      {
-        var revision = GetRevision();
-        if (_cachedData == null || revision != _cachedData.Revision)
-          _cachedData = LoadData (revision);
-      }
-    }
+          var groups = QueryFactory.CreateLinqQuery<Group>()
+                                   .Select (g => new { Key = g.UniqueIdentifier, Value = g.ID })
+                                   .ToDictionary (g => g.Key, g => g.Value.GetHandle<Group>());
 
-    private Data LoadData (int revision)
-    {
-      using (ClientTransaction.CreateRootTransaction().EnterNonDiscardingScope())
-      {
-        var tenants = QueryFactory.CreateLinqQuery<Tenant>()
-                                  .Select (t => new { Key = t.UniqueIdentifier, Value = t.ID })
-                                  .ToDictionary (t => t.Key, t => t.Value.GetHandle<Tenant>());
+          var users = QueryFactory.CreateLinqQuery<User>()
+                                  .Select (u => new { Key = u.UserName, Value = u.ID })
+                                  .ToDictionary (u => u.Key, u => u.Value.GetHandle<User>());
 
-        var groups = QueryFactory.CreateLinqQuery<Group>()
-                                 .Select (g => new { Key = g.UniqueIdentifier, Value = g.ID })
-                                 .ToDictionary (g => g.Key, g => g.Value.GetHandle<Group>());
+          var abstractRoles = QueryFactory.CreateLinqQuery<AbstractRoleDefinition>()
+                                          .Select (r => new { Key = r.Name, Value = r.ID })
+                                          .ToDictionary (r => EnumWrapper.Get (r.Key), r => r.Value.GetHandle<AbstractRoleDefinition>());
 
-        var users = QueryFactory.CreateLinqQuery<User>()
-                                .Select (u => new { Key = u.UserName, Value = u.ID })
-                                .ToDictionary (u => u.Key, u => u.Value.GetHandle<User>());
+          PrefetchStateDefinitions();
+          PrefetchStatePropertyDefinitions();
+          var classes = QueryFactory.CreateLinqQuery<SecurableClassDefinition>().Select (c => c)
+                                    .FetchOne (cd => cd.StatelessAccessControlList)
+                                    .FetchMany (cd => cd.StatefulAccessControlLists)
+                                    .ThenFetchMany (StatefulAccessControlList.SelectStateCombinations())
+                                    .ThenFetchMany (StateCombination.SelectStateUsages()).
+                                     ToDictionary (c => c.Name, CreateCachableData);
 
-        var abstractRoles = QueryFactory.CreateLinqQuery<AbstractRoleDefinition>()
-                                        .Select (r => new { Key = r.Name, Value = r.ID })
-                                        .ToDictionary (r => EnumWrapper.Get (r.Key), r => r.Value.GetHandle<AbstractRoleDefinition>());
-
-        PrefetchStateDefinitions();
-        PrefetchStatePropertyDefinitions();
-        var classes = QueryFactory.CreateLinqQuery<SecurableClassDefinition>().Select (c => c)
-                                  .FetchOne (cd => cd.StatelessAccessControlList)
-                                  .FetchMany (cd => cd.StatefulAccessControlLists)
-                                  .ThenFetchMany (StatefulAccessControlList.SelectStateCombinations())
-                                  .ThenFetchMany (StateCombination.SelectStateUsages()).
-                                   ToDictionary (c => c.Name, CreateCachableData);
-
-        return new Data (revision, tenants, groups, users, abstractRoles, classes);
+          return new Data (revision, tenants, groups, users, abstractRoles, classes);
+        }
       }
     }
 
@@ -296,11 +272,6 @@ namespace Remotion.SecurityManager.Domain.AccessControl
     private StatefulAccessControlListData CreateStatefulAccessControlListData (StatefulAccessControlList acl, StateDefinition stateDefinition)
     {
       return new StatefulAccessControlListData (acl.GetHandle(), new State (stateDefinition.StateProperty.Name, stateDefinition.Name));
-    }
-
-    private int GetRevision ()
-    {
-      return (int) ClientTransaction.CreateRootTransaction().QueryManager.GetScalar (Revision.GetGetRevisionQuery());
     }
 
     private AccessControlException CreateAccessControlException (string message, params object[] args)
