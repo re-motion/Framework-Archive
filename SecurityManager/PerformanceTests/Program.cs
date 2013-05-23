@@ -47,6 +47,7 @@ namespace Remotion.SecurityManager.PerformanceTests
         provider.GetAccess (context, user);
       }
       Console.WriteLine ("Init done");
+      return;
       Console.ReadKey();
 
       Stopwatch stopwatch = Stopwatch.StartNew();
