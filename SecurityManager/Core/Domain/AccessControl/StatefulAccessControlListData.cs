@@ -16,6 +16,8 @@
 // Additional permissions are listed in the file re-motion_exceptions.txt.
 // 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using JetBrains.Annotations;
 using Remotion.Collections;
 using Remotion.Data.DomainObjects;
@@ -28,13 +30,13 @@ namespace Remotion.SecurityManager.Domain.AccessControl
     private readonly IDomainObjectHandle<StatefulAccessControlList> _handle;
     private readonly ReadOnlyCollectionDecorator<State> _states;
 
-    public StatefulAccessControlListData ([NotNull] IDomainObjectHandle<StatefulAccessControlList> handle, [NotNull] State states)
+    public StatefulAccessControlListData ([NotNull] IDomainObjectHandle<StatefulAccessControlList> handle, [NotNull] IEnumerable<State> states)
     {
       ArgumentUtility.CheckNotNull ("handle", handle);
       ArgumentUtility.CheckNotNull ("states", states);
 
       _handle = handle;
-      _states = new[]{states}.AsReadOnly();
+      _states = states.ToArray().AsReadOnly();
     }
 
     [NotNull]

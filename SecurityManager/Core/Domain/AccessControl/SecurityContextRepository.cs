@@ -204,16 +204,20 @@ namespace Remotion.SecurityManager.Domain.AccessControl
                        new
                        {
                            Class = acl.GetClass().ID,
-                           Acl =
-                       new StatefulAccessControlListData (
-                       acl.ID.GetHandle<StatefulAccessControlList>(),
+                           Acl = new
+                                 {
+                                     Handle = acl.ID.GetHandle<StatefulAccessControlList>(),
+                                     State =
                        new State (
-                           su.StateDefinition.StateProperty.ID.GetHandle<StatePropertyDefinition>(),
-                           su.StateDefinition.StateProperty.Name,
-                           su.StateDefinition.Name))
+                       su.StateDefinition.StateProperty.ID.GetHandle<StatePropertyDefinition>(),
+                       su.StateDefinition.StateProperty.Name,
+                       su.StateDefinition.Name)
+                                 }
                        };
 
-      return result.ToLookup (o => o.Class, o => o.Acl);
+      return result.AsEnumerable()
+                   .GroupBy (o => new { o.Class, Acl = o.Acl.Handle }, o => o.Acl.State)
+                   .ToLookup (g => g.Key.Class, g => new StatefulAccessControlListData (g.Key.Acl, g.ToArray().AsReadOnly()));
     }
 
     private IDictionary<ObjectID, IDomainObjectHandle<StatelessAccessControlList>> LoadStatelessAccessControlLists ()
