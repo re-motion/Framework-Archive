@@ -108,42 +108,6 @@ namespace Remotion.SecurityManager.Domain.AccessControl
       return enumWrapper.Name.Equals (state.Value);
     }
 
-    private StateCombination FindStateCombination (SecurableClassDefinition classDefinition, ISecurityContext context)
-    {
-      var states = GetStates (classDefinition.StateProperties, context);
-      if (states == null)
-        return null;
-
-      return classDefinition.FindStateCombination (states);
-    }
-
-    private List<StateDefinition> GetStates (IList<StatePropertyDefinition> stateProperties, ISecurityContext context)
-    {
-      if (context.GetNumberOfStates() > stateProperties.Count)
-        return null;
-
-      return stateProperties.Select (stateProperty => GetState (stateProperty, context)).ToList();
-    }
-
-    private StateDefinition GetState (StatePropertyDefinition property, ISecurityContext context)
-    {
-      if (!context.ContainsState (property.Name))
-        throw CreateAccessControlException ("The state '{0}' is missing in the security context.", property.Name);
-
-      EnumWrapper enumWrapper = context.GetState (property.Name);
-
-      if (!property.ContainsState (enumWrapper.Name))
-      {
-        throw CreateAccessControlException (
-            "The state '{0}' is not defined for the property '{1}' of the securable class '{2}' or its base classes.",
-            enumWrapper.Name,
-            property.Name,
-            context.Class);
-      }
-
-      return property.GetState (enumWrapper.Name);
-    }
-
     private AccessControlException CreateAccessControlException (string message, params object[] args)
     {
       return new AccessControlException (string.Format (message, args));
