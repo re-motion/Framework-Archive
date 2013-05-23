@@ -200,14 +200,15 @@ namespace Remotion.SecurityManager.Domain.AccessControl
       var result = from acl in QueryFactory.CreateLinqQuery<StatefulAccessControlList>()
                    from sc in acl.GetStateCombinationsForQuery()
                    from usage in sc.GetStateUsagesForQuery().DefaultIfEmpty()
+                   from propertyReference in acl.GetClassForQuery().GetStatePropertyReferencesForQuery().DefaultIfEmpty()
                    select new
                           {
                               Class = acl.GetClassForQuery().ID,
                               Acl = acl.ID.GetHandle<StatefulAccessControlList>(),
-                              HasState = usage != null,
-                              StatePropertyID = usage.StateDefinition.StateProperty.ID.Value,
-                              StatePropertyClassID = usage.StateDefinition.StateProperty.ID.ClassID,
-                              StatePropertyName = usage.StateDefinition.StateProperty.Name,
+                              HasState = propertyReference != null,
+                              StatePropertyID = propertyReference.StateProperty.ID.Value,
+                              StatePropertyClassID = propertyReference.StateProperty.ID.ClassID,
+                              StatePropertyName = propertyReference.StateProperty.Name,
                               StateValue = usage.StateDefinition.Name
                           };
 
