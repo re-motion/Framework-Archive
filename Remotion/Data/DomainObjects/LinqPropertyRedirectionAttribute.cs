@@ -18,6 +18,7 @@ using System;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Linq.Clauses.ExpressionTreeVisitors;
 using Remotion.Linq.Parsing.ExpressionTreeVisitors.Transformation;
@@ -31,10 +32,15 @@ namespace Remotion.Data.DomainObjects
   /// to the property's get accessor.
   /// </summary>
   /// <remarks>
+  /// <para>
+  /// Methods can be declared as instance methods with an empty signature 
+  /// or as extension methods that define only the instance parameter in the signature.
+  /// </para><para>
   /// Usually, LINQ queries can only be performed on properties that are mapped to a database columns. Trying to use them on
   /// columns marked with the <see cref="StorageClassNoneAttribute"/> will cause an exception. Sometimes, however, it can be
   /// useful to enable LINQ queries on such properties if they can be redirected to another property that is mapped to a column.
   /// That way, a public unmapped property that acts as a wrapper for a protected mapped property can still be used in queries.
+  /// </para>
   /// </remarks>
   [AttributeUsage (AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
   public class LinqPropertyRedirectionAttribute : Attribute, AttributeEvaluatingExpressionTransformer.IMethodCallExpressionTransformerAttribute
@@ -66,28 +72,43 @@ namespace Remotion.Data.DomainObjects
       {
         ArgumentUtility.CheckNotNull ("methodCallExpression", methodCallExpression);
 
-        if (methodCallExpression.Method.IsStatic)
-          throw CreateNotSupportedException (methodCallExpression, "Only instance methods can be redirected, but the method is static.");
+        var isInstanceMethod = !methodCallExpression.Method.IsStatic;
+        var isExtensionMethod = !isInstanceMethod && AttributeUtility.IsDefined<ExtensionAttribute> (methodCallExpression.Method, false);
 
-        if (methodCallExpression.Arguments.Any())
-          throw CreateNotSupportedException (methodCallExpression, "Only methods without parameters can be redirected.");
+        if (isInstanceMethod)
+        {
+          if (methodCallExpression.Arguments.Any())
+            throw CreateNotSupportedException (methodCallExpression, "Only methods without parameters can be redirected.");
+        }
+        else if (isExtensionMethod)
+        {
+          if (methodCallExpression.Arguments.Count != 1)
+          {
+            throw CreateNotSupportedException (
+                methodCallExpression, "Extensions method expecting parameters other than the instance parameter cannot be redirected.");
+          }
+        }
+        else
+        {
+          throw CreateNotSupportedException (
+              methodCallExpression, "Only instance or extension methods can be redirected, but the method is static.");
+        }
 
         if (methodCallExpression.Method.Equals (MappedProperty.GetGetMethod (true)))
           throw CreateNotSupportedException (methodCallExpression, "The method would redirect to itself.");
 
-        Expression instance;
+        Expression instanceExpression = isInstanceMethod ? methodCallExpression.Object : methodCallExpression.Arguments.Single();
         try
         {
-          instance = methodCallExpression.Object.Type == MappedProperty.DeclaringType
-                         ? methodCallExpression.Object
-                         : Expression.Convert (methodCallExpression.Object, MappedProperty.DeclaringType);
+          if (instanceExpression.Type != MappedProperty.DeclaringType)
+            instanceExpression = Expression.Convert (instanceExpression, MappedProperty.DeclaringType);
         }
         catch (InvalidOperationException ex)
         {
           throw CreateNotSupportedException (methodCallExpression, ex.Message, ex);
         }
 
-        var memberAccess = Expression.MakeMemberAccess (instance, MappedProperty);
+        var memberAccess = Expression.MakeMemberAccess (instanceExpression, MappedProperty);
 
         if (!methodCallExpression.Type.IsAssignableFrom (memberAccess.Type))
           throw CreateNotSupportedException (methodCallExpression, "The property has an incompatible return type.");
