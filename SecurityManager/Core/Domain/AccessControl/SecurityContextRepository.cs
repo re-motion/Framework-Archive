@@ -15,14 +15,13 @@
 // 
 // Additional permissions are listed in the file re-motion_exceptions.txt.
 // 
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using JetBrains.Annotations;
 using Remotion.Collections;
 using Remotion.Data.DomainObjects;
-using Remotion.Data.DomainObjects.Linq;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Security;
 using Remotion.SecurityManager.Domain.Metadata;
@@ -103,7 +102,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl
     {
       ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
       ArgumentUtility.CheckNotNullOrEmpty ("propertyValue", propertyValue);
-     
+
       _propertyName = propertyName;
       _propertyValue = propertyValue;
     }
@@ -140,7 +139,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl
           Dictionary<string, IDomainObjectHandle<User>> users,
           Dictionary<EnumWrapper, IDomainObjectHandle<AbstractRoleDefinition>> abstractRoles,
           Dictionary<string, SecurableClassDefinitionData> classes)
-        :base (revision)
+          : base (revision)
       {
         Tenants = tenants;
         Groups = groups;
@@ -151,7 +150,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl
     }
 
     public SecurityContextRepository (IRevisionProvider revisionProvider)
-      : base (revisionProvider)
+        : base (revisionProvider)
     {
     }
 
@@ -216,33 +215,50 @@ namespace Remotion.SecurityManager.Domain.AccessControl
       {
         using (ClientTransaction.CreateRootTransaction().EnterNonDiscardingScope())
         {
-          var tenants = QueryFactory.CreateLinqQuery<Tenant>()
-                                    .Select (t => new { Key = t.UniqueIdentifier, Value = t.ID })
-                                    .ToDictionary (t => t.Key, t => t.Value.GetHandle<Tenant>());
+          var tenants = GetTenants();
+          var groups = GetGroups();
+          var users = GetUsers();
+          var abstractRoles = GetAbstractRoles();
+          var classes = BuildClassCache (
+              GetSecurableClassDefinitions(),
+              GetStatelessAccessControlLists(),
+              GetStatefulAccessControlLists());
 
-          var groups = QueryFactory.CreateLinqQuery<Group>()
-                                   .Select (g => new { Key = g.UniqueIdentifier, Value = g.ID })
-                                   .ToDictionary (g => g.Key, g => g.Value.GetHandle<Group>());
-
-          var users = QueryFactory.CreateLinqQuery<User>()
-                                  .Select (u => new { Key = u.UserName, Value = u.ID })
-                                  .ToDictionary (u => u.Key, u => u.Value.GetHandle<User>());
-
-          var abstractRoles = QueryFactory.CreateLinqQuery<AbstractRoleDefinition>()
-                                          .Select (r => new { Key = r.Name, Value = r.ID })
-                                          .ToDictionary (r => EnumWrapper.Get (r.Key), r => r.Value.GetHandle<AbstractRoleDefinition>());
-
-          var classes = GetSecurableClassDefinitions();
-          var statefulAcls = GetStatefulAccessControlLists();
-          var statelessAcls = GetStatelessAccessControlLists();
-
-          var classData = classes.ToDictionary (
-              c => c.Value,
-              c => new SecurableClassDefinitionData (classes.GetValueOrDefault (c.Key), statelessAcls.GetValueOrDefault (c.Key), statefulAcls[c.Key]));
-
-          return new Data (revision, tenants, groups, users, abstractRoles, classData);
+          return new Data (revision, tenants, groups, users, abstractRoles, classes);
         }
       }
+    }
+
+    private Dictionary<string, IDomainObjectHandle<Tenant>> GetTenants ()
+    {
+      var result = from t in QueryFactory.CreateLinqQuery<Tenant>()
+                   select new { Key = t.UniqueIdentifier, Value = t.ID };
+
+      return result.ToDictionary (t => t.Key, t => t.Value.GetHandle<Tenant>());
+    }
+
+    private Dictionary<string, IDomainObjectHandle<Group>> GetGroups ()
+    {
+      var result = from g in QueryFactory.CreateLinqQuery<Group>()
+                   select new { Key = g.UniqueIdentifier, Value = g.ID };
+
+      return result.ToDictionary (g => g.Key, g => g.Value.GetHandle<Group>());
+    }
+
+    private Dictionary<string, IDomainObjectHandle<User>> GetUsers ()
+    {
+      var result = from u in QueryFactory.CreateLinqQuery<User>()
+                   select new { Key = u.UserName, Value = u.ID };
+
+      return result.ToDictionary (u => u.Key, u => u.Value.GetHandle<User>());
+    }
+
+    private Dictionary<EnumWrapper, IDomainObjectHandle<AbstractRoleDefinition>> GetAbstractRoles ()
+    {
+      var result = from r in QueryFactory.CreateLinqQuery<AbstractRoleDefinition>()
+                   select new { Key = r.Name, Value = r.ID };
+
+      return result.ToDictionary (r => EnumWrapper.Get (r.Key), r => r.Value.GetHandle<AbstractRoleDefinition>());
     }
 
     private IDictionary<ObjectID, string> GetSecurableClassDefinitions ()
@@ -277,6 +293,16 @@ namespace Remotion.SecurityManager.Domain.AccessControl
                    select new { Class = acl.GetClass().ID, Acl = acl.ID.GetHandle<StatelessAccessControlList>() };
 
       return result.ToDictionary (o => o.Class, o => o.Acl);
+    }
+
+    private static Dictionary<string, SecurableClassDefinitionData> BuildClassCache (
+        IDictionary<ObjectID, string> classes,
+        IDictionary<ObjectID, IDomainObjectHandle<StatelessAccessControlList>> statelessAcls,
+        ILookup<ObjectID, StatefulAccessControlListData> statefulAcls)
+    {
+      return classes.ToDictionary (
+          c => c.Value,
+          c => new SecurableClassDefinitionData (classes.GetValueOrDefault (c.Key), statelessAcls.GetValueOrDefault (c.Key), statefulAcls[c.Key]));
     }
 
     private AccessControlException CreateAccessControlException (string message, params object[] args)
