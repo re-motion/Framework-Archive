@@ -134,8 +134,11 @@ namespace Remotion.Data.DomainObjects
     /// <summary>
     /// Initializes a new instance of the <see cref="LinqPropertyRedirectionAttribute"/> class.
     /// </summary>
-    /// <param name="declaringType">The declaring type of the property to which the attribute's target is redirected. The property must
-    /// exist within the <see cref="DomainObject"/> holding the redirected attribute (or one of its persistent mixins).</param>
+    /// <param name="declaringType">
+    /// The declaring type of the property to which the attribute's target is redirected. 
+    /// The declaring type may be the corresponding <see cref="DomainObject"/> type, the mixin type, 
+    /// or the interface type defining the property specified by <paramref name="mappedPropertyName"/>.
+    /// </param>
     /// <param name="mappedPropertyName">The name of the property to which the attribute's target is redirected.</param>
     public LinqPropertyRedirectionAttribute (Type declaringType, string mappedPropertyName)
     {
