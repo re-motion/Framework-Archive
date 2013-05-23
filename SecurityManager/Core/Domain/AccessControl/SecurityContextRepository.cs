@@ -18,6 +18,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using JetBrains.Annotations;
 using Remotion.Collections;
 using Remotion.Data.DomainObjects;
@@ -231,47 +232,51 @@ namespace Remotion.SecurityManager.Domain.AccessControl
                                           .Select (r => new { Key = r.Name, Value = r.ID })
                                           .ToDictionary (r => EnumWrapper.Get (r.Key), r => r.Value.GetHandle<AbstractRoleDefinition>());
 
-          PrefetchStateDefinitions();
-          PrefetchStatePropertyDefinitions();
-          var classes = QueryFactory.CreateLinqQuery<SecurableClassDefinition>().Select (c => c)
-                                    .FetchOne (cd => cd.StatelessAccessControlList)
-                                    .FetchMany (cd => cd.StatefulAccessControlLists)
-                                    .ThenFetchMany (StatefulAccessControlList.SelectStateCombinations())
-                                    .ThenFetchMany (StateCombination.SelectStateUsages()).
-                                     ToDictionary (c => c.Name, CreateCachableData);
+          var classes = GetSecurableClassDefinitions();
+          var statefulAcls = GetStatefulAccessControlLists();
+          var statelessAcls = GetStatelessAccessControlLists();
 
-          return new Data (revision, tenants, groups, users, abstractRoles, classes);
+          var classData = classes.ToDictionary (
+              c => c.Value,
+              c => new SecurableClassDefinitionData (classes.GetValueOrDefault (c.Key), statelessAcls.GetValueOrDefault (c.Key), statefulAcls[c.Key]));
+
+          return new Data (revision, tenants, groups, users, abstractRoles, classData);
         }
       }
     }
 
-    private static void PrefetchStateDefinitions ()
+    private IDictionary<ObjectID, string> GetSecurableClassDefinitions ()
     {
-// ReSharper disable ReturnValueOfPureMethodIsNotUsed
-      QueryFactory.CreateLinqQuery<StateDefinition>().AsEnumerable().FirstOrDefault();
-// ReSharper restore ReturnValueOfPureMethodIsNotUsed
-    }
-    
-    private static void PrefetchStatePropertyDefinitions ()
-    {
-// ReSharper disable ReturnValueOfPureMethodIsNotUsed
-      QueryFactory.CreateLinqQuery<StatePropertyDefinition>().AsEnumerable().FirstOrDefault();
-// ReSharper restore ReturnValueOfPureMethodIsNotUsed
+      var result = from @class in QueryFactory.CreateLinqQuery<SecurableClassDefinition>()
+                   select new { @class.ID, @class.Name };
+
+      return result.ToDictionary (c => c.ID, c => c.Name);
     }
 
-    private SecurableClassDefinitionData CreateCachableData (SecurableClassDefinition @class)
+    private ILookup<ObjectID, StatefulAccessControlListData> GetStatefulAccessControlLists ()
     {
-      return new SecurableClassDefinitionData (
-          @class.BaseClass != null ? @class.BaseClass.Name : null,
-          @class.StatelessAccessControlList.GetSafeHandle(),
-          @class.StatefulAccessControlLists.SelectMany (
-              acl => acl.StateCombinations.SelectMany (sc => sc.GetStates())
-                        .Select (sd => CreateStatefulAccessControlListData (acl, sd))));
+      var result = from acl in QueryFactory.CreateLinqQuery<StatefulAccessControlList>()
+                   from sc in acl.GetStateCombinations()
+                   from su in sc.GetStateUsages()
+                   select
+                       new
+                       {
+                           Class = acl.GetClass().ID,
+                           Acl =
+                       new StatefulAccessControlListData (
+                       acl.ID.GetHandle<StatefulAccessControlList>(),
+                       new State (su.StateDefinition.StateProperty.Name, su.StateDefinition.Name))
+                       };
+
+      return result.ToLookup (o => o.Class, o => o.Acl);
     }
 
-    private StatefulAccessControlListData CreateStatefulAccessControlListData (StatefulAccessControlList acl, StateDefinition stateDefinition)
+    private IDictionary<ObjectID, IDomainObjectHandle<StatelessAccessControlList>> GetStatelessAccessControlLists ()
     {
-      return new StatefulAccessControlListData (acl.GetHandle(), new State (stateDefinition.StateProperty.Name, stateDefinition.Name));
+      var result = from acl in QueryFactory.CreateLinqQuery<StatelessAccessControlList>()
+                   select new { Class = acl.GetClass().ID, Acl = acl.ID.GetHandle<StatelessAccessControlList>() };
+
+      return result.ToDictionary (o => o.Class, o => o.Acl);
     }
 
     private AccessControlException CreateAccessControlException (string message, params object[] args)

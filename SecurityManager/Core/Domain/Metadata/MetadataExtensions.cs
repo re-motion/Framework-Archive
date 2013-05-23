@@ -25,9 +25,9 @@ using Remotion.Utilities;
 namespace Remotion.SecurityManager.Domain.Metadata
 {
   /// <summary>
-  /// Defines query extensions for <see cref="SecurableClassDefinition"/>
+  /// Defines query extensions for types declared in the <c>Remotion.SecurityManager.Domain.Metadata</c> namespace.
   /// </summary>
-  public static class SecurableClassDefinitionExtensions
+  public static class MetadataExtensions
   {
     public static IQueryable<SecurableClassDefinition> FetchDetails (this IQueryable<SecurableClassDefinition> query)
     {
