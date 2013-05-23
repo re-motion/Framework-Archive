@@ -47,7 +47,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl
     {
       ArgumentUtility.CheckNotNull ("context", context);
 
-      for (var @class = GetClass(context.Class); @class.BaseClass != null; @class = GetClass (@class.BaseClass))
+      for (var @class = GetClass (context.Class); @class != null; @class = GetClass (@class.BaseClass))
       {
         var foundAccessControlList = FindAccessControlList (@class, context);
         if (foundAccessControlList != null)
@@ -59,6 +59,8 @@ namespace Remotion.SecurityManager.Domain.AccessControl
 
     private SecurableClassDefinitionData GetClass (string className)
     {
+      if (className == null)
+        return null;
       return _securityContextRepository.GetClass (className);
     }
 
