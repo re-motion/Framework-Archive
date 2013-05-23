@@ -31,7 +31,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
   public static class MetadataExtensions
   {
     [LinqPropertyRedirection (typeof (StatePropertyDefinition), "DefinedStatesInternal")]
-    public static ObjectList<StateDefinition> GetDefinedStates (this StatePropertyDefinition statePropertyDefinition)
+    public static ObjectList<StateDefinition> GetDefinedStatesForQuery (this StatePropertyDefinition statePropertyDefinition)
     {
       ArgumentUtility.CheckNotNull ("statePropertyDefinition", statePropertyDefinition);
 
@@ -79,7 +79,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
 
       return query.FetchMany (@class => @class.GetStatePropertyReferencesForQuery())
                   .ThenFetchOne (r => r.StateProperty)
-                  .ThenFetchMany (p => p.GetDefinedStates());
+                  .ThenFetchMany (p => p.GetDefinedStatesForQuery());
     }
 
     private static IQueryable<SecurableClassDefinition> FetchStatelessAccessControlList (this IQueryable<SecurableClassDefinition> query)
@@ -88,7 +88,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
 
       return query.FetchOne (cd => cd.StatelessAccessControlList)
                   .ThenFetchMany (acl => acl.AccessControlEntries)
-                  .ThenFetchMany (ace => AccessControlExtensions.GetPermissions (ace));
+                  .ThenFetchMany (ace => ace.GetPermissionsForQuery());
     }
 
     private static IQueryable<SecurableClassDefinition> FetchStatefulAcessControlLists (this IQueryable<SecurableClassDefinition> query)
@@ -97,9 +97,9 @@ namespace Remotion.SecurityManager.Domain.Metadata
 
       return query.FetchMany (cd => cd.StatefulAccessControlLists)
                   .ThenFetchMany (acl => acl.AccessControlEntries)
-                  .ThenFetchMany (ace => AccessControlExtensions.GetPermissions (ace))
+                  .ThenFetchMany (ace => ace.GetPermissionsForQuery())
                   .FetchMany (cd => cd.StatefulAccessControlLists)
-                  .ThenFetchMany (acl => acl.GetStateCombinations())
+                  .ThenFetchMany (acl => acl.GetStateCombinationsForQuery())
                   .ThenFetchMany (sc => sc.GetStateUsagesForQuery());
     }
   }

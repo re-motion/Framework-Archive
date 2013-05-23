@@ -47,6 +47,14 @@ namespace Remotion.SecurityManager.Domain.AccessControl
     {
       ArgumentUtility.CheckNotNull ("context", context);
 
+      // Status quo:
+      // Don't match ACL if Context contains more properties then the Class
+      // Throw if Context misses a property for the specified Class
+      // Match ACL if all States of the StateCombination match with the Context
+      // if current Class does not contain a matching ACL, go to parent
+      // -> once the BaseClass contains less properties then the Context a match is no longer possible
+      // -> Inheritance happens on a by-state base
+
       for (var @class = GetClass (context.Class); @class != null; @class = GetClass (@class.BaseClass))
       {
         var foundAccessControlList = FindAccessControlList (@class, context);

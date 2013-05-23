@@ -198,9 +198,9 @@ namespace Remotion.SecurityManager.Domain.AccessControl
     private ILookup<ObjectID, StatefulAccessControlListData> LoadStatefulAccessControlLists ()
     {
       var result = from acl in QueryFactory.CreateLinqQuery<StatefulAccessControlList>()
-                   from sc in acl.GetStateCombinations().DefaultIfEmpty()
+                   from sc in acl.GetStateCombinationsForQuery().DefaultIfEmpty()
                    from su in sc.GetStateUsagesForQuery().DefaultIfEmpty()
-                   select new { Class = acl.GetClass(), Acl = acl, State = su.StateDefinition }
+                   select new { Class = acl.GetClassForQuery(), Acl = acl, State = su.StateDefinition }
                    into row
                    select new
                           {
@@ -225,13 +225,13 @@ namespace Remotion.SecurityManager.Domain.AccessControl
                                       o.Acl.StatePropertyName,
                                       o.Acl.StateValue)
                                 : null)
-                   .ToLookup (g => g.Key.Class, g => new StatefulAccessControlListData (g.Key.Acl, g.ToArray().AsReadOnly()));
+                   .ToLookup (g => g.Key.Class, g => new StatefulAccessControlListData (g.Key.Acl, g.Where (s => s != null).ToArray().AsReadOnly()));
     }
 
     private IDictionary<ObjectID, IDomainObjectHandle<StatelessAccessControlList>> LoadStatelessAccessControlLists ()
     {
       var result = from acl in QueryFactory.CreateLinqQuery<StatelessAccessControlList>()
-                   select new { Class = acl.GetClass().ID, Acl = acl.ID.GetHandle<StatelessAccessControlList>() };
+                   select new { Class = acl.GetClassForQuery().ID, Acl = acl.ID.GetHandle<StatelessAccessControlList>() };
 
       return result.ToDictionary (o => o.Class, o => o.Acl);
     }

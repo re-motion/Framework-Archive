@@ -28,7 +28,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl
   public static class AccessControlExtensions
   {
     [LinqPropertyRedirection(typeof (StatefulAccessControlList), "MyClass")]
-    public static SecurableClassDefinition GetClass (this StatefulAccessControlList acl)
+    public static SecurableClassDefinition GetClassForQuery (this StatefulAccessControlList acl)
     {
       ArgumentUtility.CheckNotNull ("acl", acl);
 
@@ -36,7 +36,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl
     }
 
     [LinqPropertyRedirection(typeof (StatelessAccessControlList), "MyClass")]
-    public static SecurableClassDefinition GetClass (this StatelessAccessControlList acl)
+    public static SecurableClassDefinition GetClassForQuery (this StatelessAccessControlList acl)
     {
       ArgumentUtility.CheckNotNull ("acl", acl);
 
@@ -44,7 +44,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl
     }
 
     [LinqPropertyRedirection(typeof (StatefulAccessControlList), "StateCombinationsInternal")]
-    public static ObjectList<StateCombination> GetStateCombinations (this StatefulAccessControlList acl)
+    public static ObjectList<StateCombination> GetStateCombinationsForQuery (this StatefulAccessControlList acl)
     {
       ArgumentUtility.CheckNotNull ("acl", acl);
 
@@ -58,7 +58,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl
     }
 
     [LinqPropertyRedirection(typeof (AccessControlEntry), "PermissionsInternal")]
-    public static ObjectList<Permission> GetPermissions (AccessControlEntry ace)
+    public static ObjectList<Permission> GetPermissionsForQuery (this AccessControlEntry ace)
     {
       ArgumentUtility.CheckNotNull ("ace", ace);
 
