@@ -132,8 +132,11 @@
     <Compile Include="Domain\AccessControl\ISecurityPrincipalRepository.cs" />
     <Compile Include="Domain\AccessControl\Principal.cs" />
     <Compile Include="Domain\AccessControl\RepositoryBase.cs" />
+    <Compile Include="Domain\AccessControl\SecurableClassDefinitionData.cs" />
     <Compile Include="Domain\AccessControl\SecurityContextRepository.cs" />
     <Compile Include="Domain\AccessControl\SecurityPrincipalRepository.cs" />
+    <Compile Include="Domain\AccessControl\State.cs" />
+    <Compile Include="Domain\AccessControl\StatefulAccessControlListData.cs" />
     <Compile Include="Domain\AccessControl\TenantHierarchyCondition.cs" />
     <Compile Include="Domain\AccessControl\GroupHierarchyCondition.cs" />
     <Compile Include="Domain\AccessControl\SecurityTokenMatcher.cs" />

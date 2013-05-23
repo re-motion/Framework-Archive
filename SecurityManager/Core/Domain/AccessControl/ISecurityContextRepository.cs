@@ -18,6 +18,7 @@
 
 using System;
 using JetBrains.Annotations;
+using Remotion.Collections;
 using Remotion.Data.DomainObjects;
 using Remotion.Security;
 using Remotion.SecurityManager.Domain.Metadata;
@@ -48,5 +49,8 @@ namespace Remotion.SecurityManager.Domain.AccessControl
 
     [NotNull]
     SecurableClassDefinitionData GetClass (string name);
+
+    [NotNull]
+    ReadOnlyCollectionDecorator<string> GetStatePropertyValues (IDomainObjectHandle<StatePropertyDefinition> stateProperty);
   }
 }

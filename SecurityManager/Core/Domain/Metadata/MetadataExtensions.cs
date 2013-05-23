@@ -18,6 +18,7 @@
 
 using System;
 using System.Linq;
+using Remotion.Data.DomainObjects;
 using Remotion.Data.DomainObjects.Linq;
 using Remotion.SecurityManager.Domain.AccessControl;
 using Remotion.Utilities;
@@ -29,6 +30,32 @@ namespace Remotion.SecurityManager.Domain.Metadata
   /// </summary>
   public static class MetadataExtensions
   {
+    [LinqPropertyRedirection (typeof (StatePropertyDefinition), "DefinedStatesInternal")]
+    public static ObjectList<StateDefinition> GetDefinedStates (this StatePropertyDefinition statePropertyDefinition)
+    {
+      ArgumentUtility.CheckNotNull ("statePropertyDefinition", statePropertyDefinition);
+
+      return new ObjectList<StateDefinition> (statePropertyDefinition.DefinedStates);
+    }
+
+    [LinqPropertyRedirection (typeof (StatePropertyDefinition), "StatePropertyReferences")]
+    public static ObjectList<StatePropertyReference> GetStatePropertyReferences (this StatePropertyDefinition statePropertyDefinition)
+    {
+      throw new NotSupportedException ("GetStatePropertyReferences() is only supported for building LiNQ query expressions.");
+    }
+
+    [LinqPropertyRedirection (typeof (SecurableClassDefinition), "StatePropertyReferences")]
+    public static ObjectList<StatePropertyReference> GetStatePropertyReferences (this SecurableClassDefinition securableClassDefinition)
+    {
+      throw new NotSupportedException ("GetStatePropertyReferences() is only supported for building LiNQ query expressions.");
+    }
+
+    [LinqPropertyRedirection (typeof (SecurableClassDefinition), "AccessTypeReferences")]
+    public static ObjectList<AccessTypeReference> GetAccessTypeReferences (this SecurableClassDefinition securableClassDefinition)
+    {
+      throw new NotSupportedException ("GetAccessTypeReferences() is only supported for building LiNQ query expressions.");
+    }
+
     public static IQueryable<SecurableClassDefinition> FetchDetails (this IQueryable<SecurableClassDefinition> query)
     {
       ArgumentUtility.CheckNotNull ("query", query);
@@ -43,16 +70,16 @@ namespace Remotion.SecurityManager.Domain.Metadata
     {
       ArgumentUtility.CheckNotNull ("query", query);
 
-      return query.FetchMany (SecurableClassDefinition.SelectAccessTypeReferences()).ThenFetchOne (r => r.AccessType);
+      return query.FetchMany (@class => @class.GetAccessTypeReferences()).ThenFetchOne (r => r.AccessType);
     }
 
     private static IQueryable<SecurableClassDefinition> FetchStateProperties (this IQueryable<SecurableClassDefinition> query)
     {
       ArgumentUtility.CheckNotNull ("query", query);
 
-      return query.FetchMany (SecurableClassDefinition.SelectStatePropertyReferences())
+      return query.FetchMany (@class => @class.GetStatePropertyReferences())
                   .ThenFetchOne (r => r.StateProperty)
-                  .ThenFetchMany (StatePropertyDefinition.SelectDefinedStates());
+                  .ThenFetchMany (p => p.GetDefinedStates());
     }
 
     private static IQueryable<SecurableClassDefinition> FetchStatelessAccessControlList (this IQueryable<SecurableClassDefinition> query)
@@ -61,7 +88,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
 
       return query.FetchOne (cd => cd.StatelessAccessControlList)
                   .ThenFetchMany (acl => acl.AccessControlEntries)
-                  .ThenFetchMany (AccessControlEntry.SelectPermissions());
+                  .ThenFetchMany (ace => AccessControlExtensions.GetPermissions (ace));
     }
 
     private static IQueryable<SecurableClassDefinition> FetchStatefulAcessControlLists (this IQueryable<SecurableClassDefinition> query)
@@ -70,10 +97,10 @@ namespace Remotion.SecurityManager.Domain.Metadata
 
       return query.FetchMany (cd => cd.StatefulAccessControlLists)
                   .ThenFetchMany (acl => acl.AccessControlEntries)
-                  .ThenFetchMany (AccessControlEntry.SelectPermissions())
+                  .ThenFetchMany (ace => AccessControlExtensions.GetPermissions (ace))
                   .FetchMany (cd => cd.StatefulAccessControlLists)
-                  .ThenFetchMany (StatefulAccessControlList.SelectStateCombinations())
-                  .ThenFetchMany (StateCombination.SelectStateUsages());
+                  .ThenFetchMany (acl => acl.GetStateCombinations())
+                  .ThenFetchMany (sc => sc.GetStateUsages());
     }
   }
 }

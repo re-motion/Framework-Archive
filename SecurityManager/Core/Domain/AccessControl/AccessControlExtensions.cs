@@ -54,7 +54,15 @@ namespace Remotion.SecurityManager.Domain.AccessControl
     [LinqPropertyRedirection(typeof (StateCombination), "StateUsages")]
     public static ObjectList<StateUsage> GetStateUsages (this StateCombination stateCombination)
     {
-      throw new NotSupportedException ("Is only supported for building LiNQ query expressions.");
+      throw new NotSupportedException ("GetStateUsages() is only supported for building LiNQ query expressions.");
+    }
+
+    [LinqPropertyRedirection(typeof (AccessControlEntry), "PermissionsInternal")]
+    public static ObjectList<Permission> GetPermissions (AccessControlEntry ace)
+    {
+      ArgumentUtility.CheckNotNull ("ace", ace);
+
+      return new ObjectList<Permission> (ace.GetPermissions());
     }
   }
 }

@@ -18,6 +18,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Remotion.Collections;
 using Remotion.Data.DomainObjects;
 using Remotion.Security;
 using Remotion.SecurityManager.Domain.Metadata;
@@ -46,38 +47,55 @@ namespace Remotion.SecurityManager.Domain.AccessControl
     {
       ArgumentUtility.CheckNotNull ("context", context);
 
-      var classDefinition = _securityContextRepository.GetClass (context.Class);
-
-      IDomainObjectHandle<AccessControlList> foundAccessControlList;
-
-      while (true)
+      for (var @class = GetClass(context.Class); @class.BaseClass != null; @class = GetClass (@class.BaseClass))
       {
-        foundAccessControlList = FindAccessControlList (classDefinition, context);
+        var foundAccessControlList = FindAccessControlList (@class, context);
         if (foundAccessControlList != null)
-          break;
-        if (classDefinition.BaseClass == null)
-          break;
-
-        classDefinition = _securityContextRepository.GetClass (classDefinition.BaseClass);
+          return foundAccessControlList;
       }
 
-      if (foundAccessControlList == null)
-        throw CreateAccessControlException ("The ACL for the securable class '{0}' could not be found.", context.Class);
-
-      return foundAccessControlList;
+      throw CreateAccessControlException ("The ACL for the securable class '{0}' could not be found.", context.Class);
     }
 
-    private IDomainObjectHandle<AccessControlList> FindAccessControlList (SecurableClassDefinitionData classDefinition, ISecurityContext context)
+    private SecurableClassDefinitionData GetClass (string className)
+    {
+      return _securityContextRepository.GetClass (className);
+    }
+
+    private IDomainObjectHandle<AccessControlList> FindAccessControlList (SecurableClassDefinitionData classData, ISecurityContext context)
     {
       if (context.IsStateless)
-      {
-        return classDefinition.StatelessAccessControlList;
-      }
+        return classData.StatelessAccessControlList;
       else
+        return classData.StatefulAccessControlLists.Where (acl => MatchesStates (context, acl.States)).Select (acl => acl.Handle).FirstOrDefault();
+    }
+
+    private bool MatchesStates (ISecurityContext context, ICollection<State> states)
+    {
+      if (context.GetNumberOfStates() > states.Count)
+        return false;
+
+      return states.All (s => MatchesState (context, s));
+    }
+
+    private bool MatchesState (ISecurityContext context, State state)
+    {
+      if (!context.ContainsState (state.PropertyName))
+        throw CreateAccessControlException ("The state '{0}' is missing in the security context.", state.PropertyName);
+
+      var enumWrapper = context.GetState (state.PropertyName);
+
+      var validStates = _securityContextRepository.GetStatePropertyValues (state.PropertyHandle);
+      if (!validStates.Contains (enumWrapper.Name))
       {
-        StatefulAccessControlListData statefulAccessControlList = null; // FindStateCombination (classDefinition, context);
-        return statefulAccessControlList.Handle;
+        throw CreateAccessControlException (
+            "The state '{0}' is not defined for the property '{1}' of the securable class '{2}' or its base classes.",
+            enumWrapper.Name,
+            state.PropertyName,
+            context.Class);
       }
+
+      return enumWrapper.Name.Equals (state.Value);
     }
 
     private StateCombination FindStateCombination (SecurableClassDefinition classDefinition, ISecurityContext context)
