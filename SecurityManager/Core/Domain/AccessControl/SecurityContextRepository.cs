@@ -199,18 +199,16 @@ namespace Remotion.SecurityManager.Domain.AccessControl
     {
       var result = from acl in QueryFactory.CreateLinqQuery<StatefulAccessControlList>()
                    from sc in acl.GetStateCombinationsForQuery()
-                   from su in sc.GetStateUsagesForQuery().DefaultIfEmpty()
-                   select new { Class = acl.GetClassForQuery(), Acl = acl, State = su.StateDefinition }
-                   into row
+                   from usage in sc.GetStateUsagesForQuery().DefaultIfEmpty()
                    select new
                           {
-                              Class = row.Class.ID,
-                              Acl = row.Acl.ID.GetHandle<StatefulAccessControlList>(),
-                              HasState = row.State != null,
-                              StatePropertyID = row.State.StateProperty.ID.Value,
-                              StatePropertyClassID = row.State.StateProperty.ID.ClassID,
-                              StatePropertyName = row.State.StateProperty.Name,
-                              StateValue = row.State.Name
+                              Class = acl.GetClassForQuery().ID,
+                              Acl = acl.ID.GetHandle<StatefulAccessControlList>(),
+                              HasState = usage != null,
+                              StatePropertyID = usage.StateDefinition.StateProperty.ID.Value,
+                              StatePropertyClassID = usage.StateDefinition.StateProperty.ID.ClassID,
+                              StatePropertyName = usage.StateDefinition.StateProperty.Name,
+                              StateValue = usage.StateDefinition.Name
                           };
 
       return result.AsEnumerable()
