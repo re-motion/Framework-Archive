@@ -52,7 +52,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl
     }
 
     [LinqPropertyRedirection(typeof (StateCombination), "StateUsages")]
-    public static ObjectList<StateUsage> GetStateUsages (this StateCombination stateCombination)
+    public static ObjectList<StateUsage> GetStateUsagesForQuery (this StateCombination stateCombination)
     {
       throw new NotSupportedException ("GetStateUsages() is only supported for building LiNQ query expressions.");
     }

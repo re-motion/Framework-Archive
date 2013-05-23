@@ -199,7 +199,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl
     {
       var result = from acl in QueryFactory.CreateLinqQuery<StatefulAccessControlList>()
                    from sc in acl.GetStateCombinations()
-                   from su in sc.GetStateUsages()
+                   from su in sc.GetStateUsagesForQuery()
                    select
                        new
                        {

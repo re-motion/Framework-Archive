@@ -39,19 +39,19 @@ namespace Remotion.SecurityManager.Domain.Metadata
     }
 
     [LinqPropertyRedirection (typeof (StatePropertyDefinition), "StatePropertyReferences")]
-    public static ObjectList<StatePropertyReference> GetStatePropertyReferences (this StatePropertyDefinition statePropertyDefinition)
+    public static ObjectList<StatePropertyReference> GetStatePropertyReferencesForQuery (this StatePropertyDefinition statePropertyDefinition)
     {
       throw new NotSupportedException ("GetStatePropertyReferences() is only supported for building LiNQ query expressions.");
     }
 
     [LinqPropertyRedirection (typeof (SecurableClassDefinition), "StatePropertyReferences")]
-    public static ObjectList<StatePropertyReference> GetStatePropertyReferences (this SecurableClassDefinition securableClassDefinition)
+    public static ObjectList<StatePropertyReference> GetStatePropertyReferencesForQuery (this SecurableClassDefinition securableClassDefinition)
     {
       throw new NotSupportedException ("GetStatePropertyReferences() is only supported for building LiNQ query expressions.");
     }
 
     [LinqPropertyRedirection (typeof (SecurableClassDefinition), "AccessTypeReferences")]
-    public static ObjectList<AccessTypeReference> GetAccessTypeReferences (this SecurableClassDefinition securableClassDefinition)
+    public static ObjectList<AccessTypeReference> GetAccessTypeReferencesForQuery (this SecurableClassDefinition securableClassDefinition)
     {
       throw new NotSupportedException ("GetAccessTypeReferences() is only supported for building LiNQ query expressions.");
     }
@@ -70,14 +70,14 @@ namespace Remotion.SecurityManager.Domain.Metadata
     {
       ArgumentUtility.CheckNotNull ("query", query);
 
-      return query.FetchMany (@class => @class.GetAccessTypeReferences()).ThenFetchOne (r => r.AccessType);
+      return query.FetchMany (@class => @class.GetAccessTypeReferencesForQuery()).ThenFetchOne (r => r.AccessType);
     }
 
     private static IQueryable<SecurableClassDefinition> FetchStateProperties (this IQueryable<SecurableClassDefinition> query)
     {
       ArgumentUtility.CheckNotNull ("query", query);
 
-      return query.FetchMany (@class => @class.GetStatePropertyReferences())
+      return query.FetchMany (@class => @class.GetStatePropertyReferencesForQuery())
                   .ThenFetchOne (r => r.StateProperty)
                   .ThenFetchMany (p => p.GetDefinedStates());
     }
@@ -100,7 +100,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
                   .ThenFetchMany (ace => AccessControlExtensions.GetPermissions (ace))
                   .FetchMany (cd => cd.StatefulAccessControlLists)
                   .ThenFetchMany (acl => acl.GetStateCombinations())
-                  .ThenFetchMany (sc => sc.GetStateUsages());
+                  .ThenFetchMany (sc => sc.GetStateUsagesForQuery());
     }
   }
 }
