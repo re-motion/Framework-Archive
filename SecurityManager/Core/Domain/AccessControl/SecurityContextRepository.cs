@@ -187,7 +187,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl
       return result.ToDictionary (r => EnumWrapper.Get (r.Key), r => r.Value);
     }
 
-    private IDictionary<ObjectID, string> LoadSecurableClassDefinitions ()
+    private Dictionary<ObjectID, string> LoadSecurableClassDefinitions ()
     {
       var result = from @class in QueryFactory.CreateLinqQuery<SecurableClassDefinition>()
                    select new { @class.ID, @class.Name };
@@ -224,7 +224,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl
                    .ToLookup (g => g.Key.Class, g => new StatefulAccessControlListData (g.Key.Acl, g.Where (s => s != null)));
     }
 
-    private IDictionary<ObjectID, IDomainObjectHandle<StatelessAccessControlList>> LoadStatelessAccessControlLists ()
+    private Dictionary<ObjectID, IDomainObjectHandle<StatelessAccessControlList>> LoadStatelessAccessControlLists ()
     {
       var result = from acl in QueryFactory.CreateLinqQuery<StatelessAccessControlList>()
                    select new { Class = acl.GetClassForQuery().ID, Acl = acl.ID.GetHandle<StatelessAccessControlList>() };
@@ -232,7 +232,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl
       return result.ToDictionary (o => o.Class, o => o.Acl);
     }
 
-    private static Dictionary<string, SecurableClassDefinitionData> BuildClassCache (
+    private Dictionary<string, SecurableClassDefinitionData> BuildClassCache (
         IDictionary<ObjectID, string> classes,
         IDictionary<ObjectID, IDomainObjectHandle<StatelessAccessControlList>> statelessAcls,
         ILookup<ObjectID, StatefulAccessControlListData> statefulAcls)
