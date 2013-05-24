@@ -64,7 +64,9 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessControlL
     public void Find_WithMatchingState_ReturnsStatefulAcl ()
     {
       var acl = CreateStatefulAcl (OrderState_Delivered, PaymentState_None);
-      StubClassDefinition<Order> (acl);
+      StubClassDefinition<Order> (
+          CreateStatefulAcl (OrderState_Received, PaymentState_None),
+          acl);
       var context = CreateContextForOrder (OrderState.Delivered, PaymentState.None);
 
       var aclFinder = CreateAccessControlListFinder();
