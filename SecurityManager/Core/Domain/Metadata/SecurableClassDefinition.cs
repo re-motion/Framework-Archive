@@ -20,6 +20,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Linq.Expressions;
 using Remotion.Data.DomainObjects;
 using Remotion.Data.DomainObjects.Linq;
 using Remotion.Data.DomainObjects.Queries;
@@ -35,9 +36,15 @@ namespace Remotion.SecurityManager.Domain.Metadata
   [DBTable]
   public abstract class SecurableClassDefinition : MetadataObject, ISupportsGetObject
   {
-    // types
+    public static Expression<Func<SecurableClassDefinition, IEnumerable<AccessTypeReference>>> SelectAccessTypeReferences ()
+    {
+      return @class => @class.AccessTypeReferences;
+    }
 
-    // static members and constants
+    public static Expression<Func<SecurableClassDefinition, IEnumerable<StatePropertyReference>>> SelectStatePropertyReferences ()
+    {
+      return @class => @class.StatePropertyReferences;
+    }
 
     public static SecurableClassDefinition NewObject ()
     {
@@ -74,38 +81,10 @@ namespace Remotion.SecurityManager.Domain.Metadata
       return result.ToObjectList();
     }
 
-    // member fields
     private DomainObjectDeleteHandler _deleteHandler;
-
-    // construction and disposing
 
     protected SecurableClassDefinition ()
     {
-      SubscribeCollectionEvents();
-    }
-
-    // methods and properties
-
-    //TODO: Add test for initialize during on load
-    protected override void OnLoaded (LoadMode loadMode)
-    {
-      base.OnLoaded (loadMode);
-      SubscribeCollectionEvents(); // always subscribe collection events when the object gets a new data container
-    }
-
-    private void SubscribeCollectionEvents ()
-    {
-      StatefulAccessControlLists.Added += StatefulAccessControlLists_Added;
-    }
-
-    private void StatefulAccessControlLists_Added (object sender, DomainObjectCollectionChangeEventArgs args)
-    {
-      var accessControlList = (StatefulAccessControlList) args.DomainObject;
-      var accessControlLists = StatefulAccessControlLists;
-      if (accessControlLists.Count == 1)
-        accessControlList.Index = 0;
-      else
-        accessControlList.Index = accessControlLists[accessControlLists.Count - 2].Index + 1;
     }
 
     [DBBidirectionalRelation ("DerivedClasses")]
@@ -145,6 +124,18 @@ namespace Remotion.SecurityManager.Domain.Metadata
     public ReadOnlyCollection<StateCombination> StateCombinations
     {
       get { return StatefulAccessControlLists.SelectMany (acl => acl.StateCombinations).ToList().AsReadOnly(); }
+    }
+
+    //TODO RM-5636: Add tests
+    public bool AreStateCombinationsComplete ()
+    {
+      if (StateProperties.Count > 1)
+        throw new NotSupportedException ("Only classes with a zero or one StatePropertyDefinition are supported.");
+
+      int possibleStateCombinations = 1;
+      if (StateProperties.Count > 0)
+        possibleStateCombinations = StateProperties[0].DefinedStates.Count;
+      return StateCombinations.Count < possibleStateCombinations;
     }
 
     [DBBidirectionalRelation ("MyClass")]
@@ -433,19 +424,32 @@ namespace Remotion.SecurityManager.Domain.Metadata
         if (result.DuplicateStateCombinations.Count > 0)
         {
           throw new ConstraintViolationException (
-              string.Format ("The securable class definition '{0}' contains at least one state combination that has been defined twice.", Name));
+              String.Format ("The securable class definition '{0}' contains at least one state combination that has been defined twice.", Name));
         }
         else
         {
           Assertion.IsTrue (result.InvalidStateCombinations.Count > 0);
           throw new ConstraintViolationException (
-              string.Format ("The securable class definition '{0}' contains at least one state combination that does not match the class's properties.", Name));
+              String.Format ("The securable class definition '{0}' contains at least one state combination that does not match the class's properties.", Name));
         }
       }
 
       base.OnCommitting (args);
 
       Touch();
+    }
+
+    protected override void OnRelationChanged (RelationChangedEventArgs args)
+    {
+      base.OnRelationChanged (args);
+      if (args.IsRelation (this, "StatefulAccessControlLists"))
+        HandleStatefulAccessControlListsChanged ((StatefulAccessControlList) args.NewRelatedObject);
+    }
+
+    private void HandleStatefulAccessControlListsChanged (StatefulAccessControlList acl)
+    {
+      if (acl != null)
+        acl.Index = StatefulAccessControlLists.IndexOf (acl);
     }
 
     protected override void OnDeleting (EventArgs args)
@@ -470,12 +474,12 @@ namespace Remotion.SecurityManager.Domain.Metadata
 
     private ArgumentException CreateArgumentException (string argumentName, string format, params object[] args)
     {
-      return new ArgumentException (string.Format (format, args), argumentName);
+      return new ArgumentException (String.Format (format, args), argumentName);
     }
     
     private ArgumentException CreateArgumentOutOfRangeException (string argumentName, object actualValue, string format, params object[] args)
     {
-      return new ArgumentOutOfRangeException(argumentName, actualValue, string.Format (format, args));
+      return new ArgumentOutOfRangeException(argumentName, actualValue, String.Format (format, args));
     }
 
     private IEnumerable<AccessControlList> GetAccessControlLists()

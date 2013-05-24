@@ -17,6 +17,7 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Remotion.Data.DomainObjects;
 using Remotion.Security;
 using Remotion.SecurityManager.Domain.Metadata;
@@ -26,26 +27,31 @@ namespace Remotion.SecurityManager.Domain.AccessControl
 {
   public class AccessControlListFinder : IAccessControlListFinder
   {
+    private readonly ISecurityContextRepository _securityContextRepository;
+
+    public AccessControlListFinder (ISecurityContextRepository securityContextRepository)
+    {
+      ArgumentUtility.CheckNotNull ("securityContextRepository", securityContextRepository);
+      
+      _securityContextRepository = securityContextRepository;
+    }
+
     /// <exception cref="AccessControlException">
     ///   The <see cref="SecurableClassDefinition"/> is not found.<br/>- or -<br/>
     ///   A matching <see cref="AccessControlList"/> is not found.<br/>- or -<br/>
     ///   <paramref name="context"/> is not state-less and a <see cref="StatePropertyDefinition"/> is missing.<br/>- or -<br/>
     ///   <paramref name="context"/> is not state-less and contains an invalid state for a <see cref="StatePropertyDefinition"/>.
     /// </exception>
-    public AccessControlList Find (ClientTransaction transaction, ISecurityContext context)
+    public IDomainObjectHandle<AccessControlList> Find (ISecurityContext context)
     {
-      ArgumentUtility.CheckNotNull ("transaction", transaction);
       ArgumentUtility.CheckNotNull ("context", context);
 
-      SecurableClassDefinition classDefinition;
-      using (transaction.EnterNonDiscardingScope())
-      {
-        classDefinition = SecurableClassDefinition.FindByName (context.Class);
-      }
-      if (classDefinition == null)
-        throw CreateAccessControlException ("The securable class '{0}' cannot be found.", context.Class);
+      var securableClassDefinition = _securityContextRepository.GetClass (context.Class);
 
-      return Find (transaction, classDefinition, context);
+      lock (securableClassDefinition.RootTransaction)
+      {
+        return Find (securableClassDefinition, context);
+      }
     }
 
     /// <exception cref="AccessControlException">
@@ -53,42 +59,38 @@ namespace Remotion.SecurityManager.Domain.AccessControl
     ///   <paramref name="context"/> is not state-less and a <see cref="StatePropertyDefinition"/> is missing.<br/>- or -<br/>
     ///   <paramref name="context"/> is not state-less and contains an invalid state for a <see cref="StatePropertyDefinition"/>.
     /// </exception>
-    public AccessControlList Find (ClientTransaction transaction, SecurableClassDefinition classDefinition, ISecurityContext context)
+    public IDomainObjectHandle<AccessControlList> Find (SecurableClassDefinition classDefinition, ISecurityContext context)
     {
-      ArgumentUtility.CheckNotNull ("transaction", transaction);
       ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
       ArgumentUtility.CheckNotNull ("context", context);
 
-      using (transaction.EnterNonDiscardingScope())
+      AccessControlList foundAccessControlList = null;
+
+      while (foundAccessControlList == null && classDefinition != null)
       {
-        AccessControlList foundAccessControlList = null;
-
-        while (foundAccessControlList == null && classDefinition != null)
+        if (context.IsStateless)
         {
-          if (context.IsStateless)
-          {
-            foundAccessControlList = classDefinition.StatelessAccessControlList;
-          }
-          else
-          {
-            var foundStateCombination = FindStateCombination (classDefinition, context);
-            if (foundStateCombination != null)
-              foundAccessControlList = foundStateCombination.AccessControlList;
-          }
-
-          classDefinition = classDefinition.BaseClass;
+          foundAccessControlList = classDefinition.StatelessAccessControlList;
+        }
+        else
+        {
+          var foundStateCombination = FindStateCombination (classDefinition, context);
+          if (foundStateCombination != null)
+            foundAccessControlList = foundStateCombination.AccessControlList;
         }
 
-        if (foundAccessControlList == null)
-          throw CreateAccessControlException ("The ACL for the securable class '{0}' could not be found.", context.Class);
-
-        return foundAccessControlList;
+        classDefinition = classDefinition.BaseClass;
       }
+
+      if (foundAccessControlList == null)
+        throw CreateAccessControlException ("The ACL for the securable class '{0}' could not be found.", context.Class);
+
+      return foundAccessControlList.GetHandle();
     }
 
     private StateCombination FindStateCombination (SecurableClassDefinition classDefinition, ISecurityContext context)
     {
-      List<StateDefinition> states = GetStates (classDefinition.StateProperties, context);
+      var states = GetStates (classDefinition.StateProperties, context);
       if (states == null)
         return null;
 
@@ -97,15 +99,10 @@ namespace Remotion.SecurityManager.Domain.AccessControl
 
     private List<StateDefinition> GetStates (IList<StatePropertyDefinition> stateProperties, ISecurityContext context)
     {
-      List<StateDefinition> states = new List<StateDefinition>();
-
       if (context.GetNumberOfStates() > stateProperties.Count)
         return null;
 
-      foreach (var stateProperty in stateProperties)
-        states.Add (GetState (stateProperty, context));
-
-      return states;
+      return stateProperties.Select (stateProperty => GetState (stateProperty, context)).ToList();
     }
 
     private StateDefinition GetState (StatePropertyDefinition property, ISecurityContext context)
