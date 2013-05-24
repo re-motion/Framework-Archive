@@ -221,7 +221,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl
                                       row.StatePropertyName,
                                       row.StateValue)
                                 : null)
-                   .ToLookup (g => g.Key.Class, g => new StatefulAccessControlListData (g.Key.Acl, g.Where (s => s != null).ToArray().AsReadOnly()));
+                   .ToLookup (g => g.Key.Class, g => new StatefulAccessControlListData (g.Key.Acl, g.Where (s => s != null)));
     }
 
     private IDictionary<ObjectID, IDomainObjectHandle<StatelessAccessControlList>> LoadStatelessAccessControlLists ()
