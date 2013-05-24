@@ -61,7 +61,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl
           return foundAccessControlList;
       }
 
-      throw CreateAccessControlException ("The ACL for the securable class '{0}' could not be found.", context.Class);
+      return null;
     }
 
     private SecurableClassDefinitionData GetClass (string className)
