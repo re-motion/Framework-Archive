@@ -20,6 +20,8 @@ using System.ComponentModel;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
+using Microsoft.Practices.ServiceLocation;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.Compilation;
 using Remotion.Web.Configuration;
@@ -530,7 +532,7 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
 
   void ISmartPage.SaveAllState ()
   {
-    ControlHelper.SaveAllState (this);
+    MemberCaller.SaveAllState (this);
   }
 
   public override void ProcessRequest (HttpContext httpContext)
@@ -538,6 +540,16 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
     ArgumentUtility.CheckNotNull ("httpContext", httpContext);
     _httpContext = new HttpContextWrapper (httpContext);
     base.ProcessRequest (httpContext);
+  }
+
+  protected virtual IServiceLocator ServiceLocator
+  {
+    get { return SafeServiceLocator.Current; }
+  }
+
+  private IInternalControlMemberCaller MemberCaller
+  {
+    get { return ServiceLocator.GetInstance<IInternalControlMemberCaller>(); }
   }
 
   IPage IControl.Page
