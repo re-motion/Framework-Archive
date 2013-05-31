@@ -18,8 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Remotion.Security;
-using Remotion.Utilities;
-using System.Security.Principal;
 
 namespace Remotion.Data.DomainObjects.Security
 {

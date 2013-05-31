@@ -95,11 +95,6 @@ namespace Remotion.SecurityManager.Clients.Web.Classes
         return null;
     }
 
-    protected IServiceLocator ServiceLocator
-    {
-      get { return SafeServiceLocator.Current; }
-    }
-
     protected IResourceUrlFactory ResourceUrlFactory
     {
       get { return ServiceLocator.GetInstance<IResourceUrlFactory> (); }

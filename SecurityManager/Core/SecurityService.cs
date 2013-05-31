@@ -19,10 +19,12 @@ using System;
 using System.Collections.Specialized;
 using Remotion.Configuration;
 using Remotion.Data.DomainObjects;
+using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Logging;
 using Remotion.Security;
 using Remotion.SecurityManager.Domain;
 using Remotion.SecurityManager.Domain.AccessControl;
+using Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 
@@ -87,7 +89,18 @@ namespace Remotion.SecurityManager
           return new AccessType[0];
         }
 
-        return _accessResolver.GetAccessTypes (acl, token);
+        if (acl == null)
+          return new AccessType[0];
+
+        try
+        {
+          return _accessResolver.GetAccessTypes (acl, token);
+        }
+        catch (ObjectsNotFoundException e)
+        {
+          s_log.Error ("Error during evaluation of security query.", e);
+          return new AccessType[0];
+        }
       }
     }
 

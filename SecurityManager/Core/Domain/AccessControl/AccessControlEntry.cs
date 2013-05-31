@@ -24,6 +24,7 @@ using Remotion.Data.DomainObjects;
 using Remotion.Globalization;
 using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.BindableObject;
+using Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation;
 using Remotion.SecurityManager.Domain.Metadata;
 using Remotion.SecurityManager.Domain.OrganizationalStructure;
 using Remotion.SecurityManager.Domain.SearchInfrastructure.Metadata;
@@ -39,11 +40,6 @@ namespace Remotion.SecurityManager.Domain.AccessControl
   [SecurityManagerStorageGroup]
   public abstract class AccessControlEntry : AccessControlObject
   {
-    public static Expression<Func<AccessControlEntry, IEnumerable<Permission>>> SelectPermissions ()
-    {
-      return ace => ace.PermissionsInternal;
-    }
-
     public static AccessControlEntry NewObject ()
     {
       return NewObject<AccessControlEntry>();
