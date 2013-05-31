@@ -277,9 +277,13 @@ namespace Remotion.Data.DomainObjects.Security
 
     private IDisposable EnterScopeOnDemand (ClientTransaction clientTransaction)
     {
-      //if (ClientTransaction.Current == clientTransaction && clientTransaction.ActiveTransaction == clientTransaction)
-      //  return null;
-      return clientTransaction.EnterNonDiscardingScope();
+      if (clientTransaction.ActiveTransaction != clientTransaction)
+        return clientTransaction.EnterNonDiscardingScope();
+
+      if (ClientTransaction.Current != clientTransaction)
+        return clientTransaction.EnterNonDiscardingScope();
+
+      return null;
     }
   }
 }
