@@ -30,7 +30,6 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
 {
 
   [TestFixture]
-  [Ignore("TODO RM-5537")]
   public class LazyContainerTest : WebControlTest
   {
     // types

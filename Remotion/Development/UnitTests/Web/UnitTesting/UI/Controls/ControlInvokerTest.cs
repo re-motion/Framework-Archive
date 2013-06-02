@@ -139,15 +139,14 @@ namespace Remotion.Development.UnitTests.Web.UnitTesting.UI.Controls
     }
 
     [Test]
-    [Ignore ("TODO 5534")]
-    public void TestViewState ()  // TODO 5534: Check with MK, which ViewStateMode value should be passed to SaveViewStateRecursive?
+    public void TestViewState ()
     {
       _invoker.InitRecursive();
       _invoker.LoadRecursive();
       _child.Text = "Foo Bar";
       _invoker.PreRenderRecursive();
 
-      object viewState = _invoker.SaveViewStateRecursive ();
+      object viewState = _invoker.SaveViewStateRecursive (ViewStateMode.Enabled);
 
       _invokerAfterPostBack.InitRecursive();
       Assert.That (_childAfterPostBack.Text, Is.EqualTo (string.Empty));
