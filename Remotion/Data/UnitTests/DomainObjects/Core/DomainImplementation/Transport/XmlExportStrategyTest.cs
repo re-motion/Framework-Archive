@@ -29,8 +29,14 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DomainImplementation.Transp
   [TestFixture]
   public class XmlExportStrategyTest : ClientTransactionBaseTest
   {
+    private string ReplaceKnownXmlNamespaceDeclarations (string xml)
+    {
+      return xml
+          .Replace (@"xmlns:xsd=""http://www.w3.org/2001/XMLSchema""", "XmlnsDeclaration")
+          .Replace (@"xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance""", "XmlnsDeclaration");
+    }
+
     [Test]
-    [Ignore("TODO RM-5580")]
     public void Export_SerializesData ()
     {
       DataContainer container1 = DomainObjectIDs.Order1.GetObject<Order> ().InternalDataContainer;
@@ -43,9 +49,11 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DomainImplementation.Transp
       using (var stream = new MemoryStream ())
       {
         XmlExportStrategy.Instance.Export (stream, items);
-        string actualString = Encoding.UTF8.GetString (stream.ToArray());
+        var actualString = Encoding.UTF8.GetString (stream.ToArray());
+        actualString = ReplaceKnownXmlNamespaceDeclarations (actualString);
+        var expectedString = ReplaceKnownXmlNamespaceDeclarations (XmlSerializationStrings.XmlForOrder1Order2);
 
-        Assert.That (actualString, Is.EqualTo (XmlSerializationStrings.XmlForOrder1Order2));
+        Assert.That (actualString, Is.EqualTo (expectedString));
       }
     }
 

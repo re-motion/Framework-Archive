@@ -26,6 +26,14 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting
   [TestFixture]
   public class SerializerTest
   {
+
+    private string ReplaceKnownXmlNamespaceDeclarations (string xml)
+    {
+      return xml
+        .Replace (@"xmlns:xsd=""http://www.w3.org/2001/XMLSchema""", "XmlnsDeclaration")
+        .Replace (@"xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance""", "XmlnsDeclaration");
+    }
+
     [Test]
     public void SerializeAndDeserialize()
     {
@@ -40,14 +48,15 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting
     }
 
     [Test]
-    [Ignore("TODO RM-5580")]
     public void XmlSerialize ()
     {
       int[] array = new int[] {1, 2, 3};
       byte[] serializedArray = Serializer.XmlSerialize (array);
       string serializedArrayString = Encoding.UTF8.GetString (serializedArray);
+      serializedArrayString = ReplaceKnownXmlNamespaceDeclarations (serializedArrayString);
+      var expectedXmlString = ReplaceKnownXmlNamespaceDeclarations(GetExpectedXmlString());
 
-      Assert.That (serializedArrayString, Is.EqualTo (GetExpectedXmlString()));
+      Assert.That (serializedArrayString, Is.EqualTo (expectedXmlString));
     }
 
     private string GetExpectedXmlString ()
