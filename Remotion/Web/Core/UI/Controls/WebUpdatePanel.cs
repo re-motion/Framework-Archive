@@ -93,6 +93,8 @@ namespace Remotion.Web.UI.Controls
     {
       if (!string.IsNullOrEmpty (_cssClass))
         writer.AddAttribute (HtmlTextWriterAttribute.Class, _cssClass);
+
+      Attributes.AddAttributes(writer);
     }
 
     protected override void RenderChildren (HtmlTextWriter writer)
