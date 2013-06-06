@@ -14,16 +14,15 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System;
-using Remotion.Data.DomainObjects.ObjectBinding;
+using Remotion.Data.DomainObjects;
 
-namespace Remotion.Data.DomainObjects.PerformanceTests.TestDomain
+namespace Remotion.Development.UnitTests.Data.UnitTesting.DomainObjects.TestDomain
 {
   [Instantiable]
   [DBTable]
-  [Serializable]
-  public class OppositeClassWithAnonymousRelationProperties : SimpleDomainObject<OppositeClassWithAnonymousRelationProperties>
+  [DBStorageGroup]
+  public abstract class TestDomainObject:DomainObject
   {
-    
+    public abstract int Value { get; set; }
   }
 }

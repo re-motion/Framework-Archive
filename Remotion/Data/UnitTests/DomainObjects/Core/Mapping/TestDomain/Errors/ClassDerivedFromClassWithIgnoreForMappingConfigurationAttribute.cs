@@ -15,15 +15,13 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Data.DomainObjects.ObjectBinding;
 
-namespace Remotion.Data.DomainObjects.PerformanceTests.TestDomain
+namespace Remotion.Data.UnitTests.DomainObjects.Core.Mapping.TestDomain.Errors
 {
-  [Instantiable]
-  [DBTable]
-  [Serializable]
-  public class OppositeClassWithAnonymousRelationProperties : SimpleDomainObject<OppositeClassWithAnonymousRelationProperties>
+  public abstract class ClassDerivedFromClassWithIgnoreForMappingConfigurationAttribute : ClassWithIgnoreForMappingConfigurationAttribute
   {
-    
+    protected ClassDerivedFromClassWithIgnoreForMappingConfigurationAttribute ()
+    {
+    }
   }
 }
