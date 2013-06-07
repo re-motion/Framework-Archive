@@ -14,13 +14,14 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
 
-namespace Remotion.Data.UnitTests.DomainObjects.Core.Mapping.TestDomain.Errors
+namespace Remotion.Data.UnitTests.DomainObjects.Core.Mapping.TestDomain.Integration.ReflectionBasedMappingSample
 {
-  public abstract class ClassDerivedFromClassWithIgnoreForMappingConfigurationAttribute : ClassWithIgnoreForMappingConfigurationAttribute
+  public abstract class ClassInMappingDerivedFromClassWithIgnoreForMappingConfigurationAttribute : ClassWithIgnoreForMappingConfigurationAttribute
   {
-    protected ClassDerivedFromClassWithIgnoreForMappingConfigurationAttribute ()
+    protected ClassInMappingDerivedFromClassWithIgnoreForMappingConfigurationAttribute ()
     {
     }
   }
