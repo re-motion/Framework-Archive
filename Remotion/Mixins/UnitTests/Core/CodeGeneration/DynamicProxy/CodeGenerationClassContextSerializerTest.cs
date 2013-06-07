@@ -28,7 +28,8 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.DynamicProxy
   public class CodeGenerationClassContextSerializerTest : CodeGenerationBaseTest
   {
     [Test]
-    public void IntegrationTest()
+    [Ignore ("TODO 5370: Rewrite to use our code generation instead of SavedTypeBuilder. Move to another namespace.")]
+    public void IntegrationTest ()
     {
       var referenceMixinContext1 = MixinContextObjectMother.Create (mixinType: typeof (BT1Mixin1));
       var referenceMixinContext2 = MixinContextObjectMother.Create (mixinType: typeof (BT1Mixin2));

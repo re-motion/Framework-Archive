@@ -59,6 +59,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixinTy
     }
 
     [Test]
+    [Ignore ("TODO 5370: Delete. (No more name providers.)")]
     public void NameProviderIsUsedWhenTypeIsGenerated ()
     {
       var repository = new MockRepository ();
@@ -81,6 +82,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixinTy
     }
 
     [Test]
+    [Ignore ("TODO 5370: Delete. (No more name providers.)")]
     public void NamesOfNestedTypesAreFlattened ()
     {
       var repository = new MockRepository ();

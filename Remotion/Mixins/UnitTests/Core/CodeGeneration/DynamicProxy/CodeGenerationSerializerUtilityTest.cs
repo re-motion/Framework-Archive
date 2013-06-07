@@ -23,6 +23,7 @@ using Remotion.Mixins.CodeGeneration.DynamicProxy;
 namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.DynamicProxy
 {
   [TestFixture]
+  [Ignore ("TODO 5370: Delete.")]
   public class CodeGenerationSerializerUtilityTest : CodeGenerationBaseTest
   {
     [Test]

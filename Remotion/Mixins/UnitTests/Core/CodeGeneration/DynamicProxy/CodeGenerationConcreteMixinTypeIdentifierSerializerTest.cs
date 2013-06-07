@@ -28,6 +28,7 @@ using Remotion.Mixins.UnitTests.Core.TestDomain;
 namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.DynamicProxy
 {
   [TestFixture]
+  [Ignore ("TODO 5370: Port to ExpressionConcreteMixinTypeSerializer.")]
   public class CodeGenerationConcreteMixinTypeIdentifierSerializerTest : CodeGenerationBaseTest
   {
     private MethodInfo _simpleMethod1;

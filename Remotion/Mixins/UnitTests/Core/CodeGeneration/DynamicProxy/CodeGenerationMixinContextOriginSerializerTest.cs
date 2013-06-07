@@ -24,6 +24,7 @@ using Remotion.Mixins.Context;
 namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.DynamicProxy
 {
   [TestFixture]
+  [Ignore ("TODO 5370: Rewrite to use our code generation instead of SavedTypeBuilder. Move to another namespace.")]
   public class CodeGenerationMixinContextOriginSerializerTest : CodeGenerationBaseTest
   {
     [Test]

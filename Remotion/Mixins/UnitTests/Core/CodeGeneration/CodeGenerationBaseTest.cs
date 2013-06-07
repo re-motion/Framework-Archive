@@ -42,7 +42,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
 
     protected ConcreteTypeBuilder SavedTypeBuilder
     {
-      get { throw new NotImplementedException ("TODO 5370 ABABABABABAABABABABABABABAABABABABABABABAABABABABABABABAABAB"); }
+      get { throw new NotImplementedException ("TODO 5370: Remove"); }
     }
 
     protected IPipelineRegistry PipelineRegistry
