@@ -23,6 +23,7 @@ namespace Remotion.Mixins.CodeGeneration.DynamicProxy
   public interface IInitializableMixinTarget : IMixinTarget
   {
     void Initialize ();
+    // TODO 5370: Remove method.
     void InitializeAfterDeserialization (object[] mixinInstances);
   }
 }

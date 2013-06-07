@@ -28,9 +28,9 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
   {
     Expression CreateNewClassContext (ClassContext classContext);
 
-    Expression CreateInitialization (MutableType concreteTarget, Expression extensionsField);
+    Expression CreateInitialization (MutableType concreteTarget, Expression extensionsField, Expression extensionsInitializedField);
 
     Expression CreateInitializingDelegation (
-        MethodBodyContextBase bodyContext, Expression extensionsField, Expression instance, MethodInfo methodToCall);
+        MethodBodyContextBase bodyContext, Expression extensionsField, Expression extensionsInitializedField, Expression instance, MethodInfo methodToCall);
   }
 }

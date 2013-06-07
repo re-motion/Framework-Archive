@@ -43,24 +43,26 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       return serializer.CreateNewExpression();
     }
 
-    public Expression CreateInitialization (MutableType concreteTarget, Expression extensionsField)
+    public Expression CreateInitialization (MutableType concreteTarget, Expression extensionsField, Expression extensionsInitializedField)
     {
       ArgumentUtility.CheckNotNull ("concreteTarget", concreteTarget);
       ArgumentUtility.CheckNotNull ("extensionsField", extensionsField);
+      ArgumentUtility.CheckNotNull ("extensionsInitializedField", extensionsInitializedField);
 
-      // if (__extensions == null)
+      // if (__extensions == null || !__extensionsInitialized)
       //   ((IInitializableMixinTarget) this).Initialize();
 
       return Expression.IfThen (
-          Expression.Equal (extensionsField, Expression.Constant (null)),
+          Expression.OrElse (Expression.Equal (extensionsField, Expression.Constant (null)), Expression.Not (extensionsInitializedField)),
           Expression.Call (new ThisExpression (concreteTarget), s_initializeMethod));
     }
 
     public Expression CreateInitializingDelegation (
-        MethodBodyContextBase bodyContext, Expression extensionsField, Expression instance, MethodInfo methodToCall)
+        MethodBodyContextBase bodyContext, Expression extensionsField, Expression extensionsInitializedField, Expression instance, MethodInfo methodToCall)
     {
       ArgumentUtility.CheckNotNull ("bodyContext", bodyContext);
       ArgumentUtility.CheckNotNull ("extensionsField", extensionsField);
+      ArgumentUtility.CheckNotNull ("extensionsInitializedField", extensionsInitializedField);
       ArgumentUtility.CheckNotNull ("instance", instance);
       ArgumentUtility.CheckNotNull ("methodToCall", methodToCall);
 
@@ -68,7 +70,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       // instance<GenericParameters>.MethodToCall(<parameters>);
 
       return Expression.Block (
-          CreateInitialization (bodyContext.DeclaringType, extensionsField),
+          CreateInitialization (bodyContext.DeclaringType, extensionsField, extensionsInitializedField),
           bodyContext.DelegateTo (instance, methodToCall));
     }
   }

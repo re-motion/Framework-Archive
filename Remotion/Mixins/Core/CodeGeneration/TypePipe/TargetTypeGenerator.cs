@@ -68,6 +68,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     private Expression _classContextField;
     private Expression _mixinArrayInitializerField;
+    private Expression _extensionsInitializedField;
     private Expression _extensionsField;
     private Expression _firstField;
 
@@ -97,10 +98,15 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       // '__extensions' field of type 'object[]' has already been added by TargetTypeForNextCall.
       _extensionsField = GetFieldExpression (_concreteTarget.AddedFields.Single (f => f.Name == "__extensions"));
 
+      // Not serialized so that initialization is triggered again after deserialization. Default is false. Set immediately _before_ mixins are
+      // serialized (to avoid reentrancy).
+      _extensionsInitializedField = AddDebuggerInvisibleField (
+          "__extensionsInitialized", typeof (bool), FieldAttributes.Private | FieldAttributes.NotSerialized);
+
       var privateStatic = FieldAttributes.Private | FieldAttributes.Static;
       _classContextField = AddDebuggerInvisibleField ("__classContext", typeof (ClassContext), privateStatic);
       _mixinArrayInitializerField = AddDebuggerInvisibleField ("__mixinArrayInitializer", typeof (MixinArrayInitializer), privateStatic);
-      _firstField = AddDebuggerInvisibleField ("__first", nextCallProxyType, FieldAttributes.Private);
+      _firstField = AddDebuggerInvisibleField ("__first", nextCallProxyType, FieldAttributes.Private | FieldAttributes.NotSerialized);
     }
 
     public void AddTypeInitializations (ClassContext classContext, IEnumerable<Type> mixinTypes)
@@ -117,7 +123,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     public void AddInitializations ()
     {
-      _concreteTarget.AddInitialization (ctx => _expressionBuilder.CreateInitialization (ctx.DeclaringType, _extensionsField));
+      _concreteTarget.AddInitialization (ctx => _expressionBuilder.CreateInitialization (ctx.DeclaringType, _extensionsField, _extensionsInitializedField));
     }
 
     public void ImplementIInitializableMixinTarget (IList<Type> mixinTypes, ConstructorInfo nextCallProxyConstructor)
@@ -146,7 +152,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       var noInitialization = Expression.Empty();
       var classContextDebuggerDisplay = "Class context for " + targetClassName;
       // Initialize this instance in case we're being called before the ctor has finished running.
-      var initialization = _expressionBuilder.CreateInitialization (_concreteTarget, _extensionsField);
+      var initialization = _expressionBuilder.CreateInitialization (_concreteTarget, _extensionsField, _extensionsInitializedField);
 
       ImplementReadOnlyProperty (_classContextField, noInitialization, s_classContextProperty, "ClassContext", classContextDebuggerDisplay);
       ImplementReadOnlyProperty (_extensionsField, initialization, s_mixinProperty, "Mixins", "Count = {__extensions.Length}");
@@ -177,7 +183,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
               ? _concreteTarget.GetOrAddOverride (interfaceMethod)
               : _concreteTarget.AddExplicitOverride (interfaceMethod, ctx => Expression.Default (ctx.ReturnType));
 
-      method.SetBody (ctx => _expressionBuilder.CreateInitializingDelegation (ctx, _extensionsField, implementer, interfaceMethod));
+      method.SetBody (ctx => _expressionBuilder.CreateInitializingDelegation (ctx, _extensionsField, _extensionsInitializedField, implementer, interfaceMethod));
 
       _attributeGenerator.AddIntroducedMemberAttribute (method, interfaceMethod, implementingMethod);
       _attributeGenerator.ReplicateAttributes (implementingMethod, method);
@@ -323,7 +329,8 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
       var proxyMethod = nextCallProxy.GetProxyMethodForOverriddenMethod (method);
       var methodOverride = _concreteTarget.GetOrAddOverride (method.MethodInfo);
-      methodOverride.SetBody (ctx => _expressionBuilder.CreateInitializingDelegation (ctx, _extensionsField, _firstField, proxyMethod));
+      methodOverride.SetBody (
+          ctx => _expressionBuilder.CreateInitializingDelegation (ctx, _extensionsField, _extensionsInitializedField, _firstField, proxyMethod));
 
       return methodOverride;
     }
@@ -410,14 +417,17 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     private Expression ImplementCreatingMixinInstances ()
     {
-      // __extensions = __mixinArrayInitializer.CreateMixinArray (MixedObjectInstantiationScope.Current.SuppliedMixinInstances);
+      // if (__extensions == null) // could be set in deserialization scenario
+      //     __extensions = __mixinArrayInitializer.CreateMixinArray (MixedObjectInstantiationScope.Current.SuppliedMixinInstances);
 
-      return Expression.Assign (
-          _extensionsField,
-          Expression.Call (
-              _mixinArrayInitializerField,
-              s_createMixinArrayMethod,
-              Expression.Property (Expression.Property (null, s_currentMixedObjectInstantiationScopeProperty), s_suppliedMixinInstancesProperty)));
+      return Expression.IfThen (
+          Expression.Equal (_extensionsField, Expression.Constant (null, _extensionsField.Type)),
+          Expression.Assign (
+              _extensionsField,
+              Expression.Call (
+                  _mixinArrayInitializerField,
+                  s_createMixinArrayMethod,
+                  Expression.Property (Expression.Property (null, s_currentMixedObjectInstantiationScopeProperty), s_suppliedMixinInstancesProperty))));
     }
 
     private Expression ImplementSettingMixinInstances (Expression mixinInstancs)
@@ -434,6 +444,13 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
         ThisExpression @this, IList<Type> expectedMixinTypes, ConstructorInfo nextCallProxyConstructor, Expression deserialization)
     {
       var mixinInitExpressions = new List<Expression>();
+
+      // if (!__extensionsInitialized)
+      // {
+      //   __extensionsInitialized = true;
+      //  
+
+      mixinInitExpressions.Add (Expression.Assign (_extensionsInitializedField, Expression.Constant (true)));
 
       for (int i = 0; i < expectedMixinTypes.Count; i++)
       {
@@ -454,7 +471,8 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
         }
       }
 
-      return Expression.BlockOrEmpty (mixinInitExpressions);
+      // }
+      return Expression.IfThen (Expression.Not (_extensionsInitializedField), Expression.Block (mixinInitExpressions));
     }
 
     private Expression NewNextCallProxy (ConstructorInfo nextCallProxyConstructor, ThisExpression @this, int depth)
