@@ -19,7 +19,6 @@ using NUnit.Framework;
 using Remotion.Mixins.CodeGeneration;
 using Remotion.Mixins.CodeGeneration.TypePipe;
 using Remotion.Mixins.Context;
-using Remotion.Mixins.Context.Serialization;
 using Remotion.TypePipe.Dlr.Ast;
 using Rhino.Mocks;
 
@@ -92,30 +91,11 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
     {
       var result = _provider.GetFlatValueExpressionForSerialization (_classContext);
 
-      Assert.That (result.NodeType, Is.EqualTo (ExpressionType.Block));
-
-      // Must use the FlatClassContextSerializer.
-      var returningExpression = ((BlockExpression) result).Result;
-      Assert.That (returningExpression.NodeType, Is.EqualTo (ExpressionType.MemberAccess));
-      Assert.That (((MemberExpression) returningExpression).Member, Is.EqualTo (typeof (FlatClassContextSerializer).GetProperty ("Values")));
-
       var compiledResult = Expression.Lambda<Func<object>> (result).Compile ();
       var evaluatedResult = compiledResult ();
 
-      Assert.That (evaluatedResult, Is.TypeOf<object[]>());
-      var deserializer = new FlatClassContextDeserializer ((object[]) evaluatedResult);
-      Assert.That (ClassContext.Deserialize (deserializer), Is.EqualTo (_classContext));
-    }
-
-    [Test]
-    public void DeserializeFlattenedID_ReconstructsClassContext ()
-    {
-      var serializer = new FlatClassContextSerializer();
-      _classContext.Serialize (serializer);
-
-      var result = _provider.DeserializeFlattenedID (serializer.Values);
-
-      Assert.That (result, Is.EqualTo (_classContext));
+      Assert.That (evaluatedResult, Is.TypeOf<FlatClassContext>());
+      Assert.That (((FlatClassContext) evaluatedResult).GetRealValue(), Is.EqualTo (_classContext));
     }
   }
 }

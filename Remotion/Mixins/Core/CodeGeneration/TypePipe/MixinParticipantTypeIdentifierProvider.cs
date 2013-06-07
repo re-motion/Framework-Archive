@@ -57,24 +57,8 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     {
       var classContext = ArgumentUtility.CheckNotNullAndType<ClassContext> ("id", id);
 
-      //ClassContext classContext = ...;
-      //var serializer = new FlatClassContextSerializer();
-      //classContext.Serialize (serializer);
-      //return serializer.Values;
-
       var classContextExpression = GetClassContextExpression (classContext);
-      var serializerExpression = Expression.Variable (typeof (FlatClassContextSerializer));
-      return Expression.Block (
-          new[] { serializerExpression },
-          Expression.Assign (serializerExpression, Expression.New (typeof (FlatClassContextSerializer))),
-          Expression.Call (classContextExpression, "Serialize", Type.EmptyTypes, serializerExpression),
-          Expression.Property (serializerExpression, "Values"));
-    }
-
-    public object DeserializeFlattenedID (object flattenedID)
-    {
-      var serializedValues = ArgumentUtility.CheckNotNullAndType<object[]> ("flattenedID", flattenedID);
-      return ClassContext.Deserialize (new FlatClassContextDeserializer (serializedValues));
+      return Expression.Call (typeof (FlatClassContext), "Create", Type.EmptyTypes, classContextExpression);
     }
 
     private Expression GetClassContextExpression (ClassContext classContext)
@@ -84,6 +68,5 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       var classContextExpression = classContextCodeGenerator.GetConstructorInvocationExpression ();
       return classContextExpression;
     }
-
   }
 }

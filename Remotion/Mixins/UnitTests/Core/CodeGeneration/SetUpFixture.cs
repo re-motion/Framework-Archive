@@ -64,6 +64,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
     {
       var assemblyTrackingPipelineFactory = new AssemblyTrackingPipelineFactory();
       var settings = new PipelineSettings ("re-mix-tests");
+      settings.EnableSerializationWithoutAssemblySaving = true;
       var participants = new IParticipant[] { new MixinParticipant() };
 
       s_pipeline = assemblyTrackingPipelineFactory.CreatePipeline (settings, participants);

@@ -144,6 +144,7 @@
     <Compile Include="CodeGeneration\TypePipe\ExpressionConcreteMixinTypeIdentifierSerializer.cs" />
     <Compile Include="CodeGeneration\TypePipe\ExpressionMixinContextOriginSerializer.cs" />
     <Compile Include="CodeGeneration\TypePipe\ExpressionMixinContextSerializer.cs" />
+    <Compile Include="CodeGeneration\TypePipe\FlatClassContext.cs" />
     <Compile Include="CodeGeneration\TypePipe\IAttributeGenerator.cs" />
     <Compile Include="CodeGeneration\TypePipe\IExpressionBuilder.cs" />
     <Compile Include="CodeGeneration\TypePipe\IMixinInfo.cs" />
