@@ -14,41 +14,40 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
-using System.Runtime.Serialization;
-using Remotion.Utilities;
+using System.Reflection;
 
 namespace Remotion.Mixins.Context.Serialization
 {
   /// <summary>
-  /// Provides functionality for classes deserializing data from an attribute's arguments.
+  /// Provides utility functionality for classes serializing Context objects into an array.
   /// </summary>
-  public abstract class AttributeDeserializerBase
+  public abstract class ArrayContextSerializerBase
   {
     private readonly object[] _values;
 
-    protected AttributeDeserializerBase (object[] values, int expectedNumberOfValues)
+    protected ArrayContextSerializerBase (int valueCount)
     {
-      ArgumentUtility.CheckNotNull ("values", values);
-
-      if (values.Length != expectedNumberOfValues)
-        throw new ArgumentException (string.Format ("Expected an array with {0} elements.", expectedNumberOfValues), "values");
-
-      _values = values;
+      _values = new object[valueCount];
     }
 
-    protected T GetValue<T> (int index)
+    public object[] Values
     {
-      var value = _values[index];
+      get { return _values; }
+    }
 
-      if (!(value is T))
-      {
-        var message = string.Format ("Expected value of type '{0}' at index {1} in the values array, but found '{2}'.",
-                                     typeof (T).FullName, index, value != null ? value.GetType ().FullName : "null");
-        throw new SerializationException (message);
-      }
+    protected void SetValue<T> (int index, T value)
+    {
+      Values[index] = ConvertToStorageFormat (value);
+    }
 
-      return (T) value;
+    protected virtual object ConvertToStorageFormat<T> (T value)
+    {
+      if (typeof (T) == typeof (Assembly))
+        return ConvertToStorageFormat (((Assembly) (object) value).FullName);
+
+      return value;
     }
   }
 }

@@ -15,14 +15,12 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Reflection;
 using NUnit.Framework;
-using Remotion.Development.TypePipe.UnitTesting.Expressions;
 using Remotion.Mixins.CodeGeneration;
 using Remotion.Mixins.CodeGeneration.TypePipe;
 using Remotion.Mixins.Context;
+using Remotion.Mixins.Context.Serialization;
 using Remotion.TypePipe.Dlr.Ast;
-using Remotion.Utilities;
 using Rhino.Mocks;
 
 namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
@@ -90,20 +88,34 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
     }
 
     [Test]
-    public void GetFlatValueExpressionForSerialization_Returns ()
+    public void GetFlatValueExpressionForSerialization_ReturnsExpressionSerializingClassContext ()
     {
-      var result = _provider.GetExpression (_classContext);
+      var result = _provider.GetFlatValueExpressionForSerialization (_classContext);
 
-      Assert.That (result.NodeType, Is.EqualTo (ExpressionType.Convert));
-      var inner = ((UnaryExpression) result).Operand;
+      Assert.That (result.NodeType, Is.EqualTo (ExpressionType.Block));
 
-      // Must _not_ be a ConstantExpression containing the ClassContext, but instead a NewExpression constructing the ClassContext from scratch.
-      Assert.That (inner.NodeType, Is.EqualTo (ExpressionType.New));
+      // Must use the FlatClassContextSerializer.
+      var returningExpression = ((BlockExpression) result).Result;
+      Assert.That (returningExpression.NodeType, Is.EqualTo (ExpressionType.MemberAccess));
+      Assert.That (((MemberExpression) returningExpression).Member, Is.EqualTo (typeof (FlatClassContextSerializer).GetProperty ("Values")));
 
       var compiledResult = Expression.Lambda<Func<object>> (result).Compile ();
       var evaluatedResult = compiledResult ();
 
-      Assert.That (evaluatedResult, Is.EqualTo (_classContext));
+      Assert.That (evaluatedResult, Is.TypeOf<object[]>());
+      var deserializer = new FlatClassContextDeserializer ((object[]) evaluatedResult);
+      Assert.That (ClassContext.Deserialize (deserializer), Is.EqualTo (_classContext));
+    }
+
+    [Test]
+    public void DeserializeFlattenedID_ReconstructsClassContext ()
+    {
+      var serializer = new FlatClassContextSerializer();
+      _classContext.Serialize (serializer);
+
+      var result = _provider.DeserializeFlattenedID (serializer.Values);
+
+      Assert.That (result, Is.EqualTo (_classContext));
     }
   }
 }

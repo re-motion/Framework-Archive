@@ -81,6 +81,12 @@
     <Compile Include="Core\CodeGeneration\TypePipe\CodeGenerationMixinContextOriginSerializerTest.cs" />
     <Compile Include="Core\CodeGeneration\TypePipe\CodeGenerationMixinContextSerializerTest.cs" />
     <Compile Include="Core\CodeGeneration\TypePipe\MixinParticipantTypeIdentifierProviderTest.cs" />
+    <Compile Include="Core\Context\Serialization\AttributeClassContextSerializationTest.cs" />
+    <Compile Include="Core\Context\Serialization\AttributeMixinContextOriginSerializationTest.cs" />
+    <Compile Include="Core\Context\Serialization\AttributeMixinContextSerializationTest.cs" />
+    <Compile Include="Core\Context\Serialization\FlatClassContextSerializationTest.cs" />
+    <Compile Include="Core\Context\Serialization\FlatMixinContextOriginSerializationTest.cs" />
+    <Compile Include="Core\Context\Serialization\FlatMixinContextSerializationTest.cs" />
     <Compile Include="Core\TypeGenerationHelper.cs" />
     <Compile Include="Core\CodeGenerationTypeMother.cs" />
     <Compile Include="Core\CodeGeneration\AttributeBasedMetadataImporterTest.cs" />
@@ -254,9 +260,6 @@
     <Compile Include="Core\Context\MixinContextCollectionTest.cs" />
     <Compile Include="Core\Context\MixinContextTest.cs" />
     <Compile Include="Core\Context\ReadOnlyContextCollectionTest.cs" />
-    <Compile Include="Core\Context\Serialization\AttributeClassContextSerializationTest.cs" />
-    <Compile Include="Core\Context\Serialization\AttributeMixinContextOriginSerializationTest.cs" />
-    <Compile Include="Core\Context\Serialization\AttributeMixinContextSerializationTest.cs" />
     <Compile Include="Core\Context\Serialization\SerializationInfoMixinContextOriginSerializationTest.cs" />
     <Compile Include="Core\Context\Serialization\SerializationInfoClassContextSerializationTest.cs" />
     <Compile Include="Core\Context\Serialization\SerializationInfoMixinContextSerializationTest.cs" />

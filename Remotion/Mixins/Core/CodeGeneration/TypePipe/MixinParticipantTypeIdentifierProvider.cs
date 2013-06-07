@@ -18,6 +18,7 @@
 using System;
 using System.Diagnostics;
 using Remotion.Mixins.Context;
+using Remotion.Mixins.Context.Serialization;
 using Remotion.TypePipe.Caching;
 using Remotion.TypePipe.Dlr.Ast;
 using Remotion.Utilities;
@@ -47,21 +48,42 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     public Expression GetExpression (object id)
     {
       var classContext = ArgumentUtility.CheckNotNullAndType<ClassContext> ("id", id);
-      var classContextCodeGenerator = new CodeGenerationClassContextSerializer();
-      classContext.Serialize (classContextCodeGenerator);
-      return Expression.Convert (classContextCodeGenerator.GetConstructorInvocationExpression(), typeof (object));
+
+      var classContextExpression = GetClassContextExpression (classContext);
+      return Expression.Convert (classContextExpression, typeof (object));
     }
 
     public Expression GetFlatValueExpressionForSerialization (object id)
     {
-      // TODO 5370: Use logic from SerializationInfoClassContextSerializer here.
-      throw new NotImplementedException ("TODO 5370");
+      var classContext = ArgumentUtility.CheckNotNullAndType<ClassContext> ("id", id);
+
+      //ClassContext classContext = ...;
+      //var serializer = new FlatClassContextSerializer();
+      //classContext.Serialize (serializer);
+      //return serializer.Values;
+
+      var classContextExpression = GetClassContextExpression (classContext);
+      var serializerExpression = Expression.Variable (typeof (FlatClassContextSerializer));
+      return Expression.Block (
+          new[] { serializerExpression },
+          Expression.Assign (serializerExpression, Expression.New (typeof (FlatClassContextSerializer))),
+          Expression.Call (classContextExpression, "Serialize", Type.EmptyTypes, serializerExpression),
+          Expression.Property (serializerExpression, "Values"));
     }
 
     public object DeserializeFlattenedID (object flattenedID)
     {
-      // TODO 5370: Use logic from SerializationInfoClassContextDeserializer here.
-      throw new NotImplementedException ("TODO 5370");
+      var serializedValues = ArgumentUtility.CheckNotNullAndType<object[]> ("flattenedID", flattenedID);
+      return ClassContext.Deserialize (new FlatClassContextDeserializer (serializedValues));
     }
+
+    private Expression GetClassContextExpression (ClassContext classContext)
+    {
+      var classContextCodeGenerator = new CodeGenerationClassContextSerializer ();
+      classContext.Serialize (classContextCodeGenerator);
+      var classContextExpression = classContextCodeGenerator.GetConstructorInvocationExpression ();
+      return classContextExpression;
+    }
+
   }
 }

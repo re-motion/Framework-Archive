@@ -15,26 +15,40 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Reflection;
+using System.Linq;
 
 namespace Remotion.Mixins.Context.Serialization
 {
   /// <summary>
-  /// Deserializes the data produced by <see cref="AttributeMixinContextOriginSerializer"/>.
+  /// Deserializes the data serialized by a <see cref="FlatMixinContextSerializer"/>.
   /// </summary>
-  public class AttributeMixinContextOriginDeserializer : ArrayMixinContextOriginDeserializer
+  public class FlatMixinContextDeserializer : ArrayMixinContextDeserializer
   {
-    public AttributeMixinContextOriginDeserializer (object[] values)
+    public FlatMixinContextDeserializer (object[] values)
         : base(values)
     {
     }
 
     protected override T ConvertFromStorageFormat<T> (object value, int index)
     {
-      if (typeof (T) == typeof (Assembly))
-        return (T) (object) Assembly.Load (ConvertFromStorageFormat<string> (value, index));
+      if (typeof (T) == typeof (Type[]))
+      {
+        var convertedTypes = ConvertFromStorageFormat<string[]> (value, index);
+        return (T) (object) convertedTypes.Select (ConvertFromStorageFormat<Type>).ToArray();
+      }
+
+      if (typeof (T) == typeof (Type))
+      {
+        var typeName = ConvertFromStorageFormat<string> (value, index);
+        return (T) (object) Type.GetType (typeName);
+      }
 
       return base.ConvertFromStorageFormat<T> (value, index);
+    }
+
+    protected override ArrayMixinContextOriginDeserializer CreateMixinContextOriginDeserializer (object[] values)
+    {
+      return new FlatMixinContextOriginDeserializer (values);
     }
   }
 }

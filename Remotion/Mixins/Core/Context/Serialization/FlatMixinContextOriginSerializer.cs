@@ -15,22 +15,22 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Reflection;
 
 namespace Remotion.Mixins.Context.Serialization
 {
   /// <summary>
-  /// Deserializes the data serialized by a <see cref="AttributeClassContextSerializer"/>.
+  /// Serializes a <see cref="MixinContextOrigin"/> object into an array in such a way that deserialization can occur in
+  /// a single pass (required by mixed object serialization).
   /// </summary>
-  public class AttributeClassContextDeserializer : ArrayClassContextDeserializer
+  public class FlatMixinContextOriginSerializer : ArrayMixinContextOriginSerializer
   {
-    public AttributeClassContextDeserializer (object[] values)
-        : base(values)
+    protected override object ConvertToStorageFormat<T> (T value)
     {
-    }
+      if (typeof (T) == typeof (Assembly))
+        return ((Assembly) (object) (value)).FullName;
 
-    protected override ArrayMixinContextDeserializer CreateMixinContextDeserializer (object[] values)
-    {
-      return new AttributeMixinContextDeserializer (values);
+      return base.ConvertToStorageFormat (value);
     }
   }
 }
