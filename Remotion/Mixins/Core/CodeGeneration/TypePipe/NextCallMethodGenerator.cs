@@ -21,6 +21,8 @@ using Remotion.Mixins.Definitions;
 using Remotion.TypePipe.Dlr.Ast;
 using Remotion.TypePipe.MutableReflection.BodyBuilding;
 using Remotion.Utilities;
+using System.Linq;
+using Remotion.FunctionalProgramming;
 
 namespace Remotion.Mixins.CodeGeneration.TypePipe
 {
@@ -59,15 +61,17 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
       var expressions = new List<Expression>();
 
+      var returnLabel = Expression.Label (ctx.ReturnType);
+
       for (int potentialDepth = 0; potentialDepth < _targetClassDefinition.Mixins.Count; ++potentialDepth)
       {
         var nextInChain = GetNextInChain (methodDefinitionOnTarget, potentialDepth);
-        var baseCallIfDepthMatches = AddBaseCallToTargetIfDepthMatches (ctx, nextInChain, potentialDepth);
+        var baseCallIfDepthMatches = AddBaseCallToTargetIfDepthMatches (ctx, nextInChain, potentialDepth, returnLabel);
         expressions.Add (baseCallIfDepthMatches);
       }
-      var baseCall = CreateBaseCallToTarget (ctx, methodDefinitionOnTarget);
-      expressions.Add (baseCall);
 
+      var baseCall = CreateBaseCallToTarget (ctx, methodDefinitionOnTarget);
+      expressions.Add (Expression.Label (returnLabel, baseCall));
       return Expression.Block (expressions);
     }
 
@@ -81,11 +85,11 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       return methodDefinitionOnTarget;
     }
 
-    private Expression AddBaseCallToTargetIfDepthMatches (MethodBodyContextBase ctx, MethodDefinition target, int requestedDepth)
+    private Expression AddBaseCallToTargetIfDepthMatches (MethodBodyContextBase ctx, MethodDefinition target, int requestedDepth, LabelTarget returnLabel)
     {
       return Expression.IfThen (
               Expression.Equal (_depthField, Expression.Constant (requestedDepth)),
-              CreateBaseCallStatement (ctx, target));
+              Expression.Return (returnLabel, CreateBaseCallStatement (ctx, target)));
     }
 
     public Expression CreateBaseCallToTarget (MethodBodyContextBase ctx, MethodDefinition target)
