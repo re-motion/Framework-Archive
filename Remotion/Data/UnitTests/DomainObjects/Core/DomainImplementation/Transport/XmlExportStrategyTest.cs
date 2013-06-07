@@ -49,11 +49,9 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DomainImplementation.Transp
       using (var stream = new MemoryStream ())
       {
         XmlExportStrategy.Instance.Export (stream, items);
-        var actualString = Encoding.UTF8.GetString (stream.ToArray());
-        actualString = ReplaceKnownXmlNamespaceDeclarations (actualString);
-        var expectedString = ReplaceKnownXmlNamespaceDeclarations (XmlSerializationStrings.XmlForOrder1Order2);
+        var actualString = ReplaceKnownXmlNamespaceDeclarations (Encoding.UTF8.GetString (stream.ToArray()));
 
-        Assert.That (actualString, Is.EqualTo (expectedString));
+        Assert.That (actualString, Is.EqualTo (ReplaceKnownXmlNamespaceDeclarations (XmlSerializationStrings.XmlForOrder1Order2)));
       }
     }
 

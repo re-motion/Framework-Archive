@@ -52,11 +52,9 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting
     {
       int[] array = new int[] {1, 2, 3};
       byte[] serializedArray = Serializer.XmlSerialize (array);
-      string serializedArrayString = Encoding.UTF8.GetString (serializedArray);
-      serializedArrayString = ReplaceKnownXmlNamespaceDeclarations (serializedArrayString);
-      var expectedXmlString = ReplaceKnownXmlNamespaceDeclarations(GetExpectedXmlString());
+      var serializedArrayString = ReplaceKnownXmlNamespaceDeclarations (Encoding.UTF8.GetString (serializedArray));
 
-      Assert.That (serializedArrayString, Is.EqualTo (expectedXmlString));
+      Assert.That (serializedArrayString, Is.EqualTo (ReplaceKnownXmlNamespaceDeclarations(GetExpectedXmlString())));
     }
 
     private string GetExpectedXmlString ()
