@@ -29,6 +29,7 @@ using Rhino.Mocks;
 namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure
 {
   [TestFixture]
+  [Ignore ("TODO 4370: Delete.")]
   public class InterceptedDomainObjectCreatorTest : StandardMappingTest
   {
     private ClientTransaction _transaction;

@@ -17,12 +17,11 @@
 
 using System;
 using System.Reflection;
-using Remotion.TypePipe.CodeGeneration;
+using Remotion.Data.DomainObjects.Mapping;
 using Remotion.TypePipe.Dlr.Ast;
 using Remotion.Data.DomainObjects.Infrastructure.Interception;
 using Remotion.TypePipe;
 using Remotion.TypePipe.Caching;
-using Remotion.TypePipe.Implementation;
 using Remotion.TypePipe.MutableReflection;
 using Remotion.TypePipe.TypeAssembly;
 using Remotion.Utilities;
@@ -73,9 +72,12 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
       _interceptedPropertyFinder = interceptedPropertyFinder;
     }
 
+    // Assuming a stable mapping, we do not need any additional keys.
+    // Note: To support modifiable mappings, we could use the ClassDefinition as cache key. However, there is no good way to recreate a 
+    // ClassDefinition within the generated code (without relying on a stable mapping) or to deserialize a ClassDefinition (without a stable mapping).
     public override ITypeIdentifierProvider PartialTypeIdentifierProvider
     {
-      get { return new DomainObjectParticipantTypeIdentifierProvider (_typeDefinitionProvider); }
+      get { return null; }
     }
 
     public override void Participate (object id, IProxyTypeAssemblyContext proxyTypeAssemblyContext)
@@ -85,11 +87,12 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
       if (!typeof (DomainObject).IsTypePipeAssignableFrom (proxyTypeAssemblyContext.RequestedType))
         return;
 
-      // TODO 5370: This will change when TypePipe is integrated with re-mix.
-      // TODO : use 'id' i.e. the domainobjectType?!
       var proxyType = proxyTypeAssemblyContext.ProxyType;
-      var concreteBaseType = proxyTypeAssemblyContext.RequestedType;
-      var domainObjectType = _typeDefinitionProvider.GetPublicDomainObjectType (concreteBaseType);
+      var domainObjectType = proxyTypeAssemblyContext.RequestedType;
+
+      var classDefinition = _typeDefinitionProvider.GetTypeDefinition (domainObjectType);
+      if (classDefinition == null)
+        return;
 
       // Add marker interface.
       proxyType.AddInterface (typeof (IInterceptedDomainObject));
@@ -99,10 +102,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
       OverrideGetPublicDomainObjectType (proxyType, domainObjectType);
 
       // Intercept properties.
-      InterceptProperties (proxyType, domainObjectType, concreteBaseType);
-
-      // For now, serialization is not supported.
-      // TODO 5370: Use TypePipe serialization capabilities, after TypePipe is integrated with re-mix.
+      InterceptProperties (proxyType, domainObjectType, classDefinition);
     }
 
     public override void HandleNonSubclassableType (Type requestedType)
@@ -126,10 +126,9 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
       proxyType.GetOrAddOverride (s_getPublicDomainObjectTypeImplementation).SetBody (ctx => Expression.Constant (publicDomainObjectType));
     }
 
-    private void InterceptProperties (MutableType proxyType, Type domainObjectType, Type concreteBaseType)
+    private void InterceptProperties (MutableType proxyType, Type domainObjectType, ClassDefinition classDefinition)
     {
-      var classDefinition = _typeDefinitionProvider.GetTypeDefinition (domainObjectType);
-      var accessorInterceptors = _interceptedPropertyFinder.GetPropertyInterceptors (classDefinition, concreteBaseType);
+      var accessorInterceptors = _interceptedPropertyFinder.GetPropertyInterceptors (classDefinition, domainObjectType);
 
       foreach (var interceptor in accessorInterceptors)
         interceptor.Intercept (proxyType);

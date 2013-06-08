@@ -32,6 +32,7 @@ using Throws = Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.Interce
 namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.Interception
 {
   [TestFixture]
+  [Ignore ("TODO 5370: Delete.")]
   public class InterceptedPropertyIntegrationTest : ClientTransactionBaseTest
   {
     public override void SetUp ()

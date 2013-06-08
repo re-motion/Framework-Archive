@@ -24,6 +24,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.Interception
 {
   // TODO 5370: Remove whole file.
   [TestFixture]
+  [Ignore ("TODO 5370: Delete.")]
   public class DefaultServiceLocatorConfigurationTest
   {
     [Test]

@@ -26,6 +26,7 @@ using Remotion.Reflection;
 namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.Interception
 {
   [TestFixture]
+  [Ignore ("TODO 5370: Delete.")]
   public class DomainObjectConstructorLookupInfoTest : ClientTransactionBaseTest
   {
     public InterceptedDomainObjectTypeFactory Factory

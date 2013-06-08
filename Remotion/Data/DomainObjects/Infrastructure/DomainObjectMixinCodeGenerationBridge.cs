@@ -58,6 +58,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       }
     }
 
+    // TODO 5370: Remove.
     public static Type GetConcreteType (Type domainObjectType)
     {
       ArgumentUtility.CheckNotNull ("domainObjectType", domainObjectType);

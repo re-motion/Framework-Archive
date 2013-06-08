@@ -31,6 +31,7 @@ using Throws = NUnit.Framework.Throws;
 namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.Interception
 {
   [TestFixture]
+  [Ignore ("TODO 5370: Delete.")]
   public class InterceptedDomainObjectTypeFactoryTest : ClientTransactionBaseTest
   {
     public override void TestFixtureSetUp ()

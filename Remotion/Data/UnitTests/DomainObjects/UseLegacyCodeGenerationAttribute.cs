@@ -27,12 +27,12 @@ namespace Remotion.Data.UnitTests.DomainObjects
     {
       Assertion.IsFalse (DomainObjectCreatorSwitch.UseLegacyCodeGeneration);
 
-      DomainObjectCreatorSwitch.UseLegacyCodeGeneration = true;
+      // DomainObjectCreatorSwitch.UseLegacyCodeGeneration = true;
     }
 
     public override void AfterTest (TestDetails testDetails)
     {
-      Assertion.IsTrue (DomainObjectCreatorSwitch.UseLegacyCodeGeneration);
+      // Assertion.IsTrue (DomainObjectCreatorSwitch.UseLegacyCodeGeneration);
 
       DomainObjectCreatorSwitch.UseLegacyCodeGeneration = false;
     }

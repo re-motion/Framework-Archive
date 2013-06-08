@@ -23,6 +23,7 @@ using Remotion.Utilities;
 namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.Interception
 {
   [SetUpFixture]
+  [Ignore ("TODO 5370: Delete.")]
   public class SetUpFixture
   {
     private static string s_assemblyDirectory;

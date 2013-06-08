@@ -44,6 +44,7 @@ using Rhino.Mocks;
 namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.Interception
 {
   [TestFixture]
+  [Ignore ("TODO 5370: Remove.")]
   public class TypeGeneratorTest : ClientTransactionBaseTest
   {
     private const BindingFlags _declaredInstanceFlags = BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
@@ -424,6 +425,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.Interception
     }
 
     [Test]
+    [Ignore ("TODO 5370: Delete.")]
     public void ImplementsAutomaticProperties_ViaPropertyIndexer ()
     {
       Type type = CreateTypeGenerator (typeof (DOWithAutomaticProperties)).BuildType ();
