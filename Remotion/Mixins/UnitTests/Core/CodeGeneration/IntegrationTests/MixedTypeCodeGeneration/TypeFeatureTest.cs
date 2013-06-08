@@ -272,10 +272,12 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
     }
 
     [Test]
-    public void FirstFieldIsPrivate ()
+    public void FirstFieldIsPrivateNonSerialized ()
     {
       Type concreteType = CreateMixedType (typeof (BaseType1), typeof (BT1Mixin1));
-      Assert.That (concreteType.GetField ("__first", BindingFlags.NonPublic | BindingFlags.Instance).Attributes, Is.EqualTo (FieldAttributes.Private));
+      Assert.That (
+          concreteType.GetField ("__first", BindingFlags.NonPublic | BindingFlags.Instance).Attributes,
+          Is.EqualTo (FieldAttributes.Private | FieldAttributes.NotSerialized));
     }
 
     [Test]
