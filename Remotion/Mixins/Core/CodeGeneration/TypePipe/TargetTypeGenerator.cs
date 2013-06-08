@@ -180,8 +180,8 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
         Expression implementer, MethodInfo interfaceMethod, MethodDefinition implementingMethod, MemberVisibility visibility)
     {
       var method = visibility == MemberVisibility.Public
-              ? _concreteTarget.GetOrAddOverride (interfaceMethod)
-              : _concreteTarget.AddExplicitOverride (interfaceMethod, ctx => Expression.Default (ctx.ReturnType));
+                       ? _concreteTarget.GetOrAddImplementation (interfaceMethod)
+                       : _concreteTarget.AddExplicitOverride (interfaceMethod, ctx => Expression.Default (ctx.ReturnType));
 
       method.SetBody (ctx => _expressionBuilder.CreateInitializingDelegation (ctx, _extensionsField, _extensionsInitializedField, implementer, interfaceMethod));
 
