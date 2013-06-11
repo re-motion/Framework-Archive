@@ -20,6 +20,9 @@ using NUnit.Framework;
 using Remotion.Data.DomainObjects;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.UnitTests.DomainObjects.TestDomain;
+using Remotion.Development.Data.UnitTesting.DomainObjects.Linq;
+
+[assembly:ApplyQueryGeneratorMixin]
 
 namespace Remotion.Data.UnitTests.DomainObjects.Core.Linq.IntegrationTests
 {
