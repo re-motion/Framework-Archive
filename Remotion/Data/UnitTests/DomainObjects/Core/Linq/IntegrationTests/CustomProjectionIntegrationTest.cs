@@ -142,7 +142,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Linq.IntegrationTests
                     where c.ID == DomainObjectIDs.ClassWithAllDataTypes1
                     select c.BooleanProperty).ToArray();
 
-      Assert.That (result, Is.EqualTo (new[] { true }));
+      Assert.That (result, Is.EqualTo (new[] { false }));
     }
 
     [Test]
@@ -152,7 +152,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Linq.IntegrationTests
                     where c.ID == DomainObjectIDs.ClassWithAllDataTypes1
                     select c.NaBooleanProperty).ToArray();
 
-      Assert.That (result, Is.EqualTo (new[] { false }));
+      Assert.That (result, Is.EqualTo (new[] { true }));
     }
 
     [Test]
