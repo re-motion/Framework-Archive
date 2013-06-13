@@ -20,10 +20,8 @@ using System.Linq;
 using System.Reflection;
 using Remotion.FunctionalProgramming;
 using Remotion.Mixins.Definitions;
-using Remotion.TypePipe.CodeGeneration;
 using Remotion.TypePipe.Dlr.Ast;
 using Remotion.TypePipe.Expressions;
-using Remotion.TypePipe.Implementation;
 using Remotion.TypePipe.MutableReflection;
 using Remotion.TypePipe.TypeAssembly;
 using Remotion.Utilities;
@@ -53,10 +51,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       ArgumentUtility.CheckNotNull ("targetTypeForNextCall", targetTypeForNextCall);
 
       var concreteTarget = context.ProxyType;
-
-      var nextCallProxyType = CreateNextCallProxyType (context, concreteTarget);
-      AddRequiredInterfaces (nextCallProxyType, targetClassDefinition);
-      // tODO 5370: Old code woul add SerializableAttribute.
+      var nextCallProxyType = CreateNextCallProxyType(concreteTarget, targetClassDefinition);
 
       var thisField = AddPublicField (nextCallProxyType, "__this", concreteTarget);
       var depthField = AddPublicField (nextCallProxyType, "__depth", typeof (int));
@@ -73,12 +68,15 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       return nextCallProxy;
     }
 
-    private static MutableType CreateNextCallProxyType (IProxyTypeAssemblyContext context, MutableType concreteTarget)
+    private static MutableType CreateNextCallProxyType (MutableType concreteTarget, TargetClassDefinition targetClassDefinition)
     {
-      var name = concreteTarget.Name + "_NextCallProxy";
-      var attributes = TypeAttributes.Public | TypeAttributes.Sealed | TypeAttributes.Serializable;
+      // TODO 5370: Old code would add SerializableAttribute, instead of TypeAttributes. (Does this work too?!)
+      var attributes = TypeAttributes.NestedPublic | TypeAttributes.Sealed | TypeAttributes.Serializable;
+      var nextCallProxy =  concreteTarget.AddNestedType ("NextCallProxy", attributes, typeof (object));
 
-      return context.CreateType (name, concreteTarget.Namespace, attributes, typeof (object));
+      AddRequiredInterfaces (nextCallProxy, targetClassDefinition);
+
+      return nextCallProxy;
     }
 
     private static void AddRequiredInterfaces (MutableType nextCallProxy, TargetClassDefinition targetClassDefinition)
