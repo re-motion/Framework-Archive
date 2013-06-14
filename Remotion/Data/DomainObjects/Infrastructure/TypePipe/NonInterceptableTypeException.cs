@@ -14,10 +14,11 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
 using System.Runtime.Serialization;
 
-namespace Remotion.Data.DomainObjects.Infrastructure.Interception
+namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
 {
   /// <summary>
   /// This exception is thrown when the property interception mechanism cannot be applied to a specific <see cref="DomainObject"/> type

@@ -20,7 +20,6 @@ using Remotion.Development.TypePipe.UnitTesting.ObjectMothers.CodeGeneration;
 using Remotion.TypePipe.Dlr.Ast;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects;
-using Remotion.Data.DomainObjects.Infrastructure.Interception;
 using Remotion.Data.DomainObjects.Infrastructure.TypePipe;
 using Remotion.Data.UnitTests.DomainObjects.Core.Mapping;
 using Remotion.Data.UnitTests.DomainObjects.TestDomain;

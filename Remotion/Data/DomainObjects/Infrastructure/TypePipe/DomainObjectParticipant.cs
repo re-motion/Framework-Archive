@@ -19,7 +19,6 @@ using System;
 using System.Reflection;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.TypePipe.Dlr.Ast;
-using Remotion.Data.DomainObjects.Infrastructure.Interception;
 using Remotion.TypePipe;
 using Remotion.TypePipe.Caching;
 using Remotion.TypePipe.MutableReflection;

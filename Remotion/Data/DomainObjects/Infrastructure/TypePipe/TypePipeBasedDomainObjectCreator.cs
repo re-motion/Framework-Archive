@@ -17,7 +17,6 @@
 
 using System;
 using System.Runtime.Serialization;
-using Remotion.Data.DomainObjects.Infrastructure.Interception;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectLifetime;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Reflection;
@@ -51,6 +50,11 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
       ArgumentUtility.CheckNotNull ("pipeline", pipeline);
 
       _pipeline = pipeline;
+    }
+
+    public IPipeline Pipeline
+    {
+      get { return _pipeline; }
     }
 
     public DomainObject CreateObjectReference (IObjectInitializationContext objectInitializationContext, ClientTransaction clientTransaction)
