@@ -15,12 +15,38 @@
 // 
 // Additional permissions are listed in the file re-motion_exceptions.txt.
 // 
-
 using System;
 
 namespace Remotion.SecurityManager.Domain
 {
-  public interface IUserRevisionProvider : IRevisionProvider<UserRevisionKey, Int32RevisionValue>
+  [Serializable]
+  public sealed class Int32RevisionValue : IRevisionValue
   {
+    private readonly DateTime _timestamp;
+    private readonly int _revision;
+
+    public Int32RevisionValue (int revision)
+    {
+      _timestamp = DateTime.UtcNow;
+      _revision = revision;
+    }
+
+    public int Int32Value
+    {
+      get { return _revision; }
+    }
+
+    public bool IsCurrent (IRevisionValue reference)
+    {
+      var referenceRevision = reference as Int32RevisionValue;
+      if (referenceRevision == null)
+        return false;
+
+      if (_revision == referenceRevision._revision)
+        return true;
+      if (_timestamp > referenceRevision._timestamp)
+        return true;
+      return false;
+    }
   }
 }

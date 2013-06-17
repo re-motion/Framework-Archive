@@ -15,12 +15,38 @@
 // 
 // Additional permissions are listed in the file re-motion_exceptions.txt.
 // 
-
 using System;
 
 namespace Remotion.SecurityManager.Domain
 {
-  public interface IUserRevisionProvider : IRevisionProvider<UserRevisionKey, Int32RevisionValue>
+  [PermanentGuid (c_permanentGuid)]
+  public sealed class RevisionKey : IRevisionKey
   {
+    private const string c_permanentGuid = "{446DF534-DBEA-420E-9AC1-0B19D51B0ED3}";
+    private static readonly Guid s_globalKey = new Guid (c_permanentGuid);
+
+    public RevisionKey ()
+    {
+    }
+
+    public Guid GlobalKey
+    {
+      get { return s_globalKey; }
+    }
+
+    public string LocalKey
+    {
+      get { return null; }
+    }
+
+    public override bool Equals (object obj)
+    {
+      return obj is RevisionKey;
+    }
+
+    public override int GetHashCode ()
+    {
+      return s_globalKey.GetHashCode();
+    }
   }
 }

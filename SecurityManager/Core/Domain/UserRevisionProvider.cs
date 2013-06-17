@@ -15,12 +15,15 @@
 // 
 // Additional permissions are listed in the file re-motion_exceptions.txt.
 // 
-
 using System;
 
 namespace Remotion.SecurityManager.Domain
 {
-  public interface IUserRevisionProvider : IRevisionProvider<UserRevisionKey, Int32RevisionValue>
+  /// <threadsafety static="true" instance="true"/>
+  public class UserRevisionProvider : RevisionProviderBase<UserRevisionKey>, IUserRevisionProvider
   {
+    public UserRevisionProvider ()
+    {
+    }
   }
 }

@@ -1,4 +1,4 @@
-﻿// This file is part of re-strict (www.re-motion.org)
+// This file is part of re-strict (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // This program is free software; you can redistribute it and/or modify
@@ -17,10 +17,12 @@
 // 
 
 using System;
+using Remotion.ServiceLocation;
 
 namespace Remotion.SecurityManager.Domain
 {
-  public interface IUserRevisionProvider : IRevisionProvider<UserRevisionKey, Int32RevisionValue>
+  [ConcreteImplementation (typeof (RevisionProvider), Lifetime = LifetimeKind.Singleton)]
+  public interface IDomainRevisionProvider : IRevisionProvider<RevisionKey, Int32RevisionValue>
   {
   }
 }
