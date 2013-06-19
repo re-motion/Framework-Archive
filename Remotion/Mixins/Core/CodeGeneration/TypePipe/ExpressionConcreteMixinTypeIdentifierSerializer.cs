@@ -17,12 +17,17 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
-using Remotion.TypePipe.Dlr.Ast;
+using Remotion.Reflection;
 using Remotion.Utilities;
+using Expression = Remotion.TypePipe.Dlr.Ast.Expression;
 
 namespace Remotion.Mixins.CodeGeneration.TypePipe
 {
+  /// <summary>
+  /// Generates an expression that regenerates a <see cref="ConcreteMixinTypeIdentifier"/> serialized using this class.
+  /// </summary>
   public class ExpressionConcreteMixinTypeIdentifierSerializer : ConcreteMixinTypeIdentifierSerializerBase
   {
     private static readonly ConstructorInfo s_constructor =
@@ -31,18 +36,40 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     private static readonly ConstructorInfo s_hashSetConstructor =
         MemberInfoFromExpressionUtility.GetConstructor (() => new HashSet<MethodInfo> (new MethodInfo[0]));
 
-    public Expression CreateNewExpression ()
+    private static readonly MethodInfo s_resolveMethodMethod =
+        MemberInfoFromExpressionUtility.GetMethod (() => MethodResolver.ResolveMethod (null, null, null));
+
+    public Expression CreateExpression ()
     {
       // new ConcreteMixinTypeIdentifier (
       //     MixinType,
       //     new HashSet<MethodInfo> (Overriders)
       //     new HashSet<MethodInfo> (Overridden));
 
+      // Unfortunately, there is a CLR bug that prevents us from simply emitting Expression.Constant (methodInfo): When a method is open generic, 
+      // Reflection.Emit will bind the generic type parameter to the outer method (even if that method isn't even generic).
+      // Therefore, we need to use MethodResolver, which resolves methods by declaring type, name, and signature.
+      // When that bug is fixed, we could use the following code:
+      //  return Expression.New (
+      //      s_constructor,
+      //      Expression.Constant (MixinType),
+      //      Expression.New (s_hashSetConstructor, Expression.ArrayConstant (Overriders)),
+      //      Expression.New (s_hashSetConstructor, Expression.ArrayConstant (Overridden)));
+
       return Expression.New (
           s_constructor,
           Expression.Constant (MixinType),
-          Expression.New (s_hashSetConstructor, Expression.ArrayConstant (Overriders)),
-          Expression.New (s_hashSetConstructor, Expression.ArrayConstant (Overridden)));
+          Expression.New (s_hashSetConstructor, Expression.NewArrayInit (typeof (MethodInfo), Overriders.Select (GetResolveMethodExpression))),
+          Expression.New (s_hashSetConstructor, Expression.NewArrayInit (typeof (MethodInfo), Overridden.Select (GetResolveMethodExpression))));
+    }
+
+    private Expression GetResolveMethodExpression (MethodInfo methodInfo)
+    {
+      return Expression.Call (
+          s_resolveMethodMethod,
+          Expression.Constant (methodInfo.DeclaringType),
+          Expression.Constant (methodInfo.Name),
+          Expression.Constant (methodInfo.ToString ()));
     }
   }
 }

@@ -17,19 +17,18 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using System.Reflection.Emit;
-using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
 using NUnit.Framework;
 using Remotion.Mixins.CodeGeneration;
-using Remotion.Mixins.CodeGeneration.DynamicProxy;
+using Remotion.Mixins.CodeGeneration.TypePipe;
 using Remotion.Mixins.UnitTests.Core.CodeGeneration.TestDomain;
 using Remotion.Mixins.UnitTests.Core.TestDomain;
+using Remotion.Utilities;
+using Expression = Remotion.TypePipe.Dlr.Ast.Expression;
 
-namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.DynamicProxy
+namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
 {
   [TestFixture]
-  [Ignore ("TODO 5370: Delete")]
-  public class CodeGenerationConcreteMixinTypeIdentifierSerializerTest : CodeGenerationBaseTest
+  public class ExpressionConcreteMixinTypeIdentifierSerializerTest
   {
     private MethodInfo _simpleMethod1;
     private MethodInfo _simpleMethod2;
@@ -38,32 +37,30 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.DynamicProxy
     private MethodInfo _methodOnGenericClosedWithValueType;
 
     [SetUp]
-    public override void SetUp ()
+    public /* override*/ void SetUp ()
     {
-      base.SetUp ();
+      // base.SetUp ();
 
-      _simpleMethod1 = typeof (BT1Mixin1).GetMethod ("VirtualMethod");
-      _simpleMethod2 = typeof (BT1Mixin2).GetMethod ("VirtualMethod");
-      _genericMethod = typeof (BaseType7).GetMethod ("One");
+      _simpleMethod1 = Assertion.IsNotNull (typeof (BT1Mixin1).GetMethod ("VirtualMethod"));
+      _simpleMethod2 = Assertion.IsNotNull (typeof (BT1Mixin2).GetMethod ("VirtualMethod"));
+      _genericMethod = Assertion.IsNotNull (typeof (BaseType7).GetMethod ("One"));
+      
       _methodOnGenericClosedWithReferenceType = typeof (GenericClassWithAllKindsOfMembers<string>).GetMethod ("Method");
       _methodOnGenericClosedWithValueType = typeof (GenericClassWithAllKindsOfMembers<int>).GetMethod ("Method");
     }
 
     [Test]
-    public void IntegrationTest()
+    public void IntegrationTest ()
     {
-      TypeBuilder type = DefineType ("IntegrationTest");
-      MethodBuilderEmitter emitter = DefineMethod (type, typeof (ConcreteMixinTypeIdentifier));
-
       var referenceIdentifier = new ConcreteMixinTypeIdentifier (
           typeof (BT1Mixin1),
           new HashSet<MethodInfo> { _simpleMethod1 },
           new HashSet<MethodInfo> { _simpleMethod2 });
 
-      var serializer = new CodeGenerationConcreteMixinTypeIdentifierSerializer (emitter.CodeBuilder);
+      var serializer = new ExpressionConcreteMixinTypeIdentifierSerializer();
       referenceIdentifier.Serialize (serializer);
 
-      object result = BuildTypeAndInvokeMethod(type, emitter, serializer.GetConstructorInvocationExpression ());
+      object result = BuildTypeAndInvokeMethod (serializer.CreateExpression());
 
       Assert.That (result, Is.EqualTo (referenceIdentifier));
     }
@@ -71,18 +68,15 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.DynamicProxy
     [Test]
     public void IntegrationTest_MethodsOnGenericType ()
     {
-      TypeBuilder type = DefineType ("IntegrationTest_OnGenericType");
-      MethodBuilderEmitter emitter = DefineMethod (type, typeof (ConcreteMixinTypeIdentifier));
-
       var referenceIdentifier = new ConcreteMixinTypeIdentifier (
           typeof (BT1Mixin1),
           new HashSet<MethodInfo> { _methodOnGenericClosedWithReferenceType, _methodOnGenericClosedWithValueType },
           new HashSet<MethodInfo> { _methodOnGenericClosedWithReferenceType, _methodOnGenericClosedWithValueType });
 
-      var serializer = new CodeGenerationConcreteMixinTypeIdentifierSerializer (emitter.CodeBuilder);
+      var serializer = new ExpressionConcreteMixinTypeIdentifierSerializer();
       referenceIdentifier.Serialize (serializer);
 
-      object result = BuildTypeAndInvokeMethod (type, emitter, serializer.GetConstructorInvocationExpression ());
+      object result = BuildTypeAndInvokeMethod (serializer.CreateExpression());
 
       Assert.That (result, Is.EqualTo (referenceIdentifier));
     }
@@ -90,42 +84,27 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.DynamicProxy
     [Test]
     public void IntegrationTest_GenericMethods ()
     {
-      TypeBuilder type = DefineType ("IntegrationTest_GenericMethods");
-      MethodBuilderEmitter emitter = DefineMethod (type, typeof (ConcreteMixinTypeIdentifier));
-
       var referenceIdentifier = new ConcreteMixinTypeIdentifier (
           typeof (BT1Mixin1),
           new HashSet<MethodInfo> { _genericMethod },
           new HashSet<MethodInfo> { _genericMethod });
 
-      var serializer = new CodeGenerationConcreteMixinTypeIdentifierSerializer (emitter.CodeBuilder);
+      var serializer = new ExpressionConcreteMixinTypeIdentifierSerializer();
       referenceIdentifier.Serialize (serializer);
 
-      object result = BuildTypeAndInvokeMethod (type, emitter, serializer.GetConstructorInvocationExpression ());
+      object result = BuildTypeAndInvokeMethod (serializer.CreateExpression());
 
       Assert.That (result, Is.EqualTo (referenceIdentifier));
     }
 
-    private TypeBuilder DefineType (string testName)
+    private ConcreteMixinTypeIdentifier BuildTypeAndInvokeMethod (Expression expressionToReturn)
     {
-      var module = ConcreteTypeBuilderTestHelper.GetModuleManager (SavedTypeBuilder).Scope.ObtainDynamicModuleWithWeakName ();
-      return module.DefineType ("CodeGenerationConcreteMixinTypeIdentifierSerializerTest." + testName);
-    }
+      // This needs to generate code into a TypeBuilder as dynamic methods won't trigger the code gen bug with generic methods (see comment in 
+      // ExpressionConcreteMixinTypeIdentifierSerializer.ConcreteMixinTypeIdentifier).
+      var adHocCodeGenerator = new AdHocCodeGenerator ();
+      var lambda = Expression.Lambda<Func<ConcreteMixinTypeIdentifier>> (expressionToReturn);
 
-    private MethodBuilderEmitter DefineMethod (TypeBuilder type, Type returnType)
-    {
-      var method =
-          type.DefineMethod ("Test", MethodAttributes.Public | MethodAttributes.Static, returnType, Type.EmptyTypes);
-      return new MethodBuilderEmitter (method);
-    }
-
-    private object BuildTypeAndInvokeMethod (TypeBuilder type, MethodBuilderEmitter emitter, Expression expressionToReturn)
-    {
-      emitter.CodeBuilder.AddStatement (new ReturnStatement (expressionToReturn));
-      emitter.Generate ();
-
-      Type compiledType = type.CreateType ();
-      return compiledType.GetMethod ("Test").Invoke (null, null);
+      return adHocCodeGenerator.CreateMethodAndRun<ConcreteMixinTypeIdentifier> (action: lambda.CompileToMethod, saveOnError: true);
     }
   }
 }

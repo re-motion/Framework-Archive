@@ -73,6 +73,7 @@
     <Compile Include="CoreComponentIntegration\TestDomain\MixinSuppressingNonInheritedAttribute.cs" />
     <Compile Include="Core\AdditionalMixinDependencyAttributeTest.cs" />
     <Compile Include="Core\ClassContextObjectMother.cs" />
+    <Compile Include="Core\CodeGeneration\AdHocCodeGenerator.cs" />
     <Compile Include="Core\CodeGeneration\ConcreteMixinTypeIdentifierObjectMother.cs" />
     <Compile Include="Core\CodeGeneration\ConcreteMixinTypeObjectMother.cs" />
     <Compile Include="Core\CodeGeneration\LockingCodeGenerationCacheDecoratorTest.cs" />
@@ -80,6 +81,7 @@
     <Compile Include="Core\CodeGeneration\TypePipe\CodeGenerationClassContextSerializerTest.cs" />
     <Compile Include="Core\CodeGeneration\TypePipe\CodeGenerationMixinContextOriginSerializerTest.cs" />
     <Compile Include="Core\CodeGeneration\TypePipe\CodeGenerationMixinContextSerializerTest.cs" />
+    <Compile Include="Core\CodeGeneration\TypePipe\ExpressionConcreteMixinTypeIdentifierSerializerTest.cs" />
     <Compile Include="Core\CodeGeneration\TypePipe\FlatClassContextTest.cs" />
     <Compile Include="Core\CodeGeneration\TypePipe\MixinParticipantTypeIdentifierProviderTest.cs" />
     <Compile Include="Core\Context\Serialization\AttributeClassContextSerializationTest.cs" />

@@ -72,7 +72,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     {
       var serializer = new ExpressionConcreteMixinTypeIdentifierSerializer();
       _identifier.Serialize (serializer);
-      var newExpression = serializer.CreateNewExpression();
+      var newExpression = serializer.CreateExpression();
 
       _type.AddTypeInitializer (ctx => Expression.Assign (_identifierField, newExpression));
     }
