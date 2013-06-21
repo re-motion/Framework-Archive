@@ -134,7 +134,6 @@
     <Compile Include="Core\CodeGeneration\IntegrationTests\MixedTypeCodeGeneration\IntroductionTest.cs" />
     <Compile Include="Core\CodeGeneration\IntegrationTests\MixedTypeCodeGeneration\MixedMixinTest.cs" />
     <Compile Include="Core\CodeGeneration\IntegrationTests\MixedTypeCodeGeneration\OverrideTest.cs" />
-    <Compile Include="Core\CodeGeneration\IntegrationTests\MixedTypeCodeGeneration\StrongNameTest.cs" />
     <Compile Include="Core\CodeGeneration\IntegrationTests\MixedTypeCodeGeneration\TestDomain\ClassWithCtors.cs" />
     <Compile Include="Core\CodeGeneration\IntegrationTests\MixedTypeCodeGeneration\TestDomain\IMixinWithPropsEventsAtts.cs" />
     <Compile Include="Core\CodeGeneration\IntegrationTests\MixedTypeCodeGeneration\TestDomain\MixinAddingAttributes.cs" />
