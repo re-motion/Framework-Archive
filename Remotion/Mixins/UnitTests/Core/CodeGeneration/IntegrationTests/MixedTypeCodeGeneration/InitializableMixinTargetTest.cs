@@ -56,7 +56,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
 
       var oldMixins = instance.Mixins;
 
-      PrivateInvoke.SetPublicField (instance, "__extensions", null);
+      PrivateInvoke.SetNonPublicField (instance, "__extensions", null);
       instance.Initialize ();
 
       Assert.That (instance.Mixins, Is.Not.Null);
@@ -106,7 +106,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
       
       // Simulate a deserialized instance that got its mixin deserialized.
       var deserialized = (IInitializableMixinTarget) FormatterServices.GetUninitializedObject (instance.GetType());
-      PrivateInvoke.SetPublicField (deserialized, "__extensions", new object[] { new MixinWithOnInitializedAndOnDeserialized() });
+      PrivateInvoke.SetNonPublicField (deserialized, "__extensions", new object[] { new MixinWithOnInitializedAndOnDeserialized() });
       // __extensionsInitialized is _not_ deserialized
       Assert.That (PrivateInvoke.GetNonPublicField (deserialized, "__extensionsInitialized"), Is.False);
 

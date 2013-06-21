@@ -102,8 +102,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     public void AddExtensionsField ()
     {
-      // TODO 5370: Should not be public
-      _extensionsFieldInfo = _concreteTarget.AddField ("__extensions", FieldAttributes.Public, typeof (object[]));
+      _extensionsFieldInfo = _concreteTarget.AddField ("__extensions", FieldAttributes.Private, typeof (object[]));
       new AttributeGenerator ().AddDebuggerBrowsableAttribute (_extensionsFieldInfo, DebuggerBrowsableState.Never);
 
       _extensionsField = GetFieldExpression (_extensionsFieldInfo);
