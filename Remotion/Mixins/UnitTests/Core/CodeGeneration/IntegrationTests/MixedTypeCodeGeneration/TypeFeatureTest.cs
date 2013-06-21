@@ -241,16 +241,6 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
     }
 
     [Test]
-    public void DeserializationConstructorGeneratedEvenIfBaseNotISerializable ()
-    {
-      Type concreteType = CreateGeneratedTypeWithoutMixins (typeof (BaseType1));
-      Assert.That (typeof (BaseType1).GetConstructor (BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance,
-                  null, new[] { typeof (SerializationInfo), typeof (StreamingContext) }, null), Is.Null);
-      Assert.That (concreteType.GetConstructor (BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance,
-                  null, new[] { typeof (SerializationInfo), typeof (StreamingContext) }, null), Is.Not.Null);
-    }
-
-    [Test]
     public void CopiedAttributesAreNotReplicated ()
     {
       Type concreteType = CreateGeneratedTypeWithoutMixins (typeof (ClassWithCopyCustomAttributes));

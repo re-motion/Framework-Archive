@@ -154,7 +154,6 @@
     <Compile Include="CodeGeneration\TypePipe\INextCallProxy.cs" />
     <Compile Include="CodeGeneration\TypePipe\INextCallProxyGenerator.cs" />
     <Compile Include="CodeGeneration\TypePipe\ITargetTypeForNextCall.cs" />
-    <Compile Include="CodeGeneration\TypePipe\ITargetTypeGenerator.cs" />
     <Compile Include="CodeGeneration\TypePipe\ITargetTypeModifier.cs" />
     <Compile Include="CodeGeneration\TypePipe\MixinContextOriginSerializerBase.cs" />
     <Compile Include="CodeGeneration\TypePipe\MixinContextSerializerBase.cs" />

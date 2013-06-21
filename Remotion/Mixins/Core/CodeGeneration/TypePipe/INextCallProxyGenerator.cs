@@ -16,23 +16,19 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using Remotion.Mixins.Definitions;
-using Remotion.TypePipe.CodeGeneration;
-using Remotion.TypePipe.Implementation;
 using Remotion.TypePipe.MutableReflection;
-using Remotion.TypePipe.TypeAssembly;
 
 namespace Remotion.Mixins.CodeGeneration.TypePipe
 {
   // TODO 5370: docs
   public interface INextCallProxyGenerator
   {
-    ITargetTypeForNextCall GetTargetTypeWrapper (MutableType concreteTarget);
-
     INextCallProxy Create (
-        IProxyTypeAssemblyContext context,
+        MutableType concreteTarget,
+        FieldInfo extensionsField,
         TargetClassDefinition targetClassDefinition,
-        IList<IMixinInfo> mixinInfos,
-        ITargetTypeForNextCall targetTypeForNextCall);
+        IList<IMixinInfo> mixinInfos);
   }
 }

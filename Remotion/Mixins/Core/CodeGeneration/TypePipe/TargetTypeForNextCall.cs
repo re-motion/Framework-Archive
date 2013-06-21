@@ -32,21 +32,13 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     private readonly FieldInfo _extensionsField;
     private readonly Dictionary<MethodInfo, MethodInfo> _baseCallMethods = new Dictionary<MethodInfo, MethodInfo>();
 
-    public TargetTypeForNextCall (MutableType concreteTarget)
+    public TargetTypeForNextCall (MutableType concreteTarget, FieldInfo extensionsField)
     {
       ArgumentUtility.CheckNotNull ("concreteTarget", concreteTarget);
-
+      ArgumentUtility.CheckNotNull ("extensionsField", extensionsField);
+      
       _concreteTarget = concreteTarget;
-      _extensionsField = AddDebuggerInvisibleExtensionsField();
-    }
-
-    private FieldInfo AddDebuggerInvisibleExtensionsField ()
-    {
-      // TODO 5370: Better option than making this field public?
-      var field = _concreteTarget.AddField ("__extensions", FieldAttributes.Public, typeof (object[]));
-      new AttributeGenerator().AddDebuggerBrowsableAttribute(field, DebuggerBrowsableState.Never);
-
-      return field;
+      _extensionsField = extensionsField;
     }
 
     public FieldInfo ExtensionsField

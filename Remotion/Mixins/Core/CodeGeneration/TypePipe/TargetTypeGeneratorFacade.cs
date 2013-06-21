@@ -27,38 +27,46 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
   // TODO 5370: tests
   public class TargetTypeGeneratorFacade : ITargetTypeModifier
   {
+    private readonly INextCallProxyGenerator _nextCallProxyGenerator;
+
+    public TargetTypeGeneratorFacade (INextCallProxyGenerator nextCallProxyGenerator)
+    {
+      ArgumentUtility.CheckNotNull ("nextCallProxyGenerator", nextCallProxyGenerator);
+      _nextCallProxyGenerator = nextCallProxyGenerator;
+    }
+
     public void ModifyTargetType (
         MutableType concreteTarget,
         TargetClassDefinition targetClassDefinition,
-        INextCallProxy nextCallProxy,
         IEnumerable<Type> interfacesToImplement,
         IList<IMixinInfo> mixinInfos)
     {
       ArgumentUtility.CheckNotNull ("concreteTarget", concreteTarget);
       ArgumentUtility.CheckNotNull ("targetClassDefinition", targetClassDefinition);
-      ArgumentUtility.CheckNotNull ("nextCallProxy", nextCallProxy);
       ArgumentUtility.CheckNotNull ("interfacesToImplement", interfacesToImplement);
       ArgumentUtility.CheckNotNull ("mixinInfos", mixinInfos);
 
-      var modifier = new TargetTypeGenerator (concreteTarget, new ExpressionBuilder(), new AttributeGenerator());
+      var targetTypeGenerator = new TargetTypeGenerator (concreteTarget, new ExpressionBuilder(), new AttributeGenerator(), _nextCallProxyGenerator);
       var mixinTypes = mixinInfos.Select (t => t.MixinType).ToList();
 
-      modifier.AddInterfaces (interfacesToImplement);
-      modifier.AddFields (nextCallProxy.Type);
-      modifier.AddTypeInitializations (targetClassDefinition.ConfigurationContext, mixinTypes);
-      modifier.AddInitializations();
+      targetTypeGenerator.AddInterfaces (interfacesToImplement);
+      targetTypeGenerator.AddExtensionsField ();
+      targetTypeGenerator.AddNextCallProxy (targetClassDefinition, mixinInfos);
+      targetTypeGenerator.AddFields();
+      targetTypeGenerator.AddTypeInitializations (targetClassDefinition.ConfigurationContext, mixinTypes);
+      targetTypeGenerator.AddInitializations();
 
-      modifier.ImplementIInitializableMixinTarget (mixinTypes, nextCallProxy.Constructor);
-      modifier.ImplementIMixinTarget (targetClassDefinition.Name);
-      modifier.ImplementIntroducedInterfaces (targetClassDefinition.ReceivedInterfaces);
-      modifier.ImplementRequiredDuckMethods (targetClassDefinition);
-      modifier.ImplementAttributes (targetClassDefinition);
+      targetTypeGenerator.ImplementIInitializableMixinTarget (mixinTypes);
+      targetTypeGenerator.ImplementIMixinTarget (targetClassDefinition.Name);
+      targetTypeGenerator.ImplementIntroducedInterfaces (targetClassDefinition.ReceivedInterfaces);
+      targetTypeGenerator.ImplementRequiredDuckMethods (targetClassDefinition);
+      targetTypeGenerator.ImplementAttributes (targetClassDefinition);
       
-      modifier.AddMixedTypeAttribute (targetClassDefinition);
-      modifier.AddDebuggerDisplayAttribute (targetClassDefinition);
+      targetTypeGenerator.AddMixedTypeAttribute (targetClassDefinition);
+      targetTypeGenerator.AddDebuggerDisplayAttribute (targetClassDefinition);
       
-      modifier.ImplementOverrides (targetClassDefinition, nextCallProxy);
-      modifier.ImplementOverridingMethods (targetClassDefinition, mixinInfos);
+      targetTypeGenerator.ImplementOverrides (targetClassDefinition);
+      targetTypeGenerator.ImplementOverridingMethods (targetClassDefinition, mixinInfos);
     }
   }
 }
