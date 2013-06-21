@@ -20,6 +20,7 @@ using System.Linq;
 using Remotion.Mixins.CodeGeneration.TypePipe;
 using Remotion.Mixins.Context;
 using Remotion.TypePipe;
+using Remotion.TypePipe.Caching;
 using Remotion.Utilities;
 
 namespace Remotion.Mixins.UnitTests.Core
@@ -35,10 +36,8 @@ namespace Remotion.Mixins.UnitTests.Core
       var classContext = MixinConfiguration.ActiveConfiguration.GetContext (targetType)
                          ?? new ClassContext (targetType, Enumerable.Empty<MixinContext>(), Enumerable.Empty<Type>());
 
-      // TODO 5370
-      //return ConcreteTypeBuilder.Current.GetConcreteType (classContext);
-
-      return s_pipeline.ReflectionService.GetAssembledType (classContext.Type);
+      // Explicitly pass classContext in to the MixinParticipant; that way we generate a mixed type even if there are no mixins on the type.
+      return s_pipeline.ReflectionService.GetAssembledType (new AssembledTypeID (targetType, new[] { classContext }));
     }
 
     public static object ForceTypeGenerationAndCreateInstance (Type targetType)
