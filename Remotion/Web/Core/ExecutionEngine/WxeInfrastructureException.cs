@@ -15,24 +15,28 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Configuration;
 using System.Runtime.Serialization;
 
 namespace Remotion.Web.ExecutionEngine
 {
-  /// <summary> This exception is used by the execution engine to end the execution of a <see cref="WxeUserControlStep"/>. </summary>
+  /// <summary> This exception is thrown when the execution engine needs to manipulate the ASP.NET execution control flow. </summary>
+  /// <remarks> 
+  /// This exception is derived from <see cref="ConfigurationException"/> to allow the exception to bubble through the ASP.NET infrastructure 
+  /// (i.e. Page.ProcessRequest) without being logged in the ASP.NET performance counters (.e.g. Total Errors).
+  /// </remarks>
   [Serializable]
-  public class WxeExecuteUserControlNextStepException : WxeExecutionControlException
+  public abstract class WxeInfrastructureException : ConfigurationException
   {
-    public WxeExecuteUserControlNextStepException ()
-      : base (
-      "This exception does not indicate an error. It is used to roll back the call stack. "
-      + "It is recommended to disable breaking on this exeption type while debugging."
-      )
+    protected WxeInfrastructureException (string message)
+#pragma warning disable 612,618
+        : base (message)
+#pragma warning restore 612,618
     {
     }
 
-    protected WxeExecuteUserControlNextStepException (SerializationInfo info, StreamingContext context)
-      : base (info, context)
+    protected WxeInfrastructureException (SerializationInfo info, StreamingContext context)
+        : base (info, context)
     {
     }
   }
