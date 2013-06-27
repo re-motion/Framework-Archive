@@ -17,7 +17,6 @@
 using System;
 using System.Reflection;
 using System.Collections.Generic;
-using Remotion.TypePipe.CodeGeneration;
 using Remotion.TypePipe.MutableReflection;
 using Remotion.TypePipe.TypeAssembly;
 using Remotion.Utilities;
@@ -25,6 +24,7 @@ using System.Linq;
 
 namespace Remotion.Mixins.CodeGeneration
 {
+  // TODO 5370: Unify with DeriveMixinInfo.
   /// <summary>
   /// Holds the results of mixin code generation when a concrete mixin type was generated.
   /// </summary>

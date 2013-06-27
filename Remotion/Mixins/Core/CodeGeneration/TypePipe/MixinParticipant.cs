@@ -16,14 +16,10 @@
 // 
 
 using System;
-using System.Diagnostics;
 using System.Linq;
-using System.Reflection;
 using Remotion.Mixins.Context;
 using Remotion.TypePipe;
 using Remotion.TypePipe.Caching;
-using Remotion.TypePipe.CodeGeneration;
-using Remotion.TypePipe.MutableReflection;
 using Remotion.TypePipe.TypeAssembly;
 using Remotion.Utilities;
 

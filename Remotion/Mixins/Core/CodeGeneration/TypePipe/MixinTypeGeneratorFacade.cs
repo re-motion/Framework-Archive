@@ -47,7 +47,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     {
       var concreteMixinTypeCache = GetOrCreateConcreteMixinTypeCache (participantState);
 
-      // TODO Review
+      // TODO 5370 Review
       // what if identifier already present?
       if (!concreteMixinTypeCache.ContainsKey (concreteMixinType.Identifier))
       {

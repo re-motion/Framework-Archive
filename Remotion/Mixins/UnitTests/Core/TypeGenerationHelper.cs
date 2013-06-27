@@ -17,8 +17,11 @@
 
 using System;
 using System.Linq;
+using NUnit.Framework;
+using Remotion.Mixins.CodeGeneration;
 using Remotion.Mixins.CodeGeneration.TypePipe;
 using Remotion.Mixins.Context;
+using Remotion.Mixins.Definitions;
 using Remotion.TypePipe;
 using Remotion.TypePipe.Caching;
 using Remotion.Utilities;
@@ -50,6 +53,18 @@ namespace Remotion.Mixins.UnitTests.Core
     public static T ForceTypeGenerationAndCreateInstance<T> ()
     {
       return (T) ForceTypeGenerationAndCreateInstance (typeof (T));
+    }
+    
+    public static ConcreteMixinType GetGeneratedMixinTypeAndMetadata (ClassContext requestingClass, Type mixinType)
+    {
+      MixinDefinition mixinDefinition = TargetClassDefinitionFactory.CreateAndValidate (requestingClass)
+          .GetMixinByConfiguredType (mixinType);
+      Assert.That (mixinDefinition, Is.Not.Null);
+
+      var mixinTypeIdentifier = mixinDefinition.GetConcreteMixinTypeIdentifier();
+
+      var generatedMixinType = s_pipeline.ReflectionService.GetAdditionalType (mixinTypeIdentifier);
+      return new AttributeBasedMetadataImporter().GetMetadataForMixinType (generatedMixinType);
     }
   }
 }
