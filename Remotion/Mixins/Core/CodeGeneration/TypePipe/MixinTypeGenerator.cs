@@ -28,7 +28,6 @@ using Remotion.TypePipe.Dlr.Ast;
 using Remotion.TypePipe.Expressions;
 using Remotion.TypePipe.Implementation;
 using Remotion.TypePipe.MutableReflection;
-using Remotion.TypePipe.TypeAssembly;
 using Remotion.Utilities;
 
 namespace Remotion.Mixins.CodeGeneration.TypePipe
@@ -103,9 +102,9 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       _attributeGenerator.AddDebuggerDisplayAttribute (_type, debuggerDisplayString, null);
     }
 
-    public OverrideInterface GenerateOverrides (IProxyTypeAssemblyContext context)
+    public OverrideInterface GenerateOverrides ()
     {
-      var overrideInterfaceGenerator = OverrideInterfaceGenerator2.CreateNestedGenerator (context, _type, "IOverriddenMethods");
+      var overrideInterfaceGenerator = OverrideInterfaceGenerator2.CreateNestedGenerator (_type, "IOverriddenMethods");
 
       var targetReference = GetTargetReference();
       foreach (var method in _identifier.Overridden)

@@ -87,7 +87,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       generator.AddMixinTypeAttribute();
       generator.AddDebuggerAttributes();
 
-      var overrideInterface = generator.GenerateOverrides (context);
+      var overrideInterface = generator.GenerateOverrides ();
       var methodWrappers = generator.GenerateMethodWrappers();
 
       return new ConcreteMixinType (
