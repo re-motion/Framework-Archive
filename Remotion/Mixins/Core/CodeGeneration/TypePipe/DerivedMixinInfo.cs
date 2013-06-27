@@ -44,11 +44,14 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       yield return _concreteMixinType.GeneratedOverrideInterface;
     }
 
-    public MethodInfo GetMethodWrapper (MethodInfo wrappedMethod)
+    public MethodInfo GetPubliclyCallableMixinMethod (MethodInfo methodToBeCalled)
     {
-      ArgumentUtility.CheckNotNull ("wrappedMethod", wrappedMethod);
+      ArgumentUtility.CheckNotNull ("methodToBeCalled", methodToBeCalled);
 
-      return _concreteMixinType.GetMethodWrapper (wrappedMethod);
+      if (methodToBeCalled.IsPublic)
+        return methodToBeCalled;
+
+      return _concreteMixinType.GetMethodWrapper (methodToBeCalled);
     }
 
     public MethodInfo GetOverrideInterfaceMethod (MethodInfo mixinMethod)

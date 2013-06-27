@@ -44,15 +44,17 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       return Type.EmptyTypes;
     }
 
-    public MethodInfo GetMethodWrapper (MethodInfo wrappedMethod)
+    public MethodInfo GetPubliclyCallableMixinMethod (MethodInfo methodToBeCalled)
     {
-      // For a non-derived mixin type we do not need a wrapper!
-      return wrappedMethod;
+      if (!methodToBeCalled.IsPublic)
+        throw new NotSupportedException ("If a non-public method is to be called, a derived mixin type must have been created for it.");
+
+      return methodToBeCalled;
     }
 
     public MethodInfo GetOverrideInterfaceMethod (MethodInfo mixinMethod)
     {
-      throw new NotSupportedException ("If a mixin method is overridden, a concrete type must have been created for it.");
+      throw new NotSupportedException ("If a mixin method is overridden, a derived mixin type must have been created for it.");
     }
   }
 }

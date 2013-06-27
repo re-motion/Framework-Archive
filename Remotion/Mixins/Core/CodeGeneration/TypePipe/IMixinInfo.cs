@@ -28,7 +28,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     IEnumerable<Type> GetInterfacesToImplement ();
 
-    MethodInfo GetMethodWrapper (MethodInfo wrappedMethod);
+    MethodInfo GetPubliclyCallableMixinMethod (MethodInfo methodToBeCalled);
     MethodInfo GetOverrideInterfaceMethod (MethodInfo mixinMethod);
   }
 }
