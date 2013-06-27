@@ -88,6 +88,16 @@ namespace Remotion.Mixins.UnitTests.Core
     }
 
     [Test]
+    public void IsIsGeneratedByMixinEngine_OnOverriddenMethodsInterface ()
+    {
+      var mixedInstance = ObjectFactory.Create<ClassOverridingMixinMembers> (ParamList.Empty);
+      var mixinType = Mixin.Get<MixinWithAbstractMembers> (mixedInstance).GetType ();
+      var overriddenMembersInterface = mixinType.GetNestedType ("IOverriddenMethods");
+      Assert.That (overriddenMembersInterface, Is.Not.Null);
+      Assert.That (MixinTypeUtility.IsGeneratedByMixinEngine (overriddenMembersInterface), Is.True);
+    }
+
+    [Test]
     public void GetConcreteMixedType_StandardType ()
     {
       Assert.That (MixinTypeUtility.GetConcreteMixedType (typeof (object)), Is.SameAs (typeof (object)));

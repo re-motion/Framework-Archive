@@ -64,7 +64,8 @@ namespace Remotion.Mixins
       ArgumentUtility.CheckNotNull ("type", type);
       return IsGeneratedConcreteMixedType (type)
           || typeof (IGeneratedMixinType).IsAssignableFrom (type)
-          || typeof (IGeneratedNextCallProxyType).IsAssignableFrom (type);
+          || typeof (IGeneratedNextCallProxyType).IsAssignableFrom (type)
+          || (type.IsNested && type.IsInterface && IsGeneratedByMixinEngine (type.DeclaringType));
     }
 
     /// <summary>
