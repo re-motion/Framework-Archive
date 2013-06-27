@@ -18,10 +18,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using Remotion.TypePipe.CodeGeneration;
-using Remotion.TypePipe.Implementation;
 using Remotion.TypePipe.MutableReflection;
-using Remotion.TypePipe.TypeAssembly;
 using Remotion.Utilities;
 
 namespace Remotion.Mixins.CodeGeneration.TypePipe
@@ -29,7 +26,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
   // TODO 5370
   public class OverrideInterfaceGenerator2
   {
-    public static OverrideInterfaceGenerator2 CreateNestedGenerator (IProxyTypeAssemblyContext context, MutableType outerType, string typeName)
+    public static OverrideInterfaceGenerator2 CreateNestedGenerator (MutableType outerType, string typeName)
     {
       ArgumentUtility.CheckNotNull ("outerType", outerType);
       ArgumentUtility.CheckNotNullOrEmpty ("typeName", typeName);
