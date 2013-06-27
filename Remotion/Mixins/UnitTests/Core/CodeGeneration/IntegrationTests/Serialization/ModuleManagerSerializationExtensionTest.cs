@@ -25,6 +25,7 @@ using Remotion.Utilities;
 namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.Serialization
 {
   [TestFixture]
+  [Ignore ("TODO 5370: Delete")]
   public class ModuleManagerSerializationExtensionTest
   {
     private Func<Type, Type> _identityTransformer;
