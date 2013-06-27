@@ -30,7 +30,7 @@ namespace Remotion.Mixins.UnitTests.Core
 {
   public class TypeGenerationHelper
   {
-    private static readonly IPipeline s_pipeline = PipelineFactory.Create ("TypeGenerationHelper", new MixinParticipant());
+    public static readonly IPipeline Pipeline = PipelineFactory.Create ("TypeGenerationHelper", new MixinParticipant());
 
     public static Type ForceTypeGeneration (Type targetType)
     {
@@ -40,7 +40,7 @@ namespace Remotion.Mixins.UnitTests.Core
                          ?? new ClassContext (targetType, Enumerable.Empty<MixinContext>(), Enumerable.Empty<Type>());
 
       // Explicitly pass classContext in to the MixinParticipant; that way we generate a mixed type even if there are no mixins on the type.
-      return s_pipeline.ReflectionService.GetAssembledType (new AssembledTypeID (targetType, new[] { classContext }));
+      return Pipeline.ReflectionService.GetAssembledType (new AssembledTypeID (targetType, new[] { classContext }));
     }
 
     public static object ForceTypeGenerationAndCreateInstance (Type targetType)
@@ -63,7 +63,7 @@ namespace Remotion.Mixins.UnitTests.Core
 
       var mixinTypeIdentifier = mixinDefinition.GetConcreteMixinTypeIdentifier();
 
-      var generatedMixinType = s_pipeline.ReflectionService.GetAdditionalType (mixinTypeIdentifier);
+      var generatedMixinType = Pipeline.ReflectionService.GetAdditionalType (mixinTypeIdentifier);
       return new AttributeBasedMetadataImporter().GetMetadataForMixinType (generatedMixinType);
     }
   }
