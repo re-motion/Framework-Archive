@@ -34,7 +34,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       ArgumentUtility.CheckNotNull ("outerType", outerType);
       ArgumentUtility.CheckNotNullOrEmpty ("typeName", typeName);
 
-      var interfaceType = context.CreateInterface (outerType.Name + "." + typeName, outerType.Namespace);
+      var interfaceType = outerType.AddNestedType(typeName, TypeAttributes.Interface | TypeAttributes.NestedPublic | TypeAttributes.Abstract, null);
       return new OverrideInterfaceGenerator2 (interfaceType);
     }
 
