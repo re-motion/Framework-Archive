@@ -136,9 +136,6 @@
     <Compile Include="UnitTesting\AppDomainRunner.cs" />
     <Compile Include="UnitTesting\AssemblyCompiler.cs" />
     <Compile Include="UnitTesting\AssemblyCompilationException.cs" />
-    <Compile Include="Mixins\DebuggerWorkaroundMixinTypeGeneratorDecorator.cs" />
-    <Compile Include="Mixins\DebuggerWorkaroundModuleManagerDecorator.cs" />
-    <Compile Include="Mixins\DebuggerWorkaroundTypeGeneratorDecorator.cs" />
     <Compile Include="UnitTesting\Configuration\XmlSchemaValidation.cs" />
     <Compile Include="UnitTesting\Enumerables\EnumerableExtensions.cs" />
     <Compile Include="UnitTesting\Enumerables\OneTimeEnumerable.cs" />
