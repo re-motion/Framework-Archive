@@ -10,12 +10,14 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Remotion.Mixins.Samples</RootNamespace>
     <AssemblyName>Remotion.Mixins.Samples</AssemblyName>
-    <FileUpgradeFlags></FileUpgradeFlags>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
     <OldToolsVersion>3.5</OldToolsVersion>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\..\remotion.snk</AssemblyOriginatorKeyFile>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <UpgradeBackupLocation></UpgradeBackupLocation>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -74,7 +76,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\AssemblyInfoShared.cs">
+    <Compile Include="..\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
     <Compile Include="CompositionPattern\Core\Domain\ITenantBoundObject.cs" />
