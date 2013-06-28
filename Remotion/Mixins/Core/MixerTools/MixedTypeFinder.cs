@@ -25,13 +25,13 @@ using Remotion.Logging;
 namespace Remotion.Mixins.MixerTools
 {
   // Change to be an ITypeDiscoveryService decorator
-  public class ClassContextFinder : IClassContextFinder
+  public class MixedTypeFinder : IMixedTypeFinder
   {
-    private static readonly ILog s_log = LogManager.GetLogger (typeof (ClassContextFinder));
+    private static readonly ILog s_log = LogManager.GetLogger (typeof (MixedTypeFinder));
 
     private readonly ITypeDiscoveryService _typeDiscoveryService;
 
-    public ClassContextFinder (ITypeDiscoveryService typeDiscoveryService)
+    public MixedTypeFinder (ITypeDiscoveryService typeDiscoveryService)
     {
       ArgumentUtility.CheckNotNull ("typeDiscoveryService", typeDiscoveryService);
 
@@ -43,7 +43,7 @@ namespace Remotion.Mixins.MixerTools
       get { return _typeDiscoveryService; }
     }
 
-    public IEnumerable<ClassContext> FindClassContexts (MixinConfiguration configuration)
+    public IEnumerable<Type> FindMixedTypes (MixinConfiguration configuration)
     {
       ArgumentUtility.CheckNotNull ("configuration", configuration);
 
@@ -57,7 +57,7 @@ namespace Remotion.Mixins.MixerTools
              where !t.IsDefined (typeof (IgnoreForMixinConfigurationAttribute), false)
              let context = configuration.GetContext (t)
              where context != null && !MixinTypeUtility.IsGeneratedConcreteMixedType (t) && ShouldProcessContext (context)
-             select context;
+             select t;
     }
 
     private bool ShouldProcessContext (ClassContext context)

@@ -180,7 +180,7 @@
     <Compile Include="Context\ClassContextCollection.cs" />
     <Compile Include="Context\ClassContextCombiner.cs" />
     <Compile Include="Context\ClassContextDeriver.cs" />
-    <Compile Include="Context\ClassContextEventArgs.cs" />
+    <Compile Include="Context\TypeEventArgs.cs" />
     <Compile Include="Context\DeclarativeAnalyzers\HasComposedInterfaceMarkerAnalyzer.cs" />
     <Compile Include="Context\DeclarativeAnalyzers\DeclarativeConfigurationAnalyzer.cs" />
     <Compile Include="Context\DeclarativeAnalyzers\IMixinDeclarationAnalyzer.cs" />
@@ -318,11 +318,11 @@
     <Compile Include="MemberVisibility.cs" />
     <Compile Include="MemberVisibilityAttribute.cs" />
     <Compile Include="MixAttribute.cs" />
-    <Compile Include="MixerTools\ClassContextFinder.cs" />
-    <Compile Include="MixerTools\ConcreteTypeBuilderFactory.cs" />
+    <Compile Include="MixerTools\MixedTypeFinder.cs" />
+    <Compile Include="MixerTools\MixerPipelineFactory.cs" />
     <Compile Include="MixerTools\ErrorEventArgs.cs" />
-    <Compile Include="MixerTools\IClassContextFinder.cs" />
-    <Compile Include="MixerTools\IConcreteTypeBuilderFactory.cs" />
+    <Compile Include="MixerTools\IMixedTypeFinder.cs" />
+    <Compile Include="MixerTools\IMixerPipelineFactory.cs" />
     <Compile Include="MixerTools\Mixer.cs" />
     <Compile Include="MixerTools\ValidationErrorEventArgs.cs" />
     <Compile Include="Mixin.cs" />

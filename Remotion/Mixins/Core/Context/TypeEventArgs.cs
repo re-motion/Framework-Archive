@@ -14,14 +14,25 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using Remotion.Mixins.CodeGeneration;
+using System;
+using Remotion.Utilities;
 
-namespace Remotion.Mixins.MixerTools
+namespace Remotion.Mixins.Context
 {
-  public interface IConcreteTypeBuilderFactory
+  [Serializable]
+  public class TypeEventArgs : EventArgs
   {
-    IConcreteTypeBuilder CreateTypeBuilder (string assemblyOutputDirectory);
-    string GetSignedModulePath (string assemblyOutputDirectory);
-    string GetUnsignedModulePath (string assemblyOutputDirectory);
+    private readonly Type _type;
+
+    public TypeEventArgs (Type type)
+    {
+      ArgumentUtility.CheckNotNull ("type", type);
+      _type = type;
+    }
+
+    public Type Type
+    {
+      get { return _type; }
+    }
   }
 }

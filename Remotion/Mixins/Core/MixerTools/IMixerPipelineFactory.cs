@@ -14,25 +14,13 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System;
-using Remotion.Utilities;
+using Remotion.TypePipe;
 
-namespace Remotion.Mixins.Context
+namespace Remotion.Mixins.MixerTools
 {
-  [Serializable]
-  public class ClassContextEventArgs : EventArgs
+  public interface IMixerPipelineFactory
   {
-    private readonly ClassContext _classContext;
-
-    public ClassContextEventArgs (ClassContext classContext)
-    {
-      ArgumentUtility.CheckNotNull ("classContext", classContext);
-      _classContext = classContext;
-    }
-
-    public ClassContext ClassContext
-    {
-      get { return _classContext; }
-    }
+    IPipeline CreatePipeline (string assemblyOutputDirectory);
+    string GetModulePath (string assemblyOutputDirectory);
   }
 }

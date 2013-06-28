@@ -371,8 +371,8 @@
     <Compile Include="Core\Globalization\TestDomain\MixinAddingMultiLingualResourcesAttributes1.cs" />
     <Compile Include="Core\Globalization\TestDomain\MixinAddingMultiLingualResourcesAttributes2.cs" />
     <Compile Include="Core\MixAttributeTest.cs" />
-    <Compile Include="Core\MixerTools\ClassContextFinderTest.cs" />
-    <Compile Include="Core\MixerTools\ConcreteTypeBuilderFactoryTest.cs" />
+    <Compile Include="Core\MixerTools\MixedTypeFinderTest.cs" />
+    <Compile Include="Core\MixerTools\MixerPipelineFactoryTest.cs" />
     <Compile Include="Core\MixerTools\MixerRunnerTest.cs" />
     <Compile Include="Core\MixerTools\MixerTest.cs" />
     <Compile Include="Core\MixerTools\Mixer_IntegrationTest.cs" />
