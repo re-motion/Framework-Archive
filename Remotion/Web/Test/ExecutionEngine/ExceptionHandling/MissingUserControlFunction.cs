@@ -1,4 +1,4 @@
-// This file is part of the re-motion Core Framework (www.re-motion.org)
+﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -15,27 +15,19 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections.Specialized;
-using Remotion.Collections;
-using Remotion.Configuration;
+using Remotion.Web.ExecutionEngine;
+using Remotion.Web.ExecutionEngine.Infrastructure;
 
-namespace Remotion.Security.UnitTests.Core.Configuration
+namespace Remotion.Web.Test.ExecutionEngine.ExceptionHandling
 {
-  public class GlobalAccessTypeCacheProviderMock : ExtendedProviderBase, IGlobalAccessTypeCacheProvider
+  [Serializable]
+  public class MissingUserControlFunction : WxeFunction
   {
-    public GlobalAccessTypeCacheProviderMock (string name, NameValueCollection config)
-        : base (name, config)
+    public MissingUserControlFunction ()
+        : base (new NoneTransactionMode())
     {
     }
 
-    public ICache<Tuple<ISecurityContext, ISecurityPrincipal>, AccessType[]> GetCache ()
-    {
-      throw new NotImplementedException();
-    }
-
-    public bool IsNull
-    {
-      get { return false; }
-    }
+    private WxePageStep Step1 = new WxePageStep ("~/ExecutionEngine/ExceptionHandling/MissingUserControlForm.aspx");
   }
 }

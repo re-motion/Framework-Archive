@@ -21,14 +21,14 @@ namespace Remotion.Web.ExecutionEngine
 {
   /// <summary> This exception is used by the execution engine to control the call stack. </summary>
   [Serializable]
-  public abstract class WxeExecutionControlExceptionBase : WxeException
+  public abstract class WxeExecutionControlException : WxeInfrastructureException
   {
-    protected WxeExecutionControlExceptionBase (string message)
+    protected WxeExecutionControlException (string message)
         : base(message)
     {
     }
 
-    protected WxeExecutionControlExceptionBase (SerializationInfo info, StreamingContext context)
+    protected WxeExecutionControlException (SerializationInfo info, StreamingContext context)
         : base (info, context)
     {
     }

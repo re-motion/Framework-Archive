@@ -26,14 +26,6 @@ namespace Remotion.SecurityManager.Domain
 {
   public class PrincipalRole
   {
-    public static PrincipalRole Create ([NotNull] Position position, [NotNull] Group group)
-    {
-      ArgumentUtility.CheckNotNull ("position", position);
-      ArgumentUtility.CheckNotNull ("group", group);
-
-      return new PrincipalRole (position.GetHandle(), group.GetHandle());
-    }
-
     private readonly IDomainObjectHandle<Position> _position;
     private readonly IDomainObjectHandle<Group> _group;
 

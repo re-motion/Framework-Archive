@@ -19,7 +19,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
-using Remotion.SecurityManager.Domain;
 using Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation;
 using log4net;
 using log4net.Appender;
@@ -34,12 +33,12 @@ using Remotion.Data.DomainObjects;
 using Remotion.Security;
 using Remotion.SecurityManager.Domain.AccessControl;
 using Remotion.SecurityManager.Domain.Metadata;
-using Remotion.SecurityManager.UnitTests.Domain;
 using Remotion.SecurityManager.UnitTests.TestDomain;
 using Mocks_Is = Rhino.Mocks.Constraints.Is;
 using Mocks_List = Rhino.Mocks.Constraints.List;
 using Mocks_Property = Rhino.Mocks.Constraints.Property;
 using log4net.Filter;
+using PrincipalTestHelper = Remotion.SecurityManager.UnitTests.Domain.AccessControl.PrincipalTestHelper;
 using SecurityContext=Remotion.Security.SecurityContext;
 
 namespace Remotion.SecurityManager.UnitTests
@@ -51,7 +50,6 @@ namespace Remotion.SecurityManager.UnitTests
     private IAccessControlListFinder _mockAclFinder;
     private ISecurityTokenBuilder _mockTokenBuilder;
     private IAccessResolver _mockAccessResolver;
-    private IRevisionProvider _mockRevisionProvider;
 
     private SecurityService _service;
     private SecurityContext _context;
@@ -70,15 +68,13 @@ namespace Remotion.SecurityManager.UnitTests
       _mockAclFinder = _mocks.StrictMock<IAccessControlListFinder>();
       _mockTokenBuilder = _mocks.StrictMock<ISecurityTokenBuilder>();
       _mockAccessResolver = _mocks.StrictMock<IAccessResolver>();
-      _mockRevisionProvider = MockRepository.GenerateStub<IRevisionProvider>();
 
       _service = new SecurityService (
           "name",
           new NameValueCollection(),
           _mockAclFinder,
           _mockTokenBuilder,
-          _mockAccessResolver,
-          _mockRevisionProvider);
+          _mockAccessResolver);
       _context = SecurityContext.Create (typeof (Order), "Owner", "UID: OwnerGroup", "OwnerTenant", new Dictionary<string, Enum>(), new Enum[0]);
 
       _clientTransaction = ClientTransaction.CreateRootTransaction();
@@ -129,7 +125,7 @@ namespace Remotion.SecurityManager.UnitTests
       AccessType[] expectedAccessTypes = new AccessType[1];
 
       SecurityToken token = SecurityToken.Create (
-          Principal.Create (_tenant, null, new Role[0]),
+          PrincipalTestHelper.Create (_tenant, null, new Role[0]),
           null,
           null,
           null,
@@ -151,7 +147,7 @@ namespace Remotion.SecurityManager.UnitTests
     public void GetAccess_ContextDoesNotMatchAcl_ReturnsEmptyAccessTypes ()
     {
       SecurityToken token = SecurityToken.Create (
-          Principal.Create (_tenant, null, new Role[0]),
+          PrincipalTestHelper.Create (_tenant, null, new Role[0]),
           null,
           null,
           null,
@@ -226,7 +222,7 @@ namespace Remotion.SecurityManager.UnitTests
         role.Group.Tenant = _tenant;
         role.Position = organizationalStructureFactory.CreatePosition();
 
-        var token = SecurityToken.Create(Principal.Create (_tenant, null, new[] { role }), null, null, null, abstractRoles);
+        var token = SecurityToken.Create(PrincipalTestHelper.Create (_tenant, null, new[] { role }), null, null, null, abstractRoles);
 
         subTransaction = _clientTransaction.CreateSubTransaction ();
         using (subTransaction.EnterNonDiscardingScope())
@@ -251,18 +247,9 @@ namespace Remotion.SecurityManager.UnitTests
     }
 
     [Test]
-    public void GetRevision ()
-    {
-      DatabaseFixtures dbFixtures = new DatabaseFixtures ();
-      dbFixtures.CreateEmptyDomain ();
-
-      Assert.That (_service.GetRevision (), Is.EqualTo (0));
-    }
-
-    [Test]
     public void GetIsNull ()
     {
-      Assert.That (((IRevisionBasedSecurityProvider) _service).IsNull, Is.False);
+      Assert.That (((ISecurityProvider) _service).IsNull, Is.False);
     }
 
     private IDomainObjectHandle<AccessControlList> CreateAccessControlListHandle ()

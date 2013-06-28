@@ -28,20 +28,17 @@ using Mocks_Property = Rhino.Mocks.Constraints.Property;
 
 namespace Remotion.Security.UnitTests.Core.SecurityStrategyTests
 {
-  using GlobalCacheKey = Tuple<ISecurityContext, ISecurityPrincipal>;
-
   [TestFixture]
   public class HasAccessWithCaching_SecurityStrategyTest
   {
     private MockRepository _mocks;
     private ISecurityProvider _mockSecurityProvider;
-    private IGlobalAccessTypeCacheProvider _mockGlobalAccessTypeCacheProvider;
-    private ICache<GlobalCacheKey, AccessType[]> _mockGlobalAccessTypeCache;
+    private IGlobalAccessTypeCache _mockGlobalAccessTypeCache;
     private ICache<ISecurityPrincipal, AccessType[]> _mockLocalAccessTypeCache;
     private ISecurityContextFactory _mockContextFactory;
     private ISecurityPrincipal _stubUser;
     private SecurityContext _context;
-    private GlobalCacheKey _globalAccessTypeCacheKey;
+    private GlobalAccessTypeCacheKey _globalAccessTypeCacheKey;
     private SecurityStrategy _strategy;
 
     [SetUp]
@@ -49,17 +46,16 @@ namespace Remotion.Security.UnitTests.Core.SecurityStrategyTests
     {
       _mocks = new MockRepository();
       _mockSecurityProvider = _mocks.StrictMock<ISecurityProvider>();
-      _mockGlobalAccessTypeCacheProvider = _mocks.StrictMock<IGlobalAccessTypeCacheProvider>();
-      _mockGlobalAccessTypeCache = _mocks.StrictMock<ICache<GlobalCacheKey, AccessType[]>>();
+      _mockGlobalAccessTypeCache = _mocks.StrictMock<IGlobalAccessTypeCache>();
       _mockLocalAccessTypeCache = _mocks.StrictMock<ICache<ISecurityPrincipal, AccessType[]>>();
       _mockContextFactory = _mocks.StrictMock<ISecurityContextFactory>();
 
         _stubUser = _mocks.Stub<ISecurityPrincipal> ();
         SetupResult.For (_stubUser.User).Return ("user");
       _context = SecurityContext.Create (typeof (SecurableObject), "owner", "group", "tenant", new Dictionary<string, Enum> (), new Enum[0]);
-      _globalAccessTypeCacheKey = new GlobalCacheKey (_context, _stubUser);
+      _globalAccessTypeCacheKey = new GlobalAccessTypeCacheKey (_context, _stubUser);
 
-      _strategy = new SecurityStrategy (_mockLocalAccessTypeCache, _mockGlobalAccessTypeCacheProvider);
+      _strategy = new SecurityStrategy (_mockLocalAccessTypeCache, _mockGlobalAccessTypeCache);
 
       SecurityConfigurationMock.SetCurrent (new SecurityConfiguration());
     }
@@ -74,18 +70,7 @@ namespace Remotion.Security.UnitTests.Core.SecurityStrategyTests
     public void Initialize()
     {
       Assert.That (_strategy.LocalCache, Is.SameAs (_mockLocalAccessTypeCache));
-      Assert.That (_strategy.GlobalCacheProvider, Is.SameAs (_mockGlobalAccessTypeCacheProvider));
-    }
-
-    [Test]
-    public void Initialize_WithDefaults()
-    {
-      IGlobalAccessTypeCacheProvider stubGlobalCacheProvider = _mocks.StrictMock<IGlobalAccessTypeCacheProvider>();
-      SecurityConfiguration.Current.GlobalAccessTypeCacheProvider = stubGlobalCacheProvider;
-      SecurityStrategy strategy = new SecurityStrategy();
-
-      Assert.IsInstanceOf (typeof (Cache<ISecurityPrincipal, AccessType[]>), strategy.LocalCache);
-      Assert.That (strategy.GlobalCacheProvider, Is.SameAs (stubGlobalCacheProvider));
+      Assert.That (_strategy.GlobalCache, Is.SameAs (_mockGlobalAccessTypeCache));
     }
 
     [Test]
@@ -103,7 +88,6 @@ namespace Remotion.Security.UnitTests.Core.SecurityStrategyTests
             .IgnoreArguments()
             .Constraints (Mocks_Is.Same (_stubUser), Mocks_Is.NotNull ())
             .Do (GetOrCreateValueFromValueFactory<ISecurityPrincipal> ());
-        Expect.Call (_mockGlobalAccessTypeCacheProvider.GetCache()).Return (_mockGlobalAccessTypeCache);
         Expect.Call (_mockContextFactory.CreateSecurityContext()).Return (_context);
         Expect.Call (_mockGlobalAccessTypeCache.TryGetValue (null, out value))
             .IgnoreArguments()
@@ -112,7 +96,7 @@ namespace Remotion.Security.UnitTests.Core.SecurityStrategyTests
         Expect.Call (_mockGlobalAccessTypeCache.GetOrCreateValue (null, null))
             .IgnoreArguments()
             .Constraints (Mocks_Is.Equal (_globalAccessTypeCacheKey), Mocks_Is.NotNull())
-            .Do (GetOrCreateValueFromValueFactory<GlobalCacheKey>());
+            .Do (GetOrCreateValueFromValueFactory<GlobalAccessTypeCacheKey>());
         Expect.Call (_mockSecurityProvider.GetAccess (_context, _stubUser)).Return (accessTypeResult);
       }
       _mocks.ReplayAll();
@@ -138,7 +122,6 @@ namespace Remotion.Security.UnitTests.Core.SecurityStrategyTests
             .IgnoreArguments()
             .Constraints (Mocks_Is.Same (_stubUser), Mocks_Is.NotNull ())
             .Do (GetOrCreateValueFromValueFactory<ISecurityPrincipal> ());
-        Expect.Call (_mockGlobalAccessTypeCacheProvider.GetCache()).Return (_mockGlobalAccessTypeCache);
         Expect.Call (_mockContextFactory.CreateSecurityContext()).Return (_context);
         Expect.Call (_mockGlobalAccessTypeCache.TryGetValue (null, out value))
             .IgnoreArguments()
@@ -147,7 +130,7 @@ namespace Remotion.Security.UnitTests.Core.SecurityStrategyTests
         Expect.Call (_mockGlobalAccessTypeCache.GetOrCreateValue (null, null))
             .IgnoreArguments()
             .Constraints (Mocks_Is.Equal (_globalAccessTypeCacheKey), Mocks_Is.NotNull())
-            .Do (GetOrCreateValueFromValueFactory<GlobalCacheKey>());
+            .Do (GetOrCreateValueFromValueFactory<GlobalAccessTypeCacheKey>());
         Expect.Call (_mockSecurityProvider.GetAccess (_context, _stubUser)).Return (accessTypeResult);
       }
       _mocks.ReplayAll();
@@ -173,7 +156,6 @@ namespace Remotion.Security.UnitTests.Core.SecurityStrategyTests
             .IgnoreArguments()
             .Constraints (Mocks_Is.Same (_stubUser), Mocks_Is.NotNull ())
             .Do (GetOrCreateValueFromValueFactory<ISecurityPrincipal> ());
-        Expect.Call (_mockGlobalAccessTypeCacheProvider.GetCache()).Return (_mockGlobalAccessTypeCache);
         Expect.Call (_mockContextFactory.CreateSecurityContext()).Return (_context);
         Expect.Call (_mockGlobalAccessTypeCache.TryGetValue (null, out value))
             .IgnoreArguments()
@@ -202,7 +184,6 @@ namespace Remotion.Security.UnitTests.Core.SecurityStrategyTests
             .IgnoreArguments()
             .Constraints (Mocks_Is.Same (_stubUser), Mocks_Is.NotNull ())
             .Do (GetOrCreateValueFromValueFactory<ISecurityPrincipal> ());
-        Expect.Call (_mockGlobalAccessTypeCacheProvider.GetCache()).Return (_mockGlobalAccessTypeCache);
         Expect.Call (_mockContextFactory.CreateSecurityContext()).Return (_context);
         Expect.Call (_mockGlobalAccessTypeCache.TryGetValue (null, out value))
             .IgnoreArguments()
@@ -235,25 +216,6 @@ namespace Remotion.Security.UnitTests.Core.SecurityStrategyTests
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "IGlobalAccesTypeCacheProvider.GetAccessTypeCache() evaluated and returned null.")]
-    public void HasAccess_WithGlobalCacheProviderReturningNull()
-    {
-      AccessType[] value;
-      SetupResult.For (_mockLocalAccessTypeCache.TryGetValue (null, out value))
-          .IgnoreArguments ()
-          .Constraints (Mocks_Is.Same (_stubUser), Mocks_Is.Anything ()).OutRef (new AccessType[0])
-          .Return (false);
-      SetupResult.For (_mockLocalAccessTypeCache.GetOrCreateValue (null, null))
-          .IgnoreArguments ()
-          .Constraints (Mocks_Is.Same (_stubUser), Mocks_Is.NotNull ())
-          .Do (GetOrCreateValueFromValueFactory<ISecurityPrincipal>());
-      SetupResult.For (_mockGlobalAccessTypeCacheProvider.GetCache()).Return (null);
-      _mocks.ReplayAll();
-
-      _strategy.HasAccess (_mockContextFactory, _mockSecurityProvider, _stubUser, AccessType.Get (GeneralAccessTypes.Edit));
-    }
-
-    [Test]
     [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "ISecurityContextFactory.CreateSecurityContext() evaluated and returned null.")]
     public void HasAccess_WithSecurityContextFactoryReturningNull()
     {
@@ -266,7 +228,6 @@ namespace Remotion.Security.UnitTests.Core.SecurityStrategyTests
           .IgnoreArguments ()
           .Constraints (Mocks_Is.Same (_stubUser), Mocks_Is.NotNull ())
           .Do (GetOrCreateValueFromValueFactory<ISecurityPrincipal> ());
-      SetupResult.For (_mockGlobalAccessTypeCacheProvider.GetCache()).Return (_mockGlobalAccessTypeCache);
       SetupResult.For (_mockContextFactory.CreateSecurityContext()).Return (null);
       _mocks.ReplayAll();
 
