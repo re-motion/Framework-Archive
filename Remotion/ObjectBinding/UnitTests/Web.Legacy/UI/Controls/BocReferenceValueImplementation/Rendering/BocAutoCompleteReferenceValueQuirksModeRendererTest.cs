@@ -41,6 +41,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.Legacy.UI.Controls.BocReferenceVa
   [TestFixture]
   public class BocAutoCompleteReferenceValueQuirksModeRendererTest : RendererTestBase
   {
+    private const string c_selectedValueID = "MyReferenceValue";
     private static readonly Unit s_width = Unit.Pixel (250);
     private static readonly Unit s_height = Unit.Point (12);
 
@@ -63,12 +64,10 @@ namespace Remotion.ObjectBinding.UnitTests.Web.Legacy.UI.Controls.BocReferenceVa
       TextBox = new StubTextBox();
 
       Control = MockRepository.GenerateStub<IBocAutoCompleteReferenceValue> ();
-      Control.Stub (stub => stub.ClientID).Return ("MyReferenceValue");
-      Control.Stub (stub => stub.TextBoxUniqueID).Return ("MyReferenceValue_Boc_TextBox");
-      Control.Stub (stub => stub.TextBoxClientID).Return ("MyReferenceValue_Boc_TextBox");
-      Control.Stub (stub => stub.HiddenFieldUniqueID).Return ("MyReferenceValue_Boc_HiddenField");
-      Control.Stub (stub => stub.HiddenFieldClientID).Return ("MyReferenceValue_Boc_HiddenField");
-      Control.Stub (stub => stub.DropDownButtonClientID).Return ("MyReferenceValue_Boc_DropDownButton");
+      Control.Stub (stub => stub.ClientID).Return (c_selectedValueID);
+      Control.Stub (stub => stub.GetTextBoxName()).Return ("MyReferenceValue_TextValue");
+      Control.Stub (stub => stub.GetHiddenFieldName()).Return ("MyReferenceValue_Boc_HiddenValue");
+      Control.Stub (stub => stub.GetDropDownButtonName()).Return ("MyReferenceValue_DropDownButton");
       Control.Stub (stub => stub.Command).Return (new BocCommand ());
       Control.Command.Type = CommandType.Event;
       Control.Command.Show = CommandShow.Always;

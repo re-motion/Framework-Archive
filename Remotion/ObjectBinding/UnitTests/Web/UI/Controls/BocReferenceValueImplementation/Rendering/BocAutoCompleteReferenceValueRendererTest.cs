@@ -39,6 +39,8 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocReferenceValueImpl
   [TestFixture]
   public class BocAutoCompleteReferenceValueRendererTest : RendererTestBase
   {
+    private const string c_selectedValueID = "MyReferenceValue";
+
     private enum OptionMenuConfiguration
     {
       NoOptionsMenu,
@@ -74,13 +76,11 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocReferenceValueImpl
       TextBox = new StubTextBox();
 
       Control = MockRepository.GenerateStub<IBocAutoCompleteReferenceValue>();
-      Control.Stub (stub => stub.ClientID).Return ("MyReferenceValue");
-      Control.Stub (stub => stub.TextBoxUniqueID).Return ("MyReferenceValue_Boc_TextBox");
-      Control.Stub (stub => stub.TextBoxClientID).Return ("MyReferenceValue_Boc_TextBox");
-      Control.Stub (stub => stub.HiddenFieldUniqueID).Return ("MyReferenceValue_Boc_HiddenField");
-      Control.Stub (stub => stub.HiddenFieldClientID).Return ("MyReferenceValue_Boc_HiddenField");
+      Control.Stub (stub => stub.ClientID).Return (c_selectedValueID);
+      Control.Stub (stub => stub.GetTextBoxName()).Return ("MyReferenceValue_TextValue");
+      Control.Stub (stub => stub.GetHiddenFieldName()).Return ("MyReferenceValue_HiddenValue");
       Control.Stub (stub => stub.LabelClientID).Return ("MyReferenceValue_Boc_Label");
-      Control.Stub (stub => stub.DropDownButtonClientID).Return ("MyReferenceValue_Boc_DropDownButton");
+      Control.Stub (stub => stub.GetDropDownButtonName()).Return ("MyReferenceValue_DropDownButton");
       Control.Stub (stub => stub.Command).Return (new BocCommand());
       Control.Command.Type = CommandType.Event;
       Control.Command.Show = CommandShow.Always;
@@ -557,7 +557,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocReferenceValueImpl
       }
 
       var hiddenField = contentSpan.GetAssertedChildElement ("input", hiddenFieldIndex);
-      hiddenField.AssertAttributeValueEquals ("id", Control.HiddenFieldClientID);
+      hiddenField.AssertAttributeValueEquals ("id", Control.GetHiddenFieldName());
       hiddenField.AssertAttributeValueEquals ("type", "hidden");
       if (autoPostBack == AutoPostBack.Enabled)
         hiddenField.AssertAttributeValueEquals ("onchange", "PostBackEventReference");

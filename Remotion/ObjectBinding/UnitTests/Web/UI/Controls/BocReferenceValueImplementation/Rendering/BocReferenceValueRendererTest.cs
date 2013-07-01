@@ -38,6 +38,8 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocReferenceValueImpl
   [TestFixture]
   public class BocReferenceValueRendererTest : RendererTestBase
   {
+    private const string c_selectedValueID = "MyReferenceValue";
+
     private enum OptionMenuConfiguration
     {
       NoOptionsMenu,
@@ -65,7 +67,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocReferenceValueImpl
       DropDownList = new StubDropDownList();
 
       Control = MockRepository.GenerateStub<IBocReferenceValue>();
-      Control.Stub (stub => stub.ClientID).Return ("MyReferenceValue");
+      Control.Stub (stub => stub.ClientID).Return (c_selectedValueID);
       Control.Stub (stub => stub.Command).Return (new BocCommand());
       Control.Command.Type = CommandType.Event;
       Control.Command.Show = CommandShow.Always;
