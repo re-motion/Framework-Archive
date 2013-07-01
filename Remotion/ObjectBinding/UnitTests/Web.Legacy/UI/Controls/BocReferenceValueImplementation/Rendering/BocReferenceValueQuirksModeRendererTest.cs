@@ -46,6 +46,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.Legacy.UI.Controls.BocReferenceVa
     protected static readonly Unit Width = Unit.Pixel (250);
     protected static readonly Unit Height = Unit.Point (12);
     private IResourceUrlFactory _resourceUrlFactory;
+    private string c_selectedValueID;
     public IClientScriptManager ClientScriptManagerMock { get; set; }
     public IBocReferenceValue Control { get; set; }
     public TypeWithReference BusinessObject { get; set; }
@@ -61,7 +62,8 @@ namespace Remotion.ObjectBinding.UnitTests.Web.Legacy.UI.Controls.BocReferenceVa
       DropDownList = new StubDropDownList ();
 
       Control = MockRepository.GenerateStub<IBocReferenceValue> ();
-      Control.Stub (stub => stub.ClientID).Return ("MyReferenceValue");
+      c_selectedValueID = "MyReferenceValue";
+      Control.Stub (stub => stub.ClientID).Return (c_selectedValueID);
       Control.Stub (stub => stub.Command).Return (new BocCommand ());
       Control.Command.Type = CommandType.Event;
       Control.Command.Show = CommandShow.Always;
@@ -96,7 +98,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.Legacy.UI.Controls.BocReferenceVa
       Control.Stub (mock => mock.ControlStyle).Return (new Style (stateBag));
 
       Control.Stub (stub => stub.LabelClientID).Return (Control.ClientID + "_Boc_Label");
-      Control.Stub (stub => stub.DropDownListClientID).Return (Control.ClientID + "_Boc_DropDownList");
+      Control.Stub (stub => stub.GetSelectedValueName()).Return (Control.ClientID + "_SelectedValue");
       Control.Stub (stub => stub.IconClientID).Return (Control.ClientID + "_Boc_Icon");
       Control.Stub (stub => stub.PopulateDropDownList (Arg<DropDownList>.Is.NotNull))
           .WhenCalled (

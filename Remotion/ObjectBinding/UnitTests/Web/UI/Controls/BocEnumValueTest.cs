@@ -328,5 +328,13 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls
       Assert.That (_businessObject.EnumValue, Is.EqualTo (TestEnum.Second));
       Assert.That (_bocEnumValue.IsDirty, Is.False);
     }
+
+    [Test]
+    public void GetListLabelName ()
+    {
+      var result = _bocEnumValue.GetListControlName();
+
+      Assert.That (result, Is.EqualTo ("NamingContainer_BocEnumValue_SelectedValue"));
+    }
   }
 }
