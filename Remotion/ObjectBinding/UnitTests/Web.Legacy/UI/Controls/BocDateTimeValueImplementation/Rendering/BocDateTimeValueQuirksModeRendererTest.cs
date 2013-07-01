@@ -61,8 +61,8 @@ namespace Remotion.ObjectBinding.UnitTests.Web.Legacy.UI.Controls.BocDateTimeVal
 
       _dateTimeValue.Stub (mock => mock.ProvideMaxLength).Return (true);
 
-      _dateTimeValue.Stub (mock => mock.DateTextboxID).Return ("MyDateTime$DateTextboxId");
-      _dateTimeValue.Stub (mock => mock.TimeTextboxID).Return ("MyDateTime$TimeTextboxId");
+      _dateTimeValue.Stub (mock => mock.GetDateTextboxName()).Return ("MyDateTime$DateTextboxId");
+      _dateTimeValue.Stub (mock => mock.GetTimeTextboxName()).Return ("MyDateTime$TimeTextboxId");
 
       var pageStub = MockRepository.GenerateStub<IPage>();
       pageStub.Stub (stub => stub.WrappedInstance).Return (new PageMock());
@@ -515,7 +515,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.Legacy.UI.Controls.BocDateTimeVal
       }
       int maxLength = new DateTime (2009, 12, 31, 12, 30, 30).ToString (timeFormat).Length;
 
-      AssertTextBox (timeBox, _dateTimeValue.TimeTextboxID, maxLength, isDisabled, withStyle, _dateTimeValue.DateTextBoxStyle.AutoPostBack==true);
+      AssertTextBox (timeBox, _dateTimeValue.GetTimeTextboxName(), maxLength, isDisabled, withStyle, _dateTimeValue.DateTextBoxStyle.AutoPostBack==true);
       if (_dateTimeValue.Value.HasValue)
         Html.AssertAttribute (timeBox, "value", _dateTimeValue.Value.Value.ToString (timeFormat));
       else
@@ -525,7 +525,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.Legacy.UI.Controls.BocDateTimeVal
     private void AssertDateTextBox (XmlNode dateBoxCell, bool isDisabled, bool withStyle)
     {
       var dateBox = Html.GetAssertedChildElement (dateBoxCell, "input", 0);
-      AssertTextBox (dateBox, _dateTimeValue.DateTextboxID, 10, isDisabled, withStyle, _dateTimeValue.TimeTextBoxStyle.AutoPostBack==true);
+      AssertTextBox (dateBox, _dateTimeValue.GetDateTextboxName(), 10, isDisabled, withStyle, _dateTimeValue.TimeTextBoxStyle.AutoPostBack==true);
       if (_dateTimeValue.Value.HasValue)
         Html.AssertAttribute (dateBox, "value", _dateTimeValue.Value.Value.ToString ("d"));
       else

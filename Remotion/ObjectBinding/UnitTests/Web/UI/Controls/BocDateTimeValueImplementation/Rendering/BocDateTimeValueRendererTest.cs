@@ -37,6 +37,8 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocDateTimeValueImple
   {
     private const string c_timeString = "15:43";
     private const string c_dateString = "31.07.2009";
+    private const string c_dateTextValueID = "MyDateTimeValue$Boc_DateTextBox";
+    private const string c_timeTextValueID = "MyDateTimeValue$Boc_TimeTextBox";
     private IBocDateTimeValue _control;
     private SingleRowTextBoxStyle _dateStyle;
     private SingleRowTextBoxStyle _timeStyle;
@@ -50,8 +52,8 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocDateTimeValueImple
       Initialize();
       _control = MockRepository.GenerateStub<IBocDateTimeValue>();
       _control.Stub (stub => stub.ClientID).Return ("MyDateTimeValue");
-      _control.Stub (stub => stub.DateTextboxID).Return ("MyDateTimeValue$Boc_DateTextBox");
-      _control.Stub (stub => stub.TimeTextboxID).Return ("MyDateTimeValue$Boc_TimeTextBox");
+      _control.Stub (stub => stub.GetDateTextboxName()).Return (c_dateTextValueID);
+      _control.Stub (stub => stub.GetTimeTextboxName()).Return (c_timeTextValueID);
 
       _dateStyle = new SingleRowTextBoxStyle();
       _timeStyle = new SingleRowTextBoxStyle();
@@ -125,7 +127,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocDateTimeValueImple
 
       timeInputWrapper.AssertTextNode ("TextBox", 0);
 
-      Assert.That (_timeTextBox.ID, Is.EqualTo (_control.TimeTextboxID));
+      Assert.That (_timeTextBox.ID, Is.EqualTo (_control.GetTimeTextboxName()));
       Assert.That (_timeTextBox.CssClass, Is.EqualTo (renderer.CssClassTime));
       Assert.That (_timeTextBox.Text, Is.EqualTo (c_timeString));
       Assert.That (_timeTextBox.MaxLength, Is.EqualTo (5));
@@ -139,7 +141,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocDateTimeValueImple
       dateInputWrapper.AssertChildElementCount (0);
 
       dateInputWrapper.AssertTextNode ("TextBox", 0);
-      Assert.That (_dateTextBox.ID, Is.EqualTo (_control.DateTextboxID));
+      Assert.That (_dateTextBox.ID, Is.EqualTo (_control.GetDateTextboxName()));
       Assert.That (_dateTextBox.CssClass, Is.EqualTo (renderer.CssClassDate));
       Assert.That (_dateTextBox.Text, Is.EqualTo (c_dateString));
       Assert.That (_dateTextBox.MaxLength, Is.EqualTo (10));
