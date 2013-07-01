@@ -42,9 +42,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
   {
     // constants
 
-    private const string c_labelIDPostfix = "Boc_Label";
-    private const string c_checkboxIDPostfix = "Boc_CheckBox";
-    private const string c_imageIDPostfix = "Boc_Image";
+    private const string c_labelIDPostfix = "_Boc_Label";
+    private const string c_checkboxIDPostfix = "_BooleanValue";
+    private const string c_imageIDPostfix = "_Boc_Image";
 
     // types
 
@@ -129,7 +129,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       if (! _isActive)
         return false;
 
-      string newValue = PageUtility.GetPostBackCollectionItem (Page, GetCheckboxUniqueID());
+      string newValue = PageUtility.GetPostBackCollectionItem (Page, GetCheckBoxName());
       bool newBooleanValue = ! StringUtility.IsNullOrEmpty (newValue);
       bool isDataChanged = _value != newBooleanValue;
       if (isDataChanged)
@@ -235,7 +235,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <seealso cref="BusinessObjectBoundEditableWebControl.GetTrackedClientIDs">BusinessObjectBoundEditableWebControl.GetTrackedClientIDs</seealso>
     public override string[] GetTrackedClientIDs ()
     {
-      return IsReadOnly ? new string[0] : new[] { GetCheckboxUniqueID() };
+      return IsReadOnly ? new string[0] : new[] { GetCheckBoxName() };
     }
 
     /// <summary>
@@ -266,7 +266,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     [Browsable (false)]
     public override string FocusID
     {
-      get { return IsReadOnly ? null : GetCheckboxClientID(); }
+      get { return IsReadOnly ? null : GetCheckBoxName(); }
     }
 
     /// <summary> Gets the string representation of this control's <see cref="BocBooleanValueBase.Value"/>. </summary>
@@ -405,39 +405,37 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       get { return !WcagHelper.Instance.IsWaiConformanceLevelARequired() && _showDescription == true; }
     }
 
-    string IBocCheckBox.LabelID
+    public string GetLabelName ()
     {
-      get { return ClientID + ClientIDSeparator + c_labelIDPostfix; }
+      return ClientID + c_labelIDPostfix;
     }
 
-    string IBocCheckBox.CheckboxID
+    public string GetCheckBoxName ()
     {
-      get { return GetCheckboxClientID(); }
+      return ClientID + c_checkboxIDPostfix;
     }
 
-    string IBocCheckBox.ImageID
+    public string GetImageName ()
     {
-      get { return ClientID + ClientIDSeparator + c_imageIDPostfix; }
+      return ClientID + c_imageIDPostfix;
     }
 
+    [Obsolete ("Use GetLabelName() instead. (1.13.206)", true)]
     public string GetLabelUniqueID ()
     {
-      return UniqueID + IdSeparator + c_labelIDPostfix;
+      throw new NotImplementedException ("Use GetLabelName() instead. (1.13.206)");
     }
 
+    [Obsolete ("Use GetCheckBoxName() instead. (1.13.206)", true)]
     public string GetCheckboxUniqueID ()
     {
-      return UniqueID + IdSeparator + c_checkboxIDPostfix;
+      throw new NotImplementedException ("Use GetCheckBoxName() instead. (1.13.206)");
     }
-
-    private string GetCheckboxClientID ()
-    {
-      return ClientID + ClientIDSeparator + c_checkboxIDPostfix;
-    }
-
+    
+    [Obsolete ("Use GetImageName() instead. (1.13.206)", true)]
     public string GetImageUniqueID ()
     {
-      return UniqueID + IdSeparator + c_imageIDPostfix;
+      throw new NotImplementedException ("Use GetImageName() instead. (1.13.206)");
     }
 
     bool IBocCheckBox.IsDescriptionEnabled

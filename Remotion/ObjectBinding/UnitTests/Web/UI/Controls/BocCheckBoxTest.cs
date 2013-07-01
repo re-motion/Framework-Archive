@@ -105,10 +105,9 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls
       string[] actual = _bocCheckBox.GetTrackedClientIDs();
       Assert.That (actual, Is.Not.Null);
       Assert.That (actual.Length, Is.EqualTo (1));
-      Assert.That (actual[0], Is.EqualTo (_bocCheckBox.GetCheckboxUniqueID()));
+      Assert.That (actual[0], Is.EqualTo (_bocCheckBox.GetCheckBoxName()));
     }
-
-
+    
     [Test]
     public void SetValueToTrue()
     {
@@ -461,6 +460,30 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls
       _bocCheckBox.SaveValue (false);
       Assert.That (_businessObject.BooleanValue, Is.EqualTo (true));
       Assert.That (_bocCheckBox.IsDirty, Is.False);
+    }
+
+    [Test]
+    public void GetCheckBoxName ()
+    {
+      var result = _bocCheckBox.GetCheckBoxName();
+
+      Assert.That (result, Is.EqualTo ("NamingContainer_BocCheckBox_BooleanValue"));
+    }
+
+    [Test]
+    public void GetLabelName ()
+    {
+      var result = _bocCheckBox.GetLabelName();
+
+      Assert.That (result, Is.EqualTo ("NamingContainer_BocCheckBox_Boc_Label"));
+    }
+
+    [Test]
+    public void GeImageName ()
+    {
+      var result = _bocCheckBox.GetImageName();
+
+      Assert.That (result, Is.EqualTo ("NamingContainer_BocCheckBox_Boc_Image"));
     }
   }
 }

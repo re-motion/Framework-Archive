@@ -36,6 +36,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocBooleanValueImplem
     private const string c_trueDescription = "Wahr";
     private const string c_falseDescription = "Falsch";
     private const string c_cssClass = "someCssClass";
+    private const string c_selectedValueID = "MyCheckbox";
     private readonly string _startUpScriptKey = typeof (BocCheckBox).FullName + "_Startup";
 
     private IBocCheckBox _checkbox;
@@ -48,10 +49,10 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocBooleanValueImplem
       Initialize();
       _checkbox = MockRepository.GenerateMock<IBocCheckBox>();
 
-      _checkbox.Stub (mock => mock.ClientID).Return ("MyCheckbox");
-      _checkbox.Stub (mock => mock.GetCheckboxUniqueID()).Return ("_Boc_CheckBox");
-      _checkbox.Stub (mock => mock.GetImageUniqueID()).Return ("_Boc_Image");
-      _checkbox.Stub (mock => mock.GetLabelUniqueID()).Return ("_Boc_Label");
+      _checkbox.Stub (mock => mock.ClientID).Return (c_selectedValueID);
+      _checkbox.Stub (mock => mock.GetCheckBoxName()).Return ("_SelectedValue");
+      _checkbox.Stub (mock => mock.GetImageName()).Return ("_Boc_Image");
+      _checkbox.Stub (mock => mock.GetLabelName()).Return ("_Boc_Label");
 
       var clientScriptManagerMock = MockRepository.GenerateMock<IClientScriptManager>();
       _startupScript = string.Format (
@@ -246,8 +247,8 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocBooleanValueImplem
     {
       var checkbox = Html.GetAssertedChildElement (outerSpan, "input", 0);
       Html.AssertAttribute (checkbox, "type", "checkbox");
-      Html.AssertAttribute (checkbox, "id", "_Boc_CheckBox");
-      Html.AssertAttribute (checkbox, "name", "_Boc_CheckBox");
+      Html.AssertAttribute (checkbox, "id", "_SelectedValue");
+      Html.AssertAttribute (checkbox, "name", "_SelectedValue");
       if (value)
         Html.AssertAttribute (checkbox, "checked", "checked");
       else

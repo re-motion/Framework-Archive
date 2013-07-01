@@ -63,9 +63,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
       AddAttributesToRender (renderingContext);
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
 
-      Label labelControl = new Label { ID = renderingContext.Control.GetLabelUniqueID () };
-      HtmlInputCheckBox checkBoxControl = new HtmlInputCheckBox { ID = renderingContext.Control.GetCheckboxUniqueID () };
-      Image imageControl = new Image { ID = renderingContext.Control.GetImageUniqueID () };
+      Label labelControl = new Label { ID = renderingContext.Control.GetLabelName () };
+      HtmlInputCheckBox checkBoxControl = new HtmlInputCheckBox { ID = renderingContext.Control.GetCheckBoxName () };
+      Image imageControl = new Image { ID = renderingContext.Control.GetImageName () };
 
       string description = GetDescription (renderingContext);
 
@@ -126,8 +126,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
 
     private string GetScriptParameters (BocCheckBoxRenderingContext renderingContext)
     {
-      string label = renderingContext.Control.IsDescriptionEnabled ? "document.getElementById ('" + renderingContext.Control.LabelID + "')" : "null";
-      string checkBox = "document.getElementById ('" + renderingContext.Control.CheckboxID + "')";
+      string label = renderingContext.Control.IsDescriptionEnabled ? "document.getElementById ('" + renderingContext.Control.GetLabelName() + "')" : "null";
+      string checkBox = "document.getElementById ('" + renderingContext.Control.GetCheckBoxName() + "')";
       string script = " ("
                       + checkBox + ", "
                       + label + ", "

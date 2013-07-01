@@ -20,14 +20,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation
 {
   public interface IBocCheckBox : IBocBooleanValueBase
   {
-    string LabelID { get; }
-    string CheckboxID { get; }
-    string ImageID { get; }
-    bool IsDescriptionEnabled { get; }
+     bool IsDescriptionEnabled { get; }
     string DefaultTrueDescription { get; }
     string DefaultFalseDescription { get; }
-    string GetLabelUniqueID ();
-    string GetCheckboxUniqueID ();
-    string GetImageUniqueID ();
+    string GetLabelName ();
+    string GetCheckBoxName ();
+    string GetImageName ();
   }
 }
