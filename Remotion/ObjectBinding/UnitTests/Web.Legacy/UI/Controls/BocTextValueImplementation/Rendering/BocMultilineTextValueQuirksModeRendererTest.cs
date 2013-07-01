@@ -56,7 +56,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.Legacy.UI.Controls.BocTextValueIm
           });
 
       TextValue.Stub (stub => stub.ClientID).Return ("MyTextValue");
-      TextValue.Stub (stub => stub.GetTextValueID()).Return (c_textValueID);
+      TextValue.Stub (stub => stub.GetTextValueName()).Return (c_textValueID);
 
       TextValue.Stub (mock => mock.CssClass).PropertyBehavior();
 
