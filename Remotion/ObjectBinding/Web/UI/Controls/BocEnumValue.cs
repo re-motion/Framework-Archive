@@ -43,8 +43,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     // constants
 
     private const string c_nullIdentifier = "==null==";
-    private const string c_labelIDPostfix = "_Boc_Label";
-    private const string c_listControlIDPostfix = "_Boc_ListControl";
+    private const string c_labelIDPostfix = "_LabelValue";
+    private const string c_listControlIDPostfix = "_SelectedValue";
 
     // types
 
@@ -220,41 +220,38 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         return new string[0];
       else if (ListControlStyle.ControlType == ListControlType.DropDownList
                || ListControlStyle.ControlType == ListControlType.ListBox)
-        return new[] { GetListControlClientID() };
+        return new[] { GetListControlName () };
       else if (ListControlStyle.ControlType == ListControlType.RadioButtonList)
       {
         string[] clientIDs = new string[GetEnabledValues().Length + (IsRequired ? 0 : 1)];
         for (int i = 0; i < clientIDs.Length; i++)
-          clientIDs[i] = GetListControlClientID() + "_" + i.ToString (NumberFormatInfo.InvariantInfo);
+          clientIDs[i] = GetListControlName () + "_" + i.ToString (NumberFormatInfo.InvariantInfo);
         return clientIDs;
       }
       else
         return new string[0];
     }
 
-    private string GetListControlUniqueID ()
-    {
-      return UniqueID + c_listControlIDPostfix;
-    }
-
-    public string GetListControlClientID ()
+    public string GetListControlName ()
     {
       return ClientID + c_listControlIDPostfix;
     }
 
-    public string GetLabelClientID ()
+    string IBocEnumValue.GetListLabelName ()
     {
       return ClientID + c_labelIDPostfix;
     }
 
-    string IBocEnumValue.LabelID
+    [Obsolete ("Use GetListControlName() instead. (1.13.206)", true)]
+    public string GetListControlClientID ()
     {
-      get { return UniqueID + c_labelIDPostfix; }
+      throw new NotImplementedException ("Use GetListControlName() instead. (1.13.206)");
     }
 
-    string IBocEnumValue.ListControlID
+    [Obsolete ("Use GetListLabelName() instead. (1.13.206)", true)]
+    public string GetLabelClientID ()
     {
-      get { return UniqueID + c_listControlIDPostfix; }
+      throw new NotImplementedException ("Use GetListLabelName() instead. (1.13.206)");
     }
 
     /// <summary> This event is fired when the selection is changed between postbacks. </summary>
@@ -422,7 +419,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     [Browsable (false)]
     public string FocusID
     {
-      get { return IsReadOnly ? null : GetListControlClientID(); }
+      get { return IsReadOnly ? null : GetListControlName (); }
     }
 
     /// <summary>
@@ -546,7 +543,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <include file='doc\include\UI\Controls\BocEnumValue.xml' path='BocEnumValue/LoadPostData/*' />
     protected virtual bool LoadPostData (string postDataKey, NameValueCollection postCollection)
     {
-      string newValue = PageUtility.GetPostBackCollectionItem (Page, GetListControlUniqueID());
+      string newValue = PageUtility.GetPostBackCollectionItem (Page, GetListControlName());
       bool isDataChanged = false;
       if (newValue != null)
       {
