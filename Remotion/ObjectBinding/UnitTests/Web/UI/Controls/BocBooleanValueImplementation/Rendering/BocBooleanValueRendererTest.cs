@@ -43,6 +43,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocBooleanValueImplem
     private string _clickScript;
     private string _keyDownScript;
     private const string _dummyScript = "return false;";
+    private const string c_selectedValueID = "MyBooleanValue";
     private IBocBooleanValue _booleanValue;
     private BocBooleanValueRenderer _renderer;
     private BocBooleanValueResourceSet _resourceSet;
@@ -66,11 +67,11 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocBooleanValueImplem
 
       var clientScriptManagerMock = MockRepository.GenerateMock<IClientScriptManager>();
 
-      _booleanValue.Stub (mock => mock.ClientID).Return ("MyBooleanValue");
-      _booleanValue.Stub (mock => mock.GetHiddenFieldUniqueID()).Return ("_Boc_HiddenField");
-      _booleanValue.Stub (mock => mock.GetHyperLinkUniqueID()).Return ("_Boc_HyperLink");
-      _booleanValue.Stub (mock => mock.GetImageClientID()).Return ("_Boc_Image");
-      _booleanValue.Stub (mock => mock.GetLabelClientID()).Return ("_Boc_Label");
+      _booleanValue.Stub (mock => mock.ClientID).Return (c_selectedValueID);
+      _booleanValue.Stub (mock => mock.GetHiddenFieldName()).Return ("_HiddenValue");
+      _booleanValue.Stub (mock => mock.GetHyperLinkName()).Return ("_Boc_HyperLink");
+      _booleanValue.Stub (mock => mock.GetImageName()).Return ("_Boc_Image");
+      _booleanValue.Stub (mock => mock.GetLabelName()).Return ("_Boc_Label");
 
       string startupScriptKey = typeof (BocBooleanValueRenderer).FullName + "_Startup_" + _resourceSet.ResourceKey;
       _startupScript = string.Format (
@@ -94,9 +95,9 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocBooleanValueImplem
           "document.getElementById ('{2}'), document.getElementById ('{3}'), false, " +
           "'" + c_trueDescription + "', '" + c_falseDescription + "', '" + c_nullDescription + "');return false;",
           "ResourceKey",
-          _booleanValue.GetImageClientID(),
-          _booleanValue.GetLabelClientID(),
-          _booleanValue.GetHiddenFieldUniqueID());
+          _booleanValue.GetImageName(),
+          _booleanValue.GetLabelName(),
+          _booleanValue.GetHiddenFieldName());
 
       _keyDownScript = "BocBooleanValue_OnKeyDown (this);";
 
@@ -333,7 +334,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocBooleanValueImplem
     {
       var hiddenField = Html.GetAssertedChildElement (outerSpan, "input", 0);
       Html.AssertAttribute (hiddenField, "type", "hidden");
-      Html.AssertAttribute (hiddenField, "id", "_Boc_HiddenField");
+      Html.AssertAttribute (hiddenField, "id", "_HiddenValue");
       Html.AssertAttribute (hiddenField, "value", value);
     }
   }

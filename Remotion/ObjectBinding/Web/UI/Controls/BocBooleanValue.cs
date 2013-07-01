@@ -24,7 +24,6 @@ using Remotion.Globalization;
 using Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.Rendering;
 using Remotion.Utilities;
-using System.Web;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Globalization;
 using Remotion.Web.Utilities;
@@ -42,7 +41,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     private const string c_nullString = "null";
 
-    private const string c_hiddenfieldIDPostfix = "Boc_HiddenField";
+    private const string c_hiddenfieldIDPostfix = "_HiddenValue";
+    private const string c_hyperlinkIDPostfix = "_Boc_HyperLink";
+    private const string c_labelIDPostfix = "_Boc_Label";
+    private const string c_imageIDPostfix = "_Boc_Image";
 
     // types
 
@@ -160,39 +162,49 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <seealso cref="BusinessObjectBoundEditableWebControl.GetTrackedClientIDs">BusinessObjectBoundEditableWebControl.GetTrackedClientIDs</seealso>
     public override string[] GetTrackedClientIDs ()
     {
-      return IsReadOnly ? new string[0] : new[] { GetHiddenFieldClientID() };
+      return IsReadOnly ? new string[0] : new[] { GetHiddenFieldName () };
     }
 
     /// <summary>
-    /// Gets an ID to use for the hidden field needed to store the value of the control client-side.
+    /// Gets a name (ID) to use for the hidden field needed to store the value of the control client-side.
     /// </summary>
-    /// <returns>The control's <see cref="Control.UniqueID"/> postfixed with a constant id for the hidden field.</returns>
+    /// <returns>The control's <see cref="Control.ClientID"/> postfixed with a constant id for the hidden field.</returns>
+    public string GetHiddenFieldName ()
+    {
+      return ClientID + c_hiddenfieldIDPostfix;
+    }
+
+    [Obsolete ("Use GetHiddenFieldName() instead. (1.13.206)", true)]
     public string GetHiddenFieldUniqueID ()
     {
-      return UniqueID + IdSeparator + c_hiddenfieldIDPostfix;
+      throw new NotImplementedException ("Use GetHiddenFieldName() instead. (1.13.206)");
     }
 
-    /// <summary>
-    /// Gets an ID to use for the hidden field needed to store the value of the control client-side.
-    /// </summary>
-    /// <returns>The control's <see cref="Control.UniqueID"/> postfixed with a constant id for the hidden field.</returns>
+    [Obsolete ("Use GetHiddenFieldName() instead. (1.13.206)", true)]
     public string GetHiddenFieldClientID ()
     {
-      return ClientID + ClientIDSeparator + c_hiddenfieldIDPostfix;
+      throw new NotImplementedException ("Use GetHiddenFieldName() instead. (1.13.206)");
     }
 
     /// <summary>
-    /// Gets an ID to use for the hyperlink used to change the value of the control client-side.
+    /// Gets a name (ID) to use for the hyperlink used to change the value of the control client-side.
     /// </summary>
-    /// <returns>The control's <see cref="Control.UniqueID"/> postfixed with a constant id for the hyperlink.</returns>
-    public string GetHyperLinkUniqueID ()
+    /// <returns>The control's <see cref="Control.ClientID"/> postfixed with a constant id for the hyperlink.</returns>
+    public string GetHyperLinkName ()
     {
-      return UniqueID + IdSeparator + "Boc_HyperLink";
+      return ClientID + c_hyperlinkIDPostfix;
     }
 
+    [Obsolete ("Use GetHyperlinkName() instead. (1.13.206)", true)]
+    public string GetHyperLinkUniqueID ()
+    {
+      throw new NotImplementedException ("Use GetHyperlinkName() instead. (1.13.206)");
+    }
+
+    [Obsolete ("Use GetHyperlinkName() instead. (1.13.206)", true)]
     private string GetHyperLinkClientID ()
     {
-      return ClientID + ClientIDSeparator + "Boc_HyperLink";
+      throw new NotImplementedException ("Use GetHyperlinkName() instead. (1.13.206)");
     }
 
     protected override bool? GetValue ()
@@ -262,7 +274,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     [Browsable (false)]
     public override string FocusID
     {
-      get { return IsReadOnly ? null : GetHyperLinkClientID (); }
+      get { return IsReadOnly ? null : GetHyperLinkName (); }
     }
 
     /// <summary> Gets the string representation of this control's <see cref="BocBooleanValueBase.Value"/>. </summary>
@@ -321,7 +333,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <include file='doc\include\UI\Controls\BocBooleanValue.xml' path='BocBooleanValue/LoadPostData/*' />
     protected override bool LoadPostData (string postDataKey, NameValueCollection postCollection)
     {
-      string newValueAsString = PageUtility.GetPostBackCollectionItem (Page, GetHiddenFieldUniqueID());
+      string newValueAsString = PageUtility.GetPostBackCollectionItem (Page, GetHiddenFieldName());
       bool? newValue = null;
       bool isDataChanged = false;
       if (newValueAsString != null)
@@ -442,14 +454,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       return ! isList;
     }
 
-    string IBocBooleanValue.GetLabelClientID ()
+    string IBocBooleanValue.GetLabelName ()
     {
-      return UniqueID + IdSeparator + "Boc_Label";
+      return ClientID + c_labelIDPostfix;
     }
 
-    string IBocBooleanValue.GetImageClientID ()
+    string IBocBooleanValue.GetImageName ()
     {
-      return UniqueID + IdSeparator + "Boc_Image";
+      return ClientID + c_imageIDPostfix;
     }
 
     BocBooleanValueResourceSet IBocBooleanValue.CreateResourceSet ()

@@ -71,10 +71,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
       AddAttributesToRender (renderingContext);
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
 
-      Label labelControl = new Label { ID = renderingContext.Control.GetLabelClientID () };
-      Image imageControl = new Image { ID = renderingContext.Control.GetImageClientID () };
-      HiddenField hiddenFieldControl = new HiddenField { ID = renderingContext.Control.GetHiddenFieldUniqueID () };
-      HyperLink linkControl = new HyperLink { ID = renderingContext.Control.GetHyperLinkUniqueID () };
+      Label labelControl = new Label { ID = renderingContext.Control.GetLabelName () };
+      Image imageControl = new Image { ID = renderingContext.Control.GetImageName () };
+      HiddenField hiddenFieldControl = new HiddenField { ID = renderingContext.Control.GetHiddenFieldName () };
+      HyperLink linkControl = new HyperLink { ID = renderingContext.Control.GetHyperLinkName () };
 
       bool isClientScriptEnabled = DetermineClientScriptLevel (renderingContext);
       if (isClientScriptEnabled)
