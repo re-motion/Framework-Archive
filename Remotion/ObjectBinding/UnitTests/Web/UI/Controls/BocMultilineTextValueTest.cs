@@ -103,7 +103,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls
       string[] actual = _bocMultilineTextValue.GetTrackedClientIDs();
       Assert.That (actual, Is.Not.Null);
       Assert.That (actual.Length, Is.EqualTo (1));
-      Assert.That (actual[0], Is.EqualTo (_bocMultilineTextValue.GetTextBoxClientID()));
+      Assert.That (actual[0], Is.EqualTo (_bocMultilineTextValue.GetTextValueID()));
     }
 
     [Test]

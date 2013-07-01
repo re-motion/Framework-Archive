@@ -32,6 +32,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocTextValueImplement
   [TestFixture]
   public class BocTextValueRendererTest : BocTextValueRendererTestBase<IBocTextValue>
   {
+    private const string c_textValueID = "MyTextValue_Boc_Textbox";
     private BocTextValueRenderer _renderer;
 
     [SetUp]
@@ -41,7 +42,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocTextValueImplement
       TextValue = MockRepository.GenerateMock<IBocTextValue>();
       _renderer = new BocTextValueRenderer (new FakeResourceUrlFactory());
       TextValue.Stub (stub => stub.ClientID).Return ("MyTextValue");
-      TextValue.Stub (stub => stub.TextBoxID).Return ("MyTextValue_Boc_Textbox");
+      TextValue.Stub (stub => stub.GetTextValueID()).Return (c_textValueID);
       TextValue.Stub (mock => mock.CssClass).PropertyBehavior();
 
       var pageStub = MockRepository.GenerateStub<IPage>();
@@ -226,11 +227,13 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocTextValueImplement
       Html.AssertChildElementCount (content, 1);
 
       var input = Html.GetAssertedChildElement (content, "input", 0);
+      Html.AssertAttribute (input, "id", c_textValueID);
+      Html.AssertAttribute (input, "name", c_textValueID);
       Html.AssertAttribute (input, "type", "text");
       Html.AssertAttribute (input, "value", BocTextValueRendererTestBase<IBocTextValue>.c_firstLineText);
       Assert.That (TextValue.TextBoxStyle.AutoPostBack, Is.EqualTo (autoPostBack));
       if (autoPostBack)
-        Html.AssertAttribute (input, "onchange", string.Format ("javascript:__doPostBack('{0}','')", TextValue.TextBoxID));
+        Html.AssertAttribute (input, "onchange", string.Format ("javascript:__doPostBack('{0}','')", c_textValueID));
       else
         Html.AssertNoAttribute (input, "onchange");
 
@@ -288,6 +291,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocTextValueImplement
       Html.AssertChildElementCount (content, 1);
 
       var labelSpan = Html.GetAssertedChildElement (content, "span", 0);
+      Html.AssertAttribute (labelSpan, "id", c_textValueID);
       Html.AssertTextNode (labelSpan, BocTextValueRendererTestBase<IBocTextValue>.c_firstLineText, 0);
 
       CheckStyle (withStyle, span, labelSpan);
@@ -356,7 +360,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocTextValueImplement
 
       Assert.That (TextValue.TextBoxStyle.AutoPostBack, Is.EqualTo (autoPostBack));
       if (autoPostBack)
-        Html.AssertAttribute (input, "onchange", string.Format ("javascript:__doPostBack('{0}','')", TextValue.TextBoxID));
+        Html.AssertAttribute (input, "onchange", string.Format ("javascript:__doPostBack('{0}','')", c_textValueID));
       else
         Html.AssertNoAttribute (input, "onchange");
     }

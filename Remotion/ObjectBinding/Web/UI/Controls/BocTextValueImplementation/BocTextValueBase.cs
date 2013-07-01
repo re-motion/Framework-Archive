@@ -41,7 +41,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation
   [ToolboxItemFilter ("System.Web.UI")]
   public abstract class BocTextValueBase : BusinessObjectBoundEditableWebControl, IBocTextValueBase, IPostBackDataHandler, IFocusableControl
   {
-    private const string c_textboxIDPostfix = "_Boc_TextBox";
+    private const string c_textboxIDPostfix = "_TextValueID";
     private readonly Style _commonStyle = new Style();
     private readonly TextBoxStyle _textBoxStyle;
     private readonly Style _labelStyle = new Style();
@@ -97,7 +97,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation
     [Browsable (false)]
     public string FocusID
     {
-      get { return IsReadOnly ? null : GetTextBoxClientID(); }
+      get { return IsReadOnly ? null : GetTextValueID(); }
     }
 
     /// <summary>
@@ -219,7 +219,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation
     /// <include file='doc\include\UI\Controls\BocTextValue.xml' path='BocTextValue/LoadPostData/*' />
     protected virtual bool LoadPostData (string postDataKey, NameValueCollection postCollection)
     {
-      string newValue = PageUtility.GetPostBackCollectionItem (Page, GetTextBoxUniqueID());
+      string newValue = PageUtility.GetPostBackCollectionItem (Page, GetTextValueID());
       bool isDataChanged = newValue != null && Text != NormalizeText (newValue);
       if (isDataChanged)
       {
@@ -281,7 +281,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation
     /// <seealso cref="BusinessObjectBoundEditableWebControl.GetTrackedClientIDs">BusinessObjectBoundEditableWebControl.GetTrackedClientIDs</seealso>
     public override string[] GetTrackedClientIDs ()
     {
-      return IsReadOnly ? new string[0] : new[] { GetTextBoxClientID() };
+      return IsReadOnly ? new string[0] : new[] { GetTextValueID() };
     }
 
     /// <summary> This event is fired when the text is changed between postbacks. </summary>
@@ -334,20 +334,22 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation
     /// <summary>
     /// Returns the ID to use for the input field in the rendered HTML.
     /// </summary>
-    /// <returns>The control's <see cref="Control.ClientID"/> postfixed by a constant textbox id.</returns>
-    public string GetTextBoxClientID ()
+    /// <returns>The control's <see cref="Control.ClientID"/> postfixed by a constant textbox ID.</returns>
+    public string GetTextValueID ()
     {
       return ClientID + c_textboxIDPostfix;
     }
 
-    public string GetTextBoxUniqueID ()
+    [Obsolete ("Use GetTextValueID instead. (1.13.206)", true)]
+    public string GetTextBoxClientID ()
     {
-      return UniqueID + c_textboxIDPostfix;
+      throw new NotImplementedException ("Use GetTextValueID instead. (1.13.206)");
     }
 
-    string IBocTextValueBase.TextBoxID
+    [Obsolete ("Use GetTextValueID instead. (1.13.206)", true)]
+    public string GetTextBoxUniqueID ()
     {
-      get { return GetTextBoxUniqueID(); }
+      throw new NotImplementedException ("Use GetTextValueID instead. (1.13.206)");
     }
   }
 }
