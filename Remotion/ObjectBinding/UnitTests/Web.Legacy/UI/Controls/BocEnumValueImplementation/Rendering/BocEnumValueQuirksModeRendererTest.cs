@@ -343,7 +343,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.Legacy.UI.Controls.BocEnumValueIm
       
       var span = Html.GetAssertedChildElement (div, "span", 0);
       Html.AssertAttribute (span, "id", _enumValue.GetValueName());
-
+      
       if (withStyle)
       {
         Html.AssertStyleAttribute (span, "width", _width.ToString());
@@ -388,6 +388,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.Legacy.UI.Controls.BocEnumValueIm
 
       var select = Html.GetAssertedChildElement (div, "select", 0);
       Html.AssertAttribute (select, "id", _enumValue.GetValueName());
+      Html.AssertAttribute (select, "name", _enumValue.GetValueName ());
 
       if (withStyle)
       {

@@ -37,8 +37,8 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocDateTimeValueImple
   {
     private const string c_timeString = "15:43";
     private const string c_dateString = "31.07.2009";
-    private const string c_dateTextValueID = "MyDateTimeValue$Boc_DateTextBox";
-    private const string c_timeTextValueID = "MyDateTimeValue$Boc_TimeTextBox";
+    private const string c_dateTextValueID = "MyDateTimeValue_DateValue";
+    private const string c_timeTextValueID = "MyDateTimeValue_TimeValue";
     private const string c_dateValueID = "MyDateTimeValue";
     private IBocDateTimeValue _control;
     private SingleRowTextBoxStyle _dateStyle;
@@ -150,8 +150,12 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocDateTimeValueImple
 
     private XmlNode GetAssertedContainer (out BocDateTimeValueRenderer renderer, bool isDateOnly)
     {
+      Assert.That (_dateTextBox.ID, Is.Null);
+      Assert.That (_timeTextBox.ID, Is.Null);
       renderer = new TestableBocDateTimeValueRenderer (new FakeResourceUrlFactory(), _dateTextBox, _timeTextBox);
       renderer.Render (new BocDateTimeValueRenderingContext(HttpContext, Html.Writer, _control));
+      Assert.That (_dateTextBox.ID, Is.EqualTo (_control.GetDateValueName ()));
+      Assert.That (_timeTextBox.ID, Is.EqualTo (_control.GetTimeValueName ()));
 
       var document = Html.GetResultDocument ();
       var container = document.GetAssertedChildElement ("span", 0);

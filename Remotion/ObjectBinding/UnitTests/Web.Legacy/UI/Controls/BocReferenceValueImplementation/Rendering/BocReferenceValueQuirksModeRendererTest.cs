@@ -464,7 +464,10 @@ namespace Remotion.ObjectBinding.UnitTests.Web.Legacy.UI.Controls.BocReferenceVa
     private XmlNode GetAssertedDiv (int expectedChildElements, bool withStyle)
     {
       var renderer = new TestableBocReferenceValueQuirksModeRenderer (_resourceUrlFactory, () => DropDownList);
+
+      Assert.That (DropDownList.ID, Is.Null);
       renderer.Render (CreateRenderingContext());
+      Assert.That (DropDownList.ID, Is.EqualTo (Control.GetValueName()));
 
       var document = Html.GetResultDocument();
       var div = document.GetAssertedChildElement ("div", 0);

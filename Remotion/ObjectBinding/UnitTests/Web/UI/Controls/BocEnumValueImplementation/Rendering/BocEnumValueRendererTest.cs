@@ -386,6 +386,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocEnumValueImplement
 
       var select = Html.GetAssertedChildElement (div, "select", 0);
       Html.AssertAttribute (select, "id", _enumValue.GetValueName());
+      Html.AssertAttribute (select, "name", _enumValue.GetValueName ());
 
       if (withStyle)
         Html.AssertStyleAttribute (select, "height", "100%");

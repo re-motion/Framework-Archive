@@ -41,12 +41,14 @@ namespace Remotion.ObjectBinding.UnitTests.Web.Legacy.UI.Controls.BocDateTimeVal
   public class BocDateTimeValueQuirksModeRendererTest : RendererTestBase
   {
     private const string c_defaultControlWidth = "150pt";
+    private const string c_dateValueID = "MyDateTimeValue";
+    private const string c_dateTextValueID = "MyDateTimeValue_DateValue";
+    private const string c_timeTextValueID = "MyDateTimeValue_TimeValue";
 
     private IBocDateTimeValue _dateTimeValue;
     private BocDateTimeValueQuirksModeRenderer _renderer;
     private IResourceUrlFactory _resourceUrlFactory;
-    private string c_dateValueID = "MyDateTimeValue";
-
+    
     [SetUp]
     public void SetUp ()
     {
@@ -57,13 +59,12 @@ namespace Remotion.ObjectBinding.UnitTests.Web.Legacy.UI.Controls.BocDateTimeVal
 
       _dateTimeValue = MockRepository.GenerateStub<IBocDateTimeValue>();
       _dateTimeValue.Stub (mock => mock.ClientID).Return (c_dateValueID);
+      _dateTimeValue.Stub (mock => mock.GetDateValueName ()).Return (c_dateTextValueID);
+      _dateTimeValue.Stub (mock => mock.GetTimeValueName ()).Return (c_timeTextValueID);
       _dateTimeValue.Stub (mock => mock.DatePickerButton).Return (datePickerButton);
       _dateTimeValue.DatePickerButton.AlternateText = "DatePickerButton";
 
       _dateTimeValue.Stub (mock => mock.ProvideMaxLength).Return (true);
-
-      _dateTimeValue.Stub (mock => mock.GetDateValueName()).Return ("MyDateTime$DateTextboxId");
-      _dateTimeValue.Stub (mock => mock.GetTimeValueName()).Return ("MyDateTime$TimeTextboxId");
 
       var pageStub = MockRepository.GenerateStub<IPage>();
       pageStub.Stub (stub => stub.WrappedInstance).Return (new PageMock());
@@ -536,7 +537,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.Legacy.UI.Controls.BocDateTimeVal
     private void AssertTextBox (XmlNode textBox, string id, int maxLength, bool isDisabled, bool withStyle, bool autoPostBack)
     {
       Html.AssertAttribute (textBox, "type", "text");
-      Html.AssertAttribute (textBox, "id", id.Replace('$', '_'));
+      Html.AssertAttribute (textBox, "id", id);
       Html.AssertAttribute (textBox, "name", id);
       Html.AssertAttribute (textBox, "maxlength", maxLength.ToString());
       Html.AssertStyleAttribute (textBox, "width", "100%");

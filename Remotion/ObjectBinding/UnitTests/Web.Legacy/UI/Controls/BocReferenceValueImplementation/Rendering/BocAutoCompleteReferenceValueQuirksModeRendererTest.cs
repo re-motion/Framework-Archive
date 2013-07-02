@@ -462,7 +462,11 @@ namespace Remotion.ObjectBinding.UnitTests.Web.Legacy.UI.Controls.BocReferenceVa
     private XmlNode GetAssertedDiv (int expectedChildElements, bool withStyle)
     {
       var renderer = new TestableBocAutoCompleteReferenceValueQuirksModeRenderer (_resourceUrlFactory, () =>TextBox);
+
+      Assert.That (TextBox.ID, Is.Null);
       renderer.Render (CreateRenderingContext());
+      if (!Control.IsReadOnly)
+        Assert.That (TextBox.ID, Is.EqualTo (Control.GetTextValueName ()));
 
       var document = Html.GetResultDocument ();
       var div = document.GetAssertedChildElement ("div", 0);

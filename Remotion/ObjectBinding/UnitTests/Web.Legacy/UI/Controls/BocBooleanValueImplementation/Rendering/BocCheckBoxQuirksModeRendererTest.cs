@@ -40,6 +40,8 @@ namespace Remotion.ObjectBinding.UnitTests.Web.Legacy.UI.Controls.BocBooleanValu
     private const string c_falseDescription = "Falsch";
     private const string c_defaultControlWidth = "100pt";
     private const string c_cssClass = "someCssClass";
+    private const string c_clientID = "MyCheckbox";
+    private const string c_selectedBooleanValueName = "MyCheckBox_BooleanValue";
     private readonly string _startUpScriptKey = typeof (BocCheckBox).FullName + "_Startup";
 
     private IBocCheckBox _checkbox;
@@ -53,8 +55,8 @@ namespace Remotion.ObjectBinding.UnitTests.Web.Legacy.UI.Controls.BocBooleanValu
       Initialize();
       _checkbox = MockRepository.GenerateMock<IBocCheckBox>();
 
-      _checkbox.Stub (mock => mock.ClientID).Return ("MyCheckbox");
-      _checkbox.Stub (mock => mock.GetValueName()).Return ("_SelectedValue");
+      _checkbox.Stub (mock => mock.ClientID).Return (c_clientID);
+      _checkbox.Stub (mock => mock.GetValueName()).Return (c_selectedBooleanValueName);
       _checkbox.Stub (mock => mock.GetImageName()).Return ("_Boc_Image");
       _checkbox.Stub (mock => mock.GetTextValueName()).Return ("_Boc_Label");
 
@@ -257,8 +259,8 @@ namespace Remotion.ObjectBinding.UnitTests.Web.Legacy.UI.Controls.BocBooleanValu
     {
       var checkbox = Html.GetAssertedChildElement (outerSpan, "input", 0);
       Html.AssertAttribute (checkbox, "type", "checkbox");
-      Html.AssertAttribute (checkbox, "id", "_SelectedValue");
-      Html.AssertAttribute (checkbox, "name", "_SelectedValue");
+      Html.AssertAttribute (checkbox, "id", c_selectedBooleanValueName);
+      Html.AssertAttribute (checkbox, "name", c_selectedBooleanValueName);
       if (value)
         Html.AssertAttribute (checkbox, "checked", "checked");
       else

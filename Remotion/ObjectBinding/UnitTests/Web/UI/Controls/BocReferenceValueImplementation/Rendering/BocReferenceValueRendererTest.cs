@@ -498,8 +498,12 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocReferenceValueImpl
     private XmlNode GetAssertedContainerSpan (bool withStyle)
     {
       var renderer = new TestableBocReferenceValueRenderer (_resourceUrlFactoryStub, () => DropDownList);
-      renderer.Render (CreateRenderingContext());
 
+      Assert.That (DropDownList.ID, Is.Null);
+      renderer.Render (CreateRenderingContext());
+      if(!Control.IsReadOnly)
+        Assert.That (DropDownList.ID, Is.EqualTo (c_selectedValueID + "_SelectedValue"));
+      
       var document = Html.GetResultDocument();
       var containerDiv = document.GetAssertedChildElement ("span", 0);
 
