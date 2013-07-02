@@ -148,7 +148,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       if (!renderingContext.Control.Enabled)
         return;
 
-      string key = renderingContext.Control.UniqueID + "_InitializationScript";
+      string key = renderingContext.Control.ClientID + "_InitializationScript";
 
       var script = new StringBuilder (1000);
       script.Append ("$(document).ready( function() { BocAutoCompleteReferenceValue.Initialize(");

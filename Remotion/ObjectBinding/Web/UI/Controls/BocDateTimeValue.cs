@@ -247,7 +247,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
       LoadResources (GetResourceManager());
 
-      _datePickerButton.ContainerControlID = UniqueID;
+      _datePickerButton.ContainerControlID = ClientID;
       _datePickerButton.TargetControlID = GetDateTextboxName();
 
       EvaluateWaiConformity();
