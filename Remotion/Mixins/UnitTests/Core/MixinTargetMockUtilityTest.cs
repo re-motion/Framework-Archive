@@ -88,8 +88,8 @@ namespace Remotion.Mixins.UnitTests.Core
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "Cannot create an instance of "
-        + "'Remotion.Mixins.UnitTests.Core.TestDomain.MixinWithAbstractMembers' because it is an abstract type.")]
+    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = 
+        "The type 'Remotion.Mixins.UnitTests.Core.TestDomain.MixinWithAbstractMembers' cannot be constructed because the assembled type is abstract.")]
     public void CreateMixinWithMockedTarget_AbstractMixin ()
     {
       var thisMock = new ClassOverridingMixinMembers();

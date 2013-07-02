@@ -15,9 +15,9 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Reflection;
 using Remotion.Mixins.Utilities;
 using Remotion.Reflection;
-using Remotion.ServiceLocation;
 using Remotion.TypePipe;
 using Remotion.Utilities;
 
@@ -25,7 +25,13 @@ namespace Remotion.Mixins.CodeGeneration
 {
   public class ObjectFactoryImplementation : IObjectFactoryImplementation
   {
-    private static readonly IPipelineRegistry s_pipelineRegistry = SafeServiceLocator.Current.GetInstance<IPipelineRegistry>();
+    private readonly IPipelineRegistry _pipelineRegistry;
+
+    public ObjectFactoryImplementation (IPipelineRegistry pipelineRegistry)
+    {
+      ArgumentUtility.CheckNotNull ("pipelineRegistry", pipelineRegistry);
+      _pipelineRegistry = pipelineRegistry;
+    }
 
     public object CreateInstance (
         bool allowNonPublicConstructors, 
@@ -43,42 +49,28 @@ namespace Remotion.Mixins.CodeGeneration
       }
 
       var classContext = MixinConfiguration.ActiveConfiguration.GetContext (targetOrConcreteType);
-
-      // TODO 5370
-      //IConstructorLookupInfo constructorLookupInfo;
-      //if (classContext == null)
-      //{
-      //  if (preparedMixins.Length > 0)
-      //    throw new ArgumentException (string.Format ("There is no mixin configuration for type {0}, so no mixin instances must be specified.",
-      //        targetOrConcreteType.FullName), "preparedMixins");
-
-      //  constructorLookupInfo = new MixedTypeConstructorLookupInfo (targetOrConcreteType, targetOrConcreteType, allowNonPublicConstructors);
-      //}
-      //else
-      //  constructorLookupInfo = ConcreteTypeBuilder.Current.GetConstructorLookupInfo (classContext, allowNonPublicConstructors);
-
-      //using (new MixedObjectInstantiationScope (preparedMixins))
-      //{
-      //  return constructorParameters.InvokeConstructor (constructorLookupInfo);
-      //}
-
-      if (classContext == null)
+      if (classContext == null && preparedMixins.Length > 0)
       {
-        if (preparedMixins.Length > 0)
           throw new ArgumentException (string.Format ("There is no mixin configuration for type {0}, so no mixin instances must be specified.",
               targetOrConcreteType.FullName), "preparedMixins");
+      }
 
-        var constructorLookupInfo = new MixedTypeConstructorLookupInfo (targetOrConcreteType, targetOrConcreteType, allowNonPublicConstructors);
+      if (classContext != null && classContext.Type != targetOrConcreteType)
+      {
+        // The ClassContext doesn't match the requested type, so it must already be a concrete type. Just instantiate it.
+        Assertion.DebugAssert (MixinTypeUtility.IsGeneratedConcreteMixedType (targetOrConcreteType));
 
-        using (new MixedObjectInstantiationScope (preparedMixins))
-        {
-          return constructorParameters.InvokeConstructor (constructorLookupInfo);
-        }
+        // TODO 5370: To remove MixedTypeConstructorLookupInfo, the TypePipe would need to support requesting assembled types. Two options:
+        // - Option 1: The participants need to detect whether the given type already has the desired capabilities (e.g., no more mixins added if 
+        //   already a mixed type, no more property interception if already an IInterceptedDomainObject).
+        // - Option 2: The TypePipe detects when an assembled type is requested (performance! - only after cache check) and just instantiates it.
+        var mixedTypeConstructorLookupInfo = new MixedTypeConstructorLookupInfo (targetOrConcreteType, classContext.Type, allowNonPublicConstructors);
+        return constructorParameters.InvokeConstructor (mixedTypeConstructorLookupInfo);
       }
 
       using (new MixedObjectInstantiationScope (preparedMixins))
       {
-        return s_pipelineRegistry.DefaultPipeline.Create (classContext.Type, constructorParameters, allowNonPublicConstructors);
+        return _pipelineRegistry.DefaultPipeline.Create (targetOrConcreteType, constructorParameters, allowNonPublicConstructors);
       }
     }
   }

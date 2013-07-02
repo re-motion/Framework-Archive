@@ -19,6 +19,7 @@ using System.IO;
 using System.Reflection;
 using System.Web.UI;
 using NUnit.Framework;
+using Remotion.Development.TypePipe.UnitTesting;
 using Remotion.Development.UnitTesting;
 using Remotion.Mixins.MixerTools;
 using Remotion.Mixins.UnitTests.Core.TestDomain;
@@ -78,7 +79,7 @@ namespace Remotion.Mixins.UnitTests.Core.MixerTools
               var concreteTypeFromSystemAssembly = types.SingleOrDefault(t => t.BaseType == typeof (Page));
               Assert.That (concreteTypeFromSystemAssembly, Is.Not.Null);
 
-              SafeServiceLocator.Current.GetInstance<IPipelineRegistry>().DefaultPipeline.CodeManager.LoadFlushedCode (theAssembly);
+              PipelineRegistryTestHelper.GloablRegistry.DefaultPipeline.CodeManager.LoadFlushedCode (theAssembly);
 
               Type concreteTypeFromFactory = TypeFactory.GetConcreteType (typeof (BaseType1));
               Assert.That (concreteTypeFromFactory, Is.SameAs (concreteType));

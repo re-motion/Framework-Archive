@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.ServiceLocation;
 using Remotion.TypePipe;
 using Remotion.Utilities;
 
@@ -23,25 +22,30 @@ namespace Remotion.Mixins.CodeGeneration
 {
   public class TypeFactoryImplementation : ITypeFactoryImplementation
   {
-    private static readonly IPipelineRegistry s_pipelineRegistry = SafeServiceLocator.Current.GetInstance<IPipelineRegistry>();
+    private readonly IPipelineRegistry _pipelineRegistry;
+
+    public TypeFactoryImplementation (IPipelineRegistry pipelineRegistry)
+    {
+      ArgumentUtility.CheckNotNull ("pipelineRegistry", pipelineRegistry);
+      _pipelineRegistry = pipelineRegistry;
+    }
 
     public Type GetConcreteType (Type targetOrConcreteType)
     {
       ArgumentUtility.CheckNotNull ("targetOrConcreteType", targetOrConcreteType);
 
-      // TODO 5370
-      //var classContext = MixinConfiguration.ActiveConfiguration.GetContext (targetOrConcreteType);
-
-      //if (classContext == null)
-      //  return targetOrConcreteType;
-      //else
-      //  return ConcreteTypeBuilder.Current.GetConcreteType (classContext);
-
       var classContext = MixinConfiguration.ActiveConfiguration.GetContext (targetOrConcreteType);
       if (classContext == null)
         return targetOrConcreteType;
 
-      return s_pipelineRegistry.DefaultPipeline.ReflectionService.GetAssembledType (classContext.Type);
+      if (classContext.Type != targetOrConcreteType)
+      {
+        // The ClassContext doesn't match the requested type, so it must already be a concrete type. Just return it.
+        Assertion.DebugAssert (MixinTypeUtility.IsGeneratedConcreteMixedType (targetOrConcreteType));
+        return targetOrConcreteType;
+      }
+
+      return _pipelineRegistry.DefaultPipeline.ReflectionService.GetAssembledType (targetOrConcreteType);
     }
 
     public void InitializeUnconstructedInstance (object mixinTarget)
@@ -49,10 +53,7 @@ namespace Remotion.Mixins.CodeGeneration
       ArgumentUtility.CheckNotNull ("mixinTarget", mixinTarget);
       ArgumentUtility.CheckType<IMixinTarget> ("mixinTarget", mixinTarget);
 
-      // TODO 5370
-      //ConcreteTypeBuilder.Current.InitializeUnconstructedInstance ((IMixinTarget) mixinTarget);
-
-      s_pipelineRegistry.DefaultPipeline.PrepareExternalUninitializedObject (mixinTarget);
+      _pipelineRegistry.DefaultPipeline.PrepareExternalUninitializedObject (mixinTarget);
     }
   }
 }
