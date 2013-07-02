@@ -405,25 +405,16 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       get { return !WcagHelper.Instance.IsWaiConformanceLevelARequired() && _showDescription == true; }
     }
 
-    public string GetTextValueName ()
-    {
-      return ClientID + c_labelIDPostfix;
-    }
-
     public string GetValueName ()
     {
       return ClientID + c_checkboxIDPostfix;
     }
 
-    public string GetImageName ()
-    {
-      return ClientID + c_imageIDPostfix;
-    }
 
-    [Obsolete ("Use GetTextValueName() instead. (1.13.206)", true)]
+    [Obsolete ("Use GetValueName() instead. (1.13.206)", true)]
     public string GetLabelUniqueID ()
     {
-      throw new NotImplementedException ("Use GetTextValueName() instead. (1.13.206)");
+      throw new NotImplementedException ("Use GetValueName() instead. (1.13.206)");
     }
 
     [Obsolete ("Use GetValueName() instead. (1.13.206)", true)]
@@ -431,11 +422,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       throw new NotImplementedException ("Use GetValueName() instead. (1.13.206)");
     }
-    
-    [Obsolete ("Use GetImageName() instead. (1.13.206)", true)]
+
+    [Obsolete ("Use GetValueName() instead. (1.13.206)", true)]
     public string GetImageUniqueID ()
     {
-      throw new NotImplementedException ("Use GetImageName() instead. (1.13.206)");
+      throw new NotImplementedException ("Use GetValueName() instead. (1.13.206)");
     }
 
     bool IBocCheckBox.IsDescriptionEnabled
