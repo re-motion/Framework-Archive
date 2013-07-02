@@ -98,7 +98,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.Legacy.UI.Controls.BocReferenceVa
       Control.Stub (mock => mock.ControlStyle).Return (new Style (stateBag));
 
       Control.Stub (stub => stub.LabelClientID).Return (Control.ClientID + "_Boc_Label");
-      Control.Stub (stub => stub.GetSelectedValueName()).Return (Control.ClientID + "_SelectedValue");
+      Control.Stub (stub => stub.GetValueName()).Return (Control.ClientID + "_SelectedValue");
       Control.Stub (stub => stub.IconClientID).Return (Control.ClientID + "_Boc_Icon");
       Control.Stub (stub => stub.PopulateDropDownList (Arg<DropDownList>.Is.NotNull))
           .WhenCalled (

@@ -112,7 +112,7 @@ namespace Remotion.ObjectBinding.Web.Legacy.UI.Controls.BocReferenceValueImpleme
 
       var script = new StringBuilder (1000);
       script.Append ("$(document).ready( function() { BocReferenceValue.Initialize(");
-      script.AppendFormat ("$('#{0}'), ", renderingContext.Control.GetSelectedValueName());
+      script.AppendFormat ("$('#{0}'), ", renderingContext.Control.GetValueName());
 
       if (renderingContext.Control.IsIconEnabled())
         script.AppendFormat ("$('#{0} .{1}'), ", renderingContext.Control.ClientID, CssClassCommand);
@@ -136,7 +136,7 @@ namespace Remotion.ObjectBinding.Web.Legacy.UI.Controls.BocReferenceValueImpleme
     private DropDownList GetDropDownList (BocReferenceValueRenderingContext renderingContext)
     {
       var dropDownList = _dropDownListFactoryMethod();
-      dropDownList.ID = renderingContext.Control.GetSelectedValueName();
+      dropDownList.ID = renderingContext.Control.GetValueName();
       dropDownList.EnableViewState = false;
       renderingContext.Control.PopulateDropDownList (dropDownList);
 

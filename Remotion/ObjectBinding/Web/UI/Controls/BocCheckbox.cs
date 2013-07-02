@@ -129,7 +129,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       if (! _isActive)
         return false;
 
-      string newValue = PageUtility.GetPostBackCollectionItem (Page, GetCheckBoxName());
+      string newValue = PageUtility.GetPostBackCollectionItem (Page, GetValueName());
       bool newBooleanValue = ! StringUtility.IsNullOrEmpty (newValue);
       bool isDataChanged = _value != newBooleanValue;
       if (isDataChanged)
@@ -235,7 +235,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <seealso cref="BusinessObjectBoundEditableWebControl.GetTrackedClientIDs">BusinessObjectBoundEditableWebControl.GetTrackedClientIDs</seealso>
     public override string[] GetTrackedClientIDs ()
     {
-      return IsReadOnly ? new string[0] : new[] { GetCheckBoxName() };
+      return IsReadOnly ? new string[0] : new[] { GetValueName() };
     }
 
     /// <summary>
@@ -266,7 +266,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     [Browsable (false)]
     public override string FocusID
     {
-      get { return IsReadOnly ? null : GetCheckBoxName(); }
+      get { return IsReadOnly ? null : GetValueName(); }
     }
 
     /// <summary> Gets the string representation of this control's <see cref="BocBooleanValueBase.Value"/>. </summary>
@@ -405,12 +405,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       get { return !WcagHelper.Instance.IsWaiConformanceLevelARequired() && _showDescription == true; }
     }
 
-    public string GetLabelName ()
+    public string GetTextValueName ()
     {
       return ClientID + c_labelIDPostfix;
     }
 
-    public string GetCheckBoxName ()
+    public string GetValueName ()
     {
       return ClientID + c_checkboxIDPostfix;
     }
@@ -420,16 +420,16 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       return ClientID + c_imageIDPostfix;
     }
 
-    [Obsolete ("Use GetLabelName() instead. (1.13.206)", true)]
+    [Obsolete ("Use GetTextValueName() instead. (1.13.206)", true)]
     public string GetLabelUniqueID ()
     {
-      throw new NotImplementedException ("Use GetLabelName() instead. (1.13.206)");
+      throw new NotImplementedException ("Use GetTextValueName() instead. (1.13.206)");
     }
 
-    [Obsolete ("Use GetCheckBoxName() instead. (1.13.206)", true)]
+    [Obsolete ("Use GetValueName() instead. (1.13.206)", true)]
     public string GetCheckboxUniqueID ()
     {
-      throw new NotImplementedException ("Use GetCheckBoxName() instead. (1.13.206)");
+      throw new NotImplementedException ("Use GetValueName() instead. (1.13.206)");
     }
     
     [Obsolete ("Use GetImageName() instead. (1.13.206)", true)]

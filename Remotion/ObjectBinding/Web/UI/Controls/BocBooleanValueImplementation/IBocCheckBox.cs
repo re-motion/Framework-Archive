@@ -23,8 +23,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation
      bool IsDescriptionEnabled { get; }
     string DefaultTrueDescription { get; }
     string DefaultFalseDescription { get; }
-    string GetLabelName ();
-    string GetCheckBoxName ();
+    string GetTextValueName ();
+    string GetValueName ();
     string GetImageName ();
   }
 }

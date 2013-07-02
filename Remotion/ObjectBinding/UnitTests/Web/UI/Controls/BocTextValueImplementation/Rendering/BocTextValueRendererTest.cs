@@ -42,7 +42,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocTextValueImplement
       TextValue = MockRepository.GenerateMock<IBocTextValue>();
       _renderer = new BocTextValueRenderer (new FakeResourceUrlFactory());
       TextValue.Stub (stub => stub.ClientID).Return ("MyTextValue");
-      TextValue.Stub (stub => stub.GetTextValueName()).Return (c_textValueID);
+      TextValue.Stub (stub => stub.GetValueName()).Return (c_textValueID);
       TextValue.Stub (mock => mock.CssClass).PropertyBehavior();
 
       var pageStub = MockRepository.GenerateStub<IPage>();

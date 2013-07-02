@@ -105,7 +105,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls
       string[] actual = _bocBooleanValue.GetTrackedClientIDs();
       Assert.That (actual, Is.Not.Null);
       Assert.That (actual.Length, Is.EqualTo (1));
-      Assert.That (actual[0], Is.EqualTo (_bocBooleanValue.GetHiddenFieldName()));
+      Assert.That (actual[0], Is.EqualTo (_bocBooleanValue.GetValueName()));
     }
 
 
@@ -486,9 +486,9 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls
     }
 
     [Test]
-    public void GetHiddenFieldName ()
+    public void GetValueName ()
     {
-      var result = _bocBooleanValue.GetHiddenFieldName ();
+      var result = _bocBooleanValue.GetValueName ();
 
       Assert.That (result, Is.EqualTo ("NamingContainer_BocBooleanValue_HiddenValue"));
     }

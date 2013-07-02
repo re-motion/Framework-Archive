@@ -97,7 +97,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation
     [Browsable (false)]
     public string FocusID
     {
-      get { return IsReadOnly ? null : GetTextValueName(); }
+      get { return IsReadOnly ? null : GetValueName(); }
     }
 
     /// <summary>
@@ -219,7 +219,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation
     /// <include file='doc\include\UI\Controls\BocTextValue.xml' path='BocTextValue/LoadPostData/*' />
     protected virtual bool LoadPostData (string postDataKey, NameValueCollection postCollection)
     {
-      string newValue = PageUtility.GetPostBackCollectionItem (Page, GetTextValueName());
+      string newValue = PageUtility.GetPostBackCollectionItem (Page, GetValueName());
       bool isDataChanged = newValue != null && Text != NormalizeText (newValue);
       if (isDataChanged)
       {
@@ -281,7 +281,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation
     /// <seealso cref="BusinessObjectBoundEditableWebControl.GetTrackedClientIDs">BusinessObjectBoundEditableWebControl.GetTrackedClientIDs</seealso>
     public override string[] GetTrackedClientIDs ()
     {
-      return IsReadOnly ? new string[0] : new[] { GetTextValueName() };
+      return IsReadOnly ? new string[0] : new[] { GetValueName() };
     }
 
     /// <summary> This event is fired when the text is changed between postbacks. </summary>
@@ -335,21 +335,21 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation
     /// Returns the name (and ID) to use for the input field in the rendered HTML.
     /// </summary>
     /// <returns>The control's <see cref="Control.ClientID"/> postfixed by a constant textbox ID.</returns>
-    public string GetTextValueName ()
+    public string GetValueName ()
     {
       return ClientID + c_textboxIDPostfix;
     }
 
-    [Obsolete ("Use GetTextValueName() instead. (1.13.206)", true)]
+    [Obsolete ("Use GetValueName() instead. (1.13.206)", true)]
     public string GetTextBoxClientID ()
     {
-      throw new NotImplementedException ("Use GetTextValueName() instead. (1.13.206)");
+      throw new NotImplementedException ("Use GetValueName() instead. (1.13.206)");
     }
 
-    [Obsolete ("Use GetTextValueName() instead. (1.13.206)", true)]
+    [Obsolete ("Use GetValueName() instead. (1.13.206)", true)]
     public string GetTextBoxUniqueID ()
     {
-      throw new NotImplementedException ("Use GetTextValueName() instead. (1.13.206)");
+      throw new NotImplementedException ("Use GetValueName() instead. (1.13.206)");
     }
   }
 }

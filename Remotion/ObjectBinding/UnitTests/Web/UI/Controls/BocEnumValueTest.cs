@@ -105,7 +105,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls
       string[] actual = _bocEnumValue.GetTrackedClientIDs();
       Assert.That (actual, Is.Not.Null);
       Assert.That (actual.Length, Is.EqualTo (1));
-      Assert.That (actual[0], Is.EqualTo (_bocEnumValue.GetListControlName()));
+      Assert.That (actual[0], Is.EqualTo (_bocEnumValue.GetValueName()));
     }
 
     [Test]
@@ -116,7 +116,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls
       string[] actual = _bocEnumValue.GetTrackedClientIDs();
       Assert.That (actual, Is.Not.Null);
       Assert.That (actual.Length, Is.EqualTo (1));
-      Assert.That (actual[0], Is.EqualTo (_bocEnumValue.GetListControlName()));
+      Assert.That (actual[0], Is.EqualTo (_bocEnumValue.GetValueName()));
     }
 
     [Test]
@@ -133,9 +133,9 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls
       string[] actual = _bocEnumValue.GetTrackedClientIDs();
       Assert.That (actual, Is.Not.Null);
       Assert.That (actual.Length, Is.EqualTo (3));
-      Assert.That (actual[0], Is.EqualTo (_bocEnumValue.GetListControlName() + "_0"));
-      Assert.That (actual[1], Is.EqualTo (_bocEnumValue.GetListControlName() + "_1"));
-      Assert.That (actual[2], Is.EqualTo (_bocEnumValue.GetListControlName() + "_2"));
+      Assert.That (actual[0], Is.EqualTo (_bocEnumValue.GetValueName() + "_0"));
+      Assert.That (actual[1], Is.EqualTo (_bocEnumValue.GetValueName() + "_1"));
+      Assert.That (actual[2], Is.EqualTo (_bocEnumValue.GetValueName() + "_2"));
     }
 
 
@@ -330,9 +330,9 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls
     }
 
     [Test]
-    public void GetListLabelName ()
+    public void GetValueName ()
     {
-      var result = _bocEnumValue.GetListControlName();
+      var result = _bocEnumValue.GetValueName();
 
       Assert.That (result, Is.EqualTo ("NamingContainer_BocEnumValue_SelectedValue"));
     }

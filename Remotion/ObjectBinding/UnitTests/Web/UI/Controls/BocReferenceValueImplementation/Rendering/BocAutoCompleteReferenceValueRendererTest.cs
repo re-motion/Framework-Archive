@@ -77,8 +77,8 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocReferenceValueImpl
 
       Control = MockRepository.GenerateStub<IBocAutoCompleteReferenceValue>();
       Control.Stub (stub => stub.ClientID).Return (c_selectedValueID);
-      Control.Stub (stub => stub.GetTextBoxName()).Return ("MyReferenceValue_TextValue");
-      Control.Stub (stub => stub.GetHiddenFieldName()).Return ("MyReferenceValue_HiddenValue");
+      Control.Stub (stub => stub.GetTextValueName()).Return ("MyReferenceValue_TextValue");
+      Control.Stub (stub => stub.GetKeyValueName()).Return ("MyReferenceValue_HiddenValue");
       Control.Stub (stub => stub.LabelClientID).Return ("MyReferenceValue_Boc_Label");
       Control.Stub (stub => stub.GetDropDownButtonName()).Return ("MyReferenceValue_DropDownButton");
       Control.Stub (stub => stub.Command).Return (new BocCommand());
@@ -557,7 +557,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocReferenceValueImpl
       }
 
       var hiddenField = contentSpan.GetAssertedChildElement ("input", hiddenFieldIndex);
-      hiddenField.AssertAttributeValueEquals ("id", Control.GetHiddenFieldName());
+      hiddenField.AssertAttributeValueEquals ("id", Control.GetKeyValueName());
       hiddenField.AssertAttributeValueEquals ("type", "hidden");
       if (autoPostBack == AutoPostBack.Enabled)
         hiddenField.AssertAttributeValueEquals ("onchange", "PostBackEventReference");

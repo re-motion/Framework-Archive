@@ -142,24 +142,24 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     protected override string ValueContainingControlID
     {
-      get { return GetSelectedValueName(); }
+      get { return GetValueName(); }
     }
 
-    public string GetSelectedValueName ()
+    public string GetValueName ()
     {
       return ClientID + c_dropDownListIDPostfix;
     }
 
-    [Obsolete ("Use GetSelectedValueName() instead. (1.13.206)", true)]
+    [Obsolete ("Use GetValueName() instead. (1.13.206)", true)]
     public string DropDownListUniqueID
     {
-      get { throw new NotImplementedException ("Use GetSelectedValueName() instead. (1.13.206)"); }
+      get { throw new NotImplementedException ("Use GetValueName() instead. (1.13.206)"); }
     }
 
-    [Obsolete ("Use GetSelectedValueName() instead. (1.13.206)", true)]
+    [Obsolete ("Use GetValueName() instead. (1.13.206)", true)]
     public string DropDownListClientID
     {
-      get { throw new NotImplementedException ("Use GetSelectedValueName() instead. (1.13.206)"); }
+      get { throw new NotImplementedException ("Use GetValueName() instead. (1.13.206)"); }
     }
 
     /// <summary> Called when the state of the control has changed between postbacks. </summary>
@@ -312,7 +312,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     protected override sealed string GetSelectionCountScript ()
     {
-      return "function() { return BocReferenceValue.GetSelectionCount ('" + GetSelectedValueName() + "', '" + c_nullIdentifier + "'); }";
+      return "function() { return BocReferenceValue.GetSelectionCount ('" + GetValueName() + "', '" + c_nullIdentifier + "'); }";
     }
 
     /// <summary> Sets the <see cref="IBusinessObjectWithIdentity"/> objects to be displayed in edit mode. </summary>
@@ -485,7 +485,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <seealso cref="BusinessObjectBoundEditableWebControl.GetTrackedClientIDs">BusinessObjectBoundEditableWebControl.GetTrackedClientIDs</seealso>
     public override string[] GetTrackedClientIDs ()
     {
-      return IsReadOnly ? new string[0] : new[] { GetSelectedValueName() };
+      return IsReadOnly ? new string[0] : new[] { GetValueName() };
     }
 
     /// <summary> Gets the ID of the element to receive the focus when the page is loaded. </summary>
@@ -497,7 +497,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     [Browsable (false)]
     public string FocusID
     {
-      get { return IsReadOnly ? null : GetSelectedValueName(); }
+      get { return IsReadOnly ? null : GetValueName(); }
     }
 
     /// <summary> Gets the style that you want to apply to the <see cref="DropDownList"/> (edit mode) only. </summary>

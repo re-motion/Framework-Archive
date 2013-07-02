@@ -24,7 +24,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation
     bool ShowDescription { get; }
     string GetLabelName ();
     string GetImageName ();
-    string GetHiddenFieldName ();
+    string GetValueName ();
     string GetHyperLinkName ();
     BocBooleanValueResourceSet CreateResourceSet ();
     IResourceManager GetResourceManager ();

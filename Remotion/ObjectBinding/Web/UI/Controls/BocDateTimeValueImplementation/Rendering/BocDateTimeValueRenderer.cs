@@ -85,14 +85,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
     private void RenderEditModeControls (BocDateTimeValueRenderingContext renderingContext)
     {
       var dateTextBox = _dateTextBox;
-      dateTextBox.ID = renderingContext.Control.GetDateTextboxName();
+      dateTextBox.ID = renderingContext.Control.GetDateValueName();
       dateTextBox.CssClass = CssClassDate;
       Initialize (renderingContext, dateTextBox, renderingContext.Control.DateTextBoxStyle, GetDateMaxLength ());
       dateTextBox.Text = renderingContext.Control.DateString;
       dateTextBox.Page = renderingContext.Control.Page.WrappedInstance;
 
       var timeTextBox = _timeTextBox;
-      timeTextBox.ID = renderingContext.Control.GetTimeTextboxName();
+      timeTextBox.ID = renderingContext.Control.GetTimeValueName();
       timeTextBox.CssClass = CssClassTime;
       Initialize (renderingContext, timeTextBox, renderingContext.Control.TimeTextBoxStyle, GetTimeMaxLength (renderingContext));
       timeTextBox.Text = renderingContext.Control.TimeString;

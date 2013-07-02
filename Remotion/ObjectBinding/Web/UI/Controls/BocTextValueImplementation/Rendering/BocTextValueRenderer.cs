@@ -67,7 +67,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Rend
       ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
       
       Label label = new Label { Text = renderingContext.Control.Text };
-      label.ID = renderingContext.Control.GetTextValueName ();
+      label.ID = renderingContext.Control.GetValueName ();
       label.EnableViewState = false;
       label.Text = GetText(renderingContext);
 

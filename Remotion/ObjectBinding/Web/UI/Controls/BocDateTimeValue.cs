@@ -167,7 +167,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       //  Date input field
 
-      string newDateValue = PageUtility.GetPostBackCollectionItem (Page, GetDateTextboxName());
+      string newDateValue = PageUtility.GetPostBackCollectionItem (Page, GetDateValueName());
       bool isDateChanged = newDateValue != null
                            && StringUtility.NullToEmpty (_internalDateValue) != newDateValue;
       if (isDateChanged)
@@ -182,7 +182,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
       //  Time input field
 
-      string newTimeValue = PageUtility.GetPostBackCollectionItem (Page, GetTimeTextboxName());
+      string newTimeValue = PageUtility.GetPostBackCollectionItem (Page, GetTimeValueName());
       bool isTimeChanged = newTimeValue != null
                            && StringUtility.NullToEmpty (_internalTimeValue) != newTimeValue;
       if (isTimeChanged)
@@ -248,7 +248,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       LoadResources (GetResourceManager());
 
       _datePickerButton.ContainerControlID = ClientID;
-      _datePickerButton.TargetControlID = GetDateTextboxName();
+      _datePickerButton.TargetControlID = GetDateValueName();
 
       EvaluateWaiConformity();
     }
@@ -651,9 +651,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       {
         case BocDateTimeValueType.DateTime:
         case BocDateTimeValueType.Undefined:
-          return new[] { GetDateTextboxName(), GetTimeTextboxName() };
+          return new[] { GetDateValueName(), GetTimeValueName() };
         case BocDateTimeValueType.Date:
-          return new[] { GetDateTextboxName() };
+          return new[] { GetDateValueName() };
         default:
           return new string[0];
       }
@@ -705,7 +705,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     [Browsable (false)]
     public string FocusID
     {
-      get { return IsReadOnly ? null : GetDateTextboxName(); }
+      get { return IsReadOnly ? null : GetDateValueName(); }
     }
 
     /// <summary>
@@ -859,26 +859,26 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       }
     }
 
-    public string GetDateTextboxName ()
+    public string GetDateValueName ()
     {
       return ClientID + c_dateTextBoxIDPostfix;
     }
 
-    public string GetTimeTextboxName ()
+    public string GetTimeValueName ()
     {
       return ClientID + c_timeTextBoxIDPostfix;
     }
 
-    [Obsolete ("Use GetDateTextboxName instead. (1.13.206)", true)]
+    [Obsolete ("Use GetDateValueName instead. (1.13.206)", true)]
     public string GetDateTextboxClientID ()
     {
-      throw new NotImplementedException ("Use GetDateTextboxName instead. (1.13.206)");
+      throw new NotImplementedException ("Use GetDateValueName instead. (1.13.206)");
     }
 
-    [Obsolete ("Use GetTimeTextboxName instead. (1.13.206)", true)]
+    [Obsolete ("Use GetTimeValueName instead. (1.13.206)", true)]
     public string GetTimeTextboxClientID ()
     {
-      throw new NotImplementedException ("Use GetTimeTextboxName instead. (1.13.206)");
+      throw new NotImplementedException ("Use GetTimeValueName instead. (1.13.206)");
     }
 
     string IBocDateTimeValue.GetDatePickerText ()

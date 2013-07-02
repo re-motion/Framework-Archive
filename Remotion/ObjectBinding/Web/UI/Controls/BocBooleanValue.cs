@@ -162,28 +162,28 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <seealso cref="BusinessObjectBoundEditableWebControl.GetTrackedClientIDs">BusinessObjectBoundEditableWebControl.GetTrackedClientIDs</seealso>
     public override string[] GetTrackedClientIDs ()
     {
-      return IsReadOnly ? new string[0] : new[] { GetHiddenFieldName () };
+      return IsReadOnly ? new string[0] : new[] { GetValueName () };
     }
 
     /// <summary>
     /// Gets a name (ID) to use for the hidden field needed to store the value of the control client-side.
     /// </summary>
     /// <returns>The control's <see cref="Control.ClientID"/> postfixed with a constant id for the hidden field.</returns>
-    public string GetHiddenFieldName ()
+    public string GetValueName ()
     {
       return ClientID + c_hiddenfieldIDPostfix;
     }
 
-    [Obsolete ("Use GetHiddenFieldName() instead. (1.13.206)", true)]
+    [Obsolete ("Use GetValueName() instead. (1.13.206)", true)]
     public string GetHiddenFieldUniqueID ()
     {
-      throw new NotImplementedException ("Use GetHiddenFieldName() instead. (1.13.206)");
+      throw new NotImplementedException ("Use GetValueName() instead. (1.13.206)");
     }
 
-    [Obsolete ("Use GetHiddenFieldName() instead. (1.13.206)", true)]
+    [Obsolete ("Use GetValueName() instead. (1.13.206)", true)]
     public string GetHiddenFieldClientID ()
     {
-      throw new NotImplementedException ("Use GetHiddenFieldName() instead. (1.13.206)");
+      throw new NotImplementedException ("Use GetValueName() instead. (1.13.206)");
     }
 
     /// <summary>
@@ -333,7 +333,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <include file='doc\include\UI\Controls\BocBooleanValue.xml' path='BocBooleanValue/LoadPostData/*' />
     protected override bool LoadPostData (string postDataKey, NameValueCollection postCollection)
     {
-      string newValueAsString = PageUtility.GetPostBackCollectionItem (Page, GetHiddenFieldName());
+      string newValueAsString = PageUtility.GetPostBackCollectionItem (Page, GetValueName());
       bool? newValue = null;
       bool isDataChanged = false;
       if (newValueAsString != null)

@@ -145,8 +145,8 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls
       string[] actual = _bocDateTimeValue.GetTrackedClientIDs();
       Assert.That (actual, Is.Not.Null);
       Assert.That (actual.Length, Is.EqualTo (2));
-      Assert.That (actual[0], Is.EqualTo (_bocDateTimeValue.GetDateTextboxName()));
-      Assert.That (actual[1], Is.EqualTo (_bocDateTimeValue.GetTimeTextboxName()));
+      Assert.That (actual[0], Is.EqualTo (_bocDateTimeValue.GetDateValueName()));
+      Assert.That (actual[1], Is.EqualTo (_bocDateTimeValue.GetTimeValueName()));
     }
 
     [Test]
@@ -157,7 +157,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls
       string[] actual = _bocDateTimeValue.GetTrackedClientIDs();
       Assert.That (actual, Is.Not.Null);
       Assert.That (actual.Length, Is.EqualTo (1));
-      Assert.That (actual[0], Is.EqualTo (_bocDateTimeValue.GetDateTextboxName()));
+      Assert.That (actual[0], Is.EqualTo (_bocDateTimeValue.GetDateValueName()));
     }
 
     [Test]
@@ -168,8 +168,8 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls
       string[] actual = _bocDateTimeValue.GetTrackedClientIDs();
       Assert.That (actual, Is.Not.Null);
       Assert.That (actual.Length, Is.EqualTo (2));
-      Assert.That (actual[0], Is.EqualTo (_bocDateTimeValue.GetDateTextboxName()));
-      Assert.That (actual[1], Is.EqualTo (_bocDateTimeValue.GetTimeTextboxName()));
+      Assert.That (actual[0], Is.EqualTo (_bocDateTimeValue.GetDateValueName()));
+      Assert.That (actual[1], Is.EqualTo (_bocDateTimeValue.GetTimeValueName()));
     }
 
 
@@ -466,17 +466,17 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls
     }
 
     [Test]
-    public void GetDateTextValueID ()
+    public void GetDateValueName ()
     {
-      var result = _bocDateTimeValue.GetDateTextboxName();
+      var result = _bocDateTimeValue.GetDateValueName();
 
       Assert.That (result, Is.EqualTo ("NamingContainer_BocDateTimeValue_DateValue"));
     }
 
     [Test]
-    public void GetTimeTextValueID ()
+    public void GetTimeValueName ()
     {
-      var result = _bocDateTimeValue.GetTimeTextboxName();
+      var result = _bocDateTimeValue.GetTimeValueName();
 
       Assert.That (result, Is.EqualTo ("NamingContainer_BocDateTimeValue_TimeValue"));
     }

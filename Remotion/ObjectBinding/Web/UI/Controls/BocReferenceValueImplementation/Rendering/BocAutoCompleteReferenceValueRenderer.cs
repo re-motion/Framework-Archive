@@ -152,8 +152,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
 
       var script = new StringBuilder (1000);
       script.Append ("$(document).ready( function() { BocAutoCompleteReferenceValue.Initialize(");
-      script.AppendFormat ("$('#{0}'), ", renderingContext.Control.GetTextBoxName());
-      script.AppendFormat ("$('#{0}'), ", renderingContext.Control.GetHiddenFieldName());
+      script.AppendFormat ("$('#{0}'), ", renderingContext.Control.GetTextValueName());
+      script.AppendFormat ("$('#{0}'), ", renderingContext.Control.GetKeyValueName());
       script.AppendFormat ("$('#{0}'),", renderingContext.Control.GetDropDownButtonName());
 
       if (renderingContext.Control.IsIconEnabled())
@@ -317,7 +317,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     {
       return new HiddenField
       {
-        ID = renderingContext.Control.GetHiddenFieldName(),
+        ID = renderingContext.Control.GetKeyValueName(),
         Page = renderingContext.Control.Page.WrappedInstance,
         EnableViewState = true,
         Value = renderingContext.Control.BusinessObjectUniqueIdentifier ?? renderingContext.Control.NullValueString        
@@ -327,7 +327,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     private TextBox GetTextBox (BocRenderingContext<IBocAutoCompleteReferenceValue> renderingContext)
     {
       var textBox = _textBoxFactory();
-      textBox.ID = renderingContext.Control.GetTextBoxName();
+      textBox.ID = renderingContext.Control.GetTextValueName();
       textBox.Text = renderingContext.Control.GetLabelText ();
       textBox.Enabled = renderingContext.Control.Enabled;
       textBox.EnableViewState = false;

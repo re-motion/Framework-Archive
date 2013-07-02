@@ -39,6 +39,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocDateTimeValueImple
     private const string c_dateString = "31.07.2009";
     private const string c_dateTextValueID = "MyDateTimeValue$Boc_DateTextBox";
     private const string c_timeTextValueID = "MyDateTimeValue$Boc_TimeTextBox";
+    private const string c_dateValueID = "MyDateTimeValue";
     private IBocDateTimeValue _control;
     private SingleRowTextBoxStyle _dateStyle;
     private SingleRowTextBoxStyle _timeStyle;
@@ -51,9 +52,9 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocDateTimeValueImple
     {
       Initialize();
       _control = MockRepository.GenerateStub<IBocDateTimeValue>();
-      _control.Stub (stub => stub.ClientID).Return ("MyDateTimeValue");
-      _control.Stub (stub => stub.GetDateTextboxName()).Return (c_dateTextValueID);
-      _control.Stub (stub => stub.GetTimeTextboxName()).Return (c_timeTextValueID);
+      _control.Stub (stub => stub.ClientID).Return (c_dateValueID);
+      _control.Stub (stub => stub.GetDateValueName()).Return (c_dateTextValueID);
+      _control.Stub (stub => stub.GetTimeValueName()).Return (c_timeTextValueID);
 
       _dateStyle = new SingleRowTextBoxStyle();
       _timeStyle = new SingleRowTextBoxStyle();
@@ -127,7 +128,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocDateTimeValueImple
 
       timeInputWrapper.AssertTextNode ("TextBox", 0);
 
-      Assert.That (_timeTextBox.ID, Is.EqualTo (_control.GetTimeTextboxName()));
+      Assert.That (_timeTextBox.ID, Is.EqualTo (_control.GetTimeValueName()));
       Assert.That (_timeTextBox.CssClass, Is.EqualTo (renderer.CssClassTime));
       Assert.That (_timeTextBox.Text, Is.EqualTo (c_timeString));
       Assert.That (_timeTextBox.MaxLength, Is.EqualTo (5));
@@ -141,7 +142,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocDateTimeValueImple
       dateInputWrapper.AssertChildElementCount (0);
 
       dateInputWrapper.AssertTextNode ("TextBox", 0);
-      Assert.That (_dateTextBox.ID, Is.EqualTo (_control.GetDateTextboxName()));
+      Assert.That (_dateTextBox.ID, Is.EqualTo (_control.GetDateValueName()));
       Assert.That (_dateTextBox.CssClass, Is.EqualTo (renderer.CssClassDate));
       Assert.That (_dateTextBox.Text, Is.EqualTo (c_dateString));
       Assert.That (_dateTextBox.MaxLength, Is.EqualTo (10));
@@ -154,7 +155,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocDateTimeValueImple
 
       var document = Html.GetResultDocument ();
       var container = document.GetAssertedChildElement ("span", 0);
-      container.AssertAttributeValueEquals ("id", "MyDateTimeValue");
+      container.AssertAttributeValueEquals ("id", c_dateValueID);
       container.AssertAttributeValueEquals ("class", isDateOnly ? renderer.CssClassDateOnly : renderer.CssClassDateTime);
       container.AssertChildElementCount (isDateOnly ? 1 : 2);
       return container;

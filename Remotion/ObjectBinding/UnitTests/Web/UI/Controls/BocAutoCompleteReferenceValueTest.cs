@@ -161,7 +161,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls
       string[] actual = _control.GetTrackedClientIDs();
       Assert.That (actual, Is.Not.Null);
       Assert.That (actual.Length, Is.EqualTo (1));
-      Assert.That (actual[0], Is.EqualTo (_control.GetTextBoxName()));
+      Assert.That (actual[0], Is.EqualTo (_control.GetTextValueName()));
     }
     
     [Test]
@@ -351,8 +351,8 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls
 
       var postbackCollection = new NameValueCollection();
 
-      postbackCollection.Add (_control.GetHiddenFieldName(), ((IBocAutoCompleteReferenceValue)_control).NullValueString);
-      postbackCollection.Add (_control.GetTextBoxName(), string.Empty);
+      postbackCollection.Add (_control.GetKeyValueName(), ((IBocAutoCompleteReferenceValue)_control).NullValueString);
+      postbackCollection.Add (_control.GetTextValueName(), string.Empty);
 
       _control.Value = null;
       _control.IsDirty = false;
@@ -378,8 +378,8 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls
 
       var postbackCollection = new NameValueCollection();
 
-      postbackCollection.Add (_control.GetHiddenFieldName(), string.Empty);
-      postbackCollection.Add (_control.GetTextBoxName(), string.Empty);
+      postbackCollection.Add (_control.GetKeyValueName(), string.Empty);
+      postbackCollection.Add (_control.GetTextValueName(), string.Empty);
 
       _control.IsDirty = false;
       PrivateInvoke.SetNonPublicField (_control, "_hasBeenRenderedInPreviousLifecycle", true);
@@ -408,8 +408,8 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls
       var postbackCollection = new NameValueCollection();
 
       Guid value = Guid.NewGuid();
-      postbackCollection.Add (_control.GetHiddenFieldName(), value.ToString());
-      postbackCollection.Add (_control.GetTextBoxName(), "NewValue");
+      postbackCollection.Add (_control.GetKeyValueName(), value.ToString());
+      postbackCollection.Add (_control.GetTextValueName(), "NewValue");
 
       _control.IsDirty = false;
 
@@ -442,8 +442,8 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls
       string displayName = _control.Value.DisplayNameSafe;
       Assert.That (value, Is.Not.Null.Or.Empty);
       Assert.That (displayName, Is.Not.Null.Or.Empty);
-      postbackCollection.Add (_control.GetHiddenFieldName(), value);
-      postbackCollection.Add (_control.GetTextBoxName(), displayName);
+      postbackCollection.Add (_control.GetKeyValueName(), value);
+      postbackCollection.Add (_control.GetTextValueName(), displayName);
 
       _control.IsDirty = false;
 
@@ -472,8 +472,8 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls
 
       var postbackCollection = new NameValueCollection();
 
-      postbackCollection.Add (_control.GetHiddenFieldName(), ((IBocAutoCompleteReferenceValue) _control).NullValueString);
-      postbackCollection.Add (_control.GetTextBoxName(), "InvalidValue");
+      postbackCollection.Add (_control.GetKeyValueName(), ((IBocAutoCompleteReferenceValue) _control).NullValueString);
+      postbackCollection.Add (_control.GetTextValueName(), "InvalidValue");
 
       _control.Value = null;
       _control.IsDirty = false;
@@ -503,8 +503,8 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls
 
       var postbackCollection = new NameValueCollection();
 
-      postbackCollection.Add (_control.GetHiddenFieldName(), ((IBocAutoCompleteReferenceValue) _control).NullValueString);
-      postbackCollection.Add (_control.GetTextBoxName(), "InvalidValue");
+      postbackCollection.Add (_control.GetKeyValueName(), ((IBocAutoCompleteReferenceValue) _control).NullValueString);
+      postbackCollection.Add (_control.GetTextValueName(), "InvalidValue");
 
       _control.IsDirty = false;
 
@@ -533,8 +533,8 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls
 
       var postbackCollection = new NameValueCollection();
 
-      postbackCollection.Add (_control.GetHiddenFieldName(), ((IBocAutoCompleteReferenceValue) _control).NullValueString);
-      postbackCollection.Add (_control.GetTextBoxName(), "SomeValue");
+      postbackCollection.Add (_control.GetKeyValueName(), ((IBocAutoCompleteReferenceValue) _control).NullValueString);
+      postbackCollection.Add (_control.GetTextValueName(), "SomeValue");
 
       _control.IsDirty = false;
       PrivateInvoke.SetNonPublicField (_control, "_hasBeenRenderedInPreviousLifecycle", true);
@@ -809,26 +809,17 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls
     }
 
     [Test]
-    public void GetTextBoxName ()
+    public void GetTextValueName ()
     {
-      var result = _control.GetTextBoxName();
+      var result = _control.GetTextValueName();
 
       Assert.That (result, Is.EqualTo ("BocAutoCompleteReferenceValue_SelectedValue"));
     }
 
     [Test]
-    public void GetDropDownButtonName ()
+    public void GetKeyValueName ()
     {
-      var result = ((IBocAutoCompleteReferenceValue) _control).GetDropDownButtonName();
-
-      Assert.That (result, Is.EqualTo ("BocAutoCompleteReferenceValue_DropDownButton"));
-
-    }
-
-    [Test]
-    public void GetHiddenFieldName ()
-    {
-      var result = _control.GetHiddenFieldName();
+      var result = _control.GetKeyValueName();
 
       Assert.That (result, Is.EqualTo ("BocAutoCompleteReferenceValue_HiddenValue"));
     }

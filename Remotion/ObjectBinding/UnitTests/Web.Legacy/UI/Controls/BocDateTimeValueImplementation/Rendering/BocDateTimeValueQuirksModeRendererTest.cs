@@ -45,6 +45,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.Legacy.UI.Controls.BocDateTimeVal
     private IBocDateTimeValue _dateTimeValue;
     private BocDateTimeValueQuirksModeRenderer _renderer;
     private IResourceUrlFactory _resourceUrlFactory;
+    private string c_dateValueID = "MyDateTimeValue";
 
     [SetUp]
     public void SetUp ()
@@ -55,14 +56,14 @@ namespace Remotion.ObjectBinding.UnitTests.Web.Legacy.UI.Controls.BocDateTimeVal
       datePickerButton.Stub (stub => stub.EnableClientScript).Return (true);
 
       _dateTimeValue = MockRepository.GenerateStub<IBocDateTimeValue>();
-      _dateTimeValue.Stub (mock => mock.ClientID).Return ("MyDateTimeValue");
+      _dateTimeValue.Stub (mock => mock.ClientID).Return (c_dateValueID);
       _dateTimeValue.Stub (mock => mock.DatePickerButton).Return (datePickerButton);
       _dateTimeValue.DatePickerButton.AlternateText = "DatePickerButton";
 
       _dateTimeValue.Stub (mock => mock.ProvideMaxLength).Return (true);
 
-      _dateTimeValue.Stub (mock => mock.GetDateTextboxName()).Return ("MyDateTime$DateTextboxId");
-      _dateTimeValue.Stub (mock => mock.GetTimeTextboxName()).Return ("MyDateTime$TimeTextboxId");
+      _dateTimeValue.Stub (mock => mock.GetDateValueName()).Return ("MyDateTime$DateTextboxId");
+      _dateTimeValue.Stub (mock => mock.GetTimeValueName()).Return ("MyDateTime$TimeTextboxId");
 
       var pageStub = MockRepository.GenerateStub<IPage>();
       pageStub.Stub (stub => stub.WrappedInstance).Return (new PageMock());
@@ -515,7 +516,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.Legacy.UI.Controls.BocDateTimeVal
       }
       int maxLength = new DateTime (2009, 12, 31, 12, 30, 30).ToString (timeFormat).Length;
 
-      AssertTextBox (timeBox, _dateTimeValue.GetTimeTextboxName(), maxLength, isDisabled, withStyle, _dateTimeValue.DateTextBoxStyle.AutoPostBack==true);
+      AssertTextBox (timeBox, _dateTimeValue.GetTimeValueName(), maxLength, isDisabled, withStyle, _dateTimeValue.DateTextBoxStyle.AutoPostBack==true);
       if (_dateTimeValue.Value.HasValue)
         Html.AssertAttribute (timeBox, "value", _dateTimeValue.Value.Value.ToString (timeFormat));
       else
@@ -525,7 +526,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.Legacy.UI.Controls.BocDateTimeVal
     private void AssertDateTextBox (XmlNode dateBoxCell, bool isDisabled, bool withStyle)
     {
       var dateBox = Html.GetAssertedChildElement (dateBoxCell, "input", 0);
-      AssertTextBox (dateBox, _dateTimeValue.GetDateTextboxName(), 10, isDisabled, withStyle, _dateTimeValue.TimeTextBoxStyle.AutoPostBack==true);
+      AssertTextBox (dateBox, _dateTimeValue.GetDateValueName(), 10, isDisabled, withStyle, _dateTimeValue.TimeTextBoxStyle.AutoPostBack==true);
       if (_dateTimeValue.Value.HasValue)
         Html.AssertAttribute (dateBox, "value", _dateTimeValue.Value.Value.ToString ("d"));
       else
@@ -575,7 +576,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.Legacy.UI.Controls.BocDateTimeVal
     {
       var div = Html.GetAssertedChildElement (document, "div", 0);
       
-      Html.AssertAttribute (div, "id", "MyDateTimeValue");
+      Html.AssertAttribute (div, "id", c_dateValueID);
 
       Html.AssertAttribute (
           div,

@@ -22,8 +22,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
 {
   public interface IBocAutoCompleteReferenceValue : IBocReferenceValueBase
   {
-    string GetTextBoxName ();
-    string GetHiddenFieldName ();
+    string GetTextValueName ();
+    string GetKeyValueName ();
     string GetDropDownButtonName ();
     string SearchServicePath { get; }
 

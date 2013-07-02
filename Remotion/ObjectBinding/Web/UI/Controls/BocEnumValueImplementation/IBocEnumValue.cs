@@ -28,7 +28,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation
     string NullIdentifier { get; }
     IEnumerationValueInfo[] GetEnabledValues();
     string GetNullItemText ();
-    string GetListControlName ();
-    string GetListLabelName ();
+    string GetValueName ();
   }
 }

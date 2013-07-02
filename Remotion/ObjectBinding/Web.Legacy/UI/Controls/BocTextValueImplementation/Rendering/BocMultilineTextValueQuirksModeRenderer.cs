@@ -60,7 +60,7 @@ namespace Remotion.ObjectBinding.Web.Legacy.UI.Controls.BocTextValueImplementati
     protected override Label GetLabel (BocRenderingContext<IBocMultilineTextValue> renderingContext)
     {
       Label label = new Label();
-      label.ID = renderingContext.Control.GetTextValueName ();
+      label.ID = renderingContext.Control.GetValueName ();
       label.EnableViewState = false;
 
       string[] lines = renderingContext.Control.Value;

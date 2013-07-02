@@ -54,9 +54,9 @@ namespace Remotion.ObjectBinding.UnitTests.Web.Legacy.UI.Controls.BocBooleanValu
       _checkbox = MockRepository.GenerateMock<IBocCheckBox>();
 
       _checkbox.Stub (mock => mock.ClientID).Return ("MyCheckbox");
-      _checkbox.Stub (mock => mock.GetCheckBoxName()).Return ("_SelectedValue");
+      _checkbox.Stub (mock => mock.GetValueName()).Return ("_SelectedValue");
       _checkbox.Stub (mock => mock.GetImageName()).Return ("_Boc_Image");
-      _checkbox.Stub (mock => mock.GetLabelName()).Return ("_Boc_Label");
+      _checkbox.Stub (mock => mock.GetTextValueName()).Return ("_Boc_Label");
 
       var clientScriptManagerMock = MockRepository.GenerateMock<IClientScriptManager>();
       _startupScript = string.Format (

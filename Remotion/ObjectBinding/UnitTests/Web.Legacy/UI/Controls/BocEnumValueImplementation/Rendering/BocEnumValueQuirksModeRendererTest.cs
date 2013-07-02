@@ -83,8 +83,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.Legacy.UI.Controls.BocEnumValueIm
       _enumValue.Stub (mock => mock.GetEnabledValues()).Return (_enumerationInfos);
 
       _enumValue.Stub (mock => mock.GetNullItemText()).Return ("null");
-      _enumValue.Stub (mock => mock.GetListLabelName()).Return ("LabelClientID");
-      _enumValue.Stub (mock => mock.GetListControlName()).Return ("ListControlClientID");
+      _enumValue.Stub (mock => mock.GetValueName()).Return ("ListControlClientID");
 
       StateBag stateBag = new StateBag();
       _enumValue.Stub (mock => mock.Attributes).Return (new AttributeCollection (stateBag));
@@ -341,10 +340,9 @@ namespace Remotion.ObjectBinding.UnitTests.Web.Legacy.UI.Controls.BocEnumValueIm
 
       var document = Html.GetResultDocument();
       XmlNode div = GetAssertedSpan (document, true, false, false, renderer);
-
-
+      
       var span = Html.GetAssertedChildElement (div, "span", 0);
-      Html.AssertAttribute (span, "id", _enumValue.GetListLabelName());
+      Html.AssertAttribute (span, "id", _enumValue.GetValueName());
 
       if (withStyle)
       {
@@ -389,7 +387,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.Legacy.UI.Controls.BocEnumValueIm
       var div = GetAssertedSpan (document, false, false, false, renderer);
 
       var select = Html.GetAssertedChildElement (div, "select", 0);
-      Html.AssertAttribute (select, "id", _enumValue.GetListControlName());
+      Html.AssertAttribute (select, "id", _enumValue.GetValueName());
 
       if (withStyle)
       {
@@ -406,7 +404,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.Legacy.UI.Controls.BocEnumValueIm
         AssertNullOption (select, !selectedValue.HasValue);
 
       if (autoPostBack)
-        Html.AssertAttribute (select, "onchange", string.Format ("javascript:__doPostBack('{0}','')", _enumValue.GetListControlName()));
+        Html.AssertAttribute (select, "onchange", string.Format ("javascript:__doPostBack('{0}','')", _enumValue.GetValueName()));
 
       int index = withNullValue ? 1 : 0;
       foreach (TestEnum value in Enum.GetValues (typeof (TestEnum)))

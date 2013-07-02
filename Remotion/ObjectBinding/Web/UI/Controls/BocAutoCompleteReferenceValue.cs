@@ -128,14 +128,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     protected override string ValueContainingControlID
     {
-      get { return GetHiddenFieldName(); }
+      get { return GetKeyValueName(); }
     }
 
     protected override bool LoadPostData (string postDataKey, NameValueCollection postCollection)
     {
       var isDataChanged = base.LoadPostData (postDataKey, postCollection);
 
-      string newValue = PageUtility.GetPostBackCollectionItem (Page, GetTextBoxName());
+      string newValue = PageUtility.GetPostBackCollectionItem (Page, GetTextValueName());
       if (newValue != null)
       {
         if (InternalDisplayName == null && !string.IsNullOrEmpty (newValue))
@@ -395,7 +395,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <seealso cref="BusinessObjectBoundEditableWebControl.GetTrackedClientIDs">BusinessObjectBoundEditableWebControl.GetTrackedClientIDs</seealso>
     public override string[] GetTrackedClientIDs ()
     {
-      return IsReadOnly ? new string[0] : new[] { GetTextBoxName() };
+      return IsReadOnly ? new string[0] : new[] { GetTextValueName() };
     }
 
     /// <summary> The <see cref="BocReferenceValue"/> supports only scalar properties. </summary>
@@ -415,7 +415,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     [Browsable (false)]
     public string FocusID
     {
-      get { return IsReadOnly ? null : GetTextBoxName(); }
+      get { return IsReadOnly ? null : GetTextValueName(); }
     }
 
     /// <summary> Gets the style that you want to apply to the <see cref="TextBox"/> (edit mode) only. </summary>
@@ -599,7 +599,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       }
     }
 
-    public string GetTextBoxName ()
+    public string GetTextValueName ()
     {
       return ClientID + c_textBoxIDPostfix;
     }
@@ -609,33 +609,33 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       return ClientID + c_buttonIDPostfix;
     }
 
-    public string GetHiddenFieldName ()
+    public string GetKeyValueName ()
     {
       return ClientID + c_hiddenFieldIDPostfix;
     }
 
-    [Obsolete ("Use GetTextBoxName() instead. (1.13.206)", true)]
+    [Obsolete ("Use GetTextValueName() instead. (1.13.206)", true)]
     public string TextBoxUniqueID
     {
-      get { throw new NotImplementedException ("Use GetTextBoxName() instead. (1.13.206)"); }
+      get { throw new NotImplementedException ("Use GetTextValueName() instead. (1.13.206)"); }
     }
 
-    [Obsolete ("Use GetTextBoxName() instead. (1.13.206)", true)]
+    [Obsolete ("Use GetTextValueName() instead. (1.13.206)", true)]
     public string TextBoxClientID
     {
-      get { throw new NotImplementedException ("Use GetTextBoxName() instead. (1.13.206)"); }
+      get { throw new NotImplementedException ("Use GetTextValueName() instead. (1.13.206)"); }
     }
 
-    [Obsolete ("Use GetHiddenFieldUniqueID() instead. (1.13.206)", true)]
+    [Obsolete ("Use GetKeyValueName() instead. (1.13.206)", true)]
     public string HiddenFieldClientID
     {
-      get { throw new NotImplementedException ("Use GetHiddenFieldUniqueID() instead. (1.13.206)"); }
+      get { throw new NotImplementedException ("Use GetKeyValueName() instead. (1.13.206)"); }
     }
 
-    [Obsolete ("Use GetHiddenFieldUniqueID() instead. (1.13.206)", true)]
+    [Obsolete ("Use GetKeyValueName() instead. (1.13.206)", true)]
     public string HiddenFieldUniqueID
     {
-      get { throw new NotImplementedException ("Use GetHiddenFieldUniqueID() instead. (1.13.206)"); }
+      get { throw new NotImplementedException ("Use GetKeyValueName() instead. (1.13.206)"); }
     }
 
     protected override sealed string GetNullItemErrorMessage ()
@@ -650,7 +650,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     protected override sealed string GetSelectionCountScript ()
     {
-      return "function() { return BocAutoCompleteReferenceValue.GetSelectionCount ('" + GetHiddenFieldName() + "', '" + c_nullIdentifier + "'); }";
+      return "function() { return BocAutoCompleteReferenceValue.GetSelectionCount ('" + GetKeyValueName() + "', '" + c_nullIdentifier + "'); }";
     }
 
     private string InternalDisplayName

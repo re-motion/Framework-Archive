@@ -99,7 +99,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocTextValueTests
       string[] actual = _bocTextValue.GetTrackedClientIDs();
       Assert.That (actual, Is.Not.Null);
       Assert.That (actual.Length, Is.EqualTo (1));
-      Assert.That (actual[0], Is.EqualTo (_bocTextValue.GetTextValueName()));
+      Assert.That (actual[0], Is.EqualTo (_bocTextValue.GetValueName()));
     }
 
 
@@ -317,9 +317,9 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocTextValueTests
     }
 
     [Test]
-    public void GetTextValueID ()
+    public void GetValueName ()
     {
-      Assert.That (_bocTextValue.GetTextValueName(), Is.EqualTo ("NamingContainer_BocTextValue_TextValue"));
+      Assert.That (_bocTextValue.GetValueName(), Is.EqualTo ("NamingContainer_BocTextValue_TextValue"));
     }
   }
 }
