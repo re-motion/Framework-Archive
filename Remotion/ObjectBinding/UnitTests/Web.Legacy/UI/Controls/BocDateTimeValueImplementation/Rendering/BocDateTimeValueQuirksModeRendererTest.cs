@@ -403,6 +403,26 @@ namespace Remotion.ObjectBinding.UnitTests.Web.Legacy.UI.Controls.BocDateTimeVal
       AssertDocument (true, false, false);
     }
 
+    [Test]
+    public void RenderIDs ()
+    {
+      _dateTimeValue.Stub (stub => stub.ActualValueType).Return (BocDateTimeValueType.DateTime);
+      _dateTimeValue.Stub (stub => stub.Enabled).Return (true);
+
+      IClientScriptBehavior clientScriptBehaviorStub = MockRepository.GenerateStub<IClientScriptBehavior> ();
+      clientScriptBehaviorStub.Stub (stub => stub.IsBrowserCapableOfScripting (HttpContext, _dateTimeValue)).Return (true);
+      var renderer = new BocDateTimeValueQuirksModeRenderer (clientScriptBehaviorStub, new FakeResourceUrlFactory ());
+      renderer.Render (new BocDateTimeValueRenderingContext (HttpContext, Html.Writer, _dateTimeValue));
+      var document = Html.GetResultDocument ();
+      var tableRow = document.GetAssertedChildElement ("div", 0).GetAssertedChildElement ("table", 0).GetAssertedChildElement ("tr", 0);
+      var dateInput = tableRow.GetAssertedChildElement ("td", 0).GetAssertedChildElement ("input", 0);
+      var timeInput = tableRow.GetAssertedChildElement ("td", 2).GetAssertedChildElement ("input", 0);
+      dateInput.AssertAttributeValueEquals ("id", c_dateTextValueID);
+      dateInput.AssertAttributeValueEquals ("name", c_dateTextValueID);
+      timeInput.AssertAttributeValueEquals ("id", c_timeTextValueID);
+      timeInput.AssertAttributeValueEquals ("name", c_timeTextValueID);
+    }
+
     private void SetStyle (bool inAttributes)
     {
       if (inAttributes)

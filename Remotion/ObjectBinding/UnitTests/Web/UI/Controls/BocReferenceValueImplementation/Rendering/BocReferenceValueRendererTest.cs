@@ -38,7 +38,8 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocReferenceValueImpl
   [TestFixture]
   public class BocReferenceValueRendererTest : RendererTestBase
   {
-    private const string c_selectedValueID = "MyReferenceValue";
+    private const string c_clientID = "MyReferenceValue";
+    private const string c_selectedValueName = "MyReferenceValue_SelectedValue";
 
     private enum OptionMenuConfiguration
     {
@@ -52,6 +53,12 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocReferenceValueImpl
     protected static readonly Unit Width = Unit.Pixel (250);
     protected static readonly Unit Height = Unit.Point (12);
     private IResourceUrlFactory _resourceUrlFactoryStub;
+
+    public BocReferenceValueRendererTest ()
+    {
+      
+    }
+
     public IClientScriptManager ClientScriptManagerMock { get; set; }
     public IBocReferenceValue Control { get; set; }
     public TypeWithReference BusinessObject { get; set; }
@@ -67,7 +74,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocReferenceValueImpl
       DropDownList = new StubDropDownList();
 
       Control = MockRepository.GenerateStub<IBocReferenceValue>();
-      Control.Stub (stub => stub.ClientID).Return (c_selectedValueID);
+      Control.Stub (stub => stub.ClientID).Return (c_clientID);
       Control.Stub (stub => stub.Command).Return (new BocCommand());
       Control.Command.Type = CommandType.Event;
       Control.Command.Show = CommandShow.Always;
@@ -102,7 +109,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocReferenceValueImpl
       Control.Stub (mock => mock.ControlStyle).Return (new Style (stateBag));
 
       Control.Stub (stub => stub.LabelClientID).Return (Control.ClientID + "_Boc_Label");
-      Control.Stub (stub => stub.GetValueName()).Return (Control.ClientID + "_SelectedValue");
+      Control.Stub (stub => stub.GetValueName ()).Return (c_selectedValueName);
       Control.Stub (stub => stub.IconClientID).Return (Control.ClientID + "_Boc_Icon");
       Control.Stub (stub => stub.PopulateDropDownList (Arg<DropDownList>.Is.NotNull))
           .WhenCalled (
@@ -435,6 +442,19 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocReferenceValueImpl
       AssertReadOnlyContent (document);
     }
 
+    [Test]
+    public void RenderIDs ()
+    {
+      Control.Stub (stub => stub.Enabled).Return (true);
+
+      var renderer = new BocReferenceValueRenderer (_resourceUrlFactoryStub);
+      renderer.Render (CreateRenderingContext ());
+      var document = Html.GetResultDocument ();
+      var select = document.GetAssertedChildElement ("span", 0).GetAssertedChildElement ("span", 0).GetAssertedChildElement ("span", 1).GetAssertedChildElement ("select", 0);
+      select.AssertAttributeValueEquals ("id", c_selectedValueName);
+      select.AssertAttributeValueEquals ("name", c_selectedValueName);
+    }
+
     private void AssertReadOnlyContent (XmlNode parent)
     {
       var span = parent.GetAssertedChildElement ("span", 0);
@@ -502,7 +522,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocReferenceValueImpl
       Assert.That (DropDownList.ID, Is.Null);
       renderer.Render (CreateRenderingContext());
       if(!Control.IsReadOnly)
-        Assert.That (DropDownList.ID, Is.EqualTo (c_selectedValueID + "_SelectedValue"));
+        Assert.That (DropDownList.ID, Is.EqualTo (c_clientID + "_SelectedValue"));
       
       var document = Html.GetResultDocument();
       var containerDiv = document.GetAssertedChildElement ("span", 0);

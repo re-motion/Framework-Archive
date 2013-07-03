@@ -19,6 +19,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Xml;
 using NUnit.Framework;
+using Remotion.Development.Web.UnitTesting.AspNetFramework;
 using Remotion.Development.Web.UnitTesting.Resources;
 using Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocReferenceValueImplementation.Rendering;
 using Remotion.ObjectBinding.Web.UI.Controls;
@@ -62,7 +63,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocDateTimeValueImple
       _control.Stub (stub => stub.TimeTextBoxStyle).Return (_timeStyle);
 
       var pageStub = MockRepository.GenerateStub<IPage>();
-      pageStub.Stub (stub => stub.WrappedInstance).Return (new Page());
+      pageStub.Stub (stub => stub.WrappedInstance).Return (new PageMock());
       pageStub.Stub (stub => stub.ClientScript).Return (MockRepository.GenerateStub<IClientScriptManager>());
       _control.Stub (stub => stub.Page).Return (pageStub);
 
@@ -117,6 +118,26 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocDateTimeValueImple
       AssertTime (container, renderer);
 
       container.AssertTextNode ("DatePicker", 1);
+    }
+
+    [Test]
+    public void RenderIDs ()
+    {
+      _control.Stub (stub => stub.DateString).Return (c_dateString);
+      _control.Stub (stub => stub.TimeString).Return (c_timeString);
+      _control.Stub (stub => stub.ActualValueType).Return (BocDateTimeValueType.DateTime);
+      _control.Stub (stub => stub.Enabled).Return (true);
+
+      var renderer = new BocDateTimeValueRenderer (new FakeResourceUrlFactory());
+      renderer.Render (new BocDateTimeValueRenderingContext (HttpContext, Html.Writer, _control));
+      var document = Html.GetResultDocument ();
+      var container = document.GetAssertedChildElement ("span", 0);
+      var dateInput = container.GetAssertedChildElement("span", 0).GetAssertedChildElement("input", 0);
+      var timeInput = container.GetAssertedChildElement ("span", 2).GetAssertedChildElement ("input", 0);
+      dateInput.AssertAttributeValueEquals ("id", c_dateTextValueID);
+      dateInput.AssertAttributeValueEquals ("name", c_dateTextValueID);
+      timeInput.AssertAttributeValueEquals ("id", c_timeTextValueID);
+      timeInput.AssertAttributeValueEquals ("name", c_timeTextValueID);
     }
 
     private void AssertTime (XmlNode container, BocDateTimeValueRenderer renderer)
