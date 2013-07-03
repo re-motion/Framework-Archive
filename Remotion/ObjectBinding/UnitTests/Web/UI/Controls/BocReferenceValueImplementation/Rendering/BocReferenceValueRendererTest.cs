@@ -54,11 +54,6 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocReferenceValueImpl
     protected static readonly Unit Height = Unit.Point (12);
     private IResourceUrlFactory _resourceUrlFactoryStub;
 
-    public BocReferenceValueRendererTest ()
-    {
-      
-    }
-
     public IClientScriptManager ClientScriptManagerMock { get; set; }
     public IBocReferenceValue Control { get; set; }
     public TypeWithReference BusinessObject { get; set; }
@@ -518,11 +513,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocReferenceValueImpl
     private XmlNode GetAssertedContainerSpan (bool withStyle)
     {
       var renderer = new TestableBocReferenceValueRenderer (_resourceUrlFactoryStub, () => DropDownList);
-
-      Assert.That (DropDownList.ID, Is.Null);
       renderer.Render (CreateRenderingContext());
-      if(!Control.IsReadOnly)
-        Assert.That (DropDownList.ID, Is.EqualTo (c_clientID + "_SelectedValue"));
       
       var document = Html.GetResultDocument();
       var containerDiv = document.GetAssertedChildElement ("span", 0);

@@ -607,11 +607,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocReferenceValueImpl
     private XmlNode GetAssertedContainerSpan (bool withStyle)
     {
       var renderer = new TestableBocAutoCompleteReferenceValueRenderer (_resourceUrlFactory, () => TextBox);
-
-      Assert.That (TextBox.ID, Is.Null);
       renderer.Render (CreateRenderingContext());
-      if(!Control.IsReadOnly)
-       Assert.That (TextBox.ID, Is.EqualTo (Control.GetTextValueName()));
 
       var document = Html.GetResultDocument();
       var containerDiv = document.GetAssertedChildElement ("span", 0);
