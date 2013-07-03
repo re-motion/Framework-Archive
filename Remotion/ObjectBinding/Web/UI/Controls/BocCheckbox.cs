@@ -41,7 +41,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
   public class BocCheckBox : BocBooleanValueBase, IBocCheckBox
   {
     // constants
-    private const string c_checkboxIDPostfix = "_BooleanValue";
+    private const string c_checkboxIDPostfix = "_Value";
 
     // types
 

@@ -490,7 +490,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls
     {
       var result = _bocBooleanValue.GetValueName ();
 
-      Assert.That (result, Is.EqualTo ("NamingContainer_BocBooleanValue_HiddenValue"));
+      Assert.That (result, Is.EqualTo ("NamingContainer_BocBooleanValue_Value"));
     }
 
     [Test]

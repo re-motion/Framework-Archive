@@ -813,7 +813,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls
     {
       var result = _control.GetTextValueName();
 
-      Assert.That (result, Is.EqualTo ("BocAutoCompleteReferenceValue_SelectedValue"));
+      Assert.That (result, Is.EqualTo ("BocAutoCompleteReferenceValue_TextValue"));
     }
 
     [Test]
@@ -821,7 +821,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls
     {
       var result = _control.GetKeyValueName();
 
-      Assert.That (result, Is.EqualTo ("BocAutoCompleteReferenceValue_HiddenValue"));
+      Assert.That (result, Is.EqualTo ("BocAutoCompleteReferenceValue_KeyValue"));
     }
   }
 }

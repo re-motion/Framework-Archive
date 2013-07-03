@@ -47,8 +47,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     /// <summary> The text displayed when control is displayed in desinger, is read-only, and has no contents. </summary>
     private const string c_designModeEmptyLabelContents = "##";
-
-    private const string c_dropDownListIDPostfix = "_SelectedValue";
+    private const string c_dropDownListIDPostfix = "_Value";
 
     // types
 

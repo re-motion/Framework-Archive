@@ -319,7 +319,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocTextValueTests
     [Test]
     public void GetValueName ()
     {
-      Assert.That (_bocTextValue.GetValueName(), Is.EqualTo ("NamingContainer_BocTextValue_TextValue"));
+      Assert.That (_bocTextValue.GetValueName(), Is.EqualTo ("NamingContainer_BocTextValue_Value"));
     }
   }
 }

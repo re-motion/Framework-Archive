@@ -467,7 +467,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls
     {
       var result = _bocCheckBox.GetValueName();
 
-      Assert.That (result, Is.EqualTo ("NamingContainer_BocCheckBox_BooleanValue"));
+      Assert.That (result, Is.EqualTo ("NamingContainer_BocCheckBox_Value"));
     }
     
   }

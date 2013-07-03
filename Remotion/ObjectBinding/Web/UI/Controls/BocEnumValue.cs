@@ -43,7 +43,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     // constants
 
     private const string c_nullIdentifier = "==null==";
-    private const string c_listControlIDPostfix = "_SelectedValue";
+    private const string c_listControlIDPostfix = "_Value";
 
     // types
 

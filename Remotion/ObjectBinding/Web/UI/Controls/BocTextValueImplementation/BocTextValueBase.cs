@@ -41,7 +41,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation
   [ToolboxItemFilter ("System.Web.UI")]
   public abstract class BocTextValueBase : BusinessObjectBoundEditableWebControl, IBocTextValueBase, IPostBackDataHandler, IFocusableControl
   {
-    private const string c_textboxIDPostfix = "_TextValue";
+    private const string c_textboxIDPostfix = "_Value";
     private readonly Style _commonStyle = new Style();
     private readonly TextBoxStyle _textBoxStyle;
     private readonly Style _labelStyle = new Style();

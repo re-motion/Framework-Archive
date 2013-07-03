@@ -41,7 +41,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     private const string c_nullString = "null";
 
-    private const string c_hiddenfieldIDPostfix = "_HiddenValue";
+    private const string c_hiddenfieldIDPostfix = "_Value";
     private const string c_hyperlinkIDPostfix = "_Boc_HyperLink";
     private const string c_labelIDPostfix = "_Boc_Label";
     private const string c_imageIDPostfix = "_Boc_Image";

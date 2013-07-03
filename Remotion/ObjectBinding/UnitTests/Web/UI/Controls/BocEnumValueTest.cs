@@ -334,7 +334,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls
     {
       var result = _bocEnumValue.GetValueName();
 
-      Assert.That (result, Is.EqualTo ("NamingContainer_BocEnumValue_SelectedValue"));
+      Assert.That (result, Is.EqualTo ("NamingContainer_BocEnumValue_Value"));
     }
   }
 }

@@ -52,8 +52,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <summary> The text displayed when control is displayed in desinger, is read-only, and has no contents. </summary>
     private const string c_designModeEmptyLabelContents = "##";
 
-    private const string c_textBoxIDPostfix = "_SelectedValue";
-    private const string c_hiddenFieldIDPostfix = "_HiddenValue";
+    private const string c_textBoxIDPostfix = "_TextValue";
+    private const string c_hiddenFieldIDPostfix = "_KeyValue";
     private const string c_buttonIDPostfix = "_DropDownButton";
 
     // types

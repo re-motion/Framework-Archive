@@ -494,7 +494,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls
     {
       var result = _bocReferenceValue.GetValueName();
 
-      Assert.That (result, Is.EqualTo ("NamingContainer_BocReferenceValue_SelectedValue"));
+      Assert.That (result, Is.EqualTo ("NamingContainer_BocReferenceValue_Value"));
     }
   }
 }
