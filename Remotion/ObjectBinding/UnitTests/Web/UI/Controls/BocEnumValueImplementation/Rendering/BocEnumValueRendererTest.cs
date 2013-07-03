@@ -338,6 +338,8 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocEnumValueImplement
 
       var span = Html.GetAssertedChildElement (div, "span", 0);
       Html.AssertAttribute (span, "id", _enumValue.GetValueName());
+      if (_enumValue.EnumerationValueInfo!=null)
+        Html.AssertAttribute (span, "data-value", _enumValue.EnumerationValueInfo.Identifier);
 
       if (withStyle)
       {

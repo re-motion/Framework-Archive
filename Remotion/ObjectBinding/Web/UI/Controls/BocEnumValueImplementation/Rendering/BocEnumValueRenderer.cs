@@ -150,9 +150,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Rend
         //  label.Text = "[ " + this.GetType().Name + " \"" + this.ID + "\" ]";
       }
       else if (renderingContext.Control.EnumerationValueInfo != null)
+      {
         text = renderingContext.Control.EnumerationValueInfo.DisplayName;
+        label.Attributes.Add ("data-value", renderingContext.Control.EnumerationValueInfo.Identifier);
+      }
       else
+      {
         text = null;
+      }
 
       label.Text = text;
 
