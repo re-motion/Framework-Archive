@@ -498,7 +498,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls
     {
       var result = _bocBooleanValue.GetHyperLinkName ();
 
-      Assert.That (result, Is.EqualTo ("NamingContainer_BocBooleanValue_Boc_HyperLink"));
+      Assert.That (result, Is.EqualTo ("NamingContainer_BocBooleanValue_HyperLink"));
     }
   }
 }

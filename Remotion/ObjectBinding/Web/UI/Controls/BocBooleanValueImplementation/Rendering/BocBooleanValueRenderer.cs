@@ -71,8 +71,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
       AddAttributesToRender (renderingContext);
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
 
-      Label labelControl = new Label { ID = renderingContext.Control.GetLabelName () };
-      Image imageControl = new Image { ID = renderingContext.Control.GetImageName () };
+      Label labelControl = new Label { ID = GetLabelName(renderingContext) };
+      Image imageControl = new Image { ID = GetImageName(renderingContext) };
       HiddenField hiddenFieldControl = new HiddenField { ID = renderingContext.Control.GetValueName () };
       HyperLink linkControl = new HyperLink { ID = renderingContext.Control.GetHyperLinkName () };
 

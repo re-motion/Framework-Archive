@@ -71,9 +71,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocBooleanValueImplem
       _booleanValue.Stub (mock => mock.ClientID).Return (c_clientID);
       _booleanValue.Stub (mock => mock.GetValueName ()).Return (c_booleanValueName);
       _booleanValue.Stub (mock => mock.GetHyperLinkName()).Return ("_Boc_HyperLink");
-      _booleanValue.Stub (mock => mock.GetImageName()).Return ("_Boc_Image");
-      _booleanValue.Stub (mock => mock.GetLabelName()).Return ("_Boc_Label");
-
+      
       string startupScriptKey = typeof (BocBooleanValueRenderer).FullName + "_Startup_" + _resourceSet.ResourceKey;
       _startupScript = string.Format (
           "BocBooleanValue_InitializeGlobals ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}', '{9}');",
@@ -96,8 +94,8 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocBooleanValueImplem
           "document.getElementById ('{2}'), document.getElementById ('{3}'), false, " +
           "'" + c_trueDescription + "', '" + c_falseDescription + "', '" + c_nullDescription + "');return false;",
           "ResourceKey",
-          _booleanValue.GetImageName(),
-          _booleanValue.GetLabelName(),
+          c_clientID + "_Image",
+          c_clientID + "_Label",
           _booleanValue.GetValueName());
 
       _keyDownScript = "BocBooleanValue_OnKeyDown (this);";
@@ -287,7 +285,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocBooleanValueImplem
       checkImageAttributes (image, iconUrl, description);
 
       var label = Html.GetAssertedChildElement (outerSpan, "span", offset + 1);
-      Html.AssertAttribute (label, "id", "_Boc_Label");
+      Html.AssertAttribute (label, "id", "MyBooleanValue_Label");
       Html.AssertChildElementCount (label, 0);
       Html.AssertTextNode (label, description, 0);
 
@@ -319,7 +317,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocBooleanValueImplem
 
     private void checkImageAttributes (XmlNode image, string iconUrl, string description)
     {
-      Html.AssertAttribute (image, "id", "_Boc_Image");
+      Html.AssertAttribute (image, "id", "MyBooleanValue_Image");
       Html.AssertAttribute (image, "src", iconUrl);
       Html.AssertAttribute (image, "alt", description);
     }

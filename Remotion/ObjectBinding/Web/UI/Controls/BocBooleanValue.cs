@@ -40,11 +40,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     // constants
 
     private const string c_nullString = "null";
-
     private const string c_hiddenfieldIDPostfix = "_Value";
-    private const string c_hyperlinkIDPostfix = "_Boc_HyperLink";
-    private const string c_labelIDPostfix = "_Boc_Label";
-    private const string c_imageIDPostfix = "_Boc_Image";
+    private const string c_hyperlinkIDPostfix = "_HyperLink";
 
     // types
 
@@ -174,18 +171,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       return ClientID + c_hiddenfieldIDPostfix;
     }
 
-    [Obsolete ("Use GetValueName() instead. (1.13.206)", true)]
-    public string GetHiddenFieldUniqueID ()
-    {
-      throw new NotImplementedException ("Use GetValueName() instead. (1.13.206)");
-    }
-
-    [Obsolete ("Use GetValueName() instead. (1.13.206)", true)]
-    public string GetHiddenFieldClientID ()
-    {
-      throw new NotImplementedException ("Use GetValueName() instead. (1.13.206)");
-    }
-
     /// <summary>
     /// Gets a name (ID) to use for the hyperlink used to change the value of the control client-side.
     /// </summary>
@@ -193,18 +178,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     public string GetHyperLinkName ()
     {
       return ClientID + c_hyperlinkIDPostfix;
-    }
-
-    [Obsolete ("Use GetHyperlinkName() instead. (1.13.206)", true)]
-    public string GetHyperLinkUniqueID ()
-    {
-      throw new NotImplementedException ("Use GetHyperlinkName() instead. (1.13.206)");
-    }
-
-    [Obsolete ("Use GetHyperlinkName() instead. (1.13.206)", true)]
-    private string GetHyperLinkClientID ()
-    {
-      throw new NotImplementedException ("Use GetHyperlinkName() instead. (1.13.206)");
     }
 
     protected override bool? GetValue ()
@@ -452,16 +425,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     protected override bool SupportsPropertyMultiplicity (bool isList)
     {
       return ! isList;
-    }
-
-    string IBocBooleanValue.GetLabelName ()
-    {
-      return ClientID + c_labelIDPostfix;
-    }
-
-    string IBocBooleanValue.GetImageName ()
-    {
-      return ClientID + c_imageIDPostfix;
     }
 
     BocBooleanValueResourceSet IBocBooleanValue.CreateResourceSet ()
