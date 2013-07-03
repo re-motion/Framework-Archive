@@ -108,7 +108,6 @@ namespace Remotion.ObjectBinding.UnitTests.Web.Legacy.UI.Controls.BocBooleanValu
     {
       _checkbox.Stub (mock => mock.Enabled).Return (true);
       _checkbox.Stub (mock => mock.IsRequired).Return (true);
-      _checkbox.Stub (mock => mock.IsReadOnly).Return (true);
       CheckRender (true, _checkbox.TrueDescription);
     }
 
@@ -117,7 +116,6 @@ namespace Remotion.ObjectBinding.UnitTests.Web.Legacy.UI.Controls.BocBooleanValu
     {
       _checkbox.Stub (mock => mock.Enabled).Return (true);
       _checkbox.Stub (mock => mock.IsRequired).Return (true);
-      _checkbox.Stub (mock => mock.IsReadOnly).Return (true);
       CheckRender (false, _checkbox.FalseDescription);
     }
 
@@ -245,18 +243,12 @@ namespace Remotion.ObjectBinding.UnitTests.Web.Legacy.UI.Controls.BocBooleanValu
         Html.AssertStyleAttribute (outerSpan, "width", c_defaultControlWidth);
 
       if (_checkbox.IsReadOnly)
-      {
-        outerSpan = outerSpan.GetAssertedChildElement ("span", 0);
-        outerSpan.AssertAttributeValueContains ("id", c_selectedBooleanValueName);
         CheckImage (value, outerSpan, spanText);
-      }
       else
-      {
         CheckInput (value, outerSpan);
-      }
 
       var label = Html.GetAssertedChildElement (outerSpan, "span", 1);
-      Html.AssertNoAttribute (label, "id");
+      Html.AssertAttribute (label, "id", "MyCheckbox_Label");
 
       Html.AssertTextNode (label, spanText, 0);
     }
@@ -281,7 +273,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.Legacy.UI.Controls.BocBooleanValu
     private void CheckImage (bool value, XmlNode outerSpan, string altText)
     {
       var image = Html.GetAssertedChildElement (outerSpan, "img", 0);
-      Html.AssertNoAttribute (image, "id");
+      Html.AssertAttribute (image, "id", "_Boc_Image");
       Html.AssertAttribute (image, "src", string.Format ("/CheckBox{0}.gif", value), HtmlHelper.AttributeValueCompareMode.Contains);
       Html.AssertAttribute (image, "alt", altText);
       Html.AssertStyleAttribute (image, "border-width", "0px");
