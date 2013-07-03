@@ -141,7 +141,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       Assertion.IsNotNull (_mixinArrayInitializerField, "AddFields must be called first.");
 
       _concreteTarget.AddTypeInitialization (
-          ctx => Expression.Block (
+          Expression.Block (
               typeof (void),
               InitializeClassContextField (classContext),
               InitializeMixinArrayInitializerField (classContext.Type, mixinTypes)));
