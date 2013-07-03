@@ -53,7 +53,8 @@ namespace Remotion.Mixins.CodeGeneration
       ArgumentUtility.CheckNotNull ("mixinTarget", mixinTarget);
       ArgumentUtility.CheckType<IMixinTarget> ("mixinTarget", mixinTarget);
 
-      _pipelineRegistry.DefaultPipeline.PrepareExternalUninitializedObject (mixinTarget);
+      // tODO 5370
+      _pipelineRegistry.DefaultPipeline.PrepareExternalUninitializedObject (mixinTarget,0);
     }
   }
 }
