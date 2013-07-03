@@ -16,9 +16,8 @@
 // 
 
 using System;
+using System.Collections.Generic;
 using Remotion.Mixins.Definitions;
-using Remotion.TypePipe.CodeGeneration;
-using Remotion.TypePipe.Implementation;
 using Remotion.TypePipe.TypeAssembly;
 
 namespace Remotion.Mixins.CodeGeneration.TypePipe
@@ -27,5 +26,9 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
   public interface IMixinTypeProvider
   {
     IMixinInfo GetMixinInfo (IProxyTypeAssemblyContext context, MixinDefinition mixin);
+
+    void AddLoadedConcreteMixinType (IDictionary<string, object> participantState, ConcreteMixinType concreteMixinType);
+
+    ConcreteMixinType GetOrGenerateConcreteMixinType (ITypeAssemblyContext context, ConcreteMixinTypeIdentifier concreteMixinTypeIdentifier);
   }
 }

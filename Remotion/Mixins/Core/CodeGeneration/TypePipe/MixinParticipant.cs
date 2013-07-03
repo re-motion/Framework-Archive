@@ -87,13 +87,19 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       {
         var conreteMixinType = _concreteTypeMetadataImporter.GetMetadataForMixinType (additionalType);
         if (conreteMixinType != null)
-          MixinTypeGeneratorFacade.AddLoadedConcreteMixinType (loadedTypesContext.State, conreteMixinType);
+          _mixinTypeProvider.AddLoadedConcreteMixinType (loadedTypesContext.State, conreteMixinType);
       }
     }
 
     public Type GetOrCreateAdditionalType (object additionalTypeID, IAdditionalTypeAssemblyContext additionalTypeAssemblyContext)
     {
-      throw new NotImplementedException("TODO 5370");
+      ArgumentUtility.CheckNotNullAndType<ConcreteMixinTypeIdentifier> ("additionalTypeID", additionalTypeID);
+      ArgumentUtility.CheckNotNull ("additionalTypeAssemblyContext", additionalTypeAssemblyContext);
+
+      var concreteMixinTypeIdentifier = ((ConcreteMixinTypeIdentifier) additionalTypeID);
+      var concreteMixinType = _mixinTypeProvider.GetOrGenerateConcreteMixinType (additionalTypeAssemblyContext, concreteMixinTypeIdentifier);
+
+      return concreteMixinType.GeneratedType;
     }
 
     public void HandleNonSubclassableType (Type requestedType)

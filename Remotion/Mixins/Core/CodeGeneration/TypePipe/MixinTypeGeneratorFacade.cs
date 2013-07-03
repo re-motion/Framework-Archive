@@ -18,8 +18,6 @@ using System;
 using System.Collections.Generic;
 using Remotion.Collections;
 using Remotion.Mixins.Definitions;
-using Remotion.TypePipe.CodeGeneration;
-using Remotion.TypePipe.Implementation;
 using Remotion.TypePipe.TypeAssembly;
 using Remotion.Utilities;
 
@@ -42,21 +40,24 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       return new DerivedMixinInfo (concreteMixinType);
     }
 
-    // TODO 5370: Make non-static, add to interface.
-    public static void AddLoadedConcreteMixinType (IDictionary<string, object> participantState, ConcreteMixinType concreteMixinType)
+    public void AddLoadedConcreteMixinType (IDictionary<string, object> participantState, ConcreteMixinType concreteMixinType)
     {
+      ArgumentUtility.CheckNotNull ("participantState", participantState);
+      ArgumentUtility.CheckNotNull ("concreteMixinType", concreteMixinType);
+
       var concreteMixinTypeCache = GetOrCreateConcreteMixinTypeCache (participantState);
 
       // TODO 5370 Review
-      // what if identifier already present?
+      // What if already present? (should we ignore it or raise an exception?)
       if (!concreteMixinTypeCache.ContainsKey (concreteMixinType.Identifier))
-      {
         concreteMixinTypeCache.Add (concreteMixinType.Identifier, concreteMixinType);
-      }
     }
 
-    private ConcreteMixinType GetOrGenerateConcreteMixinType (IProxyTypeAssemblyContext context, ConcreteMixinTypeIdentifier concreteMixinTypeIdentifier)
+    public ConcreteMixinType GetOrGenerateConcreteMixinType (ITypeAssemblyContext context, ConcreteMixinTypeIdentifier concreteMixinTypeIdentifier)
     {
+      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull ("concreteMixinTypeIdentifier", concreteMixinTypeIdentifier);
+
       var concreteMixinTypeCache = GetOrCreateConcreteMixinTypeCache (context.State);
 
       ConcreteMixinType concreteMixinType;
@@ -74,7 +75,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       return concreteMixinType;
     }
 
-    private ConcreteMixinType GenerateConcreteMixinType (IProxyTypeAssemblyContext context, ConcreteMixinTypeIdentifier concreteMixinTypeIdentifier)
+    private ConcreteMixinType GenerateConcreteMixinType (ITypeAssemblyContext context, ConcreteMixinTypeIdentifier concreteMixinTypeIdentifier)
     {
       var mixinProxyType = context.CreateProxy (concreteMixinTypeIdentifier.MixinType);
 
@@ -94,8 +95,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
           concreteMixinTypeIdentifier, mixinProxyType, overrideInterface.Type, overrideInterface.InterfaceMethodsByOverriddenMethods, methodWrappers);
     }
 
-    // TODO 5370: Make non-static.
-    private static IDictionary<ConcreteMixinTypeIdentifier, ConcreteMixinType> GetOrCreateConcreteMixinTypeCache (
+    private IDictionary<ConcreteMixinTypeIdentifier, ConcreteMixinType> GetOrCreateConcreteMixinTypeCache (
         IDictionary<string, object> participantState)
     {
       const string key = "ConcreteMixinTypes";
