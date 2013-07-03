@@ -44,7 +44,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.Legacy.UI.Controls.BocReferenceVa
   public class BocReferenceValueQuirksModeRendererTest : RendererTestBase
   {
     private const string c_clientID = "MyReferenceValue";
-    private const string c_selectedValueName = "MyReferenceValue_SelectedValue";
+    private const string c_selectedValueName = "MyReferenceValue_Value";
 
     private IBusinessObjectProvider _provider;
     private BusinessObjectReferenceDataSource _dataSource;
@@ -99,10 +99,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.Legacy.UI.Controls.BocReferenceVa
       Control.Stub (mock => mock.LabelStyle).Return (new Style (stateBag));
       Control.Stub (mock => mock.DropDownListStyle).Return (new DropDownListStyle());
       Control.Stub (mock => mock.ControlStyle).Return (new Style (stateBag));
-
-      Control.Stub (stub => stub.LabelClientID).Return (Control.ClientID + "_Boc_Label");
       Control.Stub (stub => stub.GetValueName ()).Return (c_selectedValueName);
-      Control.Stub (stub => stub.IconClientID).Return (Control.ClientID + "_Boc_Icon");
       Control.Stub (stub => stub.PopulateDropDownList (Arg<DropDownList>.Is.NotNull))
              .WhenCalled (
                  invocation =>
@@ -604,7 +601,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.Legacy.UI.Controls.BocReferenceVa
         {
           var span = valueCell.GetAssertedChildElement ("span", 0);
           var label = span.GetAssertedChildElement ("span", 0);
-          label.AssertAttributeValueEquals ("id", Control.ClientID + "_Boc_Label");
+          label.AssertAttributeValueEquals ("id", Control.ClientID + "_Value");
           label.AssertTextNode ("MyText", 0);
         }
       }

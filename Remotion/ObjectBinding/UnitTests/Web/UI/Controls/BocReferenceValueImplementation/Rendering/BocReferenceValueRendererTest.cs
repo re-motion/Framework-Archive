@@ -40,6 +40,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocReferenceValueImpl
   {
     private const string c_clientID = "MyReferenceValue";
     private const string c_selectedValueName = "MyReferenceValue_SelectedValue";
+    private const string c_uniqueIdentifier = "uniqueidentifiert";
 
     private enum OptionMenuConfiguration
     {
@@ -71,6 +72,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocReferenceValueImpl
       Control = MockRepository.GenerateStub<IBocReferenceValue>();
       Control.Stub (stub => stub.ClientID).Return (c_clientID);
       Control.Stub (stub => stub.Command).Return (new BocCommand());
+      Control.Stub (stub => stub.BusinessObjectUniqueIdentifier).Return (c_uniqueIdentifier);
       Control.Command.Type = CommandType.Event;
       Control.Command.Show = CommandShow.Always;
 
@@ -102,10 +104,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocReferenceValueImpl
       Control.Stub (mock => mock.LabelStyle).Return (new Style (stateBag));
       Control.Stub (mock => mock.DropDownListStyle).Return (new DropDownListStyle());
       Control.Stub (mock => mock.ControlStyle).Return (new Style (stateBag));
-
-      Control.Stub (stub => stub.LabelClientID).Return (Control.ClientID + "_Boc_Label");
       Control.Stub (stub => stub.GetValueName ()).Return (c_selectedValueName);
-      Control.Stub (stub => stub.IconClientID).Return (Control.ClientID + "_Boc_Icon");
       Control.Stub (stub => stub.PopulateDropDownList (Arg<DropDownList>.Is.NotNull))
           .WhenCalled (
               invocation =>
@@ -466,7 +465,8 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocReferenceValueImpl
       contentSpan.AssertChildElementCount (1);
 
       var innerSpan = contentSpan.GetAssertedChildElement ("span", 0);
-      innerSpan.AssertAttributeValueEquals ("id", Control.LabelClientID);
+      innerSpan.AssertAttributeValueEquals ("id", c_clientID + "_Label");
+      innerSpan.AssertAttributeValueEquals ("data-value", c_uniqueIdentifier);
       innerSpan.AssertChildElementCount (0);
       innerSpan.AssertTextNode ("MyText", 0);
 

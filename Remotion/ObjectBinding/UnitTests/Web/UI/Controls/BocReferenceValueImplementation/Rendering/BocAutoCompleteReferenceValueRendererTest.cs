@@ -42,6 +42,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocReferenceValueImpl
     private const string c_clientID = "MyReferenceValue";
     private const string c_selectedTextValueName = "MyReferenceValue_SelectedTextValue";
     private const string c_selectedKeyValueName = "MyReferenceValue_SelectedKeyValue";
+    private const string c_uniqueidentifier = "uniqueidentifier";
 
     private enum OptionMenuConfiguration
     {
@@ -81,7 +82,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocReferenceValueImpl
       Control.Stub (stub => stub.ClientID).Return (c_clientID);
       Control.Stub (stub => stub.GetTextValueName()).Return (c_selectedTextValueName);
       Control.Stub (stub => stub.GetKeyValueName()).Return (c_selectedKeyValueName);
-      Control.Stub (stub => stub.LabelClientID).Return ("MyReferenceValue_Boc_Label");
+      Control.Stub (stub => stub.BusinessObjectUniqueIdentifier).Return (c_uniqueidentifier);
       Control.Stub (stub => stub.Command).Return (new BocCommand());
       Control.Command.Type = CommandType.Event;
       Control.Command.Show = CommandShow.Always;
@@ -528,7 +529,8 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocReferenceValueImpl
       contentSpan.AssertChildElementCount (1);
       
       var innerSpan = contentSpan.GetAssertedChildElement ("span", 0);
-      innerSpan.AssertAttributeValueEquals ("id", Control.LabelClientID);
+      innerSpan.AssertAttributeValueEquals ("id", c_clientID + "_Label");
+      innerSpan.AssertAttributeValueEquals ("data-value", c_uniqueidentifier);
       innerSpan.AssertChildElementCount (0);
       innerSpan.AssertTextNode ("MyText", 0);
 

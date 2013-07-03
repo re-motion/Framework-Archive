@@ -151,7 +151,7 @@ namespace Remotion.ObjectBinding.Web.Legacy.UI.Controls.BocReferenceValueImpleme
 
     private Label GetLabel (BocReferenceValueRenderingContext renderingContext)
     {
-      var label = new Label { ID = renderingContext.Control.LabelClientID, EnableViewState = false, Height = Unit.Empty, Width = Unit.Empty };
+      var label = new Label { ID = renderingContext.Control.GetValueName(), EnableViewState = false, Height = Unit.Empty, Width = Unit.Empty };
       label.ApplyStyle (renderingContext.Control.CommonStyle);
       label.ApplyStyle (renderingContext.Control.LabelStyle);
       label.Text = HttpUtility.HtmlEncode (renderingContext.Control.GetLabelText ());
@@ -160,7 +160,7 @@ namespace Remotion.ObjectBinding.Web.Legacy.UI.Controls.BocReferenceValueImpleme
 
     private Image GetIcon (BocReferenceValueRenderingContext renderingContext)
     {
-      var icon = new Image { EnableViewState = false, ID = renderingContext.Control.IconClientID, Visible = false };
+      var icon = new Image { EnableViewState = false, ID = renderingContext.Control.ClientID + "_Icon", Visible = false };
       if (renderingContext.Control.IsIconEnabled())
       {
         IconInfo iconInfo = renderingContext.Control.GetIcon ();
