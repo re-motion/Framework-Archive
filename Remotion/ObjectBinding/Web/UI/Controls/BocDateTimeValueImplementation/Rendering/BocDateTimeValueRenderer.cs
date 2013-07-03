@@ -241,11 +241,19 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
           DateTime dateTime = renderingContext.Control.Value.Value;
 
           if (renderingContext.Control.ActualValueType == BocDateTimeValueType.DateTime)
+          {
             label.Text = Formatter.FormatDateTimeValue (dateTime, renderingContext.Control.ShowSeconds);
+            label.Attributes.Add ("data-value", dateTime.ToString ("s"));
+          }
           else if (renderingContext.Control.ActualValueType == BocDateTimeValueType.Date)
+          {
             label.Text = Formatter.FormatDateValue (dateTime);
+            label.Attributes.Add ("data-value", dateTime.ToString ("yyyy-MM-dd"));
+          }
           else
+          {
             label.Text = dateTime.ToString();
+          }
         }
       }
 
