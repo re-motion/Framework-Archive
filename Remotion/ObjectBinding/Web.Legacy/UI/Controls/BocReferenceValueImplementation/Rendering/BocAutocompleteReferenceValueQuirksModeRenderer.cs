@@ -143,7 +143,7 @@ namespace Remotion.ObjectBinding.Web.Legacy.UI.Controls.BocReferenceValueImpleme
       script.Append ("$(document).ready( function() { BocAutoCompleteReferenceValue.Initialize(");
       script.AppendFormat ("$('#{0}'), ", renderingContext.Control.GetTextValueName());
       script.AppendFormat ("$('#{0}'), ", renderingContext.Control.GetKeyValueName());
-      script.AppendFormat ("$('#{0}'),", renderingContext.Control.GetDropDownButtonName());
+      script.AppendFormat ("$('#{0}'),", GetDropDownButtonName(renderingContext));
 
       if (renderingContext.Control.IsIconEnabled())
         script.AppendFormat ("$('#{0} .{1}'), ", renderingContext.Control.ClientID, CssClassCommand);
@@ -550,7 +550,7 @@ namespace Remotion.ObjectBinding.Web.Legacy.UI.Controls.BocReferenceValueImpleme
 
     private void RenderDropdownButton (BocAutoCompleteReferenceValueRenderingContext renderingContext)
     {
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Id, renderingContext.Control.GetDropDownButtonName());
+      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Id, GetDropDownButtonName(renderingContext));
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassButton);
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
       IconInfo.CreateSpacer (ResourceUrlFactory).Render (renderingContext.Writer, renderingContext.Control);

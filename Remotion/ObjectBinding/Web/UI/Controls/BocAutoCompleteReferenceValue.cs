@@ -54,7 +54,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     private const string c_textBoxIDPostfix = "_TextValue";
     private const string c_hiddenFieldIDPostfix = "_KeyValue";
-    private const string c_buttonIDPostfix = "_DropDownButton";
 
     // types
     
@@ -602,11 +601,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     public string GetTextValueName ()
     {
       return ClientID + c_textBoxIDPostfix;
-    }
-
-    string IBocAutoCompleteReferenceValue.GetDropDownButtonName ()
-    {
-      return ClientID + c_buttonIDPostfix;
     }
 
     public string GetKeyValueName ()

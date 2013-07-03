@@ -167,6 +167,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
         RenderContentsWithSeparateOptionsMenu (renderingContext);
     }
 
+    protected virtual string GetDropDownButtonName (BocRenderingContext<TControl> renderingContext)
+    {
+       return renderingContext.Control.ClientID + "_DropDownButton";
+    }
+
     private void RenderContentsWithIntegratedOptionsMenu (BocRenderingContext<TControl> renderingContext)
     {
       ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);

@@ -24,7 +24,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
   {
     string GetTextValueName ();
     string GetKeyValueName ();
-    string GetDropDownButtonName ();
     string SearchServicePath { get; }
 
     /// <summary> Gets the style that you want to apply to the <see cref="TextBox"/> (edit mode) only. </summary>

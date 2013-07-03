@@ -82,7 +82,6 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocReferenceValueImpl
       Control.Stub (stub => stub.GetTextValueName()).Return (c_selectedTextValueName);
       Control.Stub (stub => stub.GetKeyValueName()).Return (c_selectedKeyValueName);
       Control.Stub (stub => stub.LabelClientID).Return ("MyReferenceValue_Boc_Label");
-      Control.Stub (stub => stub.GetDropDownButtonName()).Return ("MyReferenceValue_DropDownButton");
       Control.Stub (stub => stub.Command).Return (new BocCommand());
       Control.Command.Type = CommandType.Event;
       Control.Command.Show = CommandShow.Always;
