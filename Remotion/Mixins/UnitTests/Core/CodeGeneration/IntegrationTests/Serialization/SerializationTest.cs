@@ -182,8 +182,6 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.Seriali
     [Test]
     public void OnInitializedNotCalledOnDeserialization ()
     {
-      SkipDeletion();
-
       using (MixinConfiguration.BuildFromActive().ForClass<NullTarget> ().Clear().AddMixins (typeof (MixinWithOnInitializedAndOnDeserialized)).EnterScope())
       {
         NullTarget instance = ObjectFactory.Create<NullTarget> (ParamList.Empty);

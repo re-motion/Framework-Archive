@@ -27,6 +27,7 @@ using Remotion.Mixins.UnitTests.Core.CodeGeneration.TestDomain;
 using Remotion.Mixins.UnitTests.Core.IntegrationTests.Ordering;
 using Remotion.Mixins.UnitTests.Core.TestDomain;
 using Remotion.Reflection;
+using Remotion.TypePipe.MutableReflection.Implementation;
 using Rhino.Mocks;
 
 namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTypeCodeGeneration
@@ -185,50 +186,6 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
     }
 
     [Test]
-    [Ignore ("TODO 5370: Delete. (No more name providers.)")]
-    public void NameProviderIsUsedWhenTypeIsGenerated ()
-    {
-      var repository = new MockRepository ();
-      var nameProviderMock = repository.StrictMock<IConcreteMixedTypeNameProvider> ();
-      var moduleManager = ConcreteTypeBuilderTestHelper.GetIModuleManager (SavedTypeBuilder);
-
-      var builder = ConcreteTypeBuilderObjectMother.CreateConcreteTypeBuilder (moduleManager, nameProviderMock);
-      ConcreteTypeBuilder.SetCurrent (builder);
-
-      nameProviderMock.Expect (mock => mock.GetNameForConcreteMixedType (Arg<TargetClassDefinition>.Matches (tcd => tcd.Type == typeof (BaseType1)))).Return ("Foo");
-
-      repository.ReplayAll ();
-
-      Type generatedType = TypeFactory.GetConcreteType (typeof (BaseType1));
-
-      Assert.That (generatedType.FullName, Is.EqualTo ("Foo"));
-
-      repository.VerifyAll ();
-    }
-
-    [Test]
-    [Ignore ("TODO 5370: Delete. (No more name providers.)")]
-    public void NamesOfNestedTypesAreFlattened ()
-    {
-      var repository = new MockRepository ();
-      var nameProviderMock = repository.StrictMock<IConcreteMixedTypeNameProvider> ();
-      var moduleManager = ConcreteTypeBuilderTestHelper.GetIModuleManager (SavedTypeBuilder);
-
-      var builder = ConcreteTypeBuilderObjectMother.CreateConcreteTypeBuilder (moduleManager, nameProviderMock);
-      ConcreteTypeBuilder.SetCurrent (builder);
-
-      Expect.Call (nameProviderMock.GetNameForConcreteMixedType (Arg<TargetClassDefinition>.Matches (tcd => tcd.Type == typeof (BaseType1)))).Return ("Foo+Bar");
-
-      repository.ReplayAll ();
-
-      Type generatedType = TypeFactory.GetConcreteType (typeof (BaseType1));
-
-      Assert.That (generatedType.FullName, Is.EqualTo ("Foo/Bar"));
-
-      repository.VerifyAll ();
-    }
-
-    [Test]
     public void AbstractBaseTypesLeadToAbstractConcreteTypes ()
     {
       Type concreteType = CreateMixedType (typeof (AbstractBaseType), typeof (MixinOverridingClassMethod));
@@ -315,14 +272,16 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
           typeof (MixinWithAbstractMembers));
 
       Assert.That (concreteType.GetInterfaces (), Has.Member(concreteMixinType.GeneratedOverrideInterface));
-      
-      var explicitInterfaceMember = concreteType.GetMethod (
-          concreteMixinType.GeneratedOverrideInterface.FullName + ".AbstractMethod", 
-          BindingFlags.NonPublic | BindingFlags.Instance);
+
+      var abstractMethodWrapperName =
+          MethodOverrideUtility.GetNameForExplicitOverride (concreteMixinType.GeneratedOverrideInterface.GetMethod ("AbstractMethod"));
+      var explicitInterfaceMember = concreteType.GetMethod (abstractMethodWrapperName, BindingFlags.NonPublic | BindingFlags.Instance);
       Assert.That (explicitInterfaceMember, Is.Not.Null);
 
+      var abstractGetterWrapperName =
+          MethodOverrideUtility.GetNameForExplicitOverride(concreteMixinType.GeneratedOverrideInterface.GetMethod("get_AbstractProperty"));
       var explicitInterfacePropertyGetter = concreteType.GetMethod (
-          concreteMixinType.GeneratedOverrideInterface.FullName + ".get_AbstractProperty",
+          abstractGetterWrapperName,
           BindingFlags.NonPublic | BindingFlags.Instance);
       Assert.That (explicitInterfacePropertyGetter, Is.Not.Null);
     }

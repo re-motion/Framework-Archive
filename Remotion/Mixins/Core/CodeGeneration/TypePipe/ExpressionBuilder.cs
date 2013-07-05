@@ -20,6 +20,7 @@ using Remotion.Mixins.CodeGeneration.DynamicProxy;
 using Remotion.Mixins.Context;
 using Remotion.TypePipe.Dlr.Ast;
 using Remotion.TypePipe.Expressions;
+using Remotion.TypePipe.Implementation;
 using Remotion.TypePipe.MutableReflection;
 using Remotion.TypePipe.MutableReflection.BodyBuilding;
 using Remotion.Utilities;
@@ -32,6 +33,8 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
   {
     private static readonly MethodInfo s_initializeMethod =
         MemberInfoFromExpressionUtility.GetMethod ((IInitializableMixinTarget o) => o.Initialize());
+    private static readonly MethodInfo s_initializeAfterDeserializationMethod =
+        MemberInfoFromExpressionUtility.GetMethod ((IInitializableMixinTarget o) => o.InitializeAfterDeserialization(null));
 
     public Expression CreateNewClassContext (ClassContext classContext)
     {
@@ -43,7 +46,33 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       return serializer.CreateNewExpression();
     }
 
-    public Expression CreateInitialization (MutableType concreteTarget, Expression extensionsField, Expression extensionsInitializedField)
+    public Expression CreateInitialization (MutableType concreteTarget, Expression extensionsField, Expression extensionsInitializedField, bool initSemanticsSwitch)
+    {
+      ArgumentUtility.CheckNotNull("concreteTarget", concreteTarget);
+      ArgumentUtility.CheckNotNull("extensionsField", extensionsField);
+      ArgumentUtility.CheckNotNull("extensionsInitializedField", extensionsInitializedField);
+
+      if (!initSemanticsSwitch)
+        return CreateInitialization2 (concreteTarget, extensionsField, extensionsInitializedField);
+
+
+      // if (__extensions == null || !__extensionsInitialized) {
+      //   if (initializationSemantics == InitializationSemantics.Construction)
+      //     ((IInitializableMixinTarget) this).Initialize();
+      //   else
+      //     ((IInitializableMixinTarget) this).InitializeAfterDeserialization(mixinInstances: null);
+      // }
+
+      var @this = new ThisExpression (concreteTarget);
+      return Expression.IfThen (
+          Expression.OrElse (Expression.Equal (extensionsField, Expression.Constant (null)), Expression.Not (extensionsInitializedField)),
+          Expression.IfThenElse (
+              Expression.Equal (concreteTarget.Initialization.Semantics, Expression.Constant (InitializationSemantics.Construction)),
+              Expression.Call (@this, s_initializeMethod),
+              Expression.Call (@this, s_initializeAfterDeserializationMethod, extensionsField)));
+    }
+
+    public Expression CreateInitialization2 (MutableType concreteTarget, Expression extensionsField, Expression extensionsInitializedField)
     {
       ArgumentUtility.CheckNotNull ("concreteTarget", concreteTarget);
       ArgumentUtility.CheckNotNull ("extensionsField", extensionsField);
@@ -70,7 +99,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       // instance<GenericParameters>.MethodToCall(<parameters>);
 
       return Expression.Block (
-          CreateInitialization (bodyContext.DeclaringType, extensionsField, extensionsInitializedField),
+          CreateInitialization2 (bodyContext.DeclaringType, extensionsField, extensionsInitializedField),
           bodyContext.DelegateTo (instance, methodToCall));
     }
   }

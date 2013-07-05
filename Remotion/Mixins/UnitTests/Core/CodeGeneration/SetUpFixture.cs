@@ -22,6 +22,7 @@ using Remotion.ServiceLocation;
 using Remotion.Text;
 using Remotion.TypePipe;
 using Remotion.TypePipe.Configuration;
+using Remotion.Utilities;
 
 namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
 {
@@ -33,7 +34,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
     private static IPipeline s_pipeline;
     private static bool s_skipDeletion;
 
-    private AssemblyTrackingCodeManager _assemblyTrackingCodeManager;
+    private static AssemblyTrackingCodeManager s_assemblyTrackingCodeManager;
 
     public static IPipelineRegistry PipelineRegistry
     {
@@ -59,6 +60,15 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
       s_skipDeletion = true;
     }
 
+    /// <summary>
+    /// Adds an assembly to be verified and deleted at the end of the test runs.
+    /// </summary>
+    public static void AddSavedAssembly (string assemblyPath)
+    {
+      ArgumentUtility.CheckNotNullOrEmpty ("assemblyPath", assemblyPath);
+      s_assemblyTrackingCodeManager.AddSavedAssembly (assemblyPath);
+    }
+
     [SetUp]
     public void SetUp ()
     {
@@ -68,7 +78,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
       var participants = new IParticipant[] { new MixinParticipant() };
 
       s_pipeline = assemblyTrackingPipelineFactory.CreatePipeline (settings, participants);
-      _assemblyTrackingCodeManager = assemblyTrackingPipelineFactory.AssemblyTrackingCodeManager;
+      s_assemblyTrackingCodeManager = assemblyTrackingPipelineFactory.AssemblyTrackingCodeManager;
     }
 
     [TearDown]
@@ -77,25 +87,25 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
 #if !NO_PEVERIFY
       try
       {
-        _assemblyTrackingCodeManager.FlushCodeToDisk();
+        s_assemblyTrackingCodeManager.FlushCodeToDisk();
       }
       catch (Exception ex)
       {
         Assert.Fail ("Error when saving assemblies: {0}", ex);
       }
 
-      _assemblyTrackingCodeManager.PeVerifySavedAssemblies();
+      s_assemblyTrackingCodeManager.PeVerifySavedAssemblies();
 #endif
 
       if (!s_skipDeletion)
       {
-        _assemblyTrackingCodeManager.DeleteSavedAssemblies(); // Delete assemblies if everything went fine.
+        s_assemblyTrackingCodeManager.DeleteSavedAssemblies(); // Delete assemblies if everything went fine.
       }
       else
       {
         Console.WriteLine (
             "Assemblies saved to: " + Environment.NewLine
-            + SeparatedStringBuilder.Build (Environment.NewLine, _assemblyTrackingCodeManager.SavedAssemblies));
+            + SeparatedStringBuilder.Build (Environment.NewLine, s_assemblyTrackingCodeManager.SavedAssemblies));
       }
     }
   }

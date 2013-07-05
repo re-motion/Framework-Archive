@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using Castle.DynamicProxy;
 using NUnit.Framework;
+using Remotion.Mixins.CodeGeneration.DynamicProxy;
 using Remotion.Mixins.UnitTests.Core.IntegrationTests.Ordering;
 using Remotion.Mixins.UnitTests.Core.TestDomain;
 using Remotion.Mixins.Utilities;
@@ -36,6 +37,8 @@ namespace Remotion.Mixins.UnitTests.Core
       Assert.That (MixinTypeUtility.IsGeneratedConcreteMixedType (typeof (string)), Is.False);
       Assert.That (MixinTypeUtility.IsGeneratedConcreteMixedType (typeof (int)), Is.False);
       Assert.That (MixinTypeUtility.IsGeneratedConcreteMixedType (typeof (BaseType1)), Is.False);
+      Assert.That (MixinTypeUtility.IsGeneratedConcreteMixedType (typeof (IMixinTarget)), Is.False);
+      Assert.That (MixinTypeUtility.IsGeneratedConcreteMixedType (typeof (IInitializableMixinTarget)), Is.False);
 
       Assert.That (MixinTypeUtility.IsGeneratedConcreteMixedType (MixinTypeUtility.GetConcreteMixedType (typeof (object))), Is.False);
       Assert.That (MixinTypeUtility.IsGeneratedConcreteMixedType (MixinTypeUtility.GetConcreteMixedType (typeof (string))), Is.False);

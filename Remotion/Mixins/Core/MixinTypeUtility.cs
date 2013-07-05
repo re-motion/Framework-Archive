@@ -48,7 +48,7 @@ namespace Remotion.Mixins
     public static bool IsGeneratedConcreteMixedType (Type type)
     {
       ArgumentUtility.CheckNotNull ("type", type);
-      return typeof (IMixinTarget).IsAssignableFrom (type);
+      return typeof (IMixinTarget).IsAssignableFrom (type) && !type.IsInterface;
     }
     
     /// <summary>

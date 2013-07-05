@@ -149,7 +149,9 @@ namespace Remotion.Mixins
       if (MixinTypeUtility.IsGeneratedConcreteMixedType (targetOrConcreteType))
       {
         var classContextForConcreteType = MixinTypeUtility.GetClassContextForConcreteType (targetOrConcreteType);
-        Assertion.IsTrue (classContextForConcreteType != null && classContextForConcreteType.Type != targetOrConcreteType);
+        // Theoretically, classContextForConcreteType should never be null here. However, the heuristics of IsGeneratedConcreteMixedType can be 
+        // wrong, which is why we allow for a null classContextForConcreteType in the assertion below.
+        Assertion.IsTrue (classContextForConcreteType == null || classContextForConcreteType.Type != targetOrConcreteType);
         return classContextForConcreteType;
       }
 

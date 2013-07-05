@@ -40,11 +40,6 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
       PipelineRegistry.SetDefaultPipeline (_previousDefaultPipeline);
     }
 
-    protected ConcreteTypeBuilder SavedTypeBuilder
-    {
-      get { throw new NotImplementedException ("TODO 5370: Remove"); }
-    }
-
     protected IPipelineRegistry PipelineRegistry
     {
       get { return SetUpFixture.PipelineRegistry; }
@@ -53,6 +48,12 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
     protected IPipeline Pipeline
     {
       get { return SetUpFixture.Pipeline; }
+    }
+
+    protected void AddSavedAssembly (string assemblyPath)
+    {
+      ArgumentUtility.CheckNotNullOrEmpty("assemblyPath", assemblyPath);
+      SetUpFixture.AddSavedAssembly (assemblyPath);
     }
 
     protected Type CreateMixedType (Type targetType, params Type[] mixinTypes)

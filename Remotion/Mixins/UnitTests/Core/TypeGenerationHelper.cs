@@ -54,17 +54,5 @@ namespace Remotion.Mixins.UnitTests.Core
     {
       return (T) ForceTypeGenerationAndCreateInstance (typeof (T));
     }
-    
-    public static ConcreteMixinType GetGeneratedMixinTypeAndMetadata (ClassContext requestingClass, Type mixinType)
-    {
-      MixinDefinition mixinDefinition = TargetClassDefinitionFactory.CreateAndValidate (requestingClass)
-          .GetMixinByConfiguredType (mixinType);
-      Assert.That (mixinDefinition, Is.Not.Null);
-
-      var mixinTypeIdentifier = mixinDefinition.GetConcreteMixinTypeIdentifier();
-
-      var generatedMixinType = Pipeline.ReflectionService.GetAdditionalType (mixinTypeIdentifier);
-      return new AttributeBasedMetadataImporter().GetMetadataForMixinType (generatedMixinType);
-    }
   }
 }

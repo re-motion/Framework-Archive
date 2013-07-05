@@ -18,6 +18,8 @@ using System;
 using System.Collections.Generic;
 using Remotion.Collections;
 using Remotion.Mixins.Definitions;
+using Remotion.ServiceLocation;
+using Remotion.TypePipe;
 using Remotion.TypePipe.TypeAssembly;
 using Remotion.Utilities;
 
@@ -79,7 +81,9 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     {
       var mixinProxyType = context.CreateProxy (concreteMixinTypeIdentifier.MixinType);
 
-      var generator = new MixinTypeGenerator (concreteMixinTypeIdentifier, mixinProxyType, new AttributeGenerator());
+      // TODO 5370: Should get this identifier from the context.
+      var pipelineIdentifier = SafeServiceLocator.Current.GetInstance<IPipelineRegistry>().DefaultPipeline.ParticipantConfigurationID;
+      var generator = new MixinTypeGenerator(concreteMixinTypeIdentifier, mixinProxyType, new AttributeGenerator(), pipelineIdentifier);
       generator.AddInterfaces();
       generator.AddFields();
       generator.AddTypeInitializer();

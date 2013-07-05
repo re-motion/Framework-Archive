@@ -19,23 +19,28 @@ using System;
 using System.Reflection;
 using System.Reflection.Emit;
 using Remotion.Collections;
+using Remotion.Utilities;
 
 namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
 {
   /// <summary>
   /// Allows tests to generate code into an <see cref="TypeBuilder"/> without having to care about defining the 
+  /// <see cref="System.Reflection.Emit.AssemblyBuilder"/>, etc.
   /// </summary>
   public class AdHocCodeGenerator
   {
     private readonly AssemblyBuilder _assemblyBuilder;
     private readonly ModuleBuilder _moduleBuilder;
-    private readonly string _filename = "AdHocCodeGenerator.dll";
+    private readonly string _filename;
 
     private int _typeCounter;
 
-    public AdHocCodeGenerator ()
+    public AdHocCodeGenerator (string assemblyName = "AdHocCodeGenerator")
     {
-      _assemblyBuilder = AppDomain.CurrentDomain.DefineDynamicAssembly (new AssemblyName ("AdHocCodeGenerator"), AssemblyBuilderAccess.RunAndSave);
+      ArgumentUtility.CheckNotNullOrEmpty ("assemblyName", assemblyName);
+
+      _filename = assemblyName + ".dll";
+      _assemblyBuilder = AppDomain.CurrentDomain.DefineDynamicAssembly (new AssemblyName (assemblyName), AssemblyBuilderAccess.RunAndSave);
       _moduleBuilder = _assemblyBuilder.DefineDynamicModule (_filename);
     }
 
@@ -49,36 +54,57 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
       get { return _moduleBuilder; }
     }
 
-    public TypeBuilder CreateType (string typeName = null)
+    public TypeBuilder CreateType (string typeName = null, Type baseType = null)
     {
       typeName = typeName ?? ("Test_" + _typeCounter++);
 
-      return _moduleBuilder.DefineType (typeName, TypeAttributes.Public);
+      return _moduleBuilder.DefineType(typeName, TypeAttributes.Public, baseType);
     }
 
     public Tuple<TypeBuilder, MethodBuilder> CreateMethod (
-        string typeName = null, string methodName = null, Type returnType = null, Type[] parameterTypes = null, Action<MethodBuilder> action = null)
+        string typeName = null,
+        string methodName = null,
+        MethodAttributes methodAttributes = MethodAttributes.Public | MethodAttributes.Static,
+        Type returnType = null,
+        Type[] parameterTypes = null,
+        Action<MethodBuilder> action = null)
     {
-      methodName = methodName ?? ("Test_" + Guid.NewGuid().ToString().Replace("-", ""));
-      returnType = returnType ?? typeof (void);
-      parameterTypes = parameterTypes ?? Type.EmptyTypes;
-
       var typeBuilder = CreateType (typeName);
 
-      var methodBuilder = typeBuilder.DefineMethod (methodName, MethodAttributes.Public | MethodAttributes.Static, returnType, parameterTypes);
-      if (action != null)
-        action (methodBuilder);
+      var methodBuilder = CreateMethod(typeBuilder, methodName, methodAttributes, returnType, parameterTypes, action);
 
       return Tuple.Create (typeBuilder, methodBuilder);
     }
 
+    public MethodBuilder CreateMethod (
+        TypeBuilder typeBuilder,
+        string methodName = null,
+        MethodAttributes methodAttributes = MethodAttributes.Public | MethodAttributes.Static,
+        Type returnType = null,
+        Type[] parameterTypes = null,
+        Action<MethodBuilder> action = null)
+    {
+      methodName = methodName ?? ("Test_" + Guid.NewGuid().ToString().Replace("-", ""));
+      returnType = returnType ?? typeof(void);
+      parameterTypes = parameterTypes ?? Type.EmptyTypes;
+
+      var methodBuilder = typeBuilder.DefineMethod (methodName, methodAttributes, returnType, parameterTypes);
+      if (action != null)
+        action (methodBuilder);
+      return methodBuilder;
+    }
+
     public T CreateMethodAndRun<T> (
-        string typeName = null, string methodName = null, Action<MethodBuilder> action = null, bool saveOnError = false)
+        string typeName = null,
+        MethodAttributes methodAttributes = MethodAttributes.Public | MethodAttributes.Static,
+        string methodName = null,
+        Action<MethodBuilder> action = null,
+        bool saveOnError = false)
     {
       var returnType = typeof (T);
       var parameterTypes = Type.EmptyTypes;
 
-      var tuple = CreateMethod (typeName, methodName, returnType, parameterTypes, action);
+      var tuple = CreateMethod (typeName, methodName, methodAttributes, returnType, parameterTypes, action);
       var actualType = tuple.Item1.CreateType();
 
       try
@@ -97,6 +123,20 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
     {
       _assemblyBuilder.Save (_filename);
       return _moduleBuilder.FullyQualifiedName;
+    }
+
+    public void AddCustomAttribute (Type type)
+    {
+      var customAttributeBuilder = CreateCustomAttributeBuilder(type);
+      _assemblyBuilder.SetCustomAttribute(customAttributeBuilder);
+    }
+
+    public CustomAttributeBuilder CreateCustomAttributeBuilder (Type type)
+    {
+      var constructorInfo = type.GetConstructor (Type.EmptyTypes);
+      Assertion.IsNotNull (constructorInfo, "Type must have a public default constructor.");
+      var customAttributeBuilder = new CustomAttributeBuilder (constructorInfo, new object[0]);
+      return customAttributeBuilder;
     }
   }
 }

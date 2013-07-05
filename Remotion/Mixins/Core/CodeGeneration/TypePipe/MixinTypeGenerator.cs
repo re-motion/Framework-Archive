@@ -21,12 +21,9 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
 using Remotion.Collections;
-using Remotion.Mixins.CodeGeneration.DynamicProxy;
 using Remotion.Mixins.Utilities;
-using Remotion.TypePipe.CodeGeneration;
 using Remotion.TypePipe.Dlr.Ast;
 using Remotion.TypePipe.Expressions;
-using Remotion.TypePipe.Implementation;
 using Remotion.TypePipe.MutableReflection;
 using Remotion.Utilities;
 
@@ -36,23 +33,26 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
   public class MixinTypeGenerator
   {
     private static readonly MethodInfo s_getObjectDataForGeneratedTypesMethod = MemberInfoFromExpressionUtility.GetMethod (
-        () => MixinSerializationHelper.GetObjectDataForGeneratedTypes (null, new StreamingContext(), null, null, false));
+        () => MixinSerializationHelper2.GetObjectDataForGeneratedTypes(null, new StreamingContext(), null, null, false, null));
 
     private readonly ConcreteMixinTypeIdentifier _identifier;
     private readonly MutableType _type;
     private readonly IAttributeGenerator _attributeGenerator;
+    private readonly string _pipelineIdentifier;
 
     private Expression _identifierField;
 
-    public MixinTypeGenerator (ConcreteMixinTypeIdentifier identifier, MutableType type, IAttributeGenerator attributeGenerator)
+    public MixinTypeGenerator (ConcreteMixinTypeIdentifier identifier, MutableType type, IAttributeGenerator attributeGenerator, string pipelineIdentifier)
     {
       ArgumentUtility.CheckNotNull ("identifier", identifier);
       ArgumentUtility.CheckNotNull ("type", type);
       ArgumentUtility.CheckNotNull ("attributeGenerator", attributeGenerator);
-
+      ArgumentUtility.CheckNotNullOrEmpty ("pipelineIdentifier", pipelineIdentifier);
+      
       _identifier = identifier;
       _type = type;
       _attributeGenerator = attributeGenerator;
+      _pipelineIdentifier = pipelineIdentifier;
     }
 
     public void AddInterfaces ()
@@ -78,6 +78,10 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     public void ImplementGetObjectData ()
     {
+      // TODO 5370: This does exactly the same as what ComplexSerializationEnabler does, but with a different ID (ConcreteMixinTypeIdentifier instead 
+      // of AssembledTypeID) and a different way to get the type back from the pipeline (GetAdditionalType instead of GetAssembledType).
+      // Consider refactoring ComplexSerializationEnabler to allow this code to be replaced.
+
       SerializationImplementer2.ImplementGetObjectDataByDelegation (
           _type,
           (ctx, baseIsISerializable) =>
@@ -88,7 +92,8 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
               ctx.Parameters[1],
               ctx.This,
               _identifierField,
-              Expression.Constant (!baseIsISerializable)));
+              Expression.Constant (!baseIsISerializable),
+              Expression.Constant (_pipelineIdentifier)));
     }
 
     public void AddMixinTypeAttribute ()
