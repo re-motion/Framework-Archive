@@ -93,13 +93,14 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     public Type GetOrCreateAdditionalType (object additionalTypeID, IAdditionalTypeAssemblyContext additionalTypeAssemblyContext)
     {
-      ArgumentUtility.CheckNotNullAndType<ConcreteMixinTypeIdentifier> ("additionalTypeID", additionalTypeID);
+      ArgumentUtility.CheckNotNull ("additionalTypeID", additionalTypeID);
       ArgumentUtility.CheckNotNull ("additionalTypeAssemblyContext", additionalTypeAssemblyContext);
 
-      var concreteMixinTypeIdentifier = ((ConcreteMixinTypeIdentifier) additionalTypeID);
-      var concreteMixinType = _mixinTypeProvider.GetOrGenerateConcreteMixinType (additionalTypeAssemblyContext, concreteMixinTypeIdentifier);
+      var concreteMixinTypeIdentifier = additionalTypeID as ConcreteMixinTypeIdentifier;
+      if (concreteMixinTypeIdentifier == null)
+        return null;
 
-      return concreteMixinType.GeneratedType;
+      return _mixinTypeProvider.GetOrGenerateConcreteMixinType (additionalTypeAssemblyContext, concreteMixinTypeIdentifier).GeneratedType;
     }
 
     public void HandleNonSubclassableType (Type requestedType)
