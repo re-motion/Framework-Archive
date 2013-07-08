@@ -63,7 +63,7 @@ namespace Remotion.Development.UnitTests.Core.TypePipe
     public void Integration_CreatedPipeline_AddsNonApplicationAssemblyAttribute_OnModuleCreation ()
     {
       // Creates new in-memory assembly (avoid no-modification optimization).
-      var settings = new PipelineSettings ("dummy id");
+      var settings = PipelineSettings.WithParticipantConfigurationID ("dummy id").Build();
       var defaultPipeline = _factory.CreatePipeline (settings, new[] { new ModifyingParticipant() });
       var type = defaultPipeline.ReflectionService.GetAssembledType (typeof (RequestedType));
 
