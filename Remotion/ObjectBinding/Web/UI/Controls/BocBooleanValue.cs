@@ -40,8 +40,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     // constants
 
     private const string c_nullString = "null";
-    private const string c_hiddenfieldIDPostfix = "_Value";
-    private const string c_hyperlinkIDPostfix = "_HyperLink";
+    private const string c_keyValueName = "_KeyValue";
+    private const string c_textValueName = "_TextValue";
 
     // types
 
@@ -159,25 +159,25 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <seealso cref="BusinessObjectBoundEditableWebControl.GetTrackedClientIDs">BusinessObjectBoundEditableWebControl.GetTrackedClientIDs</seealso>
     public override string[] GetTrackedClientIDs ()
     {
-      return IsReadOnly ? new string[0] : new[] { GetValueName () };
+      return IsReadOnly ? new string[0] : new[] { GetKeyValueName () };
     }
 
     /// <summary>
     /// Gets a name (ID) to use for the hidden field needed to store the value of the control client-side.
     /// </summary>
     /// <returns>The control's <see cref="Control.ClientID"/> postfixed with a constant id for the hidden field.</returns>
-    public string GetValueName ()
+    public string GetKeyValueName ()
     {
-      return ClientID + c_hiddenfieldIDPostfix;
+      return ClientID + c_keyValueName;
     }
 
     /// <summary>
     /// Gets a name (ID) to use for the hyperlink used to change the value of the control client-side.
     /// </summary>
     /// <returns>The control's <see cref="Control.ClientID"/> postfixed with a constant id for the hyperlink.</returns>
-    public string GetHyperLinkName ()
+    public string GetTextValueName ()
     {
-      return ClientID + c_hyperlinkIDPostfix;
+      return ClientID + c_textValueName;
     }
 
     protected override bool? GetValue ()
@@ -247,7 +247,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     [Browsable (false)]
     public override string FocusID
     {
-      get { return IsReadOnly ? null : GetHyperLinkName (); }
+      get { return IsReadOnly ? null : GetTextValueName (); }
     }
 
     /// <summary> Gets the string representation of this control's <see cref="BocBooleanValueBase.Value"/>. </summary>
@@ -306,7 +306,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <include file='doc\include\UI\Controls\BocBooleanValue.xml' path='BocBooleanValue/LoadPostData/*' />
     protected override bool LoadPostData (string postDataKey, NameValueCollection postCollection)
     {
-      string newValueAsString = PageUtility.GetPostBackCollectionItem (Page, GetValueName());
+      string newValueAsString = PageUtility.GetPostBackCollectionItem (Page, GetKeyValueName());
       bool? newValue = null;
       bool isDataChanged = false;
       if (newValueAsString != null)

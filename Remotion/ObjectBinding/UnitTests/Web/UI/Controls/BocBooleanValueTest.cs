@@ -105,7 +105,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls
       string[] actual = _bocBooleanValue.GetTrackedClientIDs();
       Assert.That (actual, Is.Not.Null);
       Assert.That (actual.Length, Is.EqualTo (1));
-      Assert.That (actual[0], Is.EqualTo (_bocBooleanValue.GetValueName()));
+      Assert.That (actual[0], Is.EqualTo (_bocBooleanValue.GetKeyValueName()));
     }
 
 
@@ -486,19 +486,19 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls
     }
 
     [Test]
-    public void GetValueName ()
+    public void GetKeyValueName ()
     {
-      var result = _bocBooleanValue.GetValueName ();
+      var result = _bocBooleanValue.GetKeyValueName ();
 
-      Assert.That (result, Is.EqualTo ("NamingContainer_BocBooleanValue_Value"));
+      Assert.That (result, Is.EqualTo ("NamingContainer_BocBooleanValue_KeyValue"));
     }
 
     [Test]
-    public void GetHyperlinkName ()
+    public void GetTextValueName ()
     {
-      var result = _bocBooleanValue.GetHyperLinkName ();
+      var result = _bocBooleanValue.GetTextValueName ();
 
-      Assert.That (result, Is.EqualTo ("NamingContainer_BocBooleanValue_HyperLink"));
+      Assert.That (result, Is.EqualTo ("NamingContainer_BocBooleanValue_TextValue"));
     }
   }
 }
