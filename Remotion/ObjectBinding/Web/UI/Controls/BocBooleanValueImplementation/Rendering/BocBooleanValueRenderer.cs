@@ -244,6 +244,16 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
       labelControl.ApplyStyle (renderingContext.Control.LabelStyle);
     }
 
+    private string GetLabelName (BocBooleanValueRenderingContext renderingContext)
+    {
+      return renderingContext.Control.ClientID + "_Label";
+    }
+
+    private string GetImageName (BocBooleanValueRenderingContext renderingContext)
+    {
+      return renderingContext.Control.ClientID + "_Image";
+    }
+
     public override string GetCssClassBase (IBocBooleanValue control)
     {
       return "bocBooleanValue";

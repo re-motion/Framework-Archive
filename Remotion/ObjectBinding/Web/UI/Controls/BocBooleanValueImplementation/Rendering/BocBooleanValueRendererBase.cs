@@ -32,15 +32,5 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
         : base (resourceUrlFactory)
     { 
     }
-
-    protected virtual string GetLabelName (BocRenderingContext<T> renderingContext)
-    {
-      return renderingContext.Control.ClientID + "_Label";
-    }
-
-    protected virtual string GetImageName (BocRenderingContext<T> renderingContext)
-    {
-      return renderingContext.Control.ClientID + "_Image";
-    }
   }
 }
