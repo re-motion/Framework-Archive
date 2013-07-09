@@ -338,7 +338,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocEnumValueImplement
 
 
       var span = Html.GetAssertedChildElement (div, "span", 0);
-      Html.AssertAttribute (span, "id", _enumValue.GetValueName());
+      Html.AssertAttribute (span, "id", c_valueName);
       if (_enumValue.EnumerationValueInfo!=null)
         Html.AssertAttribute (span, "data-value", _enumValue.EnumerationValueInfo.Identifier);
 
@@ -388,8 +388,8 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocEnumValueImplement
       var div = GetAssertedSpan (document, false, false, false, renderer);
 
       var select = Html.GetAssertedChildElement (div, "select", 0);
-      Html.AssertAttribute (select, "id", _enumValue.GetValueName());
-      Html.AssertAttribute (select, "name", _enumValue.GetValueName ());
+      Html.AssertAttribute (select, "id", c_valueName);
+      Html.AssertAttribute (select, "name", c_valueName);
 
       if (withStyle)
         Html.AssertStyleAttribute (select, "height", "100%");
@@ -401,7 +401,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocEnumValueImplement
         AssertNullOption (select, !selectedValue.HasValue);
 
       if (autoPostBack)
-        Html.AssertAttribute (select, "onchange", string.Format ("javascript:__doPostBack('{0}','')", _enumValue.GetValueName()));
+        Html.AssertAttribute (select, "onchange", string.Format ("javascript:__doPostBack('{0}','')", c_valueName));
 
       int index = withNullValue ? 1 : 0;
       foreach (TestEnum value in Enum.GetValues (typeof (TestEnum)))

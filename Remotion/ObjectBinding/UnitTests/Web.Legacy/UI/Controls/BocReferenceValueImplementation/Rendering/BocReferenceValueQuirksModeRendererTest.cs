@@ -485,7 +485,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.Legacy.UI.Controls.BocReferenceVa
 
       Assert.That (DropDownList.ID, Is.Null);
       renderer.Render (CreateRenderingContext());
-      Assert.That (DropDownList.ID, Is.EqualTo (Control.GetValueName()));
+      Assert.That (DropDownList.ID, Is.EqualTo (c_valueName));
 
       var document = Html.GetResultDocument();
       var div = document.GetAssertedChildElement ("div", 0);

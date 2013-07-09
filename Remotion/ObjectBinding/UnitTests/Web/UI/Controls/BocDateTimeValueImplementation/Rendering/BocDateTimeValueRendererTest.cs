@@ -186,7 +186,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocDateTimeValueImple
 
         timeInputWrapper.AssertTextNode ("TextBox", 0);
 
-        Assert.That (_timeTextBox.ID, Is.EqualTo (_control.GetTimeValueName()));
+        Assert.That (_timeTextBox.ID, Is.EqualTo (c_timeValueName));
         Assert.That (_timeTextBox.CssClass, Is.EqualTo (renderer.CssClassTime));
         Assert.That (_timeTextBox.Text, Is.EqualTo (c_timeString));
         Assert.That (_timeTextBox.MaxLength, Is.EqualTo (5));
@@ -209,7 +209,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocDateTimeValueImple
         dateInputWrapper.AssertChildElementCount (0);
 
         dateInputWrapper.AssertTextNode ("TextBox", 0);
-        Assert.That (_dateTextBox.ID, Is.EqualTo (_control.GetDateValueName ()));
+        Assert.That (_dateTextBox.ID, Is.EqualTo (c_dateValueName));
         Assert.That (_dateTextBox.CssClass, Is.EqualTo (renderer.CssClassDate));
         Assert.That (_dateTextBox.Text, Is.EqualTo (c_dateString));
         Assert.That (_dateTextBox.MaxLength, Is.EqualTo (10));

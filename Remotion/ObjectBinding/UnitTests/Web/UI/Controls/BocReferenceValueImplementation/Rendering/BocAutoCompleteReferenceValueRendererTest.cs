@@ -405,8 +405,8 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocReferenceValueImpl
       AssertControl (span, OptionMenuConfiguration.NoOptionsMenu, AutoPostBack.Disabled);
 
       var input = span.GetAssertedChildElement ("span", 0).GetAssertedChildElement ("span", 1).GetAssertedChildElement ("input", 2);
-      input.AssertAttributeValueEquals ("id", Control.GetKeyValueName());
-      input.AssertAttributeValueEquals ("name", Control.GetKeyValueName ());
+      input.AssertAttributeValueEquals ("id", c_keyValueName);
+      input.AssertAttributeValueEquals ("name", c_keyValueName);
     }
 
     [Test]
@@ -564,8 +564,8 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocReferenceValueImpl
       }
 
       var hiddenField = contentSpan.GetAssertedChildElement ("input", hiddenFieldIndex);
-      hiddenField.AssertAttributeValueEquals ("id", Control.GetKeyValueName());
-      hiddenField.AssertAttributeValueEquals ("name", Control.GetKeyValueName ());
+      hiddenField.AssertAttributeValueEquals ("id", c_keyValueName);
+      hiddenField.AssertAttributeValueEquals ("name", c_keyValueName);
       hiddenField.AssertAttributeValueEquals ("type", "hidden");
       if (autoPostBack == AutoPostBack.Enabled)
         hiddenField.AssertAttributeValueEquals ("onchange", "PostBackEventReference");

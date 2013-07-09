@@ -96,7 +96,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocBooleanValueImplem
           "ResourceKey",
           c_clientID + "_Image",
           c_clientID + "_Label",
-          _booleanValue.GetValueName());
+          c_valueName);
 
       _keyDownScript = "BocBooleanValue_OnKeyDown (this);";
 

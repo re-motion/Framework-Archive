@@ -103,7 +103,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.Legacy.UI.Controls.BocBooleanValu
           "ResourceKey",
           c_clientID + "_Image",
           c_clientID + "_Label",
-          _booleanValue.GetValueName());
+          c_valueName);
 
       _keyDownScript = "BocBooleanValue_OnKeyDown (this);";
 
