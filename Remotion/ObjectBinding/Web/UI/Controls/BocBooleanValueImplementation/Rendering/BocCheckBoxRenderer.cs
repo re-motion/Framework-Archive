@@ -75,7 +75,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
         PrepareLabel (renderingContext, description, labelControl);
 
         renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Id, renderingContext.Control.GetValueName ());
-        renderingContext.Writer.AddAttribute ("data-value", renderingContext.Control.Value.Value.ToString ());
+        if (renderingContext.Control.Value.HasValue)
+          renderingContext.Writer.AddAttribute ("data-value", renderingContext.Control.Value.Value.ToString ());
         renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
         imageControl.RenderControl (renderingContext.Writer);
         labelControl.RenderControl (renderingContext.Writer);

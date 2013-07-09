@@ -268,15 +268,13 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocBooleanValueImplem
       var outerSpan = Html.GetAssertedChildElement (document, "span", 0);
       CheckOuterSpanAttributes (outerSpan);
 
-      int offset = 0;
       if (!_booleanValue.IsReadOnly)
-      {
         CheckHiddenField (outerSpan, value);
-        offset = 1;
-      }
-      Html.AssertChildElementCount (outerSpan, 2 + offset);
+      else
+        CheckDataValueField (outerSpan, value);
+      Html.AssertChildElementCount (outerSpan, 3);
 
-      var link = Html.GetAssertedChildElement (outerSpan, "a", offset);
+      var link = Html.GetAssertedChildElement (outerSpan, "a", 1);
       Html.AssertAttribute (link, "id", "_Boc_HyperLink");
       if (!_booleanValue.IsReadOnly)
         CheckLinkAttributes (link);
@@ -284,7 +282,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocBooleanValueImplem
       var image = Html.GetAssertedChildElement (link, "img", 0);
       checkImageAttributes (image, iconUrl, description);
 
-      var label = Html.GetAssertedChildElement (outerSpan, "span", offset + 1);
+      var label = Html.GetAssertedChildElement (outerSpan, "span", 2);
       Html.AssertAttribute (label, "id", "MyBooleanValue_Label");
       Html.AssertChildElementCount (label, 0);
       Html.AssertTextNode (label, description, 0);
@@ -336,6 +334,14 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocBooleanValueImplem
       Html.AssertAttribute (hiddenField, "id", c_valueName);
       Html.AssertAttribute (hiddenField, "name", c_valueName);
       Html.AssertAttribute (hiddenField, "value", value);
+    }
+
+    private void CheckDataValueField (XmlNode outerSpan, string value)
+    {
+      var dataValueField = Html.GetAssertedChildElement (outerSpan, "span", 0);
+      Html.AssertAttribute (dataValueField, "id", c_valueName);
+      if(value!="null")
+        Html.AssertAttribute (dataValueField, "data-value", value);
     }
   }
 }
