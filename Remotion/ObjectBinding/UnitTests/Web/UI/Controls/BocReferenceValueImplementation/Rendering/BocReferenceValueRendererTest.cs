@@ -39,7 +39,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocReferenceValueImpl
   public class BocReferenceValueRendererTest : RendererTestBase
   {
     private const string c_clientID = "MyReferenceValue";
-    private const string c_selectedValueName = "MyReferenceValue_SelectedValue";
+    private const string c_valueName = "MyReferenceValue_SelectedValue";
     private const string c_uniqueIdentifier = "uniqueidentifiert";
 
     private enum OptionMenuConfiguration
@@ -104,7 +104,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocReferenceValueImpl
       Control.Stub (mock => mock.LabelStyle).Return (new Style (stateBag));
       Control.Stub (mock => mock.DropDownListStyle).Return (new DropDownListStyle());
       Control.Stub (mock => mock.ControlStyle).Return (new Style (stateBag));
-      Control.Stub (stub => stub.GetValueName ()).Return (c_selectedValueName);
+      Control.Stub (stub => stub.GetValueName ()).Return (c_valueName);
       Control.Stub (stub => stub.PopulateDropDownList (Arg<DropDownList>.Is.NotNull))
           .WhenCalled (
               invocation =>
@@ -445,8 +445,8 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocReferenceValueImpl
       renderer.Render (CreateRenderingContext ());
       var document = Html.GetResultDocument ();
       var select = document.GetAssertedChildElement ("span", 0).GetAssertedChildElement ("span", 0).GetAssertedChildElement ("span", 1).GetAssertedChildElement ("select", 0);
-      select.AssertAttributeValueEquals ("id", c_selectedValueName);
-      select.AssertAttributeValueEquals ("name", c_selectedValueName);
+      select.AssertAttributeValueEquals ("id", c_valueName);
+      select.AssertAttributeValueEquals ("name", c_valueName);
     }
 
     private void AssertReadOnlyContent (XmlNode parent)

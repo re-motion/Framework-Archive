@@ -44,7 +44,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.Legacy.UI.Controls.BocReferenceVa
   public class BocReferenceValueQuirksModeRendererTest : RendererTestBase
   {
     private const string c_clientID = "MyReferenceValue";
-    private const string c_selectedValueName = "MyReferenceValue_Value";
+    private const string c_valueName = "MyReferenceValue_Value";
 
     private IBusinessObjectProvider _provider;
     private BusinessObjectReferenceDataSource _dataSource;
@@ -99,7 +99,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.Legacy.UI.Controls.BocReferenceVa
       Control.Stub (mock => mock.LabelStyle).Return (new Style (stateBag));
       Control.Stub (mock => mock.DropDownListStyle).Return (new DropDownListStyle());
       Control.Stub (mock => mock.ControlStyle).Return (new Style (stateBag));
-      Control.Stub (stub => stub.GetValueName ()).Return (c_selectedValueName);
+      Control.Stub (stub => stub.GetValueName ()).Return (c_valueName);
       Control.Stub (stub => stub.PopulateDropDownList (Arg<DropDownList>.Is.NotNull))
              .WhenCalled (
                  invocation =>
@@ -475,8 +475,8 @@ namespace Remotion.ObjectBinding.UnitTests.Web.Legacy.UI.Controls.BocReferenceVa
                   .GetAssertedChildElement ("tr", 0)
                   .GetAssertedChildElement ("td", 0)
                   .GetAssertedChildElement ("select", 0);
-      select.AssertAttributeValueEquals ("id", c_selectedValueName);
-      select.AssertAttributeValueEquals ("name", c_selectedValueName);
+      select.AssertAttributeValueEquals ("id", c_valueName);
+      select.AssertAttributeValueEquals ("name", c_valueName);
     }
 
     private XmlNode GetAssertedDiv (int expectedChildElements, bool withStyle)

@@ -40,8 +40,8 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocReferenceValueImpl
   public class BocAutoCompleteReferenceValueRendererTest : RendererTestBase
   {
     private const string c_clientID = "MyReferenceValue";
-    private const string c_selectedTextValueName = "MyReferenceValue_SelectedTextValue";
-    private const string c_selectedKeyValueName = "MyReferenceValue_SelectedKeyValue";
+    private const string c_textValueName = "MyReferenceValue_SelectedTextValue";
+    private const string c_keyValueName = "MyReferenceValue_SelectedKeyValue";
     private const string c_uniqueidentifier = "uniqueidentifier";
 
     private enum OptionMenuConfiguration
@@ -80,8 +80,8 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocReferenceValueImpl
 
       Control = MockRepository.GenerateStub<IBocAutoCompleteReferenceValue>();
       Control.Stub (stub => stub.ClientID).Return (c_clientID);
-      Control.Stub (stub => stub.GetTextValueName()).Return (c_selectedTextValueName);
-      Control.Stub (stub => stub.GetKeyValueName()).Return (c_selectedKeyValueName);
+      Control.Stub (stub => stub.GetTextValueName()).Return (c_textValueName);
+      Control.Stub (stub => stub.GetKeyValueName()).Return (c_keyValueName);
       Control.Stub (stub => stub.BusinessObjectUniqueIdentifier).Return (c_uniqueidentifier);
       Control.Stub (stub => stub.Command).Return (new BocCommand());
       Control.Command.Type = CommandType.Event;

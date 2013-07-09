@@ -42,8 +42,8 @@ namespace Remotion.ObjectBinding.UnitTests.Web.Legacy.UI.Controls.BocDateTimeVal
   {
     private const string c_defaultControlWidth = "150pt";
     private const string c_dateValueID = "MyDateTimeValue";
-    private const string c_dateTextValueID = "MyDateTimeValue_DateValue";
-    private const string c_timeTextValueID = "MyDateTimeValue_TimeValue";
+    private const string c_dateValueName = "MyDateTimeValue_DateValue";
+    private const string c_timeValueName = "MyDateTimeValue_TimeValue";
 
     private IBocDateTimeValue _dateTimeValue;
     private BocDateTimeValueQuirksModeRenderer _renderer;
@@ -59,8 +59,8 @@ namespace Remotion.ObjectBinding.UnitTests.Web.Legacy.UI.Controls.BocDateTimeVal
 
       _dateTimeValue = MockRepository.GenerateStub<IBocDateTimeValue>();
       _dateTimeValue.Stub (mock => mock.ClientID).Return (c_dateValueID);
-      _dateTimeValue.Stub (mock => mock.GetDateValueName ()).Return (c_dateTextValueID);
-      _dateTimeValue.Stub (mock => mock.GetTimeValueName ()).Return (c_timeTextValueID);
+      _dateTimeValue.Stub (mock => mock.GetDateValueName ()).Return (c_dateValueName);
+      _dateTimeValue.Stub (mock => mock.GetTimeValueName ()).Return (c_timeValueName);
       _dateTimeValue.Stub (mock => mock.DatePickerButton).Return (datePickerButton);
       _dateTimeValue.DatePickerButton.AlternateText = "DatePickerButton";
 
@@ -417,10 +417,10 @@ namespace Remotion.ObjectBinding.UnitTests.Web.Legacy.UI.Controls.BocDateTimeVal
       var tableRow = document.GetAssertedChildElement ("div", 0).GetAssertedChildElement ("table", 0).GetAssertedChildElement ("tr", 0);
       var dateInput = tableRow.GetAssertedChildElement ("td", 0).GetAssertedChildElement ("input", 0);
       var timeInput = tableRow.GetAssertedChildElement ("td", 2).GetAssertedChildElement ("input", 0);
-      dateInput.AssertAttributeValueEquals ("id", c_dateTextValueID);
-      dateInput.AssertAttributeValueEquals ("name", c_dateTextValueID);
-      timeInput.AssertAttributeValueEquals ("id", c_timeTextValueID);
-      timeInput.AssertAttributeValueEquals ("name", c_timeTextValueID);
+      dateInput.AssertAttributeValueEquals ("id", c_dateValueName);
+      dateInput.AssertAttributeValueEquals ("name", c_dateValueName);
+      timeInput.AssertAttributeValueEquals ("id", c_timeValueName);
+      timeInput.AssertAttributeValueEquals ("name", c_timeValueName);
     }
 
     private void SetStyle (bool inAttributes)

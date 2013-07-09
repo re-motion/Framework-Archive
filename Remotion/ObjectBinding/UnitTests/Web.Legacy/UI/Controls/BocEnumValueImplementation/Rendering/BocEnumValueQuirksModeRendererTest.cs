@@ -41,7 +41,8 @@ namespace Remotion.ObjectBinding.UnitTests.Web.Legacy.UI.Controls.BocEnumValueIm
   [TestFixture]
   public class BocEnumValueQuirksModeRendererTest : RendererTestBase
   {
-    private const string c_selectedValueID = "MyEnumValue";
+    private const string c_clientID = "MyEnumValue";
+    private const string c_valueName = "ListControlClientID";
     private IBocEnumValue _enumValue;
     private readonly Unit _width = Unit.Point (173);
     private readonly Unit _height = Unit.Point (17);
@@ -69,7 +70,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.Legacy.UI.Controls.BocEnumValueIm
                   new BindableObjectDefaultValueStrategy ())
               );
       _enumValue.Property = property;
-      _enumValue.Stub (stub => stub.ClientID).Return (c_selectedValueID);
+      _enumValue.Stub (stub => stub.ClientID).Return (c_clientID);
       _enumValue.Stub (mock => mock.IsDesignMode).Return (false);
 
       var pageStub = MockRepository.GenerateStub<IPage>();
@@ -83,7 +84,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.Legacy.UI.Controls.BocEnumValueIm
       _enumValue.Stub (mock => mock.GetEnabledValues()).Return (_enumerationInfos);
 
       _enumValue.Stub (mock => mock.GetNullItemText()).Return ("null");
-      _enumValue.Stub (mock => mock.GetValueName()).Return ("ListControlClientID");
+      _enumValue.Stub (mock => mock.GetValueName()).Return (c_valueName);
 
       StateBag stateBag = new StateBag();
       _enumValue.Stub (mock => mock.Attributes).Return (new AttributeCollection (stateBag));

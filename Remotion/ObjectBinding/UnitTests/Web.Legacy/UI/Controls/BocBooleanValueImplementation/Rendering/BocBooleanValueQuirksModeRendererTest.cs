@@ -48,7 +48,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.Legacy.UI.Controls.BocBooleanValu
     private string _keyDownScript;
     private const string _dummyScript = "return false;";
     private const string c_clientID = "MyBooleanValue";
-    private const string c_selectedBooleanValueName = "MyBooleanValue_BooleanValue";
+    private const string c_valueName = "MyBooleanValue_BooleanValue";
     private IBocBooleanValue _booleanValue;
     private BocBooleanValueQuirksModeRenderer _renderer;
     private BocBooleanValueResourceSet _resourceSet;
@@ -76,7 +76,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.Legacy.UI.Controls.BocBooleanValu
       var clientScriptManagerMock = MockRepository.GenerateMock<IClientScriptManager>();
 
       _booleanValue.Stub (mock => mock.ClientID).Return (c_clientID);
-      _booleanValue.Stub (mock => mock.GetValueName ()).Return (c_selectedBooleanValueName);
+      _booleanValue.Stub (mock => mock.GetValueName ()).Return (c_valueName);
       _booleanValue.Stub (mock => mock.GetHyperLinkName()).Return ("_Boc_HyperLink");
       
       string startupScriptKey = typeof (BocBooleanValueQuirksModeRenderer).FullName + "_Startup_" + _resourceSet.ResourceKey;
@@ -348,8 +348,8 @@ namespace Remotion.ObjectBinding.UnitTests.Web.Legacy.UI.Controls.BocBooleanValu
     {
       var hiddenField = Html.GetAssertedChildElement (outerSpan, "input", 0);
       Html.AssertAttribute (hiddenField, "type", "hidden");
-      Html.AssertAttribute (hiddenField, "id", c_selectedBooleanValueName);
-      Html.AssertAttribute (hiddenField, "name", c_selectedBooleanValueName);
+      Html.AssertAttribute (hiddenField, "id", c_valueName);
+      Html.AssertAttribute (hiddenField, "name", c_valueName);
       Html.AssertAttribute (hiddenField, "value", value);
     }
   }
