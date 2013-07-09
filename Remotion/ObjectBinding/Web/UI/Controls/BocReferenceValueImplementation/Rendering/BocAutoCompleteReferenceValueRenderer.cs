@@ -189,7 +189,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
           renderingContext.Control, typeof (IBocAutoCompleteReferenceValue), key, script.ToString());
     }
 
-    protected virtual string GetDropDownButtonName (BocRenderingContext<IBocAutoCompleteReferenceValue> renderingContext)
+    private  string GetDropDownButtonName (BocRenderingContext<IBocAutoCompleteReferenceValue> renderingContext)
     {
       return renderingContext.Control.ClientID + "_DropDownButton";
     }
