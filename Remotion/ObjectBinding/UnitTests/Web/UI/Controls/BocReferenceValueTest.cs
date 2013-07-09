@@ -264,7 +264,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls
       string[] actual = _bocReferenceValue.GetTrackedClientIDs();
       Assert.That (actual, Is.Not.Null);
       Assert.That (actual.Length, Is.EqualTo (1));
-      Assert.That (actual[0], Is.EqualTo (_bocReferenceValue.GetValueName()));
+      Assert.That (actual[0], Is.EqualTo (((IBocReferenceValue)_bocReferenceValue).GetValueName()));
     }
 
 
@@ -492,9 +492,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls
     [Test]
     public void GetValueName ()
     {
-      var result = _bocReferenceValue.GetValueName();
-
-      Assert.That (result, Is.EqualTo ("NamingContainer_BocReferenceValue_Value"));
+      Assert.That (((IBocReferenceValue)_bocReferenceValue).GetValueName(), Is.EqualTo ("NamingContainer_BocReferenceValue_Value"));
     }
   }
 }

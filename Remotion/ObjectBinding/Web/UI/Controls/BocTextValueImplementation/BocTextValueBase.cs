@@ -331,11 +331,16 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation
     /// <summary> Returns the <see cref="IResourceManager"/> used to access the resources for this control. </summary>
     protected abstract IResourceManager GetResourceManager ();
 
+    string IBocTextValueBase.GetValueName ()
+    {
+      return GetValueName();
+    }
+
     /// <summary>
     /// Returns the name (and ID) to use for the input field in the rendered HTML.
     /// </summary>
     /// <returns>The control's <see cref="Control.ClientID"/> postfixed by a constant textbox ID.</returns>
-    public string GetValueName ()
+    protected string GetValueName ()
     {
       return ClientID + c_textboxIDPostfix;
     }

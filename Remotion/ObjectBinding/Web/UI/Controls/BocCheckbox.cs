@@ -402,7 +402,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       get { return !WcagHelper.Instance.IsWaiConformanceLevelARequired() && _showDescription == true; }
     }
 
-    public string GetValueName ()
+    string IBocCheckBox.GetValueName ()
+    {
+      return GetValueName();
+    }
+
+    protected string GetValueName ()
     {
       return ClientID + c_checkboxIDPostfix;
     }

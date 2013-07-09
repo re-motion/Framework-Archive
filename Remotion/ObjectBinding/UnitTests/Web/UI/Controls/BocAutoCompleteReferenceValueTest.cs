@@ -161,7 +161,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls
       string[] actual = _control.GetTrackedClientIDs();
       Assert.That (actual, Is.Not.Null);
       Assert.That (actual.Length, Is.EqualTo (1));
-      Assert.That (actual[0], Is.EqualTo (_control.GetTextValueName()));
+      Assert.That (actual[0], Is.EqualTo (((IBocAutoCompleteReferenceValue)_control).GetTextValueName()));
     }
     
     [Test]
@@ -351,8 +351,8 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls
 
       var postbackCollection = new NameValueCollection();
 
-      postbackCollection.Add (_control.GetKeyValueName(), ((IBocAutoCompleteReferenceValue)_control).NullValueString);
-      postbackCollection.Add (_control.GetTextValueName(), string.Empty);
+      postbackCollection.Add (((IBocAutoCompleteReferenceValue)_control).GetKeyValueName(), ((IBocAutoCompleteReferenceValue)_control).NullValueString);
+      postbackCollection.Add (((IBocAutoCompleteReferenceValue)_control).GetTextValueName(), string.Empty);
 
       _control.Value = null;
       _control.IsDirty = false;
@@ -378,8 +378,8 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls
 
       var postbackCollection = new NameValueCollection();
 
-      postbackCollection.Add (_control.GetKeyValueName(), string.Empty);
-      postbackCollection.Add (_control.GetTextValueName(), string.Empty);
+      postbackCollection.Add (((IBocAutoCompleteReferenceValue)_control).GetKeyValueName(), string.Empty);
+      postbackCollection.Add (((IBocAutoCompleteReferenceValue)_control).GetTextValueName(), string.Empty);
 
       _control.IsDirty = false;
       PrivateInvoke.SetNonPublicField (_control, "_hasBeenRenderedInPreviousLifecycle", true);
@@ -408,8 +408,8 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls
       var postbackCollection = new NameValueCollection();
 
       Guid value = Guid.NewGuid();
-      postbackCollection.Add (_control.GetKeyValueName(), value.ToString());
-      postbackCollection.Add (_control.GetTextValueName(), "NewValue");
+      postbackCollection.Add (((IBocAutoCompleteReferenceValue)_control).GetKeyValueName(), value.ToString());
+      postbackCollection.Add (((IBocAutoCompleteReferenceValue)_control).GetTextValueName(), "NewValue");
 
       _control.IsDirty = false;
 
@@ -442,8 +442,8 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls
       string displayName = _control.Value.DisplayNameSafe;
       Assert.That (value, Is.Not.Null.Or.Empty);
       Assert.That (displayName, Is.Not.Null.Or.Empty);
-      postbackCollection.Add (_control.GetKeyValueName(), value);
-      postbackCollection.Add (_control.GetTextValueName(), displayName);
+      postbackCollection.Add (((IBocAutoCompleteReferenceValue)_control).GetKeyValueName(), value);
+      postbackCollection.Add (((IBocAutoCompleteReferenceValue)_control).GetTextValueName(), displayName);
 
       _control.IsDirty = false;
 
@@ -472,8 +472,8 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls
 
       var postbackCollection = new NameValueCollection();
 
-      postbackCollection.Add (_control.GetKeyValueName(), ((IBocAutoCompleteReferenceValue) _control).NullValueString);
-      postbackCollection.Add (_control.GetTextValueName(), "InvalidValue");
+      postbackCollection.Add (((IBocAutoCompleteReferenceValue)_control).GetKeyValueName(), ((IBocAutoCompleteReferenceValue) _control).NullValueString);
+      postbackCollection.Add (((IBocAutoCompleteReferenceValue)_control).GetTextValueName(), "InvalidValue");
 
       _control.Value = null;
       _control.IsDirty = false;
@@ -503,8 +503,8 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls
 
       var postbackCollection = new NameValueCollection();
 
-      postbackCollection.Add (_control.GetKeyValueName(), ((IBocAutoCompleteReferenceValue) _control).NullValueString);
-      postbackCollection.Add (_control.GetTextValueName(), "InvalidValue");
+      postbackCollection.Add (((IBocAutoCompleteReferenceValue)_control).GetKeyValueName(), ((IBocAutoCompleteReferenceValue) _control).NullValueString);
+      postbackCollection.Add (((IBocAutoCompleteReferenceValue)_control).GetTextValueName(), "InvalidValue");
 
       _control.IsDirty = false;
 
@@ -533,8 +533,8 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls
 
       var postbackCollection = new NameValueCollection();
 
-      postbackCollection.Add (_control.GetKeyValueName(), ((IBocAutoCompleteReferenceValue) _control).NullValueString);
-      postbackCollection.Add (_control.GetTextValueName(), "SomeValue");
+      postbackCollection.Add (((IBocAutoCompleteReferenceValue)_control).GetKeyValueName(), ((IBocAutoCompleteReferenceValue) _control).NullValueString);
+      postbackCollection.Add (((IBocAutoCompleteReferenceValue)_control).GetTextValueName(), "SomeValue");
 
       _control.IsDirty = false;
       PrivateInvoke.SetNonPublicField (_control, "_hasBeenRenderedInPreviousLifecycle", true);
@@ -811,17 +811,13 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls
     [Test]
     public void GetTextValueName ()
     {
-      var result = _control.GetTextValueName();
-
-      Assert.That (result, Is.EqualTo ("BocAutoCompleteReferenceValue_TextValue"));
+      Assert.That (((IBocAutoCompleteReferenceValue)_control).GetTextValueName(), Is.EqualTo ("BocAutoCompleteReferenceValue_TextValue"));
     }
 
     [Test]
     public void GetKeyValueName ()
     {
-      var result = _control.GetKeyValueName();
-
-      Assert.That (result, Is.EqualTo ("BocAutoCompleteReferenceValue_KeyValue"));
+      Assert.That (((IBocAutoCompleteReferenceValue)_control).GetKeyValueName(), Is.EqualTo ("BocAutoCompleteReferenceValue_KeyValue"));
     }
   }
 }

@@ -18,6 +18,7 @@ using System;
 using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting.Configuration;
 using Remotion.ObjectBinding.UnitTests.Web.Domain;
+using Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation;
 
 namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls
 {
@@ -105,7 +106,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls
       string[] actual = _bocCheckBox.GetTrackedClientIDs();
       Assert.That (actual, Is.Not.Null);
       Assert.That (actual.Length, Is.EqualTo (1));
-      Assert.That (actual[0], Is.EqualTo (_bocCheckBox.GetValueName()));
+      Assert.That (actual[0], Is.EqualTo (((IBocCheckBox)_bocCheckBox).GetValueName()));
     }
     
     [Test]
@@ -465,9 +466,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls
     [Test]
     public void GetValueName ()
     {
-      var result = _bocCheckBox.GetValueName();
-
-      Assert.That (result, Is.EqualTo ("NamingContainer_BocCheckBox_Value"));
+      Assert.That (((IBocCheckBox)_bocCheckBox).GetValueName(), Is.EqualTo ("NamingContainer_BocCheckBox_Value"));
     }
     
   }

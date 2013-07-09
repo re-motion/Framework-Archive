@@ -19,6 +19,7 @@ using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting.Configuration;
 using Remotion.ObjectBinding.UnitTests.Web.Domain;
 using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation;
 
 namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocTextValueTests
 {
@@ -99,7 +100,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocTextValueTests
       string[] actual = _bocTextValue.GetTrackedClientIDs();
       Assert.That (actual, Is.Not.Null);
       Assert.That (actual.Length, Is.EqualTo (1));
-      Assert.That (actual[0], Is.EqualTo (_bocTextValue.GetValueName()));
+      Assert.That (actual[0], Is.EqualTo (((IBocTextValueBase)_bocTextValue).GetValueName()));
     }
 
 
@@ -319,7 +320,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocTextValueTests
     [Test]
     public void GetValueName ()
     {
-      Assert.That (_bocTextValue.GetValueName(), Is.EqualTo ("NamingContainer_BocTextValue_Value"));
+      Assert.That (((IBocTextValueBase)_bocTextValue).GetValueName(), Is.EqualTo ("NamingContainer_BocTextValue_Value"));
     }
   }
 }

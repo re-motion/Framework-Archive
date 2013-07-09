@@ -231,7 +231,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         return new string[0];
     }
 
-    public string GetValueName ()
+    string IBocEnumValue.GetValueName ()
+    {
+      return GetValueName();
+    }
+
+    protected string GetValueName ()
     {
       return ClientID + c_listControlIDPostfix;
     }

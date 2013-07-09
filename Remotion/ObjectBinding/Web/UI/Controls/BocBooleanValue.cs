@@ -162,20 +162,30 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       return IsReadOnly ? new string[0] : new[] { GetKeyValueName () };
     }
 
+    string IBocBooleanValue.GetKeyValueName ()
+    {
+      return GetKeyValueName();
+    }
+
     /// <summary>
     /// Gets a name (ID) to use for the hidden field needed to store the value of the control client-side.
     /// </summary>
     /// <returns>The control's <see cref="Control.ClientID"/> postfixed with a constant id for the hidden field.</returns>
-    public string GetKeyValueName ()
+    protected string GetKeyValueName ()
     {
       return ClientID + c_keyValueName;
+    }
+
+    string IBocBooleanValue.GetTextValueName ()
+    {
+      return GetTextValueName();
     }
 
     /// <summary>
     /// Gets a name (ID) to use for the hyperlink used to change the value of the control client-side.
     /// </summary>
     /// <returns>The control's <see cref="Control.ClientID"/> postfixed with a constant id for the hyperlink.</returns>
-    public string GetTextValueName ()
+    protected string GetTextValueName ()
     {
       return ClientID + c_textValueName;
     }

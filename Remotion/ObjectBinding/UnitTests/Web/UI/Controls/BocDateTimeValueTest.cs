@@ -19,6 +19,7 @@ using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting.Configuration;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.UnitTests.Web.Domain;
+using Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation;
 
 namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls
 {
@@ -145,8 +146,8 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls
       string[] actual = _bocDateTimeValue.GetTrackedClientIDs();
       Assert.That (actual, Is.Not.Null);
       Assert.That (actual.Length, Is.EqualTo (2));
-      Assert.That (actual[0], Is.EqualTo (_bocDateTimeValue.GetDateValueName()));
-      Assert.That (actual[1], Is.EqualTo (_bocDateTimeValue.GetTimeValueName()));
+      Assert.That (actual[0], Is.EqualTo (((IBocDateTimeValue) _bocDateTimeValue).GetDateValueName()));
+      Assert.That (actual[1], Is.EqualTo (((IBocDateTimeValue)_bocDateTimeValue).GetTimeValueName()));
     }
 
     [Test]
@@ -157,7 +158,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls
       string[] actual = _bocDateTimeValue.GetTrackedClientIDs();
       Assert.That (actual, Is.Not.Null);
       Assert.That (actual.Length, Is.EqualTo (1));
-      Assert.That (actual[0], Is.EqualTo (_bocDateTimeValue.GetDateValueName()));
+      Assert.That (actual[0], Is.EqualTo (((IBocDateTimeValue)_bocDateTimeValue).GetDateValueName()));
     }
 
     [Test]
@@ -168,8 +169,8 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls
       string[] actual = _bocDateTimeValue.GetTrackedClientIDs();
       Assert.That (actual, Is.Not.Null);
       Assert.That (actual.Length, Is.EqualTo (2));
-      Assert.That (actual[0], Is.EqualTo (_bocDateTimeValue.GetDateValueName()));
-      Assert.That (actual[1], Is.EqualTo (_bocDateTimeValue.GetTimeValueName()));
+      Assert.That (actual[0], Is.EqualTo (((IBocDateTimeValue)_bocDateTimeValue).GetDateValueName()));
+      Assert.That (actual[1], Is.EqualTo (((IBocDateTimeValue)_bocDateTimeValue).GetTimeValueName()));
     }
 
 
@@ -468,17 +469,13 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls
     [Test]
     public void GetDateValueName ()
     {
-      var result = _bocDateTimeValue.GetDateValueName();
-
-      Assert.That (result, Is.EqualTo ("NamingContainer_BocDateTimeValue_DateValue"));
+      Assert.That (((IBocDateTimeValue)_bocDateTimeValue).GetDateValueName(), Is.EqualTo ("NamingContainer_BocDateTimeValue_DateValue"));
     }
 
     [Test]
     public void GetTimeValueName ()
     {
-      var result = _bocDateTimeValue.GetTimeValueName();
-
-      Assert.That (result, Is.EqualTo ("NamingContainer_BocDateTimeValue_TimeValue"));
+      Assert.That (((IBocDateTimeValue)_bocDateTimeValue).GetTimeValueName(), Is.EqualTo ("NamingContainer_BocDateTimeValue_TimeValue"));
     }
 
   }

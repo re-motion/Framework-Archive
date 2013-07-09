@@ -144,7 +144,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       get { return GetValueName(); }
     }
 
-    public string GetValueName ()
+    string IBocReferenceValue.GetValueName ()
+    {
+      return GetValueName();
+    }
+
+    protected string GetValueName ()
     {
       return ClientID + c_dropDownListIDPostfix;
     }

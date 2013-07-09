@@ -598,12 +598,22 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       }
     }
 
-    public string GetTextValueName ()
+    string IBocAutoCompleteReferenceValue.GetTextValueName ()
+    {
+      return GetTextValueName();
+    }
+
+    protected string GetTextValueName ()
     {
       return ClientID + c_textBoxIDPostfix;
     }
 
-    public string GetKeyValueName ()
+    string IBocAutoCompleteReferenceValue.GetKeyValueName ()
+    {
+      return GetKeyValueName();
+    }
+
+    protected string GetKeyValueName ()
     {
       return ClientID + c_hiddenFieldIDPostfix;
     }

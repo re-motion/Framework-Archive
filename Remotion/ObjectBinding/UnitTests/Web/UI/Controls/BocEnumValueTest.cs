@@ -19,6 +19,7 @@ using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting.Configuration;
 using Remotion.ObjectBinding.UnitTests.Web.Domain;
 using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation;
 
 namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls
 {
@@ -105,7 +106,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls
       string[] actual = _bocEnumValue.GetTrackedClientIDs();
       Assert.That (actual, Is.Not.Null);
       Assert.That (actual.Length, Is.EqualTo (1));
-      Assert.That (actual[0], Is.EqualTo (_bocEnumValue.GetValueName()));
+      Assert.That (actual[0], Is.EqualTo (((IBocEnumValue)_bocEnumValue).GetValueName()));
     }
 
     [Test]
@@ -116,7 +117,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls
       string[] actual = _bocEnumValue.GetTrackedClientIDs();
       Assert.That (actual, Is.Not.Null);
       Assert.That (actual.Length, Is.EqualTo (1));
-      Assert.That (actual[0], Is.EqualTo (_bocEnumValue.GetValueName()));
+      Assert.That (actual[0], Is.EqualTo (((IBocEnumValue)_bocEnumValue).GetValueName()));
     }
 
     [Test]
@@ -133,12 +134,12 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls
       string[] actual = _bocEnumValue.GetTrackedClientIDs();
       Assert.That (actual, Is.Not.Null);
       Assert.That (actual.Length, Is.EqualTo (3));
-      Assert.That (actual[0], Is.EqualTo (_bocEnumValue.GetValueName() + "_0"));
-      Assert.That (actual[1], Is.EqualTo (_bocEnumValue.GetValueName() + "_1"));
-      Assert.That (actual[2], Is.EqualTo (_bocEnumValue.GetValueName() + "_2"));
+      var valueName = ((IBocEnumValue) _bocEnumValue).GetValueName();
+      Assert.That (actual[0], Is.EqualTo (valueName + "_0"));
+      Assert.That (actual[1], Is.EqualTo (valueName + "_1"));
+      Assert.That (actual[2], Is.EqualTo (valueName + "_2"));
     }
-
-
+    
     [Test]
     public void SetValueToEnum ()
     {
@@ -332,9 +333,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls
     [Test]
     public void GetValueName ()
     {
-      var result = _bocEnumValue.GetValueName();
-
-      Assert.That (result, Is.EqualTo ("NamingContainer_BocEnumValue_Value"));
+      Assert.That (((IBocEnumValue)_bocEnumValue).GetValueName(), Is.EqualTo ("NamingContainer_BocEnumValue_Value"));
     }
   }
 }

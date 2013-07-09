@@ -859,12 +859,22 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       }
     }
 
-    public string GetDateValueName ()
+    string IBocDateTimeValue.GetDateValueName ()
+    {
+      return GetDateValueName();
+    }
+
+    protected string GetDateValueName ()
     {
       return ClientID + c_dateTextBoxIDPostfix;
     }
 
-    public string GetTimeValueName ()
+    string IBocDateTimeValue.GetTimeValueName ()
+    {
+      return GetTimeValueName();
+    }
+
+    protected string GetTimeValueName ()
     {
       return ClientID + c_timeTextBoxIDPostfix;
     }
