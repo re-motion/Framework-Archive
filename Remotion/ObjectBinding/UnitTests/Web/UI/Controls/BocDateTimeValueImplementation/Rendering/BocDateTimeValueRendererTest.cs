@@ -36,8 +36,10 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocDateTimeValueImple
   [SetCulture("")]
   public class BocDateTimeValueRendererTest : RendererTestBase
   {
-    private const string c_timeString = "15:43";
-    private const string c_dateString = "31.07.2009";
+    private const string c_timeString = "17:45";
+    private const string c_dateString = "12.07.2013";
+    private const string c_formatedDateString = "2013-07-12";
+    private const string c_formatedTimeString = "17:45:00";
     private const string c_dateValueName = "MyDateTimeValue_DateValue";
     private const string c_timeValueName = "MyDateTimeValue_TimeValue";
     private const string c_dateValueID = "MyDateTimeValue";
@@ -183,7 +185,6 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocDateTimeValueImple
         timeInputWrapper.AssertAttributeValueContains (
             "class", renderer.GetPositioningCssClass (_renderingContext, BocDateTimeValueRenderer.DateTimeValuePart.Time));
         timeInputWrapper.AssertChildElementCount (0);
-
         timeInputWrapper.AssertTextNode ("TextBox", 0);
 
         Assert.That (_timeTextBox.ID, Is.EqualTo (c_timeValueName));
@@ -193,8 +194,10 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocDateTimeValueImple
       }
       else
       {
-        var timeInputWrapper = container.GetAssertedChildElement ("span", 0);
-        timeInputWrapper.AssertAttributeValueEquals ("data-value", _dateTimeValue.ToString ("s"));
+        var dateLabel = container.GetAssertedChildElement ("span", 0);
+        dateLabel.AssertAttributeValueEquals ("data-value", c_formatedDateString);
+        var timeLabel = container.GetAssertedChildElement ("span", 1);
+        timeLabel.AssertAttributeValueEquals ("data-value", c_formatedTimeString);
       }
     }
 
@@ -229,7 +232,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocDateTimeValueImple
       var container = document.GetAssertedChildElement ("span", 0);
       container.AssertAttributeValueEquals ("id", c_dateValueID);
       container.AssertAttributeValueContains ("class", isDateOnly ? renderer.CssClassDateOnly : renderer.CssClassDateTime);
-      container.AssertChildElementCount (isDateOnly || _control.IsReadOnly ? 1 : 2);
+      container.AssertChildElementCount (isDateOnly ? 1 : 2);
       return container;
     }
   }
