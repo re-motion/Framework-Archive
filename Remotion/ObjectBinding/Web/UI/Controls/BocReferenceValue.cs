@@ -150,12 +150,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     [Obsolete ("Use GetValueName() instead. (1.13.206)", true)]
-    public string DropDownListUniqueID
-    {
-      get { throw new NotImplementedException ("Use GetValueName() instead. (1.13.206)"); }
-    }
-
-    [Obsolete ("Use GetValueName() instead. (1.13.206)", true)]
     public string DropDownListClientID
     {
       get { throw new NotImplementedException ("Use GetValueName() instead. (1.13.206)"); }

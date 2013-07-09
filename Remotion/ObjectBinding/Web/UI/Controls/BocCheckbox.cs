@@ -407,25 +407,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       return ClientID + c_checkboxIDPostfix;
     }
 
-
-    [Obsolete ("Use GetValueName() instead. (1.13.206)", true)]
-    public string GetLabelUniqueID ()
-    {
-      throw new NotImplementedException ("Use GetValueName() instead. (1.13.206)");
-    }
-
-    [Obsolete ("Use GetValueName() instead. (1.13.206)", true)]
-    public string GetCheckboxUniqueID ()
-    {
-      throw new NotImplementedException ("Use GetValueName() instead. (1.13.206)");
-    }
-
-    [Obsolete ("Use GetValueName() instead. (1.13.206)", true)]
-    public string GetImageUniqueID ()
-    {
-      throw new NotImplementedException ("Use GetValueName() instead. (1.13.206)");
-    }
-
     bool IBocCheckBox.IsDescriptionEnabled
     {
       get { return IsDescriptionEnabled; }

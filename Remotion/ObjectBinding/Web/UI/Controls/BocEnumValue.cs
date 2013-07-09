@@ -242,12 +242,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       throw new NotImplementedException ("Use GetValueName() instead. (1.13.206)");
     }
 
-    [Obsolete ("Use GetValueName() instead. (1.13.206)", true)]
-    public string GetLabelClientID ()
-    {
-      throw new NotImplementedException ("Use GetValueName() instead. (1.13.206)");
-    }
-
     /// <summary> This event is fired when the selection is changed between postbacks. </summary>
     [Category ("Action")]
     [Description ("Fires when the value of the control has changed.")]

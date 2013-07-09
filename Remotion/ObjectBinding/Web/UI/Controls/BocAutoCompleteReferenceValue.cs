@@ -626,12 +626,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       get { throw new NotImplementedException ("Use GetKeyValueName() instead. (1.13.206)"); }
     }
 
-    [Obsolete ("Use GetKeyValueName() instead. (1.13.206)", true)]
-    public string HiddenFieldUniqueID
-    {
-      get { throw new NotImplementedException ("Use GetKeyValueName() instead. (1.13.206)"); }
-    }
-
     protected override sealed string GetNullItemErrorMessage ()
     {
       return GetResourceManager().GetString (ResourceIdentifier.NullItemErrorMessage);
