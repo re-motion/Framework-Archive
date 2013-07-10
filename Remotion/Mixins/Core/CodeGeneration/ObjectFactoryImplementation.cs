@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Reflection;
 using Remotion.Mixins.Utilities;
 using Remotion.Reflection;
 using Remotion.TypePipe;
@@ -34,12 +33,13 @@ namespace Remotion.Mixins.CodeGeneration
     }
 
     public object CreateInstance (
-        bool allowNonPublicConstructors, 
-        Type targetOrConcreteType, 
-        ParamList constructorParameters, 
+        bool allowNonPublicConstructors,
+        Type targetOrConcreteType,
+        ParamList constructorParameters,
         params object[] preparedMixins)
     {
       ArgumentUtility.CheckNotNull ("targetOrConcreteType", targetOrConcreteType);
+      ArgumentUtility.CheckNotNull ("constructorParameters", constructorParameters);
       ArgumentUtility.CheckNotNull ("preparedMixins", preparedMixins);
 
       if (targetOrConcreteType.IsInterface)
@@ -60,12 +60,12 @@ namespace Remotion.Mixins.CodeGeneration
         // The ClassContext doesn't match the requested type, so it must already be a concrete type. Just instantiate it.
         Assertion.DebugAssert (MixinTypeUtility.IsGeneratedConcreteMixedType (targetOrConcreteType));
 
-        // TODO 5370: To remove MixedTypeConstructorLookupInfo, the TypePipe would need to support requesting assembled types. Two options:
-        // - Option 1: The participants need to detect whether the given type already has the desired capabilities (e.g., no more mixins added if 
-        //   already a mixed type, no more property interception if already an IInterceptedDomainObject).
-        // - Option 2: The TypePipe detects when an assembled type is requested (performance! - only after cache check) and just instantiates it.
-        var mixedTypeConstructorLookupInfo = new MixedTypeConstructorLookupInfo (targetOrConcreteType, classContext.Type, allowNonPublicConstructors);
-        return constructorParameters.InvokeConstructor (mixedTypeConstructorLookupInfo);
+        var pipeline = _pipelineRegistry.DefaultPipeline;
+        // TODO 5370: Is this a good way to do this without pipeline.ReflectionServe.CreateAssembledTypeInstance(....)?
+        // 1) performance, 2) this way we can only instantiate assembledTypes that are cached in the pipeline.
+        var typeID = pipeline.ReflectionService.GetTypeID (targetOrConcreteType);
+
+        return pipeline.Create (typeID, constructorParameters, allowNonPublicConstructors);
       }
 
       using (new MixedObjectInstantiationScope (preparedMixins))

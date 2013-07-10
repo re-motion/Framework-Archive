@@ -16,12 +16,15 @@
 // 
 using System;
 using NUnit.Framework;
+using Remotion.Development.TypePipe.UnitTesting.ObjectMothers.Caching;
 using Remotion.Development.UnitTesting.ObjectMothers;
 using Remotion.Mixins.CodeGeneration;
 using Remotion.Mixins.UnitTests.Core.TestDomain;
 using Remotion.Mixins.Utilities;
 using Remotion.Reflection;
 using Remotion.TypePipe;
+using Remotion.TypePipe.Caching;
+using Remotion.TypePipe.Implementation;
 using Rhino.Mocks;
 
 namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
@@ -132,39 +135,24 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
     [Test]
     public void CreateInstance_WithConcreteType ()
     {
+      var allowNonPublicCtor = BooleanObjectMother.GetRandomBoolean();
       var concreteType = TypeFactory.GetConcreteType (typeof (BaseType1));
-      
-      var instance = _implementation.CreateInstance (false, concreteType, ParamList.Empty);
+      var paramList = ParamList.Create ("blub");
+      var typeID = AssembledTypeIDObjectMother.Create();
+      var fakeInstance = new object();
 
-      _defaultPipelineMock.AssertWasNotCalled (mock => mock.Create (Arg<Type>.Is.Anything, Arg<ParamList>.Is.Anything, Arg<bool>.Is.Anything));
-      Assert.That (instance, Is.TypeOf (concreteType));
-    }
+      var reflectionServiceMock = MockRepository.GenerateStrictMock<IReflectionService>();
+      _defaultPipelineMock.Expect (mock => mock.ReflectionService).Return (reflectionServiceMock);
+      reflectionServiceMock.Expect (mock => mock.GetTypeID (concreteType)).Return (typeID);
+      _defaultPipelineMock
+          .Expect (mock => mock.Create (Arg<AssembledTypeID>.Matches (x => x.Equals (typeID)), Arg.Is (paramList), Arg.Is (allowNonPublicCtor)))
+          .Return (fakeInstance);
 
-    [Test]
-    [ExpectedException (typeof (MissingMethodException))]
-    public void CreateInstance_WithConcreteType_ProtectedCtorNotAllowed ()
-    {
-      var concreteType = TypeFactory.GetConcreteType (typeof (ClassWithProtectedCtor));
+      var instance = _implementation.CreateInstance (allowNonPublicCtor, concreteType, paramList);
 
-      _implementation.CreateInstance (false, concreteType, ParamList.Empty);
-    }
-
-    [Test]
-    public void CreateInstance_WithConcreteType_ProtectedCtorAllowed ()
-    {
-      var concreteType = TypeFactory.GetConcreteType (typeof (ClassWithProtectedCtor));
-
-      var instance = _implementation.CreateInstance (true, concreteType, ParamList.Empty);
-
-      Assert.That (instance, Is.TypeOf (concreteType));
-    }
-
-    [Uses (typeof (NullMixin))]
-    public class ClassWithProtectedCtor
-    {
-      protected ClassWithProtectedCtor ()
-      {
-      }
+      _defaultPipelineMock.VerifyAllExpectations();
+      reflectionServiceMock.VerifyAllExpectations();
+      Assert.That (instance, Is.SameAs (fakeInstance));
     }
   }
 }
