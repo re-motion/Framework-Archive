@@ -16,6 +16,8 @@
 // 
 using System;
 using System.IO;
+using Remotion.Logging;
+using Remotion.Mixins.CodeGeneration.TypePipe;
 using Remotion.ServiceLocation;
 using Remotion.TypePipe;
 using Remotion.TypePipe.Implementation.Remotion;
@@ -26,6 +28,8 @@ namespace Remotion.Mixins.MixerTools
 {
   public class MixerPipelineFactory : IMixerPipelineFactory
   {
+    private static readonly ILog s_log = LogManager.GetLogger(typeof(MixerPipelineFactory));
+
     private readonly string _assemblyName;
 
     public MixerPipelineFactory (string assemblyName)
@@ -46,11 +50,19 @@ namespace Remotion.Mixins.MixerTools
 
       var remotionPipelineFactory = new RemotionPipelineFactory();
       var defaultPipeline = SafeServiceLocator.Current.GetInstance<IPipelineRegistry>().DefaultPipeline;
+      var participants = defaultPipeline.Participants.ToArray();
+
+      var participantTypeNames = participants.Select (p => p.GetType().Name).ToArray();
+      s_log.InfoFormat (
+          "Using pipeline '{0}' with the following participants: {1}.",
+          defaultPipeline.ParticipantConfigurationID,
+          string.Join (", ", participantTypeNames));
+      Assertion.DebugAssert (participants.OfType<MixinParticipant>().Any(), "Mixin participant must be present.");
 
       var pipeline = remotionPipelineFactory.CreatePipeline (
           defaultPipeline.ParticipantConfigurationID,
           defaultPipeline.Settings,
-          defaultPipeline.Participants.ToArray());
+          participants);
 
       pipeline.CodeManager.SetAssemblyDirectory (assemblyOutputDirectory);
       pipeline.CodeManager.SetAssemblyNamePattern (_assemblyName);

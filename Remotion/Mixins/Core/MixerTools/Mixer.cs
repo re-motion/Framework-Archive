@@ -42,11 +42,6 @@ namespace Remotion.Mixins.MixerTools
 
     public static Mixer Create (string assemblyName, string assemblyOutputDirectory)
     {
-      
-      // TODO 5370:
-      // create pipeline with default participants (from default pipeline) via RemotionPipelineFactory
-      // assert that re-mix participant is part of the participants list
-      // Log an info message with participant list
       var builderFactory = new MixerPipelineFactory (assemblyName);
 
       // Use a custom TypeDiscoveryService with the LoadAllAssemblyLoaderFilter so that mixed types within system assemblies are also considered.
@@ -68,7 +63,7 @@ namespace Remotion.Mixins.MixerTools
     private readonly HashSet<Type> _processedTypes = new HashSet<Type>();
     private readonly Dictionary<Type, Type> _finishedTypes = new Dictionary<Type, Type> ();
 
-    private string _generatedFile = null;
+    private string _generatedFile;
 
     public Mixer (IMixedTypeFinder mixedTypeFinder, IMixerPipelineFactory mixerPipelineFactory, string assemblyOutputDirectory)
     {
