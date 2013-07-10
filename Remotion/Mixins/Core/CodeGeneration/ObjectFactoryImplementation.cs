@@ -68,6 +68,7 @@ namespace Remotion.Mixins.CodeGeneration
         return pipeline.Create (typeID, constructorParameters, allowNonPublicConstructors);
       }
 
+      // TODO 5370: This scope _must_ also be around the if block above. Add a test and fix.
       using (new MixedObjectInstantiationScope (preparedMixins))
       {
         return _pipelineRegistry.DefaultPipeline.Create (targetOrConcreteType, constructorParameters, allowNonPublicConstructors);
