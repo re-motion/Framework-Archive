@@ -28,7 +28,7 @@ using System.Reflection;
 [assembly: AssemblyProduct("re-motion mixins library (remix.codeplex.com)")]
 [assembly: AssemblyCopyright ("Copyright (c) rubicon IT GmbH, www.rubicon.eu - Licensed under GNU LGPL 2.1 (or later)")]
 [assembly: AssemblyTrademark ("")]
-[assembly: AssemblyInformationalVersion ("1.15.2.0 DEV Debug; SVNRevision=27801")]
+[assembly: AssemblyInformationalVersion ("1.15.2.0 DEV Debug; SVNRevision=27825")]
 
 //
 // Version information for an assembly consists of the following four values:
