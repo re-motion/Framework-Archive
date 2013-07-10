@@ -153,7 +153,8 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       Assertion.IsNotNull (_extensionsInitializedField, "AddFields must be called first.");
 
       _concreteTarget.AddInitialization (
-          ctx => _expressionBuilder.CreateInitialization (ctx.DeclaringType, _extensionsField, _extensionsInitializedField, initSemanticsSwitch: true));
+          ctx => _expressionBuilder.CreateInitializationOnConstructionOrDeserialization (
+              ctx.DeclaringType, _extensionsField, _extensionsInitializedField, ctx.InitializationSemantics));
     }
 
     public void ImplementIInitializableMixinTarget (IList<Type> mixinTypes)
