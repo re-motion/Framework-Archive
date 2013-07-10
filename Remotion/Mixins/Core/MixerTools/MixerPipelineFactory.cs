@@ -48,7 +48,7 @@ namespace Remotion.Mixins.MixerTools
       var settings = new AppConfigBasedSettingsProvider().GetSettings();
       // TODO 5370: This does _not_ use the RemotionPipelineFactory for instantiating the pipeline, although it should. Instantiate the 
       // RemotionPipelineFactory instead. Then, adding a NonApplicationAssemblyAttribute in Mixer.Save is no longer necessary.
-      var pipeline = PipelineFactory.Create (settings, defaultPipeline.Participants.ToArray());
+      var pipeline = PipelineFactory.Create (defaultPipeline.ParticipantConfigurationID, settings, defaultPipeline.Participants.ToArray());
       pipeline.CodeManager.SetAssemblyDirectory (assemblyOutputDirectory);
       pipeline.CodeManager.SetAssemblyNamePattern (_assemblyName);
       return pipeline;
