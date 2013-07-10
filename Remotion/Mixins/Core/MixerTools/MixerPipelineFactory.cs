@@ -18,7 +18,6 @@ using System;
 using System.IO;
 using Remotion.ServiceLocation;
 using Remotion.TypePipe;
-using Remotion.TypePipe.Configuration;
 using Remotion.TypePipe.Implementation.Remotion;
 using Remotion.Utilities;
 using System.Linq;
@@ -43,14 +42,21 @@ namespace Remotion.Mixins.MixerTools
 
     public IPipeline CreatePipeline (string assemblyOutputDirectory)
     {
+      // Assembly output directory may be null.
+
+      var remotionPipelineFactory = new RemotionPipelineFactory();
       var defaultPipeline = SafeServiceLocator.Current.GetInstance<IPipelineRegistry>().DefaultPipeline;
-      // TODO 5730: Should retrieve settings from default pipeline instead.
-      var settings = new AppConfigBasedSettingsProvider().GetSettings();
+
       // TODO 5370: This does _not_ use the RemotionPipelineFactory for instantiating the pipeline, although it should. Instantiate the 
       // RemotionPipelineFactory instead. Then, adding a NonApplicationAssemblyAttribute in Mixer.Save is no longer necessary.
-      var pipeline = PipelineFactory.Create (defaultPipeline.ParticipantConfigurationID, settings, defaultPipeline.Participants.ToArray());
+      var pipeline = PipelineFactory.Create (
+          defaultPipeline.ParticipantConfigurationID,
+          defaultPipeline.Settings,
+          defaultPipeline.Participants.ToArray());
+
       pipeline.CodeManager.SetAssemblyDirectory (assemblyOutputDirectory);
       pipeline.CodeManager.SetAssemblyNamePattern (_assemblyName);
+
       return pipeline;
     }
 
