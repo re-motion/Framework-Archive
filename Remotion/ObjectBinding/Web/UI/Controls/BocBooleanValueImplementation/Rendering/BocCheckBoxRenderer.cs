@@ -64,7 +64,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
 
       Label labelControl = new Label();
-      HtmlInputCheckBox checkBoxControl = new HtmlInputCheckBox { ID = renderingContext.Control.GetValueName () };
+      HtmlInputCheckBox checkBoxControl = new HtmlInputCheckBox { ID = renderingContext.Control.GetValueName (), ClientIDMode = ClientIDMode.Static };
       Image imageControl = new Image();
 
       string description = GetDescription (renderingContext);

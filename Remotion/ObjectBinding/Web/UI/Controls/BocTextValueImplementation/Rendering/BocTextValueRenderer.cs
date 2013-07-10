@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Web;
+using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.Utilities;
 using Remotion.Web;
@@ -66,7 +67,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Rend
     {
       ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
       
-      Label label = new Label { Text = renderingContext.Control.Text };
+      Label label = new Label { Text = renderingContext.Control.Text, ClientIDMode = ClientIDMode.Static};
       label.ID = renderingContext.Control.GetValueName ();
       label.EnableViewState = false;
       label.Text = GetText(renderingContext);

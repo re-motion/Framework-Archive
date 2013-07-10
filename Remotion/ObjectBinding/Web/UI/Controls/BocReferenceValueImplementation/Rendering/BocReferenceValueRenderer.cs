@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Text;
+using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.Globalization;
 using Remotion.Utilities;
@@ -173,6 +174,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     private DropDownList GetDropDownList (BocRenderingContext<IBocReferenceValue> renderingContext)
     {
       var dropDownList = _dropDownListFactoryMethod ();
+      dropDownList.ClientIDMode = ClientIDMode.Static;
       dropDownList.ID = renderingContext.Control.GetValueName();
       dropDownList.EnableViewState = false;
       dropDownList.Page = renderingContext.Control.Page.WrappedInstance;
