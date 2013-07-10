@@ -28,7 +28,7 @@ using System.Reflection;
 [assembly: AssemblyProduct("re-motion code generation library (typepipe.codeplex.com)")]
 [assembly: AssemblyCopyright ("Copyright (c) rubicon IT GmbH, www.rubicon.eu - Licensed under Apache License, Version 2.0")]
 [assembly: AssemblyTrademark ("")]
-[assembly: AssemblyInformationalVersion ("1.15.2.0 DEV Debug; SVNRevision=27825")]
+[assembly: AssemblyInformationalVersion ("1.15.2.0 DEV Debug; SVNRevision=27828")]
 
 //
 // Version information for an assembly consists of the following four values:
