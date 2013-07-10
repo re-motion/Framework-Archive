@@ -27,7 +27,6 @@ using Remotion.Reflection.TypeDiscovery;
 using Remotion.Reflection.TypeDiscovery.AssemblyFinding;
 using Remotion.Reflection.TypeDiscovery.AssemblyLoading;
 using Remotion.TypePipe;
-using Remotion.TypePipe.MutableReflection;
 using Remotion.Utilities;
 using System.Linq;
 
@@ -175,12 +174,9 @@ namespace Remotion.Mixins.MixerTools
 
     private void Save (IPipeline pipeline)
     {
-      var nonApplicationAssemblyAttribute =
-          new CustomAttributeDeclaration (MemberInfoFromExpressionUtility.GetConstructor (() => new NonApplicationAssemblyAttribute()), new object[0]);
-      var path = pipeline.CodeManager.FlushCodeToDisk (nonApplicationAssemblyAttribute);
-      _generatedFile = path;
+      _generatedFile = pipeline.CodeManager.FlushCodeToDisk();
 
-      s_log.InfoFormat ("Generated assembly file {0}.", path);
+      s_log.InfoFormat ("Generated assembly file {0}.", _generatedFile);
     }
 
     private void CleanupIfExists (string path)

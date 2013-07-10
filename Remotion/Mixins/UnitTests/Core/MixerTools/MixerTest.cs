@@ -225,18 +225,11 @@ namespace Remotion.Mixins.UnitTests.Core.MixerTools
     [Test]
     public void Execute_Saves ()
     {
-      _codeManagerDynamicMock
-          .Expect (
-              mock => mock.FlushCodeToDisk (
-                  Arg<CustomAttributeDeclaration[]>.Matches (
-                      d => d.Length == 1
-                           && d[0].Constructor == MemberInfoFromExpressionUtility.GetConstructor (() => new NonApplicationAssemblyAttribute())
-                           && d[0].ConstructorArguments.Count == 0)))
-          .Return ("a");
+      _codeManagerDynamicMock.Expect (mock => mock.FlushCodeToDisk()).Return ("a");
 
       _mixer.Execute (_configuration);
 
-      _codeManagerDynamicMock.VerifyAllExpectations ();
+      _codeManagerDynamicMock.VerifyAllExpectations();
       Assert.That (_mixer.GeneratedFile, Is.EqualTo ("a"));
     }
 
