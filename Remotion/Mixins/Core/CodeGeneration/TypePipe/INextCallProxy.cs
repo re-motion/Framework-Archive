@@ -18,6 +18,7 @@
 using System;
 using System.Reflection;
 using Remotion.Mixins.Definitions;
+using Remotion.TypePipe.Dlr.Ast;
 
 namespace Remotion.Mixins.CodeGeneration.TypePipe
 {
@@ -26,8 +27,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
   {
     Type Type { get; }
 
-    // TODO 5370: Make method that returns expression.
-    ConstructorInfo Constructor { get; }
+    Expression CallConstructor (Expression target, Expression depth);
 
     MethodInfo GetProxyMethodForOverriddenMethod (MethodDefinition method);
   }

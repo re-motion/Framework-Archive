@@ -31,8 +31,6 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     private readonly MutableType _type;
     private readonly ConstructorInfo _constructor;
     private readonly TargetClassDefinition _targetClassDefinition;
-    // TOOD 5370: Remove
-    private readonly IExpressionBuilder _expressionBuilder;
     private readonly INextCallMethodGenerator _nextCallMethodGenerator;
     private readonly Dictionary<MethodDefinition, MethodInfo> _overriddenMethodToImplementationMap = new Dictionary<MethodDefinition, MethodInfo>();
 
@@ -40,19 +38,16 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
         MutableType type,
         MutableConstructorInfo constructor,
         TargetClassDefinition targetClassDefinition,
-        IExpressionBuilder expressionBuilder,
         INextCallMethodGenerator nextCallMethodGenerator)
     {
       ArgumentUtility.CheckNotNull ("type", type);
       ArgumentUtility.CheckNotNull ("constructor", constructor);
       ArgumentUtility.CheckNotNull ("targetClassDefinition", targetClassDefinition);
-      ArgumentUtility.CheckNotNull ("expressionBuilder", expressionBuilder);
       ArgumentUtility.CheckNotNull ("nextCallMethodGenerator", nextCallMethodGenerator);
 
       _type = type;
       _constructor = constructor;
       _targetClassDefinition = targetClassDefinition;
-      _expressionBuilder = expressionBuilder;
       _nextCallMethodGenerator = nextCallMethodGenerator;
     }
 
@@ -61,9 +56,12 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       get { return _type; }
     }
 
-    public ConstructorInfo Constructor
+    public Expression CallConstructor (Expression target, Expression depth)
     {
-      get { return _constructor; }
+      ArgumentUtility.CheckNotNull ("target", target);
+      ArgumentUtility.CheckNotNull ("depth", depth);
+
+      return Expression.New (_constructor, target, depth);
     }
 
     public MethodInfo GetProxyMethodForOverriddenMethod (MethodDefinition method)

@@ -51,7 +51,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       var targetTypeForNextCall = GetTargetTypeWrapper (concreteTarget, extensionsField);
       var nextCallMethodGenerator = new NextCallMethodGenerator (
           targetClassDefinition, targetTypeForNextCall, thisField, depthField, mixinInfos);
-      var nextCallProxy = new NextCallProxy (nextCallProxyType, constructor, targetClassDefinition, new ExpressionBuilder(), nextCallMethodGenerator);
+      var nextCallProxy = new NextCallProxy (nextCallProxyType, constructor, targetClassDefinition, nextCallMethodGenerator);
 
       nextCallProxy.ImplementBaseCallsForOverriddenMethodsOnTarget();
       nextCallProxy.ImplementBaseCallsForRequirements();

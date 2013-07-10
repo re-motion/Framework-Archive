@@ -405,9 +405,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     private Expression NewNextCallProxy (ThisExpression @this, int depth)
     {
-      // new NextCallProxy (this, depth)
-
-      return Expression.New (_nextCallProxy.Constructor, @this, Expression.Constant (depth));
+      return _nextCallProxy.CallConstructor (@this, Expression.Constant (depth));
     }
 
     private void ImplementReadOnlyProperty (
