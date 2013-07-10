@@ -46,6 +46,8 @@ namespace Remotion.Mixins.MixerTools
       var defaultPipeline = SafeServiceLocator.Current.GetInstance<IPipelineRegistry>().DefaultPipeline;
       // TODO 5730: Should retrieve settings from default pipeline instead.
       var settings = new AppConfigBasedSettingsProvider().GetSettings();
+      // TODO 5370: This does _not_ use the RemotionPipelineFactory for instantiating the pipeline, although it should. Instantiate the 
+      // RemotionPipelineFactory instead. Then, adding a NonApplicationAssemblyAttribute in Mixer.Save is no longer necessary.
       var pipeline = RemotionPipelineFactory.Create (settings, defaultPipeline.Participants.ToArray());
       pipeline.CodeManager.SetAssemblyDirectory (assemblyOutputDirectory);
       pipeline.CodeManager.SetAssemblyNamePattern (_assemblyName);
