@@ -38,7 +38,6 @@ using AttributeCollection = System.Web.UI.AttributeCollection;
 namespace Remotion.ObjectBinding.UnitTests.Web.Legacy.UI.Controls.BocDateTimeValueImplementation.Rendering
 {
   [TestFixture]
-  [Ignore ("TODO: RM-5570")]
   public class BocDateTimeValueQuirksModeRendererTest : RendererTestBase
   {
     private const string c_defaultControlWidth = "150pt";
