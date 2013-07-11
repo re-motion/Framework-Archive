@@ -97,10 +97,6 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Reflection.CodeGeneration\Core.Reflection.CodeGeneration.csproj">
-      <Project>{503dcac3-e668-41d8-aa48-176e489b8e86}</Project>
-      <Name>Core.Reflection.CodeGeneration</Name>
-    </ProjectReference>
     <Reference Include="Castle.Core, Version=3.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\prereq\Assemblies\Castle 3.0\Castle.Core.dll</HintPath>
@@ -215,7 +211,8 @@
     <Compile Include="Globalization\ResourceManagerCacheEntryTest.cs" />
     <Compile Include="BridgeInterfaces\IAdapterRegistryImplementationTest.cs" />
     <Compile Include="BridgeInterfaces\IParamListCreateImplementationTest.cs" />
-    <Compile Include="Reflection\CodeGeneration\SetUpFixture.cs">
+    <Compile Include="Reflection\CodeGeneration\MethodWrapperEmitterTests\ILStatement.cs" />
+    <Compile Include="Reflection\CodeGeneration\MethodWrapperEmitterTests\SetUpFixture.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Reflection\CodeGeneration\TestDomain\BaseClassWithDeserializationEvents.cs">
@@ -271,7 +268,6 @@
     <Compile Include="Reflection\CodeGeneration\MethodWrapperEmitterTests\TestDomain\StructWithMethods.cs" />
     <Compile Include="Reflection\CodeGeneration\MethodWrapperEmitterTests\TestDomain\DerivedClassWithMethods.cs" />
     <Compile Include="Reflection\CodeGeneration\MethodWrapperEmitterTests\TestDomain\SimpleReferenceType.cs" />
-    <Compile Include="Reflection\CodeGeneration\MethodGenerationTestBase.cs" />
     <Compile Include="Reflection\CodeGeneration\TestMethodReferencingAttribute.cs" />
     <Compile Include="Reflection\DynamicMethodBasedMethodCallerFactoryTest.cs" />
     <Compile Include="Reflection\MethodInfoAdapterConverterTest.cs" />
@@ -365,7 +361,6 @@
     <Compile Include="Collections\SimpleDataStoreTest.cs" />
     <Compile Include="Context\CallContextStorageProviderTest.cs" />
     <Compile Include="Globalization\ResourceManagerFactoryTest.cs" />
-    <Compile Include="Reflection\CodeGeneration\CodeGenerationTestBase.cs" />
     <Compile Include="Reflection\CodeGeneration\SerializationEventRaiserTest.cs" />
     <Compile Include="Collections\LockingCacheDecoratorTest.cs" />
     <Compile Include="Collections\SetTest.cs" />

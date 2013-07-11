@@ -14,21 +14,20 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
 using System.IO;
 using Castle.DynamicProxy;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
-using Remotion.Reflection.CodeGeneration.DPExtensions;
 using Remotion.Utilities;
 
-namespace Remotion.UnitTests.Reflection.CodeGeneration
+namespace Remotion.UnitTests.Reflection.CodeGeneration.MethodWrapperEmitterTests
 {
   [SetUpFixture]
   public class SetUpFixture
   {
     private static ModuleScope s_scope;
-    private static ModuleScope s_unsavedScope;
 
     public static ModuleScope Scope
     {
@@ -40,41 +39,30 @@ namespace Remotion.UnitTests.Reflection.CodeGeneration
       }
     }
 
-    public static ModuleScope UnsavedScope
-    {
-      get
-      {
-        if (s_scope == null)
-          throw new InvalidOperationException ("SetUp must be called before the scope is accessed.");
-        return s_unsavedScope;
-      }
-    }
-
     [SetUp]
     public virtual void SetUp ()
     {
-      Console.WriteLine ("Setting up code generation tests");
-      s_scope = new ModuleScope (true, false, "Remotion.Reflection.CodeGeneration.Generated.Signed", "Remotion.Reflection.CodeGeneration.Generated.Signed.dll", "Remotion.Reflection.CodeGeneration.Generated.Unsigned", "Remotion.Reflection.CodeGeneration.Generated.Unsigned.dll");
-      s_unsavedScope = new ModuleScope (true);
-      DeleteIfExists (Path.Combine (s_scope.StrongNamedModuleDirectory ?? Environment.CurrentDirectory, s_scope.StrongNamedModuleName));
+      Console.WriteLine ("Setting up MethodWrapperEmitterTests");
+      s_scope = new ModuleScope (
+          true,
+          true,
+          null,
+          null,
+          "Remotion.Reflection.CodeGeneration.MethodWrapperEmitterTests.Generated.Unsigned",
+          "Remotion.Reflection.CodeGeneration.MethodWrapperEmitterTests.Generated.Unsigned.dll");
       DeleteIfExists (Path.Combine (s_scope.WeakNamedModuleDirectory ?? Environment.CurrentDirectory, s_scope.WeakNamedModuleName));
     }
 
     [TearDown]
     public virtual void TearDown ()
     {
-      Console.WriteLine ("Tearing down code generation tests");
+      Console.WriteLine ("Tearing down MethodWrapperEmitterTests");
 #if !NO_PEVERIFY
-      string[] paths = AssemblySaver.SaveAssemblies (s_scope);
+      var path = s_scope.SaveAssembly (false);
       s_scope = null;
-      s_unsavedScope = null;
-
-      foreach (string path in paths)
-      {
-        PEVerifier.CreateDefault ().VerifyPEFile (path);
-        FileUtility.DeleteAndWaitForCompletion (path);
-        FileUtility.DeleteAndWaitForCompletion (path.Replace (".dll", ".pdb"));
-      }
+      PEVerifier.CreateDefault().VerifyPEFile (path);
+      FileUtility.DeleteAndWaitForCompletion (path);
+      FileUtility.DeleteAndWaitForCompletion (path.Replace (".dll", ".pdb"));
 #endif
     }
 

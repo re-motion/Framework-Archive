@@ -14,43 +14,25 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using Castle.DynamicProxy;
-using NUnit.Framework;
+using System;
+using System.Reflection.Emit;
+using Castle.DynamicProxy.Generators.Emitters;
+using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
 
-namespace Remotion.UnitTests.Reflection.CodeGeneration
+namespace Remotion.UnitTests.Reflection.CodeGeneration.MethodWrapperEmitterTests
 {
-  public abstract class CodeGenerationTestBase
+  public class ILStatement : Statement
   {
-    private static int s_counter;
+    private readonly Action<IMemberEmitter, ILGenerator> _ilSource;
 
-    [SetUp]
-    public virtual void SetUp ()
+    public ILStatement (Action<IMemberEmitter, ILGenerator> ilSource)
     {
-      // nothing to do
+      _ilSource = ilSource;
     }
 
-    [TearDown]
-    public virtual void TearDown ()
+    public override void Emit (IMemberEmitter member, ILGenerator gen)
     {
-      // nothing to do
-    }
-
-    public ModuleScope Scope
-    {
-      get { return SetUpFixture.Scope; }
-    }
-
-    public ModuleScope UnsavedScope
-    {
-      get { return SetUpFixture.UnsavedScope; }
-    }
-
-    public string UniqueName
-    {
-      get
-      {
-        return GetType ().Name + "." + s_counter++;
-      }
+      _ilSource (member, gen);
     }
   }
 }
