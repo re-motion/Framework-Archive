@@ -15,6 +15,7 @@
 // 
 // Additional permissions are listed in the file re-motion_exceptions.txt.
 // 
+
 using System;
 using System.Reflection;
 using System.Text;
@@ -24,21 +25,29 @@ using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.DomainObjects.Queries.Configuration;
 using Remotion.SecurityManager.Domain.Metadata;
+using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.Domain
 {
   public static class Revision
   {
-    public static IQuery GetGetRevisionQuery ()
+    public static IQuery GetGetRevisionQuery (IRevisionKey revisionKey)
     {
+      ArgumentUtility.CheckNotNull ("revisionKey", revisionKey);
+
       var storageProviderDefinition = GetStorageProviderDefinition();
       var sqlDialect = storageProviderDefinition.Factory.CreateSqlDialect (storageProviderDefinition);
+
+      var parameters = new QueryParameterCollection();
 
       var statement = new StringBuilder();
       statement.Append ("SELECT ");
-      statement.Append (GetRevisionColumnIdentifier (sqlDialect));
+      statement.Append (GetRevisionValueColumnIdentifier (sqlDialect));
       statement.Append (" FROM ");
       statement.Append (GetRevisionTableIdentifier (sqlDialect));
+      statement.Append (" WHERE (");
+      AppendKeyClause (statement, parameters, revisionKey, sqlDialect);
+      statement.Append (")");
       statement.Append (sqlDialect.StatementDelimiter);
 
       return QueryFactory.CreateQuery (
@@ -46,30 +55,112 @@ namespace Remotion.SecurityManager.Domain
               typeof (Revision) + "." + MethodBase.GetCurrentMethod().Name,
               storageProviderDefinition,
               statement.ToString(),
-              QueryType.Scalar));
+              QueryType.Scalar),
+          parameters);
     }
 
-    public static IQuery GetIncrementRevisionQuery ()
+    public static IQuery GetIncrementRevisionQuery (IRevisionKey revisionKey)
     {
+      ArgumentUtility.CheckNotNull ("revisionKey", revisionKey);
+
       var storageProviderDefinition = GetStorageProviderDefinition();
       var sqlDialect = storageProviderDefinition.Factory.CreateSqlDialect (storageProviderDefinition);
 
+      const string incrementrevision = "IncrementRevision";
+      string revisionTable = GetRevisionTableIdentifier (sqlDialect);
+      string revisionValueColumn = GetRevisionValueColumnIdentifier (sqlDialect);
+      string revisionValueParameter = sqlDialect.GetParameterName ("value");
+      string revisionGlobalKeyParameter = sqlDialect.GetParameterName ("globalKey");
+      string revisionLocalKeyParameter = sqlDialect.GetParameterName ("localKey");
+
+      var parameters = new QueryParameterCollection();
+
       var statement = new StringBuilder();
-      statement.Append ("Update ");
-      statement.Append (GetRevisionTableIdentifier (sqlDialect));
-      statement.Append (" SET ");
-      statement.Append (GetRevisionColumnIdentifier (sqlDialect));
-      statement.Append (" = ");
-      statement.Append (GetRevisionColumnIdentifier (sqlDialect));
-      statement.Append (" + 1");
+      statement.Append ("BEGIN TRANSACTION " + incrementrevision);
       statement.Append (sqlDialect.StatementDelimiter);
+      statement.AppendLine();
+      statement.Append ("IF EXISTS (SELECT 0 FROM ");
+      statement.Append (revisionTable);
+      statement.Append (" WHERE (");
+      AppendKeyClause (statement, parameters, revisionKey, sqlDialect);
+      statement.Append (")");
+      statement.Append (")");
+      statement.AppendLine();
+
+      statement.Append ("UPDATE ");
+      statement.Append (revisionTable);
+      statement.Append (" SET ");
+      statement.Append (revisionValueColumn);
+      statement.Append (" = ");
+      statement.Append (revisionValueParameter);
+      statement.Append (" WHERE (");
+      AppendKeyClause (statement, parameters, revisionKey, sqlDialect);
+      statement.Append (")");
+      statement.AppendLine();
+
+      statement.Append ("ELSE");
+      statement.AppendLine();
+
+      statement.Append ("INSERT INTO ");
+      statement.Append (revisionTable);
+      statement.Append ("(");
+      statement.Append (GetRevisionGlobalKeyColumnIdentifier (sqlDialect));
+      statement.Append (",");
+      statement.Append (GetRevisionLocalKeyColumnIdentifier (sqlDialect));
+      statement.Append (",");
+      statement.Append (revisionValueColumn);
+      statement.Append (") VALUES (");
+      statement.Append (parameters[revisionGlobalKeyParameter].Name);
+      statement.Append (",");
+      statement.Append (parameters[revisionLocalKeyParameter].Name);
+      statement.Append (",");
+      statement.Append (revisionValueParameter);
+      statement.Append (")");
+      statement.Append (sqlDialect.StatementDelimiter);
+      statement.AppendLine();
+      statement.Append ("COMMIT TRANSACTION " + incrementrevision);
+      statement.Append (sqlDialect.StatementDelimiter);
+      statement.AppendLine();
+
+      parameters.Add (revisionValueParameter, Guid.NewGuid());
 
       return QueryFactory.CreateQuery (
           new QueryDefinition (
               typeof (Revision) + "." + MethodBase.GetCurrentMethod().Name,
               storageProviderDefinition,
               statement.ToString(),
-              QueryType.Scalar));
+              QueryType.Scalar),
+          parameters);
+    }
+
+    private static void AppendKeyClause (StringBuilder statement, QueryParameterCollection parameters, IRevisionKey key, ISqlDialect sqlDialect)
+    {
+      string revisionGlobalKeyColumn = GetRevisionGlobalKeyColumnIdentifier (sqlDialect);
+      string revisionLocalKeyColumn = GetRevisionLocalKeyColumnIdentifier (sqlDialect);
+      string revisionGlobalKeyParameter = sqlDialect.GetParameterName ("globalKey");
+      string revisionLocalKeyParameter = sqlDialect.GetParameterName ("localKey");
+
+      statement.Append (revisionGlobalKeyColumn);
+      statement.Append (" = ");
+      statement.Append (revisionGlobalKeyParameter);
+      if (!parameters.Contains (revisionGlobalKeyParameter))
+        parameters.Add (new QueryParameter (revisionGlobalKeyParameter, key.GlobalKey));
+
+      statement.Append (" AND ");
+      statement.Append (revisionLocalKeyColumn);
+      if (string.IsNullOrEmpty (key.LocalKey))
+      {
+        statement.Append (" IS NULL");
+        if (!parameters.Contains (revisionLocalKeyParameter))
+          parameters.Add (new QueryParameter (revisionLocalKeyParameter, null));
+      }
+      else
+      {
+        statement.Append (" = ");
+        statement.Append (revisionLocalKeyParameter);
+        if (!parameters.Contains (revisionLocalKeyParameter))
+          parameters.Add (new QueryParameter (revisionLocalKeyParameter, key.LocalKey));
+      }
     }
 
     private static RdbmsProviderDefinition GetStorageProviderDefinition ()
@@ -89,7 +180,17 @@ namespace Remotion.SecurityManager.Domain
         return sqlDialect.DelimitIdentifier (tableDefinition.TableName.SchemaName) + "." + sqlDialect.DelimitIdentifier ("Revision");
     }
 
-    private static string GetRevisionColumnIdentifier (ISqlDialect sqlDialect)
+    private static string GetRevisionGlobalKeyColumnIdentifier (ISqlDialect sqlDialect)
+    {
+      return sqlDialect.DelimitIdentifier ("GlobalKey");
+    }
+
+    private static string GetRevisionLocalKeyColumnIdentifier (ISqlDialect sqlDialect)
+    {
+      return sqlDialect.DelimitIdentifier ("LocalKey");
+    }
+
+    private static string GetRevisionValueColumnIdentifier (ISqlDialect sqlDialect)
     {
       return sqlDialect.DelimitIdentifier ("Value");
     }

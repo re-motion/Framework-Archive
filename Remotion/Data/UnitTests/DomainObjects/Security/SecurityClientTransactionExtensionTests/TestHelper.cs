@@ -17,6 +17,7 @@
 using System;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects;
+using Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement;
 using Remotion.Data.DomainObjects.Security;
 using Remotion.Data.UnitTests.DomainObjects.Security.TestDomain;
 using Remotion.Development.UnitTesting;
@@ -24,6 +25,7 @@ using Remotion.Reflection;
 using Remotion.Security;
 using Remotion.Security.Configuration;
 using Remotion.Security.Metadata;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Rhino.Mocks;
 
@@ -48,6 +50,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Security.SecurityClientTransacti
     private readonly IPermissionProvider _mockPermissionReflector;
     private readonly IMemberResolver _mockMemberResolver;
     private readonly ClientTransaction _transaction;
+    private ServiceLocatorScope _serviceLocatorScope;
 
     // construction and disposing
 
@@ -94,14 +97,18 @@ namespace Remotion.Data.UnitTests.DomainObjects.Security.SecurityClientTransacti
       PrivateInvoke.InvokeNonPublicStaticMethod (typeof (SecurityConfiguration), "SetCurrent", new SecurityConfiguration ());
       SecurityConfiguration.Current.SecurityProvider = _mockSecurityProvider;
       SecurityConfiguration.Current.PrincipalProvider = _stubPrincipalProvider;
-      SecurityConfiguration.Current.FunctionalSecurityStrategy = _mockFunctionalSecurityStrategy;
-      SecurityConfiguration.Current.PermissionProvider = _mockPermissionReflector;
-      SecurityConfiguration.Current.MemberResolver = _mockMemberResolver;
+
+      var serviceLocator = new DefaultServiceLocator();
+      serviceLocator.Register (typeof (IMemberResolver), () => _mockMemberResolver);
+      serviceLocator.Register (typeof (IPermissionProvider), () => _mockPermissionReflector);
+      serviceLocator.Register (typeof (IFunctionalSecurityStrategy), () => _mockFunctionalSecurityStrategy);
+      _serviceLocatorScope = new ServiceLocatorScope (serviceLocator);
     }
 
     public void TearDownSecurityConfiguration ()
     {
       PrivateInvoke.InvokeNonPublicStaticMethod (typeof (SecurityConfiguration), "SetCurrent", new SecurityConfiguration ());
+      _serviceLocatorScope.Dispose();
     }
 
     public void ReplayAll ()
@@ -129,34 +136,30 @@ namespace Remotion.Data.UnitTests.DomainObjects.Security.SecurityClientTransacti
     public void ExpectObjectSecurityStrategyHasAccess (SecurableObject securableObject, Enum accessTypeEnum, HasAccessDelegate doDelegate)
     {
       IObjectSecurityStrategy objectSecurityStrategy = securableObject.GetSecurityStrategy ();
-      Expect
-          .Call (objectSecurityStrategy.HasAccess (_mockSecurityProvider, _stubUser, AccessType.Get (accessTypeEnum)))
-          .WhenCalled (mi => CheckCurrentTransaction())
+      Expect.Call (objectSecurityStrategy.HasAccess (_mockSecurityProvider, _stubUser, AccessType.Get (accessTypeEnum)))
+          .WhenCalled (mi => CheckTransaction())
           .Do (doDelegate);
     }
 
     public void ExpectObjectSecurityStrategyHasAccess (SecurableObject securableObject, Enum accessTypeEnum, bool returnValue)
     {
       IObjectSecurityStrategy objectSecurityStrategy = securableObject.GetSecurityStrategy ();
-      Expect
-          .Call (objectSecurityStrategy.HasAccess (_mockSecurityProvider, _stubUser, AccessType.Get (accessTypeEnum)))
-          .WhenCalled (mi => CheckCurrentTransaction ())
+      Expect.Call (objectSecurityStrategy.HasAccess (_mockSecurityProvider, _stubUser, AccessType.Get (accessTypeEnum)))
+          .WhenCalled (mi => CheckTransaction())
           .Return (returnValue);
     }
 
     public void ExpectFunctionalSecurityStrategyHasAccess (Type securableObjectType, Enum accessTypeEnum, HasStatelessAccessDelegate doDelegate)
     {
-      Expect
-          .Call (_mockFunctionalSecurityStrategy.HasAccess (securableObjectType, _mockSecurityProvider, _stubUser, AccessType.Get (accessTypeEnum)))
-          .WhenCalled (mi => CheckCurrentTransaction ())
+      Expect.Call (_mockFunctionalSecurityStrategy.HasAccess (securableObjectType, _mockSecurityProvider, _stubUser, AccessType.Get (accessTypeEnum)))
+          .WhenCalled (mi => CheckTransaction())
           .Do (doDelegate);
     }
 
     public void ExpectFunctionalSecurityStrategyHasAccess (Type securableObjectType, Enum accessTypeEnum, bool returnValue)
     {
-      Expect
-          .Call (_mockFunctionalSecurityStrategy.HasAccess (securableObjectType, _mockSecurityProvider, _stubUser, AccessType.Get (accessTypeEnum)))
-          .WhenCalled (mi => CheckCurrentTransaction ())
+      Expect.Call (_mockFunctionalSecurityStrategy.HasAccess (securableObjectType, _mockSecurityProvider, _stubUser, AccessType.Get (accessTypeEnum)))
+          .WhenCalled (mi => CheckTransaction())
           .Return (returnValue);
     }
 
@@ -166,21 +169,50 @@ namespace Remotion.Data.UnitTests.DomainObjects.Security.SecurityClientTransacti
           _mockPermissionReflector.GetRequiredMethodPermissions (
               Arg.Is (typeof (SecurableObject)),
               Arg<IMethodInformation>.Matches (mi => mi.Equals (methodInformation))))
-          .WhenCalled (mi => CheckCurrentTransaction())
           .Return (returnedAccessTypes);
     }
 
     public void ExpectSecurityProviderGetAccess (SecurityContext context, params Enum[] returnedAccessTypes)
     {
-      Expect
-          .Call (_mockSecurityProvider.GetAccess (context, _stubUser))
-          .WhenCalled (mi => CheckCurrentTransaction ())
-          .Return (Array.ConvertAll<Enum, AccessType> (returnedAccessTypes, AccessType.Get));
+      Expect.Call (_mockSecurityProvider.GetAccess (context, _stubUser))
+          .WhenCalled (mi => CheckTransaction())
+          .Return (Array.ConvertAll (returnedAccessTypes, AccessType.Get));
     }
 
-    private void CheckCurrentTransaction ()
+    public void ExpectObjectSecurityStrategyHasAccessWithMatchingScope (SecurableObject securableObject, ClientTransactionScope expectedScope)
+    {
+      IObjectSecurityStrategy objectSecurityStrategy = securableObject.GetSecurityStrategy ();
+      Expect.Call (objectSecurityStrategy.HasAccess (null, null, null))
+          .IgnoreArguments()
+          .WhenCalled (mi => CheckScope (expectedScope))
+          .Return (true);
+    }
+
+    public void ExpectFunctionalSecurityStrategyHasAccessWithMatchingScope (ClientTransactionScope expectedScope)
+    {
+      Expect.Call (_mockFunctionalSecurityStrategy.HasAccess (null, null, null))
+          .IgnoreArguments()
+          .WhenCalled (mi => CheckScope (expectedScope))
+          .Return (true);
+    }
+
+    public IDisposable MakeInactive ()
+    {
+      var hierarchy = TransactionHierarchyManagerService.GetTransactionHierarchyManager (_transaction).TransactionHierarchy;
+      var subTransaction = _transaction.CreateSubTransaction();
+      IDisposable activateTransaction = hierarchy.ActivateTransaction (subTransaction);
+      return activateTransaction;
+    }
+
+    private void CheckScope (ClientTransactionScope expectedScope)
+    {
+      Assert.That (ClientTransactionScope.ActiveScope, Is.SameAs (expectedScope));
+    }
+
+    private void CheckTransaction ()
     {
       Assert.That (ClientTransaction.Current, Is.SameAs (_transaction));
+      Assert.That (_transaction.ActiveTransaction, Is.SameAs (_transaction));
     }
   }
 }

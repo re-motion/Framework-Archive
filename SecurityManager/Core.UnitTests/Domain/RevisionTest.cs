@@ -31,9 +31,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain
       DatabaseFixtures dbFixtures = new DatabaseFixtures();
       dbFixtures.CreateEmptyDomain();
 
-      Assert.That (
-          ClientTransaction.CreateRootTransaction().QueryManager.GetScalar (Revision.GetGetRevisionQuery()),
-          Is.EqualTo (0));
+      Assert.That (ClientTransaction.CreateRootTransaction().QueryManager.GetScalar (Revision.GetGetRevisionQuery(new RevisionKey())), Is.Null);
     }
 
     [Test]
@@ -42,11 +40,12 @@ namespace Remotion.SecurityManager.UnitTests.Domain
       DatabaseFixtures dbFixtures = new DatabaseFixtures();
       dbFixtures.CreateEmptyDomain();
 
-      ClientTransaction.CreateRootTransaction().QueryManager.GetScalar (Revision.GetIncrementRevisionQuery());
+      var oldValue = ClientTransaction.CreateRootTransaction().QueryManager.GetScalar (Revision.GetGetRevisionQuery (new RevisionKey()));
 
-      Assert.That (
-          ClientTransaction.CreateRootTransaction().QueryManager.GetScalar (Revision.GetGetRevisionQuery()),
-          Is.EqualTo (1));
+      ClientTransaction.CreateRootTransaction().QueryManager.GetScalar (Revision.GetIncrementRevisionQuery (new RevisionKey()));
+
+      var newValue = ClientTransaction.CreateRootTransaction().QueryManager.GetScalar (Revision.GetGetRevisionQuery (new RevisionKey()));
+      Assert.That (oldValue, Is.Not.EqualTo (newValue));
     }
   }
 }

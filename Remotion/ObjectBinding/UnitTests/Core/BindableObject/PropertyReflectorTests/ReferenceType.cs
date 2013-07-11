@@ -21,6 +21,7 @@ using Remotion.ObjectBinding.BindableObject;
 using Remotion.ObjectBinding.BindableObject.Properties;
 using Remotion.ObjectBinding.UnitTests.Core.TestDomain;
 using Remotion.Reflection;
+using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.UnitTests.Core.BindableObject.PropertyReflectorTests
 {
@@ -216,8 +217,12 @@ namespace Remotion.ObjectBinding.UnitTests.Core.BindableObject.PropertyReflector
     [Test]
     public void GetMetadata_WithReadWriteMixedProperty ()
     {
-      IPropertyInformation propertyInfo = GetPropertyInfo (MixinTypeUtility.GetConcreteMixedType (typeof (ClassWithMixedProperty)),
-          typeof (IMixinAddingProperty), "MixedProperty");
+      IPropertyInformation propertyInfo = GetPropertyInfo (
+              MixinTypeUtility.GetConcreteMixedType (typeof (ClassWithMixedProperty)),
+              typeof (IMixinAddingProperty),
+              "MixedProperty");
+      Assertion.IsTrue (propertyInfo is BindableObjectMixinIntroducedPropertyInformation);
+
       PropertyReflector propertyReflector = PropertyReflector.Create(propertyInfo, _businessObjectProvider);
 
       Assert.That (GetUnderlyingType (propertyReflector), Is.SameAs (typeof (string)));
@@ -236,8 +241,12 @@ namespace Remotion.ObjectBinding.UnitTests.Core.BindableObject.PropertyReflector
     [Test]
     public void GetMetadata_WithReadOnlyMixedProperty ()
     {
-      IPropertyInformation propertyInfo = GetPropertyInfo (MixinTypeUtility.GetConcreteMixedType (typeof (ClassWithMixedProperty)),
-          typeof (IMixinAddingProperty).FullName + ".MixedReadOnlyProperty");
+      IPropertyInformation propertyInfo = GetPropertyInfo (
+          MixinTypeUtility.GetConcreteMixedType (typeof (ClassWithMixedProperty)),
+          typeof (IMixinAddingProperty),
+          "MixedReadOnlyProperty");
+      Assertion.IsTrue (propertyInfo is BindableObjectMixinIntroducedPropertyInformation);
+
       PropertyReflector propertyReflector = PropertyReflector.Create(propertyInfo, _businessObjectProvider);
 
       Assert.That (GetUnderlyingType (propertyReflector), Is.SameAs (typeof (string)));
@@ -247,6 +256,30 @@ namespace Remotion.ObjectBinding.UnitTests.Core.BindableObject.PropertyReflector
       Assert.That (businessObjectProperty, Is.InstanceOf (typeof (PropertyBase)));
       Assert.That (((PropertyBase) businessObjectProperty).PropertyInfo, Is.SameAs (propertyInfo));
       Assert.That (businessObjectProperty.Identifier, Is.EqualTo ("MixedReadOnlyProperty"));
+      Assert.That (businessObjectProperty.PropertyType, Is.SameAs (typeof (string)));
+      Assert.That (businessObjectProperty.IsList, Is.False);
+      Assert.That (businessObjectProperty.IsRequired, Is.False);
+      Assert.That (businessObjectProperty.IsReadOnly (null), Is.True);
+    }
+
+    [Test]
+    public void GetMetadata_WithReadOnlyMixedPropertyHavingSetterOnMixin ()
+    {
+      IPropertyInformation propertyInfo = GetPropertyInfo (
+          MixinTypeUtility.GetConcreteMixedType (typeof (ClassWithMixedProperty)),
+          typeof (IMixinAddingProperty),
+          "MixedReadOnlyPropertyHavingSetterOnMixin");
+      Assertion.IsTrue (propertyInfo is BindableObjectMixinIntroducedPropertyInformation);
+
+      PropertyReflector propertyReflector = PropertyReflector.Create(propertyInfo, _businessObjectProvider);
+
+      Assert.That (GetUnderlyingType (propertyReflector), Is.SameAs (typeof (string)));
+
+      IBusinessObjectProperty businessObjectProperty = propertyReflector.GetMetadata ();
+
+      Assert.That (businessObjectProperty, Is.InstanceOf (typeof (PropertyBase)));
+      Assert.That (((PropertyBase) businessObjectProperty).PropertyInfo, Is.SameAs (propertyInfo));
+      Assert.That (businessObjectProperty.Identifier, Is.EqualTo ("MixedReadOnlyPropertyHavingSetterOnMixin"));
       Assert.That (businessObjectProperty.PropertyType, Is.SameAs (typeof (string)));
       Assert.That (businessObjectProperty.IsList, Is.False);
       Assert.That (businessObjectProperty.IsRequired, Is.False);

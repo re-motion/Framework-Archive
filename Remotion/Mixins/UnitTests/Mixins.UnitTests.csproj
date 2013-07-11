@@ -78,6 +78,7 @@
     <Compile Include="Core\CodeGeneration\ConcreteMixinTypeObjectMother.cs" />
     <Compile Include="Core\CodeGeneration\LockingCodeGenerationCacheDecoratorTest.cs" />
     <Compile Include="Core\CodeGeneration\LockingCodeGenerationModuleInfoDecoratorTest.cs" />
+    <Compile Include="Core\IntegrationTests\Overrides\OverridingTargetMethodsWithShadowing.cs" />
     <Compile Include="Core\CodeGeneration\TypePipe\CodeGenerationClassContextSerializerTest.cs" />
     <Compile Include="Core\CodeGeneration\TypePipe\CodeGenerationMixinContextOriginSerializerTest.cs" />
     <Compile Include="Core\CodeGeneration\TypePipe\CodeGenerationMixinContextSerializerTest.cs" />

@@ -14,9 +14,11 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
 using Remotion.Collections;
-using Remotion.Security.Configuration;
+using Remotion.FunctionalProgramming;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 
 namespace Remotion.Security
@@ -24,21 +26,30 @@ namespace Remotion.Security
   [Serializable]
   public class SecurityStrategy : ISecurityStrategy
   {
+    [ThreadStatic]
+    private static bool s_isEvaluatingAccess;
+
+    private static IGlobalAccessTypeCache GetGlobalAccessTypeCache ()
+    {
+      return SafeServiceLocator.Current.GetAllInstances<IGlobalAccessTypeCache>()
+          .First (() => new InvalidOperationException ("No instance of IGlobalAccessTypeCache has been registered with the ServiceLocator."));
+    }
+
     private readonly ICache<ISecurityPrincipal, AccessType[]> _localCache;
-    private readonly IGlobalAccessTypeCacheProvider _globalCacheProvider;
+    private readonly IGlobalAccessTypeCache _globalCache;
 
     public SecurityStrategy ()
-      : this (new Cache<ISecurityPrincipal, AccessType[]> (), SecurityConfiguration.Current.GlobalAccessTypeCacheProvider)
+        : this (new Cache<ISecurityPrincipal, AccessType[]>(), GetGlobalAccessTypeCache())
     {
     }
 
-    public SecurityStrategy (ICache<ISecurityPrincipal, AccessType[]> localCache, IGlobalAccessTypeCacheProvider globalCacheProvider)
+    public SecurityStrategy (ICache<ISecurityPrincipal, AccessType[]> localCache, IGlobalAccessTypeCache globalCache)
     {
       ArgumentUtility.CheckNotNull ("localCache", localCache);
-      ArgumentUtility.CheckNotNull ("globalCacheProvider", globalCacheProvider);
+      ArgumentUtility.CheckNotNull ("globalCache", globalCache);
 
       _localCache = localCache;
-      _globalCacheProvider = globalCacheProvider;
+      _globalCache = globalCache;
     }
 
     public ICache<ISecurityPrincipal, AccessType[]> LocalCache
@@ -46,24 +57,44 @@ namespace Remotion.Security
       get { return _localCache; }
     }
 
-    public IGlobalAccessTypeCacheProvider GlobalCacheProvider
+    public IGlobalAccessTypeCache GlobalCache
     {
-      get { return _globalCacheProvider; }
+      get { return _globalCache; }
     }
 
     public void InvalidateLocalCache ()
     {
-      _localCache.Clear ();
+      _localCache.Clear();
     }
 
-    public bool HasAccess (ISecurityContextFactory factory, ISecurityProvider securityProvider, ISecurityPrincipal principal, params AccessType[] requiredAccessTypes)
+    public bool HasAccess (
+        ISecurityContextFactory factory,
+        ISecurityProvider securityProvider,
+        ISecurityPrincipal principal,
+        params AccessType[] requiredAccessTypes)
     {
       ArgumentUtility.CheckNotNull ("factory", factory);
       ArgumentUtility.CheckNotNull ("securityProvider", securityProvider);
       ArgumentUtility.CheckNotNull ("principal", principal);
       ArgumentUtility.CheckNotNull ("requiredAccessTypes", requiredAccessTypes);
 
-      AccessType[] actualAccessTypes = GetAccessFromLocalCache (factory, securityProvider, principal);
+      if (s_isEvaluatingAccess)
+      {
+        throw new InvalidOperationException (
+            "Multiple reentrancies on SecurityStrategy.HasAccess(...) are not allowed as they can indicate a possible infinite recursion. "
+            + "Use SecurityFreeSection.IsActive to guard the computation of the SecurityContext returned by ISecurityContextFactory.CreateSecurityContext().");
+      }
+
+      AccessType[] actualAccessTypes;
+      try
+      {
+        s_isEvaluatingAccess = true;
+        actualAccessTypes = GetAccessFromLocalCache (factory, securityProvider, principal);
+      }
+      finally
+      {
+        s_isEvaluatingAccess = false;
+      }
 
       // This section is performance critical. No closure should be created, therefor converting this code to Linq is not possible.
       // requiredAccessTypes.All (requiredAccessType => actualAccessTypes.Contains (requiredAccessType));
@@ -90,21 +121,26 @@ namespace Remotion.Security
 
     private AccessType[] GetAccessFromGlobalCache (ISecurityContextFactory factory, ISecurityProvider securityProvider, ISecurityPrincipal principal)
     {
-      var globalAccessTypeCache = _globalCacheProvider.GetCache ();
-      if (globalAccessTypeCache == null)
-        throw new InvalidOperationException ("IGlobalAccesTypeCacheProvider.GetAccessTypeCache() evaluated and returned null.");
-
-      var context = factory.CreateSecurityContext ();
-      if (context == null)
-        throw new InvalidOperationException ("ISecurityContextFactory.CreateSecurityContext() evaluated and returned null.");
-
-      var key = new Tuple<ISecurityContext, ISecurityPrincipal> (context, principal);
+      var globalCache = _globalCache;
+      var context = CreateSecurityContext (factory);
+      var key = new GlobalAccessTypeCacheKey (context, principal);
 
       AccessType[] value;
-      if (!globalAccessTypeCache.TryGetValue (key, out value))
-        value = globalAccessTypeCache.GetOrCreateValue (key, delegate { return GetAccessFromSecurityProvider (securityProvider, context, principal); });
-  
+      if (!globalCache.TryGetValue (key, out value))
+        value = globalCache.GetOrCreateValue (key, delegate { return GetAccessFromSecurityProvider (securityProvider, context, principal); });
+
       return value;
+    }
+
+    private ISecurityContext CreateSecurityContext (ISecurityContextFactory factory)
+    {
+      using (new SecurityFreeSection())
+      {
+        var context = factory.CreateSecurityContext();
+        if (context == null)
+          throw new InvalidOperationException ("ISecurityContextFactory.CreateSecurityContext() evaluated and returned null.");
+        return context;
+      }
     }
 
     private AccessType[] GetAccessFromSecurityProvider (ISecurityProvider securityProvider, ISecurityContext context, ISecurityPrincipal principal)

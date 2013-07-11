@@ -25,6 +25,8 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
   [Serializable]
   public class WxePageExecutor : IWxePageExecutor
   {
+    private const int HttpStatusCode_NotFound = 404;
+
     public WxePageExecutor ()
     {
     }
@@ -51,13 +53,14 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
       {
         context.HttpContext.Server.Transfer (url, isPostBack);
       }
-      catch (HttpException e)
+      catch (HttpException httpException)
       {
-        Exception unwrappedException = PageUtility.GetUnwrappedExceptionFromHttpException (e);
-        if (unwrappedException is WxeExecuteNextStepException)
+        if (httpException.InnerException is WxeExecutionControlException)
           return;
-        if (unwrappedException is WxeExecuteUserControlNextStepException)
-          return;
+
+        if (httpException.GetHttpCode() == HttpStatusCode_NotFound)
+          throw new WxeResourceNotFoundException (string.Format ("The page '{0}' does not exist.", page), httpException);
+
         throw;
       }
       finally

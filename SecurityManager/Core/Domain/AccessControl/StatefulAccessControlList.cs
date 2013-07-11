@@ -16,7 +16,9 @@
 // Additional permissions are listed in the file re-motion_exceptions.txt.
 // 
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq.Expressions;
 using Remotion.Data.DomainObjects;
 using Remotion.SecurityManager.Domain.Metadata;
 
@@ -26,38 +28,33 @@ namespace Remotion.SecurityManager.Domain.AccessControl
   [Instantiable]
   public abstract class StatefulAccessControlList : AccessControlList
   {
-    private DomainObjectDeleteHandler _deleteHandler;
+    public static Expression<Func<StatefulAccessControlList, IEnumerable<StateCombination>>> SelectStateCombinations ()
+    {
+      return acl => acl.StateCombinationsInternal;
+    }
 
     public static StatefulAccessControlList NewObject ()
     {
       return NewObject<StatefulAccessControlList>();
     }
 
+    private DomainObjectDeleteHandler _deleteHandler;
+
     protected StatefulAccessControlList ()
     {
-      SubscribeCollectionEvents();
     }
 
-    //TODO: Add test for initialize during on load
-    protected override void OnLoaded (LoadMode loadMode)
+    protected override void OnRelationChanged (RelationChangedEventArgs args)
     {
-      base.OnLoaded (loadMode);
-      SubscribeCollectionEvents(); // always subscribe collection events when the object gets a new data container
+      base.OnRelationChanged (args);
+      if (args.IsRelation (this, "StateCombinationsInternal"))
+        HandleStateCombinationsChanged ((StateCombination) args.NewRelatedObject);
     }
 
-    private void SubscribeCollectionEvents ()
+    private void HandleStateCombinationsChanged (StateCombination stateCombination)
     {
-      StateCombinationsInternal.Added += StateCombinations_Added;
-    }
-
-    private void StateCombinations_Added (object sender, DomainObjectCollectionChangeEventArgs args)
-    {
-      var stateCombination = (StateCombination) args.DomainObject;
-      var stateCombinations = StateCombinationsInternal;
-      if (stateCombinations.Count == 1)
-        stateCombination.Index = 0;
-      else
-        stateCombination.Index = stateCombinations[stateCombinations.Count - 2].Index + 1;
+      if (stateCombination != null)
+        stateCombination.Index = StateCombinationsInternal.IndexOf (stateCombination);
     }
 
     public abstract int Index { get; set; }

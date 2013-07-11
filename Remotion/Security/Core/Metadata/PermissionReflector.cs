@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using Remotion.Collections;
-using Remotion.Configuration;
 using Remotion.Reflection;
 using Remotion.Utilities;
 
@@ -27,45 +26,40 @@ namespace Remotion.Security.Metadata
   /// <summary>
   /// Implements the <see cref="IPermissionProvider"/> for a reflection-based security declaration.
   /// </summary>
-  public class PermissionReflector : ExtendedProviderBase, IPermissionProvider
+  public class PermissionReflector : IPermissionProvider
   {
-    private class CacheKey : IEquatable<CacheKey>
+    private struct CacheKey : IEquatable<CacheKey>
     {
-      private readonly Type _type;
-      private readonly IMethodInformation _methodInformation;
+      public readonly Type Type;
+      public readonly IMethodInformation MethodInformation;
 
       public CacheKey (Type type, IMethodInformation methodInformation)
       {
         Assertion.DebugAssert (type != null, "Parameter 'type' is null.");
         Assertion.DebugAssert (methodInformation != null, "Parameter 'methodInformation' is null.");
-        
-        _type = type;
-        _methodInformation = methodInformation;
+
+        Type = type;
+        MethodInformation = methodInformation;
       }
 
       public override int GetHashCode ()
       {
-        return _methodInformation.GetHashCode();
+        return MethodInformation.GetHashCode();
       }
 
       public bool Equals (CacheKey other)
       {
-        return EqualityUtility.NotNullAndSameType (this, other)
-               && _type.Equals (other._type)
-               && _methodInformation.Equals (other._methodInformation);
+        return Type == other.Type
+               && MethodInformation.Equals (other.MethodInformation);
       }
     }
 
     private static readonly ICache<CacheKey, Enum[]> s_cache = CacheFactory.CreateWithLocking<CacheKey, Enum[]>();
+    private readonly Func<CacheKey, Enum[]> _cacheValueFactory;
 
     public PermissionReflector ()
-        : this ("Reflection", new NameValueCollection())
     {
-    }
-
-    public PermissionReflector (string name, NameValueCollection config)
-        : base (name, config)
-    {
+      _cacheValueFactory = key => GetPermissions (key.MethodInformation);
     }
 
     public Enum[] GetRequiredMethodPermissions (Type type, IMethodInformation methodInformation)
@@ -96,7 +90,7 @@ namespace Remotion.Security.Metadata
     private Enum[] GetPermissionsFromCache (Type type, IMethodInformation methodInformation)
     {
       var cacheKey = new CacheKey (type, methodInformation);
-      return s_cache.GetOrCreateValue (cacheKey, key => GetPermissions (methodInformation));
+      return s_cache.GetOrCreateValue (cacheKey, _cacheValueFactory);
     }
   }
 }

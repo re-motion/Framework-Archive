@@ -21,10 +21,10 @@ namespace Remotion.Context
     public const string DataDomainObjectsClientTransactionScope = "Rm.CTS";
     public const string MixinsMixinConfigurationActiveConfiguration = "Rm.MC";
     public const string SecuritySecurityFreeSection = "Rm.SFS";
-    public const string SecurityRevisionBasedAccessTypeCacheProviderRevision = "Rm.SRBATCP";
     public const string WebExecutionEngineWxeContextCurrent = "Rm.WxeCtx";
     public const string ScriptingScriptContext = "Rm.SSC";
     public const string ScriptingScriptingHost = "Rm.SSH";
-    public const string SecurityManagerPrincipalCurrent= "Rm.SMPC";
+    public const string SecurityManagerPrincipalCurrent = "Rm.SMPC";
+    public const string SecurityManagerRevision = "Rm.SMR";
   }
 }

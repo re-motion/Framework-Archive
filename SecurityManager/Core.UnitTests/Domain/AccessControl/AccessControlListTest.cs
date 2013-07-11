@@ -20,6 +20,7 @@ using NUnit.Framework;
 using Remotion.Data.DomainObjects;
 using Remotion.Data.DomainObjects.DomainImplementation;
 using Remotion.SecurityManager.Domain.AccessControl;
+using Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation;
 using Remotion.SecurityManager.Domain.Metadata;
 
 namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
@@ -41,7 +42,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
     {
       AccessControlEntry entry = AccessControlEntry.NewObject();
       AccessControlList acl = _testHelper.CreateStatefulAcl (entry);
-      SecurityToken token = _testHelper.CreateEmptyToken();
+      SecurityToken token = _testHelper.CreateTokenWithoutUser();
 
       AccessControlEntry[] foundEntries = acl.FindMatchingEntries (token);
 
@@ -53,7 +54,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
     public void FindMatchingEntries_WithoutMatchingAce ()
     {
       AccessControlList acl = _testHelper.CreateStatefulAcl (_testHelper.CreateAceWithAbstractRole());
-      SecurityToken token = _testHelper.CreateEmptyToken();
+      SecurityToken token = _testHelper.CreateTokenWithoutUser();
 
       AccessControlEntry[] foundEntries = acl.FindMatchingEntries (token);
 
@@ -96,7 +97,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
       AccessTypeDefinition moveAccessType = _testHelper.CreateAccessTypeForAce (ace, false, Guid.NewGuid (), "Move", 4);
       
       AccessControlList acl = _testHelper.CreateStatefulAcl (ace);
-      SecurityToken token = _testHelper.CreateEmptyToken();
+      SecurityToken token = _testHelper.CreateTokenWithoutUser();
 
       AccessInformation accessInformation = acl.GetAccessTypes (token);
 
@@ -112,7 +113,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
       _testHelper.CreateWriteAccessTypeAndAttachToAce (ace, null);
       _testHelper.CreateDeleteAccessTypeAndAttachToAce (ace, false);
       AccessControlList acl = _testHelper.CreateStatefulAcl (ace);
-      SecurityToken token = _testHelper.CreateEmptyToken();
+      SecurityToken token = _testHelper.CreateTokenWithoutUser();
 
       AccessInformation accessInformation = acl.GetAccessTypes (token);
 

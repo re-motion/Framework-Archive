@@ -20,6 +20,7 @@ using System.Reflection;
 using Remotion.Reflection;
 using Remotion.Security.Configuration;
 using Remotion.Security.Metadata;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 
 namespace Remotion.Security
@@ -30,6 +31,7 @@ namespace Remotion.Security
     private static readonly AccessType s_createAccessType = AccessType.Get (GeneralAccessTypes.Create);
     private static readonly AccessType s_readAccessType = AccessType.Get (GeneralAccessTypes.Read);
     private static readonly AccessType s_editAccessType = AccessType.Get (GeneralAccessTypes.Edit);
+    private static readonly Converter<Enum, AccessType> s_enumToAccessTypeConverter = ConvertEnumToAccessType;
 
     public static SecurityClient CreateSecurityClientFromConfiguration ()
     {
@@ -38,12 +40,14 @@ namespace Remotion.Security
       if (securityProvider.IsNull)
         return SecurityClient.Null;
 
+      var serviceLocator = SafeServiceLocator.Current;
+
       return new SecurityClient (
           securityProvider,
-          SecurityConfiguration.Current.PermissionProvider,
+          serviceLocator.GetInstance<IPermissionProvider>(),
           SecurityConfiguration.Current.PrincipalProvider,
-          SecurityConfiguration.Current.FunctionalSecurityStrategy,
-          SecurityConfiguration.Current.MemberResolver);
+          serviceLocator.GetInstance<IFunctionalSecurityStrategy>(),
+          serviceLocator.GetInstance<IMemberResolver>());
     }
 
     private readonly ISecurityProvider _securityProvider;
@@ -661,10 +665,10 @@ namespace Remotion.Security
 
     private AccessType[] ConvertRequiredAccessTypeEnums (Enum[] requiredAccessTypeEnums)
     {
-      return Array.ConvertAll<Enum, AccessType> (requiredAccessTypeEnums, ConvertEnumsToAccessTypes);
+      return Array.ConvertAll<Enum, AccessType> (requiredAccessTypeEnums, s_enumToAccessTypeConverter);
     }
 
-    private AccessType ConvertEnumsToAccessTypes (Enum accessTypeEnum)
+    private static AccessType ConvertEnumToAccessType (Enum accessTypeEnum)
     {
       if (GeneralAccessTypes.Read.Equals (accessTypeEnum))
         return s_readAccessType;

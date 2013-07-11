@@ -17,6 +17,7 @@
 // 
 using System;
 using Remotion.SecurityManager.Domain.AccessControl;
+using Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation;
 
 namespace Remotion.SecurityManager.AclTools.Expansion.Infrastructure
 {

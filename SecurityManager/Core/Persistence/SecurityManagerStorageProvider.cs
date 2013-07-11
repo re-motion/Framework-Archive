@@ -15,13 +15,18 @@
 // 
 // Additional permissions are listed in the file re-motion_exceptions.txt.
 // 
+
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Tracing;
+using Remotion.SecurityManager.Domain;
+using Remotion.ServiceLocation;
+using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.Persistence
 {
@@ -40,13 +45,19 @@ namespace Remotion.SecurityManager.Persistence
             commandFactory,
             connectionFactory)
     {
-      _revisionExtension = new RevisionStorageProviderExtension();
+      _revisionExtension = new RevisionStorageProviderExtension (
+          SafeServiceLocator.Current.GetInstance<IDomainRevisionProvider>(),
+          SafeServiceLocator.Current.GetInstance<IUserRevisionProvider>());
     }
 
     public override void Save (IEnumerable<DataContainer> dataContainers)
     {
-      _revisionExtension.Saving (Connection.WrappedInstance, Transaction.WrappedInstance, dataContainers);
-      base.Save (dataContainers);
+      ArgumentUtility.CheckNotNull ("dataContainers", dataContainers);
+
+      //TODO RM-5638: Refactor to Streaming-API
+      var dataContainersList = dataContainers.ToList();
+      base.Save (dataContainersList);
+      _revisionExtension.Saved (Connection.WrappedInstance, Transaction.WrappedInstance, dataContainersList);
     }
   }
 }

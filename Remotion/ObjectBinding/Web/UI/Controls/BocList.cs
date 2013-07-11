@@ -26,6 +26,7 @@ using System.Linq;
 using System.Reflection;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using JetBrains.Annotations;
 using Remotion.Collections;
 using Remotion.Globalization;
 using Remotion.Logging;
@@ -108,6 +109,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     /// <summary> The key identifying a list menu item resource entry. </summary>
     private const string c_resourceKeyListMenuItems = "ListMenuItems";
+
+    private const string c_rowSelectorPostfix = "_RowSelector";
+    private const string c_allRowsSelectorPostfix = "_AllRowsSelector";
 
     // types
 
@@ -3483,21 +3487,42 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     string IBocList.GetSelectorControlName ()
     {
-      return UniqueID + "_Boc_SelectRowControl";
+      return ClientID + c_rowSelectorPostfix;
     }
 
     string IBocList.GetSelectAllControlName ()
     {
-      return UniqueID + "_Boc_SelectAllControl";
+      return ClientID + c_allRowsSelectorPostfix;
     }
 
     string IBocList.GetSelectionChangedHandlerScript()
     {
+      return GetSelectionChangedHandlerScript();
+    }
+
+    /// <summary>
+    /// Returns a an anonymous Javascript function with the signature <c>function (bocList) {...}</c>. 
+    /// It is invoked when the <see cref="BocList"/> is initialized on the client and when the selected rows change.
+    /// </summary>
+    /// <remarks>
+    /// One way to extend the Javascript is by wrapping the function returned by the base-call, e.g.
+    /// <code>
+    ///protected override string GetSelectionChangedHandlerScript ()
+    ///{
+    ///  var baseScript = base.GetSelectionChangedHandlerScript ();
+    ///  var extensionScript = "alert (bocList.id);";
+    ///  return string.Format ("function (bocList, isInitializing) {{ var base = {0}; base (bocList, isInitializing); {1} }}", baseScript, extensionScript);
+    ///}
+    /// </code>
+    /// </remarks>
+    protected virtual string GetSelectionChangedHandlerScript ()
+    {
       return HasListMenu
-                 ? string.Format ("function(bocList) {{ {0} }}", _listMenu.GetUpdateScriptReference (GetSelectionCountScript()))
+                 ? string.Format ("function(bocList, isInitializing) {{ {0} }}", _listMenu.GetUpdateScriptReference (GetSelectionCountScript()))
                  : "function(){{}}";
     }
 
+    [PublicAPI]
     protected string GetSelectionCountScript ()
     {
       return "function() { return BocList_GetSelectionCount ('" + ClientID + "'); }";
@@ -3570,7 +3595,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     string IBocList.GetCurrentPageControlName ()
     {
-      return UniqueID + c_currentPageControlName;
+      return ClientID + c_currentPageControlName;
     }
   }
 

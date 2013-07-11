@@ -172,6 +172,7 @@
     <Compile Include="Core\Compilation\DefaultControlBuilderCodeProcessorTest.cs" />
     <Compile Include="Core\Context\HttpContextStorageProviderTest.cs" />
     <Compile Include="Core\Context\SafeContextWebIntegrationTest.cs" />
+    <Compile Include="Core\ExecutionEngine\WxePageTests\InfrastructureExceptionHandling_WxePageTest.cs" />
     <Compile Include="Core\Infrastructure\IHttpContextProviderTest.cs" />
     <Compile Include="Core\Infrastructure\IInfrastructureResourceUrlFactoryTest.cs" />
     <Compile Include="Core\IResourceUrlFactoryTest.cs" />
@@ -378,7 +379,7 @@
     <Compile Include="Core\ExecutionEngine\WxeMethodStepTest.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Core\ExecutionEngine\WxePageTest.cs">
+    <Compile Include="Core\ExecutionEngine\WxePageTests\AbortHandling_WxePageTest.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Core\ExecutionEngine\WxeParameterConverterMock.cs">

@@ -62,6 +62,10 @@
     <DocumentationFile>bin\Release\Remotion.SecurityManager.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\prereq\Assemblies\CommonServiceLocator-1.0\net-2.0\Microsoft.Practices.ServiceLocation.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core">
@@ -121,17 +125,33 @@
     </Compile>
     <Compile Include="Domain\AccessControl\AccessControlEntry.cs" />
     <Compile Include="Domain\AccessControl\AccessControlEntryValidationError.cs" />
-    <Compile Include="Domain\AccessControl\Principal.cs" />
+    <Compile Include="Domain\AccessControl\AccessControlExtensions.cs" />
+    <Compile Include="Domain\AccessControl\AccessEvaluation\AccessResolver.cs" />
+    <Compile Include="Domain\AccessControl\AccessEvaluation\CachedUser.cs" />
+    <Compile Include="Domain\AccessControl\AccessEvaluation\IAccessResolver.cs" />
+    <Compile Include="Domain\AccessControl\AccessEvaluation\ISecurityContextRepository.cs" />
+    <Compile Include="Domain\AccessControl\AccessEvaluation\ISecurityPrincipalRepository.cs" />
+    <Compile Include="Domain\AccessControl\AccessEvaluation\Principal.cs" />
+    <Compile Include="Domain\AccessControl\AccessEvaluation\PrincipalTestHelper.cs" />
+    <Compile Include="Domain\AccessControl\AccessEvaluation\RepositoryBase.cs" />
+    <Compile Include="Domain\AccessControl\AccessEvaluation\SecurableClassDefinitionData.cs" />
+    <Compile Include="Domain\AccessControl\AccessEvaluation\SecurityContextRepository.cs" />
+    <Compile Include="Domain\AccessControl\AccessEvaluation\SecurityContextRevisionBasedCache.cs" />
+    <Compile Include="Domain\AccessControl\AccessEvaluation\SecurityContextRevisionBasedCacheBase.cs" />
+    <Compile Include="Domain\AccessControl\AccessEvaluation\SecurityContextUserRevisionBasedCache.cs" />
+    <Compile Include="Domain\AccessControl\AccessEvaluation\SecurityPrincipalRepository.cs" />
+    <Compile Include="Domain\AccessControl\AccessEvaluation\State.cs" />
+    <Compile Include="Domain\AccessControl\AccessEvaluation\StatefulAccessControlListData.cs" />
     <Compile Include="Domain\AccessControl\TenantHierarchyCondition.cs" />
     <Compile Include="Domain\AccessControl\GroupHierarchyCondition.cs" />
-    <Compile Include="Domain\AccessControl\SecurityTokenMatcher.cs" />
+    <Compile Include="Domain\AccessControl\AccessEvaluation\SecurityTokenMatcher.cs" />
     <Compile Include="Domain\AccessControl\AccessControlEntryValidationResult.cs" />
     <Compile Include="Domain\AccessControl\AccessControlException.cs" />
     <Compile Include="Domain\AccessControl\AccessControlList.cs" />
-    <Compile Include="Domain\AccessControl\AccessControlListFinder.cs" />
+    <Compile Include="Domain\AccessControl\AccessEvaluation\AccessControlListFinder.cs" />
     <Compile Include="Domain\AccessControl\AccessControlObject.cs" />
     <Compile Include="Domain\AccessControl\AccessInformation.cs" />
-    <Compile Include="Domain\AccessControl\AccessTypeStatistics.cs" />
+    <Compile Include="Domain\AccessControl\AccessEvaluation\AccessTypeStatistics.cs" />
     <Compile Include="Domain\AccessControl\IStateCombinationBuilder.cs" />
     <Compile Include="Domain\AccessControl\PropertyStateTuple.cs" />
     <Compile Include="AclTools\Expansion\TextWriterFactory\StringWriterFactory.cs" />
@@ -139,10 +159,23 @@
     <Compile Include="Domain\AccessControl\StatelessAccessControlList.cs" />
     <Compile Include="Domain\AccessControl\AccessControlEntryPropertiesEnumerationValueFilter.cs" />
     <Compile Include="Domain\DomainObjectDeleteHandler.cs" />
+    <Compile Include="Domain\DomainObjectExtensions.cs" />
+    <Compile Include="Domain\IDomainRevisionProvider.cs" />
+    <Compile Include="Domain\GuidRevisionValue.cs" />
+    <Compile Include="Domain\IRevisionKey.cs" />
+    <Compile Include="Domain\IRevisionValue.cs" />
     <Compile Include="Domain\ISecurityManagerPrincipal.cs" />
     <Compile Include="Domain\ISecurityManagerPrincipalFactory.cs" />
-    <Compile Include="Domain\LockingSecurityManagerPrincipalDecorator.cs" />
+    <Compile Include="Domain\IRevisionProvider.cs" />
+    <Compile Include="Domain\IUserRevisionProvider.cs" />
+    <Compile Include="Domain\Metadata\MetadataExtensions.cs" />
     <Compile Include="Domain\NullSecurityManagerPrincipal.cs" />
+    <Compile Include="Domain\PrincipalRole.cs" />
+    <Compile Include="GlobalAccessTypeCache\Implementation\AccessTypeCache.cs" />
+    <Compile Include="GlobalAccessTypeCache\RevisionBasedGlobalAccessTypeCache.cs" />
+    <Compile Include="Domain\RevisionKey.cs" />
+    <Compile Include="Domain\RevisionProvider.cs" />
+    <Compile Include="Domain\RevisionProviderBase.cs" />
     <Compile Include="Domain\SearchInfrastructure\Metadata\AbstractRoleDefinitionPropertyTypeSearchService.cs" />
     <Compile Include="Domain\SearchInfrastructure\OrganizationalStructure\GroupTypePropertyTypeSearchService.cs" />
     <Compile Include="Domain\SearchInfrastructure\OrganizationalStructure\PositionPropertyTypeSearchService.cs" />
@@ -173,11 +206,11 @@
     <Compile Include="Domain\SearchInfrastructure\SecurityManagerSearchServiceBase.cs" />
     <Compile Include="Domain\AccessControl\TenantCondition.cs" />
     <Compile Include="Domain\AccessControl\GroupCondition.cs" />
-    <Compile Include="Domain\AccessControl\IAccessControlListFinder.cs" />
-    <Compile Include="Domain\AccessControl\ISecurityTokenBuilder.cs" />
+    <Compile Include="Domain\AccessControl\AccessEvaluation\IAccessControlListFinder.cs" />
+    <Compile Include="Domain\AccessControl\AccessEvaluation\ISecurityTokenBuilder.cs" />
     <Compile Include="Domain\AccessControl\Permission.cs" />
-    <Compile Include="Domain\AccessControl\SecurityToken.cs" />
-    <Compile Include="Domain\AccessControl\SecurityTokenBuilder.cs" />
+    <Compile Include="Domain\AccessControl\AccessEvaluation\SecurityToken.cs" />
+    <Compile Include="Domain\AccessControl\AccessEvaluation\SecurityTokenBuilder.cs" />
     <Compile Include="Domain\AccessControl\StateCombination.cs" />
     <Compile Include="Domain\AccessControl\StateCombinationBuilder.cs" />
     <Compile Include="Domain\AccessControl\StateCombinationComparer.cs" />
@@ -217,6 +250,9 @@
     <Compile Include="Domain\Revision.cs" />
     <Compile Include="Domain\SecurityManagerAccessTypes.cs" />
     <Compile Include="Domain\SecurityManagerStorageGroupAttribute.cs" />
+    <Compile Include="Domain\UserRevisionKey.cs" />
+    <Compile Include="Domain\UserRevisionProvider.cs" />
+    <Compile Include="GlobalAccessTypeCache\Implementation\SecurityContextCache.cs" />
     <Compile Include="Globalization\AclTools\Expansion\AclToolsExpansion.de.Designer.cs">
       <DependentUpon>AclToolsExpansion.de.resx</DependentUpon>
       <DesignTime>True</DesignTime>
@@ -404,6 +440,10 @@
       <Project>{2AA369EC-A4E7-4D75-9101-EFA90E902625}</Project>
       <Name>Core.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Remotion\Data\DomainObjects.ObjectBinding\Data.DomainObjects.ObjectBinding.csproj">
+      <Project>{f3935d12-39e6-4f06-8316-98cd7ed60c6b}</Project>
+      <Name>Data.DomainObjects.ObjectBinding</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Remotion\Data\DomainObjects.Security\Data.DomainObjects.Security.csproj">
       <Project>{2C87FB62-CC00-4297-A3EA-35F4FC6649F0}</Project>
       <Name>Data.DomainObjects.Security</Name>
@@ -458,6 +498,7 @@
       <LastGenOutput>Substitution.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <Content Include="Database\SecurityManagerSetupIndexes.sql" />
     <Content Include="Database\SecurityManagerSetupConstraints.sql">
     </Content>
     <None Include="Database\SecurityManagerTearDownDB.sql" />

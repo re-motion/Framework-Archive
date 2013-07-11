@@ -21,7 +21,7 @@ namespace Remotion.Web.ExecutionEngine
 {
   /// <summary> This exception is used by the execution engine to end the execution of a <see cref="WxeUserControlStep"/>. </summary>
   [Serializable]
-  public class WxeExecuteUserControlNextStepException : WxeExecutionControlExceptionBase
+  public class WxeExecuteUserControlNextStepException : WxeExecutionControlException
   {
     public WxeExecuteUserControlNextStepException ()
       : base (
