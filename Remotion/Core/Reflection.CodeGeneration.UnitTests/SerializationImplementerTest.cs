@@ -93,7 +93,7 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
 
     [Test]
     [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "No public or protected deserialization constructor in type "
-        + "Remotion.UnitTests.Reflection.CodeGeneration.TestDomain.SerializableClassWithoutCtor - serialization is not supported.")]
+        + "Remotion.Reflection.CodeGeneration.UnitTests.TestDomain.SerializableClassWithoutCtor - serialization is not supported.")]
     public void ImplementGetObjectDataByDelegationThrowsIfBaseHasNoDeserializationCtor ()
     {
       var classEmitter = new CustomClassEmitter (Scope, "ImplementGetObjectDataByDelegationThrowsIfBaseHasNoDeserializationCtor", typeof (SerializableClassWithoutCtor),
@@ -106,7 +106,7 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
 
     [Test]
     [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "No public or protected GetObjectData in type "
-        + "Remotion.UnitTests.Reflection.CodeGeneration.TestDomain.SerializableClassWithPrivateGetObjectData - serialization is not supported.")]
+        + "Remotion.Reflection.CodeGeneration.UnitTests.TestDomain.SerializableClassWithPrivateGetObjectData - serialization is not supported.")]
     public void ImplementGetObjectDataByDelegationThrowsIfBaseHasPrivateGetObjectData ()
     {
       var classEmitter = new CustomClassEmitter (Scope, "ImplementGetObjectDataByDelegationThrowsIfBaseHasPrivateGetObjectData", typeof (SerializableClassWithPrivateGetObjectData),
