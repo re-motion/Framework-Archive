@@ -138,19 +138,14 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
       var allowNonPublicCtor = BooleanObjectMother.GetRandomBoolean();
       var concreteType = TypeFactory.GetConcreteType (typeof (BaseType1));
       var paramList = ParamList.Create ("blub");
-      var typeID = AssembledTypeIDObjectMother.Create();
       var fakeInstance = new object();
 
       var reflectionServiceMock = MockRepository.GenerateStrictMock<IReflectionService>();
-      _defaultPipelineMock.Expect (mock => mock.ReflectionService).Return (reflectionServiceMock);
-      reflectionServiceMock.Expect (mock => mock.GetTypeID (concreteType)).Return (typeID);
-      _defaultPipelineMock
-          .Expect (mock => mock.Create (Arg<AssembledTypeID>.Matches (x => x.Equals (typeID)), Arg.Is (paramList), Arg.Is (allowNonPublicCtor)))
-          .Return (fakeInstance);
+      _defaultPipelineMock.Stub (_ => _.ReflectionService).Return (reflectionServiceMock);
+      reflectionServiceMock.Expect (_ => _.InstantiateAssembledType (concreteType, paramList, allowNonPublicCtor)).Return (fakeInstance);
 
       var instance = _implementation.CreateInstance (allowNonPublicCtor, concreteType, paramList);
 
-      _defaultPipelineMock.VerifyAllExpectations();
       reflectionServiceMock.VerifyAllExpectations();
       Assert.That (instance, Is.SameAs (fakeInstance));
     }

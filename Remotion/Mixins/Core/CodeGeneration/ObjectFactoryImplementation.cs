@@ -60,12 +60,8 @@ namespace Remotion.Mixins.CodeGeneration
         // The ClassContext doesn't match the requested type, so it must already be a concrete type. Just instantiate it.
         Assertion.DebugAssert (MixinTypeUtility.IsGeneratedConcreteMixedType (targetOrConcreteType));
 
-        var pipeline = _pipelineRegistry.DefaultPipeline;
-        // TODO 5370: Is this a good way to do this without pipeline.ReflectionServe.CreateAssembledTypeInstance(....)?
-        // 1) performance, 2) this way we can only instantiate assembledTypes that are cached in the pipeline.
-        var typeID = pipeline.ReflectionService.GetTypeID (targetOrConcreteType);
-
-        return pipeline.Create (typeID, constructorParameters, allowNonPublicConstructors);
+        var reflectionService = _pipelineRegistry.DefaultPipeline.ReflectionService;
+        return reflectionService.InstantiateAssembledType (targetOrConcreteType, constructorParameters, allowNonPublicConstructors);
       }
 
       // TODO 5370: This scope _must_ also be around the if block above. Add a test and fix.
