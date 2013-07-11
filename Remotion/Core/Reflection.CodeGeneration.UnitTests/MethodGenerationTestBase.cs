@@ -14,13 +14,13 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
 using System.Reflection;
-using Remotion.Reflection.CodeGeneration;
 
-namespace Remotion.UnitTests.Reflection.CodeGeneration
+namespace Remotion.Reflection.CodeGeneration.UnitTests
 {
-  public abstract class MethodGenerationTestBase : CodeGenerationBaseTest
+  public abstract class MethodGenerationTestBase : CodeGenerationTestBase
   {
     private CustomClassEmitter _classEmitter;
 

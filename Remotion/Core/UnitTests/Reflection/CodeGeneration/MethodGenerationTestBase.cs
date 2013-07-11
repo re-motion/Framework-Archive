@@ -20,7 +20,7 @@ using Remotion.Reflection.CodeGeneration;
 
 namespace Remotion.UnitTests.Reflection.CodeGeneration
 {
-  public abstract class MethodGenerationTestBase : CodeGenerationBaseTest
+  public abstract class MethodGenerationTestBase : CodeGenerationTestBase
   {
     private CustomClassEmitter _classEmitter;
 

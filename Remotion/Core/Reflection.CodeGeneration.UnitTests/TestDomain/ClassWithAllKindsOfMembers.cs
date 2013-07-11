@@ -14,10 +14,11 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
 using Remotion.Development.UnitTesting;
 
-namespace Remotion.UnitTests.Reflection.CodeGeneration.TestDomain
+namespace Remotion.Reflection.CodeGeneration.UnitTests.TestDomain
 {
   public class ClassWithAllKindsOfMembers
   {

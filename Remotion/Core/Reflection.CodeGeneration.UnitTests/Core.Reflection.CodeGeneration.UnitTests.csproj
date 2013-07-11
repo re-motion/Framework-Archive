@@ -158,7 +158,7 @@
     <Compile Include="CastClassExpressionTest.cs" />
     <Compile Include="ClassEmitterGenericsTest.cs" />
     <Compile Include="ClassEmitterTest.cs" />
-    <Compile Include="CodeGenerationBaseTest.cs" />
+    <Compile Include="CodeGenerationTestBase.cs" />
     <Compile Include="CustomAttributeExpressionTest.cs" />
     <Compile Include="EventEmitterTest.cs" />
     <Compile Include="ExpressionReferenceTest.cs" />

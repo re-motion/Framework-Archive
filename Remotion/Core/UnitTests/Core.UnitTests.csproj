@@ -365,7 +365,7 @@
     <Compile Include="Collections\SimpleDataStoreTest.cs" />
     <Compile Include="Context\CallContextStorageProviderTest.cs" />
     <Compile Include="Globalization\ResourceManagerFactoryTest.cs" />
-    <Compile Include="Reflection\CodeGeneration\CodeGenerationBaseTest.cs" />
+    <Compile Include="Reflection\CodeGeneration\CodeGenerationTestBase.cs" />
     <Compile Include="Reflection\CodeGeneration\SerializationEventRaiserTest.cs" />
     <Compile Include="Collections\LockingCacheDecoratorTest.cs" />
     <Compile Include="Collections\SetTest.cs" />

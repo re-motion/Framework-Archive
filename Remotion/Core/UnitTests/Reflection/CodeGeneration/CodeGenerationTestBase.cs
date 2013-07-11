@@ -19,7 +19,7 @@ using NUnit.Framework;
 
 namespace Remotion.UnitTests.Reflection.CodeGeneration
 {
-  public abstract class CodeGenerationBaseTest
+  public abstract class CodeGenerationTestBase
   {
     private static int s_counter;
 

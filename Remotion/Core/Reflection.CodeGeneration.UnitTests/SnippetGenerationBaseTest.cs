@@ -14,14 +14,14 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
 using System.Reflection;
 using Remotion.Development.UnitTesting;
-using Remotion.Reflection.CodeGeneration;
 
-namespace Remotion.UnitTests.Reflection.CodeGeneration
+namespace Remotion.Reflection.CodeGeneration.UnitTests
 {
-  public class SnippetGenerationBaseTest : CodeGenerationBaseTest
+  public class SnippetGenerationBaseTest : CodeGenerationTestBase
   {
     private static int s_typeCount;
 
