@@ -726,10 +726,10 @@ function SmartPage_Context(
       return CreatePostbackSettings(false, null);
 
 
-    var updatePanelIDs = pageRequestManager._updatePanelIDs;
+    var updatePanelIDs = pageRequestManager._updatePanelClientIDs;
     for (var i = updatePanelIDs.length - 1; i >= 0; i--)
     {
-      var updatePanel = document.getElementById(UniqueIDToClientID(updatePanelIDs[i]));
+      var updatePanel = document.getElementById(updatePanelIDs[i]);
       if (updatePanel != null && jQuery(updatePanel).find('#' + element.id).length == 1)
         return CreatePostbackSettings(true, updatePanelIDs[i]);
     }
