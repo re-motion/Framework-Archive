@@ -106,6 +106,8 @@ function SmartPage_Context(
   var _elementFocusHandler = function (evt) { SmartPage_Context.Instance.OnElementFocus(evt); };
   var _elementBlurHandler = function (evt) { SmartPage_Context.Instance.OnElementBlur(evt); };
 
+  var _hasPageRequestManager = false;
+
   this.Init = function ()
   {
     _theForm = window.document.forms[theFormID];
@@ -128,6 +130,10 @@ function SmartPage_Context(
 
     _smartScrollingFieldID = smartScrollingFieldID;
     _smartFocusFieldID = smartFocusFieldID;
+
+    _hasPageRequestManager = TypeUtility.IsDefined (window.Sys)
+        && TypeUtility.IsDefined(Sys.WebForms)
+        && TypeUtility.IsDefined(Sys.WebForms.PageRequestManager);
 
     AttachPageLevelEventHandlers();
   };
@@ -191,7 +197,7 @@ function SmartPage_Context(
 
     AttachFocusEventHandlers(window.document.body);
 
-    if (TypeUtility.IsDefined(window.Sys) && TypeUtility.IsDefined(Sys.WebForms) && TypeUtility.IsDefined(Sys.WebForms.PageRequestManager))
+    if (_hasPageRequestManager)
     {
       Sys.WebForms.PageRequestManager.prototype._updatePanel = Sys$WebForms$PageRequestManager$_updatePanel;
       Sys.WebForms.PageRequestManager.getInstance().add_endRequest(SmartPage_PageRequestManager_endRequest);
@@ -371,7 +377,7 @@ function SmartPage_Context(
   // Event handler for window.OnLoad
   this.OnLoad = function ()
   {
-    if (TypeUtility.IsDefined(window.Sys) && TypeUtility.IsDefined(Sys.WebForms) && TypeUtility.IsDefined(Sys.WebForms.PageRequestManager))
+    if (_hasPageRequestManager)
     {
       Sys.WebForms.PageRequestManager.getInstance().remove_pageLoaded(SmartPage_PageRequestManager_pageLoaded);
       Sys.WebForms.PageRequestManager.getInstance().add_pageLoaded(SmartPage_PageRequestManager_pageLoaded);
@@ -516,7 +522,7 @@ function SmartPage_Context(
   // Override for the ASP.NET __doPostBack method.
   this.DoPostBack = function (eventTarget, eventArgument)
   {
-    var eventSource = document.getElementById(UniqueIDToClientID(eventTarget));
+    var eventSource = document.getElementById(this.UniqueIDToClientID(eventTarget));
     this.SetActiveElement(eventSource);
     var _this = this;
     setTimeout(function () { _this.DoPostBackInternal(eventTarget, eventArgument); }, 0);
@@ -626,7 +632,7 @@ function SmartPage_Context(
   // Event handler for Form.OnClick.
   this.OnFormClick = function (evt)
   {
-    var eventSource = eventSource = GetEventSource(evt);
+    var eventSource = GetEventSource(evt);
     this.SetActiveElement(eventSource);
     eventSource = GetFocusableElement(eventSource);
 
@@ -711,7 +717,7 @@ function SmartPage_Context(
   {
     ArgumentUtility.CheckNotNull('element', element);
 
-    if (TypeUtility.IsUndefined(window.Sys) || TypeUtility.IsUndefined(Sys.WebForms) || TypeUtility.IsUndefined(Sys.WebForms.PageRequestManager))
+    if (!_hasPageRequestManager)
       return false;
 
     var postbackSettings = GetPostbackSettings(Sys.WebForms.PageRequestManager.getInstance(), element);
@@ -979,9 +985,12 @@ function SmartPage_Context(
     return null;
   }
 
-  function UniqueIDToClientID(uniqueID)
+  this.UniqueIDToClientID = function (uniqueID)
   {
-    return uniqueID.replace(/\$/g, '_');
+    if (!_hasPageRequestManager)
+      return uniqueID.replace(/\$/g, '_');
+    else
+      return uniqueID.replace(/\$/g, '_');//Sys.WebForms.PageRequestManager.getInstance()._
   }
 
   // Determines whether the element (or it's parent) is an anchor tag 
@@ -1058,7 +1067,7 @@ function SmartPage_Context(
     if (StringUtility.IsNullOrEmpty(_theForm.__EVENTTARGET.value))
       return null;
 
-    return document.getElementById(UniqueIDToClientID(_theForm.__EVENTTARGET.value));
+    return document.getElementById(this.UniqueIDToClientID(_theForm.__EVENTTARGET.value));
   };
 
   this.IsSynchronousPostBackRequired = function (eventTargetID, eventArguments)
@@ -1066,7 +1075,7 @@ function SmartPage_Context(
     if (StringUtility.IsNullOrEmpty(eventTargetID))
       return true;
 
-    var id = UniqueIDToClientID(eventTargetID) + '|' + eventArguments;
+    var id = this.UniqueIDToClientID(eventTargetID) + '|' + eventArguments;
     for (var i = _synchronousPostBackCommands.length - 1; i >= 0; i--)
     {
       if (_synchronousPostBackCommands[i] == id)

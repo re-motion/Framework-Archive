@@ -426,6 +426,13 @@
     <Compile Include="CssIncludeTest.aspx.designer.cs">
       <DependentUpon>CssIncludeTest.aspx</DependentUpon>
     </Compile>
+    <Compile Include="UpdatePanelTests\UpdatePanelMasterPage.Master.cs">
+      <DependentUpon>UpdatePanelMasterPage.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UpdatePanelTests\UpdatePanelMasterPage.Master.designer.cs">
+      <DependentUpon>UpdatePanelMasterPage.Master</DependentUpon>
+    </Compile>
     <Content Include="DefaultButtonTest.aspx" />
     <Content Include="ErrorHandling\ErrorForm.aspx" />
     <Content Include="ErrorHandling\TestForm.aspx" />
@@ -495,6 +502,7 @@
     <Content Include="DropDownMenu.aspx" />
     <Content Include="ExecutionEngine\RedirectHandler.ashx" />
     <Content Include="CssIncludeTest.aspx" />
+    <Content Include="UpdatePanelTests\UpdatePanelMasterPage.Master" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="res\" />
