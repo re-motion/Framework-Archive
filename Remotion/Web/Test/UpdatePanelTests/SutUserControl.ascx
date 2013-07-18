@@ -52,6 +52,23 @@
           </remotion:WebMenuItem>
         </MenuItems>
         </remotion:DropDownMenu>
+        <div>
+          List Menu
+          <remotion:ListMenu ID="ListMenuInsideUpdatePanel" runat="server">
+          <MenuItems>
+            <remotion:WebMenuItem ItemID="EventWithSyncPostBack" Text="Event With Sync PostBack">
+              <PersistedCommand>
+                <remotion:Command Type="Event" EventCommand-RequiresSynchronousPostBack="True" />
+              </PersistedCommand>
+            </remotion:WebMenuItem>
+            <remotion:WebMenuItem ItemID="EventWithAsyncPostBack" Text="Event With Async PostBack">
+              <PersistedCommand>
+                <remotion:Command Type="Event" />
+              </PersistedCommand>
+            </remotion:WebMenuItem>
+          </MenuItems>
+          </remotion:ListMenu>
+        </div>
       </div>
     </div>
   </ContentTemplate>

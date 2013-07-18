@@ -41,6 +41,7 @@ namespace Remotion.Web.Test.UpdatePanelTests
       AsyncPostBackInsideUpdatePanelWebButton.Click += HandlePostBack;
       SyncPostBackInsideUpdatePanelWebButton.Click += HandlePostBack;
       DropDownMenuInsideUpdatePanel.EventCommandClick += HandlePostBack;
+      ListMenuInsideUpdatePanel.EventCommandClick += HandlePostBack;
 
       _postBackEventHandler = new PostBackEventHandler ();
       _postBackEventHandler.ID = "PostBackEventHandler";
