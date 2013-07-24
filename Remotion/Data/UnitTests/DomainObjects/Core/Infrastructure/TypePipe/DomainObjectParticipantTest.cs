@@ -127,9 +127,29 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.TypePipe
     }
 
     [Test]
+    public void Participate_AbstractDomainObject ()
+    {
+      var abstractClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition (isAbstract: true);
+      _typeDefinitionProviderMock.Stub (stub => stub.GetTypeDefinition (_proxyTypeAssemblyContext.RequestedType)).Return (abstractClassDefinition);
+
+      _participant.Participate (null, _proxyTypeAssemblyContext);
+
+      Assert.That (_proxyType.AddedInterfaces, Has.No.Member (typeof (IInterceptedDomainObject)));
+    }
+
+    [Test]
     public void HandleNonSubclassableType ()
     {
+      _typeDefinitionProviderMock.Stub (stub => stub.GetTypeDefinition (typeof (object))).Return (null);
       Assert.That (() => _participant.HandleNonSubclassableType (typeof (object)), Throws.Nothing);
+    }
+
+    [Test]
+    public void HandleNonSubclassableType_AbstractDomainObject ()
+    {
+      var abstractClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition (isAbstract: true);
+      _typeDefinitionProviderMock.Stub (stub => stub.GetTypeDefinition (_proxyTypeAssemblyContext.RequestedType)).Return (abstractClassDefinition);
+      Assert.That (() => _participant.HandleNonSubclassableType (_proxyTypeAssemblyContext.RequestedType), Throws.Nothing);
     }
 
     [Test]
@@ -137,6 +157,8 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.TypePipe
         "The requested type 'NonSubclassableDomainObject' is derived from DomainObject but cannot be subclassed.")]
     public void HandleNonSubclassableType_UnsubclassableDomainObject ()
     {
+      var nonAbstractClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition (isAbstract: false);
+      _typeDefinitionProviderMock.Stub (stub => stub.GetTypeDefinition (typeof (NonSubclassableDomainObject))).Return (nonAbstractClassDefinition);
       _participant.HandleNonSubclassableType (typeof (NonSubclassableDomainObject));
     }
 

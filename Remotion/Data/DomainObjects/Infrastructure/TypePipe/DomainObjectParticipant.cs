@@ -90,7 +90,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
       var domainObjectType = proxyTypeAssemblyContext.RequestedType;
 
       var classDefinition = _typeDefinitionProvider.GetTypeDefinition (domainObjectType);
-      if (classDefinition == null)
+      if (classDefinition == null || classDefinition.IsAbstract)
         return;
 
       // Add marker interface.
@@ -108,7 +108,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
     {
       ArgumentUtility.CheckNotNull ("requestedType", requestedType);
 
-      if (typeof (DomainObject).IsTypePipeAssignableFrom (requestedType))
+      var classDefinition = _typeDefinitionProvider.GetTypeDefinition (requestedType);
+      if (classDefinition != null && !classDefinition.IsAbstract)
       {
         var message = string.Format ("The requested type '{0}' is derived from DomainObject but cannot be subclassed.", requestedType.Name);
         throw new NotSupportedException (message);
