@@ -22,6 +22,7 @@ using System.Runtime.CompilerServices;
 using Remotion.Collections;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Reflection;
+using Remotion.TypePipe.MutableReflection.Implementation;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
@@ -128,7 +129,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
       else
       {
         ValidateNonMixinAccessor (property, accessor, accessorDescription);
-        _validatedMethods.Add (accessor.GetBaseDefinition ());
+        _validatedMethods.Add (MethodBaseDefinitionCache.GetBaseDefinition (accessor));
       }
     }
 
@@ -166,7 +167,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
     {
       foreach (MethodInfo method in currentType.GetMethods (_declaredInfrastructureBindingFlags))
       {
-        if (method.IsAbstract && !_validatedMethods.Contains (method.GetBaseDefinition()))
+        if (method.IsAbstract && !_validatedMethods.Contains (MethodBaseDefinitionCache.GetBaseDefinition (method)))
           throw new NonInterceptableTypeException (
               string.Format (
                   "Cannot instantiate type {0} as its member {1} (on type {2}) is abstract (and not an automatic property).",
@@ -175,7 +176,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
                   currentType.Name),
               _baseType);
 
-        _validatedMethods.Add (method.GetBaseDefinition());
+        _validatedMethods.Add (MethodBaseDefinitionCache.GetBaseDefinition (method));
       }
 
       if (currentType.BaseType != null)
