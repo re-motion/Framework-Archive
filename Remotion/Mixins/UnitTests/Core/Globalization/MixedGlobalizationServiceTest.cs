@@ -104,15 +104,14 @@ namespace Remotion.Mixins.UnitTests.Core.Globalization
     }
 
     [Test]
-    [Ignore ("TODO AO: Mixin-Resources are insert at index 0 -> see ResourceManagerResolver.CreateResourceManagerSet")]
-    public void name ()
+    public void GetResourceManager_TypeWithResourceAndMixinWithResource_TypeResourceOverridesMixinResource ()
     {
       using (MixinConfiguration.BuildFromActive().ForClass<ClassWithResources>().AddMixin<MixinAddingResources>().EnterScope())
       {
         var typeInformation = TypeAdapter.Create (typeof (ClassWithResources));
         var resourceManager = _globalizationService.GetResourceManager (typeInformation);
 
-        Assert.That (resourceManager.GetString ("property:Value1"), Is.EqualTo ("overridden by mixin"));
+        Assert.That (resourceManager.GetString ("property:Value1"), Is.EqualTo ("Value 1"));
       }
     }
 
