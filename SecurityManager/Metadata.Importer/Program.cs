@@ -23,6 +23,7 @@ using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurati
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence;
+using Remotion.Reflection;
 using Remotion.Reflection.TypeDiscovery;
 using Remotion.Reflection.TypeDiscovery.AssemblyFinding;
 using Remotion.Reflection.TypeDiscovery.AssemblyLoading;
@@ -93,7 +94,7 @@ namespace Remotion.SecurityManager.Metadata.Importer
         MappingConfiguration.SetCurrent (
             new MappingConfiguration (
                 new MappingReflector (
-                    typeDiscoveryService, new ClassIDProvider(), new DomainModelConstraintProvider(), new ReflectionBasedNameResolver(), new InterceptedDomainObjectCreator()),
+                    typeDiscoveryService, new ClassIDProvider(), new DomainModelConstraintProvider(), new ReflectionBasedMemberInfoNameResolver(), new InterceptedDomainObjectCreator()),
                 new PersistenceModelLoader (new StorageGroupBasedStorageProviderDefinitionFinder (DomainObjectsConfiguration.Current.Storage))));
 
         ClientTransaction transaction = ClientTransaction.CreateRootTransaction();

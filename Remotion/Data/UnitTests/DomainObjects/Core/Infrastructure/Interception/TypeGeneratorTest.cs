@@ -745,7 +745,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.Interception
       mappingLoaderStub.Stub (stub => stub.GetClassDefinitions()).Return (classDefinitions);
       mappingLoaderStub.Stub (stub => stub.GetRelationDefinitions (null)).IgnoreArguments().Return (new RelationDefinition[0]);
       mappingLoaderStub.Stub (stub => stub.ResolveTypes).Return (true);
-      mappingLoaderStub.Stub (stub => stub.NameResolver).Return (new ReflectionBasedNameResolver());
+      mappingLoaderStub.Stub (stub => stub.NameResolver).Return (new ReflectionBasedMemberInfoNameResolver());
       mappingLoaderStub.Stub (stub => stub.CreateClassDefinitionValidator()).Return (new ClassDefinitionValidator());
       mappingLoaderStub.Stub (stub => stub.CreatePropertyDefinitionValidator()).Return (new PropertyDefinitionValidator());
       mappingLoaderStub.Stub (stub => stub.CreateRelationDefinitionValidator()).Return (new RelationDefinitionValidator());

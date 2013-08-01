@@ -32,6 +32,7 @@ using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Queries.Configuration;
 using Remotion.Development.UnitTesting.Data.SqlClient;
+using Remotion.Reflection;
 using Remotion.Reflection.TypeDiscovery;
 using Remotion.Reflection.TypeDiscovery.AssemblyFinding;
 using Remotion.Reflection.TypeDiscovery.AssemblyLoading;
@@ -80,7 +81,7 @@ namespace Remotion.SecurityManager.UnitTests
         MappingConfiguration.SetCurrent (
             new MappingConfiguration (
                 new MappingReflector (
-                    typeDiscoveryService, new ClassIDProvider(), new DomainModelConstraintProvider(), new ReflectionBasedNameResolver(), new InterceptedDomainObjectCreator()),
+                    typeDiscoveryService, new ClassIDProvider(), new DomainModelConstraintProvider(), new ReflectionBasedMemberInfoNameResolver(), new InterceptedDomainObjectCreator()),
                 new PersistenceModelLoader (new StorageGroupBasedStorageProviderDefinitionFinder (DomainObjectsConfiguration.Current.Storage))));
 
         SqlConnection.ClearAllPools();

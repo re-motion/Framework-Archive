@@ -250,6 +250,7 @@
     <Compile Include="Definitions\TargetDependencyDefinition.cs" />
     <Compile Include="Definitions\UniqueDefinitionCollection.cs" />
     <Compile Include="ExtendsAttribute.cs" />
+    <Compile Include="Globalization\MixedGlobalizationService .cs" />
     <Compile Include="Globalization\MixedMultiLingualResources.cs" />
     <Compile Include="Globalization\MixedResourceManagerResolver.cs" />
     <Compile Include="IgnoreForMixinConfigurationAttribute.cs" />

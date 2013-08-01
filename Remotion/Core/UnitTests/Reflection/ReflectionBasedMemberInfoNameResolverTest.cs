@@ -14,26 +14,27 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
+using System;
 using NUnit.Framework;
-using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Reflection;
 using Rhino.Mocks;
 
-namespace Remotion.Data.UnitTests.DomainObjects.Core.Mapping
+namespace Remotion.UnitTests.Reflection
 {
   [TestFixture]
-  public class ReflectionBasedNameResolverTest : MappingReflectionTestBase
+  public class ReflectionBasedMemberInfoNameResolverTest
   {
-    private ReflectionBasedNameResolver _resolver;
+    private ReflectionBasedMemberInfoNameResolver _resolver;
     private IPropertyInformation _propertyInformationStub;
     private ITypeInformation _typeInformationStub;
 
-    public override void SetUp ()
+    [SetUp]
+    public void SetUp ()
     {
-      base.SetUp();
-      _resolver = new ReflectionBasedNameResolver();
+      _resolver = new ReflectionBasedMemberInfoNameResolver();
       _propertyInformationStub = MockRepository.GenerateStub<IPropertyInformation>();
-      _typeInformationStub = MockRepository.GenerateStub<ITypeInformation> ();
+      _typeInformationStub = MockRepository.GenerateStub<ITypeInformation>();
     }
 
     [Test]
@@ -42,16 +43,24 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Mapping
       _typeInformationStub.Stub (stub => stub.FullName).Return ("Namespace.Class");
 
       _propertyInformationStub.Stub (stub => stub.Name).Return ("Property");
-      _propertyInformationStub.Stub (stub => stub.GetOriginalDeclaringType ()).Return (_typeInformationStub);
+      _propertyInformationStub.Stub (stub => stub.GetOriginalDeclaringType()).Return (_typeInformationStub);
 
       Assert.That (_resolver.GetPropertyName (_propertyInformationStub), Is.EqualTo ("Namespace.Class.Property"));
+    }
+
+    [Test]
+    public void GetTypeName ()
+    {
+      _typeInformationStub.Stub (stub => stub.FullName).Return ("Namespace.Class");
+
+      Assert.That (_resolver.GetTypeName (_typeInformationStub), Is.EqualTo ("Namespace.Class"));
     }
 
     [Test]
     public void GetPropertyName_Twice_ReturnsSameResultFromCache ()
     {
       _typeInformationStub.Stub (stub => stub.FullName).Return ("Namespace.Class");
-      _propertyInformationStub.Stub (stub => stub.GetOriginalDeclaringType ()).Return (_typeInformationStub);
+      _propertyInformationStub.Stub (stub => stub.GetOriginalDeclaringType()).Return (_typeInformationStub);
 
       _propertyInformationStub.Stub (stub => stub.Name).Return ("Property1").Repeat.Once();
       string name1 = _resolver.GetPropertyName (_propertyInformationStub);
@@ -60,12 +69,25 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Mapping
       Assert.That (_propertyInformationStub.Name, Is.EqualTo ("Property2"));
       string name2 = _resolver.GetPropertyName (_propertyInformationStub);
 
-      Assert.That (name1, Is.SameAs(name2));
+      Assert.That (name1, Is.SameAs (name2));
       Assert.That (name1, Is.EqualTo ("Namespace.Class.Property1"));
     }
 
     [Test]
-    public void GetPropertyName_ForOverriddenProperty ()
+    public void GetTypeName_Twice_ReturnsSameResultFromCache ()
+    {
+      _typeInformationStub.Stub (stub => stub.FullName).Return ("Namespace.Class");
+      string name1 = _resolver.GetTypeName (_typeInformationStub);
+
+      _typeInformationStub.Stub (stub => stub.FullName).Return ("IgnoredNewTypeName");
+      string name2 = _resolver.GetTypeName (_typeInformationStub);
+
+      Assert.That (name1, Is.SameAs (name2));
+      Assert.That (name1, Is.EqualTo ("Namespace.Class"));
+    }
+
+    [Test]
+    public void GetPropertyAndTypeName_ForOverriddenProperty ()
     {
       var derivedTypeStub = MockRepository.GenerateStub<ITypeInformation>();
       derivedTypeStub.Stub (stub => stub.FullName).Return ("Namespace.Derived");
@@ -78,9 +100,9 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Mapping
     }
 
     [Test]
-    public void GetPropertyName_ForPropertyInClosedGenericType ()
+    public void GetPropertyAndTypeName_ForPropertyInClosedGenericType ()
     {
-      var genericTypeDefinitionStub = MockRepository.GenerateStub<ITypeInformation> ();
+      var genericTypeDefinitionStub = MockRepository.GenerateStub<ITypeInformation>();
       genericTypeDefinitionStub.Stub (stub => stub.FullName).Return ("Namespace.OpenGeneric<>");
 
       _typeInformationStub.Stub (stub => stub.FullName).Return ("Namespace.ClosedGeneric");
@@ -89,21 +111,20 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Mapping
       _typeInformationStub.Stub (stub => stub.GetGenericTypeDefinition()).Return (genericTypeDefinitionStub);
 
       _propertyInformationStub.Stub (stub => stub.Name).Return ("Property");
-      _propertyInformationStub.Stub (stub => stub.GetOriginalDeclaringType ()).Return (_typeInformationStub);
+      _propertyInformationStub.Stub (stub => stub.GetOriginalDeclaringType()).Return (_typeInformationStub);
       Assert.That (_resolver.GetPropertyName (_propertyInformationStub), Is.EqualTo ("Namespace.OpenGeneric<>.Property"));
     }
 
     [Test]
-    public void GetPropertyName_ForPropertyInOpenGenericType ()
+    public void GetPropertyAndTypeName_ForPropertyInOpenGenericType ()
     {
       _typeInformationStub.Stub (stub => stub.FullName).Return ("Namespace.OpenGeneric<>");
       _typeInformationStub.Stub (stub => stub.IsGenericType).Return (true);
       _typeInformationStub.Stub (stub => stub.IsGenericTypeDefinition).Return (true);
 
       _propertyInformationStub.Stub (stub => stub.Name).Return ("Property");
-      _propertyInformationStub.Stub (stub => stub.GetOriginalDeclaringType ()).Return (_typeInformationStub);
+      _propertyInformationStub.Stub (stub => stub.GetOriginalDeclaringType()).Return (_typeInformationStub);
       Assert.That (_resolver.GetPropertyName (_propertyInformationStub), Is.EqualTo ("Namespace.OpenGeneric<>.Property"));
     }
-
   }
 }

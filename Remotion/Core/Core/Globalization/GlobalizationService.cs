@@ -1,4 +1,4 @@
-// This file is part of the re-motion Core Framework (www.re-motion.org)
+﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -14,18 +14,16 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System;
-using System.Collections.Generic;
-using Remotion.Data.DomainObjects.Mapping;
-using Remotion.Reflection;
 
-namespace Remotion.Data.DomainObjects.ConfigurationLoader
+using System;
+
+namespace Remotion.Globalization
 {
-  public interface IMappingLoader : IMappingValidatorFactory
+  public class GlobalizationService : GlobalizationServiceBase
   {
-    ClassDefinition[] GetClassDefinitions();
-    RelationDefinition[] GetRelationDefinitions (IDictionary<Type, ClassDefinition> classDefinitions);
-    bool ResolveTypes { get; }
-    IMemberInfoNameResolver NameResolver { get; }
+    protected override IResourceManager GetConcreteResourceManager (Type type)
+    {
+      return MultiLingualResources.ExistsResource (type) ? MultiLingualResources.GetResourceManager (type, true) : null;
+    }
   }
 }

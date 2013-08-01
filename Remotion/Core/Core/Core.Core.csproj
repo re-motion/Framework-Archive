@@ -147,9 +147,15 @@
     <Compile Include="Context\ISafeContextStorageProvider.cs" />
     <Compile Include="Context\SafeContext.cs" />
     <Compile Include="Context\SafeContextKeys.cs" />
+    <Compile Include="Globalization\GlobalizationService.cs" />
+    <Compile Include="Globalization\GlobalizationServiceBase.cs" />
+    <Compile Include="Globalization\IGlobalizationService.cs" />
+    <Compile Include="Globalization\IMemberInformationGlobalizationService.cs" />
+    <Compile Include="Globalization\MemberInformationGlobalizationService.cs" />
     <Compile Include="IHandleAttribute.cs" />
     <Compile Include="Reflection\DelegateFactory.cs" />
     <Compile Include="Reflection\IDelegateFactory.cs" />
+    <Compile Include="Reflection\IMemberInfoNameResolver.cs" />
     <Compile Include="Reflection\MemberSignatures\EventSignature.cs" />
     <Compile Include="Reflection\MemberSignatures\FieldSignature.cs" />
     <Compile Include="Reflection\MemberSignatures\IMemberSignature.cs" />
@@ -158,6 +164,7 @@
     <Compile Include="Reflection\MemberSignatures\MemberSignatureProvider.cs" />
     <Compile Include="Reflection\MemberSignatures\MethodSignature.cs" />
     <Compile Include="Reflection\MemberSignatures\PropertySignature.cs" />
+    <Compile Include="Reflection\ReflectionBasedMemberInfoNameResolver.cs" />
     <Compile Include="SafeContextSingleton.cs" />
     <Compile Include="Design\IDesignModeHelper.cs" />
     <Compile Include="Diagnostics\DebuggerInterface.cs" />
