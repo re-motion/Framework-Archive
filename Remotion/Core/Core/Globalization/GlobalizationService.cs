@@ -16,13 +16,21 @@
 // 
 
 using System;
+using Remotion.Utilities;
 
 namespace Remotion.Globalization
 {
   public class GlobalizationService : GlobalizationServiceBase
   {
+    public GlobalizationService ()
+    {
+
+    }
+
     protected override IResourceManager GetConcreteResourceManager (Type type)
     {
+      ArgumentUtility.CheckNotNull ("type", type);
+      
       return MultiLingualResources.ExistsResource (type) ? MultiLingualResources.GetResourceManager (type, true) : null;
     }
   }

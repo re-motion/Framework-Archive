@@ -16,18 +16,39 @@
 // 
 
 using System;
-using Remotion.ExtensibleEnums;
+using NUnit.Framework;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
 
-namespace Remotion.Globalization
+namespace Remotion.UnitTests.Reflection
 {
-  [ConcreteImplementation (typeof (MemberInformationGlobalizationService), Lifetime = LifetimeKind.Singleton)]
-  public interface IMemberInformationGlobalizationService
+  [TestFixture]
+  public class IMemberInfoNameResolverTest
   {
-    string GetPropertyDisplayName (IPropertyInformation propertyInformation, ITypeInformation typeInformation);
-    string GetTypeDisplayName (ITypeInformation typeInformation);
-    string GetEnumerationValueDisplayName (Enum value);
-    string GetExtensibleEnumerationValueDisplayName (IExtensibleEnum value);
+    private DefaultServiceLocator _serviceLocator;
+
+    [SetUp]
+    public void SetUp ()
+    {
+      _serviceLocator = new DefaultServiceLocator ();
+    }
+
+    [Test]
+    public void GetInstance_Once ()
+    {
+      var factory = _serviceLocator.GetInstance<IMemberInfoNameResolver> ();
+
+      Assert.That (factory, Is.Not.Null);
+      Assert.That (factory, Is.TypeOf (typeof (ReflectionBasedMemberInfoNameResolver)));
+    }
+
+    [Test]
+    public void GetInstance_Twice_ReturnsSameInstance ()
+    {
+      var factory1 = _serviceLocator.GetInstance<IMemberInfoNameResolver> ();
+      var factory2 = _serviceLocator.GetInstance<IMemberInfoNameResolver> ();
+
+      Assert.That (factory1, Is.SameAs (factory2));
+    }
   }
 }

@@ -19,10 +19,8 @@ using System;
 using NUnit.Framework;
 using Remotion.Globalization;
 using Remotion.Reflection;
-using Remotion.ServiceLocation;
 using Remotion.UnitTests.Globalization.TestDomain;
 using Rhino.Mocks;
-using System.Linq;
 
 namespace Remotion.UnitTests.Globalization
 {
@@ -30,20 +28,11 @@ namespace Remotion.UnitTests.Globalization
   public class GlobalizationServiceTest
   {
     private GlobalizationService _globalizationService;
-
+    
     [SetUp]
     public void SetUp ()
     {
       _globalizationService = new GlobalizationService();
-    }
-
-    [Test]
-    public void Instance_AutoInitialization ()
-    {
-      var instance = SafeServiceLocator.Current.GetAllInstances<IGlobalizationService>().ToArray();
-      Assert.That (instance.Count(), Is.EqualTo(2));
-      Assert.That (instance[0].GetType ().Name, Is.EqualTo ("MixedGlobalizationService"));
-      Assert.That (instance[1].GetType (), Is.EqualTo (typeof (GlobalizationService)));
     }
 
     [Test]
@@ -53,7 +42,7 @@ namespace Remotion.UnitTests.Globalization
       
       var result = _globalizationService.GetResourceManager (typeInformation);
 
-      Assert.That(result, Is.TypeOf(typeof(NullResourceManager)));
+      Assert.That (result, Is.TypeOf(typeof(NullResourceManager)));
     }
 
     [Test]
@@ -61,9 +50,9 @@ namespace Remotion.UnitTests.Globalization
     {
       var typeInformation = TypeAdapter.Create (typeof (ClassWithMultiLingualResourcesAttributes));
 
-      var result = _globalizationService.GetResourceManager (typeInformation);
-
-      Assert.That (result, Is.TypeOf (typeof (ResourceManagerSet)));
+      var result = _globalizationService.GetResourceManager (typeInformation) as ResourceManagerSet;
+      Assert.That (result, Is.Not.Null);
+      Assert.That (result.Count, Is.EqualTo (3));
     }
 
     [Test]
@@ -73,7 +62,20 @@ namespace Remotion.UnitTests.Globalization
 
       var result = _globalizationService.GetResourceManager (typeInformation);
 
-      Assert.That (result, Is.TypeOf (typeof (NullResourceManager)));
+      Assert.That (result, Is.TypeOf(typeof(NullResourceManager)));
     }
+
+    [Test]
+    public void GetResourceManager_ClassWithRealResource ()
+    {
+      var typeInformation = TypeAdapter.Create (typeof (ClassWithResources));
+
+      var resourceManager = _globalizationService.GetResourceManager (typeInformation);
+
+      Assert.That (resourceManager.GetString ("property:Value1"), Is.EqualTo ("Value 1"));
+    }
+
+   
+ 
   }
 }

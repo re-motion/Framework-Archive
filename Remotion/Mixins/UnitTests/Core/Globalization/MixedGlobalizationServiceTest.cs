@@ -22,6 +22,8 @@ using Remotion.Mixins.Globalization;
 using Remotion.Mixins.UnitTests.Core.Globalization.TestDomain;
 using Remotion.Reflection;
 using Rhino.Mocks;
+using System.Linq;
+
 
 namespace Remotion.Mixins.UnitTests.Core.Globalization
 {
@@ -33,7 +35,7 @@ namespace Remotion.Mixins.UnitTests.Core.Globalization
     [SetUp]
     public void SetUp ()
     {
-      _globalizationService = new MixedGlobalizationService();
+        _globalizationService = new MixedGlobalizationService();
     }
 
     [Test]
@@ -43,7 +45,7 @@ namespace Remotion.Mixins.UnitTests.Core.Globalization
 
       var result = _globalizationService.GetResourceManager (typeInformation);
 
-      Assert.That (result, Is.TypeOf (typeof (NullResourceManager)));
+      Assert.That (result, Is.TypeOf(typeof(NullResourceManager)));
     }
 
     [Test]
@@ -51,9 +53,11 @@ namespace Remotion.Mixins.UnitTests.Core.Globalization
     {
       var typeInformation = TypeAdapter.Create (typeof (ClassWithMultiLingualResourcesAttributes));
 
-      var result = _globalizationService.GetResourceManager (typeInformation);
+      var result = _globalizationService.GetResourceManager (typeInformation) as ResourceManagerSet;
 
-      Assert.That (result, Is.TypeOf (typeof (ResourceManagerSet)));
+      Assert.That (result, Is.Not.Null);
+      Assert.That (result.Count, Is.EqualTo (1));
+      Assert.That (result.ElementAt (0), Is.TypeOf (typeof (ResourceManagerWrapper)));
     }
 
     [Test]
@@ -63,7 +67,7 @@ namespace Remotion.Mixins.UnitTests.Core.Globalization
 
       var result = _globalizationService.GetResourceManager (typeInformation);
 
-      Assert.That (result, Is.TypeOf (typeof (NullResourceManager)));
+      Assert.That (result, Is.TypeOf(typeof(NullResourceManager)));
     }
 
     [Test]
@@ -73,9 +77,11 @@ namespace Remotion.Mixins.UnitTests.Core.Globalization
       {
         var typeInformation = TypeAdapter.Create (typeof (ClassWithoutMultiLingualResourcesAttributes));
 
-        var result = _globalizationService.GetResourceManager (typeInformation);
+        var result = _globalizationService.GetResourceManager (typeInformation) as ResourceManagerSet;
 
-        Assert.That (result, Is.TypeOf (typeof (ResourceManagerSet)));
+        Assert.That (result, Is.Not.Null);
+        Assert.That (result.Count, Is.EqualTo (1));
+        Assert.That (result.ElementAt(0), Is.TypeOf(typeof(ResourceManagerWrapper)));
       }
     }
 
@@ -90,10 +96,25 @@ namespace Remotion.Mixins.UnitTests.Core.Globalization
       {
         var typeInformation = TypeAdapter.Create (typeof (ClassWithoutMultiLingualResourcesAttributes));
 
-        var result = _globalizationService.GetResourceManager (typeInformation);
+        var result = _globalizationService.GetResourceManager (typeInformation) as ResourceManagerSet;
 
-        Assert.That (result, Is.TypeOf (typeof (ResourceManagerSet)));
+        Assert.That (result, Is.Not.Null);
+        Assert.That (result.Count, Is.EqualTo (3));
       }
     }
+
+    [Test]
+    [Ignore ("TODO AO: Mixin-Resources are insert at index 0 -> see ResourceManagerResolver.CreateResourceManagerSet")]
+    public void name ()
+    {
+      using (MixinConfiguration.BuildFromActive().ForClass<ClassWithResources>().AddMixin<MixinAddingResources>().EnterScope())
+      {
+        var typeInformation = TypeAdapter.Create (typeof (ClassWithResources));
+        var resourceManager = _globalizationService.GetResourceManager (typeInformation);
+
+        Assert.That (resourceManager.GetString ("property:Value1"), Is.EqualTo ("overridden by mixin"));
+      }
+    }
+
   }
 }

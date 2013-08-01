@@ -16,6 +16,8 @@
 // 
 
 using System;
+using System.Collections.Generic;
+using Remotion.ExtensibleEnums;
 using Remotion.Reflection;
 using Remotion.Utilities;
 
@@ -24,12 +26,15 @@ namespace Remotion.Globalization
   public class MemberInformationGlobalizationService : IMemberInformationGlobalizationService
   {
     private readonly IGlobalizationService _globalizationService;
+    private readonly IMemberInfoNameResolver _memberInfoNameResolver;
 
-    public MemberInformationGlobalizationService (IGlobalizationService globalizationService)
+    public MemberInformationGlobalizationService (IEnumerable<IGlobalizationService> globalizationServices, IMemberInfoNameResolver memberInfoNameResolver)
     {
-      ArgumentUtility.CheckNotNull ("globalizationService", globalizationService);
-      
-      _globalizationService = globalizationService;
+      ArgumentUtility.CheckNotNull ("globalizationServices", globalizationServices);
+      ArgumentUtility.CheckNotNull ("memberInfoNameResolver", memberInfoNameResolver);
+
+      _globalizationService = new CompoundGlobalizationService (globalizationServices);
+      _memberInfoNameResolver = memberInfoNameResolver;
     }
 
     public string GetPropertyDisplayName (IPropertyInformation propertyInformation, ITypeInformation typeInformation)
@@ -37,24 +42,35 @@ namespace Remotion.Globalization
       ArgumentUtility.CheckNotNull ("propertyInformation", propertyInformation);
       ArgumentUtility.CheckNotNull ("typeInformation", typeInformation);
 
-      //TODO: get property name with name service!
-      return GetString (typeInformation, propertyInformation.Name, typeInformation.FullName + "." + propertyInformation.Name, "property:");
+      return GetString (typeInformation, propertyInformation.Name, _memberInfoNameResolver.GetPropertyName (propertyInformation), "property:");
     }
 
     public string GetTypeDisplayName (ITypeInformation typeInformation)
     {
       ArgumentUtility.CheckNotNull ("typeInformation", typeInformation);
 
-      return GetString (typeInformation, typeInformation.Name, typeInformation.FullName, "type:");
+      return GetString (typeInformation, typeInformation.Name, _memberInfoNameResolver.GetTypeName (typeInformation), "type:");
+    }
+
+    public string GetEnumerationValueDisplayName (Enum value)
+    {
+      ArgumentUtility.CheckNotNull ("value", value);
+      return EnumDescription.GetDescription (value);
+    }
+
+    public string GetExtensibleEnumerationValueDisplayName (IExtensibleEnum value)
+    {
+      ArgumentUtility.CheckNotNull ("value", value);
+      return value.GetLocalizedName();
     }
 
     private string GetString (ITypeInformation typeInformation, string shortMemberName, string longMemberName, string resourcePrefix)
     {
       var resourceManager = _globalizationService.GetResourceManager (typeInformation);
 
-      return GetResourceString (resourceManager, resourcePrefix + longMemberName) ?? 
-             GetResourceString (resourceManager, resourcePrefix + shortMemberName) ?? 
-             shortMemberName;
+      return GetResourceString (resourceManager, resourcePrefix + longMemberName)
+             ?? GetResourceString (resourceManager, resourcePrefix + shortMemberName)
+             ?? shortMemberName;
     }
 
     private string GetResourceString (IResourceManager resourceManager, string longID)

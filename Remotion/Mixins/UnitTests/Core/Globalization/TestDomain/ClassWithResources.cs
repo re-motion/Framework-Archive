@@ -15,19 +15,19 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 
-using System;
-using Remotion.ExtensibleEnums;
-using Remotion.Reflection;
-using Remotion.ServiceLocation;
+using Remotion.Globalization;
 
-namespace Remotion.Globalization
+namespace Remotion.Mixins.UnitTests.Core.Globalization.TestDomain
 {
-  [ConcreteImplementation (typeof (MemberInformationGlobalizationService), Lifetime = LifetimeKind.Singleton)]
-  public interface IMemberInformationGlobalizationService
+  [MultiLingualResources ("Remotion.Mixins.UnitTests.Core.Globalization.Resources.ClassWithResources")]
+  public class ClassWithResources
   {
-    string GetPropertyDisplayName (IPropertyInformation propertyInformation, ITypeInformation typeInformation);
-    string GetTypeDisplayName (ITypeInformation typeInformation);
-    string GetEnumerationValueDisplayName (Enum value);
-    string GetExtensibleEnumerationValueDisplayName (IExtensibleEnum value);
+    private string _value1;
+
+    public string Value1
+    {
+      get { return _value1; }
+      set { _value1 = value; }
+    } 
   }
 }

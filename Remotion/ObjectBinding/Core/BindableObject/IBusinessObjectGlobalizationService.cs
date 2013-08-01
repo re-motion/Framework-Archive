@@ -16,8 +16,8 @@
 // 
 using System;
 using Remotion.ExtensibleEnums;
-using Remotion.ObjectBinding.BindableObject.Properties;
 using Remotion.Reflection;
+using Remotion.ServiceLocation;
 
 namespace Remotion.ObjectBinding.BindableObject
 {
@@ -29,6 +29,7 @@ namespace Remotion.ObjectBinding.BindableObject
   /// using the <see cref="BusinessObjectProvider.AddService"/> method or indirectly by providing a custom implementation of the 
   /// <see cref="IBusinessObjectServiceFactory"/>.
   /// </remarks>
+  [ConcreteImplementation(typeof(BindableObjectGlobalizationService), Lifetime = LifetimeKind.Singleton)]
   public interface IBindableObjectGlobalizationService : IBusinessObjectService
   {
     /// <summary>

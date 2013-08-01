@@ -34,34 +34,32 @@ namespace Remotion.ObjectBinding.BindableObject
       False
     }
 
-    private readonly IResourceManager _resourceIdentifierCache = MultiLingualResources.GetResourceManager (typeof (ResourceIdentifier), true);
+    private static readonly IResourceManager s_resourceManager = MultiLingualResources.GetResourceManager (typeof (ResourceIdentifier), true);
 
-    private readonly TypeConversionProvider _typeConversionProvider;
     private readonly IMemberInformationGlobalizationService _memberInformationGlobalizationService;
 
     public BindableObjectGlobalizationService (IMemberInformationGlobalizationService memberInformationGlobalizationService)
     {
       ArgumentUtility.CheckNotNull ("memberInformationGlobalizationService", memberInformationGlobalizationService);
 
-      _typeConversionProvider = TypeConversionProvider.Create();
       _memberInformationGlobalizationService = memberInformationGlobalizationService;
     }
 
     public string GetEnumerationValueDisplayName (Enum value)
     {
       ArgumentUtility.CheckNotNull ("value", value);
-      return EnumDescription.GetDescription (value);
+      return _memberInformationGlobalizationService.GetEnumerationValueDisplayName (value);
     }
 
-    public string GetExtensibleEnumerationValueDisplayName (IExtensibleEnum value)
+    public string GetExtensibleEnumerationValueDisplayName (IExtensibleEnum value) //move to member info globalization service
     {
       ArgumentUtility.CheckNotNull ("value", value);
-      return value.GetLocalizedName();
+      return _memberInformationGlobalizationService.GetExtensibleEnumerationValueDisplayName (value);
     }
 
     public string GetBooleanValueDisplayName (bool value)
     {
-      return _resourceIdentifierCache.GetString (value ? ResourceIdentifier.True : ResourceIdentifier.False);
+      return s_resourceManager.GetString (value ? ResourceIdentifier.True : ResourceIdentifier.False);
     }
 
     public string GetPropertyDisplayName (IPropertyInformation propertyInfo)

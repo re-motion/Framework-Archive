@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Remotion.ObjectBinding.UnitTests.Core.Globalization {
+namespace Remotion.UnitTests.Globalization.Resources {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace Remotion.ObjectBinding.UnitTests.Core.Globalization {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Remotion.ObjectBinding.UnitTests.Core.Globalization.ClassWithResources", typeof(ClassWithResources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Remotion.UnitTests.Globalization.Resources.ClassWithResources", typeof(ClassWithResources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -57,16 +57,6 @@ namespace Remotion.ObjectBinding.UnitTests.Core.Globalization {
             }
             set {
                 resourceCulture = value;
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Value 2.
-        /// </summary>
-        internal static string property_Remotion_ObjectBinding_UnitTests_Core_TestDomain_ClassWithResources_Value2 {
-            get {
-                return ResourceManager.GetString("property:Remotion.ObjectBinding.UnitTests.Core.TestDomain.ClassWithResources.Valu" +
-                        "e2", resourceCulture);
             }
         }
         

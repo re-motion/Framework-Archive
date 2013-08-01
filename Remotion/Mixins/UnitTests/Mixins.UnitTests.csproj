@@ -78,6 +78,18 @@
     <Compile Include="Core\CodeGeneration\LockingCodeGenerationCacheDecoratorTest.cs" />
     <Compile Include="Core\CodeGeneration\LockingCodeGenerationModuleInfoDecoratorTest.cs" />
     <Compile Include="Core\Globalization\MixedGlobalizationServiceTest.cs" />
+    <Compile Include="Core\Globalization\Resources\ClassWithResources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ClassWithResources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Core\Globalization\Resources\MixinAddingResources.Designer.cs">
+      <DependentUpon>MixinAddingResources.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Core\Globalization\TestDomain\ClassWithResources.cs" />
+    <Compile Include="Core\Globalization\TestDomain\MixinAddingResources.cs" />
     <Compile Include="Core\IntegrationTests\Overrides\OverridingTargetMethodsWithShadowing.cs" />
     <Compile Include="Core\TypeGenerationHelper.cs" />
     <Compile Include="Core\CodeGenerationTypeMother.cs" />
@@ -693,7 +705,16 @@
       <Name>Mixins.Samples</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Core\Globalization\Resources\ClassWithResources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ClassWithResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Core\Globalization\Resources\MixinAddingResources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>MixinAddingResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

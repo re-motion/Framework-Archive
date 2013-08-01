@@ -28,7 +28,7 @@ namespace Remotion.Globalization
         CacheFactory.CreateWithLocking<ITypeInformation, IResourceManager>();
 
     private readonly TypeConversionProvider _typeConversionProvider;
-
+    
     protected GlobalizationServiceBase ()
     {
       _typeConversionProvider = TypeConversionProvider.Create();
@@ -40,10 +40,10 @@ namespace Remotion.Globalization
     {
       ArgumentUtility.CheckNotNull ("typeInformation", typeInformation);
 
-      return _resourceManagerCache.GetOrCreateValue (typeInformation, GetResourceManagerInternal);
+      return _resourceManagerCache.GetOrCreateValue (typeInformation, GetResourceManagerFromType);
     }
 
-    private IResourceManager GetResourceManagerInternal (ITypeInformation typeInformation)
+    private IResourceManager GetResourceManagerFromType (ITypeInformation typeInformation)
     {
       if (!_typeConversionProvider.CanConvert (typeInformation.GetType(), typeof (Type)))
         return NullResourceManager.Instance;

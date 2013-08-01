@@ -1,4 +1,4 @@
-﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
+// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -16,18 +16,15 @@
 // 
 
 using System;
-using Remotion.ExtensibleEnums;
-using Remotion.Reflection;
-using Remotion.ServiceLocation;
 
-namespace Remotion.Globalization
+namespace Remotion.UnitTests.Globalization.TestDomain
 {
-  [ConcreteImplementation (typeof (MemberInformationGlobalizationService), Lifetime = LifetimeKind.Singleton)]
-  public interface IMemberInformationGlobalizationService
+  public enum TestEnum
   {
-    string GetPropertyDisplayName (IPropertyInformation propertyInformation, ITypeInformation typeInformation);
-    string GetTypeDisplayName (ITypeInformation typeInformation);
-    string GetEnumerationValueDisplayName (Enum value);
-    string GetExtensibleEnumerationValueDisplayName (IExtensibleEnum value);
+    Value1 = 1,
+    Value2 = 2,
+    Value3 = 3,
+    Value4 = 4,
+    Value5 = 5
   }
 }

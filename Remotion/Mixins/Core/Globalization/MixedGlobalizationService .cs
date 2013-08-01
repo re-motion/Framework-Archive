@@ -17,13 +17,21 @@
 
 using System;
 using Remotion.Globalization;
+using Remotion.Utilities;
 
 namespace Remotion.Mixins.Globalization
 {
   public class MixedGlobalizationService : GlobalizationServiceBase
   {
+    public MixedGlobalizationService ()
+    {
+
+    }
+
     protected override IResourceManager GetConcreteResourceManager (Type type)
     {
+      ArgumentUtility.CheckNotNull ("type", type);
+      
       return MixedMultiLingualResources.ExistsResource (type) ? MixedMultiLingualResources.GetResourceManager (type, true) : null;
     }
   }

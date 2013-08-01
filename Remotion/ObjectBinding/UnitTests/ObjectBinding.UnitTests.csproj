@@ -88,6 +88,7 @@
     <Compile Include="..\..\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
+    <Compile Include="Core\BindableObject\IBindableObjectGlobalizationServiceTest.cs" />
     <Compile Include="Core\BindableObject\IntergrationTests\InterfaceProperties\InterfacePropertiesTest.cs" />
     <Compile Include="Core\BindableObject\IntergrationTests\InterfaceProperties\TestDomain\IMixinInterface.cs" />
     <Compile Include="Core\BindableObject\IntergrationTests\InterfaceProperties\TestDomain\ClassWithInterface.cs" />
@@ -118,6 +119,11 @@
     <Compile Include="Core\BusinessObjectPropertyPaths\TestDomain\TypeThree.cs" />
     <Compile Include="Core\BusinessObjectPropertyPaths\TestDomain\TypeTwo.cs" />
     <Compile Include="Core\BusinessObjectPropertyPathTest.cs" />
+    <Compile Include="Core\Globalization\SimpleBusinessObjectClass.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SimpleBusinessObjectClass.resx</DependentUpon>
+    </Compile>
     <Compile Include="Web\UI\Controls\BocCompundColumnDefinitionTest.cs" />
     <Compile Include="Web\UI\Controls\BocCustomColumnDefinitionTest.cs" />
     <Compile Include="Web\UI\Controls\BocListImplementation\BocListRowTest.cs" />
@@ -153,7 +159,7 @@
     <Compile Include="Core\BindableObject\BindableObjectClassWithIdentityTest.cs" />
     <Compile Include="Core\BindableObject\BindableObjectDataSourceTests\DesignTime.cs" />
     <Compile Include="Core\BindableObject\BindableObjectDataSourceTests\RunTime.cs" />
-    <Compile Include="Core\BindableObject\BindableObjectGlobalizationServiceTest.cs" />
+    <Compile Include="Core\BindableObject\BindableObjectGlobalizationServiceIntegrationTest.cs" />
     <Compile Include="Core\BindableObject\BindableObjectMixinTests\Common.cs" />
     <Compile Include="Core\BindableObject\BindableObjectMixinTests\DefaultValueTest.cs" />
     <Compile Include="Core\BindableObject\BindableObjectMixinTests\GetDisplayName.cs" />
@@ -594,6 +600,10 @@
       <SubType>Designer</SubType>
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>EnumWithResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Core\Globalization\SimpleBusinessObjectClass.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>SimpleBusinessObjectClass.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

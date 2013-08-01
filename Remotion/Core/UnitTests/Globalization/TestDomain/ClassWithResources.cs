@@ -16,18 +16,19 @@
 // 
 
 using System;
-using Remotion.ExtensibleEnums;
-using Remotion.Reflection;
-using Remotion.ServiceLocation;
+using Remotion.Globalization;
 
-namespace Remotion.Globalization
+namespace Remotion.UnitTests.Globalization.TestDomain
 {
-  [ConcreteImplementation (typeof (MemberInformationGlobalizationService), Lifetime = LifetimeKind.Singleton)]
-  public interface IMemberInformationGlobalizationService
+  [MultiLingualResources ("Remotion.UnitTests.Globalization.Resources.ClassWithResources")]
+  public class ClassWithResources
   {
-    string GetPropertyDisplayName (IPropertyInformation propertyInformation, ITypeInformation typeInformation);
-    string GetTypeDisplayName (ITypeInformation typeInformation);
-    string GetEnumerationValueDisplayName (Enum value);
-    string GetExtensibleEnumerationValueDisplayName (IExtensibleEnum value);
+    private string _value1;
+
+    public string Value1
+    {
+      get { return _value1; }
+      set { _value1 = value; }
+    }
   }
 }
