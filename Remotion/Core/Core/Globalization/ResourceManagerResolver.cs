@@ -133,6 +133,7 @@ namespace Remotion.Globalization
 
     protected virtual object GetResourceManagerSetCacheKey (Type definingType, bool includeHierarchy)
     {
+      //TODO AO: change to tuple<type, boolean>
       return definingType.AssemblyQualifiedName + "/" + includeHierarchy;
     }
 
@@ -172,7 +173,7 @@ namespace Remotion.Globalization
         foreach (Tuple<Type, TAttribute[]> attributePair in definition.GetAllAttributePairs())
         {
           ResourceManager[] resourceManagersForAttributePair = _resourceManagerFactory.GetResourceManagers (
-              attributePair.Item1.Assembly, attributePair.Item2);
+              attributePair.Item1.Assembly, attributePair.Item2); //TODO AO: simply use a projection on the sequence and create the resource set 
           resourceManagers.InsertRange (0, resourceManagersForAttributePair);
         }
       }

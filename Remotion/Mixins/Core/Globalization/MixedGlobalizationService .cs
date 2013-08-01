@@ -33,7 +33,7 @@ namespace Remotion.Mixins.Globalization
       ArgumentUtility.CheckNotNull ("type", type);
 
       //TODO AO: implement as decorator
-      //TODO AO: replace null with NullResourceManager
+      //TODO AO: replace null with NullResourceManager, annotate with JetBrains.CannotBeNull attribute (including/only base method)
       return MixedMultiLingualResources.ExistsResource (type) ? MixedMultiLingualResources.GetResourceManager (type, true) : null;
     }
   }

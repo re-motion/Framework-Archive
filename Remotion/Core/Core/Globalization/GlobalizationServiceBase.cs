@@ -40,6 +40,7 @@ namespace Remotion.Globalization
     {
       ArgumentUtility.CheckNotNull ("typeInformation", typeInformation);
 
+      //TODO AO: annotate with cannotbenull (including/only interface)
       return _resourceManagerCache.GetOrCreateValue (typeInformation, GetResourceManagerFromType);
     }
 

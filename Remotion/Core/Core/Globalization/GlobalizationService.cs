@@ -30,8 +30,8 @@ namespace Remotion.Globalization
     protected override IResourceManager GetConcreteResourceManager (Type type)
     {
       ArgumentUtility.CheckNotNull ("type", type);
-      
-      //TODO AO: replace null with NullResourceManager
+
+      //TODO AO: replace null with NullResourceManager, annotate with JetBrains.CannotBeNull attribute
       return MultiLingualResources.ExistsResource (type) ? MultiLingualResources.GetResourceManager (type, true) : null;
     }
   }

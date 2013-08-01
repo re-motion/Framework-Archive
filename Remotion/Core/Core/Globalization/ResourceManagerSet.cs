@@ -56,6 +56,9 @@ namespace Remotion.Globalization
     {
       ArgumentUtility.CheckNotNullOrEmpty ("resourceManagers", resourceManagers);
 
+      //TODO AO: flip order of resource managers 
+      //TODO AO: make ctor with params array obsolete true and provide factory method and ctor expecting IEnumberable
+
       SeparatedStringBuilder sb = new SeparatedStringBuilder (", ", 30*Count);
       foreach (IResourceManager rm in this)
         sb.Append (rm.Name);
