@@ -33,6 +33,7 @@ namespace Remotion.Globalization
       ArgumentUtility.CheckNotNull ("globalizationServices", globalizationServices);
       ArgumentUtility.CheckNotNull ("memberInfoNameResolver", memberInfoNameResolver);
 
+      //TODO AO: RM-5508
       _globalizationService = new CompoundGlobalizationService (globalizationServices);
       _memberInfoNameResolver = memberInfoNameResolver;
     }

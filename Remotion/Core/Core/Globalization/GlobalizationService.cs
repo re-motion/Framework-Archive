@@ -31,6 +31,7 @@ namespace Remotion.Globalization
     {
       ArgumentUtility.CheckNotNull ("type", type);
       
+      //TODO AO: replace null with NullResourceManager
       return MultiLingualResources.ExistsResource (type) ? MultiLingualResources.GetResourceManager (type, true) : null;
     }
   }

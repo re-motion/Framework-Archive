@@ -31,7 +31,9 @@ namespace Remotion.Mixins.Globalization
     protected override IResourceManager GetConcreteResourceManager (Type type)
     {
       ArgumentUtility.CheckNotNull ("type", type);
-      
+
+      //TODO AO: implement as decorator
+      //TODO AO: replace null with NullResourceManager
       return MixedMultiLingualResources.ExistsResource (type) ? MixedMultiLingualResources.GetResourceManager (type, true) : null;
     }
   }
