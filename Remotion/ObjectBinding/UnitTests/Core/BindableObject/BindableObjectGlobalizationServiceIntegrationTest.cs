@@ -134,13 +134,12 @@ namespace Remotion.ObjectBinding.UnitTests.Core.BindableObject
     }
 
     [Test]
-    [Ignore ("TODO AO: Mixin-Resources are insert at index 0 -> see ResourceManagerResolver.CreateResourceManagerSet")]
-    public void GetPropertyDisplayName_WithMixin_ResourceEntryOverriddenByMixin ()
+    public void GetPropertyDisplayName_WithMixin_ResourceEntryIsNotOverriddenByMixin ()
     {
       using (MixinConfiguration.BuildFromActive().ForClass<SimpleBusinessObjectClass>().AddMixin<MixinAddingResources>().EnterScope())
       {
         IPropertyInformation propertyInformation = GetPropertyInfo (typeof (SimpleBusinessObjectClass), "PropertyForMixinOverriddeTest");
-        Assert.That (_globalizationService.GetPropertyDisplayName (propertyInformation), Is.EqualTo ("overridden by mixin"));
+        Assert.That (_globalizationService.GetPropertyDisplayName (propertyInformation), Is.EqualTo ("default value"));
       }
     }
 
