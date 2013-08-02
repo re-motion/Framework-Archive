@@ -44,7 +44,7 @@ namespace Remotion.UnitTests.Globalization
 
       _typeInformationStub = MockRepository.GenerateStub<ITypeInformation>();
 
-      _service = new CompoundGlobalizationService(new[] { _innerService1, _innerService2, _innerService3 });
+      _service = new CompoundGlobalizationService (new[] { _innerService1, _innerService2, _innerService3 });
     }
 
     [Test]
@@ -57,23 +57,23 @@ namespace Remotion.UnitTests.Globalization
     public void GetResourceManager ()
     {
       var resourceManagerStub1 = MockRepository.GenerateStub<IResourceManager>();
-      var resourceManagerStub2 = MockRepository.GenerateStub<IResourceManager> ();
-      var resourceManagerStub3 = MockRepository.GenerateStub<IResourceManager> ();
+      var resourceManagerStub2 = MockRepository.GenerateStub<IResourceManager>();
+      var resourceManagerStub3 = MockRepository.GenerateStub<IResourceManager>();
 
-      using (_mockRepository.Ordered ())
+      using (_mockRepository.Ordered())
       {
-        _innerService3.Expect (mock => mock.GetResourceManager (_typeInformationStub)).Return(resourceManagerStub1);
-        _innerService2.Expect (mock => mock.GetResourceManager (_typeInformationStub)).Return(resourceManagerStub2);
-        _innerService1.Expect (mock => mock.GetResourceManager (_typeInformationStub)).Return(resourceManagerStub3);
+        _innerService3.Expect (mock => mock.GetResourceManager (_typeInformationStub)).Return (resourceManagerStub1);
+        _innerService2.Expect (mock => mock.GetResourceManager (_typeInformationStub)).Return (resourceManagerStub2);
+        _innerService1.Expect (mock => mock.GetResourceManager (_typeInformationStub)).Return (resourceManagerStub3);
       }
       _mockRepository.ReplayAll();
 
       var result = _service.GetResourceManager (_typeInformationStub);
 
       Assert.That (result, Is.TypeOf (typeof (ResourceManagerSet)));
-      Assert.That (result, Is.EqualTo (new[] { resourceManagerStub1, resourceManagerStub2, resourceManagerStub3 }));
-      
-      _mockRepository.VerifyAll ();
+      Assert.That (((ResourceManagerSet) result).ResourceManagers, Is.EqualTo (new[] { resourceManagerStub1, resourceManagerStub2, resourceManagerStub3 }));
+
+      _mockRepository.VerifyAll();
     }
   }
 }

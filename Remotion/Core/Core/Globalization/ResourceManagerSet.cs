@@ -14,24 +14,26 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.Linq;
+using Remotion.Collections;
 using Remotion.Logging;
 using Remotion.Text;
 using Remotion.Utilities;
-using System.Linq;
 
 namespace Remotion.Globalization
 {
   /// <summary>
   ///   Combines one or more <see cref="IResourceManager"/> instances to a set that can be accessed using a single interface.
   /// </summary>
-  public class ResourceManagerSet : ReadOnlyCollection<IResourceManager>, IResourceManager
-  {//TODO AO: change readonlycollection from baseclass to member
+  public class ResourceManagerSet : IResourceManager
+  {
     private static readonly ILog s_log = LogManager.GetLogger (typeof (ResourceManagerSet));
 
+    private readonly ReadOnlyCollectionDecorator<IResourceManager> _resourceManagers;
     private readonly string _name;
 
     /// <summary>
@@ -55,23 +57,28 @@ namespace Remotion.Globalization
     public static ResourceManagerSet Create (IEnumerable<IResourceManager> resourceManagers)
     {
       ArgumentUtility.CheckNotNull ("resourceManagers", resourceManagers);
-      
-      return new ResourceManagerSet (CreateFlatList(resourceManagers));
+
+      return new ResourceManagerSet (CreateFlatList (resourceManagers));
     }
 
-    protected ResourceManagerSet (IEnumerable<IResourceManager> resourceManagers) : base(resourceManagers.ToList())
+    protected ResourceManagerSet (IEnumerable<IResourceManager> resourceManagers)
     {
-      SeparatedStringBuilder sb = new SeparatedStringBuilder (", ", 30 * Count);
-      foreach (IResourceManager rm in this)
+      _resourceManagers = resourceManagers.ToArray().AsReadOnly();
+      SeparatedStringBuilder sb = new SeparatedStringBuilder (", ", 30 * _resourceManagers.Count);
+      foreach (var rm in _resourceManagers)
         sb.Append (rm.Name);
-      _name = sb.ToString ();
+      _name = sb.ToString();
     }
 
-    [Obsolete("User ResourceManagerSet.Create instead", true)]
+    [Obsolete ("User ResourceManagerSet.Create instead", true)]
     public ResourceManagerSet (params IResourceManager[] resourceManagers)
-        : base (null)
     {
       throw new InvalidOperationException ("User ResourceManagerSet.Create instead");
+    }
+
+    public IEnumerable<IResourceManager> ResourceManagers
+    {
+      get { return _resourceManagers; }
     }
 
     public NameValueCollection GetAllStrings ()
@@ -86,13 +93,13 @@ namespace Remotion.Globalization
     public NameValueCollection GetAllStrings (string prefix)
     {
       var result = new NameValueCollection();
-      foreach (var resourceManager in this)
+      foreach (var resourceManager in _resourceManagers)
       {
         var strings = resourceManager.GetAllStrings (prefix);
         for (var i = 0; i < strings.Count; i++)
         {
           var key = strings.Keys[i];
-          if(result[key]==null)
+          if (result[key] == null)
             result[key] = strings[i];
         }
       }
@@ -105,9 +112,9 @@ namespace Remotion.Globalization
     /// <seealso cref="M:Remotion.Globalization.IResourceManager.GetString(System.String)"/>
     public string GetString (string id)
     {
-      for (var i = 0; i < Count; i++)
+      for (var i = 0; i < _resourceManagers.Count; i++)
       {
-        var s = this[i].GetString (id);
+        var s = _resourceManagers.ElementAt(i).GetString (id);
         if (s != null && s != id)
           return s;
       }
@@ -132,12 +139,7 @@ namespace Remotion.Globalization
     {
       ArgumentUtility.CheckNotNullOrEmpty ("id", id);
 
-      for (var i = 0; i < Count; i++)
-      {
-        if (this[i].ContainsResource (id))
-          return true;
-      }
-      return false;
+      return _resourceManagers.Where ((t, i) => _resourceManagers.ElementAt (i).ContainsResource (id)).Any();
     }
 
     /// <summary>Tests whether the <see cref="ResourceManagerSet"/> contains the specified resource.</summary>
@@ -156,13 +158,11 @@ namespace Remotion.Globalization
         var rmset = resourceManager as ResourceManagerSet;
         if (rmset != null)
         {
-          foreach (var rm in rmset)
+          foreach (var rm in rmset.ResourceManagers)
             yield return rm;
         }
         else if (resourceManager != null && !resourceManager.IsNull)
-        {
           yield return resourceManager;
-        }
       }
     }
 

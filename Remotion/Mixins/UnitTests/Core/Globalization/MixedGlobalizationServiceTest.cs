@@ -56,8 +56,8 @@ namespace Remotion.Mixins.UnitTests.Core.Globalization
       var result = _globalizationService.GetResourceManager (typeInformation) as ResourceManagerSet;
 
       Assert.That (result, Is.Not.Null);
-      Assert.That (result.Count, Is.EqualTo (1));
-      Assert.That (result.ElementAt (0), Is.TypeOf (typeof (ResourceManagerWrapper)));
+      Assert.That (result.ResourceManagers.Count(), Is.EqualTo (1));
+      Assert.That (result.ResourceManagers.ElementAt (0), Is.TypeOf (typeof (ResourceManagerWrapper)));
     }
 
     [Test]
@@ -80,8 +80,8 @@ namespace Remotion.Mixins.UnitTests.Core.Globalization
         var result = _globalizationService.GetResourceManager (typeInformation) as ResourceManagerSet;
 
         Assert.That (result, Is.Not.Null);
-        Assert.That (result.Count, Is.EqualTo (1));
-        Assert.That (result.ElementAt(0), Is.TypeOf(typeof(ResourceManagerWrapper)));
+        Assert.That (result.ResourceManagers.Count(), Is.EqualTo (1));
+        Assert.That (result.ResourceManagers.ElementAt(0), Is.TypeOf(typeof(ResourceManagerWrapper)));
       }
     }
 
@@ -99,7 +99,7 @@ namespace Remotion.Mixins.UnitTests.Core.Globalization
         var result = _globalizationService.GetResourceManager (typeInformation) as ResourceManagerSet;
 
         Assert.That (result, Is.Not.Null);
-        Assert.That (result.Count, Is.EqualTo (3));
+        Assert.That (result.ResourceManagers.Count(), Is.EqualTo (3));
       }
     }
 

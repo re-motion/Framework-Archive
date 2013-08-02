@@ -21,6 +21,7 @@ using Remotion.Globalization;
 using Remotion.Reflection;
 using Remotion.UnitTests.Globalization.TestDomain;
 using Rhino.Mocks;
+using System.Linq;
 
 namespace Remotion.UnitTests.Globalization
 {
@@ -52,7 +53,7 @@ namespace Remotion.UnitTests.Globalization
 
       var result = _globalizationService.GetResourceManager (typeInformation) as ResourceManagerSet;
       Assert.That (result, Is.Not.Null);
-      Assert.That (result.Count, Is.EqualTo (3));
+      Assert.That (result.ResourceManagers.Count(), Is.EqualTo (3));
     }
 
     [Test]
