@@ -34,7 +34,7 @@ namespace Remotion.UnitTests.Globalization
     public void IsEmpty_False ()
     {
       var stub = MockRepository.GenerateStub<IResourceManager> ();
-      var entry = ResourceManagerCacheEntry.Create (typeof (MultiLingualResources), new ResourceManagerSet (stub));
+      var entry = ResourceManagerCacheEntry.Create (typeof (MultiLingualResources), ResourceManagerSet.Create (new[] { stub }));
       Assert.That (entry.IsEmpty, Is.False);
     }
   }

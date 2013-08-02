@@ -149,8 +149,8 @@ namespace Remotion.UnitTests.Globalization
       Assert.That (resourceManagerSet.Count, Is.EqualTo (5));
       var names = new[]
                   {
-                      resourceManagerSet[0].Name, resourceManagerSet[1].Name, resourceManagerSet[2].Name,
-                      resourceManagerSet[3].Name, resourceManagerSet[4].Name
+                      resourceManagerSet[4].Name, resourceManagerSet[3].Name, resourceManagerSet[2].Name,
+                      resourceManagerSet[1].Name, resourceManagerSet[0].Name
                   };
       Assert.That (names, Is.EquivalentTo (new[] { "One", "Two", "Three", "Four", "Five" }));
       Assert.That (Array.IndexOf (names, "One"), Is.LessThan (Array.IndexOf (names, "Four")));
@@ -200,8 +200,8 @@ namespace Remotion.UnitTests.Globalization
       Assert.That (resourceManagerSet.Count, Is.EqualTo (5));
       var names = new[]
                   {
-                      resourceManagerSet[0].Name, resourceManagerSet[1].Name, resourceManagerSet[2].Name,
-                      resourceManagerSet[3].Name, resourceManagerSet[4].Name
+                      resourceManagerSet[4].Name, resourceManagerSet[3].Name, resourceManagerSet[2].Name,
+                      resourceManagerSet[1].Name, resourceManagerSet[0].Name
                   };
       Assert.That (names, Is.EquivalentTo (new[] { "One", "Two", "Three", "Four", "Five" }));
       Assert.That (Array.IndexOf (names, "One"), Is.LessThan (Array.IndexOf (names, "Four")));

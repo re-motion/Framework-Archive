@@ -74,8 +74,8 @@ namespace Remotion.UnitTests.Globalization
     [Test]
     public void GetPropertyDisplayName_NoResourceFound ()
     {
-      _globalizationServiceMock1.Expect (mock => mock.GetResourceManager (_typeInformationStub)).Return (_resourceManager1Mock);
-      _globalizationServiceMock2.Expect (mock => mock.GetResourceManager (_typeInformationStub)).Return (_resourceManager2Mock);
+      _globalizationServiceMock1.Expect (mock => mock.GetResourceManager (_typeInformationStub)).Return (_resourceManager2Mock);
+      _globalizationServiceMock2.Expect (mock => mock.GetResourceManager (_typeInformationStub)).Return (_resourceManager1Mock);
 
       _resourceManager1Mock.Expect (mock => mock.ContainsResource (_longPropertyResourceID)).Return (false);
       _resourceManager1Mock.Expect (mock => mock.ContainsResource (_shortPropertyResourceID)).Return (false);
@@ -94,8 +94,8 @@ namespace Remotion.UnitTests.Globalization
     [Test]
     public void GetPropertyDisplayName_ResourceFoundByFirstResourceManager_LongResourceID ()
     {
-      _globalizationServiceMock1.Expect (mock => mock.GetResourceManager (_typeInformationStub)).Return (_resourceManager1Mock);
-      _globalizationServiceMock2.Expect (mock => mock.GetResourceManager (_typeInformationStub)).Return (_resourceManager2Mock);
+      _globalizationServiceMock1.Expect (mock => mock.GetResourceManager (_typeInformationStub)).Return (_resourceManager2Mock);
+      _globalizationServiceMock2.Expect (mock => mock.GetResourceManager (_typeInformationStub)).Return (_resourceManager1Mock);
 
       _resourceManager1Mock.Expect (mock => mock.ContainsResource (_longPropertyResourceID)).Return (true);
       _resourceManager1Mock.Expect (mock => mock.GetString (_longPropertyResourceID)).Return ("FakeResultForLongPropertyName1");
@@ -113,8 +113,8 @@ namespace Remotion.UnitTests.Globalization
     [Test]
     public void GetPropertyDisplayName_ResourceFoundBySecondResourceManager_LongResourceID ()
     {
-      _globalizationServiceMock1.Expect (mock => mock.GetResourceManager (_typeInformationStub)).Return (_resourceManager1Mock);
-      _globalizationServiceMock2.Expect (mock => mock.GetResourceManager (_typeInformationStub)).Return (_resourceManager2Mock);
+      _globalizationServiceMock1.Expect (mock => mock.GetResourceManager (_typeInformationStub)).Return (_resourceManager2Mock);
+      _globalizationServiceMock2.Expect (mock => mock.GetResourceManager (_typeInformationStub)).Return (_resourceManager1Mock);
 
       _resourceManager1Mock.Expect (mock => mock.ContainsResource (_longPropertyResourceID)).Return (false);
       _resourceManager2Mock.Expect (mock => mock.ContainsResource (_longPropertyResourceID)).Return (true);
@@ -132,8 +132,8 @@ namespace Remotion.UnitTests.Globalization
     [Test]
     public void GetPropertyDisplayName_ResourceFoundByBothResourceManager_LongResourceID ()
     {
-      _globalizationServiceMock1.Expect (mock => mock.GetResourceManager (_typeInformationStub)).Return (_resourceManager1Mock);
-      _globalizationServiceMock2.Expect (mock => mock.GetResourceManager (_typeInformationStub)).Return (_resourceManager2Mock);
+      _globalizationServiceMock1.Expect (mock => mock.GetResourceManager (_typeInformationStub)).Return (_resourceManager2Mock);
+      _globalizationServiceMock2.Expect (mock => mock.GetResourceManager (_typeInformationStub)).Return (_resourceManager1Mock);
 
       _resourceManager1Mock.Expect (mock => mock.ContainsResource (_longPropertyResourceID)).Return (true);
       _resourceManager1Mock.Expect (mock => mock.GetString (_longPropertyResourceID)).Return ("FakeResultForLongPropertyName1");
@@ -151,8 +151,8 @@ namespace Remotion.UnitTests.Globalization
     [Test]
     public void GetPropertyDisplayName_ResourceFoundByFirstResourceManager_ShortResourceID ()
     {
-      _globalizationServiceMock1.Expect (mock => mock.GetResourceManager (_typeInformationStub)).Return (_resourceManager1Mock);
-      _globalizationServiceMock2.Expect (mock => mock.GetResourceManager (_typeInformationStub)).Return (_resourceManager2Mock);
+      _globalizationServiceMock1.Expect (mock => mock.GetResourceManager (_typeInformationStub)).Return (_resourceManager2Mock);
+      _globalizationServiceMock2.Expect (mock => mock.GetResourceManager (_typeInformationStub)).Return (_resourceManager1Mock);
 
       _resourceManager1Mock.Expect (mock => mock.ContainsResource (_longPropertyResourceID)).Return (false);
       _resourceManager1Mock.Expect (mock => mock.ContainsResource (_shortPropertyResourceID)).Return (true);
@@ -171,8 +171,8 @@ namespace Remotion.UnitTests.Globalization
     [Test]
     public void GetPropertyDisplayName_ResourceFoundBySecondResourceManager_ShortResourceID ()
     {
-      _globalizationServiceMock1.Expect (mock => mock.GetResourceManager (_typeInformationStub)).Return (_resourceManager1Mock);
-      _globalizationServiceMock2.Expect (mock => mock.GetResourceManager (_typeInformationStub)).Return (_resourceManager2Mock);
+      _globalizationServiceMock1.Expect (mock => mock.GetResourceManager (_typeInformationStub)).Return (_resourceManager2Mock);
+      _globalizationServiceMock2.Expect (mock => mock.GetResourceManager (_typeInformationStub)).Return (_resourceManager1Mock);
 
       _resourceManager1Mock.Expect (mock => mock.ContainsResource (_longPropertyResourceID)).Return (false);
       _resourceManager1Mock.Expect (mock => mock.ContainsResource (_shortPropertyResourceID)).Return (false);
@@ -193,8 +193,8 @@ namespace Remotion.UnitTests.Globalization
     [Test]
     public void GetPropertyDisplayName_ResourceFoundByBothResourceManager_LongAndShortResourceID_ReturnedByLongResourceID ()
     {
-      _globalizationServiceMock1.Expect (mock => mock.GetResourceManager (_typeInformationStub)).Return (_resourceManager1Mock);
-      _globalizationServiceMock2.Expect (mock => mock.GetResourceManager (_typeInformationStub)).Return (_resourceManager2Mock);
+      _globalizationServiceMock1.Expect (mock => mock.GetResourceManager (_typeInformationStub)).Return (_resourceManager2Mock);
+      _globalizationServiceMock2.Expect (mock => mock.GetResourceManager (_typeInformationStub)).Return (_resourceManager1Mock);
 
       _resourceManager1Mock.Expect (mock => mock.ContainsResource (_longPropertyResourceID)).Return (true);
       _resourceManager1Mock.Stub (stub => stub.ContainsResource (_shortPropertyResourceID)).Return (true);
@@ -214,8 +214,8 @@ namespace Remotion.UnitTests.Globalization
     [Test]
     public void GetTypeDisplayName_NoResourceFound ()
     {
-      _globalizationServiceMock1.Expect (mock => mock.GetResourceManager (_typeInformationStub)).Return (_resourceManager1Mock);
-      _globalizationServiceMock2.Expect (mock => mock.GetResourceManager (_typeInformationStub)).Return (_resourceManager2Mock);
+      _globalizationServiceMock1.Expect (mock => mock.GetResourceManager (_typeInformationStub)).Return (_resourceManager2Mock);
+      _globalizationServiceMock2.Expect (mock => mock.GetResourceManager (_typeInformationStub)).Return (_resourceManager1Mock);
 
       _resourceManager1Mock.Expect (mock => mock.ContainsResource (_longTypeResourceID)).Return (false);
       _resourceManager1Mock.Expect (mock => mock.ContainsResource (_shortTypeResourceID)).Return (false);
@@ -234,8 +234,8 @@ namespace Remotion.UnitTests.Globalization
     [Test]
     public void GetTypeDisplayName_ResourceFoundByLongResourceID ()
     {
-      _globalizationServiceMock1.Expect (mock => mock.GetResourceManager (_typeInformationStub)).Return (_resourceManager1Mock);
-      _globalizationServiceMock2.Expect (mock => mock.GetResourceManager (_typeInformationStub)).Return (_resourceManager2Mock);
+      _globalizationServiceMock1.Expect (mock => mock.GetResourceManager (_typeInformationStub)).Return (_resourceManager2Mock);
+      _globalizationServiceMock2.Expect (mock => mock.GetResourceManager (_typeInformationStub)).Return (_resourceManager1Mock);
 
       _resourceManager1Mock.Expect (mock => mock.ContainsResource (_longTypeResourceID)).Return (true);
       _resourceManager1Mock.Expect (mock => mock.GetString (_longTypeResourceID)).Return ("FakeResultForLongTypeName");
@@ -252,8 +252,8 @@ namespace Remotion.UnitTests.Globalization
     [Test]
     public void GetTypeDisplayName_ResourceFoundByShortResourceID ()
     {
-      _globalizationServiceMock1.Expect (mock => mock.GetResourceManager (_typeInformationStub)).Return (_resourceManager1Mock);
-      _globalizationServiceMock2.Expect (mock => mock.GetResourceManager (_typeInformationStub)).Return (_resourceManager2Mock);
+      _globalizationServiceMock1.Expect (mock => mock.GetResourceManager (_typeInformationStub)).Return (_resourceManager2Mock);
+      _globalizationServiceMock2.Expect (mock => mock.GetResourceManager (_typeInformationStub)).Return (_resourceManager1Mock);
 
       _resourceManager1Mock.Expect (mock => mock.ContainsResource (_longTypeResourceID)).Return (false);
       _resourceManager1Mock.Expect (mock => mock.ContainsResource (_shortTypeResourceID)).Return (true);
@@ -272,8 +272,8 @@ namespace Remotion.UnitTests.Globalization
     [Test]
     public void GetTypeDisplayName_ResourceFoundByLongAndShortResourceID_ReturnedByLongResourceID ()
     {
-      _globalizationServiceMock1.Expect (mock => mock.GetResourceManager (_typeInformationStub)).Return (_resourceManager1Mock);
-      _globalizationServiceMock2.Expect (mock => mock.GetResourceManager (_typeInformationStub)).Return (_resourceManager2Mock);
+      _globalizationServiceMock1.Expect (mock => mock.GetResourceManager (_typeInformationStub)).Return (_resourceManager2Mock);
+      _globalizationServiceMock2.Expect (mock => mock.GetResourceManager (_typeInformationStub)).Return (_resourceManager1Mock);
 
       _resourceManager1Mock.Expect (mock => mock.ContainsResource (_longTypeResourceID)).Return (true);
       _resourceManager1Mock.Stub (stub => stub.ContainsResource (_shortTypeResourceID)).Return (true);

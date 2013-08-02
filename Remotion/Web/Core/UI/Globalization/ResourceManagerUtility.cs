@@ -96,7 +96,7 @@ public static class ResourceManagerUtility
     else if (resourceManagers.Count == 1)
       return resourceManagers[0].IsNull ? null : resourceManagers[0];
     else
-      return new ResourceManagerSet (resourceManagers.ToArray());
+      return ResourceManagerSet.Create (resourceManagers);
   }
 
   private static void GetResourceManagersRecursive (Control control, List<IResourceManager> resourceManagers, bool alwaysIncludeParents)

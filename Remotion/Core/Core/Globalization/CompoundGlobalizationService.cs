@@ -45,7 +45,7 @@ namespace Remotion.Globalization
       ArgumentUtility.CheckNotNull ("typeInformation", typeInformation);
 
       // TODO MK Jira Perfoptimization
-      return new ResourceManagerSet (_globalizationServices.Select (s => s.GetResourceManager (typeInformation)).ToArray());
+      return ResourceManagerSet.Create (_globalizationServices.Select (s => s.GetResourceManager (typeInformation)));
     }
   }
 }

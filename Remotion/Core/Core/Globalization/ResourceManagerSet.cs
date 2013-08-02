@@ -21,6 +21,7 @@ using System.Collections.Specialized;
 using Remotion.Logging;
 using Remotion.Text;
 using Remotion.Utilities;
+using System.Linq;
 
 namespace Remotion.Globalization
 {
@@ -28,10 +29,10 @@ namespace Remotion.Globalization
   ///   Combines one or more <see cref="IResourceManager"/> instances to a set that can be accessed using a single interface.
   /// </summary>
   public class ResourceManagerSet : ReadOnlyCollection<IResourceManager>, IResourceManager
-  {
+  {//TODO AO: change readonlycollection from baseclass to member
     private static readonly ILog s_log = LogManager.GetLogger (typeof (ResourceManagerSet));
 
-    private string _name;
+    private readonly string _name;
 
     /// <summary>
     ///   Combines several IResourceManager instances to a single ResourceManagerSet, starting with the first entry of the first set.
@@ -51,33 +52,26 @@ namespace Remotion.Globalization
     ///   </para>
     /// </example>
     /// <param name="resourceManagers"> The resource manager, starting with the least specific. </param>
-    public ResourceManagerSet (params IResourceManager[] resourceManagers)
-        : base (CreateFlatList (resourceManagers))
+    public static ResourceManagerSet Create (IEnumerable<IResourceManager> resourceManagers)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("resourceManagers", resourceManagers);
-
-      //TODO AO: flip order of resource managers 
-      //TODO AO: make ctor with params array obsolete true and provide factory method and ctor expecting IEnumberable
-
-      SeparatedStringBuilder sb = new SeparatedStringBuilder (", ", 30*Count);
-      foreach (IResourceManager rm in this)
-        sb.Append (rm.Name);
-      _name = sb.ToString();
+      ArgumentUtility.CheckNotNull ("resourceManagers", resourceManagers);
+      
+      return new ResourceManagerSet (CreateFlatList(resourceManagers));
     }
 
-    private static IList<IResourceManager> CreateFlatList (IEnumerable<IResourceManager> resourceManagers)
+    protected ResourceManagerSet (IEnumerable<IResourceManager> resourceManagers) : base(resourceManagers.ToList())
     {
-      List<IResourceManager> list = new List<IResourceManager>();
-      foreach (IResourceManager rm in resourceManagers)
-      {
-        ResourceManagerSet rmset = rm as ResourceManagerSet;
-        if (rmset != null)
-          list.AddRange (rmset);
-        else if (rm != null && !rm.IsNull)
-          list.Add (rm);
-      }
+      SeparatedStringBuilder sb = new SeparatedStringBuilder (", ", 30 * Count);
+      foreach (IResourceManager rm in this)
+        sb.Append (rm.Name);
+      _name = sb.ToString ();
+    }
 
-      return list;
+    [Obsolete("User ResourceManagerSet.Create instead", true)]
+    public ResourceManagerSet (params IResourceManager[] resourceManagers)
+        : base (null)
+    {
+      throw new InvalidOperationException ("User ResourceManagerSet.Create instead");
     }
 
     public NameValueCollection GetAllStrings ()
@@ -91,15 +85,15 @@ namespace Remotion.Globalization
     /// <seealso cref="M:Remotion.Globalization.IResourceManager.GetAllStrings(System.String)"/>
     public NameValueCollection GetAllStrings (string prefix)
     {
-      NameValueCollection result = new NameValueCollection();
-
-      foreach (IResourceManager resourceManager in this)
+      var result = new NameValueCollection();
+      foreach (var resourceManager in this)
       {
-        NameValueCollection strings = resourceManager.GetAllStrings (prefix);
-        for (int i = 0; i < strings.Count; i++)
+        var strings = resourceManager.GetAllStrings (prefix);
+        for (var i = 0; i < strings.Count; i++)
         {
-          string key = strings.Keys[i];
-          result[key] = strings[i];
+          var key = strings.Keys[i];
+          if(result[key]==null)
+            result[key] = strings[i];
         }
       }
       return result;
@@ -111,9 +105,9 @@ namespace Remotion.Globalization
     /// <seealso cref="M:Remotion.Globalization.IResourceManager.GetString(System.String)"/>
     public string GetString (string id)
     {
-      for (int i = Count - 1; i >= 0; --i)
+      for (var i = 0; i < Count; i++)
       {
-        string s = this[i].GetString (id);
+        var s = this[i].GetString (id);
         if (s != null && s != id)
           return s;
       }
@@ -138,7 +132,7 @@ namespace Remotion.Globalization
     {
       ArgumentUtility.CheckNotNullOrEmpty ("id", id);
 
-      for (int i = this.Count - 1; i >= 0; --i)
+      for (var i = 0; i < Count; i++)
       {
         if (this[i].ContainsResource (id))
           return true;
@@ -153,6 +147,23 @@ namespace Remotion.Globalization
     {
       ArgumentUtility.CheckNotNull ("enumValue", enumValue);
       return ContainsResource (ResourceIdentifiersAttribute.GetResourceIdentifier (enumValue));
+    }
+
+    private static IEnumerable<IResourceManager> CreateFlatList (IEnumerable<IResourceManager> resourceManagers)
+    {
+      foreach (var resourceManager in resourceManagers)
+      {
+        var rmset = resourceManager as ResourceManagerSet;
+        if (rmset != null)
+        {
+          foreach (var rm in rmset)
+            yield return rm;
+        }
+        else if (resourceManager != null && !resourceManager.IsNull)
+        {
+          yield return resourceManager;
+        }
+      }
     }
 
     public string Name

@@ -314,8 +314,8 @@ namespace Remotion.Mixins.UnitTests.Core.Globalization
 				var resourceManagerSet =
 						(ResourceManagerSet) _resolver.GetResourceManager (typeof (InheritedClassWithMultiLingualResourcesAttributes), false);
 			  Assert.That (resourceManagerSet.Count, Is.EqualTo (2));
-			  Assert.That (resourceManagerSet[0].Name, Is.EqualTo ("OnMixin1"));
-			  Assert.That (resourceManagerSet[1].Name, Is.EqualTo ("OnInherited"));
+			  Assert.That (resourceManagerSet[1].Name, Is.EqualTo ("OnMixin1"));
+			  Assert.That (resourceManagerSet[0].Name, Is.EqualTo ("OnInherited"));
 			}
 		}
 
@@ -342,8 +342,8 @@ namespace Remotion.Mixins.UnitTests.Core.Globalization
         var resourceManagerSet =
             (ResourceManagerSet) _resolver.GetResourceManager (typeof (InheritedClassWithMultiLingualResourcesAttributes), true);
         Assert.That (resourceManagerSet.Count, Is.EqualTo (5));
-        var names = new[] {resourceManagerSet[0].Name, resourceManagerSet[1].Name, resourceManagerSet[2].Name,
-						resourceManagerSet[3].Name, resourceManagerSet[4].Name};
+        var names = new[] {resourceManagerSet[4].Name, resourceManagerSet[3].Name, resourceManagerSet[2].Name,
+						resourceManagerSet[1].Name, resourceManagerSet[0].Name};
 				Assert.That (names, Is.EquivalentTo (new[] { "OnMixin2b", "OnMixin2a", "OnTarget", "OnMixin1", "OnInherited" }));
 				Assert.That (Array.IndexOf (names, "OnTarget"), Is.LessThan (Array.IndexOf (names, "OnInherited")));
       }

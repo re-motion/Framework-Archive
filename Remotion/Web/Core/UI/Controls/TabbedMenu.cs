@@ -552,7 +552,7 @@ namespace Remotion.Web.UI.Controls
       IResourceManager localResourceManager = MultiLingualResources.GetResourceManager (localResourcesType, true);
       IResourceManager namingContainerResourceManager = ResourceManagerUtility.GetResourceManager (NamingContainer, true);
 
-      _cachedResourceManager = new ResourceManagerSet (localResourceManager, namingContainerResourceManager);
+      _cachedResourceManager = ResourceManagerSet.Create (new[] { localResourceManager, namingContainerResourceManager });
 
       return _cachedResourceManager;
     }

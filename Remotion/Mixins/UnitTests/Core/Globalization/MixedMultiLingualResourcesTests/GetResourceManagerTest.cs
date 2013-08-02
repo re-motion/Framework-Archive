@@ -154,9 +154,9 @@ namespace Remotion.Mixins.UnitTests.Core.Globalization.MixedMultiLingualResource
         Assert.That (
             new[]
             {
-                resourceManager[0].Name, resourceManager[1].Name, resourceManager[2].Name, resourceManager[3].Name, resourceManager[3].Name
+                resourceManager[0].Name, resourceManager[1].Name, resourceManager[2].Name, resourceManager[3].Name
             },
-            Is.EquivalentTo (new[] { "OnInherited", "OnInherited", "OnMixin1", "OnMixin2a", "OnMixin2b" }));
+            Is.EquivalentTo (new[] { "OnInherited", "OnMixin1", "OnMixin2a", "OnMixin2b" }));
       }
     }
 

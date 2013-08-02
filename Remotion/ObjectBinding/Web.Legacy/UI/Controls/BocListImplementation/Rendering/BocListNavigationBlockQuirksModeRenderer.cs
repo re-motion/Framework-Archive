@@ -213,9 +213,9 @@ namespace Remotion.ObjectBinding.Web.Legacy.UI.Controls.BocListImplementation.Re
 
     protected virtual IResourceManager GetResourceManager (BocListRenderingContext renderingContext)
     {
-      return new ResourceManagerSet (
+      return ResourceManagerSet.Create (new[] {
           MultiLingualResources.GetResourceManager (typeof (ResourceIdentifier), true),
-          renderingContext.Control.GetResourceManager());
+          renderingContext.Control.GetResourceManager() });
     }
 
     private string GetResolvedImageUrl (string imageUrl)

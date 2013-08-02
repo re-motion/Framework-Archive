@@ -168,14 +168,10 @@ namespace Remotion.Globalization
     private ResourceManagerSet CreateResourceManagerSet (IEnumerable<ResourceDefinition<TAttribute>> resourceDefinitions)
     {
       var resourceManagers = new List<ResourceManager>();
-      foreach (ResourceDefinition<TAttribute> definition in resourceDefinitions)
+      foreach (var definition in resourceDefinitions)
       {
-        foreach (Tuple<Type, TAttribute[]> attributePair in definition.GetAllAttributePairs())
-        {
-          ResourceManager[] resourceManagersForAttributePair = _resourceManagerFactory.GetResourceManagers (
-              attributePair.Item1.Assembly, attributePair.Item2); //TODO AO: simply use a projection on the sequence and create the resource set 
-          resourceManagers.InsertRange (0, resourceManagersForAttributePair);
-        }
+        foreach (var attributePair in definition.GetAllAttributePairs())
+          resourceManagers.AddRange (_resourceManagerFactory.GetResourceManagers (attributePair.Item1.Assembly, attributePair.Item2));
       }
 
       //  Create a new resource mananger wrapper set and return it.

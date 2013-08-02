@@ -49,7 +49,7 @@ namespace Remotion.Globalization
       for (int i = 0; i < wrappers.Length; ++i)
         wrappers[i] = new ResourceManagerWrapper (resourceManagers[i]);
 
-      return new ResourceManagerSet (wrappers);
+      return ResourceManagerSet.Create (wrappers);
     }
 
     // member fields
