@@ -207,7 +207,6 @@ namespace Remotion.ObjectBinding.UnitTests.Core.BindableObject
     }
 
     [Test]
-    [Ignore("TODO AO: check with MK")]
     public void GetPropertyDisplayName_WithPropertyAddedByMixin ()
     {
       BindableObjectClass bindableClass = BindableObjectProviderTestHelper.GetBindableObjectClass (typeof (ClassWithMixedPropertyAndResources));

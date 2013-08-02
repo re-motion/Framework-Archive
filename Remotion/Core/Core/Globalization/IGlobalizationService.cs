@@ -24,8 +24,8 @@ namespace Remotion.Globalization
   [ConcreteImplementation (
       "Remotion.Mixins.Globalization.MixedGlobalizationService, Remotion.Mixins, Version=<version>, Culture=neutral, PublicKeyToken=<publicKeyToken>",
       ignoreIfNotFound: true,
-      Position = 0, Lifetime = LifetimeKind.Singleton)]
-  [ConcreteImplementation (typeof (GlobalizationService), Position = 1, Lifetime = LifetimeKind.Singleton)]
+      Position = 1, Lifetime = LifetimeKind.Singleton)]
+  [ConcreteImplementation (typeof (GlobalizationService), Position = 0, Lifetime = LifetimeKind.Singleton)]
   public interface IGlobalizationService
   {
     [JetBrains.Annotations.NotNull]

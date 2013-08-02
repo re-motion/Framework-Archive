@@ -18,6 +18,7 @@
 using System;
 using System.Collections.Generic;
 using Remotion.ExtensibleEnums;
+using Remotion.FunctionalProgramming;
 using Remotion.Globalization;
 using Remotion.Reflection;
 using Remotion.Utilities;
@@ -75,9 +76,17 @@ namespace Remotion.ObjectBinding.BindableObject
       // attribute analysis. We need to extract that information from BindableObjectMixinIntroducedPropertyInformation. The goal is to redesign mixin-
       // based globalization some time, so that we can work with ordinary IPropertyInformation objects
 
+      //TODO AO: Completely remove BindableObjectMixinIntroducedPropertyInformation
+      //TODO AO: globalizedType should alwas be the target type the mixin is applied for!! (add a integration test that fails before > mixin type with no resource!)
       var mixinIntroducedPropertyInformation = propertyInfo as BindableObjectMixinIntroducedPropertyInformation;
-      var globalizedType = mixinIntroducedPropertyInformation != null ? mixinIntroducedPropertyInformation.ConcreteType : propertyInfo.DeclaringType;
-      var property = mixinIntroducedPropertyInformation != null ? mixinIntroducedPropertyInformation.ConcreteProperty : propertyInfo;
+      var globalizedType = mixinIntroducedPropertyInformation == null ? propertyInfo.DeclaringType : mixinIntroducedPropertyInformation.ConcreteType;
+      var property = mixinIntroducedPropertyInformation == null
+                         ? propertyInfo
+                         : mixinIntroducedPropertyInformation.FindInterfaceDeclarations()
+                                                             .Single (
+                                                                 () =>
+                                                                 new InvalidOperationException (
+                                                                     "BindableObjectGS only supports unique interface declarations but proerty '' is declared on multiply interfaces"));
 
       return _memberInformationGlobalizationService.GetPropertyDisplayName (property, globalizedType);
     }
