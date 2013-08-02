@@ -16,6 +16,7 @@
 // 
 
 using System;
+using System.Collections.Generic;
 using Remotion.ExtensibleEnums;
 using Remotion.Globalization;
 using Remotion.Reflection;
@@ -34,14 +35,18 @@ namespace Remotion.ObjectBinding.BindableObject
       False
     }
 
-    private static readonly IResourceManager s_resourceManager = MultiLingualResources.GetResourceManager (typeof (ResourceIdentifier), true);
-
     private readonly IMemberInformationGlobalizationService _memberInformationGlobalizationService;
+    private readonly DoubleCheckedLockingContainer<IResourceManager> _resourceManager;
 
-    public BindableObjectGlobalizationService (IMemberInformationGlobalizationService memberInformationGlobalizationService)
+    public BindableObjectGlobalizationService (
+        IEnumerable<IGlobalizationService> globalizationServices, IMemberInformationGlobalizationService memberInformationGlobalizationService)
     {
+      ArgumentUtility.CheckNotNull ("globalizationServices", globalizationServices);
       ArgumentUtility.CheckNotNull ("memberInformationGlobalizationService", memberInformationGlobalizationService);
 
+      _resourceManager =
+          new DoubleCheckedLockingContainer<IResourceManager> (
+              () => new CompoundGlobalizationService (globalizationServices).GetResourceManager (TypeAdapter.Create (typeof (ResourceIdentifier))));
       _memberInformationGlobalizationService = memberInformationGlobalizationService;
     }
 
@@ -61,7 +66,7 @@ namespace Remotion.ObjectBinding.BindableObject
     {
       //TODO AO: get ResourceManger from  (injected) GloblizationService (see MemberInformationGlobalizationService) 
       //TODO AO: cache ResourceManger in DoubleCheckedLockingContainer
-      return s_resourceManager.GetString (value ? ResourceIdentifier.True : ResourceIdentifier.False);
+      return _resourceManager.Value.GetString (value ? ResourceIdentifier.True : ResourceIdentifier.False);
     }
 
     public string GetPropertyDisplayName (IPropertyInformation propertyInfo)
