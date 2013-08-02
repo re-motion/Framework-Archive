@@ -64,8 +64,6 @@ namespace Remotion.ObjectBinding.BindableObject
 
     public string GetBooleanValueDisplayName (bool value)
     {
-      //TODO AO: get ResourceManger from  (injected) GloblizationService (see MemberInformationGlobalizationService) 
-      //TODO AO: cache ResourceManger in DoubleCheckedLockingContainer
       return _resourceManager.Value.GetString (value ? ResourceIdentifier.True : ResourceIdentifier.False);
     }
 
