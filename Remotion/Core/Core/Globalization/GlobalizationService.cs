@@ -31,8 +31,7 @@ namespace Remotion.Globalization
     {
       ArgumentUtility.CheckNotNull ("type", type);
 
-      //TODO AO: replace null with NullResourceManager, annotate with JetBrains.CannotBeNull attribute
-      return MultiLingualResources.ExistsResource (type) ? MultiLingualResources.GetResourceManager (type, true) : null;
+      return MultiLingualResources.ExistsResource (type) ? MultiLingualResources.GetResourceManager (type, true) : NullResourceManager.Instance;
     }
   }
 }

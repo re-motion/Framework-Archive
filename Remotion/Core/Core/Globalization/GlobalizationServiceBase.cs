@@ -34,13 +34,13 @@ namespace Remotion.Globalization
       _typeConversionProvider = TypeConversionProvider.Create();
     }
 
+    [JetBrains.Annotations.NotNull]
     protected abstract IResourceManager GetConcreteResourceManager (Type type);
 
     public IResourceManager GetResourceManager (ITypeInformation typeInformation)
     {
       ArgumentUtility.CheckNotNull ("typeInformation", typeInformation);
 
-      //TODO AO: annotate with cannotbenull (including/only interface)
       return _resourceManagerCache.GetOrCreateValue (typeInformation, GetResourceManagerFromType);
     }
 
@@ -50,7 +50,7 @@ namespace Remotion.Globalization
         return NullResourceManager.Instance;
 
       var type = (Type) _typeConversionProvider.Convert (typeInformation.GetType(), typeof (Type), typeInformation);
-      return GetConcreteResourceManager(type) ?? NullResourceManager.Instance;
+      return GetConcreteResourceManager(type);
     }
   }
 }

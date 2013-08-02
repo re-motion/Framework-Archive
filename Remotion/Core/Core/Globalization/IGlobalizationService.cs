@@ -28,6 +28,7 @@ namespace Remotion.Globalization
   [ConcreteImplementation (typeof (GlobalizationService), Position = 1, Lifetime = LifetimeKind.Singleton)]
   public interface IGlobalizationService
   {
+    [JetBrains.Annotations.NotNull]
     IResourceManager GetResourceManager (ITypeInformation typeInformation);
   }
 }
