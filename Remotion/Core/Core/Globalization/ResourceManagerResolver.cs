@@ -133,8 +133,7 @@ namespace Remotion.Globalization
 
     protected virtual object GetResourceManagerSetCacheKey (Type definingType, bool includeHierarchy)
     {
-      //TODO AO: change to tuple<type, boolean>
-      return definingType.AssemblyQualifiedName + "/" + includeHierarchy;
+      return Tuple.Create(definingType, includeHierarchy);
     }
 
     private ResourceManagerCacheEntry CreateCacheEntry (Type objectType, bool includeHierarchy)
