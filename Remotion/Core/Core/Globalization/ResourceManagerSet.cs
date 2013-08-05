@@ -54,19 +54,16 @@ namespace Remotion.Globalization
     ///   </para>
     /// </example>
     /// <param name="resourceManagers"> The resource manager, starting with the least specific. </param>
-    //TODO AO RM-5784: change signature to params-array
-    public static ResourceManagerSet Create (IEnumerable<IResourceManager> resourceManagers)
+    public static ResourceManagerSet Create (params IResourceManager[] resourceManagers)
     {
       ArgumentUtility.CheckNotNull ("resourceManagers", resourceManagers);
 
-      //TODO AO RM-5784: Move CreateFlatList call into ctor.
-      return new ResourceManagerSet (CreateFlatList (resourceManagers));
+      return new ResourceManagerSet (resourceManagers.AsEnumerable());
     }
 
-    //TODO AO RM-5784: make public
-    protected ResourceManagerSet (IEnumerable<IResourceManager> resourceManagers)
+    public ResourceManagerSet (IEnumerable<IResourceManager> resourceManagers)
     {
-      _resourceManagers = resourceManagers.ToArray().AsReadOnly();
+      _resourceManagers = CreateFlatList(resourceManagers).ToArray();
       SeparatedStringBuilder sb = new SeparatedStringBuilder (", ", 30 * _resourceManagers.Count);
       foreach (var rm in _resourceManagers)
         sb.Append (rm.Name);
@@ -81,7 +78,7 @@ namespace Remotion.Globalization
 
     public IEnumerable<IResourceManager> ResourceManagers
     {
-      get { return _resourceManagers; }
+      get { return _resourceManagers.AsReadOnly(); }
     }
 
     public NameValueCollection GetAllStrings ()

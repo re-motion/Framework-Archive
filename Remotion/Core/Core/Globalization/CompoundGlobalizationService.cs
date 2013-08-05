@@ -44,7 +44,7 @@ namespace Remotion.Globalization
     {
       ArgumentUtility.CheckNotNull ("typeInformation", typeInformation);
 
-      return ResourceManagerSet.Create (_globalizationServices.Select (s => s.GetResourceManager (typeInformation)));
+      return new ResourceManagerSet (_globalizationServices.Select (s => s.GetResourceManager (typeInformation)));
     }
   }
 }
