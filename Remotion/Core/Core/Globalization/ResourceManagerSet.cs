@@ -19,7 +19,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
-using Remotion.Collections;
 using Remotion.Logging;
 using Remotion.Text;
 using Remotion.Utilities;
@@ -33,7 +32,7 @@ namespace Remotion.Globalization
   {
     private static readonly ILog s_log = LogManager.GetLogger (typeof (ResourceManagerSet));
 
-    private readonly ReadOnlyCollectionDecorator<IResourceManager> _resourceManagers;
+    private readonly IResourceManager[] _resourceManagers;
     private readonly string _name;
 
     /// <summary>
@@ -63,8 +62,8 @@ namespace Remotion.Globalization
 
     protected ResourceManagerSet (IEnumerable<IResourceManager> resourceManagers)
     {
-      _resourceManagers = resourceManagers.ToArray().AsReadOnly();
-      SeparatedStringBuilder sb = new SeparatedStringBuilder (", ", 30 * _resourceManagers.Count);
+      _resourceManagers = resourceManagers.ToArray();
+      SeparatedStringBuilder sb = new SeparatedStringBuilder (", ", 30 * _resourceManagers.Length);
       foreach (var rm in _resourceManagers)
         sb.Append (rm.Name);
       _name = sb.ToString();
@@ -112,7 +111,7 @@ namespace Remotion.Globalization
     /// <seealso cref="M:Remotion.Globalization.IResourceManager.GetString(System.String)"/>
     public string GetString (string id)
     {
-      for (var i = 0; i < _resourceManagers.Count; i++)
+      for (var i = 0; i < _resourceManagers.Length; i++)
       {
         var s = _resourceManagers.ElementAt(i).GetString (id);
         if (s != null && s != id)
