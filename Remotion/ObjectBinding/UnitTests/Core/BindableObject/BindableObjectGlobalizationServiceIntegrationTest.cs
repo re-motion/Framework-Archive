@@ -214,5 +214,14 @@ namespace Remotion.ObjectBinding.UnitTests.Core.BindableObject
 
       Assert.That (_globalizationService.GetPropertyDisplayName (property.PropertyInfo), Is.EqualTo ("Resourced!"));
     }
+
+    [Test]
+    public void GetPropertyDisplayName_WithPropertyAddedByMixin_NoMixinResource ()
+    {
+      BindableObjectClass bindableClass = BindableObjectProviderTestHelper.GetBindableObjectClass (typeof (ClassWithMixedPropertyAndResources));
+      PropertyBase property = (PropertyBase) bindableClass.GetPropertyDefinition ("MixedReadOnlyProperty");
+
+      Assert.That (_globalizationService.GetPropertyDisplayName (property.PropertyInfo), Is.EqualTo ("MixedReadOnlyProperty"));
+    }
   }
 }
