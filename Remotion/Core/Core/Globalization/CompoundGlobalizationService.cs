@@ -44,7 +44,6 @@ namespace Remotion.Globalization
     {
       ArgumentUtility.CheckNotNull ("typeInformation", typeInformation);
 
-      // TODO MK Jira Perfoptimization
       return ResourceManagerSet.Create (_globalizationServices.Select (s => s.GetResourceManager (typeInformation)));
     }
   }
