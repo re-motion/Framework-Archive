@@ -28,15 +28,10 @@ namespace Remotion.Mixins.Globalization
   public class MixedResourceManagerResolver<TAttribute> : ResourceManagerResolver<TAttribute>
       where TAttribute : Attribute, IResourcesAttribute
   {
-    public override IEnumerable<ResourceDefinition<TAttribute>> GetResourceDefinitionStream (Type type, bool includeHierarchy)
-    {
-      type = MixinTypeUtility.GetUnderlyingTargetType (type); // this adjusts type if it is a mixin engine-generated type, otherwise ignores it
-      //TODO AO: refactor to a decorator
-      return base.GetResourceDefinitionStream (type, includeHierarchy);
-    }
-
+    
     protected override ResourceDefinition<TAttribute> GetResourceDefinition (Type type, Type currentType)
     {
+      //TODO AO: refactor to a decorator
 			ResourceDefinition<TAttribute> resourcesOnType = base.GetResourceDefinition (type, currentType);
 			if (type == currentType)
 			{

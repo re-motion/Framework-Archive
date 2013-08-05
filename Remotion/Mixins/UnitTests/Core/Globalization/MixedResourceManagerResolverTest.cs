@@ -428,21 +428,6 @@ namespace Remotion.Mixins.UnitTests.Core.Globalization
       _resolver.GetResourceManager (typeof (ClassWithoutMultiLingualResourcesAttributes), true);
     }
 
-    [Test]
-    [ExpectedException (typeof (MissingManifestResourceException), ExpectedMessage = "Could not find any resources appropriate for the specified "
-                                                                                     + "culture or the neutral culture.  Make sure \"OnTarget.resources\" was correctly embedded or linked into assembly "
-                                                                                     + "\"Remotion.Mixins.UnitTests\" at compile time, or that all the satellite assemblies required are loadable and fully signed."
-        )]
-    public void GetResourceManager_ForGeneratedType_GetString ()
-    {
-      using (MixinConfiguration.BuildNew().ForClass<ClassWithMultiLingualResourcesAttributes>().AddMixin<NullMixin>().EnterScope())
-      {
-        var generatedType = TypeFactory.GetConcreteType (typeof (ClassWithMultiLingualResourcesAttributes));
-        IResourceManager resourceManager = _resolver.GetResourceManager (generatedType, true);
-        resourceManager.GetString ("Foo");
-      }
-    }
-
     private MultiLingualResourcesAttribute[] AttributesFor<T> ()
     {
       return AttributeUtility.GetCustomAttributes<MultiLingualResourcesAttribute> (typeof (T), false);
