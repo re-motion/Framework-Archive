@@ -53,6 +53,7 @@ namespace Remotion.Globalization
     ///   </para>
     /// </example>
     /// <param name="resourceManagers"> The resource manager, starting with the least specific. </param>
+    //TODO AO RM-5784: change signature to params-array
     public static ResourceManagerSet Create (IEnumerable<IResourceManager> resourceManagers)
     {
       ArgumentUtility.CheckNotNull ("resourceManagers", resourceManagers);
@@ -60,6 +61,7 @@ namespace Remotion.Globalization
       return new ResourceManagerSet (CreateFlatList (resourceManagers));
     }
 
+    //TODO AO RM-5784: make public
     protected ResourceManagerSet (IEnumerable<IResourceManager> resourceManagers)
     {
       _resourceManagers = resourceManagers.ToArray();
@@ -69,10 +71,10 @@ namespace Remotion.Globalization
       _name = sb.ToString();
     }
 
-    [Obsolete ("User ResourceManagerSet.Create instead", true)]
+    [Obsolete ("Use ResourceManagerSet.Create instead. (Version 1.23.211)", true)]
     public ResourceManagerSet (params IResourceManager[] resourceManagers)
     {
-      throw new InvalidOperationException ("User ResourceManagerSet.Create instead");
+      throw new InvalidOperationException ("Use ResourceManagerSet.Create instead. (Version 1.23.211)");
     }
 
     public IEnumerable<IResourceManager> ResourceManagers
