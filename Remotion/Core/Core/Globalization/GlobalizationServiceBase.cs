@@ -16,6 +16,7 @@
 // 
 
 using System;
+using JetBrains.Annotations;
 using Remotion.Collections;
 using Remotion.Reflection;
 using Remotion.Utilities;
@@ -34,7 +35,7 @@ namespace Remotion.Globalization
       _typeConversionProvider = TypeConversionProvider.Create();
     }
 
-    [JetBrains.Annotations.NotNull]
+    [NotNull]
     protected abstract IResourceManager GetConcreteResourceManager (Type type);
 
     public IResourceManager GetResourceManager (ITypeInformation typeInformation)
@@ -44,6 +45,7 @@ namespace Remotion.Globalization
       return _resourceManagerCache.GetOrCreateValue (typeInformation, GetResourceManagerFromType);
     }
 
+    [NotNull]
     private IResourceManager GetResourceManagerFromType (ITypeInformation typeInformation)
     {
       if (!_typeConversionProvider.CanConvert (typeInformation.GetType(), typeof (Type)))

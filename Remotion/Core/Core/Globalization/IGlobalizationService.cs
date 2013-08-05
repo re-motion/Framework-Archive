@@ -16,6 +16,7 @@
 // 
 
 using System;
+using JetBrains.Annotations;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
 
@@ -28,7 +29,7 @@ namespace Remotion.Globalization
   [ConcreteImplementation (typeof (GlobalizationService), Position = 0, Lifetime = LifetimeKind.Singleton)]
   public interface IGlobalizationService
   {
-    [JetBrains.Annotations.NotNull]
+    [NotNull]
     IResourceManager GetResourceManager (ITypeInformation typeInformation);
   }
 }
