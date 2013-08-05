@@ -58,6 +58,7 @@ namespace Remotion.Globalization
     {
       ArgumentUtility.CheckNotNull ("resourceManagers", resourceManagers);
 
+      //TODO AO RM-5784: Move CreateFlatList call into ctor.
       return new ResourceManagerSet (CreateFlatList (resourceManagers));
     }
 
