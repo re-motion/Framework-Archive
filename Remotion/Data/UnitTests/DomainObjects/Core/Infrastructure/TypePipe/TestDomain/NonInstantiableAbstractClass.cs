@@ -14,27 +14,25 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using Remotion.Data.DomainObjects;
-using Remotion.Data.DomainObjects.ObjectBinding;
 
-namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.Interception.TestDomain
+using System;
+using Remotion.Data.DomainObjects;
+
+namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.TypePipe.TestDomain
 {
   [DBTable]
   [Instantiable]
-  public abstract class ClassWithNonVirtualManualPropertyAccessors : SimpleDomainObject<ClassWithNonVirtualManualPropertyAccessors>
+  public abstract class NonInstantiableAbstractClass : DomainObject
   {
-    [DBBidirectionalRelation ("RelatedObjects")]
-    public abstract ClassWithNonVirtualManualPropertyAccessors Parent { get; }
-
-    [DBBidirectionalRelation ("Parent")]
-    public ObjectList<ClassWithNonVirtualManualPropertyAccessors> RelatedObjects
+    public static NonInstantiableAbstractClass NewObject()
     {
-      get
-      {
-        return Properties[typeof (ClassWithNonVirtualManualPropertyAccessors), "RelatedObjects"]
-            .GetValue<ObjectList<ClassWithNonVirtualManualPropertyAccessors>>();
-      }
-      set { Properties[typeof (ClassWithNonVirtualManualPropertyAccessors), "RelatedObjects"].SetValue (value); }
+      return NewObject<NonInstantiableAbstractClass>();
     }
+
+    protected NonInstantiableAbstractClass ()
+    {
+    }
+  
+    public abstract void Foo ();
   }
 }

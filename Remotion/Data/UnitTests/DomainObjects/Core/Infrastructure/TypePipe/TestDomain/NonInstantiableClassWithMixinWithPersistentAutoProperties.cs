@@ -1,4 +1,4 @@
-// This file is part of the re-motion Core Framework (www.re-motion.org)
+﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -14,28 +14,25 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using NUnit.Framework;
-using Remotion.Data.DomainObjects;
-using Remotion.Reflection;
 
-namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.Interception.TestDomain
+using System;
+using Remotion.Data.DomainObjects;
+using Remotion.Mixins;
+
+namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.TypePipe.TestDomain
 {
   [DBTable]
-  public class ClassWithWrongConstructor : DomainObject
+  [Uses (typeof (MixinWithAutoProperties))]
+  public class NonInstantiableClassWithMixinWithPersistentAutoProperties : DomainObject
   {
-    public static ClassWithWrongConstructor NewObject ()
+    public static NonInstantiableClassWithMixinWithPersistentAutoProperties NewObject ()
     {
-      return NewObject<ClassWithWrongConstructor> ();
+      return NewObject<NonInstantiableClassWithMixinWithPersistentAutoProperties> ();
     }
 
-    public static ClassWithWrongConstructor NewObject (double d)
+    public class MixinWithAutoProperties : DomainObjectMixin<NonInstantiableClassWithMixinWithPersistentAutoProperties>
     {
-      return NewObject<ClassWithWrongConstructor> (ParamList.Create (d));
-    }
-
-    public ClassWithWrongConstructor (string s)
-    {
-      Assert.Fail ("Shouldn't be executed.");
+      public int PersistentAutoProperty { get; set; }
     }
   }
 }

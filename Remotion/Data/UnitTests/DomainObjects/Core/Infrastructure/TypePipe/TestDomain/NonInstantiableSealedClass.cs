@@ -14,13 +14,22 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
+using System;
 using Remotion.Data.DomainObjects;
 
-namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.Interception.TestDomain
+namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.TypePipe.TestDomain
 {
-  public abstract class DOWithAbstractStorageClassNoneProperties : DomainObject
+  [DBTable]
+  public sealed class NonInstantiableSealedClass : DomainObject
   {
-    [StorageClassNone]
-    public abstract int PropertyWithGetterAndSetter { get; set; }
+    public static NonInstantiableSealedClass NewObject ()
+    {
+      return NewObject<NonInstantiableSealedClass> ();
+    }
+
+    public NonInstantiableSealedClass()
+    {
+    }
   }
 }

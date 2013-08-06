@@ -14,12 +14,28 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
+using System;
 using Remotion.Data.DomainObjects;
 
-namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.Interception.TestDomain
+namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.TypePipe.TestDomain
 {
   [DBTable]
-  public class NonSerializableDO : DomainObject
+  public class ClassWithExplicitInterfaceProperty : DomainObject, IPropertyInterface
   {
+    public static ClassWithExplicitInterfaceProperty NewObject()
+    {
+      return NewObject<ClassWithExplicitInterfaceProperty>();
+    }
+
+    protected ClassWithExplicitInterfaceProperty ()
+    {
+    }
+
+    int IPropertyInterface.Property
+    {
+      get { return CurrentProperty.GetValue<int> (); }
+      set { CurrentProperty.SetValue (value); }
+    }
   }
 }

@@ -14,19 +14,30 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
+using System;
+using NUnit.Framework;
 using Remotion.Data.DomainObjects;
+using Remotion.Reflection;
 
-namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.Interception.TestDomain
+namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.TypePipe.TestDomain
 {
-  [Instantiable]
-  public abstract class DOImplementingAbstractPropertyAccessors : DOWithAbstractProperties
+  [DBTable]
+  public class ClassWithWrongConstructor : DomainObject
   {
-    private int _value;
-
-    public override int PropertyWithGetterAndSetter
+    public static ClassWithWrongConstructor NewObject ()
     {
-      get { return _value; }
-      set { _value = value + 7; }
+      return NewObject<ClassWithWrongConstructor> ();
+    }
+
+    public static ClassWithWrongConstructor NewObject (double d)
+    {
+      return NewObject<ClassWithWrongConstructor> (ParamList.Create (d));
+    }
+
+    public ClassWithWrongConstructor (string s)
+    {
+      Assert.Fail ("Shouldn't be executed.");
     }
   }
 }

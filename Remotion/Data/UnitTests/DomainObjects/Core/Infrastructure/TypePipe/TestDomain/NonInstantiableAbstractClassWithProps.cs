@@ -14,19 +14,26 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
 using Remotion.Data.DomainObjects;
 
-namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.Interception.TestDomain
+namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.TypePipe.TestDomain
 {
-  [Serializable]
-  public class DOHidingVirtualProperties : DOWithVirtualProperties
+  [Instantiable]
+  [DBTable]
+  public abstract class NonInstantiableAbstractClassWithProps : DomainObject
   {
-    [DBColumn ("NewPropertyWithGetterAndSetter")]
-    public new virtual int PropertyWithGetterAndSetter
+    public static NonInstantiableAbstractClassWithProps NewObject ()
     {
-      get { return CurrentProperty.GetValue<int> (); }
-      set { CurrentProperty.SetValue (value); }
+      return NewObject<NonInstantiableAbstractClassWithProps> ();
     }
+
+    protected NonInstantiableAbstractClassWithProps()
+    {
+    }
+
+    [StorageClassNone]
+    public abstract int Foo { get; }
   }
 }
