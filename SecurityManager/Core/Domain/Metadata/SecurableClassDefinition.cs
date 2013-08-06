@@ -83,11 +83,6 @@ namespace Remotion.SecurityManager.Domain.Metadata
     [DBBidirectionalRelation ("BaseClass", SortExpression = "Index ASC")]
     public abstract ObjectList<SecurableClassDefinition> DerivedClasses { get; }
 
-    public void Touch ()
-    {
-      RegisterForCommit();
-    }
-
     [EditorBrowsable (EditorBrowsableState.Never)]
     [DBBidirectionalRelation ("Class")]
     protected abstract ObjectList<StatePropertyReference> StatePropertyReferences { get; }
@@ -190,7 +185,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
       foreach (var ace in GetAccessControlLists().SelectMany (acl => acl.AccessControlEntries))
         ace.AddAccessType (accessType);
 
-      Touch();
+      RegisterForCommit();
     }
 
     /// <summary>
@@ -221,7 +216,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
       foreach (var ace in GetAccessControlLists().SelectMany (acl => acl.AccessControlEntries))
         ace.RemoveAccessType (accessType);
 
-      Touch();
+      RegisterForCommit();
     }
 
     /// <summary>
@@ -261,7 +256,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
       for (int i = 0; i < AccessTypeReferences.Count; i++)
         AccessTypeReferences[i].Index = i;
 
-      Touch();
+      RegisterForCommit();
     }
 
     /// <summary>
@@ -286,7 +281,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
 
       StatePropertyReferences.Add (reference);
 
-      Touch();
+      RegisterForCommit();
     }
 
     /// <summary>
@@ -325,7 +320,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
         }
       }
 
-      Touch();
+      RegisterForCommit();
     }
 
     /// <summary>Retrieves the <see cref="StatePropertyDefinition"/> with the passed name.</summary>
@@ -423,9 +418,9 @@ namespace Remotion.SecurityManager.Domain.Metadata
         }
       }
 
-      base.OnCommitting (args);
+      RegisterForCommit();
 
-      Touch();
+      base.OnCommitting (args);
     }
 
     protected override void OnRelationChanged (RelationChangedEventArgs args)
