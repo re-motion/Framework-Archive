@@ -14,36 +14,25 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
 using System.Reflection;
-using System.Runtime.Serialization;
+using NUnit.Framework;
+using Remotion.Mixins.CodeGeneration.TypePipe;
+using Remotion.Mixins.UnitTests.Core.TestDomain;
 
-namespace Remotion.Mixins.Context.Serialization
+namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
 {
-  /// <summary>
-  /// Deserializes the data serialized by a <see cref="SerializationInfoMixinContextOriginSerializer"/>.
-  /// </summary>
-  public class SerializationInfoMixinContextOriginDeserializer : SerializationInfoDeserializerBase, IMixinContextOriginDeserializer
+  [TestFixture]
+  public class OverrideInterfaceMappingAttributeTest
   {
-    public SerializationInfoMixinContextOriginDeserializer (SerializationInfo info, string prefix)
-        : base (info, prefix)
+    [Test]
+    public void ResolveMethod ()
     {
-    }
+      var attribute = new OverrideInterfaceMappingAttribute (typeof (MixinWithAbstractMembers), "AbstractMethod", "Void AbstractMethod()");
+      var expected = typeof (MixinWithAbstractMembers).GetMethod ("AbstractMethod", BindingFlags.NonPublic | BindingFlags.Instance);
 
-    public string GetKind ()
-    {
-      return GetValue<string> ("Kind");
-    }
-
-    public Assembly GetAssembly ()
-    {
-      var assemblyName = GetValue<string> ("Assembly.FullName");
-      return Assembly.Load (assemblyName);
-    }
-
-    public string GetLocation ()
-    {
-      return GetValue<string> ("Location");
+      Assert.That (attribute.ResolveReferencedMethod (), Is.EqualTo (expected));
     }
   }
 }
