@@ -623,12 +623,8 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.RelationEndP
     }
 
     [Test]
-    [UseLegacyCodeGeneration]
     public void FlattenedSerializable ()
     {
-      //TODO 5370: Remove
-      SetUp ();
-
       var changeDetectionStrategy = new SerializableCollectionEndPointChangeDetectionStrategyFake();
       var data = new CollectionEndPointDataManager (_endPointID, changeDetectionStrategy);
 
