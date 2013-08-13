@@ -22,8 +22,6 @@ using Remotion.Utilities;
 
 namespace Remotion.Mixins.CodeGeneration.TypePipe
 {
-  // TODO 5370: docs
-  // TODO 5370: tests
   public class ConfigurationProvider : IConfigurationProvider
   {
     public TargetClassDefinition GetTargetClassDefinition (ClassContext classContext)

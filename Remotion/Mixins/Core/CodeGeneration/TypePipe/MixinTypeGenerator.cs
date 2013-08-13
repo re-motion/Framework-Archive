@@ -29,7 +29,9 @@ using Remotion.Utilities;
 
 namespace Remotion.Mixins.CodeGeneration.TypePipe
 {
-  // TODO 5370
+  /// <summary>
+  /// Encapsulates the generation of a derived mixin type.
+  /// </summary>
   public class MixinTypeGenerator
   {
     private static readonly MethodInfo s_getObjectDataForGeneratedTypesMethod = MemberInfoFromExpressionUtility.GetMethod (
@@ -78,7 +80,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     public void ImplementGetObjectData ()
     {
-      // TODO 5370: This does exactly the same as what ComplexSerializationEnabler does, but with a different ID (ConcreteMixinTypeIdentifier instead 
+      // TODO 5811: This does exactly the same as what ComplexSerializationEnabler does, but with a different ID (ConcreteMixinTypeIdentifier instead 
       // of AssembledTypeID) and a different way to get the type back from the pipeline (GetAdditionalType instead of GetAssembledType).
       // Consider refactoring ComplexSerializationEnabler to allow this code to be replaced.
 
@@ -109,7 +111,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     public OverrideInterface GenerateOverrides ()
     {
-      var overrideInterfaceGenerator = OverrideInterfaceGenerator2.CreateNestedGenerator (_type, "IOverriddenMethods");
+      var overrideInterfaceGenerator = OverrideInterfaceGenerator.CreateNestedGenerator (_type, "IOverriddenMethods");
 
       var targetReference = GetTargetReference();
       foreach (var method in _identifier.Overridden)
@@ -120,7 +122,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
         AddCallToOverrider (methodOverride, targetReference, methodToCall);
       }
 
-      return new OverrideInterface (overrideInterfaceGenerator.Type, overrideInterfaceGenerator.GetInterfaceMethodsForOverriddenMethods());
+      return new OverrideInterface (overrideInterfaceGenerator.Type, overrideInterfaceGenerator.InterfaceMethodsForOverriddenMethods);
     }
 
     private Expression GetTargetReference ()

@@ -23,17 +23,15 @@ using Remotion.TypePipe.MutableReflection.BodyBuilding;
 
 namespace Remotion.Mixins.CodeGeneration.TypePipe
 {
-  // TODO 5370: docs
+  /// <summary>
+  /// Builds complex <see cref="Expression"/>s needed for code generation.
+  /// </summary>
   public interface IExpressionBuilder
   {
     Expression CreateNewClassContext (ClassContext classContext);
 
-    Expression CreateInitialization (MutableType concreteTarget, Expression extensionsField, Expression extensionsInitializedField);
+    Expression CreateInitialization (MutableType concreteTarget, MethodInfo initializationMethod);
 
-    Expression CreateInitializationOnConstructionOrDeserialization (
-        MutableType concreteTarget, Expression extensionsField, Expression extensionsInitializedField, Expression initializationSemantcis);
-
-    Expression CreateInitializingDelegation (
-        MethodBodyContextBase bodyContext, Expression extensionsField, Expression extensionsInitializedField, Expression instance, MethodInfo methodToCall);
+    Expression CreateInitializingDelegation (MethodBodyContextBase ctx, MethodInfo initializationMethod, Expression instance, MethodInfo methodToCall);
   }
 }

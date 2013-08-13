@@ -25,7 +25,9 @@ using Remotion.Utilities;
 
 namespace Remotion.Mixins.CodeGeneration.TypePipe
 {
-  // TODO 5370.
+  /// <summary>
+  /// A TypePipe <see cref="IParticipant"/> that specifies the code generation needs necessary for re-mix.
+  /// </summary>
   public class MixinParticipant : IParticipant
   {
     private readonly IConfigurationProvider _configurationProvider;
@@ -37,7 +39,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
         : this (
             new ConfigurationProvider(),
             new MixinTypeGeneratorFacade(),
-            new TargetTypeGeneratorFacade(new NextCallProxyGenerator()),
+            new TargetTypeGeneratorFacade (new NextCallProxyGenerator()),
             new AttributeBasedMetadataImporter())
     {
     }
@@ -61,7 +63,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     public ITypeIdentifierProvider PartialTypeIdentifierProvider
     {
-      get { return new MixinParticipantTypeIdentifierProvider (_concreteTypeMetadataImporter); }
+      get { return new MixinParticipantTypeIdentifierProvider(); }
     }
 
     public void Participate (object id, IProxyTypeAssemblyContext proxyTypeAssemblyContext)

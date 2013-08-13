@@ -27,8 +27,9 @@ using Remotion.Utilities;
 
 namespace Remotion.Mixins.CodeGeneration.TypePipe
 {
-  // TODO 5370: docs
-  // TODO 5370: tests
+  /// <summary>
+  /// Generates <see cref="INextCallProxy"/> instances.
+  /// </summary>
   public class NextCallProxyGenerator : INextCallProxyGenerator
   {
     public INextCallProxy Create (
@@ -69,8 +70,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     private MutableType CreateNextCallProxyType (MutableType concreteTarget, TargetClassDefinition targetClassDefinition)
     {
-      // TODO 5370: Old code would add SerializableAttribute, instead of TypeAttributes. (Does this work too?!)
-      var attributes = TypeAttributes.NestedPublic | TypeAttributes.Sealed | TypeAttributes.Serializable;
+      var attributes = TypeAttributes.NestedPublic | TypeAttributes.Sealed;
       var nextCallProxy =  concreteTarget.AddNestedType ("NextCallProxy", attributes, typeof (object));
 
       AddRequiredInterfaces (nextCallProxy, targetClassDefinition);

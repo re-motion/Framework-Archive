@@ -29,7 +29,6 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
 {
   /// <summary>
   /// A TypePipe <see cref="IParticipant"/> that specifies the code generation needs necessary for re-store.
-  /// The proxy base type (i.e. requested type) is assumed to be a subclass of <see cref="DomainObject"/>.
   /// </summary>
   /// <remarks>
   /// This <see cref="IParticipant"/> applies the following modifications.
@@ -43,7 +42,6 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
   ///     Implements or wraps intercepted properties (i.e., properties for which <see cref="IInterceptedPropertyFinder"/> returns interceptors).
   ///   </item>
   /// </list>
-  /// Note that serialization is currently not supported.
   /// </remarks>
   public class DomainObjectParticipant : SimpleParticipantBase
   {
@@ -62,7 +60,12 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
     private readonly ITypeDefinitionProvider _typeDefinitionProvider;
     private readonly IInterceptedPropertyFinder _interceptedPropertyFinder;
 
-    public DomainObjectParticipant (ITypeDefinitionProvider typeDefinitionProvider, IInterceptedPropertyFinder interceptedPropertyFinder)
+    public DomainObjectParticipant ()
+        : this (new TypeDefinitionProvider(), new InterceptedPropertyCollectorAdapter())
+    {
+    }
+
+    private DomainObjectParticipant (ITypeDefinitionProvider typeDefinitionProvider, IInterceptedPropertyFinder interceptedPropertyFinder)
     {
       ArgumentUtility.CheckNotNull ("typeDefinitionProvider", typeDefinitionProvider);
       ArgumentUtility.CheckNotNull ("interceptedPropertyFinder", interceptedPropertyFinder);

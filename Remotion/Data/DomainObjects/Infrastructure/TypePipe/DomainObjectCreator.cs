@@ -20,8 +20,8 @@ using System.Runtime.Serialization;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectLifetime;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Reflection;
-using Remotion.ServiceLocation;
 using Remotion.TypePipe;
+using Remotion.TypePipe.Implementation;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
@@ -29,23 +29,11 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
   /// <summary>
   /// Creates new domain object instances via an instance of <see cref="IPipeline"/>.
   /// </summary>
-  public class TypePipeBasedDomainObjectCreator : IDomainObjectCreator
+  public class DomainObjectCreator : IDomainObjectCreator
   {
-    // TODO 5375: Remove if possible.
-    public static readonly TypePipeBasedDomainObjectCreator Instance = CreateInstance();
-
-    // TODO 5375: Refactor away and move to callers?
-    private static TypePipeBasedDomainObjectCreator CreateInstance ()
-    {
-      var pipelineRegistry = SafeServiceLocator.Current.GetInstance<IPipelineRegistry>();
-      var defaultPipeline = pipelineRegistry.DefaultPipeline;
-
-      return new TypePipeBasedDomainObjectCreator (defaultPipeline);
-    }
-
     private readonly IPipeline _pipeline;
 
-    public TypePipeBasedDomainObjectCreator (IPipeline pipeline)
+    public DomainObjectCreator (IPipeline pipeline)
     {
       ArgumentUtility.CheckNotNull ("pipeline", pipeline);
 
@@ -68,8 +56,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
 
       var concreteType = _pipeline.ReflectionService.GetAssembledType (objectID.ClassDefinition.ClassType);
       var instance = (DomainObject) FormatterServices.GetSafeUninitializedObject (concreteType);
-      // TODO 5370:
-      _pipeline.PrepareExternalUninitializedObject (instance, 0);
+      _pipeline.PrepareExternalUninitializedObject (instance, InitializationSemantics.Construction);
 
       // These calls are normally performed by DomainObject's ctor
       instance.Initialize (objectID, objectInitializationContext.RootTransaction);

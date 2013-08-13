@@ -43,10 +43,6 @@
     <AssemblyOriginatorKeyFile>..\..\..\remotion.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Castle.Core, Version=3.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\prereq\Assemblies\Castle-3.0\net-4.0 (Client Profile)\Castle.Core.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\..\prereq\Assemblies\CommonServiceLocator-1.0\net-2.0\Microsoft.Practices.ServiceLocation.dll</HintPath>
     </Reference>
@@ -68,7 +64,6 @@
     <Compile Include="CodeGeneration\ConcreteMixinTypeAttribute.cs" />
     <Compile Include="CodeGeneration\ConcreteMixinTypeIdentifier.cs" />
     <Compile Include="CodeGeneration\TypePipe\ImplementedInterfaceFinder.cs" />
-    <Compile Include="CodeGeneration\TypePipe\IInitializableMixinTarget.cs" />
     <Compile Include="CodeGeneration\TypePipe\OverrideInterfaceMappingAttribute.cs" />
     <Compile Include="CodeGeneration\IConcreteTypeMetadataImporter.cs" />
     <Compile Include="CodeGeneration\IGeneratedMixinType.cs" />
@@ -93,7 +88,6 @@
     <Compile Include="CodeGeneration\TypePipe\CodeGenerationMixinContextSerializer.cs" />
     <Compile Include="CodeGeneration\TypePipe\ConcreteMixinTypeIdentifierSerializerBase.cs" />
     <Compile Include="CodeGeneration\TypePipe\ConfigurationProvider.cs" />
-    <Compile Include="CodeGeneration\TypePipe\DerivedMixinInfo.cs" />
     <Compile Include="CodeGeneration\TypePipe\ExpressionBuilder.cs" />
     <Compile Include="CodeGeneration\TypePipe\ExpressionClassContextSerializer.cs" />
     <Compile Include="CodeGeneration\TypePipe\ExpressionConcreteMixinTypeIdentifierSerializer.cs" />
@@ -123,7 +117,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="CodeGeneration\TypePipe\OverrideInterface.cs" />
-    <Compile Include="CodeGeneration\TypePipe\OverrideInterfaceGenerator2.cs" />
+    <Compile Include="CodeGeneration\TypePipe\OverrideInterfaceGenerator.cs" />
     <Compile Include="CodeGeneration\TypePipe\RegularMixinInfo.cs" />
     <Compile Include="CodeGeneration\TypePipe\SerializationImplementer.cs" />
     <Compile Include="CodeGeneration\TypePipe\TargetTypeForNextCall.cs" />
@@ -300,7 +294,6 @@
     <Compile Include="Utilities\DependencySort\IDependencyAnalyzer.cs" />
     <Compile Include="Definitions\Building\DependencySorting\IDependentMixinSorter.cs" />
     <Compile Include="Utilities\MixedObjectInstantiationScope.cs" />
-    <Compile Include="Utilities\MixedTypeConstructorLookupInfo.cs" />
     <Compile Include="Utilities\MixinGenericArgumentFinder.cs" />
     <Compile Include="Utilities\MixinReflector.cs" />
     <Compile Include="Utilities\MixinTypeCloser.cs" />
@@ -366,10 +359,6 @@
     <ProjectReference Include="..\..\Core\Core\Core.Core.csproj">
       <Project>{2AA369EC-A4E7-4D75-9101-EFA90E902625}</Project>
       <Name>Core.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Core\Reflection.CodeGeneration\Core.Reflection.CodeGeneration.csproj">
-      <Project>{503dcac3-e668-41d8-aa48-176e489b8e86}</Project>
-      <Name>Core.Reflection.CodeGeneration</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\TypePipe\Core\TypePipe.Core.csproj">
       <Project>{98e7f7aa-12b2-4a6b-8922-52c8e53b378e}</Project>
