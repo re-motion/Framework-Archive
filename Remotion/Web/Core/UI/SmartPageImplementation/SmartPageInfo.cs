@@ -174,7 +174,12 @@ namespace Remotion.Web.UI.SmartPageImplementation
 
       Tuple<Control, string> command = new Tuple<Control, string> (control, StringUtility.NullToEmpty (eventArguments));
       if (!_synchronousPostBackCommands.Contains (command))
+      {
+        var scriptManager = ScriptManager.GetCurrent (_page.WrappedInstance);
+        if (scriptManager != null)
+          scriptManager.RegisterAsyncPostBackControl (control);
         _synchronousPostBackCommands.Add (command);
+      }
     }
 
     /// <summary> Find the <see cref="IResourceManager"/> for this SmartPageInfo. </summary>
@@ -544,7 +549,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
       {
         script.Append ("  ");
         script.Append (array).Append ("[").Append (array).Append (".length] = '");
-        script.Append (command.Item1.ClientID + "|" + command.Item2);
+        script.Append (command.Item1.UniqueID + "|" + command.Item2);
         script.AppendLine ("';");
       }
     }

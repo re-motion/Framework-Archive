@@ -29,7 +29,6 @@ namespace Remotion.Web.Test.UpdatePanelTests
     protected override void OnInit (EventArgs e)
     {
       base.OnInit (e);
-
       AsyncPostBackInsideUpdatePanelButton.Click += HandlePostBack;
       AsyncPostBackOutsideUpdatePanelButton.Click += HandlePostBack;
       SyncPostBackInsideUpdatePanelButton.Click += HandlePostBack;
@@ -39,7 +38,9 @@ namespace Remotion.Web.Test.UpdatePanelTests
       SyncPostBackInsideUpdatePanelLinkButton.Click += HandlePostBack;
       SyncPostBackOutsideUpdatePanelLinkButton.Click += HandlePostBack;
       AsyncPostBackInsideUpdatePanelWebButton.Click += HandlePostBack;
+      AsyncPostBackOutsideUpdatePanelWebButton.Click += HandlePostBack;
       SyncPostBackInsideUpdatePanelWebButton.Click += HandlePostBack;
+      SyncPostBackOutsideUpdatePanelWebButton.Click += HandlePostBack;
       DropDownMenuInsideUpdatePanel.EventCommandClick += HandlePostBack;
       ListMenuInsideUpdatePanel.EventCommandClick += HandlePostBack;
 
@@ -49,7 +50,6 @@ namespace Remotion.Web.Test.UpdatePanelTests
       Controls.Add (_postBackEventHandler);
 
       string asyncPostBackCommandInsideUpdatePanelID = "AsyncPostBackCommandInsideUpdatePanel";
-      ((ISmartPage) Page).RegisterCommandForSynchronousPostBack (_postBackEventHandler, asyncPostBackCommandInsideUpdatePanelID);
       AsyncCommandInsideUpdatePanelHyperLink.NavigateUrl = "#";
       AsyncCommandInsideUpdatePanelHyperLink.Attributes["onclick"] =
           Page.ClientScript.GetPostBackEventReference (_postBackEventHandler, asyncPostBackCommandInsideUpdatePanelID);
