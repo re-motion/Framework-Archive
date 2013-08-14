@@ -19,6 +19,7 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using JetBrains.Annotations;
 using Microsoft.Practices.ServiceLocation;
 using Remotion.Globalization;
 using Remotion.Security;
@@ -151,7 +152,7 @@ namespace Remotion.Web.UI.Controls
           string onClickAttribute = Attributes["onclick"];
           if (onClickAttribute != null)
           {
-            onClick = onClick + EnsureEndWithSemiColon (onClickAttribute);
+            onClick += EnsureEndWithSemiColon (onClickAttribute);
             Attributes.Remove ("onclick");
           }
         }
@@ -161,16 +162,14 @@ namespace Remotion.Web.UI.Controls
           PostBackOptions options = GetPostBackOptions();
           options.ClientSubmit = true;
 
-          string postBackScript = string.Format("WebButton_Click (this, {0});", options.PerformValidation ? "true" : "false");
-
-          string postBackEventReference = Page.ClientScript.GetPostBackEventReference (options, false);
+          var postBackEventReference = Page.ClientScript.GetPostBackEventReference (options, false);
           if (StringUtility.IsNullOrEmpty (postBackEventReference))
             postBackEventReference = Page.ClientScript.GetPostBackEventReference (this, null);
-          postBackScript += EnsureEndWithSemiColon (postBackEventReference);
+          var postBackScript = EnsureEndWithSemiColon (postBackEventReference);
 
           postBackScript += "return false;";
 
-          if (postBackScript != null)
+          if (!string.IsNullOrEmpty(postBackScript))
             onClick = MergeScript (onClick, postBackScript);
         }
 
@@ -344,9 +343,10 @@ namespace Remotion.Web.UI.Controls
       set { _isDefaultButton = value; }
     }
 
+    [NotNull]
     private string EnsureEndWithSemiColon (string value)
     {
-      if (!StringUtility.IsNullOrEmpty (value))
+      if (!string.IsNullOrEmpty (value))
       {
         value = value.Trim();
 
@@ -354,12 +354,12 @@ namespace Remotion.Web.UI.Controls
           value += ";";
       }
 
-      return value;
+      return StringUtility.NullToEmpty (value);
     }
 
-    private string MergeScript (string firstScript, string secondScript)
+    private string MergeScript (string firstScript, [NotNull]string secondScript)
     {
-      if (!StringUtility.IsNullOrEmpty (firstScript))
+      if (!string.IsNullOrEmpty (firstScript))
         return (firstScript + secondScript);
       if (secondScript.TrimStart (new char[0]).StartsWith ("javascript:"))
         return secondScript;
