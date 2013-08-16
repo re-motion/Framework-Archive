@@ -519,10 +519,7 @@ function SmartPage_Context(
         ExecuteEventHandlers(_eventHandlers['onpostback'], eventSourceID, '');
         this.SetCacheDetectionFieldSubmitted();
 
-        if (_aspnetFormOnSubmit != null)
-          return _aspnetFormOnSubmit();
-        else
-          return true;
+        return true;
       }
       else
       {
@@ -569,6 +566,9 @@ function SmartPage_Context(
   // returns: true to continue with request.
   this.CheckFormState = function ()
   {
+    if (_aspnetFormOnSubmit != null && !_aspnetFormOnSubmit())
+      return false;
+
     var continueRequest = true;
     var fct = null;
     if (_checkFormStateFunctionName != null)
