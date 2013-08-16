@@ -62,7 +62,7 @@ function SmartScrolling_Restore (data)
   } 
 }
 
-function SmartScrolling_Backup (activeElement)
+function SmartScrolling_Backup ()
 {
   var data = '';
   var scrollElements = new Array();
@@ -127,9 +127,10 @@ function SmartScrolling_SetScrollPosition (scrollElement)
   htmlElement.scrollLeft = scrollElement.Left;
 }
 
-function SmartFocus_Backup (activeElement)
+function SmartFocus_Backup ()
 {
-  var data = '';  
+  var data = '';
+  var activeElement = window.document.activeElement;
   if (activeElement != null)
   {
     data += activeElement.id;

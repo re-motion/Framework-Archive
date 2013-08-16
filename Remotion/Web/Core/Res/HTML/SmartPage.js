@@ -277,11 +277,10 @@ function SmartPage_Context(
   // Backs up the smart scrolling and smart focusing data for the next post back.
   this.Backup = function ()
   {
-    var activeElement = window.document.activeElement;
     if (_smartScrollingFieldID != null)
-      _theForm.elements[_smartScrollingFieldID].value = SmartScrolling_Backup(activeElement);
+      _theForm.elements[_smartScrollingFieldID].value = SmartScrolling_Backup();
     if (_smartFocusFieldID != null)
-      _theForm.elements[_smartFocusFieldID].value = SmartFocus_Backup(GetFocusableElement(activeElement));
+      _theForm.elements[_smartFocusFieldID].value = SmartFocus_Backup();
   };
 
   // Restores the smart scrolling and smart focusing data from the previous post back.
