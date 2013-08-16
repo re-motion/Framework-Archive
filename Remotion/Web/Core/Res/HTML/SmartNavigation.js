@@ -186,9 +186,26 @@ function SmartFocus_SetFocus(element)
 {
   setTimeout(function ()
   {
+    var ieVersion = BrowserUtility.GetIEVersion();
+
+    if (ieVersion == 8 && (element.is('input[type=text]') || element.is('textarea')))
+    {
+      // IE8 has problems when restoring the focus during an AutoPostBack inside an UpdatePanel
+      var elements = element[0].form.elements;
+      var elementsLength = elements.length;
+      for (var i = 0; i < elementsLength; i++)
+      {
+        var currentElement = $(elements[i]);
+        if ((currentElement.is('input[type=text]') || currentElement.is('textarea')) && currentElement.is(':enabled'))
+        {
+          currentElement.focus();
+          break;
+        }
+      }
+    }
+
     element.focus();
 
-    var ieVersion = BrowserUtility.GetIEVersion();
     var isAffectedIEVersion = ieVersion == 7 || ieVersion == 8;
     if (!isAffectedIEVersion)
       return;
@@ -202,7 +219,7 @@ function SmartFocus_SetFocus(element)
     {
       try
       {
-        if (window.document.activeElement = ! null)
+        if (window.document.activeElement =! null)
           return;
       }
       catch (e)
@@ -219,7 +236,7 @@ function SmartFocus_SetFocus(element)
       {
         try
         {
-          if (window.document.activeElement = ! null)
+          if (window.document.activeElement =! null)
             return;
         }
         catch (e1)
