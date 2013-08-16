@@ -442,12 +442,6 @@ function SmartPage_Context(
   // Override for the ASP.NET __doPostBack method.
   this.DoPostBack = function (eventTarget, eventArgument)
   {
-    var _this = this;
-    setTimeout(function () { _this.DoPostBackInternal(eventTarget, eventArgument); }, 0);
-  };
-
-  this.DoPostBackInternal = function (eventTarget, eventArgument)
-  {
     // Debugger space
     var dummy = 0;
     var continueRequest = this.CheckFormState();
@@ -495,7 +489,7 @@ function SmartPage_Context(
       {
         if (this.IsSynchronousPostBackRequired())
         {
-          this.DoPostBackInternal(_theForm.__EVENTTARGET.value, _theForm.__EVENTARGUMENT.value);
+          this.DoPostBack(_theForm.__EVENTTARGET.value, _theForm.__EVENTARGUMENT.value);
           return false;
         }
         else
