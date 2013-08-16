@@ -210,11 +210,7 @@ function SmartPage_Context(
         delete this._scriptDisposes[updatePanelID];
       }
     }
-    if (TypeUtility.IsDefined(this._destroyTree)) // .NET 3.5 AJAX library
-    {
-      this._destroyTree(updatePanelElement);
-    }
-    else if (TypeUtility.IsDefined(Sys.Application.disposeElement)) // .NET 4.0 AJAX library
+    if (TypeUtility.IsDefined(Sys.Application.disposeElement)) // .NET 4.0 AJAX library
     {
       Sys.Application.disposeElement(updatePanelElement, true);
     }
@@ -944,7 +940,6 @@ SmartPage_Context.Instance = null;
 // Called after page's html content is complete.
 function SmartPage_OnStartUp(isAsynchronous, isDirty)
 {
-  AspNetPatches.Apply();
   SmartPage_Context.Instance.OnStartUp(isAsynchronous, isDirty);
 }
 
