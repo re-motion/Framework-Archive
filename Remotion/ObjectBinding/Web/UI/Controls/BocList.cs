@@ -344,6 +344,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
       _currentPagePostBackTarget = new ScalarLoadPostDataTarget();
       _currentPagePostBackTarget.ID = ID + c_currentPageControlName;
+      _currentPagePostBackTarget.ClientIDMode = ClientIDMode.AutoID;
       _currentPagePostBackTarget.DataChanged += HandleCurrentPageChanged;
       Controls.Add (_currentPagePostBackTarget);
 
