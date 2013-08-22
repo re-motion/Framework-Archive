@@ -103,3 +103,11 @@ html>body #SmartPageIsSubmittingMessage
   color: navy !important;
   cursor: hand !important;
 }
+
+html.SmartPageBusy .SmartPageSubmitter,
+html.SmartPageBusy .SmartPageSubmitter *
+{
+  -moz-opacity: 0.4;
+  opacity: 0.4;
+  filter: progid:DXImageTransform.Microsoft.BasicImage(opacity=0.40), progid:DXImageTransform.Microsoft.BasicImage(grayscale=1);
+}

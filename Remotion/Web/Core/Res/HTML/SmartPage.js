@@ -52,6 +52,7 @@ function SmartPage_Context(
   var _abortMessage = abortMessage;
   var _isAbortConfirmationEnabled = abortMessage != null;
 
+  var _submitter = null;
   var _isSubmitting = false;
   var _hasSubmitted = false;
   // Special flag to support the OnBeforeUnload part
@@ -322,7 +323,7 @@ function SmartPage_Context(
 
     this.Restore();
 
-    _isSubmitting = false;
+    this.ClearIsSubmitting (isAsynchronous);
     _isSubmittingBeforeUnload = false;
     this.HideStatusMessage();
 
@@ -382,7 +383,8 @@ function SmartPage_Context(
         && !_isSubmittingBeforeUnload
         && !_isAborting && _isAbortConfirmationEnabled)
     {
-      var isJavaScriptAnchor = IsJavaScriptAnchor(window.document.activeElement);
+      var activeElement = GetActiveElement();
+      var isJavaScriptAnchor = IsJavaScriptAnchor(activeElement);
       var isAbortConfirmationRequired = !isJavaScriptAnchor
                                         && (!_isDirtyStateTrackingEnabled || _isDirty);
 
@@ -417,7 +419,7 @@ function SmartPage_Context(
     }
     ExecuteEventHandlers(_eventHandlers['onunload']);
     _hasUnloaded = true;
-    _isSubmitting = false;
+    this.ClearIsSubmitting(false);
     _isAborting = false;
 
     _theForm = null;
@@ -442,21 +444,28 @@ function SmartPage_Context(
     var continueRequest = this.CheckFormState();
     if (continueRequest)
     {
-      _isSubmitting = true;
-      _isSubmittingBeforeUnload = true;
+      try
+      {
+        _isExecutingDoPostBack = true;
+        _theForm.__EVENTTARGET.value = eventTarget;
+        _theForm.__EVENTARGUMENT.value = eventArgument;
 
-      this.Backup();
+        this.SetIsSubmitting();
+        _isSubmittingBeforeUnload = true;
 
-      ExecuteEventHandlers(_eventHandlers['onpostback'], eventTarget, eventArgument);
-      this.SetCacheDetectionFieldSubmitted();
+        this.Backup();
 
-      _isExecutingDoPostBack = true;
-      _theForm.__EVENTTARGET.value = eventTarget;
-      _theForm.__EVENTARGUMENT.value = eventArgument;
-      _aspnetDoPostBack(eventTarget, eventArgument);
-      _theForm.__EVENTTARGET.value = '';
-      _theForm.__EVENTARGUMENT.value = '';
-      _isExecutingDoPostBack = false;
+        ExecuteEventHandlers(_eventHandlers['onpostback'], eventTarget, eventArgument);
+        this.SetCacheDetectionFieldSubmitted();
+
+        _aspnetDoPostBack(eventTarget, eventArgument);
+      }
+      finally
+      {
+        _theForm.__EVENTTARGET.value = '';
+        _theForm.__EVENTARGUMENT.value = '';
+        _isExecutingDoPostBack = false;
+      }
 
       if (_isMsIE)
       {
@@ -492,7 +501,7 @@ function SmartPage_Context(
           var continueRequest = this.CheckFormState();
           if (continueRequest)
           {
-            _isSubmitting = true;
+            this.SetIsSubmitting();
             _isSubmittingBeforeUnload = true;
 
             this.Backup();
@@ -509,12 +518,13 @@ function SmartPage_Context(
       var continueRequest = this.CheckFormState();
       if (continueRequest)
       {
-        _isSubmitting = true;
+        this.SetIsSubmitting();
         _isSubmittingBeforeUnload = true;
 
         this.Backup();
 
-        var eventSource = GetFocusableElement(window.document.activeElement);
+        var activeElement = GetActiveElement();
+        var eventSource = GetFocusableElement(activeElement);
         var eventSourceID = (eventSource != null) ? eventSource.id : null;
         ExecuteEventHandlers(_eventHandlers['onpostback'], eventSourceID, '');
         this.SetCacheDetectionFieldSubmitted();
@@ -798,6 +808,34 @@ function SmartPage_Context(
     }
   };
 
+  // Returns the document.activeElement and uses fallbacks if the activeElement is not set.
+  function GetActiveElement()
+  {
+    var activeElement = window.document.activeElement;
+    if (activeElement != null && activeElement.tagName.toLowerCase() != 'body')
+      return activeElement;
+
+    // WebKit does not set activeElement if the element is selected using the mouse
+
+    var postBackSettings = GetPostBackSettings();
+    if (postBackSettings != null && postBackSettings.async)
+      return postBackSettings.sourceElement;
+
+    var eventTarget = _theForm.__EVENTTARGET.value;
+    if (eventTarget != '')
+    {
+      var eventTargetElement = _theForm.elements[eventTarget];
+      if (eventTargetElement != null)
+        return eventTargetElement;
+    }
+
+    var hoverElement = $('input[type=submit]:hover, button:hover, a:hover');
+    if (hoverElement.length > 0)
+      return hoverElement[0];
+
+    return null;
+  }
+
   // Determines whether the elements of the specified tag can receive the focus.
   function IsFocusableTag(tagName)
   {
@@ -911,9 +949,53 @@ function SmartPage_Context(
     return Array.contains(_synchronousPostBackCommands, postBackSettings.asyncTarget + '|' + _theForm.__EVENTARGUMENT.value);
   };
 
-  this.ClearIsSubmitting = function ()
+  this.SetIsSubmitting = function ()
   {
+    _isSubmitting = true;
+
+    var activeElement = GetActiveElement();
+    var focusableElement = GetFocusableElement(activeElement);
+    if (focusableElement != null)
+    {
+      _submitter = focusableElement;
+      $(_submitter).addClass('SmartPageSubmitter');
+    }
+
+    $("html").addClass('SmartPageBusy');
+  };
+
+  this.ClearIsSubmitting = function (isAsynchronous)
+  {
+    if (isAsynchronous)
+    {
+      if (_submitter != null && _submitter.ownerDocument != null)
+      {
+        $(_submitter).removeClass('SmartPageSubmitter');
+      }
+      //setTimeout (function ()
+    //{
+      var html = $ ("html");
+      html.removeClass('SmartPageBusy');
+
+        // Needed in IE8, Firefox 23, Chrome 4
+        // Does not work in Safari 4 for Windows
+        // Does not work in IE10, IE11
+        var cursorBackUp = html.css ('cursor');
+        html.css ('cursor', 'auto !important');
+        //setTimeout (function ()
+        //{
+          html.css ('cursor', cursorBackUp);
+        //}, 0);
+    //}, 0);
+    }
+
     _isSubmitting = false;
+    _submitter = null;
+  };
+
+  this.IsSubmitting = function ()
+  {
+    return _isSubmitting;
   };
 
   this.DisableAbortConfirmation = function ()

@@ -121,7 +121,6 @@ namespace Remotion.Web.Test.MultiplePostBackCatching
       button.Text = "Submit";
       button.UseSubmitBehavior = true;
       button.Click += OnClick;
-
       return button;
     }
 

@@ -97,3 +97,23 @@
   color: navy !important;
   cursor: hand !important;
 }
+
+html.SmartPageBusy .SmartPageSubmitter,
+html.SmartPageBusy .SmartPageSubmitter *
+{
+  -moz-opacity: 0.4;
+  opacity: 0.4;
+  filter: progid:DXImageTransform.Microsoft.BasicImage(opacity=0.40), progid:DXImageTransform.Microsoft.BasicImage(grayscale=1);
+}
+
+/*html.SmartPageBusy,
+html.SmartPageBusy *
+{
+  cursor: wait !important;
+}
+
+html,
+html *
+{
+  cursor: default;
+}*/

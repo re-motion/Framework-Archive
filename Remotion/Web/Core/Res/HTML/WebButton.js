@@ -16,6 +16,9 @@
 // 
 function WebButton_MouseDown (element, cssClass)
 {
+  if (window.SmartPage_Context && SmartPage_Context.Instance.IsSubmitting())
+    return false;
+
   element.className += " " + cssClass;
   return false;
 }
