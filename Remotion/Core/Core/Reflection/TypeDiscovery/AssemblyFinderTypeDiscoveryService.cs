@@ -17,6 +17,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel.Design;
 using System.Linq;
 using System.Reflection;
@@ -24,6 +25,7 @@ using System.Runtime.InteropServices;
 using Remotion.Configuration.TypeDiscovery;
 using Remotion.Logging;
 using Remotion.Reflection.TypeDiscovery.AssemblyFinding;
+using Remotion.Reflection.TypeDiscovery.AssemblyLoading;
 using Remotion.Text;
 using Remotion.Utilities;
 
@@ -84,10 +86,11 @@ namespace Remotion.Reflection.TypeDiscovery
 
     private IEnumerable<Type> GetTypes (_Assembly assembly, Type baseType)
     {
-      Type[] allTypesInAssembly;
+      ReadOnlyCollection<Type> allTypesInAssembly;
+      
       try
       {
-        allTypesInAssembly = assembly.GetTypes ();
+        allTypesInAssembly = AssemblyTypeCache.GetTypes (assembly);
       }
       catch (ReflectionTypeLoadException ex)
       {
