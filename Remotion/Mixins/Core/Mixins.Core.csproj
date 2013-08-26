@@ -107,6 +107,8 @@
     <Compile Include="CodeGeneration\IConcreteMixinTypeNameProvider.cs" />
     <Compile Include="CodeGeneration\IConcreteMixinTypeProvider.cs" />
     <Compile Include="CodeGeneration\IConcreteTypeBuilder.cs" />
+    <Compile Include="CodeGeneration\TypePipe\ImplementedInterfaceFinder.cs" />
+    <Compile Include="CodeGeneration\TypePipe\OverrideInterfaceMappingAttribute.cs" />
     <Compile Include="CodeGeneration\IConcreteTypeMetadataImporter.cs" />
     <Compile Include="CodeGeneration\IConcreteTypeProvider.cs" />
     <Compile Include="CodeGeneration\IGeneratedMixinType.cs" />
@@ -138,7 +140,6 @@
     <Compile Include="CodeGeneration\TypePipe\CodeGenerationMixinContextSerializer.cs" />
     <Compile Include="CodeGeneration\TypePipe\ConcreteMixinTypeIdentifierSerializerBase.cs" />
     <Compile Include="CodeGeneration\TypePipe\ConfigurationProvider.cs" />
-    <Compile Include="CodeGeneration\TypePipe\DerivedMixinInfo.cs" />
     <Compile Include="CodeGeneration\TypePipe\ExpressionBuilder.cs" />
     <Compile Include="CodeGeneration\TypePipe\ExpressionClassContextSerializer.cs" />
     <Compile Include="CodeGeneration\TypePipe\ExpressionConcreteMixinTypeIdentifierSerializer.cs" />
@@ -151,7 +152,6 @@
     <Compile Include="CodeGeneration\TypePipe\IMixinInfo.cs" />
     <Compile Include="CodeGeneration\TypePipe\IMixinTypeProvider.cs" />
     <Compile Include="CodeGeneration\TypePipe\IConfigurationProvider.cs" />
-    <Compile Include="CodeGeneration\TypePipe\ImplementedInterfaceFinder.cs" />
     <Compile Include="CodeGeneration\TypePipe\INextCallMethodGenerator.cs" />
     <Compile Include="CodeGeneration\TypePipe\INextCallProxy.cs" />
     <Compile Include="CodeGeneration\TypePipe\INextCallProxyGenerator.cs" />
@@ -171,7 +171,6 @@
     </Compile>
     <Compile Include="CodeGeneration\TypePipe\OverrideInterface.cs" />
     <Compile Include="CodeGeneration\TypePipe\OverrideInterfaceGenerator.cs" />
-    <Compile Include="CodeGeneration\TypePipe\OverrideInterfaceMappingAttribute.cs" />
     <Compile Include="CodeGeneration\TypePipe\RegularMixinInfo.cs" />
     <Compile Include="CodeGeneration\TypePipe\SerializationImplementer.cs" />
     <Compile Include="CodeGeneration\TypePipe\TargetTypeForNextCall.cs" />

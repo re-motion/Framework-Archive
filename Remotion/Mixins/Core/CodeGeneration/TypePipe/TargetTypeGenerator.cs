@@ -23,7 +23,9 @@ using Remotion.Mixins.Definitions;
 using Remotion.Mixins.Utilities;
 using Remotion.TypePipe.Dlr.Ast;
 using Remotion.TypePipe.Expressions;
+using Remotion.TypePipe.Implementation;
 using Remotion.TypePipe.MutableReflection;
+using Remotion.TypePipe.MutableReflection.BodyBuilding;
 using Remotion.TypePipe.MutableReflection.Implementation;
 using Remotion.Utilities;
 using System.Linq;
@@ -42,11 +44,6 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     private static readonly MethodInfo s_checkMixinArrayMethod =
         MemberInfoFromExpressionUtility.GetMethod ((MixinArrayInitializer o) => o.CheckMixinArray (new object[0]));
 
-    private static readonly MethodInfo s_initializeTargetMethod =
-        MemberInfoFromExpressionUtility.GetMethod ((IInitializableMixinTarget o) => o.Initialize());
-    private static readonly MethodInfo s_initializeTargetAfterDeserializationMethod =
-        MemberInfoFromExpressionUtility.GetMethod ((IInitializableMixinTarget o) => o.InitializeAfterDeserialization(new object[0]));
-
     private static readonly PropertyInfo s_classContextProperty = MemberInfoFromExpressionUtility.GetProperty ((IMixinTarget o) => o.ClassContext);
     private static readonly PropertyInfo s_mixinProperty = MemberInfoFromExpressionUtility.GetProperty ((IMixinTarget o) => o.Mixins);
     private static readonly PropertyInfo s_firstNextCallProperty = MemberInfoFromExpressionUtility.GetProperty ((IMixinTarget o) => o.FirstNextCallProxy);
@@ -58,19 +55,17 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
         MemberInfoFromExpressionUtility.GetProperty (() => MixedObjectInstantiationScope.Current);
     private static readonly PropertyInfo s_suppliedMixinInstancesProperty =
         MemberInfoFromExpressionUtility.GetProperty ((MixedObjectInstantiationScope o) => o.SuppliedMixinInstances);
-
-    private static readonly Expression s_false = Expression.Constant (false);
-    private static readonly Expression s_true = Expression.Constant (true);
     
     private readonly MutableType _concreteTarget;
     private readonly IExpressionBuilder _expressionBuilder;
     private readonly IAttributeGenerator _attributeGenerator;
     private readonly INextCallProxyGenerator _nextCallProxyGenerator;
 
-    private MutableFieldInfo _extensionsFieldInfo;
-    private Expression _extensionsField;
-
     private INextCallProxy _nextCallProxy;
+    private MutableFieldInfo _extensionsFieldInfo;
+    private MethodInfo _initializationMethod;
+
+    private Expression _extensionsField;
     private Expression _classContextField;
     private Expression _mixinArrayInitializerField;
     private Expression _extensionsInitializedField;
@@ -148,43 +143,33 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
               InitializeMixinArrayInitializerField (classContext.Type, mixinTypes)));
     }
 
-    public void AddInitializations ()
-    {
-      Assertion.IsNotNull (_extensionsField, "AddExtensionsField must be called first.");
-      Assertion.IsNotNull (_extensionsInitializedField, "AddFields must be called first.");
-
-      _concreteTarget.AddInitialization (
-          ctx => _expressionBuilder.CreateInitializationOnConstructionOrDeserialization (
-              ctx.DeclaringType, _extensionsField, _extensionsInitializedField, ctx.InitializationSemantics));
-    }
-
-    public void ImplementIInitializableMixinTarget (IList<Type> mixinTypes)
+    public void AddInitializations (List<Type> mixinTypes)
     {
       ArgumentUtility.CheckNotNull ("mixinTypes", mixinTypes);
-      Assertion.IsNotNull (_extensionsField, "AddExtensionsField must be called first.");
-      Assertion.IsNotNull (_firstField, "AddFields must be called first.");
-      Assertion.IsNotNull (_nextCallProxy, "AddNextCallProxy must be called first.");
-      Assertion.IsNotNull (_mixinArrayInitializerField, "AddFields must be called first.");
-      Assertion.IsNotNull (_extensionsInitializedField, "AddFields must be called first.");
+      Assertion.IsNotNull(_extensionsField, "AddExtensionsField must be called first.");
+      Assertion.IsNotNull(_extensionsInitializedField, "AddFields must be called first.");
+      Assertion.IsNotNull(_firstField, "AddFields must be called first.");
+      Assertion.IsNotNull(_nextCallProxy, "AddNextCallProxy must be called first.");
+      Assertion.IsNotNull(_mixinArrayInitializerField, "AddFields must be called first.");
+      Assertion.IsNotNull(_extensionsInitializedField, "AddFields must be called first.");
 
-      _concreteTarget.AddExplicitOverride (
-          s_initializeTargetMethod,
-          ctx => Expression.Block (
-              ImplementSettingFirstNextCallProxy (ctx.This),
-              ImplementCreatingMixinInstances (),
-              ImplementInitializingMixins (ctx.This, mixinTypes, deserialization: s_false)));
+      _initializationMethod = _concreteTarget.AddMethod (
+          "__InitializeMixins",
+          MethodAttributes.Private,
+          parameters: new[] { new ParameterDeclaration (typeof (bool), "isDeserialization") },
+          bodyProvider: ctx => ImplementMixinInitalizationMethod (ctx, mixinTypes));
 
-      _concreteTarget.AddExplicitOverride (
-          s_initializeTargetAfterDeserializationMethod,
-          ctx => Expression.Block (
-              ImplementSettingFirstNextCallProxy (ctx.This),
-              ImplementSettingMixinInstances (ctx.Parameters[0]),
-              ImplementInitializingMixins (ctx.This, mixinTypes, deserialization: s_true)));
+      _concreteTarget.AddInitialization (
+          ctx => Expression.Call (
+              ctx.This,
+              _initializationMethod,
+              Expression.Equal (ctx.InitializationSemantics, Expression.Constant (InitializationSemantics.Deserialization))));
     }
 
     public void ImplementIMixinTarget (string targetClassName)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("targetClassName", targetClassName);
+      Assertion.IsNotNull (_initializationMethod, "AddInitializations must be called first.");
       Assertion.IsNotNull (_classContextField, "AddFields must be called first.");
       Assertion.IsNotNull (_extensionsField, "AddExtensionsField must be called first.");
       Assertion.IsNotNull (_firstField, "AddFields must be called first.");
@@ -192,7 +177,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       var noInitialization = Expression.Empty();
       var classContextDebuggerDisplay = "Class context for " + targetClassName;
       // Initialize this instance in case we're being called before the ctor has finished running.
-      var initialization = _expressionBuilder.CreateInitialization (_concreteTarget, _extensionsField, _extensionsInitializedField);
+      var initialization = _expressionBuilder.CreateInitialization (_concreteTarget, _initializationMethod);
 
       ImplementReadOnlyProperty (_classContextField, noInitialization, s_classContextProperty, "ClassContext", classContextDebuggerDisplay);
       ImplementReadOnlyProperty (_extensionsField, initialization, s_mixinProperty, "Mixins", "Count = {__extensions.Length}");
@@ -335,6 +320,30 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
           Expression.New (s_mixinArrayInitializerCtor, Expression.Constant (targetType), Expression.ArrayConstant (concreteMixinTypes)));
     }
 
+    private Expression ImplementMixinInitalizationMethod (MethodBodyCreationContext ctx, List<Type> mixinTypes)
+    {
+      // if (!__extensionsInitialized) {
+      //   __extensionsInitialized = true;
+      //   <set first call proxy>;
+      //   if (isDeserialization)
+      //     <check deserialzed mixin instances>;
+      //   else
+      //     <create mixin instances>;
+      //   <initialize mixins>(isDeserialization);
+      // }
+
+      return Expression.IfThen (
+          Expression.Not (_extensionsInitializedField),
+          Expression.Block (
+              Expression.Assign (_extensionsInitializedField, Expression.Constant (true)),
+              ImplementSettingFirstNextCallProxy (ctx.This),
+              Expression.IfThenElse (
+                  ctx.Parameters[0],
+                  ImplementCheckingDeserializedMixinInstances(),
+                  ImplementCreatingMixinInstances()),
+              ImplementInitializingMixins (ctx.This, mixinTypes, ctx.Parameters[0])));
+    }
+
     private Expression ImplementSettingFirstNextCallProxy (ThisExpression @this)
     {
       // __first = <NewNextCallProxy (0)>;
@@ -342,50 +351,34 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       return Expression.Assign (_firstField, NewNextCallProxy (@this, depth: 0));
     }
 
+    private Expression ImplementCheckingDeserializedMixinInstances ()
+    {
+      // __mixinArrayInitializer.CheckMixinArray (__extensions);
+
+      return Expression.Call (_mixinArrayInitializerField, s_checkMixinArrayMethod, _extensionsField);
+    }
+
     private Expression ImplementCreatingMixinInstances ()
     {
-      // if (__extensions == null) // could be set in deserialization scenario
-      //     __extensions = __mixinArrayInitializer.CreateMixinArray (MixedObjectInstantiationScope.Current.SuppliedMixinInstances);
+      // __extensions = __mixinArrayInitializer.CreateMixinArray (MixedObjectInstantiationScope.Current.SuppliedMixinInstances);
 
-      return Expression.IfThen (
-          Expression.Equal (_extensionsField, Expression.Constant (null, _extensionsField.Type)),
-          Expression.Assign (
-              _extensionsField,
-              Expression.Call (
-                  _mixinArrayInitializerField,
-                  s_createMixinArrayMethod,
-                  new Expression[]
-                  {
-                      Expression.Property (Expression.Property (null, s_currentMixedObjectInstantiationScopeProperty), s_suppliedMixinInstancesProperty)
-                  })));
+      return Expression.Assign (
+          _extensionsField,
+          Expression.Call (
+              _mixinArrayInitializerField,
+              s_createMixinArrayMethod,
+              Expression.Property (Expression.Property (null, s_currentMixedObjectInstantiationScopeProperty), s_suppliedMixinInstancesProperty)));
     }
 
-    private Expression ImplementSettingMixinInstances (Expression mixinInstancs)
-    {
-      // __mixinArrayInitializer.CheckMixinArray (<arguments[0]>);
-      // __extensions = <arguments[0]>;
-
-      return Expression.Block (
-          Expression.Call (_mixinArrayInitializerField, s_checkMixinArrayMethod, new[] { mixinInstancs }),
-          Expression.Assign (_extensionsField, mixinInstancs));
-    }
-
-    private Expression ImplementInitializingMixins (ThisExpression @this, IList<Type> expectedMixinTypes, Expression deserialization)
+    private Expression ImplementInitializingMixins (ThisExpression @this, IList<Type> expectedMixinTypes, Expression isDeserialization)
     {
       var mixinInitExpressions = new List<Expression>();
-
-      // if (!__extensionsInitialized)
-      // {
-      //   __extensionsInitialized = true;
-      //  
-
-      mixinInitExpressions.Add (Expression.Assign (_extensionsInitializedField, Expression.Constant (true)));
 
       for (int i = 0; i < expectedMixinTypes.Count; i++)
       {
         if (typeof (IInitializableMixin).IsTypePipeAssignableFrom (expectedMixinTypes[i]))
         {
-          // ((IInitializableMixin) __extensions[i]).Initialize (mixinTargetInstance, <NewNextCallProxy (i + 1)>, deserialization);
+          // ((IInitializableMixin) __extensions[i]).Initialize (mixinTargetInstance, <NewNextCallProxy (i + 1)>, isDeserialization);
 
           var initExpression = Expression.Call (
               Expression.Convert (
@@ -394,14 +387,13 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
               s_initializeMixinMethod,
               @this,
               NewNextCallProxy (@this, i + 1),
-              deserialization);
+              isDeserialization);
 
           mixinInitExpressions.Add (initExpression);
         }
       }
 
-      // }
-      return Expression.IfThen (Expression.Not (_extensionsInitializedField), Expression.Block (mixinInitExpressions));
+      return Expression.BlockOrEmpty (mixinInitExpressions);
     }
 
     private Expression NewNextCallProxy (ThisExpression @this, int depth)
@@ -432,13 +424,13 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     }
 
     private MutableMethodInfo ImplementIntroducedMethod (
-    Expression implementer, MethodInfo interfaceMethod, MethodDefinition implementingMethod, MemberVisibility visibility)
+        Expression implementer, MethodInfo interfaceMethod, MethodDefinition implementingMethod, MemberVisibility visibility)
     {
       var method = visibility == MemberVisibility.Public
                        ? _concreteTarget.GetOrAddImplementation (interfaceMethod)
                        : _concreteTarget.AddExplicitOverride (interfaceMethod, ctx => Expression.Default (ctx.ReturnType));
 
-      method.SetBody (ctx => _expressionBuilder.CreateInitializingDelegation (ctx, _extensionsField, _extensionsInitializedField, implementer, interfaceMethod));
+      method.SetBody (ctx => _expressionBuilder.CreateInitializingDelegation (ctx, _initializationMethod, implementer, interfaceMethod));
 
       _attributeGenerator.AddIntroducedMemberAttribute (method, interfaceMethod, implementingMethod);
       _attributeGenerator.ReplicateAttributes (implementingMethod, method);
@@ -502,10 +494,6 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     private void ImplementAttributes (
         IMutableMember member, IAttributeIntroductionTarget targetConfiguration, TargetClassDefinition targetClassDefinition)
     {
-      ArgumentUtility.CheckNotNull ("member", member);
-      ArgumentUtility.CheckNotNull ("targetConfiguration", targetConfiguration);
-      ArgumentUtility.CheckNotNull ("targetClassDefinition", targetClassDefinition);
-
       foreach (var attribute in targetConfiguration.CustomAttributes)
       {
         if (_attributeGenerator.ShouldBeReplicated (attribute, targetConfiguration, targetClassDefinition))
@@ -518,8 +506,6 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     private IMutableMember ImplementOverride (MemberDefinitionBase member)
     {
-      ArgumentUtility.CheckNotNull ("member", member);
-
       var memberAsMethodDefinition = member as MethodDefinition;
       if (memberAsMethodDefinition != null)
         return ImplementMethodOverride (memberAsMethodDefinition);
@@ -535,20 +521,15 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     private MutableMethodInfo ImplementMethodOverride (MethodDefinition method)
     {
-      ArgumentUtility.CheckNotNull ("method", method);
-
       var proxyMethod = _nextCallProxy.GetProxyMethodForOverriddenMethod (method);
       var methodOverride = _concreteTarget.GetOrAddOverride (method.MethodInfo);
-      methodOverride.SetBody (
-          ctx => _expressionBuilder.CreateInitializingDelegation (ctx, _extensionsField, _extensionsInitializedField, _firstField, proxyMethod));
+      methodOverride.SetBody (ctx => _expressionBuilder.CreateInitializingDelegation (ctx, _initializationMethod, _firstField, proxyMethod));
 
       return methodOverride;
     }
 
     private IMutableMember ImplementPropertyOverride (PropertyDefinition property)
     {
-      ArgumentUtility.CheckNotNull ("property", property);
-
       MutableMethodInfo getMethodOverride = null, setMethodOverride = null;
       if (property.GetMethod != null && property.GetMethod.Overrides.Count > 0)
         getMethodOverride = ImplementMethodOverride (property.GetMethod);

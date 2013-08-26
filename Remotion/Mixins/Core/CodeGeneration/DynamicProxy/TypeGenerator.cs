@@ -79,10 +79,10 @@ namespace Remotion.Mixins.CodeGeneration.DynamicProxy
       Assertion.IsTrue (concreteMixinTypes.Length == _configuration.Mixins.Count);
 
       var implementedInterfaceFinder = new ImplementedInterfaceFinder (
-          _configuration.ImplementedInterfaces, 
-          _configuration.ReceivedInterfaces, 
+          _configuration.ImplementedInterfaces,
+          _configuration.ReceivedInterfaces,
           _configuration.RequiredTargetCallTypes,
-          concreteMixinTypes.Where (t => t != null).Select (t => new DerivedMixinInfo (t)).Cast<IMixinInfo>());
+          concreteMixinTypes.Where (t => t != null).Select (t => t).Cast<IMixinInfo>());
       
       var interfacesToImplement = implementedInterfaceFinder.GetInterfacesToImplement ();
 

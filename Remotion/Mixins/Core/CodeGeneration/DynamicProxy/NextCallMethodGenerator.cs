@@ -117,7 +117,7 @@ namespace Remotion.Mixins.CodeGeneration.DynamicProxy
       else
       {
         Assertion.IsNotNull (_concreteMixinTypes[mixinIndex]);
-        return _concreteMixinTypes[mixinIndex].GetMethodWrapper (mixinMethod.MethodInfo);
+        return _concreteMixinTypes[mixinIndex].GetPubliclyCallableMixinMethod(mixinMethod.MethodInfo);
       }
     }
 
