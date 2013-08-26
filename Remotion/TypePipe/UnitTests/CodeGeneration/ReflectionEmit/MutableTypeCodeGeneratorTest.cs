@@ -18,6 +18,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using Remotion.TypePipe.CodeGeneration;
 using Remotion.TypePipe.CodeGeneration.ReflectionEmit;
 using Remotion.TypePipe.CodeGeneration.ReflectionEmit.Abstractions;
 using Remotion.TypePipe.Dlr.Ast;
@@ -32,6 +33,7 @@ using Remotion.TypePipe.MutableReflection;
 using Remotion.TypePipe.UnitTests.MutableReflection;
 using Rhino.Mocks;
 using System.Linq;
+using Remotion.Development.UnitTesting.Enumerables;
 
 namespace Remotion.TypePipe.UnitTests.CodeGeneration.ReflectionEmit
 {
@@ -119,6 +121,22 @@ namespace Remotion.TypePipe.UnitTests.CodeGeneration.ReflectionEmit
     }
 
     [Test]
+    public void CreateNestedTypeGenerators ()
+    {
+      var nestedType = _mutableType.AddNestedType();
+      PopulateContext (_generator, 1);
+
+      var nestedCodeGeneratorStub = _mockRepository.Stub<IMutableTypeCodeGenerator>();
+      _nestedTypeCodeGeneratorFactoryMock.Expect (mock => mock.Create (_typeBuilderMock, nestedType)).Return (nestedCodeGeneratorStub);
+      _mockRepository.ReplayAll();
+
+      var result = _generator.CreateNestedTypeGenerators().ForceEnumeration();
+
+      _mockRepository.VerifyAll();
+      Assert.That (result, Is.EqualTo (new[] { nestedCodeGeneratorStub }));
+    }
+
+    [Test]
     public void DefineTypeFacets ()
     {
       var typeInitializer = _mutableType.AddTypeInitializer (ctx => Expression.Empty());
@@ -140,7 +158,7 @@ namespace Remotion.TypePipe.UnitTests.CodeGeneration.ReflectionEmit
 
       using (_mockRepository.Ordered())
       {
-        var context = PopulateContext (_generator, 1);
+        var context = PopulateContext (_generator, 2);
 
         _typeBuilderMock.Expect (mock => mock.SetParent (_mutableType.BaseType));
 
@@ -183,7 +201,7 @@ namespace Remotion.TypePipe.UnitTests.CodeGeneration.ReflectionEmit
           _memberEmitterMock,
           _initializationBuilderMock,
           _proxySerializationEnablerMock);
-      PopulateContext (generator, 1);
+      PopulateContext (generator, 2);
 
       // No call to SetParent because of null BaseType.
       // No call to AddConstructor because of null TypeInitializer.
@@ -199,7 +217,7 @@ namespace Remotion.TypePipe.UnitTests.CodeGeneration.ReflectionEmit
     [Test]
     public void CreateType ()
     {
-      var context = PopulateContext (_generator, 2);
+      var context = PopulateContext (_generator, 3);
       bool wasCalled = false;
       context.PostDeclarationsActionManager.AddAction (() => wasCalled = true);
       var fakeType = ReflectionObjectMother.GetSomeType();
@@ -234,14 +252,22 @@ namespace Remotion.TypePipe.UnitTests.CodeGeneration.ReflectionEmit
           proxySerializationEnablerStub);
 
       CheckThrowsForInvalidOperation (generator.DefineTypeFacets);
+      CheckThrowsForInvalidOperation (() => generator.CreateNestedTypeGenerators().ForceEnumeration());
       CheckThrowsForInvalidOperation (() => generator.CreateType());
       Assert.That (() => generator.DeclareType(), Throws.Nothing);
 
       CheckThrowsForInvalidOperation (generator.DeclareType);
+      CheckThrowsForInvalidOperation (generator.DefineTypeFacets);
+      CheckThrowsForInvalidOperation (() => generator.CreateType());
+      Assert.That (() => generator.CreateNestedTypeGenerators().ForceEnumeration(), Throws.Nothing);
+
+      CheckThrowsForInvalidOperation (generator.DeclareType);
+      CheckThrowsForInvalidOperation (() => generator.CreateNestedTypeGenerators().ForceEnumeration());
       CheckThrowsForInvalidOperation (() => generator.CreateType());
       Assert.That (() => generator.DefineTypeFacets(), Throws.Nothing);
 
       CheckThrowsForInvalidOperation (generator.DeclareType);
+      CheckThrowsForInvalidOperation (() => generator.CreateNestedTypeGenerators().ForceEnumeration());
       CheckThrowsForInvalidOperation (generator.DefineTypeFacets);
       Assert.That (() => generator.CreateType(), Throws.Nothing);
     }
@@ -269,7 +295,7 @@ namespace Remotion.TypePipe.UnitTests.CodeGeneration.ReflectionEmit
       Assert.That (
           () => action(),
           Throws.InvalidOperationException.With.Message.EqualTo (
-              "Methods DeclareType, DefineTypeFacets and CreateType must be called exactly once and in the correct order."));
+              "Methods DeclareType, CreateNestedTypeGenerators, DefineTypeFacets and CreateType must be called exactly once and in the correct order."));
     }
   }
 }
