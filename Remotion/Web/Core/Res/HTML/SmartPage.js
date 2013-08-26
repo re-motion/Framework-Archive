@@ -515,6 +515,13 @@ function SmartPage_Context(
         }
       }
 
+      var ieVersion = BrowserUtility.GetIEVersion();
+      if (ieVersion == 8 || ieVersion == 7 || ieVersion == 6)
+      {
+        if (this.IsSubmitting() && _submitter != null && _submitter.tagName.toLowerCase() == 'button' && _submitter == GetActiveElement())
+          return false;
+      }
+
       var continueRequest = this.CheckFormState();
       if (continueRequest)
       {

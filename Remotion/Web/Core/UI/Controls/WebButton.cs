@@ -159,21 +159,19 @@ namespace Remotion.Web.UI.Controls
 
         if (Page != null)
         {
-          PostBackOptions options = GetPostBackOptions();
+          var options = GetPostBackOptions();
           options.ClientSubmit = true;
 
           var postBackEventReference = Page.ClientScript.GetPostBackEventReference (options, false);
-          if (StringUtility.IsNullOrEmpty (postBackEventReference))
+          if (string.IsNullOrEmpty (postBackEventReference))
             postBackEventReference = Page.ClientScript.GetPostBackEventReference (this, null);
           var postBackScript = EnsureEndWithSemiColon (postBackEventReference);
 
-          postBackScript += "return false;";
-
-          if (!string.IsNullOrEmpty(postBackScript))
-            onClick = MergeScript (onClick, postBackScript);
+          onClick += postBackScript;
+          onClick += "return false;";
         }
 
-        if (!StringUtility.IsNullOrEmpty (onClick))
+        if (!string.IsNullOrEmpty (onClick))
           writer.AddAttribute (HtmlTextWriterAttribute.Onclick, onClick);
 
         writer.AddAttribute ("onmousedown", "WebButton_MouseDown (this, '" + CssClassMouseDown + "');");
@@ -355,15 +353,6 @@ namespace Remotion.Web.UI.Controls
       }
 
       return StringUtility.NullToEmpty (value);
-    }
-
-    private string MergeScript (string firstScript, [NotNull]string secondScript)
-    {
-      if (!string.IsNullOrEmpty (firstScript))
-        return (firstScript + secondScript);
-      if (secondScript.TrimStart (new char[0]).StartsWith ("javascript:"))
-        return secondScript;
-      return ("javascript:" + secondScript);
     }
 
     protected bool HasAccess ()
