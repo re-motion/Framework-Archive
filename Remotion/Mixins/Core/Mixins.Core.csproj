@@ -148,7 +148,6 @@
     <Compile Include="CodeGeneration\TypePipe\FlatClassContext.cs" />
     <Compile Include="CodeGeneration\TypePipe\IAttributeGenerator.cs" />
     <Compile Include="CodeGeneration\TypePipe\IExpressionBuilder.cs" />
-    <Compile Include="CodeGeneration\TypePipe\IInitializableMixinTarget.cs" />
     <Compile Include="CodeGeneration\TypePipe\IMixinInfo.cs" />
     <Compile Include="CodeGeneration\TypePipe\IMixinTypeProvider.cs" />
     <Compile Include="CodeGeneration\TypePipe\IConfigurationProvider.cs" />
