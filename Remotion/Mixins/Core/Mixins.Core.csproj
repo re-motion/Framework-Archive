@@ -147,9 +147,11 @@
     <Compile Include="CodeGeneration\TypePipe\FlatClassContext.cs" />
     <Compile Include="CodeGeneration\TypePipe\IAttributeGenerator.cs" />
     <Compile Include="CodeGeneration\TypePipe\IExpressionBuilder.cs" />
+    <Compile Include="CodeGeneration\TypePipe\IInitializableMixinTarget.cs" />
     <Compile Include="CodeGeneration\TypePipe\IMixinInfo.cs" />
     <Compile Include="CodeGeneration\TypePipe\IMixinTypeProvider.cs" />
     <Compile Include="CodeGeneration\TypePipe\IConfigurationProvider.cs" />
+    <Compile Include="CodeGeneration\TypePipe\ImplementedInterfaceFinder.cs" />
     <Compile Include="CodeGeneration\TypePipe\INextCallMethodGenerator.cs" />
     <Compile Include="CodeGeneration\TypePipe\INextCallProxy.cs" />
     <Compile Include="CodeGeneration\TypePipe\INextCallProxyGenerator.cs" />
@@ -159,7 +161,7 @@
     <Compile Include="CodeGeneration\TypePipe\MixinContextSerializerBase.cs" />
     <Compile Include="CodeGeneration\TypePipe\MixinParticipant.cs" />
     <Compile Include="CodeGeneration\TypePipe\MixinParticipantTypeIdentifierProvider.cs" />
-    <Compile Include="CodeGeneration\TypePipe\MixinSerializationHelper2.cs" />
+    <Compile Include="CodeGeneration\TypePipe\MixinSerializationHelper.cs" />
     <Compile Include="CodeGeneration\TypePipe\MixinTypeGenerator.cs" />
     <Compile Include="CodeGeneration\TypePipe\MixinTypeGeneratorFacade.cs" />
     <Compile Include="CodeGeneration\TypePipe\NextCallMethodGenerator.cs" />
@@ -169,8 +171,9 @@
     </Compile>
     <Compile Include="CodeGeneration\TypePipe\OverrideInterface.cs" />
     <Compile Include="CodeGeneration\TypePipe\OverrideInterfaceGenerator2.cs" />
+    <Compile Include="CodeGeneration\TypePipe\OverrideInterfaceMappingAttribute.cs" />
     <Compile Include="CodeGeneration\TypePipe\RegularMixinInfo.cs" />
-    <Compile Include="CodeGeneration\TypePipe\SerializationImplementer2.cs" />
+    <Compile Include="CodeGeneration\TypePipe\SerializationImplementer.cs" />
     <Compile Include="CodeGeneration\TypePipe\TargetTypeForNextCall.cs" />
     <Compile Include="CodeGeneration\TypePipe\TargetTypeGenerator.cs" />
     <Compile Include="CodeGeneration\TypePipe\TargetTypeGeneratorFacade.cs" />
@@ -181,6 +184,14 @@
     <Compile Include="Context\ClassContextCollection.cs" />
     <Compile Include="Context\ClassContextCombiner.cs" />
     <Compile Include="Context\ClassContextDeriver.cs" />
+    <Compile Include="Context\Serialization\SerializationInfoClassContextDeserializer.cs" />
+    <Compile Include="Context\Serialization\SerializationInfoClassContextSerializer.cs" />
+    <Compile Include="Context\Serialization\SerializationInfoMixinContextDeserializer.cs" />
+    <Compile Include="Context\Serialization\SerializationInfoMixinContextSerializer.cs" />
+    <Compile Include="Context\Serialization\SerializationInfoSerializerBase.cs" />
+    <Compile Include="Context\Suppression\IMixinSuppressionRule.cs" />
+    <Compile Include="Context\Suppression\MixinTreeReplacementSuppressionRule.cs" />
+    <Compile Include="Context\Suppression\MixinTreeSuppressionRule.cs" />
     <Compile Include="Context\TypeEventArgs.cs" />
     <Compile Include="Context\DeclarativeAnalyzers\HasComposedInterfaceMarkerAnalyzer.cs" />
     <Compile Include="Context\DeclarativeAnalyzers\DeclarativeConfigurationAnalyzer.cs" />
@@ -227,14 +238,6 @@
     <Compile Include="Context\Serialization\IMixinContextOriginDeserializer.cs" />
     <Compile Include="Context\Serialization\IMixinContextOriginSerializer.cs" />
     <Compile Include="Context\Serialization\IMixinContextSerializer.cs" />
-    <Compile Include="Context\Serialization\SerializationInfoClassContextDeserializer.cs" />
-    <Compile Include="Context\Serialization\SerializationInfoClassContextSerializer.cs" />
-    <Compile Include="Context\Serialization\SerializationInfoMixinContextDeserializer.cs" />
-    <Compile Include="Context\Serialization\SerializationInfoMixinContextSerializer.cs" />
-    <Compile Include="Context\Serialization\SerializationInfoSerializerBase.cs" />
-    <Compile Include="Context\Suppression\IMixinSuppressionRule.cs" />
-    <Compile Include="Context\Suppression\MixinTreeReplacementSuppressionRule.cs" />
-    <Compile Include="Context\Suppression\MixinTreeSuppressionRule.cs" />
     <Compile Include="CopyCustomAttributesAttribute.cs" />
     <Compile Include="Definitions\AttributeDefinition.cs" />
     <Compile Include="Definitions\AttributeIntroductionDefinition.cs" />

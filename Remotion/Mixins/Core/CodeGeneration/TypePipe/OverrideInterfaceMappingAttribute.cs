@@ -14,18 +14,22 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System;
-using Remotion.Data.DomainObjects;
 
-namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.Interception.TestDomain
+using System;
+using Remotion.Reflection.CodeGeneration;
+
+namespace Remotion.Mixins.CodeGeneration.TypePipe
 {
-  [Instantiable]
-  public class DerivedDO : DOWithVirtualProperties
+  /// <summary>
+  /// Defines a mapping between an overridden mixin member and the member in the mixin's override interface. The attribute is applied to the members
+  /// of the interface so that the mixin member can be determined when needed.
+  /// </summary>
+  [AttributeUsage (AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
+  public class OverrideInterfaceMappingAttribute : MethodReferencingAttribute
   {
-    public virtual int VirtualPropertyOnDerivedClass
+    public OverrideInterfaceMappingAttribute (Type declaringType, string methodName, string methodSignature)
+        : base (declaringType, methodName, methodSignature)
     {
-      get { throw new NotImplementedException(); }
-      set { throw new NotImplementedException(); }
     }
   }
 }

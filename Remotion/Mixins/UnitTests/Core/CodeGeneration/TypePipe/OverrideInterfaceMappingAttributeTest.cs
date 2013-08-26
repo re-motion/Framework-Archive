@@ -14,19 +14,25 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using Remotion.Data.DomainObjects;
 
-namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.Interception.TestDomain
+using System;
+using System.Reflection;
+using NUnit.Framework;
+using Remotion.Mixins.CodeGeneration.TypePipe;
+using Remotion.Mixins.UnitTests.Core.TestDomain;
+
+namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
 {
-  [Instantiable]
-  public abstract class DOImplementingAbstractPropertyAccessors : DOWithAbstractProperties
+  [TestFixture]
+  public class OverrideInterfaceMappingAttributeTest
   {
-    private int _value;
-
-    public override int PropertyWithGetterAndSetter
+    [Test]
+    public void ResolveMethod ()
     {
-      get { return _value; }
-      set { _value = value + 7; }
+      var attribute = new OverrideInterfaceMappingAttribute (typeof (MixinWithAbstractMembers), "AbstractMethod", "Void AbstractMethod()");
+      var expected = typeof (MixinWithAbstractMembers).GetMethod ("AbstractMethod", BindingFlags.NonPublic | BindingFlags.Instance);
+
+      Assert.That (attribute.ResolveReferencedMethod (), Is.EqualTo (expected));
     }
   }
 }

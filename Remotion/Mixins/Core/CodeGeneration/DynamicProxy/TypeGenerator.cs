@@ -32,6 +32,7 @@ using Remotion.Utilities;
 using ReflectionUtility=Remotion.Mixins.Utilities.ReflectionUtility;
 using System.Linq;
 using Remotion.TypePipe.MutableReflection;
+using ImplementedInterfaceFinder = Remotion.Mixins.CodeGeneration.DynamicProxy.TypeGeneration.ImplementedInterfaceFinder;
 
 namespace Remotion.Mixins.CodeGeneration.DynamicProxy
 {

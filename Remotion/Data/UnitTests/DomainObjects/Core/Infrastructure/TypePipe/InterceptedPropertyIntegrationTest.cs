@@ -14,24 +14,25 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
+using System.Runtime.Serialization;
+using JetBrains.Annotations;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects;
 using Remotion.Data.DomainObjects.DomainImplementation;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Infrastructure.TypePipe;
 using Remotion.Data.DomainObjects.Mapping;
-using Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.Interception.TestDomain;
 using Remotion.Data.UnitTests.DomainObjects.TestDomain;
 using Remotion.Development.UnitTesting;
 using System.Linq;
+using Remotion.Mixins;
 using Remotion.Reflection;
-using Throws = Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.Interception.TestDomain.Throws;
 
-namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.Interception
+namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.TypePipe
 {
   [TestFixture]
-  [Ignore ("TODO 5370: Check and migrate tests, or delete.")]
   public class InterceptedPropertyIntegrationTest : ClientTransactionBaseTest
   {
     public override void SetUp ()
@@ -68,7 +69,8 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.Interception
     public void ConstructedObjectIsDerived ()
     {
       ClassWithAllDataTypes classWithAllDataTypes = ClassWithAllDataTypes.NewObject();
-      Assert.That (((object) classWithAllDataTypes).GetType().Equals (typeof (ClassWithAllDataTypes)), Is.False);
+      Assert.That(classWithAllDataTypes, Is.Not.TypeOf<ClassWithAllDataTypes>());
+      Assert.That(classWithAllDataTypes, Is.InstanceOf<ClassWithAllDataTypes>());
     }
 
     [Test]
@@ -121,7 +123,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.Interception
 
     [Test]
     [ExpectedException (typeof (NonInterceptableTypeException), ExpectedMessage =
-        "Cannot instantiate type Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.Interception.TestDomain.NonInstantiableAbstractClass "
+        "Cannot instantiate type Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.TypePipe.InterceptedPropertyIntegrationTest+NonInstantiableAbstractClass "
         + "as its member Foo (on type NonInstantiableAbstractClass) is abstract (and not an "
         + "automatic property).")]
     public void AbstractWithMethodCannotBeInstantiated ()
@@ -131,7 +133,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.Interception
 
     [Test]
     [ExpectedException (typeof (NonInterceptableTypeException), ExpectedMessage =
-        "Cannot instantiate type Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.Interception.TestDomain.NonInstantiableAbstractClassWithProps "
+        "Cannot instantiate type Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.TypePipe.InterceptedPropertyIntegrationTest+NonInstantiableAbstractClassWithProps "
         + "as its member get_Foo (on type NonInstantiableAbstractClassWithProps) is abstract (and not an automatic property).")]
     public void AbstractWithNonAutoPropertiesCannotBeInstantiated ()
     {
@@ -141,7 +143,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.Interception
     [Test]
     [ExpectedException (typeof (NonInterceptableTypeException), ExpectedMessage =
         "Cannot instantiate type "
-        + "'Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.Interception.TestDomain.NonInstantiableClassWithMixinWithPersistentAutoProperties' "
+        + "'Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.TypePipe.InterceptedPropertyIntegrationTest+NonInstantiableClassWithMixinWithPersistentAutoProperties' "
         + "because the mixin member 'MixinWithAutoProperties.PersistentAutoProperty' is an automatic property. Mixins must implement their persistent "
         + "members by using 'Properties' to get and set property values.")]
     public void ClassWithMixinWithAutoPropertiesCannotBeInstantiated ()
@@ -151,7 +153,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.Interception
 
     [Test]
     [ExpectedException (typeof (NonInterceptableTypeException), ExpectedMessage =
-        "Cannot instantiate type 'Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.Interception.TestDomain.NonInstantiableSealedClass' as it is sealed.")]
+        "Cannot instantiate type 'Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.TypePipe.InterceptedPropertyIntegrationTest+NonInstantiableSealedClass' as it is sealed.")]
     public void SealedCannotBeInstantiated ()
     {
       NonInstantiableSealedClass.NewObject();
@@ -175,7 +177,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.Interception
 
     [Test]
     [ExpectedException (typeof (MissingMethodException), ExpectedMessage =
-        "Type 'Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.Interception.TestDomain.ClassWithWrongConstructor' does not contain a "
+        "Type 'Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.TypePipe.InterceptedPropertyIntegrationTest+ClassWithWrongConstructor' does not contain a "
         + "constructor with the following signature: ().")]
     public void ConstructorMismatch1 ()
     {
@@ -184,7 +186,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.Interception
 
     [Test]
     [ExpectedException (typeof (MissingMethodException), ExpectedMessage =
-        "Type 'Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.Interception.TestDomain.ClassWithWrongConstructor' does not contain a "
+        "Type 'Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.TypePipe.InterceptedPropertyIntegrationTest+ClassWithWrongConstructor' does not contain a "
         + "constructor with the following signature: (Double).")]
     public void ConstructorMismatch2 ()
     {
@@ -398,7 +400,8 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.Interception
     {
       Order order = DomainObjectIDs.Order1.GetObject<Order> ();
       var propertyInfos = ((object) order).GetType ().GetProperties ();
-      var orderNumberProperty = propertyInfos.Where (pi => pi.Name == "OrderNumber") .SingleOrDefault();
+      var orderNumberProperty = propertyInfos.SingleOrDefault(pi => pi.Name == "OrderNumber");
+
       Assert.That (orderNumberProperty, Is.Not.Null);
     }
 
@@ -406,6 +409,150 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.Interception
     {
       var pipeline = ((TypePipeBasedDomainObjectCreator) DomainObjectIDs.Order1.ClassDefinition.InstanceCreator).Pipeline;
       return pipeline.ReflectionService.IsAssembledType (o.GetType ());
+    }
+
+    [DBTable]
+    [Instantiable]
+    public abstract class ClassWithAbstractRelatedCollectionSetter : DomainObject
+    {
+      public static ClassWithAbstractRelatedCollectionSetter NewObject ()
+      {
+        return NewObject<ClassWithAbstractRelatedCollectionSetter>();
+      }
+
+      protected ClassWithAbstractRelatedCollectionSetter ()
+      {
+      }
+
+      [DBBidirectionalRelation("RelatedObjects")]
+      public abstract ClassWithAbstractRelatedCollectionSetter Parent { get; }
+
+      [DBBidirectionalRelation("Parent")]
+      public abstract ObjectList<ClassWithAbstractRelatedCollectionSetter> RelatedObjects { get; set; }
+    }
+
+    [DBTable]
+    public class ClassWithExplicitInterfaceProperty : DomainObject, IPropertyInterface
+    {
+      public static ClassWithExplicitInterfaceProperty NewObject ()
+      {
+        return NewObject<ClassWithExplicitInterfaceProperty>();
+      }
+
+      protected ClassWithExplicitInterfaceProperty ()
+      {
+      }
+
+      int IPropertyInterface.Property
+      {
+        get { return CurrentProperty.GetValue<int>(); }
+        set { CurrentProperty.SetValue(value); }
+      }
+    }
+
+    [DBTable]
+    public class ClassWithWrongConstructor : DomainObject
+    {
+      public static ClassWithWrongConstructor NewObject ()
+      {
+        return NewObject<ClassWithWrongConstructor>();
+      }
+
+      public static ClassWithWrongConstructor NewObject (double d)
+      {
+        return NewObject<ClassWithWrongConstructor>(ParamList.Create(d));
+      }
+
+      [UsedImplicitly]
+      public ClassWithWrongConstructor (string s)
+      {
+        Assert.Fail("Shouldn't be executed.");
+      }
+    }
+
+    public interface IPropertyInterface
+    {
+      int Property { get; set; }
+    }
+
+    [DBTable]
+    [Instantiable]
+    public abstract class NonInstantiableAbstractClass : DomainObject
+    {
+      public static NonInstantiableAbstractClass NewObject ()
+      {
+        return NewObject<NonInstantiableAbstractClass>();
+      }
+
+      protected NonInstantiableAbstractClass ()
+      {
+      }
+
+      public abstract void Foo ();
+    }
+
+    [Instantiable]
+    [DBTable]
+    public abstract class NonInstantiableAbstractClassWithProps : DomainObject
+    {
+      public static NonInstantiableAbstractClassWithProps NewObject ()
+      {
+        return NewObject<NonInstantiableAbstractClassWithProps>();
+      }
+
+      protected NonInstantiableAbstractClassWithProps ()
+      {
+      }
+
+      [StorageClassNone]
+      public abstract int Foo { get; }
+    }
+
+    [DBTable]
+    [Uses(typeof(MixinWithAutoProperties))]
+    public class NonInstantiableClassWithMixinWithPersistentAutoProperties : DomainObject
+    {
+      public static NonInstantiableClassWithMixinWithPersistentAutoProperties NewObject ()
+      {
+        return NewObject<NonInstantiableClassWithMixinWithPersistentAutoProperties>();
+      }
+
+      public class MixinWithAutoProperties : DomainObjectMixin<NonInstantiableClassWithMixinWithPersistentAutoProperties>
+      {
+        public int PersistentAutoProperty { get; set; }
+      }
+    }
+
+    [DBTable]
+    public sealed class NonInstantiableSealedClass : DomainObject
+    {
+      public static NonInstantiableSealedClass NewObject ()
+      {
+        return NewObject<NonInstantiableSealedClass>();
+      }
+
+      public NonInstantiableSealedClass ()
+      {
+      }
+    }
+
+    [DBTable]
+    public class Throws : DomainObject
+    {
+      public static Throws NewObject ()
+      {
+        return NewObject<Throws>();
+      }
+
+      public Throws ()
+        : base(ThrowException(), new StreamingContext())
+      {
+      }
+
+      private static SerializationInfo ThrowException ()
+      {
+        throw new Exception("Thrown in ThrowException()");
+      }
     }
   }
 }
