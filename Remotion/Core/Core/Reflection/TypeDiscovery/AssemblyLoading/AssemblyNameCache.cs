@@ -1,4 +1,4 @@
-// This file is part of the re-motion Core Framework (www.re-motion.org)
+﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -14,27 +14,24 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using NUnit.Framework;
-using Remotion.Development.UnitTesting;
-using Remotion.Mixins.Validation;
 
-namespace Remotion.Mixins.UnitTests.Core.Validation
+using System.Collections.Concurrent;
+using System.Reflection;
+using Remotion.Utilities;
+
+namespace Remotion.Reflection.TypeDiscovery.AssemblyLoading
 {
-  [TestFixture]
-  public class ValidationLogDataTest
+  /// <summary>
+  /// Caches the results of <see cref="AssemblyName"/> operations.
+  /// </summary>
+  public static class AssemblyNameCache
   {
-    [Test]
-    public void Serialization ()
+    private static readonly ConcurrentDictionary<string, AssemblyName> s_cache = new ConcurrentDictionary<string, AssemblyName>();
+
+    public static AssemblyName GetAssemblyName (string filePath)
     {
-      var data = new ValidationLogData();
-
-      var result = new ValidationResult(new ValidatedDefinitionDescription ("a", "b", null, null));
-      result.Successes.Add (new ValidationResultItem("x", "y"));
-      data.Add (result);
-
-      var deserializedData = Serializer.SerializeAndDeserialize (data);
-
-      Assert.That (deserializedData.GetNumberOfSuccesses(), Is.EqualTo (1));
+      ArgumentUtility.CheckNotNullOrEmpty ("filePath", filePath);
+      return s_cache.GetOrAdd (filePath, AssemblyName.GetAssemblyName);
     }
   }
 }
