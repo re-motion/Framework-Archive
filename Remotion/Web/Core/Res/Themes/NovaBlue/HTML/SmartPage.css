@@ -99,11 +99,21 @@
 }
 
 html.SmartPageBusy .SmartPageSubmitter,
-html.SmartPageBusy .SmartPageSubmitter *
+html.SmartPageBusy .SmartPageSubmitter *,
+html.SmartPageBusy input:focus,
+html.SmartPageBusy select:focus,
+html.SmartPageBusy a:focus,
+html.SmartPageBusy a:focus *
 {
   -moz-opacity: 0.4;
   opacity: 0.4;
   filter: progid:DXImageTransform.Microsoft.BasicImage(opacity=0.40), progid:DXImageTransform.Microsoft.BasicImage(grayscale=1);
+}
+
+html.SmartPageBusy body.msie8 a.SmartPageSubmitter,
+html.SmartPageBusy body.msie7 a.SmartPageSubmitter
+{
+  color: gray !important;
 }
 
 /*html.SmartPageBusy,

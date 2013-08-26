@@ -383,8 +383,8 @@ function SmartPage_Context(
         && !_isSubmittingBeforeUnload
         && !_isAborting && _isAbortConfirmationEnabled)
     {
-      var activeElement = GetActiveElement();
-      var isJavaScriptAnchor = IsJavaScriptAnchor(activeElement);
+      var submitterElement = GetSubmitterOrActiveElement();
+      var isJavaScriptAnchor = IsJavaScriptAnchor(submitterElement);
       var isAbortConfirmationRequired = !isJavaScriptAnchor
                                         && (!_isDirtyStateTrackingEnabled || _isDirty);
 
@@ -518,7 +518,8 @@ function SmartPage_Context(
       var ieVersion = BrowserUtility.GetIEVersion();
       if (ieVersion == 8 || ieVersion == 7 || ieVersion == 6)
       {
-        if (this.IsSubmitting() && _submitter != null && _submitter.tagName.toLowerCase() == 'button' && _submitter == GetActiveElement())
+        //IE8 and earlier receive two submit-events when using doPostBack
+        if (this.IsSubmitting() && _submitter != null && _submitter.tagName.toLowerCase() == 'button' && _submitter == GetSubmitterOrActiveElement())
           return false;
       }
 
@@ -530,8 +531,7 @@ function SmartPage_Context(
 
         this.Backup();
 
-        var activeElement = GetActiveElement();
-        var eventSource = GetFocusableElement(activeElement);
+        var eventSource = GetSubmitterOrActiveElement();
         var eventSourceID = (eventSource != null) ? eventSource.id : null;
         ExecuteEventHandlers(_eventHandlers['onpostback'], eventSourceID, '');
         this.SetCacheDetectionFieldSubmitted();
@@ -815,7 +815,7 @@ function SmartPage_Context(
     }
   };
 
-  // Returns the document.activeElement and uses fallbacks if the activeElement is not set.
+  // Returns the document.activeElement and uses the hovered element as fallback if the activeElement is not set.
   function GetActiveElement()
   {
     var activeElement = window.document.activeElement;
@@ -824,9 +824,21 @@ function SmartPage_Context(
 
     // WebKit does not set activeElement if the element is selected using the mouse
 
+    var hoverElement = $('input:hover, button:hover, a:hover');
+    if (hoverElement.length > 0)
+      return hoverElement[0];
+
+    return null;
+  }
+
+  function GetDoPostBackSubmitterElement ()
+  {
     var postBackSettings = GetPostBackSettings();
     if (postBackSettings != null && postBackSettings.async)
-      return postBackSettings.sourceElement;
+    {
+      if (IsFocusableTag (postBackSettings.sourceElement.tagName))
+        return postBackSettings.sourceElement;
+    }
 
     var eventTarget = _theForm.__EVENTTARGET.value;
     if (eventTarget != '')
@@ -836,11 +848,12 @@ function SmartPage_Context(
         return eventTargetElement;
     }
 
-    var hoverElement = $('input[type=submit]:hover, button:hover, a:hover');
-    if (hoverElement.length > 0)
-      return hoverElement[0];
-
     return null;
+  }
+
+  function GetSubmitterOrActiveElement ()
+  {
+    return GetDoPostBackSubmitterElement() || GetActiveElement();
   }
 
   // Determines whether the elements of the specified tag can receive the focus.
@@ -856,22 +869,6 @@ function SmartPage_Context(
             tagName == 'textarea' ||
             tagName == 'select');
   };
-
-  function GetFocusableElement(element)
-  {
-    while (element != null)
-    {
-      if (TypeUtility.IsUndefined(element.tagName))
-        return null;
-
-      if (IsFocusableTag(element.tagName))
-        return element;
-
-      element = element.parentNode;
-    }
-
-    return null;
-  }
 
   // Determines whether the element (or it's parent) is an anchor tag 
   // and if javascript is used as the HREF.
@@ -960,11 +957,10 @@ function SmartPage_Context(
   {
     _isSubmitting = true;
 
-    var activeElement = GetActiveElement();
-    var focusableElement = GetFocusableElement(activeElement);
-    if (focusableElement != null)
+    var submitterElement = GetSubmitterOrActiveElement();
+    if (submitterElement != null)
     {
-      _submitter = focusableElement;
+      _submitter = submitterElement;
       $(_submitter).addClass('SmartPageSubmitter');
     }
 
