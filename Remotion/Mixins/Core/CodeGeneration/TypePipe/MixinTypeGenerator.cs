@@ -29,7 +29,9 @@ using Remotion.Utilities;
 
 namespace Remotion.Mixins.CodeGeneration.TypePipe
 {
-  // TODO 5370
+  /// <summary>
+  /// Encapsulates the generation of a derived mixin type.
+  /// </summary>
   public class MixinTypeGenerator
   {
     private static readonly MethodInfo s_getObjectDataForGeneratedTypesMethod = MemberInfoFromExpressionUtility.GetMethod (
@@ -109,7 +111,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     public OverrideInterface GenerateOverrides ()
     {
-      var overrideInterfaceGenerator = OverrideInterfaceGenerator2.CreateNestedGenerator (_type, "IOverriddenMethods");
+      var overrideInterfaceGenerator = OverrideInterfaceGenerator.CreateNestedGenerator (_type, "IOverriddenMethods");
 
       var targetReference = GetTargetReference();
       foreach (var method in _identifier.Overridden)
@@ -120,7 +122,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
         AddCallToOverrider (methodOverride, targetReference, methodToCall);
       }
 
-      return new OverrideInterface (overrideInterfaceGenerator.Type, overrideInterfaceGenerator.GetInterfaceMethodsForOverriddenMethods());
+      return new OverrideInterface (overrideInterfaceGenerator.Type, overrideInterfaceGenerator.InterfaceMethodsForOverriddenMethods);
     }
 
     private Expression GetTargetReference ()

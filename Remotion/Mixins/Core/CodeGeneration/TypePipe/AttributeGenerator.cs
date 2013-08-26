@@ -27,8 +27,10 @@ using System.Linq;
 
 namespace Remotion.Mixins.CodeGeneration.TypePipe
 {
-  // TODO 5370: docs
-  // TODO 5370: tests
+  /// <summary>
+  /// Adds custom <see cref="Attribute"/>s to <see cref="IMutableMember"/>s.
+  /// This class provides helper methods used during code generation.
+  /// </summary>
   public class AttributeGenerator : IAttributeGenerator
   {
     private static readonly ConstructorInfo s_debuggerBrowsableAttributeConstructor =
@@ -93,7 +95,6 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       ArgumentUtility.CheckNotNull ("classContext", classContext);
       ArgumentUtility.CheckNotNull ("orderedMixinTypes", orderedMixinTypes);
 
-      // TODO 5370: just the easiest way to get to the data.
       var attributeData = ConcreteMixedTypeAttribute.FromClassContext (classContext, orderedMixinTypes.ToArray());
       var attribute = new CustomAttributeDeclaration (
           s_concreteMixedTypeAttributeConstructor, new object[] { attributeData.ClassContextData, attributeData.OrderedMixinTypes });
@@ -105,7 +106,6 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       ArgumentUtility.CheckNotNull ("member", member);
       ArgumentUtility.CheckNotNull ("concreteMixinTypeIdentifier", concreteMixinTypeIdentifier);
 
-      // TODO 5370: just the easiest way to get to the data.
       var attributeData = ConcreteMixinTypeAttribute.Create (concreteMixinTypeIdentifier).ConcreteMixinTypeIdentifierData;
       var attribute = new CustomAttributeDeclaration (s_concreteMixinTypeAttributeConstructor, new object[] { attributeData });
       member.AddCustomAttribute (attribute);

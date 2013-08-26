@@ -26,7 +26,6 @@ using Remotion.Utilities;
 
 namespace Remotion.Mixins.CodeGeneration.TypePipe
 {
-  // TODO 5370
   public class SerializationImplementer
   {
     private static readonly MethodInfo s_getObjectDataMethod =
@@ -49,8 +48,6 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       ArgumentUtility.CheckNotNull ("delegatingExpressionFunc", delegatingExpressionFunc);
 
       var baseIsISerializable = typeof (ISerializable).IsTypePipeAssignableFrom (mutableType.BaseType);
-      // TODO 5370 Review: Why not simple explicit implementation of the interface?
-      // Create public re-implementation.
       var attributes = MethodAttributes.Public | MethodAttributes.Virtual | MethodAttributes.NewSlot | MethodAttributes.Final;
       var md = MethodDeclaration.CreateEquivalent (s_getObjectDataMethod);
 

@@ -123,8 +123,7 @@ namespace Remotion.Mixins.CodeGeneration
       {
         result = _constructorLookupInfos.GetOrCreateValue (key, cc =>
         {
-          var concreteType = GetOrCreateConcreteType (classContext);
-          return new MixedTypeConstructorLookupInfo (concreteType, classContext.Type, allowNonPublic);
+          throw new NotImplementedException();
         });
       }
       return result;

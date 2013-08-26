@@ -170,7 +170,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="CodeGeneration\TypePipe\OverrideInterface.cs" />
-    <Compile Include="CodeGeneration\TypePipe\OverrideInterfaceGenerator2.cs" />
+    <Compile Include="CodeGeneration\TypePipe\OverrideInterfaceGenerator.cs" />
     <Compile Include="CodeGeneration\TypePipe\OverrideInterfaceMappingAttribute.cs" />
     <Compile Include="CodeGeneration\TypePipe\RegularMixinInfo.cs" />
     <Compile Include="CodeGeneration\TypePipe\SerializationImplementer.cs" />
@@ -356,7 +356,6 @@
     <Compile Include="Utilities\DependencySort\IDependencyAnalyzer.cs" />
     <Compile Include="Definitions\Building\DependencySorting\IDependentMixinSorter.cs" />
     <Compile Include="Utilities\MixedObjectInstantiationScope.cs" />
-    <Compile Include="Utilities\MixedTypeConstructorLookupInfo.cs" />
     <Compile Include="Utilities\MixinGenericArgumentFinder.cs" />
     <Compile Include="Utilities\MixinReflector.cs" />
     <Compile Include="Utilities\MixinTypeCloser.cs" />
