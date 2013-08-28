@@ -244,6 +244,8 @@ namespace Remotion.Web.Test.MultiplePostBackCatching
       Image image = new Image ();
       image.ID = CreateID (prefix, "Inner");
       image.AlternateText = text;
+      image.ImageUrl = "~/Images/Image.gif";
+      image.Style.Add (HtmlTextWriterStyle.BorderStyle, "none");
 
       return image;
     }

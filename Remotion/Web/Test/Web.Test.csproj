@@ -448,6 +448,7 @@
     <Content Include="ExecutionEngine\UserControlForm.aspx" />
     <Content Include="IFrameSupport\FrameContent.aspx" />
     <Content Include="IFrameSupport\MainForm.aspx" />
+    <Content Include="Images\Image.gif" />
     <Content Include="MultiplePostBackCatching\TestSuiteForm.aspx" />
     <Content Include="MultiplePostBackCatching\UpdatePanelTestSuiteForm.aspx" />
     <Content Include="MultiplePostBackCatching\UpdatePanelTestForm.aspx" />
