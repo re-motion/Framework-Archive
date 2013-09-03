@@ -440,12 +440,8 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.RelationEndP
     }
 
     [Test]
-    [UseLegacyCodeGeneration]
     public void FlattenedSerializable ()
     {
-      //TODO 5370: Remove
-      SetUp ();
-
       var data = new VirtualObjectEndPointDataManager (_endPointID);
 
       var endPointFake = new SerializableRealObjectEndPointFake (null, DomainObjectMother.CreateFakeObject<Order> (DomainObjectIDs.Order1));

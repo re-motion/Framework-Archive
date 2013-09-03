@@ -36,11 +36,13 @@ namespace Remotion.Development.UnitTesting.Reflection
     private static readonly Type[] s_otherGenericParameters = EnsureNoNulls (typeof (Lookup<,>).GetGenericArguments());
     private static readonly Type[] s_serializableTypes = EnsureNoNulls (new[] { typeof (object), typeof (string), typeof (List<int>) });
     private static readonly Type[] s_unsealedTypes = EnsureNoNulls (new[] { typeof (Exception), typeof (List<int>) });
+    private static readonly Type[] s_sealedTypes = EnsureNoNulls (new[] { typeof (string), typeof (ReflectionObjectMother) });
     private static readonly Type[] s_delegateTypes = EnsureNoNulls (new[] { typeof (EventHandler), typeof (Action<,,>) });
     private static readonly Type[] s_valueTypes = EnsureNoNulls (new[] { typeof (double), typeof (DateTime) });
     private static readonly Type[] s_classTypes = EnsureNoNulls (new[] { typeof (StringBuilder), typeof (Exception) });
     private static readonly Type[] s_interfaceTypes = EnsureNoNulls (new[] { typeof (IDisposable), typeof (IServiceProvider) });
     private static readonly Type[] s_otherInterfaceTypes = EnsureNoNulls (new[] { typeof (IComparable), typeof (ICloneable) });
+    private static readonly Type[] s_nestedTypes = EnsureNoNulls (new[] { typeof (DomainType), typeof (DomainTypeBase) });
     private static readonly FieldInfo[] s_staticFields = EnsureNoNulls (new[] { typeof (string).GetField ("Empty"), typeof (Type).GetField ("EmptyTypes") });
     private static readonly FieldInfo[] s_instanceFields = EnsureNoNulls (new[] { typeof (DomainType).GetField ("Field") });
     private static readonly ConstructorInfo[] s_staticCtors = EnsureNoNulls (new[] { typeof (DomainType).TypeInitializer });
@@ -117,6 +119,14 @@ namespace Remotion.Development.UnitTesting.Reflection
       return type;
     }
 
+    public static Type GetSomeNonSubclassableType ()
+    {
+      var type = GetRandomElement (s_sealedTypes);
+      Assertion.IsTrue (type.IsClass);
+      Assertion.IsTrue (type.IsSealed);
+      return type;
+    }
+
     public static Type GetSomeDelegateType ()
     {
       var type = GetRandomElement (s_delegateTypes);
@@ -147,7 +157,16 @@ namespace Remotion.Development.UnitTesting.Reflection
 
     public static Type GetSomeOtherInterfaceType ()
     {
-      return GetRandomElement (s_otherInterfaceTypes);
+      var type = GetRandomElement (s_otherInterfaceTypes);
+      Assertion.IsTrue (type.IsInterface);
+      return type;
+    }
+
+    public static Type GetSomeNestedType ()
+    {
+      var type = GetRandomElement (s_nestedTypes);
+      Assertion.IsTrue (type.IsNested);
+      return type;
     }
 
     public static MemberInfo GetSomeMember ()

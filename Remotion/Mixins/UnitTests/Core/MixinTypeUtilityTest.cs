@@ -16,13 +16,12 @@
 // 
 using System;
 using System.Collections.Generic;
-using Castle.DynamicProxy;
 using NUnit.Framework;
+using Remotion.Mixins.UnitTests.Core.CodeGeneration;
 using Remotion.Mixins.UnitTests.Core.IntegrationTests.Ordering;
 using Remotion.Mixins.UnitTests.Core.TestDomain;
 using Remotion.Mixins.Utilities;
 using Remotion.Reflection;
-using Remotion.Reflection.CodeGeneration;
 
 namespace Remotion.Mixins.UnitTests.Core
 {
@@ -36,6 +35,7 @@ namespace Remotion.Mixins.UnitTests.Core
       Assert.That (MixinTypeUtility.IsGeneratedConcreteMixedType (typeof (string)), Is.False);
       Assert.That (MixinTypeUtility.IsGeneratedConcreteMixedType (typeof (int)), Is.False);
       Assert.That (MixinTypeUtility.IsGeneratedConcreteMixedType (typeof (BaseType1)), Is.False);
+      Assert.That (MixinTypeUtility.IsGeneratedConcreteMixedType (typeof (IMixinTarget)), Is.False);
 
       Assert.That (MixinTypeUtility.IsGeneratedConcreteMixedType (MixinTypeUtility.GetConcreteMixedType (typeof (object))), Is.False);
       Assert.That (MixinTypeUtility.IsGeneratedConcreteMixedType (MixinTypeUtility.GetConcreteMixedType (typeof (string))), Is.False);
@@ -46,8 +46,8 @@ namespace Remotion.Mixins.UnitTests.Core
     [Test]
     public void IsGeneratedConcreteMixedType_OnNextCallProxy ()
     {
-      Type NextCallProxy = MixinReflector.GetNextCallProxyType (ObjectFactory.Create<BaseType1>(ParamList.Empty));
-      Assert.That (MixinTypeUtility.IsGeneratedConcreteMixedType (NextCallProxy), Is.False);
+      Type nextCallProxy = MixinReflector.GetNextCallProxyType (ObjectFactory.Create<BaseType1>(ParamList.Empty));
+      Assert.That (MixinTypeUtility.IsGeneratedConcreteMixedType (nextCallProxy), Is.False);
     }
 
     [Test]
@@ -75,8 +75,8 @@ namespace Remotion.Mixins.UnitTests.Core
     [Test]
     public void IsGeneratedByMixinEngine_OnNextCallProxy ()
     {
-      Type NextCallProxy = MixinReflector.GetNextCallProxyType (ObjectFactory.Create<BaseType1> (ParamList.Empty));
-      Assert.That (MixinTypeUtility.IsGeneratedByMixinEngine (NextCallProxy), Is.True);
+      Type nextCallProxy = MixinReflector.GetNextCallProxyType (ObjectFactory.Create<BaseType1> (ParamList.Empty));
+      Assert.That (MixinTypeUtility.IsGeneratedByMixinEngine (nextCallProxy), Is.True);
     }
 
     [Test]
@@ -85,6 +85,16 @@ namespace Remotion.Mixins.UnitTests.Core
       var mixedInstance = ObjectFactory.Create<ClassOverridingMixinMembers> (ParamList.Empty);
       Type mixinType = Mixin.Get<MixinWithAbstractMembers> (mixedInstance).GetType ();
       Assert.That (MixinTypeUtility.IsGeneratedByMixinEngine (mixinType), Is.True);
+    }
+
+    [Test]
+    public void IsIsGeneratedByMixinEngine_OnOverriddenMethodsInterface ()
+    {
+      var mixedInstance = ObjectFactory.Create<ClassOverridingMixinMembers> (ParamList.Empty);
+      var mixinType = Mixin.Get<MixinWithAbstractMembers> (mixedInstance).GetType ();
+      var overriddenMembersInterface = mixinType.GetNestedType ("IOverriddenMethods");
+      Assert.That (overriddenMembersInterface, Is.Not.Null);
+      Assert.That (MixinTypeUtility.IsGeneratedByMixinEngine (overriddenMembersInterface), Is.True);
     }
 
     [Test]
@@ -510,8 +520,7 @@ namespace Remotion.Mixins.UnitTests.Core
     public void GetUnderlyingTargetTypeOnDerivedConcreteType ()
     {
       Type concreteType = MixinTypeUtility.GetConcreteMixedType (typeof (BaseType1));
-      var customClassEmitter = new CustomClassEmitter (new ModuleScope (false), "Test", concreteType);
-      Type derivedType = customClassEmitter.BuildType();
+      var derivedType = GenerateDerivedType (concreteType);
       Assert.That (MixinTypeUtility.GetUnderlyingTargetType (derivedType), Is.SameAs (typeof (BaseType1)));
     }
 
@@ -533,9 +542,9 @@ namespace Remotion.Mixins.UnitTests.Core
     public void GetMixinConfigurationFromConcreteType_DerivedType ()
     {
       Type concreteType = MixinTypeUtility.GetConcreteMixedType (typeof (BaseType1));
-      var customClassEmitter = new CustomClassEmitter (new ModuleScope (false), "Test", concreteType);
-      Type derivedType = customClassEmitter.BuildType ();
-      Assert.That (MixinTypeUtility.GetClassContextForConcreteType (derivedType),
+      var derivedType = GenerateDerivedType (concreteType);
+      Assert.That (
+          MixinTypeUtility.GetClassContextForConcreteType (derivedType),
           Is.EqualTo (MixinConfiguration.ActiveConfiguration.GetContext (typeof (BaseType1))));
     }
 
@@ -545,6 +554,14 @@ namespace Remotion.Mixins.UnitTests.Core
       {
         return TypeFactory.GetConcreteType (baseType);
       }
+    }
+
+    private Type GenerateDerivedType (Type baseType)
+    {
+      var codeGenerator = new AdHocCodeGenerator();
+      var typeBuilder = codeGenerator.CreateType (baseType: baseType);
+
+      return typeBuilder.CreateType();
     }
   }
 }

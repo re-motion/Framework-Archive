@@ -22,6 +22,7 @@ using Remotion.Data.DomainObjects;
 using Remotion.Data.DomainObjects.DomainImplementation;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectLifetime;
+using Remotion.Data.DomainObjects.Infrastructure.TypePipe;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.UnitTests.DomainObjects.Core.MixedDomains.TestDomain;
 using Remotion.Data.UnitTests.DomainObjects.TestDomain;
@@ -139,12 +140,8 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
 
     [Test]
     [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "The object cannot be initialized, it already has an ID.")]
-    [UseLegacyCodeGeneration]
     public void Initialize_ThrowsForDeserializedObject ()
     {
-      //TODO 5370: Remove
-      SetUp();
-
       var orderItem = _transaction.ExecuteInScope (() => DomainObjectIDs.OrderItem1.GetObject<OrderItem>());
 
 
@@ -155,7 +152,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
     [Test]
     public void Initialize_WithUninitializedObject_SetsIDAndRootTransaction ()
     {
-      var type = InterceptedDomainObjectCreator.Instance.Factory.GetConcreteDomainObjectType (typeof (OrderItem));
+      var type = GetConcreteType (typeof (OrderItem));
       var orderItem = (OrderItem) FormatterServices.GetSafeUninitializedObject (type);
       orderItem.Initialize (DomainObjectIDs.OrderItem1, _transaction);
 
@@ -166,7 +163,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
     [Test]
     public void Initialize_ThrowsForNonRootTransaction ()
     {
-      var type = InterceptedDomainObjectCreator.Instance.Factory.GetConcreteDomainObjectType (typeof (OrderItem));
+      var type = GetConcreteType (typeof (OrderItem));
       var orderItem = (OrderItem) FormatterServices.GetSafeUninitializedObject (type);
       Assert.That (
           () => orderItem.Initialize (DomainObjectIDs.OrderItem1, _transaction.CreateSubTransaction()),
@@ -502,12 +499,8 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
     }
 
     [Test]
-    [UseLegacyCodeGeneration]
     public void NeedsLoadModeDataContainerOnly_Serialization_True ()
     {
-      // TODO 5370: Remove.
-      SetUp ();
-
       var order = _transaction.ExecuteInScope (() => Order.NewObject ());
       Assert.That (order.NeedsLoadModeDataContainerOnly, Is.True);
 
@@ -516,12 +509,8 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
     }
 
     [Test]
-    [UseLegacyCodeGeneration]
     public void NeedsLoadModeDataContainerOnly_Serialization_False ()
     {
-      // TODO 5370: Remove.
-      SetUp();
-
       var order = (Order) LifetimeService.GetObjectReference (_transaction, DomainObjectIDs.Order1);
 
       Assert.That (order.NeedsLoadModeDataContainerOnly, Is.False);
@@ -531,12 +520,8 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
     }
 
     [Test]
-    [UseLegacyCodeGeneration]
     public void NeedsLoadModeDataContainerOnly_Serialization_ISerializable_True ()
     {
-      // TODO 5370: Remove.
-      SetUp ();
-
       var classWithAllDataTypes = _transaction.ExecuteInScope (() => ClassWithAllDataTypes.NewObject ());
       Assert.That (classWithAllDataTypes.NeedsLoadModeDataContainerOnly, Is.True);
 
@@ -545,12 +530,8 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
     }
 
     [Test]
-    [UseLegacyCodeGeneration]
     public void NeedsLoadModeDataContainerOnly_Serialization_ISerializable_False ()
     {
-      // TODO 5370: Remove.
-      SetUp ();
-
       var classWithAllDataTypes = (ClassWithAllDataTypes) LifetimeService.GetObjectReference (_transaction, DomainObjectIDs.ClassWithAllDataTypes1);
 
       Assert.That (classWithAllDataTypes.NeedsLoadModeDataContainerOnly, Is.False);
@@ -572,12 +553,8 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
     }
 
     [Test]
-    [UseLegacyCodeGeneration]
     public void Properties_Serialization ()
     {
-      // TODO 5370: Remove.
-      SetUp ();
-
       var order = _transaction.ExecuteInScope (() => Order.NewObject ());
       var propertyIndexer = _transaction.ExecuteInScope (() => order.Properties);
       Assert.That (propertyIndexer, Is.Not.Null);
@@ -597,6 +574,13 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
 
       Assert.That (transactionContextIndexer, Is.InstanceOf (typeof (DomainObjectTransactionContextIndexer)));
       Assert.That (((DomainObjectTransactionContext) transactionContextIndexer[_transaction]).DomainObject, Is.SameAs (order));
+    }
+
+    private Type GetConcreteType (Type requestedType)
+    {
+      var pipeline = ((DomainObjectCreator) GetTypeDefinition (requestedType).InstanceCreator).Pipeline;
+      var type = pipeline.ReflectionService.GetAssembledType (requestedType);
+      return type;
     }
 
     [DBTable]

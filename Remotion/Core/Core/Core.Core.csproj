@@ -164,8 +164,13 @@
     <Compile Include="Reflection\MemberSignatures\MemberNameAndSignatureEqualityComparer.cs" />
     <Compile Include="Reflection\MemberSignatures\MemberSignatureProvider.cs" />
     <Compile Include="Reflection\MemberSignatures\MethodSignature.cs" />
+    <Compile Include="Reflection\MemberSignatures\NestedTypeSignature.cs" />
     <Compile Include="Reflection\MemberSignatures\PropertySignature.cs" />
     <Compile Include="Reflection\ReflectionBasedMemberInfoNameResolver.cs" />
+    <Compile Include="Reflection\TypeDiscovery\AssemblyLoading\AssemblyNameCache.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Reflection\AssemblyTypeCache.cs" />
     <Compile Include="SafeContextSingleton.cs" />
     <Compile Include="Design\IDesignModeHelper.cs" />
     <Compile Include="Diagnostics\DebuggerInterface.cs" />
@@ -284,6 +289,7 @@
     <Compile Include="ServiceLocation\DefaultServiceConfigurationDiscoveryService.cs" />
     <Compile Include="ServiceLocation\DefaultServiceLocator.cs" />
     <Compile Include="ServiceLocation\ServiceConfigurationEntry.cs" />
+    <Compile Include="Utilities\ConcurrentDictionary.cs" />
     <Compile Include="Utilities\CustomAttributeTypedArgumentUtility.cs" />
     <Compile Include="Utilities\DefaultConverter.cs" />
     <Compile Include="Utilities\DelegateBasedDisposable.cs" />

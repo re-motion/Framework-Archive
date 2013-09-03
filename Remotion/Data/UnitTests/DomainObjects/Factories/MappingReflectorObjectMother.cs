@@ -17,7 +17,7 @@
 using System;
 using System.ComponentModel.Design;
 using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
-using Remotion.Data.DomainObjects.Infrastructure;
+using Remotion.Data.DomainObjects.Infrastructure.TypePipe;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Reflection;
 using Remotion.Utilities;
@@ -26,8 +26,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Factories
 {
   public class MappingReflectorObjectMother
   {
-    //TODO 5370: Remove
-    public static readonly IDomainObjectCreator DomainObjectCreator = new DomainObjectCreatorSwitch();
+    public static readonly DomainObjectCreator DomainObjectCreator = MappingReflector.CreateDomainObjectCreator();
 
     public static MappingReflector CreateMappingReflector (ITypeDiscoveryService typeDiscoveryService)
     {

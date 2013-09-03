@@ -17,6 +17,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel.Design;
 using System.Linq;
 using System.Reflection;
@@ -84,10 +85,11 @@ namespace Remotion.Reflection.TypeDiscovery
 
     private IEnumerable<Type> GetTypes (_Assembly assembly, Type baseType)
     {
-      Type[] allTypesInAssembly;
+      ReadOnlyCollection<Type> allTypesInAssembly;
+      
       try
       {
-        allTypesInAssembly = assembly.GetTypes ();
+        allTypesInAssembly = AssemblyTypeCache.GetTypes (assembly);
       }
       catch (ReflectionTypeLoadException ex)
       {

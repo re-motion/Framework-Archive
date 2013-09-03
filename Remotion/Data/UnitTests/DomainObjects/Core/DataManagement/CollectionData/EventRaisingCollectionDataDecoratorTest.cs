@@ -201,12 +201,8 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DataManagement.CollectionDa
     }
 
     [Test]
-    [UseLegacyCodeGeneration]
     public void Serializable ()
     {
-      //TODO 5370: Remove
-      SetUp();
-
       var source = new EventRaisingCollectionDataDecorator (new SerializableDomainObjectCollectionEventRaiserFake (), new DomainObjectCollectionData ());
       source.Insert (0, _order1);
       source.Insert (1, _order3);

@@ -18,8 +18,9 @@ using System;
 using System.Linq;
 using System.IO;
 using Remotion.Logging;
-using Remotion.Mixins.CodeGeneration;
 using Remotion.Mixins.Validation;
+using Remotion.Reflection;
+using Remotion.Reflection.TypeDiscovery.AssemblyLoading;
 using Remotion.Utilities;
 
 namespace Remotion.Mixins.MixerTools
@@ -88,7 +89,7 @@ namespace Remotion.Mixins.MixerTools
       }
       else
       {
-        var mixerLoggers = from t in typeof (Mixer).Assembly.GetTypes ()
+        var mixerLoggers = from t in AssemblyTypeCache.GetTypes (typeof (Mixer).Assembly)
                            where t.Namespace == typeof (Mixer).Namespace
                            select LogManager.GetLogger (t);
         var logThresholds = from l in mixerLoggers
@@ -99,16 +100,7 @@ namespace Remotion.Mixins.MixerTools
 
     private Mixer CreateMixer ()
     {
-      var typeNameProvider = 
-          _parameters.KeepTypeNames 
-          ? (IConcreteMixedTypeNameProvider) new NamespaceChangingNameProvider()
-          : new GuidNameProvider();
-
-      var mixer = Mixer.Create (
-          _parameters.SignedAssemblyName, 
-          _parameters.UnsignedAssemblyName, 
-          _parameters.AssemblyOutputDirectory, 
-          typeNameProvider);
+      var mixer = Mixer.Create (_parameters.AssemblyName, _parameters.AssemblyOutputDirectory);
       
       mixer.ValidationErrorOccurred += Mixer_ValidationErrorOccurred;
       mixer.ErrorOccurred += Mixer_ErrorOccurred;
@@ -117,7 +109,10 @@ namespace Remotion.Mixins.MixerTools
 
     private void Mixer_ValidationErrorOccurred (object sender, ValidationErrorEventArgs e)
     {
-      ConsoleDumper.DumpValidationResults (e.ValidationException.ValidationLogData.GetResults ());
+      using (ConsoleUtility.EnterColorScope (ConsoleColor.Red, null))
+      {
+        Console.WriteLine (e.ValidationException.Message);
+      }
     }
 
     void Mixer_ErrorOccurred (object sender, ErrorEventArgs e)

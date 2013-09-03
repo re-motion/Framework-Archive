@@ -16,14 +16,14 @@
 // 
 using System;
 using Remotion.ServiceLocation;
+using Remotion.TypePipe.Implementation;
 
 namespace Remotion.Mixins.CodeGeneration
 {
-  [ConcreteImplementation ("Remotion.Mixins.CodeGeneration.TypeFactoryImplementation, Remotion.Mixins, Version=<version>, Culture=neutral, PublicKeyToken=<publicKeyToken>",
-    Lifetime = LifetimeKind.Singleton)]
+  [ConcreteImplementation (typeof (TypeFactoryImplementation), Lifetime = LifetimeKind.Singleton)]
   public interface ITypeFactoryImplementation
   {
     Type GetConcreteType (Type targetOrConcreteType);
-    void InitializeUnconstructedInstance (object mixinTarget);
+    void InitializeUnconstructedInstance (object mixinTarget, InitializationSemantics initializationSemantics);
   }
 }
