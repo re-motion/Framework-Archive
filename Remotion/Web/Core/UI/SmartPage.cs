@@ -162,7 +162,12 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
     _smartPageInfo.RegisterCommandForSynchronousPostBack (control, eventArguments);
   }
 
-  #endregion
+    public void RegisterControlForSynchronousPostBack (Control control)
+    {
+      _smartPageInfo.RegisterControlForSynchronousPostBack (control);
+    }
+
+    #endregion
 
   #region ISmartNavigablePage Implementation
 

@@ -184,6 +184,15 @@ namespace Remotion.Web.UI.SmartPageImplementation
       }
     }
 
+    public void RegisterControlForSynchronousPostBack (Control control)
+    {
+      ArgumentUtility.CheckNotNull ("control", control);
+
+      var scriptManager = ScriptManager.GetCurrent (_page.WrappedInstance);
+      if (scriptManager != null)
+        scriptManager.RegisterPostBackControl (control);
+    }
+
     /// <summary> Find the <see cref="IResourceManager"/> for this SmartPageInfo. </summary>
     protected virtual IResourceManager GetResourceManager ()
     {

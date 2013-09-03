@@ -119,6 +119,15 @@ namespace Remotion.Web.UI
     /// </remarks>
     void RegisterCommandForSynchronousPostBack ([NotNull]Control control, [NotNull]string eventArguments);
 
+    /// <summary>
+    /// Registers a control as a synchronous postback target.
+    /// </summary>
+    /// <param name="control">The <see cref="Control"/> registered for a synchronous postback. Must not be <see langword="null" />.</param>
+    /// <remarks>
+    /// The <paramref name="control"/> must not be registered as a synchronous postback target in addition to registering individual event arguments.
+    /// </remarks>
+    void RegisterControlForSynchronousPostBack ([NotNull] Control control);
+
     /// <summary> Gets or sets the <see cref="HtmlForm"/> of the ASP.NET page. </summary>
     [EditorBrowsable (EditorBrowsableState.Never)]
     HtmlForm HtmlForm { get; set; }
