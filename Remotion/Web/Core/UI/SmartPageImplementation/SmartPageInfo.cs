@@ -24,6 +24,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
+using JetBrains.Annotations;
 using Remotion.Collections;
 using Remotion.Globalization;
 using Remotion.ServiceLocation;
@@ -162,9 +163,10 @@ namespace Remotion.Web.UI.SmartPageImplementation
       set { _checkFormStateFunction = StringUtility.EmptyToNull (value); }
     }
 
-    public void RegisterCommandForSynchronousPostBack (Control control, string eventArguments)
+    public void RegisterCommandForSynchronousPostBack ([NotNull]Control control, [NotNull]string eventArguments)
     {
       ArgumentUtility.CheckNotNull ("control", control);
+      ArgumentUtility.CheckNotNullOrEmpty ("eventArguments", eventArguments);
 
       if (_isPreRenderComplete)
       {
@@ -172,7 +174,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
             "RegisterCommandForSynchronousPostBack must not be called after the PreRenderComplete method of the System.Web.UI.Page has been invoked.");
       }
 
-      Tuple<Control, string> command = new Tuple<Control, string> (control, StringUtility.NullToEmpty (eventArguments));
+      Tuple<Control, string> command = new Tuple<Control, string> (control, eventArguments);
       if (!_synchronousPostBackCommands.Contains (command))
       {
         var scriptManager = ScriptManager.GetCurrent (_page.WrappedInstance);
