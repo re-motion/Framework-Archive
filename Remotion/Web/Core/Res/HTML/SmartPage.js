@@ -834,7 +834,7 @@ function SmartPage_Context(
   function GetDoPostBackSubmitterElement ()
   {
     var postBackSettings = GetPostBackSettings();
-    if (postBackSettings != null && postBackSettings.async)
+    if (postBackSettings != null && postBackSettings.async && postBackSettings.sourceElement != null)
     {
       if (IsFocusableTag (postBackSettings.sourceElement.tagName))
         return postBackSettings.sourceElement;
