@@ -634,7 +634,8 @@ namespace Remotion.ObjectBinding.UnitTests.Web.Legacy.UI.Controls.BocReferenceVa
 
     protected void SetUpClientScriptExpectations ()
     {
-      ClientScriptManagerMock.Expect (mock => mock.GetPostBackEventReference (Control, string.Empty)).Return ("PostBackEventReference");
+      ClientScriptManagerMock.Expect (mock => mock.GetPostBackEventReference (Control, BocReferenceValueBase.CommandArgumentName))
+                             .Return ("PostBackEventReference");
     }
 
     protected void AssertIcon (XmlNode parent, bool wrapNonCommandIcon)
