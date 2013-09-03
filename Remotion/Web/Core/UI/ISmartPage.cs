@@ -128,10 +128,6 @@ namespace Remotion.Web.UI
     /// </remarks>
     void RegisterControlForSynchronousPostBack ([NotNull] Control control);
 
-    /// <summary> Gets or sets the <see cref="HtmlForm"/> of the ASP.NET page. </summary>
-    [EditorBrowsable (EditorBrowsableState.Never)]
-    HtmlForm HtmlForm { get; set; }
-
     /// <summary> Saves the ControlState and the ViewState of the ASP.NET page. </summary>
     [EditorBrowsable (EditorBrowsableState.Never)]
     void SaveAllState ();

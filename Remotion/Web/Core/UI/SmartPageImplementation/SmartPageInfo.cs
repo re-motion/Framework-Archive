@@ -19,11 +19,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web.UI;
-using System.Web.UI.HtmlControls;
 using JetBrains.Annotations;
 using Remotion.Collections;
 using Remotion.Globalization;
@@ -84,9 +82,6 @@ namespace Remotion.Web.UI.SmartPageImplementation
     private readonly List<Tuple<Control, string>> _synchronousPostBackCommands = new List<Tuple<Control, string>>();
 
     private ResourceManagerSet _cachedResourceManager;
-
-    private Tuple<Control, FieldInfo> _htmlFormField;
-    private bool _htmlFormFieldInitialized;
 
     public SmartPageInfo (ISmartPage page)
     {
@@ -222,88 +217,6 @@ namespace Remotion.Web.UI.SmartPageImplementation
       return _cachedResourceManager;
     }
 
-
-    private void EnsureHtmlFormFieldInitialized ()
-    {
-      if (! _htmlFormFieldInitialized)
-      {
-        bool isDesignMode = ControlHelper.IsDesignMode (_page);
-
-        Control page = _page.WrappedInstance;
-        MemberInfo[] fields;
-        do
-        {
-          fields = page.GetType().FindMembers (
-              MemberTypes.Field,
-              BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance,
-              FindHtmlFormControlFilter,
-              null);
-
-          if (fields.Length == 0)
-          {
-            if (page is Page)
-              page = ((Page) page).Master;
-            else
-              page = ((MasterPage) page).Master;
-          }
-        } while (fields.Length == 0 && page != null);
-
-        if (fields.Length == 0 && !isDesignMode)
-        {
-          throw new ApplicationException (
-              "Page class " + _page.GetType().FullName + " has no field of type HtmlForm. Please add a field or override property IWxePage.HtmlForm.");
-        }
-        else if (fields.Length > 1)
-        {
-          throw new ApplicationException (
-              "Page class " + _page.GetType().FullName
-              + " has more than one field of type HtmlForm. Please remove excessive fields or override property IWxePage.HtmlForm.");
-        }
-        if (fields.Length == 1) // Can only be 0 without an exception during design mode
-        {
-          _htmlFormField = new Tuple<Control, FieldInfo> (page, (FieldInfo) fields[0]);
-          _htmlFormFieldInitialized = true;
-        }
-      }
-    }
-
-    private bool FindHtmlFormControlFilter (MemberInfo member, object filterCriteria)
-    {
-      return (member is FieldInfo && ((FieldInfo) member).FieldType == typeof (HtmlForm));
-    }
-
-    /// <summary> 
-    ///   Implements <see cref="ISmartPage.HtmlForm">ISmartPage.HtmlForm</see>.
-    /// </summary>
-    public HtmlForm HtmlForm
-    {
-      get
-      {
-        EnsureHtmlFormFieldInitialized();
-
-        if (_htmlFormField != null) // Can only be null without an exception during design mode
-        {
-          Control page = _htmlFormField.Item1;
-          FieldInfo htmlFormField = _htmlFormField.Item2;
-          return (HtmlForm) htmlFormField.GetValue (page);
-        }
-        else
-          return null;
-      }
-      set
-      {
-        EnsureHtmlFormFieldInitialized();
-
-        if (_htmlFormField != null) // Can only be null without an exception during design mode
-        {
-          Control page = _htmlFormField.Item1;
-          FieldInfo htmlFormField = _htmlFormField.Item2;
-          htmlFormField.SetValue (page, value);
-        }
-      }
-    }
-
-
     private void Page_Init (object sender, EventArgs e)
     {
       if (_page.Header != null)
@@ -368,6 +281,10 @@ namespace Remotion.Web.UI.SmartPageImplementation
 
     private void RegisterSmartPageInitializationScript ()
     {
+      var htmlForm = _page.Form;
+      if (htmlForm == null)
+        throw new InvalidOperationException ("SmartPage requires an HtmlForm control on the page.");
+
       string abortMessage = GetAbortMessage();
       string statusIsSubmittingMessage = GetStatusIsSubmittingMessage();
 
@@ -423,7 +340,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
       initScript.AppendLine();
 
       initScript.AppendLine ("    SmartPage_Context.Instance = new SmartPage_Context (");
-      initScript.Append ("        '").Append (_page.HtmlForm.ClientID).AppendLine ("',");
+      initScript.Append ("        '").Append (htmlForm.ClientID).AppendLine ("',");
       initScript.Append ("        ").Append (isDirtyStateTrackingEnabled).AppendLine (",");
       initScript.Append ("        ").Append (abortMessage).AppendLine (",");
       initScript.Append ("        ").Append (statusIsSubmittingMessage).AppendLine (",");

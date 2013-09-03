@@ -271,26 +271,11 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
       return Request.QueryString;
   }
 
-    /// <summary> Gets or sets the <b>HtmlForm</b> of this page. </summary>
-  /// <remarks> Redirects the call to the <see cref="HtmlForm"/> property. </remarks>
-  HtmlForm ISmartPage.HtmlForm
-  {
-    get { return HtmlForm; }
-    set { HtmlForm = value; }
-  }
-
-  /// <summary> Gets or sets the <b>HtmlForm</b> of this page. </summary>
-  /// <remarks>
-  ///   <note type="inheritinfo"> 
-  ///     Override this property you do not wish to rely on automatic detection of the <see cref="HtmlForm"/>
-  ///     using reflection.
-  ///   </note>
-  /// </remarks>
-  [EditorBrowsable (EditorBrowsableState.Never)]
+  [Obsolete ("Use Page.Form instead. (1.15.5)", true)]
   protected virtual HtmlForm HtmlForm
   {
-    get { return _smartPageInfo.HtmlForm; }
-    set { _smartPageInfo.HtmlForm = value; }
+    get { throw new NotSupportedException ("Use Page.Form instead. (1.15.5"); }
+    set { throw new NotSupportedException ("Use Page.Form instead. (1.15.5"); }
   }
 
 
