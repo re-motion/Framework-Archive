@@ -738,7 +738,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       }
 
       if (Command != null)
-        Command.RegisterForSynchronousPostBack (this, null, string.Format ("{0} '{1}', Object Command", GetType().Name, ID));
+        Command.RegisterForSynchronousPostBackOnDemand (this, null, string.Format ("{0} '{1}', Object Command", GetType().Name, ID));
 
       CheckIconService();
     }

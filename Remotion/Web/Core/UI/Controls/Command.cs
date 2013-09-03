@@ -858,7 +858,7 @@ namespace Remotion.Web.UI.Controls
         ToolTip = resourceManager.GetString (key);
     }
 
-    public void RegisterForSynchronousPostBack (Control control, string argument, string commandID)
+    public void RegisterForSynchronousPostBackOnDemand (Control control, string argument, string commandID)
     {
       ArgumentUtility.CheckNotNull ("control", control);
       ArgumentUtility.CheckNotNullOrEmpty ("commandID", commandID);
