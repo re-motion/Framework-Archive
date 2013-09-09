@@ -16,10 +16,12 @@
 // 
 using System;
 using System.IO;
+using JetBrains.Annotations;
 using Remotion.Logging;
 using Remotion.Mixins.CodeGeneration.TypePipe;
 using Remotion.ServiceLocation;
 using Remotion.TypePipe;
+using Remotion.TypePipe.Configuration;
 using Remotion.TypePipe.Implementation.Remotion;
 using Remotion.Utilities;
 using System.Linq;
@@ -44,10 +46,8 @@ namespace Remotion.Mixins.MixerTools
       get { return _assemblyName; }
     }
 
-    public IPipeline CreatePipeline (string assemblyOutputDirectory)
+    public IPipeline CreatePipeline ([CanBeNull]string assemblyOutputDirectory)
     {
-      // Assembly output directory may be null.
-
       var remotionPipelineFactory = new RemotionPipelineFactory();
       var defaultPipeline = SafeServiceLocator.Current.GetInstance<IPipelineRegistry>().DefaultPipeline;
       var participants = defaultPipeline.Participants.ToArray();
@@ -59,13 +59,14 @@ namespace Remotion.Mixins.MixerTools
           string.Join (", ", participantTypeNames));
       Assertion.DebugAssert (participants.OfType<MixinParticipant>().Any(), "Mixin participant must be present.");
 
+      var pipelineSettings = PipelineSettings.From (defaultPipeline.Settings)
+          .SetAssemblyDirectory (assemblyOutputDirectory)
+          .SetAssemblyNamePattern (_assemblyName);
+
       var pipeline = remotionPipelineFactory.CreatePipeline (
           defaultPipeline.ParticipantConfigurationID,
-          defaultPipeline.Settings,
+          pipelineSettings.Build(),
           participants);
-
-      pipeline.CodeManager.SetAssemblyDirectory (assemblyOutputDirectory);
-      pipeline.CodeManager.SetAssemblyNamePattern (_assemblyName);
 
       return pipeline;
     }

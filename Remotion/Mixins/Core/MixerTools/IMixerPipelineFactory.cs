@@ -14,13 +14,17 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
+using JetBrains.Annotations;
 using Remotion.TypePipe;
 
 namespace Remotion.Mixins.MixerTools
 {
   public interface IMixerPipelineFactory
   {
-    IPipeline CreatePipeline (string assemblyOutputDirectory);
+    IPipeline CreatePipeline ([CanBeNull]string assemblyOutputDirectory);
+    
+    //TODO 5840: Cleanup inconsistent nullability
     string GetModulePath (string assemblyOutputDirectory);
   }
 }
