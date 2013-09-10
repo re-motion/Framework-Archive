@@ -33,7 +33,7 @@ namespace Remotion.Mixins.UnitTests.Core.MixerTools
     {
       _factory = new MixerPipelineFactory ("Assembly");
     }
-    
+
     [Test]
     public void CreatePipeline ()
     {
@@ -43,11 +43,15 @@ namespace Remotion.Mixins.UnitTests.Core.MixerTools
 
       var defaultPipeline = SafeServiceLocator.Current.GetInstance<IPipelineRegistry>().DefaultPipeline;
       Assert.That (pipeline.ParticipantConfigurationID, Is.EqualTo (defaultPipeline.ParticipantConfigurationID));
-      Assert.That (pipeline.Settings, Is.SameAs (defaultPipeline.Settings));
       Assert.That (pipeline.Participants, Is.EqualTo (defaultPipeline.Participants));
 
-      Assert.That (pipeline.CodeManager.AssemblyNamePattern, Is.EqualTo ("Assembly"));
-      Assert.That (pipeline.CodeManager.AssemblyDirectory, Is.EqualTo (@"c:\directory"));
+      Assert.That (pipeline.Settings.AssemblyNamePattern, Is.EqualTo ("Assembly"));
+      Assert.That (pipeline.Settings.AssemblyDirectory, Is.EqualTo (@"c:\directory"));
+      Assert.That (
+          pipeline.Settings.EnableSerializationWithoutAssemblySaving,
+          Is.EqualTo (defaultPipeline.Settings.EnableSerializationWithoutAssemblySaving));
+      Assert.That (pipeline.Settings.ForceStrongNaming, Is.EqualTo (defaultPipeline.Settings.ForceStrongNaming));
+      Assert.That (pipeline.Settings.KeyFilePath, Is.EqualTo (defaultPipeline.Settings.KeyFilePath));
     }
 
     [Test]

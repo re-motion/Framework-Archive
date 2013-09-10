@@ -40,6 +40,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixinTy
     }
 
     [Test]
+    [Ignore ("TODO 5840: RebuildParticipantState is currently disabled")]
     public void LoadFlushedCode_IncludesGeneratedMixinTypes ()
     {
       var mixedInstance = CreateMixedObject<ClassOverridingMixinMembers> (typeof (MixinWithAbstractMembers));
@@ -79,7 +80,8 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixinTy
 
     private Assembly FlushAndLoadAssemblyWithoutLocking ()
     {
-      var assemblyPath = _savedPipeline.CodeManager.FlushCodeToDisk();
+      var assemblyPaths = _savedPipeline.CodeManager.FlushCodeToDisk();
+      var assemblyPath = assemblyPaths.Single();
       AddSavedAssembly (assemblyPath);
       var assembly = AssemblyLoader.LoadWithoutLocking (assemblyPath);
       return assembly;
