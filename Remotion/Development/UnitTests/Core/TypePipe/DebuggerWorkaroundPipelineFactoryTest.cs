@@ -50,9 +50,11 @@ namespace Remotion.Development.UnitTests.Core.TypePipe
     {
       var forceStrongNaming = BooleanObjectMother.GetRandomBoolean();
       var keyFilePath = "keyFilePath";
+      string assemblyDirectory = null;
+      var assemblyNamePattern = "DebuggerAssemblies_{counter}";
       _factory.MaximumTypesPerAssembly = 7;
 
-      var result = _factory.Invoke<IReflectionEmitCodeGenerator> ("NewReflectionEmitCodeGenerator", forceStrongNaming, keyFilePath);
+      var result = _factory.Invoke<IReflectionEmitCodeGenerator> ("NewReflectionEmitCodeGenerator", forceStrongNaming, keyFilePath, assemblyDirectory, assemblyNamePattern);
 
       Assert.That (result, Is.TypeOf<DebuggerWorkaroundCodeGenerator>());
       var debuggerWorkaroundCodeGenerator = (DebuggerWorkaroundCodeGenerator) result;
