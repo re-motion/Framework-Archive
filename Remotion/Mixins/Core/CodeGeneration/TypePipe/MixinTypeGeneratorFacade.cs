@@ -26,8 +26,13 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
   /// <summary>
   /// Generates concrete mixin types and meta data by calling the methods on <see cref="MixinTypeGenerator"/> in proper order.
   /// </summary>
+  /// <threadsafety static="true" instance="true"/>
   public class MixinTypeGeneratorFacade : IMixinTypeProvider
   {
+    public MixinTypeGeneratorFacade ()
+    {
+    }
+
     public IMixinInfo GetMixinInfo (IProxyTypeAssemblyContext context, MixinDefinition mixin)
     {
       ArgumentUtility.CheckNotNull ("context", context);

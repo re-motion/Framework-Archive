@@ -43,6 +43,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
   ///   </item>
   /// </list>
   /// </remarks>
+  /// <threadsafety static="true" instance="true"/>
   public class DomainObjectParticipant : SimpleParticipantBase
   {
     private static readonly MethodInfo s_getPublicDomainObjectTypeImplementation = GetInfrastructureHook ("GetPublicDomainObjectTypeImplementation");
@@ -74,12 +75,16 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
       _interceptedPropertyFinder = interceptedPropertyFinder;
     }
 
-    // Assuming a stable mapping, we do not need any additional keys.
-    // Note: To support modifiable mappings, we could use the ClassDefinition as cache key. However, there is no good way to recreate a 
-    // ClassDefinition within the generated code (without relying on a stable mapping) or to deserialize a ClassDefinition (without a stable mapping).
     public override ITypeIdentifierProvider PartialTypeIdentifierProvider
     {
-      get { return null; }
+      get
+      {
+        // Assuming a stable mapping, we do not need any additional keys.
+        // Note: To support modifiable mappings, we could use the ClassDefinition as cache key. However, there is no good way to recreate a 
+        // ClassDefinition within the generated code (without relying on a stable mapping) or to deserialize a ClassDefinition (without a stable mapping).
+
+        return null;
+      }
     }
 
     public override void Participate (object id, IProxyTypeAssemblyContext proxyTypeAssemblyContext)
