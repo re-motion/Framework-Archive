@@ -33,12 +33,14 @@ namespace Remotion.Mixins.MixerTools
     private static readonly ILog s_log = LogManager.GetLogger(typeof(MixerPipelineFactory));
 
     private readonly string _assemblyName;
+    private readonly int _degreeOfParallelism;
 
-    public MixerPipelineFactory (string assemblyName)
+    public MixerPipelineFactory (string assemblyName, int degreeOfParallelism)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("assemblyName", assemblyName);
 
       _assemblyName = assemblyName;
+      _degreeOfParallelism = degreeOfParallelism;
     }
 
     public string AssemblyName
@@ -46,7 +48,12 @@ namespace Remotion.Mixins.MixerTools
       get { return _assemblyName; }
     }
 
-    public IPipeline CreatePipeline ([CanBeNull]string assemblyOutputDirectory)
+    public int DegreeOfParallelism
+    {
+      get { return _degreeOfParallelism; }
+    }
+
+    public IPipeline CreatePipeline (string assemblyOutputDirectory)
     {
       var remotionPipelineFactory = new RemotionPipelineFactory();
       var defaultPipeline = SafeServiceLocator.Current.GetInstance<IPipelineRegistry>().DefaultPipeline;
@@ -61,7 +68,8 @@ namespace Remotion.Mixins.MixerTools
 
       var pipelineSettings = PipelineSettings.From (defaultPipeline.Settings)
           .SetAssemblyDirectory (assemblyOutputDirectory)
-          .SetAssemblyNamePattern (_assemblyName);
+          .SetAssemblyNamePattern (_assemblyName)
+          .SetDegreeOfParallelism (_degreeOfParallelism);
 
       var pipeline = remotionPipelineFactory.CreatePipeline (
           defaultPipeline.ParticipantConfigurationID,
@@ -71,9 +79,10 @@ namespace Remotion.Mixins.MixerTools
       return pipeline;
     }
 
-    public string GetModulePath (string assemblyOutputDirectory)
+    public string[] GetModulePaths (string assemblyOutputDirectory)
     {
-      return Path.Combine (assemblyOutputDirectory, _assemblyName + ".dll");
+      var workingDirectory = assemblyOutputDirectory ?? Environment.CurrentDirectory;
+      return Directory.GetFiles (workingDirectory, AssemblyName.Replace (PipelineSettings.CounterPattern, "*") + ".dll");
     }
   }
 }

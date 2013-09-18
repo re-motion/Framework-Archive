@@ -40,9 +40,9 @@ namespace Remotion.Mixins.MixerTools
   {
     private static readonly ILog s_log = LogManager.GetLogger (typeof (Mixer));
 
-    public static Mixer Create (string assemblyName, string assemblyOutputDirectory)
+    public static Mixer Create (string assemblyName, string assemblyOutputDirectory, int degreeOfParallelism)
     {
-      var builderFactory = new MixerPipelineFactory (assemblyName);
+      var builderFactory = new MixerPipelineFactory (assemblyName, degreeOfParallelism);
 
       // Use a custom TypeDiscoveryService with the LoadAllAssemblyLoaderFilter so that mixed types within system assemblies are also considered.
       var assemblyLoader = new FilteringAssemblyLoader (new LoadAllAssemblyLoaderFilter ());
@@ -108,7 +108,7 @@ namespace Remotion.Mixins.MixerTools
         Directory.CreateDirectory (AssemblyOutputDirectory);
       }
 
-      CleanupIfExists (MixerPipelineFactory.GetModulePath (AssemblyOutputDirectory));
+      CleanupIfExists (MixerPipelineFactory.GetModulePaths (AssemblyOutputDirectory));
     }
 
     // The MixinConfiguration is passed to Execute in order to be able to call PrepareOutputDirectory before analyzing the configuration (and potentially
@@ -175,12 +175,15 @@ namespace Remotion.Mixins.MixerTools
         s_log.InfoFormat ("Generated assembly file '{0}'.", generatedFile);
     }
 
-    private void CleanupIfExists (string path)
+    private void CleanupIfExists (string[] paths)
     {
-      if (File.Exists (path))
+      foreach (var path in paths)
       {
-        s_log.InfoFormat ("Removing file '{0}'.", path);
-        File.Delete (path);
+        if (File.Exists (path))
+        {
+          s_log.InfoFormat ("Removing file '{0}'.", path);
+          File.Delete (path);
+        }
       }
     }
   }

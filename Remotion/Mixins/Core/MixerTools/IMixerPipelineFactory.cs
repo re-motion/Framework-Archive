@@ -24,7 +24,6 @@ namespace Remotion.Mixins.MixerTools
   {
     IPipeline CreatePipeline ([CanBeNull]string assemblyOutputDirectory);
     
-    //TODO 5840: Cleanup inconsistent nullability
-    string GetModulePath (string assemblyOutputDirectory);
+    string[] GetModulePaths ([CanBeNull]string assemblyOutputDirectory);
   }
 }

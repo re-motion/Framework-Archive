@@ -77,7 +77,7 @@ namespace Remotion.Mixins.UnitTests.Core.MixerTools
 
       _mixedTypeFinderStub.Stub (stub => stub.FindMixedTypes (_configuration)).Return (new[] { _fakeMixedType });
 
-      _mixerPipelineFactoryStub.Stub (stub => stub.GetModulePath (_assemblyOutputDirectoy)).Return (_modulePath);
+      _mixerPipelineFactoryStub.Stub (stub => stub.GetModulePaths (_assemblyOutputDirectoy)).Return (new[] { _modulePath });
       _mixerPipelineFactoryStub.Stub (stub => stub.CreatePipeline (_assemblyOutputDirectoy)).Return (_pipelineStub);
     }
 
@@ -227,7 +227,7 @@ namespace Remotion.Mixins.UnitTests.Core.MixerTools
     [Test]
     public void Create ()
     {
-      var mixer = Mixer.Create ("A", "D");
+      var mixer = Mixer.Create ("A", "D", 1);
       Assert.That (mixer.MixerPipelineFactory, Is.TypeOf (typeof (MixerPipelineFactory)));
       Assert.That (((MixerPipelineFactory) mixer.MixerPipelineFactory).AssemblyName, Is.EqualTo ("A"));
 
