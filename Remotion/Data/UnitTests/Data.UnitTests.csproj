@@ -7,10 +7,13 @@
     <ProjectGuid>{6DEF9C11-1D5A-4B14-A4EB-F4C7E7CC3E7B}</ProjectGuid>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ApplicationIcon></ApplicationIcon>
-    <AssemblyKeyContainerName></AssemblyKeyContainerName>
+    <ApplicationIcon>
+    </ApplicationIcon>
+    <AssemblyKeyContainerName>
+    </AssemblyKeyContainerName>
     <AssemblyName>Remotion.Data.UnitTests</AssemblyName>
-    <AssemblyOriginatorKeyFile></AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <DefaultClientScript>JScript</DefaultClientScript>
     <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
@@ -20,9 +23,12 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Remotion.Data.UnitTests</RootNamespace>
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
-    <StartupObject></StartupObject>
-    <FileUpgradeFlags></FileUpgradeFlags>
-    <UpgradeBackupLocation></UpgradeBackupLocation>
+    <StartupObject>
+    </StartupObject>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
     <OldToolsVersion>3.5</OldToolsVersion>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\..\remotion.snk</AssemblyOriginatorKeyFile>
@@ -48,13 +54,16 @@
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
     <BaseAddress>285212672</BaseAddress>
     <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
-    <ConfigurationOverrideFile></ConfigurationOverrideFile>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
     <DefineConstants>TRACE;DEBUG</DefineConstants>
-    <DocumentationFile></DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
     <DebugSymbols>true</DebugSymbols>
     <FileAlignment>4096</FileAlignment>
     <NoStdLib>false</NoStdLib>
-    <NoWarn></NoWarn>
+    <NoWarn>
+    </NoWarn>
     <Optimize>false</Optimize>
     <RegisterForComInterop>false</RegisterForComInterop>
     <RemoveIntegerChecks>false</RemoveIntegerChecks>
@@ -69,14 +78,18 @@
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
     <BaseAddress>285212672</BaseAddress>
     <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
-    <ConfigurationOverrideFile></ConfigurationOverrideFile>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
     <DefineConstants>TRACE</DefineConstants>
-    <DocumentationFile></DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
     <DebugSymbols>false</DebugSymbols>
     <FileAlignment>4096</FileAlignment>
     <NoStdLib>false</NoStdLib>
-    <NoWarn></NoWarn>
-    <WarningsAsErrors></WarningsAsErrors>
+    <NoWarn>
+    </NoWarn>
+    <WarningsAsErrors>
+    </WarningsAsErrors>
     <Optimize>true</Optimize>
     <RegisterForComInterop>false</RegisterForComInterop>
     <RemoveIntegerChecks>false</RemoveIntegerChecks>
@@ -199,6 +212,7 @@
       <Project>{70273934-12F1-49AF-975A-303BAEFE1CAE}</Project>
       <Name>Data.Core</Name>
     </ProjectReference>
+    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\AssemblyInfoShared.cs">
@@ -275,6 +289,10 @@
     <Compile Include="DomainObjects\Core\Mapping\TestDomain\Integration\ReflectionBasedMappingSample\ClassWithStorageGroupAttributeAndBaseClass.cs" />
     <Compile Include="DomainObjects\Core\Mapping\TestDomain\Integration\ReflectionBasedMappingSample\ClassWithStorageGroupAttributeAndIgnoredForMappingConfigurationAttributeAndBaseClass.cs" />
     <Compile Include="DomainObjects\Core\Mapping\TestDomain\Integration\ReflectionBasedMappingSample\DerivedClassInMappingDerivedFromClassNotInMapping.cs" />
+    <Compile Include="DomainObjects\Core\Persistence\Rdbms\MappingSerialization\ClassSerializerTest.cs" />
+    <Compile Include="DomainObjects\Core\Persistence\Rdbms\MappingSerialization\ColumnSerializerTest.cs" />
+    <Compile Include="DomainObjects\Core\Persistence\Rdbms\MappingSerialization\PropertySerializerTest.cs" />
+    <Compile Include="DomainObjects\Core\Persistence\Rdbms\MappingSerialization\TableSerializerTest.cs" />
     <Compile Include="DomainObjects\Core\Persistence\Rdbms\Model\StoragePropertyDefinitionUnificationUtilityTest.cs" />
     <Compile Include="DomainObjects\Core\Persistence\Rdbms\SchemaGenerationTestDomain\MixinAddedTwiceWithDifferentNullability\BaseClassWithDBTable.cs" />
     <Compile Include="DomainObjects\Core\Persistence\Rdbms\SchemaGenerationTestDomain\MixinAddedTwiceWithDifferentNullability\TargetClassBelowDBTable.cs" />
@@ -2059,7 +2077,8 @@
     <EmbeddedResource Include="DomainObjects\Core\Resources\DomainObjectsConfigurationWithMixedStorageObjectFactory.xml" />
     <Content Include="DomainObjects\Database\DataDomainObjects_CreateTableInheritanceTestData.sql" />
     <Content Include="DomainObjects\Database\DataDomainObjects_CreateDB.sql" />
-    <Content Include="DomainObjects\Database\DataDomainObjects_CreateTestData.sql"></Content>
+    <Content Include="DomainObjects\Database\DataDomainObjects_CreateTestData.sql">
+    </Content>
     <Content Include="DomainObjects\Database\DataDomainObjects_SetupDB.sql" />
     <Content Include="DomainObjects\QueriesForStandardMapping.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -2088,7 +2107,8 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PreBuildEvent></PreBuildEvent>
+    <PreBuildEvent>
+    </PreBuildEvent>
     <PostBuildEvent>copy "$(ProjectDir)\DomainObjects\Database\*.sql" "$(TargetDir)"
 </PostBuildEvent>
   </PropertyGroup>

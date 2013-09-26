@@ -140,6 +140,7 @@
       <Project>{70273934-12F1-49AF-975A-303BAEFE1CAE}</Project>
       <Name>Data.Core</Name>
     </ProjectReference>
+    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\AssemblyInfoShared.cs">
@@ -284,6 +285,13 @@
     <Compile Include="Persistence\Model\IPersistenceModelValidatorFactory.cs" />
     <Compile Include="Persistence\Rdbms\DataReaders\QueryResultRow.cs" />
     <Compile Include="Persistence\Rdbms\DataReaders\QueryResultRowReader.cs" />
+    <Compile Include="Persistence\Rdbms\MappingSerialization\ClassSerializer.cs" />
+    <Compile Include="Persistence\Rdbms\MappingSerialization\ColumnSerializer.cs" />
+    <Compile Include="Persistence\Rdbms\MappingSerialization\IColumnSerializer.cs" />
+    <Compile Include="Persistence\Rdbms\MappingSerialization\IPropertySerializer.cs" />
+    <Compile Include="Persistence\Rdbms\MappingSerialization\ITableSerializer.cs" />
+    <Compile Include="Persistence\Rdbms\MappingSerialization\PropertySerializer.cs" />
+    <Compile Include="Persistence\Rdbms\MappingSerialization\TableSerializer.cs" />
     <Compile Include="Persistence\Rdbms\Model\Building\IRelationStoragePropertyDefinitionFactory.cs" />
     <Compile Include="Persistence\Rdbms\Model\Building\IValueStoragePropertyDefinitionFactory.cs" />
     <Compile Include="Persistence\Rdbms\Model\Building\RelationStoragePropertyDefinitionFactory.cs" />
@@ -1048,6 +1056,7 @@
   <ItemGroup>
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>
