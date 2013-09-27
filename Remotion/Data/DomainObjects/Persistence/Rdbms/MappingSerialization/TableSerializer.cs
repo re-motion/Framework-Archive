@@ -36,37 +36,40 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingSerialization
       _propertySerializer = propertySerializer;
     }
 
-    public XElement Serialize (ClassDefinition classDefinition, EnumTypeCollection enumTypeCollection)
+    public IEnumerable<XElement> Serialize (ClassDefinition classDefinition, EnumTypeCollection enumTypeCollection)
     {
       ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
       ArgumentUtility.CheckNotNull ("enumTypeCollection", enumTypeCollection);
 
+      var tableDefinition = GetTableDefinition(classDefinition);
+      if (tableDefinition == null)
+        yield break;
+
       var storageProviderDefinition = (RdbmsProviderDefinition) classDefinition.StorageEntityDefinition.StorageProviderDefinition;
       var persistenceModelProvider = storageProviderDefinition.Factory.CreateRdbmsPersistenceModelProvider (storageProviderDefinition);
 
-      return new XElement (
+      yield return new XElement (
           "table",
-          new XAttribute ("name", GetTableName (classDefinition)),
+          new XAttribute ("name", tableDefinition.TableName.EntityName),
           GetPersistentPropertyDefinitions (classDefinition)
               .Select (p => _propertySerializer.Serialize (p, persistenceModelProvider, enumTypeCollection))
           );
     }
 
+    private TableDefinition GetTableDefinition (ClassDefinition classDefinition)
+    {
+      if (classDefinition.StorageEntityDefinition is FilterViewDefinition)
+        return ((FilterViewDefinition) classDefinition.StorageEntityDefinition).GetBaseTable();
+      
+      if (classDefinition.StorageEntityDefinition is TableDefinition)
+        return (TableDefinition) classDefinition.StorageEntityDefinition;
+
+      return null;
+    }
+
     private IEnumerable<PropertyDefinition> GetPersistentPropertyDefinitions (ClassDefinition classDefinition)
     {
       return classDefinition.GetPropertyDefinitions().Where (p => p.StorageClass == StorageClass.Persistent);
-    }
-
-    private string GetTableName (ClassDefinition classDefinition)
-    {
-      var tableDefinition = classDefinition.StorageEntityDefinition as TableDefinition;
-      if (tableDefinition == null)
-      {
-        throw new InvalidOperationException (
-            string.Format ("StorageEntityDefinition of type '{0}' is not supported", classDefinition.StorageEntityDefinition.GetType()));
-      }
-
-      return tableDefinition.TableName.EntityName;
     }
   }
 }

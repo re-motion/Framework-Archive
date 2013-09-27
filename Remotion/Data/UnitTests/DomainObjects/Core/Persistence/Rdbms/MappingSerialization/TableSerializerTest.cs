@@ -25,6 +25,7 @@ using Remotion.Data.DomainObjects.Persistence.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.MappingSerialization;
 using Remotion.Data.UnitTests.DomainObjects.TestDomain;
+using Remotion.Data.UnitTests.DomainObjects.TestDomain.TableInheritance;
 using Rhino.Mocks;
 
 namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.MappingSerialization
@@ -45,7 +46,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.MappingSe
     {
       var tableSerializer = new TableSerializer (MockRepository.GenerateStub<IPropertySerializer>());
 
-      var actual = tableSerializer.Serialize (MappingConfiguration.Current.GetTypeDefinition (typeof (ClassWithAllDataTypes)), _enumTypeCollection);
+      var actual = tableSerializer.Serialize (MappingConfiguration.Current.GetTypeDefinition (typeof (ClassWithAllDataTypes)), _enumTypeCollection).Single();
 
       Assert.That (actual.Name.LocalName, Is.EqualTo ("table"));
       Assert.That (actual.Attributes().Select (a => a.Name.LocalName), Contains.Item ("name"));
@@ -67,7 +68,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.MappingSe
           .Repeat.AtLeastOnce();
 
       propertySerializerMock.Replay();
-      tableSerializer.Serialize (MappingConfiguration.Current.GetTypeDefinition (typeof (ClassWithAllDataTypes)), _enumTypeCollection);
+      tableSerializer.Serialize (MappingConfiguration.Current.GetTypeDefinition (typeof (ClassWithAllDataTypes)), _enumTypeCollection).ToArray();
       propertySerializerMock.VerifyAllExpectations();
     }
 
@@ -93,7 +94,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.MappingSe
       var tableSerializer = new TableSerializer (propertySerializerMock);
 
       propertySerializerMock.Replay();
-      var actual = tableSerializer.Serialize (classDefinition, _enumTypeCollection);
+      var actual = tableSerializer.Serialize (classDefinition, _enumTypeCollection).Single();
       propertySerializerMock.VerifyAllExpectations();
 
       Assert.That (actual.Elements().Count(), Is.EqualTo(2));
@@ -121,8 +122,23 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.MappingSe
       var tableSerializer = new TableSerializer (propertySerializerMock);
 
       propertySerializerMock.Replay();
-      tableSerializer.Serialize (classDefinition, _enumTypeCollection);
+      tableSerializer.Serialize (classDefinition, _enumTypeCollection).ToArray();
       propertySerializerMock.VerifyAllExpectations();
+    }
+
+    [Test]
+    public void Serialize_AbstractDerivedClass_CreatesTableElementFromBaseClass ()
+    {
+      var tableSerializer = new TableSerializer (MockRepository.GenerateStub<IPropertySerializer>());
+
+      var actual =
+          tableSerializer.Serialize (
+              MappingConfiguration.Current.GetTypeDefinition (typeof (DerivedClassWithEntityFromBaseClassWithHierarchy)),
+              _enumTypeCollection).Single();
+
+      Assert.That (actual.Name.LocalName, Is.EqualTo ("table"));
+      Assert.That (actual.Attributes().Select (a => a.Name.LocalName), Contains.Item ("name"));
+      Assert.That (actual.Attribute ("name").Value, Is.EqualTo ("TableInheritance_DerivedClassWithEntityWithHierarchy"));
     }
   }
 }

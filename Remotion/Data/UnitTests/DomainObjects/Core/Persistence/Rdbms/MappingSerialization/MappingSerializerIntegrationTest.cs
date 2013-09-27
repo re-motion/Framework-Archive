@@ -25,8 +25,8 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.MappingSe
   public class MappingSerializerIntegrationTestTest : SchemaGenerationTestBase
   {
     [Test]
-    [Ignore]
-    public void Serialize_IntegrationTest ()
+    [Explicit]
+    public void Serialize ()
     {
       var mappingSerializer = new MappingSerializer (
           new StorageProviderSerializer (

@@ -14,6 +14,8 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
+using System.Collections.Generic;
 using System.Xml.Linq;
 using Remotion.Data.DomainObjects.Mapping;
 
@@ -21,6 +23,6 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingSerialization
 {
   public interface ITableSerializer
   {
-    XElement Serialize (ClassDefinition classDefinition, EnumTypeCollection enumTypeCollection);
+    IEnumerable<XElement> Serialize (ClassDefinition classDefinition, EnumTypeCollection enumTypeCollection);
   }
 }

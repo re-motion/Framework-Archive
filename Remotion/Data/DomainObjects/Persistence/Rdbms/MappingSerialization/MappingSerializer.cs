@@ -40,9 +40,11 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingSerialization
       var enumTypeCollection = new EnumTypeCollection();
 
       return new XDocument (
-          new XElement ("mapping", 
-            _storageProviderSerializer.Serialize (MappingConfiguration.Current.GetTypeDefinitions(), enumTypeCollection),
-            _enumSerializer.Serialize (enumTypeCollection)));
+          new XDeclaration ("1.0", "utf-8", null),
+          new XElement (
+              "mapping",
+              _storageProviderSerializer.Serialize (MappingConfiguration.Current.GetTypeDefinitions(), enumTypeCollection),
+              _enumSerializer.Serialize (enumTypeCollection)));
     }
   }
 }
