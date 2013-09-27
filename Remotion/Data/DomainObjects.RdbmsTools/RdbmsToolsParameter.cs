@@ -24,6 +24,9 @@ namespace Remotion.Data.DomainObjects.RdbmsTools
   {
     [CommandLineMode ("schema", Description = "Generate the database setup script(s).")]
     BuildSchema = 1,
+
+    [CommandLineMode ("exportMappingXml", Description = "Export mapping as a xml file.")]
+    ExportMappingXml = 2,
   }
 
   /// <summary>

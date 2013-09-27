@@ -43,7 +43,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingSerialization
       ArgumentUtility.CheckNotNull ("persistenceModelProvider", persistenceModelProvider);
       ArgumentUtility.CheckNotNull ("enumTypeCollection", enumTypeCollection);
 
-      var propertyType = GetPropertyType(propertyDefinition);
+      var propertyType = GetPropertyType (propertyDefinition);
 
       if (propertyType.IsEnum || ExtensibleEnumUtility.IsExtensibleEnumType (propertyType))
         enumTypeCollection.Add (propertyType);

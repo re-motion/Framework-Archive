@@ -23,6 +23,7 @@ using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.MappingSerialization;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2005;
@@ -91,6 +92,9 @@ namespace Remotion.Data.DomainObjects.RdbmsTools
 
       if ((_rdbmsToolsParameters.Mode & OperationMode.BuildSchema) != 0)
         BuildSchema();
+      
+      if ((_rdbmsToolsParameters.Mode & OperationMode.ExportMappingXml) != 0)
+        ExportMapping();
     }
 
     protected virtual void InitializeConfiguration ()
@@ -130,6 +134,17 @@ namespace Remotion.Data.DomainObjects.RdbmsTools
       var includeStorageProviderName = scripts.Count() > 1;
       foreach (var script in scripts)
         fileGenerator.WriteScriptsToDisk (script, includeStorageProviderName);
+    }
+    
+    protected virtual void ExportMapping ()
+    {
+      var mappingSerializer = new MappingSerializer (
+          new StorageProviderSerializer (
+              new ClassSerializer (new TableSerializer (new PropertySerializer (new ColumnSerializer())))),
+          new EnumSerializer());
+
+      var xml = mappingSerializer.Serialize(MappingConfiguration.Current.GetTypeDefinitions());
+      xml.Save (Path.Combine (_rdbmsToolsParameters.SchemaOutputDirectory, "mapping.xml"));
     }
   }
 }

@@ -15,6 +15,8 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 
+using System.Collections;
+using System.Collections.Generic;
 using System.Xml.Linq;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Utilities;
@@ -35,15 +37,16 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingSerialization
       _enumSerializer = enumSerializer;
     }
 
-    public XDocument Serialize ()
+    public XDocument Serialize (IEnumerable<ClassDefinition> typeDefinitions)
     {
+      ArgumentUtility.CheckNotNull ("typeDefinitions", typeDefinitions);
+
       var enumTypeCollection = new EnumTypeCollection();
 
       return new XDocument (
-          new XDeclaration ("1.0", "utf-8", null),
           new XElement (
               "mapping",
-              _storageProviderSerializer.Serialize (MappingConfiguration.Current.GetTypeDefinitions(), enumTypeCollection),
+              _storageProviderSerializer.Serialize (typeDefinitions, enumTypeCollection),
               _enumSerializer.Serialize (enumTypeCollection)));
     }
   }

@@ -45,11 +45,9 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingSerialization
           .Where (g => g.Key is RdbmsProviderDefinition);
 
       return classDefinitionsByStorageProvider.Select (
-          storageProviderGroup => new XElement (
-              "storageProvider",
+          storageProviderGroup => new XElement ("storageProvider",
               new XAttribute("name", storageProviderGroup.Key.Name),
-              storageProviderGroup.Select (c => _classSerializer.Serialize (c, enumTypeCollection))
-              ));
+              storageProviderGroup.Select (c => _classSerializer.Serialize (c, enumTypeCollection))));
     }
   }
 }

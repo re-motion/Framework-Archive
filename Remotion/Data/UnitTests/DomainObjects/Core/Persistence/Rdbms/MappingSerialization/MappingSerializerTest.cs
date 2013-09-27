@@ -26,7 +26,7 @@ using Rhino.Mocks;
 namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.MappingSerialization
 {
   [TestFixture]
-  public class MappingSerializerTest : StandardMappingTest  
+  public class MappingSerializerTest : StandardMappingTest
   {
     private IEnumSerializer _enumSerializerStub;
     private IStorageProviderSerializer _storageProviderSerializerStub;
@@ -41,8 +41,8 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.MappingSe
     [Test]
     public void Serialize_CreatesXDocument ()
     {
-      var mappingSerializer = new MappingSerializer(_storageProviderSerializerStub, _enumSerializerStub);
-      var actual = mappingSerializer.Serialize();
+      var mappingSerializer = new MappingSerializer (_storageProviderSerializerStub, _enumSerializerStub);
+      var actual = mappingSerializer.Serialize(MappingConfiguration.Current.GetTypeDefinitions());
 
       Assert.That (actual.Root.Name.LocalName, Is.EqualTo ("mapping"));
     }
@@ -50,15 +50,16 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.MappingSe
     [Test]
     public void Serialize_AddsStorageProviderElements ()
     {
-      var mappingSerializer = new MappingSerializer(_storageProviderSerializerStub, _enumSerializerStub);
+      var mappingSerializer = new MappingSerializer (_storageProviderSerializerStub, _enumSerializerStub);
 
       var expected = new[] { new XElement ("storageProvider") };
-      _storageProviderSerializerStub.Stub (s => s.Serialize (Arg<IEnumerable<ClassDefinition>>.Is.NotNull, Arg<EnumTypeCollection>.Is.NotNull))
+      _storageProviderSerializerStub
+          .Stub (s => s.Serialize (Arg<IEnumerable<ClassDefinition>>.Is.NotNull, Arg<EnumTypeCollection>.Is.NotNull))
           .Return (expected);
 
-      var actual = mappingSerializer.Serialize();
+      var actual = mappingSerializer.Serialize(MappingConfiguration.Current.GetTypeDefinitions());
 
-      Assert.That (actual.Root.Elements().ToArray(), Is.EqualTo (expected));
+      Assert.That (actual.Root.Elements(), Is.EqualTo (expected));
     }
 
     [Test]
@@ -72,12 +73,13 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.MappingSe
           .Return (new[] { storageProviderElement });
 
       var enumTypeElement = new XElement ("enumType");
-      _enumSerializerStub.Stub (s => s.Serialize (Arg<EnumTypeCollection>.Is.NotNull))
+      _enumSerializerStub
+          .Stub (s => s.Serialize (Arg<EnumTypeCollection>.Is.NotNull))
           .Return (new[] { enumTypeElement });
 
-      var actual = mappingSerializer.Serialize();
+      var actual = mappingSerializer.Serialize(MappingConfiguration.Current.GetTypeDefinitions());
 
-      Assert.That (actual.Root.Elements().ToArray(), Is.EqualTo (new[] { storageProviderElement, enumTypeElement }));
+      Assert.That (actual.Root.Elements(), Is.EqualTo (new[] { storageProviderElement, enumTypeElement }));
     }
   }
 }

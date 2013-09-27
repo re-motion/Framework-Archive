@@ -17,6 +17,7 @@
 
 using System;
 using NUnit.Framework;
+using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.MappingSerialization;
 
 namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.MappingSerialization
@@ -33,7 +34,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.MappingSe
               new ClassSerializer (new TableSerializer (new PropertySerializer (new ColumnSerializer())))),
           new EnumSerializer());
 
-      var actual = mappingSerializer.Serialize();
+      var actual = mappingSerializer.Serialize(MappingConfiguration.Current.GetTypeDefinitions());
       var xml = actual.ToString();
     }
   }

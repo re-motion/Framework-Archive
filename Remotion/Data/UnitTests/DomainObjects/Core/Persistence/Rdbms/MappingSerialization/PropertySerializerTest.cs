@@ -15,13 +15,19 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 
+using System;
+using System.Diagnostics;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Xml.Linq;
 using NUnit.Framework;
+using Remotion.Data.DomainObjects;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.MappingSerialization;
 using Remotion.Data.UnitTests.DomainObjects.TestDomain;
+using Remotion.Reflection;
+using Remotion.Utilities;
 using Rhino.Mocks;
 
 namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.MappingSerialization
@@ -98,6 +104,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.MappingSe
     [Test]
     public void Serialize_SerializesType_EnumProperty ()
     {
+      
       var sampleProperty =
           MappingConfiguration.Current.GetTypeDefinition (typeof (ClassWithAllDataTypes))
               .GetPropertyDefinition ("Remotion.Data.UnitTests.DomainObjects.TestDomain.ClassWithAllDataTypes.EnumProperty");
@@ -222,14 +229,12 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.MappingSe
       _propertySerializer.Serialize (sampleProperty, _rdbmsPersistenceModelProviderStub, _enumTypeCollection);
       Assert.That (_enumTypeCollection, Contains.Item (typeof (Color)));
     }
-    
+
     [Test]
     public void Serialize_DoesNotCollectDuplicateEnumTypes ()
     {
-      var sampleProperty =
-          MappingConfiguration.Current.GetTypeDefinition (typeof (ClassWithAllDataTypes))
-              .GetPropertyDefinition ("Remotion.Data.UnitTests.DomainObjects.TestDomain.ClassWithAllDataTypes.ExtensibleEnumProperty");
-      
+      var sampleProperty = GetProperty ((ClassWithAllDataTypes _) => _.ExtensibleEnumProperty);
+
       _propertySerializer.Serialize (sampleProperty, _rdbmsPersistenceModelProviderStub, _enumTypeCollection);
       _propertySerializer.Serialize (sampleProperty, _rdbmsPersistenceModelProviderStub, _enumTypeCollection);
 
@@ -245,6 +250,14 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.MappingSe
       
       _propertySerializer.Serialize (sampleProperty, _rdbmsPersistenceModelProviderStub, _enumTypeCollection);
       Assert.That (_enumTypeCollection, Is.Empty);
+    }
+
+    private PropertyDefinition GetProperty<TSourceObject, TPropertyType> (Expression<Func<TSourceObject, TPropertyType>> expression)
+      where TSourceObject : DomainObject
+    {
+      var propertyInfo = MemberInfoFromExpressionUtility.GetProperty (expression);
+      var classDefinition = MappingConfiguration.Current.GetTypeDefinition (typeof (TSourceObject));
+      return classDefinition.ResolveProperty (PropertyInfoAdapter.Create (propertyInfo));
     }
   }
 }

@@ -28,37 +28,33 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingSerialization
   {
     public EnumSerializer ()
     {
-      
     }
 
     public IEnumerable<XElement> Serialize (EnumTypeCollection enumTypeCollection)
     {
       ArgumentUtility.CheckNotNull ("enumTypeCollection", enumTypeCollection);
 
-      return enumTypeCollection.Select (t => new XElement ("enumType", 
-        new XAttribute("type", TypeUtility.GetAbbreviatedTypeName(t, false)),
-        GetValues(t)
-        ));
+      return enumTypeCollection.Select (
+          t => new XElement ("enumType",
+              new XAttribute ("type", TypeUtility.GetAbbreviatedTypeName (t, false)),
+              GetValues (t)));
     }
 
     private IEnumerable<XElement> GetValues (Type type)
     {
       if (ExtensibleEnumUtility.IsExtensibleEnumType (type))
       {
-        return ExtensibleEnumUtility.GetDefinition(type).GetValueInfos().Select (
-          info => new XElement (
-              "value",
+        return ExtensibleEnumUtility.GetDefinition (type).GetValueInfos ().Select (
+          info => new XElement ("value",
               new XAttribute ("name", info.Value.ValueName),
               new XAttribute ("columnValue", info.Value.ID)));
 
       }
 
-      return Enum.GetValues (type).Cast<object>().Select (
-          value => new XElement (
-              "value",
+      return Enum.GetValues (type).Cast<object> ().Select (
+          value => new XElement ("value",
               new XAttribute ("name", Enum.GetName (type, value)),
-              new XAttribute ("columnValue", Convert.ChangeType(value, Enum.GetUnderlyingType(type)))
-              ));
+              new XAttribute ("columnValue", Convert.ChangeType (value, Enum.GetUnderlyingType (type)))));
     }
   }
 }
