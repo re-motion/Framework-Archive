@@ -291,7 +291,9 @@
     <Compile Include="DomainObjects\Core\Mapping\TestDomain\Integration\ReflectionBasedMappingSample\DerivedClassInMappingDerivedFromClassNotInMapping.cs" />
     <Compile Include="DomainObjects\Core\Persistence\Rdbms\MappingSerialization\ClassSerializerTest.cs" />
     <Compile Include="DomainObjects\Core\Persistence\Rdbms\MappingSerialization\ColumnSerializerTest.cs" />
+    <Compile Include="DomainObjects\Core\Persistence\Rdbms\MappingSerialization\MappingSerializerTest.cs" />
     <Compile Include="DomainObjects\Core\Persistence\Rdbms\MappingSerialization\PropertySerializerTest.cs" />
+    <Compile Include="DomainObjects\Core\Persistence\Rdbms\MappingSerialization\StorageProviderSerializerTest.cs" />
     <Compile Include="DomainObjects\Core\Persistence\Rdbms\MappingSerialization\TableSerializerTest.cs" />
     <Compile Include="DomainObjects\Core\Persistence\Rdbms\Model\StoragePropertyDefinitionUnificationUtilityTest.cs" />
     <Compile Include="DomainObjects\Core\Persistence\Rdbms\SchemaGenerationTestDomain\MixinAddedTwiceWithDifferentNullability\BaseClassWithDBTable.cs" />

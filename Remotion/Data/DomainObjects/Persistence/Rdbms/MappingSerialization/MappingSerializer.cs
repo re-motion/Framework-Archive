@@ -17,38 +17,26 @@
 
 using System.Xml.Linq;
 using Remotion.Data.DomainObjects.Mapping;
+using Remotion.TypePipe.Dlr.Ast;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingSerialization
 {
-  public class ClassSerializer : IClassSerializer
+  public class MappingSerializer
   {
-    private readonly ITableSerializer _tableSerializer;
+    private readonly IStorageProviderSerializer _storageProviderSerializer;
 
-    public ClassSerializer (ITableSerializer tableSerializer)
+    public MappingSerializer (IStorageProviderSerializer storageProviderSerializer)
     {
-      ArgumentUtility.CheckNotNull ("tableSerializer", tableSerializer);
+      ArgumentUtility.CheckNotNull ("storageProviderSerializer", storageProviderSerializer);
 
-      _tableSerializer = tableSerializer;
+      _storageProviderSerializer = storageProviderSerializer;
     }
 
-    public XElement Serialize (ClassDefinition classDefinition)
+    public XDocument Serialize ()
     {
-      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
-
-      return new XElement ("class",
-        new XAttribute("id", classDefinition.ID),
-        GetBaseClassAttribute(classDefinition),
-        new XAttribute("isAbstract", classDefinition.IsAbstract),
-        _tableSerializer.Serialize(classDefinition)
-        );
-    }
-
-    private XAttribute GetBaseClassAttribute (ClassDefinition classDefinition)
-    {
-      if (classDefinition.BaseClass == null)
-        return null;
-      return new XAttribute("baseClass", classDefinition.BaseClass.ID);
+      return new XDocument (
+          new XElement ("mapping", _storageProviderSerializer.Serialize (MappingConfiguration.Current.GetTypeDefinitions())));
     }
   }
 }

@@ -287,10 +287,14 @@
     <Compile Include="Persistence\Rdbms\DataReaders\QueryResultRowReader.cs" />
     <Compile Include="Persistence\Rdbms\MappingSerialization\ClassSerializer.cs" />
     <Compile Include="Persistence\Rdbms\MappingSerialization\ColumnSerializer.cs" />
+    <Compile Include="Persistence\Rdbms\MappingSerialization\IClassSerializer.cs" />
     <Compile Include="Persistence\Rdbms\MappingSerialization\IColumnSerializer.cs" />
     <Compile Include="Persistence\Rdbms\MappingSerialization\IPropertySerializer.cs" />
+    <Compile Include="Persistence\Rdbms\MappingSerialization\IStorageProviderSerializer.cs" />
     <Compile Include="Persistence\Rdbms\MappingSerialization\ITableSerializer.cs" />
+    <Compile Include="Persistence\Rdbms\MappingSerialization\MappingSerializer.cs" />
     <Compile Include="Persistence\Rdbms\MappingSerialization\PropertySerializer.cs" />
+    <Compile Include="Persistence\Rdbms\MappingSerialization\StorageProviderSerializer.cs" />
     <Compile Include="Persistence\Rdbms\MappingSerialization\TableSerializer.cs" />
     <Compile Include="Persistence\Rdbms\Model\Building\IRelationStoragePropertyDefinitionFactory.cs" />
     <Compile Include="Persistence\Rdbms\Model\Building\IValueStoragePropertyDefinitionFactory.cs" />

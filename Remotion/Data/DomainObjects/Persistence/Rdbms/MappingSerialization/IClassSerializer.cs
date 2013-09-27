@@ -14,41 +14,13 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-
 using System.Xml.Linq;
 using Remotion.Data.DomainObjects.Mapping;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingSerialization
 {
-  public class ClassSerializer : IClassSerializer
+  public interface IClassSerializer
   {
-    private readonly ITableSerializer _tableSerializer;
-
-    public ClassSerializer (ITableSerializer tableSerializer)
-    {
-      ArgumentUtility.CheckNotNull ("tableSerializer", tableSerializer);
-
-      _tableSerializer = tableSerializer;
-    }
-
-    public XElement Serialize (ClassDefinition classDefinition)
-    {
-      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
-
-      return new XElement ("class",
-        new XAttribute("id", classDefinition.ID),
-        GetBaseClassAttribute(classDefinition),
-        new XAttribute("isAbstract", classDefinition.IsAbstract),
-        _tableSerializer.Serialize(classDefinition)
-        );
-    }
-
-    private XAttribute GetBaseClassAttribute (ClassDefinition classDefinition)
-    {
-      if (classDefinition.BaseClass == null)
-        return null;
-      return new XAttribute("baseClass", classDefinition.BaseClass.ID);
-    }
+    XElement Serialize (ClassDefinition classDefinition);
   }
 }
