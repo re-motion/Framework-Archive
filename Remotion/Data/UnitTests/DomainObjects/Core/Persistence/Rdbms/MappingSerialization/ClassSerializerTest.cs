@@ -29,12 +29,20 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.MappingSe
   [TestFixture]
   public class ClassSerializerTest : StandardMappingTest
   {
+    private EnumTypeCollection _enumTypeCollection;
+
+    public override void SetUp ()
+    {
+      base.SetUp();
+      _enumTypeCollection = new EnumTypeCollection();
+    }
+
     [Test]
     public void Serialize_AddsIdAttribute ()
     {
       var classSerializer = new ClassSerializer (MockRepository.GenerateStub<ITableSerializer>());
       var classDefinition = MappingConfiguration.Current.GetTypeDefinition (typeof (ClassWithAllDataTypes));
-      var actual = classSerializer.Serialize (classDefinition);
+      var actual = classSerializer.Serialize (classDefinition, _enumTypeCollection);
 
       Assert.That (actual.Name.LocalName, Is.EqualTo ("class"));
       Assert.That (actual.Attributes().Select (a => a.Name.LocalName), Contains.Item ("id"));
@@ -46,7 +54,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.MappingSe
     {
       var classSerializer = new ClassSerializer (MockRepository.GenerateStub<ITableSerializer>());
       var classDefinition = MappingConfiguration.Current.GetTypeDefinition (typeof (DerivedClassWithEntityWithHierarchy));
-      var actual = classSerializer.Serialize (classDefinition);
+      var actual = classSerializer.Serialize (classDefinition, _enumTypeCollection);
 
       Assert.That (actual.Attributes().Select (a => a.Name.LocalName), Contains.Item ("baseClass"));
       Assert.That (actual.Attribute ("baseClass").Value, Is.EqualTo ("TI_AbstractBaseClassWithHierarchy"));
@@ -57,7 +65,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.MappingSe
     {
       var classSerializer = new ClassSerializer (MockRepository.GenerateStub<ITableSerializer>());
       var classDefinition = MappingConfiguration.Current.GetTypeDefinition (typeof (ClassDerivedFromSimpleDomainObject));
-      var actual = classSerializer.Serialize (classDefinition);
+      var actual = classSerializer.Serialize (classDefinition, _enumTypeCollection);
 
       Assert.That (actual.Attributes().Select (a => a.Name.LocalName).Contains("baseClass"), Is.False);
     }
@@ -67,7 +75,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.MappingSe
     {
       var classSerializer = new ClassSerializer (MockRepository.GenerateStub<ITableSerializer>());
       var classDefinition = MappingConfiguration.Current.GetTypeDefinition (typeof (Computer));
-      var actual = classSerializer.Serialize (classDefinition);
+      var actual = classSerializer.Serialize (classDefinition, _enumTypeCollection);
 
       Assert.That (actual.Attributes().Select (a => a.Name.LocalName), Contains.Item ("isAbstract"));
       Assert.That (actual.Attribute ("isAbstract").Value, Is.EqualTo ("false"));
@@ -78,7 +86,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.MappingSe
     {
       var classSerializer = new ClassSerializer (MockRepository.GenerateStub<ITableSerializer>());
       var classDefinition = MappingConfiguration.Current.GetTypeDefinition (typeof (AbstractBaseClassWithHierarchy));
-      var actual = classSerializer.Serialize (classDefinition);
+      var actual = classSerializer.Serialize (classDefinition, _enumTypeCollection);
 
       Assert.That (actual.Attributes().Select (a => a.Name.LocalName), Contains.Item ("isAbstract"));
       Assert.That (actual.Attribute ("isAbstract").Value, Is.EqualTo ("true"));
@@ -91,11 +99,11 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.MappingSe
       var tableSerializerMock = MockRepository.GenerateMock<ITableSerializer>();
       var expected1 = new XElement ("property1");
 
-      tableSerializerMock.Expect (m => m.Serialize (classDefinition)).Return (expected1);
+      tableSerializerMock.Expect (m => m.Serialize (classDefinition, _enumTypeCollection)).Return (expected1);
       var classSerializer = new ClassSerializer (tableSerializerMock);
 
       tableSerializerMock.Replay();
-      var actual = classSerializer.Serialize (classDefinition);
+      var actual = classSerializer.Serialize (classDefinition, _enumTypeCollection);
       tableSerializerMock.VerifyAllExpectations();
 
       Assert.That (actual.Elements().Count(), Is.EqualTo(1));

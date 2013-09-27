@@ -32,15 +32,16 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingSerialization
       _tableSerializer = tableSerializer;
     }
 
-    public XElement Serialize (ClassDefinition classDefinition)
+    public XElement Serialize (ClassDefinition classDefinition, EnumTypeCollection enumTypeCollection)
     {
       ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull ("enumTypeCollection", enumTypeCollection);
 
       return new XElement ("class",
         new XAttribute("id", classDefinition.ID),
         GetBaseClassAttribute(classDefinition),
         new XAttribute("isAbstract", classDefinition.IsAbstract),
-        _tableSerializer.Serialize(classDefinition)
+        _tableSerializer.Serialize(classDefinition, enumTypeCollection)
         );
     }
 

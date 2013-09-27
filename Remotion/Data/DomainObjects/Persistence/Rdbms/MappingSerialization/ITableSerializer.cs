@@ -21,6 +21,6 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingSerialization
 {
   public interface ITableSerializer
   {
-    XElement Serialize (ClassDefinition classDefinition);
+    XElement Serialize (ClassDefinition classDefinition, EnumTypeCollection enumTypeCollection);
   }
 }

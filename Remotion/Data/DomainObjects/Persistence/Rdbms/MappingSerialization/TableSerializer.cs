@@ -35,9 +35,10 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingSerialization
       _propertySerializer = propertySerializer;
     }
 
-    public XElement Serialize (ClassDefinition classDefinition)
+    public XElement Serialize (ClassDefinition classDefinition, EnumTypeCollection enumTypeCollection)
     {
       ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull ("enumTypeCollection", enumTypeCollection);
 
       var storageProviderDefinition = (RdbmsProviderDefinition) classDefinition.StorageEntityDefinition.StorageProviderDefinition;
       var persistenceModelProvider = storageProviderDefinition.Factory.CreateRdbmsPersistenceModelProvider (storageProviderDefinition);
@@ -45,7 +46,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingSerialization
       return new XElement (
           "table",
           new XAttribute ("name", GetTableName (classDefinition)),
-          classDefinition.GetPropertyDefinitions().Select (p => _propertySerializer.Serialize (p, persistenceModelProvider))
+          classDefinition.GetPropertyDefinitions().Select (p => _propertySerializer.Serialize (p, persistenceModelProvider, enumTypeCollection))
           );
     }
 

@@ -18,6 +18,7 @@
 using System;
 using System.Xml.Linq;
 using Remotion.Data.DomainObjects.Mapping;
+using Remotion.ExtensibleEnums;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingSerialization
@@ -33,16 +34,25 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingSerialization
       _columnSerializer = columnSerializer;
     }
 
-    public XElement Serialize (PropertyDefinition propertyDefinition, IRdbmsPersistenceModelProvider persistenceModelProvider)
+    public XElement Serialize (
+        PropertyDefinition propertyDefinition,
+        IRdbmsPersistenceModelProvider persistenceModelProvider,
+        EnumTypeCollection enumTypeCollection)
     {
       ArgumentUtility.CheckNotNull ("propertyDefinition", propertyDefinition);
       ArgumentUtility.CheckNotNull ("persistenceModelProvider", persistenceModelProvider);
+      ArgumentUtility.CheckNotNull ("enumTypeCollection", enumTypeCollection);
+
+      var propertyType = GetPropertyType(propertyDefinition);
+
+      if (propertyType.IsEnum || ExtensibleEnumUtility.IsExtensibleEnumType (propertyType))
+        enumTypeCollection.Add (propertyType);
 
       return new XElement (
           "property",
           new XAttribute ("name", propertyDefinition.PropertyName),
           new XAttribute ("displayName", propertyDefinition.PropertyInfo.Name),
-          new XAttribute ("type", GetTypeName (propertyDefinition)),
+          new XAttribute ("type", GetTypeName (propertyType)),
           new XAttribute ("isNullable", propertyDefinition.IsNullable),
           GetMaxLenghtAttribute (propertyDefinition),
           _columnSerializer.Serialize (propertyDefinition, persistenceModelProvider)
@@ -54,17 +64,21 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingSerialization
       return propertyDefinition.MaxLength.HasValue ? new XAttribute ("maxLength", propertyDefinition.MaxLength.Value) : null;
     }
 
-    private string GetTypeName (PropertyDefinition propertyDefinition)
+    private string GetTypeName (Type propertyType)
+    {
+      if (propertyType.Assembly == typeof (int).Assembly)
+        return propertyType.FullName;
+
+      return TypeUtility.GetAbbreviatedTypeName (propertyType, false);
+    }
+
+    private Type GetPropertyType (PropertyDefinition propertyDefinition)
     {
       var propertyType = propertyDefinition.IsObjectID ? propertyDefinition.PropertyInfo.PropertyType : propertyDefinition.PropertyType;
 
       if (NullableTypeUtility.IsNullableType (propertyType))
         propertyType = NullableTypeUtility.GetBasicType (propertyType);
-
-      if (propertyType.Assembly == typeof (int).Assembly)
-        return propertyType.FullName;
-
-      return TypeUtility.GetAbbreviatedTypeName (propertyType, false);
+      return propertyType;
     }
   }
 }

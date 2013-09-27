@@ -30,12 +30,20 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.MappingSe
   [TestFixture]
   public class TableSerializerTest : StandardMappingTest
   {
+    private EnumTypeCollection _enumTypeCollection;
+
+    public override void SetUp ()
+    {
+      base.SetUp();
+      _enumTypeCollection = new EnumTypeCollection();
+    }
+
     [Test]
     public void Serialize_CreatesTableElement ()
     {
       var tableSerializer = new TableSerializer (MockRepository.GenerateStub<IPropertySerializer>());
 
-      var actual = tableSerializer.Serialize (MappingConfiguration.Current.GetTypeDefinition (typeof (ClassWithAllDataTypes)));
+      var actual = tableSerializer.Serialize (MappingConfiguration.Current.GetTypeDefinition (typeof (ClassWithAllDataTypes)), _enumTypeCollection);
 
       Assert.That (actual.Name.LocalName, Is.EqualTo ("table"));
       Assert.That (actual.Attributes().Select (a => a.Name.LocalName), Contains.Item ("name"));
@@ -48,12 +56,16 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.MappingSe
       var propertySerializerMock = MockRepository.GenerateMock<IPropertySerializer>();
       var tableSerializer = new TableSerializer (propertySerializerMock);
 
-      propertySerializerMock.Expect (s => s.Serialize (Arg<PropertyDefinition>.Is.NotNull, Arg<IRdbmsPersistenceModelProvider>.Is.NotNull))
+      propertySerializerMock.Expect (
+          s => s.Serialize (
+              Arg<PropertyDefinition>.Is.NotNull,
+              Arg<IRdbmsPersistenceModelProvider>.Is.NotNull,
+              Arg<EnumTypeCollection>.Is.Same (_enumTypeCollection)))
           .Return (null)
           .Repeat.AtLeastOnce();
 
       propertySerializerMock.Replay();
-      tableSerializer.Serialize (MappingConfiguration.Current.GetTypeDefinition (typeof (ClassWithAllDataTypes)));
+      tableSerializer.Serialize (MappingConfiguration.Current.GetTypeDefinition (typeof (ClassWithAllDataTypes)), _enumTypeCollection);
       propertySerializerMock.VerifyAllExpectations();
     }
 
@@ -68,16 +80,18 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.MappingSe
       propertySerializerMock.Expect (
           m => m.Serialize (
               Arg<PropertyDefinition>.Is.Same (classDefinition.GetPropertyDefinition ("Remotion.Data.UnitTests.DomainObjects.TestDomain.Ceo.Name")),
-              Arg<IRdbmsPersistenceModelProvider>.Is.Anything)).Return (expected1);
+              Arg<IRdbmsPersistenceModelProvider>.Is.Anything,
+              Arg<EnumTypeCollection>.Is.Same (_enumTypeCollection))).Return (expected1);
       propertySerializerMock.Expect (
           m => m.Serialize (
               Arg<PropertyDefinition>.Is.Same (classDefinition.GetPropertyDefinition ("Remotion.Data.UnitTests.DomainObjects.TestDomain.Ceo.Company")),
-              Arg<IRdbmsPersistenceModelProvider>.Is.Anything))
+              Arg<IRdbmsPersistenceModelProvider>.Is.Anything,
+              Arg<EnumTypeCollection>.Is.Same (_enumTypeCollection)))
           .Return (expected2);
       var tableSerializer = new TableSerializer (propertySerializerMock);
 
       propertySerializerMock.Replay();
-      var actual = tableSerializer.Serialize (classDefinition);
+      var actual = tableSerializer.Serialize (classDefinition, _enumTypeCollection);
       propertySerializerMock.VerifyAllExpectations();
 
       Assert.That (actual.Elements().Count(), Is.EqualTo(2));

@@ -17,7 +17,6 @@
 
 using System.Xml.Linq;
 using Remotion.Data.DomainObjects.Mapping;
-using Remotion.TypePipe.Dlr.Ast;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingSerialization
@@ -25,18 +24,25 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingSerialization
   public class MappingSerializer
   {
     private readonly IStorageProviderSerializer _storageProviderSerializer;
+    private readonly IEnumSerializer _enumSerializer;
 
-    public MappingSerializer (IStorageProviderSerializer storageProviderSerializer)
+    public MappingSerializer (IStorageProviderSerializer storageProviderSerializer, IEnumSerializer enumSerializer)
     {
       ArgumentUtility.CheckNotNull ("storageProviderSerializer", storageProviderSerializer);
+      ArgumentUtility.CheckNotNull ("enumSerializer", enumSerializer);
 
       _storageProviderSerializer = storageProviderSerializer;
+      _enumSerializer = enumSerializer;
     }
 
     public XDocument Serialize ()
     {
+      var enumTypeCollection = new EnumTypeCollection();
+
       return new XDocument (
-          new XElement ("mapping", _storageProviderSerializer.Serialize (MappingConfiguration.Current.GetTypeDefinitions())));
+          new XElement ("mapping", 
+            _storageProviderSerializer.Serialize (MappingConfiguration.Current.GetTypeDefinitions(), enumTypeCollection),
+            _enumSerializer.Serialize (enumTypeCollection)));
     }
   }
 }

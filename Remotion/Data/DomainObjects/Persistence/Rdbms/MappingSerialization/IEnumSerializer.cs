@@ -16,12 +16,11 @@
 // 
 using System.Collections.Generic;
 using System.Xml.Linq;
-using Remotion.Data.DomainObjects.Mapping;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingSerialization
 {
-  public interface IStorageProviderSerializer
+  public interface IEnumSerializer
   {
-    IEnumerable<XElement> Serialize (IEnumerable<ClassDefinition> classDefinitions, EnumTypeCollection enumTypeCollection);
+    IEnumerable<XElement> Serialize (EnumTypeCollection enumTypeCollection);
   }
 }

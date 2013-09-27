@@ -32,6 +32,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.MappingSe
     private PropertySerializer _propertySerializer;
     private IRdbmsPersistenceModelProvider _rdbmsPersistenceModelProviderStub;
     private IColumnSerializer _columnSerializerStub;
+    private EnumTypeCollection _enumTypeCollection;
 
     public override void SetUp ()
     {
@@ -39,6 +40,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.MappingSe
       _columnSerializerStub = MockRepository.GenerateStub<IColumnSerializer>();
       _propertySerializer = new PropertySerializer(_columnSerializerStub);
       _rdbmsPersistenceModelProviderStub = MockRepository.GenerateStub<IRdbmsPersistenceModelProvider>();
+      _enumTypeCollection = new EnumTypeCollection();
     }
 
     [Test]
@@ -48,7 +50,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.MappingSe
           MappingConfiguration.Current.GetTypeDefinition (typeof (Computer))
               .GetPropertyDefinition ("Remotion.Data.UnitTests.DomainObjects.TestDomain.Computer.SerialNumber");
 
-      var actual = _propertySerializer.Serialize (sampleProperty, _rdbmsPersistenceModelProviderStub);
+      var actual = _propertySerializer.Serialize (sampleProperty, _rdbmsPersistenceModelProviderStub, _enumTypeCollection);
 
       Assert.That (actual.Attributes().Select (a => a.Name.LocalName), Contains.Item ("name"));
       Assert.That (actual.Attribute ("name").Value, Is.EqualTo ("Remotion.Data.UnitTests.DomainObjects.TestDomain.Computer.SerialNumber"));
@@ -61,7 +63,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.MappingSe
           MappingConfiguration.Current.GetTypeDefinition (typeof (Computer))
               .GetPropertyDefinition ("Remotion.Data.UnitTests.DomainObjects.TestDomain.Computer.SerialNumber");
 
-      var actual = _propertySerializer.Serialize (sampleProperty, _rdbmsPersistenceModelProviderStub);
+      var actual = _propertySerializer.Serialize (sampleProperty, _rdbmsPersistenceModelProviderStub, _enumTypeCollection);
 
       Assert.That (actual.Attributes().Select (a => a.Name.LocalName), Contains.Item ("displayName"));
       Assert.That (actual.Attribute ("displayName").Value, Is.EqualTo ("SerialNumber"));
@@ -74,7 +76,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.MappingSe
           MappingConfiguration.Current.GetTypeDefinition (typeof (Computer))
               .GetPropertyDefinition ("Remotion.Data.UnitTests.DomainObjects.TestDomain.Computer.SerialNumber");
 
-      var actual = _propertySerializer.Serialize (sampleProperty, _rdbmsPersistenceModelProviderStub);
+      var actual = _propertySerializer.Serialize (sampleProperty, _rdbmsPersistenceModelProviderStub, _enumTypeCollection);
 
       Assert.That (actual.Attributes().Select (a => a.Name.LocalName), Contains.Item ("type"));
       Assert.That (actual.Attribute ("type").Value, Is.EqualTo ("System.String"));
@@ -87,7 +89,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.MappingSe
           MappingConfiguration.Current.GetTypeDefinition (typeof (Computer))
               .GetPropertyDefinition ("Remotion.Data.UnitTests.DomainObjects.TestDomain.Computer.Employee");
 
-      var actual = _propertySerializer.Serialize (sampleProperty, _rdbmsPersistenceModelProviderStub);
+      var actual = _propertySerializer.Serialize (sampleProperty, _rdbmsPersistenceModelProviderStub, _enumTypeCollection);
 
       Assert.That (actual.Attributes().Select (a => a.Name.LocalName), Contains.Item ("type"));
       Assert.That (actual.Attribute ("type").Value, Is.EqualTo ("Remotion.Data.UnitTests::DomainObjects.TestDomain.Employee"));
@@ -100,7 +102,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.MappingSe
           MappingConfiguration.Current.GetTypeDefinition (typeof (ClassWithAllDataTypes))
               .GetPropertyDefinition ("Remotion.Data.UnitTests.DomainObjects.TestDomain.ClassWithAllDataTypes.EnumProperty");
 
-      var actual = _propertySerializer.Serialize (sampleProperty, _rdbmsPersistenceModelProviderStub);
+      var actual = _propertySerializer.Serialize (sampleProperty, _rdbmsPersistenceModelProviderStub, _enumTypeCollection);
 
       Assert.That (actual.Attributes().Select (a => a.Name.LocalName), Contains.Item ("type"));
       Assert.That (actual.Attribute ("type").Value, Is.EqualTo ("Remotion.Data.UnitTests::DomainObjects.TestDomain.EnumType"));
@@ -113,7 +115,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.MappingSe
           MappingConfiguration.Current.GetTypeDefinition (typeof (ClassWithAllDataTypes))
               .GetPropertyDefinition ("Remotion.Data.UnitTests.DomainObjects.TestDomain.ClassWithAllDataTypes.ExtensibleEnumProperty");
 
-      var actual = _propertySerializer.Serialize (sampleProperty, _rdbmsPersistenceModelProviderStub);
+      var actual = _propertySerializer.Serialize (sampleProperty, _rdbmsPersistenceModelProviderStub, _enumTypeCollection);
 
       Assert.That (actual.Attributes().Select (a => a.Name.LocalName), Contains.Item ("type"));
       Assert.That (actual.Attribute ("type").Value, Is.EqualTo ("Remotion.Data.UnitTests::DomainObjects.TestDomain.Color"));
@@ -126,7 +128,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.MappingSe
           MappingConfiguration.Current.GetTypeDefinition (typeof (ClassWithAllDataTypes))
               .GetPropertyDefinition ("Remotion.Data.UnitTests.DomainObjects.TestDomain.ClassWithAllDataTypes.NaByteProperty");
 
-      var actual = _propertySerializer.Serialize (sampleProperty, _rdbmsPersistenceModelProviderStub);
+      var actual = _propertySerializer.Serialize (sampleProperty, _rdbmsPersistenceModelProviderStub, _enumTypeCollection);
 
       Assert.That (actual.Attributes().Select (a => a.Name.LocalName), Contains.Item ("isNullable"));
       Assert.That (actual.Attribute ("isNullable").Value, Is.EqualTo ("true"));
@@ -139,7 +141,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.MappingSe
           MappingConfiguration.Current.GetTypeDefinition (typeof (ClassWithAllDataTypes))
               .GetPropertyDefinition ("Remotion.Data.UnitTests.DomainObjects.TestDomain.ClassWithAllDataTypes.ByteProperty");
 
-      var actual = _propertySerializer.Serialize (sampleProperty, _rdbmsPersistenceModelProviderStub);
+      var actual = _propertySerializer.Serialize (sampleProperty, _rdbmsPersistenceModelProviderStub, _enumTypeCollection);
 
       Assert.That (actual.Attributes().Select (a => a.Name.LocalName), Contains.Item ("isNullable"));
       Assert.That (actual.Attribute ("isNullable").Value, Is.EqualTo ("false"));
@@ -152,7 +154,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.MappingSe
           MappingConfiguration.Current.GetTypeDefinition (typeof (ClassWithAllDataTypes))
               .GetPropertyDefinition ("Remotion.Data.UnitTests.DomainObjects.TestDomain.ClassWithAllDataTypes.NaDateProperty");
 
-      var actual = _propertySerializer.Serialize (sampleProperty, _rdbmsPersistenceModelProviderStub);
+      var actual = _propertySerializer.Serialize (sampleProperty, _rdbmsPersistenceModelProviderStub, _enumTypeCollection);
 
       Assert.That (actual.Attributes().Select (a => a.Name.LocalName), Contains.Item ("type"));
       Assert.That (actual.Attribute ("type").Value, Is.EqualTo ("System.DateTime"));
@@ -165,7 +167,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.MappingSe
           MappingConfiguration.Current.GetTypeDefinition (typeof (ClassWithAllDataTypes))
               .GetPropertyDefinition ("Remotion.Data.UnitTests.DomainObjects.TestDomain.ClassWithAllDataTypes.StringProperty");
 
-      var actual = _propertySerializer.Serialize (sampleProperty, _rdbmsPersistenceModelProviderStub);
+      var actual = _propertySerializer.Serialize (sampleProperty, _rdbmsPersistenceModelProviderStub, _enumTypeCollection);
 
       Assert.That (actual.Attributes().Select (a => a.Name.LocalName), Contains.Item ("maxLength"));
       Assert.That (actual.Attribute ("maxLength").Value, Is.EqualTo ("100"));
@@ -178,7 +180,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.MappingSe
           MappingConfiguration.Current.GetTypeDefinition (typeof (ClassWithAllDataTypes))
               .GetPropertyDefinition ("Remotion.Data.UnitTests.DomainObjects.TestDomain.ClassWithAllDataTypes.StringPropertyWithoutMaxLength");
 
-      var actual = _propertySerializer.Serialize (sampleProperty, _rdbmsPersistenceModelProviderStub);
+      var actual = _propertySerializer.Serialize (sampleProperty, _rdbmsPersistenceModelProviderStub, _enumTypeCollection);
       Assert.That (actual.Attributes().Select (a => a.Name.LocalName).Contains("maxLength"), Is.False);
     }
 
@@ -192,11 +194,57 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.MappingSe
       _columnSerializerStub.Stub (s => s.Serialize (sampleProperty, _rdbmsPersistenceModelProviderStub))
           .Return (new[] { new XElement ("column1"), new XElement ("column2") });
 
-      var actual = _propertySerializer.Serialize (sampleProperty, _rdbmsPersistenceModelProviderStub);
+      var actual = _propertySerializer.Serialize (sampleProperty, _rdbmsPersistenceModelProviderStub, _enumTypeCollection);
 
       Assert.That (actual.Elements().Count(), Is.EqualTo (2));
       Assert.That (actual.Elements().ElementAt (0).Name.LocalName, Is.EqualTo ("column1"));
       Assert.That (actual.Elements().ElementAt (1).Name.LocalName, Is.EqualTo ("column2"));
+    }
+
+    [Test]
+    public void Serialize_CollectsEnumTypes ()
+    {
+      var sampleProperty =
+          MappingConfiguration.Current.GetTypeDefinition (typeof (ClassWithAllDataTypes))
+              .GetPropertyDefinition ("Remotion.Data.UnitTests.DomainObjects.TestDomain.ClassWithAllDataTypes.EnumProperty");
+
+      _propertySerializer.Serialize (sampleProperty, _rdbmsPersistenceModelProviderStub, _enumTypeCollection);
+      Assert.That (_enumTypeCollection, Contains.Item (typeof (ClassWithAllDataTypes.EnumType)));
+    }
+
+    [Test]
+    public void Serialize_CollectsExtensibleEnumProperty ()
+    {
+      var sampleProperty =
+          MappingConfiguration.Current.GetTypeDefinition (typeof (ClassWithAllDataTypes))
+              .GetPropertyDefinition ("Remotion.Data.UnitTests.DomainObjects.TestDomain.ClassWithAllDataTypes.ExtensibleEnumProperty");
+      
+      _propertySerializer.Serialize (sampleProperty, _rdbmsPersistenceModelProviderStub, _enumTypeCollection);
+      Assert.That (_enumTypeCollection, Contains.Item (typeof (Color)));
+    }
+    
+    [Test]
+    public void Serialize_DoesNotCollectDuplicateEnumTypes ()
+    {
+      var sampleProperty =
+          MappingConfiguration.Current.GetTypeDefinition (typeof (ClassWithAllDataTypes))
+              .GetPropertyDefinition ("Remotion.Data.UnitTests.DomainObjects.TestDomain.ClassWithAllDataTypes.ExtensibleEnumProperty");
+      
+      _propertySerializer.Serialize (sampleProperty, _rdbmsPersistenceModelProviderStub, _enumTypeCollection);
+      _propertySerializer.Serialize (sampleProperty, _rdbmsPersistenceModelProviderStub, _enumTypeCollection);
+
+      Assert.That (_enumTypeCollection.Count (t => t == typeof (Color)), Is.EqualTo (1));
+    }
+
+    [Test]
+    public void Serialize_DoesNotCollectNonEnumTypes ()
+    {
+      var sampleProperty =
+          MappingConfiguration.Current.GetTypeDefinition (typeof (ClassWithAllDataTypes))
+              .GetPropertyDefinition ("Remotion.Data.UnitTests.DomainObjects.TestDomain.ClassWithAllDataTypes.StringProperty");
+      
+      _propertySerializer.Serialize (sampleProperty, _rdbmsPersistenceModelProviderStub, _enumTypeCollection);
+      Assert.That (_enumTypeCollection, Is.Empty);
     }
   }
 }
