@@ -16,6 +16,7 @@
 // 
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 using Remotion.Data.DomainObjects.Mapping;
@@ -46,8 +47,14 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingSerialization
       return new XElement (
           "table",
           new XAttribute ("name", GetTableName (classDefinition)),
-          classDefinition.GetPropertyDefinitions().Select (p => _propertySerializer.Serialize (p, persistenceModelProvider, enumTypeCollection))
+          GetPersistentPropertyDefinitions (classDefinition)
+              .Select (p => _propertySerializer.Serialize (p, persistenceModelProvider, enumTypeCollection))
           );
+    }
+
+    private IEnumerable<PropertyDefinition> GetPersistentPropertyDefinitions (ClassDefinition classDefinition)
+    {
+      return classDefinition.GetPropertyDefinitions().Where (p => p.StorageClass == StorageClass.Persistent);
     }
 
     private string GetTableName (ClassDefinition classDefinition)

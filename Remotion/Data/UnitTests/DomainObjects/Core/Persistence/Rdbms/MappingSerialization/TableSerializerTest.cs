@@ -15,7 +15,9 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 
+using System;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Xml.Linq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Mapping;
@@ -97,6 +99,30 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.MappingSe
       Assert.That (actual.Elements().Count(), Is.EqualTo(2));
       Assert.That (actual.Elements(), Contains.Item(expected1));
       Assert.That (actual.Elements(), Contains.Item(expected2));
+    }
+
+    [Test]
+    public void Serialize_OnlyAddsPersistentProperties ()
+    {
+      var classDefinition = MappingConfiguration.Current.GetTypeDefinition (typeof (Computer));
+      var propertySerializerMock = MockRepository.GenerateStrictMock<IPropertySerializer>();
+
+      Expression<Predicate<PropertyDefinition>> propertyDefinitionConstraint =
+          p => p.StorageClass == StorageClass.Persistent;
+
+      propertySerializerMock.Expect (
+          s => s.Serialize (
+              Arg<PropertyDefinition>.Matches (propertyDefinitionConstraint),
+              Arg<IRdbmsPersistenceModelProvider>.Is.Anything,
+              Arg<EnumTypeCollection>.Is.Anything))
+          .Return (new XElement ("property"))
+          .Repeat.AtLeastOnce();
+
+      var tableSerializer = new TableSerializer (propertySerializerMock);
+
+      propertySerializerMock.Replay();
+      tableSerializer.Serialize (classDefinition, _enumTypeCollection);
+      propertySerializerMock.VerifyAllExpectations();
     }
   }
 }

@@ -291,6 +291,7 @@
     <Compile Include="DomainObjects\Core\Mapping\TestDomain\Integration\ReflectionBasedMappingSample\DerivedClassInMappingDerivedFromClassNotInMapping.cs" />
     <Compile Include="DomainObjects\Core\Persistence\Rdbms\MappingSerialization\ClassSerializerTest.cs" />
     <Compile Include="DomainObjects\Core\Persistence\Rdbms\MappingSerialization\ColumnSerializerTest.cs" />
+    <Compile Include="DomainObjects\Core\Persistence\Rdbms\MappingSerialization\MappingSerializerIntegrationTest.cs" />
     <Compile Include="DomainObjects\Core\Persistence\Rdbms\MappingSerialization\EnumSerializerTest.cs" />
     <Compile Include="DomainObjects\Core\Persistence\Rdbms\MappingSerialization\MappingSerializerTest.cs" />
     <Compile Include="DomainObjects\Core\Persistence\Rdbms\MappingSerialization\PropertySerializerTest.cs" />

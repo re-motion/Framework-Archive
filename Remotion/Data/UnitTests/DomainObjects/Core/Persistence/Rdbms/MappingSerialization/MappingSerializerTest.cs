@@ -21,7 +21,6 @@ using System.Xml.Linq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.MappingSerialization;
-using Remotion.FunctionalProgramming;
 using Rhino.Mocks;
 
 namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.MappingSerialization
@@ -79,20 +78,6 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.MappingSe
       var actual = mappingSerializer.Serialize();
 
       Assert.That (actual.Root.Elements().ToArray(), Is.EqualTo (new[] { storageProviderElement, enumTypeElement }));
-    }
-
-    [Test]
-    [Ignore]
-    public void Serialize_IntegrationTest ()
-    {
-      var mappingSerializer = new MappingSerializer (
-          new StorageProviderSerializer (
-              new ClassSerializer (new TableSerializer (new PropertySerializer (new ColumnSerializer())))),
-          new EnumSerializer());
-
-      var actual = mappingSerializer.Serialize();
-      var xml = actual.ToString();
-
     }
   }
 }
