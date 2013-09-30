@@ -42,7 +42,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingSerialization
               new XElement (
                   "column",
                   new XAttribute ("name", columnDefinition.Name),
-                  new XAttribute ("type", ((StorageTypeInformation) columnDefinition.StorageTypeInfo).StorageDbType)
+                  new XAttribute ("dbType", ((StorageTypeInformation) columnDefinition.StorageTypeInfo).StorageDbType)
                   ));
     }
   }

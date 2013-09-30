@@ -67,8 +67,8 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.MappingSe
       var columnSerializer = new ColumnSerializer();
       var actual = columnSerializer.Serialize (propertyDefinition, GetRdbmsPersistenceModelProvider (classDefinition)).Single();
 
-      Assert.That (actual.Attributes().Select (a => a.Name.LocalName), Contains.Item ("type"));
-      Assert.That (actual.Attribute ("type").Value, Is.EqualTo ("Int32"));
+      Assert.That (actual.Attributes().Select (a => a.Name.LocalName), Contains.Item ("dbType"));
+      Assert.That (actual.Attribute ("dbType").Value, Is.EqualTo ("Int32"));
     }
 
     [Test]
@@ -83,9 +83,9 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.MappingSe
 
       Assert.That (actual.Length, Is.EqualTo (2));
       Assert.That (actual[0].Attribute("name").Value, Is.EqualTo ("CompanyID"));
-      Assert.That (actual[0].Attribute("type").Value, Is.EqualTo ("Guid"));
+      Assert.That (actual[0].Attribute("dbType").Value, Is.EqualTo ("Guid"));
       Assert.That (actual[1].Attribute("name").Value, Is.EqualTo ("CompanyIDClassID"));
-      Assert.That (actual[1].Attribute("type").Value, Is.EqualTo ("String"));
+      Assert.That (actual[1].Attribute("dbType").Value, Is.EqualTo ("String"));
     }
 
     private IRdbmsPersistenceModelProvider GetRdbmsPersistenceModelProvider (ClassDefinition classDefinition)
