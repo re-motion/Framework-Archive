@@ -21,7 +21,7 @@ using System.Xml.Linq;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Utilities;
 
-namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingSerialization
+namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport
 {
   public class MappingSerializer
   {

@@ -14,17 +14,13 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+using System.Xml.Linq;
+using Remotion.Data.DomainObjects.Mapping;
 
-using System;
-using System.Collections.Generic;
-
-namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingSerialization
+namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport
 {
-  public class EnumTypeCollection : HashSet<Type>
+  public interface IClassSerializer
   {
-    public EnumTypeCollection ()
-    {
-      
-    }
+    XElement Serialize (ClassDefinition classDefinition, EnumTypeCollection enumTypeCollection);
   }
 }

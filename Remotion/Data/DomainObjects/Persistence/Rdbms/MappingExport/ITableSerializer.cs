@@ -19,7 +19,7 @@ using System.Collections.Generic;
 using System.Xml.Linq;
 using Remotion.Data.DomainObjects.Mapping;
 
-namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingSerialization
+namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport
 {
   public interface ITableSerializer
   {

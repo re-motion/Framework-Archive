@@ -22,7 +22,7 @@ using System.Xml.Linq;
 using Remotion.ExtensibleEnums;
 using Remotion.Utilities;
 
-namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingSerialization
+namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport
 {
   public class EnumSerializer : IEnumSerializer
   {

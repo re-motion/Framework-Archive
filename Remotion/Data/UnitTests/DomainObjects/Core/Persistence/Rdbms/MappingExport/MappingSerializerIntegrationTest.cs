@@ -18,9 +18,9 @@
 using System;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Mapping;
-using Remotion.Data.DomainObjects.Persistence.Rdbms.MappingSerialization;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport;
 
-namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.MappingSerialization
+namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.MappingExport
 {
   [TestFixture]
   public class MappingSerializerIntegrationTestTest : SchemaGenerationTestBase

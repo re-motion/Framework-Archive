@@ -23,7 +23,7 @@ using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Utilities;
 
-namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingSerialization
+namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport
 {
   public class ColumnSerializer : IColumnSerializer
   {
