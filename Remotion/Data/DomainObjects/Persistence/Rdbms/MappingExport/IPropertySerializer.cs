@@ -21,6 +21,6 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport
 {
   public interface IPropertySerializer
   {
-    XElement Serialize (PropertyDefinition propertyDefinition, IRdbmsPersistenceModelProvider persistenceModelProvider, EnumTypeCollection enumTypeCollection);
+    XElement Serialize (PropertyDefinition propertyDefinition, IRdbmsPersistenceModelProvider persistenceModelProvider);
   }
 }

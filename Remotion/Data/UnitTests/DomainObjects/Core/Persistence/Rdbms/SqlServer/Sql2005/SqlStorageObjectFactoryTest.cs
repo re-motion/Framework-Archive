@@ -23,6 +23,7 @@ using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration;
@@ -452,7 +453,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.SqlServer
     }
 
     [Test]
-    public void CreateSchemaFileBuilder ()
+    public void CreateSchemaScriptBuilder ()
     {
       IRdbmsStorageObjectFactory testableSqlProviderFactory = new TestableSqlStorageObjectFactory (
           _tableBuilderStub, _viewBuilderStub, _constraintBuilderStub, _indexBuilderStub, _synonymBuilderStub);
@@ -475,6 +476,26 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.SqlServer
                   _indexBuilderStub,
                   _synonymBuilderStub
               }));
+    }
+
+    [Test]
+    public void CreateMappingSerializer ()
+    {
+      var storageProviderSerializerStub = MockRepository.GenerateStub<IStorageProviderSerializer>();
+      var enumSerializerStub = MockRepository.GenerateStub<IEnumSerializer>();
+      var testableSqlProviderFactory = new TestableSqlStorageObjectFactory (
+          null,
+          storageProviderSerializerStub,
+          enumSerializerStub);
+
+      var mappingSerializer = testableSqlProviderFactory.CreateMappingSerializer();
+      Assert.That(mappingSerializer, Is.InstanceOf<MappingSerializer>());
+      Assert.That (
+          ((MappingSerializer) mappingSerializer).StorageProviderSerializer,
+          Is.SameAs (storageProviderSerializerStub));
+      Assert.That (
+          ((MappingSerializer) mappingSerializer).EnumSerializer,
+          Is.SameAs (enumSerializerStub));
     }
   }
 }

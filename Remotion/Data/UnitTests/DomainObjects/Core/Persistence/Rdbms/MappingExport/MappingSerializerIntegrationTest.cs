@@ -18,7 +18,7 @@
 using System;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Mapping;
-using Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2005;
 
 namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.MappingExport
 {
@@ -29,12 +29,10 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.MappingEx
     [Explicit]
     public void Serialize ()
     {
-      var mappingSerializer = new MappingSerializer (
-          new StorageProviderSerializer (
-              new ClassSerializer (new TableSerializer (new PropertySerializer (new ColumnSerializer())))),
-          new EnumSerializer());
+      var sqlStorageObjectFactory = new SqlStorageObjectFactory();
+      var mappingSerializer = sqlStorageObjectFactory.CreateMappingSerializer();
 
-      var actual = mappingSerializer.Serialize(MappingConfiguration.Current.GetTypeDefinitions());
+      var actual = mappingSerializer.Serialize (MappingConfiguration.Current.GetTypeDefinitions());
       var xml = actual.ToString();
     }
   }

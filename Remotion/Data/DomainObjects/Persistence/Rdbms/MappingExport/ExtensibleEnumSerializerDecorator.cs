@@ -25,12 +25,15 @@ using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport
 {
-  public class EnumSerializer : IEnumSerializer
+  public class ExtensibleEnumSerializerDecorator : IEnumSerializer
   {
+    private readonly IEnumSerializer _enumSerializer;
     private readonly HashSet<Type> _enumTypes = new HashSet<Type>();
- 
-    public EnumSerializer ()
+
+    public ExtensibleEnumSerializerDecorator (IEnumSerializer enumSerializer)
     {
+      ArgumentUtility.CheckNotNull ("enumSerializer", enumSerializer);
+      _enumSerializer = enumSerializer;
     }
 
     public HashSet<Type> EnumTypes
@@ -43,27 +46,31 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport
       ArgumentUtility.CheckNotNull ("propertyDefinition", propertyDefinition);
 
       var propertyType = propertyDefinition.PropertyType;
-      if (NullableTypeUtility.IsNullableType (propertyType))
-        propertyType = NullableTypeUtility.GetBasicType (propertyType);
-
-      if (propertyType.IsEnum)
+      if (ExtensibleEnumUtility.IsExtensibleEnumType(propertyType))
         _enumTypes.Add (propertyType);
+      else
+        _enumSerializer.CollectPropertyType (propertyDefinition);
     }
 
     public IEnumerable<XElement> Serialize ()
     {
-      return _enumTypes.Select (
-          t => new XElement ("enumType",
+      var elements = _enumTypes.Select (
+          t => new XElement (
+              "enumType",
               new XAttribute ("type", TypeUtility.GetAbbreviatedTypeName (t, false)),
-              GetValues (t)));
+              GetValues (t))).ToList();
+
+      elements.AddRange (_enumSerializer.Serialize());
+      return elements;
     }
 
     private IEnumerable<XElement> GetValues (Type type)
     {
-     return Enum.GetValues (type).Cast<object> ().Select (
-          value => new XElement ("value",
-              new XAttribute ("name", Enum.GetName (type, value)),
-              new XAttribute ("columnValue", Convert.ChangeType (value, Enum.GetUnderlyingType (type)))));
+      return ExtensibleEnumUtility.GetDefinition (type).GetValueInfos().Select (
+          info => new XElement (
+              "value",
+              new XAttribute ("name", info.Value.ValueName),
+              new XAttribute ("columnValue", info.Value.ID)));
     }
   }
 }

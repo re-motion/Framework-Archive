@@ -19,12 +19,12 @@ using System;
 using System.Linq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport;
-using Remotion.Data.UnitTests.DomainObjects.TestDomain;
+using Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.SchemaGenerationTestDomain;
 
 namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.MappingExport
 {
   [TestFixture]
-  public class EnumSerializerTest : StandardMappingTest
+  public class EnumSerializerTest : SchemaGenerationTestBase
   {
     private EnumSerializer _enumSerializer;
 
@@ -37,7 +37,8 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.MappingEx
     [Test]
     public void Serialize_CreatesEnumTypeElement ()
     {
-      var actual = _enumSerializer.Serialize (new EnumTypeCollection { typeof (ClassWithAllDataTypes.EnumType) }).Single();
+      _enumSerializer.CollectPropertyType (GetPropertyDefinition((ClassWithAllDataTypes _) => _.EnumProperty));
+      var actual = _enumSerializer.Serialize ().Single();
 
       Assert.That (actual.Name.LocalName, Is.EqualTo ("enumType"));
     }
@@ -45,16 +46,18 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.MappingEx
     [Test]
     public void Serialize_AddsTypeAttribute ()
     {
-      var actual = _enumSerializer.Serialize (new EnumTypeCollection { typeof (ClassWithAllDataTypes.EnumType) }).Single();
+      _enumSerializer.CollectPropertyType (GetPropertyDefinition((ClassWithAllDataTypes _) => _.EnumProperty));
+      var actual = _enumSerializer.Serialize ().Single();
 
       Assert.That (actual.Attributes().Select (a => a.Name.LocalName), Contains.Item ("type"));
-      Assert.That (actual.Attribute ("type").Value, Is.EqualTo ("Remotion.Data.UnitTests::DomainObjects.TestDomain.EnumType"));
+      Assert.That (actual.Attribute ("type").Value, Is.EqualTo ("Remotion.Data.UnitTests::DomainObjects.Core.Persistence.Rdbms.SchemaGenerationTestDomain.EnumType"));
     }
 
     [Test]
     public void Serialize_AddsValueElementsForSimpleEnumType ()
     {
-      var actual = _enumSerializer.Serialize (new EnumTypeCollection { typeof (ClassWithAllDataTypes.EnumType) }).Single();
+      _enumSerializer.CollectPropertyType (GetPropertyDefinition((ClassWithAllDataTypes _) => _.EnumProperty));
+      var actual = _enumSerializer.Serialize ().Single();
 
       Assert.That (actual.Elements().Count(), Is.EqualTo (3));
 
@@ -80,33 +83,36 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.MappingEx
       Assert.That (thirdValueElement.Attribute ("columnValue").Value, Is.EqualTo ("2"));
     }
 
-    [Test]
-    public void Serialize_AddsValueElementsForExtensibleEnumType ()
+    public void CollectPropertyType_CollectsEnumType ()
     {
-      var actual = _enumSerializer.Serialize (new EnumTypeCollection { typeof (Color) }).Single();
+      _enumSerializer.CollectPropertyType (GetPropertyDefinition ((ClassWithAllDataTypes _) => _.EnumProperty));
 
-      Assert.That (actual.Elements().Count(), Is.EqualTo (3));
+      Assert.That (_enumSerializer.EnumTypes, Contains.Item (typeof (ClassWithAllDataTypes.EnumType)));
+    }
 
-      var firstValueElement = actual.Elements().ElementAt (0);
-      Assert.That (firstValueElement.Name.LocalName, Is.EqualTo ("value"));
-      Assert.That (firstValueElement.Attributes().Select (a => a.Name.LocalName), Contains.Item ("name"));
-      Assert.That (firstValueElement.Attribute ("name").Value, Is.EqualTo ("Blue"));
-      Assert.That (firstValueElement.Attributes().Select (a => a.Name.LocalName), Contains.Item ("columnValue"));
-      Assert.That (firstValueElement.Attribute ("columnValue").Value, Is.EqualTo ("Remotion.Data.UnitTests.DomainObjects.TestDomain.ColorExtensions.Blue"));
+    [Test]
+    public void CollectPropertyType_DoesNotCollectDuplicates ()
+    {
+      _enumSerializer.CollectPropertyType (GetPropertyDefinition ((ClassWithAllDataTypes _) => _.EnumProperty));
+      _enumSerializer.CollectPropertyType (GetPropertyDefinition ((ClassWithAllDataTypes _) => _.EnumProperty));
 
-      var secondValueElement = actual.Elements().ElementAt (1);
-      Assert.That (secondValueElement.Name.LocalName, Is.EqualTo ("value"));
-      Assert.That (secondValueElement.Attributes().Select (a => a.Name.LocalName), Contains.Item ("name"));
-      Assert.That (secondValueElement.Attribute ("name").Value, Is.EqualTo ("Green"));
-      Assert.That (secondValueElement.Attributes().Select (a => a.Name.LocalName), Contains.Item ("columnValue"));
-      Assert.That (secondValueElement.Attribute ("columnValue").Value, Is.EqualTo ("Remotion.Data.UnitTests.DomainObjects.TestDomain.ColorExtensions.Green"));
+      Assert.That (_enumSerializer.EnumTypes.Count, Is.EqualTo (1));
+    }
 
-      var thirdValueElement = actual.Elements().ElementAt (2);
-      Assert.That (thirdValueElement.Name.LocalName, Is.EqualTo ("value"));
-      Assert.That (thirdValueElement.Attributes().Select (a => a.Name.LocalName), Contains.Item ("name"));
-      Assert.That (thirdValueElement.Attribute ("name").Value, Is.EqualTo ("Red"));
-      Assert.That (thirdValueElement.Attributes().Select (a => a.Name.LocalName), Contains.Item ("columnValue"));
-      Assert.That (thirdValueElement.Attribute ("columnValue").Value, Is.EqualTo ("Remotion.Data.UnitTests.DomainObjects.TestDomain.ColorExtensions.Red"));
+    [Test]
+    public void CollectPropertyType_DoesNotCollectNonEnumTypes ()
+    {
+      _enumSerializer.CollectPropertyType (GetPropertyDefinition ((ClassWithAllDataTypes _) => _.Int32Property));
+
+      Assert.That(_enumSerializer.EnumTypes, Is.Empty);
+    }
+    
+    [Test]
+    public void CollectPropertyType_CollectsNullableEnumType ()
+    {
+      _enumSerializer.CollectPropertyType (GetPropertyDefinition ((ClassWithAllDataTypes _) => _.NaEnumProperty));
+
+      Assert.That (_enumSerializer.EnumTypes, Contains.Item (typeof (ClassWithAllDataTypes.EnumType)));
     }
   }
 }

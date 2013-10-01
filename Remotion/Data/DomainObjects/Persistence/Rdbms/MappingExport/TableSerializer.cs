@@ -36,10 +36,9 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport
       _propertySerializer = propertySerializer;
     }
 
-    public IEnumerable<XElement> Serialize (ClassDefinition classDefinition, EnumTypeCollection enumTypeCollection)
+    public IEnumerable<XElement> Serialize (ClassDefinition classDefinition)
     {
       ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
-      ArgumentUtility.CheckNotNull ("enumTypeCollection", enumTypeCollection);
 
       var tableDefinition = GetTableDefinition(classDefinition);
       if (tableDefinition == null)
@@ -52,7 +51,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport
           "table",
           new XAttribute ("name", tableDefinition.TableName.EntityName),
           GetPersistentPropertyDefinitions (classDefinition)
-              .Select (p => _propertySerializer.Serialize (p, persistenceModelProvider, enumTypeCollection))
+              .Select (p => _propertySerializer.Serialize (p, persistenceModelProvider))
           );
     }
 

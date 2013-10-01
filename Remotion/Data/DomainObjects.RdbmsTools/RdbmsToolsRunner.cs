@@ -137,10 +137,8 @@ namespace Remotion.Data.DomainObjects.RdbmsTools
     
     protected virtual void ExportMapping ()
     {
-      var mappingSerializer = new MappingSerializer (
-          new StorageProviderSerializer (
-              new ClassSerializer (new TableSerializer (new PropertySerializer (new ColumnSerializer())))),
-          new EnumSerializer());
+      var sqlStorageObjectFactory = new SqlStorageObjectFactory(); //TODO: replace with storageDefinition.Factory?
+      var mappingSerializer = sqlStorageObjectFactory.CreateMappingSerializer();
 
       var xml = mappingSerializer.Serialize(MappingConfiguration.Current.GetTypeDefinitions());
       xml.Save (Path.Combine (_rdbmsToolsParameters.SchemaOutputDirectory, "mapping.xml"));

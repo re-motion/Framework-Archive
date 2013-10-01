@@ -21,34 +21,27 @@ using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport
 {
-  public class ClassSerializer : IClassSerializer
+  public class EnumPropertySerializerDecorator : IPropertySerializer
   {
-    private readonly ITableSerializer _tableSerializer;
+    private readonly IEnumSerializer _enumSerializer;
+    private readonly IPropertySerializer _propertySerializer;
 
-    public ClassSerializer (ITableSerializer tableSerializer)
+    public EnumPropertySerializerDecorator (IEnumSerializer enumSerializer, IPropertySerializer propertySerializer)
     {
-      ArgumentUtility.CheckNotNull ("tableSerializer", tableSerializer);
+      ArgumentUtility.CheckNotNull ("enumSerializer", enumSerializer);
+      ArgumentUtility.CheckNotNull ("propertySerializer", propertySerializer);
 
-      _tableSerializer = tableSerializer;
+      _enumSerializer = enumSerializer;
+      _propertySerializer = propertySerializer;
     }
 
-    public XElement Serialize (ClassDefinition classDefinition)
+    public XElement Serialize (PropertyDefinition propertyDefinition, IRdbmsPersistenceModelProvider persistenceModelProvider)
     {
-      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull ("propertyDefinition", propertyDefinition);
+      ArgumentUtility.CheckNotNull ("persistenceModelProvider", persistenceModelProvider);
 
-      return new XElement ("class",
-        new XAttribute("id", classDefinition.ID),
-        GetBaseClassAttribute(classDefinition),
-        new XAttribute("isAbstract", classDefinition.IsAbstract),
-        _tableSerializer.Serialize(classDefinition)
-        );
-    }
-
-    private XAttribute GetBaseClassAttribute (ClassDefinition classDefinition)
-    {
-      if (classDefinition.BaseClass == null)
-        return null;
-      return new XAttribute("baseClass", classDefinition.BaseClass.ID);
+      _enumSerializer.CollectPropertyType (propertyDefinition);
+      return _propertySerializer.Serialize (propertyDefinition, persistenceModelProvider);
     }
   }
 }

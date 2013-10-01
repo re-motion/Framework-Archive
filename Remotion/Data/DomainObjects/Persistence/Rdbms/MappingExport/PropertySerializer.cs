@@ -16,9 +16,9 @@
 // 
 
 using System;
+using System.Runtime.InteropServices;
 using System.Xml.Linq;
 using Remotion.Data.DomainObjects.Mapping;
-using Remotion.ExtensibleEnums;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport
@@ -34,19 +34,12 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport
       _columnSerializer = columnSerializer;
     }
 
-    public XElement Serialize (
-        PropertyDefinition propertyDefinition,
-        IRdbmsPersistenceModelProvider persistenceModelProvider,
-        EnumTypeCollection enumTypeCollection)
+    public XElement Serialize (PropertyDefinition propertyDefinition, IRdbmsPersistenceModelProvider persistenceModelProvider)
     {
       ArgumentUtility.CheckNotNull ("propertyDefinition", propertyDefinition);
       ArgumentUtility.CheckNotNull ("persistenceModelProvider", persistenceModelProvider);
-      ArgumentUtility.CheckNotNull ("enumTypeCollection", enumTypeCollection);
 
       var propertyType = GetPropertyType (propertyDefinition);
-
-      if (propertyType.IsEnum || ExtensibleEnumUtility.IsExtensibleEnumType (propertyType))
-        enumTypeCollection.Add (propertyType);
 
       return new XElement (
           "property",

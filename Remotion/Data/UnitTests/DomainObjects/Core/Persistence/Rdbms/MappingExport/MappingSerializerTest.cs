@@ -54,7 +54,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.MappingEx
 
       var expected = new[] { new XElement ("storageProvider") };
       _storageProviderSerializerStub
-          .Stub (s => s.Serialize (Arg<IEnumerable<ClassDefinition>>.Is.NotNull, Arg<EnumTypeCollection>.Is.NotNull))
+          .Stub (s => s.Serialize (Arg<IEnumerable<ClassDefinition>>.Is.NotNull))
           .Return (expected);
 
       var actual = mappingSerializer.Serialize(MappingConfiguration.Current.GetTypeDefinitions());
@@ -69,12 +69,12 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.MappingEx
       var mappingSerializer = new MappingSerializer (storageProviderSerializerStub, _enumSerializerStub);
 
       var storageProviderElement = new XElement ("storageProvider");
-      storageProviderSerializerStub.Stub (s => s.Serialize (Arg<IEnumerable<ClassDefinition>>.Is.NotNull, Arg<EnumTypeCollection>.Is.NotNull))
+      storageProviderSerializerStub.Stub (s => s.Serialize (Arg<IEnumerable<ClassDefinition>>.Is.NotNull))
           .Return (new[] { storageProviderElement });
 
       var enumTypeElement = new XElement ("enumType");
       _enumSerializerStub
-          .Stub (s => s.Serialize (Arg<EnumTypeCollection>.Is.NotNull))
+          .Stub (s => s.Serialize ())
           .Return (new[] { enumTypeElement });
 
       var actual = mappingSerializer.Serialize(MappingConfiguration.Current.GetTypeDefinitions());

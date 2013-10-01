@@ -35,10 +35,9 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport
       _classSerializer = classSerializer;
     }
 
-    public IEnumerable<XElement> Serialize (IEnumerable<ClassDefinition> classDefinitions, EnumTypeCollection enumTypeCollection)
+    public IEnumerable<XElement> Serialize (IEnumerable<ClassDefinition> classDefinitions)
     {
       ArgumentUtility.CheckNotNull ("classDefinitions", classDefinitions);
-      ArgumentUtility.CheckNotNull ("enumTypeCollection", enumTypeCollection);
 
       var classDefinitionsByStorageProvider = classDefinitions
           .GroupBy (cd => cd.StorageEntityDefinition.StorageProviderDefinition)
@@ -47,7 +46,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport
       return classDefinitionsByStorageProvider.Select (
           storageProviderGroup => new XElement ("storageProvider",
               new XAttribute("name", storageProviderGroup.Key.Name),
-              storageProviderGroup.Select (c => _classSerializer.Serialize (c, enumTypeCollection))));
+              storageProviderGroup.Select (c => _classSerializer.Serialize (c))));
     }
   }
 }

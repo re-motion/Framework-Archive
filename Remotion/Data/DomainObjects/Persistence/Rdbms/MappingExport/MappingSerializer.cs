@@ -15,15 +15,15 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 
-using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Xml.Linq;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport
 {
-  public class MappingSerializer
+  public class MappingSerializer : IMappingSerializer
   {
     private readonly IStorageProviderSerializer _storageProviderSerializer;
     private readonly IEnumSerializer _enumSerializer;
@@ -37,17 +37,35 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport
       _enumSerializer = enumSerializer;
     }
 
+    public IStorageProviderSerializer StorageProviderSerializer
+    {
+      get { return _storageProviderSerializer; }
+    }
+
+    public IEnumSerializer EnumSerializer
+    {
+      get { return _enumSerializer; }
+    }
+
     public XDocument Serialize (IEnumerable<ClassDefinition> typeDefinitions)
     {
       ArgumentUtility.CheckNotNull ("typeDefinitions", typeDefinitions);
 
-      var enumTypeCollection = new EnumTypeCollection();
-
       return new XDocument (
           new XElement (
               "mapping",
-              _storageProviderSerializer.Serialize (typeDefinitions, enumTypeCollection),
-              _enumSerializer.Serialize (enumTypeCollection)));
+              GetStorageProviders(typeDefinitions),
+              GetEnums()));
+    }
+
+    private IEnumerable<XElement> GetEnums ()
+    {
+      return _enumSerializer.Serialize ().ToList();
+    }
+
+    private IEnumerable<XElement> GetStorageProviders (IEnumerable<ClassDefinition> typeDefinitions)
+    {
+      return _storageProviderSerializer.Serialize (typeDefinitions).ToList();
     }
   }
 }

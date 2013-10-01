@@ -29,13 +29,6 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.MappingEx
   [TestFixture]
   public class StorageProviderSerializerTest : StandardMappingTest
   {
-    private EnumTypeCollection _enumTypeCollection;
-
-    public override void SetUp ()
-    {
-      base.SetUp();
-      _enumTypeCollection = new EnumTypeCollection();
-    }
 
     [Test]
     public void Serialize_GroupsClassDefinitionsByStorageProvider ()
@@ -45,7 +38,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.MappingEx
         .Select (c => c.StorageEntityDefinition.StorageProviderDefinition).Distinct().OfType<RdbmsProviderDefinition>().ToArray();
 
       var storageProviderSerializer = new StorageProviderSerializer (MockRepository.GenerateStub<IClassSerializer>());
-      var actual = storageProviderSerializer.Serialize (classDefinitions, _enumTypeCollection).ToArray();
+      var actual = storageProviderSerializer.Serialize (classDefinitions).ToArray();
 
       Assert.That (actual.Count(), Is.EqualTo (storageProviders.Count()));
       Assert.That (actual[0].Name.LocalName, Is.EqualTo ("storageProvider"));
@@ -57,7 +50,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.MappingEx
       var classDefinitions = MappingConfiguration.Current.GetTypeDefinitions();
 
       var storageProviderSerializer = new StorageProviderSerializer (MockRepository.GenerateStub<IClassSerializer>());
-      var actual = storageProviderSerializer.Serialize (classDefinitions, _enumTypeCollection).First();
+      var actual = storageProviderSerializer.Serialize (classDefinitions).First();
 
       Assert.That (actual.Attributes().Select (a => a.Name.LocalName), Contains.Item ("name"));
       Assert.That (actual.Attribute ("name").Value, Is.EqualTo ("TestDomain"));
@@ -70,12 +63,12 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.MappingEx
 
       var classSerializerStub = MockRepository.GenerateStub<IClassSerializer>();
       var expectedElement = new XElement ("class");
-      classSerializerStub.Stub (s => s.Serialize (Arg<ClassDefinition>.Is.NotNull, Arg<EnumTypeCollection>.Is.Same (_enumTypeCollection)))
+      classSerializerStub.Stub (s => s.Serialize (Arg<ClassDefinition>.Is.NotNull))
           .Return (expectedElement)
           .Repeat.Any();
 
       var storageProviderSerializer = new StorageProviderSerializer (classSerializerStub);
-      var actual = storageProviderSerializer.Serialize (classDefinitions, _enumTypeCollection).First();
+      var actual = storageProviderSerializer.Serialize (classDefinitions).First();
 
       Assert.That (actual.Elements(), Is.Not.Empty);
       Assert.That (actual.Elements().First(), Is.SameAs (expectedElement));
