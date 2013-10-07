@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
@@ -25,47 +26,43 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport
 {
   public class MappingSerializer : IMappingSerializer
   {
-    private readonly IStorageProviderSerializer _storageProviderSerializer;
-    private readonly IEnumSerializer _enumSerializer;
+    private readonly Func<RdbmsProviderDefinition, IEnumSerializer> _enumSerializerFactory;
+    private readonly Func<RdbmsProviderDefinition, IEnumSerializer, IStorageProviderSerializer> _storageProviderSerializerFactory;
 
-    public MappingSerializer (IStorageProviderSerializer storageProviderSerializer, IEnumSerializer enumSerializer)
+    public MappingSerializer (
+        Func<RdbmsProviderDefinition, IEnumSerializer> enumSerializerFactory,
+        Func<RdbmsProviderDefinition, IEnumSerializer, IStorageProviderSerializer> storageProviderSerializerFactory)
     {
-      ArgumentUtility.CheckNotNull ("storageProviderSerializer", storageProviderSerializer);
-      ArgumentUtility.CheckNotNull ("enumSerializer", enumSerializer);
+      ArgumentUtility.CheckNotNull ("enumSerializerFactory", enumSerializerFactory);
+      ArgumentUtility.CheckNotNull ("storageProviderSerializerFactory", storageProviderSerializerFactory);
 
-      _storageProviderSerializer = storageProviderSerializer;
-      _enumSerializer = enumSerializer;
+      _enumSerializerFactory = enumSerializerFactory;
+      _storageProviderSerializerFactory = storageProviderSerializerFactory;
     }
 
-    public IStorageProviderSerializer StorageProviderSerializer
+    public XDocument Serialize (IEnumerable<ClassDefinition> classDefinitions)
     {
-      get { return _storageProviderSerializer; }
-    }
+      ArgumentUtility.CheckNotNull ("classDefinitions", classDefinitions);
 
-    public IEnumSerializer EnumSerializer
-    {
-      get { return _enumSerializer; }
-    }
+      var classDefinitionsByStorageProvider = classDefinitions
+          .Where (cd => cd.StorageEntityDefinition.StorageProviderDefinition is RdbmsProviderDefinition)
+          .GroupBy (cd => (RdbmsProviderDefinition) cd.StorageEntityDefinition.StorageProviderDefinition);
 
-    public XDocument Serialize (IEnumerable<ClassDefinition> typeDefinitions)
-    {
-      ArgumentUtility.CheckNotNull ("typeDefinitions", typeDefinitions);
+      var mappingElement = new XElement ("mapping");
+      var enumElements = new List<XElement>();
 
-      return new XDocument (
-          new XElement (
-              "mapping",
-              GetStorageProviders(typeDefinitions),
-              GetEnums()));
-    }
+      foreach (var group in classDefinitionsByStorageProvider)
+      {
+        var rdbmsProviderDefinition = @group.Key;
+        var enumSerializer = _enumSerializerFactory (rdbmsProviderDefinition);
+        var storageProviderSerializer = _storageProviderSerializerFactory (rdbmsProviderDefinition, enumSerializer);
 
-    private IEnumerable<XElement> GetEnums ()
-    {
-      return _enumSerializer.Serialize ().ToList();
-    }
+        mappingElement.Add (storageProviderSerializer.Serialize (@group, rdbmsProviderDefinition));
+        enumElements.AddRange (enumSerializer.Serialize());
+      }
+      mappingElement.Add (enumElements);
 
-    private IEnumerable<XElement> GetStorageProviders (IEnumerable<ClassDefinition> typeDefinitions)
-    {
-      return _storageProviderSerializer.Serialize (typeDefinitions).ToList();
+      return new XDocument (mappingElement);
     }
   }
 }

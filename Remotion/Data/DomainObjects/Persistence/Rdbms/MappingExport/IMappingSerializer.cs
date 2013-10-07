@@ -22,6 +22,6 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport
 {
   public interface IMappingSerializer
   {
-    XDocument Serialize (IEnumerable<ClassDefinition> typeDefinitions);
+    XDocument Serialize (IEnumerable<ClassDefinition> classDefinitions);
   }
 }

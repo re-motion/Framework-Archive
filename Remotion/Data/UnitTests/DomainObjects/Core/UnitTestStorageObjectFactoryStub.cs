@@ -56,7 +56,12 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core
       throw new NotImplementedException();
     }
 
-    public IMappingSerializer CreateMappingSerializer ()
+    public IStorageProviderSerializer CreateStorageProviderSerializer (IEnumSerializer enumSerializer)
+    {
+      throw new NotImplementedException();
+    }
+    
+    public IEnumSerializer CreateEnumSerializer ()
     {
       throw new NotImplementedException();
     }

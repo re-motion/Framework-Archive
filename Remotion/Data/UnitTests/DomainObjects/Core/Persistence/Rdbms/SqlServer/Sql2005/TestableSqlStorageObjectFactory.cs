@@ -30,7 +30,6 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.SqlServer
 {
   public class TestableSqlStorageObjectFactory : SqlStorageObjectFactory
   {
-    private readonly IMappingSerializer _mappingSerializer;
     private readonly IStorageProviderSerializer _storageProviderSerializer;
     private readonly IEnumSerializer _enumSerializer;
     private readonly TableScriptBuilder _tableBuilder;
@@ -79,16 +78,10 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.SqlServer
       _storagePropertyDefinitionResolver = storagePropertyDefinitionResolver;
     }
 
-    public TestableSqlStorageObjectFactory (IMappingSerializer mappingSerializer, IStorageProviderSerializer storageProviderSerializer, IEnumSerializer enumSerializer)
+    public TestableSqlStorageObjectFactory (IStorageProviderSerializer storageProviderSerializer, IEnumSerializer enumSerializer)
     {
-      _mappingSerializer = mappingSerializer;
       _storageProviderSerializer = storageProviderSerializer;
       _enumSerializer = enumSerializer;
-    }
-
-    public override IMappingSerializer CreateMappingSerializer ()
-    {
-      return _mappingSerializer ?? base.CreateMappingSerializer();
     }
 
     public override IStorageProviderSerializer CreateStorageProviderSerializer (IEnumSerializer enumSerializer)

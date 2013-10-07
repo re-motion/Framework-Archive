@@ -17,9 +17,11 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Xml.Linq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport;
 using Rhino.Mocks;
 
@@ -28,23 +30,30 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.MappingEx
   [TestFixture]
   public class MappingSerializerTest : StandardMappingTest
   {
-    private IEnumSerializer _enumSerializerStub;
-    private IStorageProviderSerializer _storageProviderSerializerStub;
+    private Func<RdbmsProviderDefinition, IEnumSerializer> _enumSerializerFactoryStub;
+    private Func<RdbmsProviderDefinition, IEnumSerializer, IStorageProviderSerializer> _storageProviderSerializerFactoryStub;
+    private MappingSerializer _mappingSerializer;
 
     public override void SetUp ()
     {
       base.SetUp();
-      _enumSerializerStub = MockRepository.GenerateStub<IEnumSerializer>();
-      _storageProviderSerializerStub = MockRepository.GenerateStub<IStorageProviderSerializer>();
+      _enumSerializerFactoryStub = MockRepository.GenerateStub<Func<RdbmsProviderDefinition, IEnumSerializer>>();
+      _storageProviderSerializerFactoryStub =
+          MockRepository.GenerateStub<Func<RdbmsProviderDefinition, IEnumSerializer, IStorageProviderSerializer>>();
+      _mappingSerializer = new MappingSerializer (_enumSerializerFactoryStub, _storageProviderSerializerFactoryStub);
     }
 
     [Test]
     public void Serialize_CreatesXDocument ()
     {
-      _storageProviderSerializerStub.Stub (_ => _.Serialize (null)).IgnoreArguments().Return (new XElement[0]);
-      _enumSerializerStub.Stub (_ => _.Serialize()).IgnoreArguments().Return (new XElement[0]);
-      var mappingSerializer = new MappingSerializer (_storageProviderSerializerStub, _enumSerializerStub);
-      var actual = mappingSerializer.Serialize (MappingConfiguration.Current.GetTypeDefinitions());
+      var enumSerializerStub = MockRepository.GenerateStub<IEnumSerializer>();
+      _storageProviderSerializerFactoryStub.Stub (_ => _ (null, null))
+          .IgnoreArguments()
+          .Return (MockRepository.GenerateStub<IStorageProviderSerializer>());
+      _enumSerializerFactoryStub.Stub (_ => _ (null)).IgnoreArguments().Return (enumSerializerStub);
+      enumSerializerStub.Stub (_ => _.Serialize()).Return (new XElement[0]);
+
+      var actual = _mappingSerializer.Serialize (MappingConfiguration.Current.GetTypeDefinitions());
 
       Assert.That (actual.Root.Name.LocalName, Is.EqualTo ("mapping"));
     }
@@ -52,36 +61,65 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.MappingEx
     [Test]
     public void Serialize_AddsStorageProviderElements ()
     {
-      _enumSerializerStub.Stub (_ => _.Serialize()).IgnoreArguments().Return (new XElement[0]);
-      var mappingSerializer = new MappingSerializer (_storageProviderSerializerStub, _enumSerializerStub);
+      var enumSerializerStub = MockRepository.GenerateStub<IEnumSerializer>();
+      var storageProviderSerializerStub = MockRepository.GenerateStub<IStorageProviderSerializer>();
+      _storageProviderSerializerFactoryStub.Stub (_ => _ (null, null)).IgnoreArguments().Return (storageProviderSerializerStub);
+      _enumSerializerFactoryStub.Stub (_ => _ (null)).IgnoreArguments().Return (enumSerializerStub);
+      enumSerializerStub.Stub (_ => _.Serialize()).Return (new XElement[0]);
 
-      var expected = new[] { new XElement ("storageProvider") };
-      _storageProviderSerializerStub
-          .Stub (s => s.Serialize (Arg<IEnumerable<ClassDefinition>>.Is.NotNull))
-          .Return (expected);
+      var expected = new XElement ("storageProvider");
+      storageProviderSerializerStub.Stub (_ => _.Serialize (null, null)).IgnoreArguments().Return (expected);
 
-      var actual = mappingSerializer.Serialize (MappingConfiguration.Current.GetTypeDefinitions());
+      var actual = _mappingSerializer.Serialize (MappingConfiguration.Current.GetTypeDefinitions());
 
-      Assert.That (actual.Root.Elements(), Is.EqualTo (expected));
+      Assert.That (actual.Root.Elements().First(), Is.SameAs (expected));
     }
 
     [Test]
     public void Serialize_AddsEnumTypes ()
     {
-      var mappingSerializer = new MappingSerializer (_storageProviderSerializerStub, _enumSerializerStub);
+      var enumSerializerStub = MockRepository.GenerateStub<IEnumSerializer>();
+      var storageProviderSerializerStub = MockRepository.GenerateStub<IStorageProviderSerializer>();
+      _storageProviderSerializerFactoryStub.Stub (_ => _ (null, null)).IgnoreArguments().Return (storageProviderSerializerStub);
+      _enumSerializerFactoryStub.Stub (_ => _ (null)).IgnoreArguments().Return (enumSerializerStub);
 
       var storageProviderElement = new XElement ("storageProvider");
-      _storageProviderSerializerStub.Stub (s => s.Serialize (Arg<IEnumerable<ClassDefinition>>.Is.NotNull))
-          .Return (new[] { storageProviderElement });
+      var enumTypeElement = new XElement ("enumType");
+
+      storageProviderSerializerStub.Stub (_ => _.Serialize (null, null)).IgnoreArguments().Return (storageProviderElement);
+      enumSerializerStub.Stub (_ => _.Serialize()).Return (new[] { enumTypeElement });
+
+      var actual = _mappingSerializer.Serialize (MappingConfiguration.Current.GetTypeDefinitions());
+
+      Assert.That (actual.Root.Elements ("storageProvider").Count(), Is.GreaterThanOrEqualTo (1));
+      Assert.That (actual.Root.Elements ("enumType").Count(), Is.GreaterThanOrEqualTo (1));
+    }
+
+    [Test]
+    public void Serialize_GroupsClassDefinitionsByStorageProvider ()
+    {
+      var classDefinitions = MappingConfiguration.Current.GetTypeDefinitions();
+      var storageProviders = classDefinitions
+          .Select (c => c.StorageEntityDefinition.StorageProviderDefinition).Distinct().OfType<RdbmsProviderDefinition>().ToArray();
+
+      var enumSerializerStub = MockRepository.GenerateStub<IEnumSerializer>();
+      _enumSerializerFactoryStub.Stub (_ => _ (null)).IgnoreArguments().Return (enumSerializerStub);
 
       var enumTypeElement = new XElement ("enumType");
-      _enumSerializerStub
-          .Stub (s => s.Serialize())
-          .Return (new[] { enumTypeElement });
+      enumSerializerStub.Stub (_ => _.Serialize()).Return (new[] { enumTypeElement });
 
-      var actual = mappingSerializer.Serialize (MappingConfiguration.Current.GetTypeDefinitions());
+      foreach (var rdbmsProviderDefinition in storageProviders)
+      {
+        var storageProviderSerializerMock = MockRepository.GenerateStrictMock<IStorageProviderSerializer>();
+        _storageProviderSerializerFactoryStub.Stub (_ => _ (rdbmsProviderDefinition, enumSerializerStub)).Return (storageProviderSerializerMock);
 
-      Assert.That (actual.Root.Elements(), Is.EqualTo (new[] { storageProviderElement, enumTypeElement }));
+        storageProviderSerializerMock.Expect (_ => _.Serialize (Arg<IEnumerable<ClassDefinition>>.Is.Anything, Arg.Is (rdbmsProviderDefinition)))
+            .Return (new XElement ("storageProvider"));
+
+        storageProviderSerializerMock.Replay();
+      }
+
+      _mappingSerializer.Serialize (classDefinitions);
     }
   }
 }

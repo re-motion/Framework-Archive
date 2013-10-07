@@ -479,23 +479,26 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.SqlServer
     }
 
     [Test]
-    public void CreateMappingSerializer ()
+    public void CreateStorageProviderSerializer ()
     {
-      var storageProviderSerializerStub = MockRepository.GenerateStub<IStorageProviderSerializer>();
       var enumSerializerStub = MockRepository.GenerateStub<IEnumSerializer>();
-      var testableSqlProviderFactory = new TestableSqlStorageObjectFactory (
-          null,
-          storageProviderSerializerStub,
+      var testableSqlProviderFactory = new TestableSqlStorageObjectFactory (null,
           enumSerializerStub);
 
-      var mappingSerializer = testableSqlProviderFactory.CreateMappingSerializer();
-      Assert.That(mappingSerializer, Is.InstanceOf<MappingSerializer>());
+      var storageProviderSerializer = testableSqlProviderFactory.CreateStorageProviderSerializer (enumSerializerStub);
+      Assert.That(storageProviderSerializer, Is.InstanceOf<StorageProviderSerializer>());
       Assert.That (
-          ((MappingSerializer) mappingSerializer).StorageProviderSerializer,
-          Is.SameAs (storageProviderSerializerStub));
-      Assert.That (
-          ((MappingSerializer) mappingSerializer).EnumSerializer,
-          Is.SameAs (enumSerializerStub));
+          ((StorageProviderSerializer) storageProviderSerializer).ClassSerializer,
+          Is.InstanceOf<ClassSerializer> ());
+    }
+
+    [Test]
+    public void CreateEnumSerializer ()
+    {
+      var testableSqlProviderFactory = new TestableSqlStorageObjectFactory (null, null);
+
+      var enumSerializer = testableSqlProviderFactory.CreateEnumSerializer ();
+      Assert.That(enumSerializer, Is.InstanceOf<ExtensibleEnumSerializerDecorator>());
     }
   }
 }

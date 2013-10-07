@@ -16,24 +16,33 @@
 // 
 
 using System;
+using System.IO;
+using System.Text;
+using System.Xml.Linq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2005;
+using Remotion.Data.UnitTests.DomainObjects.Core.Resources;
 
 namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.MappingExport
 {
   [TestFixture]
-  public class MappingSerializerIntegrationTestTest : SchemaGenerationTestBase
+  public class MappingSerializerIntegrationTest : SchemaGenerationTestBase
   {
     [Test]
-    [Explicit]
     public void Serialize ()
     {
       var sqlStorageObjectFactory = new SqlStorageObjectFactory();
-      var mappingSerializer = sqlStorageObjectFactory.CreateMappingSerializer();
+      var mappingSerializer =
+          new MappingSerializer (
+              d => sqlStorageObjectFactory.CreateEnumSerializer(),
+              (d, enumSerializer) => sqlStorageObjectFactory.CreateStorageProviderSerializer (enumSerializer));
 
       var actual = mappingSerializer.Serialize (MappingConfiguration.Current.GetTypeDefinitions());
-      var xml = actual.ToString();
+      var expected = XDocument.Load (new MemoryStream(ResourceManager.GetMappingExportOutput()));
+
+      Assert.That (XNode.DeepEquals (actual, expected));
     }
   }
 }

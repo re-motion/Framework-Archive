@@ -51,7 +51,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
     IRelationStoragePropertyDefinitionFactory CreateRelationStoragePropertyDefinitionFactory (RdbmsProviderDefinition storageProviderDefinition);
     IForeignKeyConstraintDefinitionFactory CreateForeignKeyConstraintDefinitionsFactory (RdbmsProviderDefinition storageProviderDefinition);
 
-    IMappingSerializer CreateMappingSerializer ();
+    IStorageProviderSerializer CreateStorageProviderSerializer (IEnumSerializer enumSerializer);
 
     IScriptBuilder CreateSchemaScriptBuilder (RdbmsProviderDefinition storageProviderDefinition);
     TableScriptBuilder CreateTableBuilder (RdbmsProviderDefinition storageProviderDefinition);
@@ -59,5 +59,6 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
     ForeignKeyConstraintScriptBuilder CreateConstraintBuilder (RdbmsProviderDefinition storageProviderDefinition);
     IndexScriptBuilder CreateIndexBuilder (RdbmsProviderDefinition storageProviderDefinition);
     SynonymScriptBuilder CreateSynonymBuilder (RdbmsProviderDefinition storageProviderDefinition);
+    IEnumSerializer CreateEnumSerializer ();
   }
 }

@@ -23,6 +23,7 @@ using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2005;
 using Remotion.Data.DomainObjects.Queries.Configuration;
@@ -136,8 +137,9 @@ namespace Remotion.Data.DomainObjects.RdbmsTools
     
     protected virtual void ExportMapping ()
     {
-      var sqlStorageObjectFactory = new SqlStorageObjectFactory(); //TODO: replace with storageDefinition.Factory?
-      var mappingSerializer = sqlStorageObjectFactory.CreateMappingSerializer();
+      var mappingSerializer = new MappingSerializer (
+          d => d.Factory.CreateEnumSerializer(),
+          (d, enumSerializer) => d.Factory.CreateStorageProviderSerializer (enumSerializer));
 
       var xml = mappingSerializer.Serialize(MappingConfiguration.Current.GetTypeDefinitions());
       xml.Save (Path.Combine (_rdbmsToolsParameters.SchemaOutputDirectory, "mapping.xml"));

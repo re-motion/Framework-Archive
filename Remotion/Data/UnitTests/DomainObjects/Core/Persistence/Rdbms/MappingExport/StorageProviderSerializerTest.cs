@@ -17,6 +17,7 @@
 
 using System;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Mapping;
@@ -31,26 +32,15 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.MappingEx
   {
 
     [Test]
-    public void Serialize_GroupsClassDefinitionsByStorageProvider ()
-    {
-      var classDefinitions = MappingConfiguration.Current.GetTypeDefinitions();
-      var storageProviders = classDefinitions
-        .Select (c => c.StorageEntityDefinition.StorageProviderDefinition).Distinct().OfType<RdbmsProviderDefinition>().ToArray();
-
-      var storageProviderSerializer = new StorageProviderSerializer (MockRepository.GenerateStub<IClassSerializer>());
-      var actual = storageProviderSerializer.Serialize (classDefinitions).ToArray();
-
-      Assert.That (actual.Count(), Is.EqualTo (storageProviders.Count()));
-      Assert.That (actual[0].Name.LocalName, Is.EqualTo ("storageProvider"));
-    }
-    
-    [Test]
     public void Serialize_AddsNameAttribute ()
     {
       var classDefinitions = MappingConfiguration.Current.GetTypeDefinitions();
+      var groupedByStorageProvider = classDefinitions.Where (c => c.StorageEntityDefinition.StorageProviderDefinition is RdbmsProviderDefinition)
+          .GroupBy (c => (RdbmsProviderDefinition) c.StorageEntityDefinition.StorageProviderDefinition)
+          .First();
 
       var storageProviderSerializer = new StorageProviderSerializer (MockRepository.GenerateStub<IClassSerializer>());
-      var actual = storageProviderSerializer.Serialize (classDefinitions).First();
+      var actual = storageProviderSerializer.Serialize (groupedByStorageProvider, groupedByStorageProvider.Key);
 
       Assert.That (actual.Attributes().Select (a => a.Name.LocalName), Contains.Item ("name"));
       Assert.That (actual.Attribute ("name").Value, Is.EqualTo ("TestDomain"));
@@ -60,6 +50,9 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.MappingEx
     public void Serialize_AddsClassElements ()
     {
       var classDefinitions = MappingConfiguration.Current.GetTypeDefinitions();
+      var groupedByStorageProvider = classDefinitions.Where (c => c.StorageEntityDefinition.StorageProviderDefinition is RdbmsProviderDefinition)
+          .GroupBy (c => (RdbmsProviderDefinition) c.StorageEntityDefinition.StorageProviderDefinition)
+          .First();
 
       var classSerializerStub = MockRepository.GenerateStub<IClassSerializer>();
       var expectedElement = new XElement ("class");
@@ -68,7 +61,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.MappingEx
           .Repeat.Any();
 
       var storageProviderSerializer = new StorageProviderSerializer (classSerializerStub);
-      var actual = storageProviderSerializer.Serialize (classDefinitions).First();
+      var actual = storageProviderSerializer.Serialize (groupedByStorageProvider, groupedByStorageProvider.Key);
 
       Assert.That (actual.Elements(), Is.Not.Empty);
       Assert.That (actual.Elements().First(), Is.SameAs (expectedElement));

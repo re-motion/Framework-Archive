@@ -35,18 +35,19 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport
       _classSerializer = classSerializer;
     }
 
-    public IEnumerable<XElement> Serialize (IEnumerable<ClassDefinition> classDefinitions)
+    public IClassSerializer ClassSerializer
+    {
+      get { return _classSerializer; }
+    }
+
+    public XElement Serialize (IEnumerable<ClassDefinition> classDefinitions, RdbmsProviderDefinition providerDefinition)
     {
       ArgumentUtility.CheckNotNull ("classDefinitions", classDefinitions);
+      ArgumentUtility.CheckNotNull ("providerDefinition", providerDefinition);
 
-      var classDefinitionsByStorageProvider = classDefinitions
-          .GroupBy (cd => cd.StorageEntityDefinition.StorageProviderDefinition)
-          .Where (g => g.Key is RdbmsProviderDefinition);
-
-      return classDefinitionsByStorageProvider.Select (
-          storageProviderGroup => new XElement ("storageProvider",
-              new XAttribute("name", storageProviderGroup.Key.Name),
-              storageProviderGroup.Select (c => _classSerializer.Serialize (c))));
+      return new XElement ("storageProvider",
+              new XAttribute("name", providerDefinition.Name),
+              classDefinitions.Select (c => _classSerializer.Serialize (c)));
     }
   }
 }

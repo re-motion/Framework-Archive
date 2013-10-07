@@ -292,12 +292,6 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2005
           infrastructureStoragePropertyDefinitionProvider);
     }
 
-    public virtual IMappingSerializer CreateMappingSerializer ()
-    {
-      var enumSerializer = CreateEnumSerializer();
-      return new MappingSerializer (CreateStorageProviderSerializer(enumSerializer), enumSerializer);
-    }
-
     public virtual IEnumSerializer CreateEnumSerializer ()
     {
       return new ExtensibleEnumSerializerDecorator (new EnumSerializer());
