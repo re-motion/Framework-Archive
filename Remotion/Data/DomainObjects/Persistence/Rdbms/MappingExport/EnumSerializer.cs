@@ -53,7 +53,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport
     public IEnumerable<XElement> Serialize ()
     {
       return _enumTypes.Select (
-          t => new XElement ("enumType",
+          t => new XElement (Constants.Namespace + "enumType",
               new XAttribute ("type", TypeUtility.GetAbbreviatedTypeName (t, false)),
               GetValues (t)));
     }
@@ -61,7 +61,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport
     private IEnumerable<XElement> GetValues (Type type)
     {
      return Enum.GetValues (type).Cast<object> ().Select (
-          value => new XElement ("value",
+          value => new XElement (Constants.Namespace + "value",
               new XAttribute ("name", Enum.GetName (type, value)),
               new XAttribute ("columnValue", Convert.ChangeType (value, Enum.GetUnderlyingType (type)))));
     }

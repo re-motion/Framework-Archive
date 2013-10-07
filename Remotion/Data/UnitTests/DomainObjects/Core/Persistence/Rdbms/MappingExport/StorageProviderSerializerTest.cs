@@ -56,7 +56,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.MappingEx
 
       var classSerializerStub = MockRepository.GenerateStub<IClassSerializer>();
       var expectedElement = new XElement ("class");
-      classSerializerStub.Stub (s => s.Serialize (Arg<ClassDefinition>.Is.NotNull))
+      classSerializerStub.Stub (_ => _.Serialize (Arg<ClassDefinition>.Is.NotNull))
           .Return (expectedElement)
           .Repeat.Any();
 

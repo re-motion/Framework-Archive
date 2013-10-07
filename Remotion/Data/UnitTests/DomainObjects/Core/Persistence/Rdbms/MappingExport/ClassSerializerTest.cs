@@ -98,7 +98,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.MappingEx
       var tableSerializerMock = MockRepository.GenerateMock<ITableSerializer>();
       var expected1 = new XElement ("property1");
 
-      tableSerializerMock.Expect (m => m.Serialize (classDefinition)).Return (new [] { expected1 });
+      tableSerializerMock.Expect (_ => _.Serialize (classDefinition)).Return (new [] { expected1 });
       var classSerializer = new ClassSerializer (tableSerializerMock);
 
       tableSerializerMock.Replay();

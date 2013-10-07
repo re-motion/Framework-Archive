@@ -36,7 +36,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport
     {
       ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
 
-      return new XElement ("class",
+      return new XElement (Constants.Namespace + "class",
         new XAttribute("id", classDefinition.ID),
         GetBaseClassAttribute(classDefinition),
         new XAttribute("isAbstract", classDefinition.IsAbstract),

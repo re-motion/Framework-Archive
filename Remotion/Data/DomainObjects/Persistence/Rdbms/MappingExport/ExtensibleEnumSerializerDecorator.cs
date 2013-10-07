@@ -56,7 +56,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport
     {
       var elements = _enumTypes.Select (
           t => new XElement (
-              "enumType",
+              Constants.Namespace + "enumType",
               new XAttribute ("type", TypeUtility.GetAbbreviatedTypeName (t, false)),
               GetValues (t))).ToList();
 
@@ -68,7 +68,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport
     {
       return ExtensibleEnumUtility.GetDefinition (type).GetValueInfos().Select (
           info => new XElement (
-              "value",
+              Constants.Namespace + "value",
               new XAttribute ("name", info.Value.ValueName),
               new XAttribute ("columnValue", info.Value.ID)));
     }

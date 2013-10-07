@@ -40,7 +40,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport
       return storagePropertyDefinition.GetColumns().Select (
           columnDefinition =>
               new XElement (
-                  "column",
+                  Constants.Namespace + "column",
                   new XAttribute ("name", columnDefinition.Name),
                   new XAttribute ("dbType", ((StorageTypeInformation) columnDefinition.StorageTypeInfo).StorageDbType)
                   ));

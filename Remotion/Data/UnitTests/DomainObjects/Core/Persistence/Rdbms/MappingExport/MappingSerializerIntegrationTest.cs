@@ -42,7 +42,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.MappingEx
       var actual = mappingSerializer.Serialize (MappingConfiguration.Current.GetTypeDefinitions());
       var expected = XDocument.Load (new MemoryStream(ResourceManager.GetMappingExportOutput()));
 
-      Assert.That (XNode.DeepEquals (actual, expected));
+      Assert.That (actual.ToString(), Is.EqualTo (expected.ToString()));
     }
   }
 }

@@ -2081,7 +2081,9 @@
     <EmbeddedResource Include="DomainObjects\Core\Resources\DomainObjectsConfigurationWithResolvedInterfaceStorageObjectFactory.xml" />
     <EmbeddedResource Include="DomainObjects\Core\Resources\DomainObjectsConfigurationWithUnresolvedInterfaceStorageObjectFactory.xml" />
     <EmbeddedResource Include="DomainObjects\Core\Resources\DomainObjectsConfigurationWithMixedStorageObjectFactory.xml" />
-    <EmbeddedResource Include="DomainObjects\Core\Resources\MappingExportOutput.xml" />
+    <EmbeddedResource Include="DomainObjects\Core\Resources\MappingExportOutput.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <Content Include="DomainObjects\Database\DataDomainObjects_CreateTableInheritanceTestData.sql" />
     <Content Include="DomainObjects\Database\DataDomainObjects_CreateDB.sql" />
     <Content Include="DomainObjects\Database\DataDomainObjects_CreateTestData.sql">

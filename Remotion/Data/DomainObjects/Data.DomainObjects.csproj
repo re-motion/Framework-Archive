@@ -287,6 +287,7 @@
     <Compile Include="Persistence\Rdbms\DataReaders\QueryResultRowReader.cs" />
     <Compile Include="Persistence\Rdbms\MappingExport\ClassSerializer.cs" />
     <Compile Include="Persistence\Rdbms\MappingExport\ColumnSerializer.cs" />
+    <Compile Include="Persistence\Rdbms\MappingExport\Constants.cs" />
     <Compile Include="Persistence\Rdbms\MappingExport\EnumPropertySerializerDecorator.cs" />
     <Compile Include="Persistence\Rdbms\MappingExport\EnumSerializer.cs" />
     <Compile Include="Persistence\Rdbms\MappingExport\ExtensibleEnumSerializerDecorator.cs" />
@@ -1061,6 +1062,9 @@
     </EmbeddedResource>
     <Content Include="Doc\How to add a new property type.txt" />
     <Content Include="Doc\include\Remotion.Data.DomainObjects.NamespaceDoc.xml" />
+    <None Include="Persistence\Rdbms\MappingExport\Mapping.xsd">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />

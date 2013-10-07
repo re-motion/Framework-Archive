@@ -1,4 +1,4 @@
-﻿<mapping>
+﻿<mapping xmlns="http://www.re-motion.org/Data/DomainObjects/Rdbms/Mapping/1.0">
   <storageProvider name="SchemaGenerationFirstStorageProvider">
     <class id="Company" isAbstract="true" />
     <class id="AbstractWithoutConcreteClass" baseClass="Company" isAbstract="true" />

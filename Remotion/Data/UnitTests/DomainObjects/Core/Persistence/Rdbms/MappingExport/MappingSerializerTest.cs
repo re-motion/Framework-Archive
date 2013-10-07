@@ -59,6 +59,21 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.MappingEx
     }
 
     [Test]
+    public void Serialize_UsesCorrectNamespace ()
+    {
+      var enumSerializerStub = MockRepository.GenerateStub<IEnumSerializer>();
+      _storageProviderSerializerFactoryStub.Stub (_ => _ (null, null))
+          .IgnoreArguments()
+          .Return (MockRepository.GenerateStub<IStorageProviderSerializer>());
+      _enumSerializerFactoryStub.Stub (_ => _ (null)).IgnoreArguments().Return (enumSerializerStub);
+      enumSerializerStub.Stub (_ => _.Serialize()).Return (new XElement[0]);
+
+      var actual = _mappingSerializer.Serialize (MappingConfiguration.Current.GetTypeDefinitions());
+
+      Assert.That (actual.Root.Name.Namespace.NamespaceName, Is.EqualTo ("http://www.re-motion.org/Data/DomainObjects/Rdbms/Mapping/1.0"));
+    }
+
+    [Test]
     public void Serialize_AddsStorageProviderElements ()
     {
       var enumSerializerStub = MockRepository.GenerateStub<IEnumSerializer>();

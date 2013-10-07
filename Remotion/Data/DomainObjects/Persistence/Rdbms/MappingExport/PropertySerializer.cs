@@ -42,7 +42,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport
       var propertyType = GetPropertyType (propertyDefinition);
 
       return new XElement (
-          "property",
+          Constants.Namespace + "property",
           new XAttribute ("name", propertyDefinition.PropertyName),
           new XAttribute ("displayName", propertyDefinition.PropertyInfo.Name),
           new XAttribute ("type", GetTypeName (propertyType)),

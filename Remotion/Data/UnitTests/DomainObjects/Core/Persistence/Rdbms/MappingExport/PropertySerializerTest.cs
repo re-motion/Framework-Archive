@@ -164,7 +164,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.MappingEx
     public void Serialize_AddsColumnElements ()
     {
       var sampleProperty = GetPropertyDefinition ((ClassWithAllDataTypes _) => _.StringProperty);
-      _columnSerializerStub.Stub (s => s.Serialize (sampleProperty, _rdbmsPersistenceModelProviderStub))
+      _columnSerializerStub.Stub (_ => _.Serialize (sampleProperty, _rdbmsPersistenceModelProviderStub))
           .Return (new[] { new XElement ("column1"), new XElement ("column2") });
 
       var actual = _propertySerializer.Serialize (sampleProperty, _rdbmsPersistenceModelProviderStub);

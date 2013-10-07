@@ -48,7 +48,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport
       var persistenceModelProvider = storageProviderDefinition.Factory.CreateRdbmsPersistenceModelProvider (storageProviderDefinition);
 
       yield return new XElement (
-          "table",
+          Constants.Namespace + "table",
           new XAttribute ("name", tableDefinition.TableName.EntityName),
           GetPersistentPropertyDefinitions (classDefinition)
               .Select (p => _propertySerializer.Serialize (p, persistenceModelProvider))

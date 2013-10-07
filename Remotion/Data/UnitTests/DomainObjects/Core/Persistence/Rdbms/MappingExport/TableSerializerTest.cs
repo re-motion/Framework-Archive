@@ -53,7 +53,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.MappingEx
       var tableSerializer = new TableSerializer (propertySerializerMock);
 
       propertySerializerMock.Expect (
-          s => s.Serialize (
+          _ => _.Serialize (
               Arg<PropertyDefinition>.Is.NotNull,
               Arg<IRdbmsPersistenceModelProvider>.Is.NotNull))
           .Return (null)
@@ -101,7 +101,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.MappingEx
           p => p.StorageClass == StorageClass.Persistent;
 
       propertySerializerMock.Expect (
-          s => s.Serialize (
+          _ => _.Serialize (
               Arg<PropertyDefinition>.Matches (propertyDefinitionConstraint),
               Arg<IRdbmsPersistenceModelProvider>.Is.Anything))
           .Return (new XElement ("property"))
