@@ -23,14 +23,13 @@ using NUnit.Framework;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport;
-using Remotion.Data.UnitTests.DomainObjects.TestDomain;
-using Remotion.Data.UnitTests.DomainObjects.TestDomain.TableInheritance;
+using Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.SchemaGenerationTestDomain;
 using Rhino.Mocks;
 
 namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.MappingExport
 {
   [TestFixture]
-  public class TableSerializerTest : StandardMappingTest
+  public class TableSerializerTest : SchemaGenerationTestBase
   {
  
     [Test]
@@ -75,13 +74,13 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.MappingEx
       propertySerializerStub
           .Stub (
               _ => _.Serialize (
-                  Arg.Is (classDefinition.GetPropertyDefinition ("Remotion.Data.UnitTests.DomainObjects.TestDomain.Ceo.Name")),
+                  Arg.Is (classDefinition.GetPropertyDefinition ("Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.SchemaGenerationTestDomain.Ceo.Name")),
                   Arg<IRdbmsPersistenceModelProvider>.Is.Anything))
           .Return (expected1);
       propertySerializerStub
           .Stub (
               _ => _.Serialize (
-                  Arg.Is (classDefinition.GetPropertyDefinition ("Remotion.Data.UnitTests.DomainObjects.TestDomain.Ceo.Company")),
+                  Arg.Is (classDefinition.GetPropertyDefinition ("Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.SchemaGenerationTestDomain.Ceo.Company")),
                   Arg<IRdbmsPersistenceModelProvider>.Is.Anything))
           .Return (expected2);
       var tableSerializer = new TableSerializer (propertySerializerStub);
@@ -94,7 +93,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.MappingEx
     [Test]
     public void Serialize_OnlyAddsPersistentProperties ()
     {
-      var classDefinition = MappingConfiguration.Current.GetTypeDefinition (typeof (Computer));
+      var classDefinition = MappingConfiguration.Current.GetTypeDefinition (typeof (Ceo));
       var propertySerializerMock = MockRepository.GenerateStrictMock<IPropertySerializer>();
 
       Expression<Predicate<PropertyDefinition>> propertyDefinitionConstraint =
@@ -121,11 +120,11 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.MappingEx
 
       var actual =
           tableSerializer.Serialize (
-              MappingConfiguration.Current.GetTypeDefinition (typeof (DerivedClassWithEntityFromBaseClassWithHierarchy))).Single();
+              MappingConfiguration.Current.GetTypeDefinition (typeof (DerivedAbstractClass))).Single();
 
       Assert.That (actual.Name.LocalName, Is.EqualTo ("table"));
       Assert.That (actual.Attributes().Select (a => a.Name.LocalName), Contains.Item ("name"));
-      Assert.That (actual.Attribute ("name").Value, Is.EqualTo ("TableInheritance_DerivedClassWithEntityWithHierarchy"));
+      Assert.That (actual.Attribute ("name").Value, Is.EqualTo ("AbstractClass"));
     }
   }
 }

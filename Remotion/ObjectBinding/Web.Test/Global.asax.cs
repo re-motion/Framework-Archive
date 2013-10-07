@@ -101,6 +101,10 @@ namespace OBWTest
       }
 
       //HostingEnvironment.RegisterVirtualPathProvider (new ResourceVirtualPathProvider());
+      // ~/res/Remotion.Web => ..\..\..\Web\Core\res
+      // ~/res/Remotion.ObjectBinding.Web => ..\ObjectBinding.Web\res
+      // ~/res/Remotion.SecurityManager.Web.Client\UI => ..\SecurityManager\Web.Client\UI
+      // ~/res/Remotion.SecurityManager.Web.Client\Html => ..\SecurityManager\Web.Client\res\Html
     }
 
     protected void Session_Start (Object sender, EventArgs e)

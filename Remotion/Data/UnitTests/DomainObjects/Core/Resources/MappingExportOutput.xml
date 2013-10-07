@@ -205,23 +205,8 @@
         </property>
       </table>
     </class>
-    <class id="AbstractClass" isAbstract="true">
-      <table name="AbstractClass">
-        <property name="Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.SchemaGenerationTestDomain.AbstractClass.PropertyInAbstractClass" displayName="PropertyInAbstractClass" type="System.String" isNullable="true">
-          <column name="PropertyInAbstractClass" dbType="String" />
-        </property>
-      </table>
-    </class>
-    <class id="DerivedAbstractClass" baseClass="AbstractClass" isAbstract="true">
-      <table name="AbstractClass">
-        <property name="Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.SchemaGenerationTestDomain.DerivedAbstractClass.PropertyInAbstractDerivedClass" displayName="PropertyInAbstractDerivedClass" type="System.String" isNullable="true">
-          <column name="PropertyInAbstractDerivedClass" dbType="String" />
-        </property>
-        <property name="Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.SchemaGenerationTestDomain.AbstractClass.PropertyInAbstractClass" displayName="PropertyInAbstractClass" type="System.String" isNullable="true">
-          <column name="PropertyInAbstractClass" dbType="String" />
-        </property>
-      </table>
-    </class>
+    <class id="AbstractClass" isAbstract="true" />
+    <class id="DerivedAbstractClass" baseClass="AbstractClass" isAbstract="true" />
     <class id="DerivedDerivedConcreteClass" baseClass="DerivedAbstractClass" isAbstract="false">
       <table name="AbstractClass">
         <property name="Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.SchemaGenerationTestDomain.DerivedDerivedConcreteClass.PropertyInDerivedConcreteClass" displayName="PropertyInDerivedConcreteClass" type="System.String" isNullable="true">

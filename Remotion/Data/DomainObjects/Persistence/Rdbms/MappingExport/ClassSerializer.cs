@@ -15,6 +15,8 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 
+using System;
+using System.Collections.Generic;
 using System.Xml.Linq;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Utilities;
@@ -36,19 +38,37 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport
     {
       ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
 
-      return new XElement (Constants.Namespace + "class",
-        new XAttribute("id", classDefinition.ID),
-        GetBaseClassAttribute(classDefinition),
-        new XAttribute("isAbstract", classDefinition.IsAbstract),
-        _tableSerializer.Serialize(classDefinition)
-        );
+      return new XElement (
+          Constants.Namespace + "class",
+          GetIdAttribute (classDefinition),
+          GetBaseClassAttribute (classDefinition),
+          GetIsAbstractAttribute (classDefinition),
+          GetTableElements (classDefinition)
+          );
+    }
+
+    private static XAttribute GetIdAttribute (ClassDefinition classDefinition)
+    {
+      return new XAttribute ("id", classDefinition.ID);
+    }
+
+    private static XAttribute GetIsAbstractAttribute (ClassDefinition classDefinition)
+    {
+      return new XAttribute ("isAbstract", classDefinition.IsAbstract);
+    }
+
+    private IEnumerable<XElement> GetTableElements (ClassDefinition classDefinition)
+    {
+      if (!classDefinition.IsAbstract)
+        return _tableSerializer.Serialize (classDefinition);
+      return null;
     }
 
     private XAttribute GetBaseClassAttribute (ClassDefinition classDefinition)
     {
       if (classDefinition.BaseClass == null)
         return null;
-      return new XAttribute("baseClass", classDefinition.BaseClass.ID);
+      return new XAttribute ("baseClass", classDefinition.BaseClass.ID);
     }
   }
 }

@@ -28,7 +28,7 @@ using Rhino.Mocks;
 namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.MappingExport
 {
   [TestFixture]
-  public class MappingSerializerTest : StandardMappingTest
+  public class MappingSerializerTest : SchemaGenerationTestBase
   {
     private Func<RdbmsProviderDefinition, IEnumSerializer> _enumSerializerFactoryStub;
     private Func<RdbmsProviderDefinition, IEnumSerializer, IStorageProviderSerializer> _storageProviderSerializerFactoryStub;

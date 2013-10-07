@@ -17,7 +17,6 @@
 
 using System;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Mapping;
@@ -28,7 +27,7 @@ using Rhino.Mocks;
 namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.MappingExport
 {
   [TestFixture]
-  public class StorageProviderSerializerTest : StandardMappingTest
+  public class StorageProviderSerializerTest : SchemaGenerationTestBase
   {
 
     [Test]
@@ -43,7 +42,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.MappingEx
       var actual = storageProviderSerializer.Serialize (groupedByStorageProvider, groupedByStorageProvider.Key);
 
       Assert.That (actual.Attributes().Select (a => a.Name.LocalName), Contains.Item ("name"));
-      Assert.That (actual.Attribute ("name").Value, Is.EqualTo ("TestDomain"));
+      Assert.That (actual.Attribute ("name").Value, Is.EqualTo ("SchemaGenerationFirstStorageProvider"));
     }
   
     [Test]

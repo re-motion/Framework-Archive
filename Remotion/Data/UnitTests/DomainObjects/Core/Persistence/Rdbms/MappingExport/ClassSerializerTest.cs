@@ -21,14 +21,13 @@ using System.Xml.Linq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport;
-using Remotion.Data.UnitTests.DomainObjects.TestDomain;
-using Remotion.Data.UnitTests.DomainObjects.TestDomain.TableInheritance;
+using Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.SchemaGenerationTestDomain;
 using Rhino.Mocks;
 
 namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.MappingExport
 {
   [TestFixture]
-  public class ClassSerializerTest : StandardMappingTest
+  public class ClassSerializerTest : SchemaGenerationTestBase
   {
 
     public override void SetUp ()
@@ -52,18 +51,18 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.MappingEx
     public void Serialize_AddsBaseClassAttribute ()
     {
       var classSerializer = new ClassSerializer (MockRepository.GenerateStub<ITableSerializer>());
-      var classDefinition = MappingConfiguration.Current.GetTypeDefinition (typeof (DerivedClassWithEntityWithHierarchy));
+      var classDefinition = MappingConfiguration.Current.GetTypeDefinition (typeof (DerivedAbstractClass));
       var actual = classSerializer.Serialize (classDefinition);
 
       Assert.That (actual.Attributes().Select (a => a.Name.LocalName), Contains.Item ("baseClass"));
-      Assert.That (actual.Attribute ("baseClass").Value, Is.EqualTo ("TI_AbstractBaseClassWithHierarchy"));
+      Assert.That (actual.Attribute ("baseClass").Value, Is.EqualTo ("AbstractClass"));
     }
 
     [Test]
     public void Serialize_ClassHasNoBaseClass_DoesNotAddAttribute ()
     {
       var classSerializer = new ClassSerializer (MockRepository.GenerateStub<ITableSerializer>());
-      var classDefinition = MappingConfiguration.Current.GetTypeDefinition (typeof (ClassDerivedFromSimpleDomainObject));
+      var classDefinition = MappingConfiguration.Current.GetTypeDefinition (typeof (Ceo));
       var actual = classSerializer.Serialize (classDefinition);
 
       Assert.That (actual.Attributes().Select (a => a.Name.LocalName).Contains("baseClass"), Is.False);
@@ -73,7 +72,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.MappingEx
     public void Serialize_AddsAbstractAttribute ()
     {
       var classSerializer = new ClassSerializer (MockRepository.GenerateStub<ITableSerializer>());
-      var classDefinition = MappingConfiguration.Current.GetTypeDefinition (typeof (Computer));
+      var classDefinition = MappingConfiguration.Current.GetTypeDefinition (typeof (Ceo));
       var actual = classSerializer.Serialize (classDefinition);
 
       Assert.That (actual.Attributes().Select (a => a.Name.LocalName), Contains.Item ("isAbstract"));
@@ -84,11 +83,22 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.MappingEx
     public void Serialize_AddsAbstractAttribute_AbstractClass ()
     {
       var classSerializer = new ClassSerializer (MockRepository.GenerateStub<ITableSerializer>());
-      var classDefinition = MappingConfiguration.Current.GetTypeDefinition (typeof (AbstractBaseClassWithHierarchy));
+      var classDefinition = MappingConfiguration.Current.GetTypeDefinition (typeof (DerivedAbstractClass));
       var actual = classSerializer.Serialize (classDefinition);
 
       Assert.That (actual.Attributes().Select (a => a.Name.LocalName), Contains.Item ("isAbstract"));
       Assert.That (actual.Attribute ("isAbstract").Value, Is.EqualTo ("true"));
+    }
+
+    [Test]
+    public void Serialize_DoesNotExportTablesForAbstractNonInstantiableClasses ()
+    {
+      var tableSerializerStub = MockRepository.GenerateStub<ITableSerializer>();
+      var classSerializer = new ClassSerializer (tableSerializerStub);
+      var classDefinition = MappingConfiguration.Current.GetTypeDefinition (typeof (AbstractWithoutConcreteClass));
+      classSerializer.Serialize (classDefinition);
+
+      tableSerializerStub.AssertWasNotCalled (_ => _.Serialize (classDefinition));
     }
 
     [Test]

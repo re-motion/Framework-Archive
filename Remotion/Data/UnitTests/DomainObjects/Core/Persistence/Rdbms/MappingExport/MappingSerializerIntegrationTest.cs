@@ -17,7 +17,6 @@
 
 using System;
 using System.IO;
-using System.Text;
 using System.Xml.Linq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Mapping;
