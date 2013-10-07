@@ -142,7 +142,7 @@ namespace Remotion.Data.DomainObjects.RdbmsTools
           (d, enumSerializer) => d.Factory.CreateStorageProviderSerializer (enumSerializer));
 
       var xml = mappingSerializer.Serialize(MappingConfiguration.Current.GetTypeDefinitions());
-      xml.Save (Path.Combine (_rdbmsToolsParameters.SchemaOutputDirectory, "mapping.xml"));
+      xml.Save (_rdbmsToolsParameters.MappingExportOutputFileName);
     }
   }
 }

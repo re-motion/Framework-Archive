@@ -56,6 +56,11 @@ namespace Remotion.Data.DomainObjects.RdbmsTools
         Placeholder = "directory")]
     public string SchemaOutputDirectory = string.Empty;
 
+    [CommandLineStringArgument ("exportOutputFile", true,
+        Description = "The output filename for the mapping export.",
+        Placeholder = "filename")]
+    public string MappingExportOutputFileName = string.Empty;
+
     //TODO: remove parameter (1.13.84)
     [CommandLineStringArgument ("schemaBuilder", true,
         Description = "This parameter is obsolete and should no longer be used. (The schema file builder is now retrieved from the storage provider definition.)",
