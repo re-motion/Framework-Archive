@@ -48,10 +48,8 @@ namespace Remotion.Development.Web.ResourceHosting
       _staticFileHandler = (IHttpHandler) Activator.CreateInstance (staticFileHandlerType, true);
     }
 
-    public void Register (HttpApplication httpApplication)
+    public void Register ()
     {
-      ArgumentUtility.CheckNotNull ("httpApplication", httpApplication);
-
       HostingEnvironment.RegisterVirtualPathProvider (this);
     }
 
