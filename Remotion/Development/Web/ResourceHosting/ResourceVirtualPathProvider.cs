@@ -30,7 +30,6 @@ namespace Remotion.Development.Web.ResourceHosting
 {
   public class ResourceVirtualPathProvider : VirtualPathProvider
   {
-    private readonly string _projectRoot;
     private readonly string _resourceRoot;
     private readonly IHttpHandler _staticFileHandler;
     private readonly Dictionary<string, ResourcePathMapping> _resourcePathMappings;
@@ -39,17 +38,16 @@ namespace Remotion.Development.Web.ResourceHosting
     {
       ArgumentUtility.CheckNotNullOrEmpty ("mappings", mappings);
 
-      _resourceRoot = VirtualPathUtility.AppendTrailingSlash (VirtualPathUtility.Combine ("~/", WebConfiguration.Current.Resources.Root));
-      _projectRoot = HttpContext.Current.Server.MapPath ("~/");
+      _resourceRoot = VirtualPathUtility.AppendTrailingSlash (CombineVirtualPath ("~/", WebConfiguration.Current.Resources.Root));
 
       _resourcePathMappings = new Dictionary<string, ResourcePathMapping> (StringComparer.OrdinalIgnoreCase);
       foreach (var mapping in mappings)
-        _resourcePathMappings.Add (VirtualPathUtility.Combine (_resourceRoot, mapping.VirtualPath), mapping);
+        _resourcePathMappings.Add (CombineVirtualPath (_resourceRoot, mapping.VirtualPath), mapping);
 
       var staticFileHandlerType = typeof (HttpApplication).Assembly.GetType ("System.Web.StaticFileHandler", true);
       _staticFileHandler = (IHttpHandler) Activator.CreateInstance (staticFileHandlerType, true);
     }
-    
+
     public void Register (HttpApplication httpApplication)
     {
       ArgumentUtility.CheckNotNull ("httpApplication", httpApplication);
@@ -65,7 +63,7 @@ namespace Remotion.Development.Web.ResourceHosting
 
     public bool IsMappedPath (string virtualPath)
     {
-      var checkPath = VirtualPathUtility.ToAppRelative (virtualPath);
+      var checkPath = ToAppRelativeVirtualPath (virtualPath);
       if (!checkPath.StartsWith (_resourceRoot, StringComparison.OrdinalIgnoreCase))
         return false;
 
@@ -124,7 +122,7 @@ namespace Remotion.Development.Web.ResourceHosting
       {
         string str;
 
-        var appRelative = VirtualPathUtility.ToAppRelative (virtualPath1);
+        var appRelative = ToAppRelativeVirtualPath (virtualPath1);
         if (IsMappedPath (appRelative))
         {
           if (FileExists (appRelative))
@@ -152,15 +150,15 @@ namespace Remotion.Development.Web.ResourceHosting
 
     private ResourceVirtualFile GetResourceVirtualFile (string virtualPath)
     {
-      var appRelativeVirtualPath = VirtualPathUtility.ToAppRelative (virtualPath);
+      var appRelativeVirtualPath = ToAppRelativeVirtualPath (virtualPath);
       var mapping = GetResourcePathMapping (appRelativeVirtualPath);
 
       FileInfo physicalFile = null;
       if (mapping != null)
       {
-        var resourceRootPath = VirtualPathUtility.Combine (_resourceRoot, mapping.VirtualPath);
-        var directoryRelativePath = VirtualPathUtility.MakeRelative (resourceRootPath, appRelativeVirtualPath).Replace ('/', '\\');
-        var directory = Path.GetFullPath (Path.Combine (_projectRoot, mapping.RelativeFileSystemPath));
+        var resourceRootPath = CombineVirtualPath (_resourceRoot, mapping.VirtualPath);
+        var directoryRelativePath = MakeRelativeVirtualPath (resourceRootPath, appRelativeVirtualPath).Replace ('/', '\\');
+        var directory = Path.GetFullPath (Path.Combine (GetProjectRoot(), mapping.RelativeFileSystemPath));
         var filePath = Path.Combine (directory, directoryRelativePath);
 
         physicalFile = new FileInfo (filePath);
@@ -171,15 +169,15 @@ namespace Remotion.Development.Web.ResourceHosting
 
     private ResourceVirtualDirectory GetResourceVirtualDirectory (string virtualDir)
     {
-      var appRelativeVirtualPath = VirtualPathUtility.ToAppRelative (virtualDir);
+      var appRelativeVirtualPath = ToAppRelativeVirtualPath (virtualDir);
       var mapping = GetResourcePathMapping (appRelativeVirtualPath);
 
       DirectoryInfo directoryInfo = null;
       if (mapping != null)
       {
-        var resourceRootPath = VirtualPathUtility.Combine (_resourceRoot, mapping.VirtualPath);
-        var directoryRelativePath = VirtualPathUtility.MakeRelative (resourceRootPath, appRelativeVirtualPath).Replace ('/', '\\');
-        var mappedRootDirectory = Path.GetFullPath (Path.Combine (_projectRoot, mapping.RelativeFileSystemPath));
+        var resourceRootPath = CombineVirtualPath (_resourceRoot, mapping.VirtualPath);
+        var directoryRelativePath = MakeRelativeVirtualPath (resourceRootPath, appRelativeVirtualPath).Replace ('/', '\\');
+        var mappedRootDirectory = Path.GetFullPath (Path.Combine (GetProjectRoot(), mapping.RelativeFileSystemPath));
         var absolutePath = Path.Combine (mappedRootDirectory, directoryRelativePath);
 
         directoryInfo = new DirectoryInfo (absolutePath);
@@ -199,6 +197,26 @@ namespace Remotion.Development.Web.ResourceHosting
       if (_resourcePathMappings.ContainsKey (resourceRootPath))
         return _resourcePathMappings[resourceRootPath];
       return null;
+    }
+
+    protected virtual string GetProjectRoot ()
+    {
+      return HttpContext.Current.Server.MapPath ("~/");
+    }
+
+    protected virtual string CombineVirtualPath (string basePath, string relativePath)
+    {
+      return VirtualPathUtility.Combine (basePath, relativePath);
+    }
+
+    protected virtual string MakeRelativeVirtualPath (string fromPath, string toPath)
+    {
+      return VirtualPathUtility.MakeRelative (fromPath, toPath);
+    }
+
+    protected virtual string ToAppRelativeVirtualPath (string virtualPath)
+    {
+      return VirtualPathUtility.ToAppRelative (virtualPath);
     }
   }
 }
