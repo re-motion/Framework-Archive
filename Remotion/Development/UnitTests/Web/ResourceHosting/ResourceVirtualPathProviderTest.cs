@@ -75,6 +75,14 @@ namespace Remotion.Development.UnitTests.Web.ResourceHosting
     }
 
     [Test]
+    public void IsMappedPath_WithSubDirectoryMapping ()
+    {
+      var provider = new TestableResourceVirtualPathProvider (new[] { new ResourcePathMapping ("test/subdirectory", "testResourceFolder") }, _testDirectory);
+
+      Assert.That (provider.IsMappedPath ("~/res/test/subdirectory/file.txt"));
+    }
+
+    [Test]
     public void IsMappedPath_ResourceFolderRoot ()
     {
       var provider = new TestableResourceVirtualPathProvider (new[] { new ResourcePathMapping ("test", "testResourceFolder") }, _testDirectory);
@@ -139,6 +147,23 @@ namespace Remotion.Development.UnitTests.Web.ResourceHosting
       File.WriteAllText (expectedFilePath, "hello");
 
       var actual = (ResourceVirtualFile) provider.GetFile ("~/res/test/testfile.txt");
+
+      Assert.That (actual.PhysicalPath, Is.EqualTo (expectedFilePath));
+      Assert.That (actual.Exists);
+    }
+
+    [Test]
+    public void GetFile_FileInsideMappedSubdirectory ()
+    {
+      var provider = new TestableResourceVirtualPathProvider (new[] { new ResourcePathMapping ("test/subdirectory", "testResourceFolder") }, _testDirectory);
+      provider.SetMakeRelativeVirtualPathOverride ((a, b) => "testfile.txt");
+      provider.SetCombineVirtualPathOverride ((a, b) => "~/res/test/subdirectory");
+
+      var expectedFilePath = Path.Combine (_testDirectory, "testResourceFolder\\testfile.txt");
+      Directory.CreateDirectory (Path.Combine (_testDirectory, "testResourceFolder"));
+      File.WriteAllText (expectedFilePath, "hello");
+
+      var actual = (ResourceVirtualFile) provider.GetFile ("~/res/test/subdirectory/testfile.txt");
 
       Assert.That (actual.PhysicalPath, Is.EqualTo (expectedFilePath));
       Assert.That (actual.Exists);

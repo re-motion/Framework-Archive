@@ -186,14 +186,18 @@ namespace Remotion.Development.Web.ResourceHosting
 
     private ResourcePathMapping GetResourcePathMapping (string appRelativePath)
     {
-      var resourceRootPath = appRelativePath;
-      var resourceSubfolderEndIndex = appRelativePath.IndexOf ('/', _resourceRoot.Length);
-      if (resourceSubfolderEndIndex != -1)
-        resourceRootPath = appRelativePath.Substring (0, resourceSubfolderEndIndex + 1);
-      resourceRootPath = VirtualPathUtility.AppendTrailingSlash (resourceRootPath);
+      var rootPath = VirtualPathUtility.AppendTrailingSlash (appRelativePath);
+      if (_resourcePathMappings.ContainsKey (rootPath))
+        return _resourcePathMappings[rootPath];
 
-      if (_resourcePathMappings.ContainsKey (resourceRootPath))
-        return _resourcePathMappings[resourceRootPath];
+      var subDirectories = appRelativePath.Substring (_resourceRoot.Length).Split ('/');
+      for (var index = 0; index < subDirectories.Length; index++)
+      {
+        var partialPath = VirtualPathUtility.AppendTrailingSlash (_resourceRoot + string.Join ("/", subDirectories, 0, index + 1));
+        if (_resourcePathMappings.ContainsKey (partialPath))
+          return _resourcePathMappings[partialPath];
+      }
+
       return null;
     }
 
