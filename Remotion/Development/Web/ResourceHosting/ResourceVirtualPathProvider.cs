@@ -56,7 +56,12 @@ namespace Remotion.Development.Web.ResourceHosting
     public void HandleBeginRequest ()
     {
       if (IsMappedPath (HttpContext.Current.Request.AppRelativeCurrentExecutionFilePath))
-        HttpContext.Current.RemapHandler (_staticFileHandler);
+      {
+        if (DirectoryExists (HttpContext.Current.Request.AppRelativeCurrentExecutionFilePath))
+          HttpContext.Current.RemapHandler (new DirectoryListingHandler());
+        else
+          HttpContext.Current.RemapHandler (_staticFileHandler);
+      }
     }
 
     public bool IsMappedPath (string virtualPath)
