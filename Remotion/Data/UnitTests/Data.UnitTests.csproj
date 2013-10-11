@@ -2042,6 +2042,10 @@
     <None Include="..\..\Remotion LGPL.licenseheader">
       <Link>Remotion LGPL.licenseheader</Link>
     </None>
+    <EmbeddedResource Include="..\DomainObjects\Persistence\Rdbms\MappingExport\RdbmsMapping.xsd">
+      <Link>DomainObjects\Core\Resources\RdbmsMapping.xsd</Link>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <None Include="app.config" />
     <None Include="DomainObjects\TestDomain\TableInheritance\AbstractClassWithHierarchy.cd" />
     <None Include="DomainObjects\TestDomain\TableInheritance\TestDomain.cd" />

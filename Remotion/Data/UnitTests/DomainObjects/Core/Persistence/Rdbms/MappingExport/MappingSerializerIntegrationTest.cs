@@ -18,6 +18,7 @@
 using System;
 using System.IO;
 using System.Xml.Linq;
+using System.Xml.Schema;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport;
@@ -42,6 +43,22 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms.MappingEx
       var expected = XDocument.Load (new MemoryStream(ResourceManager.GetMappingExportOutput()));
 
       Assert.That (actual.ToString(), Is.EqualTo (expected.ToString()));
+    }
+
+    [Test]
+    public void Serialize_OutputIsValid ()
+    {
+      var sqlStorageObjectFactory = new SqlStorageObjectFactory();
+      var mappingSerializer =
+          new MappingSerializer (
+              d => sqlStorageObjectFactory.CreateEnumSerializer(),
+              (d, enumSerializer) => sqlStorageObjectFactory.CreateStorageProviderSerializer (enumSerializer));
+
+      var actual = mappingSerializer.Serialize (MappingConfiguration.Current.GetTypeDefinitions());
+
+      var schemaSet = new XmlSchemaSet();
+      schemaSet.Add (XmlSchema.Read (new MemoryStream (ResourceManager.GetRdbmsMappingSchema()), null));
+      actual.Validate (schemaSet, null);
     }
   }
 }

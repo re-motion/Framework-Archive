@@ -71,6 +71,11 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Resources
     {
       return ResourceUtility.GetResource (typeof (ResourceManager), "MappingExportOutput.xml");
     }
+    
+    public static byte[] GetRdbmsMappingSchema ()
+    {
+      return ResourceUtility.GetResource (typeof (ResourceManager), "RdbmsMapping.xsd");
+    }
 
     public static void IsEqualToImage1 (byte[] actual)
     {

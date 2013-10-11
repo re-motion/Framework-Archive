@@ -1062,7 +1062,7 @@
     </EmbeddedResource>
     <Content Include="Doc\How to add a new property type.txt" />
     <Content Include="Doc\include\Remotion.Data.DomainObjects.NamespaceDoc.xml" />
-    <None Include="Persistence\Rdbms\MappingExport\Mapping.xsd">
+    <None Include="Persistence\Rdbms\MappingExport\RdbmsMapping.xsd">
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
