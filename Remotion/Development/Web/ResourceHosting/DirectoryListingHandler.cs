@@ -99,8 +99,6 @@ namespace Remotion.Development.Web.ResourceHosting
           responseWriter.WriteEncodedText (item.Name);
           responseWriter.RenderEndTag();
         }
-
-        //responseWriter.Write ("<br />");
       }
 
       responseWriter.RenderEndTag();
