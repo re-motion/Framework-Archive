@@ -73,10 +73,14 @@ namespace Remotion.Development.Web.ResourceHosting
 
       foreach (var item in virtualDirectory.Children.Cast<VirtualFileBase>().OrderBy (v => v.Name))
       {
+        responseWriter.AddAttribute (HtmlTextWriterAttribute.Style, "display: table-row;");
+        responseWriter.RenderBeginTag (HtmlTextWriterTag.Li);
+        
         if (item is ResourceVirtualDirectory)
         {
           var info = new DirectoryInfo (((ResourceVirtualDirectory) item).PhysicalPath);
-          responseWriter.WriteEncodedText (string.Format ("{0}\t<dir> ", info.LastWriteTime));
+          RenderCell(responseWriter, info.LastWriteTime.ToString());
+          RenderCell(responseWriter, "<dir> ");
 
           responseWriter.AddAttribute (HtmlTextWriterAttribute.Href, item.VirtualPath);
           responseWriter.RenderBeginTag (HtmlTextWriterTag.A);
@@ -87,7 +91,8 @@ namespace Remotion.Development.Web.ResourceHosting
         {
           var info = new FileInfo (((ResourceVirtualFile) item).PhysicalPath);
 
-          responseWriter.WriteEncodedText (string.Format ("{0}\t{1} ", info.LastWriteTime, info.Length));
+          RenderCell(responseWriter, info.LastWriteTime.ToString());
+          RenderCell(responseWriter, info.Length.ToString());
 
           responseWriter.AddAttribute (HtmlTextWriterAttribute.Href, item.VirtualPath);
           responseWriter.RenderBeginTag (HtmlTextWriterTag.A);
@@ -95,10 +100,18 @@ namespace Remotion.Development.Web.ResourceHosting
           responseWriter.RenderEndTag();
         }
 
-        responseWriter.Write ("<br />");
+        //responseWriter.Write ("<br />");
       }
 
+      responseWriter.RenderEndTag();
+      responseWriter.RenderEndTag();
+    }
 
+    private void RenderCell (HtmlTextWriter responseWriter, string text)
+    {
+      responseWriter.AddAttribute (HtmlTextWriterAttribute.Style, "display: table-cell; padding-right: 1em;");
+      responseWriter.RenderBeginTag (HtmlTextWriterTag.Span);
+      responseWriter.WriteEncodedText (text);
       responseWriter.RenderEndTag();
     }
 
