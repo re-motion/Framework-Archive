@@ -28,6 +28,9 @@ using Remotion.Web.Configuration;
 
 namespace Remotion.Development.Web.ResourceHosting
 {
+  /// <summary>
+  /// Allows mapping of the re-motion resource directories as virtual directories.
+  /// </summary>
   public class ResourceVirtualPathProvider : VirtualPathProvider
   {
     private readonly string _resourceRoot;
@@ -36,7 +39,7 @@ namespace Remotion.Development.Web.ResourceHosting
 
     public ResourceVirtualPathProvider (ResourcePathMapping[] mappings)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("mappings", mappings);
+      ArgumentUtility.CheckNotNull ("mappings", mappings);
 
       _resourceRoot = VirtualPathUtility.AppendTrailingSlash (CombineVirtualPath ("~/", WebConfiguration.Current.Resources.Root));
 
@@ -66,6 +69,8 @@ namespace Remotion.Development.Web.ResourceHosting
 
     public bool IsMappedPath (string virtualPath)
     {
+      ArgumentUtility.CheckNotNullOrEmpty ("virtualPath", virtualPath);
+
       var checkPath = ToAppRelativeVirtualPath (virtualPath);
       if (!checkPath.StartsWith (_resourceRoot, StringComparison.OrdinalIgnoreCase))
         return false;
@@ -75,6 +80,8 @@ namespace Remotion.Development.Web.ResourceHosting
 
     public override bool FileExists (string virtualPath)
     {
+      ArgumentUtility.CheckNotNullOrEmpty ("virtualPath", virtualPath);
+
       if (IsMappedPath (virtualPath))
       {
         var file = GetResourceVirtualFile (virtualPath);
@@ -86,6 +93,8 @@ namespace Remotion.Development.Web.ResourceHosting
 
     public override VirtualFile GetFile (string virtualPath)
     {
+      ArgumentUtility.CheckNotNullOrEmpty ("virtualPath", virtualPath);
+
       if (IsMappedPath (virtualPath))
         return GetResourceVirtualFile (virtualPath);
 
@@ -94,6 +103,8 @@ namespace Remotion.Development.Web.ResourceHosting
 
     public override bool DirectoryExists (string virtualDir)
     {
+      ArgumentUtility.CheckNotNullOrEmpty ("virtualDir", virtualDir);
+
       if (IsMappedPath (virtualDir))
       {
         var virtualDirectory = GetResourceVirtualDirectory (virtualDir);
@@ -105,6 +116,8 @@ namespace Remotion.Development.Web.ResourceHosting
 
     public override VirtualDirectory GetDirectory (string virtualDir)
     {
+      ArgumentUtility.CheckNotNullOrEmpty ("virtualDir", virtualDir);
+
       if (IsMappedPath (virtualDir))
         return GetResourceVirtualDirectory (virtualDir);
 
@@ -113,6 +126,8 @@ namespace Remotion.Development.Web.ResourceHosting
 
     public override CacheDependency GetCacheDependency (string virtualPath, IEnumerable virtualPathDependencies, DateTime utcStart)
     {
+      ArgumentUtility.CheckNotNullOrEmpty ("virtualPath", virtualPath);
+
       if (IsMappedPath (virtualPath))
         return null;
 
@@ -147,8 +162,6 @@ namespace Remotion.Development.Web.ResourceHosting
       string[] strArray = new string[stringCollection.Count];
       stringCollection.CopyTo (strArray, 0);
       return new CacheDependency (strArray, new string[0], utcStart);
-
-      //return Previous.GetCacheDependency (virtualPath, virtualPathDependencies, utcStart);
     }
 
     private ResourceVirtualFile GetResourceVirtualFile (string virtualPath)
@@ -213,16 +226,24 @@ namespace Remotion.Development.Web.ResourceHosting
 
     protected virtual string CombineVirtualPath (string basePath, string relativePath)
     {
+      ArgumentUtility.CheckNotNullOrEmpty ("basePath", basePath);
+      ArgumentUtility.CheckNotNullOrEmpty ("relativePath", relativePath);
+
       return VirtualPathUtility.Combine (basePath, relativePath);
     }
 
     protected virtual string MakeRelativeVirtualPath (string fromPath, string toPath)
     {
+      ArgumentUtility.CheckNotNullOrEmpty ("fromPath", fromPath);
+      ArgumentUtility.CheckNotNullOrEmpty ("toPath", toPath);
+
       return VirtualPathUtility.MakeRelative (fromPath, toPath);
     }
 
     protected virtual string ToAppRelativeVirtualPath (string virtualPath)
     {
+      ArgumentUtility.CheckNotNullOrEmpty ("virtualPath", virtualPath);
+
       return VirtualPathUtility.ToAppRelative (virtualPath);
     }
   }

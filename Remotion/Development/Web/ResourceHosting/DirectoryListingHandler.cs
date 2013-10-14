@@ -21,9 +21,13 @@ using System.Linq;
 using System.Web;
 using System.Web.Hosting;
 using System.Web.UI;
+using Remotion.Utilities;
 
 namespace Remotion.Development.Web.ResourceHosting
 {
+  /// <summary>
+  /// Renders directory content as an HTML page.
+  /// </summary>
   public class DirectoryListingHandler : IHttpHandler
   {
     public DirectoryListingHandler ()
@@ -32,6 +36,8 @@ namespace Remotion.Development.Web.ResourceHosting
 
     public void ProcessRequest (HttpContext context)
     {
+      ArgumentUtility.CheckNotNull ("context", context);
+
       context.Response.ContentType = "text/html";
       context.Response.Charset = "utf-8";
 
@@ -45,7 +51,7 @@ namespace Remotion.Development.Web.ResourceHosting
       responseWriter.Flush();
     }
 
-    private static void RenderBody (HttpContext context, HtmlTextWriter responseWriter)
+    private void RenderBody (HttpContext context, HtmlTextWriter responseWriter)
     {
       responseWriter.RenderBeginTag (HtmlTextWriterTag.Body);
       responseWriter.RenderBeginTag (HtmlTextWriterTag.H1);
@@ -96,7 +102,7 @@ namespace Remotion.Development.Web.ResourceHosting
       responseWriter.RenderEndTag();
     }
 
-    private static void RenderHead (HttpContext context, HtmlTextWriter responseWriter)
+    private void RenderHead (HttpContext context, HtmlTextWriter responseWriter)
     {
       responseWriter.RenderBeginTag (HtmlTextWriterTag.Head);
 
@@ -106,7 +112,7 @@ namespace Remotion.Development.Web.ResourceHosting
       responseWriter.RenderEndTag();
     }
 
-    public bool IsReusable
+    bool IHttpHandler.IsReusable
     {
       get { return true; }
     }
