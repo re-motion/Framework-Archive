@@ -223,8 +223,8 @@ namespace Remotion.Web.Test.MultiplePostBackCatching
       HyperLink hyperLink = new HyperLink ();
       hyperLink.ID = CreateID (prefix, "AnchorWithNonPostBackJavascriptInOnClick");
       hyperLink.Text = "OnClick";
-      hyperLink.NavigateUrl = "#";
-      hyperLink.Attributes["onclick"] = "window.alert ('javascript in onclick handler')";
+      hyperLink.NavigateUrl = "invalid";
+      hyperLink.Attributes["onclick"] = "window.alert ('javascript in onclick handler'); return false;";
 
       return hyperLink;
     }
