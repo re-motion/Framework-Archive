@@ -212,17 +212,12 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
       if (!securityClient.HasMethodAccess (this, "GetParents"))
         return Enumerable.Empty<Group>();
 
-      Func<Group, Group> parentResolver = g =>
-      {
-        if (g == this)
-        {
-          throw new InvalidOperationException (
-              string.Format ("The parent hierarchy for group '{0}' cannot be resolved because a circular reference exists.", ID));
-        }
-        return g.Parent;
-      };
-
-      return Parent.CreateSequence (parentResolver, g => g != null && securityClient.HasAccess (g, AccessType.Get (GeneralAccessTypes.Read)));
+      return Parent.CreateSequenceWithCycleCheck (
+          g => g.Parent,
+          g => g != null && securityClient.HasAccess (g, AccessType.Get (GeneralAccessTypes.Read)),
+          null,
+          g => new InvalidOperationException (
+              string.Format ("The parent hierarchy for group '{0}' cannot be resolved because a circular reference exists.", ID)));
     }
 
     /// <summary>
@@ -285,18 +280,12 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
       if (!Properties[typeof (Group), "Parent"].HasChanged)
         return;
 
-      Func<Group, Group> parentResolver = g =>
-      {
-        if (g == this)
-        {
-          throw new InvalidOperationException (
-              string.Format ("Group '{0}' cannot be committed because it would result in a cirucular parent hierarchy.", ID));
-        }
+      var parents = GetParentObjectReference().CreateSequenceWithCycleCheck (
+          g => g.GetParentObjectReference(),
+          g => new InvalidOperationException (
+              string.Format ("Group '{0}' cannot be committed because it would result in a cirucular parent hierarchy.", ID)));
 
-        return g.GetParentObjectReference();
-      };
-
-      foreach (var group in GetParentObjectReference().CreateSequence (parentResolver))
+      foreach (var group in parents)
         group.RegisterForCommit();
     }
 
