@@ -491,7 +491,7 @@ function SmartPage_Context(
       var postBackSettings = GetPostBackSettings();
       if (postBackSettings != null && postBackSettings.async)
       {
-        if (IsSynchronousPostBackRequired())
+        if (IsSynchronousPostBackRequired(postBackSettings))
         {
           this.DoPostBack(_theForm.__EVENTTARGET.value, _theForm.__EVENTARGUMENT.value);
           return false;
@@ -548,7 +548,8 @@ function SmartPage_Context(
   // Event handler for Form.OnClick.
   this.OnFormClick = function (evt)
   {
-    if (IsSynchronousPostBackRequired())
+    var postBackSettings = GetPostBackSettings();
+    if (postBackSettings != null && IsSynchronousPostBackRequired(postBackSettings))
       return true;
 
     if (_isMsIE)
@@ -941,11 +942,9 @@ function SmartPage_Context(
     return pageRequestManager._postBackSettings;
   }
 
-  function IsSynchronousPostBackRequired()
+  function IsSynchronousPostBackRequired(postBackSettings)
   {
-    var postBackSettings = GetPostBackSettings();
-    if (postBackSettings == null)
-      return true;
+    ArgumentUtility.CheckNotNull (postBackSettings);
 
     if (postBackSettings.async == false)
       return true;
