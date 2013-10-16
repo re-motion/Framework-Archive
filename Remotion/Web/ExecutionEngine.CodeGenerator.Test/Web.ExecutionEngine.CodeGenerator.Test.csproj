@@ -21,6 +21,7 @@
     <UpgradeBackupLocation></UpgradeBackupLocation>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <TargetFrameworkProfile />
+    <UseIISExpress>true</UseIISExpress>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -139,7 +140,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>53514</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost/dev/Remotion/net45/Web/ExecutionEngine.CodeGenerator.Test</IISUrl>
+          <IISUrl>http://localhost:61150/Web.ExecutionEngine.CodeGenerator.Test</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl></CustomServerUrl>
