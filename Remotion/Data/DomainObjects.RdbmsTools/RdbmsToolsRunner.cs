@@ -134,14 +134,14 @@ namespace Remotion.Data.DomainObjects.RdbmsTools
       foreach (var script in scripts)
         fileGenerator.WriteScriptsToDisk (script, includeStorageProviderName);
     }
-    
+
     protected virtual void ExportMapping ()
     {
       var mappingSerializer = new MappingSerializer (
-          d => d.Factory.CreateEnumSerializer(),
-          (d, enumSerializer) => d.Factory.CreateStorageProviderSerializer (enumSerializer));
+          pd => pd.Factory.CreateEnumSerializer(),
+          (pd, enumSerializer) => pd.Factory.CreateStorageProviderSerializer (enumSerializer));
 
-      var xml = mappingSerializer.Serialize(MappingConfiguration.Current.GetTypeDefinitions());
+      var xml = mappingSerializer.Serialize (MappingConfiguration.Current.GetTypeDefinitions());
       xml.Save (_rdbmsToolsParameters.MappingExportOutputFileName);
     }
   }

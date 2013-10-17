@@ -294,7 +294,6 @@
     <Compile Include="Persistence\Rdbms\MappingExport\IClassSerializer.cs" />
     <Compile Include="Persistence\Rdbms\MappingExport\IColumnSerializer.cs" />
     <Compile Include="Persistence\Rdbms\MappingExport\IEnumSerializer.cs" />
-    <Compile Include="Persistence\Rdbms\MappingExport\IMappingSerializer.cs" />
     <Compile Include="Persistence\Rdbms\MappingExport\IPropertySerializer.cs" />
     <Compile Include="Persistence\Rdbms\MappingExport\IStorageProviderSerializer.cs" />
     <Compile Include="Persistence\Rdbms\MappingExport\ITableSerializer.cs" />
