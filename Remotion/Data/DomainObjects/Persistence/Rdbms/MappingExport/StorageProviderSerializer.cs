@@ -24,6 +24,9 @@ using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport
 {
+  /// <summary>
+  /// Default implementation of the <see cref="IStorageProviderSerializer"/> interface.
+  /// </summary>
   public class StorageProviderSerializer : IStorageProviderSerializer
   {
     private readonly IClassSerializer _classSerializer;

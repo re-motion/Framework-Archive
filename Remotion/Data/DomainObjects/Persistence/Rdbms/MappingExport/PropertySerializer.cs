@@ -16,13 +16,15 @@
 // 
 
 using System;
-using System.Runtime.InteropServices;
 using System.Xml.Linq;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport
 {
+  /// <summary>
+  /// Default implementation of the <see cref="IPropertySerializer"/> interface.
+  /// </summary>
   public class PropertySerializer : IPropertySerializer
   {
     private readonly IColumnSerializer _columnSerializer;

@@ -25,6 +25,9 @@ using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport
 {
+  /// <summary>
+  /// Default implementation of the <see cref="ITableSerializer"/> interface.
+  /// </summary>
   public class TableSerializer : ITableSerializer
   {
     private readonly IPropertySerializer _propertySerializer;

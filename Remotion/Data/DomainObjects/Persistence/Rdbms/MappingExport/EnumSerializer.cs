@@ -20,11 +20,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 using Remotion.Data.DomainObjects.Mapping;
-using Remotion.ExtensibleEnums;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport
 {
+  /// <summary>
+  /// Default implementation of the <see cref="IEnumSerializer"/> interface.
+  /// </summary>
   public class EnumSerializer : IEnumSerializer
   {
     private readonly HashSet<Type> _enumTypes = new HashSet<Type>();

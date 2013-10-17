@@ -20,6 +20,9 @@ using Remotion.Data.DomainObjects.Mapping;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport
 {
+  /// <summary>
+  /// Defines an API for creating an xml fragment which contains all mapping information for a single <see cref="RdbmsProviderDefinition"/>.
+  /// </summary>
   public interface IStorageProviderSerializer
   {
     XElement Serialize (IEnumerable<ClassDefinition> classDefinitions, RdbmsProviderDefinition providerDefinition);

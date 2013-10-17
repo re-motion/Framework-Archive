@@ -22,6 +22,10 @@ using Remotion.Data.DomainObjects.Mapping;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport
 {
+  /// <summary>
+  /// Defines an API for collecting the enum types used within the domain and
+  /// creating an xml fragment which describes the database representation of these enums.
+  /// </summary>
   public interface IEnumSerializer
   {
     void CollectPropertyType(PropertyDefinition propertyDefinition);

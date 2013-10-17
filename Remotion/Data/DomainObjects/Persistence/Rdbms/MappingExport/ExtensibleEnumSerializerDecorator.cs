@@ -25,6 +25,9 @@ using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport
 {
+  /// <summary>
+  /// Adds support for extensible enums to the <see cref="IEnumSerializer" /> interface.
+  /// </summary>
   public class ExtensibleEnumSerializerDecorator : IEnumSerializer
   {
     private readonly IEnumSerializer _enumSerializer;

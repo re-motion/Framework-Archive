@@ -19,6 +19,9 @@ using Remotion.Data.DomainObjects.Mapping;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport
 {
+  /// <summary>
+  /// Defines an API for creating an xml fragment which contains the <see cref="ClassDefinition"/> metadata.
+  /// </summary>
   public interface IClassSerializer
   {
     XElement Serialize (ClassDefinition classDefinition);

@@ -21,6 +21,9 @@ using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport
 {
+  /// <summary>
+  /// Adds enum type collection support to the <see cref="IPropertySerializer"/> interface.
+  /// </summary>
   public class EnumPropertySerializerDecorator : IPropertySerializer
   {
     private readonly IEnumSerializer _enumSerializer;

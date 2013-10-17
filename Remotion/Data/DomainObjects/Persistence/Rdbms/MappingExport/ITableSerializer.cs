@@ -21,6 +21,9 @@ using Remotion.Data.DomainObjects.Mapping;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport
 {
+  /// <summary>
+  /// Defines an API for creating an xml fragment which describes how the <see cref="ClassDefinition"/> maps to database tables.
+  /// </summary>
   public interface ITableSerializer
   {
     IEnumerable<XElement> Serialize (ClassDefinition classDefinition);

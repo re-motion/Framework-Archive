@@ -24,7 +24,10 @@ using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport
 {
-  public class MappingSerializer : IMappingSerializer
+  /// <summary>
+  /// The <see cref="MappingSerializer"/> is responsible for creating an <see cref="XDocument"/> that contains an xml representation of the class to database mapping.
+  /// </summary>
+  public class MappingSerializer
   {
     private readonly Func<RdbmsProviderDefinition, IEnumSerializer> _enumSerializerFactory;
     private readonly Func<RdbmsProviderDefinition, IEnumSerializer, IStorageProviderSerializer> _storageProviderSerializerFactory;

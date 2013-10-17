@@ -20,6 +20,9 @@ using Remotion.Data.DomainObjects.Mapping;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport
 {
+  /// <summary>
+  /// Defines an API for creating an xml fragment which describes how the <see cref="PropertyDefinition"/> maps to database columns.
+  /// </summary>
   public interface IColumnSerializer
   {
     IEnumerable<XElement> Serialize (PropertyDefinition propertyDefinition, IRdbmsPersistenceModelProvider persistenceModelProvider);
