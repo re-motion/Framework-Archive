@@ -14,20 +14,13 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
+using Remotion.Web.UI;
 
-namespace Remotion.Web.Test
+namespace Remotion.Web.Test.Rendering
 {
-  public partial class WebButtonDisabledCssTest : System.Web.UI.Page
+  public partial class WebButtonDisabledCssTest : SmartPage
   {
-    protected void Page_Load (object sender, EventArgs e)
-    {
-
-    }
   }
 }

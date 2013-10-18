@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Remotion.Web.Test {
+namespace Remotion.Web.Test.Rendering {
     
     
     public partial class WebButtonDisabledCssTest {
@@ -28,7 +28,7 @@ namespace Remotion.Web.Test {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Remotion.Web.Test.WebButtonWithDisabledCssStyleSupport WebButtonWithDisabledCssStyleSupport5;
+        protected global::Remotion.Web.Test.Rendering.WebButtonWithDisabledCssStyleSupport WebButtonWithDisabledCssStyleSupport5;
         
         /// <summary>
         /// WebButtonWithDisabledCssStyleSupport1 control.
@@ -37,6 +37,6 @@ namespace Remotion.Web.Test {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Remotion.Web.Test.WebButtonWithDisabledCssStyleSupport WebButtonWithDisabledCssStyleSupport1;
+        protected global::Remotion.Web.Test.Rendering.WebButtonWithDisabledCssStyleSupport WebButtonWithDisabledCssStyleSupport1;
     }
 }

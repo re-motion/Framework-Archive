@@ -15,7 +15,7 @@
  % along with re-motion; if not, see http://www.gnu.org/licenses.
 --%>
 
-<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="WebButtonDisabledCssTest.aspx.cs" Inherits="Remotion.Web.Test.WebButtonDisabledCssTest" %>
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="WebButtonDisabledCssTest.aspx.cs" Inherits="Remotion.Web.Test.Rendering.WebButtonDisabledCssTest" %>
 
 <!DOCTYPE html>
 
@@ -48,7 +48,7 @@
       <br />
 
       actual:
-      <a:WebButtonWithDisabledCssStyleSupport runat="server" Text="Enabled" CssClass="testClass" />
+      <remotion:WebButtonWithDisabledCssStyleSupport runat="server" Text="Enabled" CssClass="testClass" />
       <br />
       <br />
 
@@ -58,7 +58,7 @@
       <br />
 
       actual:
-      <a:WebButtonWithDisabledCssStyleSupport ID="WebButtonWithDisabledCssStyleSupport5" runat="server" Text="Enabled" />
+      <remotion:WebButtonWithDisabledCssStyleSupport ID="WebButtonWithDisabledCssStyleSupport5" runat="server" Text="Enabled" />
       <br />
       <br />
       
@@ -68,7 +68,7 @@
       <br />
 
       actual:
-      <a:WebButtonWithDisabledCssStyleSupport ID="WebButtonWithDisabledCssStyleSupport1" runat="server" Text="Enabled" CssClass="testClass" Enabled="False" />
+      <remotion:WebButtonWithDisabledCssStyleSupport ID="WebButtonWithDisabledCssStyleSupport1" runat="server" Text="Enabled" CssClass="testClass" Enabled="False" />
       <br />
       <br />
       
@@ -78,7 +78,7 @@
       <br />
 
       actual:
-      <a:WebButtonWithDisabledCssStyleSupport runat="server" Text="Enabled" Enabled="False" />
+      <remotion:WebButtonWithDisabledCssStyleSupport runat="server" Text="Enabled" Enabled="False" />
       <br />
       <br />
 
