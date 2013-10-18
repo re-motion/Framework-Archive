@@ -196,14 +196,16 @@ namespace Remotion.Web.UI.Controls
       string backUpOnClientClick = OnClientClick;
       OnClientClick = null;
 
+      var originalCssClass = (CssClass ?? "").Replace (DisabledCssClass, "").Trim();
+      var isCssStyleOverridden = !string.IsNullOrEmpty (originalCssClass);
+      var computedCssClass = isCssStyleOverridden ? originalCssClass : CssClassBase;
+      ControlStyle.CssClass = computedCssClass;
+
       base.AddAttributesToRender (writer);
 
       OnClientClick = backUpOnClientClick;
 
       _options = null;
-
-      if (StringUtility.IsNullOrEmpty (CssClass) && StringUtility.IsNullOrEmpty (Attributes["class"]))
-        writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassBase);
     }
 
     protected override PostBackOptions GetPostBackOptions ()
