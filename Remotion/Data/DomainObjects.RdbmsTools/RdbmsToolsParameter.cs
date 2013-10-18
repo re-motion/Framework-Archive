@@ -36,7 +36,7 @@ namespace Remotion.Data.DomainObjects.RdbmsTools
   [Serializable]
   public class RdbmsToolsParameters
   {
-    [CommandLineModeArgument (true)]
+    [CommandLineModeArgument (false)]
     public OperationMode Mode = OperationMode.BuildSchema;
 
     [CommandLineStringArgument ("baseDirectory", true,
