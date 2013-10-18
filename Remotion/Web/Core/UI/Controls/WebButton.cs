@@ -196,12 +196,15 @@ namespace Remotion.Web.UI.Controls
       string backUpOnClientClick = OnClientClick;
       OnClientClick = null;
 
+      var cssClassBackup = ControlStyle.CssClass;
       var originalCssClass = (CssClass ?? "").Replace (DisabledCssClass, "").Trim();
       var isCssStyleOverridden = !string.IsNullOrEmpty (originalCssClass);
       var computedCssClass = isCssStyleOverridden ? originalCssClass : CssClassBase;
       ControlStyle.CssClass = computedCssClass;
 
       base.AddAttributesToRender (writer);
+
+      ControlStyle.CssClass = cssClassBackup;
 
       OnClientClick = backUpOnClientClick;
 
