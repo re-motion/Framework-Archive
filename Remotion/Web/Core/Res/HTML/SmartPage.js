@@ -963,7 +963,7 @@ function SmartPage_Context(
       $(_submitter).addClass('SmartPageSubmitter');
     }
 
-    $("html").addClass('SmartPageBusy');
+    $('html').addClass('SmartPageBusy');
   };
 
   this.ClearIsSubmitting = function (isAsynchronous)
@@ -976,7 +976,7 @@ function SmartPage_Context(
       }
       //setTimeout (function ()
     //{
-      var html = $ ("html");
+      var html = $ ('html');
       html.removeClass('SmartPageBusy');
 
         // Needed in IE8, Firefox 23, Chrome 4
