@@ -55,7 +55,7 @@ namespace Remotion.Development.UnitTests.Core.TypePipe
       var assemblyNamePattern = "DebuggerAssemblies_{counter}";
       _factory.MaximumTypesPerAssembly = 7;
 
-      var result = _factory.Invoke<IReflectionEmitCodeGenerator> (
+      var result = _factory.Invoke<ReflectionEmitCodeGenerator> (
           "NewReflectionEmitCodeGenerator",
           participantID,
           forceStrongNaming,
