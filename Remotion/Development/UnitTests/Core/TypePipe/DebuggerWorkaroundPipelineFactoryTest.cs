@@ -55,7 +55,7 @@ namespace Remotion.Development.UnitTests.Core.TypePipe
       var assemblyNamePattern = "DebuggerAssemblies_{counter}";
       _factory.MaximumTypesPerAssembly = 7;
 
-      var result = _factory.Invoke<ReflectionEmitCodeGenerator> (
+      var result = _factory.Invoke<object> (
           "NewReflectionEmitCodeGenerator",
           participantID,
           forceStrongNaming,
@@ -63,8 +63,9 @@ namespace Remotion.Development.UnitTests.Core.TypePipe
           assemblyDirectory,
           assemblyNamePattern);
 
-      Assert.That (result, Is.TypeOf<DebuggerWorkaroundCodeGenerator>());
-      var debuggerWorkaroundCodeGenerator = (DebuggerWorkaroundCodeGenerator) result;
+      var actualResult = PrivateInvoke.GetNonPublicField (result, "_reflectionEmitCodeGenerator");
+      Assert.That (actualResult, Is.TypeOf<DebuggerWorkaroundCodeGenerator>());
+      var debuggerWorkaroundCodeGenerator = (DebuggerWorkaroundCodeGenerator) actualResult;
       Assert.That (debuggerWorkaroundCodeGenerator.MaximumTypesPerAssembly, Is.EqualTo (7));
     }
 
