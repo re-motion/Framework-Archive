@@ -81,8 +81,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     private ConcreteMixinType GenerateConcreteMixinType (ITypeAssemblyContext context, ConcreteMixinTypeIdentifier concreteMixinTypeIdentifier)
     {
-      //TODO: RM-5849: add concreteMixinTypeIdentifier as parameter.
-      var mixinProxyType = context.CreateProxy (concreteMixinTypeIdentifier.MixinType);
+      var mixinProxyType = context.CreateAddtionalProxyType (concreteMixinTypeIdentifier, concreteMixinTypeIdentifier.MixinType);
 
       var generator = new MixinTypeGenerator (concreteMixinTypeIdentifier, mixinProxyType, new AttributeGenerator(), context.ParticipantConfigurationID);
       generator.AddInterfaces();
