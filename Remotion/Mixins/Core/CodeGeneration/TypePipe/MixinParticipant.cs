@@ -92,18 +92,6 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       return conreteMixinType.Identifier;
     }
 
-    public void RebuildState (LoadedTypesContext loadedTypesContext)
-    {
-      ArgumentUtility.CheckNotNull ("loadedTypesContext", loadedTypesContext);
-
-      foreach (var additionalType in loadedTypesContext.AdditionalTypes)
-      {
-        var conreteMixinType = _concreteTypeMetadataImporter.GetMetadataForMixinType (additionalType);
-        if (conreteMixinType != null)
-          _mixinTypeProvider.AddLoadedConcreteMixinType (loadedTypesContext.State, conreteMixinType);
-      }
-    }
-
     public Type GetOrCreateAdditionalType (object additionalTypeID, IAdditionalTypeAssemblyContext additionalTypeAssemblyContext)
     {
       ArgumentUtility.CheckNotNull ("additionalTypeID", additionalTypeID);

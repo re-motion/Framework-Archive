@@ -16,7 +16,6 @@
 // 
 
 using System;
-using System.Collections.Generic;
 using JetBrains.Annotations;
 using Remotion.Mixins.Definitions;
 using Remotion.TypePipe.TypeAssembly;
@@ -32,8 +31,6 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
   {
     [NotNull]
     IMixinInfo GetMixinInfo (IProxyTypeAssemblyContext context, MixinDefinition mixin);
-
-    void AddLoadedConcreteMixinType (IDictionary<string, object> participantState, ConcreteMixinType concreteMixinType);
 
     [NotNull]
     ConcreteMixinType GetOrGenerateConcreteMixinType (ITypeAssemblyContext context, ConcreteMixinTypeIdentifier concreteMixinTypeIdentifier);
