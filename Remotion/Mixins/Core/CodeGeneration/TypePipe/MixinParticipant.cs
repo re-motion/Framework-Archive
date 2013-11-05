@@ -82,6 +82,13 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       _targetTypeModifier.ModifyTargetType (concreteTarget, targetClassDefinition, interfacesToImplement, mixinInfos);
     }
 
+    public object GetAdditionalTypeID (Type additionalType)
+    {
+      ArgumentUtility.CheckNotNull ("additionalType", additionalType);
+
+      return _concreteTypeMetadataImporter.GetMetadataForMixinType (additionalType);
+    }
+
     public void RebuildState (LoadedTypesContext loadedTypesContext)
     {
       ArgumentUtility.CheckNotNull ("loadedTypesContext", loadedTypesContext);
