@@ -40,7 +40,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixinTy
     }
 
     [Test]
-    [Ignore ("TODO RM-5849: RebuildParticipantState is currently disabled")]
+    [Ignore ("TODO RM-5895: RebuildParticipantState is currently disabled")]
     public void LoadFlushedCode_IncludesGeneratedMixinTypes ()
     {
       var mixedInstance = CreateMixedObject<ClassOverridingMixinMembers> (typeof (MixinWithAbstractMembers));

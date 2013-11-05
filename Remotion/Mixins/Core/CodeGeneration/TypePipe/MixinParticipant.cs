@@ -90,7 +90,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       {
         var conreteMixinType = _concreteTypeMetadataImporter.GetMetadataForMixinType (additionalType);
         if (conreteMixinType != null)
-          _mixinTypeProvider.AddLoadedConcreteMixinType (loadedTypesContext.State, conreteMixinType);
+          _mixinTypeProvider.AddLoadedConcreteMixinType (loadedTypesContext.ParticipantState, conreteMixinType);
       }
     }
 

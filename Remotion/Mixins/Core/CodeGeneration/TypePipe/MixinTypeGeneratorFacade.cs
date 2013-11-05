@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using Remotion.Collections;
 using Remotion.Mixins.Definitions;
 using Remotion.TypePipe.TypeAssembly;
+using Remotion.TypePipe.TypeAssembly.Implementation;
 using Remotion.Utilities;
 
 namespace Remotion.Mixins.CodeGeneration.TypePipe
@@ -45,7 +46,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       return GetOrGenerateConcreteMixinType (context, concreteMixinTypeIdentifier);
     }
 
-    public void AddLoadedConcreteMixinType (IDictionary<string, object> participantState, ConcreteMixinType concreteMixinType)
+    public void AddLoadedConcreteMixinType (IParticipantState participantState, ConcreteMixinType concreteMixinType)
     {
       ArgumentUtility.CheckNotNull ("participantState", participantState);
       ArgumentUtility.CheckNotNull ("concreteMixinType", concreteMixinType);
@@ -62,7 +63,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       ArgumentUtility.CheckNotNull ("context", context);
       ArgumentUtility.CheckNotNull ("concreteMixinTypeIdentifier", concreteMixinTypeIdentifier);
 
-      var concreteMixinTypeCache = GetOrCreateConcreteMixinTypeCache (context.State);
+      var concreteMixinTypeCache = GetOrCreateConcreteMixinTypeCache (context.ParticipantState);
 
       ConcreteMixinType concreteMixinType;
       if (!concreteMixinTypeCache.TryGetValue (concreteMixinTypeIdentifier, out concreteMixinType))
@@ -81,8 +82,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     private ConcreteMixinType GenerateConcreteMixinType (ITypeAssemblyContext context, ConcreteMixinTypeIdentifier concreteMixinTypeIdentifier)
     {
-      //TODO: RM-5849: add concreteMixinTypeIdentifier as parameter.
-      var mixinProxyType = context.CreateProxy (concreteMixinTypeIdentifier.MixinType);
+      var mixinProxyType = context.CreateAddtionalProxyType (concreteMixinTypeIdentifier, concreteMixinTypeIdentifier.MixinType);
 
       var generator = new MixinTypeGenerator (concreteMixinTypeIdentifier, mixinProxyType, new AttributeGenerator(), context.ParticipantConfigurationID);
       generator.AddInterfaces();
@@ -101,14 +101,14 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     }
 
     private IDictionary<ConcreteMixinTypeIdentifier, ConcreteMixinType> GetOrCreateConcreteMixinTypeCache (
-        IDictionary<string, object> participantState)
+        IParticipantState participantState)
     {
       const string key = "ConcreteMixinTypes";
-      var concreteMixinTypeCache = (Dictionary<ConcreteMixinTypeIdentifier, ConcreteMixinType>) participantState.GetValueOrDefault (key);
+      var concreteMixinTypeCache = (Dictionary<ConcreteMixinTypeIdentifier, ConcreteMixinType>) participantState.GetState (key);
       if (concreteMixinTypeCache == null)
       {
         concreteMixinTypeCache = new Dictionary<ConcreteMixinTypeIdentifier, ConcreteMixinType>();
-        participantState.Add (key, concreteMixinTypeCache);
+        participantState.AddState (key, concreteMixinTypeCache);
       }
 
       return concreteMixinTypeCache;
