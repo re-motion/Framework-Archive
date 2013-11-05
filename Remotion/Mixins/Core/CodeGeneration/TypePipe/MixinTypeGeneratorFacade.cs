@@ -46,18 +46,6 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       return GetOrGenerateConcreteMixinType (context, concreteMixinTypeIdentifier);
     }
 
-    public void AddLoadedConcreteMixinType (IParticipantState participantState, ConcreteMixinType concreteMixinType)
-    {
-      ArgumentUtility.CheckNotNull ("participantState", participantState);
-      ArgumentUtility.CheckNotNull ("concreteMixinType", concreteMixinType);
-
-      var concreteMixinTypeCache = GetOrCreateConcreteMixinTypeCache (participantState);
-
-      // Might already be present when an assembly is loaded twice, or when a type requiring an equivalent ConcreteMixinType was already requested.
-      if (!concreteMixinTypeCache.ContainsKey (concreteMixinType.Identifier))
-        concreteMixinTypeCache.Add (concreteMixinType.Identifier, concreteMixinType);
-    }
-
     public ConcreteMixinType GetOrGenerateConcreteMixinType (ITypeAssemblyContext context, ConcreteMixinTypeIdentifier concreteMixinTypeIdentifier)
     {
       ArgumentUtility.CheckNotNull ("context", context);
