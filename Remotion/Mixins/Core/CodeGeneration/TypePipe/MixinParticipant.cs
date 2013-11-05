@@ -86,7 +86,10 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     {
       ArgumentUtility.CheckNotNull ("additionalType", additionalType);
 
-      return _concreteTypeMetadataImporter.GetMetadataForMixinType (additionalType);
+      var conreteMixinType = _concreteTypeMetadataImporter.GetMetadataForMixinType (additionalType);
+      if (conreteMixinType == null)
+        return null;
+      return conreteMixinType.Identifier;
     }
 
     public void RebuildState (LoadedTypesContext loadedTypesContext)
