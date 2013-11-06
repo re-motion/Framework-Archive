@@ -50,7 +50,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       ArgumentUtility.CheckNotNull ("context", context);
       ArgumentUtility.CheckNotNull ("concreteMixinTypeIdentifier", concreteMixinTypeIdentifier);
 
-      var concreteMixinTypeCache = GetOrCreateConcreteMixinTypeCache (context.State);
+      var concreteMixinTypeCache = GetOrCreateConcreteMixinTypeCache (context.ParticipantState);
 
       ConcreteMixinType concreteMixinType;
       if (!concreteMixinTypeCache.TryGetValue (concreteMixinTypeIdentifier, out concreteMixinType))
@@ -88,14 +88,14 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     }
 
     private IDictionary<ConcreteMixinTypeIdentifier, ConcreteMixinType> GetOrCreateConcreteMixinTypeCache (
-        IDictionary<string, object> participantState)
+        IParticipantState participantState)
     {
       const string key = "ConcreteMixinTypes";
-      var concreteMixinTypeCache = (Dictionary<ConcreteMixinTypeIdentifier, ConcreteMixinType>) participantState.GetValueOrDefault (key);
+      var concreteMixinTypeCache = (Dictionary<ConcreteMixinTypeIdentifier, ConcreteMixinType>) participantState.GetState (key);
       if (concreteMixinTypeCache == null)
       {
         concreteMixinTypeCache = new Dictionary<ConcreteMixinTypeIdentifier, ConcreteMixinType>();
-        participantState.Add (key, concreteMixinTypeCache);
+        participantState.AddState (key, concreteMixinTypeCache);
       }
 
       return concreteMixinTypeCache;

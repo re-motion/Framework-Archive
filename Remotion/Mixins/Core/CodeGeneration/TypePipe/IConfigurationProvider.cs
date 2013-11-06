@@ -31,10 +31,10 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
   public interface IConfigurationProvider
   {
     [CanBeNull]
-    TargetClassDefinition GetTargetClassDefinition (ClassContext classContext);
+    TargetClassDefinition GetTargetClassDefinition ([CanBeNull]ClassContext classContext);
 
     [CanBeNull]
-    TargetClassDefinition GetTargetClassDefinition (Type requestedType);
+    TargetClassDefinition GetTargetClassDefinition ([NotNull]Type requestedType);
 
     IEnumerable<Type> GetInterfacesToImplement (TargetClassDefinition targetClassDefinition, IEnumerable<IMixinInfo> mixinInfos);
   }
