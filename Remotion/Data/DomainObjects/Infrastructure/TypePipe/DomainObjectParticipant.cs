@@ -44,7 +44,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
   /// </list>
   /// </remarks>
   /// <threadsafety static="true" instance="true"/>
-  public class DomainObjectParticipant : SimpleParticipantBase
+  public class DomainObjectParticipant : IParticipant
   {
     private static readonly MethodInfo s_getPublicDomainObjectTypeImplementation = GetInfrastructureHook ("GetPublicDomainObjectTypeImplementation");
     private static readonly MethodInfo s_performConstructorCheck = GetInfrastructureHook ("PerformConstructorCheck");
@@ -75,7 +75,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
       _interceptedPropertyFinder = interceptedPropertyFinder;
     }
 
-    public override ITypeIdentifierProvider PartialTypeIdentifierProvider
+    public ITypeIdentifierProvider PartialTypeIdentifierProvider
     {
       get
       {
@@ -87,7 +87,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
       }
     }
 
-    public override void Participate (object id, IProxyTypeAssemblyContext proxyTypeAssemblyContext)
+    public void Participate (object id, IProxyTypeAssemblyContext proxyTypeAssemblyContext)
     {
       ArgumentUtility.CheckNotNull ("proxyTypeAssemblyContext", proxyTypeAssemblyContext);
 
@@ -112,19 +112,29 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
       InterceptProperties (proxyType, domainObjectType, classDefinition);
     }
 
-    public override void HandleNonSubclassableType (Type requestedType)
+    public void HandleNonSubclassableType (Type nonSubclassableRequestedType)
     {
-      ArgumentUtility.CheckNotNull ("requestedType", requestedType);
+      ArgumentUtility.CheckNotNull ("nonSubclassableRequestedType", nonSubclassableRequestedType);
 
-      if (!typeof (DomainObject).IsTypePipeAssignableFrom (requestedType))
+      if (!typeof (DomainObject).IsTypePipeAssignableFrom (nonSubclassableRequestedType))
         return;
 
-      var classDefinition = _typeDefinitionProvider.GetTypeDefinition (requestedType);
+      var classDefinition = _typeDefinitionProvider.GetTypeDefinition (nonSubclassableRequestedType);
       if (classDefinition != null && !classDefinition.IsAbstract)
       {
-        var message = string.Format ("The requested type '{0}' is derived from DomainObject but cannot be subclassed.", requestedType.Name);
+        var message = string.Format ("The requested type '{0}' is derived from DomainObject but cannot be subclassed.", nonSubclassableRequestedType.Name);
         throw new NotSupportedException (message);
       }
+    }
+
+    public object GetAdditionalTypeID (Type additionalType)
+    {
+      return null; // Does nothing.
+    }
+
+    public Type GetOrCreateAdditionalType (object additionalTypeID, IAdditionalTypeAssemblyContext additionalTypeAssemblyContext)
+    {
+      return null; // Does nothing.
     }
 
     private void OverridePerformConstructorCheck (MutableType proxyType)

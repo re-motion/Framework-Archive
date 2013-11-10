@@ -104,11 +104,11 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       return _mixinTypeProvider.GetOrGenerateConcreteMixinType (additionalTypeAssemblyContext, concreteMixinTypeIdentifier).GeneratedType;
     }
 
-    public void HandleNonSubclassableType (Type requestedType)
+    public void HandleNonSubclassableType (Type nonSubclassableRequestedType)
     {
-      ArgumentUtility.CheckNotNull ("requestedType", requestedType);
+      ArgumentUtility.CheckNotNull ("nonSubclassableRequestedType", nonSubclassableRequestedType);
 
-      var targetClassDefinition = _configurationProvider.GetTargetClassDefinition (requestedType);
+      var targetClassDefinition = _configurationProvider.GetTargetClassDefinition (nonSubclassableRequestedType);
       Assertion.IsNull (
           targetClassDefinition,
           "There should be no mixin configuration for a non-subclassable type; "
