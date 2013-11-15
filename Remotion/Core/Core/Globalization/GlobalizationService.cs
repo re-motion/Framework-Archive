@@ -16,22 +16,14 @@
 // 
 
 using System;
-using System.Collections.Generic;
-using FluentValidation.Resources;
-using FluentValidation.Results;
-using FluentValidation.Validators;
 
-namespace Remotion.Validation.UnitTests.TestHelpers
+namespace Remotion.Globalization
 {
-  public class StubPropertyValidator : IPropertyValidator
+  public class GlobalizationService : GlobalizationServiceBase
   {
-    public IEnumerable<ValidationFailure> Validate (PropertyValidatorContext context)
+    protected override IResourceManager GetConcreteResourceManager (Type type)
     {
-      throw new NotImplementedException();
+      return MultiLingualResources.ExistsResource (type) ? MultiLingualResources.GetResourceManager (type, true) : null;
     }
-
-    public ICollection<Func<object, object, object>> CustomMessageFormatArguments { get; private set; }
-    public Func<object, object> CustomStateProvider { get; set; }
-    public IStringSource ErrorMessageSource { get; set; }
   }
 }

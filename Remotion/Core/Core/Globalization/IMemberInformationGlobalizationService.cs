@@ -16,22 +16,13 @@
 // 
 
 using System;
-using System.Collections.Generic;
-using FluentValidation.Resources;
-using FluentValidation.Results;
-using FluentValidation.Validators;
+using Remotion.Reflection;
 
-namespace Remotion.Validation.UnitTests.TestHelpers
+namespace Remotion.Globalization
 {
-  public class StubPropertyValidator : IPropertyValidator
+  public interface IMemberInformationGlobalizationService
   {
-    public IEnumerable<ValidationFailure> Validate (PropertyValidatorContext context)
-    {
-      throw new NotImplementedException();
-    }
-
-    public ICollection<Func<object, object, object>> CustomMessageFormatArguments { get; private set; }
-    public Func<object, object> CustomStateProvider { get; set; }
-    public IStringSource ErrorMessageSource { get; set; }
+    string GetPropertyDisplayName (IPropertyInformation propertyInformation, ITypeInformation typeInformation);
+    string GetTypeDisplayName (ITypeInformation typeInformation);
   }
 }

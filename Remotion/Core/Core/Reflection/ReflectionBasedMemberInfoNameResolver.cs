@@ -14,21 +14,24 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
 using System.Reflection;
 using Remotion.Collections;
-using Remotion.Reflection;
 using Remotion.Utilities;
 
-namespace Remotion.Data.DomainObjects.Mapping
+namespace Remotion.Reflection
 {
   /// <summary>
   /// Resolves <see cref="PropertyInfo"/> objects into property names and the other way around.
   /// </summary>
-  public class ReflectionBasedNameResolver : IMappingNameResolver
+  public class ReflectionBasedMemberInfoNameResolver : IMemberInfoNameResolver
   {
     private static readonly LockingCacheDecorator<IPropertyInformation, string> s_propertyNameCache =
         CacheFactory.CreateWithLocking<IPropertyInformation, string>();
+
+    private static readonly LockingCacheDecorator<ITypeInformation, string> s_typeNameCache =
+        CacheFactory.CreateWithLocking<ITypeInformation, string> ();
 
     /// <summary>
     /// Returns the mapping name for the given <paramref name="propertyInformation"/>.
@@ -43,12 +46,29 @@ namespace Remotion.Data.DomainObjects.Mapping
           propertyInformation, pi => GetPropertyName (pi.GetOriginalDeclaringType(), pi.Name));
     }
 
+    /// <summary>
+    /// Returns the mapping name for the given <paramref name="typeInformation"/>.
+    /// </summary>
+    /// <param name="typeInformation">The type whose mapping name should be retrieved.</param>
+    /// <returns>The name of the given <paramref name="typeInformation"/> as used internally by the mapping.</returns>
+    public string GetTypeName (ITypeInformation typeInformation)
+    {
+      ArgumentUtility.CheckNotNull ("typeInformation", typeInformation);
+
+      return s_typeNameCache.GetOrCreateValue (typeInformation, GetTypeNameInternal);
+    }
+
     private string GetPropertyName (ITypeInformation type, string shortPropertyName)
     {
-      if (type.IsGenericType && !type.IsGenericTypeDefinition)
-        type = type.GetGenericTypeDefinition ();
+      return GetTypeName(type) + "." + shortPropertyName;
+    }
 
-      return type.FullName + "." + shortPropertyName;
+    private string GetTypeNameInternal (ITypeInformation typeInformation)
+    {
+      if (typeInformation.IsGenericType && !typeInformation.IsGenericTypeDefinition)
+        typeInformation = typeInformation.GetGenericTypeDefinition ();
+
+      return typeInformation.FullName;
     }
   }
 }

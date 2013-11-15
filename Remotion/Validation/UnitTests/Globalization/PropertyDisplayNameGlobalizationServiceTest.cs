@@ -78,7 +78,7 @@ namespace Remotion.Validation.UnitTests.Globalization
                   Arg<IPropertyInformation>.Matches (pi => ((PropertyInfoAdapter) pi).PropertyInfo == (PropertyInfo) _propertyRule.Member),
                   Arg<ITypeInformation>.Matches (ti => ((TypeAdapter) ti).Type == typeof (Customer))))
           .Return ("LocalizedPropertyName");
-      Assert.That (_propertyRule.DisplayName, Is.Null);
+      Assert.That (_propertyRule.DisplayName, Is.TypeOf(typeof(LazyStringSource)));
 
       _service.ApplyLocalization (_propertyRule, typeof (Customer));
 

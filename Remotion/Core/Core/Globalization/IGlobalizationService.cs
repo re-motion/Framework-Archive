@@ -16,22 +16,18 @@
 // 
 
 using System;
-using System.Collections.Generic;
-using FluentValidation.Resources;
-using FluentValidation.Results;
-using FluentValidation.Validators;
+using Remotion.Reflection;
+using Remotion.ServiceLocation;
 
-namespace Remotion.Validation.UnitTests.TestHelpers
+namespace Remotion.Globalization
 {
-  public class StubPropertyValidator : IPropertyValidator
+  [ConcreteImplementation (
+      "Remotion.Mixins.Globalization.MixedGlobalizationService, Remotion.Mixins, Version=<version>, Culture=neutral, PublicKeyToken=<publicKeyToken>",
+      ignoreIfNotFound: true,
+      Position = 0)]
+  [ConcreteImplementation (typeof (GlobalizationService), Position = 1)]
+  public interface IGlobalizationService
   {
-    public IEnumerable<ValidationFailure> Validate (PropertyValidatorContext context)
-    {
-      throw new NotImplementedException();
-    }
-
-    public ICollection<Func<object, object, object>> CustomMessageFormatArguments { get; private set; }
-    public Func<object, object> CustomStateProvider { get; set; }
-    public IStringSource ErrorMessageSource { get; set; }
+    IResourceManager GetResourceManager (ITypeInformation typeInformation);
   }
 }

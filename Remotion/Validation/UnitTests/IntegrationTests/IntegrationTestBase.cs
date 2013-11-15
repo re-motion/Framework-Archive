@@ -63,7 +63,7 @@ namespace Remotion.Validation.UnitTests.IntegrationTests
               new IValidationRuleGlobalizationService[]
               {
                   new PropertyDisplayNameGlobalizationService (
-                      new MemberInformationGlobalizationService (new[] { new MixedGlobalizationService() }, memberInfoNameResolver)),
+                      new MemberInformationGlobalizationService (new MixedGlobalizationService())),
                   new ValidationRuleGlobalizationService (new DefaultMessageEvaluator(), GetValidatorGlobalizationService())
               }),
           memberInfoNameResolver);

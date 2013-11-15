@@ -92,6 +92,7 @@
     <Compile Include="Core\Context\Serialization\FlatClassContextSerializationTest.cs" />
     <Compile Include="Core\Context\Serialization\FlatMixinContextOriginSerializationTest.cs" />
     <Compile Include="Core\Context\Serialization\FlatMixinContextSerializationTest.cs" />
+    <Compile Include="Core\Globalization\MixedGlobalizationServiceTest.cs" />
     <Compile Include="Core\TypeGenerationHelper.cs" />
     <Compile Include="Core\CodeGenerationTypeMother.cs" />
     <Compile Include="Core\CodeGeneration\AttributeBasedMetadataImporterTest.cs" />

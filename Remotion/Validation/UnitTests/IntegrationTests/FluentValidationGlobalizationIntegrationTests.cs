@@ -51,7 +51,8 @@ namespace Remotion.Validation.UnitTests.IntegrationTests
     [Test]
     public void Initialization ()
     {
-      Assert.That (_propertyRule.DisplayName, Is.Null);
+      Assert.That (_propertyRule.DisplayName, Is.TypeOf(typeof(LazyStringSource)));
+      Assert.That (_propertyRule.DisplayName.GetString(), Is.Null);
       Assert.That (_propertyRule.PropertyName, Is.EqualTo ("LastName"));
       Assert.That (_propertyRule.GetDisplayName(), Is.EqualTo ("Last Name"));
     }

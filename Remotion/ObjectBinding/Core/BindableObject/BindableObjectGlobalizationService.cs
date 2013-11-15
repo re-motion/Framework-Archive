@@ -14,11 +14,10 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
-using Remotion.Collections;
 using Remotion.ExtensibleEnums;
 using Remotion.Globalization;
-using Remotion.Mixins.Globalization;
 using Remotion.Reflection;
 using Remotion.Utilities;
 
@@ -35,14 +34,17 @@ namespace Remotion.ObjectBinding.BindableObject
       False
     }
 
-    private readonly ICache<ITypeInformation, IResourceManager> _resourceManagerCache =
-        CacheFactory.CreateWithLocking<ITypeInformation, IResourceManager>();
+    private readonly IResourceManager _resourceIdentifierCache = MultiLingualResources.GetResourceManager (typeof (ResourceIdentifier), true);
 
     private readonly TypeConversionProvider _typeConversionProvider;
+    private readonly IMemberInformationGlobalizationService _memberInformationGlobalizationService;
 
-    public BindableObjectGlobalizationService ()
+    public BindableObjectGlobalizationService (IMemberInformationGlobalizationService memberInformationGlobalizationService)
     {
+      ArgumentUtility.CheckNotNull ("memberInformationGlobalizationService", memberInformationGlobalizationService);
+
       _typeConversionProvider = TypeConversionProvider.Create();
+      _memberInformationGlobalizationService = memberInformationGlobalizationService;
     }
 
     public string GetEnumerationValueDisplayName (Enum value)
@@ -59,8 +61,7 @@ namespace Remotion.ObjectBinding.BindableObject
 
     public string GetBooleanValueDisplayName (bool value)
     {
-      IResourceManager resourceManager = GetResourceManagerFromCache (TypeAdapter.Create (typeof (ResourceIdentifier)));
-      return resourceManager.GetString (value ? ResourceIdentifier.True : ResourceIdentifier.False);
+      return _resourceIdentifierCache.GetString (value ? ResourceIdentifier.True : ResourceIdentifier.False);
     }
 
     public string GetPropertyDisplayName (IPropertyInformation propertyInfo)
@@ -75,33 +76,7 @@ namespace Remotion.ObjectBinding.BindableObject
       var globalizedType = mixinIntroducedPropertyInformation != null ? mixinIntroducedPropertyInformation.ConcreteType : propertyInfo.DeclaringType;
       var property = mixinIntroducedPropertyInformation != null ? mixinIntroducedPropertyInformation.ConcreteProperty : propertyInfo;
 
-      var resourceManager = GetResourceManagerFromCache (globalizedType);
-
-      string resourceID = "property:" + property.Name;
-      if (!resourceManager.ContainsResource (resourceID))
-        return propertyInfo.Name;
-      return resourceManager.GetString (resourceID);
-    }
-
-    private IResourceManager GetResourceManagerFromCache (ITypeInformation typeInformation)
-    {
-      IResourceManager resourceManager;
-      if (_resourceManagerCache.TryGetValue (typeInformation, out resourceManager))
-        return resourceManager;
-      return _resourceManagerCache.GetOrCreateValue (typeInformation, GetResourceManager);
-    }
-
-    private IResourceManager GetResourceManager (ITypeInformation typeInformation)
-    {
-      if (!_typeConversionProvider.CanConvert (typeInformation.GetType(), typeof (Type)))
-        return NullResourceManager.Instance;
-
-      var type = (Type) _typeConversionProvider.Convert (typeInformation.GetType(), typeof (Type), typeInformation);
-
-      if (MixedMultiLingualResources.ExistsResource (type))
-        return MixedMultiLingualResources.GetResourceManager (type, true);
-
-      return NullResourceManager.Instance;
+      return _memberInformationGlobalizationService.GetPropertyDisplayName (property, globalizedType);
     }
   }
 }

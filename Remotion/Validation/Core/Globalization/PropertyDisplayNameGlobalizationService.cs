@@ -18,6 +18,7 @@
 using System;
 using FluentValidation;
 using FluentValidation.Internal;
+using FluentValidation.Resources;
 using Remotion.Globalization;
 using Remotion.Utilities;
 
@@ -42,7 +43,7 @@ namespace Remotion.Validation.Globalization
       var validationRuleAsPropertyRule = validationRule as PropertyRule;
       if (validationRuleAsPropertyRule == null)
         return;
-      if (validationRuleAsPropertyRule.DisplayName != null)
+      if(validationRuleAsPropertyRule.DisplayName!=null && !string.IsNullOrEmpty(validationRuleAsPropertyRule.DisplayName.GetString()))
         return;
 
       validationRuleAsPropertyRule.DisplayName = new PropertyRuleDisplayNameStringSource (

@@ -18,7 +18,9 @@ using System;
 using System.Globalization;
 using System.Threading;
 using NUnit.Framework;
+using Remotion.Globalization;
 using Remotion.Mixins;
+using Remotion.Mixins.Globalization;
 using Remotion.ObjectBinding.BindableObject;
 using Remotion.ObjectBinding.BindableObject.Properties;
 using Remotion.ObjectBinding.UnitTests.Core.TestDomain;
@@ -37,7 +39,7 @@ namespace Remotion.ObjectBinding.UnitTests.Core.BindableObject
     {
       base.SetUp();
 
-      _globalizationService = new BindableObjectGlobalizationService();
+      _globalizationService = new BindableObjectGlobalizationService(new MemberInformationGlobalizationService(new MixedGlobalizationService())); //TODO: consider to use a mock instead
 
       _uiCultureBackup = Thread.CurrentThread.CurrentUICulture;
       Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
