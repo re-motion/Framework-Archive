@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Remotion.ObjectBinding.UnitTests.Core.Globalization {
+namespace Remotion.ObjectBinding.UnitTests.Core.BindableObject.IntergrationTests.Globalization.Resources {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace Remotion.ObjectBinding.UnitTests.Core.Globalization {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class MixinAddingResources2 {
+    internal class DerivedMixinAddingResources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal MixinAddingResources2() {
+        internal DerivedMixinAddingResources() {
         }
         
         /// <summary>
@@ -39,7 +39,8 @@ namespace Remotion.ObjectBinding.UnitTests.Core.Globalization {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Remotion.ObjectBinding.UnitTests.Core.Globalization.MixinAddingResources2", typeof(MixinAddingResources2).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Remotion.ObjectBinding.UnitTests.Core.BindableObject.IntergrationTests.Globalizat" +
+                            "ion.Resources.DerivedMixinAddingResources", typeof(DerivedMixinAddingResources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -57,6 +58,35 @@ namespace Remotion.ObjectBinding.UnitTests.Core.Globalization {
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Property4 display name from DerivedMixinAddingResources.
+        /// </summary>
+        internal static string property_Property4 {
+            get {
+                return ResourceManager.GetString("property:Property4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MixedProperty3 display name from DerivedMixinAddingResources.
+        /// </summary>
+        internal static string property_Remotion_ObjectBinding_UnitTests_Core_BindableObject_IntergrationTests_Globalization_TestDomain_IDerivedMixinAddingResources_MixedProperty3 {
+            get {
+                return ResourceManager.GetString("property:Remotion.ObjectBinding.UnitTests.Core.BindableObject.IntergrationTests.G" +
+                        "lobalization.TestDomain.IDerivedMixinAddingResources.MixedProperty3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MixedProperty2 display name from DerivedMixinAddingResources.
+        /// </summary>
+        internal static string property_Remotion_ObjectBinding_UnitTests_Core_BindableObject_IntergrationTests_Globalization_TestDomain_IMixinAddingResources_MixedProperty2 {
+            get {
+                return ResourceManager.GetString("property:Remotion.ObjectBinding.UnitTests.Core.BindableObject.IntergrationTests.G" +
+                        "lobalization.TestDomain.IMixinAddingResources.MixedProperty2", resourceCulture);
             }
         }
         
