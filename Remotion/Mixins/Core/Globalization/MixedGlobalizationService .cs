@@ -32,7 +32,7 @@ namespace Remotion.Mixins.Globalization
     {
       ArgumentUtility.CheckNotNull ("type", type);
 
-      //TODO AO: implement as decorator
+      //TODO AO: implement as decorator: Will use MixedResourceManagerResolver directly. Possibly, also inline MixedResourceManagerResolver?
       return MixedMultiLingualResources.ExistsResource (type) ? MixedMultiLingualResources.GetResourceManager (type, true) : NullResourceManager.Instance;
     }
   }
