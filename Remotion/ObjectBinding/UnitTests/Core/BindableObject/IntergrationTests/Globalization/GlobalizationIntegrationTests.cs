@@ -146,6 +146,40 @@ namespace Remotion.ObjectBinding.UnitTests.Core.BindableObject.IntergrationTests
       }
     }
 
+    [Test]
+    [Ignore ("Check with MK")]
+    public void DisplayName_PropertyOverridenInMixinOfMixin ()
+    {
+      using (MixinConfiguration.BuildFromActive ()
+          .ForClass<TargetClassForGlobalization> ()
+          .AddMixin<MixinAddingResources> ()
+            .ForClass<MixinAddingResources>()
+            .AddMixin<MixinOfMixinAddingResources>()
+            .EnterScope())
+        {
+          var resourceString = GetResourceStringForType (typeof (TargetClassForGlobalization), "Property1");
+
+          Assert.That (resourceString, Is.EqualTo ("Property1 display name from MixinOfMixinAddingResources"));
+        }
+    }
+
+    [Test]
+    [Ignore ("Check with MK")]
+    public void DisplayName_MixedPropertyOverridenInMixinOfMixin ()
+    {
+      using (MixinConfiguration.BuildFromActive ()
+          .ForClass<TargetClassForGlobalization> ()
+          .AddMixin<MixinAddingResources> ()
+            .ForClass<MixinAddingResources> ()
+            .AddMixin<MixinOfMixinAddingResources> ()
+            .EnterScope ())
+        {
+          var resourceString = GetResourceStringForType (typeof (TargetClassForGlobalization), "MixedProperty2");
+
+          Assert.That (resourceString, Is.EqualTo ("MixedProperty2 display name from MixinOfMixinAddingResources"));
+        }
+    }
+
 
     private string GetResourceStringForType (Type targetType, string propertyName)
     {

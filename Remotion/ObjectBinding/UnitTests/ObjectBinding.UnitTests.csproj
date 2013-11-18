@@ -90,6 +90,11 @@
     </Compile>
     <Compile Include="Core\BindableObject\IBindableObjectGlobalizationServiceTest.cs" />
     <Compile Include="Core\BindableObject\IntergrationTests\Globalization\GlobalizationIntegrationTests.cs" />
+    <Compile Include="Core\BindableObject\IntergrationTests\Globalization\Resources\MixinOfMixinAddingResources.Designer.cs">
+      <DependentUpon>MixinOfMixinAddingResources.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Core\BindableObject\IntergrationTests\Globalization\Resources\DerivedTargetClassForGlobalization.Designer.cs">
       <DependentUpon>DerivedTargetClassForGlobalization.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -102,6 +107,7 @@
     <Compile Include="Core\BindableObject\IntergrationTests\Globalization\TestDomain\IMixinAddingResources.cs" />
     <Compile Include="Core\BindableObject\IntergrationTests\Globalization\TestDomain\MixinAddingResources.cs" />
     <Compile Include="Core\BindableObject\IntergrationTests\Globalization\TestDomain\DerivedMixinAddingResources.cs" />
+    <Compile Include="Core\BindableObject\IntergrationTests\Globalization\TestDomain\MixinOfMixinAddingResources.cs" />
     <Compile Include="Core\BindableObject\IntergrationTests\Globalization\TestDomain\TargetClassForGlobalization.cs" />
     <Compile Include="Core\BindableObject\IntergrationTests\InterfaceProperties\InterfacePropertiesTest.cs" />
     <Compile Include="Core\BindableObject\IntergrationTests\InterfaceProperties\TestDomain\IMixinInterface.cs" />
@@ -604,6 +610,11 @@
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Core\BindableObject\IntergrationTests\Globalization\Resources\MixinOfMixinAddingResources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>MixinOfMixinAddingResources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Core\BindableObject\IntergrationTests\Globalization\Resources\DerivedTargetClassForGlobalization.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>DerivedTargetClassForGlobalization.Designer.cs</LastGenOutput>
