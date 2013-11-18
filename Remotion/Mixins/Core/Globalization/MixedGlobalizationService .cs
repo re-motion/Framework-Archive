@@ -32,6 +32,14 @@ namespace Remotion.Mixins.Globalization
     {
       ArgumentUtility.CheckNotNull ("type", type);
 
+      //foreach mixintype on type
+      // get resourceManger + call method with mixintype (GetConcreteResourceManager)
+      //create set of all resourceManagers
+      //return set;
+      // use ClassContext as cache-key
+
+
+
       //TODO AO: implement as decorator: Will use MixedResourceManagerResolver directly. Possibly, also inline MixedResourceManagerResolver?
       return MixedMultiLingualResources.ExistsResource (type) ? MixedMultiLingualResources.GetResourceManager (type, true) : NullResourceManager.Instance;
     }
