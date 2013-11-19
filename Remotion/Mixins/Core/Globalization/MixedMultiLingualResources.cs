@@ -35,7 +35,7 @@ namespace Remotion.Mixins.Globalization
 	/// </list>
 	/// Both possibilities have a certain inconsistency, and none is perfect, so the class leaves it to the user to decide.
 	/// </remarks>
-  //TODO AO: mark obosolete
+  [Obsolete ("Use MixedGlobalizationService instead.", true)]
   public class MixedMultiLingualResources
   {
   	private static readonly MixedResourceManagerResolver<MultiLingualResourcesAttribute> s_resolver =
