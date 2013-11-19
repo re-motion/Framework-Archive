@@ -147,24 +147,24 @@ namespace Remotion.ObjectBinding.UnitTests.Core.BindableObject.IntergrationTests
     }
 
     [Test]
-    [Ignore ("Check with MK")]
+    [Ignore ("TODO AO: static cache problem-> will be resolved with the new implementation")]
     public void DisplayName_PropertyOverridenInMixinOfMixin ()
     {
       using (MixinConfiguration.BuildFromActive ()
           .ForClass<TargetClassForGlobalization> ()
           .AddMixin<MixinAddingResources> ()
-            .ForClass<MixinAddingResources>()
-            .AddMixin<MixinOfMixinAddingResources>()
-            .EnterScope())
-        {
-          var resourceString = GetResourceStringForType (typeof (TargetClassForGlobalization), "Property1");
+            .ForClass<MixinAddingResources> ()
+            .AddMixin<MixinOfMixinAddingResources> ()
+            .EnterScope ())
+      {
+        var resourceString = GetResourceStringForType (typeof (TargetClassForGlobalization), "Property1");
 
-          Assert.That (resourceString, Is.EqualTo ("Property1 display name from MixinOfMixinAddingResources"));
-        }
+        Assert.That (resourceString, Is.EqualTo ("Property1 display name from MixinOfMixinAddingResources"));
+      }
     }
 
     [Test]
-    [Ignore ("Check with MK")]
+    [Ignore ("TODO AO: mixins in wrong order")]
     public void DisplayName_MixedPropertyOverridenInMixinOfMixin ()
     {
       using (MixinConfiguration.BuildFromActive ()
