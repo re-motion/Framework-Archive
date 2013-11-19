@@ -89,6 +89,8 @@
     </Compile>
     <Compile Include="Core\Globalization\TestDomain\ClassWithResources.cs" />
     <Compile Include="Core\Globalization\TestDomain\MixinAddingResources.cs" />
+    <Compile Include="Core\Globalization\TestDomain\MixinOfMixinWithResources.cs" />
+    <Compile Include="Core\Globalization\TestDomain\MixinWithoutResourceAttribute.cs" />
     <Compile Include="Core\IntegrationTests\Overrides\OverridingTargetMethodsWithShadowing.cs" />
     <Compile Include="Core\CodeGeneration\TypePipe\CodeGenerationClassContextSerializerTest.cs" />
     <Compile Include="Core\CodeGeneration\TypePipe\CodeGenerationMixinContextOriginSerializerTest.cs" />

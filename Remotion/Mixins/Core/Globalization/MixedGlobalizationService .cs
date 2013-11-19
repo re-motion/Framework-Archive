@@ -16,32 +16,80 @@
 // 
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using JetBrains.Annotations;
+using Remotion.Collections;
 using Remotion.Globalization;
+using Remotion.Mixins.Context;
+using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.Mixins.Globalization
 {
-  public class MixedGlobalizationService : GlobalizationServiceBase
+  public class MixedGlobalizationService : IGlobalizationService
   {
+    private static readonly ResourceManagerResolver<MultiLingualResourcesAttribute> s_resolver =
+        new ResourceManagerResolver<MultiLingualResourcesAttribute>();
+
+    private readonly ICache<ClassContext, IResourceManager> _resourceManagerCache =
+        CacheFactory.CreateWithLocking<ClassContext, IResourceManager>();
+
+    private readonly TypeConversionProvider _typeConversionProvider;
+
     public MixedGlobalizationService ()
     {
-
+      _typeConversionProvider = TypeConversionProvider.Create();
     }
 
-    protected override IResourceManager GetConcreteResourceManager (Type type)
+    public IResourceManager GetResourceManager (ITypeInformation typeInformation)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
+      ArgumentUtility.CheckNotNull ("typeInformation", typeInformation);
 
-      //foreach mixintype on type
-      // get resourceManger + call method with mixintype (GetConcreteResourceManager)
-      //create set of all resourceManagers
-      //return set;
-      // use ClassContext as cache-key
+      var cacheKey = GetCacheKey (typeInformation);
+      if (cacheKey == null)
+        return NullResourceManager.Instance;
 
+      return _resourceManagerCache.GetOrCreateValue (cacheKey, GetResourceManagerFromType);
+    }
 
+    private ClassContext GetCacheKey (ITypeInformation typeInformation)
+    {
+      var type = GetType (typeInformation);
+      if (type == null)
+        return null;
 
-      //TODO AO: implement as decorator: Will use MixedResourceManagerResolver directly. Possibly, also inline MixedResourceManagerResolver?
-      return MixedMultiLingualResources.ExistsResource (type) ? MixedMultiLingualResources.GetResourceManager (type, true) : NullResourceManager.Instance;
+      return MixinConfiguration.ActiveConfiguration.GetContext (type);
+    }
+
+    private Type GetType (ITypeInformation typeInformation)
+    {
+      if (!_typeConversionProvider.CanConvert (typeInformation.GetType(), typeof (Type)))
+        return null;
+      return (Type) _typeConversionProvider.Convert (typeInformation.GetType (), typeof (Type), typeInformation);
+    }
+
+    [NotNull]
+    private IResourceManager GetResourceManagerFromType (ClassContext classContext)
+    {
+      var resourceMangers = new List<IResourceManager>();
+      CollectResourceManagersRecursively(classContext.Type, resourceMangers);
+
+      if (resourceMangers.Any())
+        return new ResourceManagerSet (resourceMangers);
+
+      return NullResourceManager.Instance;
+    }
+
+    private void CollectResourceManagersRecursively (Type type, List<IResourceManager> collectedResourceMangers)
+    {
+      foreach (Type mixinType in MixinTypeUtility.GetMixinTypesExact (type))
+      {
+        if (ResourceManagerResolverUtility.Current.ExistsResource (s_resolver, mixinType))
+          collectedResourceMangers.Add (s_resolver.GetResourceManager (mixinType, true));
+
+        CollectResourceManagersRecursively (mixinType, collectedResourceMangers);
+      }
     }
   }
 }

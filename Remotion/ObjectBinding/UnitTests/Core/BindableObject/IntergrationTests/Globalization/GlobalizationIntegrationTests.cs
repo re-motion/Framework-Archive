@@ -54,7 +54,7 @@ namespace Remotion.ObjectBinding.UnitTests.Core.BindableObject.IntergrationTests
     }
 
     [Test]
-    [Ignore("not implemented yet")]
+    [Ignore("TODO AO: not implemented yet")]
     public void DisplayName_InheritedAndOverridden_NotMixed_DerivedClass ()
     {
       var resourceString = GetResourceStringForType (typeof (DerivedTargetClassForGlobalization), "Property1");

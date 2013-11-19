@@ -16,13 +16,13 @@
 // 
 
 using System;
+using System.Linq;
 using NUnit.Framework;
 using Remotion.Globalization;
 using Remotion.Mixins.Globalization;
 using Remotion.Mixins.UnitTests.Core.Globalization.TestDomain;
 using Remotion.Reflection;
 using Rhino.Mocks;
-using System.Linq;
 
 
 namespace Remotion.Mixins.UnitTests.Core.Globalization
@@ -35,83 +35,132 @@ namespace Remotion.Mixins.UnitTests.Core.Globalization
     [SetUp]
     public void SetUp ()
     {
-        _globalizationService = new MixedGlobalizationService();
+      _globalizationService = new MixedGlobalizationService();
     }
 
     [Test]
     public void GetResourceManager_WithTypeNotSupportingConversionFromITypeInformationToType ()
     {
-      var typeInformation = MockRepository.GenerateStub<ITypeInformation> ();
+      var typeInformation = MockRepository.GenerateStub<ITypeInformation>();
 
       var result = _globalizationService.GetResourceManager (typeInformation);
 
-      Assert.That (result, Is.TypeOf(typeof(NullResourceManager)));
+      Assert.That (result, Is.TypeOf (typeof (NullResourceManager)));
     }
 
     [Test]
-    public void GetResourceManager_TypeWithResourceForType ()
+    public void GetResourceManager_TypeWithoutMixin_ReturnsNullResourceManager ()
     {
-      var typeInformation = TypeAdapter.Create (typeof (ClassWithMultiLingualResourcesAttributes));
-
-      var result = _globalizationService.GetResourceManager (typeInformation) as ResourceManagerSet;
-
-      Assert.That (result, Is.Not.Null);
-      Assert.That (result.ResourceManagers.Count(), Is.EqualTo (1));
-      Assert.That (result.ResourceManagers.ElementAt (0), Is.TypeOf (typeof (ResourceManagerWrapper)));
-    }
-
-    [Test]
-    public void GetResourceManager_TypeWithoutResourceForType ()
-    {
-      var typeInformation = TypeAdapter.Create (typeof (ClassWithoutMultiLingualResourcesAttributes));
+      var typeInformation = TypeAdapter.Create (typeof (ClassWithResources));
 
       var result = _globalizationService.GetResourceManager (typeInformation);
 
-      Assert.That (result, Is.TypeOf(typeof(NullResourceManager)));
+      Assert.That (result, Is.TypeOf (typeof (NullResourceManager)));
     }
 
     [Test]
-    public void GetResourceManager_TypeWithoutResourceForType_ResourceAddedByMixin ()
+    public void GetResourceManager_TypeWithMixin_NoResourceAttribute_ReturnsNullResourceManager ()
     {
-      using (MixinConfiguration.BuildFromActive ().ForClass<ClassWithoutMultiLingualResourcesAttributes> ().AddMixin<MixinAddingMultiLingualResourcesAttributes1> ().EnterScope ())
+      using (MixinConfiguration.BuildFromActive()
+          .ForClass<ClassWithoutMultiLingualResourcesAttributes>()
+          .AddMixin<MixinWithoutResourceAttribute>()
+          .EnterScope())
       {
         var typeInformation = TypeAdapter.Create (typeof (ClassWithoutMultiLingualResourcesAttributes));
 
-        var result = _globalizationService.GetResourceManager (typeInformation) as ResourceManagerSet;
+        var result = _globalizationService.GetResourceManager (typeInformation);
 
-        Assert.That (result, Is.Not.Null);
-        Assert.That (result.ResourceManagers.Count(), Is.EqualTo (1));
-        Assert.That (result.ResourceManagers.ElementAt(0), Is.TypeOf(typeof(ResourceManagerWrapper)));
+        Assert.That (result, Is.InstanceOf<NullResourceManager>());
       }
     }
 
     [Test]
-    public void GetResourceManager_TypeWithoutResourceForType_ResourceAddedByTwoMixins ()
+    public void GetResourceManager_TypeWithMixin_WithResourceAttribute_ReturnsResourceManagerSet ()
+    {
+      using (MixinConfiguration.BuildFromActive()
+          .ForClass<ClassWithoutMultiLingualResourcesAttributes>()
+          .AddMixin<MixinAddingMultiLingualResourcesAttributes1>()
+          .EnterScope())
+      {
+        var typeInformation = TypeAdapter.Create (typeof (ClassWithoutMultiLingualResourcesAttributes));
+
+        var result = (ResourceManagerSet) _globalizationService.GetResourceManager (typeInformation);
+
+        var innerResourceManager = result.ResourceManagers.Single();
+        Assert.That (innerResourceManager, Is.InstanceOf<ResourceManagerWrapper>());
+        Assert.That (innerResourceManager.Name, Is.EqualTo ("OnMixin1"));
+      }
+    }
+
+    [Test]
+    public void GetResourceManager_TypeWithMixinOfMixin_WithResourceAttribute_ReturnsResourceManagerSet ()
     {
       using (MixinConfiguration.BuildFromActive ()
-        .ForClass<ClassWithoutMultiLingualResourcesAttributes> ()
-        .AddMixin<MixinAddingMultiLingualResourcesAttributes1> ()
-        .AddMixin<MixinAddingMultiLingualResourcesAttributes2>()
-        .EnterScope ())
+          .ForClass<ClassWithoutMultiLingualResourcesAttributes> ()
+          .AddMixin<MixinWithoutResourceAttribute> ()
+            .ForClass<MixinWithoutResourceAttribute>()
+            .AddMixin<MixinOfMixinWithResources>()
+          .EnterScope ())
       {
         var typeInformation = TypeAdapter.Create (typeof (ClassWithoutMultiLingualResourcesAttributes));
 
-        var result = _globalizationService.GetResourceManager (typeInformation) as ResourceManagerSet;
+        var result = (ResourceManagerSet) _globalizationService.GetResourceManager (typeInformation);
 
-        Assert.That (result, Is.Not.Null);
-        Assert.That (result.ResourceManagers.Count(), Is.EqualTo (3));
+        var innerResourceManager = result.ResourceManagers.Single ();
+        Assert.That (innerResourceManager, Is.InstanceOf<ResourceManagerWrapper> ());
+        Assert.That (innerResourceManager.Name, Is.EqualTo ("MixinOfMixinWithResources"));
       }
     }
 
     [Test]
-    public void GetResourceManager_TypeWithResourceAndMixinWithResource_TypeResourceOverridesMixinResource ()
+    public void GetResourceManager_TypeWithMultipleMixins_ReturnsResourceManagerSet ()
     {
-      using (MixinConfiguration.BuildFromActive().ForClass<ClassWithResources>().AddMixin<MixinAddingResources>().EnterScope())
+      using (MixinConfiguration.BuildFromActive ()
+          .ForClass<ClassWithoutMultiLingualResourcesAttributes> ()
+          .AddMixin<MixinAddingMultiLingualResourcesAttributes1> ()
+          .AddMixin<MixinWithoutResourceAttribute> ()
+            .ForClass<MixinWithoutResourceAttribute> ()
+            .AddMixin<MixinOfMixinWithResources> ()
+          .EnterScope ())
       {
-        var typeInformation = TypeAdapter.Create (typeof (ClassWithResources));
-        var resourceManager = _globalizationService.GetResourceManager (typeInformation);
+        var typeInformation = TypeAdapter.Create (typeof (ClassWithoutMultiLingualResourcesAttributes));
 
-        Assert.That (resourceManager.GetString ("property:Value1"), Is.EqualTo ("Value 1"));
+        var result = (ResourceManagerSet) _globalizationService.GetResourceManager (typeInformation);
+
+        Assert.That (result.ResourceManagers.Count(), Is.EqualTo(2));
+      }
+    }
+
+    [Test]
+    public void GetResourceManager_TypeWithMixinWithMultipleAttributes_ReturnsResourceManagerSet ()
+    {
+      using (MixinConfiguration.BuildFromActive ()
+          .ForClass<ClassWithoutMultiLingualResourcesAttributes> ()
+          .AddMixin<MixinAddingMultiLingualResourcesAttributes2> ()
+          .EnterScope ())
+      {
+        var typeInformation = TypeAdapter.Create (typeof (ClassWithoutMultiLingualResourcesAttributes));
+
+        var result = (ResourceManagerSet) _globalizationService.GetResourceManager (typeInformation);
+
+        Assert.That (result.ResourceManagers.Count (), Is.EqualTo (2));
+      }
+    }
+
+    [Test]
+    public void GetResourceManager_ReturnsSameInstanceForSameClassContext ()
+    {
+      using (MixinConfiguration.BuildFromActive ()
+          .ForClass<ClassWithoutMultiLingualResourcesAttributes> ()
+          .AddMixin<MixinAddingMultiLingualResourcesAttributes2> ()
+          .EnterScope ())
+      {
+        var typeInformation = TypeAdapter.Create (typeof (ClassWithoutMultiLingualResourcesAttributes));
+
+        var result1 = _globalizationService.GetResourceManager (typeInformation);
+        var result2 = _globalizationService.GetResourceManager (typeInformation);
+
+        Assert.That (result1, Is.SameAs(result2));
       }
     }
 
