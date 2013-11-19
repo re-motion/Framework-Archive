@@ -25,6 +25,9 @@ namespace Remotion.Globalization
 {
   public class GlobalizationService : IGlobalizationService
   {
+    private static readonly ResourceManagerResolver<MultiLingualResourcesAttribute> s_resolver =
+        new ResourceManagerResolver<MultiLingualResourcesAttribute> ();
+
     private readonly ICache<ITypeInformation, IResourceManager> _resourceManagerCache =
         CacheFactory.CreateWithLocking<ITypeInformation, IResourceManager> ();
 
@@ -56,7 +59,10 @@ namespace Remotion.Globalization
     {
       ArgumentUtility.CheckNotNull ("type", type);
 
-      return MultiLingualResources.ExistsResource (type) ? MultiLingualResources.GetResourceManager (type, true) : NullResourceManager.Instance;
+      if (ResourceManagerResolverUtility.Current.ExistsResource (s_resolver, type))
+         return s_resolver.GetResourceManager (type, true);
+      
+      return NullResourceManager.Instance;
     }
   }
 }

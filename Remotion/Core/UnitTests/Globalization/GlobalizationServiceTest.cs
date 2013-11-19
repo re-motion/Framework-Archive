@@ -75,8 +75,6 @@ namespace Remotion.UnitTests.Globalization
 
       Assert.That (resourceManager.GetString ("property:Value1"), Is.EqualTo ("Value 1"));
     }
-
-   
  
   }
 }
