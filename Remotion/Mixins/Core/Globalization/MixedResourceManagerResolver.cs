@@ -32,8 +32,7 @@ namespace Remotion.Mixins.Globalization
     
     protected override ResourceDefinition<TAttribute> GetResourceDefinition (Type type, Type currentType)
     {
-      //TODO AO: refactor to a decorator: Will use an instance of ResourceManagerResolver<T> to resolve the ResourceManagers for each individual MixinType
-			ResourceDefinition<TAttribute> resourcesOnType = base.GetResourceDefinition (type, currentType);
+      ResourceDefinition<TAttribute> resourcesOnType = base.GetResourceDefinition (type, currentType);
 			if (type == currentType)
 			{
 				// only on first call, check mixins

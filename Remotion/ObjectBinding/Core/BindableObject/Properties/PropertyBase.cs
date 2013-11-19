@@ -150,7 +150,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
         IBindableObjectGlobalizationService globalizationService = BusinessObjectProvider.GetService<IBindableObjectGlobalizationService>();
         if (globalizationService == null)
           return Identifier;
-        //TODO AO: 
+        
         return globalizationService.GetPropertyDisplayName (_propertyInfo); //TODO AO: (_reflectedClass.TargetType, _propertyInfo);
       }
     }
