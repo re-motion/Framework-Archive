@@ -341,7 +341,6 @@
     <Compile Include="Core\Definitions\TestDomain\RequiredMethodDefinitionBuilding\MixinRequiringSingleMethod.cs" />
     <Compile Include="Core\Definitions\TestDomain\RequiredMethodDefinitionBuilding\MixinRequiringSingleProperty.cs" />
     <Compile Include="Core\Definitions\TestDomain\TestClassDefinition.cs" />
-    <Compile Include="Core\Globalization\MixedResourceManagerResolverTest.cs" />
     <Compile Include="Core\Globalization\TestDomain\ClassWithMultiLingualResourcesAttributes.cs" />
     <Compile Include="Core\Globalization\TestDomain\ClassWithoutMultiLingualResourcesAttributes.cs" />
     <Compile Include="Core\Globalization\TestDomain\InheritedClassWithMultiLingualResourcesAttributes.cs" />

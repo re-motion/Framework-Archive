@@ -25,6 +25,7 @@ namespace Remotion.Mixins.Globalization
   /// Extends <see cref="ResourceManagerResolver{TAttribute}"/> to detect resources added via mixins.
   /// </summary>
   /// <typeparam name="TAttribute">The type of the resource attribute to be resolved by this class.</typeparam>
+  [Obsolete ("Use MixedGlobalizationService instead.", true)]
   public class MixedResourceManagerResolver<TAttribute> : ResourceManagerResolver<TAttribute>
       where TAttribute : Attribute, IResourcesAttribute
   {
