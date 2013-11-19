@@ -20,7 +20,6 @@ using NUnit.Framework;
 using Remotion.Mixins;
 using Remotion.ObjectBinding.BindableObject;
 using Remotion.ObjectBinding.UnitTests.Core.BindableObject.IntergrationTests.Globalization.TestDomain;
-using Rhino.Mocks.Constraints;
 using Is = NUnit.Framework.Is;
 
 namespace Remotion.ObjectBinding.UnitTests.Core.BindableObject.IntergrationTests.Globalization
@@ -54,7 +53,7 @@ namespace Remotion.ObjectBinding.UnitTests.Core.BindableObject.IntergrationTests
     }
 
     [Test]
-    [Ignore("TODO AO: not implemented yet")]
+    [Ignore("TODO AO: property not overidden -> not implemented yet")]
     public void DisplayName_InheritedAndOverridden_NotMixed_DerivedClass ()
     {
       var resourceString = GetResourceStringForType (typeof (DerivedTargetClassForGlobalization), "Property1");
@@ -147,7 +146,7 @@ namespace Remotion.ObjectBinding.UnitTests.Core.BindableObject.IntergrationTests
     }
 
     [Test]
-    [Ignore ("TODO AO: static cache problem-> will be resolved with the new implementation")]
+    [Explicit ("TODO AO: static cache problem-> will be resolved with the new implementation")]
     public void DisplayName_PropertyOverridenInMixinOfMixin ()
     {
       using (MixinConfiguration.BuildFromActive ()
@@ -164,7 +163,7 @@ namespace Remotion.ObjectBinding.UnitTests.Core.BindableObject.IntergrationTests
     }
 
     [Test]
-    [Ignore ("TODO AO: mixins in wrong order")]
+    [Explicit ("TODO AO: static cache problem-> will be resolved with the new implementation")]
     public void DisplayName_MixedPropertyOverridenInMixinOfMixin ()
     {
       using (MixinConfiguration.BuildFromActive ()

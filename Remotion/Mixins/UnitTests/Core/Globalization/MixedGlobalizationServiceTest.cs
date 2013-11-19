@@ -164,5 +164,24 @@ namespace Remotion.Mixins.UnitTests.Core.Globalization
       }
     }
 
+    [Test]
+    public void GetResourceManager_TypeWithMultipleMixins_ReturnsMostSpecificResourceManagerFirst ()
+    {
+      using (MixinConfiguration.BuildFromActive ()
+          .ForClass<ClassWithoutMultiLingualResourcesAttributes> ()
+          .AddMixin<MixinAddingMultiLingualResourcesAttributes1> ()
+          .AddMixin<MixinWithoutResourceAttribute> ()
+            .ForClass<MixinWithoutResourceAttribute> ()
+            .AddMixin<MixinOfMixinWithResources> ()
+          .EnterScope ())
+      {
+        var typeInformation = TypeAdapter.Create (typeof (ClassWithoutMultiLingualResourcesAttributes));
+
+        var result = (ResourceManagerSet) _globalizationService.GetResourceManager (typeInformation);
+
+        Assert.That (result.ResourceManagers.First ().Name, Is.EqualTo ("MixinOfMixinWithResources"));
+      }
+    }
+
   }
 }

@@ -83,13 +83,14 @@ namespace Remotion.Mixins.Globalization
 
     private void CollectResourceManagersRecursively (Type type, List<IResourceManager> collectedResourceMangers)
     {
-      foreach (Type mixinType in MixinTypeUtility.GetMixinTypesExact (type))
-      {
+      var mixinTypes = MixinTypeUtility.GetMixinTypesExact (type);
+      
+      foreach (var mixinType in mixinTypes)
+        CollectResourceManagersRecursively (mixinType, collectedResourceMangers);
+    
+      foreach (var mixinType in mixinTypes)
         if (ResourceManagerResolverUtility.Current.ExistsResource (s_resolver, mixinType))
           collectedResourceMangers.Add (s_resolver.GetResourceManager (mixinType, true));
-
-        CollectResourceManagersRecursively (mixinType, collectedResourceMangers);
-      }
     }
   }
 }
