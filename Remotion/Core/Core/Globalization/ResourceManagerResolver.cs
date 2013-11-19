@@ -18,7 +18,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Resources;
 using Remotion.Collections;
 using Remotion.Utilities;
 
@@ -70,7 +69,9 @@ namespace Remotion.Globalization
       if (cacheEntry.IsEmpty)
       {
         string message = string.Format (
-            "Type {0} and its base classes do not define the attribute {1}.", objectType.FullName, typeof (TAttribute).Name);
+            "Type {0} and its base classes do not define the attribute {1}.",
+            objectType.FullName,
+            typeof (TAttribute).Name);
         throw new ResourceException (message);
       }
 
@@ -133,7 +134,7 @@ namespace Remotion.Globalization
 
     protected virtual object GetResourceManagerSetCacheKey (Type definingType, bool includeHierarchy)
     {
-      return Tuple.Create(definingType, includeHierarchy);
+      return Tuple.Create (definingType, includeHierarchy);
     }
 
     private ResourceManagerCacheEntry CreateCacheEntry (Type objectType, bool includeHierarchy)
@@ -166,17 +167,10 @@ namespace Remotion.Globalization
 
     private ResourceManagerSet CreateResourceManagerSet (IEnumerable<ResourceDefinition<TAttribute>> resourceDefinitions)
     {
-      //TODO AO: Refactor to SelectMany expression and remove array
-      var resourceManagers = new List<ResourceManager>();
-      foreach (var definition in resourceDefinitions)
-      {
-        foreach (var attributePair in definition.GetAllAttributePairs())
-          resourceManagers.AddRange (_resourceManagerFactory.GetResourceManagers (attributePair.Item1.Assembly, attributePair.Item2));
-      }
-
-      //  Create a new resource mananger wrapper set and return it.
-      var resourceManagerArray = resourceManagers.ToArray();
-      return ResourceManagerWrapper.CreateWrapperSet (resourceManagerArray);
+      return
+          ResourceManagerWrapper.CreateWrapperSet (
+              resourceDefinitions.SelectMany (definition => definition.GetAllAttributePairs())
+                  .SelectMany (ap => _resourceManagerFactory.GetResourceManagers (ap.Item1.Assembly, ap.Item2)));
     }
   }
 }
