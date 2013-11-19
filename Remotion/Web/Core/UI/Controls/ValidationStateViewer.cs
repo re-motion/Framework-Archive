@@ -271,7 +271,7 @@ public class ValidationStateViewer : WebControl, IControl
 
     IResourceManager localResourceManager = MultiLingualResources.GetResourceManager (typeof (ResourceIdentifier), true);
     IResourceManager namingContainerResourceManager = ResourceManagerUtility.GetResourceManager (NamingContainer, true);
-    _cachedResourceManager = ResourceManagerSet.Create (new[] { localResourceManager, namingContainerResourceManager });
+    _cachedResourceManager = ResourceManagerSet.Create (namingContainerResourceManager, localResourceManager);
 
     return _cachedResourceManager;
   }

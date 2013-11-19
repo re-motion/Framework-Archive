@@ -33,7 +33,7 @@ namespace Remotion.Globalization
   {
     private static readonly ILog s_log = LogManager.GetLogger (typeof (ResourceManagerSet));
 
-    private readonly ICollection<IResourceManager> _resourceManagers;
+    private readonly IResourceManager[] _resourceManagers;
     private readonly string _name;
 
     /// <summary>
@@ -53,7 +53,7 @@ namespace Remotion.Globalization
     ///     rmset (rm1, rm2, rm3, rm4, rm5, rm6, rm7, rm8)
     ///   </para>
     /// </example>
-    /// <param name="resourceManagers"> The resource manager, starting with the least specific. </param>
+    /// <param name="resourceManagers"> The resource manager, starting with the most specific. </param>
     public static ResourceManagerSet Create (params IResourceManager[] resourceManagers)
     {
       ArgumentUtility.CheckNotNull ("resourceManagers", resourceManagers);
@@ -64,13 +64,13 @@ namespace Remotion.Globalization
     public ResourceManagerSet (IEnumerable<IResourceManager> resourceManagers)
     {
       _resourceManagers = CreateFlatList(resourceManagers).ToArray();
-      SeparatedStringBuilder sb = new SeparatedStringBuilder (", ", 30 * _resourceManagers.Count);
+      SeparatedStringBuilder sb = new SeparatedStringBuilder (", ", 30 * _resourceManagers.Length);
       foreach (var rm in _resourceManagers)
         sb.Append (rm.Name);
       _name = sb.ToString();
     }
 
-    [Obsolete ("Use ResourceManagerSet.Create instead. (Version 1.23.211)", true)]
+    [Obsolete ("Use ResourceManagerSet.Create instead. NOTE: The order of the ResourceMangers is now reversed. (Version 1.23.211)", true)]
     public ResourceManagerSet (params IResourceManager[] resourceManagers)
     {
       throw new InvalidOperationException ("Use ResourceManagerSet.Create instead. (Version 1.23.211)");
@@ -112,12 +112,15 @@ namespace Remotion.Globalization
     /// <seealso cref="M:Remotion.Globalization.IResourceManager.GetString(System.String)"/>
     public string GetString (string id)
     {
-      for (var i = 0; i < _resourceManagers.Count; i++)
+      //FOR-loop for performance reasons
+      // ReSharper disable ForCanBeConvertedToForeach
+      for (var i = 0; i < _resourceManagers.Length; i++)
       {
-        var s = _resourceManagers.ElementAt(i).GetString (id);
+        var s = _resourceManagers[i].GetString (id);
         if (s != null && s != id)
           return s;
       }
+      // ReSharper restore ForCanBeConvertedToForeach
 
       s_log.Debug ("Could not find resource with ID '" + id + "' in any of the following resource containers " + _name + ".");
       return id;

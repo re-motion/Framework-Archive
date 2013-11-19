@@ -16,8 +16,10 @@
 // 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Globalization;
+using System.Linq;
 using System.Resources;
 using Remotion.Collections;
 using Remotion.Logging;
@@ -43,13 +45,11 @@ namespace Remotion.Globalization
 
     private static readonly ILog s_log = LogManager.GetLogger (typeof (ResourceManagerWrapper));
 
-    public static ResourceManagerSet CreateWrapperSet (ResourceManager[] resourceManagers)
+    public static ResourceManagerSet CreateWrapperSet (IEnumerable<ResourceManager> resourceManagers)
     {
-      ResourceManagerWrapper[] wrappers = new ResourceManagerWrapper[resourceManagers.Length];
-      for (int i = 0; i < wrappers.Length; ++i)
-        wrappers[i] = new ResourceManagerWrapper (resourceManagers[i]);
-
-      return ResourceManagerSet.Create (wrappers);
+      ArgumentUtility.CheckNotNull ("resourceManagers", resourceManagers);
+      
+      return new ResourceManagerSet (resourceManagers.Select (rm => (IResourceManager) new ResourceManagerWrapper (rm)));
     }
 
     // member fields

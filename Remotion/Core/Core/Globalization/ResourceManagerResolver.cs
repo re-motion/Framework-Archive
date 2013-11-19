@@ -138,7 +138,7 @@ namespace Remotion.Globalization
 
     private ResourceManagerCacheEntry CreateCacheEntry (Type objectType, bool includeHierarchy)
     {
-      var resourceDefinitions = GetResourceDefinitionStream (objectType, includeHierarchy);
+      var resourceDefinitions = GetResourceDefinitionStream (objectType, includeHierarchy).ToArray();
 
       // Get the first resource definition in the stream (this is the type itself, or the first base class that has a resource definition).
       // If that first definition's defining type already has a resource manager, we'll use that resource manager. Otherwise, we'll create a new one
@@ -166,6 +166,7 @@ namespace Remotion.Globalization
 
     private ResourceManagerSet CreateResourceManagerSet (IEnumerable<ResourceDefinition<TAttribute>> resourceDefinitions)
     {
+      //TODO AO: Refactor to SelectMany expression and remove array
       var resourceManagers = new List<ResourceManager>();
       foreach (var definition in resourceDefinitions)
       {

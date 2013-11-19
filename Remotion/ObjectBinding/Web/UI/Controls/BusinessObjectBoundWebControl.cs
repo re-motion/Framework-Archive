@@ -389,7 +389,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
             IResourceManager localResourceManager = MultiLingualResources.GetResourceManager (localResourcesType, true);
             IResourceManager namingContainerResourceManager = ResourceManagerUtility.GetResourceManager (NamingContainer, true);
 
-            return ResourceManagerSet.Create (new[] {localResourceManager, namingContainerResourceManager});
+            return ResourceManagerSet.Create (namingContainerResourceManager, localResourceManager);
           });
     }
 

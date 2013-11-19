@@ -112,7 +112,7 @@ namespace Remotion.Web.UI.Controls
 
       return _resourceManagerCache.GetOrCreateValue (
           Tuple.Create (localResourcesType, controlResourceManager),
-          key => ResourceManagerSet.Create (new[] { MultiLingualResources.GetResourceManager (key.Item1, true), key.Item2 }));
+          key => ResourceManagerSet.Create (key.Item2 , MultiLingualResources.GetResourceManager (key.Item1, true)));
     }
   }
 }

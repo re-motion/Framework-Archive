@@ -150,7 +150,7 @@ namespace Remotion.Web.ExecutionEngine
       Control namingContainer = _control.NamingContainer ?? (Control) _control;
       IResourceManager namingContainerResourceManager = ResourceManagerUtility.GetResourceManager (namingContainer, true);
 
-      _cachedResourceManager = ResourceManagerSet.Create (new[] { localResourceManager, namingContainerResourceManager });
+      _cachedResourceManager = ResourceManagerSet.Create (namingContainerResourceManager, localResourceManager);
 
       return _cachedResourceManager;
     }
