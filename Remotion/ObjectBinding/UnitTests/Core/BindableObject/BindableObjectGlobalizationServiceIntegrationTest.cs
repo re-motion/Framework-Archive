@@ -134,12 +134,12 @@ namespace Remotion.ObjectBinding.UnitTests.Core.BindableObject
     }
 
     [Test]
-    public void GetPropertyDisplayName_WithMixin_ResourceEntryIsNotOverriddenByMixin ()
+    public void GetPropertyDisplayName_WithMixin_ResourceEntryIsOverriddenByMixin ()
     {
       using (MixinConfiguration.BuildFromActive().ForClass<SimpleBusinessObjectClass>().AddMixin<MixinAddingResources>().EnterScope())
       {
         IPropertyInformation propertyInformation = GetPropertyInfo (typeof (SimpleBusinessObjectClass), "PropertyForMixinOverriddeTest");
-        Assert.That (_globalizationService.GetPropertyDisplayName (propertyInformation), Is.EqualTo ("default value"));
+        Assert.That (_globalizationService.GetPropertyDisplayName (propertyInformation), Is.EqualTo ("overridden by mixin"));
       }
     }
 
