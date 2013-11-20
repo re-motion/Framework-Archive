@@ -15,7 +15,9 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Linq;
 using Remotion.Globalization;
+using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.Mixins.Globalization
@@ -24,31 +26,31 @@ namespace Remotion.Mixins.Globalization
   /// Provides a variant of <see cref="MultiLingualResources"/> that can be used to have mixins add resource identifiers to a target
   /// class. With this class, attributes are not only retrieved from the class and its base classes, but also from its mixins.
   /// </summary>
-	/// <remarks>
-	/// The methods of this class do not have overloads taking object - getting and checking resources is always done via the type.
-	/// The reason for this is as follows: If an instance was specified, its type would have to be used. Now, if the instance was not created 
-	/// by the <see cref="ObjectFactory"/>, we would have to either:
-	/// <list type="bullet">
-	///   <item>Fall back to <see cref="MultiLingualResources"/>, because the "new-ed" object doesn't have any mixins, so the type-based resource 
-	///   lookup shouldn't use the mixins either; or </item>
-	///   <item>Be consistent with ExistsResource (obj.GetType()), ie. considering the mixins as well.</item>
-	/// </list>
-	/// Both possibilities have a certain inconsistency, and none is perfect, so the class leaves it to the user to decide.
-	/// </remarks>
-  [Obsolete ("Use MixedGlobalizationService instead.", true)]
-  public class MixedMultiLingualResources
+  /// <remarks>
+  /// The methods of this class do not have overloads taking object - getting and checking resources is always done via the type.
+  /// The reason for this is as follows: If an instance was specified, its type would have to be used. Now, if the instance was not created 
+  /// by the <see cref="ObjectFactory"/>, we would have to either:
+  /// <list type="bullet">
+  ///   <item>Fall back to <see cref="MultiLingualResources"/>, because the "new-ed" object doesn't have any mixins, so the type-based resource 
+  ///   lookup shouldn't use the mixins either; or </item>
+  ///   <item>Be consistent with ExistsResource (obj.GetType()), ie. considering the mixins as well.</item>
+  /// </list>
+  /// Both possibilities have a certain inconsistency, and none is perfect, so the class leaves it to the user to decide.
+  /// </remarks>
+  [Obsolete ("Retrieve IGlobalizationService from IoC container instead.")]
+  public class MixedMultiLingualResources //TODO AO: Restore dropped unit tests (mark as Obsolete) -> if not possible reuse integration tests
   {
-  	private static readonly MixedResourceManagerResolver<MultiLingualResourcesAttribute> s_resolver =
-        new MixedResourceManagerResolver<MultiLingualResourcesAttribute> ();
+    private static readonly IGlobalizationService s_globalizationService =
+        new CompoundGlobalizationService (new IGlobalizationService[] { new MixedGlobalizationService(), new GlobalizationService() });
 
-		/// <summary>
-		/// Gets the resolver object used by the methods of this class.
-		/// </summary>
-		/// <value>The resolver object used by <see cref="MultiLingualResources"/>.</value>
-		public static MixedResourceManagerResolver<MultiLingualResourcesAttribute> Resolver
-		{
-			get { return s_resolver; }
-		}
+    /// <summary>
+    /// Gets the resolver object used by the methods of this class.
+    /// </summary>
+    /// <value>The resolver object used by <see cref="MultiLingualResources"/>.</value>
+    public static IGlobalizationService GlobalizationService
+    {
+      get { return s_globalizationService; }
+    }
 
     /// <summary>
     ///   Returns an instance of <see cref="IResourceManager"/> for the resource container specified in the class declaration of the type.
@@ -58,56 +60,70 @@ namespace Remotion.Mixins.Globalization
     /// included in the resource manager; otherwise, only the <paramref name="objectType"/> is searched for such attributes.</param>
     /// <returns>An instance of <see cref="IResourceManager"/> for <paramref name="objectType"/>.</returns>
     public static IResourceManager GetResourceManager (Type objectType, bool includeHierarchy)
+        //TODO AO: throw NotSupportedException if includeHierarchy is false
     {
       ArgumentUtility.CheckNotNull ("objectType", objectType);
       ArgumentUtility.CheckNotNull ("includeHierarchy", includeHierarchy);
 
-      return s_resolver.GetResourceManager (objectType, includeHierarchy);
+      return s_globalizationService.GetResourceManager (TypeAdapter.Create (objectType));
     }
 
-		/// <summary>
+    /// <summary>
     ///   Returns an instance of <see cref="IResourceManager"/> for the resource container specified in the class declaration of the type
-		///   that does not include resource managers for base classes and mixins.
+    ///   that does not include resource managers for base classes and mixins.
     /// </summary>
     /// <param name="objectType">The type to return an <see cref="IResourceManager"/> for.</param>
     /// <returns>An instance of <see cref="IResourceManager"/> for <paramref name="objectType"/>.</returns>
-		public static IResourceManager GetResourceManager (Type objectType)
-		{
-			ArgumentUtility.CheckNotNull ("objectType", objectType);
-			return GetResourceManager (objectType, false);
-		}
+    public static IResourceManager GetResourceManager (Type objectType) //TODO AO: mark as obsolete true
+    {
+      ArgumentUtility.CheckNotNull ("objectType", objectType);
+      return GetResourceManager (objectType, false);
+    }
 
-		/// <summary>
-		///   Loads a string resource for the specified type, identified by ID.
-		/// </summary>
-		/// <param name="objectTypeToGetResourceFor">
-		///   The <see cref="Type"/> for which to get the resource.
-		/// </param>
-		/// <param name="name"> The ID of the resource. </param>
-		/// <returns> The found string resource or an empty string. </returns>
-		public static string GetResourceText (Type objectTypeToGetResourceFor, string name)
-		{
-			ArgumentUtility.CheckNotNull ("objectTypeToGetResourceFor", objectTypeToGetResourceFor);
-			ArgumentUtility.CheckNotNull ("name", name);
+    /// <summary>
+    ///   Loads a string resource for the specified type, identified by ID.
+    /// </summary>
+    /// <param name="objectTypeToGetResourceFor">
+    ///   The <see cref="Type"/> for which to get the resource.
+    /// </param>
+    /// <param name="name"> The ID of the resource. </param>
+    /// <returns> The found string resource or an empty string. </returns>
+    public static string GetResourceText (Type objectTypeToGetResourceFor, string name)
+    {
+      ArgumentUtility.CheckNotNull ("objectTypeToGetResourceFor", objectTypeToGetResourceFor);
+      ArgumentUtility.CheckNotNull ("name", name);
 
-			return ResourceManagerResolverUtility.Current.GetResourceText (s_resolver, objectTypeToGetResourceFor, name);
-		}
+      var rm = s_globalizationService.GetResourceManager (TypeAdapter.Create (objectTypeToGetResourceFor));
+      var text = rm.GetString (name);
+      if (text == name)
+        return String.Empty;
+      return text;
+    }
 
-		/// <summary>
-		///   Checks for the existence of a string resource for the specified type, identified by ID.
-		/// </summary>
-		/// <param name="objectTypeToGetResourceFor">
-		///   The <see cref="Type"/> for which to check the resource.
-		/// </param>
-		/// <param name="name"> The ID of the resource. </param>
-		/// <returns> <see langword="true"/> if the resource can be found. </returns>
-		public static bool ExistsResourceText (Type objectTypeToGetResourceFor, string name)
-		{
-			ArgumentUtility.CheckNotNull ("objectTypeToGetResourceFor", objectTypeToGetResourceFor);
-			ArgumentUtility.CheckNotNull ("name", name);
+    /// <summary>
+    ///   Checks for the existence of a string resource for the specified type, identified by ID.
+    /// </summary>
+    /// <param name="objectTypeToGetResourceFor">
+    ///   The <see cref="Type"/> for which to check the resource.
+    /// </param>
+    /// <param name="name"> The ID of the resource. </param>
+    /// <returns> <see langword="true"/> if the resource can be found. </returns>
+    public static bool ExistsResourceText (Type objectTypeToGetResourceFor, string name)
+    {
+      ArgumentUtility.CheckNotNull ("objectTypeToGetResourceFor", objectTypeToGetResourceFor);
+      ArgumentUtility.CheckNotNull ("name", name);
 
-			return ResourceManagerResolverUtility.Current.ExistsResourceText (s_resolver, objectTypeToGetResourceFor, name);
-		}
+      try
+      {
+        var rm = s_globalizationService.GetResourceManager (TypeAdapter.Create (objectTypeToGetResourceFor));
+        string text = rm.GetString (name);
+        return (text != name);
+      }
+      catch
+      {
+        return false;
+      }
+    }
 
     /// <summary>
     ///   Checks for the existence of a resource set for the specified type.
@@ -119,7 +135,16 @@ namespace Remotion.Mixins.Globalization
     public static bool ExistsResource (Type objectTypeToGetResourceFor)
     {
       ArgumentUtility.CheckNotNull ("objectTypeToGetResourceFor", objectTypeToGetResourceFor);
-			return ResourceManagerResolverUtility.Current.ExistsResource (s_resolver, objectTypeToGetResourceFor);
+
+      var resourceManager = s_globalizationService.GetResourceManager (TypeAdapter.Create (objectTypeToGetResourceFor));
+      if (resourceManager.IsNull)
+        return false;
+
+      var resourceManagerAsResourceManagerSet = resourceManager as ResourceManagerSet;
+      if (resourceManagerAsResourceManagerSet != null && !resourceManagerAsResourceManagerSet.ResourceManagers.Any())
+        return false;
+
+      return true;
     }
   }
 }

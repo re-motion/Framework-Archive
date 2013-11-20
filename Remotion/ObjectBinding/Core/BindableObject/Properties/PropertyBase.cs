@@ -151,7 +151,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
         if (globalizationService == null)
           return Identifier;
         
-        return globalizationService.GetPropertyDisplayName (_propertyInfo); //TODO AO: (_reflectedClass.TargetType, _propertyInfo);
+        return globalizationService.GetPropertyDisplayName (_propertyInfo); //TODO AO: (_reflectedClass.TargetType, _propertyInfo); -> if not set throw InvalidOperationException
       }
     }
 

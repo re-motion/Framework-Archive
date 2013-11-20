@@ -22,7 +22,7 @@ namespace Remotion.Globalization
   /// <summary>
   /// Holds resource manager information cached by <see cref="ResourceManagerResolver{TAttribute}"/>.
   /// </summary>
-  public class ResourceManagerCacheEntry
+  public sealed class ResourceManagerCacheEntry
   {
     public static readonly ResourceManagerCacheEntry Empty = new ResourceManagerCacheEntry (null, null);
 

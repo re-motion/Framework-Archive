@@ -22,6 +22,7 @@ namespace Remotion.Globalization
   /// <summary>
   /// Provides the public API for classes working with and analyzing instances of <see cref="MultiLingualResourcesAttribute"/>.
   /// </summary>
+  //[Obsolete ("Retrieve IGlobalizationService from IoC container instead.")]   //TODO AO
   public static class MultiLingualResources
   {
   	private static readonly ResourceManagerResolver<MultiLingualResourcesAttribute> s_resolver =

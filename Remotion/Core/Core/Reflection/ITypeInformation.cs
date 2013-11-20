@@ -4,6 +4,7 @@ using Remotion.Utilities;
 
 namespace Remotion.Reflection
 {
+  //TODO AO: add ReflectionExtensions class: ConvertToRuntimeType/AsRuntimeType (extension method for ITypeInformation) > replace ReflectionUtility.ToRuntimeType
   /// <summary>
   /// Provides information about a type.
   /// </summary>

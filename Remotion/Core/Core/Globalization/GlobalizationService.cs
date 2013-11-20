@@ -23,14 +23,15 @@ using Remotion.Utilities;
 
 namespace Remotion.Globalization
 {
-  public class GlobalizationService : IGlobalizationService
+  public sealed class GlobalizationService : IGlobalizationService
   {
-    private static readonly ResourceManagerResolver<MultiLingualResourcesAttribute> s_resolver =
+    private readonly ResourceManagerResolver<MultiLingualResourcesAttribute> _resolver =
         new ResourceManagerResolver<MultiLingualResourcesAttribute> ();
 
     private readonly ICache<ITypeInformation, IResourceManager> _resourceManagerCache =
         CacheFactory.CreateWithLocking<ITypeInformation, IResourceManager> ();
 
+    //TODO AO: cache as static in extension class - later replace instantiation with IoC
     private readonly TypeConversionProvider _typeConversionProvider;
 
     public GlobalizationService ()
@@ -42,25 +43,19 @@ namespace Remotion.Globalization
     {
       ArgumentUtility.CheckNotNull ("typeInformation", typeInformation);
 
-      return _resourceManagerCache.GetOrCreateValue (typeInformation, GetResourceManagerFromType);
+      return _resourceManagerCache.GetOrCreateValue (typeInformation, GetResourceManagerImplementation);
     }
 
     [NotNull]
-    private IResourceManager GetResourceManagerFromType (ITypeInformation typeInformation)
+    private IResourceManager GetResourceManagerImplementation (ITypeInformation typeInformation)
     {
       if (!_typeConversionProvider.CanConvert (typeInformation.GetType (), typeof (Type)))
         return NullResourceManager.Instance;
 
       var type = (Type) _typeConversionProvider.Convert (typeInformation.GetType (), typeof (Type), typeInformation);
-      return GetConcreteResourceManager (type);
-    }
 
-    protected IResourceManager GetConcreteResourceManager (Type type)
-    {
-      ArgumentUtility.CheckNotNull ("type", type);
-
-      if (ResourceManagerResolverUtility.Current.ExistsResource (s_resolver, type))
-         return s_resolver.GetResourceManager (type, true);
+      if (ResourceManagerResolverUtility.Current.ExistsResource (_resolver, type))
+        return _resolver.GetResourceManager (type, true);
       
       return NullResourceManager.Instance;
     }

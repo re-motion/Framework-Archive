@@ -27,18 +27,15 @@ namespace Remotion.Globalization
   /// Provides a generalized implementation of the algorithms used to translate resource attributes into <see cref="IResourceManager"/> instances.
   /// </summary>
   /// <typeparam name="TAttribute">The type of the resource attribute to be resolved by this class.</typeparam>
-  public class ResourceManagerResolver<TAttribute>
+  //TODO AO: threadsafety doc instace safe
+  public sealed class ResourceManagerResolver<TAttribute>
       where TAttribute: Attribute, IResourcesAttribute
   {
+    //TODO AO: change cache key to type
     private readonly LockingCacheDecorator<object, ResourceManagerCacheEntry> _resourceManagerWrappersCache =
         CacheFactory.CreateWithLocking<object, ResourceManagerCacheEntry>();
 
     private readonly ResourceManagerFactory _resourceManagerFactory = new ResourceManagerFactory();
-
-    protected ResourceManagerFactory ResourceManagerFactory
-    {
-      get { return _resourceManagerFactory; }
-    }
 
     /// <summary>
     ///   Returns an instance of <c>IResourceManager</c> for the resource container specified
@@ -92,7 +89,7 @@ namespace Remotion.Globalization
     /// A <see cref="ResourceManagerCacheEntry"/> object for the given <paramref name="objectType"/>. The object is 
     /// <see cref="ResourceManagerCacheEntry.Empty"/> if no resources could be found.
     /// </returns>
-    public virtual ResourceManagerCacheEntry GetResourceManagerCacheEntry (Type objectType, bool includeHierarchy)
+    public ResourceManagerCacheEntry GetResourceManagerCacheEntry (Type objectType, bool includeHierarchy) //TODO AO: rename to GetResourceManager and drop above methods
     {
       ArgumentUtility.CheckNotNull ("objectType", objectType);
 
@@ -110,7 +107,7 @@ namespace Remotion.Globalization
       return cacheEntry;
     }
 
-    public virtual IEnumerable<ResourceDefinition<TAttribute>> GetResourceDefinitionStream (Type type, bool includeHierarchy)
+    private IEnumerable<ResourceDefinition<TAttribute>> GetResourceDefinitionStream (Type type, bool includeHierarchy)
     {
       Type currentType = type;
       while (currentType != null)
@@ -126,13 +123,13 @@ namespace Remotion.Globalization
       }
     }
 
-    protected virtual ResourceDefinition<TAttribute> GetResourceDefinition (Type type, Type currentType)
+    private ResourceDefinition<TAttribute> GetResourceDefinition (Type type, Type currentType)
     {
       TAttribute[] resourceAttributes = AttributeUtility.GetCustomAttributes<TAttribute> (currentType, false);
       return new ResourceDefinition<TAttribute> (currentType, resourceAttributes);
     }
 
-    protected virtual object GetResourceManagerSetCacheKey (Type definingType, bool includeHierarchy)
+    private object GetResourceManagerSetCacheKey (Type definingType, bool includeHierarchy)
     {
       return Tuple.Create (definingType, includeHierarchy);
     }
@@ -167,10 +164,10 @@ namespace Remotion.Globalization
 
     private ResourceManagerSet CreateResourceManagerSet (IEnumerable<ResourceDefinition<TAttribute>> resourceDefinitions)
     {
-      return
-          ResourceManagerWrapper.CreateWrapperSet (
-              resourceDefinitions.SelectMany (definition => definition.GetAllAttributePairs())
-                  .SelectMany (ap => _resourceManagerFactory.GetResourceManagers (ap.Item1.Assembly, ap.Item2)));
+      return ResourceManagerWrapper.CreateWrapperSet (
+          resourceDefinitions
+              .SelectMany (definition => definition.GetAllAttributePairs())
+              .SelectMany (ap => _resourceManagerFactory.GetResourceManagers (ap.Item1.Assembly, ap.Item2)));
     }
   }
 }

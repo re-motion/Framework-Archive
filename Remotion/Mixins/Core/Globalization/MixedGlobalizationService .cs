@@ -29,7 +29,7 @@ namespace Remotion.Mixins.Globalization
 {
   public class MixedGlobalizationService : IGlobalizationService
   {
-    private static readonly ResourceManagerResolver<MultiLingualResourcesAttribute> s_resolver =
+    private readonly ResourceManagerResolver<MultiLingualResourcesAttribute> _resolver =
         new ResourceManagerResolver<MultiLingualResourcesAttribute>();
 
     private readonly ICache<ClassContext, IResourceManager> _resourceManagerCache =
@@ -59,6 +59,8 @@ namespace Remotion.Mixins.Globalization
       if (type == null)
         return null;
 
+      //TODO AO: hold ActiveConfiguration in static field - use Interlocked.Compare to check if still current - if not call Cache.Clear
+      //refctor cache to use TypeInformation - if no mixins return NullManager
       return MixinConfiguration.ActiveConfiguration.GetContext (type);
     }
 
@@ -89,8 +91,8 @@ namespace Remotion.Mixins.Globalization
         CollectResourceManagersRecursively (mixinType, collectedResourceMangers);
     
       foreach (var mixinType in mixinTypes)
-        if (ResourceManagerResolverUtility.Current.ExistsResource (s_resolver, mixinType))
-          collectedResourceMangers.Add (s_resolver.GetResourceManager (mixinType, true));
+        if (ResourceManagerResolverUtility.Current.ExistsResource (_resolver, mixinType))
+          collectedResourceMangers.Add (_resolver.GetResourceManager (mixinType, true));
     }
   }
 }
