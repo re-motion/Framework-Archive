@@ -56,8 +56,9 @@ namespace Remotion.ObjectBinding.BindableObject
     /// <summary>
     /// Gets the localized display name of a property.
     /// </summary>
+    /// <param name="type">The target type of the property.</param>
     /// <param name="info">The property.</param>
     /// <returns>The localized display name.</returns>
-    string GetPropertyDisplayName (IPropertyInformation info);
+    string GetPropertyDisplayName (ITypeInformation type, IPropertyInformation info);
   }
 }

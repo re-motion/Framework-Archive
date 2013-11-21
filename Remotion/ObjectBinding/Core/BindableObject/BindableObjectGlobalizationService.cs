@@ -69,8 +69,9 @@ namespace Remotion.ObjectBinding.BindableObject
       return _resourceManager.Value.GetString (value ? ResourceIdentifier.True : ResourceIdentifier.False);
     }
 
-    public string GetPropertyDisplayName (IPropertyInformation propertyInfo)
+    public string GetPropertyDisplayName (ITypeInformation typeInfo, IPropertyInformation propertyInfo)
     {
+      ArgumentUtility.CheckNotNull ("typeInfo", typeInfo);
       ArgumentUtility.CheckNotNull ("propertyInfo", propertyInfo);
 
       // Note: Currently, MixedMultilingualResources requires the concrete mixed type and the concrete implemented property for globalization 
@@ -78,10 +79,6 @@ namespace Remotion.ObjectBinding.BindableObject
       // based globalization some time, so that we can work with ordinary IPropertyInformation objects
 
       var mixinIntroducedPropertyInformation = propertyInfo as BindableObjectMixinIntroducedPropertyInformation;
-      var globalizedType = mixinIntroducedPropertyInformation == null
-                               ? propertyInfo.DeclaringType
-                               : TypeAdapter.Create (
-                                   MixinTypeUtility.GetUnderlyingTargetType (((TypeAdapter) mixinIntroducedPropertyInformation.ConcreteType).Type));
       var property = mixinIntroducedPropertyInformation == null
                          ? propertyInfo
                          : mixinIntroducedPropertyInformation.FindInterfaceDeclarations()
@@ -92,7 +89,7 @@ namespace Remotion.ObjectBinding.BindableObject
                                                                          "BindableObjectGlobalizationService only supports unique interface declarations but proerty '{0}' is declared on multiply interfaces",
                                                                          propertyInfo.Name)));
 
-      return _memberInformationGlobalizationService.GetPropertyDisplayName (property, globalizedType);
+      return _memberInformationGlobalizationService.GetPropertyDisplayName (property, typeInfo);
     }
   }
 }

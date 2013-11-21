@@ -34,6 +34,7 @@ namespace Remotion.ObjectBinding.UnitTests.Core.BindableObject
     private IBindableObjectGlobalizationService _globalizationService;
     private CultureInfo _uiCultureBackup;
     private DefaultServiceLocator _defaultServiceLocator;
+    private TypeAdapter _targetType;
 
     public override void SetUp ()
     {
@@ -41,6 +42,8 @@ namespace Remotion.ObjectBinding.UnitTests.Core.BindableObject
 
       _defaultServiceLocator = new DefaultServiceLocator();
       _globalizationService = _defaultServiceLocator.GetInstance<IBindableObjectGlobalizationService>();
+      var bindableObjectClass = BindableObjectProviderTestHelper.GetBindableObjectClass (typeof (ClassWithResources));
+      _targetType = TypeAdapter.Create (bindableObjectClass.TargetType);
 
       _uiCultureBackup = Thread.CurrentThread.CurrentUICulture;
       Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
@@ -99,28 +102,28 @@ namespace Remotion.ObjectBinding.UnitTests.Core.BindableObject
     public void GetPropertyDisplayName ()
     {
       IPropertyInformation propertyInformation = GetPropertyInfo (typeof (ClassWithResources), "Value1");
-      Assert.That (_globalizationService.GetPropertyDisplayName (propertyInformation), Is.EqualTo ("Value 1"));
+      Assert.That (_globalizationService.GetPropertyDisplayName (_targetType, propertyInformation), Is.EqualTo ("Value 1"));
     }
 
     [Test]
     public void GetPropertyDisplayName_LongPropertyName ()
     {
       IPropertyInformation propertyInformation = GetPropertyInfo (typeof (ClassWithResources), "Value2");
-      Assert.That (_globalizationService.GetPropertyDisplayName (propertyInformation), Is.EqualTo ("Value 2"));
+      Assert.That (_globalizationService.GetPropertyDisplayName (_targetType, propertyInformation), Is.EqualTo ("Value 2"));
     }
 
     [Test]
     public void GetPropertyDisplayName_WithoutMultiLingualResourcesAttribute ()
     {
       IPropertyInformation propertyInformation = GetPropertyInfo (typeof (SimpleBusinessObjectClass), "String");
-      Assert.That (_globalizationService.GetPropertyDisplayName (propertyInformation), Is.EqualTo ("String"));
+      Assert.That (_globalizationService.GetPropertyDisplayName (_targetType, propertyInformation), Is.EqualTo ("String"));
     }
 
     [Test]
     public void GetPropertyDisplayName_WithoutResourceForProperty ()
     {
       IPropertyInformation propertyInformation = GetPropertyInfo (typeof (ClassWithResources), "ValueWithoutResource");
-      Assert.That (_globalizationService.GetPropertyDisplayName (propertyInformation), Is.EqualTo ("ValueWithoutResource"));
+      Assert.That (_globalizationService.GetPropertyDisplayName (_targetType, propertyInformation), Is.EqualTo ("ValueWithoutResource"));
     }
 
     [Test]
@@ -129,7 +132,9 @@ namespace Remotion.ObjectBinding.UnitTests.Core.BindableObject
       using (MixinConfiguration.BuildFromActive().ForClass<SimpleBusinessObjectClass>().AddMixin<MixinAddingResources>().EnterScope())
       {
         IPropertyInformation propertyInformation = GetPropertyInfo (typeof (SimpleBusinessObjectClass), "String");
-        Assert.That (_globalizationService.GetPropertyDisplayName (propertyInformation), Is.EqualTo ("Resource from mixin"));
+        Assert.That (
+            _globalizationService.GetPropertyDisplayName (TypeAdapter.Create (typeof (MixinAddingResources)), propertyInformation),
+            Is.EqualTo ("Resource from mixin"));
       }
     }
 
@@ -139,7 +144,9 @@ namespace Remotion.ObjectBinding.UnitTests.Core.BindableObject
       using (MixinConfiguration.BuildFromActive().ForClass<SimpleBusinessObjectClass>().AddMixin<MixinAddingResources>().EnterScope())
       {
         IPropertyInformation propertyInformation = GetPropertyInfo (typeof (SimpleBusinessObjectClass), "PropertyForMixinOverriddeTest");
-        Assert.That (_globalizationService.GetPropertyDisplayName (propertyInformation), Is.EqualTo ("overridden by mixin"));
+        Assert.That (
+            _globalizationService.GetPropertyDisplayName (TypeAdapter.Create (typeof (MixinAddingResources)), propertyInformation),
+            Is.EqualTo ("overridden by mixin"));
       }
     }
 
@@ -149,7 +156,9 @@ namespace Remotion.ObjectBinding.UnitTests.Core.BindableObject
       using (MixinConfiguration.BuildFromActive().ForClass<SimpleBusinessObjectClass>().AddMixin<MixinAddingResources>().EnterScope())
       {
         IPropertyInformation propertyInformation = GetPropertyInfo (typeof (SimpleBusinessObjectClass), "StringForLongPropertyName");
-        Assert.That (_globalizationService.GetPropertyDisplayName (propertyInformation), Is.EqualTo ("Resource from mixin for long property name"));
+        Assert.That (
+            _globalizationService.GetPropertyDisplayName (TypeAdapter.Create (typeof (MixinAddingResources)), propertyInformation),
+            Is.EqualTo ("Resource from mixin for long property name"));
       }
     }
 
@@ -158,23 +167,27 @@ namespace Remotion.ObjectBinding.UnitTests.Core.BindableObject
     public void GetPropertyDisplayName_WithTwoMixins_WithDependency_IntegrationTest ()
     {
       using (MixinConfiguration.BuildFromActive()
-                               .ForClass<SimpleBusinessObjectClass>()
-                               .AddMixin<MixinAddingResources>()
-                               .AddMixin<MixinAddingResources2>().WithDependency<MixinAddingResources>()
-                               .EnterScope())
+          .ForClass<SimpleBusinessObjectClass>()
+          .AddMixin<MixinAddingResources>()
+          .AddMixin<MixinAddingResources2>().WithDependency<MixinAddingResources>()
+          .EnterScope())
       {
         IPropertyInformation propertyInformation = GetPropertyInfo (typeof (SimpleBusinessObjectClass), "String");
-        Assert.That (_globalizationService.GetPropertyDisplayName (propertyInformation), Is.EqualTo ("Resource from mixin2"));
+        Assert.That (
+            _globalizationService.GetPropertyDisplayName (TypeAdapter.Create (typeof (MixinAddingResources2)), propertyInformation),
+            Is.EqualTo ("Resource from mixin2"));
       }
 
       using (MixinConfiguration.BuildFromActive()
-                               .ForClass<SimpleBusinessObjectClass>()
-                               .AddMixin<MixinAddingResources>().WithDependency<MixinAddingResources2>()
-                               .AddMixin<MixinAddingResources2>()
-                               .EnterScope())
+          .ForClass<SimpleBusinessObjectClass>()
+          .AddMixin<MixinAddingResources>().WithDependency<MixinAddingResources2>()
+          .AddMixin<MixinAddingResources2>()
+          .EnterScope())
       {
         IPropertyInformation propertyInformation = GetPropertyInfo (typeof (SimpleBusinessObjectClass), "String");
-        Assert.That (_globalizationService.GetPropertyDisplayName (propertyInformation), Is.EqualTo ("Resource from mixin"));
+        Assert.That (
+            _globalizationService.GetPropertyDisplayName (TypeAdapter.Create (typeof (MixinAddingResources)), propertyInformation),
+            Is.EqualTo ("Resource from mixin"));
       }
     }
 
@@ -182,13 +195,15 @@ namespace Remotion.ObjectBinding.UnitTests.Core.BindableObject
     public void GetPropertyDisplayName_WithTwoMixins_WithDependency1_IntegrationTest ()
     {
       using (MixinConfiguration.BuildFromActive()
-                               .ForClass<SimpleBusinessObjectClass>()
-                               .AddMixin<MixinAddingResources>()
-                               .AddMixin<MixinAddingResources2>().WithDependency<MixinAddingResources>()
-                               .EnterScope())
+          .ForClass<SimpleBusinessObjectClass>()
+          .AddMixin<MixinAddingResources>()
+          .AddMixin<MixinAddingResources2>().WithDependency<MixinAddingResources>()
+          .EnterScope())
       {
         IPropertyInformation propertyInformation = GetPropertyInfo (typeof (SimpleBusinessObjectClass), "String");
-        Assert.That (_globalizationService.GetPropertyDisplayName (propertyInformation), Is.EqualTo ("Resource from mixin2"));
+        Assert.That (
+            _globalizationService.GetPropertyDisplayName (TypeAdapter.Create (typeof (MixinAddingResources2)), propertyInformation),
+            Is.EqualTo ("Resource from mixin2"));
       }
     }
 
@@ -196,13 +211,15 @@ namespace Remotion.ObjectBinding.UnitTests.Core.BindableObject
     public void GetPropertyDisplayName_WithTwoMixins_WithDependency2_IntegrationTest ()
     {
       using (MixinConfiguration.BuildFromActive()
-                               .ForClass<SimpleBusinessObjectClass>()
-                               .AddMixin<MixinAddingResources>().WithDependency<MixinAddingResources2>()
-                               .AddMixin<MixinAddingResources2>()
-                               .EnterScope())
+          .ForClass<SimpleBusinessObjectClass>()
+          .AddMixin<MixinAddingResources>().WithDependency<MixinAddingResources2>()
+          .AddMixin<MixinAddingResources2>()
+          .EnterScope())
       {
         IPropertyInformation propertyInformation = GetPropertyInfo (typeof (SimpleBusinessObjectClass), "String");
-        Assert.That (_globalizationService.GetPropertyDisplayName (propertyInformation), Is.EqualTo ("Resource from mixin"));
+        Assert.That (
+            _globalizationService.GetPropertyDisplayName (TypeAdapter.Create (typeof (MixinAddingResources)), propertyInformation),
+            Is.EqualTo ("Resource from mixin"));
       }
     }
 
@@ -212,7 +229,9 @@ namespace Remotion.ObjectBinding.UnitTests.Core.BindableObject
       BindableObjectClass bindableClass = BindableObjectProviderTestHelper.GetBindableObjectClass (typeof (ClassWithMixedPropertyAndResources));
       PropertyBase property = (PropertyBase) bindableClass.GetPropertyDefinition ("MixedProperty");
 
-      Assert.That (_globalizationService.GetPropertyDisplayName (property.PropertyInfo), Is.EqualTo ("Resourced!"));
+      Assert.That (
+          _globalizationService.GetPropertyDisplayName (TypeAdapter.Create (bindableClass.TargetType), property.PropertyInfo),
+          Is.EqualTo ("Resourced!"));
     }
 
     [Test]
@@ -221,7 +240,9 @@ namespace Remotion.ObjectBinding.UnitTests.Core.BindableObject
       BindableObjectClass bindableClass = BindableObjectProviderTestHelper.GetBindableObjectClass (typeof (ClassWithMixedPropertyAndResources));
       PropertyBase property = (PropertyBase) bindableClass.GetPropertyDefinition ("MixedReadOnlyProperty");
 
-      Assert.That (_globalizationService.GetPropertyDisplayName (property.PropertyInfo), Is.EqualTo ("MixedReadOnlyProperty"));
+      Assert.That (
+          _globalizationService.GetPropertyDisplayName (TypeAdapter.Create (bindableClass.TargetType), property.PropertyInfo),
+          Is.EqualTo ("MixedReadOnlyProperty"));
     }
   }
 }
