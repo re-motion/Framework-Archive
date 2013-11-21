@@ -35,13 +35,6 @@ namespace Remotion.Mixins.Globalization
     private readonly ICache<ClassContext, IResourceManager> _resourceManagerCache =
         CacheFactory.CreateWithLocking<ClassContext, IResourceManager>();
 
-    private readonly TypeConversionProvider _typeConversionProvider;
-
-    public MixedGlobalizationService ()
-    {
-      _typeConversionProvider = TypeConversionProvider.Create();
-    }
-
     public IResourceManager GetResourceManager (ITypeInformation typeInformation)
     {
       ArgumentUtility.CheckNotNull ("typeInformation", typeInformation);
@@ -55,20 +48,13 @@ namespace Remotion.Mixins.Globalization
 
     private ClassContext GetCacheKey (ITypeInformation typeInformation)
     {
-      var type = GetType (typeInformation);
+      var type = typeInformation.AsRuntimeType();
       if (type == null)
         return null;
 
       //TODO AO: hold ActiveConfiguration in static field - use Interlocked.Compare to check if still current - if not call Cache.Clear
       //refctor cache to use TypeInformation - if no mixins return NullManager
       return MixinConfiguration.ActiveConfiguration.GetContext (type);
-    }
-
-    private Type GetType (ITypeInformation typeInformation)
-    {
-      if (!_typeConversionProvider.CanConvert (typeInformation.GetType(), typeof (Type)))
-        return null;
-      return (Type) _typeConversionProvider.Convert (typeInformation.GetType (), typeof (Type), typeInformation);
     }
 
     [NotNull]

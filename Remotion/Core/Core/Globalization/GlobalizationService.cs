@@ -31,14 +31,6 @@ namespace Remotion.Globalization
     private readonly ICache<ITypeInformation, IResourceManager> _resourceManagerCache =
         CacheFactory.CreateWithLocking<ITypeInformation, IResourceManager> ();
 
-    //TODO AO: cache as static in extension class - later replace instantiation with IoC
-    private readonly TypeConversionProvider _typeConversionProvider;
-
-    public GlobalizationService ()
-    {
-      _typeConversionProvider = TypeConversionProvider.Create();
-    }
-
     public IResourceManager GetResourceManager (ITypeInformation typeInformation)
     {
       ArgumentUtility.CheckNotNull ("typeInformation", typeInformation);
@@ -49,12 +41,10 @@ namespace Remotion.Globalization
     [NotNull]
     private IResourceManager GetResourceManagerImplementation (ITypeInformation typeInformation)
     {
-      if (!_typeConversionProvider.CanConvert (typeInformation.GetType (), typeof (Type)))
-        return NullResourceManager.Instance;
-
-      var type = (Type) _typeConversionProvider.Convert (typeInformation.GetType (), typeof (Type), typeInformation);
-
-      return _resolver.GetResourceManager (type, true);
+      var runtimeType = typeInformation.AsRuntimeType();
+      if (runtimeType!=null)
+        return _resolver.GetResourceManager (runtimeType, true);
+      return NullResourceManager.Instance;
     }
   }
 }
