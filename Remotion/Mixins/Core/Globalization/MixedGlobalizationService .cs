@@ -21,7 +21,6 @@ using System.Linq;
 using JetBrains.Annotations;
 using Remotion.Collections;
 using Remotion.Globalization;
-using Remotion.Mixins.Context;
 using Remotion.Reflection;
 using Remotion.Utilities;
 
@@ -29,39 +28,46 @@ namespace Remotion.Mixins.Globalization
 {
   public class MixedGlobalizationService : IGlobalizationService
   {
+    private volatile MixinConfiguration _mixinConfiguration;
+
     private readonly ResourceManagerResolver<MultiLingualResourcesAttribute> _resolver =
         new ResourceManagerResolver<MultiLingualResourcesAttribute>();
 
-    private readonly ICache<ClassContext, IResourceManager> _resourceManagerCache =
-        CacheFactory.CreateWithLocking<ClassContext, IResourceManager>();
+    private readonly ICache<ITypeInformation, IResourceManager> _resourceManagerCache =
+        CacheFactory.CreateWithLocking<ITypeInformation, IResourceManager>();
+
+    public MixedGlobalizationService ()
+    {
+      _mixinConfiguration = MixinConfiguration.GetMasterConfiguration();
+    }
 
     public IResourceManager GetResourceManager (ITypeInformation typeInformation)
     {
       ArgumentUtility.CheckNotNull ("typeInformation", typeInformation);
 
-      var cacheKey = GetCacheKey (typeInformation);
-      if (cacheKey == null)
-        return NullResourceManager.Instance;
+      var masterConfiguration = MixinConfiguration.GetMasterConfiguration();
+      if (masterConfiguration != _mixinConfiguration)
+      {
+        _resourceManagerCache.Clear ();
+        _mixinConfiguration = masterConfiguration;
+      }
 
-      return _resourceManagerCache.GetOrCreateValue (cacheKey, GetResourceManagerFromType);
-    }
-
-    private ClassContext GetCacheKey (ITypeInformation typeInformation)
-    {
-      var type = typeInformation.AsRuntimeType();
-      if (type == null)
-        return null;
-
-      //TODO AO: hold ActiveConfiguration in static field - use Interlocked.Compare to check if still current - if not call Cache.Clear
-      //refctor cache to use TypeInformation - if no mixins return NullManager
-      return MixinConfiguration.ActiveConfiguration.GetContext (type);
+      return _resourceManagerCache.GetOrCreateValue (typeInformation, GetResourceManagerFromType);
     }
 
     [NotNull]
-    private IResourceManager GetResourceManagerFromType (ClassContext classContext)
+    private IResourceManager GetResourceManagerFromType (ITypeInformation typeInformation)
     {
-      var resourceMangers = new List<IResourceManager>();
-      CollectResourceManagersRecursively(classContext.Type, resourceMangers);
+      var type = typeInformation.AsRuntimeType ();
+      if (type == null)
+        return NullResourceManager.Instance;
+
+      var classContext = MixinConfiguration.ActiveConfiguration.GetContext (type);
+      if (classContext == null)
+        return NullResourceManager.Instance;
+
+      var resourceMangers = new List<IResourceManager> ();
+      CollectResourceManagersRecursively (classContext.Type, resourceMangers);
 
       if (resourceMangers.Any())
         return new ResourceManagerSet (resourceMangers);
@@ -72,7 +78,7 @@ namespace Remotion.Mixins.Globalization
     private void CollectResourceManagersRecursively (Type type, List<IResourceManager> collectedResourceMangers)
     {
       var mixinTypes = MixinTypeUtility.GetMixinTypesExact (type);
-      
+
       foreach (var mixinType in mixinTypes)
         CollectResourceManagersRecursively (mixinType, collectedResourceMangers);
 

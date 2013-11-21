@@ -31,9 +31,8 @@ namespace Remotion.Globalization
   public sealed class ResourceManagerResolver<TAttribute> : IResourceManagerResolver<TAttribute>
       where TAttribute: Attribute, IResourcesAttribute
   {
-    //TODO AO: change cache key to type
-    private readonly LockingCacheDecorator<object, ResourceManagerCacheEntry> _resourceManagerWrappersCache =
-        CacheFactory.CreateWithLocking<object, ResourceManagerCacheEntry>();
+    private readonly LockingCacheDecorator<Type, ResourceManagerCacheEntry> _resourceManagerWrappersCache =
+        CacheFactory.CreateWithLocking<Type, ResourceManagerCacheEntry>();
 
     private readonly ResourceManagerFactory _resourceManagerFactory = new ResourceManagerFactory();
 
@@ -53,15 +52,17 @@ namespace Remotion.Globalization
     {
       ArgumentUtility.CheckNotNull ("objectType", objectType);
 
+      if (includeHierarchy == false)
+        throw new NotSupportedException ("Usage of ResourceManagerResolver.GetResourceManager with includeHierarchy=false is not supported.");
+
       // 1. Try to get resource manager from cache using objectType.
       // 2. If miss, get resource definition stream.
       // 3. Get first type from definition stream. Try to get resource manager from cache using that type.
       // 4. If miss, create resource manager from definition stream.
       // Steps 2-4 happen in CreateCacheEntry.
 
-      var key = GetResourceManagerSetCacheKey (objectType, includeHierarchy);
       var cacheEntry = _resourceManagerWrappersCache.GetOrCreateValue (
-          key,
+          objectType,
           arg => CreateCacheEntry (objectType, includeHierarchy));
 
       return cacheEntry.IsEmpty ? NullResourceManager.Instance :  cacheEntry.ResourceManager;
@@ -89,11 +90,6 @@ namespace Remotion.Globalization
       return new ResourceDefinition<TAttribute> (type, resourceAttributes);
     }
 
-    private object GetResourceManagerSetCacheKey (Type definingType, bool includeHierarchy)
-    {
-      return Tuple.Create (definingType, includeHierarchy);
-    }
-
     private ResourceManagerCacheEntry CreateCacheEntry (Type objectType, bool includeHierarchy)
     {
       var resourceDefinitions = GetResourceDefinitionStream (objectType, includeHierarchy).ToArray();
@@ -115,9 +111,8 @@ namespace Remotion.Globalization
         // Create or get the entry for the base class from cache.
         // Then reuse that cache entry for the objectType.
 
-        object firstDefinitionKey = GetResourceManagerSetCacheKey (firstResourceDefinition.Type, includeHierarchy);
         return _resourceManagerWrappersCache.GetOrCreateValue (
-            firstDefinitionKey,
+            firstResourceDefinition.Type,
             arg => ResourceManagerCacheEntry.Create (firstResourceDefinition.Type, CreateResourceManagerSet (resourceDefinitions)));
       }
     }
