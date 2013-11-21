@@ -60,10 +60,12 @@ namespace Remotion.Mixins.Globalization
     /// included in the resource manager; otherwise, only the <paramref name="objectType"/> is searched for such attributes.</param>
     /// <returns>An instance of <see cref="IResourceManager"/> for <paramref name="objectType"/>.</returns>
     public static IResourceManager GetResourceManager (Type objectType, bool includeHierarchy)
-        //TODO AO: throw NotSupportedException if includeHierarchy is false
     {
       ArgumentUtility.CheckNotNull ("objectType", objectType);
       ArgumentUtility.CheckNotNull ("includeHierarchy", includeHierarchy);
+
+      if (includeHierarchy == false)
+        throw new NotSupportedException ("Usage of MixedMultiLingualResources.GetResourceManager with includeHierarchy=false is not supported.");
 
       return s_globalizationService.GetResourceManager (TypeAdapter.Create (objectType));
     }
@@ -74,7 +76,8 @@ namespace Remotion.Mixins.Globalization
     /// </summary>
     /// <param name="objectType">The type to return an <see cref="IResourceManager"/> for.</param>
     /// <returns>An instance of <see cref="IResourceManager"/> for <paramref name="objectType"/>.</returns>
-    public static IResourceManager GetResourceManager (Type objectType) //TODO AO: mark as obsolete true
+    [Obsolete("Use IGlobalizationService instead.")]
+    public static IResourceManager GetResourceManager (Type objectType)
     {
       ArgumentUtility.CheckNotNull ("objectType", objectType);
       return GetResourceManager (objectType, false);
