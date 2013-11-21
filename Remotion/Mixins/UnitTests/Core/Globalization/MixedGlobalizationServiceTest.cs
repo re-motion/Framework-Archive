@@ -59,7 +59,7 @@ namespace Remotion.Mixins.UnitTests.Core.Globalization
     }
 
     [Test]
-    public void GetResourceManager_TypeWithMixin_NoResourceAttribute_ReturnsNullResourceManager ()
+    public void GetResourceManager_TypeWithMixin_NoResourceAttribute_ReturnsResourceManagerSetWithEmptyResourceManagerCollection ()
     {
       using (MixinConfiguration.BuildFromActive()
           .ForClass<ClassWithoutMultiLingualResourcesAttributes>()
@@ -68,9 +68,9 @@ namespace Remotion.Mixins.UnitTests.Core.Globalization
       {
         var typeInformation = TypeAdapter.Create (typeof (ClassWithoutMultiLingualResourcesAttributes));
 
-        var result = _globalizationService.GetResourceManager (typeInformation);
+        var result = (ResourceManagerSet) _globalizationService.GetResourceManager (typeInformation);
 
-        Assert.That (result, Is.InstanceOf<NullResourceManager>());
+        Assert.That (result.ResourceManagers.Any(), Is.False);
       }
     }
 

@@ -151,6 +151,7 @@
     <Compile Include="Globalization\GlobalizationService.cs" />
     <Compile Include="Globalization\IGlobalizationService.cs" />
     <Compile Include="Globalization\IMemberInformationGlobalizationService.cs" />
+    <Compile Include="Globalization\IResourceManagerResolver.cs" />
     <Compile Include="Globalization\MemberInformationGlobalizationService.cs" />
     <Compile Include="IHandleAttribute.cs" />
     <Compile Include="Reflection\DelegateFactory.cs" />
@@ -334,7 +335,6 @@
     <Compile Include="Globalization\IResourcesAttribute.cs" />
     <Compile Include="Globalization\MultiLingualResources.cs" />
     <Compile Include="Globalization\ResourceManagerResolver.cs" />
-    <Compile Include="Globalization\ResourceManagerResolverUtility.cs" />
     <Compile Include="Collections\ArrayComparer.cs" />
     <Compile Include="Logging\Log4NetLog.cs" />
     <Compile Include="Logging\Log4NetLogManager.cs" />

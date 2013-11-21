@@ -29,7 +29,7 @@ namespace Remotion.Globalization
 		/// </param>
 		/// <param name="name"> The ID of the resource. </param>
 		/// <returns> The found string resource or an empty string. </returns>
-		string GetResourceText<TAttribute> (ResourceManagerResolver<TAttribute> resolver, Type objectTypeToGetResourceFor, string name)
+		string GetResourceText<TAttribute> (IResourceManagerResolver<TAttribute> resolver, Type objectTypeToGetResourceFor, string name)
 				where TAttribute: Attribute, IResourcesAttribute;
 
 		/// <summary>
@@ -41,7 +41,7 @@ namespace Remotion.Globalization
 		/// </param>
 		/// <param name="name"> The ID of the resource. </param>
 		/// <returns> <see langword="true"/> if the resource can be found. </returns>
-		bool ExistsResourceText<TAttribute> (ResourceManagerResolver<TAttribute> resolver, Type objectTypeToGetResourceFor, string name)
+		bool ExistsResourceText<TAttribute> (IResourceManagerResolver<TAttribute> resolver, Type objectTypeToGetResourceFor, string name)
 				where TAttribute: Attribute, IResourcesAttribute;
 
 		/// <summary>
@@ -52,7 +52,7 @@ namespace Remotion.Globalization
 		///   The <see cref="Type"/> for which to check for the resource set.
 		/// </param>
 		/// <returns> <see langword="true"/> if the resource ser can be found. </returns>
-		bool ExistsResource<TAttribute> (ResourceManagerResolver<TAttribute> resolver, Type objectTypeToGetResourceFor)
+		bool ExistsResource<TAttribute> (IResourceManagerResolver<TAttribute> resolver, Type objectTypeToGetResourceFor)
 				where TAttribute: Attribute, IResourcesAttribute;
 	}
 }

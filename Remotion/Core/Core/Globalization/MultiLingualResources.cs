@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.Globalization
@@ -22,11 +23,12 @@ namespace Remotion.Globalization
   /// <summary>
   /// Provides the public API for classes working with and analyzing instances of <see cref="MultiLingualResourcesAttribute"/>.
   /// </summary>
-  //[Obsolete ("Retrieve IGlobalizationService from IoC container instead.")]   //TODO AO
+  //[Obsolete ("Retrieve IGlobalizationService from IoC container instead.")] //TODO AO: make obsolete
   public static class MultiLingualResources
   {
   	private static readonly ResourceManagerResolver<MultiLingualResourcesAttribute> s_resolver =
         new ResourceManagerResolver<MultiLingualResourcesAttribute>();
+    private static IGlobalizationService s_globalizationService = new GlobalizationService();
 
 		/// <summary>
 		/// Gets the resolver object used by the methods of this class.
@@ -75,7 +77,11 @@ namespace Remotion.Globalization
       ArgumentUtility.CheckNotNull ("objectTypeToGetResourceFor", objectTypeToGetResourceFor);
       ArgumentUtility.CheckNotNull ("name", name);
       
-      return ResourceManagerResolverUtility.Current.GetResourceText (s_resolver, objectTypeToGetResourceFor, name);
+      var resourceManager = s_globalizationService.GetResourceManager (TypeAdapter.Create(objectTypeToGetResourceFor));
+      var text = resourceManager.GetString (name);
+      if (text == name)
+        return String.Empty;
+      return text;
     }
 
     /// <summary>
@@ -107,7 +113,16 @@ namespace Remotion.Globalization
       ArgumentUtility.CheckNotNull ("objectTypeToGetResourceFor", objectTypeToGetResourceFor);
       ArgumentUtility.CheckNotNull ("name", name);
 
-			return ResourceManagerResolverUtility.Current.ExistsResourceText (s_resolver, objectTypeToGetResourceFor, name);
+      try
+      {
+        var resourceManager = s_globalizationService.GetResourceManager (TypeAdapter.Create(objectTypeToGetResourceFor));
+        string text = resourceManager.GetString (name);
+        return (text != name);
+      }
+      catch
+      {
+        return false;
+      }
     }
 
     /// <summary>
@@ -136,8 +151,9 @@ namespace Remotion.Globalization
     public static bool ExistsResource (Type objectTypeToGetResourceFor)
     {
       ArgumentUtility.CheckNotNull ("objectTypeToGetResourceFor", objectTypeToGetResourceFor);
-			return ResourceManagerResolverUtility.Current.ExistsResource (s_resolver, objectTypeToGetResourceFor);
-    }
+
+      return !(s_globalizationService.GetResourceManager (TypeAdapter.Create(objectTypeToGetResourceFor)) is NullResourceManager);
+		}
 
     /// <summary>
     ///   Checks for the existence of a resource set for the specified object.

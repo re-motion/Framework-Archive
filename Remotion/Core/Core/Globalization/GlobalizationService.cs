@@ -54,10 +54,7 @@ namespace Remotion.Globalization
 
       var type = (Type) _typeConversionProvider.Convert (typeInformation.GetType (), typeof (Type), typeInformation);
 
-      if (ResourceManagerResolverUtility.Current.ExistsResource (_resolver, type))
-        return _resolver.GetResourceManager (type, true);
-      
-      return NullResourceManager.Instance;
+      return _resolver.GetResourceManager (type, true);
     }
   }
 }

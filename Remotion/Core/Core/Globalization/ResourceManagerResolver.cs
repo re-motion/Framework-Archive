@@ -28,7 +28,7 @@ namespace Remotion.Globalization
   /// </summary>
   /// <typeparam name="TAttribute">The type of the resource attribute to be resolved by this class.</typeparam>
   /// <threadsafety static="false" instance="true"/>
-  public sealed class ResourceManagerResolver<TAttribute>
+  public sealed class ResourceManagerResolver<TAttribute> : IResourceManagerResolver<TAttribute>
       where TAttribute: Attribute, IResourcesAttribute
   {
     //TODO AO: change cache key to type
@@ -38,47 +38,7 @@ namespace Remotion.Globalization
     private readonly ResourceManagerFactory _resourceManagerFactory = new ResourceManagerFactory();
 
     /// <summary>
-    ///   Returns an instance of <c>IResourceManager</c> for the resource container specified
-    ///   in the class declaration of the type.
-    /// </summary>
-    /// <include file='doc\include\Globalization\MultiLingualResourcesAttribute.xml' path='/MultiLingualResourcesAttribute/GetResourceManager/Common/*' />
-    /// <include file='doc\include\Globalization\MultiLingualResourcesAttribute.xml' path='/MultiLingualResourcesAttribute/GetResourceManager/param[@name="objectType" or @name="includeHierarchy"]' />
-    public IResourceManager GetResourceManager (Type objectType, bool includeHierarchy)
-    {
-      ArgumentUtility.CheckNotNull ("objectType", objectType);
-      ArgumentUtility.CheckNotNull ("includeHierarchy", includeHierarchy);
-
-      Type definingType;
-      return GetResourceManager (objectType, includeHierarchy, out definingType);
-    }
-
-    /// <summary>
-    ///   Returns a <c>IResourceManager</c> set for the resource containers specified
-    ///   in the class declaration of the type, throwing an exception if no resources can be found.
-    /// </summary>
-    /// <include file='doc\include\Globalization\MultiLingualResourcesAttribute.xml' path='/MultiLingualResourcesAttribute/GetResourceManager/Common/*' />
-    /// <include file='doc\include\Globalization\MultiLingualResourcesAttribute.xml' path='/MultiLingualResourcesAttribute/GetResourceManager/param[@name="objectType" or @name="includeHierarchy" or @name="definingType"]' />
-    public IResourceManager GetResourceManager (Type objectType, bool includeHierarchy, out Type definingType)
-    {
-      ArgumentUtility.CheckNotNull ("objectType", objectType);
-
-      var cacheEntry = GetResourceManagerCacheEntry (objectType, includeHierarchy);
-      if (cacheEntry.IsEmpty)
-      {
-        string message = string.Format (
-            "Type {0} and its base classes do not define the attribute {1}.",
-            objectType.FullName,
-            typeof (TAttribute).Name);
-        throw new ResourceException (message);
-      }
-
-      definingType = cacheEntry.DefiningType;
-      return cacheEntry.ResourceManager;
-    }
-
-    /// <summary>
-    /// Tries to get a <see cref="IResourceManager"/> for the given <paramref name="objectType"/> (see 
-    /// <see cref="GetResourceManager(System.Type,bool,out System.Type)"/>), returning <see langword="null" /> if the type has no resources defined. 
+    /// Tries to get a <see cref="IResourceManager"/> for the given <paramref name="objectType"/>, returning <see langword="null" /> if the type has no resources defined. 
     /// The <see cref="IResourceManager"/> is retrieved from the cache if possible; if not, a new <see cref="IResourceManager"/> is created and added
     /// to the cache.
     /// </summary>
@@ -89,7 +49,7 @@ namespace Remotion.Globalization
     /// A <see cref="ResourceManagerCacheEntry"/> object for the given <paramref name="objectType"/>. The object is 
     /// <see cref="ResourceManagerCacheEntry.Empty"/> if no resources could be found.
     /// </returns>
-    public ResourceManagerCacheEntry GetResourceManagerCacheEntry (Type objectType, bool includeHierarchy) //TODO AO: rename to GetResourceManager and drop above methods
+    public IResourceManager GetResourceManager (Type objectType, bool includeHierarchy)
     {
       ArgumentUtility.CheckNotNull ("objectType", objectType);
 
@@ -104,7 +64,7 @@ namespace Remotion.Globalization
           key,
           arg => CreateCacheEntry (objectType, includeHierarchy));
 
-      return cacheEntry;
+      return cacheEntry.IsEmpty ? NullResourceManager.Instance :  cacheEntry.ResourceManager;
     }
 
     private IEnumerable<ResourceDefinition<TAttribute>> GetResourceDefinitionStream (Type type, bool includeHierarchy)
@@ -112,7 +72,7 @@ namespace Remotion.Globalization
       Type currentType = type;
       while (currentType != null)
       {
-        ResourceDefinition<TAttribute> definition = GetResourceDefinition (type, currentType);
+        ResourceDefinition<TAttribute> definition = GetResourceDefinition (currentType);
         if (definition.HasResources)
         {
           yield return definition;
@@ -123,10 +83,10 @@ namespace Remotion.Globalization
       }
     }
 
-    private ResourceDefinition<TAttribute> GetResourceDefinition (Type type, Type currentType)
+    private ResourceDefinition<TAttribute> GetResourceDefinition (Type type)
     {
-      TAttribute[] resourceAttributes = AttributeUtility.GetCustomAttributes<TAttribute> (currentType, false);
-      return new ResourceDefinition<TAttribute> (currentType, resourceAttributes);
+      TAttribute[] resourceAttributes = AttributeUtility.GetCustomAttributes<TAttribute> (type, false);
+      return new ResourceDefinition<TAttribute> (type, resourceAttributes);
     }
 
     private object GetResourceManagerSetCacheKey (Type definingType, bool includeHierarchy)

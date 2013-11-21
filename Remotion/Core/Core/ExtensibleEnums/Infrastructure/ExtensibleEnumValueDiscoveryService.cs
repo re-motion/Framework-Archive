@@ -21,6 +21,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using Remotion.Globalization;
+using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.ExtensibleEnums.Infrastructure
@@ -31,6 +32,8 @@ namespace Remotion.ExtensibleEnums.Infrastructure
   /// </summary>
   public class ExtensibleEnumValueDiscoveryService : IExtensibleEnumValueDiscoveryService
   {
+    private static readonly IGlobalizationService s_globalizationService = new GlobalizationService ();
+
     public static IEnumerable<ExtensibleEnumInfo<T>> GetValueInfosForTypes<T> (ExtensibleEnumDefinition<T> definition, IEnumerable<Type> typeCandidates) 
         where T: ExtensibleEnum<T>
     {
@@ -51,10 +54,7 @@ namespace Remotion.ExtensibleEnums.Infrastructure
       var methods = typeDeclaringMethods.GetMethods (BindingFlags.Static | BindingFlags.Public);
       var extensionMethods = GetValueExtensionMethods (typeof (T), methods);
 
-      var resourceManager = MultiLingualResources.ExistsResource (typeDeclaringMethods) 
-          ? MultiLingualResources.GetResourceManager (typeDeclaringMethods) 
-          : NullResourceManager.Instance;
-
+      var resourceManager = s_globalizationService.GetResourceManager(TypeAdapter.Create(typeDeclaringMethods)); 
       return from mi in extensionMethods
              let value = (T) mi.Invoke (null, new object[] { definition })
              let positionAttribute = AttributeUtility.GetCustomAttribute<ExtensibleEnumPositionAttribute> (mi, true)

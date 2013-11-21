@@ -89,10 +89,8 @@ namespace Remotion.Mixins.Globalization
       
       foreach (var mixinType in mixinTypes)
         CollectResourceManagersRecursively (mixinType, collectedResourceMangers);
-    
-      foreach (var mixinType in mixinTypes)
-        if (ResourceManagerResolverUtility.Current.ExistsResource (_resolver, mixinType))
-          collectedResourceMangers.Add (_resolver.GetResourceManager (mixinType, true));
+
+      collectedResourceMangers.AddRange (mixinTypes.Select (mixinType => _resolver.GetResourceManager (mixinType, true)));
     }
   }
 }

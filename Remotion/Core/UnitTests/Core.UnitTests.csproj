@@ -416,7 +416,6 @@
     <Compile Include="Design\StubDesignModeHelper.cs" />
     <Compile Include="DoubleCheckedLockingContainerTest.cs" />
     <Compile Include="Globalization\ResourceManagerResolverTest.cs" />
-    <Compile Include="Globalization\ResourceManagerResolverUtilityTest.cs" />
     <Compile Include="Globalization\TestDomain\ClassWithMultiLingualResourcesAttributes.cs" />
     <Compile Include="Globalization\TestDomain\ClassWithoutMultiLingualResourcesAttributes.cs" />
     <Compile Include="Globalization\TestDomain\InheritedClassWithoutMultiLingualResourcesAttributes.cs" />

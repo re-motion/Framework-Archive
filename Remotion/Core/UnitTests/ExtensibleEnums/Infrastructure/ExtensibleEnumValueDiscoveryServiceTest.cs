@@ -23,6 +23,7 @@ using NUnit.Framework;
 using Remotion.ExtensibleEnums;
 using Remotion.ExtensibleEnums.Infrastructure;
 using Remotion.Globalization;
+using Remotion.Reflection;
 using Remotion.UnitTests.ExtensibleEnums.TestDomain;
 using Rhino.Mocks;
 
@@ -37,12 +38,14 @@ namespace Remotion.UnitTests.ExtensibleEnums.Infrastructure
 
     private ExtensibleEnumDefinition<Color> _fakeColorDefinition;
     private ExtensibleEnumDefinition<Planet> _fakePlanetDefinition;
+    private GlobalizationService _globalizationService;
 
     [SetUp]
     public void SetUp ()
     {
       _fakeColorDefinition = new ExtensibleEnumDefinition<Color> (MockRepository.GenerateStub<IExtensibleEnumValueDiscoveryService> ());
       _fakePlanetDefinition = new ExtensibleEnumDefinition<Planet> (MockRepository.GenerateStub<IExtensibleEnumValueDiscoveryService> ());
+      _globalizationService = new GlobalizationService();
     }
 
     [Test]
@@ -94,12 +97,15 @@ namespace Remotion.UnitTests.ExtensibleEnums.Infrastructure
     {
       var result = ExtensibleEnumValueDiscoveryService.GetValueInfosForType (_fakeColorDefinition, typeof (ColorExtensions)).ToArray ();
 
-      var expectedResourceManager = MultiLingualResources.GetResourceManager (typeof (ColorExtensions));
       var expected = new[] { 
-          new { Value = Color.Values.Red (), ResourceManager = expectedResourceManager }, 
-          new { Value = Color.Values.Green (), ResourceManager = expectedResourceManager }, };
+          new { Value = Color.Values.Red () }, 
+          new { Value = Color.Values.Green () } };
 
-      Assert.That (result.Select (info => new { info.Value, info.ResourceManager }).ToArray (), Is.EquivalentTo (expected));
+      Assert.That (result.Select (info => new { info.Value }).ToArray (), Is.EquivalentTo (expected));
+      //TODO AO: check (inject IGlobalizationService and create a test with mocks instead!?)
+      Assert.That (((ResourceManagerSet) result[0].ResourceManager).ResourceManagers.Any(), Is.True);  
+      Assert.That (((ResourceManagerSet) result[1].ResourceManager).ResourceManagers.Any (), Is.True);
+
     }
 
     [Test]
