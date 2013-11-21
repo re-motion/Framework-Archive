@@ -38,7 +38,7 @@ namespace Remotion.Mixins.Globalization
   /// Both possibilities have a certain inconsistency, and none is perfect, so the class leaves it to the user to decide.
   /// </remarks>
   [Obsolete ("Retrieve IGlobalizationService from IoC container instead.")]
-  public class MixedMultiLingualResources //TODO AO: Restore dropped unit tests (mark as Obsolete) -> if not possible reuse integration tests
+  public class MixedMultiLingualResources
   {
     private static readonly IGlobalizationService s_globalizationService =
         new CompoundGlobalizationService (new IGlobalizationService[] { new MixedGlobalizationService(), new GlobalizationService() });
