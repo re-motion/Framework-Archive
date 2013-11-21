@@ -27,7 +27,7 @@ namespace Remotion.Globalization
   /// Provides a generalized implementation of the algorithms used to translate resource attributes into <see cref="IResourceManager"/> instances.
   /// </summary>
   /// <typeparam name="TAttribute">The type of the resource attribute to be resolved by this class.</typeparam>
-  //TODO AO: threadsafety doc instace safe
+  /// <threadsafety static="false" instance="true"/>
   public sealed class ResourceManagerResolver<TAttribute>
       where TAttribute: Attribute, IResourcesAttribute
   {
