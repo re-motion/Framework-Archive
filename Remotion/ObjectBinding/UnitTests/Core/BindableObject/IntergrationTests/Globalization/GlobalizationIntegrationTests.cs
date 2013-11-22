@@ -53,7 +53,6 @@ namespace Remotion.ObjectBinding.UnitTests.Core.BindableObject.IntergrationTests
     }
 
     [Test]
-    [Ignore("TODO AO: property not overidden -> not implemented yet")]
     public void DisplayName_InheritedAndOverridden_NotMixed_DerivedClass ()
     {
       var resourceString = GetResourceStringForType (typeof (DerivedTargetClassForGlobalization), "Property1");
@@ -146,7 +145,6 @@ namespace Remotion.ObjectBinding.UnitTests.Core.BindableObject.IntergrationTests
     }
 
     [Test]
-    [Explicit ("TODO AO: static cache problem-> will be resolved with the new implementation")]
     public void DisplayName_PropertyOverridenInMixinOfMixin ()
     {
       using (MixinConfiguration.BuildFromActive ()
@@ -163,7 +161,6 @@ namespace Remotion.ObjectBinding.UnitTests.Core.BindableObject.IntergrationTests
     }
 
     [Test]
-    [Explicit ("TODO AO: static cache problem-> will be resolved with the new implementation")]
     public void DisplayName_MixedPropertyOverridenInMixinOfMixin ()
     {
       using (MixinConfiguration.BuildFromActive ()
@@ -178,8 +175,7 @@ namespace Remotion.ObjectBinding.UnitTests.Core.BindableObject.IntergrationTests
           Assert.That (resourceString, Is.EqualTo ("MixedProperty2 display name from MixinOfMixinAddingResources"));
         }
     }
-
-
+    
     private string GetResourceStringForType (Type targetType, string propertyName)
     {
       var classReflector = _factory.CreateClassReflector (targetType, new BindableObjectProvider ());

@@ -20,13 +20,19 @@ using System.Collections.Generic;
 using System.Linq;
 using Remotion.Collections;
 using Remotion.Reflection;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 
 namespace Remotion.Globalization
 {
-  public class CompoundGlobalizationService : IGlobalizationService
+  public class CompoundGlobalizationService : ICompoundGlobalizationService
   {
     private readonly IGlobalizationService[] _globalizationServices;
+
+    public static ICompoundGlobalizationService Create ()
+    {
+      return SafeServiceLocator.Current.GetInstance<ICompoundGlobalizationService>();
+    }
 
     public CompoundGlobalizationService (IEnumerable<IGlobalizationService> globalizationServices)
     {

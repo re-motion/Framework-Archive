@@ -88,6 +88,7 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Core\Globalization\TestDomain\ClassWithMixinResource.cs" />
     <Compile Include="Core\Globalization\TestDomain\ClassWithResources.cs" />
     <Compile Include="Core\Globalization\TestDomain\MixinAddingResources.cs" />
     <Compile Include="Core\Globalization\TestDomain\MixinOfMixinWithResources.cs" />

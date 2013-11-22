@@ -22,6 +22,7 @@ using System.Xml;
 using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting;
 using Remotion.Development.Web.UnitTesting.Resources;
+using Remotion.Globalization;
 using Remotion.Web.Infrastructure;
 using Remotion.Web.Resources;
 using Remotion.Web.UI;
@@ -156,7 +157,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.DropDownMenuImplementation.Ren
 
     private XmlNode GetAssertedContainerSpan ()
     {
-      var renderer = new DropDownMenuRenderer (_resourceUrlFactory);
+      var renderer = new DropDownMenuRenderer (_resourceUrlFactory, CompoundGlobalizationService.Create());
       renderer.Render (new DropDownMenuRenderingContext (_httpContextStub, _htmlHelper.Writer, _control));
       var document = _htmlHelper.GetResultDocument();
       var containerDiv = document.GetAssertedChildElement ("span", 0);

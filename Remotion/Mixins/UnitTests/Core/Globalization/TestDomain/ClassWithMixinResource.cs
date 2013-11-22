@@ -1,4 +1,4 @@
-// This file is part of the re-motion Core Framework (www.re-motion.org)
+﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -14,28 +14,12 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System;
-using NUnit.Framework;
-using Remotion.Globalization;
-using Rhino.Mocks;
 
-namespace Remotion.UnitTests.Globalization
+namespace Remotion.Mixins.UnitTests.Core.Globalization.TestDomain
 {
-  [TestFixture]
-  public class ResourceManagerCacheEntryTest
+  [Uses(typeof(MixinAddingResources))]
+  public class ClassWithMixinResource
   {
-    [Test]
-    public void IsEmpty_True ()
-    {
-      Assert.That (ResourceManagerCacheEntry.Empty.IsEmpty, Is.True);
-    }
-
-    [Test]
-    public void IsEmpty_False ()
-    {
-      var stub = MockRepository.GenerateStub<IResourceManager> ();
-      var entry = ResourceManagerCacheEntry.Create (typeof (IGlobalizationService), ResourceManagerSet.Create (new[] { stub }));
-      Assert.That (entry.IsEmpty, Is.False);
-    }
+     
   }
 }

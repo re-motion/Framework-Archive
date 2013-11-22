@@ -25,6 +25,7 @@ using Remotion.Collections;
 using Remotion.Globalization;
 using Remotion.ObjectBinding.Design;
 using Remotion.ObjectBinding.Web.UI.Design;
+using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web;
@@ -217,11 +218,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         CacheFactory.Create<Tuple<Type, Control>, IResourceManager>();
 
     private bool _controlExistedInPreviousRequest;
+    private GlobalizationService _globalizationService;
 
     /// <summary> Creates a new instance of the BusinessObjectBoundWebControl type. </summary>
     protected BusinessObjectBoundWebControl ()
     {
       _binding = new BusinessObjectBinding (this);
+      _globalizationService = new GlobalizationService();
     }
 
     /// <remarks>Calls <see cref="Control.EnsureChildControls"/> and the <see cref="BusinessObjectBinding.EnsureDataSource"/> method.</remarks>
@@ -386,7 +389,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
           Tuple.Create (localResourcesType, NamingContainer),
           key =>
           {
-            IResourceManager localResourceManager = MultiLingualResources.GetResourceManager (localResourcesType, true);
+            IResourceManager localResourceManager = _globalizationService.GetResourceManager (TypeAdapter.Create(localResourcesType));
             IResourceManager namingContainerResourceManager = ResourceManagerUtility.GetResourceManager (NamingContainer, true);
 
             return ResourceManagerSet.Create (namingContainerResourceManager, localResourceManager);

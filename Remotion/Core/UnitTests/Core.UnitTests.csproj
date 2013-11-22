@@ -211,6 +211,7 @@
     <Compile Include="FunctionalProgramming\TestDomain\RecursiveItem.cs" />
     <Compile Include="Globalization\CompoundGlobalizationServiceTest.cs" />
     <Compile Include="Globalization\GlobalizationServiceTest.cs" />
+    <Compile Include="Globalization\ICompoundGlobalizationServiceTest.cs" />
     <Compile Include="Globalization\IGlobalizationServiceTest.cs" />
     <Compile Include="Globalization\IMemberInformationGlobalizationServiceTest.cs" />
     <Compile Include="Globalization\MemberInformationGlobalizationServiceTest.cs" />

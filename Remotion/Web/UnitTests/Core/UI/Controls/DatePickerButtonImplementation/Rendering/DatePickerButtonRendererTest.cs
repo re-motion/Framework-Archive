@@ -19,6 +19,7 @@ using System.Web;
 using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting;
 using Remotion.Development.Web.UnitTesting.Resources;
+using Remotion.Globalization;
 using Remotion.Web.Resources;
 using Remotion.Web.UI.Controls.DatePickerButtonImplementation;
 using Remotion.Web.UI.Controls.DatePickerButtonImplementation.Rendering;
@@ -79,7 +80,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.DatePickerButtonImplementation
 
     private void AssertDateTimePickerButton (bool isDisabled, bool hasClientScript)
     {
-      var renderer = new DatePickerButtonRenderer (new FakeResourceUrlFactory());
+      var renderer = new DatePickerButtonRenderer (new FakeResourceUrlFactory(), CompoundGlobalizationService.Create());
       renderer.Render (new DatePickerButtonRenderingContext (_httpContext, _htmlHelper.Writer, _datePickerButton));
       var buttonDocument = _htmlHelper.GetResultDocument();
 

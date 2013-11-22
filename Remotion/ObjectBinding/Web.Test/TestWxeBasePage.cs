@@ -22,6 +22,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.Globalization;
+using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Web;
 using Remotion.Web.ExecutionEngine;
@@ -107,10 +108,12 @@ public class TestWxeBasePage:
   protected virtual IResourceManager GetResourceManager()
   {
     Type type = GetType();
-    if (MultiLingualResources.ExistsResource (type))
-      return MultiLingualResources.GetResourceManager (type, true);
-    else
-      return null;
+    return GlobalizationService.GetResourceManager (TypeAdapter.Create (type));
+  }
+
+  protected IGlobalizationService GlobalizationService
+  {
+    get { return CompoundGlobalizationService.Create(); }
   }
 
   IResourceManager IObjectWithResources.GetResourceManager()

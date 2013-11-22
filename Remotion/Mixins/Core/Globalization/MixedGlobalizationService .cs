@@ -38,7 +38,6 @@ namespace Remotion.Mixins.Globalization
 
     public MixedGlobalizationService ()
     {
-      _mixinConfiguration = MixinConfiguration.GetMasterConfiguration();
     }
 
     public IResourceManager GetResourceManager (ITypeInformation typeInformation)
@@ -46,9 +45,13 @@ namespace Remotion.Mixins.Globalization
       ArgumentUtility.CheckNotNull ("typeInformation", typeInformation);
 
       var masterConfiguration = MixinConfiguration.GetMasterConfiguration();
+
+      if (masterConfiguration != MixinConfiguration.ActiveConfiguration)
+        return GetResourceManagerFromType (typeInformation);
+
       if (masterConfiguration != _mixinConfiguration)
       {
-        _resourceManagerCache.Clear ();
+        _resourceManagerCache.Clear();
         _mixinConfiguration = masterConfiguration;
       }
 
@@ -58,7 +61,7 @@ namespace Remotion.Mixins.Globalization
     [NotNull]
     private IResourceManager GetResourceManagerFromType (ITypeInformation typeInformation)
     {
-      var type = typeInformation.AsRuntimeType ();
+      var type = typeInformation.AsRuntimeType();
       if (type == null)
         return NullResourceManager.Instance;
 
@@ -66,7 +69,7 @@ namespace Remotion.Mixins.Globalization
       if (classContext == null)
         return NullResourceManager.Instance;
 
-      var resourceMangers = new List<IResourceManager> ();
+      var resourceMangers = new List<IResourceManager>();
       CollectResourceManagersRecursively (classContext.Type, resourceMangers);
 
       if (resourceMangers.Any())

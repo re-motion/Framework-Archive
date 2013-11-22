@@ -149,6 +149,7 @@
     <Compile Include="Context\SafeContextKeys.cs" />
     <Compile Include="Globalization\CompoundGlobalizationService.cs" />
     <Compile Include="Globalization\GlobalizationService.cs" />
+    <Compile Include="Globalization\ICompoundGlobalizationService.cs" />
     <Compile Include="Globalization\IGlobalizationService.cs" />
     <Compile Include="Globalization\IMemberInformationGlobalizationService.cs" />
     <Compile Include="Globalization\IResourceManagerResolver.cs" />

@@ -20,6 +20,7 @@ using System.ComponentModel;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.Globalization;
+using Remotion.Reflection;
 using Remotion.Utilities;
 using Remotion.Web.UI.Globalization;
 using Remotion.Web.Utilities;
@@ -77,11 +78,14 @@ public class ValidationStateViewer : WebControl, IControl
   /// <summary> Caches the <see cref="ResourceManagerSet"/> for this <see cref="ValidationStateViewer"/>. </summary>
   private ResourceManagerSet _cachedResourceManager;
 
+  private GlobalizationService _globalizationService;
+
   // construction and disposing
 
   /// <summary> Initializes a new instance of the <see cref="ValidationStateViewer"/> class. </summary>
   public ValidationStateViewer()
   {
+    _globalizationService = new GlobalizationService();
   }
 
   /// <summary> Registers all instances of <see cref="FormGridManager"/>. </summary>
@@ -269,7 +273,7 @@ public class ValidationStateViewer : WebControl, IControl
 
     //  Get the resource managers
 
-    IResourceManager localResourceManager = MultiLingualResources.GetResourceManager (typeof (ResourceIdentifier), true);
+    IResourceManager localResourceManager = _globalizationService.GetResourceManager (TypeAdapter.Create(typeof (ResourceIdentifier)));
     IResourceManager namingContainerResourceManager = ResourceManagerUtility.GetResourceManager (NamingContainer, true);
     _cachedResourceManager = ResourceManagerSet.Create (namingContainerResourceManager, localResourceManager);
 

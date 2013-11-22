@@ -19,6 +19,7 @@ using System;
 using System.Linq;
 using NUnit.Framework;
 using Remotion.Globalization;
+using Remotion.Mixins.Context.FluentBuilders;
 using Remotion.Mixins.Globalization;
 using Remotion.Mixins.UnitTests.Core.Globalization.TestDomain;
 using Remotion.Reflection;
@@ -93,24 +94,7 @@ namespace Remotion.Mixins.UnitTests.Core.Globalization
     }
 
     [Test]
-    public void GetResourceManager_TypeWithMixin_WithResourceAttribute_SameMixinConfiguration_ResourceManagerIsReturnedFromCache ()
-    {
-      using (MixinConfiguration.BuildFromActive()
-          .ForClass<ClassWithoutMultiLingualResourcesAttributes>()
-          .AddMixin<MixinAddingMultiLingualResourcesAttributes1>()
-          .EnterScope())
-      {
-        var typeInformation = TypeAdapter.Create (typeof (ClassWithoutMultiLingualResourcesAttributes));
-
-        var result1 = (ResourceManagerSet) _globalizationService.GetResourceManager (typeInformation);
-        var result2 = (ResourceManagerSet) _globalizationService.GetResourceManager (typeInformation);
-
-        Assert.That (result1, Is.SameAs (result2));
-      }
-    }
-
-    [Test]
-    public void GetResourceManager_TypeWithMixin_WithResourceAttribute_DifferentMixinMasterConfiguration_CacheIsCleared ()
+    public void GetResourceManagerTwice_TypeWithDynamicMixinScope_NotSameButEqual ()
     {
       using (MixinConfiguration.BuildFromActive ()
           .ForClass<ClassWithoutMultiLingualResourcesAttributes> ()
@@ -120,35 +104,98 @@ namespace Remotion.Mixins.UnitTests.Core.Globalization
         var typeInformation = TypeAdapter.Create (typeof (ClassWithoutMultiLingualResourcesAttributes));
 
         var result1 = (ResourceManagerSet) _globalizationService.GetResourceManager (typeInformation);
-        MixinConfiguration.ResetMasterConfiguration();
         var result2 = (ResourceManagerSet) _globalizationService.GetResourceManager (typeInformation);
 
         Assert.That (result1, Is.Not.SameAs (result2));
+        Assert.That (result1.Name, Is.EqualTo(result2.Name));
+        Assert.That (result1.ResourceManagers.Count (), Is.EqualTo (1));
+        Assert.That (result2.ResourceManagers.Count(), Is.EqualTo (1));
+        Assert.That (result1.ResourceManagers.Single ().GetType (), Is.EqualTo (result2.ResourceManagers.Single ().GetType ()));
       }
     }
 
     [Test]
-    public void GetResourceManager_TypeWithMixin_NewMixinMasterConfiguration_ResourceManagerSetNotReturnedFromCache ()
+    public void GetResourceManagerTwice_TypeWithStaticMixinAndSameMixinMasterConfiguration_Same ()
+    {
+      var typeInformation = TypeAdapter.Create (typeof (ClassWithMixinResource));
+
+      var result1 = _globalizationService.GetResourceManager (typeInformation);
+      var result2 = _globalizationService.GetResourceManager (typeInformation);
+      Assert.That (result1, Is.SameAs (result2));
+    }
+
+    [Test]
+    public void GetResourceManagerTwice_TypeWithStaticMixinAndNotSameMixinMasterConfiguration_NotSame ()
+    {
+      var typeInformation = TypeAdapter.Create (typeof (ClassWithMixinResource));
+
+      var result1 = _globalizationService.GetResourceManager (typeInformation);
+      MixinConfiguration.ResetMasterConfiguration();
+      MixinConfiguration.SetActiveConfiguration (null);
+      var result2 = _globalizationService.GetResourceManager (typeInformation);
+
+      Assert.That (result1, Is.Not.SameAs (result2));
+    }
+
+    [Test]
+    public void GetResourceManagerTwice_TypeWithMixin_DifferentMixinConfiguration_NotSame ()
     {
       var typeInformation = TypeAdapter.Create (typeof (ClassWithoutMultiLingualResourcesAttributes));
       ResourceManagerSet result1;
 
-      using (MixinConfiguration.BuildFromActive()
+      var mixinConfiguration = MixinConfiguration.BuildFromActive()
           .ForClass<ClassWithoutMultiLingualResourcesAttributes>()
-          .AddMixin<MixinAddingMultiLingualResourcesAttributes1>()
-          .EnterScope())
+          .AddMixin<MixinAddingMultiLingualResourcesAttributes1>();
+      
+      using (mixinConfiguration.EnterScope())
       {
         result1 = (ResourceManagerSet) _globalizationService.GetResourceManager (typeInformation);
       }
-      MixinConfiguration.ResetMasterConfiguration();
-
+      
       ResourceManagerSet result2;
-      using (MixinConfiguration.BuildFromActive()
-          .ForClass<ClassWithoutMultiLingualResourcesAttributes> ()
-          .AddMixin<MixinAddingMultiLingualResourcesAttributes1> ()
-          .EnterScope ())
+      using (mixinConfiguration.EnterScope())
       {
         result2 = (ResourceManagerSet) _globalizationService.GetResourceManager (typeInformation);
+      }
+
+      Assert.That (result1, Is.Not.SameAs (result2));
+    }
+
+    [Test]
+    public void GetResourceManagerTwice_WithAndWithoutMixinConfiguration_NotSame ()
+    {
+      var typeInformation = TypeAdapter.Create (typeof (ClassWithoutMultiLingualResourcesAttributes));
+      IResourceManager result1;
+      using (MixinConfiguration.BuildFromActive ()
+          .ForClass<ClassWithoutMultiLingualResourcesAttributes> ()
+          .AddMixin<MixinAddingMultiLingualResourcesAttributes1> ().EnterScope ())
+      {
+        result1 = _globalizationService.GetResourceManager (typeInformation);
+      }
+
+      var result2 = _globalizationService.GetResourceManager (typeInformation);
+      
+      Assert.That (result1, Is.Not.SameAs (result2));
+    }
+
+    [Test]
+    public void GetResourceManagerTwice_NewMixinConfigurationWithinConfiguration_NotSame ()
+    {
+      var typeInformation = TypeAdapter.Create (typeof (ClassWithoutMultiLingualResourcesAttributes));
+      IResourceManager result1;
+      IResourceManager result2;
+      using (MixinConfiguration.BuildFromActive ()
+          .ForClass<ClassWithoutMultiLingualResourcesAttributes> ()
+          .AddMixin<MixinAddingMultiLingualResourcesAttributes1> ().EnterScope ())
+      {
+        result1 = _globalizationService.GetResourceManager (typeInformation);
+
+        using (MixinConfiguration.BuildFromActive()
+            .ForClass<ClassWithoutMultiLingualResourcesAttributes>()
+            .AddMixin<MixinAddingMultiLingualResourcesAttributes1>().EnterScope())
+        {
+          result2 = _globalizationService.GetResourceManager (typeInformation);
+        }
       }
 
       Assert.That (result1, Is.Not.SameAs (result2));
