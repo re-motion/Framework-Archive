@@ -68,7 +68,7 @@ namespace Remotion.UnitTests.Globalization
       _longTypeResourceID = "type:FakeTypeFullName";
 
       _service = new MemberInformationGlobalizationService (
-          new[] { _globalizationServiceMock1, _globalizationServiceMock2 }, _memberInfoNameResolverStub);
+          new CompoundGlobalizationService(new [] { _globalizationServiceMock1, _globalizationServiceMock2 }), _memberInfoNameResolverStub);
     }
 
     [Test]

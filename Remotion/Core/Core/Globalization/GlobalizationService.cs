@@ -23,6 +23,8 @@ using Remotion.Utilities;
 
 namespace Remotion.Globalization
 {
+  //TODO AO: replace exisiting tests with mocked tests
+  //TODO AO: resolver should be ctor injected
   public sealed class GlobalizationService : IGlobalizationService
   {
     private readonly ResourceManagerResolver<MultiLingualResourcesAttribute> _resolver =
@@ -42,9 +44,9 @@ namespace Remotion.Globalization
     private IResourceManager GetResourceManagerImplementation (ITypeInformation typeInformation)
     {
       var runtimeType = typeInformation.AsRuntimeType();
-      if (runtimeType!=null)
-        return _resolver.GetResourceManager (runtimeType, true);
-      return NullResourceManager.Instance;
+      if (runtimeType == null)
+        return NullResourceManager.Instance;
+      return _resolver.GetResourceManager (runtimeType, true);
     }
   }
 }

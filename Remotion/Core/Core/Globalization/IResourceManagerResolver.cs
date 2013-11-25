@@ -19,9 +19,11 @@ using System;
 
 namespace Remotion.Globalization
 {
+  //TODO AO: add concrete implementation attribute (singleton) + add test
   public interface IResourceManagerResolver<TAttribute>
      where TAttribute : Attribute, IResourcesAttribute
   {
+    //TODO AO: remove includeHierarchy parameter
     IResourceManager GetResourceManager (Type objectType, bool includeHierarchy);
   }
 }

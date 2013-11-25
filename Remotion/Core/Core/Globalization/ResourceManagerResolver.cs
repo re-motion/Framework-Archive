@@ -27,7 +27,7 @@ namespace Remotion.Globalization
   /// Provides a generalized implementation of the algorithms used to translate resource attributes into <see cref="IResourceManager"/> instances.
   /// </summary>
   /// <typeparam name="TAttribute">The type of the resource attribute to be resolved by this class.</typeparam>
-  /// <threadsafety static="false" instance="true"/>
+  /// <threadsafety static="true" instance="true"/>
   public sealed class ResourceManagerResolver<TAttribute> : IResourceManagerResolver<TAttribute>
       where TAttribute: Attribute, IResourcesAttribute
   {
@@ -61,38 +61,14 @@ namespace Remotion.Globalization
       // 4. If miss, create resource manager from definition stream.
       // Steps 2-4 happen in CreateCacheEntry.
 
-      var cacheEntry = _resourceManagerWrappersCache.GetOrCreateValue (
-          objectType,
-          arg => CreateCacheEntry (objectType, includeHierarchy));
+      var cacheEntry = _resourceManagerWrappersCache.GetOrCreateValue (objectType, CreateCacheEntry);
 
       return cacheEntry.IsEmpty ? NullResourceManager.Instance :  cacheEntry.ResourceManager;
     }
 
-    private IEnumerable<ResourceDefinition<TAttribute>> GetResourceDefinitionStream (Type type, bool includeHierarchy)
+    private ResourceManagerCacheEntry CreateCacheEntry (Type objectType)
     {
-      Type currentType = type;
-      while (currentType != null)
-      {
-        ResourceDefinition<TAttribute> definition = GetResourceDefinition (currentType);
-        if (definition.HasResources)
-        {
-          yield return definition;
-          if (!includeHierarchy)
-            yield break;
-        }
-        currentType = currentType.BaseType;
-      }
-    }
-
-    private ResourceDefinition<TAttribute> GetResourceDefinition (Type type)
-    {
-      TAttribute[] resourceAttributes = AttributeUtility.GetCustomAttributes<TAttribute> (type, false);
-      return new ResourceDefinition<TAttribute> (type, resourceAttributes);
-    }
-
-    private ResourceManagerCacheEntry CreateCacheEntry (Type objectType, bool includeHierarchy)
-    {
-      var resourceDefinitions = GetResourceDefinitionStream (objectType, includeHierarchy).ToArray();
+      var resourceDefinitions = GetResourceDefinitionStream (objectType).ToArray();
 
       // Get the first resource definition in the stream (this is the type itself, or the first base class that has a resource definition).
       // If that first definition's defining type already has a resource manager, we'll use that resource manager. Otherwise, we'll create a new one
@@ -115,6 +91,24 @@ namespace Remotion.Globalization
             firstResourceDefinition.Type,
             arg => ResourceManagerCacheEntry.Create (firstResourceDefinition.Type, CreateResourceManagerSet (resourceDefinitions)));
       }
+    }
+
+    private IEnumerable<ResourceDefinition<TAttribute>> GetResourceDefinitionStream (Type type)
+    {
+      var currentType = type;
+      while (currentType != null)
+      {
+        var definition = GetResourceDefinition (currentType);
+        if (definition.HasResources)
+          yield return definition;
+        currentType = currentType.BaseType;
+      }
+    }
+
+    private ResourceDefinition<TAttribute> GetResourceDefinition (Type type)
+    {
+      TAttribute[] resourceAttributes = AttributeUtility.GetCustomAttributes<TAttribute> (type, false);
+      return new ResourceDefinition<TAttribute> (type, resourceAttributes);
     }
 
     private ResourceManagerSet CreateResourceManagerSet (IEnumerable<ResourceDefinition<TAttribute>> resourceDefinitions)

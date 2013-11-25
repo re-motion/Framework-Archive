@@ -16,7 +16,6 @@
 // 
 
 using System;
-using System.Collections.Generic;
 using Remotion.ExtensibleEnums;
 using Remotion.Reflection;
 using Remotion.Utilities;
@@ -28,22 +27,21 @@ namespace Remotion.Globalization
     private readonly IGlobalizationService _globalizationService;
     private readonly IMemberInfoNameResolver _memberInfoNameResolver;
 
-    public MemberInformationGlobalizationService (IEnumerable<IGlobalizationService> globalizationServices, IMemberInfoNameResolver memberInfoNameResolver)
+    public MemberInformationGlobalizationService (ICompoundGlobalizationService globalizationService, IMemberInfoNameResolver memberInfoNameResolver)
     {
-      ArgumentUtility.CheckNotNull ("globalizationServices", globalizationServices);
+      ArgumentUtility.CheckNotNull ("globalizationService", globalizationService);
       ArgumentUtility.CheckNotNull ("memberInfoNameResolver", memberInfoNameResolver);
 
-      //TODO AO: RM-5508
-      _globalizationService = new CompoundGlobalizationService (globalizationServices);
+      _globalizationService = globalizationService;
       _memberInfoNameResolver = memberInfoNameResolver;
     }
 
-    public string GetPropertyDisplayName (IPropertyInformation propertyInformation, ITypeInformation typeInformation)
+    public string GetPropertyDisplayName (IPropertyInformation propertyInformation, ITypeInformation typeInformationForResourceResolution)
     {
       ArgumentUtility.CheckNotNull ("propertyInformation", propertyInformation);
-      ArgumentUtility.CheckNotNull ("typeInformation", typeInformation);
+      ArgumentUtility.CheckNotNull ("typeInformationForResourceResolution", typeInformationForResourceResolution);
 
-      return GetString (typeInformation, propertyInformation.Name, _memberInfoNameResolver.GetPropertyName (propertyInformation), "property:");
+      return GetString (typeInformationForResourceResolution, propertyInformation.Name, _memberInfoNameResolver.GetPropertyName (propertyInformation), "property:");
     }
 
     public string GetTypeDisplayName (ITypeInformation typeInformation)

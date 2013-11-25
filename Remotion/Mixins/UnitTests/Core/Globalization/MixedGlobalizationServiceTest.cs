@@ -36,7 +36,7 @@ namespace Remotion.Mixins.UnitTests.Core.Globalization
     [SetUp]
     public void SetUp ()
     {
-      _globalizationService = new MixedGlobalizationService();
+      _globalizationService = new MixedGlobalizationService(); //TODO AO: use real resolver and make a comment
     }
 
     [Test]

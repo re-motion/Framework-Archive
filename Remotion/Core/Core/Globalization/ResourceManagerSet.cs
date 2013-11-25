@@ -61,6 +61,7 @@ namespace Remotion.Globalization
       return new ResourceManagerSet (resourceManagers.AsEnumerable());
     }
 
+    //TODO AO: if list is empty behave like NullResourceManager (name="Empty ResourceManagerSet", isnull=true)
     public ResourceManagerSet (IEnumerable<IResourceManager> resourceManagers)
     {
       _resourceManagers = CreateFlatList(resourceManagers).ToArray();

@@ -22,6 +22,11 @@ using Remotion.ServiceLocation;
 
 namespace Remotion.Globalization
 {
+  //TODO AO: add behaviour comments  (no resource -> NullResourceManager, etc.)
+
+  /// <summary>
+  /// Defines an interface for resolving the <see cref="IResourceManager"/> for an <see cref="ITypeInformation"/>.
+  /// </summary>
   [ConcreteImplementation (
       "Remotion.Mixins.Globalization.MixedGlobalizationService, Remotion.Mixins, Version=<version>, Culture=neutral, PublicKeyToken=<publicKeyToken>",
       ignoreIfNotFound: true,
@@ -29,7 +34,10 @@ namespace Remotion.Globalization
   [ConcreteImplementation (typeof (GlobalizationService), Position = 0, Lifetime = LifetimeKind.Singleton)]
   public interface IGlobalizationService
   {
+    /// <summary>
+    /// Resolves the <see cref="IResourceManager"/> for the specified <paramref name="typeInformation"/>.
+    /// </summary>
     [NotNull]
-    IResourceManager GetResourceManager (ITypeInformation typeInformation);
+    IResourceManager GetResourceManager ([NotNull] ITypeInformation typeInformation);
   }
 }

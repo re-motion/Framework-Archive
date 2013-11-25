@@ -118,6 +118,8 @@ namespace Remotion.ObjectBinding.UnitTests.Core.BindableObject.IntergrationTests
       Assert.That (resourceString, Is.EqualTo ("ExplicitImplementedProperty display name from TargetClassForGlobalization"));
     }
 
+    //TODO AO: explicit integration test for mixin properties
+
     [Test]
     public void DisplayName_MixedPropertyInDerivedClass ()
     {

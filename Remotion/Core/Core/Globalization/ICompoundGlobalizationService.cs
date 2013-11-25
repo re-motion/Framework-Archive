@@ -20,6 +20,8 @@ using Remotion.ServiceLocation;
 
 namespace Remotion.Globalization
 {
+  //TODO AO: addcomment > Temporary interface for dependency resolution
+  
   //TODO AO: will be merged back into IGlobaliazationService as soon the re-motion service locator is able to resolve compositions
   [ConcreteImplementation (typeof (CompoundGlobalizationService), Lifetime = LifetimeKind.Singleton)]
   public interface ICompoundGlobalizationService : IGlobalizationService

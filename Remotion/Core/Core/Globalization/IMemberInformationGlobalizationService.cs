@@ -22,12 +22,18 @@ using Remotion.ServiceLocation;
 
 namespace Remotion.Globalization
 {
+  /// <summary>
+  /// Defines an interface for retrieving the human-readable localized representation of the reflection object.
+  /// </summary>
   [ConcreteImplementation (typeof (MemberInformationGlobalizationService), Lifetime = LifetimeKind.Singleton)]
   public interface IMemberInformationGlobalizationService
   {
-    string GetPropertyDisplayName (IPropertyInformation propertyInformation, ITypeInformation typeInformation);
-    string GetTypeDisplayName (ITypeInformation typeInformation);
+    //TODO AO: comments!
+    string GetPropertyDisplayName (IPropertyInformation propertyInformation, ITypeInformation typeInformationForResourceResolution);
+    string GetTypeDisplayName (ITypeInformation typeInformation); //TODO AO: add parameter ITypeInformation typeInformationForResourceResolution
+    // TODO AO: Move to IEnumerationGlobalizationService
     string GetEnumerationValueDisplayName (Enum value);
+    // TODO AO: Move to IExtensibleEnumerationGlobalizationService
     string GetExtensibleEnumerationValueDisplayName (IExtensibleEnum value);
   }
 }
