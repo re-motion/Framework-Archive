@@ -19,6 +19,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Web.UI;
 using Remotion.Collections;
+using Remotion.FunctionalProgramming;
 using Remotion.Globalization;
 using Remotion.Utilities;
 
@@ -84,6 +85,7 @@ public static class ResourceManagerUtility
   /// <remarks> Uses a cache for the individual <see cref="IResourceManager"/> instances. </remarks>
   public static IResourceManager GetResourceManager (Control control, bool alwaysIncludeParents)
   {
+    //TODO AO: Return NUllResourcMgr instead of null, annotate with notnull
     if (control == null)
       return null;
 
@@ -99,6 +101,8 @@ public static class ResourceManagerUtility
       return new ResourceManagerSet (resourceManagers);
   }
 
+  //TODO AO: Invert order via .Reverse() in outer method or by first recursing, then adding
+  //Remotion.FunctionalProgramming.EnumerableExtensions.CreateSequence ()
   private static void GetResourceManagersRecursive (Control control, List<IResourceManager> resourceManagers, bool alwaysIncludeParents)
   {
     if (control == null)
@@ -123,7 +127,7 @@ public static class ResourceManagerUtility
   private static IResourceManager GetResourceManagerFromCache (IObjectWithResources objectWithResources)
   {
     ArgumentUtility.CheckNotNull ("objectWithResources", objectWithResources);
-
+    //TODO AO: Drop cache
     return s_chachedResourceManagers.GetOrCreateValue (
         objectWithResources.GetType(),
         key => objectWithResources.GetResourceManager() ?? NullResourceManager.Instance);
