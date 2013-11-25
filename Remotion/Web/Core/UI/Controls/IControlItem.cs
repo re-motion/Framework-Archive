@@ -30,6 +30,6 @@ namespace Remotion.Web.UI.Controls
   {
     IControl OwnerControl { get; set; }
     string ItemID { get; }
-    void LoadResources (IResourceManager resourceManager);
+    void LoadResources (IResourceManager resourceManager, ICompoundGlobalizationService globalizationService);
   }
 }

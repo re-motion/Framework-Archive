@@ -361,7 +361,7 @@ public class WebTab: IWebTab, IControlStateManager
   {
   }
 
-  public virtual void LoadResources (IResourceManager resourceManager)
+  public virtual void LoadResources (IResourceManager resourceManager, ICompoundGlobalizationService globalizationService)
   {
     if (resourceManager == null)
       return;

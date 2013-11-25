@@ -424,10 +424,11 @@ namespace Remotion.Web.UI.Controls
     }
 
     /// <summary> Loads the resources into the control's properties. </summary>
-    protected virtual void LoadResources (IResourceManager resourceManager)
+    protected virtual void LoadResources (IResourceManager resourceManager, ICompoundGlobalizationService globalizationService)
     {
       ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
-
+      ArgumentUtility.CheckNotNull ("globalizationService", globalizationService);
+      
       if (ControlHelper.IsDesignMode (this))
         return;
 
@@ -439,7 +440,7 @@ namespace Remotion.Web.UI.Controls
       if (!StringUtility.IsNullOrEmpty (key))
         ToolTip = resourceManager.GetString (key);
 
-      Nodes.LoadResources (resourceManager);
+      Nodes.LoadResources (resourceManager, globalizationService);
     }
 
     protected override void OnLoad (EventArgs e)
@@ -470,8 +471,10 @@ namespace Remotion.Web.UI.Controls
 
       base.OnPreRender (e);
 
-      IResourceManager resourceManager = ResourceManagerUtility.GetResourceManager (this, true) ?? NullResourceManager.Instance;
-      LoadResources (resourceManager);
+      var resourceManager = ResourceManagerUtility.GetResourceManager (this, true);
+      var globalizationService = CompoundGlobalizationService.Create();
+
+      LoadResources (resourceManager, globalizationService);
 
       if (_requiresSynchronousPostBack)
       {
