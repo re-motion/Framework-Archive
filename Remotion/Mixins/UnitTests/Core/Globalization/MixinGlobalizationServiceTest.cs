@@ -19,7 +19,6 @@ using System;
 using System.Linq;
 using NUnit.Framework;
 using Remotion.Globalization;
-using Remotion.Mixins.Context.FluentBuilders;
 using Remotion.Mixins.Globalization;
 using Remotion.Mixins.UnitTests.Core.Globalization.TestDomain;
 using Remotion.Reflection;
@@ -29,14 +28,14 @@ using Rhino.Mocks;
 namespace Remotion.Mixins.UnitTests.Core.Globalization
 {
   [TestFixture]
-  public class MixedGlobalizationServiceTest
+  public class MixinGlobalizationServiceTest
   {
-    private MixedGlobalizationService _globalizationService;
+    private MixinGlobalizationService _globalizationService;
 
     [SetUp]
     public void SetUp ()
     {
-      _globalizationService = new MixedGlobalizationService(); //TODO AO: use real resolver and make a comment
+      _globalizationService = new MixinGlobalizationService(); //TODO AO: use real resolver and make a comment
     }
 
     [Test]

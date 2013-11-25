@@ -26,10 +26,9 @@ using Remotion.Utilities;
 
 namespace Remotion.Mixins.Globalization
 {
-  //TODO AO: rename to Mixin....
   //TODO AO: check that test for classes without attribute exists (should return NullResourceManager)
   //TODO AO: resolver should be ctor injected
-  public class MixedGlobalizationService : IGlobalizationService
+  public class MixinGlobalizationService : IGlobalizationService
   {
     private volatile MixinConfiguration _mixinConfiguration;
 
@@ -39,7 +38,7 @@ namespace Remotion.Mixins.Globalization
     private readonly ICache<ITypeInformation, IResourceManager> _resourceManagerCache =
         CacheFactory.CreateWithLocking<ITypeInformation, IResourceManager>();
 
-    public MixedGlobalizationService ()
+    public MixinGlobalizationService ()
     {
     }
 

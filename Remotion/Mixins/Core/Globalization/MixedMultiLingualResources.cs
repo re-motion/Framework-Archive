@@ -41,7 +41,7 @@ namespace Remotion.Mixins.Globalization
   public class MixedMultiLingualResources
   {
     private static readonly IGlobalizationService s_globalizationService =
-        new CompoundGlobalizationService (new IGlobalizationService[] { new MixedGlobalizationService(), new GlobalizationService() });
+        new CompoundGlobalizationService (new IGlobalizationService[] { new MixinGlobalizationService(), new GlobalizationService() });
 
     /// <summary>
     /// Gets the resolver object used by the methods of this class.
