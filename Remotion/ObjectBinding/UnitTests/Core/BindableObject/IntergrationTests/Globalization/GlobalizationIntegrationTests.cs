@@ -103,6 +103,22 @@ namespace Remotion.ObjectBinding.UnitTests.Core.BindableObject.IntergrationTests
     }
 
     [Test]
+    public void DisplayName_ImplicitInterfaceProperty ()
+    {
+      var resourceString = GetResourceStringForType (typeof (TargetClassForGlobalization), "ImplicitImplementedProperty");
+
+      Assert.That (resourceString, Is.EqualTo ("ImplicitImplementedProperty display name from TargetClassForGlobalization"));
+    }
+
+    [Test]
+    public void DisplayName_ExplicitInterfaceProperty ()
+    {
+      var resourceString = GetResourceStringForType (typeof (TargetClassForGlobalization), "ExplicitImplementedProperty");
+
+      Assert.That (resourceString, Is.EqualTo ("ExplicitImplementedProperty display name from TargetClassForGlobalization"));
+    }
+
+    [Test]
     public void DisplayName_MixedPropertyInDerivedClass ()
     {
       using (MixinConfiguration.BuildFromActive ()

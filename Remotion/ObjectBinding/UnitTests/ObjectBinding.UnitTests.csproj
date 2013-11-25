@@ -105,6 +105,7 @@
     <Compile Include="Core\BindableObject\IntergrationTests\Globalization\TestDomain\DerivedTargetClassForGlobalization.cs" />
     <Compile Include="Core\BindableObject\IntergrationTests\Globalization\TestDomain\IDerivedMixinAddingResources.cs" />
     <Compile Include="Core\BindableObject\IntergrationTests\Globalization\TestDomain\IMixinAddingResources.cs" />
+    <Compile Include="Core\BindableObject\IntergrationTests\Globalization\TestDomain\ITargetClassForGlobalization.cs" />
     <Compile Include="Core\BindableObject\IntergrationTests\Globalization\TestDomain\MixinAddingResources.cs" />
     <Compile Include="Core\BindableObject\IntergrationTests\Globalization\TestDomain\DerivedMixinAddingResources.cs" />
     <Compile Include="Core\BindableObject\IntergrationTests\Globalization\TestDomain\MixinOfMixinAddingResources.cs" />

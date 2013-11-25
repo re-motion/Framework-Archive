@@ -129,4 +129,10 @@
   <data name="property:Remotion.ObjectBinding.UnitTests.Core.BindableObject.IntergrationTests.Globalization.TestDomain.IMixinAddingResources.MixedProperty1" xml:space="preserve">
     <value>MixedProperty1 display name from TargetClassForGlobalization</value>
   </data>
+  <data name="property:Remotion.ObjectBinding.UnitTests.Core.BindableObject.IntergrationTests.Globalization.TestDomain.ITargetClassForGlobalization.ExplicitImplementedProperty" xml:space="preserve">
+    <value>ExplicitImplementedProperty display name from TargetClassForGlobalization</value>
+  </data>
+  <data name="property:Remotion.ObjectBinding.UnitTests.Core.BindableObject.IntergrationTests.Globalization.TestDomain.TargetClassForGlobalization.ImplicitImplementedProperty" xml:space="preserve">
+    <value>ImplicitImplementedProperty display name from TargetClassForGlobalization</value>
+  </data>
 </root>

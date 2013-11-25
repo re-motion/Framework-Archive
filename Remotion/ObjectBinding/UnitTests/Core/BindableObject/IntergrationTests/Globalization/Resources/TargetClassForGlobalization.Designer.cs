@@ -97,5 +97,26 @@ namespace Remotion.ObjectBinding.UnitTests.Core.BindableObject.IntergrationTests
                         "lobalization.TestDomain.IMixinAddingResources.MixedProperty1", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ExplicitImplementedProperty display name from TargetClassForGlobalization.
+        /// </summary>
+        internal static string property_Remotion_ObjectBinding_UnitTests_Core_BindableObject_IntergrationTests_Globalization_TestDomain_ITargetClassForGlobalization_ExplicitImplementedProperty {
+            get {
+                return ResourceManager.GetString("property:Remotion.ObjectBinding.UnitTests.Core.BindableObject.IntergrationTests.G" +
+                        "lobalization.TestDomain.ITargetClassForGlobalization.ExplicitImplementedProperty" +
+                        "", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ImplicitImplementedProperty display name from TargetClassForGlobalization.
+        /// </summary>
+        internal static string property_Remotion_ObjectBinding_UnitTests_Core_BindableObject_IntergrationTests_Globalization_TestDomain_TargetClassForGlobalization_ImplicitImplementedProperty {
+            get {
+                return ResourceManager.GetString("property:Remotion.ObjectBinding.UnitTests.Core.BindableObject.IntergrationTests.G" +
+                        "lobalization.TestDomain.TargetClassForGlobalization.ImplicitImplementedProperty", resourceCulture);
+            }
+        }
     }
 }
