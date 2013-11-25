@@ -102,7 +102,6 @@ namespace Remotion.UnitTests.ExtensibleEnums.Infrastructure
           new { Value = Color.Values.Green () } };
 
       Assert.That (result.Select (info => new { info.Value }).ToArray (), Is.EquivalentTo (expected));
-      //TODO AO: check (inject IGlobalizationService and create a test with mocks instead!?)
       Assert.That (((ResourceManagerSet) result[0].ResourceManager).ResourceManagers.Any(), Is.True);  
       Assert.That (((ResourceManagerSet) result[1].ResourceManager).ResourceManagers.Any (), Is.True);
 
