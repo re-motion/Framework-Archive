@@ -218,13 +218,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         CacheFactory.Create<Tuple<Type, Control>, IResourceManager>();
 
     private bool _controlExistedInPreviousRequest;
-    private GlobalizationService _globalizationService;
-
+    
     /// <summary> Creates a new instance of the BusinessObjectBoundWebControl type. </summary>
     protected BusinessObjectBoundWebControl ()
     {
       _binding = new BusinessObjectBinding (this);
-      _globalizationService = new GlobalizationService();
     }
 
     /// <remarks>Calls <see cref="Control.EnsureChildControls"/> and the <see cref="BusinessObjectBinding.EnsureDataSource"/> method.</remarks>
@@ -389,8 +387,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
           Tuple.Create (localResourcesType, NamingContainer),
           key =>
           {
-            IResourceManager localResourceManager = _globalizationService.GetResourceManager (TypeAdapter.Create(localResourcesType));
-            IResourceManager namingContainerResourceManager = ResourceManagerUtility.GetResourceManager (NamingContainer, true);
+            var localResourceManager = GlobalizationService.GetResourceManager (TypeAdapter.Create(localResourcesType));
+            var namingContainerResourceManager = ResourceManagerUtility.GetResourceManager (NamingContainer, true);
 
             return ResourceManagerSet.Create (namingContainerResourceManager, localResourceManager);
           });
@@ -484,7 +482,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       get { return ServiceLocator.GetInstance<ResourceTheme>(); }
     }
 
-    //TODO AO: globalizationservice
+    protected ICompoundGlobalizationService GlobalizationService
+    {
+      get { return ServiceLocator.GetInstance<ICompoundGlobalizationService> (); }
+    }
 
     protected override void LoadControlState (object savedState)
     {
