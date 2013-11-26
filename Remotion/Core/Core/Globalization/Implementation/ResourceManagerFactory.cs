@@ -14,13 +14,14 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
 using System.Reflection;
 using System.Resources;
 using Remotion.Collections;
 using Remotion.Utilities;
 
-namespace Remotion.Globalization
+namespace Remotion.Globalization.Implementation
 {
   /// <summary>
   /// Provides methods to create resource managers for given resource management information.

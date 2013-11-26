@@ -74,6 +74,7 @@ namespace Remotion.Globalization
 
     private string GetResourceString (IResourceManager resourceManager, string longID)
     {
+      //TODO AO: GetStringOrDefault
       if (resourceManager.ContainsResource (longID))
         return resourceManager.GetString (longID);
       return null;

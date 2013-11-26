@@ -21,7 +21,7 @@ using Remotion.Collections;
 using Remotion.Reflection;
 using Remotion.Utilities;
 
-namespace Remotion.Globalization
+namespace Remotion.Globalization.Implementation
 {
   //TODO AO: replace exisiting tests with mocked tests
   //TODO AO: resolver should be ctor injected

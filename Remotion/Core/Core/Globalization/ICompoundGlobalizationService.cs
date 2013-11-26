@@ -16,6 +16,7 @@
 // 
 
 using System;
+using Remotion.Globalization.Implementation;
 using Remotion.ServiceLocation;
 
 namespace Remotion.Globalization

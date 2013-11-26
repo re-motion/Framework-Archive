@@ -19,6 +19,7 @@ using System;
 using System.Linq;
 using NUnit.Framework;
 using Remotion.Globalization;
+using Remotion.Globalization.Implementation;
 using Remotion.UnitTests.Globalization.TestDomain;
 
 namespace Remotion.UnitTests.Globalization

@@ -21,7 +21,7 @@ using System.Linq;
 using Remotion.Collections;
 using Remotion.Utilities;
 
-namespace Remotion.Globalization
+namespace Remotion.Globalization.Implementation
 {
   /// <summary>
   /// Provides a generalized implementation of the algorithms used to translate resource attributes into <see cref="IResourceManager"/> instances.

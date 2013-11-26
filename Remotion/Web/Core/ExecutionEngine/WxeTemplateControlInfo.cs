@@ -19,6 +19,7 @@ using System.Web;
 using System.Web.UI;
 using Remotion.Collections;
 using Remotion.Globalization;
+using Remotion.Globalization.Implementation;
 using Remotion.Reflection;
 using Remotion.Utilities;
 using Remotion.Web.UI.Globalization;

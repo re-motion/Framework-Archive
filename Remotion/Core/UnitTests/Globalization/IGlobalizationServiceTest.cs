@@ -18,6 +18,7 @@
 using System;
 using NUnit.Framework;
 using Remotion.Globalization;
+using Remotion.Globalization.Implementation;
 using Remotion.ServiceLocation;
 using System.Linq;
 
@@ -40,7 +41,7 @@ namespace Remotion.UnitTests.Globalization
       var factory = _serviceLocator.GetAllInstances<IGlobalizationService> ().ToArray();
 
       Assert.That (factory.Count (), Is.EqualTo (2));
-      Assert.That (factory[1].GetType ().Name, Is.EqualTo ("MixedGlobalizationService"));
+      Assert.That (factory[1].GetType ().Name, Is.EqualTo ("MixinGlobalizationService"));
       Assert.That (factory[0].GetType (), Is.EqualTo (typeof (GlobalizationService)));
     }
 

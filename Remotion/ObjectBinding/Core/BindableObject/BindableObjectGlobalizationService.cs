@@ -20,6 +20,7 @@ using System.Collections.Generic;
 using Remotion.ExtensibleEnums;
 using Remotion.FunctionalProgramming;
 using Remotion.Globalization;
+using Remotion.Globalization.Implementation;
 using Remotion.Mixins;
 using Remotion.Reflection;
 using Remotion.Utilities;

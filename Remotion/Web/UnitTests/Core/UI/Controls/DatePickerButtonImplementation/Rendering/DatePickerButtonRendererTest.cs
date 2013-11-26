@@ -20,6 +20,7 @@ using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting;
 using Remotion.Development.Web.UnitTesting.Resources;
 using Remotion.Globalization;
+using Remotion.Globalization.Implementation;
 using Remotion.Web.Resources;
 using Remotion.Web.UI.Controls.DatePickerButtonImplementation;
 using Remotion.Web.UI.Controls.DatePickerButtonImplementation.Rendering;

@@ -123,6 +123,7 @@ namespace Remotion.Globalization
       }
       // ReSharper restore ForCanBeConvertedToForeach
 
+      //TODO AO: refactor to DebugFormat
       s_log.Debug ("Could not find resource with ID '" + id + "' in any of the following resource containers " + _name + ".");
       return id;
     }
@@ -143,6 +144,7 @@ namespace Remotion.Globalization
     {
       ArgumentUtility.CheckNotNullOrEmpty ("id", id);
 
+      //TODO AO: Revert and annotate like GetString
       return _resourceManagers.Where ((t, i) => _resourceManagers.ElementAt (i).ContainsResource (id)).Any();
     }
 

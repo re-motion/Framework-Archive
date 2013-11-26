@@ -23,7 +23,7 @@ using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 
-namespace Remotion.Globalization
+namespace Remotion.Globalization.Implementation
 {
   public class CompoundGlobalizationService : ICompoundGlobalizationService
   {

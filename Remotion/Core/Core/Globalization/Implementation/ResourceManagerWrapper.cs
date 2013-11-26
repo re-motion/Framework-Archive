@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -25,7 +26,7 @@ using Remotion.Collections;
 using Remotion.Logging;
 using Remotion.Utilities;
 
-namespace Remotion.Globalization
+namespace Remotion.Globalization.Implementation
 {
   /// <summary>
   ///   A wrapper for the .net Framework <c>ResourceManager</c> implementation.
@@ -160,6 +161,7 @@ namespace Remotion.Globalization
       if (result != null)
         return result;
 
+      //TODO AO: refactor to DebugFormat
       s_log.Debug ("Could not find resource with ID '" + id + "' in resource container '" + _resourceManager.BaseName + "'.");
       return id;
     }

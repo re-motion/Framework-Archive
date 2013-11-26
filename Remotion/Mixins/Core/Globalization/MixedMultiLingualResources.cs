@@ -17,6 +17,7 @@
 using System;
 using System.Linq;
 using Remotion.Globalization;
+using Remotion.Globalization.Implementation;
 using Remotion.Reflection;
 using Remotion.Utilities;
 
@@ -44,15 +45,6 @@ namespace Remotion.Mixins.Globalization
         new CompoundGlobalizationService (new IGlobalizationService[] { new MixinGlobalizationService(), new GlobalizationService() });
 
     /// <summary>
-    /// Gets the resolver object used by the methods of this class.
-    /// </summary>
-    /// <value>The resolver object used by <see cref="MultiLingualResources"/>.</value>
-    public static IGlobalizationService GlobalizationService
-    {
-      get { return s_globalizationService; }
-    }
-
-    /// <summary>
     ///   Returns an instance of <see cref="IResourceManager"/> for the resource container specified in the class declaration of the type.
     /// </summary>
     /// <param name="objectType">The type to return an <see cref="IResourceManager"/> for.</param>
@@ -67,7 +59,15 @@ namespace Remotion.Mixins.Globalization
       if (includeHierarchy == false)
         throw new NotSupportedException ("Usage of MixedMultiLingualResources.GetResourceManager with includeHierarchy=false is not supported.");
 
-      return s_globalizationService.GetResourceManager (TypeAdapter.Create (objectType));
+      var resourceManager = s_globalizationService.GetResourceManager (TypeAdapter.Create (objectType));
+      if (resourceManager.IsNull)
+      {
+        var message = string.Format (
+            "Type {0} and its base classes do not define a resource attribute.", objectType.FullName);
+        throw new ResourceException (message);
+      }
+
+      return resourceManager;
     }
 
     /// <summary>
@@ -96,7 +96,7 @@ namespace Remotion.Mixins.Globalization
       ArgumentUtility.CheckNotNull ("objectTypeToGetResourceFor", objectTypeToGetResourceFor);
       ArgumentUtility.CheckNotNull ("name", name);
 
-      var rm = s_globalizationService.GetResourceManager (TypeAdapter.Create (objectTypeToGetResourceFor));
+      var rm = GetResourceManager (objectTypeToGetResourceFor);
       var text = rm.GetString (name);
       if (text == name)
         return String.Empty;
@@ -143,6 +143,7 @@ namespace Remotion.Mixins.Globalization
       if (resourceManager.IsNull)
         return false;
 
+      //TODO AO: Remove once ReseourceManagerSet is changed to return IsNull=true if emptz
       var resourceManagerAsResourceManagerSet = resourceManager as ResourceManagerSet;
       if (resourceManagerAsResourceManagerSet != null && !resourceManagerAsResourceManagerSet.ResourceManagers.Any())
         return false;

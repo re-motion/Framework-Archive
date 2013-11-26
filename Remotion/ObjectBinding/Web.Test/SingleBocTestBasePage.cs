@@ -19,6 +19,7 @@ using System.Globalization;
 using System.Threading;
 using System.Web;
 using Remotion.Globalization;
+using Remotion.Globalization.Implementation;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Web;

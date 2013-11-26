@@ -23,6 +23,7 @@ using System.Reflection;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.Globalization;
+using Remotion.Globalization.Implementation;
 using Remotion.Logging;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;

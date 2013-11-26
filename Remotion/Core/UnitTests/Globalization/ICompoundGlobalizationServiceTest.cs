@@ -19,6 +19,7 @@ using System;
 using System.Linq;
 using NUnit.Framework;
 using Remotion.Globalization;
+using Remotion.Globalization.Implementation;
 using Remotion.ServiceLocation;
 
 namespace Remotion.UnitTests.Globalization
@@ -41,7 +42,7 @@ namespace Remotion.UnitTests.Globalization
 
       Assert.That (factory, Is.TypeOf (typeof (CompoundGlobalizationService)));
       var compoundGlobalizationServices = ((CompoundGlobalizationService) factory).GlobalizationServices.ToArray();
-      Assert.That (compoundGlobalizationServices[0].GetType().Name, Is.EqualTo("MixedGlobalizationService"));
+      Assert.That (compoundGlobalizationServices[0].GetType().Name, Is.EqualTo("MixinGlobalizationService"));
       Assert.That (compoundGlobalizationServices[1], Is.TypeOf(typeof(GlobalizationService)));
     }
 

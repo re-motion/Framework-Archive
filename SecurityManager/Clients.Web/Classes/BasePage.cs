@@ -18,6 +18,7 @@
 using System;
 using Microsoft.Practices.ServiceLocation;
 using Remotion.Globalization;
+using Remotion.Globalization.Implementation;
 using Remotion.Reflection;
 using Remotion.SecurityManager.Clients.Web.Globalization.UI;
 using Remotion.SecurityManager.Clients.Web.WxeFunctions;

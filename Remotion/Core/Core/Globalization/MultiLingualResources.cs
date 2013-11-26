@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Remotion.Globalization.Implementation;
 using Remotion.Reflection;
 using Remotion.Utilities;
 
@@ -26,20 +27,9 @@ namespace Remotion.Globalization
   [Obsolete ("Retrieve IGlobalizationService from IoC container instead.")]
   public static class MultiLingualResources
   {
-  	private static readonly ResourceManagerResolver<MultiLingualResourcesAttribute> s_resolver =
-        new ResourceManagerResolver<MultiLingualResourcesAttribute>();
-    private static IGlobalizationService s_globalizationService = new GlobalizationService();
+  	private static readonly IGlobalizationService s_globalizationService = new GlobalizationService();
 
 		/// <summary>
-		/// Gets the resolver object used by the methods of this class.
-		/// </summary>
-		/// <value>The resolver object used by <see cref="MultiLingualResources"/>.</value>
-		public static ResourceManagerResolver<MultiLingualResourcesAttribute> Resolver
-		{
-			get { return s_resolver; }
-		}
-
-    /// <summary>
     ///   Returns an instance of <c>IResourceManager</c> for the resource container specified
     ///   in the class declaration of the type.
     /// </summary>
@@ -49,7 +39,19 @@ namespace Remotion.Globalization
     {
       ArgumentUtility.CheckNotNull ("objectType", objectType);
       ArgumentUtility.CheckNotNull ("includeHierarchy", includeHierarchy);
-      return s_resolver.GetResourceManager (objectType, includeHierarchy);
+
+      if (includeHierarchy == false)
+        throw new NotSupportedException ("Usage of MixedMultiLingualResources.GetResourceManager with includeHierarchy=false is not supported.");
+      
+      var resourceManager = s_globalizationService.GetResourceManager (TypeAdapter.Create (objectType));
+		  if (resourceManager.IsNull)
+		  {
+        var message = string.Format (
+            "Type {0} and its base classes do not define a resource attribute.", objectType.FullName);
+        throw new ResourceException (message);
+		  }
+
+		  return resourceManager;
     }
 
     /// <summary>
@@ -76,8 +78,8 @@ namespace Remotion.Globalization
     {
       ArgumentUtility.CheckNotNull ("objectTypeToGetResourceFor", objectTypeToGetResourceFor);
       ArgumentUtility.CheckNotNull ("name", name);
-      
-      var resourceManager = s_globalizationService.GetResourceManager (TypeAdapter.Create(objectTypeToGetResourceFor));
+
+      var resourceManager = GetResourceManager (objectTypeToGetResourceFor);
       var text = resourceManager.GetString (name);
       if (text == name)
         return String.Empty;
@@ -115,7 +117,7 @@ namespace Remotion.Globalization
 
       try
       {
-        var resourceManager = s_globalizationService.GetResourceManager (TypeAdapter.Create(objectTypeToGetResourceFor));
+        var resourceManager = GetResourceManager (objectTypeToGetResourceFor);
         string text = resourceManager.GetString (name);
         return (text != name);
       }
@@ -152,7 +154,7 @@ namespace Remotion.Globalization
     {
       ArgumentUtility.CheckNotNull ("objectTypeToGetResourceFor", objectTypeToGetResourceFor);
 
-      return !(s_globalizationService.GetResourceManager (TypeAdapter.Create(objectTypeToGetResourceFor)) is NullResourceManager);
+      return !GetResourceManager(objectTypeToGetResourceFor).IsNull;
 		}
 
     /// <summary>
