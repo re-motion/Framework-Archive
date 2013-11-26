@@ -57,10 +57,19 @@
       -moz-box-sizing: border-box;
       -webkit-box-sizing: border-box;
       
+      /*padding: 3px;*/
       width: 12.8em;
       padding-right: 15px;
+      /*border: 1px solid darkgrey;
+      border-radius: 3px;*/
     }
     
+    /*.ie9 .autoCompleteReferenceValue input.textField
+    {
+      padding-right: 3px;
+      border-right: 15px solid transparent;
+    }*/
+
     .autoCompleteReferenceValue a.dropDownButton
     {
       border: solid 1px ThreeDShadow;
@@ -266,7 +275,7 @@
   </span>
   M
   <h1>Auto Complete Reference Value:</h1>
-  (Issue in IE: text will end up behind the dropdown until IE moves back to left)<br/>
+  (Issue in IE&lt;10: text will end up behind the dropdown until IE moves back to left. Can be solved with CSS-tricks, currently commented out)<br/>
   <span class="autoCompleteReferenceValue">
     <input name="autoCompleteReferenceValue" type="text" class="textField" />
     <a href="#" class="dropDownButton" title="Show the value list">&nbsp;</a>
@@ -274,6 +283,8 @@
   M
   <h1>Multiline tooltip:</h1>
    <span title="Line 1&#13&#10Line 2">The Tooltip Target</span><br/>
+    <br/>
+    See Chosen (http://harvesthq.github.io/chosen/) for Reference Values and Enum Values
   </form>
 </body>
 </html>
