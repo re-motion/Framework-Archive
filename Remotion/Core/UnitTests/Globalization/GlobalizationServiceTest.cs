@@ -30,11 +30,32 @@ namespace Remotion.UnitTests.Globalization
   public class GlobalizationServiceTest
   {
     private GlobalizationService _globalizationService;
-    
+    private IResourceManagerResolver<MultiLingualResourcesAttribute> _resolverMock;
+    private IResourceManager _resourceManagerStub;
+
     [SetUp]
     public void SetUp ()
     {
-      _globalizationService = new GlobalizationService();
+      _resourceManagerStub = MockRepository.GenerateStub<IResourceManager>();
+
+      _resolverMock = MockRepository.GenerateStrictMock<IResourceManagerResolver<MultiLingualResourcesAttribute>>();
+      _globalizationService = new GlobalizationService(_resolverMock);
+    }
+
+    [Test]
+    public void GetResourceManager ()
+    {
+      var type = typeof (ClassWithResources);
+      var typeInformation = TypeAdapter.Create (type);
+
+      _resourceManagerStub.Stub (sub => _resourceManagerStub.GetString ("property:Value1")).Return ("Test1");
+
+      _resolverMock.Expect (mock => mock.GetResourceManager (type)).Return (_resourceManagerStub);
+
+      var resourceManager = _globalizationService.GetResourceManager (typeInformation);
+
+      _resolverMock.VerifyAllExpectations ();
+      Assert.That (resourceManager.GetString ("property:Value1"), Is.EqualTo ("Test1"));
     }
 
     [Test]
@@ -44,37 +65,24 @@ namespace Remotion.UnitTests.Globalization
       
       var result = _globalizationService.GetResourceManager (typeInformation);
 
+      _resolverMock.VerifyAllExpectations();
       Assert.That (result, Is.TypeOf(typeof(NullResourceManager)));
     }
 
     [Test]
-    public void GetResourceManager_TypeWithResourceForType ()
+    public void GetResourceManagerTwice_SameFromCache ()
     {
-      var typeInformation = TypeAdapter.Create (typeof (ClassWithMultiLingualResourcesAttributes));
+      var type = typeof (ClassWithResources);
+      var typeInformation = TypeAdapter.Create (type);
 
-      var result = _globalizationService.GetResourceManager (typeInformation) as ResourceManagerSet;
-      Assert.That (result, Is.Not.Null);
-      Assert.That (result.ResourceManagers.Count(), Is.EqualTo (3));
-    }
+      _resourceManagerStub.Stub (sub => _resourceManagerStub.GetString ("property:Value1")).Return ("Test1");
 
-    [Test]
-    public void GetResourceManager_TypeWithoutResourceForType ()
-    {
-      var typeInformation = TypeAdapter.Create (typeof (ClassWithoutMultiLingualResourcesAttributes));
+      _resolverMock.Expect (mock => mock.GetResourceManager (type)).Return (_resourceManagerStub).Repeat.Once();
 
-      var result = _globalizationService.GetResourceManager (typeInformation);
+      var resourceManager1 = _globalizationService.GetResourceManager (typeInformation);
+      var resourceManager2 = _globalizationService.GetResourceManager (typeInformation);
 
-      Assert.That (result, Is.TypeOf(typeof(NullResourceManager)));
-    }
-
-    [Test]
-    public void GetResourceManager_ClassWithRealResource ()
-    {
-      var typeInformation = TypeAdapter.Create (typeof (ClassWithResources));
-
-      var resourceManager = _globalizationService.GetResourceManager (typeInformation);
-
-      Assert.That (resourceManager.GetString ("property:Value1"), Is.EqualTo ("Value 1"));
+      Assert.That (resourceManager1, Is.SameAs(resourceManager2));
     }
  
   }

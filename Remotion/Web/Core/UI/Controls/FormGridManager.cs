@@ -1026,7 +1026,7 @@ namespace Remotion.Web.UI.Controls
     private bool _formGridListPopulated = false;
     private IInfrastructureResourceUrlFactory _infrastructureResourceUrlFactory;
     private IResourceUrlFactory _resourceUrlFactory;
-    private GlobalizationService _globalizationService;
+    private readonly IGlobalizationService _globalizationService;
 
     // construction and disposing
 
@@ -1042,7 +1042,7 @@ namespace Remotion.Web.UI.Controls
       _showValidationMarkers = true;
       _showRequiredMarkers = true;
       _showHelpProviders = true;
-      _globalizationService = new GlobalizationService();
+      _globalizationService = CompoundGlobalizationService.Create();
     }
   
     // methods and properties

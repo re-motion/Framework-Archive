@@ -51,7 +51,12 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls
     {
       var bocListCssClassDefinition = new BocListCssClassDefinition();
       var compoundGlobalizationService =
-          new CompoundGlobalizationService (new IGlobalizationService[] { new GlobalizationService(), new MixinGlobalizationService() });
+          new CompoundGlobalizationService (
+              new IGlobalizationService[]
+              {
+                  new GlobalizationService (new ResourceManagerResolver<MultiLingualResourcesAttribute>()),
+                  new MixinGlobalizationService (new ResourceManagerResolver<MultiLingualResourcesAttribute>())
+              });
 
       _instances.Add (
           typeof (IBocListRenderer),

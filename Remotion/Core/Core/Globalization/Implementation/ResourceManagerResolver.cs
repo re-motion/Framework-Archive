@@ -42,18 +42,13 @@ namespace Remotion.Globalization.Implementation
     /// to the cache.
     /// </summary>
     /// <param name="objectType">The type to get an <see cref="IResourceManager"/> for.</param>
-    /// <param name="includeHierarchy">Determines whether to include all resources defined in the <paramref name="objectType"/>'s hierarchy. If
-    /// set to <see langword="false" />, only those of the first type with resources in the hierarchy are included.</param>
     /// <returns>
     /// A <see cref="ResourceManagerCacheEntry"/> object for the given <paramref name="objectType"/>. The object is 
     /// <see cref="ResourceManagerCacheEntry.Empty"/> if no resources could be found.
     /// </returns>
-    public IResourceManager GetResourceManager (Type objectType, bool includeHierarchy)
+    public IResourceManager GetResourceManager (Type objectType)
     {
       ArgumentUtility.CheckNotNull ("objectType", objectType);
-
-      if (includeHierarchy == false)
-        throw new NotSupportedException ("Usage of ResourceManagerResolver.GetResourceManager with includeHierarchy=false is not supported.");
 
       // 1. Try to get resource manager from cache using objectType.
       // 2. If miss, get resource definition stream.
@@ -62,7 +57,6 @@ namespace Remotion.Globalization.Implementation
       // Steps 2-4 happen in CreateCacheEntry.
 
       var cacheEntry = _resourceManagerWrappersCache.GetOrCreateValue (objectType, CreateCacheEntry);
-
       return cacheEntry.IsEmpty ? NullResourceManager.Instance :  cacheEntry.ResourceManager;
     }
 

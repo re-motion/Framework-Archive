@@ -38,7 +38,7 @@ namespace Remotion.UnitTests.Globalization
     [Test]
     public void GetResourceManager_NoSuccess ()
     {
-      var result = _resolver.GetResourceManager (typeof (ClassWithoutMultiLingualResourcesAttributes), true);
+      var result = _resolver.GetResourceManager (typeof (ClassWithoutMultiLingualResourcesAttributes));
 
       Assert.That (result, Is.TypeOf (typeof (NullResourceManager)));
     }
@@ -46,7 +46,7 @@ namespace Remotion.UnitTests.Globalization
     [Test]
     public void GetResourceManager_Hierarchy ()
     {
-      var resourceManagerSet = (ResourceManagerSet) _resolver.GetResourceManager (typeof (InheritedClassWithMultiLingualResourcesAttributes), true);
+      var resourceManagerSet = (ResourceManagerSet) _resolver.GetResourceManager (typeof (InheritedClassWithMultiLingualResourcesAttributes));
       Assert.That (resourceManagerSet.ResourceManagers.Count(), Is.EqualTo (5));
       var names = new[]
                   {
@@ -59,18 +59,10 @@ namespace Remotion.UnitTests.Globalization
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException),
-        ExpectedMessage = "Usage of ResourceManagerResolver.GetResourceManager with includeHierarchy=false is not supported.")]
-    public void GetResourceManager_NoHierarchy ()
-    {
-      _resolver.GetResourceManager (typeof (InheritedClassWithMultiLingualResourcesAttributes), false);
-    }
-
-    [Test]
     public void GetResourceManager_DefiningType_Hierarchy ()
     {
       var resourceManagerSet =
-          (ResourceManagerSet) _resolver.GetResourceManager (typeof (InheritedClassWithMultiLingualResourcesAttributes), true);
+          (ResourceManagerSet) _resolver.GetResourceManager (typeof (InheritedClassWithMultiLingualResourcesAttributes));
       Assert.That (resourceManagerSet.ResourceManagers.Count(), Is.EqualTo (5));
       var names = new[]
                   {
@@ -85,7 +77,7 @@ namespace Remotion.UnitTests.Globalization
     [Test]
     public void GetResourceManager_NoDefiningType_Hierarchy ()
     {
-      var resourceManagerSet = (ResourceManagerSet) _resolver.GetResourceManager (typeof (InheritedClassWithMultiLingualResourcesAttributes), true);
+      var resourceManagerSet = (ResourceManagerSet) _resolver.GetResourceManager (typeof (InheritedClassWithMultiLingualResourcesAttributes));
       Assert.That (resourceManagerSet.ResourceManagers.Count(), Is.EqualTo (5));
       Assert.That (
           new[]

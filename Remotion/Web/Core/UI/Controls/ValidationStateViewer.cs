@@ -79,14 +79,14 @@ public class ValidationStateViewer : WebControl, IControl
   /// <summary> Caches the <see cref="ResourceManagerSet"/> for this <see cref="ValidationStateViewer"/>. </summary>
   private ResourceManagerSet _cachedResourceManager;
 
-  private GlobalizationService _globalizationService;
+  private IGlobalizationService _globalizationService;
 
   // construction and disposing
 
   /// <summary> Initializes a new instance of the <see cref="ValidationStateViewer"/> class. </summary>
   public ValidationStateViewer()
   {
-    _globalizationService = new GlobalizationService();
+    _globalizationService = CompoundGlobalizationService.Create();
   }
 
   /// <summary> Registers all instances of <see cref="FormGridManager"/>. </summary>

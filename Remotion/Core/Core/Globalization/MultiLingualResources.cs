@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
 using Remotion.Globalization.Implementation;
 using Remotion.Reflection;
@@ -27,9 +28,10 @@ namespace Remotion.Globalization
   [Obsolete ("Retrieve IGlobalizationService from IoC container instead.")]
   public static class MultiLingualResources
   {
-  	private static readonly IGlobalizationService s_globalizationService = new GlobalizationService();
+    private static readonly IGlobalizationService s_globalizationService =
+        new GlobalizationService (new ResourceManagerResolver<MultiLingualResourcesAttribute>());
 
-		/// <summary>
+    /// <summary>
     ///   Returns an instance of <c>IResourceManager</c> for the resource container specified
     ///   in the class declaration of the type.
     /// </summary>
@@ -42,16 +44,17 @@ namespace Remotion.Globalization
 
       if (includeHierarchy == false)
         throw new NotSupportedException ("Usage of MixedMultiLingualResources.GetResourceManager with includeHierarchy=false is not supported.");
-      
-      var resourceManager = s_globalizationService.GetResourceManager (TypeAdapter.Create (objectType));
-		  if (resourceManager.IsNull)
-		  {
-        var message = string.Format (
-            "Type {0} and its base classes do not define a resource attribute.", objectType.FullName);
-        throw new ResourceException (message);
-		  }
 
-		  return resourceManager;
+      var resourceManager = s_globalizationService.GetResourceManager (TypeAdapter.Create (objectType));
+      if (resourceManager.IsNull)
+      {
+        var message = string.Format (
+            "Type {0} and its base classes do not define a resource attribute.",
+            objectType.FullName);
+        throw new ResourceException (message);
+      }
+
+      return resourceManager;
     }
 
     /// <summary>
@@ -99,7 +102,7 @@ namespace Remotion.Globalization
       ArgumentUtility.CheckNotNull ("objectToGetResourceFor", objectToGetResourceFor);
       ArgumentUtility.CheckNotNullOrEmpty ("name", name);
 
-      return GetResourceText (objectToGetResourceFor.GetType(), name);  
+      return GetResourceText (objectToGetResourceFor.GetType(), name);
     }
 
     /// <summary>
@@ -140,7 +143,7 @@ namespace Remotion.Globalization
       ArgumentUtility.CheckNotNull ("objectToGetResourceFor", objectToGetResourceFor);
       ArgumentUtility.CheckNotNullOrEmpty ("name", name);
 
-      return ExistsResourceText (objectToGetResourceFor.GetType(), name);  
+      return ExistsResourceText (objectToGetResourceFor.GetType(), name);
     }
 
     /// <summary>
@@ -154,8 +157,8 @@ namespace Remotion.Globalization
     {
       ArgumentUtility.CheckNotNull ("objectTypeToGetResourceFor", objectTypeToGetResourceFor);
 
-      return !GetResourceManager(objectTypeToGetResourceFor).IsNull;
-		}
+      return !GetResourceManager (objectTypeToGetResourceFor).IsNull;
+    }
 
     /// <summary>
     ///   Checks for the existence of a resource set for the specified object.

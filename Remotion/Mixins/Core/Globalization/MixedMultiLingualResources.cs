@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
 using System.Linq;
 using Remotion.Globalization;
@@ -42,7 +43,12 @@ namespace Remotion.Mixins.Globalization
   public class MixedMultiLingualResources
   {
     private static readonly IGlobalizationService s_globalizationService =
-        new CompoundGlobalizationService (new IGlobalizationService[] { new MixinGlobalizationService(), new GlobalizationService() });
+        new CompoundGlobalizationService (
+            new IGlobalizationService[]
+            {
+                new MixinGlobalizationService (new ResourceManagerResolver<MultiLingualResourcesAttribute>()),
+                new GlobalizationService (new ResourceManagerResolver<MultiLingualResourcesAttribute>())
+            });
 
     /// <summary>
     ///   Returns an instance of <see cref="IResourceManager"/> for the resource container specified in the class declaration of the type.
@@ -63,7 +69,8 @@ namespace Remotion.Mixins.Globalization
       if (resourceManager.IsNull)
       {
         var message = string.Format (
-            "Type {0} and its base classes do not define a resource attribute.", objectType.FullName);
+            "Type {0} and its base classes do not define a resource attribute.",
+            objectType.FullName);
         throw new ResourceException (message);
       }
 
@@ -76,7 +83,7 @@ namespace Remotion.Mixins.Globalization
     /// </summary>
     /// <param name="objectType">The type to return an <see cref="IResourceManager"/> for.</param>
     /// <returns>An instance of <see cref="IResourceManager"/> for <paramref name="objectType"/>.</returns>
-    [Obsolete("Use IGlobalizationService instead.")]
+    [Obsolete ("Use IGlobalizationService instead.")]
     public static IResourceManager GetResourceManager (Type objectType)
     {
       ArgumentUtility.CheckNotNull ("objectType", objectType);

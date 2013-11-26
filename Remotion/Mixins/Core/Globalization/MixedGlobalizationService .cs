@@ -28,19 +28,18 @@ using Remotion.Utilities;
 namespace Remotion.Mixins.Globalization
 {
   //TODO AO: check that test for classes without attribute exists (should return NullResourceManager)
-  //TODO AO: resolver should be ctor injected
   public class MixinGlobalizationService : IGlobalizationService
   {
     private volatile MixinConfiguration _mixinConfiguration;
-
-    private readonly ResourceManagerResolver<MultiLingualResourcesAttribute> _resolver =
-        new ResourceManagerResolver<MultiLingualResourcesAttribute>();
-
+    private readonly IResourceManagerResolver<MultiLingualResourcesAttribute> _resourceManagerResolver;
     private readonly ICache<ITypeInformation, IResourceManager> _resourceManagerCache =
         CacheFactory.CreateWithLocking<ITypeInformation, IResourceManager>();
 
-    public MixinGlobalizationService ()
+    public MixinGlobalizationService (IResourceManagerResolver<MultiLingualResourcesAttribute> resourceManagerResolver)
     {
+      ArgumentUtility.CheckNotNull ("resourceManagerResolver", resourceManagerResolver);
+
+      _resourceManagerResolver = resourceManagerResolver;
     }
 
     public IResourceManager GetResourceManager (ITypeInformation typeInformation)
@@ -88,7 +87,7 @@ namespace Remotion.Mixins.Globalization
       foreach (var mixinType in mixinTypes)
         CollectResourceManagersRecursively (mixinType, collectedResourceMangers);
 
-      collectedResourceMangers.AddRange (mixinTypes.Select (mixinType => _resolver.GetResourceManager (mixinType, true)));
+      collectedResourceMangers.AddRange (mixinTypes.Select (mixinType => _resourceManagerResolver.GetResourceManager (mixinType)));
     }
   }
 }

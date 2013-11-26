@@ -39,13 +39,14 @@ namespace Remotion.Web.ExecutionEngine
     private readonly IWxeTemplateControl _control;
     /// <summary> Caches the <see cref="ResourceManagerSet"/> for this control. </summary>
     private ResourceManagerSet _cachedResourceManager;
-    private GlobalizationService _globalizationService;
+    private readonly IGlobalizationService _globalizationService;
 
     public WxeTemplateControlInfo (IWxeTemplateControl control)
     {
       ArgumentUtility.CheckNotNullAndType<TemplateControl> ("control", control);
+      
       _control = control;
-      _globalizationService = new GlobalizationService();
+      _globalizationService = CompoundGlobalizationService.Create();
     }
 
     public virtual void Initialize (HttpContext context)

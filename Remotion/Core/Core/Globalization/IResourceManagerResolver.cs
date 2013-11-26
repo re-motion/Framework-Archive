@@ -16,14 +16,15 @@
 // 
 
 using System;
+using Remotion.Globalization.Implementation;
+using Remotion.ServiceLocation;
 
 namespace Remotion.Globalization
 {
-  //TODO AO: add concrete implementation attribute (singleton) + add test
+  [ConcreteImplementation (typeof (ResourceManagerResolver<MultiLingualResourcesAttribute>),Lifetime = LifetimeKind.Singleton)]
   public interface IResourceManagerResolver<TAttribute>
      where TAttribute : Attribute, IResourcesAttribute
   {
-    //TODO AO: remove includeHierarchy parameter
-    IResourceManager GetResourceManager (Type objectType, bool includeHierarchy);
+    IResourceManager GetResourceManager (Type objectType);
   }
 }

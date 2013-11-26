@@ -69,7 +69,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocListImplementation
 
       EventArgs = new BocListDataRowRenderEventArgs (10, (IBusinessObject) businessObject.FirstValue, false, true);
 
-      GlobalizationService = new GlobalizationService();
+      GlobalizationService = new GlobalizationService(new ResourceManagerResolver<MultiLingualResourcesAttribute>());
 
       InitializeMockList();
     }

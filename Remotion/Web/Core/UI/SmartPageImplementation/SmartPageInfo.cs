@@ -88,7 +88,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
 
     private Tuple<Control, FieldInfo> _htmlFormField;
     private bool _htmlFormFieldInitialized;
-    private GlobalizationService _globalizationService;
+    private readonly IGlobalizationService _globalizationService;
 
     public SmartPageInfo (ISmartPage page)
     {
@@ -97,7 +97,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
       _page.Init += Page_Init;
       // PreRenderComplete-handler must be registered before ScriptManager registers its own PreRenderComplete-handler during OnInit.
       _page.PreRenderComplete += Page_PreRenderComplete;
-      _globalizationService = new GlobalizationService();
+      _globalizationService = CompoundGlobalizationService.Create();
     }
 
     /// <summary> Implements <see cref="ISmartPage.RegisterClientSidePageEventHandler">ISmartPage.RegisterClientSidePageEventHandler</see>. </summary>

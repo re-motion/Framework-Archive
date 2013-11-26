@@ -62,7 +62,7 @@ namespace Remotion.Web.UI.Controls
     private bool _isPastInitialization;
     private Color _subMenuBackgroundColor;
     private ResourceManagerSet _cachedResourceManager;
-    private GlobalizationService _globalizationService;
+    private readonly IGlobalizationService _globalizationService;
 
 
     // construction and destruction
@@ -72,7 +72,7 @@ namespace Remotion.Web.UI.Controls
       _subMenuTabStrip = new WebTabStrip (this, new[] { typeof (SubMenuTab) });
       _statusStyle = new Style ();
       _subMenuBackgroundColor = new Color ();
-      _globalizationService = new GlobalizationService();
+      _globalizationService = CompoundGlobalizationService.Create();
     }
 
     // methods and properties

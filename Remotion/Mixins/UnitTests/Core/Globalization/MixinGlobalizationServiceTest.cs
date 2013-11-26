@@ -36,7 +36,7 @@ namespace Remotion.Mixins.UnitTests.Core.Globalization
     [SetUp]
     public void SetUp ()
     {
-      _globalizationService = new MixinGlobalizationService(); //TODO AO: use real resolver and make a comment
+      _globalizationService = new MixinGlobalizationService (new ResourceManagerResolver<MultiLingualResourcesAttribute>());
     }
 
     [Test]
@@ -96,10 +96,10 @@ namespace Remotion.Mixins.UnitTests.Core.Globalization
     [Test]
     public void GetResourceManagerTwice_TypeWithDynamicMixinScope_NotSameButEqual ()
     {
-      using (MixinConfiguration.BuildFromActive ()
-          .ForClass<ClassWithoutMultiLingualResourcesAttributes> ()
-          .AddMixin<MixinAddingMultiLingualResourcesAttributes1> ()
-          .EnterScope ())
+      using (MixinConfiguration.BuildFromActive()
+          .ForClass<ClassWithoutMultiLingualResourcesAttributes>()
+          .AddMixin<MixinAddingMultiLingualResourcesAttributes1>()
+          .EnterScope())
       {
         var typeInformation = TypeAdapter.Create (typeof (ClassWithoutMultiLingualResourcesAttributes));
 
@@ -107,10 +107,10 @@ namespace Remotion.Mixins.UnitTests.Core.Globalization
         var result2 = (ResourceManagerSet) _globalizationService.GetResourceManager (typeInformation);
 
         Assert.That (result1, Is.Not.SameAs (result2));
-        Assert.That (result1.Name, Is.EqualTo(result2.Name));
-        Assert.That (result1.ResourceManagers.Count (), Is.EqualTo (1));
+        Assert.That (result1.Name, Is.EqualTo (result2.Name));
+        Assert.That (result1.ResourceManagers.Count(), Is.EqualTo (1));
         Assert.That (result2.ResourceManagers.Count(), Is.EqualTo (1));
-        Assert.That (result1.ResourceManagers.Single ().GetType (), Is.EqualTo (result2.ResourceManagers.Single ().GetType ()));
+        Assert.That (result1.ResourceManagers.Single().GetType(), Is.EqualTo (result2.ResourceManagers.Single().GetType()));
       }
     }
 
@@ -146,12 +146,12 @@ namespace Remotion.Mixins.UnitTests.Core.Globalization
       var mixinConfiguration = MixinConfiguration.BuildFromActive()
           .ForClass<ClassWithoutMultiLingualResourcesAttributes>()
           .AddMixin<MixinAddingMultiLingualResourcesAttributes1>();
-      
+
       using (mixinConfiguration.EnterScope())
       {
         result1 = (ResourceManagerSet) _globalizationService.GetResourceManager (typeInformation);
       }
-      
+
       ResourceManagerSet result2;
       using (mixinConfiguration.EnterScope())
       {
@@ -166,15 +166,15 @@ namespace Remotion.Mixins.UnitTests.Core.Globalization
     {
       var typeInformation = TypeAdapter.Create (typeof (ClassWithoutMultiLingualResourcesAttributes));
       IResourceManager result1;
-      using (MixinConfiguration.BuildFromActive ()
-          .ForClass<ClassWithoutMultiLingualResourcesAttributes> ()
-          .AddMixin<MixinAddingMultiLingualResourcesAttributes1> ().EnterScope ())
+      using (MixinConfiguration.BuildFromActive()
+          .ForClass<ClassWithoutMultiLingualResourcesAttributes>()
+          .AddMixin<MixinAddingMultiLingualResourcesAttributes1>().EnterScope())
       {
         result1 = _globalizationService.GetResourceManager (typeInformation);
       }
 
       var result2 = _globalizationService.GetResourceManager (typeInformation);
-      
+
       Assert.That (result1, Is.Not.SameAs (result2));
     }
 
@@ -184,9 +184,9 @@ namespace Remotion.Mixins.UnitTests.Core.Globalization
       var typeInformation = TypeAdapter.Create (typeof (ClassWithoutMultiLingualResourcesAttributes));
       IResourceManager result1;
       IResourceManager result2;
-      using (MixinConfiguration.BuildFromActive ()
-          .ForClass<ClassWithoutMultiLingualResourcesAttributes> ()
-          .AddMixin<MixinAddingMultiLingualResourcesAttributes1> ().EnterScope ())
+      using (MixinConfiguration.BuildFromActive()
+          .ForClass<ClassWithoutMultiLingualResourcesAttributes>()
+          .AddMixin<MixinAddingMultiLingualResourcesAttributes1>().EnterScope())
       {
         result1 = _globalizationService.GetResourceManager (typeInformation);
 
