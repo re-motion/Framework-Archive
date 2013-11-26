@@ -21,13 +21,11 @@ using System.Linq;
 using JetBrains.Annotations;
 using Remotion.Collections;
 using Remotion.Globalization;
-using Remotion.Globalization.Implementation;
 using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.Mixins.Globalization
 {
-  //TODO AO: check that test for classes without attribute exists (should return NullResourceManager)
   public class MixinGlobalizationService : IGlobalizationService
   {
     private volatile MixinConfiguration _mixinConfiguration;

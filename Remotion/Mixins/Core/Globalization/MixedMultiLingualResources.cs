@@ -150,11 +150,6 @@ namespace Remotion.Mixins.Globalization
       if (resourceManager.IsNull)
         return false;
 
-      //TODO AO: Remove once ReseourceManagerSet is changed to return IsNull=true if emptz
-      var resourceManagerAsResourceManagerSet = resourceManager as ResourceManagerSet;
-      if (resourceManagerAsResourceManagerSet != null && !resourceManagerAsResourceManagerSet.ResourceManagers.Any())
-        return false;
-
       return true;
     }
   }

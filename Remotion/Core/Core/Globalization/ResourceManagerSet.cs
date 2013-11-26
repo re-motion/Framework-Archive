@@ -61,14 +61,13 @@ namespace Remotion.Globalization
       return new ResourceManagerSet (resourceManagers.AsEnumerable());
     }
 
-    //TODO AO: if list is empty behave like NullResourceManager (name="Empty ResourceManagerSet", isnull=true)
     public ResourceManagerSet (IEnumerable<IResourceManager> resourceManagers)
     {
       _resourceManagers = CreateFlatList(resourceManagers).ToArray();
       SeparatedStringBuilder sb = new SeparatedStringBuilder (", ", 30 * _resourceManagers.Length);
       foreach (var rm in _resourceManagers)
         sb.Append (rm.Name);
-      _name = sb.ToString();
+      _name = _resourceManagers.Any() ? sb.ToString() : "Empty ResourceManagerSet";
     }
 
     [Obsolete ("Use ResourceManagerSet.Create instead. NOTE: The order of the ResourceMangers is now reversed. (Version 1.23.211)", true)]
@@ -123,8 +122,7 @@ namespace Remotion.Globalization
       }
       // ReSharper restore ForCanBeConvertedToForeach
 
-      //TODO AO: refactor to DebugFormat
-      s_log.Debug ("Could not find resource with ID '" + id + "' in any of the following resource containers " + _name + ".");
+      s_log.DebugFormat ("Could not find resource with ID '{0}' in any of the following resource containers '{1}'.", id, _name);
       return id;
     }
 
@@ -144,8 +142,15 @@ namespace Remotion.Globalization
     {
       ArgumentUtility.CheckNotNullOrEmpty ("id", id);
 
-      //TODO AO: Revert and annotate like GetString
-      return _resourceManagers.Where ((t, i) => _resourceManagers.ElementAt (i).ContainsResource (id)).Any();
+      //FOR-loop for performance reasons
+      // ReSharper disable once LoopCanBeConvertedToQuery
+      for (var i = 0; i < _resourceManagers.Length; i++)
+      {
+        if (_resourceManagers.ElementAt (i).ContainsResource (id))
+          return true;
+      }
+      // ReSharper restore LoopCanBeConvertedToQuery
+      return false;
     }
 
     /// <summary>Tests whether the <see cref="ResourceManagerSet"/> contains the specified resource.</summary>
@@ -179,7 +184,7 @@ namespace Remotion.Globalization
 
     bool INullObject.IsNull
     {
-      get { return false; }
+      get { return !_resourceManagers.Any(); }
     }
   }
 }

@@ -25,5 +25,7 @@ namespace Remotion.ObjectBinding.UnitTests.Core.BindableObject.IntergrationTests
   {
     public string MixedProperty1 { get; set; }
     public string MixedProperty2 { get; set; }
+
+    string IMixinAddingResources.MixedExplicitProperty { get; set; }
   }
 }

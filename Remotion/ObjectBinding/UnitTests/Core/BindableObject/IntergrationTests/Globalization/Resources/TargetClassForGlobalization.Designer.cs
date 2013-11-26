@@ -89,6 +89,16 @@ namespace Remotion.ObjectBinding.UnitTests.Core.BindableObject.IntergrationTests
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to MixedExplicitProperty display name from TargetClassForGlobalization.
+        /// </summary>
+        internal static string property_Remotion_ObjectBinding_UnitTests_Core_BindableObject_IntergrationTests_Globalization_TestDomain_IMixinAddingResources_MixedExplicitProperty {
+            get {
+                return ResourceManager.GetString("property:Remotion.ObjectBinding.UnitTests.Core.BindableObject.IntergrationTests.G" +
+                        "lobalization.TestDomain.IMixinAddingResources.MixedExplicitProperty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to MixedProperty1 display name from TargetClassForGlobalization.
         /// </summary>
         internal static string property_Remotion_ObjectBinding_UnitTests_Core_BindableObject_IntergrationTests_Globalization_TestDomain_IMixinAddingResources_MixedProperty1 {
