@@ -22,7 +22,9 @@ using Remotion.ServiceLocation;
 
 namespace Remotion.Globalization
 {
-  //TODO AO: comment
+  /// <summary>
+  /// Defines an interface for retrieving the human-readable localized representation of the extensible-enumeration object.
+  /// </summary>
   [ConcreteImplementation (typeof (ExtensibleEnumerationServiceGlobalizationService), Lifetime = LifetimeKind.Singleton)]
   public interface IExtensibleEnumerationGlobalizationService
   {

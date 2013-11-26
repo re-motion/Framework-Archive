@@ -161,8 +161,7 @@ namespace Remotion.Globalization.Implementation
       if (result != null)
         return result;
 
-      //TODO AO: refactor to DebugFormat
-      s_log.Debug ("Could not find resource with ID '" + id + "' in resource container '" + _resourceManager.BaseName + "'.");
+      s_log.DebugFormat ("Could not find resource with ID '{0}' in resource container '{1}'.", id, _resourceManager.BaseName);
       return id;
     }
 
