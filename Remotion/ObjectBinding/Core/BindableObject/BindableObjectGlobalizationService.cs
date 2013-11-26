@@ -21,7 +21,6 @@ using Remotion.ExtensibleEnums;
 using Remotion.FunctionalProgramming;
 using Remotion.Globalization;
 using Remotion.Globalization.Implementation;
-using Remotion.Mixins;
 using Remotion.Reflection;
 using Remotion.Utilities;
 
@@ -40,29 +39,36 @@ namespace Remotion.ObjectBinding.BindableObject
 
     private readonly IMemberInformationGlobalizationService _memberInformationGlobalizationService;
     private readonly DoubleCheckedLockingContainer<IResourceManager> _resourceManager;
+    private readonly IEnumerationGlobalizationService _enumerationGlobalizationService;
+    private readonly IExtensibleEnumerationGlobalizationService _extensibleEnumerationGlobalizationService;
 
     public BindableObjectGlobalizationService (
-        IEnumerable<IGlobalizationService> globalizationServices, IMemberInformationGlobalizationService memberInformationGlobalizationService)
+        IEnumerable<IGlobalizationService> globalizationServices,
+        IMemberInformationGlobalizationService memberInformationGlobalizationService,
+        IEnumerationGlobalizationService enumerationGlobalizationService,
+        IExtensibleEnumerationGlobalizationService extensibleEnumerationGlobalizationService)
     {
       ArgumentUtility.CheckNotNull ("globalizationServices", globalizationServices);
       ArgumentUtility.CheckNotNull ("memberInformationGlobalizationService", memberInformationGlobalizationService);
-
+     
       _resourceManager =
           new DoubleCheckedLockingContainer<IResourceManager> (
               () => new CompoundGlobalizationService (globalizationServices).GetResourceManager (TypeAdapter.Create (typeof (ResourceIdentifier))));
       _memberInformationGlobalizationService = memberInformationGlobalizationService;
+      _enumerationGlobalizationService = ArgumentUtility.CheckNotNull ("enumerationGlobalizationService", enumerationGlobalizationService);
+      _extensibleEnumerationGlobalizationService = ArgumentUtility.CheckNotNull ("extensibleEnumerationGlobalizationService", extensibleEnumerationGlobalizationService);
     }
 
     public string GetEnumerationValueDisplayName (Enum value)
     {
       ArgumentUtility.CheckNotNull ("value", value);
-      return _memberInformationGlobalizationService.GetEnumerationValueDisplayName (value);
+      return _enumerationGlobalizationService.GetEnumerationValueDisplayName (value);
     }
 
     public string GetExtensibleEnumerationValueDisplayName (IExtensibleEnum value) //move to member info globalization service
     {
       ArgumentUtility.CheckNotNull ("value", value);
-      return _memberInformationGlobalizationService.GetExtensibleEnumerationValueDisplayName (value);
+      return _extensibleEnumerationGlobalizationService.GetExtensibleEnumerationValueDisplayName (value);
     }
 
     public string GetBooleanValueDisplayName (bool value)
@@ -81,14 +87,14 @@ namespace Remotion.ObjectBinding.BindableObject
 
       var mixinIntroducedPropertyInformation = propertyInfo as BindableObjectMixinIntroducedPropertyInformation;
       var property = mixinIntroducedPropertyInformation == null
-                         ? propertyInfo
-                         : mixinIntroducedPropertyInformation.FindInterfaceDeclarations()
-                                                             .Single (
-                                                                 () =>
-                                                                 new InvalidOperationException (
-                                                                     string.Format (
-                                                                         "BindableObjectGlobalizationService only supports unique interface declarations but proerty '{0}' is declared on multiply interfaces",
-                                                                         propertyInfo.Name)));
+          ? propertyInfo
+          : mixinIntroducedPropertyInformation.FindInterfaceDeclarations()
+              .Single (
+                  () =>
+                      new InvalidOperationException (
+                          string.Format (
+                              "BindableObjectGlobalizationService only supports unique interface declarations but proerty '{0}' is declared on multiply interfaces",
+                              propertyInfo.Name)));
 
       return _memberInformationGlobalizationService.GetPropertyDisplayName (property, typeInfo);
     }

@@ -31,6 +31,7 @@ namespace Remotion.UnitTests.Globalization
     private IGlobalizationService _globalizationServiceMock1;
     private IGlobalizationService _globalizationServiceMock2;
     private MemberInformationGlobalizationService _service;
+    private ITypeInformation _typeInformationForResourceResolutionStub;
     private ITypeInformation _typeInformationStub;
     private IPropertyInformation _propertyInformationStub;
     private IResourceManager _resourceManager1Mock;
@@ -55,6 +56,9 @@ namespace Remotion.UnitTests.Globalization
 
       _typeInformationStub = MockRepository.GenerateStub<ITypeInformation>();
       _typeInformationStub.Stub (stub => stub.Name).Return ("TypeName");
+
+      _typeInformationForResourceResolutionStub = MockRepository.GenerateStub<ITypeInformation>();
+      _typeInformationForResourceResolutionStub.Stub (stub => stub.Name).Return ("TypeNameForResourceResolution");
 
       _propertyInformationStub = MockRepository.GenerateStub<IPropertyInformation>();
       _propertyInformationStub.Stub (stub => stub.Name).Return ("PropertyName");
@@ -215,15 +219,15 @@ namespace Remotion.UnitTests.Globalization
     [Test]
     public void GetTypeDisplayName_NoResourceFound ()
     {
-      _globalizationServiceMock1.Expect (mock => mock.GetResourceManager (_typeInformationStub)).Return (_resourceManager2Mock);
-      _globalizationServiceMock2.Expect (mock => mock.GetResourceManager (_typeInformationStub)).Return (_resourceManager1Mock);
+      _globalizationServiceMock1.Expect (mock => mock.GetResourceManager (_typeInformationForResourceResolutionStub)).Return (_resourceManager2Mock);
+      _globalizationServiceMock2.Expect (mock => mock.GetResourceManager (_typeInformationForResourceResolutionStub)).Return (_resourceManager1Mock);
 
       _resourceManager1Mock.Expect (mock => mock.ContainsResource (_longTypeResourceID)).Return (false);
       _resourceManager1Mock.Expect (mock => mock.ContainsResource (_shortTypeResourceID)).Return (false);
       _resourceManager2Mock.Expect (mock => mock.ContainsResource (_longTypeResourceID)).Return (false);
       _resourceManager2Mock.Expect (mock => mock.ContainsResource (_shortTypeResourceID)).Return (false);
 
-      var result = _service.GetTypeDisplayName (_typeInformationStub);
+      var result = _service.GetTypeDisplayName (_typeInformationStub, _typeInformationForResourceResolutionStub);
 
       _globalizationServiceMock1.VerifyAllExpectations();
       _globalizationServiceMock2.VerifyAllExpectations ();
@@ -235,13 +239,13 @@ namespace Remotion.UnitTests.Globalization
     [Test]
     public void GetTypeDisplayName_ResourceFoundByLongResourceID ()
     {
-      _globalizationServiceMock1.Expect (mock => mock.GetResourceManager (_typeInformationStub)).Return (_resourceManager2Mock);
-      _globalizationServiceMock2.Expect (mock => mock.GetResourceManager (_typeInformationStub)).Return (_resourceManager1Mock);
+      _globalizationServiceMock1.Expect (mock => mock.GetResourceManager (_typeInformationForResourceResolutionStub)).Return (_resourceManager2Mock);
+      _globalizationServiceMock2.Expect (mock => mock.GetResourceManager (_typeInformationForResourceResolutionStub)).Return (_resourceManager1Mock);
 
       _resourceManager1Mock.Expect (mock => mock.ContainsResource (_longTypeResourceID)).Return (true);
       _resourceManager1Mock.Expect (mock => mock.GetString (_longTypeResourceID)).Return ("FakeResultForLongTypeName");
 
-      var result = _service.GetTypeDisplayName (_typeInformationStub);
+      var result = _service.GetTypeDisplayName (_typeInformationStub, _typeInformationForResourceResolutionStub);
 
       _globalizationServiceMock1.VerifyAllExpectations();
       _globalizationServiceMock2.VerifyAllExpectations ();
@@ -253,15 +257,15 @@ namespace Remotion.UnitTests.Globalization
     [Test]
     public void GetTypeDisplayName_ResourceFoundByShortResourceID ()
     {
-      _globalizationServiceMock1.Expect (mock => mock.GetResourceManager (_typeInformationStub)).Return (_resourceManager2Mock);
-      _globalizationServiceMock2.Expect (mock => mock.GetResourceManager (_typeInformationStub)).Return (_resourceManager1Mock);
+      _globalizationServiceMock1.Expect (mock => mock.GetResourceManager (_typeInformationForResourceResolutionStub)).Return (_resourceManager2Mock);
+      _globalizationServiceMock2.Expect (mock => mock.GetResourceManager (_typeInformationForResourceResolutionStub)).Return (_resourceManager1Mock);
 
       _resourceManager1Mock.Expect (mock => mock.ContainsResource (_longTypeResourceID)).Return (false);
       _resourceManager1Mock.Expect (mock => mock.ContainsResource (_shortTypeResourceID)).Return (true);
       _resourceManager1Mock.Expect (mock => mock.GetString (_shortTypeResourceID)).Return ("FakeResultForShortTypeName");
       _resourceManager2Mock.Expect (mock => mock.ContainsResource (_longTypeResourceID)).Return (false);
       
-      var result = _service.GetTypeDisplayName (_typeInformationStub);
+      var result = _service.GetTypeDisplayName (_typeInformationStub, _typeInformationForResourceResolutionStub);
 
       _globalizationServiceMock1.VerifyAllExpectations();
       _globalizationServiceMock2.VerifyAllExpectations ();
@@ -273,56 +277,20 @@ namespace Remotion.UnitTests.Globalization
     [Test]
     public void GetTypeDisplayName_ResourceFoundByLongAndShortResourceID_ReturnedByLongResourceID ()
     {
-      _globalizationServiceMock1.Expect (mock => mock.GetResourceManager (_typeInformationStub)).Return (_resourceManager2Mock);
-      _globalizationServiceMock2.Expect (mock => mock.GetResourceManager (_typeInformationStub)).Return (_resourceManager1Mock);
+      _globalizationServiceMock1.Expect (mock => mock.GetResourceManager (_typeInformationForResourceResolutionStub)).Return (_resourceManager2Mock);
+      _globalizationServiceMock2.Expect (mock => mock.GetResourceManager (_typeInformationForResourceResolutionStub)).Return (_resourceManager1Mock);
 
       _resourceManager1Mock.Expect (mock => mock.ContainsResource (_longTypeResourceID)).Return (true);
       _resourceManager1Mock.Stub (stub => stub.ContainsResource (_shortTypeResourceID)).Return (true);
       _resourceManager1Mock.Expect (mock => mock.GetString (_longTypeResourceID)).Return ("FakeResultForLongTypeName");
 
-      var result = _service.GetTypeDisplayName (_typeInformationStub);
+      var result = _service.GetTypeDisplayName (_typeInformationStub, _typeInformationForResourceResolutionStub);
 
       _globalizationServiceMock1.VerifyAllExpectations();
       _globalizationServiceMock2.VerifyAllExpectations ();
       _resourceManager1Mock.VerifyAllExpectations();
       _resourceManager2Mock.VerifyAllExpectations ();
       Assert.That (result, Is.EqualTo ("FakeResultForLongTypeName"));
-    }
-
-    [Test]
-    public void GetEnumerationValueDisplayName ()
-    {
-      Assert.That (_service.GetEnumerationValueDisplayName (EnumWithResources.Value1), Is.EqualTo ("Value 1"));
-      Assert.That (_service.GetEnumerationValueDisplayName (EnumWithResources.Value2), Is.EqualTo ("Value 2"));
-      Assert.That (_service.GetEnumerationValueDisplayName (EnumWithResources.ValueWithoutResource), Is.EqualTo ("ValueWithoutResource"));
-    }
-
-    [Test]
-    public void GetEnumerationValueDisplayName_WithDescription ()
-    {
-      Assert.That (_service.GetEnumerationValueDisplayName (EnumWithDescription.Value1), Is.EqualTo ("Value I"));
-      Assert.That (_service.GetEnumerationValueDisplayName (EnumWithDescription.Value2), Is.EqualTo ("Value II"));
-      Assert.That (
-          _service.GetEnumerationValueDisplayName (EnumWithDescription.ValueWithoutDescription),
-          Is.EqualTo ("ValueWithoutDescription"));
-    }
-
-    [Test]
-    public void GetEnumerationValueDisplayName_WithoutResources ()
-    {
-      Assert.That (_service.GetEnumerationValueDisplayName (TestEnum.Value1), Is.EqualTo ("Value1"));
-      Assert.That (_service.GetEnumerationValueDisplayName (TestEnum.Value2), Is.EqualTo ("Value2"));
-      Assert.That (_service.GetEnumerationValueDisplayName (TestEnum.Value3), Is.EqualTo ("Value3"));
-    }
-
-    [Test]
-    public void GetExtensibleEnumerationValueDisplayName ()
-    {
-      Assert.That (_service.GetExtensibleEnumerationValueDisplayName (ExtensibleEnumWithResources.Values.Value1()), Is.EqualTo ("Wert1"));
-      Assert.That (_service.GetExtensibleEnumerationValueDisplayName (ExtensibleEnumWithResources.Values.Value2()), Is.EqualTo ("Wert2"));
-      Assert.That (
-          _service.GetExtensibleEnumerationValueDisplayName (ExtensibleEnumWithResources.Values.ValueWithoutResource()),
-          Is.EqualTo ("Remotion.UnitTests.Globalization.TestDomain.ExtensibleEnumWithResourcesExtensions.ValueWithoutResource"));
     }
   }
 }

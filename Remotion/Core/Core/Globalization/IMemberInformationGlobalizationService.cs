@@ -16,7 +16,7 @@
 // 
 
 using System;
-using Remotion.ExtensibleEnums;
+using Remotion.Globalization.Implementation;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
 
@@ -30,10 +30,6 @@ namespace Remotion.Globalization
   {
     //TODO AO: comments!
     string GetPropertyDisplayName (IPropertyInformation propertyInformation, ITypeInformation typeInformationForResourceResolution);
-    string GetTypeDisplayName (ITypeInformation typeInformation); //TODO AO: add parameter ITypeInformation typeInformationForResourceResolution
-    // TODO AO: Move to IEnumerationGlobalizationService
-    string GetEnumerationValueDisplayName (Enum value);
-    // TODO AO: Move to IExtensibleEnumerationGlobalizationService
-    string GetExtensibleEnumerationValueDisplayName (IExtensibleEnum value);
+    string GetTypeDisplayName (ITypeInformation typeInformation, ITypeInformation typeInformationForResourceResolution);
   }
 }

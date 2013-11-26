@@ -17,39 +17,30 @@
 
 using System;
 using NUnit.Framework;
-using Remotion.Globalization;
 using Remotion.Globalization.Implementation;
-using Remotion.ServiceLocation;
+using Remotion.UnitTests.Globalization.TestDomain;
 
 namespace Remotion.UnitTests.Globalization
 {
   [TestFixture]
-  public class IMemberInformationGlobalizationServiceTest
+  public class ExtensibleEnumerationServiceGlobalizationServiceTest
   {
-    private DefaultServiceLocator _serviceLocator;
+    private ExtensibleEnumerationServiceGlobalizationService _service;
 
     [SetUp]
     public void SetUp ()
     {
-      _serviceLocator = new DefaultServiceLocator ();
+      _service = new ExtensibleEnumerationServiceGlobalizationService();
     }
 
     [Test]
-    public void GetInstance_Once ()
+    public void GetExtensibleEnumerationValueDisplayName ()
     {
-      var factory = _serviceLocator.GetInstance<IMemberInformationGlobalizationService> ();
-
-      Assert.That (factory, Is.Not.Null);
-      Assert.That (factory, Is.TypeOf (typeof (MemberInformationGlobalizationService)));
-    }
-
-    [Test]
-    public void GetInstance_Twice_ReturnsSameInstance ()
-    {
-      var factory1 = _serviceLocator.GetInstance<IMemberInformationGlobalizationService> ();
-      var factory2 = _serviceLocator.GetInstance<IMemberInformationGlobalizationService> ();
-
-      Assert.That (factory1, Is.SameAs (factory2));
+      Assert.That (_service.GetExtensibleEnumerationValueDisplayName (ExtensibleEnumWithResources.Values.Value1 ()), Is.EqualTo ("Wert1"));
+      Assert.That (_service.GetExtensibleEnumerationValueDisplayName (ExtensibleEnumWithResources.Values.Value2 ()), Is.EqualTo ("Wert2"));
+      Assert.That (
+          _service.GetExtensibleEnumerationValueDisplayName (ExtensibleEnumWithResources.Values.ValueWithoutResource ()),
+          Is.EqualTo ("Remotion.UnitTests.Globalization.TestDomain.ExtensibleEnumWithResourcesExtensions.ValueWithoutResource"));
     }
   }
 }

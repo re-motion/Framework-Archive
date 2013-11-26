@@ -210,8 +210,12 @@
     <Compile Include="FunctionalProgramming\TestDomain\FakeElementEqualityComparer.cs" />
     <Compile Include="FunctionalProgramming\TestDomain\RecursiveItem.cs" />
     <Compile Include="Globalization\CompoundGlobalizationServiceTest.cs" />
+    <Compile Include="Globalization\EnumerationGlobalizationServiceTest.cs" />
+    <Compile Include="Globalization\ExtensibleEnumerationServiceGlobalizationServiceTest.cs" />
     <Compile Include="Globalization\GlobalizationServiceTest.cs" />
     <Compile Include="Globalization\ICompoundGlobalizationServiceTest.cs" />
+    <Compile Include="Globalization\IEnumerationGlobalizationServiceTest.cs" />
+    <Compile Include="Globalization\IExtensibleEnumerationGlobalizationServiceTest.cs" />
     <Compile Include="Globalization\IGlobalizationServiceTest.cs" />
     <Compile Include="Globalization\IMemberInformationGlobalizationServiceTest.cs" />
     <Compile Include="Globalization\MemberInformationGlobalizationServiceTest.cs" />

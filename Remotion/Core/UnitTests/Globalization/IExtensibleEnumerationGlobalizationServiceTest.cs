@@ -24,7 +24,7 @@ using Remotion.ServiceLocation;
 namespace Remotion.UnitTests.Globalization
 {
   [TestFixture]
-  public class IMemberInformationGlobalizationServiceTest
+  public class IExtensibleEnumerationGlobalizationServiceTest
   {
     private DefaultServiceLocator _serviceLocator;
 
@@ -37,17 +37,17 @@ namespace Remotion.UnitTests.Globalization
     [Test]
     public void GetInstance_Once ()
     {
-      var factory = _serviceLocator.GetInstance<IMemberInformationGlobalizationService> ();
+      var factory = _serviceLocator.GetInstance<IExtensibleEnumerationGlobalizationService> ();
 
       Assert.That (factory, Is.Not.Null);
-      Assert.That (factory, Is.TypeOf (typeof (MemberInformationGlobalizationService)));
+      Assert.That (factory, Is.TypeOf (typeof (ExtensibleEnumerationServiceGlobalizationService)));
     }
 
     [Test]
     public void GetInstance_Twice_ReturnsSameInstance ()
     {
-      var factory1 = _serviceLocator.GetInstance<IMemberInformationGlobalizationService> ();
-      var factory2 = _serviceLocator.GetInstance<IMemberInformationGlobalizationService> ();
+      var factory1 = _serviceLocator.GetInstance<IExtensibleEnumerationGlobalizationService> ();
+      var factory2 = _serviceLocator.GetInstance<IExtensibleEnumerationGlobalizationService> ();
 
       Assert.That (factory1, Is.SameAs (factory2));
     }

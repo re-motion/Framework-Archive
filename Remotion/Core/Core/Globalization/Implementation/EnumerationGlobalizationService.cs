@@ -16,17 +16,16 @@
 // 
 
 using System;
-using Remotion.Globalization.Implementation;
-using Remotion.ServiceLocation;
+using Remotion.Utilities;
 
-namespace Remotion.Globalization
+namespace Remotion.Globalization.Implementation
 {
-  /// <summary>
-  /// Temporary interface for dependency resolution.
-  /// </summary>
-  //TODO AO: will be merged back into IGlobaliazationService as soon the re-motion service locator is able to resolve compositions
-  [ConcreteImplementation (typeof (CompoundGlobalizationService), Lifetime = LifetimeKind.Singleton)]
-  public interface ICompoundGlobalizationService : IGlobalizationService
+  public class EnumerationGlobalizationService : IEnumerationGlobalizationService
   {
+    public string GetEnumerationValueDisplayName (Enum value)
+    {
+      ArgumentUtility.CheckNotNull ("value", value);
+      return EnumDescription.GetDescription (value);
+    }
   }
 }

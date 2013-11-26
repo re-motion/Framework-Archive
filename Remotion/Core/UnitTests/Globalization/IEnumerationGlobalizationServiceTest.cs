@@ -16,17 +16,41 @@
 // 
 
 using System;
+using System.Linq;
+using NUnit.Framework;
+using Remotion.Globalization;
 using Remotion.Globalization.Implementation;
 using Remotion.ServiceLocation;
 
-namespace Remotion.Globalization
+namespace Remotion.UnitTests.Globalization
 {
-  /// <summary>
-  /// Temporary interface for dependency resolution.
-  /// </summary>
-  //TODO AO: will be merged back into IGlobaliazationService as soon the re-motion service locator is able to resolve compositions
-  [ConcreteImplementation (typeof (CompoundGlobalizationService), Lifetime = LifetimeKind.Singleton)]
-  public interface ICompoundGlobalizationService : IGlobalizationService
+  [TestFixture]
+  public class IEnumerationGlobalizationServiceTest
   {
+    private DefaultServiceLocator _serviceLocator;
+
+    [SetUp]
+    public void SetUp ()
+    {
+      _serviceLocator = new DefaultServiceLocator ();
+    }
+
+    [Test]
+    public void GetInstance_Once ()
+    {
+      var factory = _serviceLocator.GetInstance<IEnumerationGlobalizationService> ();
+
+      Assert.That (factory, Is.Not.Null);
+      Assert.That (factory, Is.TypeOf (typeof (EnumerationGlobalizationService)));
+    }
+
+    [Test]
+    public void GetInstance_Twice_ReturnsSameInstance ()
+    {
+      var factory1 = _serviceLocator.GetInstance<IEnumerationGlobalizationService> ();
+      var factory2 = _serviceLocator.GetInstance<IEnumerationGlobalizationService> ();
+
+      Assert.That (factory1, Is.SameAs (factory2));
+    }
   }
 }

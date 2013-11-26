@@ -16,11 +16,10 @@
 // 
 
 using System;
-using Remotion.ExtensibleEnums;
 using Remotion.Reflection;
 using Remotion.Utilities;
 
-namespace Remotion.Globalization
+namespace Remotion.Globalization.Implementation
 {
   public class MemberInformationGlobalizationService : IMemberInformationGlobalizationService
   {
@@ -44,23 +43,12 @@ namespace Remotion.Globalization
       return GetString (typeInformationForResourceResolution, propertyInformation.Name, _memberInfoNameResolver.GetPropertyName (propertyInformation), "property:");
     }
 
-    public string GetTypeDisplayName (ITypeInformation typeInformation)
+    public string GetTypeDisplayName (ITypeInformation typeInformation, ITypeInformation typeInformationForResourceResolution)
     {
       ArgumentUtility.CheckNotNull ("typeInformation", typeInformation);
+      ArgumentUtility.CheckNotNull ("typeInformationForResourceResolution", typeInformationForResourceResolution);
 
-      return GetString (typeInformation, typeInformation.Name, _memberInfoNameResolver.GetTypeName (typeInformation), "type:");
-    }
-
-    public string GetEnumerationValueDisplayName (Enum value)
-    {
-      ArgumentUtility.CheckNotNull ("value", value);
-      return EnumDescription.GetDescription (value);
-    }
-
-    public string GetExtensibleEnumerationValueDisplayName (IExtensibleEnum value)
-    {
-      ArgumentUtility.CheckNotNull ("value", value);
-      return value.GetLocalizedName();
+      return GetString (typeInformationForResourceResolution, typeInformation.Name, _memberInfoNameResolver.GetTypeName (typeInformation), "type:");
     }
 
     private string GetString (ITypeInformation typeInformation, string shortMemberName, string longMemberName, string resourcePrefix)
