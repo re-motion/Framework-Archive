@@ -23,7 +23,6 @@ using Remotion.Utilities;
 
 namespace Remotion.Globalization.Implementation
 {
-  //TODO AO: replace exisiting tests with mocked tests
   public sealed class GlobalizationService : IGlobalizationService
   {
     private readonly IResourceManagerResolver<MultiLingualResourcesAttribute> _resourceManagerResolver;
