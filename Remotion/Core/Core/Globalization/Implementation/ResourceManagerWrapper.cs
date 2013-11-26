@@ -142,16 +142,6 @@ namespace Remotion.Globalization.Implementation
     /// <summary>
     ///   Gets the value of the specified string resource. 
     /// </summary>
-    /// <seealso cref="M:Remotion.Globalization.IResourceManager.GetString(System.Enum)"/>
-    public string GetString (Enum enumValue)
-    {
-      ArgumentUtility.CheckNotNull ("enumValue", enumValue);
-      return GetString (ResourceIdentifiersAttribute.GetResourceIdentifier (enumValue));
-    }
-
-    /// <summary>
-    ///   Gets the value of the specified string resource. 
-    /// </summary>
     /// <seealso cref="M:Remotion.Globalization.IResourceManager.GetString(System.String)"/>
     public string GetString (string id)
     {
@@ -172,15 +162,6 @@ namespace Remotion.Globalization.Implementation
     {
       ArgumentUtility.CheckNotNullOrEmpty ("id", id);
       return _resourceManager.GetObject (id) != null;
-    }
-
-    /// <summary>Tests whether the <see cref="ResourceManagerWrapper"/> contains the specified resource.</summary>
-    /// <param name="enumValue">The ID of the resource to look for.</param>
-    /// <returns><see langword="true"/> if the <see cref="ResourceManagerWrapper"/> contains the specified resource.</returns>
-    public bool ContainsResource (Enum enumValue)
-    {
-      ArgumentUtility.CheckNotNull ("enumValue", enumValue);
-      return ContainsResource (ResourceIdentifiersAttribute.GetResourceIdentifier (enumValue));
     }
 
     /// <summary>

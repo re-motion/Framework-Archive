@@ -54,30 +54,12 @@ namespace Remotion.Globalization
     //TODO AO: Add extension overload GetStringOrDefault, returns null of try returns false, add CanBeNull
     string GetString (string id);
 
-    /// <summary>
-    ///   Gets the value of the specified string resource. The resource is identified by
-    ///   concatenating type and value name.
-    /// </summary>
-    /// <remarks> See <see cref="ResourceIdentifiersAttribute.GetResourceIdentifier"/> for resource identifier syntax. </remarks>
-    /// <returns>
-    ///   The value of the resource. If no match is possible, the identifier is returned.
-    /// </returns>
-    //TODO AO: Move to extension method "ResourceManagerExtensions"
-    //TODO AO: Add extension overload GetStringOrDefault, add CanBeNull
-    string GetString (Enum enumValue);
-
     /// <summary>Tests whether the <see cref="IResourceManager"/> contains the specified resource.</summary>
     /// <param name="id">The ID of the resource to look for.</param>
     /// <returns><see langword="true"/> if the <see cref="IResourceManager"/> contains the specified resource.</returns>
     //TODO AO: Move existing API to extension method and make obsolete, new method ContainsString
     //TODO AO: Check for usages in remotion that can be changed to TryGet
     bool ContainsResource (string id);
-
-    /// <summary>Tests whether the <see cref="IResourceManager"/> contains the specified resource.</summary>
-    /// <param name="enumValue">The ID of the resource to look for.</param>
-    /// <returns><see langword="true"/> if the <see cref="IResourceManager"/> contains the specified resource.</returns>
-    //TODO AO: Move to extension method "ResourceManagerExtensions"
-    bool ContainsResource (Enum enumValue);
 
     string Name { get; }
   }

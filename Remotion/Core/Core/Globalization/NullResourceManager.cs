@@ -46,17 +46,7 @@ namespace Remotion.Globalization
       return id;
     }
 
-    string IResourceManager.GetString (Enum enumValue)
-    {
-      return ResourceIdentifiersAttribute.GetResourceIdentifier (enumValue);
-    }
-
     public bool ContainsResource (string id)
-    {
-      return false;
-    }
-
-    public bool ContainsResource (Enum enumValue)
     {
       return false;
     }

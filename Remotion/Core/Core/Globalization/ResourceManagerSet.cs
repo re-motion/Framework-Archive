@@ -125,16 +125,7 @@ namespace Remotion.Globalization
       s_log.DebugFormat ("Could not find resource with ID '{0}' in any of the following resource containers '{1}'.", id, _name);
       return id;
     }
-
-    /// <summary>
-    ///   Gets the value of the specified string resource. 
-    /// </summary>
-    /// <seealso cref="M:Remotion.Globalization.IResourceManager.GetString(System.Enum)"/>
-    public string GetString (Enum enumValue)
-    {
-      return GetString (ResourceIdentifiersAttribute.GetResourceIdentifier (enumValue));
-    }
-
+    
     /// <summary>Tests whether the <see cref="ResourceManagerSet"/> contains the specified resource.</summary>
     /// <param name="id">The ID of the resource to look for.</param>
     /// <returns><see langword="true"/> if the <see cref="ResourceManagerSet"/> contains the specified resource.</returns>
@@ -151,15 +142,6 @@ namespace Remotion.Globalization
       }
       // ReSharper restore LoopCanBeConvertedToQuery
       return false;
-    }
-
-    /// <summary>Tests whether the <see cref="ResourceManagerSet"/> contains the specified resource.</summary>
-    /// <param name="enumValue">The ID of the resource to look for.</param>
-    /// <returns><see langword="true"/> if the <see cref="ResourceManagerSet"/> contains the specified resource.</returns>
-    public bool ContainsResource (Enum enumValue)
-    {
-      ArgumentUtility.CheckNotNull ("enumValue", enumValue);
-      return ContainsResource (ResourceIdentifiersAttribute.GetResourceIdentifier (enumValue));
     }
 
     private static IEnumerable<IResourceManager> CreateFlatList (IEnumerable<IResourceManager> resourceManagers)

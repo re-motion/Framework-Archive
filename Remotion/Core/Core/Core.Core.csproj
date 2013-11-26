@@ -158,6 +158,7 @@
     <Compile Include="Globalization\IMemberInformationGlobalizationService.cs" />
     <Compile Include="Globalization\IResourceManagerResolver.cs" />
     <Compile Include="Globalization\Implementation\MemberInformationGlobalizationService.cs" />
+    <Compile Include="Globalization\ResourceManagerExtensions.cs" />
     <Compile Include="IHandleAttribute.cs" />
     <Compile Include="Reflection\DelegateFactory.cs" />
     <Compile Include="Reflection\IDelegateFactory.cs" />
