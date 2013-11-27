@@ -21,10 +21,22 @@ using Remotion.ServiceLocation;
 
 namespace Remotion.Globalization
 {
-  [ConcreteImplementation (typeof (ResourceManagerResolver<MultiLingualResourcesAttribute>),Lifetime = LifetimeKind.Singleton)]
+  /// <summary>
+  /// Defines the interface to retrieve an <see cref="IResourceManager"/> to make a resource-lookup.
+  /// </summary>
+  /// <typeparam name="TAttribute"></typeparam>
+  [ConcreteImplementation (typeof (ResourceManagerResolver<MultiLingualResourcesAttribute>), Lifetime = LifetimeKind.Singleton)]
   public interface IResourceManagerResolver<TAttribute>
-     where TAttribute : Attribute, IResourcesAttribute
+      where TAttribute: Attribute, IResourcesAttribute
   {
+    /// <summary>
+    /// Returns the <see cref="IResourceManager"/> for a specified <see cref="Type"/>.
+    /// </summary>
+    /// <param name="objectType">The <see cref="Type"/> for that a <see cref="IResourceManager"/> should be returned.</param>
+    /// <returns>
+    /// Returns the <see cref="IResourceManager"/> for the specified type. If no resource manager could be found,
+    /// a <see cref="NullResourceManager"/> is returned.
+    /// </returns>
     IResourceManager GetResourceManager (Type objectType);
   }
 }

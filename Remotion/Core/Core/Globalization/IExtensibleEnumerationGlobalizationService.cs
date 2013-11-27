@@ -28,6 +28,9 @@ namespace Remotion.Globalization
   [ConcreteImplementation (typeof (ExtensibleEnumerationServiceGlobalizationService), Lifetime = LifetimeKind.Singleton)]
   public interface IExtensibleEnumerationGlobalizationService
   {
+    /// <summary>
+    /// Returns the human-readable extensible-enumeration name of the spefified reflection object.
+    /// </summary>
     string GetExtensibleEnumerationValueDisplayName (IExtensibleEnum value);
   }
 }

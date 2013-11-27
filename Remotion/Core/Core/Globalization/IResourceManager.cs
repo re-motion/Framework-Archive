@@ -42,7 +42,12 @@ namespace Remotion.Globalization
     /// </returns>
     NameValueCollection GetAllStrings (string prefix);
 
-    //TODO AO: comment
+    /// <summary>
+    ///   Tries to get the value of the specified String resource.
+    /// </summary>
+    /// <param name="id">The ID of the resource to get. </param>
+    /// <param name="value">The value of the resource lookup result.</param>
+    /// <returns><see langword="true"/> if the <see cref="IResourceManager"/> contains the specified resource.</returns>
     bool TryGetString (string id, out string value);
 
     /// <summary>Tests whether the <see cref="IResourceManager"/> contains the specified resource.</summary>
@@ -50,6 +55,9 @@ namespace Remotion.Globalization
     /// <returns><see langword="true"/> if the <see cref="IResourceManager"/> contains the specified resource.</returns>
     bool ContainsString (string id);
 
+    /// <summary>
+    ///   Returns the name of the resource manager.
+    /// </summary>
     string Name { get; }
   }
 }

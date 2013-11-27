@@ -23,8 +23,6 @@ using Remotion.ServiceLocation;
 
 namespace Remotion.Globalization
 {
-  //TODO AO: add behaviour comments  (no resource -> NullResourceManager, etc.)
-
   /// <summary>
   /// Defines an interface for resolving the <see cref="IResourceManager"/> for an <see cref="ITypeInformation"/>.
   /// </summary>
@@ -38,6 +36,9 @@ namespace Remotion.Globalization
     /// <summary>
     /// Resolves the <see cref="IResourceManager"/> for the specified <paramref name="typeInformation"/>.
     /// </summary>
+    /// <remarks>
+    /// If not resource manager can be found for the specified <see cref="ITypeInformation"/> a <see cref="NullResourceManager"/> is returned.
+    /// </remarks>
     [NotNull]
     IResourceManager GetResourceManager ([NotNull] ITypeInformation typeInformation);
   }
