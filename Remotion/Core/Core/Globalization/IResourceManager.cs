@@ -48,9 +48,7 @@ namespace Remotion.Globalization
     /// <summary>Tests whether the <see cref="IResourceManager"/> contains the specified resource.</summary>
     /// <param name="id">The ID of the resource to look for.</param>
     /// <returns><see langword="true"/> if the <see cref="IResourceManager"/> contains the specified resource.</returns>
-    //TODO AO: Move existing API to extension method and make obsolete, new method ContainsString
-    //TODO AO: Check for usages in remotion that can be changed to TryGet
-    bool ContainsResource (string id);
+    bool ContainsString (string id);
 
     string Name { get; }
   }

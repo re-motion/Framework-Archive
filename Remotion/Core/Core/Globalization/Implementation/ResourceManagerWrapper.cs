@@ -162,7 +162,7 @@ namespace Remotion.Globalization.Implementation
     /// <summary>Tests whether the <see cref="ResourceManagerWrapper"/> contains the specified resource.</summary>
     /// <param name="id">The ID of the resource to look for.</param>
     /// <returns><see langword="true"/> if the <see cref="ResourceManagerWrapper"/> contains the specified resource.</returns>
-    public bool ContainsResource (string id)
+    public bool ContainsString (string id)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("id", id);
       return _resourceManager.GetObject (id) != null;

@@ -134,7 +134,7 @@ namespace Remotion.Globalization
     /// <summary>Tests whether the <see cref="ResourceManagerSet"/> contains the specified resource.</summary>
     /// <param name="id">The ID of the resource to look for.</param>
     /// <returns><see langword="true"/> if the <see cref="ResourceManagerSet"/> contains the specified resource.</returns>
-    public bool ContainsResource (string id)
+    public bool ContainsString (string id)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("id", id);
 
@@ -142,7 +142,7 @@ namespace Remotion.Globalization
       // ReSharper disable once LoopCanBeConvertedToQuery
       for (var i = 0; i < _resourceManagers.Length; i++)
       {
-        if (_resourceManagers.ElementAt (i).ContainsResource (id))
+        if (_resourceManagers.ElementAt (i).ContainsString (id))
           return true;
       }
       // ReSharper restore LoopCanBeConvertedToQuery

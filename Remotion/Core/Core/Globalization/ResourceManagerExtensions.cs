@@ -67,7 +67,7 @@ namespace Remotion.Globalization
       ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
       ArgumentUtility.CheckNotNull ("enumValue", enumValue);
       
-      return resourceManager.ContainsResource (ResourceIdentifiersAttribute.GetResourceIdentifier (enumValue));
+      return resourceManager.ContainsString (ResourceIdentifiersAttribute.GetResourceIdentifier (enumValue));
     }
 
     /// <summary>
@@ -94,6 +94,15 @@ namespace Remotion.Globalization
       ArgumentUtility.CheckNotNull ("enumValue", enumValue);
 
       return resourceManager.GetStringOrDefault (ResourceIdentifiersAttribute.GetResourceIdentifier (enumValue));
+    }
+
+    [Obsolete("Use 'IResourceManager.ContainsString' instead.")]
+    public static bool ContainsResource (this IResourceManager resourceManager, string id)
+    {
+      ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
+      ArgumentUtility.CheckNotNull ("id", id);
+
+      return resourceManager.ContainsString (id);
     }
   }
 }

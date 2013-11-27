@@ -47,7 +47,7 @@ namespace Remotion.Globalization
       return false;
     }
 
-    public bool ContainsResource (string id)
+    public bool ContainsString (string id)
     {
       return false;
     }

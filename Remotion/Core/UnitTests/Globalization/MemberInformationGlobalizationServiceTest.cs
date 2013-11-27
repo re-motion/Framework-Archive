@@ -194,10 +194,10 @@ namespace Remotion.UnitTests.Globalization
       _globalizationServiceMock1.Expect (mock => mock.GetResourceManager (_typeInformationStub)).Return (_resourceManager2Mock);
       _globalizationServiceMock2.Expect (mock => mock.GetResourceManager (_typeInformationStub)).Return (_resourceManager1Mock);
 
-      _resourceManager1Mock.Stub (stub => stub.ContainsResource (_shortPropertyResourceID)).Return (true);
+      _resourceManager1Mock.Stub (stub => stub.ContainsString (_shortPropertyResourceID)).Return (true);
       _resourceManager1Mock.Expect (mock => mock.TryGetString (Arg.Is(_longPropertyResourceID), out Arg<string>.Out("Test").Dummy)).Return (true);
-      _resourceManager2Mock.Stub (stub => stub.ContainsResource (_longPropertyResourceID)).Return (true);
-      _resourceManager2Mock.Stub (stub => stub.ContainsResource (_shortPropertyResourceID)).Return (true);
+      _resourceManager2Mock.Stub (stub => stub.ContainsString (_longPropertyResourceID)).Return (true);
+      _resourceManager2Mock.Stub (stub => stub.ContainsString (_shortPropertyResourceID)).Return (true);
       
       var result = _service.GetPropertyDisplayName (_propertyInformationStub, _typeInformationStub);
 
