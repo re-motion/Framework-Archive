@@ -88,7 +88,7 @@ namespace Remotion.ObjectBinding.BindableObject
       var mixinIntroducedPropertyInformation = propertyInfo as BindableObjectMixinIntroducedPropertyInformation;
       var property = mixinIntroducedPropertyInformation == null
           ? propertyInfo
-          : mixinIntroducedPropertyInformation.FindInterfaceDeclarations()
+          : mixinIntroducedPropertyInformation.FindInterfaceDeclarations()  //TODO AO: should be cached!?
               .Single (
                   () =>
                       new InvalidOperationException (
