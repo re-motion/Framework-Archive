@@ -23,6 +23,9 @@ using Remotion.Utilities;
 
 namespace Remotion.Globalization.Implementation
 {
+  /// <summary>
+  /// Retrieves and caches <see cref="IResourceManager"/>'s for types.
+  /// </summary>
   public sealed class GlobalizationService : IGlobalizationService
   {
     private readonly IResourceManagerResolver<MultiLingualResourcesAttribute> _resourceManagerResolver;

@@ -21,6 +21,9 @@ using Remotion.Utilities;
 
 namespace Remotion.Globalization.Implementation
 {
+  /// <summary>
+  /// Retrieving the human-readable localized representation of reflection objects.
+  /// </summary>
   public class MemberInformationGlobalizationService : IMemberInformationGlobalizationService
   {
     private readonly IGlobalizationService _globalizationService;

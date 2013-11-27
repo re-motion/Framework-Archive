@@ -20,6 +20,9 @@ using Remotion.Utilities;
 
 namespace Remotion.Globalization.Implementation
 {
+  /// <summary>
+  /// Retrieving the human-readable localized representation of enumeration objects.
+  /// </summary>
   public class EnumerationGlobalizationService : IEnumerationGlobalizationService
   {
     public string GetEnumerationValueDisplayName (Enum value)

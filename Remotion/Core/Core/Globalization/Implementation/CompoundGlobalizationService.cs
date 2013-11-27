@@ -25,6 +25,10 @@ using Remotion.Utilities;
 
 namespace Remotion.Globalization.Implementation
 {
+  /// <summary>
+  /// Combines one or more <see cref="IGlobalizationService"/>-instances and 
+  /// delegates to it to retrieve an <see cref="IResourceManager"/> for a specified type.
+  /// </summary>
   public class CompoundGlobalizationService : ICompoundGlobalizationService
   {
     private readonly IGlobalizationService[] _globalizationServices;
@@ -34,6 +38,10 @@ namespace Remotion.Globalization.Implementation
       return SafeServiceLocator.Current.GetInstance<ICompoundGlobalizationService>();
     }
 
+    /// <summary>
+    ///   Combines several <see cref="IGlobalizationService"/>-instances to a single CompoundGlobalizationService.
+    /// </summary>
+    /// <param name="globalizationServices"> The <see cref="IGlobalizationService"/>'s, starting with the least specific.</param>
     public CompoundGlobalizationService (IEnumerable<IGlobalizationService> globalizationServices)
     {
       ArgumentUtility.CheckNotNull ("globalizationServices", globalizationServices);

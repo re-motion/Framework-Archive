@@ -21,6 +21,9 @@ using Remotion.Utilities;
 
 namespace Remotion.Globalization.Implementation
 {
+  /// <summary>
+  /// Retrieving the human-readable localized representation of extensible-enumeration objects.
+  /// </summary>
   public class ExtensibleEnumerationServiceGlobalizationService : IExtensibleEnumerationGlobalizationService
   {
     public string GetExtensibleEnumerationValueDisplayName (IExtensibleEnum value)

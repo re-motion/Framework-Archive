@@ -26,6 +26,9 @@ using Remotion.Utilities;
 
 namespace Remotion.Mixins.Globalization
 {
+  /// <summary>
+  /// Retrieves and caches <see cref="IResourceManager"/>'s for mixin-types.
+  /// </summary>
   public class MixinGlobalizationService : IGlobalizationService
   {
     private volatile MixinConfiguration _mixinConfiguration;
