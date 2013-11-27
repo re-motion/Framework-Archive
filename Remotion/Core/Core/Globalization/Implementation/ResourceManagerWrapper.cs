@@ -143,16 +143,20 @@ namespace Remotion.Globalization.Implementation
     ///   Gets the value of the specified string resource. 
     /// </summary>
     /// <seealso cref="M:Remotion.Globalization.IResourceManager.GetString(System.String)"/>
-    public string GetString (string id)
+    public bool TryGetString (string id, out string value)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("id", id);
 
       string result = _resourceManager.GetString (id);
       if (result != null)
-        return result;
+      {
+        value = result;
+        return true;
+      }
 
       s_log.DebugFormat ("Could not find resource with ID '{0}' in resource container '{1}'.", id, _resourceManager.BaseName);
-      return id;
+      value = null;
+      return false;
     }
 
     /// <summary>Tests whether the <see cref="ResourceManagerWrapper"/> contains the specified resource.</summary>

@@ -55,17 +55,9 @@ namespace Remotion.Globalization.Implementation
     {
       var resourceManager = _globalizationService.GetResourceManager (typeInformation);
 
-      return GetResourceString (resourceManager, resourcePrefix + longMemberName)
-             ?? GetResourceString (resourceManager, resourcePrefix + shortMemberName)
+      return resourceManager.GetStringOrDefault (resourcePrefix + longMemberName)
+             ?? resourceManager.GetStringOrDefault (resourcePrefix + shortMemberName)
              ?? shortMemberName;
-    }
-
-    private string GetResourceString (IResourceManager resourceManager, string longID)
-    {
-      //TODO AO: GetStringOrDefault
-      if (resourceManager.ContainsResource (longID))
-        return resourceManager.GetString (longID);
-      return null;
     }
   }
 }

@@ -42,17 +42,8 @@ namespace Remotion.Globalization
     /// </returns>
     NameValueCollection GetAllStrings (string prefix);
 
-    /// <summary>
-    ///   Gets the value of the specified String resource.
-    /// </summary>
-    /// <param name="id">The ID of the resource to get. </param>
-    /// <returns>
-    ///   The value of the resource. If no match is possible, the identifier is returned.
-    /// </returns>
-    //TODO AO: Refactor to TryGetString (id, out value) :: bool, value = null of try returns false
-    //TODO AO: Move existing API to extension method, returns identifier if try returns false, add NotNull
-    //TODO AO: Add extension overload GetStringOrDefault, returns null of try returns false, add CanBeNull
-    string GetString (string id);
+    //TODO AO: comment
+    bool TryGetString (string id, out string value);
 
     /// <summary>Tests whether the <see cref="IResourceManager"/> contains the specified resource.</summary>
     /// <param name="id">The ID of the resource to look for.</param>

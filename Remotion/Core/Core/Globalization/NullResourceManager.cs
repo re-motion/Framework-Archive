@@ -41,9 +41,10 @@ namespace Remotion.Globalization
       return new NameValueCollection();
     }
 
-    string IResourceManager.GetString (string id)
+    bool IResourceManager.TryGetString (string id, out string value)
     {
-      return id;
+      value = null;
+      return false;
     }
 
     public bool ContainsResource (string id)
