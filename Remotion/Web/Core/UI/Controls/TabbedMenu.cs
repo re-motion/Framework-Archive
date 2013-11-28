@@ -22,6 +22,8 @@ using System.Drawing.Design;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.Globalization;
+using Remotion.Globalization.Implementation;
+using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.ExecutionEngine;
@@ -60,8 +62,7 @@ namespace Remotion.Web.UI.Controls
     private bool _isPastInitialization;
     private Color _subMenuBackgroundColor;
     private ResourceManagerSet _cachedResourceManager;
-
-
+    
     // construction and destruction
     public TabbedMenu ()
     {
@@ -549,10 +550,10 @@ namespace Remotion.Web.UI.Controls
 
       //  Get the resource managers
 
-      IResourceManager localResourceManager = MultiLingualResources.GetResourceManager (localResourcesType, true);
-      IResourceManager namingContainerResourceManager = ResourceManagerUtility.GetResourceManager (NamingContainer, true);
+      var localResourceManager = GlobalizationService.GetResourceManager (localResourcesType);
+      var namingContainerResourceManager = ResourceManagerUtility.GetResourceManager (NamingContainer, true);
 
-      _cachedResourceManager = new ResourceManagerSet (localResourceManager, namingContainerResourceManager);
+      _cachedResourceManager = ResourceManagerSet.Create (namingContainerResourceManager, localResourceManager);
 
       return _cachedResourceManager;
     }
@@ -570,7 +571,16 @@ namespace Remotion.Web.UI.Controls
         StatusText = resourceManager.GetString (key);
     }
 
-
+    [Browsable (false)]
+    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+    public IGlobalizationService GlobalizationService
+    {
+      get
+      {
+        return CompoundGlobalizationService.Create();
+      }
+    }
+    
     /// <summary> Gets the collection of <see cref="MainMenuTab"/> objects. </summary>
     [PersistenceMode (PersistenceMode.InnerProperty)]
     [ListBindable (false)]

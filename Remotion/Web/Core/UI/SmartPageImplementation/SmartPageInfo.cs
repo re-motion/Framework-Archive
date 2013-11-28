@@ -25,6 +25,8 @@ using System.Web.UI;
 using JetBrains.Annotations;
 using Remotion.Collections;
 using Remotion.Globalization;
+using Remotion.Globalization.Implementation;
+using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.Infrastructure;
@@ -90,7 +92,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
       _page.Init += Page_Init;
       // PreRenderComplete-handler must be registered before ScriptManager registers its own PreRenderComplete-handler during OnInit.
       _page.PreRenderComplete += Page_PreRenderComplete;
-   }
+    }
 
     /// <summary> Implements <see cref="ISmartPage.RegisterClientSidePageEventHandler">ISmartPage.RegisterClientSidePageEventHandler</see>. </summary>
     public void RegisterClientSidePageEventHandler (SmartPageEvents pageEvent, string key, string function)
@@ -209,10 +211,10 @@ namespace Remotion.Web.UI.SmartPageImplementation
 
       //  Get the resource managers
 
-      IResourceManager localResourceManager = MultiLingualResources.GetResourceManager (localResourcesType, true);
-      IResourceManager pageResourceManager = ResourceManagerUtility.GetResourceManager (_page.WrappedInstance, true);
+      var localResourceManager = GlobalizationService.GetResourceManager (localResourcesType);
+      var pageResourceManager = ResourceManagerUtility.GetResourceManager (_page.WrappedInstance, true);
 
-      _cachedResourceManager = new ResourceManagerSet (localResourceManager, pageResourceManager);
+      _cachedResourceManager = ResourceManagerSet.Create (pageResourceManager, localResourceManager);
 
       return _cachedResourceManager;
     }
@@ -509,6 +511,13 @@ namespace Remotion.Web.UI.SmartPageImplementation
       }
     }
 
+    public IGlobalizationService GlobalizationService
+    {
+      get
+      {
+        return CompoundGlobalizationService.Create ();
+      }
+    }
 
     /// <summary>
     ///   Implements <see cref="ISmartPage.StatusIsSubmittingMessage">ISmartPage.StatusIsSubmittingMessage</see>.

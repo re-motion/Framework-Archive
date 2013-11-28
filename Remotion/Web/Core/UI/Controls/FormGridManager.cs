@@ -25,7 +25,9 @@ using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using Microsoft.Practices.ServiceLocation;
 using Remotion.Globalization;
+using Remotion.Globalization.Implementation;
 using Remotion.Logging;
+using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.Infrastructure;
@@ -1024,7 +1026,7 @@ namespace Remotion.Web.UI.Controls
     private bool _formGridListPopulated = false;
     private IInfrastructureResourceUrlFactory _infrastructureResourceUrlFactory;
     private IResourceUrlFactory _resourceUrlFactory;
-
+    
     // construction and disposing
 
     /// <summary> Simple constructor. </summary>
@@ -1982,9 +1984,9 @@ namespace Remotion.Web.UI.Controls
 
       //  Get the resource managers
 
-      IResourceManager localResourceManager = MultiLingualResources.GetResourceManager (typeof (ResourceIdentifier), true);
+      IResourceManager localResourceManager = GlobalizationService.GetResourceManager (typeof (ResourceIdentifier));
       IResourceManager namingContainerResourceManager = ResourceManagerUtility.GetResourceManager (NamingContainer, true);
-      _cachedResourceManager = new ResourceManagerSet (localResourceManager, namingContainerResourceManager);
+      _cachedResourceManager = ResourceManagerSet.Create (namingContainerResourceManager, localResourceManager);
 
       return _cachedResourceManager;
     }
@@ -3099,6 +3101,16 @@ namespace Remotion.Web.UI.Controls
           return true;
       }
       return false;
+    }
+
+    [Browsable (false)]
+    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+    public IGlobalizationService GlobalizationService
+    {
+      get
+      {
+        return CompoundGlobalizationService.Create ();
+      }
     }
 
     [Browsable (false)]

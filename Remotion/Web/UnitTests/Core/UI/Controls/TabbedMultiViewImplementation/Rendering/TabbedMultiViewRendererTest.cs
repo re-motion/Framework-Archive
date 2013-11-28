@@ -21,6 +21,8 @@ using System.Web.UI.WebControls;
 using System.Xml;
 using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting.Resources;
+using Remotion.Globalization;
+using Remotion.Globalization.Implementation;
 using Remotion.Web.Infrastructure;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
@@ -40,9 +42,10 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.TabbedMultiViewImplementation.
     private HttpContextBase _httpContext;
     private HtmlHelper _htmlHelper;
 
-    [SetUp]
-    public void SetUp ()
+    public override void SetUp ()
     {
+      base.SetUp();
+
       _htmlHelper = new HtmlHelper ();
       _httpContext = MockRepository.GenerateStub<HttpContextBase> ();
 
@@ -188,7 +191,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.TabbedMultiViewImplementation.
 
     private void AssertControl (bool withCssClass, bool inAttributes, bool isDesignMode, bool isEmpty)
     {
-      var renderer = new TabbedMultiViewRenderer (new FakeResourceUrlFactory());
+      var renderer = new TabbedMultiViewRenderer (new FakeResourceUrlFactory(), GlobalizationService);
       renderer.Render (new TabbedMultiViewRenderingContext (_httpContext, _htmlHelper.Writer, _control));
 
       var container = GetAssertedContainerElement (withCssClass, inAttributes, isDesignMode, renderer);

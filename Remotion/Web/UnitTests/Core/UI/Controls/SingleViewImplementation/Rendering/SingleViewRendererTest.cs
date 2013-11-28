@@ -20,6 +20,8 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting.Resources;
+using Remotion.Globalization;
+using Remotion.Globalization.Implementation;
 using Remotion.Web.Infrastructure;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls.SingleViewImplementation;
@@ -35,9 +37,10 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.SingleViewImplementation.Rende
     private HttpContextBase _httpContext;
     private HtmlHelper _htmlHelper;
 
-    [SetUp]
-    public void SetUp ()
+    public override void SetUp ()
     {
+      base.SetUp();
+
       _htmlHelper = new HtmlHelper ();
       _httpContext = MockRepository.GenerateStub<HttpContextBase> ();
 
@@ -158,7 +161,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.SingleViewImplementation.Rende
 
     private void AssertRendering (bool isEmpty, bool withCssClasses, bool inAttributes, bool isDesignMode)
     {
-      var renderer = new SingleViewRenderer (new FakeResourceUrlFactory());
+      var renderer = new SingleViewRenderer (new FakeResourceUrlFactory(), GlobalizationService);
       renderer.Render (new SingleViewRenderingContext (_httpContext, _htmlHelper.Writer, _control));
 
       var document = _htmlHelper.GetResultDocument();

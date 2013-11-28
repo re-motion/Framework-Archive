@@ -19,6 +19,8 @@ using System.Web;
 using System.Web.UI;
 using Remotion.Collections;
 using Remotion.Globalization;
+using Remotion.Globalization.Implementation;
+using Remotion.Reflection;
 using Remotion.Utilities;
 using Remotion.Web.UI.Globalization;
 using Remotion.Web.Utilities;
@@ -37,12 +39,11 @@ namespace Remotion.Web.ExecutionEngine
     private readonly IWxeTemplateControl _control;
     /// <summary> Caches the <see cref="ResourceManagerSet"/> for this control. </summary>
     private ResourceManagerSet _cachedResourceManager;
-
-
-
+    
     public WxeTemplateControlInfo (IWxeTemplateControl control)
     {
       ArgumentUtility.CheckNotNullAndType<TemplateControl> ("control", control);
+      
       _control = control;
     }
 
@@ -131,6 +132,14 @@ namespace Remotion.Web.ExecutionEngine
       }
     }
 
+    public IGlobalizationService GlobalizationService
+    {
+      get
+      {
+        return CompoundGlobalizationService.Create ();
+      }
+    }
+
     /// <summary> Find the <see cref="IResourceManager"/> for this control info. </summary>
     /// <param name="localResourcesType"> 
     ///   A type with the <see cref="MultiLingualResourcesAttribute"/> applied to it.
@@ -146,11 +155,11 @@ namespace Remotion.Web.ExecutionEngine
 
       //  Get the resource managers
 
-      IResourceManager localResourceManager = MultiLingualResources.GetResourceManager (localResourcesType, true);
-      Control namingContainer = _control.NamingContainer ?? (Control) _control;
-      IResourceManager namingContainerResourceManager = ResourceManagerUtility.GetResourceManager (namingContainer, true);
+      var localResourceManager = GlobalizationService.GetResourceManager (localResourcesType);
+      var namingContainer = _control.NamingContainer ?? (Control) _control;
+      var namingContainerResourceManager = ResourceManagerUtility.GetResourceManager (namingContainer, true);
 
-      _cachedResourceManager = new ResourceManagerSet (localResourceManager, namingContainerResourceManager);
+      _cachedResourceManager = ResourceManagerSet.Create (namingContainerResourceManager, localResourceManager);
 
       return _cachedResourceManager;
     }

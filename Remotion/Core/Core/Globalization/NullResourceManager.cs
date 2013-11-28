@@ -31,42 +31,28 @@ namespace Remotion.Globalization
     {
     }
 
-    NameValueCollection IResourceManager.GetAllStrings ()
+    public NameValueCollection GetAllStrings ()
     {
       return new NameValueCollection();
     }
 
-    NameValueCollection IResourceManager.GetAllStrings (string prefix)
+    public NameValueCollection GetAllStrings (string prefix)
     {
       return new NameValueCollection();
     }
 
-    string IResourceManager.GetString (string id)
+    public bool TryGetString (string id, out string value)
     {
-      return id;
-    }
-
-    string IResourceManager.GetString (Enum enumValue)
-    {
-      return ResourceIdentifiersAttribute.GetResourceIdentifier (enumValue);
-    }
-
-    public bool ContainsResource (string id)
-    {
+      value = null;
       return false;
     }
 
-    public bool ContainsResource (Enum enumValue)
-    {
-      return false;
-    }
-
-    string IResourceManager.Name
+    public string Name
     {
       get { return "Remotion.Globalization.NullResourceManager"; }
     }
 
-    bool INullObject.IsNull
+    public bool IsNull
     {
       get { return true; }
     }

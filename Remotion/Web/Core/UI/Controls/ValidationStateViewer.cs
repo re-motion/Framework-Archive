@@ -20,6 +20,8 @@ using System.ComponentModel;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.Globalization;
+using Remotion.Globalization.Implementation;
+using Remotion.Reflection;
 using Remotion.Utilities;
 using Remotion.Web.UI.Globalization;
 using Remotion.Web.Utilities;
@@ -269,11 +271,21 @@ public class ValidationStateViewer : WebControl, IControl
 
     //  Get the resource managers
 
-    IResourceManager localResourceManager = MultiLingualResources.GetResourceManager (typeof (ResourceIdentifier), true);
+    IResourceManager localResourceManager = GlobalizationService.GetResourceManager (typeof (ResourceIdentifier));
     IResourceManager namingContainerResourceManager = ResourceManagerUtility.GetResourceManager (NamingContainer, true);
-    _cachedResourceManager = new ResourceManagerSet (localResourceManager, namingContainerResourceManager);
+    _cachedResourceManager = ResourceManagerSet.Create (namingContainerResourceManager, localResourceManager);
 
     return _cachedResourceManager;
+  }
+
+  [Browsable (false)]
+  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+  public IGlobalizationService GlobalizationService
+  {
+    get
+    {
+      return CompoundGlobalizationService.Create ();
+    }
   }
 
   /// <summary>

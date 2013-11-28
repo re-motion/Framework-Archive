@@ -20,6 +20,7 @@ using System.Text;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Remotion.Globalization;
 using Remotion.ObjectBinding.Web.Services;
 using Remotion.Utilities;
 using Remotion.Web;
@@ -34,8 +35,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
   public abstract class BocReferenceValueRendererBase<TControl> : BocRendererBase<TControl>
       where TControl: IBocReferenceValueBase
   {
-    protected BocReferenceValueRendererBase (IResourceUrlFactory resourceUrlFactory)
-        : base (resourceUrlFactory)
+    protected BocReferenceValueRendererBase (IResourceUrlFactory resourceUrlFactory, ICompoundGlobalizationService globalizationService)
+        : base(resourceUrlFactory, globalizationService)
     {
     }
 

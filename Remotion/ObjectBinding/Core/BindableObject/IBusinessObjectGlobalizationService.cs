@@ -16,8 +16,8 @@
 // 
 using System;
 using Remotion.ExtensibleEnums;
-using Remotion.ObjectBinding.BindableObject.Properties;
 using Remotion.Reflection;
+using Remotion.ServiceLocation;
 
 namespace Remotion.ObjectBinding.BindableObject
 {
@@ -29,6 +29,7 @@ namespace Remotion.ObjectBinding.BindableObject
   /// using the <see cref="BusinessObjectProvider.AddService"/> method or indirectly by providing a custom implementation of the 
   /// <see cref="IBusinessObjectServiceFactory"/>.
   /// </remarks>
+  [ConcreteImplementation(typeof(BindableObjectGlobalizationService), Lifetime = LifetimeKind.Singleton)]
   public interface IBindableObjectGlobalizationService : IBusinessObjectService
   {
     /// <summary>
@@ -55,8 +56,9 @@ namespace Remotion.ObjectBinding.BindableObject
     /// <summary>
     /// Gets the localized display name of a property.
     /// </summary>
-    /// <param name="info">The property.</param>
+    /// <param name="propertyInformation"></param>
+    /// <param name="typeInformationForResourceResolution"></param>
     /// <returns>The localized display name.</returns>
-    string GetPropertyDisplayName (IPropertyInformation info);
+    string GetPropertyDisplayName (IPropertyInformation propertyInformation, ITypeInformation typeInformationForResourceResolution);
   }
 }
