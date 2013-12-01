@@ -88,7 +88,7 @@ namespace Remotion.Data.DomainObjects.Mapping
     private readonly ReadOnlyDictionary<string, ClassDefinition> _classDefinitions;
     private readonly ReadOnlyDictionary<string, RelationDefinition> _relationDefinitions;
     private readonly bool _resolveTypes;
-    private readonly IMemberInfoNameResolver _nameResolver;
+    private readonly IMemberInformationNameResolver _nameResolver;
 
     // construction and disposing
 
@@ -197,7 +197,7 @@ namespace Remotion.Data.DomainObjects.Mapping
       return classDefinition;
     }
 
-    public IMemberInfoNameResolver NameResolver
+    public IMemberInformationNameResolver NameResolver
     {
       get { return _nameResolver; }
     }

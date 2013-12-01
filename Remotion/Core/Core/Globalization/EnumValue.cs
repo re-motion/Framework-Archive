@@ -14,17 +14,31 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System;
-using System.Reflection;
-using Remotion.ExtensibleEnums;
 
-namespace Remotion.UnitTests.Globalization.TestDomain
+using System;
+using JetBrains.Annotations;
+using Remotion.Utilities;
+
+namespace Remotion.Globalization
 {
-  public class ExtensibleEnumWithResources : ExtensibleEnum<ExtensibleEnumWithResources>
+  public struct EnumValue
   {
-    public ExtensibleEnumWithResources (MethodBase currentMethod)
-        : base(currentMethod)
+    public readonly Enum Value;
+
+    [NotNull]
+    public readonly string Description;
+
+    public long NumericValue
     {
+      get { return Convert.ToInt64 (Value); }
+    }
+
+    public EnumValue (Enum value, string description)
+    {
+      ArgumentUtility.CheckNotNullOrEmpty ("description", description);
+
+      Value = value;
+      Description = description;
     }
   }
 }

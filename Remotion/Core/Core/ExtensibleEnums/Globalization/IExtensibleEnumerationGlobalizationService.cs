@@ -16,11 +16,9 @@
 // 
 
 using System;
-using Remotion.ExtensibleEnums;
-using Remotion.Globalization.Implementation;
 using Remotion.ServiceLocation;
 
-namespace Remotion.Globalization
+namespace Remotion.ExtensibleEnums.Globalization
 {
   /// <summary>
   /// Defines an interface for retrieving the human-readable localized representation of the extensible-enumeration object.

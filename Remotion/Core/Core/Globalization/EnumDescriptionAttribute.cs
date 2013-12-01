@@ -1,4 +1,4 @@
-﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
+// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -16,20 +16,28 @@
 // 
 
 using System;
-using Remotion.ExtensibleEnums;
 using Remotion.Utilities;
 
-namespace Remotion.Globalization.Implementation
+namespace Remotion.Globalization
 {
   /// <summary>
-  /// Retrieving the human-readable localized representation of extensible-enumeration objects.
+  /// Use this attribute to specify a non-globalized text representation of a certain enumeration value.
   /// </summary>
-  public class ExtensibleEnumerationServiceGlobalizationService : IExtensibleEnumerationGlobalizationService
+  [AttributeUsage (AttributeTargets.Field, AllowMultiple = false)]
+  public class EnumDescriptionAttribute: Attribute
   {
-    public string GetExtensibleEnumerationValueDisplayName (IExtensibleEnum value)
+    private readonly string _description;
+
+    public EnumDescriptionAttribute (string description)
     {
-      ArgumentUtility.CheckNotNull ("value", value);
-      return value.GetLocalizedName ();
+      ArgumentUtility.CheckNotNullOrEmpty ("description", description);
+      
+      _description = description;
+    }
+
+    public string Description
+    {
+      get { return _description; }
     }
   }
 }

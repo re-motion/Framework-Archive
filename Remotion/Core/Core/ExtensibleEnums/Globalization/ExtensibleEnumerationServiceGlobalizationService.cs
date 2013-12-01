@@ -1,4 +1,4 @@
-// This file is part of the re-motion Core Framework (www.re-motion.org)
+﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -16,28 +16,20 @@
 // 
 
 using System;
-using JetBrains.Annotations;
+using Remotion.Globalization;
+using Remotion.Utilities;
 
-namespace Remotion.Utilities
+namespace Remotion.ExtensibleEnums.Globalization
 {
-  public struct EnumValue
+  /// <summary>
+  /// Retrieving the human-readable localized representation of extensible-enumeration objects.
+  /// </summary>
+  public class ExtensibleEnumerationServiceGlobalizationService : IExtensibleEnumerationGlobalizationService
   {
-    public readonly Enum Value;
-
-    [NotNull]
-    public readonly string Description;
-
-    public long NumericValue
+    public string GetExtensibleEnumerationValueDisplayName (IExtensibleEnum value)
     {
-      get { return Convert.ToInt64 (Value); }
-    }
-
-    public EnumValue (Enum value, string description)
-    {
-      ArgumentUtility.CheckNotNullOrEmpty ("description", description);
-
-      Value = value;
-      Description = description;
+      ArgumentUtility.CheckNotNull ("value", value);
+      return value.GetLocalizedName ();
     }
   }
 }

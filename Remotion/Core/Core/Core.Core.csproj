@@ -149,21 +149,21 @@
     <Compile Include="Context\SafeContextKeys.cs" />
     <Compile Include="Globalization\GlobalizationServiceExtensions.cs" />
     <Compile Include="Globalization\IEnumerationGlobalizationService.cs" />
-    <Compile Include="Globalization\IExtensibleEnumerationGlobalizationService.cs" />
+    <Compile Include="ExtensibleEnums\Globalization\IExtensibleEnumerationGlobalizationService.cs" />
     <Compile Include="Globalization\Implementation\CompoundGlobalizationService.cs" />
     <Compile Include="Globalization\Implementation\EnumerationGlobalizationService.cs" />
-    <Compile Include="Globalization\Implementation\ExtensibleEnumerationServiceGlobalizationService.cs" />
+    <Compile Include="ExtensibleEnums\Globalization\ExtensibleEnumerationServiceGlobalizationService.cs" />
     <Compile Include="Globalization\Implementation\GlobalizationService.cs" />
     <Compile Include="Globalization\ICompoundGlobalizationService.cs" />
     <Compile Include="Globalization\IGlobalizationService.cs" />
     <Compile Include="Globalization\IMemberInformationGlobalizationService.cs" />
-    <Compile Include="Globalization\IResourceManagerResolver.cs" />
+    <Compile Include="Globalization\Implementation\IResourceManagerResolver.cs" />
     <Compile Include="Globalization\Implementation\MemberInformationGlobalizationService.cs" />
     <Compile Include="Globalization\ResourceManagerExtensions.cs" />
     <Compile Include="IHandleAttribute.cs" />
     <Compile Include="Reflection\DelegateFactory.cs" />
     <Compile Include="Reflection\IDelegateFactory.cs" />
-    <Compile Include="Reflection\IMemberInfoNameResolver.cs" />
+    <Compile Include="Reflection\IMemberInformationNameResolver.cs" />
     <Compile Include="Reflection\MemberSignatures\EventSignature.cs" />
     <Compile Include="Reflection\MemberSignatures\FieldSignature.cs" />
     <Compile Include="Reflection\MemberSignatures\IMemberSignature.cs" />
@@ -173,7 +173,7 @@
     <Compile Include="Reflection\MemberSignatures\MethodSignature.cs" />
     <Compile Include="Reflection\MemberSignatures\NestedTypeSignature.cs" />
     <Compile Include="Reflection\MemberSignatures\PropertySignature.cs" />
-    <Compile Include="Reflection\ReflectionBasedMemberInfoNameResolver.cs" />
+    <Compile Include="Reflection\ReflectionBasedMemberInformationNameResolver.cs" />
     <Compile Include="Reflection\TypeDiscovery\AssemblyLoading\AssemblyNameCache.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -300,9 +300,9 @@
     <Compile Include="Utilities\DelegateBasedDisposable.cs" />
     <Compile Include="Utilities\DelegateBasedEqualityComparer.cs" />
     <Compile Include="Utilities\DesignerUtility.cs" />
-    <Compile Include="Utilities\EnumDescriptionAttribute.cs" />
-    <Compile Include="Utilities\EnumDescriptionResourceAttribute.cs" />
-    <Compile Include="Utilities\EnumValue.cs" />
+    <Compile Include="Globalization\EnumDescriptionAttribute.cs" />
+    <Compile Include="Globalization\EnumDescriptionResourceAttribute.cs" />
+    <Compile Include="Globalization\EnumValue.cs" />
     <Compile Include="Utilities\FuncUtility.cs" />
     <Compile Include="Reflection\TypeDiscovery\AssemblyLoading\AssemblyLoaderException.cs" />
     <Compile Include="Reflection\CodeGeneration\GeneratedMethodWrapperAttribute.cs" />
@@ -509,7 +509,7 @@
     <Compile Include="Utilities\BidirectionalStringConverter.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Utilities\EnumDescription.cs">
+    <Compile Include="Globalization\EnumDescription.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Utilities\EnumUtility.cs">
