@@ -1,4 +1,4 @@
-﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
+// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -16,20 +16,16 @@
 // 
 
 using System;
+using System.Reflection;
 using Remotion.ExtensibleEnums;
-using Remotion.Utilities;
 
-namespace Remotion.Globalization.Implementation
+namespace Remotion.UnitTests.ExtensibleEnums.TestDomain
 {
-  /// <summary>
-  /// Retrieving the human-readable localized representation of extensible-enumeration objects.
-  /// </summary>
-  public class ExtensibleEnumerationServiceGlobalizationService : IExtensibleEnumerationGlobalizationService
+  public class ExtensibleEnumWithResources : ExtensibleEnum<ExtensibleEnumWithResources>
   {
-    public string GetExtensibleEnumerationValueDisplayName (IExtensibleEnum value)
+    public ExtensibleEnumWithResources (MethodBase currentMethod)
+        : base(currentMethod)
     {
-      ArgumentUtility.CheckNotNull ("value", value);
-      return value.GetLocalizedName ();
     }
   }
 }
