@@ -16,7 +16,6 @@
 // 
 
 using System;
-using System.Linq;
 using Remotion.Globalization.Implementation;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
@@ -26,12 +25,10 @@ namespace Remotion.Globalization
   /// <summary>
   /// Provides the public API for classes working with and analyzing instances of <see cref="MultiLingualResourcesAttribute"/>.
   /// </summary>
-  [Obsolete ("Retrieve IGlobalizationService from IoC container instead.")]
   public static class MultiLingualResources
   {
     private static readonly DoubleCheckedLockingContainer<IResourceManagerResolver> s_resolver =
         new DoubleCheckedLockingContainer<IResourceManagerResolver> (() => SafeServiceLocator.Current.GetInstance<IResourceManagerResolver>());
-
 
     /// <summary>
     ///   Returns an instance of <c>IResourceManager</c> for the resource container specified
@@ -39,6 +36,7 @@ namespace Remotion.Globalization
     /// </summary>
     /// <include file='..\doc\include\Globalization\MultiLingualResourcesAttribute.xml' path='/MultiLingualResourcesAttribute/GetResourceManager/Common/*' />
     /// <include file='..\doc\include\Globalization\MultiLingualResourcesAttribute.xml' path='/MultiLingualResourcesAttribute/GetResourceManager/param[@name="objectType" or @name="includeHierarchy"]' />
+    [Obsolete ("Retrieve IGlobalizationService from IoC container instead. (1.13.223)")]
     public static IResourceManager GetResourceManager (Type objectType, bool includeHierarchy)
     {
       ArgumentUtility.CheckNotNull ("objectType", objectType);
@@ -54,9 +52,16 @@ namespace Remotion.Globalization
       }
       else
       {
+        //Reproduce bug on on obsolete API
+        if (result.IsNull)
+          throw new ResourceException (string.Format ("Type {0} and its base classes do not define a resource attribute.", objectType.FullName));
         if (result.DefinedResourceManager.IsNull)
-          throw new ResourceException (string.Format ("Type {0} does not define a resource attribute.", objectType.FullName));
+          return result.InheritedResourceManager;
         return result.DefinedResourceManager;
+        //Correct behavior:
+        //if (result.DefinedResourceManager.IsNull)
+        //  throw new ResourceException (string.Format ("Type {0} does not define a resource attribute.", objectType.FullName));
+        //return result.DefinedResourceManager;
       }
     }
 
@@ -66,6 +71,7 @@ namespace Remotion.Globalization
     /// </summary>
     /// <include file='..\doc\include\Globalization\MultiLingualResourcesAttribute.xml' path='/MultiLingualResourcesAttribute/GetResourceManager/Common/*' />
     /// <include file='..\doc\include\Globalization\MultiLingualResourcesAttribute.xml' path='/MultiLingualResourcesAttribute/GetResourceManager/param[@name="objectType"]' />
+    [Obsolete ("Retrieve IGlobalizationService from IoC container instead. (1.13.223)")]
     public static IResourceManager GetResourceManager (Type objectType)
     {
       ArgumentUtility.CheckNotNull ("objectType", objectType);
@@ -80,6 +86,7 @@ namespace Remotion.Globalization
     /// </param>
     /// <param name="name"> The ID of the resource. </param>
     /// <returns> The found string resource or an empty string. </returns>
+    [Obsolete ("Retrieve IGlobalizationService from IoC container instead. (1.13.223)")]
     public static string GetResourceText (Type objectTypeToGetResourceFor, string name)
     {
       ArgumentUtility.CheckNotNull ("objectTypeToGetResourceFor", objectTypeToGetResourceFor);
@@ -100,6 +107,7 @@ namespace Remotion.Globalization
     /// </param>
     /// <param name="name"> The ID of the resource. </param>
     /// <returns> The found string resource or an empty string. </returns>
+    [Obsolete ("Retrieve IGlobalizationService from IoC container instead. (1.13.223)")]
     public static string GetResourceText (object objectToGetResourceFor, string name)
     {
       ArgumentUtility.CheckNotNull ("objectToGetResourceFor", objectToGetResourceFor);
@@ -116,6 +124,7 @@ namespace Remotion.Globalization
     /// </param>
     /// <param name="name"> The ID of the resource. </param>
     /// <returns> <see langword="true"/> if the resource can be found. </returns>
+    [Obsolete ("Retrieve IGlobalizationService from IoC container instead and test for IResourceManager.ContainsString(...)")]
     public static bool ExistsResourceText (Type objectTypeToGetResourceFor, string name)
     {
       ArgumentUtility.CheckNotNull ("objectTypeToGetResourceFor", objectTypeToGetResourceFor);
@@ -141,6 +150,7 @@ namespace Remotion.Globalization
     /// </param>
     /// <param name="name"> The ID of the resource. </param>
     /// <returns> <see langword="true"/> if the resource can be found. </returns>
+    [Obsolete ("Retrieve IGlobalizationService from IoC container instead and test for IResourceManager.ContainsString(...)")]
     public static bool ExistsResourceText (object objectToGetResourceFor, string name)
     {
       ArgumentUtility.CheckNotNull ("objectToGetResourceFor", objectToGetResourceFor);
@@ -156,11 +166,19 @@ namespace Remotion.Globalization
     ///   The <see cref="Type"/> for which to check for the resource set.
     /// </param>
     /// <returns> <see langword="true"/> if the resource ser can be found. </returns>
+    [Obsolete ("Retrieve IGlobalizationService from IoC container instead and test for IResourceManager.IsNull")]
     public static bool ExistsResource (Type objectTypeToGetResourceFor)
     {
       ArgumentUtility.CheckNotNull ("objectTypeToGetResourceFor", objectTypeToGetResourceFor);
 
-      return !GetResourceManager (objectTypeToGetResourceFor, false).IsNull;
+      try
+      {
+        return !GetResourceManager (objectTypeToGetResourceFor, false).IsNull;
+      }
+      catch (ResourceException)
+      {
+        return false;
+      }
     }
 
     /// <summary>
@@ -170,6 +188,7 @@ namespace Remotion.Globalization
     ///   The object for whose <see cref="Type"/> to check for the resource set.
     /// </param>
     /// <returns> <see langword="true"/> if the resource ser can be found. </returns>
+    [Obsolete ("Retrieve IGlobalizationService from IoC container instead and test for IResourceManager.IsNull")]
     public static bool ExistsResource (object objectToGetResourceFor)
     {
       ArgumentUtility.CheckNotNull ("objectToGetResourceFor", objectToGetResourceFor);
