@@ -26,9 +26,15 @@ namespace Remotion.ServiceLocation
   /// </summary>
   public class DefaultServiceLocatorProvider : IServiceLocatorProvider
   {
+    public DefaultServiceLocatorProvider ()
+    {
+    }
+
     public IServiceLocator GetServiceLocator (ReadOnlyCollection<ServiceConfigurationEntry> serviceConfigurationEntries)
     {
       ArgumentUtility.CheckNotNull ("serviceConfigurationEntries", serviceConfigurationEntries);
+
+      //TODO RM-5506: either use  DefaultServiceLocator.Create() or use injected instance from ctor-parameter. If ctor-parameter, still provide a default ctor as well.
 
       var defaultServiceLocator = new DefaultServiceLocator();
       foreach (var serviceConfigurationEntry in serviceConfigurationEntries)

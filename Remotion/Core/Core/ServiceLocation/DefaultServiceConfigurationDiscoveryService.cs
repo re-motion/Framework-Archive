@@ -43,6 +43,10 @@ namespace Remotion.ServiceLocation
   /// </remarks>
   public static class DefaultServiceConfigurationDiscoveryService
   {
+    //TODO RM-5560: change to instance implementation and pass ITypeDiscoveryService via ctor. 
+    // Optionally, provide a factory method that depends on ContextAwareTypeDiscoveryUtility.GetTypeDiscoveryService()
+    // Drop ITypeDiscoveryService from method signatures.
+      
     /// <summary>
     /// Gets the default service configuration for the types returned by the given <see cref="ITypeDiscoveryService"/>.
     /// </summary>
@@ -65,6 +69,12 @@ namespace Remotion.ServiceLocation
     public static IEnumerable<ServiceConfigurationEntry> GetDefaultConfiguration (IEnumerable<Type> types)
     {
       ArgumentUtility.CheckNotNull ("types", types);
+
+      // TODO RM-5560: Refactor to ask for each type the derived types from TIypeDiscoverySerivce
+      // determine flag excludeGlobalTypes on GetTypes by checking type.Assembly.GlobalAssemblyCache
+      // TBD: Caching-Decorator for ITypeDiscoveryService?
+      // Cache for each derived type if it contains a ConcreteImplementationAttribute, but result of GetCustomAttributes must not be cached.
+      // Only cache if it is actually sensible.
 
       return (from type in types
               let concreteImplementationAttributes = AttributeUtility.GetCustomAttributes<ConcreteImplementationAttribute> (type, false)

@@ -74,6 +74,12 @@ namespace Remotion.ServiceLocation
 
     private readonly IDataStore<Type, Func<object>[]> _dataStore = DataStoreFactory.CreateWithLocking<Type, Func<object>[]> ();
 
+    public DefaultServiceLocator ()
+    {
+      //TODO RM-5506: Inject DefaultServiceConfigurationDiscoveryService, optionally via interface
+      // Provide factory method for DefaultServiceLocator that depends on DefaultServiceConfigurationDiscoveryService.Create(). Mainly used in re-motion unittests.
+    }
+
     /// <summary>
     /// Get an instance of the given <paramref name="serviceType"/>. The type must either have a <see cref="ConcreteImplementationAttribute"/>, or
     /// a concrete implementation or factory must have been registered using one of the <see cref="Register(ServiceConfigurationEntry)"/> methods.
@@ -340,6 +346,8 @@ namespace Remotion.ServiceLocation
 
     private IEnumerable<Func<object>> CreateInstanceFactories (Type serviceType)
     {
+      //TODO RM-5506: Refactor to use injected DefaultServiceConfigurationDiscoveryService
+
       var attributes = AttributeUtility.GetCustomAttributes<ConcreteImplementationAttribute> (serviceType, false);
       ServiceConfigurationEntry entry;
       try
@@ -348,6 +356,7 @@ namespace Remotion.ServiceLocation
       }
       catch (InvalidOperationException ex)
       {
+        // This exception is part of the IServiceLocator contract.
         var message = string.Format ("Invalid ConcreteImplementationAttribute configuration for service type '{0}'. {1}", serviceType, ex.Message);
         throw new ActivationException (message, ex);
       }

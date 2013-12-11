@@ -24,6 +24,8 @@ namespace Remotion.ServiceLocation
   /// This attribute is used by the DefaultServiceProvider to determine how to instantiate a service type. Mutiple 
   /// <see cref="ConcreteImplementationAttribute"/> instances can be applied to a single service type. They are not inherited.
   /// </summary>
+  // TODO RM-5506: Possibly find a new/better name
+  // TODO RM-5506: Drop support for typename as string from entire ServiceLocation infrastructure after inverting the dependencies.
   [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class, AllowMultiple = true, Inherited = false)]
   public class ConcreteImplementationAttribute : Attribute
   {
