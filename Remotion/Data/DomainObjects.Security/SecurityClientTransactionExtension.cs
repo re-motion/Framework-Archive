@@ -31,6 +31,8 @@ namespace Remotion.Data.DomainObjects.Security
   [Serializable]
   public class SecurityClientTransactionExtension : ClientTransactionExtensionBase
   {
+    private static readonly AccessType s_findAccessType = AccessType.Get (GeneralAccessTypes.Find);
+
     public static string DefaultKey
     {
       get { return typeof (SecurityClientTransactionExtension).FullName; }
@@ -39,6 +41,8 @@ namespace Remotion.Data.DomainObjects.Security
     private bool _isActive;
     [NonSerialized]
     private SecurityClient _securityClient;
+
+    private static readonly AccessType s_deleteAccessType = AccessType.Get (GeneralAccessTypes.Delete);
 
     public SecurityClientTransactionExtension ()
         : this (DefaultKey)
@@ -79,7 +83,7 @@ namespace Remotion.Data.DomainObjects.Security
           try
           {
             _isActive = true;
-            hasAccess = securityClient.HasAccess (securableObject, AccessType.Get (GeneralAccessTypes.Find));
+            hasAccess = securityClient.HasAccess (securableObject, s_findAccessType);
           }
           finally
           {
@@ -150,7 +154,7 @@ namespace Remotion.Data.DomainObjects.Security
 
         using (EnterScopeOnDemand (clientTransaction))
         {
-          securityClient.CheckAccess (securableObject, AccessType.Get (GeneralAccessTypes.Delete));
+          securityClient.CheckAccess (securableObject, s_deleteAccessType);
         }
       }
       finally

@@ -16,13 +16,10 @@
 // 
 
 using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Reflection;
-using System.Resources;
 using JetBrains.Annotations;
-using Remotion.Collections;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 
 namespace Remotion.Globalization
@@ -36,119 +33,51 @@ namespace Remotion.Globalization
   /// </remarks>
   public static class EnumDescription
   {
-    /// <summary>This is for enums with the EnumDescriptionAttribute on values. </summary>
-    private static readonly ICache<Type, IDictionary<Enum, EnumValue>> s_staticEnumValues =
-        CacheFactory.CreateWithLocking<Type, IDictionary<Enum, EnumValue>>();
-
-    /// <summary> This is for enums with the EnumDescriptionResourceAttribute.  </summary>
-    private static readonly ICache<Type, ResourceManager> s_enumResourceManagers = CacheFactory.CreateWithLocking<Type, ResourceManager>();
+    private static readonly DoubleCheckedLockingContainer<IEnumerationGlobalizationService> s_globalizationService =
+      new DoubleCheckedLockingContainer<IEnumerationGlobalizationService> (() => SafeServiceLocator.Current.GetInstance<IEnumerationGlobalizationService>());
 
     [NotNull]
+    [Obsolete("(Version 1.13.222.0)")]
     public static EnumValue[] GetAllValues ([NotNull] Type enumType)
     {
       ArgumentUtility.CheckNotNull ("enumType", enumType);
 
-      return GetAllValues (enumType, null);
+      return Enum.GetValues (enumType).Cast<Enum>()
+          .Select (e => new EnumValue (e, s_globalizationService.Value.GetEnumerationValueDisplayName (e)))
+          .ToArray();
     }
 
     [NotNull]
+    [Obsolete("(Version 1.13.222.0)")]
     public static EnumValue[] GetAllValues ([NotNull] Type enumType, [CanBeNull] CultureInfo culture)
     {
       ArgumentUtility.CheckNotNull ("enumType", enumType);
 
-      var resourceManager = GetResourceManagerFromCache (enumType);
-      if (resourceManager != null)
+      using (new CultureScope (CultureInfo.CurrentCulture, culture ?? CultureInfo.CurrentUICulture))
       {
-        var data = GetEnumData (enumType);
-        var values = new EnumValue[data.Length];
-
-        for (int i = 0; i < data.Length; ++i)
-        {
-          var value = data[i].Item2;
-          values[i] = new EnumValue (value, GetDescription (value, resourceManager, culture));
-        }
-
-        return values;
-      }
-      else
-      {
-        var enumValues = GetStaticEnumValuesFromCache (enumType);
-        return enumValues.Values.ToArray();
+        return GetAllValues (enumType);
       }
     }
 
     [NotNull]
+    [Obsolete("Use IEnumerationGlobalizationService.GetEnumerationValueDisplayName. (Version 1.13.222.0)")]
     public static string GetDescription ([NotNull] Enum value)
     {
       ArgumentUtility.CheckNotNull ("value", value);
 
-      return GetDescription (value, null);
+      return s_globalizationService.Value.GetEnumerationValueDisplayName (value);
     }
 
     [NotNull]
+    [Obsolete("Use IEnumerationGlobalizationService.GetEnumerationValueDisplayName. (Version 1.13.222.0)")]
     public static string GetDescription ([NotNull] Enum value, [CanBeNull] CultureInfo culture)
     {
       ArgumentUtility.CheckNotNull ("value", value);
 
-      Type enumType = value.GetType();
-      var resourceManager = GetResourceManagerFromCache (enumType);
-      if (resourceManager != null)
-        return GetDescription (value, resourceManager, culture);
-      else
+      using (new CultureScope (CultureInfo.CurrentCulture, culture ?? CultureInfo.CurrentUICulture))
       {
-        var enumValues = GetStaticEnumValuesFromCache (enumType);
-        EnumValue enumValue;
-        if (enumValues.TryGetValue (value, out enumValue))
-          return enumValue.Description;
-
-        return value.ToString();
+        return GetDescription (value);
       }
-    }
-
-    private static string GetDescription (Enum value, ResourceManager resourceManager, CultureInfo culture)
-    {
-      return resourceManager.GetString (value.GetType().FullName + "." + value.ToString(), culture) ?? value.ToString();
-    }
-
-    private static ResourceManager GetResourceManagerFromCache (Type enumType)
-    {
-      return s_enumResourceManagers.GetOrCreateValue (enumType, GetResourceManager);
-    }
-
-    private static ResourceManager GetResourceManager (Type enumType)
-    {
-      var resourceAttribute = AttributeUtility.GetCustomAttribute<EnumDescriptionResourceAttribute> (enumType, false);
-      if (resourceAttribute == null)
-        return null;
-
-      return new ResourceManager (resourceAttribute.BaseName, enumType.Assembly, null);
-    }
-
-    private static IDictionary<Enum, EnumValue> GetStaticEnumValuesFromCache (Type enumType)
-    {
-      return s_staticEnumValues.GetOrCreateValue (enumType, GetStaticEnumValues);
-    }
-
-    private static IDictionary<Enum, EnumValue> GetStaticEnumValues (Type enumType)
-    {
-      var dictionary = new Dictionary<Enum, EnumValue>();
-      foreach (var enumData in GetEnumData (enumType))
-      {
-        var field = enumData.Item1;
-        var value = enumData.Item2;
-
-        var descriptionAttribute = AttributeUtility.GetCustomAttribute<EnumDescriptionAttribute> (field, false);
-        if (descriptionAttribute != null)
-          dictionary.Add (value, new EnumValue (value, descriptionAttribute.Description));
-        else
-          dictionary.Add (value, new EnumValue (value, value.ToString()));
-      }
-      return dictionary;
-    }
-
-    private static Tuple<FieldInfo, Enum>[] GetEnumData (Type enumType)
-    {
-      return enumType.GetFields (BindingFlags.Static | BindingFlags.Public).Select (f => Tuple.Create (f, (Enum) f.GetValue (null))).ToArray();
     }
   }
 }

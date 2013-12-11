@@ -16,6 +16,9 @@
 // 
 
 using System;
+using System.Reflection;
+using Remotion.Collections;
+using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.Globalization.Implementation
@@ -25,10 +28,53 @@ namespace Remotion.Globalization.Implementation
   /// </summary>
   public class EnumerationGlobalizationService : IEnumerationGlobalizationService
   {
+    private readonly ICache<Type, IResourceManager> _enumResourceManagers = CacheFactory.CreateWithLocking<Type, IResourceManager>();
+    private readonly ICache<Enum, string> _staticEnumValues = CacheFactory.CreateWithLocking<Enum, string>();
+    private readonly IGlobalizationService _globalizationService;
+    private readonly IMemberInformationNameResolver _memberInformationNameResolver;
+
+    public EnumerationGlobalizationService (
+        ICompoundGlobalizationService globalizationService,
+        IMemberInformationNameResolver memberInformationNameResolver)
+    {
+      ArgumentUtility.CheckNotNull ("globalizationService", globalizationService);
+
+      _globalizationService = globalizationService;
+      _memberInformationNameResolver = memberInformationNameResolver;
+    }
+
     public string GetEnumerationValueDisplayName (Enum value)
     {
       ArgumentUtility.CheckNotNull ("value", value);
-      return EnumDescription.GetDescription (value);
+
+      var enumType = value.GetType();
+      var resourceManager = _enumResourceManagers.GetOrCreateValue (enumType, type => _globalizationService.GetResourceManager (type));
+      if (!resourceManager.IsNull)
+      {
+        string resourceValue;
+        if (resourceManager.TryGetString (_memberInformationNameResolver.GetEnumName (value), out resourceValue))
+          return resourceValue;
+        return value.ToString();
+      }
+
+      return _staticEnumValues.GetOrCreateValue (value, GetStaticEnumValues);
+    }
+
+    private string GetStaticEnumValues (Enum value)
+    {
+      var field = GetField (value);
+      if (field != null)
+      {
+        var descriptionAttribute = AttributeUtility.GetCustomAttribute<EnumDescriptionAttribute> (field, false);
+        if (descriptionAttribute != null)
+          return descriptionAttribute.Description;
+      }
+      return value.ToString();
+    }
+
+    private FieldInfo GetField (Enum value)
+    {
+      return value.GetType().GetField (value.ToString(), BindingFlags.Static | BindingFlags.Public);
     }
   }
 }
