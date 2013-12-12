@@ -39,7 +39,7 @@ public class BocListWcagTest: BocTest
   [TestFixtureTearDown]
   public void TestFixtureTearDown ()
   {
-    ServiceLocator.SetLocatorProvider (() => new DefaultServiceLocator());
+    ServiceLocator.SetLocatorProvider (() => DefaultServiceLocator.Create());
   }
 
   [SetUp]

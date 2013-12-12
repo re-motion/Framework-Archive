@@ -13,7 +13,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Queries
     [SetUp]
     public void SetUp ()
     {
-      _serviceLocator = new DefaultServiceLocator();
+      _serviceLocator = DefaultServiceLocator.Create();
     }
 
     [Test]

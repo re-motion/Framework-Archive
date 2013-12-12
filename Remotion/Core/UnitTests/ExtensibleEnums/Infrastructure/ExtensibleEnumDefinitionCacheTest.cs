@@ -37,7 +37,7 @@ namespace Remotion.UnitTests.ExtensibleEnums.Infrastructure
     [SetUp]
     public void SetUp ()
     {
-      _serviceLocator = new DefaultServiceLocator();
+      _serviceLocator = DefaultServiceLocator.Create();
       _cache =
           new ExtensibleEnumDefinitionCache (
               new ExtensibleEnumValueDiscoveryService (

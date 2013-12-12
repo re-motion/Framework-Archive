@@ -187,6 +187,7 @@
     <Compile Include="ServiceLocation\ConcreteImplementationAttribute.cs" />
     <Compile Include="ServiceLocation\DefaultServiceLocatorProvider.cs" />
     <Compile Include="ServiceLocation\IBootstrapServiceConfiguration.cs" />
+    <Compile Include="ServiceLocation\IServiceConfigurationDiscoveryService.cs" />
     <Compile Include="ServiceLocation\IServiceLocatorProvider.cs" />
     <Compile Include="ServiceLocation\LifetimeKind.cs" />
     <Compile Include="ServiceLocation\ServiceImplementationInfo.cs" />

@@ -68,7 +68,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocListImplementation
     [TestFixtureTearDown]
     public void TestFixtureTearDown ()
     {
-      ServiceLocator.SetLocatorProvider (() => new DefaultServiceLocator());
+      ServiceLocator.SetLocatorProvider (() => DefaultServiceLocator.Create());
     }
 
     public override void SetUp ()

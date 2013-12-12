@@ -32,7 +32,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
   public class StubServiceLocator : ServiceLocatorImplBase
   {
     private readonly IDataStore<Type, object> _instances = new SimpleDataStore<Type, object>();
-    private readonly IServiceLocator _defaultServiceLocator = new DefaultServiceLocator();
+    private readonly IServiceLocator _defaultServiceLocator = DefaultServiceLocator.Create();
 
     public StubServiceLocator ()
     {

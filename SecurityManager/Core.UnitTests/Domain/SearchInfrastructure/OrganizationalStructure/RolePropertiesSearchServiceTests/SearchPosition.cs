@@ -82,7 +82,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SearchInfrastructure.Organiz
       SecurityConfiguration.Current.SecurityProvider = _mockSecurityProvider;
       SecurityConfiguration.Current.PrincipalProvider = _mockPrincipalProvider;
 
-      var serviceLocator = new DefaultServiceLocator();
+      var serviceLocator = DefaultServiceLocator.Create();
       serviceLocator.Register (typeof (IFunctionalSecurityStrategy), () => _stubFunctionalSecurityStrategy);
       _serviceLocatorScope = new ServiceLocatorScope (serviceLocator);
 

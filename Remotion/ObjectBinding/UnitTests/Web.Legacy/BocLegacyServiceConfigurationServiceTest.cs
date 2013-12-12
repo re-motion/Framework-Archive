@@ -32,7 +32,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.Legacy
     [Test]
     public void GetConfiguration ()
     {
-      var allServiceTypes = DefaultServiceConfigurationDiscoveryService.GetDefaultConfiguration (new[] { typeof (IBocList).Assembly })
+      var allServiceTypes = DefaultServiceConfigurationDiscoveryService.Create().GetDefaultConfiguration (new[] { typeof (IBocList).Assembly })
           .Select (e => e.ServiceType).ToList();
       var nonLegacyServices = new[] { typeof (BocListCssClassDefinition), typeof (IDateTimeFormatter) };
       var expectedLegacyServiceTypes = allServiceTypes
@@ -56,7 +56,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.Legacy
     {
       var legacyServiceTypes = BocLegacyServiceConfigurationService.GetConfiguration();
 
-      var locator = new DefaultServiceLocator();
+      var locator = DefaultServiceLocator.Create();
       foreach (var serviceConfigurationEntry in legacyServiceTypes)
         locator.Register (serviceConfigurationEntry);
 

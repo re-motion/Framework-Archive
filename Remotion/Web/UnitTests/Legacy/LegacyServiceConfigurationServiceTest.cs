@@ -48,7 +48,7 @@ namespace Remotion.Web.UnitTests.Legacy
                                   typeof (IInternalControlMemberCaller)
                               };
 
-      var allServiceTypes = DefaultServiceConfigurationDiscoveryService.GetDefaultConfiguration (new[] { typeof (IResourceUrl).Assembly })
+      var allServiceTypes = DefaultServiceConfigurationDiscoveryService.Create().GetDefaultConfiguration (new[] { typeof (IResourceUrl).Assembly })
           .Select (e => e.ServiceType);
       var expectedLegacyServiceTypes = allServiceTypes.Except (nonLegacyServices);
 
@@ -70,7 +70,7 @@ namespace Remotion.Web.UnitTests.Legacy
     {
       var legacyServiceTypes = LegacyServiceConfigurationService.GetConfiguration();
 
-      var locator = new DefaultServiceLocator();
+      var locator = DefaultServiceLocator.Create();
       foreach (var serviceConfigurationEntry in legacyServiceTypes)
         locator.Register (serviceConfigurationEntry);
 

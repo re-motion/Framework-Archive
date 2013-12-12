@@ -65,6 +65,13 @@ namespace Remotion.ServiceLocation
   /// <threadsafety static="true" instance="true" />
   public class DefaultServiceLocator : IServiceLocator
   {
+    private readonly IServiceConfigurationDiscoveryService _serviceConfigurationDiscoveryService;
+
+    public static DefaultServiceLocator Create ()
+    {
+      return new DefaultServiceLocator (DefaultServiceConfigurationDiscoveryService.Create());
+    }
+
     private static readonly MethodInfo s_resolveIndirectDependencyMethod =
         MemberInfoFromExpressionUtility.GetMethod ((DefaultServiceLocator sl) => sl.ResolveIndirectDependency<object> (null))
         .GetGenericMethodDefinition();
@@ -74,10 +81,9 @@ namespace Remotion.ServiceLocation
 
     private readonly IDataStore<Type, Func<object>[]> _dataStore = DataStoreFactory.CreateWithLocking<Type, Func<object>[]> ();
 
-    public DefaultServiceLocator ()
+    private DefaultServiceLocator (IServiceConfigurationDiscoveryService serviceConfigurationDiscoveryService)
     {
-      //TODO RM-5506: Inject DefaultServiceConfigurationDiscoveryService, optionally via interface
-      // Provide factory method for DefaultServiceLocator that depends on DefaultServiceConfigurationDiscoveryService.Create(). Mainly used in re-motion unittests.
+      _serviceConfigurationDiscoveryService = serviceConfigurationDiscoveryService;
     }
 
     /// <summary>

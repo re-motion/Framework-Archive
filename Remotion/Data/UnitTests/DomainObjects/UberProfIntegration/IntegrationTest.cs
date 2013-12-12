@@ -35,7 +35,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.UberProfIntegration
     {
       base.SetUp();
 
-      var locator = new DefaultServiceLocator();
+      var locator = DefaultServiceLocator.Create();
       var factory = new LinqToSqlExtensionFactory();
       locator.Register (typeof (IClientTransactionExtensionFactory), () => factory);
       locator.Register (typeof (IPersistenceExtensionFactory), () => factory);

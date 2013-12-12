@@ -43,7 +43,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Queries
           .Stub (stub => stub.CreatePersistenceExtensions (TestableClientTransaction.ID))
           .Return (new[] { _persistenceExtensionMock });
 
-      var locator = new DefaultServiceLocator();
+      var locator = DefaultServiceLocator.Create();
       locator.Register (typeof (IPersistenceExtensionFactory), () => persistenceExtensionFactoryStub);
       _serviceLocatorScope = new ServiceLocatorScope (locator);
     }
