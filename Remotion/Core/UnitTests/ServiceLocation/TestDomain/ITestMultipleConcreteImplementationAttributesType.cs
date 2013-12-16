@@ -18,7 +18,6 @@ using Remotion.ServiceLocation;
 
 namespace Remotion.UnitTests.ServiceLocation.TestDomain
 {
- [ConcreteImplementation (typeof (TestMultipleConcreteImplementationAttributesType2), Lifetime = LifetimeKind.Instance, Position = 1)]
  public interface ITestMultipleConcreteImplementationAttributesType
   { 
   }
@@ -27,6 +26,7 @@ namespace Remotion.UnitTests.ServiceLocation.TestDomain
   {
   }
 
+  [InterfaceConcreteImplementation (typeof (ITestMultipleConcreteImplementationAttributesType), Lifetime = LifetimeKind.Instance, Position = 1)]
   public class TestMultipleConcreteImplementationAttributesType2 : ITestMultipleConcreteImplementationAttributesType
   {
   }
