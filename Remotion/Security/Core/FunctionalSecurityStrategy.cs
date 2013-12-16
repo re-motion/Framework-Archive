@@ -24,7 +24,7 @@ using Remotion.Utilities;
 
 namespace Remotion.Security
 {
-  [InterfaceConcreteImplementation (typeof (IFunctionalSecurityStrategy), Lifetime = LifetimeKind.Singleton)]
+  [ConcreteImplementation (typeof (IFunctionalSecurityStrategy), Lifetime = LifetimeKind.Singleton)]
   public class FunctionalSecurityStrategy : IFunctionalSecurityStrategy
   {
     private static IGlobalAccessTypeCache GetGlobalAccessTypeCache ()

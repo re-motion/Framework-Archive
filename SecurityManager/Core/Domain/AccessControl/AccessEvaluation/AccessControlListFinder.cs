@@ -27,7 +27,7 @@ using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
 {
-  [InterfaceConcreteImplementation (typeof (IAccessControlListFinder), Lifetime = LifetimeKind.Singleton)]
+  [ConcreteImplementation (typeof (IAccessControlListFinder), Lifetime = LifetimeKind.Singleton)]
   public class AccessControlListFinder : IAccessControlListFinder
   {
     private readonly ISecurityContextRepository _securityContextRepository;

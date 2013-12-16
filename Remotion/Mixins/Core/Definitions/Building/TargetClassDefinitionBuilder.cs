@@ -29,7 +29,7 @@ namespace Remotion.Mixins.Definitions.Building
   /// <summary>
   /// Builds <see cref="TargetClassDefinition"/> objects containing all metadata required for code generation from a <see cref="ClassContext"/>.
   /// </summary>
-  [InterfaceConcreteImplementation (typeof (ITargetClassDefinitionBuilder), Lifetime = LifetimeKind.Singleton)]
+  [ConcreteImplementation (typeof (ITargetClassDefinitionBuilder), Lifetime = LifetimeKind.Singleton)]
   public class TargetClassDefinitionBuilder : ITargetClassDefinitionBuilder
   {
     private readonly IMixinDefinitionSorter _mixinSorter;

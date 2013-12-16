@@ -30,7 +30,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
   /// A TypePipe <see cref="IParticipant"/> that specifies the code generation needs necessary for re-mix.
   /// </summary>
   /// <threadsafety static="true" instance="true"/>
-  [InterfaceConcreteImplementation (typeof (IParticipant), Position = 1)]
+  [ConcreteImplementation (typeof (IParticipant), Position = 1)]
   public class MixinParticipant : IParticipant
   {
     private readonly IConfigurationProvider _configurationProvider;

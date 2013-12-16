@@ -28,7 +28,7 @@ namespace Remotion.Web.UI.Controls.DatePickerButtonImplementation.Rendering
   /// Responsible for rendering a <see cref="DatePickerButton"/> control in standard mode.
   /// <seealso cref="IDatePickerButton"/>
   /// </summary>
-  [InterfaceConcreteImplementation (typeof (IDatePickerButtonRenderer), Lifetime = LifetimeKind.Singleton)]
+  [ConcreteImplementation (typeof (IDatePickerButtonRenderer), Lifetime = LifetimeKind.Singleton)]
   public class DatePickerButtonRenderer : RendererBase<IDatePickerButton>, IDatePickerButtonRenderer
   {
     public DatePickerButtonRenderer (IResourceUrlFactory resourceUrlFactory, ICompoundGlobalizationService globalizationService)

@@ -19,7 +19,7 @@ using Remotion.ServiceLocation;
 
 namespace Remotion.Mixins.UnitTests.Core.Utilities.Singleton.TestDomain
 {
-  [InterfaceConcreteImplementation (typeof (IInterfaceWithConcreteImplementation))]
+  [ConcreteImplementation (typeof (IInterfaceWithConcreteImplementation))]
   public class ConcreteImplementationOfInterface : IInterfaceWithConcreteImplementation
   {
   }

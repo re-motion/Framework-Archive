@@ -22,6 +22,7 @@ using System.Reflection;
 using JetBrains.Annotations;
 using Microsoft.Practices.ServiceLocation;
 using Remotion.Collections;
+using Remotion.Logging;
 using Remotion.Utilities;
 
 namespace Remotion.ServiceLocation
@@ -84,6 +85,7 @@ namespace Remotion.ServiceLocation
     private DefaultServiceLocator (IServiceConfigurationDiscoveryService serviceConfigurationDiscoveryService)
     {
       _serviceConfigurationDiscoveryService = serviceConfigurationDiscoveryService;
+      Register (typeof(ILogManager), typeof(Log4NetLogManager), LifetimeKind.Singleton);
     }
 
     /// <summary>

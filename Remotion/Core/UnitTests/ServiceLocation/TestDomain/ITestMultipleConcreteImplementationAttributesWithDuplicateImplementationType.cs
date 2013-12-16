@@ -22,7 +22,7 @@ namespace Remotion.UnitTests.ServiceLocation.TestDomain
   { 
   }
 
-  [InterfaceConcreteImplementation (typeof (ITestMultipleConcreteImplementationAttributesWithDuplicateImplementationType))]
+  [ConcreteImplementation (typeof (ITestMultipleConcreteImplementationAttributesWithDuplicateImplementationType))]
   public class TestMultipleConcreteImplementationAttributesWithDuplicateImplementationType
       : ITestMultipleConcreteImplementationAttributesWithDuplicateImplementationType
   {

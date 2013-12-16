@@ -30,7 +30,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
   /// Responsible for rendering <see cref="BocCheckBox"/> controls.
   /// <seealso cref="IBocCheckBox"/>
   /// </summary>
-  [InterfaceConcreteImplementation (typeof (IBocCheckBoxRenderer), Lifetime = LifetimeKind.Singleton)]
+  [ConcreteImplementation (typeof (IBocCheckBoxRenderer), Lifetime = LifetimeKind.Singleton)]
   public class BocCheckBoxRenderer : BocBooleanValueRendererBase<IBocCheckBox>, IBocCheckBoxRenderer
   {
     private const string c_trueIcon = "CheckBoxTrue.gif";

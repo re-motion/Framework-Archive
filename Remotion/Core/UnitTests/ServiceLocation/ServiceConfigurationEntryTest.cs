@@ -171,40 +171,6 @@ namespace Remotion.UnitTests.ServiceLocation
     }
 
     [Test]
-    public void CreateFromAttributes_IgnoreIfNotFoundFalse_InvalidAssembly ()
-    {
-      var attribute = new ConcreteImplementationAttribute ("DoesNotMatter, InvalidAssembly", ignoreIfNotFound: false);
-      Assert.That (() => ServiceConfigurationEntry.CreateFromAttributes (typeof (object), new[] { attribute }), Throws.TypeOf<FileNotFoundException>());
-    }
-
-    [Test]
-    public void CreateFromAttributes_IgnoreIfNotFoundTrue_InvalidAssembly ()
-    {
-      var attribute = new ConcreteImplementationAttribute ("DoesNotMatter, InvalidAssembly", ignoreIfNotFound: true);
-
-      var entry = ServiceConfigurationEntry.CreateFromAttributes (typeof (object), new[] { attribute });
-
-      Assert.That (entry.ImplementationInfos, Is.Empty);
-    }
-
-    [Test]
-    public void CreateFromAttributes_IgnoreIfNotFoundFalse_InvalidType ()
-    {
-      var attribute = new ConcreteImplementationAttribute ("IDoNotExist, mscorlib", ignoreIfNotFound: false);
-      Assert.That (() => ServiceConfigurationEntry.CreateFromAttributes (typeof (object), new[] { attribute }), Throws.TypeOf<TypeLoadException> ());
-    }
-
-    [Test]
-    public void CreateFromAttributes_IgnoreIfNotFoundTrue_InvalidType ()
-    {
-      var attribute = new ConcreteImplementationAttribute ("IDoNotExist, mscorlib", ignoreIfNotFound: true);
-
-      var entry = ServiceConfigurationEntry.CreateFromAttributes (typeof (object), new[] { attribute });
-
-      Assert.That (entry.ImplementationInfos, Is.Empty);
-    }
-
-    [Test]
     public void CreateFromAttributes_IncompatibleType ()
     {
       var attribute = new ConcreteImplementationAttribute (typeof (object));

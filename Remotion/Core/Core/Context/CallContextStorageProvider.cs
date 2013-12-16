@@ -24,7 +24,7 @@ namespace Remotion.Context
   /// <summary>
   /// Implements <see cref="ISafeContextStorageProvider"/> by storing data in the thread-local <see cref="CallContext"/>.
   /// </summary>
-  [InterfaceConcreteImplementation (typeof (ISafeContextStorageProvider), Position = 1)]
+  [ConcreteImplementation (typeof (ISafeContextStorageProvider), Position = 1)]
   public class CallContextStorageProvider : ISafeContextStorageProvider
   {
     public object GetData (string key)

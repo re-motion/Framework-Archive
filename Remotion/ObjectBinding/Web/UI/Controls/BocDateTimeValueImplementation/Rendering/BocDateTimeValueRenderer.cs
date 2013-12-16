@@ -27,7 +27,7 @@ using Remotion.Web.UI.Controls.Rendering;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.Rendering
 {
-  [InterfaceConcreteImplementation (typeof (IBocDateTimeValueRenderer), Lifetime = LifetimeKind.Singleton)]
+  [ConcreteImplementation (typeof (IBocDateTimeValueRenderer), Lifetime = LifetimeKind.Singleton)]
   public class BocDateTimeValueRenderer : BocRendererBase<IBocDateTimeValue>, IBocDateTimeValueRenderer
   {
     public enum DateTimeValuePart

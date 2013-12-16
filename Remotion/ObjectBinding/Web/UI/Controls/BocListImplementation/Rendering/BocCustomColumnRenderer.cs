@@ -28,7 +28,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
   /// <summary>
   /// Responsible for rendering table cells of <see cref="BocCustomColumnDefinition"/> columns.
   /// </summary>
-  [InterfaceConcreteImplementation (typeof (IBocCustomColumnRenderer), Lifetime = LifetimeKind.Singleton)]
+  [ConcreteImplementation (typeof (IBocCustomColumnRenderer), Lifetime = LifetimeKind.Singleton)]
   public class BocCustomColumnRenderer : BocColumnRendererBase<BocCustomColumnDefinition>, IBocCustomColumnRenderer
   {
     /// <summary>

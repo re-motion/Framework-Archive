@@ -38,7 +38,20 @@ namespace Remotion.Reflection.TypeDiscovery
   /// </summary>
   public class AssemblyFinderTypeDiscoveryService : ITypeDiscoveryService
   {
-    private static readonly ILog s_log = LogManager.GetLogger (typeof (AssemblyFinderTypeDiscoveryService));
+    // This class holds lazy, readonly static fields. It relies on the fact that the .NET runtime will reliably initialize fields in a nested static
+    // class with a static constructor as lazily as possible on first access of the static field.
+    // Singleton implementations with nested classes are documented here: http://csharpindepth.com/Articles/General/Singleton.aspx.
+    static class LazyStaticFields
+    {
+      public static readonly ILog s_log = LogManager.GetLogger (typeof (AssemblyFinderTypeDiscoveryService));
+
+      // ReSharper disable EmptyConstructor
+      // Explicit static constructor to tell C# compiler not to mark type as beforefieldinit; this will make the static fields as lazy as possible.
+      static LazyStaticFields ()
+      {
+      }
+      // ReSharper restore EmptyConstructor
+    }
 
     private readonly IAssemblyFinder _assemblyFinder;
 
@@ -73,13 +86,13 @@ namespace Remotion.Reflection.TypeDiscovery
     /// </returns>
     public ICollection GetTypes (Type baseType, bool excludeGlobalTypes)
     {
-      using (StopwatchScope.CreateScope (s_log, LogLevel.Debug, "Time needed to discover types: {elapsed}."))
+      using (StopwatchScope.CreateScope (LazyStaticFields.s_log, LogLevel.Debug, "Time needed to discover types: {elapsed}."))
       {
         var types = new List<Type>();
         foreach (var assembly in GetAssemblies (excludeGlobalTypes))
           types.AddRange (GetTypes (assembly, baseType));
 
-        return types.LogAndReturn (s_log, LogLevel.Debug, typeList => string.Format ("Discovered {0} types.", typeList.Count));
+        return types.LogAndReturn (LazyStaticFields.s_log, LogLevel.Debug, typeList => string.Format ("Discovered {0} types.", typeList.Count));
       }
     }
 

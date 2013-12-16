@@ -25,7 +25,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
   /// <summary>
   /// Responsible for rendering the index column of a <see cref="IBocList"/>.
   /// </summary>
-  [InterfaceConcreteImplementation (typeof (IBocIndexColumnRenderer), Lifetime = LifetimeKind.Singleton)]
+  [ConcreteImplementation (typeof (IBocIndexColumnRenderer), Lifetime = LifetimeKind.Singleton)]
   public class BocIndexColumnRenderer : IBocIndexColumnRenderer
   {
     private readonly BocListCssClassDefinition _cssClasses;

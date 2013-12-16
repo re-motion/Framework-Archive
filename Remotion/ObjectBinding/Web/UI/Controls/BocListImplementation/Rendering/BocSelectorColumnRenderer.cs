@@ -26,7 +26,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
   /// <summary>
   /// Responsible for rendering the cells containing the row selector controls.
   /// </summary>
-  [InterfaceConcreteImplementation (typeof (IBocSelectorColumnRenderer), Lifetime = LifetimeKind.Singleton)]
+  [ConcreteImplementation (typeof (IBocSelectorColumnRenderer), Lifetime = LifetimeKind.Singleton)]
   public class BocSelectorColumnRenderer : IBocSelectorColumnRenderer
   {
     private const string c_whiteSpace = "&nbsp;";

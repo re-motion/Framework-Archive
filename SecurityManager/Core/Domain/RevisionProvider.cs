@@ -25,7 +25,7 @@ namespace Remotion.SecurityManager.Domain
   /// Cache-based implementation of the <see cref="IRevisionProvider{TKey, TValue}"/> interface.
   /// </summary>
   /// <threadsafety static="true" instance="true"/>
-  [InterfaceConcreteImplementation (typeof (IDomainRevisionProvider), Lifetime = LifetimeKind.Singleton)]
+  [ConcreteImplementation (typeof (IDomainRevisionProvider), Lifetime = LifetimeKind.Singleton)]
   public class RevisionProvider : RevisionProviderBase<RevisionKey>, IDomainRevisionProvider
   {
     public RevisionProvider ()

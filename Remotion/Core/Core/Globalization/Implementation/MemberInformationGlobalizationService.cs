@@ -25,7 +25,7 @@ namespace Remotion.Globalization.Implementation
   /// <summary>
   /// Retrieving the human-readable localized representation of reflection objects.
   /// </summary>
-  [InterfaceConcreteImplementation (typeof (IMemberInformationGlobalizationService), Lifetime = LifetimeKind.Singleton)]
+  [ConcreteImplementation (typeof (IMemberInformationGlobalizationService), Lifetime = LifetimeKind.Singleton)]
   public class MemberInformationGlobalizationService : IMemberInformationGlobalizationService
   {
     private readonly IGlobalizationService _globalizationService;

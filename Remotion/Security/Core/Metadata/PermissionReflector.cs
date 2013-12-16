@@ -27,7 +27,7 @@ namespace Remotion.Security.Metadata
   /// <summary>
   /// Implements the <see cref="IPermissionProvider"/> for a reflection-based security declaration.
   /// </summary>
-  [InterfaceConcreteImplementation (typeof (IPermissionProvider), Lifetime = LifetimeKind.Singleton)]
+  [ConcreteImplementation (typeof (IPermissionProvider), Lifetime = LifetimeKind.Singleton)]
   public class PermissionReflector : IPermissionProvider
   {
     private struct CacheKey : IEquatable<CacheKey>

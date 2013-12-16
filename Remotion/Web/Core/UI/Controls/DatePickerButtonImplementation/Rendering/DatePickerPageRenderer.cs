@@ -20,7 +20,7 @@ using Remotion.Utilities;
 
 namespace Remotion.Web.UI.Controls.DatePickerButtonImplementation.Rendering
 {
-  [InterfaceConcreteImplementation (typeof (IDatePickerPageRenderer), Lifetime = LifetimeKind.Singleton)]
+  [ConcreteImplementation (typeof (IDatePickerPageRenderer), Lifetime = LifetimeKind.Singleton)]
   public class DatePickerPageRenderer : IDatePickerPageRenderer
   {
     private readonly IResourceUrlFactory _resourceUrlFactory;

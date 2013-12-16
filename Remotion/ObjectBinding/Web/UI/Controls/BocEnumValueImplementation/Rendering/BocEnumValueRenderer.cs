@@ -31,7 +31,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Rend
   /// Responsible for rendering <see cref="BocEnumValue"/> controls.
   /// <seealso cref="IBocEnumValue"/>
   /// </summary>
-  [InterfaceConcreteImplementation (typeof (IBocEnumValueRenderer), Lifetime = LifetimeKind.Singleton)]
+  [ConcreteImplementation (typeof (IBocEnumValueRenderer), Lifetime = LifetimeKind.Singleton)]
   public class BocEnumValueRenderer : BocRendererBase<IBocEnumValue>, IBocEnumValueRenderer
   {
     /// <summary> The text displayed when control is displayed in desinger, is read-only, and has no contents. </summary>

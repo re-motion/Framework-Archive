@@ -35,7 +35,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
   /// <para>During edit mode, the control is displayed using a <see cref="System.Web.UI.WebControls.DropDownList"/>.</para>
   /// <para>During read-only mode, the control's value is displayed using a <see cref="System.Web.UI.WebControls.Label"/>.</para>
   /// </remarks>
-  [InterfaceConcreteImplementation (typeof (IBocReferenceValueRenderer), Lifetime = LifetimeKind.Singleton)]
+  [ConcreteImplementation (typeof (IBocReferenceValueRenderer), Lifetime = LifetimeKind.Singleton)]
   public class BocReferenceValueRenderer : BocReferenceValueRendererBase<IBocReferenceValue>, IBocReferenceValueRenderer
   {
     /// <summary> A list of control specific resources. </summary>

@@ -22,7 +22,7 @@ using Remotion.Utilities;
 
 namespace Remotion.Web.Context
 {
-  [InterfaceConcreteImplementation (typeof (ISafeContextStorageProvider), Position = 0)]
+  [ConcreteImplementation (typeof (ISafeContextStorageProvider), Position = 0)]
   public class HttpContextStorageProvider : ISafeContextStorageProvider
   {
     private readonly CallContextStorageProvider _fallbackProvider = new CallContextStorageProvider ();

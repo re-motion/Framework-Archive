@@ -24,7 +24,7 @@ using Remotion.Utilities;
 
 namespace Remotion.Security.Metadata
 {
-  [InterfaceConcreteImplementation (typeof (IMemberResolver), Lifetime = LifetimeKind.Singleton)]
+  [ConcreteImplementation (typeof (IMemberResolver), Lifetime = LifetimeKind.Singleton)]
   public class ReflectionBasedMemberResolver : IMemberResolver
   {
     private class CacheKey : IEquatable<CacheKey>

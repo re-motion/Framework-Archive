@@ -26,7 +26,8 @@ namespace Remotion.ServiceLocation
   /// </summary>
   // TODO RM-5506: Possibly find a new/better name
   // TODO RM-5506: Drop support for typename as string from entire ServiceLocation infrastructure after inverting the dependencies.
-  [AttributeUsage(AttributeTargets.Interface, AllowMultiple = true, Inherited = false)]
+
+  [AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = false)]
   public class ConcreteImplementationAttribute : Attribute
   {
     private readonly string _interfaceNameTemplate;
@@ -41,6 +42,7 @@ namespace Remotion.ServiceLocation
     /// placeholders.</param>
     /// <param name="ignoreIfNotFound">A boolean indicating whether the attribute should be ignored if the implementation type can not be loaded.
     /// The default is <see langword="false" />.</param>
+    [Obsolete()]
     public ConcreteImplementationAttribute (string interfaceNameTemplate, bool ignoreIfNotFound = false)
     {
       _interfaceNameTemplate = ArgumentUtility.CheckNotNull ("interfaceNameTemplate", interfaceNameTemplate);
@@ -53,76 +55,6 @@ namespace Remotion.ServiceLocation
     /// </summary>
     /// <param name="interfaceType">The type representing the concrete implementation for the service type.</param>
     public ConcreteImplementationAttribute (Type interfaceType)
-    {
-      ArgumentUtility.CheckNotNull ("interfaceType", interfaceType);
-
-      _interfaceNameTemplate = interfaceType.AssemblyQualifiedName;
-      Lifetime = LifetimeKind.Instance;
-    }
-
-    /// <summary>
-    /// Gets the type name template for the concrete implementation type. The template can contain placeholders and can be resolved using the
-    /// <see cref="TypeNameTemplateResolver"/> class.
-    /// </summary>
-    /// <value>The type name template.</value>
-    public string InterfaceNameTemplate
-    {
-      get { return _interfaceNameTemplate; }
-    }
-
-    /// <summary>
-    /// Gets a boolean indicating whether the attribute should be ignored if the implementation type can not be loaded.
-    /// </summary>
-    /// <value>A boolean indicating whether the attribute should be ignored if the implementation type can not be loaded.</value>
-    public bool IgnoreIfNotFound
-    {
-      get { return _ignoreIfNotFound; }
-    }
-
-    /// <summary>
-    /// Gets or sets the lifetime of instances of the concrete implementation type. The lifetime is used by service locators to control when to reuse 
-    /// instances of the concrete implementation type and when to create new ones. The default value is <see cref="LifetimeKind.Instance"/>.
-    /// </summary>
-    /// <value>The lifetime of instances of the concrete implementation type.</value>
-    public LifetimeKind Lifetime { get; set; }
-
-    /// <summary>
-    /// Gets the position of the concrete implementation in the list of all concrete implementations for the respective service type. The position
-    /// does not denote the exact index; instead, it only influences the relative ordering of this implementation with respect to the other
-    /// implementations.
-    /// </summary>
-    /// <value>The position of the concrete implementation in the list of all concrete implementations.</value>
-    public int Position  { get; set; }
-  }
-
-  [AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = false)]
-  public class InterfaceConcreteImplementationAttribute : Attribute
-  {
-    private readonly string _interfaceNameTemplate;
-    private readonly bool _ignoreIfNotFound;
-
-    /// <summary>
-    /// Defines a concrete implementation for a service type by means of a type name template. The template can contain placeholders such as
-    /// "&lt;version&gt;" and "&lt;publicKeyToken&gt;" that are replaced with the version and public key token of the re-motion assemblies when
-    /// the type is resolved. See <see cref="TypeNameTemplateResolver"/> for details.
-    /// </summary>
-    /// <param name="interfaceNameTemplate">A type name indicating the concrete implementation for the service type, optionally containing
-    /// placeholders.</param>
-    /// <param name="ignoreIfNotFound">A boolean indicating whether the attribute should be ignored if the implementation type can not be loaded.
-    /// The default is <see langword="false" />.</param>
-    [Obsolete()]
-    public InterfaceConcreteImplementationAttribute (string interfaceNameTemplate, bool ignoreIfNotFound = false)
-    {
-      _interfaceNameTemplate = ArgumentUtility.CheckNotNull ("interfaceNameTemplate", interfaceNameTemplate);
-      _ignoreIfNotFound = ignoreIfNotFound;
-      Lifetime = LifetimeKind.Instance;
-    }
-
-    /// <summary>
-    /// Defines a concrete implementation for a service type.
-    /// </summary>
-    /// <param name="interfaceType">The type representing the concrete implementation for the service type.</param>
-    public InterfaceConcreteImplementationAttribute (Type interfaceType)
     {
       ArgumentUtility.CheckNotNull ("interfaceType", interfaceType);
 

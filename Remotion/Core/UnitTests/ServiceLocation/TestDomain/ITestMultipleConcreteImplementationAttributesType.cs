@@ -26,7 +26,7 @@ namespace Remotion.UnitTests.ServiceLocation.TestDomain
   {
   }
 
-  [InterfaceConcreteImplementation (typeof (ITestMultipleConcreteImplementationAttributesType), Lifetime = LifetimeKind.Instance, Position = 1)]
+  [ConcreteImplementation (typeof (ITestMultipleConcreteImplementationAttributesType), Lifetime = LifetimeKind.Instance, Position = 1)]
   public class TestMultipleConcreteImplementationAttributesType2 : ITestMultipleConcreteImplementationAttributesType
   {
   }

@@ -27,7 +27,7 @@ namespace Remotion.Web.Resources
   /// <seealso cref="ResourceUrl"/>
   /// <seealso cref="ThemedResourceUrl"/>
   /// <seealso cref="T:Remotion.Development.Web.UnitTesting.Resources.FakeResourceUrlFactory"/>
-  [InterfaceConcreteImplementation (typeof (IResourceUrlFactory), Lifetime = LifetimeKind.Singleton)]
+  [ConcreteImplementation (typeof (IResourceUrlFactory), Lifetime = LifetimeKind.Singleton)]
   public class ResourceUrlFactory : IResourceUrlFactory
   {
     private readonly IResourcePathBuilder _builder;
