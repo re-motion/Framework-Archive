@@ -20,8 +20,7 @@ using Remotion.ServiceLocation;
 
 namespace Remotion.Reflection
 {
-  [ConcreteImplementation (typeof (ReflectionBasedMemberInformationNameResolver), Lifetime = LifetimeKind.Singleton)]
-  public interface IMemberInformationNameResolver
+ public interface IMemberInformationNameResolver
   {
     /// <summary>
     /// Returns the mapping name for the given <paramref name="propertyInformation"/>.

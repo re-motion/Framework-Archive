@@ -23,6 +23,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using Remotion.Globalization;
 using Remotion.Reflection.TypeDiscovery;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 
 namespace Remotion.ExtensibleEnums.Infrastructure
@@ -31,6 +32,7 @@ namespace Remotion.ExtensibleEnums.Infrastructure
   /// Implements <see cref="IExtensibleEnumValueDiscoveryService"/> by discovering and invoking extension methods defining extensible enum values
   /// via reflection and <see cref="ITypeDiscoveryService"/>.
   /// </summary>
+  [InterfaceConcreteImplementation (typeof (IExtensibleEnumValueDiscoveryService), Lifetime = LifetimeKind.Instance)]
   public class ExtensibleEnumValueDiscoveryService : IExtensibleEnumValueDiscoveryService
   {
     private readonly IGlobalizationService _globalizationService;

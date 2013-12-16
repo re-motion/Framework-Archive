@@ -30,8 +30,7 @@ namespace Remotion.Globalization
       "Remotion.Mixins.Globalization.MixinGlobalizationService, Remotion.Mixins, Version=<version>, Culture=neutral, PublicKeyToken=<publicKeyToken>",
       ignoreIfNotFound: true,
       Position = 1, Lifetime = LifetimeKind.Singleton)]
-  [ConcreteImplementation (typeof (GlobalizationService), Position = 0, Lifetime = LifetimeKind.Singleton)]
-  public interface IGlobalizationService
+ public interface IGlobalizationService
   {
     /// <summary>
     /// Resolves the <see cref="IResourceManager"/> for the specified <paramref name="typeInformation"/>.

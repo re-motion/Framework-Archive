@@ -1,4 +1,4 @@
-﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
+// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -17,6 +17,7 @@
 
 using System;
 using Remotion.Reflection;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 
 namespace Remotion.Globalization.Implementation
@@ -24,6 +25,7 @@ namespace Remotion.Globalization.Implementation
   /// <summary>
   /// Retrieving the human-readable localized representation of reflection objects.
   /// </summary>
+  [InterfaceConcreteImplementation (typeof (IMemberInformationGlobalizationService), Lifetime = LifetimeKind.Singleton)]
   public class MemberInformationGlobalizationService : IMemberInformationGlobalizationService
   {
     private readonly IGlobalizationService _globalizationService;

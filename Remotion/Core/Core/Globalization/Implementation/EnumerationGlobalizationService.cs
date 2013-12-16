@@ -1,4 +1,4 @@
-﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
+// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -16,6 +16,7 @@
 // 
 
 using System;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 
 namespace Remotion.Globalization.Implementation
@@ -23,6 +24,7 @@ namespace Remotion.Globalization.Implementation
   /// <summary>
   /// Retrieving the human-readable localized representation of enumeration objects.
   /// </summary>
+  [InterfaceConcreteImplementation (typeof (IEnumerationGlobalizationService), Lifetime = LifetimeKind.Singleton)]
   public class EnumerationGlobalizationService : IEnumerationGlobalizationService
   {
     public string GetEnumerationValueDisplayName (Enum value)

@@ -29,8 +29,7 @@ using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.Persistence
 {
-  [ConcreteImplementation (typeof (SecurityManagerSqlStorageObjectFactory))]
-  public class SecurityManagerSqlStorageObjectFactory : SqlStorageObjectFactory
+ public class SecurityManagerSqlStorageObjectFactory : SqlStorageObjectFactory
   {
     protected override StorageProvider CreateStorageProvider (
         IPersistenceExtension persistenceExtension,

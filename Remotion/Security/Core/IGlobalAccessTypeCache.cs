@@ -32,8 +32,7 @@ namespace Remotion.Security
       ignoreIfNotFound: true,
       Position = 0,
       Lifetime = LifetimeKind.Singleton)]
-  [ConcreteImplementation (typeof (NullGlobalAccessTypeCache), Position = 1, Lifetime = LifetimeKind.Singleton)]
-  public interface IGlobalAccessTypeCache : ICache<GlobalAccessTypeCacheKey, AccessType[]>
+ public interface IGlobalAccessTypeCache : ICache<GlobalAccessTypeCacheKey, AccessType[]>
   {
   }
 }

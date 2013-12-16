@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Web.UI;
 using Remotion.Globalization;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web;
 using Remotion.Web.UI.Controls;
@@ -29,6 +30,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
   /// Responsible for rendering the navigation block of a <see cref="BocList"/>.
   /// </summary>
   /// <remarks>This class should not be instantiated directly. It is meant to be used by a <see cref="BocListRenderer"/>.</remarks>
+  [InterfaceConcreteImplementation (typeof (IBocListNavigationBlockRenderer), Lifetime = LifetimeKind.Singleton)]
   public class BocListNavigationBlockRenderer : RendererBase<BocList>, IBocListNavigationBlockRenderer
   {
     /// <summary> A list of control specific resources. </summary>

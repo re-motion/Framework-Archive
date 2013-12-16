@@ -19,6 +19,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.Globalization;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 
 namespace Remotion.Web.UI.Controls.DatePickerButtonImplementation.Rendering
@@ -27,6 +28,7 @@ namespace Remotion.Web.UI.Controls.DatePickerButtonImplementation.Rendering
   /// Responsible for rendering a <see cref="DatePickerButton"/> control in standard mode.
   /// <seealso cref="IDatePickerButton"/>
   /// </summary>
+  [InterfaceConcreteImplementation (typeof (IDatePickerButtonRenderer), Lifetime = LifetimeKind.Singleton)]
   public class DatePickerButtonRenderer : RendererBase<IDatePickerButton>, IDatePickerButtonRenderer
   {
     public DatePickerButtonRenderer (IResourceUrlFactory resourceUrlFactory, ICompoundGlobalizationService globalizationService)

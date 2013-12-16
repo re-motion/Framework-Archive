@@ -65,7 +65,7 @@ namespace Remotion.ServiceLocation
     {
       try
       {
-        return TypeNameTemplateResolver.ResolveToType (attribute.TypeNameTemplate, referenceAssembly);
+        return TypeNameTemplateResolver.ResolveToType (attribute.InterfaceNameTemplate, referenceAssembly);
       }
       catch (FileNotFoundException) // Invalid assembly
       {

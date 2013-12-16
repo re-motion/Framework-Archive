@@ -16,12 +16,14 @@
 // 
 using System;
 using System.Collections.Generic;
+using Remotion.ServiceLocation;
 
 namespace Remotion.Mixins.Definitions.Building.DependencySorting
 {
   // TODO 5179: Remove.
   // groups mixins based on dependencies and common overridden methods
   [Obsolete ("This class will been removed. Use MixinDefinitionSorter instead. (1.13.175.0)")]
+  [InterfaceConcreteImplementation (typeof (IDependentMixinGrouper), Lifetime = LifetimeKind.Singleton)]
   public class DependentMixinGrouper : IDependentMixinGrouper
   {
     public IEnumerable<HashSet<MixinDefinition>> GroupMixins (IEnumerable<MixinDefinition> mixins)

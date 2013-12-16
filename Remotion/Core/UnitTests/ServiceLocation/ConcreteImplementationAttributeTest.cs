@@ -29,7 +29,7 @@ namespace Remotion.UnitTests.ServiceLocation
       
       var attribute = new ConcreteImplementationAttribute (typeNameTemplate);
       
-      Assert.That (attribute.TypeNameTemplate, Is.SameAs (typeNameTemplate));
+      Assert.That (attribute.InterfaceNameTemplate, Is.SameAs (typeNameTemplate));
       Assert.That (attribute.Lifetime, Is.EqualTo (LifetimeKind.Instance));
       Assert.That (attribute.Position, Is.EqualTo (0));
       Assert.That (attribute.IgnoreIfNotFound, Is.False);
@@ -42,7 +42,7 @@ namespace Remotion.UnitTests.ServiceLocation
 
       var attribute = new ConcreteImplementationAttribute (typeNameTemplate, ignoreIfNotFound: true);
 
-      Assert.That (attribute.TypeNameTemplate, Is.SameAs (typeNameTemplate));
+      Assert.That (attribute.InterfaceNameTemplate, Is.SameAs (typeNameTemplate));
       Assert.That (attribute.Lifetime, Is.EqualTo (LifetimeKind.Instance));
       Assert.That (attribute.Position, Is.EqualTo (0));
       Assert.That (attribute.IgnoreIfNotFound, Is.True);
@@ -52,7 +52,7 @@ namespace Remotion.UnitTests.ServiceLocation
     public void InitializationWithType ()
     {
       var attribute = new ConcreteImplementationAttribute (typeof (ConcreteImplementationAttributeTest));
-      Assert.That (attribute.TypeNameTemplate, Is.EqualTo (typeof (ConcreteImplementationAttributeTest).AssemblyQualifiedName));
+      Assert.That (attribute.InterfaceNameTemplate, Is.EqualTo (typeof (ConcreteImplementationAttributeTest).AssemblyQualifiedName));
     }
   }
 }

@@ -17,6 +17,7 @@
 using System;
 using System.Web;
 using Remotion.Globalization;
+using Remotion.ServiceLocation;
 
 namespace Remotion.Web.UI.Controls.WebTreeViewImplementation.Rendering
 {
@@ -24,6 +25,7 @@ namespace Remotion.Web.UI.Controls.WebTreeViewImplementation.Rendering
   /// Implements <see cref="IWebTreeViewRenderer"/> for standard mode rendering of <see cref="WebTreeView"/> controls.
   /// <seealso cref="IWebTreeView"/>
   /// </summary>
+  [InterfaceConcreteImplementation (typeof (IWebTreeViewRenderer), Lifetime = LifetimeKind.Singleton)]
   public class WebTreeViewRenderer : RendererBase<IWebTreeView>, IWebTreeViewRenderer
   {
     public WebTreeViewRenderer (IResourceUrlFactory resourceUrlFactory, ICompoundGlobalizationService globalizationService)

@@ -27,7 +27,6 @@ namespace Remotion.Context
       "Remotion.Web.Context.HttpContextStorageProvider, Remotion.Web, Version=<version>, Culture=neutral, PublicKeyToken=<publicKeyToken>", 
       ignoreIfNotFound: true, 
       Position = 0)]
-  [ConcreteImplementation (typeof (CallContextStorageProvider), Position = 1)]
   public interface ISafeContextStorageProvider
   {
     /// <summary>

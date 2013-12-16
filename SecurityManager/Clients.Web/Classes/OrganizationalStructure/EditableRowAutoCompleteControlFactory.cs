@@ -38,8 +38,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure
   /// The <see cref="EditableRowAutoCompleteControlFactory"/> instance is retrieved form the <see cref="IServiceLocator"/> using the type
   /// <see cref="EditableRowAutoCompleteControlFactory"/> as key.
   /// </remarks>
-  [ConcreteImplementation(typeof (EditableRowAutoCompleteControlFactory), Lifetime = LifetimeKind.Singleton)]
-  public class EditableRowAutoCompleteControlFactory : EditableRowControlFactory
+ public class EditableRowAutoCompleteControlFactory : EditableRowControlFactory
   {
     public EditableRowAutoCompleteControlFactory ()
     {

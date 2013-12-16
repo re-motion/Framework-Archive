@@ -38,8 +38,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure
   /// The <see cref="UserRolesListEditableRowControlFactory"/> instance is retrieved form the <see cref="IServiceLocator"/> using the type
   /// <see cref="UserRolesListEditableRowControlFactory"/> as key.
   /// </remarks>
-  [ConcreteImplementation (typeof (UserRolesListEditableRowControlFactory), Lifetime = LifetimeKind.Singleton)]
-  public class UserRolesListEditableRowControlFactory : EditableRowAutoCompleteControlFactory
+ public class UserRolesListEditableRowControlFactory : EditableRowAutoCompleteControlFactory
   {
     public UserRolesListEditableRowControlFactory ()
     {

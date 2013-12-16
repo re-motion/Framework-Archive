@@ -19,8 +19,7 @@ using Remotion.ServiceLocation;
 
 namespace Remotion.UnitTests.ServiceLocation.TestDomain
 {
-  [ConcreteImplementation (typeof (TestConcreteImplementationAttributeTypeThrowingExceptionInCtor), Lifetime = LifetimeKind.Instance)]
-  public interface ITestConcreteImplementationAttributeTypeThrowingExceptionInCtor
+ public interface ITestConcreteImplementationAttributeTypeThrowingExceptionInCtor
   {
   }
 

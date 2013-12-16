@@ -18,6 +18,7 @@
 using System;
 using System.Reflection;
 using Remotion.Collections;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 
 namespace Remotion.Reflection
@@ -25,6 +26,7 @@ namespace Remotion.Reflection
   /// <summary>
   /// Resolves <see cref="PropertyInfo"/> objects into property names and the other way around.
   /// </summary>
+  [InterfaceConcreteImplementation (typeof (IMemberInformationNameResolver), Lifetime = LifetimeKind.Singleton)]
   public class ReflectionBasedMemberInformationNameResolver : IMemberInformationNameResolver
   {
     private readonly LockingCacheDecorator<IPropertyInformation, string> s_propertyNameCache =

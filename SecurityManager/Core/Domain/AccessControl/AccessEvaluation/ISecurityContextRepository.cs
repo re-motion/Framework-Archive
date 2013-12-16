@@ -32,8 +32,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
   /// </summary>
   /// <seealso cref="SecurityContextRepository"/>
   /// <threadsafety static="true" instance="true"/>
-  [ConcreteImplementation (typeof (SecurityContextRepository), Lifetime = LifetimeKind.Singleton)]
-  public interface ISecurityContextRepository
+ public interface ISecurityContextRepository
   {
     [NotNull]
     IDomainObjectHandle<Tenant> GetTenant (string uniqueIdentifier);

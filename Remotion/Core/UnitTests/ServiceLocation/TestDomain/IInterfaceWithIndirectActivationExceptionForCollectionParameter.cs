@@ -21,8 +21,7 @@ using System.Linq;
 
 namespace Remotion.UnitTests.ServiceLocation.TestDomain
 {
-  [ConcreteImplementation (typeof (ClassWithIndirectActivationExceptionForCollectionParameter))]
-  public interface IInterfaceWithIndirectActivationExceptionForCollectionParameter
+ public interface IInterfaceWithIndirectActivationExceptionForCollectionParameter
   {
   }
 

@@ -23,6 +23,7 @@ using Remotion.Collections;
 using Remotion.Globalization;
 using Remotion.Globalization.Implementation;
 using Remotion.Reflection;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 
 namespace Remotion.Mixins.Globalization
@@ -30,6 +31,7 @@ namespace Remotion.Mixins.Globalization
   /// <summary>
   /// Retrieves and caches <see cref="IResourceManager"/>'s for mixin-types.
   /// </summary>
+  [InterfaceConcreteImplementation (typeof (IGlobalizationService), Position = 1, Lifetime = LifetimeKind.Singleton)]
   public class MixinGlobalizationService : IGlobalizationService
   {
     private volatile MixinConfiguration _mixinConfiguration;

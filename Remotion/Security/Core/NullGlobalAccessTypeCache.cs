@@ -16,11 +16,13 @@
 // 
 
 using System;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 
 namespace Remotion.Security
 {
   [Serializable]
+  [InterfaceConcreteImplementation (typeof (IGlobalAccessTypeCache), Position = 1, Lifetime = LifetimeKind.Singleton)]
   public class NullGlobalAccessTypeCache : IGlobalAccessTypeCache
   {
     public NullGlobalAccessTypeCache ()

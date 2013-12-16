@@ -20,6 +20,7 @@ using System.Text;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.Globalization;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web;
 using Remotion.Web.UI;
@@ -31,6 +32,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
   /// Responsible for rendering <see cref="BocBooleanValue"/> controls.
   /// <seealso cref="IBocBooleanValue"/>
   /// </summary>
+  [InterfaceConcreteImplementation (typeof (IBocBooleanValueRenderer), Lifetime = LifetimeKind.Singleton)]
   public class BocBooleanValueRenderer : BocBooleanValueRendererBase<IBocBooleanValue>, IBocBooleanValueRenderer
   {
     private readonly IBocBooleanValueResourceSetFactory _resourceSetFactory;

@@ -1,4 +1,4 @@
-﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
+// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -29,6 +29,7 @@ namespace Remotion.Globalization.Implementation
   /// Combines one or more <see cref="IGlobalizationService"/>-instances and 
   /// delegates to it to retrieve an <see cref="IResourceManager"/> for a specified type.
   /// </summary>
+  [InterfaceConcreteImplementation (typeof (ICompoundGlobalizationService), Lifetime = LifetimeKind.Singleton)]
   public class CompoundGlobalizationService : ICompoundGlobalizationService
   {
     private readonly IGlobalizationService[] _globalizationServices;

@@ -19,8 +19,7 @@ using Remotion.ServiceLocation;
 
 namespace Remotion.UnitTests.ServiceLocation.TestDomain
 {
-  [ConcreteImplementation (typeof (ClassWithIndirectActivationException))]
-  public interface IInterfaceWithIndirectActivationException
+ public interface IInterfaceWithIndirectActivationException
   {
   }
 

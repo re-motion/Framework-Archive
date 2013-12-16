@@ -30,5 +30,7 @@ namespace Remotion.ServiceLocation
     /// <returns>A <see cref="ServiceConfigurationEntry"/> for each type that has the <see cref="ConcreteImplementationAttribute"/> applied. 
     /// Types without the attribute are ignored.</returns>
     IEnumerable<ServiceConfigurationEntry> GetDefaultConfiguration (IEnumerable<Assembly> assemblies);
+
+    ServiceConfigurationEntry GetDefaultConfiguration (Type baseType);
   }
 }

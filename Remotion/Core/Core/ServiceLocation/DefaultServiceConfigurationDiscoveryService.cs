@@ -84,18 +84,7 @@ namespace Remotion.ServiceLocation
       ArgumentUtility.CheckNotNull ("types", types);
 
       foreach (var baseType in types)
-      {
-        var excludeGlobalTypes = !baseType.Assembly.GlobalAssemblyCache;
-        var derivedTypes = _typeDiscoveryService.GetTypes (baseType, excludeGlobalTypes);
-
-        foreach (Type type in derivedTypes)
-        {
-          var attributes = AttributeUtility.GetCustomAttributes<ConcreteImplementationAttribute> (type, false);
-          if (attributes.Any())
-            yield return CreateServiceConfigurationEntry (type, attributes);
-        }
-      }
-
+        yield return GetDefaultConfiguration (baseType);
 
       // TODO RM-5560: Refactor to ask for each type the derived types from TIypeDiscoverySerivce
       // determine flag excludeGlobalTypes on GetTypes by checking type.Assembly.GlobalAssemblyCache
@@ -107,6 +96,20 @@ namespace Remotion.ServiceLocation
       //        let concreteImplementationAttributes = AttributeUtility.GetCustomAttributes<ConcreteImplementationAttribute> (type, false)
       //        where concreteImplementationAttributes.Length != 0
       //        select CreateServiceConfigurationEntry (type, concreteImplementationAttributes));
+    }
+
+    public ServiceConfigurationEntry GetDefaultConfiguration (Type baseType)
+    {
+      var excludeGlobalTypes = !baseType.Assembly.GlobalAssemblyCache;
+      var derivedTypes = _typeDiscoveryService.GetTypes (baseType, excludeGlobalTypes);
+
+      // TODO RM-5506: caching 
+      var attributes = derivedTypes
+          .Cast<Type>()
+          .SelectMany (type => AttributeUtility.GetCustomAttributes<ConcreteImplementationAttribute> (type, false))
+          .ToArray();
+
+      return CreateServiceConfigurationEntry (baseType, attributes);
     }
 
     /// <summary>

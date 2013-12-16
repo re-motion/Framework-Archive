@@ -34,8 +34,6 @@ namespace Remotion.ServiceLocation
     {
       ArgumentUtility.CheckNotNull ("serviceConfigurationEntries", serviceConfigurationEntries);
 
-      //TODO RM-5506: either use  DefaultServiceLocator.Create() or use injected instance from ctor-parameter. If ctor-parameter, still provide a default ctor as well.
-
       var defaultServiceLocator = DefaultServiceLocator.Create();
       foreach (var serviceConfigurationEntry in serviceConfigurationEntries)
         defaultServiceLocator.Register (serviceConfigurationEntry);

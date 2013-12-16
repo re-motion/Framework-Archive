@@ -19,8 +19,7 @@ using Remotion.ServiceLocation;
 
 namespace Remotion.UnitTests.ServiceLocation.TestDomain
 {
-  [ConcreteImplementation (typeof(TestConstructorInjectionWithOneParameterWithSingletonLifetime))]
-  public interface ITestConstructorInjectionWithOneParameterWithSingletonLifetime
+ public interface ITestConstructorInjectionWithOneParameterWithSingletonLifetime
   {
   }
 

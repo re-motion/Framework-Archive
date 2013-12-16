@@ -1,4 +1,4 @@
-﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
+// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -30,8 +30,7 @@ using Remotion.ServiceLocation;
 
 namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Rdbms
 {
-  [ConcreteImplementation(typeof(InvalidRdbmsStorageObjectFactory))]
-  internal class InvalidRdbmsStorageObjectFactory : IStorageObjectFactory
+ internal class InvalidRdbmsStorageObjectFactory : IStorageObjectFactory
   {
     public InvalidRdbmsStorageObjectFactory ()
     {

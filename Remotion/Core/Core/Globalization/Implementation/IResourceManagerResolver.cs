@@ -24,8 +24,7 @@ namespace Remotion.Globalization.Implementation
   /// <summary>
   /// Defines the interface to resolve an <see cref="IResourceManager"/> to make a resource-lookup.
   /// </summary>
-  [ConcreteImplementation (typeof (ResourceManagerResolver), Lifetime = LifetimeKind.Singleton)]
-  public interface IResourceManagerResolver
+ public interface IResourceManagerResolver
   {
     /// <summary>
     /// Resolves the resource manager for a specified <see cref="Type"/>.

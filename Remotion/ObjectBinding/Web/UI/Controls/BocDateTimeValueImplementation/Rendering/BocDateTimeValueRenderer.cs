@@ -19,6 +19,7 @@ using System;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.Globalization;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web;
 using Remotion.Web.UI;
@@ -26,6 +27,7 @@ using Remotion.Web.UI.Controls.Rendering;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.Rendering
 {
+  [InterfaceConcreteImplementation (typeof (IBocDateTimeValueRenderer), Lifetime = LifetimeKind.Singleton)]
   public class BocDateTimeValueRenderer : BocRendererBase<IBocDateTimeValue>, IBocDateTimeValueRenderer
   {
     public enum DateTimeValuePart

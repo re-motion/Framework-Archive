@@ -352,13 +352,10 @@ namespace Remotion.ServiceLocation
 
     private IEnumerable<Func<object>> CreateInstanceFactories (Type serviceType)
     {
-      //TODO RM-5506: Refactor to use injected DefaultServiceConfigurationDiscoveryService
-
-      var attributes = AttributeUtility.GetCustomAttributes<ConcreteImplementationAttribute> (serviceType, false);
       ServiceConfigurationEntry entry;
       try
       {
-        entry = ServiceConfigurationEntry.CreateFromAttributes (serviceType, attributes);
+        entry = _serviceConfigurationDiscoveryService.GetDefaultConfiguration (serviceType);
       }
       catch (InvalidOperationException ex)
       {
