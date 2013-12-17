@@ -29,7 +29,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
   /// </summary>
   /// <seealso cref="SecurityPrincipalRepository"/>
   /// <threadsafety static="true" instance="true"/>
- public interface ISecurityPrincipalRepository
+  public interface ISecurityPrincipalRepository
   {
     [NotNull]
     User GetUser (string userName);
