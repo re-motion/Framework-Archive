@@ -170,6 +170,8 @@
     <Compile Include="Configuration\TypeDiscovery\IntegrationTests\SpecificRootAssemblies\SpecificRootAssembliesAreNotSubjectToApplicationFilterTest.cs" />
     <Compile Include="Context\SafeContextIntegrationTest.cs" />
     <Compile Include="Context\SafeContextTest.cs" />
+    <Compile Include="ExtensibleEnums\ExtensibleEnumExtensionsTest.cs" />
+    <Compile Include="Globalization\EnumFromResource.cs" />
     <Compile Include="Globalization\GlobalizationServiceExtensionsTest.cs" />
     <Compile Include="Globalization\ResourceManagerExtensionsTest.cs" />
     <Compile Include="ExtensibleEnums\Infrastructure\IExtensibleEnumValueDiscoveryServiceTest.cs" />
@@ -226,12 +228,15 @@
     <Compile Include="BridgeInterfaces\IAdapterRegistryImplementationTest.cs" />
     <Compile Include="BridgeInterfaces\IParamListCreateImplementationTest.cs" />
     <Compile Include="Globalization\MultiLingualResourcesTest.cs" />
-    <Compile Include="Globalization\Resources\ClassWithResources.Designer.cs">
+    <Compile Include="Globalization\TestDomain\ClassWithLongResourceIdentifier.cs" />
+    <Compile Include="Globalization\TestDomain\ClassWithProperties.cs" />
+    <Compile Include="Globalization\TestDomain\ClassWithShortResourceIdentifier.cs" />
+    <Compile Include="Globalization\TestDomain\Resources\ClassWithResources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ClassWithResources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Globalization\Resources\EnumWithResources.Designer.cs">
+    <Compile Include="Globalization\TestDomain\Resources\EnumWithResources.Designer.cs">
       <DependentUpon>EnumWithResources.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -339,12 +344,12 @@
     <Compile Include="Reflection\TypeDiscovery\AssemblyFinding\FilePatternRootAssemblyFinderTest.cs" />
     <Compile Include="Reflection\TypeDiscovery\AssemblyFinding\RegexAssemblyLoaderFilterTest.cs" />
     <Compile Include="Reflection\TypeDiscovery\AssemblyFinding\SearchPathRootAssemblyFinderTest.cs" />
-    <Compile Include="Resources\ColorExtensions.Designer.cs">
+    <Compile Include="ExtensibleEnums\TestDomain\Resources\ColorExtensions.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ColorExtensions.resx</DependentUpon>
     </Compile>
-    <Compile Include="Resources\LightColorExtensions.Designer.cs">
+    <Compile Include="ExtensibleEnums\TestDomain\Resources\LightColorExtensions.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>LightColorExtensions.resx</DependentUpon>
@@ -443,11 +448,15 @@
     <Compile Include="Logging\LogManagerTest.cs" />
     <Compile Include="Logging\LogMessages.cs" />
     <Compile Include="Logging\SampleType.cs" />
-    <EmbeddedResource Include="Globalization\Resources\ClassWithResources.resx">
+    <EmbeddedResource Include="Globalization\TestDomain\Resources\ClassWithResources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>ClassWithResources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Globalization\Resources\EnumWithResources.resx">
+    <EmbeddedResource Include="Globalization\TestDomain\Resources\EnumWithResources.de-AT.resx">
+      <LastGenOutput>EnumWithResources.de.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\TestDomain\Resources\EnumWithResources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>EnumWithResources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
@@ -456,11 +465,11 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>ExtensibleEnumWithResources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Resources\ColorExtensions.resx">
+    <EmbeddedResource Include="ExtensibleEnums\TestDomain\Resources\ColorExtensions.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>ColorExtensions.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Resources\LightColorExtensions.resx">
+    <EmbeddedResource Include="ExtensibleEnums\TestDomain\Resources\LightColorExtensions.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>LightColorExtensions.Designer.cs</LastGenOutput>
     </EmbeddedResource>
@@ -680,19 +689,6 @@
     <EmbeddedResource Include="Xml\SchemaLoaderBaseMock.xsd">
       <SubType>
       </SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\strings.en-US.resx">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\strings.resx">
-      <AutoGen>True</AutoGen>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\xy.en-US.resx">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\xy.resx">
-      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

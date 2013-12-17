@@ -17,19 +17,32 @@
 
 using System;
 using Remotion.Globalization;
+using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.ExtensibleEnums.Globalization
 {
   /// <summary>
-  /// Retrieving the human-readable localized representation of extensible-enumeration objects.
+  /// Default implementation for the <see cref="IExtensibleEnumerationGlobalizationService"/>.
   /// </summary>
-  public class ExtensibleEnumerationServiceGlobalizationService : IExtensibleEnumerationGlobalizationService
+  public sealed class ExtensibleEnumerationServiceGlobalizationService : IExtensibleEnumerationGlobalizationService
   {
+    private readonly IGlobalizationService _globalizationService;
+
+    public ExtensibleEnumerationServiceGlobalizationService (ICompoundGlobalizationService globalizationService)
+    {
+      ArgumentUtility.CheckNotNull ("globalizationService", globalizationService);
+
+      _globalizationService = globalizationService;
+    }
+
     public string GetExtensibleEnumerationValueDisplayName (IExtensibleEnum value)
     {
       ArgumentUtility.CheckNotNull ("value", value);
-      return value.GetLocalizedName ();
+
+      var resourceType = value.GetValueInfo().DefiningMethod.DeclaringType;
+      var resourceManager = _globalizationService.GetResourceManager (TypeAdapter.Create (resourceType));
+      return resourceManager.GetStringOrDefault (value.ID) ?? value.ValueName;
     }
   }
 }

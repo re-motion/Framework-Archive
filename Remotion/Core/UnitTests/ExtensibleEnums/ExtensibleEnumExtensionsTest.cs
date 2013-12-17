@@ -1,4 +1,4 @@
-// This file is part of the re-motion Core Framework (www.re-motion.org)
+﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -14,24 +14,22 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System.Reflection;
-using JetBrains.Annotations;
 
-namespace Remotion.Globalization
+using System;
+using NUnit.Framework;
+using Remotion.ExtensibleEnums;
+using Remotion.UnitTests.ExtensibleEnums.TestDomain;
+
+namespace Remotion.UnitTests.ExtensibleEnums
 {
-  public interface IResourcesAttribute
+  [TestFixture]
+  public class ExtensibleEnumExtensionsTest
   {
-    /// <summary>
-    ///   Gets the base name of the resource container as specified by the attributes construction.
-    /// </summary>
-    /// <remarks>
-    /// The base name of the resource conantainer to be used by this type
-    /// (&lt;assembly&gt;.&lt;path inside project&gt;.&lt;resource file name without extension&gt;).
-    /// </remarks>
-    [NotNull]
-    string BaseName { get; }
-
-    [CanBeNull]
-    Assembly ResourceAssembly { get; }
+    [Obsolete]
+    [Test]
+    public void GetExtensibleEnumerationValueDisplayName_IntegrationTest ()
+    {
+      Assert.That (ExtensibleEnumWithResources.Values.Value1().GetLocalizedName(), Is.EqualTo ("Wert1"));
+    }
   }
 }

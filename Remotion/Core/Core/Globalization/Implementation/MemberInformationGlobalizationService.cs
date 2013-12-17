@@ -24,12 +24,22 @@ namespace Remotion.Globalization.Implementation
   /// <summary>
   /// Retrieving the human-readable localized representation of reflection objects.
   /// </summary>
-  public class MemberInformationGlobalizationService : IMemberInformationGlobalizationService
+  /// <remarks>
+  ///   <list type="bullet">
+  ///     <item><see cref="GetTypeDisplayName"/> performs the lookup based on the long and the short name of the type, prefixed with <c>type:</c>.</item>
+  ///     <item><see cref="GetPropertyDisplayName"/> performs the lookup based on the long and the short name of the property, prefixed with <c>property:</c>.</item>
+  ///   </list>
+  /// The long name is resolved using <see cref="IMemberInformationNameResolver"/>.
+  /// </remarks>
+  /// <threadsafety static="true" instance="true"/>
+  public sealed class MemberInformationGlobalizationService : IMemberInformationGlobalizationService
   {
     private readonly IGlobalizationService _globalizationService;
     private readonly IMemberInformationNameResolver _memberInformationNameResolver;
 
-    public MemberInformationGlobalizationService (ICompoundGlobalizationService globalizationService, IMemberInformationNameResolver memberInformationNameResolver)
+    public MemberInformationGlobalizationService (
+        ICompoundGlobalizationService globalizationService,
+        IMemberInformationNameResolver memberInformationNameResolver)
     {
       ArgumentUtility.CheckNotNull ("globalizationService", globalizationService);
       ArgumentUtility.CheckNotNull ("memberInformationNameResolver", memberInformationNameResolver);
@@ -43,7 +53,11 @@ namespace Remotion.Globalization.Implementation
       ArgumentUtility.CheckNotNull ("propertyInformation", propertyInformation);
       ArgumentUtility.CheckNotNull ("typeInformationForResourceResolution", typeInformationForResourceResolution);
 
-      return GetString (typeInformationForResourceResolution, propertyInformation.Name, _memberInformationNameResolver.GetPropertyName (propertyInformation), "property:");
+      return GetString (
+          typeInformationForResourceResolution,
+          propertyInformation.Name,
+          _memberInformationNameResolver.GetPropertyName (propertyInformation),
+          "property:");
     }
 
     public string GetTypeDisplayName (ITypeInformation typeInformation, ITypeInformation typeInformationForResourceResolution)
@@ -51,7 +65,11 @@ namespace Remotion.Globalization.Implementation
       ArgumentUtility.CheckNotNull ("typeInformation", typeInformation);
       ArgumentUtility.CheckNotNull ("typeInformationForResourceResolution", typeInformationForResourceResolution);
 
-      return GetString (typeInformationForResourceResolution, typeInformation.Name, _memberInformationNameResolver.GetTypeName (typeInformation), "type:");
+      return GetString (
+          typeInformationForResourceResolution,
+          typeInformation.Name,
+          _memberInformationNameResolver.GetTypeName (typeInformation),
+          "type:");
     }
 
     private string GetString (ITypeInformation typeInformation, string shortMemberName, string longMemberName, string resourcePrefix)
