@@ -34,7 +34,9 @@ namespace Remotion.ObjectBinding.BindableObject
   /// using the <see cref="BusinessObjectProvider.AddService"/> method or indirectly by providing a custom implementation of the 
   /// <see cref="IBusinessObjectServiceFactory"/>.
   /// </remarks>
- public sealed class BindableObjectGlobalizationService : IBusinessObjectService
+
+  [ConcreteImplementation(typeof(BindableObjectGlobalizationService), Lifetime = LifetimeKind.Singleton)]
+  public sealed class BindableObjectGlobalizationService : IBusinessObjectService
   {
     [ResourceIdentifiers]
     [MultiLingualResources ("Remotion.ObjectBinding.Globalization.BindableObjectGlobalizationService")]
