@@ -365,6 +365,7 @@ namespace Remotion.ServiceLocation
         var message = string.Format ("Invalid ConcreteImplementationAttribute configuration for service type '{0}'. {1}", serviceType, ex.Message);
         throw new ActivationException (message, ex);
       }
+
       return CreateInstanceFactories (entry);
     }
 

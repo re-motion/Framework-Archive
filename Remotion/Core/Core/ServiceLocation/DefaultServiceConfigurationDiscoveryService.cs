@@ -58,31 +58,40 @@ namespace Remotion.ServiceLocation
     //TODO RM-5560: change to instance implementation and pass ITypeDiscoveryService via ctor. 
     // Optionally, provide a factory method that depends on ContextAwareTypeDiscoveryUtility.GetTypeDiscoveryService()
     // Drop ITypeDiscoveryService from method signatures.
-      
+
     /// <summary>
     /// Gets the default service configuration for the types returned by the given <see cref="ITypeDiscoveryService"/>.
     /// </summary>
-    /// <param name="typeDiscoveryService">The type discovery service.</param>
-    /// <returns>A <see cref="ServiceConfigurationEntry"/> for each type returned by the <paramref name="typeDiscoveryService"/> that has the
-    /// <see cref="ConcreteImplementationAttribute"/> applied. Types without the attribute are ignored.</returns>
-    public IEnumerable<ServiceConfigurationEntry> GetDefaultConfiguration (ITypeDiscoveryService typeDiscoveryService)
+    /// <returns>A <see cref="ServiceConfigurationEntry"/> for each serviceType that has implementations with a <see cref="ConcreteImplementationAttribute"/> applied. 
+    /// Types without the attribute are ignored.</returns>
+    public IEnumerable<ServiceConfigurationEntry> GetDefaultConfiguration ()
     {
-      ArgumentUtility.CheckNotNull ("typeDiscoveryService", typeDiscoveryService);
-
-      return GetDefaultConfiguration (typeDiscoveryService.GetTypes (null, false).Cast<Type>());
+      return GetDefaultConfiguration (_typeDiscoveryService.GetTypes (null, false).Cast<Type>());
     }
 
     /// <summary>
     /// Gets the default service configuration for the given types.
     /// </summary>
     /// <param name="types">The types to get the default service configuration for.</param>
-    /// <returns>A <see cref="ServiceConfigurationEntry"/> for each type that has the <see cref="ConcreteImplementationAttribute"/> applied. 
+    /// <returns>A <see cref="ServiceConfigurationEntry"/> for each serviceType that has implementations with a <see cref="ConcreteImplementationAttribute"/> applied. 
     /// Types without the attribute are ignored.</returns>
     public IEnumerable<ServiceConfigurationEntry> GetDefaultConfiguration (IEnumerable<Type> types)
     {
       ArgumentUtility.CheckNotNull ("types", types);
 
-      return types.Select (GetDefaultConfiguration);
+      return types.Select (
+          type =>
+          {
+            try
+            {
+              return GetDefaultConfiguration (type);
+            }
+            catch (InvalidOperationException ex)
+            {
+              var message = string.Format ("Invalid configuration of service type '{0}'. {1}", type, ex.Message);
+              throw new InvalidOperationException (message, ex);
+            }
+          }).Where (configuration => configuration.ImplementationInfos.Any());
     }
 
     public ServiceConfigurationEntry GetDefaultConfiguration (Type serviceType)
