@@ -21,7 +21,6 @@ using System.Linq;
 using System.Reflection;
 using Remotion.Reflection;
 using Remotion.Reflection.TypeDiscovery;
-using Remotion.Reflection.TypeDiscovery.AssemblyLoading;
 using Remotion.Utilities;
 
 namespace Remotion.ServiceLocation
@@ -51,7 +50,7 @@ namespace Remotion.ServiceLocation
       return new DefaultServiceConfigurationDiscoveryService(ContextAwareTypeDiscoveryUtility.GetTypeDiscoveryService());
     }
 
-    private DefaultServiceConfigurationDiscoveryService (ITypeDiscoveryService typeDiscoveryService)
+    public DefaultServiceConfigurationDiscoveryService (ITypeDiscoveryService typeDiscoveryService)
     {
       _typeDiscoveryService = typeDiscoveryService;
     }
@@ -83,25 +82,19 @@ namespace Remotion.ServiceLocation
     {
       ArgumentUtility.CheckNotNull ("types", types);
 
-      foreach (var baseType in types)
-        yield return GetDefaultConfiguration (baseType);
+      return types.Select (GetDefaultConfiguration);
+    }
 
+    public ServiceConfigurationEntry GetDefaultConfiguration (Type serviceType)
+    {
+      var excludeGlobalTypes = !serviceType.Assembly.GlobalAssemblyCache;
+      var derivedTypes = _typeDiscoveryService.GetTypes (serviceType, excludeGlobalTypes);
+      
       // TODO RM-5560: Refactor to ask for each type the derived types from TIypeDiscoverySerivce
       // determine flag excludeGlobalTypes on GetTypes by checking type.Assembly.GlobalAssemblyCache
       // TBD: Caching-Decorator for ITypeDiscoveryService?
       // Cache for each derived type if it contains a ConcreteImplementationAttribute, but result of GetCustomAttributes must not be cached.
       // Only cache if it is actually sensible.
-
-      //return (from type in types
-      //        let concreteImplementationAttributes = AttributeUtility.GetCustomAttributes<ConcreteImplementationAttribute> (type, false)
-      //        where concreteImplementationAttributes.Length != 0
-      //        select CreateServiceConfigurationEntry (type, concreteImplementationAttributes));
-    }
-
-    public ServiceConfigurationEntry GetDefaultConfiguration (Type baseType)
-    {
-      var excludeGlobalTypes = !baseType.Assembly.GlobalAssemblyCache;
-      var derivedTypes = _typeDiscoveryService.GetTypes (baseType, excludeGlobalTypes);
 
       // TODO RM-5506: caching 
       var attributes = derivedTypes
@@ -109,10 +102,10 @@ namespace Remotion.ServiceLocation
           .SelectMany (
               type => AttributeUtility.GetCustomAttributes<ConcreteImplementationAttribute> (type, false)
                   .Select (attribute => Tuple.Create (type, attribute)))
-          .Where (tuple => tuple.Item1 == baseType)
+          .Where (tuple => tuple.Item2.ServiceType == serviceType)
           .ToArray();
 
-      return CreateServiceConfigurationEntry (baseType, attributes);
+      return ServiceConfigurationEntry.CreateFromAttributes (serviceType, attributes);
     }
 
     /// <summary>
@@ -126,19 +119,6 @@ namespace Remotion.ServiceLocation
       ArgumentUtility.CheckNotNull ("assemblies", assemblies);
 
       return assemblies.SelectMany (a => GetDefaultConfiguration (AssemblyTypeCache.GetTypes (a)));
-    }
-
-    private ServiceConfigurationEntry CreateServiceConfigurationEntry (Type serviceType, IEnumerable<Tuple<Type, ConcreteImplementationAttribute>> concreteImplementationAttributes)
-    {
-      try
-      {
-        return ServiceConfigurationEntry.CreateFromAttributes (serviceType, concreteImplementationAttributes);
-      }
-      catch (InvalidOperationException ex)
-      {
-        var message = string.Format ("Invalid configuration of service type '{0}'. {1}", serviceType, ex.Message);
-        throw new InvalidOperationException (message, ex);
-      }
     }
   }
 }

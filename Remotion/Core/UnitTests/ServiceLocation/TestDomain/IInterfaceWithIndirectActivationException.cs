@@ -15,14 +15,16 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 
+using System;
 using Remotion.ServiceLocation;
 
 namespace Remotion.UnitTests.ServiceLocation.TestDomain
 {
- public interface IInterfaceWithIndirectActivationException
+  public interface IInterfaceWithIndirectActivationException
   {
   }
 
+  [ConcreteImplementation (typeof (IInterfaceWithIndirectActivationException))]
   public class ClassWithIndirectActivationException : IInterfaceWithIndirectActivationException
   {
     public ClassWithIndirectActivationException (IInterfaceWithoutImplementation innerDependency)

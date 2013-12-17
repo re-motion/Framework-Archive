@@ -14,14 +14,17 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
+using System;
 using Remotion.ServiceLocation;
 
 namespace Remotion.UnitTests.ServiceLocation.TestDomain
 {
- public interface ITestMultipleConcreteImplementationAttributesType
-  { 
+  public interface ITestMultipleConcreteImplementationAttributesType
+  {
   }
 
+  [ConcreteImplementation (typeof (ITestMultipleConcreteImplementationAttributesType), Lifetime = LifetimeKind.Singleton, Position = 3)]
   public class TestMultipleConcreteImplementationAttributesType1 : ITestMultipleConcreteImplementationAttributesType
   {
   }
@@ -31,6 +34,7 @@ namespace Remotion.UnitTests.ServiceLocation.TestDomain
   {
   }
 
+  [ConcreteImplementation (typeof (ITestMultipleConcreteImplementationAttributesType), Lifetime = LifetimeKind.Instance, Position = 2)]
   public class TestMultipleConcreteImplementationAttributesType3 : ITestMultipleConcreteImplementationAttributesType
   {
   }

@@ -179,17 +179,6 @@ namespace Remotion.UnitTests.ServiceLocation
     }
 
     [Test]
-    [ExpectedExceptionAttribute (typeof (ActivationException), ExpectedMessage =
-        "Invalid ConcreteImplementationAttribute configuration for service type "
-        + "'Remotion.UnitTests.ServiceLocation.TestDomain.ITestConcreteImplementationAttributeTypeWithInvalidImplementation'. "
-        + "The implementation type 'Remotion.UnitTests.ServiceLocation.TestDomain.TestConcreteImplementationAttributeType' does not implement "
-        + "the service type.")]
-    public void GetAllInstances_ServiceTypeNotImplementedByImplementationType()
-    {
-      _serviceLocator.GetAllInstances (typeof (ITestConcreteImplementationAttributeTypeWithInvalidImplementation)).ToArray ();
-    }
-
-    [Test]
     public void GetAllInstances_ServiceTypeWithMultipleConcreteImplementationAttributes ()
     {
       var result = _serviceLocator.GetAllInstances (typeof (ITestMultipleConcreteImplementationAttributesType)).ToArray ();

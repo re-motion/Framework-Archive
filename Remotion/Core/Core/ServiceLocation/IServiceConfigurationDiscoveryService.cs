@@ -31,6 +31,6 @@ namespace Remotion.ServiceLocation
     /// Types without the attribute are ignored.</returns>
     IEnumerable<ServiceConfigurationEntry> GetDefaultConfiguration (IEnumerable<Assembly> assemblies);
 
-    ServiceConfigurationEntry GetDefaultConfiguration (Type baseType);
+    ServiceConfigurationEntry GetDefaultConfiguration (Type serviceType);
   }
 }

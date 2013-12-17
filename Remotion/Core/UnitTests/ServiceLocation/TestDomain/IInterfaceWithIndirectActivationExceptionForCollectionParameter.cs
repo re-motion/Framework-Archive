@@ -15,19 +15,22 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 
+using System;
 using System.Collections.Generic;
-using Remotion.ServiceLocation;
 using System.Linq;
+using Remotion.ServiceLocation;
 
 namespace Remotion.UnitTests.ServiceLocation.TestDomain
 {
- public interface IInterfaceWithIndirectActivationExceptionForCollectionParameter
+  public interface IInterfaceWithIndirectActivationExceptionForCollectionParameter
   {
   }
 
+  [ConcreteImplementation (typeof (IInterfaceWithIndirectActivationExceptionForCollectionParameter))]
   public class ClassWithIndirectActivationExceptionForCollectionParameter : IInterfaceWithIndirectActivationExceptionForCollectionParameter
   {
-    public ClassWithIndirectActivationExceptionForCollectionParameter (IEnumerable<ITestConcreteImplementationAttributeTypeThrowingExceptionInCtor> innerDependency)
+    public ClassWithIndirectActivationExceptionForCollectionParameter (
+        IEnumerable<ITestConcreteImplementationAttributeTypeThrowingExceptionInCtor> innerDependency)
     {
       innerDependency.ToArray();
     }

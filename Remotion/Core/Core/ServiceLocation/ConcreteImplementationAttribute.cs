@@ -31,7 +31,7 @@ namespace Remotion.ServiceLocation
   public class ConcreteImplementationAttribute : Attribute
   {
     private readonly string _interfaceNameTemplate;
-    private Type _serviceType;
+    private readonly Type _serviceType;
 
     /// <summary>
     /// Defines a concrete implementation for a service type.

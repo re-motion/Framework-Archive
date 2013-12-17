@@ -114,11 +114,11 @@ namespace Remotion.UnitTests.ServiceLocation
     }
 
     [Test]
-    public void GetDefaultConfiguration_TypeDiscoveryService_WithNoConcreteImplementationAttribute ()
+    public void GetDefaultConfiguration_WithNoImplementations ()
     {
-      var serviceConfigurationEntries = _defaultServiceConfigurationDiscoveryService.GetDefaultConfiguration (new[] { typeof (ICollection) });
+      var serviceConfigurationEntries = _defaultServiceConfigurationDiscoveryService.GetDefaultConfiguration (typeof (ICollection));
 
-      Assert.That (serviceConfigurationEntries.Count(), Is.EqualTo (0));
+      Assert.That (serviceConfigurationEntries, Is.Null);
     }
 
     [Test]

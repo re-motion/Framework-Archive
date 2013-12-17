@@ -18,6 +18,7 @@
 using System;
 using System.Linq;
 using Remotion.Collections;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 
 namespace Remotion.Globalization.Implementation
@@ -26,6 +27,7 @@ namespace Remotion.Globalization.Implementation
   /// Default implementation of the <see cref="IResourceManagerResolver"/>.
   /// </summary>
   /// <threadsafety static="true" instance="true"/>
+  [ConcreteImplementation (typeof (IResourceManagerResolver), Lifetime = LifetimeKind.Singleton)]
   public sealed class ResourceManagerResolver : IResourceManagerResolver
   {
     private readonly LockingCacheDecorator<Type, ResolvedResourceManagerResult> _resourceManagerWrappersCache =
