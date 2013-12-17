@@ -31,34 +31,18 @@ namespace Remotion.ServiceLocation
   public class ConcreteImplementationAttribute : Attribute
   {
     private readonly string _interfaceNameTemplate;
-    private readonly bool _ignoreIfNotFound;
-
-    /// <summary>
-    /// Defines a concrete implementation for a service type by means of a type name template. The template can contain placeholders such as
-    /// "&lt;version&gt;" and "&lt;publicKeyToken&gt;" that are replaced with the version and public key token of the re-motion assemblies when
-    /// the type is resolved. See <see cref="TypeNameTemplateResolver"/> for details.
-    /// </summary>
-    /// <param name="interfaceNameTemplate">A type name indicating the concrete implementation for the service type, optionally containing
-    /// placeholders.</param>
-    /// <param name="ignoreIfNotFound">A boolean indicating whether the attribute should be ignored if the implementation type can not be loaded.
-    /// The default is <see langword="false" />.</param>
-    [Obsolete()]
-    public ConcreteImplementationAttribute (string interfaceNameTemplate, bool ignoreIfNotFound = false)
-    {
-      _interfaceNameTemplate = ArgumentUtility.CheckNotNull ("interfaceNameTemplate", interfaceNameTemplate);
-      _ignoreIfNotFound = ignoreIfNotFound;
-      Lifetime = LifetimeKind.Instance;
-    }
+    private Type _serviceType;
 
     /// <summary>
     /// Defines a concrete implementation for a service type.
     /// </summary>
-    /// <param name="interfaceType">The type representing the concrete implementation for the service type.</param>
-    public ConcreteImplementationAttribute (Type interfaceType)
+    /// <param name="serviceType">The type representing the concrete implementation for the service type.</param>
+    public ConcreteImplementationAttribute (Type serviceType)
     {
-      ArgumentUtility.CheckNotNull ("interfaceType", interfaceType);
+      ArgumentUtility.CheckNotNull ("serviceType", serviceType);
 
-      _interfaceNameTemplate = interfaceType.AssemblyQualifiedName;
+      _interfaceNameTemplate = serviceType.AssemblyQualifiedName;
+      _serviceType = serviceType;
       Lifetime = LifetimeKind.Instance;
     }
 
@@ -73,12 +57,11 @@ namespace Remotion.ServiceLocation
     }
 
     /// <summary>
-    /// Gets a boolean indicating whether the attribute should be ignored if the implementation type can not be loaded.
+    /// Gets the type of the implemented service interface.
     /// </summary>
-    /// <value>A boolean indicating whether the attribute should be ignored if the implementation type can not be loaded.</value>
-    public bool IgnoreIfNotFound
+    public Type ServiceType
     {
-      get { return _ignoreIfNotFound; }
+      get { return _serviceType; }
     }
 
     /// <summary>

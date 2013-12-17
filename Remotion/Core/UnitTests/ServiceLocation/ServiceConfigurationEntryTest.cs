@@ -80,9 +80,14 @@ namespace Remotion.UnitTests.ServiceLocation
     [Test]
     public void CreateFromAttributes_Single ()
     {
-      var attribute = new ConcreteImplementationAttribute (typeof (TestConcreteImplementationAttributeType)) { Lifetime = LifetimeKind.Singleton };
+      var attribute = new ConcreteImplementationAttribute (typeof (ITestSingletonConcreteImplementationAttributeType)) { Lifetime = LifetimeKind.Singleton };
 
-      var entry = ServiceConfigurationEntry.CreateFromAttributes (typeof (ITestSingletonConcreteImplementationAttributeType), new[] { attribute });
+      var entry = ServiceConfigurationEntry.CreateFromAttributes (
+          typeof (ITestSingletonConcreteImplementationAttributeType),
+          new[]
+          {
+              Tuple.Create (typeof (TestConcreteImplementationAttributeType), attribute)
+          });
 
       Assert.That (entry.ServiceType, Is.EqualTo (typeof (ITestSingletonConcreteImplementationAttributeType)));
       Assert.That (
@@ -93,10 +98,16 @@ namespace Remotion.UnitTests.ServiceLocation
     [Test]
     public void CreateFromAttributes_Multiple ()
     {
-      var attribute1 = new ConcreteImplementationAttribute (typeof (TestMultipleConcreteImplementationAttributesType1))
-                       { Lifetime = LifetimeKind.Singleton, Position = 0 };
-      var attribute2 = new ConcreteImplementationAttribute (typeof (TestMultipleConcreteImplementationAttributesType2))
-                       { Lifetime = LifetimeKind.Instance, Position = 1 };
+      var attribute1 = Tuple.Create (
+          typeof (TestMultipleConcreteImplementationAttributesType1),
+          new ConcreteImplementationAttribute (typeof (ITestMultipleConcreteImplementationAttributesType))
+          { Lifetime = LifetimeKind.Singleton, Position = 0 });
+
+      var attribute2 = Tuple.Create (
+          typeof (TestMultipleConcreteImplementationAttributesType2),
+          new ConcreteImplementationAttribute (typeof (ITestMultipleConcreteImplementationAttributesType))
+          { Lifetime = LifetimeKind.Instance, Position = 1 });
+
       var attributes = new[] { attribute1, attribute2};
 
       var entry = ServiceConfigurationEntry.CreateFromAttributes (typeof (ITestMultipleConcreteImplementationAttributesType), attributes);
@@ -115,10 +126,16 @@ namespace Remotion.UnitTests.ServiceLocation
     [Test]
     public void CreateFromAttributes_Multiple_EntriesAreSortedCorrectly ()
     {
-      var attribute1 = new ConcreteImplementationAttribute (typeof (TestMultipleConcreteImplementationAttributesType1))
-                       { Lifetime = LifetimeKind.Singleton, Position = 0 };
-      var attribute2 = new ConcreteImplementationAttribute (typeof (TestMultipleConcreteImplementationAttributesType2))
-                       { Lifetime = LifetimeKind.Instance, Position = -1 };
+      var attribute1 = Tuple.Create (
+          typeof (TestMultipleConcreteImplementationAttributesType1),
+          new ConcreteImplementationAttribute (typeof (ITestMultipleConcreteImplementationAttributesType))
+          { Lifetime = LifetimeKind.Singleton, Position = 0 });
+
+      var attribute2 = Tuple.Create (
+          typeof (TestMultipleConcreteImplementationAttributesType2),
+          new ConcreteImplementationAttribute (typeof (ITestMultipleConcreteImplementationAttributesType))
+          { Lifetime = LifetimeKind.Instance, Position = -1 });
+
       var attributes = new[] { attribute1, attribute2 };
 
       var entry = ServiceConfigurationEntry.CreateFromAttributes (typeof (ITestMultipleConcreteImplementationAttributesType), attributes);
@@ -137,8 +154,13 @@ namespace Remotion.UnitTests.ServiceLocation
     [Test]
     public void CreateFromAttributes_Multiple_WithEqualPositions_Throws ()
     {
-      var attribute1 = new ConcreteImplementationAttribute (typeof (TestMultipleConcreteImplementationAttributesType1)) { Position = 1 };
-      var attribute2 = new ConcreteImplementationAttribute (typeof (TestMultipleConcreteImplementationAttributesType2)) { Position = 1 };
+      var attribute1 = Tuple.Create (
+          typeof (TestMultipleConcreteImplementationAttributesType1),
+          new ConcreteImplementationAttribute (typeof (ITestMultipleConcreteImplementationAttributesType)) { Position = 1 });
+      var attribute2 = Tuple.Create (
+          typeof (TestMultipleConcreteImplementationAttributesType2),
+          new ConcreteImplementationAttribute (typeof (ITestMultipleConcreteImplementationAttributesType)) { Position = 1 });
+
       var attributes = new[] { attribute1, attribute2 };
 
       Assert.That (
@@ -149,8 +171,13 @@ namespace Remotion.UnitTests.ServiceLocation
     [Test]
     public void CreateFromAttributes_Multiple_WithEqualTypes_Throws ()
     {
-      var attribute1 = new ConcreteImplementationAttribute (typeof (TestMultipleConcreteImplementationAttributesType1)) { Position = 1 };
-      var attribute2 = new ConcreteImplementationAttribute (typeof (TestMultipleConcreteImplementationAttributesType1)) { Position = 2 };
+      var attribute1 = Tuple.Create (
+          typeof (ITestMultipleConcreteImplementationAttributesType),
+          new ConcreteImplementationAttribute (typeof (TestMultipleConcreteImplementationAttributesType1)) { Position = 1 });
+      var attribute2 = Tuple.Create (
+          typeof (ITestMultipleConcreteImplementationAttributesType),
+          new ConcreteImplementationAttribute (typeof (TestMultipleConcreteImplementationAttributesType1)) { Position = 2 });
+
       var attributes = new[] { attribute1, attribute2 };
 
       Assert.That (
@@ -161,8 +188,12 @@ namespace Remotion.UnitTests.ServiceLocation
     [Test]
     public void CreateFromAttributes_Multiple_WithEqualTypesAndPositions_ThrowsForType ()
     {
-      var attribute1 = new ConcreteImplementationAttribute (typeof (TestMultipleConcreteImplementationAttributesType1)) { Position = 1 };
-      var attribute2 = new ConcreteImplementationAttribute (typeof (TestMultipleConcreteImplementationAttributesType1)) { Position = 1 };
+       var attribute1 = Tuple.Create (
+          typeof (ITestMultipleConcreteImplementationAttributesType),
+          new ConcreteImplementationAttribute (typeof (TestMultipleConcreteImplementationAttributesType1)) { Position = 1 });
+       var attribute2 = Tuple.Create (
+          typeof (ITestMultipleConcreteImplementationAttributesType),
+          new ConcreteImplementationAttribute (typeof (TestMultipleConcreteImplementationAttributesType1)) { Position = 1 });
       var attributes = new[] { attribute1, attribute2 };
 
       Assert.That (
@@ -173,7 +204,7 @@ namespace Remotion.UnitTests.ServiceLocation
     [Test]
     public void CreateFromAttributes_IncompatibleType ()
     {
-      var attribute = new ConcreteImplementationAttribute (typeof (object));
+      var attribute = Tuple.Create (typeof (object), new ConcreteImplementationAttribute (typeof (ITestSingletonConcreteImplementationAttributeType)));
 
       Assert.That (
           () => ServiceConfigurationEntry.CreateFromAttributes (typeof (ITestSingletonConcreteImplementationAttributeType), new[] { attribute }),

@@ -106,7 +106,10 @@ namespace Remotion.ServiceLocation
       // TODO RM-5506: caching 
       var attributes = derivedTypes
           .Cast<Type>()
-          .SelectMany (type => AttributeUtility.GetCustomAttributes<ConcreteImplementationAttribute> (type, false))
+          .SelectMany (
+              type => AttributeUtility.GetCustomAttributes<ConcreteImplementationAttribute> (type, false)
+                  .Select (attribute => Tuple.Create (type, attribute)))
+          .Where (tuple => tuple.Item1 == baseType)
           .ToArray();
 
       return CreateServiceConfigurationEntry (baseType, attributes);
@@ -125,15 +128,15 @@ namespace Remotion.ServiceLocation
       return assemblies.SelectMany (a => GetDefaultConfiguration (AssemblyTypeCache.GetTypes (a)));
     }
 
-    private ServiceConfigurationEntry CreateServiceConfigurationEntry (Type type, ConcreteImplementationAttribute[] concreteImplementationAttributes)
+    private ServiceConfigurationEntry CreateServiceConfigurationEntry (Type serviceType, IEnumerable<Tuple<Type, ConcreteImplementationAttribute>> concreteImplementationAttributes)
     {
       try
       {
-        return ServiceConfigurationEntry.CreateFromAttributes (type, concreteImplementationAttributes);
+        return ServiceConfigurationEntry.CreateFromAttributes (serviceType, concreteImplementationAttributes);
       }
       catch (InvalidOperationException ex)
       {
-        var message = string.Format ("Invalid configuration of service type '{0}'. {1}", type, ex.Message);
+        var message = string.Format ("Invalid configuration of service type '{0}'. {1}", serviceType, ex.Message);
         throw new InvalidOperationException (message, ex);
       }
     }
