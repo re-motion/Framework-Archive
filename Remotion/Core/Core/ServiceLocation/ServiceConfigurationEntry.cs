@@ -33,12 +33,12 @@ namespace Remotion.ServiceLocation
   public class ServiceConfigurationEntry
   {
     /// <summary>
-    /// Creates a <see cref="ServiceConfigurationEntry"/> from a <see cref="ConcreteImplementationAttribute"/>.
+    /// Creates a <see cref="ServiceConfigurationEntry"/> from a <see cref="ImplementationForAttribute"/>.
     /// </summary>
     /// <param name="serviceType">The service type.</param>
     /// <param name="attributes">Tuples holding information about the concrete type implementing <paramref name="serviceType"/> as well as the attribute instance.</param>
     /// <returns>A <see cref="ServiceConfigurationEntry"/> containing the data from the <paramref name="attributes"/>.</returns>
-    public static ServiceConfigurationEntry CreateFromAttributes (Type serviceType, IEnumerable<Tuple<Type, ConcreteImplementationAttribute>> attributes)
+    public static ServiceConfigurationEntry CreateFromAttributes (Type serviceType, IEnumerable<Tuple<Type, ImplementationForAttribute>> attributes)
     {
       ArgumentUtility.CheckNotNull ("serviceType", serviceType);
       ArgumentUtility.CheckNotNull ("attributes", attributes);
@@ -75,7 +75,7 @@ namespace Remotion.ServiceLocation
       {
         if (visitedValues.Contains (value))
         {
-          var message = string.Format ("Ambiguous {0}: {1} must be unique.", typeof (ConcreteImplementationAttribute).Name, propertyDescription);
+          var message = string.Format ("Ambiguous {0}: {1} must be unique.", typeof (ImplementationForAttribute).Name, propertyDescription);
           throw new InvalidOperationException (message);
         }
         visitedValues.Add (value);

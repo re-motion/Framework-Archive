@@ -34,7 +34,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
   /// This class should not be instantiated directly. Use a <see cref="BocRowRenderer"/> to obtain an instance.</remarks>
   /// <seealso cref="BocListNavigationBlockRenderer"/>
   /// <seealso cref="BocListMenuBlockRenderer"/>
-  [ConcreteImplementation (typeof (IBocListRenderer), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor (typeof (IBocListRenderer), Lifetime = LifetimeKind.Singleton)]
   public class BocListRenderer : BocRendererBase<IBocList>, IBocListRenderer
   {
     private readonly IBocListMenuBlockRenderer _menuBlockRenderer;

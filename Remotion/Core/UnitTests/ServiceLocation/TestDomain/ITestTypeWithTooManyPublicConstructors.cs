@@ -24,7 +24,7 @@ namespace Remotion.UnitTests.ServiceLocation.TestDomain
   {
   }
 
-  [ConcreteImplementation (typeof (ITestTypeWithTooManyPublicConstructors))]
+  [ImplementationFor (typeof (ITestTypeWithTooManyPublicConstructors))]
   public class TestTypeWithTooManyPublicConstructors : ITestTypeWithTooManyPublicConstructors
   {
     public TestTypeWithTooManyPublicConstructors ()

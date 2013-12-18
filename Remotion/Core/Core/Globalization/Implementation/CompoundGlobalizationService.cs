@@ -29,7 +29,7 @@ namespace Remotion.Globalization.Implementation
   /// Combines one or more <see cref="IGlobalizationService"/>-instances and 
   /// delegates to it to retrieve an <see cref="IResourceManager"/> for a specified type.
   /// </summary>
-  [ConcreteImplementation (typeof (ICompoundGlobalizationService), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor (typeof (ICompoundGlobalizationService), Lifetime = LifetimeKind.Singleton)]
   public class CompoundGlobalizationService : ICompoundGlobalizationService
   {
     private readonly IGlobalizationService[] _globalizationServices;

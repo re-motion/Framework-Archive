@@ -33,7 +33,7 @@ using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
 {
-  [ConcreteImplementation (typeof (IAccessResolver), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor (typeof (IAccessResolver), Lifetime = LifetimeKind.Singleton)]
   public class AccessResolver : IAccessResolver
   {
     private static readonly ILog s_log = LogManager.GetLogger (MethodInfo.GetCurrentMethod().DeclaringType);

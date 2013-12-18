@@ -27,7 +27,7 @@ namespace Remotion.Globalization.Implementation
   /// <summary>
   /// Retrieves and caches <see cref="IResourceManager"/>'s for types.
   /// </summary>
-  [ConcreteImplementation (typeof (IGlobalizationService), Position = 0, Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor (typeof (IGlobalizationService), Position = 0, Lifetime = LifetimeKind.Singleton)]
   public sealed class GlobalizationService : IGlobalizationService
   {
     private readonly IResourceManagerResolver _resourceManagerResolver;

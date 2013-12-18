@@ -24,7 +24,7 @@ namespace Remotion.Globalization.Implementation
   /// <summary>
   /// Retrieving the human-readable localized representation of enumeration objects.
   /// </summary>
-  [ConcreteImplementation (typeof (IEnumerationGlobalizationService), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor (typeof (IEnumerationGlobalizationService), Lifetime = LifetimeKind.Singleton)]
   public class EnumerationGlobalizationService : IEnumerationGlobalizationService
   {
     public string GetEnumerationValueDisplayName (Enum value)

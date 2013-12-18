@@ -36,7 +36,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
   /// <para>During edit mode, the control is displayed using a <see cref="System.Web.UI.WebControls.TextBox"/> and a pop-up element.</para>
   /// <para>During read-only mode, the control's value is displayed using a <see cref="System.Web.UI.WebControls.Label"/>.</para>
   /// </remarks>
-  [ConcreteImplementation (typeof (IBocAutoCompleteReferenceValueRenderer), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor (typeof (IBocAutoCompleteReferenceValueRenderer), Lifetime = LifetimeKind.Singleton)]
   public class BocAutoCompleteReferenceValueRenderer : BocReferenceValueRendererBase<IBocAutoCompleteReferenceValue>, IBocAutoCompleteReferenceValueRenderer
   {
     /// <summary> A list of control specific resources. </summary>

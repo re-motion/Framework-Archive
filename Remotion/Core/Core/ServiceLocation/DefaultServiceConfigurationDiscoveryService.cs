@@ -33,7 +33,7 @@ namespace Remotion.ServiceLocation
   /// <remarks>
   /// <para>
   /// <see cref="DefaultServiceConfigurationDiscoveryService"/> uses the same logic as <see cref="DefaultServiceLocator"/> in order to find the
-  /// default concrete implementation of service types configured via the <see cref="ConcreteImplementationAttribute"/>. See 
+  /// default concrete implementation of service types configured via the <see cref="ImplementationForAttribute"/>. See 
   /// <see cref="DefaultServiceLocator"/> for more information about this.
   /// </para>
   /// <para>
@@ -62,7 +62,7 @@ namespace Remotion.ServiceLocation
     /// <summary>
     /// Gets the default service configuration for the types returned by the given <see cref="ITypeDiscoveryService"/>.
     /// </summary>
-    /// <returns>A <see cref="ServiceConfigurationEntry"/> for each serviceType that has implementations with a <see cref="ConcreteImplementationAttribute"/> applied. 
+    /// <returns>A <see cref="ServiceConfigurationEntry"/> for each serviceType that has implementations with a <see cref="ImplementationForAttribute"/> applied. 
     /// Types without the attribute are ignored.</returns>
     public IEnumerable<ServiceConfigurationEntry> GetDefaultConfiguration ()
     {
@@ -73,7 +73,7 @@ namespace Remotion.ServiceLocation
     /// Gets the default service configuration for the given types.
     /// </summary>
     /// <param name="types">The types to get the default service configuration for.</param>
-    /// <returns>A <see cref="ServiceConfigurationEntry"/> for each serviceType that has implementations with a <see cref="ConcreteImplementationAttribute"/> applied. 
+    /// <returns>A <see cref="ServiceConfigurationEntry"/> for each serviceType that has implementations with a <see cref="ImplementationForAttribute"/> applied. 
     /// Types without the attribute are ignored.</returns>
     public IEnumerable<ServiceConfigurationEntry> GetDefaultConfiguration (IEnumerable<Type> types)
     {
@@ -109,7 +109,7 @@ namespace Remotion.ServiceLocation
       var attributes = derivedTypes
           .Cast<Type>()
           .SelectMany (
-              type => AttributeUtility.GetCustomAttributes<ConcreteImplementationAttribute> (type, false)
+              type => AttributeUtility.GetCustomAttributes<ImplementationForAttribute> (type, false)
                   .Select (attribute => Tuple.Create (type, attribute)))
           .Where (tuple => tuple.Item2.ServiceType == serviceType)
           .ToArray();
@@ -121,7 +121,7 @@ namespace Remotion.ServiceLocation
     /// Gets the default service configuration for the types in the given assemblies.
     /// </summary>
     /// <param name="assemblies">The assemblies for whose types to get the default service configuration.</param>
-    /// <returns>A <see cref="ServiceConfigurationEntry"/> for each type that has the <see cref="ConcreteImplementationAttribute"/> applied. 
+    /// <returns>A <see cref="ServiceConfigurationEntry"/> for each type that has the <see cref="ImplementationForAttribute"/> applied. 
     /// Types without the attribute are ignored.</returns>
     public IEnumerable<ServiceConfigurationEntry> GetDefaultConfiguration (IEnumerable<Assembly> assemblies)
     {

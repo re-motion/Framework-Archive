@@ -28,7 +28,7 @@ namespace Remotion.Web.UI.Controls.WebTabStripImplementation.Rendering
   /// Implements <see cref="IWebTabStripRenderer"/> for standard mode rendering of <see cref="WebTabStrip"/> controls.
   /// <seealso cref="IWebTabStrip"/>
   /// </summary>
-  [ConcreteImplementation (typeof (IWebTabStripRenderer), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor (typeof (IWebTabStripRenderer), Lifetime = LifetimeKind.Singleton)]
   public class WebTabStripRenderer : RendererBase<IWebTabStrip>, IWebTabStripRenderer
   {
     public WebTabStripRenderer (IResourceUrlFactory resourceUrlFactory, ICompoundGlobalizationService globalizationService)

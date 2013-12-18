@@ -32,7 +32,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
   /// Responsible for rendering <see cref="BocBooleanValue"/> controls.
   /// <seealso cref="IBocBooleanValue"/>
   /// </summary>
-  [ConcreteImplementation (typeof (IBocBooleanValueRenderer), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor (typeof (IBocBooleanValueRenderer), Lifetime = LifetimeKind.Singleton)]
   public class BocBooleanValueRenderer : BocBooleanValueRendererBase<IBocBooleanValue>, IBocBooleanValueRenderer
   {
     private readonly IBocBooleanValueResourceSetFactory _resourceSetFactory;

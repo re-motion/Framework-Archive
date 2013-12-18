@@ -29,7 +29,7 @@ namespace Remotion.Logging
   /// <summary>
   /// Implementation of <see cref="ILogManager"/> for <b>log4net</b>.
   /// </summary>
-  [ConcreteImplementation (typeof(ILogManager), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor (typeof(ILogManager), Lifetime = LifetimeKind.Singleton)]
   public class Log4NetLogManager : ILogManager
   {
     /// <summary>

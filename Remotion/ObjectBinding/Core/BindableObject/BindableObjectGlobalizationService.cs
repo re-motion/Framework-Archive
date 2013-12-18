@@ -35,7 +35,7 @@ namespace Remotion.ObjectBinding.BindableObject
   /// <see cref="IBusinessObjectServiceFactory"/>.
   /// </remarks>
 
-  [ConcreteImplementation(typeof(BindableObjectGlobalizationService), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor(typeof(BindableObjectGlobalizationService), Lifetime = LifetimeKind.Singleton)]
   public sealed class BindableObjectGlobalizationService : IBusinessObjectService
   {
     [ResourceIdentifiers]

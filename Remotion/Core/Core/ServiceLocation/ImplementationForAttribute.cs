@@ -22,38 +22,23 @@ namespace Remotion.ServiceLocation
   /// <summary>
   /// Defines the concrete implementation for a service type (usually an interface or abstract class) as well as its <see cref="LifetimeKind"/>.
   /// This attribute is used by the DefaultServiceProvider to determine how to instantiate a service type. Mutiple 
-  /// <see cref="ConcreteImplementationAttribute"/> instances can be applied to a single service type. They are not inherited.
+  /// <see cref="ImplementationForAttribute"/> instances can be applied to a single service type. They are not inherited.
   /// </summary>
-  // TODO RM-5506: Possibly find a new/better name
-  // TODO RM-5506: Drop support for typename as string from entire ServiceLocation infrastructure after inverting the dependencies.
-
   [AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = false)]
-  public class ConcreteImplementationAttribute : Attribute
+  public class ImplementationForAttribute : Attribute
   {
-    private readonly string _interfaceNameTemplate;
     private readonly Type _serviceType;
 
     /// <summary>
     /// Defines a concrete implementation for a service type.
     /// </summary>
     /// <param name="serviceType">The type representing the concrete implementation for the service type.</param>
-    public ConcreteImplementationAttribute (Type serviceType)
+    public ImplementationForAttribute (Type serviceType)
     {
       ArgumentUtility.CheckNotNull ("serviceType", serviceType);
 
-      _interfaceNameTemplate = serviceType.AssemblyQualifiedName;
       _serviceType = serviceType;
       Lifetime = LifetimeKind.Instance;
-    }
-
-    /// <summary>
-    /// Gets the type name template for the concrete implementation type. The template can contain placeholders and can be resolved using the
-    /// <see cref="TypeNameTemplateResolver"/> class.
-    /// </summary>
-    /// <value>The type name template.</value>
-    public string InterfaceNameTemplate
-    {
-      get { return _interfaceNameTemplate; }
     }
 
     /// <summary>

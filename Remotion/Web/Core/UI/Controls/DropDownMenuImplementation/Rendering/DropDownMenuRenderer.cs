@@ -28,7 +28,7 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering
   /// Responsible for rendering <see cref="DropDownMenu"/> controls in standard mode.
   /// <seealso cref="IDropDownMenu"/>
   /// </summary>
-  [ConcreteImplementation (typeof (IDropDownMenuRenderer), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor (typeof (IDropDownMenuRenderer), Lifetime = LifetimeKind.Singleton)]
   public class DropDownMenuRenderer : RendererBase<IDropDownMenu>, IDropDownMenuRenderer
   {
     private const string c_whiteSpace = "&nbsp;";

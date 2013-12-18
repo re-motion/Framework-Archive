@@ -27,7 +27,7 @@ namespace Remotion.Globalization.Implementation
   /// Default implementation of the <see cref="IResourceManagerResolver"/>.
   /// </summary>
   /// <threadsafety static="true" instance="true"/>
-  [ConcreteImplementation (typeof (IResourceManagerResolver), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor (typeof (IResourceManagerResolver), Lifetime = LifetimeKind.Singleton)]
   public sealed class ResourceManagerResolver : IResourceManagerResolver
   {
     private readonly LockingCacheDecorator<Type, ResolvedResourceManagerResult> _resourceManagerWrappersCache =

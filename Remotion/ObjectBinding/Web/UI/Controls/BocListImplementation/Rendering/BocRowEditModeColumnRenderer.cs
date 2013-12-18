@@ -27,7 +27,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
   /// <summary>
   /// Responsible for rendering cells of <see cref="BocRowEditModeColumnDefinition"/> columns.
   /// </summary>
-  [ConcreteImplementation (typeof (IBocRowEditModeColumnRenderer), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor (typeof (IBocRowEditModeColumnRenderer), Lifetime = LifetimeKind.Singleton)]
   public class BocRowEditModeColumnRenderer : BocColumnRendererBase<BocRowEditModeColumnDefinition>, IBocRowEditModeColumnRenderer
   {
     /// <summary>

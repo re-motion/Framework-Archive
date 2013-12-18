@@ -45,7 +45,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
   /// </list>
   /// </remarks>
   /// <threadsafety static="true" instance="true"/>
-  [ConcreteImplementation (typeof (IParticipant), Position = 2)]
+  [ImplementationFor (typeof (IParticipant), Position = 2)]
   public class DomainObjectParticipant : IParticipant
   {
     private static readonly MethodInfo s_getPublicDomainObjectTypeImplementation = GetInfrastructureHook ("GetPublicDomainObjectTypeImplementation");

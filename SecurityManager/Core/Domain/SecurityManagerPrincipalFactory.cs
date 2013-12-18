@@ -27,7 +27,7 @@ namespace Remotion.SecurityManager.Domain
   /// <summary>
   /// Default implementation of the <see cref="ISecurityManagerPrincipalFactory"/> interface.
   /// </summary>
-  [ConcreteImplementation (typeof (ISecurityManagerPrincipalFactory), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor (typeof (ISecurityManagerPrincipalFactory), Lifetime = LifetimeKind.Singleton)]
   public class SecurityManagerPrincipalFactory : ISecurityManagerPrincipalFactory
   {
     public SecurityManagerPrincipalFactory ()

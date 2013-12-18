@@ -24,7 +24,7 @@ namespace Remotion.UnitTests.ServiceLocation.TestDomain
   {
   }
 
-  [ConcreteImplementation (typeof (ITestConstructorInjectionWithOneParameterWithInstanceLifetime))]
+  [ImplementationFor (typeof (ITestConstructorInjectionWithOneParameterWithInstanceLifetime))]
   public class TestConstructorInjectionWithOneParameterWithInstanceLifetime : ITestConstructorInjectionWithOneParameterWithInstanceLifetime
   {
     public readonly ITestInstanceConcreteImplementationAttributeType Param;

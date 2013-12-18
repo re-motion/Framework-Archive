@@ -24,7 +24,7 @@ namespace Remotion.UnitTests.ServiceLocation.TestDomain
   {
   }
 
-  [ConcreteImplementation (typeof (ITestConcreteImplementationAttributeTypeThrowingExceptionInCtor), Lifetime = LifetimeKind.Instance)]
+  [ImplementationFor (typeof (ITestConcreteImplementationAttributeTypeThrowingExceptionInCtor), Lifetime = LifetimeKind.Instance)]
   public class TestConcreteImplementationAttributeTypeThrowingExceptionInCtor : ITestConcreteImplementationAttributeTypeThrowingExceptionInCtor
   {
     public TestConcreteImplementationAttributeTypeThrowingExceptionInCtor ()

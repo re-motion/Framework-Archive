@@ -24,7 +24,7 @@ namespace Remotion.UnitTests.ServiceLocation.TestDomain
   {
   }
 
-  [ConcreteImplementation (typeof (ITestTypeWithOnlyProtectedConstructor))]
+  [ImplementationFor (typeof (ITestTypeWithOnlyProtectedConstructor))]
   public class TestTypeWithOnlyProtectedConstructor : ITestTypeWithOnlyProtectedConstructor
   {
     protected TestTypeWithOnlyProtectedConstructor ()

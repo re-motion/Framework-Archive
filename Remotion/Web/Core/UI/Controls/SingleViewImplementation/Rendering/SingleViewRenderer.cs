@@ -28,7 +28,7 @@ namespace Remotion.Web.UI.Controls.SingleViewImplementation.Rendering
   /// Implements <see cref="ISingleViewRenderer"/> for standard mode rendering of <see cref="SingleView"/> controls.
   /// <seealso cref="ISingleView"/>
   /// </summary>
-  [ConcreteImplementation (typeof (ISingleViewRenderer), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor (typeof (ISingleViewRenderer), Lifetime = LifetimeKind.Singleton)]
   public class SingleViewRenderer : RendererBase<ISingleView>, ISingleViewRenderer
   {
     public SingleViewRenderer (IResourceUrlFactory resourceUrlFactory, ICompoundGlobalizationService globalizationService)

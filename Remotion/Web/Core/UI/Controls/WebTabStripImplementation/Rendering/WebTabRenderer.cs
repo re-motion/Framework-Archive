@@ -27,7 +27,7 @@ namespace Remotion.Web.UI.Controls.WebTabStripImplementation.Rendering
   /// <summary>
   /// Responsible for rendering <see cref="WebTab"/> controls in standard mode.
   /// </summary>
-  [ConcreteImplementation (typeof (IWebTabRenderer), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor (typeof (IWebTabRenderer), Lifetime = LifetimeKind.Singleton)]
   public class WebTabRenderer : IWebTabRenderer
   {
     private readonly IHotkeyFormatter _hotkeyFormatter;

@@ -31,7 +31,7 @@ namespace Remotion.Web.Resources
   /// Default implementation of the <see cref="IResourcePathBuilder"/> interface. 
   /// Builds the resource path rooted to the application virtual directory.
   /// </summary>
-  [ConcreteImplementation (typeof (IResourcePathBuilder), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor (typeof (IResourcePathBuilder), Lifetime = LifetimeKind.Singleton)]
   public class ResourcePathBuilder : ResourcePathBuilderBase
   {
     private readonly IHttpContextProvider _httpContextProvider;

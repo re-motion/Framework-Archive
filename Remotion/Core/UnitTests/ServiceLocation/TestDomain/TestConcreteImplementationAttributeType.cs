@@ -19,9 +19,9 @@ using Remotion.ServiceLocation;
 
 namespace Remotion.UnitTests.ServiceLocation.TestDomain
 {
-  [ConcreteImplementation (typeof (ITestConcreteImplementationAttributeTypeWithInvalidImplementation))]
-  [ConcreteImplementation (typeof (ITestInstanceConcreteImplementationAttributeType), Lifetime = LifetimeKind.Instance)]
-  [ConcreteImplementation (typeof (ITestSingletonConcreteImplementationAttributeType), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor (typeof (ITestConcreteImplementationAttributeTypeWithInvalidImplementation))]
+  [ImplementationFor (typeof (ITestInstanceConcreteImplementationAttributeType), Lifetime = LifetimeKind.Instance)]
+  [ImplementationFor (typeof (ITestSingletonConcreteImplementationAttributeType), Lifetime = LifetimeKind.Singleton)]
   public class TestConcreteImplementationAttributeType
       : ITestInstanceConcreteImplementationAttributeType, ITestSingletonConcreteImplementationAttributeType
   {

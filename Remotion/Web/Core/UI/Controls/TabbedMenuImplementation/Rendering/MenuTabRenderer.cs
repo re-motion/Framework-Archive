@@ -27,7 +27,7 @@ namespace Remotion.Web.UI.Controls.TabbedMenuImplementation.Rendering
   /// Responsible for rendering a <see cref="MenuTab"/> in quirks mode.
   /// <seealso cref="IMenuTab"/>
   /// </summary>
-  [ConcreteImplementation (typeof (IMenuTabRenderer), Lifetime = LifetimeKind.Instance)]
+  [ImplementationFor (typeof (IMenuTabRenderer), Lifetime = LifetimeKind.Instance)]
   public class MenuTabRenderer : WebTabRenderer, IMenuTabRenderer
   {
     private Command _renderingCommand;
