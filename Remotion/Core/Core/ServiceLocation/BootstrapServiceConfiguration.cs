@@ -33,6 +33,11 @@ namespace Remotion.ServiceLocation
 
     private DefaultServiceLocator _bootstrapServiceLocator = DefaultServiceLocator.Create();
 
+    public BootstrapServiceConfiguration ()
+    {
+      
+    }
+
     public IServiceLocator BootstrapServiceLocator
     {
       get { return _bootstrapServiceLocator; }

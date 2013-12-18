@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Linq;
 using System.Reflection;
+using Remotion.Collections;
 using Remotion.Reflection;
 using Remotion.Reflection.TypeDiscovery;
 using Remotion.Utilities;
@@ -44,6 +45,7 @@ namespace Remotion.ServiceLocation
   public class DefaultServiceConfigurationDiscoveryService : IServiceConfigurationDiscoveryService
   {
     private readonly ITypeDiscoveryService _typeDiscoveryService;
+    private readonly ICache<Type, IEnumerable<Type>> _implementingTypeCache = CacheFactory.CreateWithLocking<Type, IEnumerable<Type>>();
 
     public static DefaultServiceConfigurationDiscoveryService Create ()
     {
@@ -97,22 +99,13 @@ namespace Remotion.ServiceLocation
     public ServiceConfigurationEntry GetDefaultConfiguration (Type serviceType)
     {
       var excludeGlobalTypes = !serviceType.Assembly.GlobalAssemblyCache;
-      var derivedTypes = _typeDiscoveryService.GetTypes (serviceType, excludeGlobalTypes);
-      
-      // TODO RM-5560: Refactor to ask for each type the derived types from TIypeDiscoverySerivce
-      // determine flag excludeGlobalTypes on GetTypes by checking type.Assembly.GlobalAssemblyCache
-      // TBD: Caching-Decorator for ITypeDiscoveryService?
-      // Cache for each derived type if it contains a ConcreteImplementationAttribute, but result of GetCustomAttributes must not be cached.
-      // Only cache if it is actually sensible.
 
-      // TODO RM-5506: caching 
-      var attributes = derivedTypes
-          .Cast<Type>()
-          .SelectMany (
-              type => AttributeUtility.GetCustomAttributes<ImplementationForAttribute> (type, false)
-                  .Select (attribute => Tuple.Create (type, attribute)))
-          .Where (tuple => tuple.Item2.ServiceType == serviceType)
-          .ToArray();
+      var implementingTypes = _implementingTypeCache.GetOrCreateValue (serviceType, type => GetImplementingTypes (type, excludeGlobalTypes));
+
+      var attributes = implementingTypes.SelectMany (
+          type => AttributeUtility.GetCustomAttributes<ImplementationForAttribute> (type, false)
+              .Where (attribute => attribute.ServiceType == serviceType)
+              .Select (attribute => Tuple.Create (type, attribute)));
 
       return ServiceConfigurationEntry.CreateFromAttributes (serviceType, attributes);
     }
@@ -128,6 +121,22 @@ namespace Remotion.ServiceLocation
       ArgumentUtility.CheckNotNull ("assemblies", assemblies);
 
       return assemblies.SelectMany (a => GetDefaultConfiguration (AssemblyTypeCache.GetTypes (a)));
+    }
+
+    private IEnumerable<Type> GetImplementingTypes (Type serviceType, bool excludeGlobalTypes)
+    {
+      var derivedTypes = _typeDiscoveryService.GetTypes (serviceType, excludeGlobalTypes);
+
+      var implementingTypes = new List<Type>();
+      foreach (Type derivedType in derivedTypes)
+      {
+        foreach (var attribute in AttributeUtility.GetCustomAttributes<ImplementationForAttribute> (derivedType, false))
+        {
+          if (attribute.ServiceType == serviceType)
+            implementingTypes.Add (derivedType);
+        }
+      }
+      return implementingTypes.ToArray();
     }
   }
 }

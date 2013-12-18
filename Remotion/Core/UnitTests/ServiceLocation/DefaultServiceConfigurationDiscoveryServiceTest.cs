@@ -100,7 +100,7 @@ namespace Remotion.UnitTests.ServiceLocation
           Throws.InvalidOperationException.With.Message.EqualTo (
               "Invalid configuration of service type "
               + "'Remotion.UnitTests.ServiceLocation.TestDomain.ITestMultipleConcreteImplementationAttributesWithDuplicatePositionType'. "
-              + "Ambiguous ConcreteImplementationAttribute: Position must be unique.")
+              + "Ambiguous ImplementationForAttribute: Position must be unique.")
               .And.InnerException.Not.Null);
     }
 
@@ -118,7 +118,7 @@ namespace Remotion.UnitTests.ServiceLocation
             .With.Message.EqualTo (
               "Invalid configuration of service type "
               + "'Remotion.UnitTests.ServiceLocation.TestDomain.ITestMultipleConcreteImplementationAttributesWithDuplicateImplementationType'. "
-              + "Ambiguous ConcreteImplementationAttribute: Implementation type must be unique.")
+              + "Ambiguous ImplementationForAttribute: Implementation type must be unique.")
             .And.InnerException.Not.Null);
     }
 
