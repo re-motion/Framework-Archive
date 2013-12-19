@@ -498,6 +498,22 @@ namespace Remotion.UnitTests.ServiceLocation
     }
 
     [Test]
+    public void Register_ServiceConfigurationEntry_ImplementationInfoWithFactory ()
+    {
+      var expectedInstance = new TestConcreteImplementationAttributeType();
+      var serviceImplementation = ServiceImplementationInfo.Create (() => expectedInstance);
+
+      var serviceConfigurationEntry = new ServiceConfigurationEntry (
+          typeof (ITestSingletonConcreteImplementationAttributeType),
+          serviceImplementation);
+
+      _serviceLocator.Register (serviceConfigurationEntry);
+
+      var instance1 = _serviceLocator.GetInstance (typeof (ITestSingletonConcreteImplementationAttributeType));
+      Assert.That (instance1, Is.SameAs (expectedInstance));
+    }
+
+    [Test]
     public void GetInstance_IEnumerable ()
     {
       var implementation1 = new ServiceImplementationInfo (typeof (TestMultipleRegistrationType1), LifetimeKind.Singleton);

@@ -376,6 +376,9 @@ namespace Remotion.ServiceLocation
 
     private Func<object> CreateInstanceFactory (ServiceImplementationInfo serviceImplementationInfo)
     {
+      if (serviceImplementationInfo.Factory != null)
+        return serviceImplementationInfo.Factory;
+
       var publicCtors = serviceImplementationInfo.ImplementationType.GetConstructors();
       if (publicCtors.Length != 1)
       {

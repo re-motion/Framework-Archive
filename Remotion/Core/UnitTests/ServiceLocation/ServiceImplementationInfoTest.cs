@@ -24,6 +24,17 @@ namespace Remotion.UnitTests.ServiceLocation
   public class ServiceImplementationInfoTest
   {
     [Test]
+    public void Create_RetrievesImplementationType ()
+    {
+      Func<ServiceImplementationInfoTest> factory = () => new ServiceImplementationInfoTest();
+      var implementationInfo = ServiceImplementationInfo.Create (factory);
+
+      Assert.That (implementationInfo.Factory, Is.Not.Null);
+      Assert.That (implementationInfo.ImplementationType, Is.SameAs (typeof (ServiceImplementationInfoTest)));
+      Assert.That (implementationInfo.Lifetime, Is.EqualTo (LifetimeKind.Instance));
+    }
+
+    [Test]
     public void ImplementationInfo_Equals ()
     {
       var implementation0 = new ServiceImplementationInfo (typeof (object), LifetimeKind.Instance);
