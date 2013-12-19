@@ -165,7 +165,7 @@ namespace Remotion.UnitTests.ServiceLocation
 
       Assert.That (
           () => ServiceConfigurationEntry.CreateFromAttributes (typeof (ITestMultipleConcreteImplementationAttributesType), attributes),
-          Throws.InvalidOperationException.With.Message.EqualTo ("Ambiguous ConcreteImplementationAttribute: Position must be unique."));
+          Throws.InvalidOperationException.With.Message.EqualTo ("Ambiguous ImplementationForAttribute: Position must be unique."));
     }
 
     [Test]
@@ -182,7 +182,7 @@ namespace Remotion.UnitTests.ServiceLocation
 
       Assert.That (
           () => ServiceConfigurationEntry.CreateFromAttributes (typeof (ITestMultipleConcreteImplementationAttributesType), attributes),
-          Throws.InvalidOperationException.With.Message.EqualTo ("Ambiguous ConcreteImplementationAttribute: Implementation type must be unique."));
+          Throws.InvalidOperationException.With.Message.EqualTo ("Ambiguous ImplementationForAttribute: Implementation type must be unique."));
     }
 
     [Test]
@@ -198,7 +198,7 @@ namespace Remotion.UnitTests.ServiceLocation
 
       Assert.That (
           () => ServiceConfigurationEntry.CreateFromAttributes (typeof (ITestMultipleConcreteImplementationAttributesType), attributes),
-          Throws.InvalidOperationException.With.Message.EqualTo ("Ambiguous ConcreteImplementationAttribute: Implementation type must be unique."));
+          Throws.InvalidOperationException.With.Message.EqualTo ("Ambiguous ImplementationForAttribute: Implementation type must be unique."));
     }
 
     [Test]
