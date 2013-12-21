@@ -18,14 +18,13 @@ using System;
 using System.Collections;
 using NUnit.Framework;
 using Remotion.Utilities;
-using System.Collections.Generic;
 
 namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
 {
-	[TestFixture]
-	public class CheckNotNullOrEmptyOrItemsNull
-	{
-	  [Test]
+  [TestFixture]
+  public class CheckNotNullOrEmptyOrItemsNull
+  {
+    [Test]
     [ExpectedException (typeof (ArgumentNullException))]
     public void Fail_NullICollection ()
     {
@@ -42,21 +41,21 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
     }
 
     [Test]
-    [ExpectedExceptionAttribute (typeof (ArgumentEmptyException))]
+    [ExpectedException(typeof(ArgumentException), ExpectedMessage = "Parameter 'arg' cannot be empty.\r\nParameter name: arg")]
     public void Fail_EmptyArray ()
     {
       ArgumentUtility.CheckNotNullOrEmptyOrItemsNull ("arg", new string[0]);
     }
 
     [Test]
-    [ExpectedExceptionAttribute (typeof (ArgumentEmptyException))]
+    [ExpectedException(typeof(ArgumentException), ExpectedMessage = "Parameter 'arg' cannot be empty.\r\nParameter name: arg")]
     public void Fail_EmptyCollection ()
     {
       ArgumentUtility.CheckNotNullOrEmptyOrItemsNull ("arg", new ArrayList ());
     }
 
     [Test]
-    [ExpectedExceptionAttribute (typeof (ArgumentEmptyException))]
+    [ExpectedException(typeof(ArgumentException), ExpectedMessage = "Parameter 'arg' cannot be empty.\r\nParameter name: arg")]
     public void Fail_EmptyIEnumerable ()
     {
       ArgumentUtility.CheckNotNullOrEmptyOrItemsNull ("arg", GetEmptyEnumerable());

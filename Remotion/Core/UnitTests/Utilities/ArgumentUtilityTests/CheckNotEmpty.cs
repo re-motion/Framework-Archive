@@ -40,7 +40,7 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
     }
 
     [Test]
-    [ExpectedExceptionAttribute (typeof (ArgumentEmptyException), ExpectedMessage = "Parameter 'arg' cannot be empty.\r\nParameter name: arg")]
+    [ExpectedExceptionAttribute (typeof (ArgumentException), ExpectedMessage = "Parameter 'arg' cannot be empty.\r\nParameter name: arg")]
     public void Fail_EmptyString ()
     {
       ArgumentUtility.CheckNotEmpty ("arg", "");
@@ -61,7 +61,7 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
     }
 
     [Test]
-    [ExpectedExceptionAttribute (typeof (ArgumentEmptyException), ExpectedMessage = "Parameter 'arg' cannot be empty.\r\nParameter name: arg")]
+    [ExpectedExceptionAttribute (typeof (ArgumentException), ExpectedMessage = "Parameter 'arg' cannot be empty.\r\nParameter name: arg")]
     public void Fail_EmptyCollection ()
     {
       ArgumentUtility.CheckNotEmpty ("arg", Type.EmptyTypes);
@@ -76,7 +76,7 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
     }
 
     [Test]
-    [ExpectedException(typeof(ArgumentEmptyException), ExpectedMessage = "Parameter 'arg' cannot be empty.\r\nParameter name: arg")]
+    [ExpectedException(typeof(ArgumentException), ExpectedMessage = "Parameter 'arg' cannot be empty.\r\nParameter name: arg")]
     public void Fail_EmptyGuid ()
     {
       ArgumentUtility.CheckNotEmpty ("arg", Guid.Empty);

@@ -54,7 +54,7 @@ public class QueryParameter
   /// <param name="value">The value of the parameter.</param>
   /// <param name="parameterType">The <see cref="QueryParameterType"/> of the parameter.</param>
   /// <exception cref="System.ArgumentNullException"><paramref name="name"/> is <see langword="null"/>.</exception>
-  /// <exception cref="Remotion.Utilities.ArgumentEmptyException"><paramref name="name"/> is an empty string.</exception>
+  /// <exception cref="System.ArgumentException"><paramref name="name"/> is an empty string.</exception>
   /// <exception cref="System.ArgumentOutOfRangeException"><paramref name="parameterType"/> is not a valid enum value.</exception>
   public QueryParameter (string name, object value, QueryParameterType parameterType)
   {

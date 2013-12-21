@@ -67,12 +67,12 @@ namespace Remotion.Utilities
     // Duplicated in Remotion.Linq.Utilities.ArgumentUtility
     [AssertionMethod]
     public static string CheckNotNullOrEmpty (
-        [InvokerParameterName] string argumentName, 
+        [InvokerParameterName] string argumentName,
         [AssertionCondition (AssertionConditionType.IS_NOT_NULL)] string actualValue)
     {
       CheckNotNull (argumentName, actualValue);
       if (actualValue.Length == 0)
-        throw new ArgumentEmptyException (argumentName);
+        throw CreateArgumentEmptyException (argumentName);
 
       return actualValue;
     }
@@ -124,7 +124,7 @@ namespace Remotion.Utilities
     public static string CheckNotEmpty ([InvokerParameterName] string argumentName, string actualValue)
     {
       if (actualValue != null && actualValue.Length == 0)
-        throw new ArgumentEmptyException (argumentName);
+        throw CreateArgumentEmptyException (argumentName);
 
       return actualValue;
     }
@@ -141,7 +141,7 @@ namespace Remotion.Utilities
         if (collection != null)
         {
           if (collection.Count == 0)
-            throw new ArgumentEmptyException (argumentName);
+            throw CreateArgumentEmptyException (argumentName);
           else
             return enumerable;
         }
@@ -151,30 +151,35 @@ namespace Remotion.Utilities
         using (disposableEnumerator) // using (null) is allowed in C#
         {
           if (!enumerator.MoveNext())
-            throw new ArgumentEmptyException (argumentName);
+            throw CreateArgumentEmptyException (argumentName);
         }
       }
 
       return enumerable;
     }
 
+    public static ArgumentException CreateArgumentEmptyException ([InvokerParameterName] string argumentName)
+    {
+      return new ArgumentException (string.Format("Parameter '{0}' cannot be empty.", argumentName), argumentName);
+    }
+
     [AssertionMethod]
     public static Guid CheckNotEmpty ([InvokerParameterName] string argumentName, Guid actualValue)
     {
       if (actualValue == Guid.Empty)
-        throw new ArgumentEmptyException (argumentName);
+        throw CreateArgumentEmptyException (argumentName);
 
       return actualValue;
     }
 
-    public static void ThrowEnumArgumentOutOfRangeException ([InvokerParameterName] string argumentName, Enum actualValue)
+    public static ArgumentOutOfRangeException CreateEnumArgumentOutOfRangeException ([InvokerParameterName] string argumentName, Enum actualValue)
     {
       string message = string.Format (
           "The value of argument {0} is not a valid value of the type {1}. Actual value was {2}.",
           argumentName,
           actualValue.GetType(),
           actualValue);
-      throw new ArgumentOutOfRangeException (argumentName, actualValue, message);
+      return new ArgumentOutOfRangeException (argumentName, actualValue, message);
     }
 
     public static object CheckNotNullAndType (

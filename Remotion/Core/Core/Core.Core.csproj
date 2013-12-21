@@ -292,7 +292,6 @@
     <Compile Include="SharedSource\ReSharperAnnotations\PartialDeclarations.cs" />
     <Compile Include="StandardDelegates.cs" />
     <Compile Include="SuppressAttributesAttribute.cs" />
-    <Compile Include="Utilities\ArgumentEmptyException.cs" />
     <Compile Include="Utilities\ArgumentItemDuplicateException.cs" />
     <Compile Include="Utilities\ArgumentItemNullException.cs" />
     <Compile Include="Utilities\ArgumentItemTypeException.cs" />

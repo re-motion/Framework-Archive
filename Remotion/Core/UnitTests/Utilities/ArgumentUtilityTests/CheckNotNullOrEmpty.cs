@@ -34,35 +34,35 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
     }
 
     [Test]
-    [ExpectedExceptionAttribute (typeof (ArgumentEmptyException))]
+    [ExpectedException(typeof(ArgumentException), ExpectedMessage = "Parameter 'arg' cannot be empty.\r\nParameter name: arg")]
     public void Fail_EmptyString()
     {
       ArgumentUtility.CheckNotNullOrEmpty ("arg", "");
     }
 
     [Test]
-    [ExpectedExceptionAttribute (typeof (ArgumentEmptyException))]
+    [ExpectedException(typeof(ArgumentException), ExpectedMessage = "Parameter 'arg' cannot be empty.\r\nParameter name: arg")]
     public void Fail_EmptyArray()
     {
       ArgumentUtility.CheckNotNullOrEmpty ("arg", new string[0]);
     }
 
     [Test]
-    [ExpectedExceptionAttribute (typeof (ArgumentEmptyException))]
+    [ExpectedException(typeof(ArgumentException), ExpectedMessage = "Parameter 'arg' cannot be empty.\r\nParameter name: arg")]
     public void Fail_EmptyCollection()
     {
       ArgumentUtility.CheckNotNullOrEmpty ("arg", new ArrayList());
     }
 
     [Test]
-    [ExpectedExceptionAttribute (typeof (ArgumentEmptyException))]
+    [ExpectedException(typeof(ArgumentException), ExpectedMessage = "Parameter 'arg' cannot be empty.\r\nParameter name: arg")]
     public void Fail_EmptyIEnumerable ()
     {
       ArgumentUtility.CheckNotNullOrEmpty ("arg", GetEmptyEnumerable());
     }
 
     [Test]
-    [ExpectedExceptionAttribute (typeof (ArgumentEmptyException))]
+    [ExpectedException(typeof(ArgumentException), ExpectedMessage = "Parameter 'arg' cannot be empty.\r\nParameter name: arg")]
     public void Fail_NonDisposableEnumerable ()
     {
       IEnumerable enumerable = new NonDisposableEnumerable (false);
