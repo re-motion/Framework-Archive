@@ -70,7 +70,11 @@
     <Compile Include="ReSharperAnnotations\TerminatesProgramAttribute.cs" />
     <Compile Include="ReSharperAnnotations\UsedImplicitlyAttribute.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="..\SharedSource Apache-2.0.licenseheader">
+      <Link>SharedSource Apache-2.0.licenseheader</Link>
+    </None>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
