@@ -253,7 +253,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Development.TypePipe", "Rem
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SharedSource", "SharedSource", "{A01E19B1-74DF-4827-B024-D06CB0D838DD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedSource", "SharedSource\SharedSource.csproj", "{378885D1-5D3E-4226-9C57-AA5183BA45D5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedSource.Core", "SharedSource\Core\SharedSource.Core.csproj", "{378885D1-5D3E-4226-9C57-AA5183BA45D5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

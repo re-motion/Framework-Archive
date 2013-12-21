@@ -66,7 +66,6 @@
     <Compile Include="ReSharperAnnotations\PathReferenceAttribute.cs" />
     <Compile Include="ReSharperAnnotations\PublicAPIAttribute.cs" />
     <Compile Include="ReSharperAnnotations\PureAttribute.cs" />
-    <Compile Include="ReSharperAnnotations\ReflectionAPIAttribute.cs" />
     <Compile Include="ReSharperAnnotations\StringFormatMethodAttribute.cs" />
     <Compile Include="ReSharperAnnotations\TerminatesProgramAttribute.cs" />
     <Compile Include="ReSharperAnnotations\UsedImplicitlyAttribute.cs" />

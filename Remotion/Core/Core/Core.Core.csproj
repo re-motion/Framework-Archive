@@ -120,68 +120,65 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\..\SharedSource\ReSharperAnnotations\AssertionConditionAttribute.cs">
-      <Link>SharedSource\ReSharperAnnotations\AssertionConditionAttribute.cs</Link>
+    <Compile Include="..\..\..\SharedSource\Core\ResharperAnnotations\AssertionConditionAttribute.cs">
+      <Link>SharedSource\ResharperAnnotations\AssertionConditionAttribute.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\SharedSource\ReSharperAnnotations\AssertionMethodAttribute.cs">
-      <Link>SharedSource\ReSharperAnnotations\AssertionMethodAttribute.cs</Link>
+    <Compile Include="..\..\..\SharedSource\Core\ResharperAnnotations\AssertionMethodAttribute.cs">
+      <Link>SharedSource\ResharperAnnotations\AssertionMethodAttribute.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\SharedSource\ReSharperAnnotations\BaseTypeRequiredAttribute.cs">
-      <Link>SharedSource\ReSharperAnnotations\BaseTypeRequiredAttribute.cs</Link>
+    <Compile Include="..\..\..\SharedSource\Core\ResharperAnnotations\BaseTypeRequiredAttribute.cs">
+      <Link>SharedSource\ResharperAnnotations\BaseTypeRequiredAttribute.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\SharedSource\ReSharperAnnotations\CanBeNullAttribute.cs">
-      <Link>SharedSource\ReSharperAnnotations\CanBeNullAttribute.cs</Link>
+    <Compile Include="..\..\..\SharedSource\Core\ResharperAnnotations\CanBeNullAttribute.cs">
+      <Link>SharedSource\ResharperAnnotations\CanBeNullAttribute.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\SharedSource\ReSharperAnnotations\CannotApplyEqualityOperatorAttribute.cs">
-      <Link>SharedSource\ReSharperAnnotations\CannotApplyEqualityOperatorAttribute.cs</Link>
+    <Compile Include="..\..\..\SharedSource\Core\ResharperAnnotations\CannotApplyEqualityOperatorAttribute.cs">
+      <Link>SharedSource\ResharperAnnotations\CannotApplyEqualityOperatorAttribute.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\SharedSource\ReSharperAnnotations\ContractAnnotationAttribute.cs">
-      <Link>SharedSource\ReSharperAnnotations\ContractAnnotationAttribute.cs</Link>
+    <Compile Include="..\..\..\SharedSource\Core\ResharperAnnotations\ContractAnnotationAttribute.cs">
+      <Link>SharedSource\ResharperAnnotations\ContractAnnotationAttribute.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\SharedSource\ReSharperAnnotations\InstantHandleAttribute.cs">
-      <Link>SharedSource\ReSharperAnnotations\InstantHandleAttribute.cs</Link>
+    <Compile Include="..\..\..\SharedSource\Core\ResharperAnnotations\InstantHandleAttribute.cs">
+      <Link>SharedSource\ResharperAnnotations\InstantHandleAttribute.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\SharedSource\ReSharperAnnotations\InvokerParameterNameAttribute.cs">
-      <Link>SharedSource\ReSharperAnnotations\InvokerParameterNameAttribute.cs</Link>
+    <Compile Include="..\..\..\SharedSource\Core\ResharperAnnotations\InvokerParameterNameAttribute.cs">
+      <Link>SharedSource\ResharperAnnotations\InvokerParameterNameAttribute.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\SharedSource\ReSharperAnnotations\LinqTunnelAttribute.cs">
-      <Link>SharedSource\ReSharperAnnotations\LinqTunnelAttribute.cs</Link>
+    <Compile Include="..\..\..\SharedSource\Core\ResharperAnnotations\LinqTunnelAttribute.cs">
+      <Link>SharedSource\ResharperAnnotations\LinqTunnelAttribute.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\SharedSource\ReSharperAnnotations\LocalizationRequiredAttribute.cs">
-      <Link>SharedSource\ReSharperAnnotations\LocalizationRequiredAttribute.cs</Link>
+    <Compile Include="..\..\..\SharedSource\Core\ResharperAnnotations\LocalizationRequiredAttribute.cs">
+      <Link>SharedSource\ResharperAnnotations\LocalizationRequiredAttribute.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\SharedSource\ReSharperAnnotations\MeansImplicitUseAttribute.cs">
-      <Link>SharedSource\ReSharperAnnotations\MeansImplicitUseAttribute.cs</Link>
+    <Compile Include="..\..\..\SharedSource\Core\ResharperAnnotations\MeansImplicitUseAttribute.cs">
+      <Link>SharedSource\ResharperAnnotations\MeansImplicitUseAttribute.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\SharedSource\ReSharperAnnotations\NoEnumerationAttribute.cs">
-      <Link>SharedSource\ReSharperAnnotations\NoEnumerationAttribute.cs</Link>
+    <Compile Include="..\..\..\SharedSource\Core\ResharperAnnotations\NoEnumerationAttribute.cs">
+      <Link>SharedSource\ResharperAnnotations\NoEnumerationAttribute.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\SharedSource\ReSharperAnnotations\NotifyPropertyChangedInvocatorAttribute.cs">
-      <Link>SharedSource\ReSharperAnnotations\NotifyPropertyChangedInvocatorAttribute.cs</Link>
+    <Compile Include="..\..\..\SharedSource\Core\ResharperAnnotations\NotifyPropertyChangedInvocatorAttribute.cs">
+      <Link>SharedSource\ResharperAnnotations\NotifyPropertyChangedInvocatorAttribute.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\SharedSource\ReSharperAnnotations\NotNullAttribute.cs">
-      <Link>SharedSource\ReSharperAnnotations\NotNullAttribute.cs</Link>
+    <Compile Include="..\..\..\SharedSource\Core\ResharperAnnotations\NotNullAttribute.cs">
+      <Link>SharedSource\ResharperAnnotations\NotNullAttribute.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\SharedSource\ReSharperAnnotations\PathReferenceAttribute.cs">
-      <Link>SharedSource\ReSharperAnnotations\PathReferenceAttribute.cs</Link>
+    <Compile Include="..\..\..\SharedSource\Core\ResharperAnnotations\PathReferenceAttribute.cs">
+      <Link>SharedSource\ResharperAnnotations\PathReferenceAttribute.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\SharedSource\ReSharperAnnotations\PublicAPIAttribute.cs">
-      <Link>SharedSource\ReSharperAnnotations\PublicAPIAttribute.cs</Link>
+    <Compile Include="..\..\..\SharedSource\Core\ReSharperAnnotations\PublicAPIAttribute.cs">
+      <Link>SharedSource\ResharperAnnotations\PublicAPIAttribute.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\SharedSource\ReSharperAnnotations\PureAttribute.cs">
-      <Link>SharedSource\ReSharperAnnotations\PureAttribute.cs</Link>
+    <Compile Include="..\..\..\SharedSource\Core\ResharperAnnotations\PureAttribute.cs">
+      <Link>SharedSource\ResharperAnnotations\PureAttribute.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\SharedSource\ReSharperAnnotations\ReflectionAPIAttribute.cs">
-      <Link>SharedSource\ReSharperAnnotations\ReflectionAPIAttribute.cs</Link>
+    <Compile Include="..\..\..\SharedSource\Core\ResharperAnnotations\StringFormatMethodAttribute.cs">
+      <Link>SharedSource\ResharperAnnotations\StringFormatMethodAttribute.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\SharedSource\ReSharperAnnotations\StringFormatMethodAttribute.cs">
-      <Link>SharedSource\ReSharperAnnotations\StringFormatMethodAttribute.cs</Link>
+    <Compile Include="..\..\..\SharedSource\Core\ResharperAnnotations\TerminatesProgramAttribute.cs">
+      <Link>SharedSource\ResharperAnnotations\TerminatesProgramAttribute.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\SharedSource\ReSharperAnnotations\TerminatesProgramAttribute.cs">
-      <Link>SharedSource\ReSharperAnnotations\TerminatesProgramAttribute.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\SharedSource\ReSharperAnnotations\UsedImplicitlyAttribute.cs">
-      <Link>SharedSource\ReSharperAnnotations\UsedImplicitlyAttribute.cs</Link>
+    <Compile Include="..\..\..\SharedSource\Core\ResharperAnnotations\UsedImplicitlyAttribute.cs">
+      <Link>SharedSource\ResharperAnnotations\UsedImplicitlyAttribute.cs</Link>
     </Compile>
     <Compile Include="..\..\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
@@ -539,6 +536,7 @@
     <Compile Include="Utilities\PostActionDisposableDecorator.cs" />
     <Compile Include="Utilities\AttributeRetrieval\PropertyCustomAttributeRetriever.cs" />
     <Compile Include="Utilities\ReferenceEqualityComparer.cs" />
+    <Compile Include="Utilities\ReSharperAnnotations\ReflectionAPIAttribute.cs" />
     <Compile Include="Utilities\StopwatchScope.cs" />
     <Compile Include="Utilities\TypeConverterResult.cs" />
     <Compile Include="Utilities\TypeConverterType.cs" />

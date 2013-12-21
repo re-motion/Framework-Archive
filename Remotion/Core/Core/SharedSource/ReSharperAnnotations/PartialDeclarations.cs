@@ -87,11 +87,6 @@ namespace JetBrains.Annotations
   {
   }
 
-
-  public partial class ReflectionAPIAttribute
-  {
-  }
-
   public partial class StringFormatMethodAttribute
   {
   }
