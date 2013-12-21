@@ -24,7 +24,7 @@ namespace JetBrains.Annotations
   /// The format string should be in <see cref="string.Format(IFormatProvider,string,object[])"/> -like form
   /// </summary>
   [AttributeUsage (AttributeTargets.Constructor | AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
-  public sealed class StringFormatMethodAttribute : Attribute
+  sealed partial class StringFormatMethodAttribute : Attribute
   {
     /// <summary>
     /// Initializes new instance of StringFormatMethodAttribute
@@ -38,7 +38,6 @@ namespace JetBrains.Annotations
     /// <summary>
     /// Gets format parameter name
     /// </summary>
-    [UsedImplicitly]
     public string FormatParameterName { get; private set; }
   }
 }

@@ -22,7 +22,7 @@ namespace JetBrains.Annotations
   /// Indicates that the function is used to notify class type property value is changed.
   /// </summary>
   [AttributeUsage (AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
-  public sealed class NotifyPropertyChangedInvocatorAttribute : Attribute
+  sealed partial class NotifyPropertyChangedInvocatorAttribute : Attribute
   {
     public NotifyPropertyChangedInvocatorAttribute () { }
     public NotifyPropertyChangedInvocatorAttribute (string parameterName)
@@ -30,7 +30,6 @@ namespace JetBrains.Annotations
       ParameterName = parameterName;
     }
 
-    [UsedImplicitly]
     public string ParameterName { get; private set; }
   }
 }

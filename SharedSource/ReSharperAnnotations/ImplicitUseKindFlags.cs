@@ -18,9 +18,30 @@ using System;
 
 namespace JetBrains.Annotations
 {
-  /// <summary>
-  /// Indicates that the value of marked element could be <c>null</c> sometimes, so the check for <c>null</c> is necessary before its usage
-  /// </summary>
-  [AttributeUsage (AttributeTargets.Method | AttributeTargets.Parameter | AttributeTargets.Property | AttributeTargets.Delegate | AttributeTargets.Field, AllowMultiple = false, Inherited = true)]
-  public sealed class CanBeNullAttribute : Attribute { }
+  [Flags]
+  public enum ImplicitUseKindFlags
+  {
+    Default = Access | Assign | InstantiatedWithFixedConstructorSignature,
+
+    /// <summary>
+    /// Only entity marked with attribute considered used
+    /// </summary>
+    Access = 1,
+
+    /// <summary>
+    /// Indicates implicit assignment to a member
+    /// </summary>
+    Assign = 2,
+
+    /// <summary>
+    /// Indicates implicit instantiation of a type with fixed constructor signature.
+    /// That means any unused constructor parameters won't be reported as such.
+    /// </summary>
+    InstantiatedWithFixedConstructorSignature = 4,
+
+    /// <summary>
+    /// Indicates implicit instantiation of a type
+    /// </summary>
+    InstantiatedNoFixedConstructorSignature = 8,
+  }
 }

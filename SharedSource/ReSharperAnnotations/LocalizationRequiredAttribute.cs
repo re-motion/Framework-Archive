@@ -22,7 +22,7 @@ namespace JetBrains.Annotations
   /// Indicates that marked element should be localized or not.
   /// </summary>
   [AttributeUsage (AttributeTargets.All, AllowMultiple = false, Inherited = true)]
-  public sealed class LocalizationRequiredAttribute : Attribute
+  sealed partial class LocalizationRequiredAttribute : Attribute
   {
     /// <summary>
     /// Initializes a new instance of the <see cref="LocalizationRequiredAttribute"/> class with
@@ -46,7 +46,6 @@ namespace JetBrains.Annotations
     /// Gets a value indicating whether a element should be localized.
     /// <value><c>true</c> if a element should be localized; otherwise, <c>false</c>.</value>
     /// </summary>
-    [UsedImplicitly]
     public bool Required { get; private set; }
 
     /// <summary>

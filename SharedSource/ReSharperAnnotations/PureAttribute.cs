@@ -19,8 +19,9 @@ using System;
 namespace JetBrains.Annotations
 {
   /// <summary>
-  /// Indicates that the value of marked element could never be <c>null</c>
+  /// Indicates that method doesn't contain observable side effects.
   /// </summary>
-  [AttributeUsage (AttributeTargets.Method | AttributeTargets.Parameter | AttributeTargets.Property | AttributeTargets.Delegate | AttributeTargets.Field, AllowMultiple = false, Inherited = true)]
-  public sealed class NotNullAttribute : Attribute { }
+  // The same as <see cref="System.Diagnostics.Contracts.PureAttribute"/>
+  [AttributeUsage (AttributeTargets.Method, Inherited = true)]
+  sealed partial class PureAttribute : Attribute { }
 }

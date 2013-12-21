@@ -19,9 +19,10 @@ using System;
 namespace JetBrains.Annotations
 {
   /// <summary>
-  /// Indicates that the value of marked type (or its derivatives) cannot be compared using '==' or '!=' operators.
-  /// There is only exception to compare with <c>null</c>, it is permitted
+  /// Indicates that method is *pure* linq method, with postponed enumeration. C# iterator methods (yield ...) are always LinqTunnel.
   /// </summary>
-  [AttributeUsage (AttributeTargets.Interface | AttributeTargets.Class | AttributeTargets.Struct, AllowMultiple = false, Inherited = true)]
-  public sealed class CannotApplyEqualityOperatorAttribute : Attribute { }
+  [AttributeUsage (AttributeTargets.Method)]
+  sealed partial class LinqTunnelAttribute : Attribute
+  {
+  }
 }

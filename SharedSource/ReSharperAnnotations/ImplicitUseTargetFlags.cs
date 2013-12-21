@@ -19,10 +19,23 @@ using System;
 namespace JetBrains.Annotations
 {
   /// <summary>
-  /// Tells code analysis engine if the parameter is completely handled when the invoked method is on stack. 
-  /// If the parameter is delegate, indicates that delegate is executed while the method is executed.
-  /// If the parameter is enumerable, indicates that it is enumerated while the method is executed.
+  /// Specify what is considered used implicitly when marked with <see cref="MeansImplicitUseAttribute"/> or <see cref="UsedImplicitlyAttribute"/>
   /// </summary>
-  [AttributeUsage (AttributeTargets.Parameter, Inherited = true)]
-  public sealed class InstantHandleAttribute : Attribute { }
+  [Flags]
+  public enum ImplicitUseTargetFlags
+  {
+    Default = Itself,
+
+    Itself = 1,
+
+    /// <summary>
+    /// Members of entity marked with attribute are considered used
+    /// </summary>
+    Members = 2,
+
+    /// <summary>
+    /// Entity marked with attribute and all its members considered used
+    /// </summary>
+    WithMembers = Itself | Members
+  }
 }

@@ -19,9 +19,9 @@ using System;
 namespace JetBrains.Annotations
 {
   /// <summary>
-  /// Indicates that method doesn't contain observable side effects.
+  /// Indicates that the value of marked type (or its derivatives) cannot be compared using '==' or '!=' operators.
+  /// There is only exception to compare with <c>null</c>, it is permitted
   /// </summary>
-  // The same as <see cref="System.Diagnostics.Contracts.PureAttribute"/>
-  [AttributeUsage (AttributeTargets.Method, Inherited = true)]
-  public sealed class PureAttribute : Attribute { }
+  [AttributeUsage (AttributeTargets.Interface | AttributeTargets.Class | AttributeTargets.Struct, AllowMultiple = false, Inherited = true)]
+  sealed partial class CannotApplyEqualityOperatorAttribute : Attribute { }
 }

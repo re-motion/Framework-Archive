@@ -19,11 +19,8 @@ using System;
 namespace JetBrains.Annotations
 {
   /// <summary>
-  /// Indicates that IEnumarable, passed as parameter, is not enumerated.
-  /// 
+  /// Indicates that the value of marked element could be <c>null</c> sometimes, so the check for <c>null</c> is necessary before its usage
   /// </summary>
-  [AttributeUsage(AttributeTargets.Parameter)]
-  public sealed class NoEnumerationAttribute : Attribute
-  {
-  }
+  [AttributeUsage (AttributeTargets.Method | AttributeTargets.Parameter | AttributeTargets.Property | AttributeTargets.Delegate | AttributeTargets.Field, AllowMultiple = false, Inherited = true)]
+  sealed partial class CanBeNullAttribute : Attribute { }
 }

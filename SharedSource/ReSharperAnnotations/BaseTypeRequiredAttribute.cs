@@ -35,7 +35,7 @@ namespace JetBrains.Annotations
   /// </example>
   [AttributeUsage (AttributeTargets.Class, AllowMultiple = true, Inherited = true)]
   [BaseTypeRequired (typeof (Attribute))]
-  public sealed class BaseTypeRequiredAttribute : Attribute
+  sealed partial class BaseTypeRequiredAttribute : Attribute
   {
     /// <summary>
     /// Initializes new instance of BaseTypeRequiredAttribute

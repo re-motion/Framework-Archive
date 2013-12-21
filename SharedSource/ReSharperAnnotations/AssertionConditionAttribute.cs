@@ -25,7 +25,7 @@ namespace JetBrains.Annotations
   /// </summary>
   /// <seealso cref="AssertionConditionType"/>
   [AttributeUsage (AttributeTargets.Parameter, AllowMultiple = false, Inherited = true)]
-  public sealed class AssertionConditionAttribute : Attribute
+  sealed partial class AssertionConditionAttribute : Attribute
   {
     private readonly AssertionConditionType myConditionType;
 

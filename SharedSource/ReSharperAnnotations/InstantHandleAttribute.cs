@@ -19,10 +19,10 @@ using System;
 namespace JetBrains.Annotations
 {
   /// <summary>
-  /// Indicates that method is *pure* linq method, with postponed enumeration. C# iterator methods (yield ...) are always LinqTunnel.
+  /// Tells code analysis engine if the parameter is completely handled when the invoked method is on stack. 
+  /// If the parameter is delegate, indicates that delegate is executed while the method is executed.
+  /// If the parameter is enumerable, indicates that it is enumerated while the method is executed.
   /// </summary>
-  [AttributeUsage (AttributeTargets.Method)]
-  public sealed class LinqTunnelAttribute : Attribute
-  {
-  }
+  [AttributeUsage (AttributeTargets.Parameter, Inherited = true)]
+  sealed partial class InstantHandleAttribute : Attribute { }
 }

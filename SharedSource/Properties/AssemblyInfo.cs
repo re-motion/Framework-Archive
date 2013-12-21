@@ -15,21 +15,15 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Reflection;
 
-namespace JetBrains.Annotations
-{
-  [AttributeUsage (AttributeTargets.Parameter)]
-  public class PathReferenceAttribute : Attribute
-  {
-    public PathReferenceAttribute () { }
+//
+// General Information about an assembly is controlled through the following 
+// set of attributes. Change these attribute values to modify the information
+// associated with an assembly.
+//
+[assembly: AssemblyTitle("Remotion Shared Source Library")]
+[assembly: AssemblyDescription("Contains source files intended for embedding in other libraries.")]
+[assembly: AssemblyCulture("")]
+[assembly: CLSCompliant(true)]
 
-    [UsedImplicitly]
-    public PathReferenceAttribute ([PathReference] string basePath)
-    {
-      BasePath = basePath;
-    }
-
-    [UsedImplicitly]
-    public string BasePath { get; private set; }
-  }
-}

@@ -251,6 +251,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Reflection.CodeGenerat
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Development.TypePipe", "Remotion\Development\TypePipe\Development.TypePipe.csproj", "{F6FAF727-9405-4BCC-9153-803F73853E67}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SharedSource", "SharedSource", "{A01E19B1-74DF-4827-B024-D06CB0D838DD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedSource", "SharedSource\SharedSource.csproj", "{378885D1-5D3E-4226-9C57-AA5183BA45D5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -849,6 +853,14 @@ Global
 		{F6FAF727-9405-4BCC-9153-803F73853E67}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F6FAF727-9405-4BCC-9153-803F73853E67}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{F6FAF727-9405-4BCC-9153-803F73853E67}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{378885D1-5D3E-4226-9C57-AA5183BA45D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{378885D1-5D3E-4226-9C57-AA5183BA45D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{378885D1-5D3E-4226-9C57-AA5183BA45D5}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{378885D1-5D3E-4226-9C57-AA5183BA45D5}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{378885D1-5D3E-4226-9C57-AA5183BA45D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{378885D1-5D3E-4226-9C57-AA5183BA45D5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{378885D1-5D3E-4226-9C57-AA5183BA45D5}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{378885D1-5D3E-4226-9C57-AA5183BA45D5}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -928,6 +940,7 @@ Global
 		{81C58D26-AD10-4422-8AB1-999C34CA8D79} = {2E38AD70-ECDF-4722-981C-7388C446A514}
 		{37304DD7-81D0-4110-B924-D974C04F067C} = {2E38AD70-ECDF-4722-981C-7388C446A514}
 		{C138ADE5-F991-49A8-8BB3-B5F5381F60DA} = {2E38AD70-ECDF-4722-981C-7388C446A514}
+		{378885D1-5D3E-4226-9C57-AA5183BA45D5} = {A01E19B1-74DF-4827-B024-D06CB0D838DD}
 	EndGlobalSection
 	GlobalSection(TextTemplating) = postSolution
 		TextTemplating = 1

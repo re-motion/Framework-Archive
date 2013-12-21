@@ -45,7 +45,7 @@ namespace JetBrains.Annotations
   /// </list>
   /// </examples>
   [AttributeUsage (AttributeTargets.Method, AllowMultiple = true, Inherited = true)]
-  public sealed class ContractAnnotationAttribute : Attribute
+  sealed partial class ContractAnnotationAttribute : Attribute
   {
     public ContractAnnotationAttribute ([NotNull] string fdt)
         : this (fdt, false)
