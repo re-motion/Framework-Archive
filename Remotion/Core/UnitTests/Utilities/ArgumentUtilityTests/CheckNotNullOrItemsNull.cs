@@ -40,7 +40,7 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentItemNullException))]
+    [ExpectedException (typeof (ArgumentNullException), ExpectedMessage = "Item 0 of parameter 'arg' is null.\r\nParameter name: arg")]
     public void Fail_zItemNullICollection ()
     {
       ArrayList list = new ArrayList ();
@@ -49,7 +49,7 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentItemNullException))]
+    [ExpectedException (typeof (ArgumentNullException), ExpectedMessage = "Item 0 of parameter 'arg' is null.\r\nParameter name: arg")]
     public void Fail_zItemNullIEnumerable ()
     {
       ArgumentUtility.CheckNotNullOrItemsNull ("arg", GetEnumerableWithNullValue());

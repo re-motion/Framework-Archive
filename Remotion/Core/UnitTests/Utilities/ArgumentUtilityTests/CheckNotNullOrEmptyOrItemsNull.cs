@@ -25,14 +25,14 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
   public class CheckNotNullOrEmptyOrItemsNull
   {
     [Test]
-    [ExpectedException (typeof (ArgumentNullException))]
+    [ExpectedException (typeof (ArgumentNullException), ExpectedMessage = "Value cannot be null.\r\nParameter name: arg")]
     public void Fail_NullICollection ()
     {
       ArgumentUtility.CheckNotNullOrEmptyOrItemsNull ("arg", (ICollection) null);
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentItemNullException))]
+    [ExpectedException (typeof (ArgumentNullException), ExpectedMessage = "Item 0 of parameter 'arg' is null.\r\nParameter name: arg")]
     public void Fail_zItemNullICollection ()
     {
       ArrayList list = new ArrayList ();
