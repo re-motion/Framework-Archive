@@ -7,7 +7,7 @@
     <ProjectGuid>{378885D1-5D3E-4226-9C57-AA5183BA45D5}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Remotion.SharedSource</RootNamespace>
+    <RootNamespace>Remotion</RootNamespace>
     <AssemblyName>Remotion.SharedSource</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -22,7 +22,7 @@
     <WarningLevel>4</WarningLevel>
     <NoWarn>1591;0419</NoWarn>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <DocumentationFile>bin\Debug\Remotion.SharedSource.XML</DocumentationFile>
+    <DocumentationFile>bin\Debug\Remotion.SharedSource.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -33,7 +33,7 @@
     <WarningLevel>4</WarningLevel>
     <NoWarn>1591;0419</NoWarn>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <DocumentationFile>bin\Release\Remotion.SharedSource.XML</DocumentationFile>
+    <DocumentationFile>bin\Release\Remotion.SharedSource.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
