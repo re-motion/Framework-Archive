@@ -53,17 +53,23 @@
     <Compile Include="ReSharperAnnotations\CanBeNullAttribute.cs" />
     <Compile Include="ReSharperAnnotations\CannotApplyEqualityOperatorAttribute.cs" />
     <Compile Include="ReSharperAnnotations\ContractAnnotationAttribute.cs" />
+    <Compile Include="ReSharperAnnotations\ImplicitUseKindFlags.cs" />
+    <Compile Include="ReSharperAnnotations\ImplicitUseTargetFlags.cs" />
     <Compile Include="ReSharperAnnotations\InstantHandleAttribute.cs" />
     <Compile Include="ReSharperAnnotations\InvokerParameterNameAttribute.cs" />
     <Compile Include="ReSharperAnnotations\LinqTunnelAttribute.cs" />
     <Compile Include="ReSharperAnnotations\LocalizationRequiredAttribute.cs" />
+    <Compile Include="ReSharperAnnotations\MeansImplicitUseAttribute.cs" />
     <Compile Include="ReSharperAnnotations\NoEnumerationAttribute.cs" />
     <Compile Include="ReSharperAnnotations\NotifyPropertyChangedInvocatorAttribute.cs" />
     <Compile Include="ReSharperAnnotations\NotNullAttribute.cs" />
     <Compile Include="ReSharperAnnotations\PathReferenceAttribute.cs" />
+    <Compile Include="ReSharperAnnotations\PublicAPIAttribute.cs" />
     <Compile Include="ReSharperAnnotations\PureAttribute.cs" />
+    <Compile Include="ReSharperAnnotations\ReflectionAPIAttribute.cs" />
     <Compile Include="ReSharperAnnotations\StringFormatMethodAttribute.cs" />
     <Compile Include="ReSharperAnnotations\TerminatesProgramAttribute.cs" />
+    <Compile Include="ReSharperAnnotations\UsedImplicitlyAttribute.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

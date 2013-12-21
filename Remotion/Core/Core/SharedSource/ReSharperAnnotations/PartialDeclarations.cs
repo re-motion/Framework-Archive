@@ -59,6 +59,10 @@ namespace JetBrains.Annotations
   {
   }
 
+  public partial class MeansImplicitUseAttribute
+  {
+  }
+
   public partial class NoEnumerationAttribute
   {
   }
@@ -75,7 +79,16 @@ namespace JetBrains.Annotations
   {
   }
 
+  public partial class PublicAPIAttribute
+  {
+  }
+
   public partial class PureAttribute
+  {
+  }
+
+
+  public partial class ReflectionAPIAttribute
   {
   }
 
@@ -84,6 +97,10 @@ namespace JetBrains.Annotations
   }
 
   public partial class TerminatesProgramAttribute
+  {
+  }
+
+  public partial class UsedImplicitlyAttribute
   {
   }
 }
