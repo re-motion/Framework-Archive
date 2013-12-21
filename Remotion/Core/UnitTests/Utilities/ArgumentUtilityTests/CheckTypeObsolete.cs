@@ -25,7 +25,8 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
 	public class CheckTypeObsolete
 	{
     [Test]
-    [ExpectedException (typeof (ArgumentTypeException))]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = 
+        "Parameter 'arg' has type 'System.Int32' when type 'System.String' was expected.\r\nParameter name: arg")]
 		public void Fail_Type ()
     {
       ArgumentUtility.CheckType ("arg", 13, typeof (string));
@@ -44,14 +45,16 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
     }
 
 	  [Test]
-    [ExpectedException (typeof (ArgumentTypeException))]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = 
+        "Parameter 'arg' has type '<null>' when type 'System.Int32' was expected.\r\nParameter name: arg")]
     public void Fail_ValueTypeNull ()
     {
       ArgumentUtility.CheckType ("arg", (object) null, typeof (int));
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentTypeException))]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = 
+        "Parameter 'arg' has type 'System.DateTime' when type 'System.Int32' was expected.\r\nParameter name: arg")]
     public void Fail_ValueType ()
     {
       ArgumentUtility.CheckType ("arg", (object) DateTime.MinValue, typeof (int));

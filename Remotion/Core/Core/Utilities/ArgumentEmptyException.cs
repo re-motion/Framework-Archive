@@ -14,7 +14,6 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-
 using System;
 
 namespace Remotion.Utilities
@@ -23,9 +22,9 @@ namespace Remotion.Utilities
   /// This exception is thrown if an argument has an invalid type.
   /// </summary>
   [Obsolete ("Use ArgumentException instead. (1.15.8.0)", true)]
-  public class ArgumentTypeException : ArgumentException
+  public class ArgumentEmptyException : ArgumentException
   {
-    private ArgumentTypeException ()
+    private ArgumentEmptyException ()
     {
     }
   }

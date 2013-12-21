@@ -115,21 +115,24 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
     }
     
     [Test]
-		[ExpectedException (typeof (ArgumentTypeException))]
+    [ExpectedExceptionAttribute (typeof (ArgumentException), ExpectedMessage = 
+        "Parameter 'arg' has type 'System.Int32' when type 'System.String' was expected.\r\nParameter name: arg")]
 		public void Fail_String_Int ()
 		{
       ArgumentUtility.CheckType<string> ("arg", 1);
 		}
 
     [Test]
-    [ExpectedException (typeof (ArgumentTypeException))]
+    [ExpectedExceptionAttribute (typeof (ArgumentException), ExpectedMessage = 
+        "Parameter 'arg' has type 'System.Int32' when type 'System.Int64' was expected.\r\nParameter name: arg")]
     public void Fail_Long_Int ()
     {
       ArgumentUtility.CheckType<long> ("arg", 1);
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentTypeException))]
+    [ExpectedExceptionAttribute (typeof (ArgumentException), ExpectedMessage = 
+        "Parameter 'arg' has type 'System.String' when type 'System.Int32' was expected.\r\nParameter name: arg")]
     public void Fail_Int_String ()
     {
       ArgumentUtility.CheckType<int> ("arg", "test");

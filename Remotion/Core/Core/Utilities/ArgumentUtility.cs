@@ -163,6 +163,21 @@ namespace Remotion.Utilities
       return new ArgumentException (string.Format("Parameter '{0}' cannot be empty.", argumentName), argumentName);
     }
 
+    public static ArgumentException CreateArgumentTypeException ([InvokerParameterName] string argumentName, Type actualType, Type expectedType)
+    {
+      string actualTypeName = actualType != null ? actualType.ToString() : "<null>";
+      if (expectedType == null)
+      {
+        return new ArgumentException (string.Format ("Parameter '{0}' has unexpected type '{1}'.", argumentName, actualTypeName), argumentName);
+      }
+      else
+      {
+        return new ArgumentException (
+            string.Format ("Parameter '{0}' has type '{2}' when type '{1}' was expected.", argumentName, expectedType, actualTypeName),
+            argumentName);
+      }
+    }
+
     [AssertionMethod]
     public static Guid CheckNotEmpty ([InvokerParameterName] string argumentName, Guid actualValue)
     {
@@ -191,7 +206,7 @@ namespace Remotion.Utilities
         throw new ArgumentNullException (argumentName);
 
       if (!expectedType.IsInstanceOfType (actualValue))
-        throw new ArgumentTypeException (argumentName, expectedType, actualValue.GetType());
+        throw CreateArgumentTypeException (argumentName, actualValue.GetType(), expectedType);
       return actualValue;
     }
 
@@ -210,7 +225,7 @@ namespace Remotion.Utilities
     /// <summary>Returns the value itself if it is not <see langword="null"/> and of the specified value type.</summary>
     /// <typeparam name="TExpected"> The type that <paramref name="actualValue"/> must have. </typeparam>
     /// <exception cref="ArgumentNullException">The <paramref name="actualValue"/> is a <see langword="null"/>.</exception>
-    /// <exception cref="ArgumentTypeException">The <paramref name="actualValue"/> is an instance of another type.</exception>
+    /// <exception cref="ArgumentException">The <paramref name="actualValue"/> is an instance of another type.</exception>
     // Duplicated in Remotion.Linq.Utilities.ArgumentUtility
     public static TExpected CheckNotNullAndType<TExpected> (
         [InvokerParameterName] string argumentName,
@@ -221,7 +236,7 @@ namespace Remotion.Utilities
         throw new ArgumentNullException (argumentName);
 
       if (! (actualValue is TExpected))
-        throw new ArgumentTypeException (argumentName, typeof (TExpected), actualValue.GetType());
+        throw CreateArgumentTypeException (argumentName, actualValue.GetType(), typeof (TExpected));
       return (TExpected) actualValue;
     }
 
@@ -232,17 +247,17 @@ namespace Remotion.Utilities
         if (NullableTypeUtility.IsNullableType_NoArgumentCheck (expectedType))
           return null;
         else
-          throw new ArgumentTypeException (argumentName, expectedType, null);
+          throw CreateArgumentTypeException (argumentName, null, expectedType);
       }
 
       if (!expectedType.IsInstanceOfType (actualValue))
-        throw new ArgumentTypeException (argumentName, expectedType, actualValue.GetType());
+        throw CreateArgumentTypeException (argumentName, actualValue.GetType(), expectedType);
       return actualValue;
     }
 
     /// <summary>Returns the value itself if it is of the specified type.</summary>
     /// <typeparam name="TExpected"> The type that <paramref name="actualValue"/> must have. </typeparam>
-    /// <exception cref="ArgumentTypeException"> 
+    /// <exception cref="ArgumentException"> 
     ///     <paramref name="actualValue"/> is an instance of another type (which is not a subtype of <typeparamref name="TExpected"/>).</exception>
     /// <exception cref="ArgumentNullException"> 
     ///     <paramref name="actualValue" /> is null and <typeparamref name="TExpected"/> cannot be null. </exception>
@@ -265,7 +280,7 @@ namespace Remotion.Utilities
       }
 
       if (!(actualValue is TExpected))
-        throw new ArgumentTypeException (argumentName, typeof (TExpected), actualValue.GetType());
+        throw CreateArgumentTypeException (argumentName, actualValue.GetType(), typeof (TExpected));
 
       return (TExpected) actualValue;
     }
@@ -273,7 +288,7 @@ namespace Remotion.Utilities
 
     /// <summary>Checks whether <paramref name="actualType"/> is not <see langword="null"/> and can be assigned to <paramref name="expectedType"/>.</summary>
     /// <exception cref="ArgumentNullException">The <paramref name="actualType"/> is <see langword="null"/>.</exception>
-    /// <exception cref="ArgumentTypeException">The <paramref name="actualType"/> cannot be assigned to <paramref name="expectedType"/>.</exception>
+    /// <exception cref="ArgumentException">The <paramref name="actualType"/> cannot be assigned to <paramref name="expectedType"/>.</exception>
     public static Type CheckNotNullAndTypeIsAssignableFrom (
         [InvokerParameterName] string argumentName,
         [AssertionCondition (AssertionConditionType.IS_NOT_NULL)] Type actualType,
@@ -285,7 +300,7 @@ namespace Remotion.Utilities
     }
 
     /// <summary>Checks whether <paramref name="actualType"/> can be assigned to <paramref name="expectedType"/>.</summary>
-    /// <exception cref="ArgumentTypeException">The <paramref name="actualType"/> cannot be assigned to <paramref name="expectedType"/>.</exception>
+    /// <exception cref="ArgumentException">The <paramref name="actualType"/> cannot be assigned to <paramref name="expectedType"/>.</exception>
     // Duplicated in Remotion.Linq.Utilities.ArgumentUtility
     public static Type CheckTypeIsAssignableFrom (
         [InvokerParameterName] string argumentName, 
@@ -297,8 +312,12 @@ namespace Remotion.Utilities
       {
         if (!expectedType.IsAssignableFrom (actualType))
         {
-          string message = string.Format ("Argument {0} is a {2}, which cannot be assigned to type {1}.", argumentName, expectedType, actualType);
-          throw new ArgumentTypeException (message, argumentName, expectedType, actualType);
+          string message = string.Format (
+              "Parameter '{0}' is a '{2}', which cannot be assigned to type '{1}'.",
+              argumentName,
+              expectedType,
+              actualType);
+          throw new ArgumentException (message, argumentName);
         }
       }
 
@@ -381,7 +400,7 @@ namespace Remotion.Utilities
         return default (TEnum?);
 
       if (! (enumValue is TEnum))
-        throw new ArgumentTypeException (argumentName, typeof (TEnum), enumValue.GetType());
+        throw CreateArgumentTypeException (argumentName, enumValue.GetType(), typeof (TEnum));
 
       if (! EnumUtility.IsValidEnumValue (enumValue))
         throw new ArgumentOutOfRangeException (argumentName);
@@ -407,7 +426,7 @@ namespace Remotion.Utilities
         throw new ArgumentNullException (argumentName);
 
       if (! (enumValue is TEnum))
-        throw new ArgumentTypeException (argumentName, typeof (TEnum), enumValue.GetType());
+        throw CreateArgumentTypeException (argumentName, enumValue.GetType(), typeof (TEnum));
 
       if (!EnumUtility.IsValidEnumValue (enumValue))
         throw new ArgumentOutOfRangeException (argumentName);

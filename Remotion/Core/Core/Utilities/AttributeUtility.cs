@@ -221,7 +221,7 @@ namespace Remotion.Utilities
       if (!typeof (Attribute).IsAssignableFrom (attributeType) && !attributeType.IsInterface)
       {
         string message = "The attribute type must be assignable to System.Attribute or an interface.";
-        throw new ArgumentTypeException (message, parameterName, typeof (Attribute), attributeType);
+        throw new ArgumentException (message, parameterName);
       }
     }
   }

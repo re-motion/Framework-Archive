@@ -108,21 +108,24 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
     }
     
     [Test]
-		[ExpectedException (typeof (ArgumentTypeException))]
+    [ExpectedExceptionAttribute (typeof (ArgumentException), ExpectedMessage = 
+        "Parameter 'arg' has type 'System.Int32' when type 'System.String' was expected.\r\nParameter name: arg")]
 		public void Fail_String_Int ()
 		{
 			ArgumentUtility.CheckNotNullAndType<string> ("arg", 1);
 		}
 
     [Test]
-    [ExpectedException (typeof (ArgumentTypeException))]
+    [ExpectedExceptionAttribute (typeof (ArgumentException), ExpectedMessage = 
+        "Parameter 'arg' has type 'System.Int32' when type 'System.Int64' was expected.\r\nParameter name: arg")]
     public void Fail_Long_Int ()
     {
       ArgumentUtility.CheckNotNullAndType<long> ("arg", 1);
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentTypeException))]
+    [ExpectedExceptionAttribute (typeof (ArgumentException), ExpectedMessage = 
+        "Parameter 'arg' has type 'System.String' when type 'System.Int32' was expected.\r\nParameter name: arg")]
     public void Fail_Int_String ()
     {
       ArgumentUtility.CheckNotNullAndType<int> ("arg", "test");
@@ -136,7 +139,8 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentTypeException))]
+    [ExpectedExceptionAttribute (typeof (ArgumentException), ExpectedMessage = 
+        "Parameter 'arg' has type 'System.Int32' when type 'System.String' was expected.\r\nParameter name: arg")]
     public void Fail_Type_String_NonGeneric ()
     {
       ArgumentUtility.CheckNotNullAndType ("arg", 13, typeof (string));
@@ -151,7 +155,8 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentTypeException))]
+    [ExpectedExceptionAttribute (typeof (ArgumentException), ExpectedMessage = 
+        "Parameter 'arg' has type 'System.Double' when type 'System.Int32' was expected.\r\nParameter name: arg")]
     public void Fail_Type_Int_NonGeneric ()
     {
       ArgumentUtility.CheckNotNullAndType ("arg", 13.0, typeof (int));

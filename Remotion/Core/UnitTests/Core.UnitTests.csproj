@@ -379,7 +379,6 @@
     <Compile Include="Reflection\ParamListImplementationTest.cs" />
     <Compile Include="Reflection\ParamListTest.cs" />
     <Compile Include="Reflection\TestDomain\ClassWithManyConstructorArguments.cs" />
-    <Compile Include="Utilities\ArgumentTypeExceptionTest.cs" />
     <Compile Include="Utilities\AttributeUtilityTests\GetCustomAttributesFromEventInfoTest.cs" />
     <Compile Include="Utilities\AttributeUtilityTests\GetCustomAttributesFromMethodInfoTest.cs" />
     <Compile Include="Utilities\AttributeUtilityTests\GetCustomAttributesFromMemberInfoTestBase.cs" />

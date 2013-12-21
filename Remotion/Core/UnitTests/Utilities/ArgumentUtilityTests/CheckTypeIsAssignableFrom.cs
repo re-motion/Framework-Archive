@@ -25,7 +25,8 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
 	public class CheckTypeIsAssignableFrom
 	{
     [Test]
-    [ExpectedException (typeof (ArgumentTypeException))]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = 
+        "Parameter 'arg' is a 'System.Object', which cannot be assigned to type 'System.String'.\r\nParameter name: arg")]
     public void Fail ()
     {
       ArgumentUtility.CheckTypeIsAssignableFrom ("arg", typeof (object), typeof (string));

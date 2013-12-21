@@ -30,7 +30,8 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
       ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("arg", null, typeof (string));
     }
     [Test]
-    [ExpectedException (typeof (ArgumentTypeException))]
+		[ExpectedException (typeof (ArgumentException), ExpectedMessage = 
+        "Parameter 'arg' is a 'System.Object', which cannot be assigned to type 'System.String'.\r\nParameter name: arg")]
     public void Fail_Type ()
     {
       ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("arg", typeof (object), typeof (string));
