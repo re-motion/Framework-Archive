@@ -21,9 +21,9 @@ using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
-using Remotion.Linq.Utilities;
+using Remotion.Text;
+using Remotion.Utilities;
 using System.Linq;
-using ArgumentUtility = Remotion.Utilities.ArgumentUtility;
 
 namespace Remotion.Data.UnitTests.DomainObjects.Core.Mapping
 {

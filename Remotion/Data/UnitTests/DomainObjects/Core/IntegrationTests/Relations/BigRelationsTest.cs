@@ -20,9 +20,9 @@ using NUnit.Framework;
 using Remotion.Data.DomainObjects;
 using Remotion.Data.UnitTests.DomainObjects.Factories;
 using Remotion.Data.UnitTests.DomainObjects.TestDomain.TableInheritance;
-using Remotion.Linq.Utilities;
 using Remotion.Data.UnitTests.DomainObjects.TestDomain;
 using Remotion.FunctionalProgramming;
+using Remotion.Text;
 
 namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Relations
 {
