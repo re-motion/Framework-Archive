@@ -69,6 +69,7 @@
     <Compile Include="Utilities\Assertion.cs" />
     <Compile Include="Utilities\Assertion.Partial.cs" />
     <Compile Include="Utilities\MemberInfoFromExpressionUtility.cs" />
+    <Compile Include="Utilities\MemberInfoFromExpressionUtility.Partial.cs" />
     <Compile Include="Utilities\NullableTypeUtility.cs" />
     <Compile Include="Utilities\NullableTypeUtility.Partial.cs" />
   </ItemGroup>
