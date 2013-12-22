@@ -54,6 +54,7 @@
     <Compile Include="Utilities\ArgumentUtilityTests\CheckTypeIsAssignableFrom.cs" />
     <Compile Include="Utilities\ArgumentUtilityTests\CheckTypeObsolete.cs" />
     <Compile Include="Utilities\ArgumentUtilityTests\NonDisposableEnumerable.cs" />
+    <Compile Include="Utilities\NullableTypeUtilityTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Core\SharedSource.Core.csproj">
