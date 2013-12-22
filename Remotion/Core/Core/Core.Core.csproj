@@ -186,6 +186,9 @@
     <Compile Include="..\..\..\SharedSource\Core\Utilities\Assertion.cs">
       <Link>SharedSource\Utilities\Assertion.cs</Link>
     </Compile>
+    <Compile Include="..\..\..\SharedSource\Core\Utilities\MemberInfoFromExpressionUtility.cs">
+      <Link>SharedSource\Utilities\MemberInfoFromExpressionUtility.cs</Link>
+    </Compile>
     <Compile Include="..\..\..\SharedSource\Core\Utilities\NullableTypeUtility.cs">
       <Link>SharedSource\Utilities\NullableTypeUtility.cs</Link>
     </Compile>
@@ -300,6 +303,7 @@
     <Compile Include="SharedSource\ResharperAnnotations\ImplicitUseTargetFlags.cs" />
     <Compile Include="Utilities\AssertionException.cs" />
     <Compile Include="Utilities\Assertion.Partial.cs" />
+    <Compile Include="Utilities\MemberInfoFromExpressionUtility.Partial.cs" />
     <Compile Include="Utilities\ReSharperAnnotations\PartialDeclarations.cs" />
     <Compile Include="StandardDelegates.cs" />
     <Compile Include="SuppressAttributesAttribute.cs" />
@@ -540,7 +544,6 @@
     <Compile Include="Utilities\IUtcNowProvider.cs" />
     <Compile Include="Utilities\AttributeRetrieval\InheritanceAwareCustomAttributeRetriever.cs" />
     <Compile Include="Utilities\MemberInfoEqualityComparer.cs" />
-    <Compile Include="Utilities\MemberInfoFromExpressionUtility.cs" />
     <Compile Include="Utilities\NullableTypeUtility.Partial.cs" />
     <Compile Include="Utilities\NullComparer.cs" />
     <Compile Include="Utilities\NullValueConverter.cs" />
