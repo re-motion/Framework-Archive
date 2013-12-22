@@ -295,6 +295,7 @@
     <Compile Include="SharedSource\ResharperAnnotations\AssertionConditionType.cs" />
     <Compile Include="SharedSource\ResharperAnnotations\ImplicitUseKindFlags.cs" />
     <Compile Include="SharedSource\ResharperAnnotations\ImplicitUseTargetFlags.cs" />
+    <Compile Include="Utilities\AssertionException.cs" />
     <Compile Include="Utilities\ReSharperAnnotations\PartialDeclarations.cs" />
     <Compile Include="StandardDelegates.cs" />
     <Compile Include="SuppressAttributesAttribute.cs" />

@@ -21,7 +21,6 @@ using System.IO;
 using System.Linq;
 using System.Xml;
 using System.Xml.Schema;
-using Remotion.Text;
 using Remotion.Utilities;
 
 namespace Remotion.Development.UnitTesting.Configuration
@@ -41,7 +40,7 @@ namespace Remotion.Development.UnitTesting.Configuration
       {
         var errors = string.Join ("\r\n", validationErrors.Select (e => e.Message));
         var message = string.Format ("Validation of the xml fragment did not succeed for schema '{0}'.\r\n{1}", xsdContent, errors);
-        throw new AssertionException (message);
+        throw new XmlSchemaValidationException (message);
       }
     }
 

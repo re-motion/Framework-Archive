@@ -16,36 +16,12 @@
 // 
 using System;
 using System.Diagnostics;
-using System.Runtime.Serialization;
 using JetBrains.Annotations;
 
 namespace Remotion.Utilities
 {
   /// <summary>
-  /// This exception is thrown when an assertion fails.
-  /// </summary>
-  /// <seealso cref="Assertion"/>
-  [Serializable]
-  public class AssertionException : Exception
-  {
-    public AssertionException (SerializationInfo info, StreamingContext context)
-      : base (info, context)
-    {
-    }
-
-    public AssertionException (string message, Exception innerException)
-      : base (message, innerException)
-    {
-    }
-
-    public AssertionException (string message)
-      : this (message, null)
-    {
-    }
-  }
-
-  /// <summary>
-  /// Provides methods that throw an <see cref="AssertionException"/> if an assertion fails.
+  /// Provides methods that throw an <see cref="InvalidOperationException"/> if an assertion fails.
   /// </summary>
   /// <remarks>
   ///   <para>
@@ -122,7 +98,7 @@ namespace Remotion.Utilities
     public static void IsTrue ([AssertionCondition (AssertionConditionType.IS_TRUE)] bool assertion, string message, params object[] arguments)
     {
       if (!assertion)
-        throw new AssertionException (string.Format (message, arguments));
+        throw new InvalidOperationException (string.Format (message, arguments));
     }
 
     [AssertionMethod]
@@ -148,7 +124,7 @@ namespace Remotion.Utilities
     public static void IsFalse ([AssertionCondition (AssertionConditionType.IS_FALSE)] bool expression, string message, params object[] arguments)
     {
       if (expression)
-        throw new AssertionException (string.Format (message, arguments));
+        throw new InvalidOperationException (string.Format (message, arguments));
     }
 
     [AssertionMethod]
@@ -170,7 +146,7 @@ namespace Remotion.Utilities
       // ReSharper disable CompareNonConstrainedGenericWithNull
       if (obj == null)
         // ReSharper restore CompareNonConstrainedGenericWithNull
-        throw new AssertionException (string.Format (message, arguments));
+        throw new InvalidOperationException (string.Format (message, arguments));
 
       return obj;
     }
@@ -192,7 +168,7 @@ namespace Remotion.Utilities
     public static void IsNull ([AssertionCondition (AssertionConditionType.IS_NULL)] object obj, string message, params object[] arguments)
     {
       if (obj != null)
-        throw new AssertionException (string.Format (message, arguments));
+        throw new InvalidOperationException (string.Format (message, arguments));
     }
   }
 }
