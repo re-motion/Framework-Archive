@@ -183,6 +183,9 @@
     <Compile Include="..\..\..\SharedSource\Core\Utilities\ArgumentUtility.cs">
       <Link>SharedSource\Utilities\ArgumentUtility.cs</Link>
     </Compile>
+    <Compile Include="..\..\..\SharedSource\Core\Utilities\Assertion.cs">
+      <Link>SharedSource\Utilities\Assertion.cs</Link>
+    </Compile>
     <Compile Include="..\..\..\SharedSource\Core\Utilities\NullableTypeUtility.cs">
       <Link>SharedSource\Utilities\NullableTypeUtility.cs</Link>
     </Compile>
@@ -296,6 +299,7 @@
     <Compile Include="SharedSource\ResharperAnnotations\ImplicitUseKindFlags.cs" />
     <Compile Include="SharedSource\ResharperAnnotations\ImplicitUseTargetFlags.cs" />
     <Compile Include="Utilities\AssertionException.cs" />
+    <Compile Include="Utilities\Assertion.Partial.cs" />
     <Compile Include="Utilities\ReSharperAnnotations\PartialDeclarations.cs" />
     <Compile Include="StandardDelegates.cs" />
     <Compile Include="SuppressAttributesAttribute.cs" />
@@ -517,7 +521,6 @@
     <Compile Include="Utilities\AppDomainAssemblyResolver.cs" />
     <Compile Include="Utilities\AppDomainRunnerBase.cs" />
     <Compile Include="Utilities\AttributeUtility.cs" />
-    <Compile Include="Utilities\Assertion.cs" />
     <Compile Include="Utilities\AttributeWithMetadata.cs" />
     <Compile Include="Utilities\ConsoleApplication\ConsoleApplication.cs" />
     <Compile Include="Utilities\ConsoleApplication\ConsoleApplicationSettings.cs" />

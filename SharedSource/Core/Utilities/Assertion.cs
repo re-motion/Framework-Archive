@@ -14,10 +14,12 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
 using System.Diagnostics;
 using JetBrains.Annotations;
 
+// ReSharper disable once CheckNamespace
 namespace Remotion.Utilities
 {
   /// <summary>
@@ -35,7 +37,7 @@ namespace Remotion.Utilities
   ///   Assertions are no replacement for checking input parameters of public methods (see <see cref="ArgumentUtility"/>).  
   ///   </para>
   /// </remarks>
-  public static class Assertion
+  static partial class Assertion
   {
     private const string c_msgIsTrue = "Assertion failed: Expression evaluates to true.";
     private const string c_msgIsFalse = "Assertion failed: Expression evaluates to false.";
