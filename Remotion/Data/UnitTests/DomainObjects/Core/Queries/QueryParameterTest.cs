@@ -42,20 +42,6 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Queries
     }
 
     [Test]
-    public void SetValue ()
-    {
-      _parameter.Value = "NewValue";
-      Assert.That (_parameter.Value, Is.EqualTo ("NewValue"));
-    }
-
-    [Test]
-    public void SetParameterType ()
-    {
-      _parameter.ParameterType = QueryParameterType.Text;
-      Assert.That (_parameter.ParameterType, Is.EqualTo (QueryParameterType.Text));
-    }
-
-    [Test]
     public void Equals_EqualParameterWithAllMembers_ValueIsReferenceType ()
     {
       var equalParameter = new QueryParameter ("name", "value", QueryParameterType.Value);
