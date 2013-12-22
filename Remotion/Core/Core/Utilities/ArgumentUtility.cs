@@ -48,7 +48,7 @@ namespace Remotion.Utilities
   /// }
   /// ]]></code>
   /// </remarks>
-  public static class ArgumentUtility
+  static partial class ArgumentUtility
   {
     // Duplicated in Remotion.Linq.Utilities.ArgumentUtility
     [AssertionMethod]
@@ -339,71 +339,6 @@ namespace Remotion.Utilities
       return collection;
     }
 
-    /// <summary>Checks whether <paramref name="enumValue"/> is defined within its enumeration type.</summary>
-    /// <exception cref="ArgumentNullException"> If <paramref name="enumValue"/> is a null reference. </exception>
-    /// <exception cref="ArgumentOutOfRangeException"> If <paramref name="enumValue"/> has a numeric value that is not completely defined within its 
-    /// enumeration type. For flag types, every bit must correspond to at least one enumeration value. </exception>
-    public static Enum CheckValidEnumValue (
-        [InvokerParameterName] string argumentName, 
-        [AssertionCondition (AssertionConditionType.IS_NOT_NULL)] Enum enumValue)
-    {
-      if (enumValue == null)
-        throw new ArgumentNullException (argumentName);
-
-      if (! EnumUtility.IsValidEnumValue (enumValue))
-        throw new ArgumentOutOfRangeException (argumentName);
-
-      return enumValue;
-    }
-
-    /// <summary>Checks whether <paramref name="enumValue"/> is of the enumeration type <typeparamref name="TEnum"/> and defined within this type.</summary>
-    /// <remarks>
-    /// When successful, the value is returned as a <c>Nullable</c> of the specified type for direct assignment. 
-    /// </remarks>
-    /// <exception cref="ArgumentException"> If <paramref name="enumValue"/> is not of the specified type. </exception>
-    /// <exception cref="ArgumentOutOfRangeException"> If <paramref name="enumValue"/> has a numeric value that is not completely defined within its 
-    /// enumeration type. For flag types, every bit must correspond to at least one enumeration value. </exception>
-    public static TEnum? CheckValidEnumValueAndType<TEnum> ([InvokerParameterName] string argumentName, object enumValue)
-        where TEnum: struct
-    {
-      if (enumValue == null)
-        return default (TEnum?);
-
-      if (! (enumValue is TEnum))
-        throw CreateArgumentTypeException (argumentName, enumValue.GetType(), typeof (TEnum));
-
-      if (! EnumUtility.IsValidEnumValue (enumValue))
-        throw new ArgumentOutOfRangeException (argumentName);
-
-      return (TEnum?) enumValue;
-    }
-
-    /// <summary>Checks whether <paramref name="enumValue"/> is of the enumeration type <typeparamref name="TEnum"/>, is defined within this 
-    /// type, and is not a null reference.</summary>
-    /// <remarks>
-    /// When successful, the value is returned as the specified type for direct assignment. 
-    /// </remarks>
-    /// <exception cref="ArgumentNullException"> If <paramref name="enumValue"/> is a null reference. </exception>
-    /// <exception cref="ArgumentException"> If <paramref name="enumValue"/> is not of the specified type. </exception>
-    /// <exception cref="ArgumentOutOfRangeException"> If <paramref name="enumValue"/> has a numeric value that is not completely defined within its 
-    /// enumeration type. For flag types, every bit must correspond to at least one enumeration value. </exception>
-    public static TEnum CheckValidEnumValueAndTypeAndNotNull<TEnum> (
-        [InvokerParameterName] string argumentName, 
-        [AssertionCondition (AssertionConditionType.IS_NOT_NULL)] object enumValue)
-        where TEnum: struct
-    {
-      if (enumValue == null)
-        throw new ArgumentNullException (argumentName);
-
-      if (! (enumValue is TEnum))
-        throw CreateArgumentTypeException (argumentName, enumValue.GetType(), typeof (TEnum));
-
-      if (!EnumUtility.IsValidEnumValue (enumValue))
-        throw new ArgumentOutOfRangeException (argumentName);
-
-      return (TEnum) enumValue;
-    }
-
     public static ArgumentException CreateArgumentEmptyException ([InvokerParameterName] string argumentName)
     {
       return new ArgumentException (string.Format("Parameter '{0}' cannot be empty.", argumentName), argumentName);
@@ -443,16 +378,6 @@ namespace Remotion.Utilities
     public static ArgumentNullException CreateArgumentItemNullException ([InvokerParameterName] string argumentName, int index)
     {
       return new ArgumentNullException (argumentName, string.Format ("Item {0} of parameter '{1}' is null.", index, argumentName));
-    }
-
-    public static ArgumentOutOfRangeException CreateEnumArgumentOutOfRangeException ([InvokerParameterName] string argumentName, Enum actualValue)
-    {
-      string message = string.Format (
-          "The value of argument {0} is not a valid value of the type {1}. Actual value was {2}.",
-          argumentName,
-          actualValue.GetType(),
-          actualValue);
-      return new ArgumentOutOfRangeException (argumentName, actualValue, message);
     }
   }
 }

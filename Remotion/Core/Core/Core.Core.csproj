@@ -297,6 +297,7 @@
     <Compile Include="Utilities\ArgumentItemNullException.cs" />
     <Compile Include="Utilities\ArgumentItemTypeException.cs" />
     <Compile Include="Utilities\ArgumentTypeException.cs" />
+    <Compile Include="Utilities\ArgumentUtility.Partial.cs" />
     <Compile Include="Utilities\AttributeRetrieval\EventCustomAttributeRetriever.cs" />
     <Compile Include="Utilities\CompoundComparer.cs" />
     <Compile Include="Collections\CompoundValueEqualityComparer.cs" />
@@ -530,6 +531,7 @@
     <Compile Include="Utilities\AttributeRetrieval\InheritanceAwareCustomAttributeRetriever.cs" />
     <Compile Include="Utilities\MemberInfoEqualityComparer.cs" />
     <Compile Include="Utilities\MemberInfoFromExpressionUtility.cs" />
+    <Compile Include="Utilities\NullableTypeUtility.Partial.cs" />
     <Compile Include="Utilities\NullableTypeUtility.cs" />
     <Compile Include="Utilities\NullComparer.cs" />
     <Compile Include="Utilities\NullValueConverter.cs" />
