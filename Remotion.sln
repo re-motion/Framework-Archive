@@ -255,6 +255,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SharedSource", "SharedSourc
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedSource.Core", "SharedSource\Core\SharedSource.Core.csproj", "{378885D1-5D3E-4226-9C57-AA5183BA45D5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedSource.UnitTests", "SharedSource\UnitTests\SharedSource.UnitTests.csproj", "{CDC130AA-4ACE-4F02-9AC0-4971523C2E3C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -861,6 +863,14 @@ Global
 		{378885D1-5D3E-4226-9C57-AA5183BA45D5}.Release|Any CPU.Build.0 = Release|Any CPU
 		{378885D1-5D3E-4226-9C57-AA5183BA45D5}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{378885D1-5D3E-4226-9C57-AA5183BA45D5}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{CDC130AA-4ACE-4F02-9AC0-4971523C2E3C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CDC130AA-4ACE-4F02-9AC0-4971523C2E3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CDC130AA-4ACE-4F02-9AC0-4971523C2E3C}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{CDC130AA-4ACE-4F02-9AC0-4971523C2E3C}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{CDC130AA-4ACE-4F02-9AC0-4971523C2E3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CDC130AA-4ACE-4F02-9AC0-4971523C2E3C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CDC130AA-4ACE-4F02-9AC0-4971523C2E3C}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{CDC130AA-4ACE-4F02-9AC0-4971523C2E3C}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -941,6 +951,7 @@ Global
 		{37304DD7-81D0-4110-B924-D974C04F067C} = {2E38AD70-ECDF-4722-981C-7388C446A514}
 		{C138ADE5-F991-49A8-8BB3-B5F5381F60DA} = {2E38AD70-ECDF-4722-981C-7388C446A514}
 		{378885D1-5D3E-4226-9C57-AA5183BA45D5} = {A01E19B1-74DF-4827-B024-D06CB0D838DD}
+		{CDC130AA-4ACE-4F02-9AC0-4971523C2E3C} = {A01E19B1-74DF-4827-B024-D06CB0D838DD}
 	EndGlobalSection
 	GlobalSection(TextTemplating) = postSolution
 		TextTemplating = 1
