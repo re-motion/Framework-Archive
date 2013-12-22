@@ -1,19 +1,20 @@
-// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
+//
+// See the NOTICE file distributed with this work for additional information
+// regarding copyright ownership.  rubicon licenses this file to you under 
+// the Apache License, Version 2.0 (the "License"); you may not use this 
+// file except in compliance with the License.  You may obtain a copy of the 
+// License at
+//
+//   http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software 
+// distributed under the License is distributed on an "AS IS" BASIS, WITHOUT 
+// WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the 
+// License for the specific language governing permissions and limitations
+// under the License.
 // 
-// The re-motion Core Framework is free software; you can redistribute it 
-// and/or modify it under the terms of the GNU Lesser General Public License 
-// as published by the Free Software Foundation; either version 2.1 of the 
-// License, or (at your option) any later version.
-// 
-// re-motion is distributed in the hope that it will be useful, 
-// but WITHOUT ANY WARRANTY; without even the implied warranty of 
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
-// GNU Lesser General Public License for more details.
-// 
-// You should have received a copy of the GNU Lesser General Public License
-// along with re-motion; if not, see http://www.gnu.org/licenses.
-// 
+
 using System;
 using System.Collections;
 using NUnit.Framework;
@@ -35,27 +36,27 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
     [ExpectedException (typeof (ArgumentNullException), ExpectedMessage = "Item 0 of parameter 'arg' is null.\r\nParameter name: arg")]
     public void Fail_zItemNullICollection ()
     {
-      ArrayList list = new ArrayList ();
+      ArrayList list = new ArrayList();
       list.Add (null);
       ArgumentUtility.CheckNotNullOrEmptyOrItemsNull ("arg", list);
     }
 
     [Test]
-    [ExpectedException(typeof(ArgumentException), ExpectedMessage = "Parameter 'arg' cannot be empty.\r\nParameter name: arg")]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Parameter 'arg' cannot be empty.\r\nParameter name: arg")]
     public void Fail_EmptyArray ()
     {
       ArgumentUtility.CheckNotNullOrEmptyOrItemsNull ("arg", new string[0]);
     }
 
     [Test]
-    [ExpectedException(typeof(ArgumentException), ExpectedMessage = "Parameter 'arg' cannot be empty.\r\nParameter name: arg")]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Parameter 'arg' cannot be empty.\r\nParameter name: arg")]
     public void Fail_EmptyCollection ()
     {
-      ArgumentUtility.CheckNotNullOrEmptyOrItemsNull ("arg", new ArrayList ());
+      ArgumentUtility.CheckNotNullOrEmptyOrItemsNull ("arg", new ArrayList());
     }
 
     [Test]
-    [ExpectedException(typeof(ArgumentException), ExpectedMessage = "Parameter 'arg' cannot be empty.\r\nParameter name: arg")]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Parameter 'arg' cannot be empty.\r\nParameter name: arg")]
     public void Fail_EmptyIEnumerable ()
     {
       ArgumentUtility.CheckNotNullOrEmptyOrItemsNull ("arg", GetEmptyEnumerable());
@@ -72,7 +73,7 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
     [Test]
     public void Succeed_Collection ()
     {
-      ArrayList list = new ArrayList ();
+      ArrayList list = new ArrayList();
       list.Add ("test");
       ArrayList result = ArgumentUtility.CheckNotNullOrEmptyOrItemsNull ("arg", list);
       Assert.That (result, Is.SameAs (list));
@@ -81,10 +82,10 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
     [Test]
     public void Succeed_IEnumerable ()
     {
-      IEnumerable enumerable  = GetEnumerableWithValue();
+      IEnumerable enumerable = GetEnumerableWithValue();
       IEnumerable result = ArgumentUtility.CheckNotNullOrEmptyOrItemsNull ("arg", enumerable);
       Assert.That (result, Is.SameAs (enumerable));
-      Assert.That (result.GetEnumerator ().MoveNext (), Is.True);
+      Assert.That (result.GetEnumerator().MoveNext(), Is.True);
     }
 
     private IEnumerable GetEnumerableWithValue ()

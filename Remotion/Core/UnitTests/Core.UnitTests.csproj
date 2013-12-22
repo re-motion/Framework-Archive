@@ -528,19 +528,7 @@
     <Compile Include="Utilities\AdvancedEnumConverterTest.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Utilities\ArgumentUtilityTests\CheckNotEmpty.cs" />
-    <Compile Include="Utilities\ArgumentUtilityTests\CheckNotNull.cs" />
-    <Compile Include="Utilities\ArgumentUtilityTests\CheckType.cs" />
-    <Compile Include="Utilities\ArgumentUtilityTests\CheckTypeObsolete.cs" />
-    <Compile Include="Utilities\ArgumentUtilityTests\CheckNotNullAndTypeIsAssignableFrom.cs" />
-    <Compile Include="Utilities\ArgumentUtilityTests\CheckTypeIsAssignableFrom.cs" />
-    <Compile Include="Utilities\ArgumentUtilityTests\CheckNotNullOrItemsNull.cs" />
-    <Compile Include="Utilities\ArgumentUtilityTests\CheckNotNullOrEmpty.cs" />
-    <Compile Include="Utilities\ArgumentUtilityTests\CheckNotNullAndType.cs" />
     <Compile Include="Utilities\ArgumentUtilityTests\CheckEnums.cs" />
-    <Compile Include="Utilities\ArgumentUtilityTests\CheckNotNullOrEmptyOrItemsNull.cs" />
-    <Compile Include="Utilities\ArgumentUtilityTests\CheckType2.cs" />
-    <Compile Include="Utilities\ArgumentUtilityTests\NonDisposableEnumerable.cs" />
     <Compile Include="Utilities\ArrayUtilityTest.cs">
       <SubType>Code</SubType>
     </Compile>

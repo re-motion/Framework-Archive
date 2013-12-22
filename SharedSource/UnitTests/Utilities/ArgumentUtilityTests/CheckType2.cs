@@ -1,28 +1,29 @@
-// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
+//
+// See the NOTICE file distributed with this work for additional information
+// regarding copyright ownership.  rubicon licenses this file to you under 
+// the Apache License, Version 2.0 (the "License"); you may not use this 
+// file except in compliance with the License.  You may obtain a copy of the 
+// License at
+//
+//   http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software 
+// distributed under the License is distributed on an "AS IS" BASIS, WITHOUT 
+// WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the 
+// License for the specific language governing permissions and limitations
+// under the License.
 // 
-// The re-motion Core Framework is free software; you can redistribute it 
-// and/or modify it under the terms of the GNU Lesser General Public License 
-// as published by the Free Software Foundation; either version 2.1 of the 
-// License, or (at your option) any later version.
-// 
-// re-motion is distributed in the hope that it will be useful, 
-// but WITHOUT ANY WARRANTY; without even the implied warranty of 
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
-// GNU Lesser General Public License for more details.
-// 
-// You should have received a copy of the GNU Lesser General Public License
-// along with re-motion; if not, see http://www.gnu.org/licenses.
-// 
+
 using System;
 using NUnit.Framework;
 using Remotion.Utilities;
 
 namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
 {
-	[TestFixture]
-	public class CheckType2
-	{
+  [TestFixture]
+  public class CheckType2
+  {
     // test names have the format {Succeed|Fail}_ExpectedType[_ActualTypeOrNull]
 
     [Test]
@@ -33,7 +34,7 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentNullException))] 
+    [ExpectedException (typeof (ArgumentNullException))]
     public void Fail_Int_Null ()
     {
       ArgumentUtility.CheckType<int> ("arg", null);
@@ -67,13 +68,13 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
       Assert.That (result, Is.EqualTo (1));
     }
 
-		[Test]
-		public void Succeed_String ()
-		{
+    [Test]
+    public void Succeed_String ()
+    {
       string result = ArgumentUtility.CheckType<string> ("arg", "test");
-		  Assert.That (result, Is.EqualTo ("test"));
-		}    
-    
+      Assert.That (result, Is.EqualTo ("test"));
+    }
+
     [Test]
     public void Succeed_StringNull ()
     {
@@ -81,10 +82,10 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
       Assert.That (result, Is.EqualTo (null));
     }
 
-	  private enum TestEnum
-	  {
-	    TestValue
-	  } 
+    private enum TestEnum
+    {
+      TestValue
+    }
 
     [Test]
     public void Succeed_Enum ()
@@ -94,7 +95,7 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentNullException))] 
+    [ExpectedException (typeof (ArgumentNullException))]
     public void Fail_Enum_Null ()
     {
       ArgumentUtility.CheckType<TestEnum> ("arg", null);
@@ -113,17 +114,17 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
       object result = ArgumentUtility.CheckType<object> ("arg", "test");
       Assert.That (result, Is.EqualTo ("test"));
     }
-    
-    [Test]
-    [ExpectedExceptionAttribute (typeof (ArgumentException), ExpectedMessage = 
-        "Parameter 'arg' has type 'System.Int32' when type 'System.String' was expected.\r\nParameter name: arg")]
-		public void Fail_String_Int ()
-		{
-      ArgumentUtility.CheckType<string> ("arg", 1);
-		}
 
     [Test]
-    [ExpectedExceptionAttribute (typeof (ArgumentException), ExpectedMessage = 
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage =
+        "Parameter 'arg' has type 'System.Int32' when type 'System.String' was expected.\r\nParameter name: arg")]
+    public void Fail_String_Int ()
+    {
+      ArgumentUtility.CheckType<string> ("arg", 1);
+    }
+
+    [Test]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage =
         "Parameter 'arg' has type 'System.Int32' when type 'System.Int64' was expected.\r\nParameter name: arg")]
     public void Fail_Long_Int ()
     {
@@ -131,7 +132,7 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
     }
 
     [Test]
-    [ExpectedExceptionAttribute (typeof (ArgumentException), ExpectedMessage = 
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage =
         "Parameter 'arg' has type 'System.String' when type 'System.Int32' was expected.\r\nParameter name: arg")]
     public void Fail_Int_String ()
     {
