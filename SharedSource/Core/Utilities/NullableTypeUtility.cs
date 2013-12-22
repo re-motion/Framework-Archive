@@ -17,6 +17,7 @@
 
 using System;
 
+// ReSharper disable once CheckNamespace
 namespace Remotion.Utilities
 {
   static partial class NullableTypeUtility

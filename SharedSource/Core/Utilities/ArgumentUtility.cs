@@ -19,6 +19,7 @@ using System;
 using System.Collections;
 using JetBrains.Annotations;
 
+// ReSharper disable once CheckNamespace
 namespace Remotion.Utilities
 {
   /// <summary>

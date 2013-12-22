@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections;
 using JetBrains.Annotations;
 
 namespace Remotion.Utilities
@@ -95,5 +94,6 @@ namespace Remotion.Utilities
           actualValue.GetType(),
           actualValue);
       return new ArgumentOutOfRangeException (argumentName, actualValue, message);
-    } }
+    }
+  }
 }
