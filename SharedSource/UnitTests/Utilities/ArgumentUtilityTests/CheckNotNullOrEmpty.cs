@@ -20,9 +20,9 @@ using System.Collections;
 using NUnit.Framework;
 using Remotion.Utilities;
 
+// ReSharper disable once CheckNamespace
 namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
 {
-  //Remotion.Linq.UnitTests.Utilities.ArgumentUtilityTests.CheckNotNullOrEmpty
   [TestFixture]
   public class CheckNotNullOrEmpty
   {

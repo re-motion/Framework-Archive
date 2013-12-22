@@ -19,9 +19,9 @@ using System;
 using NUnit.Framework;
 using Remotion.Utilities;
 
+// ReSharper disable once CheckNamespace
 namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
 {
-  //Remotion.Linq.UnitTests.Utilities.ArgumentUtilityTests.CheckTypeIsAssignableFrom
   [TestFixture]
   public class CheckTypeIsAssignableFrom
   {

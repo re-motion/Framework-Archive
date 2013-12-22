@@ -18,6 +18,7 @@
 using System;
 using System.Collections;
 
+// ReSharper disable once CheckNamespace
 namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
 {
   internal class NonDisposableEnumerable : IEnumerable
