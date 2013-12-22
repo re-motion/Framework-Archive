@@ -361,11 +361,11 @@ namespace Remotion.Data.DomainObjects
       if (valueType == typeof (string))
         ObjectIDStringSerializer.Instance.CheckSerializableStringValue ((string) value);
 
-      if (valueType == typeof (string) && string.Empty.Equals (value))
-        throw ArgumentUtility.CreateArgumentEmptyException (argumentName);
+      if (valueType == typeof (string))
+        ArgumentUtility.CheckNotEmpty (argumentName, (string) value);
 
-      if (valueType == typeof (Guid) && Guid.Empty.Equals (value))
-        throw ArgumentUtility.CreateArgumentEmptyException (argumentName);
+      if (valueType == typeof (Guid))
+        ArgumentUtility.CheckNotEmpty(argumentName, (Guid)value);
     }
 
     private ArgumentException CreateArgumentException (string argumentName, string message, params object[] args)
