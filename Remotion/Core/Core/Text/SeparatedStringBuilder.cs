@@ -26,6 +26,7 @@ namespace Remotion.Text
 /// <summary>
 /// Builds a string adding separators between appended strings.
 /// </summary>
+[Obsolete ("Use StringBuilder instead. (Version 1.15.7.0)")]
 public class SeparatedStringBuilder
 {
   /// <summary>
@@ -67,12 +68,14 @@ public class SeparatedStringBuilder
   private string _separator;
   private StringBuilder _stringBuilder;
 
-	public SeparatedStringBuilder (string separator, int capacity)
-	{
+  [Obsolete ("Use StringBuilder instead. (Version 1.15.7.0)")]
+  public SeparatedStringBuilder (string separator, int capacity)
+  {
     _stringBuilder = new StringBuilder (capacity);
     _separator = separator;
-	}
+  }
 
+  [Obsolete ("Use StringBuilder instead. (Version 1.15.7.0)")]
   public SeparatedStringBuilder (string separator)
   {
     _stringBuilder = new StringBuilder ();
