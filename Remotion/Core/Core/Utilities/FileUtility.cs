@@ -64,18 +64,13 @@ namespace Remotion.Utilities
     /// </summary>
     /// <param name="input">The input stream.</param>
     /// <param name="output">The output stream.</param>
+    [Obsolete ("Use input.CopyTo (output) instead. (Version 1.15.7.0)")]
     public static void CopyStream (Stream input, Stream output)
     {
       ArgumentUtility.CheckNotNull ("input", input);
       ArgumentUtility.CheckNotNull ("output", output);
 
-      byte[] buffer = new byte[CopyBufferSize];
-      int bytesRead;
-      do
-      {
-        bytesRead = input.Read (buffer, 0, buffer.Length);
-        output.Write (buffer, 0, bytesRead);
-      } while (bytesRead != 0);
+      input.CopyTo (output);
     }
 
 
@@ -95,7 +90,8 @@ namespace Remotion.Utilities
         Stream from = assembly.GetManifestResourceStream (typeWhoseNamespaceTheStringResourceResidesIn, stringResourceName),
         to = new FileStream (filePath, FileMode.Create))
       {
-        FileUtility.CopyStream (from, to);
+        Assertion.IsNotNull (from, "Resource '{0}' does not exist in assembly '{1}'.", stringResourceName, assembly.FullName);
+        from.CopyTo (to);
       }
     }
 
