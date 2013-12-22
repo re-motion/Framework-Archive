@@ -181,10 +181,10 @@
       <Link>SharedSource\ResharperAnnotations\UsedImplicitlyAttribute.cs</Link>
     </Compile>
     <Compile Include="..\..\..\SharedSource\Core\Utilities\ArgumentUtility.cs">
-      <Link>Utilities\ArgumentUtility.cs</Link>
+      <Link>SharedSource\Utilities\ArgumentUtility.cs</Link>
     </Compile>
     <Compile Include="..\..\..\SharedSource\Core\Utilities\NullableTypeUtility.cs">
-      <Link>Utilities\NullableTypeUtility.cs</Link>
+      <Link>SharedSource\Utilities\NullableTypeUtility.cs</Link>
     </Compile>
     <Compile Include="..\..\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
