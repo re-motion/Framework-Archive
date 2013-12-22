@@ -68,6 +68,8 @@
     <Compile Include="Utilities\ArgumentUtility.Partial.cs" />
     <Compile Include="Utilities\Assertion.cs" />
     <Compile Include="Utilities\Assertion.Partial.cs" />
+    <Compile Include="Utilities\EqualityUtility.cs" />
+    <Compile Include="Utilities\EqualityUtility.Partial.cs" />
     <Compile Include="Utilities\MemberInfoFromExpressionUtility.cs" />
     <Compile Include="Utilities\MemberInfoFromExpressionUtility.Partial.cs" />
     <Compile Include="Utilities\NullableTypeUtility.cs" />

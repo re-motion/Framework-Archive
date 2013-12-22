@@ -185,6 +185,9 @@
     <Compile Include="..\..\..\SharedSource\UnitTests\Utilities\AssertionTest.cs">
       <Link>SharedSource\Utilities\AssertionTest.cs</Link>
     </Compile>
+    <Compile Include="..\..\..\SharedSource\UnitTests\Utilities\EqualityUtilityTest.cs">
+      <Link>SharedSource\Utilities\EqualityUtilityTest.cs</Link>
+    </Compile>
     <Compile Include="..\..\..\SharedSource\UnitTests\Utilities\MemberInfoFromExpressionUtilityTest.cs">
       <Link>SharedSource\Utilities\MemberInfoFromExpressionUtilityTest.cs</Link>
     </Compile>
@@ -635,7 +638,6 @@
     <Compile Include="Utilities\EnumUtilityTests\Common.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Utilities\EqualityUtilityTest.cs" />
     <Compile Include="Utilities\FileUtilityTest.cs" />
     <Compile Include="Utilities\InvertedComparerDecoratorTest.cs" />
     <Compile Include="Utilities\NameValueCollectionUtilityTest.cs">

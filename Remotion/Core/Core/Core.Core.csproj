@@ -186,6 +186,9 @@
     <Compile Include="..\..\..\SharedSource\Core\Utilities\Assertion.cs">
       <Link>SharedSource\Utilities\Assertion.cs</Link>
     </Compile>
+    <Compile Include="..\..\..\SharedSource\Core\Utilities\EqualityUtility.cs">
+      <Link>SharedSource\Utilities\EqualityUtility.cs</Link>
+    </Compile>
     <Compile Include="..\..\..\SharedSource\Core\Utilities\MemberInfoFromExpressionUtility.cs">
       <Link>SharedSource\Utilities\MemberInfoFromExpressionUtility.cs</Link>
     </Compile>
@@ -303,6 +306,7 @@
     <Compile Include="SharedSource\ResharperAnnotations\ImplicitUseTargetFlags.cs" />
     <Compile Include="Utilities\AssertionException.cs" />
     <Compile Include="Utilities\Assertion.Partial.cs" />
+    <Compile Include="Utilities\EqualityUtility.Partial.cs" />
     <Compile Include="Utilities\MemberInfoFromExpressionUtility.Partial.cs" />
     <Compile Include="Utilities\ReSharperAnnotations\PartialDeclarations.cs" />
     <Compile Include="StandardDelegates.cs" />
@@ -535,7 +539,6 @@
     <Compile Include="Utilities\CultureScope.cs" />
     <Compile Include="Utilities\DefaultConsoleManager.cs" />
     <Compile Include="FunctionalProgramming\EnumerableUtility.cs" />
-    <Compile Include="Utilities\EqualityUtility.cs" />
     <Compile Include="Utilities\ExceptionUtility.cs" />
     <Compile Include="Utilities\FileUtility.cs" />
     <Compile Include="Utilities\IConsoleManager.cs" />
@@ -618,7 +621,6 @@
     <Content Include="doc\include\Remotion.NamespaceDoc.xml" />
     <Content Include="doc\include\Text\CommandLine\CommandLineParser.xml" />
     <Content Include="doc\include\Diagnostics\OuterProduct.xml" />
-    <Content Include="doc\include\Utilities\EqualityUtility.xml" />
     <Content Include="doc\include\Utilities\WorkContext.xml" />
   </ItemGroup>
   <ItemGroup>

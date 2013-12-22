@@ -1,28 +1,30 @@
-// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
+//
+// See the NOTICE file distributed with this work for additional information
+// regarding copyright ownership.  rubicon licenses this file to you under 
+// the Apache License, Version 2.0 (the "License"); you may not use this 
+// file except in compliance with the License.  You may obtain a copy of the 
+// License at
+//
+//   http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software 
+// distributed under the License is distributed on an "AS IS" BASIS, WITHOUT 
+// WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the 
+// License for the specific language governing permissions and limitations
+// under the License.
 // 
-// The re-motion Core Framework is free software; you can redistribute it 
-// and/or modify it under the terms of the GNU Lesser General Public License 
-// as published by the Free Software Foundation; either version 2.1 of the 
-// License, or (at your option) any later version.
-// 
-// re-motion is distributed in the hope that it will be useful, 
-// but WITHOUT ANY WARRANTY; without even the implied warranty of 
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
-// GNU Lesser General Public License for more details.
-// 
-// You should have received a copy of the GNU Lesser General Public License
-// along with re-motion; if not, see http://www.gnu.org/licenses.
-// 
+
 using System;
 using System.Collections;
 
+// ReSharper disable once CheckNamespace
 namespace Remotion.Utilities
 {
   /// <summary>
   /// Provides methods for determining equality and hash codes.
   /// </summary>
-  public static class EqualityUtility
+  static partial class EqualityUtility
   {
     /// <summary>
     /// Gets an object's hash code or null, if the object is <see langword="null"/>.
@@ -32,7 +34,21 @@ namespace Remotion.Utilities
       return (obj == null) ? 0 : obj.GetHashCode ();
     }
 
-    /// <include file='..\doc\include\Utilities\EqualityUtility.xml' path='EqualityUtility/GetRotatedHashCode/*' />
+    /// <summary>
+    ///   Gets the hash code of the individual arguments, XOR'd with bits rotated.
+    /// </summary>
+    /// <remarks>
+    ///   <para>
+    ///     This method XOR's the hash codes of all individual arguments in order to create a compound hash code
+    ///     for the entire set of arguments. Between XOR's, the compound hash code is rotated by 11 bits in order
+    ///     to better distribute hash codes of types that aggregate their hash results toward the least-significant
+    ///     side of the result (small numbers, booleans).
+    ///   </para>
+    ///   <para>
+    ///     Overloads with type arguments are identical to the object-array version, they only reduce the amount
+    ///     of boxing going on (better performance).
+    ///   </para>
+    /// </remarks>
     public static int GetRotatedHashCode<A0, A1> (A0 a0, A1 a1)
     {
       int hc = SafeGetHashCode (a0);
@@ -41,7 +57,7 @@ namespace Remotion.Utilities
       return hc;
     }
 
-    /// <include file='..\doc\include\Utilities\EqualityUtility.xml' path='EqualityUtility/GetRotatedHashCode/*' />
+    /// <inheritdoc cref="GetRotatedHashCode{A0,A1}" />
     public static int GetRotatedHashCode<A0, A1, A2> (A0 a0, A1 a1, A2 a2)
     {
       int hc = SafeGetHashCode (a0);
@@ -52,7 +68,7 @@ namespace Remotion.Utilities
       return hc;
     }
 
-    /// <include file='..\doc\include\Utilities\EqualityUtility.xml' path='EqualityUtility/GetRotatedHashCode/*' />
+    /// <inheritdoc cref="GetRotatedHashCode{A0,A1}" />
     public static int GetRotatedHashCode<A0, A1, A2, A3> (A0 a0, A1 a1, A2 a2, A3 a3)
     {
       int hc = SafeGetHashCode (a0);
@@ -65,7 +81,7 @@ namespace Remotion.Utilities
       return hc;
     }
 
-    /// <include file='..\doc\include\Utilities\EqualityUtility.xml' path='EqualityUtility/GetRotatedHashCode/*' />
+    /// <inheritdoc cref="GetRotatedHashCode{A0,A1}" />
     public static int GetRotatedHashCode<A0, A1, A2, A3, A4> (A0 a0, A1 a1, A2 a2, A3 a3, A4 a4)
     {
       int hc = SafeGetHashCode (a0);
@@ -80,7 +96,7 @@ namespace Remotion.Utilities
       return hc;
     }
 
-    /// <include file='..\doc\include\Utilities\EqualityUtility.xml' path='EqualityUtility/GetRotatedHashCode/*' />
+    /// <inheritdoc cref="GetRotatedHashCode{A0,A1}" />
     public static int GetRotatedHashCode<A0, A1, A2, A3, A4, A5> (A0 a0, A1 a1, A2 a2, A3 a3, A4 a4, A5 a5)
     {
       int hc = SafeGetHashCode (a0);
@@ -97,7 +113,7 @@ namespace Remotion.Utilities
       return hc;
     }
 
-    /// <include file='..\doc\include\Utilities\EqualityUtility.xml' path='EqualityUtility/GetRotatedHashCode/*' />
+    /// <inheritdoc cref="GetRotatedHashCode{A0,A1}" />
     public static int GetRotatedHashCode<A0, A1, A2, A3, A4, A5, A6> (A0 a0, A1 a1, A2 a2, A3 a3, A4 a4, A5 a5, A6 a6)
     {
       int hc = SafeGetHashCode (a0);
@@ -116,7 +132,7 @@ namespace Remotion.Utilities
       return hc;
     }
 
-    /// <include file='..\doc\include\Utilities\EqualityUtility.xml' path='EqualityUtility/GetRotatedHashCode/*' />
+    /// <inheritdoc cref="GetRotatedHashCode{A0,A1}" />
     public static int GetRotatedHashCode (params object[] fields)
     {
       int hc = 0;

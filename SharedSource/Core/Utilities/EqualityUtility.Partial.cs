@@ -17,7 +17,8 @@
 
 namespace Remotion.Utilities
 {
-  public static partial class MemberInfoFromExpressionUtility
+  public static partial class EqualityUtility
   {
+     
   }
 }
