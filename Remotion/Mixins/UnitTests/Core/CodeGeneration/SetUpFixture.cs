@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using NUnit.Framework;
 using Remotion.Development.TypePipe;
 using Remotion.Mixins.CodeGeneration.TypePipe;
@@ -104,7 +105,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
       {
         Console.WriteLine (
             "Assemblies saved to: " + Environment.NewLine
-            + SeparatedStringBuilder.Build (Environment.NewLine, s_assemblyTrackingCodeManager.SavedAssemblies));
+            + string.Join (Environment.NewLine, s_assemblyTrackingCodeManager.SavedAssemblies));
       }
     }
   }

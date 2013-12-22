@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Remotion.Text;
 using Remotion.Utilities;
@@ -38,7 +39,7 @@ namespace Remotion.Development.UnitTesting.PEVerifyPathSources
 
     public string GetLookupDiagnostics (PEVerifyVersion version)
     {
-      return SeparatedStringBuilder.Build (Environment.NewLine, _sources.Select (source => source.GetLookupDiagnostics (version)));
+      return string.Join (Environment.NewLine, _sources.Select (source => source.GetLookupDiagnostics (version)));
     }
   }
 }

@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 using JetBrains.Annotations;
 using NUnit.Framework;
@@ -158,7 +159,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
       [UsedImplicitly]
       public virtual string M (byte[][] bytes)
       {
-        return SeparatedStringBuilder.Build(",", bytes.Select (bs => "{"  + SeparatedStringBuilder.Build (",", bs) + "}"));
+        return string.Join (",", bytes.Select (bs => "{"  + string.Join (",", bs) + "}"));
       }
     }
 

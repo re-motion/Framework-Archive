@@ -46,7 +46,7 @@ namespace Remotion.Data.DomainObjects.Mapping.SortExpressions
 
     public override string ToString ()
     {
-      return SeparatedStringBuilder.Build (", ", SortedProperties);
+      return string.Join (", ", SortedProperties);
     }
   }
 }

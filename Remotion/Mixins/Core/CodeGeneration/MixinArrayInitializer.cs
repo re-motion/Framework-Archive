@@ -15,6 +15,8 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Remotion.Reflection;
 using Remotion.Text;
 using Remotion.Utilities;
@@ -155,8 +157,8 @@ namespace Remotion.Mixins.CodeGeneration
 
     private InvalidOperationException CreateInvalidMixinArrayException (object[] mixins)
     {
-      var expectedMixinTypes = SeparatedStringBuilder.Build (", ", _expectedMixinTypes);
-      var givenMixinTypes = SeparatedStringBuilder.Build (", ", mixins, mixin => mixin.GetType ().ToString ());
+      var expectedMixinTypes = string.Join (", ", (IEnumerable<Type>) _expectedMixinTypes);
+      var givenMixinTypes = String.Join ((string) ", ", (IEnumerable<string>) mixins.Select (mixin => mixin.GetType ().ToString ()));
       var message = string.Format (
           "Invalid mixin instances supplied. Expected the following mixin types (in this order): ('{0}'). The given types were: ('{1}').",
           expectedMixinTypes,

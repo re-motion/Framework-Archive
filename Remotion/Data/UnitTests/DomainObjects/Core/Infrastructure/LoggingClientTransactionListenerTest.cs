@@ -278,7 +278,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure
               relationEndPointDefinition.PropertyName,
               ValueAccess.Current,
               _domainObject.ID,
-              SeparatedStringBuilder.Build (", ", values.Take (10))));
+              string.Join (", ", values.Take (10))));
     }
 
     [Test]

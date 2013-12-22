@@ -114,10 +114,7 @@ namespace Remotion.Mixins.Definitions.Building
     private string BuildCandidateStringForExceptionMessage (IEnumerable<TMember> candidates)
     {
       var candidatesByType = candidates.ToLookup (md => md.DeclaringClass);
-      return SeparatedStringBuilder.Build (
-          "; ", 
-          candidatesByType,
-          group => SeparatedStringBuilder.Build (", ", group, md => "'" + md.MemberInfo.ToString () + "'") + " (on '" + group.Key.FullName + "')");
+      return string.Join ("; ", candidatesByType.Select (group => string.Join (", ", @group.Select (md => "'" + md.MemberInfo.ToString () + "'")) + " (on '" + @group.Key.FullName + "')"));
     }
 
     private bool OverriddenMemberTypeMatches (Type overriddenMemberType, Type requiredType)
