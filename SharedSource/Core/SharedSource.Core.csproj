@@ -69,6 +69,10 @@
     <Compile Include="ReSharperAnnotations\StringFormatMethodAttribute.cs" />
     <Compile Include="ReSharperAnnotations\TerminatesProgramAttribute.cs" />
     <Compile Include="ReSharperAnnotations\UsedImplicitlyAttribute.cs" />
+    <Compile Include="Utilities\ArgumentUtility.cs" />
+    <Compile Include="Utilities\ArgumentUtility.Partial.cs" />
+    <Compile Include="Utilities\NullableTypeUtility.cs" />
+    <Compile Include="Utilities\NullableTypeUtility.Partial.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\SharedSource Apache-2.0.licenseheader">
