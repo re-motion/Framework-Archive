@@ -180,6 +180,12 @@
     <Compile Include="..\..\..\SharedSource\Core\ResharperAnnotations\UsedImplicitlyAttribute.cs">
       <Link>SharedSource\ResharperAnnotations\UsedImplicitlyAttribute.cs</Link>
     </Compile>
+    <Compile Include="..\..\..\SharedSource\Core\Utilities\ArgumentUtility.cs">
+      <Link>Utilities\ArgumentUtility.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\Core\Utilities\NullableTypeUtility.cs">
+      <Link>Utilities\NullableTypeUtility.cs</Link>
+    </Compile>
     <Compile Include="..\..\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
@@ -532,7 +538,6 @@
     <Compile Include="Utilities\MemberInfoEqualityComparer.cs" />
     <Compile Include="Utilities\MemberInfoFromExpressionUtility.cs" />
     <Compile Include="Utilities\NullableTypeUtility.Partial.cs" />
-    <Compile Include="Utilities\NullableTypeUtility.cs" />
     <Compile Include="Utilities\NullComparer.cs" />
     <Compile Include="Utilities\NullValueConverter.cs" />
     <Compile Include="Utilities\PostActionDisposableDecorator.cs" />
@@ -544,9 +549,6 @@
     <Compile Include="Utilities\TypeConverterType.cs" />
     <Compile Include="Utilities\TypeNameConverter.cs" />
     <Compile Include="Utilities\AdvancedEnumConverter.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Utilities\ArgumentUtility.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Utilities\ArrayUtility.cs">
