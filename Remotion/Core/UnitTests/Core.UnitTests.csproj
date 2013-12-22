@@ -146,6 +146,45 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\..\SharedSource\UnitTests\Utilities\ArgumentUtilityTests\CheckNotEmpty.cs">
+      <Link>SharedSource\Utilities\ArgumentUtilityTests\CheckNotEmpty.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\UnitTests\Utilities\ArgumentUtilityTests\CheckNotNull.cs">
+      <Link>SharedSource\Utilities\ArgumentUtilityTests\CheckNotNull.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\UnitTests\Utilities\ArgumentUtilityTests\CheckNotNullAndType.cs">
+      <Link>SharedSource\Utilities\ArgumentUtilityTests\CheckNotNullAndType.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\UnitTests\Utilities\ArgumentUtilityTests\CheckNotNullAndTypeIsAssignableFrom.cs">
+      <Link>SharedSource\Utilities\ArgumentUtilityTests\CheckNotNullAndTypeIsAssignableFrom.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\UnitTests\Utilities\ArgumentUtilityTests\CheckNotNullOrEmpty.cs">
+      <Link>SharedSource\Utilities\ArgumentUtilityTests\CheckNotNullOrEmpty.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\UnitTests\Utilities\ArgumentUtilityTests\CheckNotNullOrEmptyOrItemsNull.cs">
+      <Link>SharedSource\Utilities\ArgumentUtilityTests\CheckNotNullOrEmptyOrItemsNull.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\UnitTests\Utilities\ArgumentUtilityTests\CheckNotNullOrItemsNull.cs">
+      <Link>SharedSource\Utilities\ArgumentUtilityTests\CheckNotNullOrItemsNull.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\UnitTests\Utilities\ArgumentUtilityTests\CheckType.cs">
+      <Link>SharedSource\Utilities\ArgumentUtilityTests\CheckType.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\UnitTests\Utilities\ArgumentUtilityTests\CheckType2.cs">
+      <Link>SharedSource\Utilities\ArgumentUtilityTests\CheckType2.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\UnitTests\Utilities\ArgumentUtilityTests\CheckTypeIsAssignableFrom.cs">
+      <Link>SharedSource\Utilities\ArgumentUtilityTests\CheckTypeIsAssignableFrom.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\UnitTests\Utilities\ArgumentUtilityTests\CheckTypeObsolete.cs">
+      <Link>SharedSource\Utilities\ArgumentUtilityTests\CheckTypeObsolete.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\UnitTests\Utilities\ArgumentUtilityTests\NonDisposableEnumerable.cs">
+      <Link>SharedSource\Utilities\ArgumentUtilityTests\NonDisposableEnumerable.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\UnitTests\Utilities\NullableTypeUtilityTest.cs">
+      <Link>SharedSource\Utilities\NullableTypeUtilityTest.cs</Link>
+    </Compile>
     <Compile Include="..\..\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
