@@ -239,6 +239,11 @@
     <Compile Include="Globalization\Implementation\MemberInformationGlobalizationServiceExtensions.cs" />
     <Compile Include="Globalization\ResourceManagerExtensions.cs" />
     <Compile Include="IHandleAttribute.cs" />
+    <Compile Include="Reflection\ParamList.generated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ParamList.generated.tt</DependentUpon>
+    </Compile>
     <Compile Include="Reflection\DelegateFactory.cs" />
     <Compile Include="Reflection\IDelegateFactory.cs" />
     <Compile Include="Reflection\IMemberInformationNameResolver.cs" />
@@ -282,8 +287,7 @@
     <Compile Include="Reflection\IPropertyInformation.cs" />
     <Compile Include="Reflection\ITypeInformation.cs" />
     <Compile Include="Reflection\MethodInfoAdapterConverter.cs" />
-    <Compile Include="Reflection\ParamList.generated.cs" />
-    <Compile Include="Reflection\ParamList.template.cs" />
+    <Compile Include="Reflection\ParamList.cs" />
     <Compile Include="Reflection\PropertyInfoAdapterConverter.cs" />
     <Compile Include="Reflection\ReflectionExtensions.cs" />
     <Compile Include="Reflection\TypeAdapter.cs" />
@@ -610,8 +614,13 @@
     <Content Include="doc\include\Text\CommandLine\CommandLineParser.xml" />
     <Content Include="doc\include\Diagnostics\OuterProduct.xml" />
     <Content Include="doc\include\Utilities\WorkContext.xml" />
+    <None Include="Reflection\ParamList.generated.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ParamList.generated.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
   </ItemGroup>
   <ItemGroup />
