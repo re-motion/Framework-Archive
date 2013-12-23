@@ -405,7 +405,6 @@
     <Compile Include="Collections\SimpleDataStore.cs" />
     <Compile Include="Context\CallContextStorageProvider.cs" />
     <Compile Include="Globalization\Implementation\ResourceManagerFactory.cs" />
-    <Compile Include="Reflection\CodeGeneration\SerializationEventRaiser.cs" />
     <Compile Include="Collections\AutoInitDictionary.cs" />
     <Compile Include="Collections\MultiDictionary.cs" />
     <Compile Include="Collections\LockingCacheDecorator.cs" />
