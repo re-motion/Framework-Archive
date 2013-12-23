@@ -239,10 +239,10 @@
     <Compile Include="Globalization\Implementation\MemberInformationGlobalizationServiceExtensions.cs" />
     <Compile Include="Globalization\ResourceManagerExtensions.cs" />
     <Compile Include="IHandleAttribute.cs" />
-    <Compile Include="Reflection\ParamList.generated.cs">
+    <Compile Include="Reflection\ParamList.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>ParamList.generated.tt</DependentUpon>
+      <DependentUpon>ParamList.tt</DependentUpon>
     </Compile>
     <Compile Include="Reflection\DelegateFactory.cs" />
     <Compile Include="Reflection\IDelegateFactory.cs" />
@@ -617,9 +617,9 @@
     <Content Include="doc\include\Text\CommandLine\CommandLineParser.xml" />
     <Content Include="doc\include\Diagnostics\OuterProduct.xml" />
     <Content Include="doc\include\Utilities\WorkContext.xml" />
-    <None Include="Reflection\ParamList.generated.tt">
+    <None Include="Reflection\ParamList.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>ParamList.generated.cs</LastGenOutput>
+      <LastGenOutput>ParamList.cs</LastGenOutput>
     </None>
     <None Include="Reflection\ParamListImplementation.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
