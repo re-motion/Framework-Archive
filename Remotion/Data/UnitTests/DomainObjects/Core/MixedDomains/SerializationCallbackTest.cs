@@ -20,7 +20,7 @@ using Remotion.Data.DomainObjects.DomainImplementation;
 using Remotion.Data.UnitTests.DomainObjects.TestDomain;
 using Remotion.Development.UnitTesting;
 using Remotion.Mixins;
-using Remotion.Reflection;
+using Remotion.TypePipe;
 
 namespace Remotion.Data.UnitTests.DomainObjects.Core.MixedDomains
 {

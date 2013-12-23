@@ -17,8 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Remotion.Reflection;
-using Remotion.Text;
+using Remotion.TypePipe;
 using Remotion.Utilities;
 
 namespace Remotion.Mixins.CodeGeneration

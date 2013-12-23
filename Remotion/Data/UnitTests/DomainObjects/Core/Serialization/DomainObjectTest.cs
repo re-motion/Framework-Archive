@@ -15,16 +15,15 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Reflection;
 using System.Runtime.Serialization;
 using NUnit.Framework;
-using Remotion.Collections;
 using Remotion.Data.DomainObjects;
 using Remotion.Data.DomainObjects.DomainImplementation;
 using Remotion.Data.UnitTests.DomainObjects.Core.EventReceiver;
 using Remotion.Data.UnitTests.DomainObjects.TestDomain;
 using Remotion.Development.UnitTesting;
-using System.Reflection;
-using Remotion.Reflection;
+using Remotion.TypePipe;
 
 namespace Remotion.Data.UnitTests.DomainObjects.Core.Serialization
 {

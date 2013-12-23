@@ -20,11 +20,10 @@ using System.IO;
 using System.Reflection;
 using Castle.DynamicProxy;
 using NUnit.Framework;
-using Remotion.Collections;
 using Remotion.Development.TypePipe.UnitTesting;
 using Remotion.Development.UnitTesting;
 using Remotion.Mixins.Samples.DynamicMixinBuilding.Core;
-using Remotion.Reflection;
+using Remotion.TypePipe;
 using Remotion.Utilities;
 
 namespace Remotion.Mixins.Samples.DynamicMixinBuilding.UnitTests

@@ -19,6 +19,7 @@ using Remotion.Mixins;
 using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.BindableObject;
 using Remotion.Reflection;
+using Remotion.TypePipe;
 using Remotion.Utilities;
 using PropertyReflector = Remotion.ObjectBinding.BindableObject.PropertyReflector;
 

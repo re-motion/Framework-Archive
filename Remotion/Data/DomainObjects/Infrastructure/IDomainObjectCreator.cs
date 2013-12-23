@@ -19,6 +19,7 @@ using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectLifetime;
 using Remotion.Data.DomainObjects.Infrastructure.TypePipe;
 using Remotion.Reflection;
+using Remotion.TypePipe;
 using Remotion.ServiceLocation;
 
 namespace Remotion.Data.DomainObjects.Infrastructure
