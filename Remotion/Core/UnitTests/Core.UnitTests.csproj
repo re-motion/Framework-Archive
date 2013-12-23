@@ -188,6 +188,33 @@
     <Compile Include="..\..\..\SharedSource\UnitTests\Utilities\EqualityUtilityTest.cs">
       <Link>SharedSource\Utilities\EqualityUtilityTest.cs</Link>
     </Compile>
+    <Compile Include="..\..\..\SharedSource\UnitTests\Utilities\MemberInfoEqualityComparerTest.cs">
+      <Link>SharedSource\Utilities\MemberInfoEqualityComparerTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\UnitTests\Utilities\MemberInfoEqualityComparerTestDomain\ClassWithFields.cs">
+      <Link>SharedSource\Utilities\MemberInfoEqualityComparerTestDomain\ClassWithFields.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\UnitTests\Utilities\MemberInfoEqualityComparerTestDomain\ClassWithMethods.cs">
+      <Link>SharedSource\Utilities\MemberInfoEqualityComparerTestDomain\ClassWithMethods.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\UnitTests\Utilities\MemberInfoEqualityComparerTestDomain\ClassWithProperties.cs">
+      <Link>SharedSource\Utilities\MemberInfoEqualityComparerTestDomain\ClassWithProperties.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\UnitTests\Utilities\MemberInfoEqualityComparerTestDomain\DerivedClassWithFields.cs">
+      <Link>SharedSource\Utilities\MemberInfoEqualityComparerTestDomain\DerivedClassWithFields.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\UnitTests\Utilities\MemberInfoEqualityComparerTestDomain\DerivedClassWithMethods.cs">
+      <Link>SharedSource\Utilities\MemberInfoEqualityComparerTestDomain\DerivedClassWithMethods.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\UnitTests\Utilities\MemberInfoEqualityComparerTestDomain\DerivedClassWithProperties.cs">
+      <Link>SharedSource\Utilities\MemberInfoEqualityComparerTestDomain\DerivedClassWithProperties.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\UnitTests\Utilities\MemberInfoEqualityComparerTestDomain\FakeMemberInfo.cs">
+      <Link>SharedSource\Utilities\MemberInfoEqualityComparerTestDomain\FakeMemberInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\UnitTests\Utilities\MemberInfoEqualityComparerTestDomain\GenericClassWithMethods.cs">
+      <Link>SharedSource\Utilities\MemberInfoEqualityComparerTestDomain\GenericClassWithMethods.cs</Link>
+    </Compile>
     <Compile Include="..\..\..\SharedSource\UnitTests\Utilities\MemberInfoFromExpressionUtilityTest.cs">
       <Link>SharedSource\Utilities\MemberInfoFromExpressionUtilityTest.cs</Link>
     </Compile>
@@ -640,16 +667,8 @@
     <Compile Include="Utilities\ReflectionUtilityTests\CanAscribe_WithNonGenericClass.cs" />
     <Compile Include="Utilities\ReflectionUtilityTests\CanAscribe_WithNonGenericInterface.cs" />
     <Compile Include="Utilities\ReflectionUtilityTests\IsOriginalDeclaration.cs" />
-    <Compile Include="Utilities\MemberInfoEqualityComparerTest.cs" />
-    <Compile Include="Utilities\MemberInfoEqualityComparerTestDomain\ClassWithProperties.cs" />
-    <Compile Include="Utilities\MemberInfoEqualityComparerTestDomain\ClassWithMethods.cs" />
     <Compile Include="Utilities\ReflectionUtilityTests\TestDomain\ClassWithDifferentProperties.cs" />
-    <Compile Include="Utilities\MemberInfoEqualityComparerTestDomain\ClassWithFields.cs" />
-    <Compile Include="Utilities\MemberInfoEqualityComparerTestDomain\DerivedClassWithFields.cs" />
-    <Compile Include="Utilities\MemberInfoEqualityComparerTestDomain\DerivedClassWithMethods.cs" />
     <Compile Include="Utilities\ReflectionUtilityTests\TestDomain\DerivedClosedGenericClassWithDifferentProperties.cs" />
-    <Compile Include="Utilities\MemberInfoEqualityComparerTestDomain\DerivedClassWithProperties.cs" />
-    <Compile Include="Utilities\MemberInfoEqualityComparerTestDomain\FakeMemberInfo.cs" />
     <Compile Include="Utilities\ReflectionUtilityTests\TestDomain\GenericClassWithDifferentProperties.cs" />
     <Compile Include="Utilities\ReflectionUtilityTests\TestDomain\DerivedOpenGenericClassWithDifferentProperties.cs" />
     <Compile Include="Utilities\ReflectionUtilityTests\TestDomain\DerivedClassWithDifferentProperties.cs" />
@@ -660,7 +679,6 @@
     <Compile Include="Utilities\ReflectionUtilityTests\GetOriginalDeclaringType.cs" />
     <Compile Include="Utilities\ReflectionUtilityTests\GuessIsExplicitInterfaceProperty.cs" />
     <Compile Include="Utilities\ReflectionUtilityTests\SampleTypes.cs" />
-    <Compile Include="Utilities\MemberInfoEqualityComparerTestDomain\GenericClassWithMethods.cs" />
     <Compile Include="Utilities\StopwatchScopeTest.cs" />
     <Compile Include="Utilities\StubStringUtility.cs">
       <SubType>Code</SubType>

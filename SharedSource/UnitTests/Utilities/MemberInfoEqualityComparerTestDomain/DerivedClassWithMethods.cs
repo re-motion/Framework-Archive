@@ -14,6 +14,8 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
+// ReSharper disable once CheckNamespace
 namespace Remotion.UnitTests.Utilities.MemberInfoEqualityComparerTestDomain
 {
   public class DerivedClassWithMethods : ClassWithMethods

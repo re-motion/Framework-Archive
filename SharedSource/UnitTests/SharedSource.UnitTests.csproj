@@ -56,6 +56,15 @@
     <Compile Include="Utilities\ArgumentUtilityTests\NonDisposableEnumerable.cs" />
     <Compile Include="Utilities\AssertionTest.cs" />
     <Compile Include="Utilities\EqualityUtilityTest.cs" />
+    <Compile Include="Utilities\MemberInfoEqualityComparerTest.cs" />
+    <Compile Include="Utilities\MemberInfoEqualityComparerTestDomain\ClassWithFields.cs" />
+    <Compile Include="Utilities\MemberInfoEqualityComparerTestDomain\ClassWithMethods.cs" />
+    <Compile Include="Utilities\MemberInfoEqualityComparerTestDomain\ClassWithProperties.cs" />
+    <Compile Include="Utilities\MemberInfoEqualityComparerTestDomain\DerivedClassWithFields.cs" />
+    <Compile Include="Utilities\MemberInfoEqualityComparerTestDomain\DerivedClassWithMethods.cs" />
+    <Compile Include="Utilities\MemberInfoEqualityComparerTestDomain\DerivedClassWithProperties.cs" />
+    <Compile Include="Utilities\MemberInfoEqualityComparerTestDomain\FakeMemberInfo.cs" />
+    <Compile Include="Utilities\MemberInfoEqualityComparerTestDomain\GenericClassWithMethods.cs" />
     <Compile Include="Utilities\MemberInfoFromExpressionUtilityTest.cs" />
     <Compile Include="Utilities\NullableTypeUtilityTest.cs" />
   </ItemGroup>
