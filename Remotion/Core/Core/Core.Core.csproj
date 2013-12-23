@@ -278,7 +278,6 @@
     <Compile Include="Reflection\FuncInvokerWrapper.template.cs" />
     <Compile Include="Reflection\IActionInvoker.generated.cs" />
     <Compile Include="Reflection\IActionInvoker.template.cs" />
-    <Compile Include="Reflection\IConstructorLookupInfo.cs" />
     <Compile Include="Reflection\IFuncInvoker.generated.cs" />
     <Compile Include="Reflection\IFuncInvoker.template.cs" />
     <Compile Include="Reflection\IMemberInformation.cs" />
@@ -387,7 +386,6 @@
     <Compile Include="Reflection\TypeDiscovery\AssemblyLoading\AssemblyLoaderException.cs" />
     <Compile Include="Reflection\CodeGeneration\GeneratedMethodWrapperAttribute.cs" />
     <Compile Include="Reflection\TypeDiscovery\AssemblyLoading\FilteringAssemblyLoader.cs" />
-    <Compile Include="Reflection\ConstructorLookupInfo.cs" />
     <Compile Include="Reflection\MemberLookupInfo.cs" />
     <Compile Include="Reflection\MethodLookupInfo.cs" />
     <Compile Include="Collections\LockingDataStoreDecorator.cs" />
@@ -470,7 +468,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Reflection\InvokerUtility.cs" />
-    <Compile Include="Reflection\MethodCaller.cs" />
     <Compile Include="Reflection\InheritanceHierarchyFilter.cs" />
     <Compile Include="Reflection\TypesafeActivator.cs" />
     <Compile Include="Utilities\ActionUtility.cs" />
