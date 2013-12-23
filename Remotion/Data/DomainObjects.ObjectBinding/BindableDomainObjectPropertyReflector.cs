@@ -21,6 +21,7 @@ using Remotion.ObjectBinding.BindableObject;
 using Remotion.Reflection;
 using Remotion.TypePipe;
 using Remotion.Utilities;
+using ParamList = Remotion.TypePipe.ParamList;
 using PropertyReflector = Remotion.ObjectBinding.BindableObject.PropertyReflector;
 
 namespace Remotion.Data.DomainObjects.ObjectBinding

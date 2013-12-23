@@ -24,7 +24,6 @@ using Remotion.Data.UnitTests.DomainObjects.Core.MixedDomains.TestDomain;
 using Remotion.Data.UnitTests.DomainObjects.TestDomain;
 using Remotion.Mixins;
 using Remotion.Mixins.CodeGeneration.TypePipe;
-using Remotion.Reflection;
 using Remotion.TypePipe;
 using Remotion.TypePipe.Implementation;
 using Rhino.Mocks;
