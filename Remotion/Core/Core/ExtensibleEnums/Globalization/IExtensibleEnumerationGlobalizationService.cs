@@ -24,10 +24,7 @@ namespace Remotion.ExtensibleEnums.Globalization
   /// <summary>
   /// Defines an interface for retrieving the human-readable localized representation of the extensible-enumeration object.
   /// </summary>
-  /// <seealso cref="ExtensibleEnumerationServiceGlobalizationService"/>
-  /// <threadsafety static="true" instance="true" />
-  [ConcreteImplementation (typeof (ExtensibleEnumerationServiceGlobalizationService), Lifetime = LifetimeKind.Singleton)]
-  public interface IExtensibleEnumerationGlobalizationService
+ public interface IExtensibleEnumerationGlobalizationService
   {
     /// <summary>
     /// Tries to get the human-readable extensible-enumeration name of the spefified reflection object.

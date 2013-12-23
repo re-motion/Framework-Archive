@@ -29,6 +29,7 @@ using Remotion.Linq.Parsing.Structure.IntermediateModel;
 using Remotion.Linq.Parsing.Structure.NodeTypeProviders;
 using Remotion.Linq.SqlBackend.SqlPreparation;
 using Remotion.Linq.Utilities;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using ArgumentUtility = Remotion.Utilities.ArgumentUtility;
 
@@ -37,6 +38,7 @@ namespace Remotion.Data.DomainObjects.Queries
   /// <summary>
   /// Creates the components required to initialize the LINQ provider.
   /// </summary>
+  [ImplementationFor (typeof (ILinqProviderComponentFactory))]
   public class LinqProviderComponentFactory : ILinqProviderComponentFactory
   {
     private readonly IMethodCallTransformerProvider _methodCallTransformerProvider;

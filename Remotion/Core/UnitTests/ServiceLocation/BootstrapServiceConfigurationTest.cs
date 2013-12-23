@@ -87,9 +87,17 @@ namespace Remotion.UnitTests.ServiceLocation
     public interface IService { }
     public class Service : IService { }
 
-    [ConcreteImplementation (typeof (ServiceWithAttribute1))]
-    public interface IServiceWithAttribute { }
-    public class ServiceWithAttribute1 : IServiceWithAttribute { }
-    public class ServiceWithAttribute2 : IServiceWithAttribute { }
+    public interface IServiceWithAttribute
+    {
+    }
+
+    [ImplementationFor (typeof (IServiceWithAttribute))]
+    public class ServiceWithAttribute1 : IServiceWithAttribute
+    {
+    }
+
+    public class ServiceWithAttribute2 : IServiceWithAttribute
+    {
+    }
   }
 }

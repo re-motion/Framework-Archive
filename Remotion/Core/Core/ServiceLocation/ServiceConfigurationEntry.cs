@@ -33,24 +33,22 @@ namespace Remotion.ServiceLocation
   public class ServiceConfigurationEntry
   {
     /// <summary>
-    /// Creates a <see cref="ServiceConfigurationEntry"/> from a <see cref="ConcreteImplementationAttribute"/>.
+    /// Creates a <see cref="ServiceConfigurationEntry"/> from a <see cref="ImplementationForAttribute"/>.
     /// </summary>
     /// <param name="serviceType">The service type.</param>
-    /// <param name="attributes">The attributes holding information about the concrete implementation of the <paramref name="serviceType"/>.</param>
+    /// <param name="attributes">Tuples holding information about the concrete type implementing <paramref name="serviceType"/> as well as the attribute instance.</param>
     /// <returns>A <see cref="ServiceConfigurationEntry"/> containing the data from the <paramref name="attributes"/>.</returns>
-    public static ServiceConfigurationEntry CreateFromAttributes (Type serviceType, IEnumerable<ConcreteImplementationAttribute> attributes)
+    public static ServiceConfigurationEntry CreateFromAttributes (Type serviceType, IEnumerable<Tuple<Type, ImplementationForAttribute>> attributes)
     {
       ArgumentUtility.CheckNotNull ("serviceType", serviceType);
       ArgumentUtility.CheckNotNull ("attributes", attributes);
 
       var attributesAndResolvedTypes =
           (from attribute in attributes
-           orderby attribute.Position
-           let resolvedType = ResolveType (attribute, serviceType.Assembly)
-           where resolvedType != null
-           select new { Attribute = attribute, ResolvedType = resolvedType }).ConvertToCollection();
+           orderby attribute.Item2.Position
+           select new { Attribute = attribute.Item2, ResolvedType = attribute.Item1}).ConvertToCollection();
 
-      EnsureUniqueProperty ("Implementation type", attributesAndResolvedTypes.Select (tuple => tuple.ResolvedType));
+      EnsureUniqueProperty ("Implementation type", attributes.Select (tuple => tuple.Item1));
       EnsureUniqueProperty ("Position", attributesAndResolvedTypes.Select (tuple => tuple.Attribute.Position));
 
       var serviceImplementationInfos =
@@ -59,26 +57,6 @@ namespace Remotion.ServiceLocation
           .Select (tuple => new ServiceImplementationInfo (tuple.ResolvedType, tuple.Attribute.Lifetime));
       
       return new ServiceConfigurationEntry (serviceType, serviceImplementationInfos);
-    }
-
-    private static Type ResolveType (ConcreteImplementationAttribute attribute, Assembly referenceAssembly)
-    {
-      try
-      {
-        return TypeNameTemplateResolver.ResolveToType (attribute.TypeNameTemplate, referenceAssembly);
-      }
-      catch (FileNotFoundException) // Invalid assembly
-      {
-        if (attribute.IgnoreIfNotFound)
-          return null;
-        throw;
-      }
-      catch (TypeLoadException) // Invalid type name
-      {
-        if (attribute.IgnoreIfNotFound)
-          return null;
-        throw;
-      }
     }
 
     private static void CheckImplementationType (Type serviceType, Type implementationType, Func<string, Exception> exceptionFactory)
@@ -97,7 +75,7 @@ namespace Remotion.ServiceLocation
       {
         if (visitedValues.Contains (value))
         {
-          var message = string.Format ("Ambiguous {0}: {1} must be unique.", typeof (ConcreteImplementationAttribute).Name, propertyDescription);
+          var message = string.Format ("Ambiguous {0}: {1} must be unique.", typeof (ImplementationForAttribute).Name, propertyDescription);
           throw new InvalidOperationException (message);
         }
         visitedValues.Add (value);

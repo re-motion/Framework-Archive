@@ -1,4 +1,4 @@
-﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
+// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -20,6 +20,7 @@ using System.Runtime.Serialization;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectLifetime;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Reflection;
+using Remotion.ServiceLocation;
 using Remotion.TypePipe;
 using Remotion.TypePipe.Implementation;
 using Remotion.Utilities;
@@ -29,6 +30,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
   /// <summary>
   /// Creates new domain object instances via an instance of <see cref="IPipeline"/>.
   /// </summary>
+  [ImplementationFor (typeof (IDomainObjectCreator), Lifetime = LifetimeKind.Singleton)]
   public class DomainObjectCreator : IDomainObjectCreator
   {
     private readonly IPipelineRegistry _pipelineRegistry;

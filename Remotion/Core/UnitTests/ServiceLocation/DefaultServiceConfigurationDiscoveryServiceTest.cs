@@ -17,6 +17,7 @@
 using System;
 using System.Collections;
 using System.ComponentModel.Design;
+using System.Runtime.InteropServices;
 using NUnit.Framework;
 using Remotion.ServiceLocation;
 using System.Linq;
@@ -28,15 +29,25 @@ namespace Remotion.UnitTests.ServiceLocation
   [TestFixture]
   public class DefaultServiceConfigurationDiscoveryServiceTest
   {
+    private DefaultServiceConfigurationDiscoveryService _defaultServiceConfigurationDiscoveryService;
+    private ITypeDiscoveryService _typeDiscoveryServiceStub;
+
+    [SetUp]
+    public void SetUp ()
+    {
+      _typeDiscoveryServiceStub = MockRepository.GenerateStub<ITypeDiscoveryService> ();
+      _defaultServiceConfigurationDiscoveryService = new DefaultServiceConfigurationDiscoveryService (_typeDiscoveryServiceStub);
+    }
+
     [Test]
     public void GetDefaultConfiguration_TypeDiscoveryService ()
     {
-      var typeDiscoveryServiceStub = MockRepository.GenerateStub<ITypeDiscoveryService> ();
-      typeDiscoveryServiceStub
-          .Stub (stub => stub.GetTypes (null, false))
+      _typeDiscoveryServiceStub.Stub (stub => stub.GetTypes (null, false))
           .Return (new ArrayList { typeof (ITestSingletonConcreteImplementationAttributeType) });
+      _typeDiscoveryServiceStub.Stub (stub => stub.GetTypes (typeof (ITestSingletonConcreteImplementationAttributeType), true))
+          .Return (new ArrayList { typeof (TestConcreteImplementationAttributeType) });
 
-      var serviceConfigurationEntries = DefaultServiceConfigurationDiscoveryService.GetDefaultConfiguration (typeDiscoveryServiceStub).ToArray();
+      var serviceConfigurationEntries = _defaultServiceConfigurationDiscoveryService.GetDefaultConfiguration ().ToArray();
 
       Assert.That (serviceConfigurationEntries, Has.Length.EqualTo (1));
       var serviceConfigurationEntry = serviceConfigurationEntries.Single ();
@@ -49,12 +60,18 @@ namespace Remotion.UnitTests.ServiceLocation
     [Test]
     public void GetDefaultConfiguration_TypeDiscoveryService_WithMultipleConcreteImplementationAttributes ()
     {
-      var typeDiscoveryServiceStub = MockRepository.GenerateStub<ITypeDiscoveryService> ();
-      typeDiscoveryServiceStub
-          .Stub (stub => stub.GetTypes (null, false))
+      _typeDiscoveryServiceStub.Stub (stub => stub.GetTypes (null, false))
           .Return (new ArrayList { typeof (ITestMultipleConcreteImplementationAttributesType) });
+      _typeDiscoveryServiceStub.Stub (stub => stub.GetTypes (typeof (ITestMultipleConcreteImplementationAttributesType), true))
+          .Return (
+              new ArrayList
+              {
+                  typeof (TestMultipleConcreteImplementationAttributesType1),
+                  typeof (TestMultipleConcreteImplementationAttributesType2),
+                  typeof (TestMultipleConcreteImplementationAttributesType3)
+              });
 
-      var serviceConfigurationEntries = DefaultServiceConfigurationDiscoveryService.GetDefaultConfiguration (typeDiscoveryServiceStub).ToArray ();
+      var serviceConfigurationEntries = _defaultServiceConfigurationDiscoveryService.GetDefaultConfiguration ().ToArray ();
 
       Assert.That (serviceConfigurationEntries, Has.Length.EqualTo (1));
       var serviceConfigurationEntry = serviceConfigurationEntries.Single ();
@@ -73,50 +90,56 @@ namespace Remotion.UnitTests.ServiceLocation
     [Test]
     public void GetDefaultConfiguration_TypeDiscoveryService_WithTypeWithDuplicatePosition ()
     {
-      var typeDiscoveryServiceStub = MockRepository.GenerateStub<ITypeDiscoveryService> ();
-      typeDiscoveryServiceStub
-          .Stub (stub => stub.GetTypes (null, false))
+      _typeDiscoveryServiceStub.Stub (stub => stub.GetTypes (null, false))
           .Return (new ArrayList { typeof (ITestMultipleConcreteImplementationAttributesWithDuplicatePositionType) });
+      _typeDiscoveryServiceStub.Stub (stub => stub.GetTypes (typeof (ITestMultipleConcreteImplementationAttributesWithDuplicatePositionType), true))
+          .Return (new ArrayList { typeof (TestMultipleConcreteImplementationAttributesWithDuplicatePositionType1), typeof (TestMultipleConcreteImplementationAttributesWithDuplicatePositionType2) });
 
       Assert.That (
-          () => DefaultServiceConfigurationDiscoveryService.GetDefaultConfiguration (typeDiscoveryServiceStub).ToArray(),
+          () => _defaultServiceConfigurationDiscoveryService.GetDefaultConfiguration ().ToArray(),
           Throws.InvalidOperationException.With.Message.EqualTo (
               "Invalid configuration of service type "
               + "'Remotion.UnitTests.ServiceLocation.TestDomain.ITestMultipleConcreteImplementationAttributesWithDuplicatePositionType'. "
-              + "Ambiguous ConcreteImplementationAttribute: Position must be unique.")
+              + "Ambiguous ImplementationForAttribute: Position must be unique.")
               .And.InnerException.Not.Null);
     }
 
     [Test]
     public void GetDefaultConfiguration_TypeDiscoveryService_WithTypeWithDuplicateImplementation ()
     {
-      var typeDiscoveryServiceStub = MockRepository.GenerateStub<ITypeDiscoveryService> ();
-      typeDiscoveryServiceStub
-          .Stub (stub => stub.GetTypes (null, false))
+      _typeDiscoveryServiceStub.Stub (stub => stub.GetTypes (null, false))
           .Return (new ArrayList { typeof (ITestMultipleConcreteImplementationAttributesWithDuplicateImplementationType) });
+      _typeDiscoveryServiceStub.Stub (stub => stub.GetTypes (typeof (ITestMultipleConcreteImplementationAttributesWithDuplicateImplementationType), true))
+          .Return (new ArrayList { typeof (TestMultipleConcreteImplementationAttributesWithDuplicateImplementationType) });
 
       Assert.That (
-          () => DefaultServiceConfigurationDiscoveryService.GetDefaultConfiguration (typeDiscoveryServiceStub).ToArray (),
+          () => _defaultServiceConfigurationDiscoveryService.GetDefaultConfiguration ().ToArray (),
           Throws.InvalidOperationException
             .With.Message.EqualTo (
               "Invalid configuration of service type "
               + "'Remotion.UnitTests.ServiceLocation.TestDomain.ITestMultipleConcreteImplementationAttributesWithDuplicateImplementationType'. "
-              + "Ambiguous ConcreteImplementationAttribute: Implementation type must be unique.")
+              + "Ambiguous ImplementationForAttribute: Implementation type must be unique.")
             .And.InnerException.Not.Null);
     }
 
     [Test]
-    public void GetDefaultConfiguration_TypeDiscoveryService_WithNoConcreteImplementationAttribute ()
+    public void GetDefaultConfiguration_WithNoImplementations ()
     {
-      var serviceConfigurationEntries = DefaultServiceConfigurationDiscoveryService.GetDefaultConfiguration (new[] { typeof (ICollection) });
+      _typeDiscoveryServiceStub.Stub (_ => _.GetTypes (null, false)).IgnoreArguments().Return (new Type[0]);
 
-      Assert.That (serviceConfigurationEntries.Count(), Is.EqualTo (0));
+      var serviceConfigurationEntries = _defaultServiceConfigurationDiscoveryService.GetDefaultConfiguration (typeof (ICollection));
+
+      Assert.That (serviceConfigurationEntries, Is.Not.Null);
+      Assert.That (serviceConfigurationEntries.ImplementationInfos, Is.Empty);
     }
 
     [Test]
     public void GetDefaultConfiguration_Types ()
     {
-      var serviceConfigurationEntries = DefaultServiceConfigurationDiscoveryService.GetDefaultConfiguration (
+      _typeDiscoveryServiceStub.Stub (_ => _.GetTypes (typeof (ITestSingletonConcreteImplementationAttributeType), true))
+        .Return (new [] { typeof (TestConcreteImplementationAttributeType) });
+
+      var serviceConfigurationEntries = _defaultServiceConfigurationDiscoveryService.GetDefaultConfiguration (
           new[] { typeof (ITestSingletonConcreteImplementationAttributeType) }).ToArray();
 
       Assert.That (serviceConfigurationEntries, Has.Length.EqualTo (1));
@@ -130,35 +153,23 @@ namespace Remotion.UnitTests.ServiceLocation
     [Test]
     public void GetDefaultConfiguration_Types_Unresolvable ()
     {
-      var serviceConfigurationEntries = DefaultServiceConfigurationDiscoveryService.GetDefaultConfiguration (
+      _typeDiscoveryServiceStub.Stub (_ => _.GetTypes (typeof (ITestConcreteImplementationAttributeWithUnresolvableImplementationType), true))
+        .Return (new Type[0]);
+      
+      var serviceConfigurationEntries = _defaultServiceConfigurationDiscoveryService.GetDefaultConfiguration (
           new[] { typeof (ITestConcreteImplementationAttributeWithUnresolvableImplementationType) }).ToArray();
 
-      Assert.That (serviceConfigurationEntries, Has.Length.EqualTo (1));
-      var entry = serviceConfigurationEntries.Single();
-      Assert.That (entry.ServiceType, Is.EqualTo (typeof (ITestConcreteImplementationAttributeWithUnresolvableImplementationType)));
-      Assert.That (entry.ImplementationInfos, Is.Empty);
-    }
-
-    [Test]
-    public void GetDefaultConfiguration_Types_UnresolvableAndResolvable ()
-    {
-      var serviceConfigurationEntries = DefaultServiceConfigurationDiscoveryService.GetDefaultConfiguration (
-          new[] { typeof (ITestConcreteImplementationAttributeWithUnresolvableAndResolvableImplementationTypes) }).ToArray();
-
-      Assert.That (serviceConfigurationEntries, Has.Length.EqualTo (1));
-      var entry = serviceConfigurationEntries.Single();
-      Assert.That (entry.ServiceType, Is.EqualTo (typeof (ITestConcreteImplementationAttributeWithUnresolvableAndResolvableImplementationTypes)));
-      var implementationInfo = new ServiceImplementationInfo (
-          typeof (TestConcreteImplementationAttributeWithUnresolvableAndResolvableImplementationTypesExisting), LifetimeKind.Instance);
-      Assert.That (entry.ImplementationInfos, Is.EqualTo (new[] { implementationInfo }));
+      Assert.That (serviceConfigurationEntries, Is.Empty);
     }
 
     [Test]
     public void GetDefaultConfiguration_Assembly ()
     {
+      var defaultServiceConfigurationDiscoveryService = DefaultServiceConfigurationDiscoveryService.Create();
+
       // Because the TestDomain contains test classes with ambiguous attributes, we expect an exception here.
       Assert.That (
-          () => DefaultServiceConfigurationDiscoveryService.GetDefaultConfiguration (new[] { GetType().Assembly }).ToArray(), 
+          () => defaultServiceConfigurationDiscoveryService.GetDefaultConfiguration (new[] { GetType().Assembly }).ToArray(), 
             Throws.InvalidOperationException.With.Message.Contains ("Ambiguous"));
     }
   }

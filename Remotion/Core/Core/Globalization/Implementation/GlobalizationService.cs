@@ -1,4 +1,4 @@
-﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
+// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -19,6 +19,7 @@ using System;
 using JetBrains.Annotations;
 using Remotion.Collections;
 using Remotion.Reflection;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 
 namespace Remotion.Globalization.Implementation
@@ -27,6 +28,7 @@ namespace Remotion.Globalization.Implementation
   /// Retrieves and caches <see cref="IResourceManager"/>s for types.
   /// </summary>
   /// <threadsafety static="true" instance="true" />
+  [ImplementationFor (typeof (IGlobalizationService), Position = 0, Lifetime = LifetimeKind.Singleton)]
   public sealed class GlobalizationService : IGlobalizationService
   {
     private readonly IResourceManagerResolver _resourceManagerResolver;

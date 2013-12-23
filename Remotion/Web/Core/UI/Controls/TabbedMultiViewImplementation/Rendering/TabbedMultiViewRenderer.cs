@@ -19,6 +19,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web;
 using Remotion.Globalization;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.Utilities;
 
@@ -28,6 +29,7 @@ namespace Remotion.Web.UI.Controls.TabbedMultiViewImplementation.Rendering
   /// Implements <see cref="ITabbedMultiViewRenderer"/> for standard mode rendering of <see cref="TabbedMultiView"/> controls.
   /// <seealso cref="ITabbedMultiView"/>
   /// </summary>
+  [ImplementationFor (typeof (ITabbedMultiViewRenderer), Lifetime = LifetimeKind.Singleton)]
   public class TabbedMultiViewRenderer : RendererBase<ITabbedMultiView>, ITabbedMultiViewRenderer
   {
     public TabbedMultiViewRenderer (IResourceUrlFactory resourceUrlFactory, ICompoundGlobalizationService globalizationService)

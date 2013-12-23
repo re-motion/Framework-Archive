@@ -1,4 +1,4 @@
-﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
+// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -17,6 +17,7 @@
 
 using System;
 using Remotion.Reflection;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 
 namespace Remotion.Globalization.Implementation
@@ -32,8 +33,8 @@ namespace Remotion.Globalization.Implementation
   /// The long name is resolved using <see cref="IMemberInformationNameResolver"/>.
   /// </remarks>
   /// <threadsafety static="true" instance="true"/>
-  public sealed class MemberInformationGlobalizationService : IMemberInformationGlobalizationService
-  {
+  [ImplementationFor (typeof (IMemberInformationGlobalizationService), Lifetime = LifetimeKind.Singleton)]
+  public sealed class MemberInformationGlobalizationService : IMemberInformationGlobalizationService  {
     private readonly IGlobalizationService _globalizationService;
     private readonly IMemberInformationNameResolver _memberInformationNameResolver;
 

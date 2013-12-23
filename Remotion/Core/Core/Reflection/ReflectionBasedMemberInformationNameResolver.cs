@@ -18,6 +18,7 @@
 using System;
 using Remotion.Collections;
 using Remotion.Globalization;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 
 namespace Remotion.Reflection
@@ -26,6 +27,7 @@ namespace Remotion.Reflection
   /// Default implementation of the <see cref="IMemberInformationNameResolver"/> interface.
   /// </summary>
   /// <threadsafety static="true" instance="true"/>
+  [ImplementationFor (typeof (IMemberInformationNameResolver), Lifetime = LifetimeKind.Singleton)]
   public class ReflectionBasedMemberInformationNameResolver : IMemberInformationNameResolver
   {
     private readonly LockingCacheDecorator<IPropertyInformation, string> s_propertyNameCache =

@@ -43,7 +43,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls
     [TestFixtureTearDown]
     public void TestFixtureTearDown ()
     {
-      ServiceLocator.SetLocatorProvider (() => new DefaultServiceLocator());
+      ServiceLocator.SetLocatorProvider (() => DefaultServiceLocator.Create());
     }
 
     [SetUp]

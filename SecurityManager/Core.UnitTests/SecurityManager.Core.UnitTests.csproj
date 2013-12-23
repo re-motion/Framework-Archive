@@ -10,12 +10,14 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Remotion.SecurityManager.UnitTests</RootNamespace>
     <AssemblyName>Remotion.SecurityManager.UnitTests</AssemblyName>
-    <FileUpgradeFlags></FileUpgradeFlags>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
     <OldToolsVersion>3.5</OldToolsVersion>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\remotion.snk</AssemblyOriginatorKeyFile>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <UpgradeBackupLocation></UpgradeBackupLocation>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -127,6 +129,11 @@
     <Compile Include="DomainTest.cs" />
     <Compile Include="Domain\AccessControl\AccessControlEntryTests\SearchServiceTest.cs" />
     <Compile Include="Domain\AccessControl\AccessControlEntryTests\ValidationTest.cs" />
+    <Compile Include="Domain\AccessControl\AccessEvaluation\IAccessControlListFinderTest.cs" />
+    <Compile Include="Domain\AccessControl\AccessEvaluation\IAccessResolverTest.cs" />
+    <Compile Include="Domain\AccessControl\AccessEvaluation\ISecurityContextRepositoryTest.cs" />
+    <Compile Include="Domain\AccessControl\AccessEvaluation\ISecurityPrincipalRepositoryTest.cs" />
+    <Compile Include="Domain\AccessControl\AccessEvaluation\ISecurityTokenBuilderTest.cs" />
     <Compile Include="Domain\AccessControl\PrincipalRoleComparer.cs" />
     <Compile Include="Domain\AccessControl\AccessEvaluation\PrincipalTest.cs" />
     <Compile Include="Domain\AccessControl\AccessEvaluation\SecurityTokenMatcherTests\AceForOwningGroupAndParents.cs" />
@@ -169,8 +176,10 @@
     <Compile Include="Domain\AccessControl\AccessControlEntryPropertiesEnumerationValueFilterTests\UserConditionStateful.cs" />
     <Compile Include="Domain\BindableObjectProviderTestHelper.cs" />
     <Compile Include="Domain\DomainObjectDeleteHandlerTest.cs" />
+    <Compile Include="Domain\IDomainRevisionProviderTest.cs" />
     <Compile Include="Domain\IGlobalAccessTypeCacheTest.cs" />
     <Compile Include="Domain\ISecurityManagerPrincipalFactoryTest.cs" />
+    <Compile Include="Domain\IUserRevisionProviderTest.cs" />
     <Compile Include="Domain\Metadata\AccessTypeDefinitionTest.cs" />
     <Compile Include="Domain\Metadata\FindMetadataObjectQueryBuilderTest.cs" />
     <Compile Include="Domain\Metadata\SecurableClassDefinitionTests\AddAccessType.cs" />
@@ -362,10 +371,14 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <DatabaseFiles Include="..\Core\Database\SecurityManagerCreateDB.sql"></DatabaseFiles>
-    <DatabaseFiles Include="..\Core\Database\SecurityManagerSetupDB.sql"></DatabaseFiles>
-    <DatabaseFiles Include="..\Core\Database\SecurityManagerSetupConstraints.sql"></DatabaseFiles>
-    <DatabaseFiles Include="..\Core\Database\SecurityManagerSetupDBSpecialTables.sql"></DatabaseFiles>
+    <DatabaseFiles Include="..\Core\Database\SecurityManagerCreateDB.sql">
+    </DatabaseFiles>
+    <DatabaseFiles Include="..\Core\Database\SecurityManagerSetupDB.sql">
+    </DatabaseFiles>
+    <DatabaseFiles Include="..\Core\Database\SecurityManagerSetupConstraints.sql">
+    </DatabaseFiles>
+    <DatabaseFiles Include="..\Core\Database\SecurityManagerSetupDBSpecialTables.sql">
+    </DatabaseFiles>
   </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
@@ -373,9 +386,9 @@
   </Target>
   -->
   <Target Name="AfterBuild">
-    <Delete Files="@(DatabaseFiles-&gt;'$(MSBuildProjectDirectory)\$(OutputPath)\%(FileName)%(Extension)')" />
-    <Delete Files="@(MappingFiles-&gt;'$(MSBuildProjectDirectory)\$(OutputPath)\%(FileName)%(Extension)')" />
-    <Copy SourceFiles="@(DatabaseFiles-&gt;'%(Fullpath)')" DestinationFiles="@(DatabaseFiles-&gt;'$(MSBuildProjectDirectory)\$(OutputPath)\%(FileName)%(Extension)')" />
-    <Copy SourceFiles="@(MappingFiles-&gt;'%(Fullpath)')" DestinationFiles="@(MappingFiles-&gt;'$(MSBuildProjectDirectory)\$(OutputPath)\%(FileName)%(Extension)')" />
+    <Delete Files="@(DatabaseFiles->'$(MSBuildProjectDirectory)\$(OutputPath)\%(FileName)%(Extension)')" />
+    <Delete Files="@(MappingFiles->'$(MSBuildProjectDirectory)\$(OutputPath)\%(FileName)%(Extension)')" />
+    <Copy SourceFiles="@(DatabaseFiles->'%(Fullpath)')" DestinationFiles="@(DatabaseFiles->'$(MSBuildProjectDirectory)\$(OutputPath)\%(FileName)%(Extension)')" />
+    <Copy SourceFiles="@(MappingFiles->'%(Fullpath)')" DestinationFiles="@(MappingFiles->'$(MSBuildProjectDirectory)\$(OutputPath)\%(FileName)%(Extension)')" />
   </Target>
 </Project>

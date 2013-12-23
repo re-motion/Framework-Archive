@@ -25,9 +25,6 @@ namespace Remotion.Globalization
   /// <summary>
   /// Defines an interface for retrieving the human-readable localized representation of the enumeration object.
   /// </summary>
-  /// <seealso cref="EnumerationGlobalizationService"/>
-  /// <threadsafety static="true" instance="true" />
-  [ConcreteImplementation (typeof (EnumerationGlobalizationService), Lifetime = LifetimeKind.Singleton)]
   public interface IEnumerationGlobalizationService
   {
     /// <summary>

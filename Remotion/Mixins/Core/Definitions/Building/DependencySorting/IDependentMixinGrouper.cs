@@ -22,8 +22,7 @@ namespace Remotion.Mixins.Definitions.Building.DependencySorting
 {
   // TODO 5179: Remove.
   [Obsolete ("This class will been removed. Use MixinDefinitionSorter instead. (1.13.175.0)")]
-  [ConcreteImplementation (typeof (DependentMixinGrouper), Lifetime = LifetimeKind.Singleton)]
-  public interface IDependentMixinGrouper
+ public interface IDependentMixinGrouper
   {
     IEnumerable<HashSet<MixinDefinition>> GroupMixins (IEnumerable<MixinDefinition> mixins);
   }

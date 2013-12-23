@@ -23,6 +23,7 @@ using Remotion.Collections;
 using Remotion.Globalization;
 using Remotion.Globalization.Implementation;
 using Remotion.Reflection;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 
 namespace Remotion.Mixins.Globalization
@@ -35,6 +36,7 @@ namespace Remotion.Mixins.Globalization
   /// <see cref="MixinConfiguration.SetMasterConfiguration"/> or <see cref="MixinConfiguration.ResetMasterConfiguration"/>.
   /// </remarks>
   /// <threadsafety static="true" instance="true" />
+  [ImplementationFor (typeof (IGlobalizationService), Position = 1, Lifetime = LifetimeKind.Singleton)]
   public sealed class MixinGlobalizationService : IGlobalizationService
   {
     private volatile MixinConfiguration _mixinConfiguration;

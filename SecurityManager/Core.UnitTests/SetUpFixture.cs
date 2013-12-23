@@ -62,7 +62,7 @@ namespace Remotion.SecurityManager.UnitTests
     {
       try
       {
-        var serviceLocator = new DefaultServiceLocator();
+        var serviceLocator = DefaultServiceLocator.Create();
         serviceLocator.Register (typeof (IGlobalAccessTypeCache), () => new NullGlobalAccessTypeCache());
         ServiceLocator.SetLocatorProvider (() => serviceLocator);
 

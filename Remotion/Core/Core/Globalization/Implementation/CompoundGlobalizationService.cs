@@ -1,4 +1,4 @@
-﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
+// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -20,6 +20,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Remotion.Collections;
 using Remotion.Reflection;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 
 namespace Remotion.Globalization.Implementation
@@ -29,6 +30,7 @@ namespace Remotion.Globalization.Implementation
   /// delegates to it to retrieve an <see cref="IResourceManager"/> for a specified type.
   /// </summary>
   /// <threadsafety static="true" instance="true" />
+  [ImplementationFor (typeof (ICompoundGlobalizationService), Lifetime = LifetimeKind.Singleton)]
   public sealed class CompoundGlobalizationService : ICompoundGlobalizationService
   {
     private readonly ReadOnlyCollectionDecorator<IGlobalizationService> _globalizationServices;

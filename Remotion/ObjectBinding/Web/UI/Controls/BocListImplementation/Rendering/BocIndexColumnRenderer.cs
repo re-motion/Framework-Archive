@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Web.UI;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Globalization;
 
@@ -24,6 +25,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
   /// <summary>
   /// Responsible for rendering the index column of a <see cref="IBocList"/>.
   /// </summary>
+  [ImplementationFor (typeof (IBocIndexColumnRenderer), Lifetime = LifetimeKind.Singleton)]
   public class BocIndexColumnRenderer : IBocIndexColumnRenderer
   {
     private readonly BocListCssClassDefinition _cssClasses;

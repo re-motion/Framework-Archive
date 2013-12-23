@@ -32,7 +32,7 @@ namespace Remotion.UnitTests.ServiceLocation
     [SetUp]
     public void SetUp ()
     {
-      _serviceLocator = new DefaultServiceLocator();
+      _serviceLocator = DefaultServiceLocator.Create();
     }
 
     [Test]
@@ -162,7 +162,7 @@ namespace Remotion.UnitTests.ServiceLocation
     [ExpectedExceptionAttribute (typeof (ActivationException), ExpectedMessage =
         "Invalid ConcreteImplementationAttribute configuration for service type "
         + "'Remotion.UnitTests.ServiceLocation.TestDomain.ITestMultipleConcreteImplementationAttributesWithDuplicatePositionType'. "
-        + "Ambiguous ConcreteImplementationAttribute: Position must be unique.")]
+        + "Ambiguous ImplementationForAttribute: Position must be unique.")]
     public void GetAllInstances_ServiceTypeWithAmbiguousPosition ()
     {
       _serviceLocator.GetAllInstances (typeof (ITestMultipleConcreteImplementationAttributesWithDuplicatePositionType)).ToArray ();
@@ -172,21 +172,10 @@ namespace Remotion.UnitTests.ServiceLocation
     [ExpectedExceptionAttribute (typeof (ActivationException), ExpectedMessage =
         "Invalid ConcreteImplementationAttribute configuration for service type "
         + "'Remotion.UnitTests.ServiceLocation.TestDomain.ITestMultipleConcreteImplementationAttributesWithDuplicateImplementationType'. "
-        + "Ambiguous ConcreteImplementationAttribute: Implementation type must be unique.")]
+        + "Ambiguous ImplementationForAttribute: Implementation type must be unique.")]
     public void GetAllInstances_ServiceTypeWithDuplicateImplementation ()
     {
       _serviceLocator.GetAllInstances (typeof (ITestMultipleConcreteImplementationAttributesWithDuplicateImplementationType)).ToArray ();
-    }
-
-    [Test]
-    [ExpectedExceptionAttribute (typeof (ActivationException), ExpectedMessage =
-        "Invalid ConcreteImplementationAttribute configuration for service type "
-        + "'Remotion.UnitTests.ServiceLocation.TestDomain.ITestConcreteImplementationAttributeTypeWithInvalidImplementation'. "
-        + "The implementation type 'Remotion.UnitTests.ServiceLocation.TestDomain.TestConcreteImplementationAttributeType' does not implement "
-        + "the service type.")]
-    public void GetAllInstances_ServiceTypeNotImplementedByImplementationType()
-    {
-      _serviceLocator.GetAllInstances (typeof (ITestConcreteImplementationAttributeTypeWithInvalidImplementation)).ToArray ();
     }
 
     [Test]
@@ -506,6 +495,22 @@ namespace Remotion.UnitTests.ServiceLocation
       Assert.That (instances, Has.Length.EqualTo (2));
       Assert.That (instances[0], Is.TypeOf<TestMultipleRegistrationType1> ());
       Assert.That (instances[1], Is.TypeOf<TestMultipleRegistrationType2> ());
+    }
+
+    [Test]
+    public void Register_ServiceConfigurationEntry_ImplementationInfoWithFactory ()
+    {
+      var expectedInstance = new TestConcreteImplementationAttributeType();
+      var serviceImplementation = ServiceImplementationInfo.Create (() => expectedInstance);
+
+      var serviceConfigurationEntry = new ServiceConfigurationEntry (
+          typeof (ITestSingletonConcreteImplementationAttributeType),
+          serviceImplementation);
+
+      _serviceLocator.Register (serviceConfigurationEntry);
+
+      var instance1 = _serviceLocator.GetInstance (typeof (ITestSingletonConcreteImplementationAttributeType));
+      Assert.That (instance1, Is.SameAs (expectedInstance));
     }
 
     [Test]

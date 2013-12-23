@@ -38,7 +38,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.UI.Controls.BocListImplementation
     [SetUp]
     public void SetUp ()
     {
-      _serviceLocator = new DefaultServiceLocator();
+      _serviceLocator = DefaultServiceLocator.Create();
       _stubColumnDefinition = new StubColumnDefinition();
       _stubValueColumnDefinition = new StubValueColumnDefinition();
       _wcagHelperStub = MockRepository.GenerateStub<WcagHelper>();

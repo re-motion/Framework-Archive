@@ -44,7 +44,7 @@ namespace Remotion.Web.UnitTests.Core.Security.UI.WebSecurityAdapterTests
       SecurityConfiguration.Current.SecurityProvider = _testHelper.SecurityProvider;
       SecurityConfiguration.Current.PrincipalProvider = _testHelper.PrincipalProvider;
 
-      var serviceLocator = new DefaultServiceLocator();
+      var serviceLocator = DefaultServiceLocator.Create();
       serviceLocator.Register (typeof (IFunctionalSecurityStrategy), () => _testHelper.FunctionalSecurityStrategy);
       _serviceLocatorScope = new ServiceLocatorScope (serviceLocator);
     }

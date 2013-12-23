@@ -17,6 +17,7 @@
 using System;
 using System.Web;
 using Remotion.Globalization;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 
 namespace Remotion.Web.UI.Controls.WebButtonImplementation.Rendering
@@ -25,6 +26,7 @@ namespace Remotion.Web.UI.Controls.WebButtonImplementation.Rendering
   /// Implements <see cref="IWebButtonRenderer"/> for standard mode rendering of <see cref="WebButton"/> controls.
   /// <seealso cref="IWebButton"/>
   /// </summary>
+  [ImplementationFor (typeof (IWebButtonRenderer), Lifetime = LifetimeKind.Singleton)]
   public class WebButtonRenderer : RendererBase<IWebButton>, IWebButtonRenderer
   {
     public WebButtonRenderer (IResourceUrlFactory resourceUrlFactory, ICompoundGlobalizationService globalizationService)

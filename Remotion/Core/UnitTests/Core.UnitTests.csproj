@@ -168,12 +168,14 @@
     <Compile Include="Configuration\ServiceLocation\FakeServiceLocatorProvider.cs" />
     <Compile Include="Configuration\ServiceLocation\ServiceLocationConfigurationTest.cs" />
     <Compile Include="Configuration\TypeDiscovery\IntegrationTests\SpecificRootAssemblies\SpecificRootAssembliesAreNotSubjectToApplicationFilterTest.cs" />
+    <Compile Include="Context\ISafeContextStorageProviderTest.cs" />
     <Compile Include="Context\SafeContextIntegrationTest.cs" />
     <Compile Include="Context\SafeContextTest.cs" />
     <Compile Include="ExtensibleEnums\ExtensibleEnumExtensionsTest.cs" />
     <Compile Include="ExtensibleEnums\Globalization\ExtensibleEnumerationGlobalizationServiceIntegrationTest.cs" />
     <Compile Include="Globalization\EnumerationGlobalizationServiceIntegrationTest.cs" />
     <Compile Include="Globalization\EnumFromResource.cs" />
+    <Compile Include="Diagnostics\IDebuggerInterfaceTest.cs" />
     <Compile Include="Globalization\GlobalizationServiceExtensionsTest.cs" />
     <Compile Include="Globalization\MemberInformationGlobalizationServiceIntegrationTest.cs" />
     <Compile Include="Globalization\ResourceManagerExtensionsTest.cs" />
@@ -272,6 +274,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Reflection\DelegateFactoryTest.cs" />
+    <Compile Include="Reflection\IDelegateFactoryTest.cs" />
     <Compile Include="Reflection\IMemberInfoNameResolverTest.cs" />
     <Compile Include="Reflection\MemberLookupInfoTest.cs" />
     <Compile Include="Reflection\MemberSignatures\EventSignatureTest.cs" />
@@ -289,6 +292,7 @@
     <Compile Include="SafeContextSingletonTest.cs" />
     <Compile Include="ServiceLocation\BootstrapServiceConfigurationTest.cs" />
     <Compile Include="ServiceLocation\DefaultServiceLocatorProviderTest.cs" />
+    <Compile Include="ServiceLocation\IMemberInformationNameResolverTest.cs" />
     <Compile Include="ServiceLocation\ServiceImplementationInfoTest.cs" />
     <Compile Include="ServiceLocation\TestDomain\IInterfaceWithIndirectActivationExceptionForCollectionParameter.cs" />
     <Compile Include="ServiceLocation\TestDomain\IInterfaceWithIndirectActivationException.cs" />
@@ -436,7 +440,6 @@
     <Compile Include="Globalization\TestDomain\ClassWithoutMultiLingualResourcesAttributes.cs" />
     <Compile Include="Globalization\TestDomain\InheritedClassWithoutMultiLingualResourcesAttributes.cs" />
     <Compile Include="Globalization\TestDomain\InheritedClassWithMultiLingualResourcesAttributes.cs" />
-    <Compile Include="ServiceLocation\ConcreteImplementationAttributeTest.cs" />
     <Compile Include="Logging\Log4NetLogManagerTest.cs" />
     <Compile Include="Logging\Log4NetLogTests\BaseTest.cs" />
     <Compile Include="Logging\Log4NetLogTests\ConvertTest.cs" />

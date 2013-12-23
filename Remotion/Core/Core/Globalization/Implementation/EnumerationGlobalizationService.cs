@@ -1,4 +1,4 @@
-﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
+// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -17,6 +17,7 @@
 
 using System;
 using System.Reflection;
+using Remotion.ServiceLocation;
 using Remotion.Collections;
 using Remotion.Reflection;
 using Remotion.Utilities;
@@ -27,7 +28,8 @@ namespace Remotion.Globalization.Implementation
   /// Retrieving the human-readable localized representation of enumeration objects.
   /// </summary>
   /// <threadsafety static="true" instance="true"/>
-  public sealed class EnumerationGlobalizationService : IEnumerationGlobalizationService
+  [ImplementationFor (typeof (IEnumerationGlobalizationService), Lifetime = LifetimeKind.Singleton)]
+  public class EnumerationGlobalizationService : IEnumerationGlobalizationService
   {
     private readonly ICache<Enum, string> _staticEnumValues = CacheFactory.CreateWithLocking<Enum, string>();
     private readonly IGlobalizationService _globalizationService;

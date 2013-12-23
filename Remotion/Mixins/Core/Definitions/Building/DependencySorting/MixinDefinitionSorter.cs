@@ -18,6 +18,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Remotion.ServiceLocation;
 using Remotion.Text;
 using Remotion.FunctionalProgramming;
 
@@ -54,6 +55,7 @@ namespace Remotion.Mixins.Definitions.Building.DependencySorting
   /// <item><description>Repeat.</description></item>
   /// </list>
   /// </remarks>
+  [ImplementationFor (typeof (IMixinDefinitionSorter), Lifetime = LifetimeKind.Singleton)]
   public class MixinDefinitionSorter : IMixinDefinitionSorter
   {
     public virtual IEnumerable<MixinDefinition> SortMixins (IEnumerable<MixinDefinition> mixinDefinitions)

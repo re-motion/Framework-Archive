@@ -26,10 +26,7 @@ namespace Remotion.Globalization
   /// <summary>
   /// Defines an interface for retrieving the human-readable localized representation of the reflection object.
   /// </summary>
-  /// <seealso cref="MemberInformationGlobalizationService"/>
-  /// <threadsafety static="true" instance="true" />
-  [ConcreteImplementation (typeof (MemberInformationGlobalizationService), Lifetime = LifetimeKind.Singleton)]
-  public interface IMemberInformationGlobalizationService
+ public interface IMemberInformationGlobalizationService
   {
     /// <summary>
     /// Tries to get the human-readable type name of the specified reflection object.

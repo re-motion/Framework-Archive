@@ -19,6 +19,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.Globalization;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web;
 using Remotion.Web.UI;
@@ -30,6 +31,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Rend
   /// Responsible for rendering <see cref="BocEnumValue"/> controls.
   /// <seealso cref="IBocEnumValue"/>
   /// </summary>
+  [ImplementationFor (typeof (IBocEnumValueRenderer), Lifetime = LifetimeKind.Singleton)]
   public class BocEnumValueRenderer : BocRendererBase<IBocEnumValue>, IBocEnumValueRenderer
   {
     /// <summary> The text displayed when control is displayed in desinger, is read-only, and has no contents. </summary>

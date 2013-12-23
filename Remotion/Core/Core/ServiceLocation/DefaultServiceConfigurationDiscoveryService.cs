@@ -19,8 +19,9 @@ using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Linq;
 using System.Reflection;
+using Remotion.Collections;
 using Remotion.Reflection;
-using Remotion.Reflection.TypeDiscovery.AssemblyLoading;
+using Remotion.Reflection.TypeDiscovery;
 using Remotion.Utilities;
 
 namespace Remotion.ServiceLocation
@@ -33,7 +34,7 @@ namespace Remotion.ServiceLocation
   /// <remarks>
   /// <para>
   /// <see cref="DefaultServiceConfigurationDiscoveryService"/> uses the same logic as <see cref="DefaultServiceLocator"/> in order to find the
-  /// default concrete implementation of service types configured via the <see cref="ConcreteImplementationAttribute"/>. See 
+  /// default concrete implementation of service types configured via the <see cref="ImplementationForAttribute"/>. See 
   /// <see cref="DefaultServiceLocator"/> for more information about this.
   /// </para>
   /// <para>
@@ -41,61 +42,101 @@ namespace Remotion.ServiceLocation
   /// methods are not returned by this class.
   /// </para>
   /// </remarks>
-  public static class DefaultServiceConfigurationDiscoveryService
+  public class DefaultServiceConfigurationDiscoveryService : IServiceConfigurationDiscoveryService
   {
+    private readonly ITypeDiscoveryService _typeDiscoveryService;
+    private readonly ICache<Type, IEnumerable<Type>> _implementingTypeCache = CacheFactory.CreateWithLocking<Type, IEnumerable<Type>>();
+
+    public static DefaultServiceConfigurationDiscoveryService Create ()
+    {
+      return new DefaultServiceConfigurationDiscoveryService(ContextAwareTypeDiscoveryUtility.GetTypeDiscoveryService());
+    }
+
+    public DefaultServiceConfigurationDiscoveryService (ITypeDiscoveryService typeDiscoveryService)
+    {
+      _typeDiscoveryService = typeDiscoveryService;
+    }
+
+    //TODO RM-5560: change to instance implementation and pass ITypeDiscoveryService via ctor. 
+    // Optionally, provide a factory method that depends on ContextAwareTypeDiscoveryUtility.GetTypeDiscoveryService()
+    // Drop ITypeDiscoveryService from method signatures.
+
     /// <summary>
     /// Gets the default service configuration for the types returned by the given <see cref="ITypeDiscoveryService"/>.
     /// </summary>
-    /// <param name="typeDiscoveryService">The type discovery service.</param>
-    /// <returns>A <see cref="ServiceConfigurationEntry"/> for each type returned by the <paramref name="typeDiscoveryService"/> that has the
-    /// <see cref="ConcreteImplementationAttribute"/> applied. Types without the attribute are ignored.</returns>
-    public static IEnumerable<ServiceConfigurationEntry> GetDefaultConfiguration (ITypeDiscoveryService typeDiscoveryService)
+    /// <returns>A <see cref="ServiceConfigurationEntry"/> for each serviceType that has implementations with a <see cref="ImplementationForAttribute"/> applied. 
+    /// Types without the attribute are ignored.</returns>
+    public IEnumerable<ServiceConfigurationEntry> GetDefaultConfiguration ()
     {
-      ArgumentUtility.CheckNotNull ("typeDiscoveryService", typeDiscoveryService);
-
-      return GetDefaultConfiguration (typeDiscoveryService.GetTypes (null, false).Cast<Type>());
+      return GetDefaultConfiguration (_typeDiscoveryService.GetTypes (null, false).Cast<Type>());
     }
 
     /// <summary>
     /// Gets the default service configuration for the given types.
     /// </summary>
     /// <param name="types">The types to get the default service configuration for.</param>
-    /// <returns>A <see cref="ServiceConfigurationEntry"/> for each type that has the <see cref="ConcreteImplementationAttribute"/> applied. 
+    /// <returns>A <see cref="ServiceConfigurationEntry"/> for each serviceType that has implementations with a <see cref="ImplementationForAttribute"/> applied. 
     /// Types without the attribute are ignored.</returns>
-    public static IEnumerable<ServiceConfigurationEntry> GetDefaultConfiguration (IEnumerable<Type> types)
+    public IEnumerable<ServiceConfigurationEntry> GetDefaultConfiguration (IEnumerable<Type> types)
     {
       ArgumentUtility.CheckNotNull ("types", types);
 
-      return (from type in types
-              let concreteImplementationAttributes = AttributeUtility.GetCustomAttributes<ConcreteImplementationAttribute> (type, false)
-              where concreteImplementationAttributes.Length != 0
-              select CreateServiceConfigurationEntry (type, concreteImplementationAttributes));
+      return types.Select (
+          type =>
+          {
+            try
+            {
+              return GetDefaultConfiguration (type);
+            }
+            catch (InvalidOperationException ex)
+            {
+              var message = string.Format ("Invalid configuration of service type '{0}'. {1}", type, ex.Message);
+              throw new InvalidOperationException (message, ex);
+            }
+          }).Where (configuration => configuration.ImplementationInfos.Any());
+    }
+
+    public ServiceConfigurationEntry GetDefaultConfiguration (Type serviceType)
+    {
+      var excludeGlobalTypes = !serviceType.Assembly.GlobalAssemblyCache;
+
+      var implementingTypes = _implementingTypeCache.GetOrCreateValue (serviceType, type => GetImplementingTypes (type, excludeGlobalTypes));
+
+      var attributes = implementingTypes.SelectMany (
+          type => AttributeUtility.GetCustomAttributes<ImplementationForAttribute> (type, false)
+              .Where (attribute => attribute.ServiceType == serviceType)
+              .Select (attribute => Tuple.Create (type, attribute)));
+
+      return ServiceConfigurationEntry.CreateFromAttributes (serviceType, attributes);
     }
 
     /// <summary>
     /// Gets the default service configuration for the types in the given assemblies.
     /// </summary>
     /// <param name="assemblies">The assemblies for whose types to get the default service configuration.</param>
-    /// <returns>A <see cref="ServiceConfigurationEntry"/> for each type that has the <see cref="ConcreteImplementationAttribute"/> applied. 
+    /// <returns>A <see cref="ServiceConfigurationEntry"/> for each type that has the <see cref="ImplementationForAttribute"/> applied. 
     /// Types without the attribute are ignored.</returns>
-    public static IEnumerable<ServiceConfigurationEntry> GetDefaultConfiguration (IEnumerable<Assembly> assemblies)
+    public IEnumerable<ServiceConfigurationEntry> GetDefaultConfiguration (IEnumerable<Assembly> assemblies)
     {
       ArgumentUtility.CheckNotNull ("assemblies", assemblies);
 
       return assemblies.SelectMany (a => GetDefaultConfiguration (AssemblyTypeCache.GetTypes (a)));
     }
 
-    private static ServiceConfigurationEntry CreateServiceConfigurationEntry (Type type, ConcreteImplementationAttribute[] concreteImplementationAttributes)
+    private IEnumerable<Type> GetImplementingTypes (Type serviceType, bool excludeGlobalTypes)
     {
-      try
+      var derivedTypes = _typeDiscoveryService.GetTypes (serviceType, excludeGlobalTypes);
+
+      var implementingTypes = new List<Type>();
+      foreach (Type derivedType in derivedTypes)
       {
-        return ServiceConfigurationEntry.CreateFromAttributes (type, concreteImplementationAttributes);
+        foreach (var attribute in AttributeUtility.GetCustomAttributes<ImplementationForAttribute> (derivedType, false))
+        {
+          if (attribute.ServiceType == serviceType)
+            implementingTypes.Add (derivedType);
+        }
       }
-      catch (InvalidOperationException ex)
-      {
-        var message = string.Format ("Invalid configuration of service type '{0}'. {1}", type, ex.Message);
-        throw new InvalidOperationException (message, ex);
-      }
+      return implementingTypes.ToArray();
     }
   }
 }

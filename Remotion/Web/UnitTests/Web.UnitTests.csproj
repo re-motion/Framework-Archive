@@ -7,8 +7,10 @@
     <ProjectGuid>{F3EE8E9C-5230-4D1A-B655-CA65E2D52F21}</ProjectGuid>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ApplicationIcon></ApplicationIcon>
-    <AssemblyKeyContainerName></AssemblyKeyContainerName>
+    <ApplicationIcon>
+    </ApplicationIcon>
+    <AssemblyKeyContainerName>
+    </AssemblyKeyContainerName>
     <AssemblyName>Remotion.Web.UnitTests</AssemblyName>
     <DefaultClientScript>JScript</DefaultClientScript>
     <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
@@ -18,9 +20,12 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Remotion.Web.UnitTests</RootNamespace>
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
-    <StartupObject></StartupObject>
-    <FileUpgradeFlags></FileUpgradeFlags>
-    <UpgradeBackupLocation></UpgradeBackupLocation>
+    <StartupObject>
+    </StartupObject>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
     <OldToolsVersion>3.5</OldToolsVersion>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\..\remotion.snk</AssemblyOriginatorKeyFile>
@@ -46,13 +51,17 @@
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
     <BaseAddress>285212672</BaseAddress>
     <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
-    <ConfigurationOverrideFile></ConfigurationOverrideFile>
-    <DefineConstants></DefineConstants>
-    <DocumentationFile></DocumentationFile>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>
+    </DefineConstants>
+    <DocumentationFile>
+    </DocumentationFile>
     <DebugSymbols>true</DebugSymbols>
     <FileAlignment>4096</FileAlignment>
     <NoStdLib>false</NoStdLib>
-    <NoWarn></NoWarn>
+    <NoWarn>
+    </NoWarn>
     <Optimize>false</Optimize>
     <RegisterForComInterop>false</RegisterForComInterop>
     <RemoveIntegerChecks>false</RemoveIntegerChecks>
@@ -68,13 +77,17 @@
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
     <BaseAddress>285212672</BaseAddress>
     <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
-    <ConfigurationOverrideFile></ConfigurationOverrideFile>
-    <DefineConstants></DefineConstants>
-    <DocumentationFile></DocumentationFile>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>
+    </DefineConstants>
+    <DocumentationFile>
+    </DocumentationFile>
     <DebugSymbols>false</DebugSymbols>
     <FileAlignment>4096</FileAlignment>
     <NoStdLib>false</NoStdLib>
-    <NoWarn></NoWarn>
+    <NoWarn>
+    </NoWarn>
     <Optimize>true</Optimize>
     <RegisterForComInterop>false</RegisterForComInterop>
     <RemoveIntegerChecks>false</RemoveIntegerChecks>
@@ -158,6 +171,7 @@
     <Compile Include="Core\Compilation\IControlBuilderCodeProcessorTest.cs" />
     <Compile Include="Core\Compilation\DefaultControlBuilderCodeProcessorTest.cs" />
     <Compile Include="Core\Context\HttpContextStorageProviderTest.cs" />
+    <Compile Include="Core\Context\ISafeContextStorageProviderTest.cs" />
     <Compile Include="Core\Context\SafeContextWebIntegrationTest.cs" />
     <Compile Include="Core\ExecutionEngine\WxePageTests\InfrastructureExceptionHandling_WxePageTest.cs" />
     <Compile Include="Core\Infrastructure\IHttpContextProviderTest.cs" />
@@ -207,6 +221,7 @@
     <Compile Include="Core\UI\Controls\CommandInfoTest.cs" />
     <Compile Include="Core\UI\Controls\CommandTests\CommonCommandTest.cs" />
     <Compile Include="Core\UI\Controls\DatePickerButtonImplementation\Rendering\IDatePickerButtonRendererTest.cs" />
+    <Compile Include="Core\UI\Controls\DatePickerButtonImplementation\Rendering\IDatePickerPageRendererTest.cs" />
     <Compile Include="Core\UI\Controls\DropDownMenuImplementation\Rendering\IDropDownMenuRendererTest.cs" />
     <Compile Include="Core\UI\Controls\Hotkey\NoneHotkeyFormatterTest.cs" />
     <Compile Include="Core\UI\Controls\Hotkey\HotkeyFormatterBaseTest.cs" />
@@ -235,6 +250,8 @@
     <Compile Include="Core\UI\HtmlHeadAppenderTest.cs" />
     <Compile Include="Core\UI\SmartPageImplementation\SmartPageAsyncPostBackErrorHandlerTest.cs" />
     <Compile Include="Core\Utilities\ControlHelperTest.cs" />
+    <Compile Include="Core\Utilities\IInternalControlMemberCallerTest.cs" />
+    <Compile Include="Core\Utilities\IScriptUtilityTest.cs" />
     <Compile Include="Core\Utilities\VirtualPathUtilityTests.cs" />
     <Compile Include="Core\Services\WebServiceUtilityTests\CheckJsonService.cs" />
     <Compile Include="Core\Services\WebServiceUtilityTests\CheckScriptService.cs" />
@@ -493,7 +510,8 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PreBuildEvent></PreBuildEvent>
+    <PreBuildEvent>
+    </PreBuildEvent>
     <PostBuildEvent>del Res /q/s
 mkdir Res
 copy "$(ProjectDir)Res\*.xml" "$(TargetDir)Res\*.xml"</PostBuildEvent>
