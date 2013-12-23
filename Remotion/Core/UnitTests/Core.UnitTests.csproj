@@ -446,7 +446,6 @@
     <Compile Include="Utilities\AttributeUtilityTests\TestDomain\DerivedShadowingNonMultipleAttribute.cs" />
     <Compile Include="Utilities\AttributeUtilityTests\TestDomain\NotInheritedAttribute.cs" />
     <Compile Include="Utilities\CompoundComparerTest.cs" />
-    <Compile Include="Utilities\CustomAttributeTypedArgumentUtilityTest.cs" />
     <Compile Include="Utilities\DefaultConverterTest.cs" />
     <Compile Include="Utilities\DelegateBasedComparerTest.cs" />
     <Compile Include="Utilities\DelegateBasedDisposableTest.cs" />

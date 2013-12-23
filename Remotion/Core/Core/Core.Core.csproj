@@ -375,7 +375,6 @@
     <Compile Include="ServiceLocation\DefaultServiceConfigurationDiscoveryService.cs" />
     <Compile Include="ServiceLocation\DefaultServiceLocator.cs" />
     <Compile Include="ServiceLocation\ServiceConfigurationEntry.cs" />
-    <Compile Include="Utilities\CustomAttributeTypedArgumentUtility.cs" />
     <Compile Include="Utilities\DefaultConverter.cs" />
     <Compile Include="Utilities\DelegateBasedDisposable.cs" />
     <Compile Include="Utilities\DelegateBasedEqualityComparer.cs" />
