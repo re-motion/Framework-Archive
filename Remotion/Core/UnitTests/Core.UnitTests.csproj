@@ -565,7 +565,6 @@
     <Compile Include="Reflection\MethodCallerTest.cs" />
     <TestAssembly Include="Reflection\TypeDiscovery\TestAssemblies\NonApplicationMarkedAssembly\AssemblyInfo.cs" />
     <TestAssembly Include="Reflection\TypeDiscovery\TestAssemblies\NonApplicationMarkedAssembly\SampleType.cs" />
-    <Compile Include="Reflection\TypesafeActivatorTest.cs" />
     <Compile Include="Text\CommandLine\CommandLineClassParserTest.cs">
       <SubType>Code</SubType>
     </Compile>
