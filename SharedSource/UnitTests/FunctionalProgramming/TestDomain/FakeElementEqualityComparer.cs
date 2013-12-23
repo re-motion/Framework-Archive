@@ -1,4 +1,4 @@
-// This file is part of the re-motion Core Framework (www.re-motion.org)
+﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -14,36 +14,30 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
-using System.Runtime.Serialization;
+using System.Collections.Generic;
 
-namespace Remotion.UnitTests.Reflection.CodeGeneration.TestDomain
+// ReSharper disable once CheckNamespace
+namespace Remotion.UnitTests.FunctionalProgramming.TestDomain
 {
-  [Serializable]
-  public class ClassWithDeserializationEvents : BaseClassWithDeserializationEvents, IDeserializationCallback
+  internal class FakeElementEqualityComparer : IEqualityComparer<Element>
   {
-    [NonSerialized]
-    public bool OnDeserializationCalled;
-    [NonSerialized]
-    public bool OnDeserializedCalled;
-    [NonSerialized]
-    public bool OnDeserializingCalled;
+    private readonly Func<Element, Element, bool> _equals;
 
-    public void OnDeserialization (object sender)
+    public FakeElementEqualityComparer (Func<Element, Element, bool> equals)
     {
-      OnDeserializationCalled = true;
+      _equals = @equals;
     }
 
-    [OnDeserializing]
-    private void OnDeserializing (StreamingContext context)
+    public bool Equals (Element x, Element y)
     {
-      OnDeserializingCalled = true;
+      return _equals (x, y);
     }
 
-    [OnDeserialized]
-    private void OnDeserialized (StreamingContext context)
+    public int GetHashCode (Element obj)
     {
-      OnDeserializedCalled = true;
+      return 0;
     }
   }
 }

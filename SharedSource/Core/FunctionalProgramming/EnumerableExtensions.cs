@@ -424,7 +424,7 @@ namespace Remotion.FunctionalProgramming
       ArgumentUtility.CheckNotNull ("predicate", predicate);
       ArgumentUtility.CheckNotNull ("createMultipleMatchingElementsException", createMultipleMatchingElementsException);
       
-      return source.Where (predicate).SingleOrDefault (createMultipleMatchingElementsException);
+      return SingleOrDefault (source.Where (predicate), createMultipleMatchingElementsException);
     }
 
     /// <summary>

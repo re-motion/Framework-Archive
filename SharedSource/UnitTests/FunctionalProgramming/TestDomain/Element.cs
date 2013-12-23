@@ -1,4 +1,4 @@
-﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
+// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -16,27 +16,34 @@
 // 
 
 using System;
-using System.Collections.Generic;
 
+// ReSharper disable once CheckNamespace
 namespace Remotion.UnitTests.FunctionalProgramming.TestDomain
 {
-  internal class FakeElementEqualityComparer : IEqualityComparer<Element>
+  internal class Element
   {
-    private readonly Func<Element, Element, bool> _equals;
+    private readonly int _value;
+    private Element _parent;
 
-    public FakeElementEqualityComparer (Func<Element, Element, bool> equals)
+    public Element (int value, Element parent)
     {
-      _equals = @equals;
+      _value = value;
+      _parent = parent;
     }
 
-    public bool Equals (Element x, Element y)
+    public Element Parent
     {
-      return _equals (x, y);
+      get { return _parent; }
     }
 
-    public int GetHashCode (Element obj)
+    public void SetParent (Element parent)
     {
-      return 0;
+      _parent = parent;
+    }
+
+    public override string ToString ()
+    {
+      return _value.ToString();
     }
   }
 }

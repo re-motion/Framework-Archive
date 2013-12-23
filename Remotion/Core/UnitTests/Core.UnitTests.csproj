@@ -152,6 +152,12 @@
     <Compile Include="..\..\..\SharedSource\UnitTests\FunctionalProgramming\EnumerableUtilityTest.cs">
       <Link>SharedSource\FunctionalProgramming\EnumerableUtilityTest.cs</Link>
     </Compile>
+    <Compile Include="..\..\..\SharedSource\UnitTests\FunctionalProgramming\TestDomain\Element.cs">
+      <Link>SharedSource\FunctionalProgramming\TestDomain\Element.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\UnitTests\FunctionalProgramming\TestDomain\FakeElementEqualityComparer.cs">
+      <Link>SharedSource\FunctionalProgramming\TestDomain\FakeElementEqualityComparer.cs</Link>
+    </Compile>
     <Compile Include="..\..\..\SharedSource\UnitTests\FunctionalProgramming\TestDomain\RecursiveItem.cs">
       <Link>SharedSource\FunctionalProgramming\TestDomain\RecursiveItem.cs</Link>
     </Compile>
@@ -267,7 +273,6 @@
     <Compile Include="ExtensibleEnums\Infrastructure\IExtensibleEnumValueDiscoveryServiceTest.cs" />
     <Compile Include="ExtensibleEnums\TestDomain\ExtensibleEnumWithDuplicateAttribute.cs" />
     <Compile Include="ExtensibleEnums\TestDomain\ExtensibleEnumWithDuplicateAttributeExtensions.cs" />
-    <Compile Include="FunctionalProgramming\TestDomain\Element.cs" />
     <Compile Include="Collections\SetBasedCacheKeyTest.cs" />
     <Compile Include="Configuration\TypeDiscovery\ByNameRootAssemblyElementCollectionTest.cs" />
     <Compile Include="Configuration\TypeDiscovery\ByFileRootAssemblyElementCollectionTest.cs" />
@@ -300,7 +305,6 @@
     <Compile Include="ExtensibleEnums\TestDomain\MetallicColorExtensions.cs" />
     <Compile Include="ExtensibleEnums\TestDomain\WrongColorValuesGeneric.cs" />
     <Compile Include="FunctionalProgramming\MaybeTest.cs" />
-    <Compile Include="FunctionalProgramming\TestDomain\FakeElementEqualityComparer.cs" />
     <Compile Include="Globalization\CompoundGlobalizationServiceTest.cs" />
     <Compile Include="Globalization\EnumerationGlobalizationServiceTest.cs" />
     <Compile Include="ExtensibleEnums\Globalization\ExtensibleEnumerationServiceGlobalizationServiceTest.cs" />
@@ -343,13 +347,7 @@
     <Compile Include="Reflection\CodeGeneration\MethodWrapperEmitterTests\SetUpFixture.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Reflection\CodeGeneration\TestDomain\BaseClassWithDeserializationEvents.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Reflection\CodeGeneration\TestDomain\ClassWithConstrainedGenericMethod.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Reflection\CodeGeneration\TestDomain\ClassWithDeserializationEvents.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Reflection\CodeGeneration\TestDomain\GenericClassWithGenericMethod.cs">
@@ -475,7 +473,6 @@
     <Compile Include="Collections\SimpleDataStoreTest.cs" />
     <Compile Include="Context\CallContextStorageProviderTest.cs" />
     <Compile Include="Globalization\ResourceManagerFactoryTest.cs" />
-    <Compile Include="Reflection\CodeGeneration\SerializationEventRaiserTest.cs" />
     <Compile Include="Collections\LockingCacheDecoratorTest.cs" />
     <Compile Include="Collections\SetTest.cs" />
     <Compile Include="Collections\AutoInitDictionaryTest.cs" />

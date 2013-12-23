@@ -43,6 +43,8 @@
   <ItemGroup>
     <Compile Include="FunctionalProgramming\EnumerableExtensionsTest.cs" />
     <Compile Include="FunctionalProgramming\EnumerableUtilityTest.cs" />
+    <Compile Include="FunctionalProgramming\TestDomain\Element.cs" />
+    <Compile Include="FunctionalProgramming\TestDomain\FakeElementEqualityComparer.cs" />
     <Compile Include="FunctionalProgramming\TestDomain\RecursiveItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilities\ArgumentUtilityTests\CheckNotEmpty.cs" />
