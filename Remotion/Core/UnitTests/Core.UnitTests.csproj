@@ -224,6 +224,9 @@
     <Compile Include="..\..\..\SharedSource\UnitTests\Utilities\NullableTypeUtilityTest.cs">
       <Link>SharedSource\Utilities\NullableTypeUtilityTest.cs</Link>
     </Compile>
+    <Compile Include="..\..\..\SharedSource\UnitTests\Utilities\ReferenceEqualityComparerTest.cs">
+      <Link>SharedSource\Utilities\ReferenceEqualityComparerTest.cs</Link>
+    </Compile>
     <Compile Include="..\..\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
@@ -657,7 +660,6 @@
     <Compile Include="Utilities\NullComparerTest.cs" />
     <Compile Include="Utilities\NullValueConverterTest.cs" />
     <Compile Include="Utilities\PostActionDisposableDecoratorTest.cs" />
-    <Compile Include="Utilities\ReferenceEqualityComparerTest.cs" />
     <Compile Include="Utilities\ReflectionUtilityTests\CanAscribe_WithGenericClass.cs" />
     <Compile Include="Utilities\ReflectionUtilityTests\CanAscribe_WithGenericInterface.cs" />
     <Compile Include="Utilities\ReflectionUtilityTests\CanAscribe_WithNonGenericClass.cs" />

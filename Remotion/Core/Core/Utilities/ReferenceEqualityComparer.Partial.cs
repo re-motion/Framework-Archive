@@ -1,4 +1,4 @@
-// This file is part of the re-motion Core Framework (www.re-motion.org)
+﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -15,28 +15,11 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 
-//
 using System;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 
 namespace Remotion.Utilities
 {
-  /// <summary>      
-  /// An equality comparer that compares equality using ReferenceEquals rather than Equals. This is to ensure that two objects are actually the same 
-  /// and not just equal for reference checking purposes.      
-  /// </summary>      
-  /// <typeparam name="T">the type of object to check</typeparam>  
-  public class ReferenceEqualityComparer<T> : IEqualityComparer<T>
+  public partial class ReferenceEqualityComparer<T>
   {
-    public bool Equals (T x, T y)
-    {
-      return object.ReferenceEquals (x, y);
-    }
-
-    public int GetHashCode (T obj)
-    {
-      return RuntimeHelpers.GetHashCode (obj); 
-    }
   }
 }

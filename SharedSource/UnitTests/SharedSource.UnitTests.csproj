@@ -68,6 +68,7 @@
     <Compile Include="Utilities\MemberInfoEqualityComparerTestDomain\GenericClassWithMethods.cs" />
     <Compile Include="Utilities\MemberInfoFromExpressionUtilityTest.cs" />
     <Compile Include="Utilities\NullableTypeUtilityTest.cs" />
+    <Compile Include="Utilities\ReferenceEqualityComparerTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Core\SharedSource.Core.csproj">

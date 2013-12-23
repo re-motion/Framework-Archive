@@ -79,6 +79,8 @@
     <Compile Include="Utilities\MemberInfoFromExpressionUtility.Partial.cs" />
     <Compile Include="Utilities\NullableTypeUtility.cs" />
     <Compile Include="Utilities\NullableTypeUtility.Partial.cs" />
+    <Compile Include="Utilities\ReferenceEqualityComparer.cs" />
+    <Compile Include="Utilities\ReferenceEqualityComparer.Partial.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\SharedSource Apache-2.0.licenseheader">
