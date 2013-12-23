@@ -203,11 +203,7 @@
     </Compile>
     <Compile Include="AdapterRegistry.cs" />
     <Compile Include="BridgeImplementations\AdapterRegistryImplementation.cs" />
-    <Compile Include="BridgeImplementations\ParamListCreateImplementation.generated.cs" />
-    <Compile Include="BridgeImplementations\ParamListCreateImplementation.template.cs" />
     <Compile Include="BridgeInterfaces\IAdapterRegistryImplementation.cs" />
-    <Compile Include="BridgeInterfaces\IParamListCreateImplementation.generated.cs" />
-    <Compile Include="BridgeInterfaces\IParamListCreateImplementation.template.cs" />
     <Compile Include="Collections\CacheFactory.cs" />
     <Compile Include="Collections\CollectionExtensions.cs" />
     <Compile Include="Collections\DataStoreFactory.cs" />
