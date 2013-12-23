@@ -247,10 +247,10 @@
     <Compile Include="Reflection\DelegateFactory.cs" />
     <Compile Include="Reflection\IDelegateFactory.cs" />
     <Compile Include="Reflection\IMemberInformationNameResolver.cs" />
-    <Compile Include="Reflection\ParamListImplementation.generated.cs">
+    <Compile Include="Reflection\ParamListImplementation.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>ParamListImplementation.generated.tt</DependentUpon>
+      <DependentUpon>ParamListImplementation.tt</DependentUpon>
     </Compile>
     <Compile Include="Reflection\ReflectionBasedMemberInformationNameResolver.cs" />
     <Compile Include="Reflection\TypeDiscovery\AssemblyLoading\AssemblyNameCache.cs">
@@ -621,9 +621,9 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>ParamList.generated.cs</LastGenOutput>
     </None>
-    <None Include="Reflection\ParamListImplementation.generated.tt">
+    <None Include="Reflection\ParamListImplementation.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>ParamListImplementation.generated.cs</LastGenOutput>
+      <LastGenOutput>ParamListImplementation.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <ItemGroup>
