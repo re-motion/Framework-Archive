@@ -22,6 +22,7 @@ using NUnit.Framework;
 using Remotion.FunctionalProgramming;
 using Remotion.UnitTests.FunctionalProgramming.TestDomain;
 
+// ReSharper disable once CheckNamespace
 namespace Remotion.UnitTests.FunctionalProgramming
 {
   [TestFixture]

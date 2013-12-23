@@ -149,6 +149,12 @@
     <Compile Include="..\..\..\SharedSource\UnitTests\FunctionalProgramming\EnumerableExtensionsTest.cs">
       <Link>SharedSource\FunctionalProgramming\EnumerableExtensionsTest.cs</Link>
     </Compile>
+    <Compile Include="..\..\..\SharedSource\UnitTests\FunctionalProgramming\EnumerableUtilityTest.cs">
+      <Link>SharedSource\FunctionalProgramming\EnumerableUtilityTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\UnitTests\FunctionalProgramming\TestDomain\RecursiveItem.cs">
+      <Link>SharedSource\FunctionalProgramming\TestDomain\RecursiveItem.cs</Link>
+    </Compile>
     <Compile Include="..\..\..\SharedSource\UnitTests\Utilities\ArgumentUtilityTests\CheckNotEmpty.cs">
       <Link>SharedSource\Utilities\ArgumentUtilityTests\CheckNotEmpty.cs</Link>
     </Compile>
@@ -295,7 +301,6 @@
     <Compile Include="ExtensibleEnums\TestDomain\WrongColorValuesGeneric.cs" />
     <Compile Include="FunctionalProgramming\MaybeTest.cs" />
     <Compile Include="FunctionalProgramming\TestDomain\FakeElementEqualityComparer.cs" />
-    <Compile Include="FunctionalProgramming\TestDomain\RecursiveItem.cs" />
     <Compile Include="Globalization\CompoundGlobalizationServiceTest.cs" />
     <Compile Include="Globalization\EnumerationGlobalizationServiceTest.cs" />
     <Compile Include="ExtensibleEnums\Globalization\ExtensibleEnumerationServiceGlobalizationServiceTest.cs" />
@@ -640,7 +645,6 @@
     <Compile Include="Globalization\EnumDescriptionTest.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="FunctionalProgramming\EnumerableUtilityTest.cs" />
     <Compile Include="Utilities\EnumUtilityTests\UInt16Enum.cs" />
     <Compile Include="Utilities\EnumUtilityTests\UInt32Enum.cs" />
     <Compile Include="Utilities\EnumUtilityTests\UInt64Enum.cs" />
@@ -731,6 +735,7 @@
   <ItemGroup>
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>

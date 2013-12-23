@@ -123,6 +123,9 @@
     <Compile Include="..\..\..\SharedSource\Core\FunctionalProgramming\EnumerableExtensions.cs">
       <Link>SharedSource\FunctionalProgramming\EnumerableExtensions.cs</Link>
     </Compile>
+    <Compile Include="..\..\..\SharedSource\Core\FunctionalProgramming\EnumerableUtility.cs">
+      <Link>SharedSource\FunctionalProgramming\EnumerableUtility.cs</Link>
+    </Compile>
     <Compile Include="..\..\..\SharedSource\Core\ResharperAnnotations\AssertionConditionAttribute.cs">
       <Link>SharedSource\ResharperAnnotations\AssertionConditionAttribute.cs</Link>
     </Compile>
@@ -233,6 +236,7 @@
     <Compile Include="ExtensibleEnums\ExtensibleEnumExtensions.cs" />
     <Compile Include="ExtensibleEnums\Globalization\ExtensibleEnumerationGlobalizationServiceExtensions.cs" />
     <Compile Include="FunctionalProgramming\EnumerableExtensions.Partial.cs" />
+    <Compile Include="FunctionalProgramming\EnumerableUtility.Partial.cs" />
     <Compile Include="Globalization\Implementation\EnumerationGlobalizationServiceExtensions.cs" />
     <Compile Include="Globalization\GlobalizationServiceExtensions.cs" />
     <Compile Include="Globalization\IEnumerationGlobalizationService.cs" />
@@ -533,7 +537,6 @@
     <Compile Include="Utilities\ConsoleUtility.cs" />
     <Compile Include="Utilities\CultureScope.cs" />
     <Compile Include="Utilities\DefaultConsoleManager.cs" />
-    <Compile Include="FunctionalProgramming\EnumerableUtility.cs" />
     <Compile Include="Utilities\FileUtility.cs" />
     <Compile Include="Utilities\IConsoleManager.cs" />
     <Compile Include="Utilities\DelegateBasedComparer.cs" />
