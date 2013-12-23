@@ -243,15 +243,6 @@
     <Compile Include="Reflection\DelegateFactory.cs" />
     <Compile Include="Reflection\IDelegateFactory.cs" />
     <Compile Include="Reflection\IMemberInformationNameResolver.cs" />
-    <Compile Include="Reflection\MemberSignatures\EventSignature.cs" />
-    <Compile Include="Reflection\MemberSignatures\FieldSignature.cs" />
-    <Compile Include="Reflection\MemberSignatures\IMemberSignature.cs" />
-    <Compile Include="Reflection\MemberSignatures\IMethodSignatureStringBuilderHelper.cs" />
-    <Compile Include="Reflection\MemberSignatures\MemberNameAndSignatureEqualityComparer.cs" />
-    <Compile Include="Reflection\MemberSignatures\MemberSignatureProvider.cs" />
-    <Compile Include="Reflection\MemberSignatures\MethodSignature.cs" />
-    <Compile Include="Reflection\MemberSignatures\NestedTypeSignature.cs" />
-    <Compile Include="Reflection\MemberSignatures\PropertySignature.cs" />
     <Compile Include="Reflection\ReflectionBasedMemberInformationNameResolver.cs" />
     <Compile Include="Reflection\TypeDiscovery\AssemblyLoading\AssemblyNameCache.cs">
       <SubType>Code</SubType>
@@ -360,11 +351,9 @@
     <Compile Include="Reflection\DynamicMethodBasedMethodCallerFactory.cs" />
     <Compile Include="Reflection\MethodInfoAdapter.cs" />
     <Compile Include="Reflection\MethodResolver.cs" />
-    <Compile Include="Reflection\MemberSignatures\MemberSignatureEqualityComparer.cs" />
     <Compile Include="Reflection\NullMethodInformation.cs" />
     <Compile Include="Reflection\NullPropertyInformation.cs" />
     <Compile Include="Reflection\PropertyInfoAdapter.cs" />
-    <Compile Include="Reflection\MemberSignatures\MethodSignatureStringBuilderHelper.cs" />
     <Compile Include="Reflection\TypeDiscovery\AssemblyFinding\AssemblyNameSpecification.cs" />
     <Compile Include="Reflection\TypeDiscovery\AssemblyFinding\CompositeRootAssemblyFinder.cs" />
     <Compile Include="Reflection\TypeDiscovery\AssemblyFinding\FilePatternRootAssemblyFinder.cs" />

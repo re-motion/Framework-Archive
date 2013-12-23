@@ -322,16 +322,8 @@
     <Compile Include="Reflection\DelegateFactoryTest.cs" />
     <Compile Include="Reflection\IMemberInfoNameResolverTest.cs" />
     <Compile Include="Reflection\MemberLookupInfoTest.cs" />
-    <Compile Include="Reflection\MemberSignatures\EventSignatureTest.cs" />
-    <Compile Include="Reflection\MemberSignatures\FieldSignatureTest.cs" />
-    <Compile Include="Reflection\MemberSignatures\MemberNameAndSignatureEqualityComparerTest.cs" />
-    <Compile Include="Reflection\MemberSignatures\MemberSignatureProviderTest.cs" />
-    <Compile Include="Reflection\MemberSignatures\MethodSignatureTest.cs" />
-    <Compile Include="Reflection\MemberSignatures\NestedTypeSignatureTest.cs" />
-    <Compile Include="Reflection\MemberSignatures\PropertySignatureTest.cs" />
     <Compile Include="Reflection\ReflectionBasedMemberInfoNameResolverTest.cs" />
     <Compile Include="Reflection\TestDomain\AbstractClass.cs" />
-    <Compile Include="Reflection\TestDomain\ClassForSignatureComparisons2.cs" />
     <Compile Include="Reflection\TypeDiscovery\AssemblyFinding\AssemblyCompilerBuildOutputManager.cs" />
     <TestAssembly Include="Reflection\TypeDiscovery\AssemblyFinding\TestAssemblies\AssemblyFinderTest\RemotionCoreReferencingAssembly\AssemblyInfo.cs" />
     <Compile Include="SafeContextSingletonTest.cs" />
@@ -369,7 +361,6 @@
     <Compile Include="Reflection\PropertyInfoAdapterConverterTest.cs" />
     <Compile Include="Reflection\ReflectionExtensionsTest.cs" />
     <Compile Include="Reflection\TestDomain\MemberInfoAdapter\DerivedClassWithReferenceType.cs" />
-    <Compile Include="Reflection\MemberSignatures\MemberSignatureEqualityComparerTest.cs" />
     <Compile Include="Reflection\MethodInfoAdapterTest.cs" />
     <Compile Include="Reflection\NullMethodInformationTest.cs" />
     <Compile Include="Reflection\NullPropertyInformationTest.cs" />
@@ -379,9 +370,6 @@
     <Compile Include="Reflection\TestDomain\MemberInfoAdapter\ClassWithReferenceType.cs" />
     <Compile Include="Reflection\TestDomain\MemberInfoAdapter\IInterfaceWithReferenceType.cs" />
     <Compile Include="Reflection\TestDomain\MemberInfoAdapter\SampleAttribute.cs" />
-    <Compile Include="Reflection\MemberSignatures\MethodSignatureIntegrationTest.cs" />
-    <Compile Include="Reflection\MemberSignatures\MethodSignatureStringBuilderHelperTest.cs" />
-    <Compile Include="Reflection\TestDomain\ClassForSignatureComparisons.cs" />
     <Compile Include="Reflection\TypeAdapterConverterTest.cs" />
     <Compile Include="Reflection\TypeAdapterTest.cs" />
     <Compile Include="Reflection\TypeDiscovery\AssemblyFinding\CachingAssemblyFinderDecoratorTest.cs" />
