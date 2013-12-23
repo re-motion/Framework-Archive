@@ -14,17 +14,10 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using Remotion.Reflection;
-using Remotion.TypePipe;
-
-namespace Remotion.Mixins.Samples.Tutorial.T02_ParamList.Core
+namespace Remotion.UnitTests.Reflection.TestDomain
 {
-  public static class TheObjectFactory
+  public abstract class AbstractClass
   {
-    public static T Create<T> (ParamList ctorArgs)
-    {
-      var info = new ConstructorLookupInfo (typeof (T));
-      return (T) ctorArgs.InvokeConstructor (info);
-    }
+    
   }
 }

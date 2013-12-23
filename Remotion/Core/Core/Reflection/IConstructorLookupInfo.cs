@@ -14,17 +14,18 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using Remotion.Reflection;
-using Remotion.TypePipe;
+using System;
 
-namespace Remotion.Mixins.Samples.Tutorial.T02_ParamList.Core
+namespace Remotion.Reflection
 {
-  public static class TheObjectFactory
+  /// <summary>
+  /// Represents an object that can be used to lookup and dynamically invoke constructors of a specific defining type.
+  /// </summary>
+  public interface IConstructorLookupInfo
   {
-    public static T Create<T> (ParamList ctorArgs)
-    {
-      var info = new ConstructorLookupInfo (typeof (T));
-      return (T) ctorArgs.InvokeConstructor (info);
-    }
+    Type DefiningType { get; }
+
+    Delegate GetDelegate (Type delegateType);
+    object DynamicInvoke (Type[] parameterTypes, object[] parameterValues);
   }
 }
