@@ -120,6 +120,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\..\SharedSource\Core\FunctionalProgramming\EnumerableExtensions.cs">
+      <Link>SharedSource\FunctionalProgramming\EnumerableExtensions.cs</Link>
+    </Compile>
     <Compile Include="..\..\..\SharedSource\Core\ResharperAnnotations\AssertionConditionAttribute.cs">
       <Link>SharedSource\ResharperAnnotations\AssertionConditionAttribute.cs</Link>
     </Compile>
@@ -226,6 +229,7 @@
     <Compile Include="Context\SafeContextKeys.cs" />
     <Compile Include="ExtensibleEnums\ExtensibleEnumExtensions.cs" />
     <Compile Include="ExtensibleEnums\Globalization\ExtensibleEnumerationGlobalizationServiceExtensions.cs" />
+    <Compile Include="FunctionalProgramming\EnumerableExtensions.Partial.cs" />
     <Compile Include="Globalization\Implementation\EnumerationGlobalizationServiceExtensions.cs" />
     <Compile Include="Globalization\GlobalizationServiceExtensions.cs" />
     <Compile Include="Globalization\IEnumerationGlobalizationService.cs" />
@@ -317,7 +321,6 @@
     <Compile Include="Collections\ComponentwiseEqualsAndHashcodeWrapper.cs" />
     <Compile Include="Collections\DictionaryExtensions.cs" />
     <Compile Include="Collections\ListAdapter.cs" />
-    <Compile Include="FunctionalProgramming\EnumerableExtensions.cs" />
     <Compile Include="Collections\SetBasedCacheKey.cs" />
     <Compile Include="Configuration\TypeDiscovery\ByFileIncludeRootAssemblyElement.cs" />
     <Compile Include="Configuration\TypeDiscovery\ByNameRootAssemblyElement.cs" />
