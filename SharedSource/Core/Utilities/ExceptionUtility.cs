@@ -14,23 +14,32 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
 using System.Reflection;
-using Remotion.Reflection;
 
+// ReSharper disable once CheckNamespace
 namespace Remotion.Utilities
 {
-  public static class ExceptionUtility
+  static partial class ExceptionUtility
   {
+    private static readonly Lazy<Action<Exception>> s_internalPreserveStackTrace = new Lazy<Action<Exception>> (GetInternalPreserveStackTrace);
+
     public static Exception PreserveStackTrace (this Exception exception)
     {
       ArgumentUtility.CheckNotNull ("exception", exception);
       // http://weblogs.asp.net/fmarguerie/archive/2008/01/02/rethrowing-exceptions-and-preserving-the-full-call-stack-trace.aspx
-      // http://www.dotnetjunkies.com/WebLog/chris.taylor/archive/2004/03/03/8353.aspx
-      // PrivateInvoke.SetNonPublicField (exception, "_remoteStackTraceString", exception.StackTrace + Environment.NewLine);
-      
-      MethodCaller.CallAction ("InternalPreserveStackTrace", BindingFlags.Instance | BindingFlags.NonPublic).With (exception);
+
+      s_internalPreserveStackTrace.Value (exception);
       return exception;
+    }
+
+    private static Action<Exception> GetInternalPreserveStackTrace ()
+    {
+      var methodInfo = typeof (Exception).GetMethod ("InternalPreserveStackTrace", BindingFlags.Instance | BindingFlags.NonPublic);
+      Assertion.IsNotNull (methodInfo, "Type 'System.Exception' does not contain method InternalPreserveStackTrace().");
+
+      return (Action<Exception>) methodInfo.CreateDelegate (typeof (Action<Exception>));
     }
   }
 }
