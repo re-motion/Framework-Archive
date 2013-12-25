@@ -20,9 +20,7 @@ using System.ComponentModel.Design;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using Remotion.FunctionalProgramming;
 using Remotion.Reflection;
-using Remotion.Reflection.TypeDiscovery.AssemblyLoading;
 using Remotion.Utilities;
 
 namespace Remotion.ServiceLocation
@@ -81,6 +79,7 @@ namespace Remotion.ServiceLocation
 
       Type partipantInterfaceType;
       Type pipelineFactoryInterfaceType;
+      Type pipelineRegistryInterfaceType;
       try
       {
         partipantInterfaceType = TypeNameTemplateResolver.ResolveToType (
@@ -88,6 +87,9 @@ namespace Remotion.ServiceLocation
             typeof (DefaultServiceConfigurationDiscoveryService).Assembly);
         pipelineFactoryInterfaceType = TypeNameTemplateResolver.ResolveToType (
             "Remotion.TypePipe.Implementation.IPipelineFactory, Remotion.TypePipe, Version=<version>, Culture=neutral, PublicKeyToken=<publicKeyToken>",
+            typeof (DefaultServiceConfigurationDiscoveryService).Assembly);
+        pipelineRegistryInterfaceType = TypeNameTemplateResolver.ResolveToType (
+            "Remotion.TypePipe.IPipelineRegistry, Remotion.TypePipe, Version=<version>, Culture=neutral, PublicKeyToken=<publicKeyToken>",
             typeof (DefaultServiceConfigurationDiscoveryService).Assembly);
       }
       catch (FileNotFoundException) // Invalid assembly
@@ -104,13 +106,18 @@ namespace Remotion.ServiceLocation
           ignoreIfNotFound: true) { Position = 2 };
 
       var remotionPipelineFactoryAttribute = new ConcreteImplementationAttribute (
-          "Remotion.TypePipe.Implementation.Remotion.RemotionPipelineFactory, Remotion.TypePipe, Version=<version>, Culture=neutral, PublicKeyToken=<publicKeyToken>",
+          "Remotion.Reflection.CodeGeneration.TypePipe.RemotionPipelineFactory, Remotion.Reflection.CodeGeneration.TypePipe, Version=<version>, Culture=neutral, PublicKeyToken=<publicKeyToken>",
+          ignoreIfNotFound: true);
+
+      var remotionPipelineRegistryAttribute = new ConcreteImplementationAttribute (
+          "Remotion.Reflection.CodeGeneration.TypePipe.RemotionPipelineRegistry, Remotion.Reflection.CodeGeneration.TypePipe, Version=<version>, Culture=neutral, PublicKeyToken=<publicKeyToken>",
           ignoreIfNotFound: true);
 
       yield return ServiceConfigurationEntry.CreateFromAttributes (partipantInterfaceType, new[] { mixinAttribute, domainObjectAttribute });
 
       yield return ServiceConfigurationEntry.CreateFromAttributes (pipelineFactoryInterfaceType, new[] { remotionPipelineFactoryAttribute });
 
+      yield return ServiceConfigurationEntry.CreateFromAttributes (pipelineRegistryInterfaceType, new[] { remotionPipelineRegistryAttribute });
     }
 
     /// <summary>
