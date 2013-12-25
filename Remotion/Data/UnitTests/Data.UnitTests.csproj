@@ -151,6 +151,10 @@
       <Project>{EBBF3A56-5B7B-4CD7-9AA9-74AF17B0B7ED}</Project>
       <Name>Development.Data</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Development\Mixins\Development.Mixins.csproj">
+      <Project>{e2ecd01b-1321-498e-8228-d6d16b5f647c}</Project>
+      <Name>Development.Mixins</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Development\RhinoMocks\Development.RhinoMocks.csproj">
       <Project>{2177143e-345f-4faa-9958-1ae2b5eed242}</Project>
       <Name>Development.RhinoMocks</Name>
