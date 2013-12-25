@@ -107,11 +107,11 @@ namespace Remotion.ServiceLocation
 
       var remotionPipelineFactoryAttribute = new ConcreteImplementationAttribute (
           "Remotion.Reflection.CodeGeneration.TypePipe.RemotionPipelineFactory, Remotion.Reflection.CodeGeneration.TypePipe, Version=<version>, Culture=neutral, PublicKeyToken=<publicKeyToken>",
-          ignoreIfNotFound: true);
+          ignoreIfNotFound: true) { Lifetime = LifetimeKind.Singleton };
 
       var remotionPipelineRegistryAttribute = new ConcreteImplementationAttribute (
           "Remotion.Reflection.CodeGeneration.TypePipe.RemotionPipelineRegistry, Remotion.Reflection.CodeGeneration.TypePipe, Version=<version>, Culture=neutral, PublicKeyToken=<publicKeyToken>",
-          ignoreIfNotFound: true) {Lifetime = LifetimeKind.Singleton};
+          ignoreIfNotFound: true) { Lifetime = LifetimeKind.Singleton };
 
       yield return ServiceConfigurationEntry.CreateFromAttributes (partipantInterfaceType, new[] { mixinAttribute, domainObjectAttribute });
 

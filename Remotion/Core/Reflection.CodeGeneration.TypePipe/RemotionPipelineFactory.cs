@@ -15,31 +15,23 @@
 // under the License.
 // 
 
-using NUnit.Framework;
+using System;
 using Remotion.TypePipe.CodeGeneration.ReflectionEmit;
-using Remotion.TypePipe.Implementation.Remotion;
-using Remotion.Development.UnitTesting;
+using Remotion.TypePipe.Implementation;
 
-namespace Remotion.TypePipe.UnitTests.Implementation.Remotion
+namespace Remotion.Reflection.CodeGeneration.TypePipe
 {
-  [TestFixture]
-  public class RemotionPipelineFactoryTest
+  /// <summary>
+  /// Decorates created <see cref="IModuleBuilderFactory"/> instances with <see cref="RemotionModuleBuilderFactoryDecorator"/>.
+  /// </summary>
+  /// <threadsafety static="true" instance="true"/>
+  public class RemotionPipelineFactory : DefaultPipelineFactory
   {
-    private RemotionPipelineFactory _factory;
-
-    [SetUp]
-    public void SetUp ()
+    [CLSCompliant (false)]
+    protected override IModuleBuilderFactory NewModuleBuilderFactory (string participantConfigurationID)
     {
-      _factory = new RemotionPipelineFactory();
-    }
-
-    [Test]
-    public void NewModuleBuilderFactory ()
-    {
-      var result = _factory.Invoke ("NewModuleBuilderFactory", "ParticipantID");
-
-      Assert.That (result, Is.TypeOf<RemotionModuleBuilderFactoryDecorator>());
-      Assert.That (PrivateInvoke.GetNonPublicField (result, "_moduleBuilderFactory"), Is.TypeOf<ModuleBuilderFactory>());
+      var moduleBuilderFactory = base.NewModuleBuilderFactory (participantConfigurationID);
+      return new RemotionModuleBuilderFactoryDecorator (moduleBuilderFactory);
     }
   }
 }

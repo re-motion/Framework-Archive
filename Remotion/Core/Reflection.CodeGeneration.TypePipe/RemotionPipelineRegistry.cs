@@ -18,12 +18,13 @@
 using System;
 using System.Collections.Generic;
 using Remotion.Reflection.TypeDiscovery;
+using Remotion.TypePipe;
 using Remotion.TypePipe.Configuration;
+using Remotion.TypePipe.Implementation;
 using Remotion.Utilities;
 
-namespace Remotion.TypePipe.Implementation.Remotion
+namespace Remotion.Reflection.CodeGeneration.TypePipe
 {
-  // TODO 5545: Move this to Remotion.Core.
   /// <summary>
   /// Creates and registers a <see cref="IPipelineRegistry.DefaultPipeline"/> containing the specified participants.
   /// Uses the <see cref="RemotionPipelineFactory"/> which creates pipeline instances that immediately apply the

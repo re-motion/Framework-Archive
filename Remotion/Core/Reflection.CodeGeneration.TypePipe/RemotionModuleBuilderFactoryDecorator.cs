@@ -23,9 +23,8 @@ using Remotion.TypePipe.CodeGeneration.ReflectionEmit.Abstractions;
 using Remotion.TypePipe.MutableReflection;
 using Remotion.Utilities;
 
-namespace Remotion.TypePipe.Implementation.Remotion
+namespace Remotion.Reflection.CodeGeneration.TypePipe
 {
-  // TODO 5545: Move this to Remotion.Core.
   /// <summary>
   /// Decorates an instance of <see cref="IModuleBuilderFactory"/> and adds the <see cref="NonApplicationAssemblyAttribute"/> to the
   /// <see cref="IAssemblyBuilder"/> whenever a <see cref="IModuleBuilder"/> is created.
