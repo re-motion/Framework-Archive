@@ -241,6 +241,7 @@
     <Compile Include="DomainObjects\Core\IntegrationTests\NewObject\RecursiveNewObjectCallTest.cs" />
     <Compile Include="DomainObjects\Core\IntegrationTests\HierarchyBoundObjects\OperationsInRootTransactionTest.cs" />
     <Compile Include="DomainObjects\Core\IntegrationTests\Relations\LoadingRelationsWithInvalidMandatoryRelationsTest.cs" />
+    <Compile Include="DomainObjects\Core\IntegrationTests\ServiceLocation\ParticipantRegistrationTest.cs" />
     <Compile Include="DomainObjects\Core\IntegrationTests\Transaction\ReadOnlyTransactions\AllowedOperations\CollectionQueryTest.cs" />
     <Compile Include="DomainObjects\Core\IntegrationTests\Transaction\ReadOnlyTransactions\AllowedOperations\CustomQueryTest.cs" />
     <Compile Include="DomainObjects\Core\IntegrationTests\Transaction\ReadOnlyTransactions\AllowedOperations\DiscardTest.cs" />
