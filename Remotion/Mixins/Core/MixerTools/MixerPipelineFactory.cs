@@ -16,13 +16,12 @@
 // 
 using System;
 using System.IO;
-using JetBrains.Annotations;
 using Remotion.Logging;
 using Remotion.Mixins.CodeGeneration.TypePipe;
+using Remotion.Reflection.CodeGeneration.TypePipe;
 using Remotion.ServiceLocation;
 using Remotion.TypePipe;
 using Remotion.TypePipe.Configuration;
-using Remotion.TypePipe.Implementation.Remotion;
 using Remotion.Utilities;
 using System.Linq;
 
