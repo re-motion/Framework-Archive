@@ -27,16 +27,13 @@ namespace Remotion.Utilities
   /// <summary>
   /// Utility class for finding custom attributes via their type or an interface implemented by the type.
   /// </summary>
-  public static class AttributeUtility
+  public static partial class AttributeUtility
   {
-    // Caching AttributeUsageAttributes and SuppressAttributes is safe because they will never mutate through usage.
+    // Caching SuppressAttributes is safe because they will never mutate through usage.
     // (As shown by their implementation, and all used members are non-virtual.)
 
     private static readonly ICache<Tuple<Type, bool>, AttributeWithMetadata[]> s_suppressAttributesCache =
         CacheFactory.CreateWithLocking<Tuple<Type, bool>, AttributeWithMetadata[]>();
-
-    private static readonly LockingCacheDecorator<Type, AttributeUsageAttribute> s_attributeUsageCache =
-        CacheFactory.CreateWithLocking<Type, AttributeUsageAttribute>();
 
     private static readonly PropertyCustomAttributeRetriever s_propertyCustomAttributeRetriever = new PropertyCustomAttributeRetriever ();
     private static readonly EventCustomAttributeRetriever s_eventCustomAttributeRetriever = new EventCustomAttributeRetriever ();
@@ -153,43 +150,6 @@ namespace Remotion.Utilities
         }
         currentType = currentType.BaseType;
       } while (inherit && currentType != null && currentType != typeof (object)); // iterate unless inherit == false, stop when typeof (object) is reached
-    }
-
-    public static bool IsAttributeInherited (Type attributeType)
-    {
-      AttributeUsageAttribute usage = GetAttributeUsage (attributeType);
-      return usage.Inherited;
-    }
-
-    public static bool IsAttributeAllowMultiple (Type attributeType)
-    {
-      AttributeUsageAttribute usage = GetAttributeUsage (attributeType);
-      return usage.AllowMultiple;
-    }
-
-    public static AttributeUsageAttribute GetAttributeUsage (Type attributeType)
-    {
-      ArgumentUtility.CheckNotNull ("attributeType", attributeType);
-
-      AttributeUsageAttribute cachedInstance = s_attributeUsageCache.GetOrCreateValue (
-          attributeType,
-          delegate (Type type)
-          {
-            AttributeUsageAttribute[] usage =
-                (AttributeUsageAttribute[]) type.GetCustomAttributes (typeof (AttributeUsageAttribute), true);
-            if (usage.Length == 0)
-              return new AttributeUsageAttribute (AttributeTargets.All);
-            else
-            {
-              Assertion.IsTrue (usage.Length == 1, "AllowMultiple == false");
-              return usage[0];
-            }
-          });
-      
-      AttributeUsageAttribute newInstance = new AttributeUsageAttribute (cachedInstance.ValidOn);
-      newInstance.AllowMultiple = cachedInstance.AllowMultiple;
-      newInstance.Inherited = cachedInstance.Inherited;
-      return newInstance;
     }
 
     private static object[] CreateTypedArray (IEnumerable attributeInstances, Type elementType)

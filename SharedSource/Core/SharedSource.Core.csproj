@@ -72,6 +72,8 @@
     <Compile Include="Utilities\ArgumentUtility.Partial.cs" />
     <Compile Include="Utilities\Assertion.cs" />
     <Compile Include="Utilities\Assertion.Partial.cs" />
+    <Compile Include="Utilities\AttributeUtility.cs" />
+    <Compile Include="Utilities\AttributeUtility.Partial.cs" />
     <Compile Include="Utilities\EqualityUtility.cs" />
     <Compile Include="Utilities\EqualityUtility.Partial.cs" />
     <Compile Include="Utilities\ExceptionUtility.cs" />

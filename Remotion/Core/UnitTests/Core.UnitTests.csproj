@@ -200,6 +200,9 @@
     <Compile Include="..\..\..\SharedSource\UnitTests\Utilities\AssertionTest.cs">
       <Link>SharedSource\Utilities\AssertionTest.cs</Link>
     </Compile>
+    <Compile Include="..\..\..\SharedSource\UnitTests\Utilities\AttributeUtilityTests\AttributeUsageTest.cs">
+      <Link>SharedSource\Utilities\AttributeUtilityTest\AttributeUsageTest.cs</Link>
+    </Compile>
     <Compile Include="..\..\..\SharedSource\UnitTests\Utilities\EqualityUtilityTest.cs">
       <Link>SharedSource\Utilities\EqualityUtilityTest.cs</Link>
     </Compile>
@@ -596,7 +599,6 @@
     <Compile Include="Utilities\ArrayUtilityTest.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Utilities\AttributeUtilityTests\AttributeUsageTest.cs" />
     <Compile Include="Utilities\AttributeUtilityTests\AttributeWithMetadataTest.cs" />
     <Compile Include="Utilities\AttributeUtilityTests\IsDefined_WithSuppressTest.cs" />
     <Compile Include="Utilities\AttributeUtilityTests\GetCustomAttributesFromType_WithSuppressTest.cs" />

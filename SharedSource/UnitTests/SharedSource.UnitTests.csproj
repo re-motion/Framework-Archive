@@ -60,6 +60,7 @@
     <Compile Include="Utilities\ArgumentUtilityTests\CheckTypeObsolete.cs" />
     <Compile Include="Utilities\ArgumentUtilityTests\NonDisposableEnumerable.cs" />
     <Compile Include="Utilities\AssertionTest.cs" />
+    <Compile Include="Utilities\AttributeUtilityTests\AttributeUsageTest.cs" />
     <Compile Include="Utilities\EqualityUtilityTest.cs" />
     <Compile Include="Utilities\MemberInfoEqualityComparerTest.cs" />
     <Compile Include="Utilities\MemberInfoEqualityComparerTestDomain\ClassWithFields.cs" />
