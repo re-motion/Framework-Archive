@@ -18,6 +18,7 @@ using System;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DomainImplementation;
 using Remotion.Data.UnitTests.DomainObjects.TestDomain;
+using Remotion.Development.Mixins.UnitTesting;
 using Remotion.Development.UnitTesting;
 using Remotion.Mixins;
 using Remotion.TypePipe;

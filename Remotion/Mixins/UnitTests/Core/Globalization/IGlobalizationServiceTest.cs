@@ -20,9 +20,10 @@ using System.Linq;
 using NUnit.Framework;
 using Remotion.Globalization;
 using Remotion.Globalization.Implementation;
+using Remotion.Mixins.Globalization;
 using Remotion.ServiceLocation;
 
-namespace Remotion.UnitTests.Globalization
+namespace Remotion.Mixins.UnitTests.Core.Globalization
 {
   [TestFixture]
   public class IGlobalizationServiceTest
@@ -40,7 +41,8 @@ namespace Remotion.UnitTests.Globalization
     {
       var factory = _serviceLocator.GetAllInstances<IGlobalizationService>().ToArray();
 
-      Assert.That (factory.Count(), Is.EqualTo (1));
+      Assert.That (factory.Count(), Is.EqualTo (2));
+      Assert.That (factory[1], Is.TypeOf<MixinGlobalizationService>());
       Assert.That (factory[0], Is.TypeOf<GlobalizationService>());
     }
 

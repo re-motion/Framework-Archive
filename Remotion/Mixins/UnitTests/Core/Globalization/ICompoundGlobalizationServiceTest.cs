@@ -20,12 +20,13 @@ using System.Linq;
 using NUnit.Framework;
 using Remotion.Globalization;
 using Remotion.Globalization.Implementation;
+using Remotion.Mixins.Globalization;
 using Remotion.ServiceLocation;
 
-namespace Remotion.UnitTests.Globalization
+namespace Remotion.Mixins.UnitTests.Core.Globalization
 {
   [TestFixture]
-  public class IGlobalizationServiceTest
+  public class ICompoundGlobalizationServiceTest
   {
     private DefaultServiceLocator _serviceLocator;
 
@@ -38,19 +39,21 @@ namespace Remotion.UnitTests.Globalization
     [Test]
     public void GetInstance_Once ()
     {
-      var factory = _serviceLocator.GetAllInstances<IGlobalizationService>().ToArray();
+      var factory = _serviceLocator.GetInstance<ICompoundGlobalizationService>();
 
-      Assert.That (factory.Count(), Is.EqualTo (1));
-      Assert.That (factory[0], Is.TypeOf<GlobalizationService>());
+      Assert.That (factory, Is.TypeOf (typeof (CompoundGlobalizationService)));
+      var compoundGlobalizationServices = ((CompoundGlobalizationService) factory).GlobalizationServices.ToArray();
+      Assert.That (compoundGlobalizationServices[0], Is.TypeOf<MixinGlobalizationService>());
+      Assert.That (compoundGlobalizationServices[1], Is.TypeOf<GlobalizationService>());
     }
 
     [Test]
     public void GetInstance_Twice_ReturnsSameInstance ()
     {
-      var factory1 = _serviceLocator.GetAllInstances<IGlobalizationService>().ToArray();
-      var factory2 = _serviceLocator.GetAllInstances<IGlobalizationService>().ToArray();
+      var factory1 = _serviceLocator.GetInstance<ICompoundGlobalizationService>();
+      var factory2 = _serviceLocator.GetInstance<ICompoundGlobalizationService>();
 
-      Assert.That (factory1, Is.EqualTo (factory2));
+      Assert.That (factory1, Is.SameAs (factory2));
     }
   }
 }

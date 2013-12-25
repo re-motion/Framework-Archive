@@ -14,11 +14,13 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System;
-using Remotion.Mixins;
-using System.Runtime.Serialization;
 
-namespace Remotion.Development.UnitTesting
+using System;
+using System.Runtime.Serialization;
+using Remotion.Development.UnitTesting;
+using Remotion.Mixins;
+
+namespace Remotion.Development.Mixins.UnitTesting
 {
   [Serializable]
   public class MixinWithSerializationCallbacks : Mixin<object>, IDeserializationCallback
