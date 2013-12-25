@@ -80,10 +80,14 @@ namespace Remotion.ServiceLocation
       //TODO RM-5506: Drop this method after ConcreteImplementationAttribute has been changed to ImpementationForAttribute and been applied to MixinParticipant and DomainObjectParticipant.
 
       Type partipantInterfaceType;
+      Type pipelineFactoryInterfaceType;
       try
       {
         partipantInterfaceType = TypeNameTemplateResolver.ResolveToType (
             "Remotion.TypePipe.IParticipant, Remotion.TypePipe, Version=<version>, Culture=neutral, PublicKeyToken=<publicKeyToken>",
+            typeof (DefaultServiceConfigurationDiscoveryService).Assembly);
+        pipelineFactoryInterfaceType = TypeNameTemplateResolver.ResolveToType (
+            "Remotion.TypePipe.Implementation.IPipelineFactory, Remotion.TypePipe, Version=<version>, Culture=neutral, PublicKeyToken=<publicKeyToken>",
             typeof (DefaultServiceConfigurationDiscoveryService).Assembly);
       }
       catch (FileNotFoundException) // Invalid assembly
@@ -99,7 +103,14 @@ namespace Remotion.ServiceLocation
           "Remotion.Data.DomainObjects.Infrastructure.TypePipe.DomainObjectParticipant, Remotion.Data.DomainObjects, Version=<version>, Culture=neutral, PublicKeyToken=<publicKeyToken>",
           ignoreIfNotFound: true) { Position = 2 };
 
+      var remotionPipelineFactoryAttribute = new ConcreteImplementationAttribute (
+          "Remotion.TypePipe.Implementation.Remotion.RemotionPipelineFactory, Remotion.TypePipe, Version=<version>, Culture=neutral, PublicKeyToken=<publicKeyToken>",
+          ignoreIfNotFound: true);
+
       yield return ServiceConfigurationEntry.CreateFromAttributes (partipantInterfaceType, new[] { mixinAttribute, domainObjectAttribute });
+
+      yield return ServiceConfigurationEntry.CreateFromAttributes (pipelineFactoryInterfaceType, new[] { remotionPipelineFactoryAttribute });
+
     }
 
     /// <summary>
