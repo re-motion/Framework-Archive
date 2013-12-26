@@ -30,7 +30,8 @@ namespace Remotion.Reflection.CodeGeneration.TypePipe
   /// Uses the <see cref="RemotionPipelineFactory"/> which creates pipeline instances that immediately apply the
   /// <see cref="NonApplicationAssemblyAttribute"/> to the in-memory assembly in order to retain original re-mix behavior.
   /// </summary>
-  public class RemotionPipelineRegistry : PipelineRegistry
+  /// <threadsafety static="true" instance="true"/>
+  public class RemotionPipelineRegistry : PipelineRegistryImplementation
   {
     private static IPipeline CreateDefaultPipeline (IEnumerable<IParticipant> defaultPipelineParticipants)
     {

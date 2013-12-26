@@ -47,7 +47,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Infrastructure.TypePipe
       var remixParticipant = new MixinParticipant();
       var restoreParticipant = new DomainObjectParticipant();
       _pipeline = PipelineFactory.Create ("DomainObjectCreatorTest", remixParticipant, restoreParticipant);
-      var pipelineRegistry = new PipelineRegistry (_pipeline);
+      var pipelineRegistry = new PipelineRegistryImplementation (_pipeline);
       _domainObjectCreator = new DomainObjectCreator (pipelineRegistry);
 
       _transaction = ClientTransaction.CreateRootTransaction();
