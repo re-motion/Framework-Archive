@@ -17,12 +17,14 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using Castle.DynamicProxy;
 using NUnit.Framework;
 using Remotion.Development.TypePipe.UnitTesting;
 using Remotion.Development.UnitTesting;
 using Remotion.Mixins.Samples.DynamicMixinBuilding.Core;
+using Remotion.ServiceLocation;
 using Remotion.TypePipe;
 using Remotion.Utilities;
 
@@ -59,7 +61,7 @@ namespace Remotion.Mixins.Samples.DynamicMixinBuilding.UnitTests
         "DynamicMixinBuilder.Unsigned", Path.Combine (directory, "DynamicMixinBuilder.Unsigned.dll"));
 
       // Set new default pipeline to avoid cached types to influence each other.
-      PipelineRegistryTestHelper.ResetDefaultPipeline();
+      ResetDefaultPipeline();
 
       _invocationHandler = delegate (object instance, MethodInfo method, object[] args, BaseMethodInvoker baseMethod)
       {
@@ -72,6 +74,22 @@ namespace Remotion.Mixins.Samples.DynamicMixinBuilding.UnitTests
 
       _builder = new DynamicMixinBuilder (typeof (SampleTarget));
     }
+
+    private static void ResetDefaultPipeline ()
+    {
+      var pipelineRegistry = SafeServiceLocator.Current.GetInstance<IPipelineRegistry>();
+      var pipelineFactory = SafeServiceLocator.Current.GetInstance<IPipelineFactory>();
+      var previousPipeline = pipelineRegistry.DefaultPipeline;
+
+      var pipeline = pipelineFactory.Create (
+          previousPipeline.ParticipantConfigurationID,
+          previousPipeline.Settings,
+          previousPipeline.Participants.ToArray());
+
+      // This overrides the previous default pipeline.
+      pipelineRegistry.SetDefaultPipeline (pipeline);
+    }
+
 
     private string PrepareDirectory ()
     {

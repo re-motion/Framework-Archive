@@ -70,7 +70,7 @@ namespace Remotion.Mixins.MixerTools
           .SetAssemblyNamePattern (_assemblyName)
           .SetDegreeOfParallelism (_degreeOfParallelism);
 
-      var pipeline = remotionPipelineFactory.CreatePipeline (
+      var pipeline = remotionPipelineFactory.Create (
           defaultPipeline.ParticipantConfigurationID,
           pipelineSettings.Build(),
           participants);

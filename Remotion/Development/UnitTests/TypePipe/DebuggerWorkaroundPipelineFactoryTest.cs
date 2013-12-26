@@ -75,7 +75,7 @@ namespace Remotion.Development.UnitTests.Core.TypePipe
       // Creates new in-memory assembly (avoid no-modification optimization).
       var participantConfigurationID = "dummy id";
       var settings = PipelineSettings.New().Build();
-      var defaultPipeline = _factory.CreatePipeline (participantConfigurationID, settings, new[] { new ModifyingParticipant() });
+      var defaultPipeline = _factory.Create (participantConfigurationID, settings, new[] { new ModifyingParticipant() });
       var type = defaultPipeline.ReflectionService.GetAssembledType (typeof (RequestedType));
 
       Assert.That (type.Assembly.IsDefined (typeof (NonApplicationAssemblyAttribute), false), Is.True);

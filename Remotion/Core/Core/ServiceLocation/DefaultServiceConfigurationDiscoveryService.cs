@@ -86,7 +86,7 @@ namespace Remotion.ServiceLocation
             "Remotion.TypePipe.IParticipant, Remotion.TypePipe, Version=<version>, Culture=neutral, PublicKeyToken=<publicKeyToken>",
             typeof (DefaultServiceConfigurationDiscoveryService).Assembly);
         pipelineFactoryInterfaceType = TypeNameTemplateResolver.ResolveToType (
-            "Remotion.TypePipe.Implementation.IPipelineFactory, Remotion.TypePipe, Version=<version>, Culture=neutral, PublicKeyToken=<publicKeyToken>",
+            "Remotion.TypePipe.IPipelineFactory, Remotion.TypePipe, Version=<version>, Culture=neutral, PublicKeyToken=<publicKeyToken>",
             typeof (DefaultServiceConfigurationDiscoveryService).Assembly);
         pipelineRegistryInterfaceType = TypeNameTemplateResolver.ResolveToType (
             "Remotion.TypePipe.IPipelineRegistry, Remotion.TypePipe, Version=<version>, Culture=neutral, PublicKeyToken=<publicKeyToken>",

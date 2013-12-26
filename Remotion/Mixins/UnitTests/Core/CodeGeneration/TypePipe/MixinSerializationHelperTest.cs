@@ -22,6 +22,7 @@ using Remotion.Mixins.CodeGeneration;
 using Remotion.Mixins.CodeGeneration.Serialization;
 using Remotion.Mixins.CodeGeneration.TypePipe;
 using Remotion.Mixins.UnitTests.Core.TestDomain;
+using Remotion.ServiceLocation;
 using Remotion.TypePipe;
 
 namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
@@ -45,14 +46,14 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
       var classContext = ClassContextObjectMother.Create (typeof (ClassOverridingMixinMembers), typeof (FakeConcreteMixinType));
       _identifier = DefinitionObjectMother.GetTargetClassDefinition(classContext).Mixins[0].GetConcreteMixinTypeIdentifier();
 
-      _pipeline = PipelineFactory.Create ("MixinSerializationHelper", new MixinParticipant());
-      PipelineRegistryTestHelper.GloablRegistry.Register (_pipeline);
+      _pipeline = SafeServiceLocator.Current.GetInstance<IPipelineFactory>().Create ("MixinSerializationHelper", new MixinParticipant());
+      SafeServiceLocator.Current.GetInstance<IPipelineRegistry>().Register (_pipeline);
     }
 
     [TearDown]
     public void TearDown ()
     {
-      PipelineRegistryTestHelper.GloablRegistry.Unregister(_pipeline.ParticipantConfigurationID);
+      SafeServiceLocator.Current.GetInstance<IPipelineRegistry>().Unregister(_pipeline.ParticipantConfigurationID);
     }
 
     [Test]

@@ -19,17 +19,14 @@ using System;
 using NUnit.Framework;
 using Remotion.Development.TypePipe;
 using Remotion.Development.TypePipe.UnitTesting;
-using Remotion.Development.UnitTesting;
 using Remotion.Diagnostics;
 using Remotion.TypePipe;
-using Remotion.TypePipe.Implementation;
 using Rhino.Mocks;
 
-namespace Remotion.Development.UnitTests.Core.TypePipe
+namespace Remotion.Development.UnitTests.TypePipe
 {
   public class DebuggerWorkaroundIntegrationTest
   {
-    private IPipelineFactory _previousPipelineFactory;
     private int _maximumTypesPerAssembly;
     private IDebuggerInterface _debuggerStub;
 
@@ -38,22 +35,14 @@ namespace Remotion.Development.UnitTests.Core.TypePipe
     [SetUp]
     public void SetUp ()
     {
-      _previousPipelineFactory = (IPipelineFactory) PrivateInvoke.GetNonPublicStaticField (typeof (PipelineFactory), "s_instance");
       _debuggerStub = MockRepository.GenerateStub<IDebuggerInterface>();
       _maximumTypesPerAssembly = 2;
 
       var debuggerWorkaroundPipelineFactory =
           new DebuggerWorkaroundPipelineFactory { DebuggerInterface = _debuggerStub, MaximumTypesPerAssembly = _maximumTypesPerAssembly };
-      PrivateInvoke.SetNonPublicStaticField (typeof (PipelineFactory), "s_instance", debuggerWorkaroundPipelineFactory);
 
       var modifyingParticipant = new ModifyingParticipant();
-      _pipeline = PipelineFactory.Create ("DebuggerWorkaroundIntegrationTest", modifyingParticipant);
-    }
-
-    [TearDown]
-    public void TearDown ()
-    {
-      PrivateInvoke.SetNonPublicStaticField (typeof (PipelineFactory), "s_instance", _previousPipelineFactory);
+      _pipeline = debuggerWorkaroundPipelineFactory.Create ("DebuggerWorkaroundIntegrationTest", modifyingParticipant);
     }
 
     [Test]

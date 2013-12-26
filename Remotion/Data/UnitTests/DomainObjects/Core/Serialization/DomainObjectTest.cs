@@ -22,7 +22,9 @@ using Remotion.Data.DomainObjects;
 using Remotion.Data.DomainObjects.DomainImplementation;
 using Remotion.Data.UnitTests.DomainObjects.Core.EventReceiver;
 using Remotion.Data.UnitTests.DomainObjects.TestDomain;
+using Remotion.Development.TypePipe.UnitTesting;
 using Remotion.Development.UnitTesting;
+using Remotion.ServiceLocation;
 using Remotion.TypePipe;
 
 namespace Remotion.Data.UnitTests.DomainObjects.Core.Serialization

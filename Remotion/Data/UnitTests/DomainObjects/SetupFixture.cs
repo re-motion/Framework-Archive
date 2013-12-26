@@ -17,6 +17,8 @@
 using System;
 using System.Configuration;
 using System.Data.SqlClient;
+using Remotion.ServiceLocation;
+using Remotion.TypePipe;
 using Remotion.Utilities;
 using log4net;
 using Microsoft.Practices.ServiceLocation;
@@ -42,6 +44,7 @@ namespace Remotion.Data.UnitTests.DomainObjects
       try
       {
         ServiceLocator.SetLocatorProvider (() => null);
+        PipelineRegistry.SetInstanceProvider (() => SafeServiceLocator.Current.GetInstance<IPipelineRegistry>());
 
         LogManager.ResetConfiguration ();
         Assert.That (LogManager.GetLogger (typeof (LoggingClientTransactionListener)).IsDebugEnabled, Is.False);
