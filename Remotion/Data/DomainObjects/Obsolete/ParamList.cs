@@ -21,6 +21,9 @@ using TypePipeParamList = Remotion.TypePipe.ParamList;
 // ReSharper disable once CheckNamespace
 namespace Remotion.Reflection
 {
+  /// <summary>
+  /// Redirect for the <see cref="TypePipeParamList"/> located in the <b>Remotion.TypePipe</b> assembly.
+  /// </summary>
   [Obsolete ("Moved to Remotion.TypePipe.dll. Add dependency on Remotion.TypePipe.dll and update using-directive from 'Remotion.Reflection' to 'Remotion.TypePipe'. (Version 1.15.7.0)")]
   public static class ParamList
   {
