@@ -42,6 +42,10 @@
     <AssemblyOriginatorKeyFile>..\..\..\remotion.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\prereq\Assemblies\CommonServiceLocator-1.0\net-2.0\Microsoft.Practices.ServiceLocation.dll</HintPath>
+    </Reference>
     <Reference Include="Remotion">
       <HintPath>..\Core\bin\Debug\Remotion.dll</HintPath>
     </Reference>
@@ -56,6 +60,7 @@
     <Compile Include="RemotionModuleBuilderFactoryDecorator.cs" />
     <Compile Include="RemotionPipelineFactory.cs" />
     <Compile Include="RemotionPipelineRegistry.cs" />
+    <Compile Include="ServiceLocatorBasedPipelineRegistry.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\remotion.snk">

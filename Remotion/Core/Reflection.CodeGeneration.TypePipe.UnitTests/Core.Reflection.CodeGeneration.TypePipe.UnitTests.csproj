@@ -63,6 +63,7 @@
     <Compile Include="RemotionModuleBuilderFactoryDecoratorTest.cs" />
     <Compile Include="RemotionPipelineFactoryTest.cs" />
     <Compile Include="RemotionPipelineRegistryTest.cs" />
+    <Compile Include="ServiceLocatorBasedPipelineRegistryTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\remotion.snk">
