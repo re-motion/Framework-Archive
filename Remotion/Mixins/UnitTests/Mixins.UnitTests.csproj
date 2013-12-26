@@ -445,7 +445,6 @@
     <Compile Include="Core\Validation\ValidationTestDomain\TargetClassWithSameNamesAsIntroducedMembers.cs" />
     <Compile Include="Core\Validation\ValidationTestDomain\TargetClassWithSameNamesDifferentSignaturesAsIntroducedMembers.cs" />
     <Compile Include="Core\Validation\ValidationTestDomain\ThrowingRuleSet.cs" />
-    <Compile Include="SetUpFixture.cs" />
     <Content Include="Core\MixerTools\SampleAssembly\SampleTypes.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

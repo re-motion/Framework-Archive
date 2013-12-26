@@ -44,7 +44,6 @@ namespace Remotion.Data.UnitTests.DomainObjects
       try
       {
         ServiceLocator.SetLocatorProvider (() => null);
-        PipelineRegistry.SetInstanceProvider (() => SafeServiceLocator.Current.GetInstance<IPipelineRegistry>());
 
         LogManager.ResetConfiguration ();
         Assert.That (LogManager.GetLogger (typeof (LoggingClientTransactionListener)).IsDebugEnabled, Is.False);
