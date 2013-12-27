@@ -115,6 +115,39 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\..\SharedSource\Development\UnitTesting\PEVerifier.cs">
+      <Link>SharedSource\UnitTesting\PEVerifier.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\Development\UnitTesting\PEVerifyException.cs">
+      <Link>SharedSource\UnitTesting\PEVerifyException.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\Development\UnitTesting\PEVerifyPathSources\CompoundPEVerifyPathSource.cs">
+      <Link>SharedSource\UnitTesting\PEVerifyPathSources\CompoundPEVerifyPathSource.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\Development\UnitTesting\PEVerifyPathSources\DotNetSdk20PEVerifyPathSource.cs">
+      <Link>SharedSource\UnitTesting\PEVerifyPathSources\DotNetSdk20PEVerifyPathSource.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\Development\UnitTesting\PEVerifyPathSources\FixedPEVerifyPathSource.cs">
+      <Link>SharedSource\UnitTesting\PEVerifyPathSources\FixedPEVerifyPathSource.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\Development\UnitTesting\PEVerifyPathSources\IPEVerifyPathSource.cs">
+      <Link>SharedSource\UnitTesting\PEVerifyPathSources\IPEVerifyPathSource.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\Development\UnitTesting\PEVerifyPathSources\PotentialPEVerifyPathSourceBase.cs">
+      <Link>SharedSource\UnitTesting\PEVerifyPathSources\PotentialPEVerifyPathSourceBase.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\Development\UnitTesting\PEVerifyPathSources\WindowsSdk6PEVerifyPathSource.cs">
+      <Link>SharedSource\UnitTesting\PEVerifyPathSources\WindowsSdk6PEVerifyPathSource.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\Development\UnitTesting\PEVerifyPathSources\WindowsSdk70aPEVerifyPathSource.cs">
+      <Link>SharedSource\UnitTesting\PEVerifyPathSources\WindowsSdk70aPEVerifyPathSource.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\Development\UnitTesting\PEVerifyPathSources\WindowsSdk71PEVerifyPathSource.cs">
+      <Link>SharedSource\UnitTesting\PEVerifyPathSources\WindowsSdk71PEVerifyPathSource.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\Development\UnitTesting\PEVerifyPathSources\WindowsSdk80aPEVerifyPathSource.cs">
+      <Link>SharedSource\UnitTesting\PEVerifyPathSources\WindowsSdk80aPEVerifyPathSource.cs</Link>
+    </Compile>
     <Compile Include="..\..\..\SharedSource\Development\UnitTesting\PrivateInvoke.cs">
       <Link>SharedSource\UnitTesting\PrivateInvoke.cs</Link>
     </Compile>
@@ -143,7 +176,6 @@
     <Compile Include="UnitTesting\IO\AssemblyLoader.cs" />
     <Compile Include="UnitTesting\ObjectExtensions.cs" />
     <Compile Include="UnitTesting\ObjectMothers\BooleanObjectMother.cs" />
-    <Compile Include="UnitTesting\PEVerifyPathSources\CompoundPEVerifyPathSource.cs" />
     <Compile Include="UnitTesting\Configuration\ConfigSystemHelper.cs" />
     <Compile Include="UnitTesting\Configuration\ConfigurationHelper.cs" />
     <Compile Include="UnitTesting\Configuration\FakeConfigurationWrapper.cs" />
@@ -152,20 +184,18 @@
     <Compile Include="UnitTesting\Data\SqlClient\SqlBatchCommandException.cs" />
     <Compile Include="UnitTesting\Dev.cs" />
     <Compile Include="UnitTesting\Configuration\FakeInternalConfigSystem.cs" />
-    <Compile Include="UnitTesting\PEVerifyPathSources\WindowsSdk80aPEVerifyPathSource.cs" />
-    <Compile Include="UnitTesting\PEVerifyPathSources\FixedPEVerifyPathSource.cs" />
-    <Compile Include="UnitTesting\PEVerifyPathSources\DotNetSdk20PEVerifyPathSource.cs" />
     <Compile Include="UnitTesting\IMockRepository.cs" />
     <Compile Include="UnitTesting\IO\TempFile.cs" />
-    <Compile Include="UnitTesting\PEVerifyPathSources\IPEVerifyPathSource.cs" />
     <Compile Include="UnitTesting\ISerializationEventReceiver.cs" />
     <Compile Include="UnitTesting\ObjectMothers\DictionaryObjectMother.cs" />
     <Compile Include="UnitTesting\ObjectMothers\ListObjectMother.cs" />
     <Compile Include="UnitTesting\ObjectMothers\QueueObjectMother.cs" />
-    <Compile Include="UnitTesting\PEVerifier.cs" />
-    <Compile Include="UnitTesting\PEVerifyException.cs" />
-    <Compile Include="UnitTesting\PEVerifyPathSources\PEVerifyVersion.cs" />
-    <Compile Include="UnitTesting\PEVerifyPathSources\PotentialPEVerifyPathSourceBase.cs" />
+    <Compile Include="UnitTesting\PEVerifier.Partial.cs" />
+    <Compile Include="UnitTesting\PEVerifyException.Partial.cs" />
+    <Compile Include="UnitTesting\PEVerifyPathSources\PartialDeclarations.cs" />
+    <Compile Include="UnitTesting\PEVerifyPathSources\PEVerifyVersion.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="UnitTesting\PrivateInvoke.Partial.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -186,9 +216,6 @@
     <Compile Include="UnitTesting\SerializationCallbackTester.cs" />
     <Compile Include="UnitTesting\Serializer.cs" />
     <Compile Include="UnitTesting\ServiceLocatorScope.cs" />
-    <Compile Include="UnitTesting\PEVerifyPathSources\WindowsSdk6PEVerifyPathSource.cs" />
-    <Compile Include="UnitTesting\PEVerifyPathSources\WindowsSdk70aPEVerifyPathSource.cs" />
-    <Compile Include="UnitTesting\PEVerifyPathSources\WindowsSdk71PEVerifyPathSource.cs" />
     <Compile Include="UnitTesting\ThreadRunner.Partial.cs" />
     <None Include="..\..\Remotion LGPL.licenseheader">
       <Link>Remotion LGPL.licenseheader</Link>

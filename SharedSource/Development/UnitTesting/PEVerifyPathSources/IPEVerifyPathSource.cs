@@ -15,11 +15,13 @@
 // under the License.
 // 
 
-using System;
-
-namespace Remotion.Development.UnitTesting
+// ReSharper disable once CheckNamespace
+namespace Remotion.Development.UnitTesting.PEVerifyPathSources
 {
-  public partial class ThreadRunner
+  partial interface IPEVerifyPathSource
   {
+    // Returns a valid path or null
+    string GetPEVerifyPath (PEVerifyVersion version);
+    string GetLookupDiagnostics (PEVerifyVersion version);
   }
 }

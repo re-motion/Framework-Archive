@@ -1,29 +1,31 @@
-﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
-// Copyright (c) rubicon IT GmbH, www.rubicon.eu
+﻿// Copyright (c) rubicon IT GmbH, www.rubicon.eu
+//
+// See the NOTICE file distributed with this work for additional information
+// regarding copyright ownership.  rubicon licenses this file to you under 
+// the Apache License, Version 2.0 (the "License"); you may not use this 
+// file except in compliance with the License.  You may obtain a copy of the 
+// License at
+//
+//   http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software 
+// distributed under the License is distributed on an "AS IS" BASIS, WITHOUT 
+// WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the 
+// License for the specific language governing permissions and limitations
+// under the License.
 // 
-// The re-motion Core Framework is free software; you can redistribute it 
-// and/or modify it under the terms of the GNU Lesser General Public License 
-// as published by the Free Software Foundation; either version 2.1 of the 
-// License, or (at your option) any later version.
-// 
-// re-motion is distributed in the hope that it will be useful, 
-// but WITHOUT ANY WARRANTY; without even the implied warranty of 
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
-// GNU Lesser General Public License for more details.
-// 
-// You should have received a copy of the GNU Lesser General Public License
-// along with re-motion; if not, see http://www.gnu.org/licenses.
-// 
+
 using System.IO;
 using Microsoft.Win32;
 using Remotion.FunctionalProgramming;
 
+// ReSharper disable once CheckNamespace
 namespace Remotion.Development.UnitTesting.PEVerifyPathSources
 {
-  public class WindowsSdk71PEVerifyPathSource : PotentialPEVerifyPathSourceBase
+  partial class WindowsSdk70aPEVerifyPathSource : PotentialPEVerifyPathSourceBase
   {
-    public const string WindowsSdkRegistryKey35 = @"SOFTWARE\Microsoft\Microsoft SDKs\Windows\v7.1\WinSDKNetFx35Tools";
-    public const string WindowsSdkRegistryKey40 = @"SOFTWARE\Microsoft\Microsoft SDKs\Windows\v7.1\WinSDK-NetFx40Tools";
+    public const string WindowsSdkRegistryKey35 = @"SOFTWARE\Microsoft\Microsoft SDKs\Windows\v7.0A\WinSDK-NetFx35Tools";
+    public const string WindowsSdkRegistryKey40 = @"SOFTWARE\Microsoft\Microsoft SDKs\Windows\v7.0A\WinSDK-NetFx40Tools";
     public const string WindowsSdkRegistryInstallationFolderValue = "InstallationFolder";
 
     public override string GetLookupDiagnostics (PEVerifyVersion version)
@@ -32,18 +34,18 @@ namespace Remotion.Development.UnitTesting.PEVerifyPathSources
       {
         case PEVerifyVersion.DotNet2:
           return string.Format (
-              "Windows SDK 7.1: Registry: HKEY_LOCAL_MACHINE\\{0}\\{1}\\PEVerify.exe",
+              "Windows SDK 7.0A: Registry: HKEY_LOCAL_MACHINE\\{0}\\{1}\\PEVerify.exe",
               WindowsSdkRegistryKey35,
               WindowsSdkRegistryInstallationFolderValue);
 
         case PEVerifyVersion.DotNet4:
           return string.Format (
-              "Windows SDK 7.1: Registry: HKEY_LOCAL_MACHINE\\{0}\\{1}\\PEVerify.exe",
+              "Windows SDK 7.0A: Registry: HKEY_LOCAL_MACHINE\\{0}\\{1}\\PEVerify.exe",
               WindowsSdkRegistryKey40,
               WindowsSdkRegistryInstallationFolderValue);
 
         default:
-          return "Windows SDK 7.1: n/a";
+          return "Windows SDK 7.0A: n/a";
       }
     }
 

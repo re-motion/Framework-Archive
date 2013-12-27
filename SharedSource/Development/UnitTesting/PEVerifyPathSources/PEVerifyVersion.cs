@@ -1,4 +1,4 @@
-// Copyright (c) rubicon IT GmbH, www.rubicon.eu
+﻿// Copyright (c) rubicon IT GmbH, www.rubicon.eu
 //
 // See the NOTICE file distributed with this work for additional information
 // regarding copyright ownership.  rubicon licenses this file to you under 
@@ -15,11 +15,12 @@
 // under the License.
 // 
 
-using System;
-
-namespace Remotion.Development.UnitTesting
+// ReSharper disable once CheckNamespace
+namespace Remotion.Development.UnitTesting.PEVerifyPathSources
 {
-  public static partial class PrivateInvoke
+  enum PEVerifyVersion
   {
+    DotNet2,
+    DotNet4
   }
 }

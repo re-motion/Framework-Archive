@@ -14,32 +14,12 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using Remotion.Text;
-using Remotion.Utilities;
 
-namespace Remotion.Development.UnitTesting.PEVerifyPathSources
+namespace Remotion.Development.UnitTesting
 {
-  public class CompoundPEVerifyPathSource : IPEVerifyPathSource
+  public partial class PEVerifyException
   {
-    private readonly IPEVerifyPathSource[] _sources;
-
-    public CompoundPEVerifyPathSource (params IPEVerifyPathSource[] sources)
-    {
-      ArgumentUtility.CheckNotNullOrEmpty ("sources", sources);
-      _sources = sources;
-    }
-
-    public string GetPEVerifyPath (PEVerifyVersion version)
-    {
-      return _sources.Select (source => source.GetPEVerifyPath (version)).FirstOrDefault (path => path != null);
-    }
-
-    public string GetLookupDiagnostics (PEVerifyVersion version)
-    {
-      return string.Join (Environment.NewLine, _sources.Select (source => source.GetLookupDiagnostics (version)));
-    }
   }
 }

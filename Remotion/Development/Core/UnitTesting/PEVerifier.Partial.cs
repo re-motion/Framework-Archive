@@ -1,4 +1,4 @@
-// This file is part of the re-motion Core Framework (www.re-motion.org)
+﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -14,27 +14,12 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
 
 namespace Remotion.Development.UnitTesting
 {
-  public class PEVerifyException : Exception
+  public partial class PEVerifier
   {
-    public PEVerifyException (string message) : base (message)
-    {
-    }
-
-    public PEVerifyException (string message, Exception inner) : base (message, inner)
-    {
-    }
-
-    public PEVerifyException (int resultCode, string output) : base (ConstructMessage (resultCode, output))
-    {
-    }
-
-    private static string ConstructMessage (int code, string output)
-    {
-      return string.Format ("PEVerify returned {0}.\n{1}", code, output);
-    }
   }
 }

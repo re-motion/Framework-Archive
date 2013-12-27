@@ -48,21 +48,25 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RhinoMocks\UnitTesting\DecoratorTestHelper.cs" />
-    <Compile Include="RhinoMocks\UnitTesting\DecoratorTestHelper.Partial.cs" />
     <Compile Include="RhinoMocks\UnitTesting\ListArgExtensions.cs" />
-    <Compile Include="RhinoMocks\UnitTesting\ListArgExtensions.Partial.cs" />
     <Compile Include="RhinoMocks\UnitTesting\Threading\LockingDecoratorTestHelper.cs" />
-    <Compile Include="RhinoMocks\UnitTesting\Threading\LockingDecoratorTestHelper.Partial.cs" />
     <Compile Include="RhinoMocks\UnitTesting\Threading\LockTestHelper.cs" />
-    <Compile Include="RhinoMocks\UnitTesting\Threading\LockTestHelper.Partial.cs" />
+    <Compile Include="UnitTesting\PEVerifier.cs" />
+    <Compile Include="UnitTesting\PEVerifyException.cs" />
+    <Compile Include="UnitTesting\PEVerifyPathSources\CompoundPEVerifyPathSource.cs" />
+    <Compile Include="UnitTesting\PEVerifyPathSources\DotNetSdk20PEVerifyPathSource.cs" />
+    <Compile Include="UnitTesting\PEVerifyPathSources\FixedPEVerifyPathSource.cs" />
+    <Compile Include="UnitTesting\PEVerifyPathSources\IPEVerifyPathSource.cs" />
+    <Compile Include="UnitTesting\PEVerifyPathSources\PEVerifyVersion.cs" />
+    <Compile Include="UnitTesting\PEVerifyPathSources\PotentialPEVerifyPathSourceBase.cs" />
+    <Compile Include="UnitTesting\PEVerifyPathSources\WindowsSdk6PEVerifyPathSource.cs" />
+    <Compile Include="UnitTesting\PEVerifyPathSources\WindowsSdk70aPEVerifyPathSource.cs" />
+    <Compile Include="UnitTesting\PEVerifyPathSources\WindowsSdk71PEVerifyPathSource.cs" />
+    <Compile Include="UnitTesting\PEVerifyPathSources\WindowsSdk80aPEVerifyPathSource.cs" />
     <Compile Include="UnitTesting\PrivateInvoke.cs" />
-    <Compile Include="UnitTesting\PrivateInvoke.Partial.cs" />
     <Compile Include="UnitTesting\Reflection\NormalizingMemberInfoFromExpressionUtility.cs" />
-    <Compile Include="UnitTesting\Reflection\NormalizingMemberInfoFromExpressionUtility.Partial.cs" />
     <Compile Include="UnitTesting\Reflection\ReflectionObjectMother.cs" />
-    <Compile Include="UnitTesting\Reflection\ReflectionObjectMother.Partial.cs" />
     <Compile Include="UnitTesting\ThreadRunner.cs" />
-    <Compile Include="UnitTesting\ThreadRunner.Partial.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\SharedSource Apache-2.0.licenseheader">

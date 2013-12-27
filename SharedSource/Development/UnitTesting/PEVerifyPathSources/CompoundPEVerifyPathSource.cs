@@ -14,12 +14,32 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
+using System;
+using System.Linq;
+using Remotion.Utilities;
+
+// ReSharper disable once CheckNamespace
 namespace Remotion.Development.UnitTesting.PEVerifyPathSources
 {
-  public interface IPEVerifyPathSource
+  partial class CompoundPEVerifyPathSource : IPEVerifyPathSource
   {
-    // Returns a valid path or null
-    string GetPEVerifyPath (PEVerifyVersion version);
-    string GetLookupDiagnostics (PEVerifyVersion version);
+    private readonly IPEVerifyPathSource[] _sources;
+
+    public CompoundPEVerifyPathSource (params IPEVerifyPathSource[] sources)
+    {
+      ArgumentUtility.CheckNotNullOrEmpty ("sources", sources);
+      _sources = sources;
+    }
+
+    public string GetPEVerifyPath (PEVerifyVersion version)
+    {
+      return _sources.Select (source => source.GetPEVerifyPath (version)).FirstOrDefault (path => path != null);
+    }
+
+    public string GetLookupDiagnostics (PEVerifyVersion version)
+    {
+      return string.Join (Environment.NewLine, _sources.Select (source => source.GetLookupDiagnostics (version)));
+    }
   }
 }

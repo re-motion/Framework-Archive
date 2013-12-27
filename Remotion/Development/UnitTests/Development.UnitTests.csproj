@@ -167,6 +167,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\..\SharedSource\UnitTests\Development\Core\UnitTesting\PEVerifierTest.cs">
+      <Link>SharedSource\Core\UnitTesting\PEVerifierTest.cs</Link>
+    </Compile>
     <Compile Include="..\..\..\SharedSource\UnitTests\Development\Core\UnitTesting\Reflection\NormalizingMemberInfoFromExpressionUtilityTest.cs">
       <Link>SharedSource\Core\UnitTesting\Reflection\NormalizingMemberInfoFromExpressionUtilityTest.cs</Link>
     </Compile>
@@ -217,7 +220,6 @@
     <Compile Include="Core\UnitTesting\Data\SqlClient\TestableDatabaseAgent.cs" />
     <Compile Include="Core\UnitTesting\DevNullTest.cs" />
     <Compile Include="Core\UnitTesting\IO\TempFileTest.cs" />
-    <Compile Include="Core\UnitTesting\PEVerifierTest.cs" />
     <Compile Include="Core\UnitTesting\RhinoMocksRepositoryAdapter.cs" />
     <Compile Include="Core\UnitTesting\SerializationCallbackTesterTest.cs" />
     <Compile Include="Core\UnitTesting\SerializerTest.cs" />

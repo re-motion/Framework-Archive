@@ -16,10 +16,29 @@
 // 
 
 using System;
+using Remotion.Utilities;
 
-namespace Remotion.Development.UnitTesting.Reflection
+// ReSharper disable once CheckNamespace
+namespace Remotion.Development.UnitTesting.PEVerifyPathSources
 {
-  public static partial class NormalizingMemberInfoFromExpressionUtility1
+  partial class FixedPEVerifyPathSource : IPEVerifyPathSource
   {
+    private readonly string _path;
+
+    public FixedPEVerifyPathSource (string path)
+    {
+      ArgumentUtility.CheckNotNullOrEmpty ("path", path);
+      _path = path;
+    }
+
+    public string GetPEVerifyPath (PEVerifyVersion version)
+    {
+      return  _path;
+    }
+
+    public string GetLookupDiagnostics (PEVerifyVersion version)
+    {
+      return "Path: " + _path;
+    }
   }
 }

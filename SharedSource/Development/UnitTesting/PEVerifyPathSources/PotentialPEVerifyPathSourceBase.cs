@@ -1,4 +1,4 @@
-﻿// Copyright (c) rubicon IT GmbH, www.rubicon.eu
+// Copyright (c) rubicon IT GmbH, www.rubicon.eu
 //
 // See the NOTICE file distributed with this work for additional information
 // regarding copyright ownership.  rubicon licenses this file to you under 
@@ -16,10 +16,24 @@
 // 
 
 using System;
+using System.IO;
 
-namespace Remotion.Development.UnitTesting.Reflection
+// ReSharper disable once CheckNamespace
+namespace Remotion.Development.UnitTesting.PEVerifyPathSources
 {
-  public static partial class ReflectionObjectMother
+  abstract partial class PotentialPEVerifyPathSourceBase : IPEVerifyPathSource
   {
+    public string GetPEVerifyPath (PEVerifyVersion version)
+    {
+      var potentialPath = GetPotentialPEVerifyPath (version);
+      if (potentialPath != null && File.Exists (potentialPath))
+        return potentialPath;
+
+      return null;
+    }
+
+    public abstract string GetLookupDiagnostics (PEVerifyVersion version);
+
+    protected abstract string GetPotentialPEVerifyPath (PEVerifyVersion version);
   }
 }
