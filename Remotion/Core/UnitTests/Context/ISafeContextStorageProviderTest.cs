@@ -19,17 +19,16 @@ namespace Remotion.UnitTests.Context
     [Test]
     public void GetInstance_Once ()
     {
-      var instance = _serviceLocator.GetAllInstances<ISafeContextStorageProvider>();
+      var instance = _serviceLocator.GetInstance<ISafeContextStorageProvider>();
 
-      Assert.That (instance, Is.Not.Null);
-      Assert.That (instance, Is.All.TypeOf (typeof (CallContextStorageProvider)));
+      Assert.That (instance, Is.InstanceOf(typeof (CallContextStorageProvider)));
     }
 
     [Test]
     public void GetInstance_Twice_ReturnsSameInstance ()
     {
-      var isntance1 = _serviceLocator.GetAllInstances<ISafeContextStorageProvider>().First();
-      var instance2 = _serviceLocator.GetAllInstances<ISafeContextStorageProvider>().First();
+      var isntance1 = _serviceLocator.GetInstance<ISafeContextStorageProvider>();
+      var instance2 = _serviceLocator.GetInstance<ISafeContextStorageProvider>();
 
       Assert.That (isntance1, Is.Not.SameAs (instance2));
     }

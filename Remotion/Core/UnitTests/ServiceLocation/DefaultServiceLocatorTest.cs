@@ -124,8 +124,8 @@ namespace Remotion.UnitTests.ServiceLocation
     public void GetInstance_WithMutipleServiceImplementationsRegistered_ReturnsFirstImplementation ()
     {
       Assert.That (
-          _serviceLocator.GetInstance<ITestMultipleConcreteImplementationAttributesType> (),
-          Is.InstanceOf<TestMultipleConcreteImplementationAttributesType2>());
+          _serviceLocator.GetInstance<ITestMultipleImplementationsForRegistrationTypeSingle> (),
+          Is.InstanceOf<TestMultipleImplementationsForRegistrationTypeSingle2>());
     }
 
     [Test]
@@ -197,7 +197,7 @@ namespace Remotion.UnitTests.ServiceLocation
     [Test]
     public void GetAllInstances_InstanceNotCompatibleWithServiceType ()
     {
-      _serviceLocator.Register (typeof (ISomeInterface), () => new object());
+      _serviceLocator.Register (typeof (ISomeInterface), Tuple.Create ((Func<object>) (() => new object()), RegistrationType.Multiple));
       Assert.That (
           () => _serviceLocator.GetAllInstances (typeof (ISomeInterface)).ToArray (),
           Throws.TypeOf<ActivationException> ().With.Message.EqualTo (
@@ -208,7 +208,7 @@ namespace Remotion.UnitTests.ServiceLocation
     [Test]
     public void GetAllInstances_ServiceTypeWithNullImplementation ()
     {
-      _serviceLocator.Register (typeof (ISomeInterface), () => null);
+      _serviceLocator.Register (typeof (ISomeInterface), Tuple.Create ((Func<object>) (() => null), RegistrationType.Multiple));
       Assert.That (
           () => _serviceLocator.GetAllInstances (typeof (ISomeInterface)).ToArray(),
           Throws.TypeOf<ActivationException> ().With.Message.EqualTo (
@@ -297,15 +297,6 @@ namespace Remotion.UnitTests.ServiceLocation
       Assert.That (result[0], Is.TypeOf (typeof (TestMultipleConcreteImplementationAttributesType2)));
       Assert.That (result[1], Is.TypeOf (typeof (TestMultipleConcreteImplementationAttributesType3)));
       Assert.That (result[2], Is.TypeOf (typeof (TestMultipleConcreteImplementationAttributesType1)));
-    }
-
-    [Test]
-    public void GetAllInstances_Generic_ServiceTypeWithUnresolvableAndResolveImplementationTypes ()
-    {
-      var results = _serviceLocator.GetAllInstances<ITestConcreteImplementationAttributeWithUnresolvableAndResolvableImplementationTypes>().ToArray();
-
-      Assert.That (results, Has.Length.EqualTo (1));
-      Assert.That (results[0], Is.TypeOf<TestConcreteImplementationAttributeWithUnresolvableAndResolvableImplementationTypesExisting> ());
     }
 
     [Test]

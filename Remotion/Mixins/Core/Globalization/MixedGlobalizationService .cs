@@ -36,7 +36,7 @@ namespace Remotion.Mixins.Globalization
   /// <see cref="MixinConfiguration.SetMasterConfiguration"/> or <see cref="MixinConfiguration.ResetMasterConfiguration"/>.
   /// </remarks>
   /// <threadsafety static="true" instance="true" />
-  [ImplementationFor (typeof (IGlobalizationService), Position = 1, Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor (typeof (IGlobalizationService), Position = 1, Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple)]
   public sealed class MixinGlobalizationService : IGlobalizationService
   {
     private volatile MixinConfiguration _mixinConfiguration;

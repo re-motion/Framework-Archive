@@ -236,6 +236,24 @@ namespace Remotion.ServiceLocation
       Register (serviceType, (IEnumerable<Func<object>>) instanceFactories);
     }
 
+      /// <summary>
+    /// Registers factories for the specified <paramref name="serviceType"/>. 
+    /// The factories are subsequently invoked whenever instances for the <paramref name="serviceType"/> is requested.
+    /// </summary>
+    /// <param name="serviceType">The service type to register the factories for.</param>
+    /// <param name="instanceFactories">The instance factories to use when resolving instances for the <paramref name="serviceType"/>. These factories
+    /// must return non-null instances implementing the <paramref name="serviceType"/>, otherwise an <see cref="ActivationException"/> is thrown
+    /// when an instance of <paramref name="serviceType"/> is requested.</param>
+    /// <exception cref="InvalidOperationException">Factories have already been registered or an instance of the <paramref name="serviceType"/> has 
+    /// already been retrieved. Registering factories or concrete implementations can only be done before any instances are retrieved.</exception>
+    public void Register (Type serviceType, params Tuple<Func<object>, RegistrationType>[] instanceFactories)
+    {
+      ArgumentUtility.CheckNotNull ("serviceType", serviceType);
+      ArgumentUtility.CheckNotNull ("instanceFactories", instanceFactories);
+
+      Register (serviceType, (IEnumerable<Tuple<Func<object>, RegistrationType>>) instanceFactories);
+    }
+
     /// <summary>
     /// Registers factories for the specified <paramref name="serviceType"/>. 
     /// The factories are subsequently invoked whenever instances for the <paramref name="serviceType"/> is requested.

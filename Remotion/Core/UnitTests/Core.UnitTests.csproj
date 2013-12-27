@@ -300,6 +300,7 @@
     <Compile Include="ServiceLocation\TestDomain\ITestConcreteImplementationAttributeWithUnresolvableImplementationType.cs" />
     <Compile Include="ServiceLocation\TestDomain\ITestConcreteImplementationAttributeWithUnresolvableAndResolvableImplementationTypes.cs" />
     <Compile Include="ServiceLocation\TestDomain\ITestMixedRegistrationTypes.cs" />
+    <Compile Include="ServiceLocation\TestDomain\ITestMultipleImplementationsForRegistrationTypeSingle.cs" />
     <Compile Include="ServiceLocation\TestDomain\ITestMultipleConcreteImplementationAttributesWithDuplicateImplementationType.cs" />
     <Compile Include="ServiceLocation\TestDomain\ITestMultipleConcreteImplementationAttributesWithDuplicatePositionType.cs" />
     <Compile Include="ServiceLocation\TestDomain\ITestMultipleConcreteImplementationAttributesType.cs" />
