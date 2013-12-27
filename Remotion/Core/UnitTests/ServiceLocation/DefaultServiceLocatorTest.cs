@@ -121,6 +121,23 @@ namespace Remotion.UnitTests.ServiceLocation
     }
 
     [Test]
+    public void GetInstance_TypeWithGenericServiceInterface ()
+    {
+      Assert.That (_serviceLocator.GetInstance (typeof (ITestOpenGenericService<int>)), Is.TypeOf (typeof (TestOpenGenericIntImplementation)));
+      Assert.That (_serviceLocator.GetInstance (typeof (ITestOpenGenericService<string>)), Is.TypeOf (typeof (TestOpenGenericStringImplementation)));
+      Assert.That (
+          SafeServiceLocator.Current.GetInstance<ITestOpenGenericService<int>>(),
+          Is.InstanceOf (typeof (TestOpenGenericIntImplementation)));
+    }
+
+    [Test]
+    public void GetInstance_NotImplementedGenericServiceInterface ()
+    {
+      Assert.That (() => _serviceLocator.GetInstance (typeof (ITestOpenGenericService<object>)), 
+        Throws.Exception.InstanceOf<ActivationException>());
+    }
+
+    [Test]
     public void GetAllInstances ()
     {
       var result = _serviceLocator.GetAllInstances (typeof (ITestInstanceConcreteImplementationAttributeType)).ToArray();

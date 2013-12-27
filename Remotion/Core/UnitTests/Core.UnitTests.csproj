@@ -303,6 +303,7 @@
     <Compile Include="ServiceLocation\TestDomain\ITestMultipleConcreteImplementationAttributesWithDuplicatePositionType.cs" />
     <Compile Include="ServiceLocation\TestDomain\ITestMultipleConcreteImplementationAttributesType.cs" />
     <Compile Include="ServiceLocation\TestDomain\ITestMultipleRegistrationsType.cs" />
+    <Compile Include="ServiceLocation\TestDomain\ITestOpenGenericService.cs" />
     <Compile Include="ServiceLocation\TestDomain\ITestTypeWithOnlyProtectedConstructor.cs" />
     <Compile Include="ServiceLocation\TypeNameTemplateResolverTest.cs" />
     <Compile Include="Logging\ILogManagerTest.cs" />
