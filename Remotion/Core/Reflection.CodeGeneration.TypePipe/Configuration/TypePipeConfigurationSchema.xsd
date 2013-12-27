@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xs:schema id="typepipe"
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
-    targetNamespace="http://www.re-motion.org/reflection/codeGeneration/typePipe/configuration"
+    targetNamespace="http://www.re-motion.org/Reflection/CodeGeneration/TypePipe/Configuration"
     elementFormDefault="qualified"
     attributeFormDefault="unqualified">
-  <xs:element name="typePipe">
+  <xs:element name="remotion.reflection.codeGeneration.typePipe">
     <xs:complexType>
       <xs:all>
         <xs:element name="forceStrongNaming" minOccurs="0" maxOccurs="1">

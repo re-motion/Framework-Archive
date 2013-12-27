@@ -23,13 +23,13 @@ namespace Remotion.Reflection.CodeGeneration.TypePipe.Configuration
 {
   public class TypePipeConfigurationSection : ConfigurationSection
   {
-    private const string c_xmlNamespace = "http://www.re-motion.org/reflection/codeGeneration/typePipe/configuration";
+    private const string c_xmlNamespace = "http://www.re-motion.org/Reflection/CodeGeneration/TypePipe/Configuration";
 
     public static readonly string ExampleConfiguration =
-        "<typePipe xmlns=\"" + c_xmlNamespace + "\">" + Environment.NewLine +
+        "<remotion.reflection.codeGeneration.typePipe xmlns=\"" + c_xmlNamespace + "\">" + Environment.NewLine +
         "  <forceStrongNaming keyFilePath=\"keyFile.snk\"/>" + Environment.NewLine +
         "  <enableSerializationWithoutAssemblySaving/>" + Environment.NewLine +
-        "</typePipe>";
+        "</remotion.reflection.codeGeneration.typePipe>";
 
     [ConfigurationProperty ("xmlns")]
     public string XmlNamespace

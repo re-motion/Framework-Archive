@@ -48,7 +48,7 @@ namespace Remotion.Reflection.CodeGeneration.TypePipe.UnitTests.Configuration
     [Test]
     public void Empty ()
     {
-      var xmlFragment = @"<typePipe {xmlns} />";
+      var xmlFragment = @"<remotion.reflection.codeGeneration.typePipe {xmlns} />";
       DeserializeSection (xmlFragment);
       
       Assert.That (_section.ForceStrongNaming.ElementInformation.IsPresent, Is.False);
@@ -58,7 +58,7 @@ namespace Remotion.Reflection.CodeGeneration.TypePipe.UnitTests.Configuration
     [Test]
     public void ForceStrongNaming ()
     {
-      var xmlFragment = @"<typePipe {xmlns}><forceStrongNaming/></typePipe>";
+      var xmlFragment = @"<remotion.reflection.codeGeneration.typePipe {xmlns}><forceStrongNaming/></remotion.reflection.codeGeneration.typePipe>";
       DeserializeSection (xmlFragment);
 
       Assert.That (_section.ForceStrongNaming.ElementInformation.IsPresent, Is.True);
@@ -67,7 +67,7 @@ namespace Remotion.Reflection.CodeGeneration.TypePipe.UnitTests.Configuration
     [Test]
     public void EnableSerializationWithoutAssemblySaving ()
     {
-      var xmlFragment = @"<typePipe {xmlns}><enableSerializationWithoutAssemblySaving/></typePipe>";
+      var xmlFragment = @"<remotion.reflection.codeGeneration.typePipe {xmlns}><enableSerializationWithoutAssemblySaving/></remotion.reflection.codeGeneration.typePipe>";
       DeserializeSection(xmlFragment);
 
       Assert.That(_section.EnableSerializationWithoutAssemblySaving.ElementInformation.IsPresent, Is.True);
@@ -77,7 +77,7 @@ namespace Remotion.Reflection.CodeGeneration.TypePipe.UnitTests.Configuration
     [ExpectedException (typeof (ConfigurationErrorsException), ExpectedMessage = "Example configuration:", MatchType = MessageMatch.Contains)]
     public void InvalidSection ()
     {
-      var xmlFragment = "<typePipe {xmlns}><invalid /></typePipe>";
+      var xmlFragment = "<remotion.reflection.codeGeneration.typePipe {xmlns}><invalid /></remotion.reflection.codeGeneration.typePipe>";
       DeserializeSection (xmlFragment);
     }
 

@@ -28,14 +28,14 @@ namespace Remotion.Reflection.CodeGeneration.TypePipe.Configuration
   /// <code>
   /// &lt;configuration&gt;
   ///   &lt;configSections&gt;
-  ///     &lt;section name="remotion.reflection.codeGeneration.typePipe" type="Remotion.Reflection.CodeGeneration.TypePipe.Configuration.TypePipeConfigurationSection, Remotion.Reflection.CodeGeneration.TypePipe.Configuration"/&gt;
+  ///     &lt;section name="remotion.reflection.codeGeneration.typePipe" type="Remotion.Reflection.CodeGeneration.TypePipe.Configuration.TypePipeConfigurationSection, Remotion.Reflection.CodeGeneration.TypePipe"/&gt;
   ///     &lt;!-- ... --&gt;
   ///   &lt;/configSections&gt;
   ///   
-  ///   &lt;typePipe xmlns="http://www.re-motion.org/reflection/codeGeneration/typePipe/configuration"&gt;
+  ///   &lt;remotion.reflection.codeGeneration.typePipe xmlns="http://www.re-motion.org/Reflection/CodeGeneration/TypePipe/Configuration"&gt;
   ///     &lt;forceStrongNaming keyFilePath="keyFile.snk"/&gt;
   ///     &lt;enableSerializationWithoutAssemblySaving/&gt;
-  ///   &lt;/typePipe&gt;
+  ///   &lt;/remotion.reflection.codeGeneration.typePipe&gt;
   ///   &lt;!-- ... --&gt;
   /// &lt;/configuration&gt;
   /// </code>
