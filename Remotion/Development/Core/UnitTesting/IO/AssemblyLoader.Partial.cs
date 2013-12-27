@@ -15,23 +15,11 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 
-using System.IO;
-using System.Reflection;
-using Remotion.Utilities;
+using System;
 
 namespace Remotion.Development.UnitTesting.IO
 {
-  /// <summary>
-  /// Provides functionality for loading an <see cref="Assembly"/> from a file path without locking the file.
-  /// </summary>
-  public static class AssemblyLoader
+  public partial class AssemblyLoader
   {
-    public static Assembly LoadWithoutLocking (string assemblyFilenameOrPath)
-    {
-      ArgumentUtility.CheckNotNullOrEmpty ("assemblyFilenameOrPath", assemblyFilenameOrPath);
-
-      var bytes = File.ReadAllBytes (assemblyFilenameOrPath);
-      return Assembly.Load (bytes);
-    }
   }
 }
