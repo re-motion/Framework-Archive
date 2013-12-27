@@ -23,8 +23,12 @@ using System.Reflection;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 //
+using System.Runtime.CompilerServices;
+
 [assembly: AssemblyTitle("Remotion Shared Source Library")]
 [assembly: AssemblyDescription("Contains source files intended for embedding in other libraries.")]
 [assembly: AssemblyCulture("")]
 [assembly: CLSCompliant(true)]
 
+[assembly: InternalsVisibleTo ("Remotion.SharedSource.Development")]
+[assembly: InternalsVisibleTo ("Remotion.SharedSource.UnitTests")]

@@ -126,6 +126,9 @@
     <Compile Include="..\..\..\SharedSource\Core\FunctionalProgramming\EnumerableUtility.cs">
       <Link>SharedSource\FunctionalProgramming\EnumerableUtility.cs</Link>
     </Compile>
+    <Compile Include="..\..\..\SharedSource\Core\FunctionalProgramming\Maybe.cs">
+      <Link>SharedSource\FunctionalProgramming\Maybe.cs</Link>
+    </Compile>
     <Compile Include="..\..\..\SharedSource\Core\ResharperAnnotations\AssertionConditionAttribute.cs">
       <Link>SharedSource\ResharperAnnotations\AssertionConditionAttribute.cs</Link>
     </Compile>
@@ -243,6 +246,7 @@
     <Compile Include="ExtensibleEnums\Globalization\ExtensibleEnumerationGlobalizationServiceExtensions.cs" />
     <Compile Include="FunctionalProgramming\EnumerableExtensions.Partial.cs" />
     <Compile Include="FunctionalProgramming\EnumerableUtility.Partial.cs" />
+    <Compile Include="FunctionalProgramming\Maybe.Partial.cs" />
     <Compile Include="Globalization\Implementation\EnumerationGlobalizationServiceExtensions.cs" />
     <Compile Include="Globalization\GlobalizationServiceExtensions.cs" />
     <Compile Include="Globalization\IEnumerationGlobalizationService.cs" />
@@ -364,7 +368,6 @@
     <Compile Include="ExtensibleEnums\IExtensibleEnum.cs" />
     <Compile Include="ExtensibleEnums\IExtensibleEnumDefinition.cs" />
     <Compile Include="ExtensibleEnums\Infrastructure\IExtensibleEnumValueDiscoveryService.cs" />
-    <Compile Include="FunctionalProgramming\Maybe.cs" />
     <Compile Include="Globalization\Implementation\ResolvedResourceManagerResult.cs" />
     <Compile Include="Reflection\CodeGeneration\MethodWrapperEmitter.cs" />
     <Compile Include="Reflection\CodeGeneration\MethodReferencingAttribute.cs" />
