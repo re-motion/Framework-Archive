@@ -661,11 +661,11 @@
       <Project>{E2ECD01B-1321-498E-8228-D6D16B5F647C}</Project>
       <Name>Development.Mixins</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\TypePipe\Core\TypePipe.Core.csproj">
+    <ProjectReference Include="..\..\..\TypePipe\Core\TypePipe.Core.csproj">
       <Project>{98e7f7aa-12b2-4a6b-8922-52c8e53b378e}</Project>
       <Name>TypePipe.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\TypePipe\Development\TypePipe.Development.csproj">
+    <ProjectReference Include="..\..\..\TypePipe\Development\TypePipe.Development.csproj">
       <Project>{f6faf727-9405-4bcc-9153-803f73853e67}</Project>
       <Name>TypePipe.Development</Name>
     </ProjectReference>

@@ -97,7 +97,7 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\TypePipe\Core\TypePipe.Core.csproj">
+    <ProjectReference Include="..\..\..\TypePipe\Core\TypePipe.Core.csproj">
       <Project>{98E7F7AA-12B2-4A6B-8922-52C8E53B378E}</Project>
       <Name>TypePipe.Core</Name>
     </ProjectReference>

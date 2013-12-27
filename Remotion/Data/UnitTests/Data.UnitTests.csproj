@@ -175,11 +175,11 @@
       <Project>{FBE0CBDD-82FF-4173-8536-47D3B5BC2E98}</Project>
       <Name>Security.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\TypePipe\Core\TypePipe.Core.csproj">
+    <ProjectReference Include="..\..\..\TypePipe\Core\TypePipe.Core.csproj">
       <Project>{98e7f7aa-12b2-4a6b-8922-52c8e53b378e}</Project>
       <Name>TypePipe.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\TypePipe\Development\TypePipe.Development.csproj">
+    <ProjectReference Include="..\..\..\TypePipe\Development\TypePipe.Development.csproj">
       <Project>{f6faf727-9405-4bcc-9153-803f73853e67}</Project>
       <Name>TypePipe.Development</Name>
     </ProjectReference>
