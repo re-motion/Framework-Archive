@@ -17,7 +17,6 @@
 using System;
 using System.Runtime.Serialization;
 using NUnit.Framework;
-using Remotion.Development.TypePipe.UnitTesting;
 using Remotion.Mixins.CodeGeneration;
 using Remotion.Mixins.CodeGeneration.Serialization;
 using Remotion.Mixins.CodeGeneration.TypePipe;

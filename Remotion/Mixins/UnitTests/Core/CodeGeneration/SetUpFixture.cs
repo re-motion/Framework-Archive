@@ -17,11 +17,11 @@
 using System;
 using System.Collections.Generic;
 using NUnit.Framework;
-using Remotion.Development.TypePipe;
 using Remotion.Mixins.CodeGeneration.TypePipe;
 using Remotion.ServiceLocation;
 using Remotion.Text;
 using Remotion.TypePipe;
+using Remotion.TypePipe.Development;
 using Remotion.Utilities;
 
 namespace Remotion.Mixins.UnitTests.Core.CodeGeneration

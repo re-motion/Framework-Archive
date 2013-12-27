@@ -19,7 +19,6 @@ using System.IO;
 using System.Reflection;
 using System.Web.UI;
 using NUnit.Framework;
-using Remotion.Development.TypePipe.UnitTesting;
 using Remotion.Development.UnitTesting;
 using Remotion.Mixins.MixerTools;
 using Remotion.Mixins.UnitTests.Core.TestDomain;
