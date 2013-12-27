@@ -115,6 +115,12 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\..\SharedSource\Development\UnitTesting\PrivateInvoke.cs">
+      <Link>SharedSource\UnitTesting\PrivateInvoke.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\Development\UnitTesting\ThreadRunner.cs">
+      <Link>SharedSource\UnitTesting\ThreadRunner.cs</Link>
+    </Compile>
     <Compile Include="..\..\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
@@ -154,7 +160,7 @@
     <Compile Include="UnitTesting\PEVerifyException.cs" />
     <Compile Include="UnitTesting\PEVerifyPathSources\PEVerifyVersion.cs" />
     <Compile Include="UnitTesting\PEVerifyPathSources\PotentialPEVerifyPathSourceBase.cs" />
-    <Compile Include="UnitTesting\PrivateInvoke.cs">
+    <Compile Include="UnitTesting\PrivateInvoke.Partial.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="UnitTesting\ClassWithSerializationCallbacksBase.cs" />
@@ -174,10 +180,10 @@
     <Compile Include="UnitTesting\SerializationCallbackTester.cs" />
     <Compile Include="UnitTesting\Serializer.cs" />
     <Compile Include="UnitTesting\ServiceLocatorScope.cs" />
-    <Compile Include="UnitTesting\ThreadRunner.cs" />
     <Compile Include="UnitTesting\PEVerifyPathSources\WindowsSdk6PEVerifyPathSource.cs" />
     <Compile Include="UnitTesting\PEVerifyPathSources\WindowsSdk70aPEVerifyPathSource.cs" />
     <Compile Include="UnitTesting\PEVerifyPathSources\WindowsSdk71PEVerifyPathSource.cs" />
+    <Compile Include="UnitTesting\ThreadRunner.Partial.cs" />
     <None Include="..\..\Remotion LGPL.licenseheader">
       <Link>Remotion LGPL.licenseheader</Link>
     </None>

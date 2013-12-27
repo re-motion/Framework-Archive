@@ -27,7 +27,9 @@ namespace Remotion.Utilities
 
     public static Exception PreserveStackTrace (this Exception exception)
     {
-      ArgumentUtility.CheckNotNull ("exception", exception);
+      if (exception == null)
+        throw new ArgumentNullException ("exception");
+
       // http://weblogs.asp.net/fmarguerie/archive/2008/01/02/rethrowing-exceptions-and-preserving-the-full-call-stack-trace.aspx
 
       s_internalPreserveStackTrace.Value (exception);
@@ -37,7 +39,8 @@ namespace Remotion.Utilities
     private static Action<Exception> GetInternalPreserveStackTrace ()
     {
       var methodInfo = typeof (Exception).GetMethod ("InternalPreserveStackTrace", BindingFlags.Instance | BindingFlags.NonPublic);
-      Assertion.IsNotNull (methodInfo, "Type 'System.Exception' does not contain method InternalPreserveStackTrace().");
+      if (methodInfo == null)
+        throw new InvalidOperationException ("Type 'System.Exception' does not contain method InternalPreserveStackTrace().");
 
       return (Action<Exception>) methodInfo.CreateDelegate (typeof (Action<Exception>));
     }

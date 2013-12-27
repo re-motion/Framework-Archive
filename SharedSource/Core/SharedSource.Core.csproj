@@ -77,6 +77,7 @@
     <Compile Include="Utilities\EqualityUtility.cs" />
     <Compile Include="Utilities\EqualityUtility.Partial.cs" />
     <Compile Include="Utilities\ExceptionUtility.cs" />
+    <Compile Include="Utilities\ExceptionUtility.Partial.cs" />
     <Compile Include="Utilities\MemberInfoEqualityComparer.cs" />
     <Compile Include="Utilities\MemberInfoEqualityComparer.Partial.cs" />
     <Compile Include="Utilities\MemberInfoFromExpressionUtility.cs" />

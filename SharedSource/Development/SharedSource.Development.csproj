@@ -36,16 +36,34 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="nunit.framework">
+      <HintPath>..\..\prereq\Assemblies\NUnit-2.6\net-2.0\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="Rhino.Mocks">
+      <HintPath>..\..\prereq\Assemblies\Rhino.Mocks-3.6\net-3.5\Rhino.Mocks.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RhinoMocks\UnitTesting\DecoratorTestHelper.cs" />
+    <Compile Include="RhinoMocks\UnitTesting\DecoratorTestHelper.Partial.cs" />
+    <Compile Include="RhinoMocks\UnitTesting\ListArgExtensions.cs" />
+    <Compile Include="RhinoMocks\UnitTesting\ListArgExtensions.Partial.cs" />
+    <Compile Include="UnitTesting\PrivateInvoke.cs" />
+    <Compile Include="UnitTesting\ThreadRunner.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\SharedSource Apache-2.0.licenseheader">
+      <Link>SharedSource Apache-2.0.licenseheader</Link>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Core\SharedSource.Core.csproj">
+      <Project>{378885d1-5d3e-4226-9c57-aa5183ba45d5}</Project>
+      <Name>SharedSource.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
