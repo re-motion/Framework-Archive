@@ -34,7 +34,7 @@ namespace Remotion.Development.UnitTesting.Reflection
   /// <remarks>
   /// This class has no support for <i>normalizing</i> methods and properties defined in interfaces and explicit interface implementations.
   /// </remarks>
-  public static partial class NormalizingMemberInfoFromExpressionUtility
+  static partial class NormalizingMemberInfoFromExpressionUtility
   {
     private const BindingFlags AllBindingFlags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static;
     private static readonly MemberInfoEqualityComparer<MethodInfo> s_methodComparer = MemberInfoEqualityComparer<MethodInfo>.Instance;

@@ -21,13 +21,12 @@ using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using JetBrains.Annotations;
 using Remotion.Utilities;
 
 // ReSharper disable once CheckNamespace
 namespace Remotion.Development.UnitTesting.Reflection
 {
-  public static partial class ReflectionObjectMother
+  static partial class ReflectionObjectMother
   {
     private static readonly Random s_random = new Random ();
 
