@@ -51,6 +51,10 @@
     <Compile Include="RhinoMocks\UnitTesting\DecoratorTestHelper.Partial.cs" />
     <Compile Include="RhinoMocks\UnitTesting\ListArgExtensions.cs" />
     <Compile Include="RhinoMocks\UnitTesting\ListArgExtensions.Partial.cs" />
+    <Compile Include="RhinoMocks\UnitTesting\Threading\LockingDecoratorTestHelper.cs" />
+    <Compile Include="RhinoMocks\UnitTesting\Threading\LockingDecoratorTestHelper.Partial.cs" />
+    <Compile Include="RhinoMocks\UnitTesting\Threading\LockTestHelper.cs" />
+    <Compile Include="RhinoMocks\UnitTesting\Threading\LockTestHelper.Partial.cs" />
     <Compile Include="UnitTesting\PrivateInvoke.cs" />
     <Compile Include="UnitTesting\ThreadRunner.cs" />
   </ItemGroup>

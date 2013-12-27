@@ -107,6 +107,12 @@
     <Compile Include="..\..\..\SharedSource\Development\RhinoMocks\UnitTesting\ListArgExtensions.cs">
       <Link>SharedSource\RhinoMocks\UnitTesting\ListArgExtensions.cs</Link>
     </Compile>
+    <Compile Include="..\..\..\SharedSource\Development\RhinoMocks\UnitTesting\Threading\LockingDecoratorTestHelper.cs">
+      <Link>SharedSource\RhinoMocks\UnitTesting\Threading\LockingDecoratorTestHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\Development\RhinoMocks\UnitTesting\Threading\LockTestHelper.cs">
+      <Link>SharedSource\RhinoMocks\UnitTesting\Threading\LockTestHelper.cs</Link>
+    </Compile>
     <Compile Include="..\..\..\SharedSource\Development\UnitTesting\PrivateInvoke.cs">
       <Link>SharedSource\UnitTesting\PrivateInvoke.cs</Link>
     </Compile>
@@ -119,8 +125,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UnitTesting\DecoratorTestHelper.Partial.cs" />
     <Compile Include="UnitTesting\ListArgExtensions.Partial.cs" />
-    <Compile Include="UnitTesting\Threading\LockingDecoratorTestHelper.cs" />
-    <Compile Include="UnitTesting\Threading\LockTestHelper.cs" />
+    <Compile Include="UnitTesting\Threading\LockingDecoratorTestHelper.Partial.cs" />
+    <Compile Include="UnitTesting\Threading\LockTestHelper.Partial.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\remotion.snk">
