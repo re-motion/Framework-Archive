@@ -206,6 +206,9 @@
     <Compile Include="..\..\..\SharedSource\UnitTests\Utilities\EqualityUtilityTest.cs">
       <Link>SharedSource\Utilities\EqualityUtilityTest.cs</Link>
     </Compile>
+    <Compile Include="..\..\..\SharedSource\UnitTests\Utilities\FileUtilityTest.cs">
+      <Link>SharedSource\Utilities\FileUtilityTest.cs</Link>
+    </Compile>
     <Compile Include="..\..\..\SharedSource\UnitTests\Utilities\MemberInfoEqualityComparerTest.cs">
       <Link>SharedSource\Utilities\MemberInfoEqualityComparerTest.cs</Link>
     </Compile>

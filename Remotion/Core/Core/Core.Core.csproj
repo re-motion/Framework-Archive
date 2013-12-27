@@ -201,6 +201,9 @@
     <Compile Include="..\..\..\SharedSource\Core\Utilities\ExceptionUtility.cs">
       <Link>SharedSource\Utilities\ExceptionUtility.cs</Link>
     </Compile>
+    <Compile Include="..\..\..\SharedSource\Core\Utilities\FileUtility.cs">
+      <Link>SharedSource\Utilities\FileUtility.cs</Link>
+    </Compile>
     <Compile Include="..\..\..\SharedSource\Core\Utilities\MemberInfoEqualityComparer.cs">
       <Link>SharedSource\Utilities\MemberInfoEqualityComparer.cs</Link>
     </Compile>
@@ -539,7 +542,7 @@
     <Compile Include="Utilities\ConsoleUtility.cs" />
     <Compile Include="Utilities\CultureScope.cs" />
     <Compile Include="Utilities\DefaultConsoleManager.cs" />
-    <Compile Include="Utilities\FileUtility.cs" />
+    <Compile Include="Utilities\FileUtility.Partial.cs" />
     <Compile Include="Utilities\IConsoleManager.cs" />
     <Compile Include="Utilities\DelegateBasedComparer.cs" />
     <Compile Include="Utilities\InvertedComparerDecorator.cs" />

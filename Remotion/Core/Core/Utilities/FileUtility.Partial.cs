@@ -14,51 +14,15 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
 using System.IO;
 using System.Reflection;
-using System.Threading;
 
 namespace Remotion.Utilities
 {
-  // TODO: comment http://at-vie-svn.int.rubicon-it.com/wiki/pmwiki.php/KnowledgeBase/FileDeleteKannAsynchronSein
-  public static class FileUtility
+  public static partial class FileUtility
   {
-    public static void DeleteOnDemandAndWaitForCompletion (string fileName)
-    {
-      ArgumentUtility.CheckNotNullOrEmpty ("fileName", fileName);
-
-      if (File.Exists (fileName))
-        DeleteAndWaitForCompletion (fileName);
-    }
-
-    public static void DeleteAndWaitForCompletion (string fileName)
-    {
-      ArgumentUtility.CheckNotNullOrEmpty ("fileName", fileName);
-
-      File.Delete (fileName);
-      while (File.Exists (fileName))
-        Thread.Sleep (10);
-    }
-
-    public static void MoveAndWaitForCompletion (string sourceFileName, string destinationFileName)
-    {
-      ArgumentUtility.CheckNotNullOrEmpty ("sourceFileName", sourceFileName);
-      ArgumentUtility.CheckNotNullOrEmpty ("destinationFileName", destinationFileName);
-
-      File.Move (sourceFileName, destinationFileName);
-
-      if (Path.GetFullPath (sourceFileName) == Path.GetFullPath (destinationFileName))
-        return;
-
-      while (File.Exists (sourceFileName) || !File.Exists (destinationFileName))
-        Thread.Sleep (10);
-    }
-
-    public const int CopyBufferSize = 1024 * 64;
-    
-
-
     /// <summary>
     /// Copies the complete content of one stream into another.
     /// </summary>
@@ -80,20 +44,22 @@ namespace Remotion.Utilities
     /// <param name="typeWhoseNamespaceTheStringResourceResidesIn"><see cref="Type"/> in whose assembly and namespace the string resource is located.</param>
     /// <param name="stringResourceName">Name of the string resource, relative to namespace of the passed <see cref="Type"/>.</param>
     /// <param name="filePath">The path of the file the string resource will be written into.</param>
-    public static void WriteEmbeddedStringResourceToFile (Type typeWhoseNamespaceTheStringResourceResidesIn, string stringResourceName, string filePath)
+    public static void WriteEmbeddedStringResourceToFile (
+        Type typeWhoseNamespaceTheStringResourceResidesIn,
+        string stringResourceName,
+        string filePath)
     {
       ArgumentUtility.CheckNotNull ("typeWhoseNamespaceTheStringResourceResidesIn", typeWhoseNamespaceTheStringResourceResidesIn);
       ArgumentUtility.CheckNotNull ("stringResourceName", stringResourceName);
       ArgumentUtility.CheckNotNull ("filePath", filePath);
       Assembly assembly = typeWhoseNamespaceTheStringResourceResidesIn.Assembly;
       using (
-        Stream from = assembly.GetManifestResourceStream (typeWhoseNamespaceTheStringResourceResidesIn, stringResourceName),
-        to = new FileStream (filePath, FileMode.Create))
+          Stream from = assembly.GetManifestResourceStream (typeWhoseNamespaceTheStringResourceResidesIn, stringResourceName),
+              to = new FileStream (filePath, FileMode.Create))
       {
         Assertion.IsNotNull (from, "Resource '{0}' does not exist in assembly '{1}'.", stringResourceName, assembly.FullName);
         from.CopyTo (to);
       }
     }
-
   }
 }

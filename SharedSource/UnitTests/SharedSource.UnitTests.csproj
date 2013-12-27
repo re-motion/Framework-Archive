@@ -70,6 +70,7 @@
     <Compile Include="Utilities\AssertionTest.cs" />
     <Compile Include="Utilities\AttributeUtilityTests\AttributeUsageTest.cs" />
     <Compile Include="Utilities\EqualityUtilityTest.cs" />
+    <Compile Include="Utilities\FileUtilityTest.cs" />
     <Compile Include="Utilities\MemberInfoEqualityComparerTest.cs" />
     <Compile Include="Utilities\MemberInfoEqualityComparerTestDomain\ClassWithFields.cs" />
     <Compile Include="Utilities\MemberInfoEqualityComparerTestDomain\ClassWithMethods.cs" />
