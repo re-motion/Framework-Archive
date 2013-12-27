@@ -17,9 +17,9 @@
 
 using System;
 using System.Collections.Generic;
+using Remotion.Reflection.CodeGeneration.TypePipe.Configuration;
 using Remotion.Reflection.TypeDiscovery;
 using Remotion.TypePipe;
-using Remotion.TypePipe.Configuration;
 using Remotion.TypePipe.Implementation;
 using Remotion.Utilities;
 

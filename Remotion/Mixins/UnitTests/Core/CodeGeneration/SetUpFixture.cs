@@ -22,7 +22,6 @@ using Remotion.Mixins.CodeGeneration.TypePipe;
 using Remotion.ServiceLocation;
 using Remotion.Text;
 using Remotion.TypePipe;
-using Remotion.TypePipe.Configuration;
 using Remotion.Utilities;
 
 namespace Remotion.Mixins.UnitTests.Core.CodeGeneration

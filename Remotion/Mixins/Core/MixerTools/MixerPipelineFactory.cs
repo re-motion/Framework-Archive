@@ -21,7 +21,6 @@ using Remotion.Mixins.CodeGeneration.TypePipe;
 using Remotion.Reflection.CodeGeneration.TypePipe;
 using Remotion.ServiceLocation;
 using Remotion.TypePipe;
-using Remotion.TypePipe.Configuration;
 using Remotion.Utilities;
 using System.Linq;
 

@@ -24,7 +24,6 @@ using Remotion.Mixins.UnitTests.Core.TestDomain;
 using Remotion.ServiceLocation;
 using Remotion.TypePipe;
 using System.Linq;
-using Remotion.TypePipe.Configuration;
 using Remotion.TypePipe.Implementation;
 
 namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixinTypeCodeGeneration
