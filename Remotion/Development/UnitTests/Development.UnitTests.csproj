@@ -176,6 +176,9 @@
     <Compile Include="..\..\..\SharedSource\UnitTests\Development\Core\UnitTesting\Enumerables\OneTimeEnumerableTest.cs">
       <Link>SharedSource\Core\UnitTesting\Enumerables\OneTimeEnumerableTest.cs</Link>
     </Compile>
+    <Compile Include="..\..\..\SharedSource\UnitTests\Development\Core\UnitTesting\ObjectMothers\ObjectMotherTest.cs">
+      <Link>SharedSource\Core\UnitTesting\ObjectMothers\ObjectMotherTest.cs</Link>
+    </Compile>
     <Compile Include="..\..\..\SharedSource\UnitTests\Development\Core\UnitTesting\PEVerifierTest.cs">
       <Link>SharedSource\Core\UnitTesting\PEVerifierTest.cs</Link>
     </Compile>
@@ -222,7 +225,6 @@
     <Compile Include="Data\UnitTesting\DomainObjects\Linq\ExpressionTreeComparerTest.cs" />
     <Compile Include="Data\UnitTesting\DomainObjects\SetUpFixture.cs" />
     <Compile Include="Data\UnitTesting\DomainObjects\TestDomain\TestDomainObject.cs" />
-    <Compile Include="Core\UnitTesting\ObjectMothers\ObjectMotherTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

@@ -55,6 +55,10 @@
     <Compile Include="UnitTesting\Enumerables\EnumerableExtensions.cs" />
     <Compile Include="UnitTesting\Enumerables\OneTimeEnumerable.cs" />
     <Compile Include="UnitTesting\ObjectExtensions.cs" />
+    <Compile Include="UnitTesting\ObjectMothers\BooleanObjectMother.cs" />
+    <Compile Include="UnitTesting\ObjectMothers\DictionaryObjectMother.cs" />
+    <Compile Include="UnitTesting\ObjectMothers\ListObjectMother.cs" />
+    <Compile Include="UnitTesting\ObjectMothers\QueueObjectMother.cs" />
     <Compile Include="UnitTesting\PEVerifier.cs" />
     <Compile Include="UnitTesting\PEVerifyException.cs" />
     <Compile Include="UnitTesting\PEVerifyPathSources\CompoundPEVerifyPathSource.cs" />

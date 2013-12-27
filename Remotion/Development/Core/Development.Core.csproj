@@ -127,6 +127,18 @@
     <Compile Include="..\..\..\SharedSource\Development\UnitTesting\ObjectExtensions.cs">
       <Link>SharedSource\UnitTesting\ObjectExtensions.cs</Link>
     </Compile>
+    <Compile Include="..\..\..\SharedSource\Development\UnitTesting\ObjectMothers\BooleanObjectMother.cs">
+      <Link>SharedSource\UnitTesting\ObjectMothers\BooleanObjectMother.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\Development\UnitTesting\ObjectMothers\DictionaryObjectMother.cs">
+      <Link>SharedSource\UnitTesting\ObjectMothers\DictionaryObjectMother.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\Development\UnitTesting\ObjectMothers\ListObjectMother.cs">
+      <Link>SharedSource\UnitTesting\ObjectMothers\ListObjectMother.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\Development\UnitTesting\ObjectMothers\QueueObjectMother.cs">
+      <Link>SharedSource\UnitTesting\ObjectMothers\QueueObjectMother.cs</Link>
+    </Compile>
     <Compile Include="..\..\..\SharedSource\Development\UnitTesting\PEVerifier.cs">
       <Link>SharedSource\UnitTesting\PEVerifier.cs</Link>
     </Compile>
@@ -190,7 +202,6 @@
     <Compile Include="UnitTesting\GCCounter.cs" />
     <Compile Include="UnitTesting\IO\AssemblyLoader.cs" />
     <Compile Include="UnitTesting\ObjectExtensions.Partial.cs" />
-    <Compile Include="UnitTesting\ObjectMothers\BooleanObjectMother.cs" />
     <Compile Include="UnitTesting\Configuration\ConfigSystemHelper.cs" />
     <Compile Include="UnitTesting\Configuration\ConfigurationHelper.cs" />
     <Compile Include="UnitTesting\Configuration\FakeConfigurationWrapper.cs" />
@@ -201,9 +212,10 @@
     <Compile Include="UnitTesting\IMockRepository.cs" />
     <Compile Include="UnitTesting\IO\TempFile.cs" />
     <Compile Include="UnitTesting\ISerializationEventReceiver.cs" />
-    <Compile Include="UnitTesting\ObjectMothers\DictionaryObjectMother.cs" />
-    <Compile Include="UnitTesting\ObjectMothers\ListObjectMother.cs" />
-    <Compile Include="UnitTesting\ObjectMothers\QueueObjectMother.cs" />
+    <Compile Include="UnitTesting\ObjectMothers\BooleanObjectMother.Partial.cs" />
+    <Compile Include="UnitTesting\ObjectMothers\DictionaryObjectMother.Partial.cs" />
+    <Compile Include="UnitTesting\ObjectMothers\ListObjectMother.Partial.cs" />
+    <Compile Include="UnitTesting\ObjectMothers\QueueObjectMother.Partial.cs" />
     <Compile Include="UnitTesting\PEVerifier.Partial.cs" />
     <Compile Include="UnitTesting\PEVerifyException.Partial.cs" />
     <Compile Include="UnitTesting\PEVerifyPathSources\PartialDeclarations.cs" />
