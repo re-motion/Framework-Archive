@@ -263,6 +263,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Reflection.CodeGenerat
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Reflection.CodeGeneration.TypePipe.UnitTests", "Remotion\Core\Reflection.CodeGeneration.TypePipe.UnitTests\Core.Reflection.CodeGeneration.TypePipe.UnitTests.csproj", "{2A89F4FC-977B-44D8-A701-73F3FE98F489}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedSource.Development", "SharedSource\Development\SharedSource.Development.csproj", "{5EB23134-3042-4B17-AD32-BDAE468CE225}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -901,6 +903,14 @@ Global
 		{2A89F4FC-977B-44D8-A701-73F3FE98F489}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2A89F4FC-977B-44D8-A701-73F3FE98F489}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{2A89F4FC-977B-44D8-A701-73F3FE98F489}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{5EB23134-3042-4B17-AD32-BDAE468CE225}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5EB23134-3042-4B17-AD32-BDAE468CE225}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5EB23134-3042-4B17-AD32-BDAE468CE225}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{5EB23134-3042-4B17-AD32-BDAE468CE225}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{5EB23134-3042-4B17-AD32-BDAE468CE225}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5EB23134-3042-4B17-AD32-BDAE468CE225}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5EB23134-3042-4B17-AD32-BDAE468CE225}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{5EB23134-3042-4B17-AD32-BDAE468CE225}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -985,6 +995,7 @@ Global
 		{C138ADE5-F991-49A8-8BB3-B5F5381F60DA} = {2E38AD70-ECDF-4722-981C-7388C446A514}
 		{378885D1-5D3E-4226-9C57-AA5183BA45D5} = {A01E19B1-74DF-4827-B024-D06CB0D838DD}
 		{CDC130AA-4ACE-4F02-9AC0-4971523C2E3C} = {A01E19B1-74DF-4827-B024-D06CB0D838DD}
+		{5EB23134-3042-4B17-AD32-BDAE468CE225} = {A01E19B1-74DF-4827-B024-D06CB0D838DD}
 	EndGlobalSection
 	GlobalSection(TextTemplating) = postSolution
 		TextTemplating = 1
