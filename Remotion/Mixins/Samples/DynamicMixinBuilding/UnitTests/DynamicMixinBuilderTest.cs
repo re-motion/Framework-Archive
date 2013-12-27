@@ -21,7 +21,6 @@ using System.Linq;
 using System.Reflection;
 using Castle.DynamicProxy;
 using NUnit.Framework;
-using Remotion.Development.TypePipe.UnitTesting;
 using Remotion.Development.UnitTesting;
 using Remotion.Mixins.Samples.DynamicMixinBuilding.Core;
 using Remotion.ServiceLocation;
