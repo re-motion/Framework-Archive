@@ -51,6 +51,10 @@
     <Compile Include="RhinoMocks\UnitTesting\ListArgExtensions.cs" />
     <Compile Include="RhinoMocks\UnitTesting\Threading\LockingDecoratorTestHelper.cs" />
     <Compile Include="RhinoMocks\UnitTesting\Threading\LockTestHelper.cs" />
+    <Compile Include="UnitTesting\Dev.cs" />
+    <Compile Include="UnitTesting\Enumerables\EnumerableExtensions.cs" />
+    <Compile Include="UnitTesting\Enumerables\OneTimeEnumerable.cs" />
+    <Compile Include="UnitTesting\ObjectExtensions.cs" />
     <Compile Include="UnitTesting\PEVerifier.cs" />
     <Compile Include="UnitTesting\PEVerifyException.cs" />
     <Compile Include="UnitTesting\PEVerifyPathSources\CompoundPEVerifyPathSource.cs" />
@@ -66,6 +70,7 @@
     <Compile Include="UnitTesting\PrivateInvoke.cs" />
     <Compile Include="UnitTesting\Reflection\NormalizingMemberInfoFromExpressionUtility.cs" />
     <Compile Include="UnitTesting\Reflection\ReflectionObjectMother.cs" />
+    <Compile Include="UnitTesting\Serializer.cs" />
     <Compile Include="UnitTesting\ThreadRunner.cs" />
   </ItemGroup>
   <ItemGroup>

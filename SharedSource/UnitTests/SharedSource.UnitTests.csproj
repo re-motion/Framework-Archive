@@ -44,8 +44,12 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Development\Core\UnitTesting\DevNullTest.cs" />
+    <Compile Include="Development\Core\UnitTesting\Enumerables\EnumerableExtensionsTest.cs" />
+    <Compile Include="Development\Core\UnitTesting\Enumerables\OneTimeEnumerableTest.cs" />
     <Compile Include="Development\Core\UnitTesting\PEVerifierTest.cs" />
     <Compile Include="Development\Core\UnitTesting\Reflection\NormalizingMemberInfoFromExpressionUtilityTest.cs" />
+    <Compile Include="Development\Core\UnitTesting\SerializerTest.cs" />
     <Compile Include="Development\Core\UnitTesting\ThreadRunnerTest.cs" />
     <Compile Include="Development\RhinoMocks\UnitTesting\DecoratorTestHelperTest.cs" />
     <Compile Include="Development\RhinoMocks\UnitTesting\ListArgExtensionsTest.cs" />

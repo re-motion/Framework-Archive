@@ -14,24 +14,29 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
 
+// ReSharper disable once CheckNamespace
+
 namespace Remotion.Development.UnitTests.Core.UnitTesting
 {
   [TestFixture]
-  public class DevNullTest
+  public class SerializerTest
   {
-    [Test] public void GetNull ()
+    [Test]
+    public void SerializeAndDeserialize ()
     {
-      Assert.That (Dev.Null, Is.Null);
-    }
+      int[] array = new int[] { 1, 2, 3 };
+      int[] array2 = Serializer.SerializeAndDeserialize (array);
+      Assert.That (array2, Is.Not.SameAs (array));
 
-    [Test] public void SetNull ()
-    {
-      Dev.Null = new object();
-      Assert.That (Dev.Null, Is.Null);
+      Assert.That (array2.Length, Is.EqualTo (array.Length));
+      Assert.That (array2[0], Is.EqualTo (array[0]));
+      Assert.That (array2[1], Is.EqualTo (array[1]));
+      Assert.That (array2[2], Is.EqualTo (array[2]));
     }
   }
 }
