@@ -116,7 +116,7 @@ namespace Remotion.FunctionalProgramming
   /// Encapsulates a value that may be <see langword="null" />, providing helpful methods to avoid <see langword="null" /> checks.
   /// </summary>
   [Serializable]
-  public partial struct Maybe<T>
+  partial struct Maybe<T>
   {
     public static readonly Maybe<T> Nothing = new Maybe<T> ();
 
