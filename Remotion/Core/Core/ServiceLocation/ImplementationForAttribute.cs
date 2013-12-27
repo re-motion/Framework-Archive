@@ -28,6 +28,7 @@ namespace Remotion.ServiceLocation
   public class ImplementationForAttribute : Attribute
   {
     private readonly Type _serviceType;
+    private RegistrationType _registrationType;
 
     /// <summary>
     /// Defines a concrete implementation for a service type.
@@ -39,6 +40,7 @@ namespace Remotion.ServiceLocation
 
       _serviceType = serviceType;
       Lifetime = LifetimeKind.Instance;
+      _registrationType = RegistrationType.Single;
     }
 
     /// <summary>
@@ -63,5 +65,16 @@ namespace Remotion.ServiceLocation
     /// </summary>
     /// <value>The position of the concrete implementation in the list of all concrete implementations.</value>
     public int Position  { get; set; }
+
+    /// <summary>
+    /// Defines wether an implementation is registered as a single value or as a sequence.
+    /// When using the ServiceLocator, "Single" registrations must be resolved via GetInstance() and "Multiple" registrations must be resolved 
+    /// via GetAllInstances(). Otherwise, an ActivationException is thrown.
+    /// </summary>
+    public RegistrationType RegistrationType
+    {
+      get { return _registrationType; }
+      set { _registrationType = value; }
+    }
   }
 }

@@ -86,6 +86,54 @@ namespace Remotion.UnitTests.ServiceLocation
                   new ServiceImplementationInfo (typeof (TestMultipleConcreteImplementationAttributesType1), LifetimeKind.Singleton),
               }));
     }
+    
+    [Test]
+    public void GetDefaultConfiguration_TypeDiscoveryService_WithMultipleConcreteImplementationAttributes_ReturnsSortedByPosition ()
+    {
+      _typeDiscoveryServiceStub.Stub (stub => stub.GetTypes (null, false))
+          .Return (new ArrayList { typeof (ITestMultipleConcreteImplementationAttributesType) });
+      _typeDiscoveryServiceStub.Stub (stub => stub.GetTypes (typeof (ITestMultipleConcreteImplementationAttributesType), true))
+          .Return (
+              new ArrayList
+              {
+                  typeof (TestMultipleConcreteImplementationAttributesType1),
+                  typeof (TestMultipleConcreteImplementationAttributesType2),
+                  typeof (TestMultipleConcreteImplementationAttributesType3)
+              });
+
+      var serviceConfigurationEntry = _defaultServiceConfigurationDiscoveryService.GetDefaultConfiguration().Single();
+      Assert.That (
+          serviceConfigurationEntry.ImplementationInfos.Select (i => i.ImplementationType),
+          Is.EqualTo (
+              new[]
+              {
+                  typeof (TestMultipleConcreteImplementationAttributesType2),
+                  typeof (TestMultipleConcreteImplementationAttributesType3),
+                  typeof (TestMultipleConcreteImplementationAttributesType1),
+              }));
+    }
+
+    [Test]
+    public void GetDefaultConfiguration_TypeDiscoveryService_WithMixedRegistrationTypes_ThrowsException ()
+    {
+      _typeDiscoveryServiceStub.Stub (stub => stub.GetTypes (null, false))
+          .Return (new ArrayList { typeof (ITestMixedRegistrationTypes) });
+      _typeDiscoveryServiceStub.Stub (stub => stub.GetTypes (typeof (ITestMixedRegistrationTypes), true))
+          .Return (
+              new ArrayList
+              {
+                  typeof (TestMixedRegistrationTypes1),
+                  typeof (TestMixedRegistrationTypes2),
+              });
+
+      Assert.That (
+          () => _defaultServiceConfigurationDiscoveryService.GetDefaultConfiguration ().ToArray(),
+          Throws.InvalidOperationException.With.Message.EqualTo (
+              "Invalid configuration of service type "
+              + "'Remotion.UnitTests.ServiceLocation.TestDomain.ITestMixedRegistrationTypes'. "
+              + "RegistrationTypes Single and Multiple must not be mixed. All service implementations have to have the same registration type.")
+              .And.InnerException.Not.Null);
+    }
 
     [Test]
     public void GetDefaultConfiguration_TypeDiscoveryService_WithTypeWithDuplicatePosition ()

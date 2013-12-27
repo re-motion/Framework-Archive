@@ -37,17 +37,20 @@ namespace Remotion.ServiceLocation
     private readonly Func<object> _factory;
     private readonly Type _implementationType;
     private readonly LifetimeKind _lifetime;
+    private readonly RegistrationType _registrationType;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="ServiceImplementationInfo"/> class.
     /// </summary>
     /// <param name="implementationType">The concrete implementation of the service type.</param>
     /// <param name="lifetime">The lifetime of the instances of <paramref name="implementationType"/>.</param>
-    public ServiceImplementationInfo (Type implementationType, LifetimeKind lifetime)
+    /// <param name="registrationType"></param>
+    public ServiceImplementationInfo (Type implementationType, LifetimeKind lifetime, RegistrationType registrationType = RegistrationType.Single)
     {
       ArgumentUtility.CheckNotNull ("implementationType", implementationType);
       _implementationType = implementationType;
       _lifetime = lifetime;
+      _registrationType = registrationType;
       _factory = null;
     }
 
@@ -56,6 +59,7 @@ namespace Remotion.ServiceLocation
       _factory = factory;
       _lifetime = LifetimeKind.Instance;
       _implementationType = implementationType;
+      _registrationType = RegistrationType.Single;
     }
 
     /// <summary>
@@ -82,6 +86,11 @@ namespace Remotion.ServiceLocation
     public Func<object> Factory
     {
       get { return _factory; }
+    }
+
+    public RegistrationType RegistrationType
+    {
+      get { return _registrationType; }
     }
 
     /// <inheritdoc />

@@ -80,7 +80,7 @@ namespace Remotion.ServiceLocation
         MemberInfoFromExpressionUtility.GetMethod ((DefaultServiceLocator sl) => sl.ResolveIndirectCollectionDependency<object> (null))
         .GetGenericMethodDefinition();
 
-    private readonly IDataStore<Type, Func<object>[]> _dataStore = DataStoreFactory.CreateWithLocking<Type, Func<object>[]> ();
+    private readonly IDataStore<Type, Tuple<Func<object>, RegistrationType>[]> _dataStore = DataStoreFactory.CreateWithLocking<Type, Tuple<Func<object>, RegistrationType>[]> ();
 
     private DefaultServiceLocator (IServiceConfigurationDiscoveryService serviceConfigurationDiscoveryService)
     {
@@ -145,7 +145,16 @@ namespace Remotion.ServiceLocation
     {
       ArgumentUtility.CheckNotNull ("serviceType", serviceType);
 
-      return GetOrCreateFactories (serviceType).Select (factory => SafeInvokeInstanceFactory (factory, serviceType));
+      var factories = GetOrCreateFactories (serviceType);
+
+      if (factories.Any (f => f.Item2 == RegistrationType.Single))
+      {
+        throw new ActivationException (
+            string.Format ("Invalid ConcreteImplementationAttribute configuration for service type '{0}'. ", serviceType)
+            + "The service has implementations registered with RegistrationType.Single. Use GetInstance() to retrieve the implementations.");
+      }
+
+      return factories.Select (factory => SafeInvokeInstanceFactory (factory, serviceType));
     }
 
     /// <summary>
@@ -242,6 +251,30 @@ namespace Remotion.ServiceLocation
       ArgumentUtility.CheckNotNull ("serviceType", serviceType);
       ArgumentUtility.CheckNotNull ("instanceFactories", instanceFactories);
 
+      var factoryArray = instanceFactories.Select (f => Tuple.Create (f, RegistrationType.Single)).ToArray();
+      var factories = _dataStore.GetOrCreateValue (serviceType, t => factoryArray);
+      if (factories != factoryArray)
+      {
+        var message = string.Format ("Register cannot be called twice or after GetInstance for service type: '{0}'.", serviceType.Name);
+        throw new InvalidOperationException (message);
+      }
+    }
+    
+    /// <summary>
+    /// Registers factories for the specified <paramref name="serviceType"/>. 
+    /// The factories are subsequently invoked whenever instances for the <paramref name="serviceType"/> is requested.
+    /// </summary>
+    /// <param name="serviceType">The service type to register the factories for.</param>
+    /// <param name="instanceFactories">The instance factories to use when resolving instances for the <paramref name="serviceType"/>. These factories
+    /// must return non-null instances implementing the <paramref name="serviceType"/>, otherwise an <see cref="ActivationException"/> is thrown
+    /// when an instance of <paramref name="serviceType"/> is requested.</param>
+    /// <exception cref="InvalidOperationException">Factories have already been registered or an instance of the <paramref name="serviceType"/> has 
+    /// already been retrieved. Registering factories or concrete implementations can only be done before any instances are retrieved.</exception>
+    public void Register (Type serviceType, IEnumerable<Tuple<Func<object>, RegistrationType>> instanceFactories)
+    {
+      ArgumentUtility.CheckNotNull ("serviceType", serviceType);
+      ArgumentUtility.CheckNotNull ("instanceFactories", instanceFactories);
+
       var factoryArray = instanceFactories.ToArray();
       var factories = _dataStore.GetOrCreateValue (serviceType, t => factoryArray);
       if (factories != factoryArray)
@@ -293,7 +326,7 @@ namespace Remotion.ServiceLocation
       Register (serviceConfigurationEntry.ServiceType, factories);
     }
 
-    private Func<Object>[] GetOrCreateFactories (Type serviceType)
+    private Tuple<Func<object>, RegistrationType>[] GetOrCreateFactories (Type serviceType)
     {
       return _dataStore.GetOrCreateValue (serviceType, t => CreateInstanceFactories (t).ToArray ());
     }
@@ -301,25 +334,27 @@ namespace Remotion.ServiceLocation
     private object GetInstanceOrNull (Type serviceType)
     {
       var factories = GetOrCreateFactories (serviceType);
-      if (factories.Length > 1)
-      {
-        var message = string.Format (
-          "Multiple implemetations are configured for service type: '{0}'. Consider using 'GetAllInstances'.", serviceType.Name);
-        throw new ActivationException (message);
-      }
+
       if (factories.Length == 0)
         return null;
 
-      var factory = factories.Single();
+      if (factories.Any (f => f.Item2 == RegistrationType.Multiple))
+      {
+        throw new ActivationException (
+            string.Format ("Invalid ConcreteImplementationAttribute configuration for service type '{0}'. ", serviceType)
+            + "The service has implementations registered with RegistrationType.Multiple. Use GetAllInstances() to retrieve the implementations.");
+      }
+
+      var factory = factories.First();
       return SafeInvokeInstanceFactory (factory, serviceType);
     }
 
-    private object SafeInvokeInstanceFactory (Func<object> factory, Type serviceType)
+    private object SafeInvokeInstanceFactory (Tuple<Func<object>, RegistrationType> factory, Type serviceType)
     {
       object instance;
       try
       {
-        instance = factory();
+        instance = factory.Item1();
       }
       catch (ActivationException ex)
       {
@@ -352,7 +387,7 @@ namespace Remotion.ServiceLocation
       return instance;
     }
 
-    private IEnumerable<Func<object>> CreateInstanceFactories (Type serviceType)
+    private IEnumerable<Tuple<Func<object>, RegistrationType>> CreateInstanceFactories (Type serviceType)
     {
       ServiceConfigurationEntry entry;
       try
@@ -369,15 +404,15 @@ namespace Remotion.ServiceLocation
       return CreateInstanceFactories (entry);
     }
 
-    private IEnumerable<Func<object>> CreateInstanceFactories (ServiceConfigurationEntry serviceConfigurationEntry)
+    private IEnumerable<Tuple<Func<object>, RegistrationType>> CreateInstanceFactories (ServiceConfigurationEntry serviceConfigurationEntry)
     {
       return serviceConfigurationEntry.ImplementationInfos.Select (CreateInstanceFactory);
     }
 
-    private Func<object> CreateInstanceFactory (ServiceImplementationInfo serviceImplementationInfo)
+    private Tuple<Func<object>, RegistrationType> CreateInstanceFactory (ServiceImplementationInfo serviceImplementationInfo)
     {
       if (serviceImplementationInfo.Factory != null)
-        return serviceImplementationInfo.Factory;
+        return Tuple.Create(serviceImplementationInfo.Factory, serviceImplementationInfo.RegistrationType);
 
       var publicCtors = serviceImplementationInfo.ImplementationType.GetConstructors();
       if (publicCtors.Length != 1)
@@ -388,19 +423,19 @@ namespace Remotion.ServiceLocation
       }
 
       var ctorInfo = publicCtors.Single();
-      Func<object> factory = CreateInstanceFactory (ctorInfo);
+      Tuple<Func<object>, RegistrationType> factory = CreateInstanceFactory (ctorInfo, serviceImplementationInfo);
 
       switch (serviceImplementationInfo.Lifetime)
       {
         case LifetimeKind.Singleton:
-          var factoryContainer = new DoubleCheckedLockingContainer<object> (factory);
-          return () => factoryContainer.Value;
+          var factoryContainer = new DoubleCheckedLockingContainer<object> (factory.Item1);
+          return Tuple.Create((Func<object>) (() => factoryContainer.Value), factory.Item2);
         default:
           return factory;
       }
     }
 
-    private Func<object> CreateInstanceFactory (ConstructorInfo ctorInfo)
+    private Tuple<Func<object>, RegistrationType> CreateInstanceFactory (ConstructorInfo ctorInfo, ServiceImplementationInfo serviceImplementationInfo)
     {
       var serviceLocator = Expression.Constant (this);
 
@@ -408,7 +443,7 @@ namespace Remotion.ServiceLocation
       var ctorArgExpressions = parameterInfos.Select (x => GetIndirectResolutionCall (serviceLocator, x));
 
       var factoryLambda = Expression.Lambda<Func<object>> (Expression.New (ctorInfo, ctorArgExpressions));
-      return factoryLambda.Compile();
+      return Tuple.Create (factoryLambda.Compile(), serviceImplementationInfo.RegistrationType);
     }
 
     private Expression GetIndirectResolutionCall (Expression serviceLocator, ParameterInfo parameterInfo)

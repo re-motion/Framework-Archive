@@ -1,4 +1,4 @@
-﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
+// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -16,23 +16,16 @@
 // 
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using Remotion.ServiceLocation;
 
 namespace Remotion.UnitTests.ServiceLocation.TestDomain
 {
-  public interface IInterfaceWithIndirectActivationExceptionForCollectionParameter
+  public interface ITestImplementationForAttributeType
   {
   }
 
-  [ImplementationFor (typeof (IInterfaceWithIndirectActivationExceptionForCollectionParameter))]
-  public class ClassWithIndirectActivationExceptionForCollectionParameter : IInterfaceWithIndirectActivationExceptionForCollectionParameter
+  [ImplementationFor (typeof (ITestImplementationForAttributeType), Lifetime = LifetimeKind.Instance, RegistrationType = RegistrationType.Multiple)]
+  public class TestImplementationForAttributeType : ITestImplementationForAttributeType
   {
-    public ClassWithIndirectActivationExceptionForCollectionParameter (
-        IEnumerable<ITestRegistrationTypeMultipleTypeThrowingExceptionInCtor> innerDependency)
-    {
-      innerDependency.ToArray();
-    }
   }
 }

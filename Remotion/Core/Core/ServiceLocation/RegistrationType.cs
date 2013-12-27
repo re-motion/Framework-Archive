@@ -14,25 +14,18 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using Remotion.ServiceLocation;
 
-namespace Remotion.UnitTests.ServiceLocation.TestDomain
+namespace Remotion.ServiceLocation
 {
-  public interface IInterfaceWithIndirectActivationExceptionForCollectionParameter
+  /// <summary>
+  /// Defines wether an implementation is registered as a single value or as a sequence.
+  /// When using the ServiceLocator, "Single" registrations must be resolved via GetInstance() and "Multiple" registrations must be resolved 
+  /// via GetAllInstances(). Otherwise, an ActivationException is thrown.
+  /// </summary>
+  public enum RegistrationType
   {
-  }
-
-  [ImplementationFor (typeof (IInterfaceWithIndirectActivationExceptionForCollectionParameter))]
-  public class ClassWithIndirectActivationExceptionForCollectionParameter : IInterfaceWithIndirectActivationExceptionForCollectionParameter
-  {
-    public ClassWithIndirectActivationExceptionForCollectionParameter (
-        IEnumerable<ITestRegistrationTypeMultipleTypeThrowingExceptionInCtor> innerDependency)
-    {
-      innerDependency.ToArray();
-    }
+    Single,
+    Multiple
   }
 }

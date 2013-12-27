@@ -20,14 +20,14 @@ using Remotion.ServiceLocation;
 
 namespace Remotion.UnitTests.ServiceLocation.TestDomain
 {
-  public interface ITestConcreteImplementationAttributeTypeThrowingExceptionInCtor
+  public interface ITestRegistrationTypeMultipleTypeThrowingExceptionInCtor
   {
   }
 
-  [ImplementationFor (typeof (ITestConcreteImplementationAttributeTypeThrowingExceptionInCtor), Lifetime = LifetimeKind.Instance)]
-  public class TestConcreteImplementationAttributeTypeThrowingExceptionInCtor : ITestConcreteImplementationAttributeTypeThrowingExceptionInCtor
+  [ImplementationFor (typeof (ITestRegistrationTypeMultipleTypeThrowingExceptionInCtor), Lifetime = LifetimeKind.Instance, RegistrationType = RegistrationType.Multiple)]
+  public class TestRegistrationTypeMultipleTypeThrowingExceptionInCtor : ITestRegistrationTypeMultipleTypeThrowingExceptionInCtor
   {
-    public TestConcreteImplementationAttributeTypeThrowingExceptionInCtor ()
+    public TestRegistrationTypeMultipleTypeThrowingExceptionInCtor ()
     {
       throw new InvalidOperationException ("This exception comes from the ctor.");
     }

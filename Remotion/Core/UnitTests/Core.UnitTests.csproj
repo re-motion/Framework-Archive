@@ -299,12 +299,17 @@
     <Compile Include="ServiceLocation\TestDomain\IInterfaceWithoutImplementation.cs" />
     <Compile Include="ServiceLocation\TestDomain\ITestConcreteImplementationAttributeWithUnresolvableImplementationType.cs" />
     <Compile Include="ServiceLocation\TestDomain\ITestConcreteImplementationAttributeWithUnresolvableAndResolvableImplementationTypes.cs" />
+    <Compile Include="ServiceLocation\TestDomain\ITestMixedRegistrationTypes.cs" />
     <Compile Include="ServiceLocation\TestDomain\ITestMultipleConcreteImplementationAttributesWithDuplicateImplementationType.cs" />
     <Compile Include="ServiceLocation\TestDomain\ITestMultipleConcreteImplementationAttributesWithDuplicatePositionType.cs" />
     <Compile Include="ServiceLocation\TestDomain\ITestMultipleConcreteImplementationAttributesType.cs" />
     <Compile Include="ServiceLocation\TestDomain\ITestMultipleRegistrationsType.cs" />
     <Compile Include="ServiceLocation\TestDomain\ITestOpenGenericService.cs" />
+    <Compile Include="ServiceLocation\TestDomain\ITestRegistrationTypeSingleTypeThrowingExceptionInCtor.cs" />
+    <Compile Include="ServiceLocation\TestDomain\ITestRegistrationTypeSingle.cs" />
+    <Compile Include="ServiceLocation\TestDomain\ITestRegistrationTypeMultiple.cs" />
     <Compile Include="ServiceLocation\TestDomain\ITestTypeWithOnlyProtectedConstructor.cs" />
+    <Compile Include="ServiceLocation\TestDomain\ITestImplementationForAttributeType.cs" />
     <Compile Include="ServiceLocation\TypeNameTemplateResolverTest.cs" />
     <Compile Include="Logging\ILogManagerTest.cs" />
     <Compile Include="Logging\Log4NetLogTests\IsEnabledTest.cs" />
@@ -367,7 +372,7 @@
     <Compile Include="ServiceLocation\DefaultServiceLocatorTest.cs" />
     <Compile Include="ServiceLocation\SafeServiceLocatorTest.cs" />
     <Compile Include="ServiceLocation\ServiceConfigurationEntryTest.cs" />
-    <Compile Include="ServiceLocation\TestDomain\ITestConcreteImplementationAttributeTypeThrowingExceptionInCtor.cs" />
+    <Compile Include="ServiceLocation\TestDomain\ITestRegistrationTypeMultipleTypeThrowingExceptionInCtor.cs" />
     <Compile Include="ServiceLocation\TestDomain\ITestConcreteImplementationAttributeTypeWithInvalidImplementation.cs" />
     <Compile Include="ServiceLocation\TestDomain\ITestConstructorInjectionWithOneParameter.cs" />
     <Compile Include="ServiceLocation\TestDomain\ITestConstructorInjectionWithOneParameterWithInstanceLifetime.cs" />

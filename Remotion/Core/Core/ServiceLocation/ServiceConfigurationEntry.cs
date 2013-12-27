@@ -20,6 +20,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using log4net.Util;
 using Microsoft.Practices.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.FunctionalProgramming;
@@ -53,9 +54,9 @@ namespace Remotion.ServiceLocation
 
       var serviceImplementationInfos =
           attributesAndResolvedTypes
-          .ApplySideEffect (tuple => CheckImplementationType (serviceType, tuple.ResolvedType, s => new InvalidOperationException (s)))
-          .Select (tuple => new ServiceImplementationInfo (tuple.ResolvedType, tuple.Attribute.Lifetime));
-      
+              .ApplySideEffect (tuple => CheckImplementationType (serviceType, tuple.ResolvedType, s => new InvalidOperationException (s)))
+              .Select (tuple => new ServiceImplementationInfo (tuple.ResolvedType, tuple.Attribute.Lifetime, tuple.Attribute.RegistrationType));
+
       return new ServiceConfigurationEntry (serviceType, serviceImplementationInfos);
     }
 
@@ -90,8 +91,7 @@ namespace Remotion.ServiceLocation
     /// </summary>
     /// <param name="serviceType">The service type. This is a type for which instances are requested from a service locator.</param>
     /// <param name="implementationInfos">The <see cref="ServiceImplementationInfo"/> for the <paramref name="serviceType" />.</param>
-    public ServiceConfigurationEntry (
-        Type serviceType, params ServiceImplementationInfo[] implementationInfos)
+    public ServiceConfigurationEntry (Type serviceType, params ServiceImplementationInfo[] implementationInfos)
         : this (serviceType, (IEnumerable<ServiceImplementationInfo>) implementationInfos)
     {
     }
