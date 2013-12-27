@@ -19,7 +19,7 @@ using System;
 
 namespace Remotion.Development.UnitTesting.Reflection
 {
-  public static partial class NormalizingMemberInfoFromExpressionUtility1
+  public static partial class NormalizingMemberInfoFromExpressionUtility
   {
   }
 }
