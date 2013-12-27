@@ -31,3 +31,4 @@ using System.Runtime.CompilerServices;
 [assembly: CLSCompliant(true)]
 
 [assembly: InternalsVisibleTo ("Remotion.SharedSource.UnitTests")]
+[assembly: InternalsVisibleTo (Rhino.Mocks.RhinoMocks.NormalName)]
