@@ -19,8 +19,6 @@ using System;
 using System.IO;
 using NUnit.Framework;
 using Remotion.Utilities;
-using Rhino.Mocks;
-using Mocks_Is = Rhino.Mocks.Constraints.Is;
 
 // ReSharper disable once CheckNamespace
 namespace Remotion.UnitTests.Utilities

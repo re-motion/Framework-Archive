@@ -44,6 +44,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Development\Core\UnitTesting\Reflection\NormalizingMemberInfoFromExpressionUtilityTest.cs" />
     <Compile Include="Development\Core\UnitTesting\ThreadRunnerTest.cs" />
     <Compile Include="Development\RhinoMocks\UnitTesting\DecoratorTestHelperTest.cs" />
     <Compile Include="Development\RhinoMocks\UnitTesting\ListArgExtensionsTest.cs" />

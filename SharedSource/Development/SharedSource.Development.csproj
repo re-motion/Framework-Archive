@@ -57,6 +57,10 @@
     <Compile Include="RhinoMocks\UnitTesting\Threading\LockTestHelper.Partial.cs" />
     <Compile Include="UnitTesting\PrivateInvoke.cs" />
     <Compile Include="UnitTesting\PrivateInvoke.Partial.cs" />
+    <Compile Include="UnitTesting\Reflection\NormalizingMemberInfoFromExpressionUtility.cs" />
+    <Compile Include="UnitTesting\Reflection\NormalizingMemberInfoFromExpressionUtility.Partial.cs" />
+    <Compile Include="UnitTesting\Reflection\ReflectionObjectMother.cs" />
+    <Compile Include="UnitTesting\Reflection\ReflectionObjectMother.Partial.cs" />
     <Compile Include="UnitTesting\ThreadRunner.cs" />
     <Compile Include="UnitTesting\ThreadRunner.Partial.cs" />
   </ItemGroup>
@@ -71,9 +75,7 @@
       <Name>SharedSource.Core</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="UnitTesting\Reflection\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

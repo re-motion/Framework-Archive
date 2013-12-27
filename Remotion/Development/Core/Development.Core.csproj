@@ -118,6 +118,12 @@
     <Compile Include="..\..\..\SharedSource\Development\UnitTesting\PrivateInvoke.cs">
       <Link>SharedSource\UnitTesting\PrivateInvoke.cs</Link>
     </Compile>
+    <Compile Include="..\..\..\SharedSource\Development\UnitTesting\Reflection\NormalizingMemberInfoFromExpressionUtility.cs">
+      <Link>SharedSource\UnitTesting\Reflection\NormalizingMemberInfoFromExpressionUtility.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\Development\UnitTesting\Reflection\ReflectionObjectMother.cs">
+      <Link>SharedSource\UnitTesting\Reflection\ReflectionObjectMother.cs</Link>
+    </Compile>
     <Compile Include="..\..\..\SharedSource\Development\UnitTesting\ThreadRunner.cs">
       <Link>SharedSource\UnitTesting\ThreadRunner.cs</Link>
     </Compile>
@@ -164,8 +170,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="UnitTesting\ClassWithSerializationCallbacksBase.cs" />
-    <Compile Include="UnitTesting\Reflection\NormalizingMemberInfoFromExpressionUtility.cs" />
-    <Compile Include="UnitTesting\Reflection\ReflectionObjectMother.cs" />
+    <Compile Include="UnitTesting\Reflection\NormalizingMemberInfoFromExpressionUtility.Partial.cs" />
+    <Compile Include="UnitTesting\Reflection\ReflectionObjectMother.Partial.cs" />
     <Compile Include="UnitTesting\Reflection\TypeDiscovery\FilteringTypeDiscoveryService.cs" />
     <Compile Include="UnitTesting\Reflection\TypeDiscovery\FixedTypeDiscoveryService.cs" />
     <Compile Include="UnitTesting\Reflection\TypeDiscovery\NullTypeDiscoveryService.cs" />

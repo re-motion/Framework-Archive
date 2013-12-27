@@ -167,6 +167,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\..\SharedSource\UnitTests\Development\Core\UnitTesting\Reflection\NormalizingMemberInfoFromExpressionUtilityTest.cs">
+      <Link>SharedSource\Core\UnitTesting\Reflection\NormalizingMemberInfoFromExpressionUtilityTest.cs</Link>
+    </Compile>
     <Compile Include="..\..\..\SharedSource\UnitTests\Development\Core\UnitTesting\ThreadRunnerTest.cs">
       <Link>SharedSource\Core\UnitTesting\ThreadRunnerTest.cs</Link>
     </Compile>
@@ -188,7 +191,6 @@
     <Compile Include="Core\UnitTesting\Configuration\XmlSchemaValidationTest.cs" />
     <Compile Include="Core\UnitTesting\Enumerables\EnumerableExtensionsTest.cs" />
     <Compile Include="Core\UnitTesting\Enumerables\OneTimeEnumerableTest.cs" />
-    <Compile Include="Core\UnitTesting\Reflection\NormalizingMemberInfoFromExpressionUtilityTest.cs" />
     <Compile Include="Core\UnitTesting\Reflection\TypeDiscovery\FilteringTypeDiscoveryServiceTest.cs" />
     <Compile Include="Core\UnitTesting\Reflection\TypeDiscovery\FixedTypeDiscoveryServiceTest.cs" />
     <Compile Include="Core\UnitTesting\Resources\ResourceUtilityTest.cs" />
