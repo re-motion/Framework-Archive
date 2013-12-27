@@ -1,4 +1,4 @@
-// Copyright (c) rubicon IT GmbH, www.rubicon.eu
+﻿// Copyright (c) rubicon IT GmbH, www.rubicon.eu
 //
 // See the NOTICE file distributed with this work for additional information
 // regarding copyright ownership.  rubicon licenses this file to you under 
@@ -17,33 +17,9 @@
 
 using System;
 
-// ReSharper disable once CheckNamespace
-namespace Remotion.UnitTests.FunctionalProgramming.TestDomain
+namespace Remotion.Development.UnitTesting
 {
-  internal class Element
+  public partial class ThreadRunner
   {
-    private readonly int _value;
-    private Element _parent;
-
-    public Element (int value, Element parent)
-    {
-      _value = value;
-      _parent = parent;
-    }
-
-    public Element Parent
-    {
-      get { return _parent; }
-    }
-
-    public void SetParent (Element parent)
-    {
-      _parent = parent;
-    }
-
-    public override string ToString ()
-    {
-      return _value.ToString();
-    }
   }
 }

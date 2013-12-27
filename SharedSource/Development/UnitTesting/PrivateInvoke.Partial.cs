@@ -17,33 +17,9 @@
 
 using System;
 
-// ReSharper disable once CheckNamespace
-namespace Remotion.UnitTests.FunctionalProgramming.TestDomain
+namespace Remotion.Development.UnitTesting
 {
-  internal class Element
+  public static partial class PrivateInvoke
   {
-    private readonly int _value;
-    private Element _parent;
-
-    public Element (int value, Element parent)
-    {
-      _value = value;
-      _parent = parent;
-    }
-
-    public Element Parent
-    {
-      get { return _parent; }
-    }
-
-    public void SetParent (Element parent)
-    {
-      _parent = parent;
-    }
-
-    public override string ToString ()
-    {
-      return _value.ToString();
-    }
   }
 }

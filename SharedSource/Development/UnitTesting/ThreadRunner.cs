@@ -19,6 +19,7 @@ using System;
 using System.Threading;
 using Remotion.Utilities;
 
+// ReSharper disable once CheckNamespace
 namespace Remotion.Development.UnitTesting
 {
   partial class ThreadRunner

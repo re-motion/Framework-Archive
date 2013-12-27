@@ -21,6 +21,7 @@ using System.Globalization;
 using System.Reflection;
 using Remotion.Utilities;
 
+// ReSharper disable once CheckNamespace
 namespace Remotion.Development.UnitTesting
 {
   /// <summary>

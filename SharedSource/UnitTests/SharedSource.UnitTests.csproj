@@ -37,10 +37,18 @@
     <Reference Include="nunit.framework">
       <HintPath>..\..\prereq\Assemblies\NUnit-2.6\net-2.0\nunit.framework.dll</HintPath>
     </Reference>
+    <Reference Include="Rhino.Mocks">
+      <HintPath>..\..\prereq\Assemblies\Rhino.Mocks-3.6\net-3.5\Rhino.Mocks.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Development\Core\UnitTesting\ThreadRunnerTest.cs" />
+    <Compile Include="Development\RhinoMocks\UnitTesting\DecoratorTestHelperTest.cs" />
+    <Compile Include="Development\RhinoMocks\UnitTesting\ListArgExtensionsTest.cs" />
+    <Compile Include="Development\RhinoMocks\UnitTesting\Threading\LockingDecoratorTestHelperTest.cs" />
+    <Compile Include="Development\RhinoMocks\UnitTesting\Threading\LockTestHelperTest.cs" />
     <Compile Include="FunctionalProgramming\EnumerableExtensionsTest.cs" />
     <Compile Include="FunctionalProgramming\EnumerableUtilityTest.cs" />
     <Compile Include="FunctionalProgramming\TestDomain\Element.cs" />
@@ -79,6 +87,10 @@
     <ProjectReference Include="..\Core\SharedSource.Core.csproj">
       <Project>{378885d1-5d3e-4226-9c57-aa5183ba45d5}</Project>
       <Name>SharedSource.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Development\SharedSource.Development.csproj">
+      <Project>{5eb23134-3042-4b17-ad32-bdae468ce225}</Project>
+      <Name>SharedSource.Development</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

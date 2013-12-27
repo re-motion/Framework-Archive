@@ -56,7 +56,9 @@
     <Compile Include="RhinoMocks\UnitTesting\Threading\LockTestHelper.cs" />
     <Compile Include="RhinoMocks\UnitTesting\Threading\LockTestHelper.Partial.cs" />
     <Compile Include="UnitTesting\PrivateInvoke.cs" />
+    <Compile Include="UnitTesting\PrivateInvoke.Partial.cs" />
     <Compile Include="UnitTesting\ThreadRunner.cs" />
+    <Compile Include="UnitTesting\ThreadRunner.Partial.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\SharedSource Apache-2.0.licenseheader">

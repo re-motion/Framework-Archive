@@ -167,6 +167,21 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\..\SharedSource\UnitTests\Development\Core\UnitTesting\ThreadRunnerTest.cs">
+      <Link>SharedSource\Core\UnitTesting\ThreadRunnerTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\UnitTests\Development\RhinoMocks\UnitTesting\DecoratorTestHelperTest.cs">
+      <Link>SharedSource\RhinoMocks\UnitTesting\DecoratorTestHelperTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\UnitTests\Development\RhinoMocks\UnitTesting\ListArgExtensionsTest.cs">
+      <Link>SharedSource\RhinoMocks\UnitTesting\ListArgExtensionsTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\UnitTests\Development\RhinoMocks\UnitTesting\Threading\LockingDecoratorTestHelperTest.cs">
+      <Link>SharedSource\RhinoMocks\UnitTesting\Threading\LockingDecoratorTestHelperTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SharedSource\UnitTests\Development\RhinoMocks\UnitTesting\Threading\LockTestHelperTest.cs">
+      <Link>SharedSource\RhinoMocks\UnitTesting\Threading\LockTestHelperTest.cs</Link>
+    </Compile>
     <Compile Include="..\..\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
@@ -188,7 +203,6 @@
     <Compile Include="Core\UnitTesting\Sandboxing\SandboxTest.cs" />
     <Compile Include="Core\UnitTesting\Sandboxing\TestResultTest.cs" />
     <Compile Include="Core\UnitTesting\ServiceLocatorScopeTest.cs" />
-    <Compile Include="Core\UnitTesting\ThreadRunnerTest.cs" />
     <Compile Include="Data\UnitTesting\DomainObjects\Linq\ExpressionTreeComparerTest.cs" />
     <Compile Include="Data\UnitTesting\DomainObjects\SetUpFixture.cs" />
     <Compile Include="Data\UnitTesting\DomainObjects\TestDomain\TestDomainObject.cs" />
@@ -217,10 +231,6 @@
     <Compile Include="Core\UnitTesting\TestPropertyAccess.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="RhinoMocks\UnitTesting\DecoratorTestHelperTest.cs" />
-    <Compile Include="RhinoMocks\UnitTesting\ListArgExtensionsTest.cs" />
-    <Compile Include="RhinoMocks\UnitTesting\Threading\LockingDecoratorTestHelperTest.cs" />
-    <Compile Include="RhinoMocks\UnitTesting\Threading\LockTestHelperTest.cs" />
     <Compile Include="Web\ResourceHosting\ResourceVirtualDirectoryTest.cs" />
     <Compile Include="Web\ResourceHosting\ResourceVirtualFileTest.cs" />
     <Compile Include="Web\ResourceHosting\ResourceVirtualPathProviderTest.cs" />
