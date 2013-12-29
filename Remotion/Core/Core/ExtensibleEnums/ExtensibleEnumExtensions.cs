@@ -16,7 +16,6 @@
 // 
 
 using System;
-using Remotion.ExtensibleEnums.Globalization;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 
@@ -27,9 +26,9 @@ namespace Remotion.ExtensibleEnums
   /// </summary>
   public static class ExtensibleEnumExtensions
   {
-    private static readonly DoubleCheckedLockingContainer<IExtensibleEnumerationGlobalizationService> s_service =
-        new DoubleCheckedLockingContainer<IExtensibleEnumerationGlobalizationService> (
-            () => SafeServiceLocator.Current.GetInstance<IExtensibleEnumerationGlobalizationService>());
+    //private static readonly DoubleCheckedLockingContainer<IExtensibleEnumerationGlobalizationService> s_service =
+    //    new DoubleCheckedLockingContainer<IExtensibleEnumerationGlobalizationService> (
+    //        () => SafeServiceLocator.Current.GetInstance<IExtensibleEnumerationGlobalizationService>());
 
     /// <summary>
     /// Gets the localized name of the value represented by this <see cref="IExtensibleEnum"/> value.
@@ -38,8 +37,9 @@ namespace Remotion.ExtensibleEnums
     public static string GetLocalizedName (this IExtensibleEnum extensibleEnum)
     {
       ArgumentUtility.CheckNotNull ("extensibleEnum", extensibleEnum);
-
-      return s_service.Value.GetExtensibleEnumerationValueDisplayName (extensibleEnum);
+      return null;
+      //TODO RM-6000: Reenable the redirect.
+//      return s_service.Value.GetExtensibleEnumerationValueDisplayName (extensibleEnum);
     }
   }
 }

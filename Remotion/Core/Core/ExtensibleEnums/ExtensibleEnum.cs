@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Reflection;
-using Remotion.ExtensibleEnums.Globalization;
 using Remotion.Utilities;
 
 namespace Remotion.ExtensibleEnums
