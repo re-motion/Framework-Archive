@@ -64,18 +64,11 @@
     <Compile Include="IExtensibleEnumerationGlobalizationServiceTest.cs" />
     <Compile Include="TestDomain\Color.cs" />
     <Compile Include="TestDomain\ColorExtensions.cs" />
-    <Compile Include="TestDomain\DwarfPlanetExtensions.cs" />
-    <Compile Include="TestDomain\EnumWithDifferentCtors.cs" />
-    <Compile Include="TestDomain\EnumWithDifferentCtorsExtensions.cs" />
-    <Compile Include="TestDomain\ExtensibleEnumWithDuplicateAttribute.cs" />
-    <Compile Include="TestDomain\ExtensibleEnumWithDuplicateAttributeExtensions.cs" />
     <Compile Include="TestDomain\ExtensibleEnumWithResources.cs" />
     <Compile Include="TestDomain\ExtensibleEnumWithResourcesExtensions.cs" />
-    <Compile Include="TestDomain\LargePlanetExtensions.cs" />
     <Compile Include="TestDomain\LightColorExtensions.cs" />
     <Compile Include="TestDomain\MetallicColor.cs" />
     <Compile Include="TestDomain\MetallicColorExtensions.cs" />
-    <Compile Include="TestDomain\Planet.cs" />
     <Compile Include="TestDomain\Resources\ColorExtensions.Designer.cs">
       <DependentUpon>ColorExtensions.resx</DependentUpon>
     </Compile>
@@ -85,9 +78,6 @@
     <Compile Include="TestDomain\Resources\LightColorExtensions.Designer.cs">
       <DependentUpon>LightColorExtensions.resx</DependentUpon>
     </Compile>
-    <Compile Include="TestDomain\SmallPlanetExtensions.cs" />
-    <Compile Include="TestDomain\WrongColorValues.cs" />
-    <Compile Include="TestDomain\WrongColorValuesGeneric.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\remotion.snk">

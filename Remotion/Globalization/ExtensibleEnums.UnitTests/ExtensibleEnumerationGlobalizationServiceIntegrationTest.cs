@@ -32,24 +32,6 @@ namespace Remotion.Globalization.ExtensibleEnums.UnitTests
 
       var service = SafeServiceLocator.Current.GetInstance<IExtensibleEnumerationGlobalizationService> ();
 
-      Assert.That (service.TryGetExtensibleEnumerationValueDisplayName (ExtensibleEnumWithResources.Values.Value1 (), out resourceValue), Is.True);
-      Assert.That (resourceValue, Is.EqualTo ("Wert1"));
-      Assert.That (service.GetExtensibleEnumerationValueDisplayName (ExtensibleEnumWithResources.Values.Value1 ()), Is.EqualTo ("Wert1"));
-      Assert.That (service.GetExtensibleEnumerationValueDisplayNameOrDefault (ExtensibleEnumWithResources.Values.Value1 ()), Is.EqualTo ("Wert1"));
-      Assert.That (service.ContainsExtensibleEnumerationValueDisplayName (ExtensibleEnumWithResources.Values.Value1 ()), Is.True);
-      
-      Assert.That (service.TryGetExtensibleEnumerationValueDisplayName (ExtensibleEnumWithResources.Values.Value2 (), out resourceValue), Is.True);
-      Assert.That (resourceValue, Is.EqualTo ("Wert2"));
-      Assert.That (service.GetExtensibleEnumerationValueDisplayName (ExtensibleEnumWithResources.Values.Value2 ()), Is.EqualTo ("Wert2"));
-      Assert.That (service.GetExtensibleEnumerationValueDisplayNameOrDefault (ExtensibleEnumWithResources.Values.Value2 ()), Is.EqualTo ("Wert2"));
-      Assert.That (service.ContainsExtensibleEnumerationValueDisplayName (ExtensibleEnumWithResources.Values.Value2 ()), Is.True);
-
-      Assert.That (service.TryGetExtensibleEnumerationValueDisplayName (ExtensibleEnumWithResources.Values.ValueWithoutResource (), out resourceValue), Is.False);
-      Assert.That (resourceValue, Is.Null);
-      Assert.That (service.GetExtensibleEnumerationValueDisplayName (ExtensibleEnumWithResources.Values.ValueWithoutResource ()), Is.EqualTo ("ValueWithoutResource"));
-      Assert.That (service.GetExtensibleEnumerationValueDisplayNameOrDefault (ExtensibleEnumWithResources.Values.ValueWithoutResource ()), Is.Null);
-      Assert.That (service.ContainsExtensibleEnumerationValueDisplayName (ExtensibleEnumWithResources.Values.ValueWithoutResource ()), Is.False);
-
       Assert.That (service.TryGetExtensibleEnumerationValueDisplayName (Color.Values.Red (), out resourceValue), Is.True);
       Assert.That (resourceValue, Is.EqualTo ("Rot"));
       Assert.That (service.GetExtensibleEnumerationValueDisplayName (Color.Values.Red ()), Is.EqualTo ("Rot"));
