@@ -60,6 +60,7 @@
     <Compile Include="ExtensibleEnumerationGlobalizationServiceExtensionsTest.cs" />
     <Compile Include="ExtensibleEnumerationGlobalizationServiceIntegrationTest.cs" />
     <Compile Include="ExtensibleEnumerationGlobalizationServiceTest.cs" />
+    <Compile Include="Obsolete\ExtensibleEnumExtensionsIntegrationTest.cs" />
     <Compile Include="IExtensibleEnumerationGlobalizationServiceTest.cs" />
     <Compile Include="TestDomain\Color.cs" />
     <Compile Include="TestDomain\ColorExtensions.cs" />

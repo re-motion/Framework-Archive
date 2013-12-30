@@ -1,4 +1,4 @@
-// This file is part of the re-motion Core Framework (www.re-motion.org)
+﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -14,21 +14,22 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
+using System;
+using NUnit.Framework;
 using Remotion.ExtensibleEnums;
+using Remotion.UnitTests.ExtensibleEnums.TestDomain;
 
-namespace Remotion.UnitTests.ExtensibleEnums.TestDomain
+namespace Remotion.UnitTests.ExtensibleEnums
 {
-  [Sample]
-  public static class LightColorExtensions
+  [TestFixture]
+  public class ExtensibleEnumExtensionsIntegrationTest
   {
-    public static Color LightRed (this ExtensibleEnumDefinition<Color> definition)
+    [Obsolete]
+    [Test]
+    public void GetExtensibleEnumerationValueDisplayName_IntegrationTest ()
     {
-      return new Color ("LightRed");
-    }
-
-    public static Color LightBlue (this ExtensibleEnumDefinition<Color> definition)
-    {
-      return new Color ("LightBlue");
+      Assert.That (ExtensibleEnumWithResources.Values.Value1().GetLocalizedName(), Is.EqualTo ("Wert1"));
     }
   }
 }

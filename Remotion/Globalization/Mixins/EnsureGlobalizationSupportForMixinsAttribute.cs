@@ -16,20 +16,15 @@
 // 
 
 using System;
-using NUnit.Framework;
-using Remotion.ExtensibleEnums;
-using Remotion.UnitTests.ExtensibleEnums.TestDomain;
 
-namespace Remotion.UnitTests.ExtensibleEnums
+namespace Remotion.Mixins.Globalization
 {
-  [TestFixture]
-  public class ExtensibleEnumExtensionsTest
+  /// <summary>
+  /// Apply this <see cref="Attribute"/> to an assembly to force the inclusing of the mixins-extension for globalization.
+  /// </summary>
+  [AttributeUsage (AttributeTargets.Assembly)]
+  public class EnsureGlobalizationSupportForMixinsAttribute : Attribute
   {
-    [Obsolete]
-    [Test]
-    public void GetExtensibleEnumerationValueDisplayName_IntegrationTest ()
-    {
-      Assert.That (ExtensibleEnumWithResources.Values.Value1().GetLocalizedName(), Is.EqualTo ("Wert1"));
-    }
+     
   }
 }

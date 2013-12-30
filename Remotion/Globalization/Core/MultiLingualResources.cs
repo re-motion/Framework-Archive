@@ -31,11 +31,21 @@ namespace Remotion.Globalization
         new DoubleCheckedLockingContainer<IResourceManagerResolver> (() => SafeServiceLocator.Current.GetInstance<IResourceManagerResolver>());
 
     /// <summary>
-    ///   Returns an instance of <c>IResourceManager</c> for the resource container specified
+    ///   Returns an instance of <see cref="IResourceManager"/> for the resource container specified
     ///   in the class declaration of the type.
     /// </summary>
-    /// <include file='..\doc\include\Globalization\MultiLingualResourcesAttribute.xml' path='/MultiLingualResourcesAttribute/GetResourceManager/Common/*' />
-    /// <include file='..\doc\include\Globalization\MultiLingualResourcesAttribute.xml' path='/MultiLingualResourcesAttribute/GetResourceManager/param[@name="objectType" or @name="includeHierarchy"]' />
+    /// <remarks>
+    ///   <see cref="ResourceManagerWrapper"/>s are cached after their first initalization.
+    /// </remarks>
+    /// <param name="objectType">
+    ///   The type for which the resource manager is wanted.
+    /// </param>
+    /// <param name="includeHierarchy">
+    ///   Include the resource managers for the base types.
+    /// </param>
+    /// <returns>
+    ///   The <see cref="ResourceManagerWrapper"/> containing the type's resource containers.
+    /// </returns>
     [Obsolete ("Retrieve IGlobalizationService from IoC container and use IGlobalizationService.GetResourceManager (objectType). (Version 1.13.223.0)")]
     public static IResourceManager GetResourceManager (Type objectType, bool includeHierarchy)
     {
@@ -59,11 +69,18 @@ namespace Remotion.Globalization
     }
 
     /// <summary>
-    ///   Returns an instance of <c>IResourceManager</c> for the resource container specified
+    ///   Returns an instance of <see cref="IResourceManager"/> for the resource container specified
     ///   in the class declaration of the type.
     /// </summary>
-    /// <include file='..\doc\include\Globalization\MultiLingualResourcesAttribute.xml' path='/MultiLingualResourcesAttribute/GetResourceManager/Common/*' />
-    /// <include file='..\doc\include\Globalization\MultiLingualResourcesAttribute.xml' path='/MultiLingualResourcesAttribute/GetResourceManager/param[@name="objectType"]' />
+    /// <remarks>
+    ///   <see cref="ResourceManagerWrapper"/>s are cached after their first initalization.
+    /// </remarks>
+    /// <param name="objectType">
+    ///   The type for which the resource manager is wanted.
+    /// </param>
+    /// <returns>
+    ///   The <see cref="ResourceManagerWrapper"/> containing the type's resource containers.
+    /// </returns>
     [Obsolete ("Retrieve IGlobalizationService from IoC container and use IGlobalizationService.GetResourceManager (objectType). Note: This method did not include the hierarchy but IGlobalizationService will always include the hierarchy. (Version 1.13.223.0)")]
     public static IResourceManager GetResourceManager (Type objectType)
     {

@@ -29,7 +29,7 @@ using Remotion.Utilities;
 namespace Remotion.Globalization.Implementation
 {
   /// <summary>
-  ///   A wrapper for the .net Framework <c>ResourceManager</c> implementation.
+  ///   A wrapper for the .net Framework <see cref="System.Resources.ResourceManager"/> implementation.
   /// </summary>
   /// <remarks>
   ///   <para>
@@ -47,6 +47,14 @@ namespace Remotion.Globalization.Implementation
 
     private static readonly ILog s_log = LogManager.GetLogger (typeof (ResourceManagerWrapper));
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="resourceManagers">
+    ///   The <see cref="System.Resources.ResourceManager"/> array to be wrapped.
+    ///   The <paramref name="resourceManagers"/> must not be emtpy and no instance may be <see langname="null"/>.
+    /// </param>
+    /// <returns></returns>
     public static ResourceManagerSet CreateWrapperSet (IEnumerable<ResourceManager> resourceManagers)
     {
       ArgumentUtility.CheckNotNull ("resourceManagers", resourceManagers);
@@ -66,7 +74,9 @@ namespace Remotion.Globalization.Implementation
     /// <summary>
     ///   Constructor for wrapping multiple resource managers
     /// </summary>
-    /// <include file='..\..\doc\include\Globalization\ResourceManagerWrapper.xml' path='ResourceManagerWrapper/Constructor/param[@name="resourceManager"]' />
+    /// <param name="resourceManager">
+    ///   The <see cref="System.Resources.ResourceManager"/> to be wrapped. Must not be <see langname="null"/>.
+    /// </param>
     public ResourceManagerWrapper (ResourceManager resourceManager)
     {
       ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
@@ -76,7 +86,7 @@ namespace Remotion.Globalization.Implementation
     // methods and properties
 
     /// <summary>
-    ///   Gets the wrapped <c>ResourceManager</c> instance. 
+    ///   Gets the wrapped <see cref="System.Resources.ResourceManager"/> instance. 
     /// </summary>
     public ResourceManager ResourceManager
     {
@@ -93,9 +103,23 @@ namespace Remotion.Globalization.Implementation
     }
 
     /// <summary>
-    ///   Searches for all string resources inside the resource manager whose name is prefixed with a matching tag.
+    ///   Searches for all string resources inside the <see cref="System.Resources.ResourceManager"/> whose name is prefixed with a matching tag.
     /// </summary>
-    /// <include file='..\..\doc\include\Globalization\ResourceManagerWrapper.xml' path='ResourceManagerWrapper/GetAllStrings/remarks' />
+    /// <remarks>
+    /// <para>
+    ///   If a duplicate ID is found, the ID from the last ResourceManager wins.
+    /// </para><para>
+    ///   Fallback:
+    ///     <list type="number">
+    ///       <item>
+    ///         Resource hierarchy for current culture.
+    ///       </item>
+    ///       <item>
+    ///         Resource hierarchies for less specific cultures
+    ///       </item>
+    ///     </list>
+    ///   </para>
+    /// </remarks>
     public NameValueCollection GetAllStrings (string prefix)
     {
       return _cachedResourceSet.GetOrCreateValue (
