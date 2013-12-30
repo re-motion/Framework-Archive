@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Security.AccessControl;
 using Microsoft.Practices.ServiceLocation;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
@@ -163,7 +164,10 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting
 
       var obj1 = new object();
       var obj2 = new object();
-      using (new ServiceLocatorScope (typeof (object), () => obj1, () => obj2))
+      using (new ServiceLocatorScope (
+          typeof (object),
+          Tuple.Create ((Func<object>) (() => obj1), RegistrationType.Multiple),
+          Tuple.Create ((Func<object>) (() => obj2), RegistrationType.Multiple)))
       {
         Assert.That (ServiceLocator.Current, Is.Not.SameAs (_locator1));
         Assert.That (ServiceLocator.Current, Is.TypeOf<DefaultServiceLocator>());

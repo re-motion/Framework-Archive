@@ -63,7 +63,10 @@ namespace Remotion.SecurityManager.UnitTests
       try
       {
         var serviceLocator = DefaultServiceLocator.Create();
-        serviceLocator.Register (typeof (IGlobalAccessTypeCache), () => new NullGlobalAccessTypeCache());
+        serviceLocator.Register (
+            typeof (IGlobalAccessTypeCache),
+            Tuple.Create ((Func<object>) (() => new NullGlobalAccessTypeCache()),
+            RegistrationType.Multiple));
         ServiceLocator.SetLocatorProvider (() => serviceLocator);
 
         ProviderCollection<StorageProviderDefinition> providers = new ProviderCollection<StorageProviderDefinition>();

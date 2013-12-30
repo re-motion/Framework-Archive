@@ -22,7 +22,7 @@ using Remotion.Utilities;
 namespace Remotion.Security
 {
   [Serializable]
-  [ImplementationFor (typeof (IGlobalAccessTypeCache), Position = 1, Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor (typeof (IGlobalAccessTypeCache), Position = 1, Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple)]
   public class NullGlobalAccessTypeCache : IGlobalAccessTypeCache
   {
     public NullGlobalAccessTypeCache ()

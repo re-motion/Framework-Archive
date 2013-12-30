@@ -309,14 +309,15 @@ namespace Remotion.ServiceLocation
     /// <param name="concreteImplementationType">The type of the concrete implementation to be instantiated when an instance of the 
     /// <paramref name="serviceType"/> is retrieved.</param>
     /// <param name="lifetime">The lifetime of the instances.</param>
+    /// <param name="registrationType">The registration type of the implementation.</param>
     /// <exception cref="InvalidOperationException">An instance of the <paramref name="serviceType"/> has already been retrieved. Registering factories
     /// or concrete implementations can only be done before any instances are retrieved.</exception>
-    public void Register (Type serviceType, Type concreteImplementationType, LifetimeKind lifetime)
+    public void Register (Type serviceType, Type concreteImplementationType, LifetimeKind lifetime, RegistrationType registrationType = RegistrationType.Single)
     {
       ArgumentUtility.CheckNotNull ("serviceType", serviceType);
       ArgumentUtility.CheckNotNull ("concreteImplementationType", concreteImplementationType);
 
-      var serviceImplemetation = new ServiceImplementationInfo (concreteImplementationType, lifetime);
+      var serviceImplemetation = new ServiceImplementationInfo (concreteImplementationType, lifetime, registrationType);
       ServiceConfigurationEntry serviceConfigurationEntry;
       try
       {

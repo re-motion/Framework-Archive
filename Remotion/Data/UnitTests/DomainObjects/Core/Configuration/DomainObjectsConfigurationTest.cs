@@ -206,7 +206,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Configuration
     {
     }
 
-    [ImplementationFor(typeof (ICustomStorageObjectFactory))]
+    [ImplementationFor(typeof (ICustomStorageObjectFactory), RegistrationType = RegistrationType.Multiple)]
     public class CustomStorageObjectFactory : SqlStorageObjectFactory, ICustomStorageObjectFactory
     {
     }

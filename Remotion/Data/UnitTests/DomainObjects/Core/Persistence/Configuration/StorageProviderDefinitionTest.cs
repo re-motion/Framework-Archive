@@ -27,6 +27,7 @@ using Remotion.Data.DomainObjects.Tracing;
 using Remotion.Development.UnitTesting;
 using Remotion.Linq.SqlBackend.SqlPreparation;
 using Remotion.Mixins;
+using Remotion.ServiceLocation;
 using Rhino.Mocks;
 
 namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Configuration
@@ -121,7 +122,11 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Configuration
     [Test]
     public void Initialize_NameValueCollection_WithServiceLocatorConfiguration ()
     {
-      using (new ServiceLocatorScope (typeof (StorageObjectFactoryFake), typeof (DerivedStorageObjectFactoryFake)))
+      using (
+          new ServiceLocatorScope (
+              typeof (StorageObjectFactoryFake),
+              typeof (DerivedStorageObjectFactoryFake),
+              registrationType: RegistrationType.Multiple))
       {
         var nameValueCollection = new NameValueCollection { { "factoryType", typeof (StorageObjectFactoryFake).AssemblyQualifiedName } };
 
@@ -135,7 +140,11 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Persistence.Configuration
     [Test]
     public void Initialize_NameValueCollection_WithServiceLocatorConfiguration_InstantiationError ()
     {
-      using (new ServiceLocatorScope (typeof (StorageObjectFactoryFake), typeof (DerivedStorageObjectFactoryFakeWithUnresolvedCtorParameter)))
+      using (
+          new ServiceLocatorScope (
+              typeof (StorageObjectFactoryFake),
+              typeof (DerivedStorageObjectFactoryFakeWithUnresolvedCtorParameter),
+              registrationType: RegistrationType.Multiple))
       {
         var nameValueCollection = new NameValueCollection { { "factoryType", typeof (StorageObjectFactoryFake).AssemblyQualifiedName } };
 
