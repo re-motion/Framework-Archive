@@ -59,8 +59,8 @@
     </Compile>
     <Compile Include="ICompoundGlobalizationServiceTest.cs" />
     <Compile Include="IGlobalizationServiceTest.cs" />
-    <Compile Include="MixedMultiLingualResourcesTests\ExistsResourceTest.cs" />
-    <Compile Include="MixedMultiLingualResourcesTests\GetResourceManagerTest.cs" />
+    <Compile Include="Obsolete\MixedMultiLingualResourcesTests\ExistsResourceTest.cs" />
+    <Compile Include="Obsolete\MixedMultiLingualResourcesTests\GetResourceManagerTest.cs" />
     <Compile Include="MixinGlobalizationServiceTest.cs" />
     <Compile Include="TestDomain\Resources\ClassWithResources.Designer.cs">
       <DependentUpon>ClassWithResources.resx</DependentUpon>
@@ -112,6 +112,7 @@
       <Name>Globalization.Mixins</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

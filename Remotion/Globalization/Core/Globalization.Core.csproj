@@ -76,6 +76,7 @@
     <Compile Include="IObjectWithResources.cs" />
     <Compile Include="IResourceManager.cs" />
     <Compile Include="IResourcesAttribute.cs" />
+    <Compile Include="Obsolete\MixedMultiLingualResources.cs" />
     <Compile Include="Obsolete\MultiLingualResources.cs" />
     <Compile Include="MultiLingualResourcesAttribute.cs" />
     <Compile Include="NullResourceManager.cs" />

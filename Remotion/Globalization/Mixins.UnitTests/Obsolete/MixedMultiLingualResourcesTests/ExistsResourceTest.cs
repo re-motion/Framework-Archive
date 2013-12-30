@@ -19,8 +19,9 @@ using System;
 using NUnit.Framework;
 using Remotion.Globalization.Mixins.UnitTests.TestDomain;
 using Remotion.Mixins;
+using Remotion.Mixins.Globalization;
 
-namespace Remotion.Globalization.Mixins.UnitTests.MixedMultiLingualResourcesTests
+namespace Remotion.Globalization.Mixins.UnitTests.Obsolete.MixedMultiLingualResourcesTests
 {
   [Obsolete]
   [TestFixture]
