@@ -23,7 +23,7 @@ using Remotion.Globalization.UnitTests.TestDomain;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 
-namespace Remotion.Globalization.UnitTests
+namespace Remotion.Globalization.UnitTests.IntegrationTests
 {
   [TestFixture]
   public class EnumerationGlobalizationServiceIntegrationTest

@@ -20,7 +20,7 @@ using NUnit.Framework;
 using Remotion.Globalization.Implementation;
 using Remotion.ServiceLocation;
 
-namespace Remotion.Globalization.UnitTests
+namespace Remotion.Globalization.UnitTests.Implementation
 {
   [TestFixture]
   public class IResourceManagerResolverTest

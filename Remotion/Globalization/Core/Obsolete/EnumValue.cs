@@ -14,4 +14,31 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
+using Remotion.Utilities;
+
+// ReSharper disable once CheckNamespace
+namespace Remotion.Globalization
+{
+  [Obsolete ("This struct is only used when retrieving enum values via EnumDescription, which is no obsolete, too. (Version 1.13.223.0)")]
+  public struct EnumValue
+  {
+    public readonly Enum Value;
+
+    public readonly string Description;
+
+    public long NumericValue
+    {
+      get { return Convert.ToInt64 (Value); }
+    }
+
+    public EnumValue (Enum value, string description)
+    {
+      ArgumentUtility.CheckNotNullOrEmpty ("description", description);
+
+      Value = value;
+      Description = description;
+    }
+  }
+}

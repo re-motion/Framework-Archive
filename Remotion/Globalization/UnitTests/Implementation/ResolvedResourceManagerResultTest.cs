@@ -20,7 +20,7 @@ using NUnit.Framework;
 using Remotion.Globalization.Implementation;
 using Rhino.Mocks;
 
-namespace Remotion.Globalization.UnitTests
+namespace Remotion.Globalization.UnitTests.Implementation
 {
   [TestFixture]
   public class ResolvedResourceManagerResultTest

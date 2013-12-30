@@ -20,6 +20,7 @@ using Remotion.Globalization.Implementation;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 
+// ReSharper disable once CheckNamespace
 namespace Remotion.Globalization
 {
   /// <summary>

@@ -22,7 +22,7 @@ using Remotion.Globalization.UnitTests.TestDomain;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
 
-namespace Remotion.Globalization.UnitTests
+namespace Remotion.Globalization.UnitTests.IntegrationTests
 {
   [TestFixture]
   public class MemberInformationGlobalizationServiceIntegrationTest

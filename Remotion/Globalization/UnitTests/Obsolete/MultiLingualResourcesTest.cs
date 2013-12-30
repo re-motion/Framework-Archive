@@ -20,7 +20,7 @@ using System.Linq;
 using NUnit.Framework;
 using Remotion.Globalization.UnitTests.TestDomain;
 
-namespace Remotion.Globalization.UnitTests
+namespace Remotion.Globalization.UnitTests.Obsolete
 {
   [Obsolete]
   [TestFixture]

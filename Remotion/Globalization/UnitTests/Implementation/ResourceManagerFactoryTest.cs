@@ -21,7 +21,7 @@ using NUnit.Framework;
 using Remotion.Development.UnitTesting;
 using Remotion.Globalization.Implementation;
 
-namespace Remotion.Globalization.UnitTests
+namespace Remotion.Globalization.UnitTests.Implementation
 {
   [TestFixture]
   public class ResourceManagerFactoryTest

@@ -53,10 +53,10 @@
     <Compile Include="..\..\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
-    <Compile Include="EnumDescription.cs" />
+    <Compile Include="Obsolete\EnumDescription.cs" />
     <Compile Include="EnumDescriptionAttribute.cs" />
     <Compile Include="EnumDescriptionResourceAttribute.cs" />
-    <Compile Include="EnumValue.cs" />
+    <Compile Include="Obsolete\EnumValue.cs" />
     <Compile Include="GlobalizationServiceExtensions.cs" />
     <Compile Include="ICompoundGlobalizationService.cs" />
     <Compile Include="IEnumerationGlobalizationService.cs" />
@@ -76,7 +76,7 @@
     <Compile Include="IObjectWithResources.cs" />
     <Compile Include="IResourceManager.cs" />
     <Compile Include="IResourcesAttribute.cs" />
-    <Compile Include="MultiLingualResources.cs" />
+    <Compile Include="Obsolete\MultiLingualResources.cs" />
     <Compile Include="MultiLingualResourcesAttribute.cs" />
     <Compile Include="NullResourceManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

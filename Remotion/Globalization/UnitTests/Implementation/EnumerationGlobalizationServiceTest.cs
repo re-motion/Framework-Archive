@@ -22,7 +22,7 @@ using Remotion.Globalization.UnitTests.TestDomain;
 using Remotion.Reflection;
 using Rhino.Mocks;
 
-namespace Remotion.Globalization.UnitTests
+namespace Remotion.Globalization.UnitTests.Implementation
 {
   [TestFixture]
   public class EnumerationGlobalizationServiceTest

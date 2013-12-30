@@ -21,7 +21,7 @@ using NUnit.Framework;
 using Remotion.Globalization.UnitTests.TestDomain;
 using Remotion.Utilities;
 
-namespace Remotion.Globalization.UnitTests
+namespace Remotion.Globalization.UnitTests.Obsolete
 {
   [TestFixture]
   [Obsolete]

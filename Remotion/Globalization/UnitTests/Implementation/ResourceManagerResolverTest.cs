@@ -21,7 +21,7 @@ using NUnit.Framework;
 using Remotion.Globalization.Implementation;
 using Remotion.Globalization.UnitTests.TestDomain;
 
-namespace Remotion.Globalization.UnitTests
+namespace Remotion.Globalization.UnitTests.Implementation
 {
   [TestFixture]
   public class ResourceManagerResolverTest
