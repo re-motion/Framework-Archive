@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{DE668AD9-4C26-4771-B641-9E4B3E06558A}</ProjectGuid>
+    <ProjectGuid>{BDAE7146-01A8-4DC1-80C2-0E67291AC3ED}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Remotion.Globalization.ExtensibleEnums.UnitTests</RootNamespace>
-    <AssemblyName>Remotion.Globalization.ExtensibleEnums.UnitTests</AssemblyName>
+    <RootNamespace>Remotion.ExtensibleEnums</RootNamespace>
+    <AssemblyName>Remotion.ExtensibleEnums</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -20,8 +20,9 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <NoWarn>1591;0419</NoWarn>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <NoWarn>0067</NoWarn>
+    <DocumentationFile>bin\Debug\Remotion.ExtensibleEnums.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -30,8 +31,9 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <NoWarn>0067</NoWarn>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <NoWarn>1591;0419</NoWarn>
+    <DocumentationFile>bin\Release\Remotion.ExtensibleEnums.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
@@ -44,12 +46,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\prereq\Assemblies\CommonServiceLocator-1.0\net-2.0\Microsoft.Practices.ServiceLocation.dll</HintPath>
     </Reference>
-    <Reference Include="nunit.framework">
-      <HintPath>..\..\..\prereq\Assemblies\NUnit-2.6\net-2.0\nunit.framework.dll</HintPath>
-    </Reference>
-    <Reference Include="Rhino.Mocks">
-      <HintPath>..\..\..\prereq\Assemblies\Rhino.Mocks-3.6\net-3.5\Rhino.Mocks.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
   </ItemGroup>
@@ -57,22 +53,23 @@
     <Compile Include="..\..\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
-    <Compile Include="ExtensibleEnumGlobalizationServiceExtensionsTest.cs" />
-    <Compile Include="ExtensibleEnumGlobalizationServiceIntegrationTest.cs" />
-    <Compile Include="ExtensibleEnumGlobalizationServiceTest.cs" />
-    <Compile Include="Obsolete\ExtensibleEnumExtensionsIntegrationTest.cs" />
-    <Compile Include="IExtensibleEnumGlobalizationServiceTest.cs" />
-    <Compile Include="TestDomain\Color.cs" />
-    <Compile Include="TestDomain\ColorExtensions.cs" />
-    <Compile Include="TestDomain\LightColorExtensions.cs" />
-    <Compile Include="TestDomain\MetallicColor.cs" />
-    <Compile Include="TestDomain\MetallicColorExtensions.cs" />
-    <Compile Include="TestDomain\Resources\ColorExtensions.Designer.cs">
-      <DependentUpon>ColorExtensions.resx</DependentUpon>
-    </Compile>
-    <Compile Include="TestDomain\Resources\LightColorExtensions.Designer.cs">
-      <DependentUpon>LightColorExtensions.resx</DependentUpon>
-    </Compile>
+    <Compile Include="ExtensibleEnum.cs" />
+    <Compile Include="ExtensibleEnumConverter.cs" />
+    <Compile Include="ExtensibleEnumDefinition.cs" />
+    <Compile Include="ExtensibleEnumExtensions.cs" />
+    <Compile Include="ExtensibleEnumInfo.cs" />
+    <Compile Include="ExtensibleEnumPositionAttribute.cs" />
+    <Compile Include="ExtensibleEnumUtility.cs" />
+    <Compile Include="IExtensibleEnum.cs" />
+    <Compile Include="IExtensibleEnumDefinition.cs" />
+    <Compile Include="IExtensibleEnumInfo.cs" />
+    <Compile Include="Infrastructure\ExtensibleEnumDefinitionCache.cs" />
+    <Compile Include="Infrastructure\ExtensibleEnumInfoComparer.cs" />
+    <Compile Include="Infrastructure\ExtensibleEnumTypeConverterFactory.cs" />
+    <Compile Include="Infrastructure\ExtensibleEnumValueDiscoveryService.cs" />
+    <Compile Include="Infrastructure\IExtensibleEnumValueDiscoveryService.cs" />
+    <Compile Include="InvalidExtensibleEnumDefinitionException.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\remotion.snk">
@@ -83,25 +80,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="TestDomain\Resources\ColorExtensions.resx" />
-    <EmbeddedResource Include="TestDomain\Resources\LightColorExtensions.resx" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Core\Core\Core.Core.csproj">
+    <ProjectReference Include="..\Core\Core.Core.csproj">
       <Project>{2AA369EC-A4E7-4D75-9101-EFA90E902625}</Project>
       <Name>Core.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Core\ExtensibleEnums\Core.ExtensibleEnums.csproj">
-      <Project>{BDAE7146-01A8-4DC1-80C2-0E67291AC3ED}</Project>
-      <Name>Core.ExtensibleEnums</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Core\Globalization.Core.csproj">
-      <Project>{AC6AB6EB-F6AC-45A4-88A7-877D11A65CCB}</Project>
-      <Name>Globalization.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ExtensibleEnums\Globalization.ExtensibleEnums.csproj">
-      <Project>{E585C288-E534-42F0-8F43-96F98BB18BE2}</Project>
-      <Name>Globalization.ExtensibleEnums</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
