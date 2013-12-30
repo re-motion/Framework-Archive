@@ -62,10 +62,10 @@
     <Compile Include="MixedMultiLingualResourcesTests\ExistsResourceTest.cs" />
     <Compile Include="MixedMultiLingualResourcesTests\GetResourceManagerTest.cs" />
     <Compile Include="MixinGlobalizationServiceTest.cs" />
-    <Compile Include="Resources\ClassWithResources.Designer.cs">
+    <Compile Include="TestDomain\Resources\ClassWithResources.Designer.cs">
       <DependentUpon>ClassWithResources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Resources\MixinAddingResources.Designer.cs">
+    <Compile Include="TestDomain\Resources\MixinAddingResources.Designer.cs">
       <DependentUpon>MixinAddingResources.resx</DependentUpon>
     </Compile>
     <Compile Include="TestDomain\ClassWithMixinResource.cs" />
@@ -91,8 +91,8 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\ClassWithResources.resx" />
-    <EmbeddedResource Include="Resources\MixinAddingResources.resx" />
+    <EmbeddedResource Include="TestDomain\Resources\ClassWithResources.resx" />
+    <EmbeddedResource Include="TestDomain\Resources\MixinAddingResources.resx" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core\Core.Core.csproj">

@@ -47,7 +47,7 @@ namespace Remotion.Globalization.ExtensibleEnums.UnitTests
       resourceManagerStub
           .Stub (
               _ => _.TryGetString (
-                  Arg.Is ("Remotion.UnitTests.ExtensibleEnums.TestDomain.ExtensibleEnumWithResourcesExtensions.Value1"),
+                  Arg.Is ("Remotion.Globalization.ExtensibleEnums.UnitTests.TestDomain.ExtensibleEnumWithResourcesExtensions.Value1"),
                   out Arg<string>.Out ("expected").Dummy))
           .Return (true);
 
@@ -63,6 +63,7 @@ namespace Remotion.Globalization.ExtensibleEnums.UnitTests
 
       string resourceValue;
       Assert.That (_service.TryGetExtensibleEnumerationValueDisplayName (ExtensibleEnumWithResources.Values.Value1 (), out resourceValue), Is.False);
+      Assert.That (resourceValue, Is.Null);
     }
   }
 }

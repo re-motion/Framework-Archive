@@ -41,7 +41,7 @@ namespace Remotion.Globalization.UnitTests
 
       Assert.That (result.IsNull, Is.False);
       Assert.That (result.ResourceManager.IsNull, Is.False);
-      Assert.That (result.ResourceManager.Name, Is.EqualTo ("Remotion.UnitTests.Globalization.TestDomain.Resources.ClassWithResources"));
+      Assert.That (result.ResourceManager.Name, Is.EqualTo ("Remotion.Globalization.UnitTests.TestDomain.Resources.ClassWithResources"));
       Assert.That (result.DefinedResourceManager, Is.SameAs (result.ResourceManager));
       Assert.That (result.InheritedResourceManager.IsNull, Is.True);
     }

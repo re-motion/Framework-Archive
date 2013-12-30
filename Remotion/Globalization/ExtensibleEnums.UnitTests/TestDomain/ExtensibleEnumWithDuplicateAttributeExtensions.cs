@@ -20,8 +20,8 @@ using Remotion.ExtensibleEnums;
 
 namespace Remotion.Globalization.ExtensibleEnums.UnitTests.TestDomain
 {
-  [MultiLingualResources ("Remotion.UnitTests.Resources.ExtensibleEnumWithDuplicateAttributeExtensions")]
-  [MultiLingualResources ("Remotion.UnitTests.Resources.ExtensibleEnumWithDuplicateAttributeExtensions")]
+  [MultiLingualResources ("Remotion.Globalization.ExtensibleEnums.UnitTests.TestDomain.Resources.ExtensibleEnumWithDuplicateAttributeExtensions")]
+  [MultiLingualResources ("Remotion.Globalization.ExtensibleEnums.UnitTests.TestDomain.Resources.ExtensibleEnumWithDuplicateAttributeExtensions")]
   public static class ExtensibleEnumWithDuplicateAttributeExtensions
   {
     public static ExtensibleEnumWithDuplicateAttribute Value1 (this ExtensibleEnumDefinition<ExtensibleEnumWithDuplicateAttribute> definition)

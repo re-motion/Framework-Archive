@@ -10,7 +10,7 @@
 
 using System;
 
-namespace Remotion.Globalization.Mixins.UnitTests.Resources {
+namespace Remotion.Globalization.Mixins.UnitTests.TestDomain.Resources {
   /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>

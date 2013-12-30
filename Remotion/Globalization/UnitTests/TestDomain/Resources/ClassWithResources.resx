@@ -112,15 +112,15 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="property:PropertyWithShortIdentifier" xml:space="preserve">
     <value>Short Property ID</value>
   </data>
-  <data name="property:Remotion.UnitTests.Globalization.TestDomain.ClassWithProperties.PropertyWithLongIdentifier" xml:space="preserve">
+  <data name="property:Remotion.Globalization.UnitTests.TestDomain.ClassWithProperties.PropertyWithLongIdentifier" xml:space="preserve">
     <value>Long Property ID</value>
   </data>
   <data name="property:Value1" xml:space="preserve">
@@ -129,7 +129,7 @@
   <data name="type:ClassWithShortResourceIdentifier" xml:space="preserve">
     <value>Short Type ID</value>
   </data>
-  <data name="type:Remotion.UnitTests.Globalization.TestDomain.ClassWithLongResourceIdentifier" xml:space="preserve">
+  <data name="type:Remotion.Globalization.UnitTests.TestDomain.ClassWithLongResourceIdentifier" xml:space="preserve">
     <value>Long Type ID</value>
   </data>
 </root>

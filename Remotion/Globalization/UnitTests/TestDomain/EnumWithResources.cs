@@ -19,7 +19,7 @@ using System;
 
 namespace Remotion.Globalization.UnitTests.TestDomain
 {
-  [EnumDescriptionResource ("Remotion.UnitTests.Globalization.TestDomain.Resources.EnumWithResources")]
+  [EnumDescriptionResource ("Remotion.Globalization.UnitTests.TestDomain.Resources.EnumWithResources")]
   public enum EnumWithResources
   {
     Value1 = 1,

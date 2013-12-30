@@ -21,7 +21,7 @@ using Remotion.ExtensibleEnums;
 
 namespace Remotion.Globalization.ExtensibleEnums.UnitTests.TestDomain
 {
-  [MultiLingualResources ("Remotion.UnitTests.ExtensibleEnums.TestDomain.Resources.ExtensibleEnumWithResources")]
+  [MultiLingualResources ("Remotion.Globalization.ExtensibleEnums.UnitTests.TestDomain.Resources.ExtensibleEnumWithResources")]
   public static class ExtensibleEnumWithResourcesExtensions
   {
     public static ExtensibleEnumWithResources Value1 (this ExtensibleEnumDefinition<ExtensibleEnumWithResources> definition)

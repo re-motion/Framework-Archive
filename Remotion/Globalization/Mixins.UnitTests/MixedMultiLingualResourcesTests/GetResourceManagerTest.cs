@@ -29,7 +29,7 @@ namespace Remotion.Globalization.Mixins.UnitTests.MixedMultiLingualResourcesTest
   {
     [Test]
     [ExpectedException (typeof (ResourceException), ExpectedMessage =
-        "Type Remotion.Mixins.UnitTests.Core.Globalization.TestDomain.ClassWithoutMultiLingualResourcesAttributes "
+        "Type Remotion.Globalization.Mixins.UnitTests.TestDomain.ClassWithoutMultiLingualResourcesAttributes "
         + "and its base classes do not define a resource attribute.")]
     public void NoAttributes_NoInheritance ()
     {
@@ -38,7 +38,7 @@ namespace Remotion.Globalization.Mixins.UnitTests.MixedMultiLingualResourcesTest
 
     [Test]
     [ExpectedException (typeof (ResourceException), ExpectedMessage =
-        "Type Remotion.Mixins.UnitTests.Core.Globalization.TestDomain.ClassWithoutMultiLingualResourcesAttributes "
+        "Type Remotion.Globalization.Mixins.UnitTests.TestDomain.ClassWithoutMultiLingualResourcesAttributes "
         + "and its base classes do not define a resource attribute.")]
     public void NoAttributes_Inheritance ()
     {
