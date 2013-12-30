@@ -17,13 +17,11 @@
 
 using System;
 using NUnit.Framework;
-using Remotion.ExtensibleEnums.Globalization;
-using Remotion.Globalization;
+using Remotion.Globalization.ExtensibleEnums.UnitTests.TestDomain;
 using Remotion.Reflection;
-using Remotion.UnitTests.ExtensibleEnums.TestDomain;
 using Rhino.Mocks;
 
-namespace Remotion.UnitTests.ExtensibleEnums.Globalization
+namespace Remotion.Globalization.ExtensibleEnums.UnitTests
 {
   [TestFixture]
   public class ExtensibleEnumerationGlobalizationServiceTest

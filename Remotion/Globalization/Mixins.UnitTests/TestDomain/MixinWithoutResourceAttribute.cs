@@ -17,7 +17,7 @@
 
 using System;
 
-namespace Remotion.Mixins.UnitTests.Core.Globalization.TestDomain
+namespace Remotion.Globalization.Mixins.UnitTests.TestDomain
 {
   public class MixinWithoutResourceAttribute
   {

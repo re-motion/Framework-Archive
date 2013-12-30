@@ -27,10 +27,10 @@ namespace Remotion.Globalization
   /// Defines an interface for resolving the <see cref="IResourceManager"/> for an <see cref="ITypeInformation"/>.
   /// </summary>
   /// <seealso cref="GlobalizationService"/>
-  /// <seealso cref="T:Remotion.Mixins.Globalization.MixinGlobalizationService"/>
+  /// <seealso cref="T:Remotion.Globalization.Mixins.MixinGlobalizationService"/>
   /// <threadsafety static="true" instance="true" />
   [ConcreteImplementation (
-      "Remotion.Mixins.Globalization.MixinGlobalizationService, Remotion.Globalization.Mixins, Version=<version>, Culture=neutral, PublicKeyToken=<publicKeyToken>",
+      "Remotion.Globalization.Mixins.MixinGlobalizationService, Remotion.Globalization.Mixins, Version=<version>, Culture=neutral, PublicKeyToken=<publicKeyToken>",
       ignoreIfNotFound: true,
       Position = 1, Lifetime = LifetimeKind.Singleton)]
   [ConcreteImplementation (typeof (GlobalizationService), Position = 0, Lifetime = LifetimeKind.Singleton)]

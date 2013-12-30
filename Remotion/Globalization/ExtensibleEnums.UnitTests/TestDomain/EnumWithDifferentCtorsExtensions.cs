@@ -14,10 +14,12 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using Remotion.ExtensibleEnums;
-using System.Reflection;
 
-namespace Remotion.UnitTests.ExtensibleEnums.TestDomain
+using System;
+using System.Reflection;
+using Remotion.ExtensibleEnums;
+
+namespace Remotion.Globalization.ExtensibleEnums.UnitTests.TestDomain
 {
   public static class EnumWithDifferentCtorsExtensions
   {

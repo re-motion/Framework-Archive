@@ -17,9 +17,10 @@
 
 using System;
 using JetBrains.Annotations;
+using Remotion.ExtensibleEnums;
 using Remotion.Utilities;
 
-namespace Remotion.ExtensibleEnums.Globalization
+namespace Remotion.Globalization.ExtensibleEnums
 {
   /// <summary>
   /// Provides extension methods for retrieving for retrieving the human-readable localized representation of an <see cref="IExtensibleEnum"/> object

@@ -18,9 +18,8 @@
 using System;
 using System.Reflection;
 using Remotion.ExtensibleEnums;
-using Remotion.Globalization;
 
-namespace Remotion.UnitTests.ExtensibleEnums.TestDomain
+namespace Remotion.Globalization.ExtensibleEnums.UnitTests.TestDomain
 {
   [MultiLingualResources ("Remotion.UnitTests.ExtensibleEnums.TestDomain.Resources.ExtensibleEnumWithResources")]
   public static class ExtensibleEnumWithResourcesExtensions

@@ -18,10 +18,9 @@
 using System;
 using NUnit.Framework;
 using Remotion.ExtensibleEnums;
-using Remotion.ExtensibleEnums.Globalization;
 using Rhino.Mocks;
 
-namespace Remotion.UnitTests.ExtensibleEnums.Globalization
+namespace Remotion.Globalization.ExtensibleEnums.UnitTests
 {
   [TestFixture]
   public class ExtensibleEnumerationGlobalizationServiceExtensionsTest

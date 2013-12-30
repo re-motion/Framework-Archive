@@ -14,7 +14,10 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-namespace Remotion.Mixins.UnitTests.Core.Globalization.TestDomain
+
+using System;
+
+namespace Remotion.Globalization.Mixins.UnitTests.TestDomain
 {
   public class ClassWithoutMultiLingualResourcesAttributes
   {

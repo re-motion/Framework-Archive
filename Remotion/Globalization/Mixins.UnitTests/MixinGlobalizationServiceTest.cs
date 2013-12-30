@@ -20,13 +20,12 @@ using System.Linq;
 using NUnit.Framework;
 using Remotion.Globalization;
 using Remotion.Globalization.Implementation;
-using Remotion.Mixins.Globalization;
-using Remotion.Mixins.UnitTests.Core.Globalization.TestDomain;
+using Remotion.Globalization.Mixins.UnitTests.TestDomain;
+using Remotion.Mixins;
 using Remotion.Reflection;
 using Rhino.Mocks;
 
-
-namespace Remotion.Mixins.UnitTests.Core.Globalization
+namespace Remotion.Globalization.Mixins.UnitTests
 {
   [TestFixture]
   public class MixinGlobalizationServiceTest

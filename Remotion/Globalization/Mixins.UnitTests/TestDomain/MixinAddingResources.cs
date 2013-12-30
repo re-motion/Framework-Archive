@@ -16,9 +16,8 @@
 // 
 
 using System;
-using Remotion.Globalization;
 
-namespace Remotion.Mixins.UnitTests.Core.Globalization.TestDomain
+namespace Remotion.Globalization.Mixins.UnitTests.TestDomain
 {
   [MultiLingualResources ("Remotion.Mixins.UnitTests.Core.Globalization.Resources.MixinAddingResources")]
   public class MixinAddingResources

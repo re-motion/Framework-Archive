@@ -18,9 +18,9 @@
 using System;
 using NUnit.Framework;
 using Remotion.ExtensibleEnums;
-using Remotion.UnitTests.ExtensibleEnums.TestDomain;
+using Remotion.Globalization.ExtensibleEnums.UnitTests.TestDomain;
 
-namespace Remotion.UnitTests.ExtensibleEnums
+namespace Remotion.Globalization.ExtensibleEnums.UnitTests.Obsolete
 {
   [TestFixture]
   public class ExtensibleEnumExtensionsIntegrationTest

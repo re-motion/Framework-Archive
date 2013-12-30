@@ -14,10 +14,10 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System;
-using Remotion.Globalization;
 
-namespace Remotion.UnitTests.Globalization.TestDomain
+using System;
+
+namespace Remotion.Globalization.UnitTests.TestDomain
 {
   [EnumDescriptionResource ("Remotion.UnitTests.Globalization.TestDomain.Resources.EnumWithResources")]
   public enum EnumWithResources

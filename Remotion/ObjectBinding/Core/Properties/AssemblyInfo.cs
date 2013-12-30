@@ -17,7 +17,7 @@
 using System;
 using System.Reflection;
 using System.Resources;
-using Remotion.Mixins.Globalization;
+using Remotion.Globalization.Mixins;
 
 [assembly: NeutralResourcesLanguage ("en")]
 

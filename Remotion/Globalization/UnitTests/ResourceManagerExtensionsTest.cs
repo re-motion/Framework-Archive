@@ -18,11 +18,10 @@
 using System;
 using System.Collections.Specialized;
 using NUnit.Framework;
-using Remotion.Globalization;
-using Remotion.UnitTests.Globalization.TestDomain;
+using Remotion.Globalization.UnitTests.TestDomain;
 using Rhino.Mocks;
 
-namespace Remotion.UnitTests.Globalization
+namespace Remotion.Globalization.UnitTests
 {
   [TestFixture]
   public class ResourceManagerExtensionsTest

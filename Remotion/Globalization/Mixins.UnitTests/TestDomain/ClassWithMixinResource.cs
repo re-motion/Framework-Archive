@@ -15,7 +15,10 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 
-namespace Remotion.Mixins.UnitTests.Core.Globalization.TestDomain
+using System;
+using Remotion.Mixins;
+
+namespace Remotion.Globalization.Mixins.UnitTests.TestDomain
 {
   [Uses(typeof(MixinAddingResources))]
   public class ClassWithMixinResource

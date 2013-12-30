@@ -18,11 +18,10 @@
 using System;
 using System.Globalization;
 using NUnit.Framework;
-using Remotion.Globalization;
-using Remotion.UnitTests.Globalization.TestDomain;
+using Remotion.Globalization.UnitTests.TestDomain;
 using Remotion.Utilities;
 
-namespace Remotion.UnitTests.Globalization
+namespace Remotion.Globalization.UnitTests
 {
   [TestFixture]
   [Obsolete]

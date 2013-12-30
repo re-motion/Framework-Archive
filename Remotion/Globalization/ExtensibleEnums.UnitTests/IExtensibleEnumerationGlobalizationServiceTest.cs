@@ -17,10 +17,9 @@
 
 using System;
 using NUnit.Framework;
-using Remotion.ExtensibleEnums.Globalization;
 using Remotion.ServiceLocation;
 
-namespace Remotion.UnitTests.ExtensibleEnums.Globalization
+namespace Remotion.Globalization.ExtensibleEnums.UnitTests
 {
   [TestFixture]
   public class IExtensibleEnumerationGlobalizationServiceTest

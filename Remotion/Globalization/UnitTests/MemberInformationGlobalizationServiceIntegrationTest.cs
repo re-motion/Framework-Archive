@@ -17,13 +17,12 @@
 
 using System;
 using NUnit.Framework;
-using Remotion.Globalization;
 using Remotion.Globalization.Implementation;
+using Remotion.Globalization.UnitTests.TestDomain;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
-using Remotion.UnitTests.Globalization.TestDomain;
 
-namespace Remotion.UnitTests.Globalization
+namespace Remotion.Globalization.UnitTests
 {
   [TestFixture]
   public class MemberInformationGlobalizationServiceIntegrationTest

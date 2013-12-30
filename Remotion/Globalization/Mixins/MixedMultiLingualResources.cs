@@ -18,13 +18,13 @@
 using System;
 using System.Linq;
 using Remotion.FunctionalProgramming;
-using Remotion.Globalization;
 using Remotion.Globalization.Implementation;
+using Remotion.Mixins;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 
-namespace Remotion.Mixins.Globalization
+namespace Remotion.Globalization.Mixins
 {
   /// <summary>
   /// Provides a variant of <see cref="MultiLingualResources"/> that can be used to have mixins add resource identifiers to a target

@@ -16,13 +16,11 @@
 // 
 
 using System;
-using System.Linq;
 using NUnit.Framework;
-using Remotion.Globalization;
 using Remotion.Globalization.Implementation;
 using Remotion.ServiceLocation;
 
-namespace Remotion.UnitTests.Globalization
+namespace Remotion.Globalization.UnitTests
 {
   [TestFixture]
   public class IEnumerationGlobalizationServiceTest

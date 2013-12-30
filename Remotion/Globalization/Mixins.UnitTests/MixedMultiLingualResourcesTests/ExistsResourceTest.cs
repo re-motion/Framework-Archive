@@ -17,10 +17,10 @@
 
 using System;
 using NUnit.Framework;
-using Remotion.Mixins.Globalization;
-using Remotion.Mixins.UnitTests.Core.Globalization.TestDomain;
+using Remotion.Globalization.Mixins.UnitTests.TestDomain;
+using Remotion.Mixins;
 
-namespace Remotion.Mixins.UnitTests.Core.Globalization.MixedMultiLingualResourcesTests
+namespace Remotion.Globalization.Mixins.UnitTests.MixedMultiLingualResourcesTests
 {
   [Obsolete]
   [TestFixture]

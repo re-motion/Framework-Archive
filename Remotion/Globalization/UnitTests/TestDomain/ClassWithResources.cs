@@ -16,9 +16,8 @@
 // 
 
 using System;
-using Remotion.Globalization;
 
-namespace Remotion.UnitTests.Globalization.TestDomain
+namespace Remotion.Globalization.UnitTests.TestDomain
 {
   [MultiLingualResources ("Remotion.UnitTests.Globalization.TestDomain.Resources.ClassWithResources")]
   public class ClassWithResources

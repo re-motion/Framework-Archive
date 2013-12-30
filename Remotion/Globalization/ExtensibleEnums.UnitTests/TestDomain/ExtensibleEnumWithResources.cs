@@ -19,7 +19,7 @@ using System;
 using System.Reflection;
 using Remotion.ExtensibleEnums;
 
-namespace Remotion.UnitTests.ExtensibleEnums.TestDomain
+namespace Remotion.Globalization.ExtensibleEnums.UnitTests.TestDomain
 {
   public class ExtensibleEnumWithResources : ExtensibleEnum<ExtensibleEnumWithResources>
   {

@@ -17,7 +17,7 @@
 
 using System;
 
-namespace Remotion.UnitTests.Globalization.TestDomain
+namespace Remotion.Globalization.UnitTests.TestDomain
 {
   public enum TestEnum
   {

@@ -18,12 +18,10 @@
 using System;
 using System.Linq;
 using NUnit.Framework;
-using Remotion.Globalization;
 using Remotion.Globalization.Implementation;
-using Remotion.Mixins.Globalization;
 using Remotion.ServiceLocation;
 
-namespace Remotion.Mixins.UnitTests.Core.Globalization
+namespace Remotion.Globalization.Mixins.UnitTests
 {
   [TestFixture]
   public class ICompoundGlobalizationServiceTest

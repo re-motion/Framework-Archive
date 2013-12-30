@@ -16,11 +16,11 @@
 // 
 
 using System;
-using Remotion.Globalization;
+using Remotion.ExtensibleEnums;
 using Remotion.Reflection;
 using Remotion.Utilities;
 
-namespace Remotion.ExtensibleEnums.Globalization
+namespace Remotion.Globalization.ExtensibleEnums
 {
   /// <summary>
   /// Retrieves the human-readable localized representation of extensible-enumeration objects.

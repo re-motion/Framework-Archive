@@ -14,11 +14,11 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
 using Remotion.ExtensibleEnums;
-using Remotion.Globalization;
 
-namespace Remotion.UnitTests.ExtensibleEnums.TestDomain
+namespace Remotion.Globalization.ExtensibleEnums.UnitTests.TestDomain
 {
   [MultiLingualResources ("Remotion.UnitTests.Resources.ExtensibleEnumWithDuplicateAttributeExtensions")]
   [MultiLingualResources ("Remotion.UnitTests.Resources.ExtensibleEnumWithDuplicateAttributeExtensions")]
