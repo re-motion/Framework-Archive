@@ -18,9 +18,6 @@ using System;
 using System.Globalization;
 using log4net.Core;
 using log4net.Util;
-using Remotion.Globalization;
-using Remotion.Globalization.Implementation;
-using Remotion.ServiceLocation;
 using Remotion.Utilities;
 
 namespace Remotion.Logging
@@ -36,12 +33,8 @@ namespace Remotion.Logging
   /// truncated event id before the exception is thrown.
   /// </note>
   /// </remarks>
-  public class Log4NetLog : LogImpl, ILog
+  public class Log4NetLog : ILog, ILoggerWrapper
   {
-    private static readonly DoubleCheckedLockingContainer<IEnumerationGlobalizationService> s_globalizationService =
-        new DoubleCheckedLockingContainer<IEnumerationGlobalizationService> (
-            () => SafeServiceLocator.Current.GetInstance<IEnumerationGlobalizationService>());
-    
     /// <summary>
     /// Converts <see cref="LogLevel"/> to <see cref="Level"/>.
     /// </summary>
@@ -66,376 +59,55 @@ namespace Remotion.Logging
       }
     }
 
+    private readonly ILogger _logger;
+
     /// <summary>
     /// Initializes a new instance of the <see cref="Log4NetLog"/> class 
     /// using the specified <see cref="log4net.Core.ILogger"/>.
     /// </summary>
     /// <param name="logger">The <see cref="ILogger"/> the log messages are written to.</param>
     public Log4NetLog (ILogger logger)
-      : base (logger)
     {
+      ArgumentUtility.CheckNotNull ("logger", logger);
+
+      _logger = logger;
     }
 
-    /// <overloads><inheritdoc cref="ILog.Log(LogLevel, object)"/></overloads>
-    /// <inheritdoc />
-    /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="eventID"/> is outside the range of an unsigned 16-bit integer. </exception>
-    public void Log (LogLevel logLevel, int eventID, object message, Exception exceptionObject)
+    /// <summary>
+    /// Gets the <see cref="ILogger"/> used by this <see cref="Log4NetLog"/>.
+    /// </summary>
+    public ILogger Logger
     {
-      LogToLog4Net (Convert (logLevel), eventID, message, exceptionObject);
-    }
-
-    /// <inheritdoc />
-    /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="eventID"/> is outside the range of an unsigned 16-bit integer. </exception>
-    public void Log (LogLevel logLevel, int eventID, object message)
-    {
-      LogToLog4Net (Convert (logLevel), eventID, message, null);
-    }
-
-    /// <inheritdoc />
-    public void Log (LogLevel logLevel, object message, Exception exceptionObject)
-    {
-      LogToLog4Net (Convert (logLevel), null, message, exceptionObject);
-    }
-
-    /// <inheritdoc />
-    public void Log (LogLevel logLevel, object message)
-    {
-      LogToLog4Net (Convert (logLevel), null, message, null);
-    }
-
-    /// <overloads><inheritdoc cref="ILog.LogFormat(LogLevel, string, object[])"/></overloads>
-    /// <inheritdoc />
-    /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="eventID"/> is outside the range of an unsigned 16-bit integer. </exception>
-    public void LogFormat (LogLevel logLevel, int eventID, Exception exceptionObject, string format, params object[] args)
-    {
-      LogToLog4NetFormat (Convert (logLevel), eventID, format, args, exceptionObject);
+      get { return _logger; }
     }
 
     /// <inheritdoc />
     /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="eventID"/> is outside the range of an unsigned 16-bit integer. </exception>
-    public void LogFormat (LogLevel logLevel, int eventID, string format, params object[] args)
+    public void Log (LogLevel logLevel, int? eventID, object message, Exception exceptionObject)
     {
-      LogToLog4NetFormat (Convert (logLevel), eventID, format, args, null);
-    }
-
-    /// <inheritdoc />
-    public void LogFormat (LogLevel logLevel, string format, params object[] args)
-    {
-      LogToLog4NetFormat (Convert (logLevel), null, format, args, null);
-    }
-
-    /// <inheritdoc />
-    public void LogFormat (LogLevel logLevel, Exception exceptionObject, string format, params object[] args)
-    {
-      LogToLog4NetFormat (Convert (logLevel), null, format, args, exceptionObject);
-    }
-
-    /// <inheritdoc />
-    /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="messageEnum"/>'s underlying value is outside the range of an unsigned 16-bit integer. </exception>
-    public void LogFormat (LogLevel logLevel, Enum messageEnum, Exception exceptionObject, params object[] args)
-    {
-      ArgumentUtility.CheckNotNull ("messageEnum", messageEnum);
-
-      LogToLog4NetFormat (
-          Convert (logLevel),
-          System.Convert.ToInt32 (messageEnum),
-          s_globalizationService.Value.GetEnumerationValueDisplayName (messageEnum),
-          args,
-          exceptionObject);
-    }
-
-    /// <inheritdoc />
-    /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="messageEnum"/>'s underlying value is outside the range of an unsigned 16-bit integer. </exception>
-    public void LogFormat (LogLevel logLevel, Enum messageEnum, params object[] args)
-    {
-      ArgumentUtility.CheckNotNull ("messageEnum", messageEnum);
-      LogToLog4NetFormat (Convert (logLevel), System.Convert.ToInt32 (messageEnum), s_globalizationService.Value.GetEnumerationValueDisplayName (messageEnum), args, null);
-    }
-
-    /// <overloads><inheritdoc cref="ILog.Debug(object)"/></overloads>
-    /// <inheritdoc />
-    /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="eventID"/> is outside the range of an unsigned 16-bit integer. </exception>
-    public void Debug (int eventID, object message, Exception exceptionObject)
-    {
-      LogToLog4Net (Level.Debug, eventID, message, exceptionObject);
+      var level = Convert (logLevel);
+      if (_logger.IsEnabledFor (level))
+        _logger.Log (CreateLoggingEvent (level, eventID, message, exceptionObject));
     }
 
     /// <inheritdoc />
     /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="eventID"/> is outside the range of an unsigned 16-bit integer. </exception>
-    public void Debug (int eventID, object message)
+    public void LogFormat (LogLevel logLevel, int? eventID, Exception exceptionObject, string format, params object[] args)
     {
-      LogToLog4Net (Level.Debug, eventID, message, null);
-    }
-
-    /// <overloads><inheritdoc cref="ILog.DebugFormat(string, object[])"/></overloads>
-    /// <inheritdoc />
-    /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="eventID"/> is outside the range of an unsigned 16-bit integer. </exception>
-    public void DebugFormat (int eventID, Exception exceptionObject, string format, params object[] args)
-    {
-      LogToLog4NetFormat (Level.Debug, eventID, format, args, exceptionObject);
-    }
-
-    /// <inheritdoc />
-    /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="eventID"/> is outside the range of an unsigned 16-bit integer. </exception>
-    public void DebugFormat (int eventID, string format, params object[] args)
-    {
-      LogToLog4NetFormat (Level.Debug, eventID, format, args, null);
-    }
-
-    /// <inheritdoc />
-    public void DebugFormat (Exception exceptionObject, string format, params object[] args)
-    {
-      LogToLog4NetFormat (Level.Debug, null, format, args, exceptionObject);
-    }
-
-    /// <inheritdoc />
-    /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="messageEnum"/>'s underlying value is outside the range of an unsigned 16-bit integer. </exception>
-    public void DebugFormat (Enum messageEnum, Exception exceptionObject, params object[] args)
-    {
-      ArgumentUtility.CheckNotNull ("messageEnum", messageEnum);
-      LogToLog4NetFormat (Level.Debug, System.Convert.ToInt32 (messageEnum), s_globalizationService.Value.GetEnumerationValueDisplayName (messageEnum), args, exceptionObject);
-    }
-
-    /// <inheritdoc />
-    /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="messageEnum"/>'s underlying value is outside the range of an unsigned 16-bit integer. </exception>
-    public void DebugFormat (Enum messageEnum, params object[] args)
-    {
-      ArgumentUtility.CheckNotNull ("messageEnum", messageEnum);
-      LogToLog4NetFormat (Level.Debug, System.Convert.ToInt32 (messageEnum), s_globalizationService.Value.GetEnumerationValueDisplayName (messageEnum), args, null);
-    }
-
-    /// <overloads><inheritdoc cref="ILog.Info(object)"/></overloads>
-    /// <inheritdoc />
-    /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="eventID"/> is outside the range of an unsigned 16-bit integer. </exception>
-    public void Info (int eventID, object message, Exception exceptionObject)
-    {
-      LogToLog4Net (Level.Info, eventID, message, exceptionObject);
-    }
-
-    /// <inheritdoc />
-    /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="eventID"/> is outside the range of an unsigned 16-bit integer. </exception>
-    public void Info (int eventID, object message)
-    {
-      LogToLog4Net (Level.Info, eventID, message, null);
-    }
-
-    /// <overloads><inheritdoc cref="ILog.InfoFormat(string, object[])"/></overloads>
-    /// <inheritdoc />
-    /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="eventID"/> is outside the range of an unsigned 16-bit integer. </exception>
-    public void InfoFormat (int eventID, Exception exceptionObject, string format, params object[] args)
-    {
-      LogToLog4NetFormat (Level.Info, eventID, format, args, exceptionObject);
-    }
-
-    /// <inheritdoc />
-    /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="eventID"/> is outside the range of an unsigned 16-bit integer. </exception>
-    public void InfoFormat (int eventID, string format, params object[] args)
-    {
-      LogToLog4NetFormat (Level.Info, eventID, format, args, null);
-    }
-
-    /// <inheritdoc />
-    public void InfoFormat (Exception exceptionObject, string format, params object[] args)
-    {
-      LogToLog4NetFormat (Level.Info, null, format, args, exceptionObject);
-    }
-
-    /// <inheritdoc />
-    /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="messageEnum"/>'s underlying value is outside the range of an unsigned 16-bit integer. </exception>
-    public void InfoFormat (Enum messageEnum, Exception exceptionObject, params object[] args)
-    {
-      ArgumentUtility.CheckNotNull ("messageEnum", messageEnum);
-      LogToLog4NetFormat (Level.Info, System.Convert.ToInt32 (messageEnum), s_globalizationService.Value.GetEnumerationValueDisplayName (messageEnum), args, exceptionObject);
-    }
-
-    /// <inheritdoc />
-    /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="messageEnum"/>'s underlying value is outside the range of an unsigned 16-bit integer. </exception>
-    public void InfoFormat (Enum messageEnum, params object[] args)
-    {
-      ArgumentUtility.CheckNotNull ("messageEnum", messageEnum);
-      LogToLog4NetFormat (Level.Info, System.Convert.ToInt32 (messageEnum), s_globalizationService.Value.GetEnumerationValueDisplayName (messageEnum), args, null);
-    }
-
-
-    /// <overloads><inheritdoc cref="ILog.Warn(object)"/></overloads>
-    /// <inheritdoc />
-    /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="eventID"/> is outside the range of an unsigned 16-bit integer. </exception>
-    public void Warn (int eventID, object message, Exception exceptionObject)
-    {
-      LogToLog4Net (Level.Warn, eventID, message, exceptionObject);
-    }
-
-    /// <inheritdoc />
-    /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="eventID"/> is outside the range of an unsigned 16-bit integer. </exception>
-    public void Warn (int eventID, object message)
-    {
-      LogToLog4Net (Level.Warn, eventID, message, null);
-    }
-
-    /// <overloads><inheritdoc cref="ILog.WarnFormat(string, object[])"/></overloads>
-    /// <inheritdoc />
-    /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="eventID"/> is outside the range of an unsigned 16-bit integer. </exception>
-    public void WarnFormat (int eventID, Exception exceptionObject, string format, params object[] args)
-    {
-      LogToLog4NetFormat (Level.Warn, eventID, format, args, exceptionObject);
-    }
-
-    /// <inheritdoc />
-    /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="eventID"/> is outside the range of an unsigned 16-bit integer. </exception>
-    public void WarnFormat (int eventID, string format, params object[] args)
-    {
-      LogToLog4NetFormat (Level.Warn, eventID, format, args, null);
-    }
-
-    /// <inheritdoc />
-    public void WarnFormat (Exception exceptionObject, string format, params object[] args)
-    {
-      LogToLog4NetFormat (Level.Warn, null, format, args, exceptionObject);
-    }
-
-    /// <inheritdoc />
-    /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="messageEnum"/>'s underlying value is outside the range of an unsigned 16-bit integer. </exception>
-    public void WarnFormat (Enum messageEnum, Exception exceptionObject, params object[] args)
-    {
-      ArgumentUtility.CheckNotNull ("messageEnum", messageEnum);
-      LogToLog4NetFormat (Level.Warn, System.Convert.ToInt32 (messageEnum), s_globalizationService.Value.GetEnumerationValueDisplayName (messageEnum), args, exceptionObject);
-    }
-
-    /// <inheritdoc />
-    /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="messageEnum"/>'s underlying value is outside the range of an unsigned 16-bit integer. </exception>
-    public void WarnFormat (Enum messageEnum, params object[] args)
-    {
-      ArgumentUtility.CheckNotNull ("messageEnum", messageEnum);
-      LogToLog4NetFormat (Level.Warn, System.Convert.ToInt32 (messageEnum), s_globalizationService.Value.GetEnumerationValueDisplayName (messageEnum), args, null);
-    }
-
-
-    /// <overloads><inheritdoc cref="ILog.Error(object)"/></overloads>
-    /// <inheritdoc />
-    /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="eventID"/> is outside the range of an unsigned 16-bit integer. </exception>
-    public void Error (int eventID, object message, Exception exceptionObject)
-    {
-      LogToLog4Net (Level.Error, eventID, message, exceptionObject);
-    }
-
-    /// <inheritdoc />
-    /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="eventID"/> is outside the range of an unsigned 16-bit integer. </exception>
-    public void Error (int eventID, object message)
-    {
-      LogToLog4Net (Level.Error, eventID, message, null);
-    }
-
-    /// <overloads><inheritdoc cref="ILog.ErrorFormat(string, object[])"/></overloads>
-    /// <inheritdoc />
-    /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="eventID"/> is outside the range of an unsigned 16-bit integer. </exception>
-    public void ErrorFormat (int eventID, Exception exceptionObject, string format, params object[] args)
-    {
-      LogToLog4NetFormat (Level.Error, eventID, format, args, exceptionObject);
-    }
-
-    /// <inheritdoc />
-    /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="eventID"/> is outside the range of an unsigned 16-bit integer. </exception>
-    public void ErrorFormat (int eventID, string format, params object[] args)
-    {
-      LogToLog4NetFormat (Level.Error, eventID, format, args, null);
-    }
-
-    /// <inheritdoc />
-    public void ErrorFormat (Exception exceptionObject, string format, params object[] args)
-    {
-      LogToLog4NetFormat (Level.Error, null, format, args, exceptionObject);
-    }
-
-    /// <inheritdoc />
-    /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="messageEnum"/>'s underlying value is outside the range of an unsigned 16-bit integer. </exception>
-    public void ErrorFormat (Enum messageEnum, Exception exceptionObject, params object[] args)
-    {
-      ArgumentUtility.CheckNotNull ("messageEnum", messageEnum);
-      LogToLog4NetFormat (Level.Error, System.Convert.ToInt32 (messageEnum), s_globalizationService.Value.GetEnumerationValueDisplayName (messageEnum), args, exceptionObject);
-    }
-
-    /// <inheritdoc />
-    /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="messageEnum"/>'s underlying value is outside the range of an unsigned 16-bit integer. </exception>
-    public void ErrorFormat (Enum messageEnum, params object[] args)
-    {
-      ArgumentUtility.CheckNotNull ("messageEnum", messageEnum);
-      LogToLog4NetFormat (Level.Error, System.Convert.ToInt32 (messageEnum), s_globalizationService.Value.GetEnumerationValueDisplayName (messageEnum), args, null);
-    }
-
-
-    /// <overloads><inheritdoc cref="ILog.Fatal(object)"/></overloads>
-    /// <inheritdoc />
-    /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="eventID"/> is outside the range of an unsigned 16-bit integer. </exception>
-    public void Fatal (int eventID, object message, Exception exceptionObject)
-    {
-      LogToLog4Net (Level.Fatal, eventID, message, exceptionObject);
-    }
-
-    /// <inheritdoc />
-    /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="eventID"/> is outside the range of an unsigned 16-bit integer. </exception>
-    public void Fatal (int eventID, object message)
-    {
-      LogToLog4Net (Level.Fatal, eventID, message, null);
-    }
-
-    /// <overloads><inheritdoc cref="ILog.FatalFormat(string, object[])"/></overloads>
-    /// <inheritdoc />
-    /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="eventID"/> is outside the range of an unsigned 16-bit integer. </exception>
-    public void FatalFormat (int eventID, Exception exceptionObject, string format, params object[] args)
-    {
-      LogToLog4NetFormat (Level.Fatal, eventID, format, args, exceptionObject);
-    }
-
-    /// <inheritdoc />
-    /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="eventID"/> is outside the range of an unsigned 16-bit integer. </exception>
-    public void FatalFormat (int eventID, string format, params object[] args)
-    {
-      LogToLog4NetFormat (Level.Fatal, eventID, format, args, null);
-    }
-
-    /// <inheritdoc />
-    public void FatalFormat (Exception exceptionObject, string format, params object[] args)
-    {
-      LogToLog4NetFormat (Level.Fatal, null, format, args, exceptionObject);
-    }
-
-    /// <inheritdoc />
-    /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="messageEnum"/>'s underlying value is outside the range of an unsigned 16-bit integer. </exception>
-    public void FatalFormat (Enum messageEnum, Exception exceptionObject, params object[] args)
-    {
-      ArgumentUtility.CheckNotNull ("messageEnum", messageEnum);
-      LogToLog4NetFormat (Level.Fatal, System.Convert.ToInt32 (messageEnum), s_globalizationService.Value.GetEnumerationValueDisplayName (messageEnum), args, exceptionObject);
-    }
-
-    /// <inheritdoc />
-    /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="messageEnum"/>'s underlying value is outside the range of an unsigned 16-bit integer. </exception>
-    public void FatalFormat (Enum messageEnum, params object[] args)
-    {
-      ArgumentUtility.CheckNotNull ("messageEnum", messageEnum);
-      LogToLog4NetFormat (Level.Fatal, System.Convert.ToInt32 (messageEnum), s_globalizationService.Value.GetEnumerationValueDisplayName (messageEnum), args, null);
+      var level = Convert (logLevel);
+      if (_logger.IsEnabledFor (level))
+        _logger.Log (CreateLoggingEvent (level, eventID, new SystemStringFormat (CultureInfo.InvariantCulture, format, args), exceptionObject));
     }
 
     /// <inheritdoc />
     public bool IsEnabled (LogLevel logLevel)
     {
-      return base.Logger.IsEnabledFor (Convert (logLevel));
-    }
-
-    private void LogToLog4NetFormat (Level level, int? eventID, string format, object[] args, Exception exceptionObject)
-    {
-      if (Logger.IsEnabledFor (level))
-        LogToLog4Net (level, eventID, new SystemStringFormat (CultureInfo.InvariantCulture, format, args), exceptionObject);
-    }
-
-    private void LogToLog4Net (Level level, int? eventID, object message, Exception exceptionObject)
-    {
-      if (Logger.IsEnabledFor (level))
-        Logger.Log (CreateLoggingEvent (level, eventID, message, exceptionObject));
+      return _logger.IsEnabledFor (Convert (logLevel));
     }
 
     private LoggingEvent CreateLoggingEvent (Level level, int? eventID, object message, Exception exceptionObject)
     {
-      LoggingEvent loggingEvent = new LoggingEvent (typeof (Log4NetLog), null, Logger.Name, level, message, exceptionObject);
+      LoggingEvent loggingEvent = new LoggingEvent (typeof (Log4NetLog), null, _logger.Name, level, message, exceptionObject);
 
       if (eventID.HasValue)
       {
@@ -462,13 +134,23 @@ namespace Remotion.Logging
         safeEventID  = 0xFFFF;
       else
         safeEventID = eventID;
-          
-      LogToLog4NetFormat (
-          Level.Error,
-          safeEventID,
-          "Failure during logging of message:\r\n{0}\r\nEvent ID: {1}",
-          new object[] { message.ToString (), eventID },
-          exceptionObject);
+
+      Level level = Level.Error;
+      if (_logger.IsEnabledFor (level))
+      {
+        if (_logger.IsEnabledFor (level))
+        {
+          _logger.Log (
+              CreateLoggingEvent (
+                  level,
+                  safeEventID,
+                  new SystemStringFormat (
+                      CultureInfo.InvariantCulture,
+                      "Failure during logging of message:\r\n{0}\r\nEvent ID: {1}",
+                      new object[] { message.ToString(), eventID }),
+                  exceptionObject));
+        }
+      }
     }
   }
 }

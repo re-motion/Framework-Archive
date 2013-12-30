@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
+
 <!-- This file is part of the re-motion Core Framework (www.re-motion.org)
  ! Copyright (c) rubicon IT GmbH, www.rubicon.eu
  ! 
@@ -15,21 +16,9 @@
  ! You should have received a copy of the GNU Lesser General Public License
  ! along with re-motion; if not, see http://www.gnu.org/licenses.
 -->
-<ILog>
-  <Class>
-    <remarks>
-        The <see cref="ILog"/> interface is intended for implementing adapters to various logging frameworks.
-      <note>
-        The range of valid event ids is only guarenteed within the range of unsigned 16-bit integers.
-      </note>
-      <note type="inheritinfo">
-        Implementors must support event ids within the range of unsigned 16-bit integers. The behavior outside this range is can be either truncation 
-        of the event id or an <see cref="ArgumentOutOfRangeException"/>. Implementors must ensure that the log message is logged before an 
-        <see cref="ArgumentOutOfRangeException"/> is thrown.
-      </note>
-    </remarks>
-  </Class>
+<LogExtensions>
   <Log>
+    <param name="log">The <see cref="ILog"/> instance where the message is to be logged.</param>
     <param name="logLevel">The <see cref="LogLevel"/> of the message to be logged.</param>
     <param name="eventID">The numeric identifier for the event.</param>
     <param name="message">The message object to log.</param>
@@ -49,4 +38,4 @@
       to associate messages with the enum values.
     </remarks>
   </LogFormatWithEnum>
-</ILog>
+</LogExtensions>

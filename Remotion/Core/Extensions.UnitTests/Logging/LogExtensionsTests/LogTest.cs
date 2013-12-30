@@ -14,50 +14,50 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
 using log4net.Core;
 using NUnit.Framework;
 using Remotion.Logging;
 
-namespace Remotion.UnitTests.Logging.Log4NetLogTests
+namespace Remotion.Extensions.UnitTests.Logging.LogExtensionsTests
 {
   [TestFixture]
   public class LogTest : BaseTest
   {
     [Test]
-    public void Test_WithMessageEventIDAndException ()
+    public void Test_FormatWithEnumAndException ()
     {
       Exception exception = new Exception ();
       SetLoggingThreshold (Level.Info);
 
-      Log.Log (LogLevel.Info, 2, (object) "The message.", exception);
+      Log.LogFormat (LogLevel.Info, LogMessages.TheMessage, exception, "First", "Second");
 
       LoggingEvent[] events = GetLoggingEvents ();
       Assert.That (events.Length, Is.EqualTo (1));
       LoggingEvent loggingEvent = events[0];
       Assert.That (loggingEvent.Level, Is.EqualTo (Level.Info));
-      Assert.That (loggingEvent.MessageObject, Is.EqualTo ("The message."));
-      Assert.That (loggingEvent.Properties["EventID"], Is.EqualTo (2));
+      Assert.That (loggingEvent.MessageObject.ToString (), Is.EqualTo ("The message with First and Second."));
+      Assert.That (loggingEvent.Properties["EventID"], Is.EqualTo ((int)LogMessages.TheMessage));
       Assert.That (loggingEvent.ExceptionObject, Is.SameAs (exception));
       Assert.That (loggingEvent.Repository, Is.SameAs (Logger.Repository));
       Assert.That (loggingEvent.LoggerName, Is.EqualTo (Logger.Name));
     }
 
     [Test]
-    public void Test_FormatWithMessageAndEventIDAndException ()
+    public void Test_FormatWithEnum ()
     {
-      Exception exception = new Exception ();
       SetLoggingThreshold (Level.Info);
 
-      Log.LogFormat (LogLevel.Info, 1, exception, "{0} {1}", "The", "message.");
+      Log.LogFormat (LogLevel.Info, LogMessages.TheMessage, "First", "Second");
 
       LoggingEvent[] events = GetLoggingEvents ();
       Assert.That (events.Length, Is.EqualTo (1));
       LoggingEvent loggingEvent = events[0];
       Assert.That (loggingEvent.Level, Is.EqualTo (Level.Info));
-      Assert.That (loggingEvent.MessageObject.ToString (), Is.EqualTo ("The message."));
-      Assert.That (loggingEvent.Properties["EventID"], Is.EqualTo (1));
-      Assert.That (loggingEvent.ExceptionObject, Is.SameAs (exception));
+      Assert.That (loggingEvent.MessageObject.ToString (), Is.EqualTo ("The message with First and Second."));
+      Assert.That (loggingEvent.Properties["EventID"], Is.EqualTo ((int) LogMessages.TheMessage));
+      Assert.That (loggingEvent.ExceptionObject, Is.Null);
       Assert.That (loggingEvent.Repository, Is.SameAs (Logger.Repository));
       Assert.That (loggingEvent.LoggerName, Is.EqualTo (Logger.Name));
     }
