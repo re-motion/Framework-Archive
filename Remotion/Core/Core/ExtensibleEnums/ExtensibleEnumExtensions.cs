@@ -26,9 +26,9 @@ namespace Remotion.ExtensibleEnums
   /// </summary>
   public static class ExtensibleEnumExtensions
   {
-    //private static readonly DoubleCheckedLockingContainer<IExtensibleEnumerationGlobalizationService> s_service =
-    //    new DoubleCheckedLockingContainer<IExtensibleEnumerationGlobalizationService> (
-    //        () => SafeServiceLocator.Current.GetInstance<IExtensibleEnumerationGlobalizationService>());
+    private delegate bool TryGetDisplayName (IExtensibleEnum extensibleEnum, out string name);
+
+    private static readonly Lazy<TryGetDisplayName> s_tryGetExtensibleEnumerationValueDisplayName = new Lazy<TryGetDisplayName> (GetLocalizedNameFunc);
 
     /// <summary>
     /// Gets the localized name of the value represented by this <see cref="IExtensibleEnum"/> value.
@@ -37,9 +37,23 @@ namespace Remotion.ExtensibleEnums
     public static string GetLocalizedName (this IExtensibleEnum extensibleEnum)
     {
       ArgumentUtility.CheckNotNull ("extensibleEnum", extensibleEnum);
-      return null;
-      //TODO RM-6000: Reenable the redirect.
-//      return s_service.Value.GetExtensibleEnumerationValueDisplayName (extensibleEnum);
+      string name;
+      if (s_tryGetExtensibleEnumerationValueDisplayName.Value (extensibleEnum, out name))
+        return name;
+      return extensibleEnum.ValueName;
+    }
+
+    private static TryGetDisplayName GetLocalizedNameFunc ()
+    {
+      var serviceType = TypeNameTemplateResolver.ResolveToType (
+          "Remotion.Globalization.ExtensibleEnums.IExtensibleEnumerationGlobalizationService, Remotion.Globalization.ExtensibleEnums, Version=<version>, Culture=neutral, PublicKeyToken=<publicKeyToken>",
+          typeof (ExtensibleEnumExtensions).Assembly);
+      var method = serviceType.GetMethod ("TryGetExtensibleEnumerationValueDisplayName");
+      Assertion.IsNotNull (method, "IExtensibleEnumerationGlobalizationService does not contain method 'GetExtensibleEnumerationValueDisplayName'.");
+
+      var service = SafeServiceLocator.Current.GetInstance (serviceType);
+
+      return (TryGetDisplayName) method.CreateDelegate (typeof(TryGetDisplayName), service);
     }
   }
 }

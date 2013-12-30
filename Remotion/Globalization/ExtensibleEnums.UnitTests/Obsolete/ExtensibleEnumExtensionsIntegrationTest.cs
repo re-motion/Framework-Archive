@@ -30,6 +30,7 @@ namespace Remotion.Globalization.ExtensibleEnums.UnitTests.Obsolete
     public void GetExtensibleEnumerationValueDisplayName_IntegrationTest ()
     {
       Assert.That (Color.Values.Red().GetLocalizedName(), Is.EqualTo ("Rot"));
+      Assert.That (Color.Values.LightBlue().GetLocalizedName(), Is.EqualTo ("LightBlue"));
     }
   }
 }
