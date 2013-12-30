@@ -42,17 +42,17 @@ namespace Remotion.Globalization.ExtensibleEnums.UnitTests
       var resourceManagerStub = MockRepository.GenerateStub<IResourceManager>();
       resourceManagerStub.Stub (_ => _.IsNull).Return (false);
       _globalizationServiceStub
-          .Stub (_ => _.GetResourceManager (TypeAdapter.Create (typeof (ExtensibleEnumWithResourcesExtensions))))
+          .Stub (_ => _.GetResourceManager (TypeAdapter.Create (typeof (ColorExtensions))))
           .Return (resourceManagerStub);
       resourceManagerStub
           .Stub (
               _ => _.TryGetString (
-                  Arg.Is ("Remotion.Globalization.ExtensibleEnums.UnitTests.TestDomain.ExtensibleEnumWithResourcesExtensions.Value1"),
+                  Arg.Is ("Color.Red"),
                   out Arg<string>.Out ("expected").Dummy))
           .Return (true);
 
       string resourceValue;
-      Assert.That (_service.TryGetExtensibleEnumerationValueDisplayName (ExtensibleEnumWithResources.Values.Value1(), out resourceValue), Is.True);
+      Assert.That (_service.TryGetExtensibleEnumerationValueDisplayName (Color.Values.Red(), out resourceValue), Is.True);
       Assert.That (resourceValue, Is.EqualTo ("expected"));
     }
 
@@ -62,7 +62,7 @@ namespace Remotion.Globalization.ExtensibleEnums.UnitTests
       _globalizationServiceStub.Stub (_ => _.GetResourceManager (Arg<ITypeInformation>.Is.NotNull)).Return (NullResourceManager.Instance);
 
       string resourceValue;
-      Assert.That (_service.TryGetExtensibleEnumerationValueDisplayName (ExtensibleEnumWithResources.Values.Value1 (), out resourceValue), Is.False);
+      Assert.That (_service.TryGetExtensibleEnumerationValueDisplayName (Color.Values.Red(), out resourceValue), Is.False);
       Assert.That (resourceValue, Is.Null);
     }
   }

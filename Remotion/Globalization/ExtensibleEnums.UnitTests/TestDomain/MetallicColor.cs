@@ -21,8 +21,8 @@ namespace Remotion.Globalization.ExtensibleEnums.UnitTests.TestDomain
 {
   public class MetallicColor : Color
   {
-    public MetallicColor (string id)
-        : base(id)
+    public MetallicColor (string declarationSpace, string valueName)
+      : base (declarationSpace, valueName)
     {
     }
   }

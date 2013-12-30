@@ -25,12 +25,12 @@ namespace Remotion.Globalization.ExtensibleEnums.UnitTests.TestDomain
   {
     public static Color LightRed (this ExtensibleEnumDefinition<Color> definition)
     {
-      return new Color ("LightRed");
+      return new Color ("LightColor", "LightRed");
     }
 
     public static Color LightBlue (this ExtensibleEnumDefinition<Color> definition)
     {
-      return new Color ("LightBlue");
+      return new Color ("LightColor", "LightBlue");
     }
   }
 }

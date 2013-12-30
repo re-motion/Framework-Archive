@@ -64,16 +64,11 @@
     <Compile Include="IExtensibleEnumerationGlobalizationServiceTest.cs" />
     <Compile Include="TestDomain\Color.cs" />
     <Compile Include="TestDomain\ColorExtensions.cs" />
-    <Compile Include="TestDomain\ExtensibleEnumWithResources.cs" />
-    <Compile Include="TestDomain\ExtensibleEnumWithResourcesExtensions.cs" />
     <Compile Include="TestDomain\LightColorExtensions.cs" />
     <Compile Include="TestDomain\MetallicColor.cs" />
     <Compile Include="TestDomain\MetallicColorExtensions.cs" />
     <Compile Include="TestDomain\Resources\ColorExtensions.Designer.cs">
       <DependentUpon>ColorExtensions.resx</DependentUpon>
-    </Compile>
-    <Compile Include="TestDomain\Resources\ExtensibleEnumWithResources.Designer.cs">
-      <DependentUpon>ExtensibleEnumWithResources.resx</DependentUpon>
     </Compile>
     <Compile Include="TestDomain\Resources\LightColorExtensions.Designer.cs">
       <DependentUpon>LightColorExtensions.resx</DependentUpon>
@@ -89,7 +84,6 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="TestDomain\Resources\ColorExtensions.resx" />
-    <EmbeddedResource Include="TestDomain\Resources\ExtensibleEnumWithResources.resx" />
     <EmbeddedResource Include="TestDomain\Resources\LightColorExtensions.resx" />
   </ItemGroup>
   <ItemGroup>

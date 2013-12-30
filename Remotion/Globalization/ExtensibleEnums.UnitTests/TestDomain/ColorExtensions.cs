@@ -28,12 +28,12 @@ namespace Remotion.Globalization.ExtensibleEnums.UnitTests.TestDomain
     public static Color Red (this ExtensibleEnumDefinition<Color> definition)
     {
       LastCallArgument = definition;
-      return new Color ("Red");
+      return new Color ("Color", "Red");
     }
 
     public static Color Green (this ExtensibleEnumDefinition<Color> definition)
     {
-      return new Color ("Green");
+      return new Color ("Color", "Green");
     }
   }
 }
