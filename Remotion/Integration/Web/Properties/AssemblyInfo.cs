@@ -22,8 +22,10 @@ using System.Reflection;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 //
+using Remotion.Web.Security;
 
 [assembly: AssemblyTitle ("Remotion Integration Library for Web-Applications")]
 [assembly: AssemblyDescription ("This assembly can be linked to ensure that all web-related dependencies are integrated in the build output of a web project.")]
 [assembly: AssemblyCulture("")]
 [assembly: CLSCompliant(true)]
+[assembly: EnsureSecuritySupportForWebAssemblies]
