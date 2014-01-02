@@ -14,18 +14,18 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-
 using System;
 
+// ReSharper disable once CheckNamespace
 namespace Remotion.Utilities
 {
   /// <summary>
-  /// This exception is thrown if a list argument contains an item of the wrong type.
+  /// This exception is thrown if an argument has an invalid type.
   /// </summary>
   [Obsolete ("Use ArgumentException instead. (1.15.8.0)", true)]
-  public class ArgumentItemTypeException : ArgumentException
+  public class ArgumentEmptyException : ArgumentException
   {
-    private ArgumentItemTypeException ()
+    private ArgumentEmptyException ()
     {
     }
   }
