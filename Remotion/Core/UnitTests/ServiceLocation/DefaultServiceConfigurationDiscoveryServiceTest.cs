@@ -171,6 +171,47 @@ namespace Remotion.UnitTests.ServiceLocation
     }
 
     [Test]
+    public void GetDefaultConfiguration_TypeDiscoveryService_WithCompoundRegistrationType_NoException ()
+    {
+      _typeDiscoveryServiceStub.Stub (stub => stub.GetTypes (null, false))
+          .Return (new ArrayList { typeof (ITestCompoundRegistration) });
+      _typeDiscoveryServiceStub.Stub (stub => stub.GetTypes (typeof (ITestCompoundRegistration), true))
+          .Return (
+              new ArrayList
+              {
+                  typeof (TestCompoundImplementation1),
+                  typeof (TestCompoundImplementation2),
+                  typeof (TestCompoundRegistration),
+              });
+
+      _defaultServiceConfigurationDiscoveryService.GetDefaultConfiguration().ToArray();
+    }
+
+    [Test]
+    public void GetDefaultConfiguration_TypeDiscoveryService_WithCompoundAndSingleRegistrationType ()
+    {
+      _typeDiscoveryServiceStub.Stub (stub => stub.GetTypes (null, false))
+          .Return (new ArrayList { typeof (ITestCompoundMixedRegistrationTypes) });
+      _typeDiscoveryServiceStub.Stub (stub => stub.GetTypes (typeof (ITestCompoundMixedRegistrationTypes), true))
+          .Return (
+              new ArrayList
+              {
+                  typeof (TestCompoundMixedRegistrationTypes),
+                  typeof (TestCompoundMixedRegistrationImplementation1),
+                  typeof (TestCompoundMixedRegistrationImplementation2),
+              });
+
+      Assert.That (
+          () => _defaultServiceConfigurationDiscoveryService.GetDefaultConfiguration().ToArray(),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo (
+                  "Invalid configuration of service type "
+                  + "'Remotion.UnitTests.ServiceLocation.TestDomain.ITestCompoundMixedRegistrationTypes'. "
+                  + "RegistrationTypes compound and Single cannot be used together.")
+              .And.InnerException.Not.Null);
+    }
+
+    [Test]
     public void GetDefaultConfiguration_WithNoImplementations ()
     {
       _typeDiscoveryServiceStub.Stub (_ => _.GetTypes (null, false)).IgnoreArguments().Return (new Type[0]);
@@ -218,7 +259,7 @@ namespace Remotion.UnitTests.ServiceLocation
       // Because the TestDomain contains test classes with ambiguous attributes, we expect an exception here.
       Assert.That (
           () => defaultServiceConfigurationDiscoveryService.GetDefaultConfiguration (new[] { GetType().Assembly }).ToArray(), 
-            Throws.InvalidOperationException.With.Message.Contains ("Ambiguous"));
+            Throws.InvalidOperationException);
     }
   }
 }

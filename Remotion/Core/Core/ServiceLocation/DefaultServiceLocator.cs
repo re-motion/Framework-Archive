@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Text;
 using JetBrains.Annotations;
 using Microsoft.Practices.ServiceLocation;
 using Remotion.Collections;
@@ -236,7 +237,7 @@ namespace Remotion.ServiceLocation
       Register (serviceType, (IEnumerable<Func<object>>) instanceFactories);
     }
 
-      /// <summary>
+    /// <summary>
     /// Registers factories for the specified <paramref name="serviceType"/>. 
     /// The factories are subsequently invoked whenever instances for the <paramref name="serviceType"/> is requested.
     /// </summary>
@@ -425,7 +426,56 @@ namespace Remotion.ServiceLocation
 
     private IEnumerable<Tuple<Func<object>, RegistrationType>> CreateInstanceFactories (ServiceConfigurationEntry serviceConfigurationEntry)
     {
+      var implementationInfosByType = serviceConfigurationEntry.ImplementationInfos.ToLookup (i => i.RegistrationType);
+
+      if (implementationInfosByType.Contains (RegistrationType.Compound))
+        return CreateCompoundInstanceFactory(serviceConfigurationEntry, implementationInfosByType);
+
       return serviceConfigurationEntry.ImplementationInfos.Select (CreateInstanceFactory);
+    }
+
+    private IEnumerable<Tuple<Func<object>, RegistrationType>> CreateCompoundInstanceFactory (
+        ServiceConfigurationEntry serviceConfigurationEntry,
+        ILookup<RegistrationType, ServiceImplementationInfo> implementationInfosByType)
+    {
+      var compoundImplementation = implementationInfosByType[RegistrationType.Compound].First();
+      var constructors = compoundImplementation.ImplementationType.GetConstructors();
+      if (constructors.Length != 1)
+      {
+        throw new ActivationException (
+            string.Format (
+                "Type '{0}' cannot be instantiated. " +
+                "Compound implementations must have a single public constructor accepting an IEnumerable of ServiceType.",
+                compoundImplementation.ImplementationType));
+      }
+
+      var constructor = constructors.First();
+      var expectedParameterType = typeof (IEnumerable<>).MakeGenericType (serviceConfigurationEntry.ServiceType);
+      if (constructor.GetParameters().Length != 1 || constructor.GetParameters().First().ParameterType != expectedParameterType)
+      {
+        throw new ActivationException (
+            string.Format (
+                "Type '{0}' cannot be instantiated. " +
+                "Compound implementations must have a single public constructor accepting an IEnumerable of ServiceType.",
+                compoundImplementation.ImplementationType));
+      }
+
+      var wrappedImplementations = implementationInfosByType[RegistrationType.Multiple];
+
+      var castMethod = typeof (Enumerable).GetMethod ("Cast", BindingFlags.Public | BindingFlags.Static)
+        .MakeGenericMethod (serviceConfigurationEntry.ServiceType);
+
+      var parameterExpression = Expression.Parameter (typeof (IEnumerable<object>));
+      var lambda = Expression.Lambda<Func<IEnumerable<object>, object>> (
+          Expression.New (
+              constructor,
+              Expression.Call (null, castMethod, parameterExpression)),
+          parameterExpression);
+
+      var compiledConstructor = lambda.Compile();
+      var factories = wrappedImplementations.Select (CreateInstanceFactory);
+      var compoundFactory = (Func<object>) (() => compiledConstructor (factories.Select (f => f.Item1()).ToArray()));
+      return new[] { Tuple.Create (compoundFactory, RegistrationType.Compound) };
     }
 
     private Tuple<Func<object>, RegistrationType> CreateInstanceFactory (ServiceImplementationInfo serviceImplementationInfo)

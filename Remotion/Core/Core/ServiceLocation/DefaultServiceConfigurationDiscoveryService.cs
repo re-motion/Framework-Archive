@@ -107,11 +107,15 @@ namespace Remotion.ServiceLocation
               .Where (attribute => attribute.ServiceType == serviceType)
               .Select (attribute => Tuple.Create (type, attribute)));
 
-      if (attributes.Select (a => a.Item2.RegistrationType).Distinct().Count() > 1)
-      {
+      var registrationTypes = attributes.Select (a => a.Item2.RegistrationType).Distinct().ToArray();
+          
+      if (registrationTypes.Contains(RegistrationType.Compound) && registrationTypes.Contains(RegistrationType.Single))
+        throw new InvalidOperationException (
+            "RegistrationTypes compound and Single cannot be used together.");
+      
+      if (registrationTypes.Contains(RegistrationType.Single) && registrationTypes.Contains(RegistrationType.Multiple))
         throw new InvalidOperationException (
             "RegistrationTypes Single and Multiple must not be mixed. All service implementations have to have the same registration type.");
-      }
 
       return ServiceConfigurationEntry.CreateFromAttributes (serviceType, attributes);
     }

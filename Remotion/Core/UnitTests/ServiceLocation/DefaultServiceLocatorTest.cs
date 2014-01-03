@@ -566,6 +566,61 @@ namespace Remotion.UnitTests.ServiceLocation
     }
 
     [Test]
+    public void GetInstance_Compound ()
+    {
+      var implementation1 = new ServiceImplementationInfo (typeof (TestCompoundImplementation1),LifetimeKind.Instance, RegistrationType.Multiple);
+      var implementation2 = new ServiceImplementationInfo (typeof (TestCompoundImplementation2),LifetimeKind.Instance, RegistrationType.Multiple);
+      var compound = new ServiceImplementationInfo (typeof (TestCompoundRegistration), LifetimeKind.Instance, RegistrationType.Compound);
+      _serviceLocator.Register (new ServiceConfigurationEntry (typeof (ITestCompoundRegistration), implementation1, implementation2, compound));
+
+      var instance = _serviceLocator.GetInstance (typeof (ITestCompoundRegistration));
+
+      Assert.That (instance, Is.InstanceOf<TestCompoundRegistration>());
+      var compoundRegistration = (TestCompoundRegistration) instance;
+      Assert.That (compoundRegistration.CompoundRegistrations, Is.Not.Empty);
+      Assert.That (
+          compoundRegistration.CompoundRegistrations.Select (c => c.GetType()),
+          Is.EqualTo (new[] { typeof (TestCompoundImplementation1), typeof (TestCompoundImplementation2) }));
+    }
+
+    [Test]
+    public void GetInstance_CompoundWithEmptyImplementationsList ()
+    {
+      var compound = new ServiceImplementationInfo (typeof (TestCompoundRegistration), LifetimeKind.Instance, RegistrationType.Compound);
+      _serviceLocator.Register (new ServiceConfigurationEntry (typeof (ITestCompoundRegistration), compound));
+
+      var instance = _serviceLocator.GetInstance (typeof (ITestCompoundRegistration));
+
+      Assert.That (instance, Is.InstanceOf<TestCompoundRegistration>());
+      var compoundRegistration = (TestCompoundRegistration) instance;
+      Assert.That (compoundRegistration.CompoundRegistrations, Is.Empty);
+    }
+
+    [Test]
+     [ExpectedException (typeof (ActivationException), ExpectedMessage =
+        "Type 'Remotion.UnitTests.ServiceLocation.TestDomain.TestCompoundWithoutPublicConstructor' cannot be instantiated. " +
+        "Compound implementations must have a single public constructor accepting an IEnumerable of ServiceType.")]
+    public void GetInstance_CompoundWithNoPublicConstructor ()
+    {
+      var compound = new ServiceImplementationInfo (typeof (TestCompoundWithoutPublicConstructor), LifetimeKind.Instance, RegistrationType.Compound);
+      _serviceLocator.Register (new ServiceConfigurationEntry (typeof (ITestCompoundWithoutPublicConstructor), compound));
+
+      _serviceLocator.GetInstance (typeof (ITestCompoundWithoutPublicConstructor));
+    }
+    
+    [Test]
+    public void GetInstance_Compound_ReturnsFirstCompoundImplementation_OrderedByPosition ()
+    {
+      var compound1 = new ServiceImplementationInfo (typeof (TestCompoundRegistration), LifetimeKind.Instance, RegistrationType.Compound);
+      var compound2 = new ServiceImplementationInfo (typeof (TestCompoundRegistration2), LifetimeKind.Instance, RegistrationType.Compound);
+      _serviceLocator.Register (new ServiceConfigurationEntry (typeof (ITestCompoundRegistration), compound1, compound2));
+
+      var instance = _serviceLocator.GetInstance (typeof (ITestCompoundRegistration));
+
+      Assert.That (instance, Is.InstanceOf<TestCompoundRegistration>());
+    }
+
+    [Test]
     [ExpectedException (typeof (ActivationException), ExpectedMessage =
         "Could not resolve type 'Remotion.UnitTests.ServiceLocation.TestDomain.IInterfaceWithIndirectActivationException': "
         + "Error resolving indirect dependendency of constructor parameter 'innerDependency' of type "

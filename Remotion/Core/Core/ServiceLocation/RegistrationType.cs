@@ -26,6 +26,7 @@ namespace Remotion.ServiceLocation
   public enum RegistrationType
   {
     Single,
-    Multiple
+    Multiple,
+    Compound
   }
 }
