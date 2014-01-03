@@ -14,35 +14,12 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System;
-using Microsoft.Practices.ServiceLocation;
-using NUnit.Framework;
-using Remotion.Development.Web.UnitTesting;
-using Remotion.Globalization.Implementation;
+using System.Reflection;
+//
+// General Information about an assembly is controlled through the following 
+// set of attributes. Change these attribute values to modify the information
+// associated with an assembly.
+//
+[assembly: AssemblyTitle("Remotion Web Legacy Library Unit Tests")]
+[assembly: AssemblyCulture("")]		
 
-namespace Remotion.Web.UnitTests.Core.UI.Controls
-{
-  public abstract class RendererTestBase
-  {
-    protected CompoundGlobalizationService GlobalizationService;
-
-    [TestFixtureSetUp]
-    public void TestFixtureSetUp ()
-    {
-      ServiceLocator.SetLocatorProvider (() => new FakeServiceLocator());
-    }
-
-    [TestFixtureTearDown]
-    public void TestFixtureTearDown ()
-    {
-      ServiceLocator.SetLocatorProvider (null);
-    }
-
-    [SetUp]
-    public virtual void SetUp ()
-    {
-      GlobalizationService =
-          new CompoundGlobalizationService (new[] { new GlobalizationService (new ResourceManagerResolver()) });
-    }
-  }
-}

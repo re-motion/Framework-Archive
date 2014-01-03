@@ -15,16 +15,28 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Web.Infrastructure;
-using Remotion.Web.Resources;
+using Remotion.Web.UI;
+using Remotion.Web.UI.Controls;
+using Remotion.Web.Utilities;
 
-namespace Remotion.Web.UnitTests.Core.UI.Controls
+namespace Remotion.Development.Web.UnitTesting.Utilities
 {
-  public class StubInfrastructureResourceUrlFactory : IInfrastructureResourceUrlFactory
+  public class FakeScriptUtility : IScriptUtility
   {
-    public IResourceUrl CreateThemedResourceUrl (ResourceType resourceType, string relativeUrl)
+    public FakeScriptUtility ()
     {
-      return new StaticResourceUrl ("/" + relativeUrl);
+    }
+
+    public void RegisterJavaScriptInclude (IControl control, HtmlHeadAppender htmlHeadAppender)
+    {
+    }
+
+    public void RegisterElementForBorderSpans (IControl control, string jQuerySelectorForBorderSpanTarget)
+    {
+    }
+
+    public void RegisterResizeOnElement (IControl control, string jquerySelector, string eventHandler)
+    {
     }
   }
 }
