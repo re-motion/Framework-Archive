@@ -21,7 +21,7 @@ using NUnit.Framework;
 
 namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
 {
-  public abstract class BaseTest //: StandardMappingTest
+  public abstract class TestBase //: StandardMappingTest
   {
     // types
 
@@ -37,7 +37,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
 
     // construction and disposing
 
-    protected BaseTest ()
+    protected TestBase ()
     {
     }
 

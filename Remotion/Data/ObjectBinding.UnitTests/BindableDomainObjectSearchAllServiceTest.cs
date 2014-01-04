@@ -24,7 +24,7 @@ using Remotion.ObjectBinding.BindableObject;
 namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
 {
   [TestFixture]
-  public class BindableDomainObjectSearchAllServiceTest : BaseTest
+  public class BindableDomainObjectSearchAllServiceTest : TestBase
   {
     private BindableDomainObjectSearchAllService _service;
     private SampleBindableDomainObject _persistedSampleObject1;

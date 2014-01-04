@@ -24,7 +24,7 @@ using Remotion.ObjectBinding.BindableObject;
 namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.BindableDomainObjectMixinTests
 {
   [TestFixture]
-  public class PropertyIntegrationTest : ObjectBindingBaseTest
+  public class PropertyIntegrationTest : ObjectBindingTestBase
   {
     [Test]
     public void TestPropertyAccess ()

@@ -20,7 +20,7 @@ using Remotion.ObjectBinding;
 
 namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
 {
-  public class ObjectBindingBaseTest : BaseTest
+  public abstract class ObjectBindingTestBase : TestBase
   {
     public override void SetUp ()
     {

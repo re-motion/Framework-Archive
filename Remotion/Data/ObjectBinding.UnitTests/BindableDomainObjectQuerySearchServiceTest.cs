@@ -24,7 +24,7 @@ using Remotion.ObjectBinding;
 namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
 {
   [TestFixture]
-  public class BindableDomainObjectQuerySearchServiceTest : ObjectBindingBaseTest
+  public class BindableDomainObjectQuerySearchServiceTest : ObjectBindingTestBase
   {
     private SearchServiceTestHelper _searchServiceTestHelper;
     private BindableDomainObjectQuerySearchService _service;

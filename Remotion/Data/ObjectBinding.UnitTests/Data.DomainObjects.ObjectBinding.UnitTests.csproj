@@ -79,7 +79,7 @@
     <Compile Include="BindableDomainObjectServiceFactoryMixinTest.cs" />
     <Compile Include="BindableDomainObjectTest.cs" />
     <Compile Include="BindableDomainObjectWithMixedPersistentPropertiesTest.cs" />
-    <Compile Include="BaseTest.cs" />
+    <Compile Include="TestBase.cs" />
     <Compile Include="ComponentFactoryWithSpecificPersistenceStrategy.cs" />
     <Compile Include="DatabaseConfiguration.cs" />
     <Compile Include="IntegrationTests\GetDefaultValueIntegrationTest.cs" />
@@ -88,7 +88,7 @@
     <Compile Include="IntegrationTests\TestDomain\IMixinAddingProperty.cs" />
     <Compile Include="IntegrationTests\TestDomain\MixinAddingProperty.cs" />
     <Compile Include="IntegrationTests\TestDomain\MixinAddingPropertyBase.cs" />
-    <Compile Include="ObjectBindingBaseTest.cs" />
+    <Compile Include="ObjectBindingTestBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SearchServiceTestHelper.cs" />
     <Compile Include="SetUpFixture.cs" />

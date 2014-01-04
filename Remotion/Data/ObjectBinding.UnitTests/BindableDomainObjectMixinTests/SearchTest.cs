@@ -25,7 +25,7 @@ using Remotion.ObjectBinding.BindableObject;
 namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.BindableDomainObjectMixinTests
 {
   [TestFixture]
-  public class SearchTest : ObjectBindingBaseTest
+  public class SearchTest : ObjectBindingTestBase
   {
     private SearchServiceTestHelper _searchServiceTestHelper;
     private string _stubbedQueryID;

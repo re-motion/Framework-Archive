@@ -31,7 +31,7 @@ using Remotion.Utilities;
 namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
 {
   [TestFixture]
-  public class BindableDomainObjectIntegrationTest : ObjectBindingBaseTest
+  public class BindableDomainObjectIntegrationTest : ObjectBindingTestBase
   {
     private IBusinessObjectWithIdentity _instance;
     private IBusinessObjectWithIdentity _instanceOverridingDisplayName;

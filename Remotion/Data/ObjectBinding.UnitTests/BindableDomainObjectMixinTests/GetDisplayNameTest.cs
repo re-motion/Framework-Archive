@@ -29,7 +29,7 @@ using Rhino.Mocks;
 namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.BindableDomainObjectMixinTests
 {
   [TestFixture]
-  public class GetDisplayNameTest : ObjectBindingBaseTest
+  public class GetDisplayNameTest : ObjectBindingTestBase
   {
     private MockRepository _mockRepository;
     private IObjectSecurityAdapter _mockObjectSecurityAdapter;

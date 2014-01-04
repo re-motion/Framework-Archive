@@ -23,7 +23,7 @@ using Remotion.ObjectBinding;
 namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.IntegrationTests
 {
   [TestFixture]
-  public class GetDefaultValueIntegrationTest : BaseTest
+  public class GetDefaultValueIntegrationTest : TestBase
   {
     [Test]
     public void IsDefaultValue_DerivedClassWithMixinWithDuplicateInterface ()

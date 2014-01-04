@@ -29,7 +29,7 @@ using Rhino.Mocks;
 namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
 {
   [TestFixture]
-  public class BindableDomainObjectTest : BaseTest
+  public class BindableDomainObjectTest : TestBase
   {
     private IBindableDomainObjectImplementation _implementationMock;
     private IBusinessObjectProperty _propertyFake;

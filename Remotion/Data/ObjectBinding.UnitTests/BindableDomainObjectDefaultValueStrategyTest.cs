@@ -30,7 +30,7 @@ using Rhino.Mocks;
 namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
 {
   [TestFixture]
-  public class BindableDomainObjectDefaultValueStrategyTest : ObjectBindingBaseTest
+  public class BindableDomainObjectDefaultValueStrategyTest : ObjectBindingTestBase
   {
     [Test]
     public void IsDefaultDefault_StateIsNotNew ()

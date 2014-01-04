@@ -24,7 +24,7 @@ using Remotion.ObjectBinding;
 namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
 {
   [TestFixture]
-  public class BindableDomainObjectWithMixedPersistentPropertiesTest : ObjectBindingBaseTest
+  public class BindableDomainObjectWithMixedPersistentPropertiesTest : ObjectBindingTestBase
   {
     [Test]
     public void MixedProperty_Exists ()

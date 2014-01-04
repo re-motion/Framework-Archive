@@ -24,7 +24,7 @@ using Remotion.ObjectBinding.BindableObject;
 namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.BindableDomainObjectMixinTests
 {
   [TestFixture]
-  public class IdentityTest : ObjectBindingBaseTest
+  public class IdentityTest : ObjectBindingTestBase
   {
     [Test]
     public void BindableDomainObjectsHaveIdentity ()

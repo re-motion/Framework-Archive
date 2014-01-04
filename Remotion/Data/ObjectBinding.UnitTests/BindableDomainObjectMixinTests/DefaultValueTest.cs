@@ -31,7 +31,7 @@ using ParamList = Remotion.TypePipe.ParamList;
 namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.BindableDomainObjectMixinTests
 {
   [TestFixture]
-  public class DefaultValueTest : ObjectBindingBaseTest
+  public class DefaultValueTest : ObjectBindingTestBase
   {
     private SampleBindableMixinDomainObject _loadedObject;
     private SampleBindableMixinDomainObject _newObject;

@@ -24,7 +24,7 @@ using Remotion.ObjectBinding;
 namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.BindableDomainObjectMixinTests
 {
   [TestFixture]
-  public class CommonTest : ObjectBindingBaseTest
+  public class CommonTest : ObjectBindingTestBase
   {
     [Test]
     public void InstantiateMixedType ()
