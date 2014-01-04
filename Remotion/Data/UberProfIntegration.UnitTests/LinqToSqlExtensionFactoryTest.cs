@@ -14,16 +14,15 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System;
-using NUnit.Framework;
-using Remotion.Data.DomainObjects;
-using Remotion.Data.DomainObjects.UberProfIntegration;
-using System.Linq;
 
-namespace Remotion.Data.UnitTests.DomainObjects.UberProfIntegration
+using System;
+using System.Linq;
+using NUnit.Framework;
+
+namespace Remotion.Data.DomainObjects.UberProfIntegration.UnitTests
 {
   [TestFixture]
-  public class LinqToSqlExtensionFactoryTest : UberProfIntegrationTestBase
+  public class LinqToSqlExtensionFactoryTest : TestBase
   {
     private LinqToSqlExtensionFactory _factory;
 

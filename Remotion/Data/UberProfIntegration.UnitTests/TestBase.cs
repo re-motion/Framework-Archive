@@ -14,22 +14,24 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using Remotion.Data.DomainObjects.UberProfIntegration;
-using Remotion.Development.UnitTesting;
 
-namespace Remotion.Data.UnitTests.DomainObjects.UberProfIntegration
+using System;
+using NUnit.Framework;
+using Remotion.Development.UnitTesting;
+using Remotion.Utilities;
+
+namespace Remotion.Data.DomainObjects.UberProfIntegration.UnitTests
 {
-  public abstract class UberProfIntegrationTestBase : StandardMappingTest
+  public abstract class TestBase
   {
     private LinqToSqlAppenderProxy _appenderProxy;
     private MockableLinqToSqlAppender _mockableAppender;
     private LinqToSqlAppenderProxy _originalAppender;
     private DoubleCheckedLockingContainer<LinqToSqlAppenderProxy> _container;
 
-    public override void SetUp ()
+    [SetUp]
+    public virtual void SetUp ()
     {
-      base.SetUp();
-
       _appenderProxy = (LinqToSqlAppenderProxy) PrivateInvoke.CreateInstanceNonPublicCtor (
           typeof (LinqToSqlAppenderProxy),
           "Test",
@@ -39,6 +41,8 @@ namespace Remotion.Data.UnitTests.DomainObjects.UberProfIntegration
 
       _container = (DoubleCheckedLockingContainer<LinqToSqlAppenderProxy>)
                    PrivateInvoke.GetNonPublicStaticField (typeof (LinqToSqlAppenderProxy), "s_instance");
+      Assertion.IsNotNull (_container);
+
       if (_container.HasValue)
         _originalAppender = _container.Value;
       else
@@ -47,11 +51,10 @@ namespace Remotion.Data.UnitTests.DomainObjects.UberProfIntegration
       _container.Value = _appenderProxy;
     }
 
-    public override void TearDown()
+    [TearDown]
+    public virtual void TearDown()
     {
       _container.Value = _originalAppender;
-
-      base.TearDown();
     }
 
     public LinqToSqlAppenderProxy AppenderProxy

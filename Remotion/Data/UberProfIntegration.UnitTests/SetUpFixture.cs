@@ -27,24 +27,19 @@ using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2005;
-using Remotion.Development.UnitTesting;
 using Remotion.Development.UnitTesting.Data.SqlClient;
-using Remotion.Security;
-using Remotion.ServiceLocation;
 
-namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
+namespace Remotion.Data.DomainObjects.UberProfIntegration.UnitTests
 {
   [SetUpFixture]
   public class SetUpFixture
   {
-    private ServiceLocatorScope _serviceLocatorScope;
-
     public static string TestDomainConnectionString
     {
       get
       {
         return string.Format (
-            "Integrated Security=SSPI;Initial Catalog=RemotionDataDomainObjectsObjectBindingTestDomain;Data Source={0}",
+            "Integrated Security=SSPI;Initial Catalog=RemotionDataDomainObjectsUberProfIntegrationTestDomain;Data Source={0}",
             DatabaseConfiguration.DataSource);
       }
     }
@@ -57,10 +52,6 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
     [SetUp]
     public void SetUp ()
     {
-      var serviceLocator = new DefaultServiceLocator();
-      serviceLocator.Register (typeof (IObjectSecurityAdapter));
-      _serviceLocatorScope = new ServiceLocatorScope (serviceLocator);
-
       try
       {
         var providers = new ProviderCollection<StorageProviderDefinition>();
@@ -89,13 +80,6 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
         Console.WriteLine();
         throw;
       }
-    }
-
-    [TearDown]
-    public virtual void TearDown ()
-    {
-      _serviceLocatorScope.Dispose();
-      SqlConnection.ClearAllPools();
     }
   }
 }

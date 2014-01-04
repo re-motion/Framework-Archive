@@ -14,26 +14,33 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
 using NUnit.Framework;
-using Remotion.Data.DomainObjects;
 using Remotion.Data.DomainObjects.DomainImplementation;
 using Remotion.Data.DomainObjects.Tracing;
-using Remotion.Data.DomainObjects.UberProfIntegration;
+using Remotion.Data.DomainObjects.UberProfIntegration.UnitTests.TestDomain;
 using Remotion.Development.UnitTesting;
 using Remotion.ServiceLocation;
+using Remotion.TypePipe;
 
-namespace Remotion.Data.UnitTests.DomainObjects.UberProfIntegration
+namespace Remotion.Data.DomainObjects.UberProfIntegration.UnitTests
 {
   [TestFixture]
-  public class IntegrationTest : UberProfIntegrationTestBase
+  public class IntegrationTest : TestBase
   {
     private ServiceLocatorScope _serviceLocatorScope;
     private TracingLinqToSqlAppender _tracingLinqToSqlAppender;
+    private ObjectID _objectID;
 
     public override void SetUp ()
     {
       base.SetUp();
+
+      var clientTransaction = ClientTransaction.CreateRootTransaction();
+      var sampleObject = LifetimeService.NewObject (clientTransaction, typeof (SampleObject), ParamList.Empty);
+      _objectID = sampleObject.ID;
+      clientTransaction.Commit();
 
       var locator = new DefaultServiceLocator();
       var factory = new LinqToSqlExtensionFactory();
@@ -43,7 +50,6 @@ namespace Remotion.Data.UnitTests.DomainObjects.UberProfIntegration
 
       _tracingLinqToSqlAppender = new TracingLinqToSqlAppender();
       SetAppender (_tracingLinqToSqlAppender);
-
     }
 
     public override void TearDown ()
@@ -56,7 +62,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.UberProfIntegration
     public void LoadSingleObject ()
     {
       var clientTransaction = ClientTransaction.CreateRootTransaction ();
-      LifetimeService.GetObject (clientTransaction, DomainObjectIDs.Order1, false);
+      LifetimeService.GetObject (clientTransaction, _objectID, false);
       clientTransaction.Discard();
 
       Assert.That (
@@ -64,11 +70,11 @@ namespace Remotion.Data.UnitTests.DomainObjects.UberProfIntegration
           Is.StringMatching (
               @"^ConnectionStarted \((?<connectionid>[^,]+)\)" + Environment.NewLine
               + @"StatementExecuted \(\k<connectionid>, (?<statementid>[^,]+), "
-              + @"SELECT \[ID\], \[ClassID\], \[Timestamp\], \[OrderNo\], \[DeliveryDate\], \[OfficialID\], \[CustomerID\], \[CustomerIDClassID\] "
-              + @"FROM \[Order\] WHERE \[ID\] = \@ID;" + Environment.NewLine
+              + @"SELECT \[ID\], \[ClassID\], \[Timestamp\], \[SampleProperty\] "
+              + @"FROM \[SampleObject\] WHERE \[ID\] = \@ID;" + Environment.NewLine
               + @"-- Ignore unbounded result sets: TOP \*" + Environment.NewLine
               + @"-- Parameters:" + Environment.NewLine
-              + @"-- \@ID = \[-\[5682f032-2f0b-494b-a31c-c97f02b89c36\]-\] \[-\[Type \(0\)\]-\]" + Environment.NewLine
+              + string.Format (@"-- \@ID = \[-\[{0}\]-\] \[-\[Type \(0\)\]-\]", _objectID.Value) + Environment.NewLine
               + @"\)" + Environment.NewLine
               + @"CommandDurationAndRowCount \(\k<connectionid>, \d+, \<null\>\)" + Environment.NewLine
               + @"StatementRowCount \(\k<connectionid>, \k<statementid>, 1\)" + Environment.NewLine

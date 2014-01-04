@@ -1,4 +1,4 @@
-// This file is part of the re-motion Core Framework (www.re-motion.org)
+﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -16,33 +16,33 @@
 // 
 
 using System;
-using NUnit.Framework;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Configuration;
 
 namespace Remotion.Data.DomainObjects.UberProfIntegration.UnitTests
 {
-  public class FakeLinqToSqlProfiler
+  public class DatabaseConfiguration
   {
-    private static bool s_initialized;
-    private static readonly object s_initializedLock = new object ();
-
-    public static void Initialize ()
+    public static string DataSource
     {
-      lock (s_initializedLock)
-      {
-        Assert.That (s_initialized, Is.False, "Initialize must not be called twice.");
-        s_initialized = true;
-      }
+      get { return ConfigurationManager.AppSettings["DataSource"]; }
     }
 
-    public static MockableLinqToSqlAppender GetAppender (string name)
+    public static string DatabaseDirectory
     {
-      lock (s_initializedLock)
-      {
-        Assert.That (s_initialized, Is.True, "Initialize must be called before GetAppender.");
-        s_initialized = false;
-      }
+      get { return ConfigurationManager.AppSettings["DatabaseDirectory"]; }
+    }
 
-      return new MockableLinqToSqlAppender (name);
+    public static ReadOnlyDictionary<string, string> GetReplacementDictionary ()
+    {
+      return new ReadOnlyDictionary<string, string> (
+          new Dictionary<string, string>
+          {
+              {
+                  "C:\\Databases", DatabaseDirectory
+              }
+          });
     }
   }
 }
