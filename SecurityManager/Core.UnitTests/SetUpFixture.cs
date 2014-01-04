@@ -109,10 +109,5 @@ namespace Remotion.SecurityManager.UnitTests
     {
       SqlConnection.ClearAllPools();
     }
-
-    private string GetFullPath (string fileName)
-    {
-      return Path.Combine (AppDomain.CurrentDomain.BaseDirectory, fileName);
-    }
   }
 }
