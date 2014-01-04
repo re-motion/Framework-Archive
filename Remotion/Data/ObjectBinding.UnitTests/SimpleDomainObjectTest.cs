@@ -14,16 +14,17 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
 using System.Runtime.Serialization;
 using NUnit.Framework;
-using Remotion.Data.DomainObjects;
-using Remotion.Data.UnitTests.DomainObjects.TestDomain;
+using Remotion.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain;
+using Remotion.Development.UnitTesting;
 
-namespace Remotion.Data.UnitTests.DomainObjects.Core.DomainObjects
+namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
 {
   [TestFixture]
-  public class SimpleDomainObjectTest : ClientTransactionBaseTest
+  public class SimpleDomainObjectTest : TestBase
   {
     [Test]
     public void NewObject ()
@@ -47,6 +48,26 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.DomainObjects
       var gottenInstance2 = instance.ID.GetObject<ClassDerivedFromSimpleDomainObject> ();
       Assert.That (gottenInstance2, Is.SameAs (instance));
     }
+
+    [Test]
+    public void Serializable ()
+    {
+      var instance = ClassDerivedFromSimpleDomainObject.NewObject();
+      instance.IntProperty = 7;
+
+      var deserializedData = Serializer.SerializeAndDeserialize (Tuple.Create (ClientTransaction.Current, instance));
+      var deserializedInstance = deserializedData.Item2;
+
+      Assert.That (deserializedInstance.ID, Is.EqualTo (instance.ID));
+      Assert.That (deserializedInstance.RootTransaction, Is.SameAs (deserializedData.Item1));
+
+      using (deserializedData.Item1.EnterNonDiscardingScope())
+      {
+        Assert.That (deserializedInstance, Is.Not.SameAs (instance));
+        Assert.That (deserializedInstance.IntProperty, Is.EqualTo (7));
+      }
+    }
+
 
     [Test]
     public void DeserializationConstructor_CallsBase ()

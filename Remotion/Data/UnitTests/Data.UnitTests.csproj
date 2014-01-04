@@ -170,10 +170,6 @@
       <Project>{D641E4E2-23F3-4454-8074-1327EF07BAA1}</Project>
       <Name>Mixins.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\ObjectBinding\Core\ObjectBinding.Core.csproj">
-      <Project>{FDCCDB1E-0962-41DA-99A1-2DB390C48748}</Project>
-      <Name>ObjectBinding.Core</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\TypePipe\Core\TypePipe.Core.csproj">
       <Project>{98e7f7aa-12b2-4a6b-8922-52c8e53b378e}</Project>
       <Name>TypePipe.Core</Name>
@@ -181,10 +177,6 @@
     <ProjectReference Include="..\..\..\TypePipe\Development\TypePipe.Development.csproj">
       <Project>{f6faf727-9405-4bcc-9153-803f73853e67}</Project>
       <Name>TypePipe.Development</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DomainObjects.ObjectBinding\Data.DomainObjects.ObjectBinding.csproj">
-      <Project>{f3935d12-39e6-4f06-8316-98cd7ed60c6b}</Project>
-      <Name>Data.DomainObjects.ObjectBinding</Name>
     </ProjectReference>
     <ProjectReference Include="..\DomainObjects\Data.DomainObjects.csproj">
       <Name>Data.DomainObjects</Name>
@@ -865,7 +857,6 @@
     <Compile Include="DomainObjects\Core\Mapping\TestDomain\Errors\TargetClass2ForMixinAddingBidirectionalRelationTwice.cs" />
     <Compile Include="DomainObjects\Core\Mapping\TestDomain\Integration\AbstractClass.cs" />
     <Compile Include="DomainObjects\Core\Mapping\TestDomain\Integration\Ceo.cs" />
-    <Compile Include="DomainObjects\Core\Mapping\TestDomain\Integration\ClassDerivedFromSimpleDomainObject.cs" />
     <Compile Include="DomainObjects\Core\Mapping\TestDomain\Integration\ClassNotDerivedFromDomainObject.cs" />
     <Compile Include="DomainObjects\Core\Mapping\TestDomain\Integration\ClassWithAllDataTypes.cs" />
     <Compile Include="DomainObjects\Core\Mapping\TestDomain\Integration\ClassWithGuidKey.cs" />
@@ -1256,7 +1247,6 @@
     <Compile Include="DomainObjects\Core\Queries\Configuration\QueryFileElementTest.cs" />
     <Compile Include="DomainObjects\Core\Persistence\Configuration\StorageProviderDefinitionTest.cs" />
     <Compile Include="DomainObjects\Core\DomainImplementation\Cloning\DomainObjectClonerTest.cs" />
-    <Compile Include="DomainObjects\Core\DomainObjects\SimpleDomainObjectTest.cs" />
     <Compile Include="DomainObjects\Core\IntegrationTests\Relations\CollectionSetterTest.cs" />
     <Compile Include="DomainObjects\Core\IntegrationTests\StorageClassTransactionTest.cs" />
     <Compile Include="DomainObjects\Core\Linq\ExtensionMethodsTest.cs" />
@@ -1355,7 +1345,6 @@
     <Compile Include="DomainObjects\Core\Serialization\ObjectIDTest.cs" />
     <Compile Include="DomainObjects\Core\Serialization\RelationEndPointManagerTest.cs" />
     <Compile Include="DomainObjects\TestDomain\TableInheritance\TISpecificFolder.cs" />
-    <Compile Include="DomainObjects\TestDomain\ClassDerivedFromSimpleDomainObject.cs" />
     <Compile Include="DomainObjects\TestDomain\ClassWithEnumNotDefiningZero.cs" />
     <Compile Include="DomainObjects\TestDomain\ClassWithMixedProperty.cs" />
     <Compile Include="DomainObjects\TestDomain\ClassWithNonPublicProperties.cs" />
@@ -1364,7 +1353,6 @@
     <Compile Include="DomainObjects\Core\Serialization\SerializationCallbackTest.cs" />
     <Compile Include="DomainObjects\StandardMappingTest.cs" />
     <Compile Include="DomainObjects\Core\Infrastructure\TypePipe\InterceptedPropertyIntegrationTest.cs" />
-    <Compile Include="DomainObjects\TestDomain\ClassDerivedFromSimpleDomainObject_ImplementingISerializable.cs" />
     <Compile Include="DomainObjects\TestDomain\Color.cs" />
     <Compile Include="DomainObjects\TestDomain\ColorExtensions.cs" />
     <Compile Include="DomainObjects\Core\MixedDomains\TestDomain\ConcreteInheritance\ConcreteInheritanceBaseClass.cs" />

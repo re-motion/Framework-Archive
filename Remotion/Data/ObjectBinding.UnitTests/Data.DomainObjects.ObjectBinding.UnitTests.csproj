@@ -79,6 +79,7 @@
     <Compile Include="BindableDomainObjectServiceFactoryMixinTest.cs" />
     <Compile Include="BindableDomainObjectTest.cs" />
     <Compile Include="BindableDomainObjectWithMixedPersistentPropertiesTest.cs" />
+    <Compile Include="SimpleDomainObjectTest.cs" />
     <Compile Include="TestBase.cs" />
     <Compile Include="ComponentFactoryWithSpecificPersistenceStrategy.cs" />
     <Compile Include="DatabaseConfiguration.cs" />
@@ -99,6 +100,8 @@
     <Compile Include="TestDomain\BindableDomainObjectWithProperties.cs" />
     <Compile Include="TestDomain\BindableNonDomainObjectReferencingDomainObject.cs" />
     <Compile Include="TestDomain\ClassDerivedFromBindableObjectBaseOverridingMixinMethod.cs" />
+    <Compile Include="TestDomain\ClassDerivedFromSimpleDomainObject.cs" />
+    <Compile Include="TestDomain\ClassDerivedFromSimpleDomainObject_ImplementingISerializable.cs" />
     <Compile Include="TestDomain\IBindableDomainObjectWithProperties.cs" />
     <Compile Include="TestDomain\IMixinAddingPersistentProperties.cs" />
     <Compile Include="TestDomain\MixinAddingPersistentProperties.cs" />

@@ -14,12 +14,11 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
 using System.Runtime.Serialization;
-using Remotion.Data.DomainObjects;
-using Remotion.Data.DomainObjects.ObjectBinding;
 
-namespace Remotion.Data.UnitTests.DomainObjects.TestDomain
+namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain
 {
   [DBTable]
   [Serializable]
