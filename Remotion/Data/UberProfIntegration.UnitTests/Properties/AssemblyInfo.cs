@@ -24,19 +24,5 @@ using System.Reflection;
 //
 
 [assembly: AssemblyTitle("Unit Tests for Remotion DomainObjects RdmbsTools Library")]
-[assembly: AssemblyDescription("Unit Tests for Remotion DomainObjects RdmbsTools Library")]
 [assembly: AssemblyCulture("")]		
 [assembly: CLSCompliant(true)]
-
-//
-// Version information for an assembly consists of the following four values:
-//
-//      Major Version
-//      Minor Version 
-//      Build Number
-//      Revision
-//
-// You can specify all the values or you can default the Revision and Build Numbers 
-// by using the '*' as shown below:
-
-//[assembly: ApplyQueryExecutorMixin]
