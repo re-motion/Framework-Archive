@@ -311,6 +311,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.DomainObjects.Security
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.DomainObjects.ObjectBinding.UnitTests", "Remotion\Data\ObjectBinding.UnitTests\Data.DomainObjects.ObjectBinding.UnitTests.csproj", "{FBEAC696-BF2A-4839-9587-44DDF80E8C6A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.DomainObjects.Web.IntegrationTests", "Remotion\Data\DomainObjects.Web.IntegrationTests\Data.DomainObjects.Web.IntegrationTests.csproj", "{7A088A69-24BE-49C5-92CC-036C94D0E870}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -1125,6 +1127,14 @@ Global
 		{FBEAC696-BF2A-4839-9587-44DDF80E8C6A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{FBEAC696-BF2A-4839-9587-44DDF80E8C6A}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{FBEAC696-BF2A-4839-9587-44DDF80E8C6A}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{7A088A69-24BE-49C5-92CC-036C94D0E870}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A088A69-24BE-49C5-92CC-036C94D0E870}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A088A69-24BE-49C5-92CC-036C94D0E870}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{7A088A69-24BE-49C5-92CC-036C94D0E870}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{7A088A69-24BE-49C5-92CC-036C94D0E870}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A088A69-24BE-49C5-92CC-036C94D0E870}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7A088A69-24BE-49C5-92CC-036C94D0E870}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{7A088A69-24BE-49C5-92CC-036C94D0E870}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -1156,6 +1166,7 @@ Global
 		{1203D162-42F9-46AE-9416-4D4CA12E824F} = {040CC4EF-ACE9-4832-AC0C-56640F2AB337}
 		{ABDD62A5-7490-418E-8D30-23E480621E8B} = {040CC4EF-ACE9-4832-AC0C-56640F2AB337}
 		{FBEAC696-BF2A-4839-9587-44DDF80E8C6A} = {040CC4EF-ACE9-4832-AC0C-56640F2AB337}
+		{7A088A69-24BE-49C5-92CC-036C94D0E870} = {040CC4EF-ACE9-4832-AC0C-56640F2AB337}
 		{B719A305-0493-4C72-88FE-9A2FC6964578} = {9F4D90EC-6AD2-495D-BFC3-270DC15974DD}
 		{AD1A0CD9-C08C-449C-9A7D-2D8BC5439BDC} = {9F4D90EC-6AD2-495D-BFC3-270DC15974DD}
 		{F5416318-15B4-421E-9B44-03CD4C052D5A} = {9F4D90EC-6AD2-495D-BFC3-270DC15974DD}
