@@ -62,17 +62,12 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
 
       try
       {
-        ProviderCollection<StorageProviderDefinition> providers = new ProviderCollection<StorageProviderDefinition>();
+        var providers = new ProviderCollection<StorageProviderDefinition>();
         providers.Add (new RdbmsProviderDefinition ("TheStorageProvider", new SqlStorageObjectFactory(), TestDomainConnectionString));
-        StorageConfiguration storageConfiguration = new StorageConfiguration (providers, providers["TheStorageProvider"]);
+        var storageConfiguration = new StorageConfiguration (providers, providers["TheStorageProvider"]);
 
         DomainObjectsConfiguration.SetCurrent (
             new FakeDomainObjectsConfiguration (new MappingLoaderConfiguration(), storageConfiguration, new QueryConfiguration()));
-
-        MappingConfiguration.SetCurrent (
-            new MappingConfiguration (
-                new MappingReflector(),
-                new PersistenceModelLoader (new StorageGroupBasedStorageProviderDefinitionFinder (DomainObjectsConfiguration.Current.Storage))));
 
         SqlConnection.ClearAllPools();
 

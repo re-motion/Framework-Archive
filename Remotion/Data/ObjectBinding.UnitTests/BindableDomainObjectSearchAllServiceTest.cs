@@ -32,17 +32,14 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
-      _service = new BindableDomainObjectSearchAllService ();
+      _service = new BindableDomainObjectSearchAllService();
 
-      using (ClientTransaction.CreateRootTransaction ().EnterDiscardingScope ())
-      {
-        _persistedSampleObject1 = SampleBindableDomainObject.NewObject();
-        _persistedSampleObject2 = SampleBindableDomainObject.NewObject();
+      _persistedSampleObject1 = SampleBindableDomainObject.NewObject();
+      _persistedSampleObject2 = SampleBindableDomainObject.NewObject();
 
-        ClientTransaction.Current.Commit();
-      }
+      ClientTransaction.Current.Commit();
     }
 
     [Test]

@@ -21,8 +21,10 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
     xsi:schemaLocation="http://www.re-motion.org/Data/DomainObjects/Queries/1.0 ..\DomainObjects\Schemas\Queries.xsd">
 
-  <query id="DummyQuery" type="scalar">
-    <statement>select 42</statement>
+  <query id="FakeQuery" type="collection">
+    <storageGroupType>Remotion.Data.DomainObjects::DBStorageGroupAttribute</storageGroupType>
+    <statement>SELECT "Dummy"</statement>
+    <collectionType>Remotion.Data.DomainObjects::DomainObjectCollection</collectionType>
   </query>
 
 </queries>
