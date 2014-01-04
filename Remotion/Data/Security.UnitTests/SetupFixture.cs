@@ -19,15 +19,12 @@ using System;
 using NUnit.Framework;
 using Remotion.Configuration;
 using Remotion.Data.DomainObjects.Configuration;
-using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.Data.DomainObjects.Development;
 using Remotion.Data.DomainObjects.Mapping;
-using Remotion.Data.DomainObjects.Mapping.Configuration;
-using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
-using Remotion.Data.DomainObjects.Queries.Configuration;
 using Remotion.Data.DomainObjects.Security.UnitTests.TestDomain;
+using Remotion.Development.UnitTesting;
 
 namespace Remotion.Data.DomainObjects.Security.UnitTests
 {
@@ -39,19 +36,12 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests
     {
       try
       {
-        ProviderCollection<StorageProviderDefinition> providers = new ProviderCollection<StorageProviderDefinition>();
+        var providers = new ProviderCollection<StorageProviderDefinition>();
         providers.Add (new RdbmsProviderDefinition (StubStorageProvider.StorageProviderID, new StubStorageFactory(), "NonExistingRdbms"));
-        StorageConfiguration storageConfiguration = new StorageConfiguration (providers, providers[StubStorageProvider.StorageProviderID]);
-        DomainObjectsConfiguration.SetCurrent (
-            new FakeDomainObjectsConfiguration (
-                new MappingLoaderConfiguration(),
-                storageConfiguration,
-                new QueryConfiguration ("UnitTests.Queries.xml")));
+        var storageConfiguration = new StorageConfiguration (providers, providers[StubStorageProvider.StorageProviderID]);
+        DomainObjectsConfiguration.SetCurrent (new FakeDomainObjectsConfiguration (storage: storageConfiguration));
 
-        MappingConfiguration.SetCurrent (
-            new MappingConfiguration (
-                new MappingReflector(),
-                new PersistenceModelLoader(new StorageGroupBasedStorageProviderDefinitionFinder (DomainObjectsConfiguration.Current.Storage))));
+        Dev.Null = MappingConfiguration.Current;
       }
       catch (Exception ex)
       {

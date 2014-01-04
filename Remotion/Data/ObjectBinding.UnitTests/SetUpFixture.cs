@@ -66,8 +66,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
         providers.Add (new RdbmsProviderDefinition ("TheStorageProvider", new SqlStorageObjectFactory(), TestDomainConnectionString));
         var storageConfiguration = new StorageConfiguration (providers, providers["TheStorageProvider"]);
 
-        DomainObjectsConfiguration.SetCurrent (
-            new FakeDomainObjectsConfiguration (new MappingLoaderConfiguration(), storageConfiguration, new QueryConfiguration()));
+        DomainObjectsConfiguration.SetCurrent (new FakeDomainObjectsConfiguration (storage: storageConfiguration));
 
         SqlConnection.ClearAllPools();
 
@@ -85,7 +84,9 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
       }
       catch (Exception e)
       {
-        Console.WriteLine (e);
+        Console.WriteLine ("SetUpFixture failed: " + e);
+        Console.WriteLine();
+        throw;
       }
     }
 
