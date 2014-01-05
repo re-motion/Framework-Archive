@@ -1,4 +1,4 @@
-﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
+// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -16,14 +16,16 @@
 // 
 
 using System;
+using System.Linq;
 using NUnit.Framework;
+using Remotion.ExtensibleEnums.Infrastructure;
 using Remotion.ServiceLocation;
-using Remotion.Web.Infrastructure;
+using Remotion.Utilities;
 
-namespace Remotion.Web.UnitTests.Core.Infrastructure
+namespace Remotion.ExtensibleEnums.UnitTests.Infrastructure
 {
   [TestFixture]
-  public class IBuildManagerTest
+  public class ITypeConverterFactoryTest
   {
     private DefaultServiceLocator _serviceLocator;
 
@@ -34,21 +36,21 @@ namespace Remotion.Web.UnitTests.Core.Infrastructure
     }
 
     [Test]
-    public void GetInstance_Once ()
+    public void GetAllInstances_Once ()
     {
-      var instance = _serviceLocator.GetInstance<IBuildManager>();
+      var instances = _serviceLocator.GetAllInstances<ITypeConverterFactory>().ToArray();
 
-      Assert.That (instance, Is.Not.Null);
-      Assert.That (instance, Is.TypeOf (typeof (BuildManagerWrapper)));
+      Assert.That (instances.First(), Is.TypeOf<AttributeBasedTypeConverterFactory>());
+      Assert.That (instances.Last(), Is.TypeOf<ExtensibleEnumTypeConverterFactory>());
     }
 
     [Test]
-    public void GetInstance_Twice_ReturnsSameInstance ()
+    public void GetAllInstances_Twice_ReturnsSameInstances ()
     {
-      var instance1 = _serviceLocator.GetInstance<IBuildManager>();
-      var instance2 = _serviceLocator.GetInstance<IBuildManager>();
+      var instances1 = _serviceLocator.GetAllInstances<ITypeConverterFactory>();
+      var instances2 = _serviceLocator.GetAllInstances<ITypeConverterFactory>();
 
-      Assert.That (instance1, Is.SameAs (instance2));
+      Assert.That (instances1, Is.EqualTo (instances2));
     }
   }
 }

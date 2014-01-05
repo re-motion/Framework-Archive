@@ -17,38 +17,36 @@
 
 using System;
 using NUnit.Framework;
-using Remotion.ServiceLocation;
-using Remotion.Web.Infrastructure;
+using Remotion.ExtensibleEnums.Infrastructure;
+using Remotion.ExtensibleEnums.UnitTests.TestDomain;
+using Remotion.Utilities;
 
-namespace Remotion.Web.UnitTests.Core.Infrastructure
+namespace Remotion.ExtensibleEnums.UnitTests.Infrastructure
 {
   [TestFixture]
-  public class IBuildManagerTest
+  public class ExtensibleEnumTypeConverterFactoryTest
   {
-    private DefaultServiceLocator _serviceLocator;
+    private ITypeConverterFactory _factory;
 
     [SetUp]
     public void SetUp ()
     {
-      _serviceLocator = new DefaultServiceLocator();
+      _factory = new ExtensibleEnumTypeConverterFactory();
     }
 
     [Test]
-    public void GetInstance_Once ()
+    public void CreateTypeConverterOrDefault_WithExtensibleEnum_ReturnsExtensibleEnumConverter ()
     {
-      var instance = _serviceLocator.GetInstance<IBuildManager>();
-
-      Assert.That (instance, Is.Not.Null);
-      Assert.That (instance, Is.TypeOf (typeof (BuildManagerWrapper)));
+      var typeConverter = _factory.CreateTypeConverterOrDefault (typeof (Color));
+      Assert.That (typeConverter, Is.TypeOf<ExtensibleEnumConverter>());
+      Assert.That (((ExtensibleEnumConverter) typeConverter).ExtensibleEnumType, Is.EqualTo (typeof (Color)));
     }
 
     [Test]
-    public void GetInstance_Twice_ReturnsSameInstance ()
+    public void CreateTypeConverterOrDefault_WithOtherType_ReturnsNull ()
     {
-      var instance1 = _serviceLocator.GetInstance<IBuildManager>();
-      var instance2 = _serviceLocator.GetInstance<IBuildManager>();
-
-      Assert.That (instance1, Is.SameAs (instance2));
+      var typeConverter = _factory.CreateTypeConverterOrDefault (typeof (Int32));
+      Assert.That (typeConverter, Is.Null);
     }
   }
 }
