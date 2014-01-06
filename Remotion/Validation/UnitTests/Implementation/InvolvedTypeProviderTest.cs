@@ -161,7 +161,7 @@ namespace Remotion.Validation.UnitTests.Implementation
       Assert.That (result[7], Is.EqualTo (typeof (IIntroducedFromMixinForBaseType)));
       Assert.That (result[8], Is.EqualTo (typeof (IIntroducedFromMixinForDerivedType1)));
       Assert.That (result[9], Is.EqualTo (typeof (IIntroducedFromMixinForDerivedType2)));
-      Assert.That (result[10].Name.StartsWith("DerivedConcreteTypeForMixin_Mixed_"), Is.True);
+      Assert.That (result[10].Name.StartsWith ("DerivedConcreteTypeForMixin_AssembledTypeProxy_"), Is.True);
       Assert.That (result[11], Is.EqualTo (typeof (BaseMixinForDerivedType)));
       Assert.That (result[12], Is.EqualTo (typeof (MixinForBaseType)));
       Assert.That (result[13], Is.EqualTo (typeof (MixinForDerivedType1)));

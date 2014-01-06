@@ -30,7 +30,7 @@ namespace Remotion.Validation.UnitTests.TestHelpers
       throw new NotImplementedException();
     }
 
-    public ICollection<Func<object, object>> CustomMessageFormatArguments { get; private set; }
+    public ICollection<Func<object, object, object>> CustomMessageFormatArguments { get; private set; }
     public Func<object, object> CustomStateProvider { get; set; }
     public IStringSource ErrorMessageSource { get; set; }
   }

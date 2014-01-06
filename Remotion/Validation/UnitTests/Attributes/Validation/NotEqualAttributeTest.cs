@@ -48,7 +48,7 @@ namespace Remotion.Validation.UnitTests.Attributes.Validation
 
       Assert.That (result.Count (), Is.EqualTo (1));
       Assert.That (result[0], Is.TypeOf (typeof (NotEqualValidator)));
-      Assert.That (result[0].ErrorMessageSource.GetString (), Is.EqualTo ("'{PropertyName}' should not be equal to '{PropertyValue}'."));
+      Assert.That (result[0].ErrorMessageSource.GetString (), Is.EqualTo ("'{PropertyName}' should not be equal to '{ComparisonValue}'."));
       Assert.That (((NotEqualValidator) result[0]).ValueToCompare, Is.EqualTo ("test"));
     }
 
