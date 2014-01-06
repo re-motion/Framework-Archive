@@ -19,6 +19,7 @@ using System;
 using FluentValidation.Internal;
 using FluentValidation.Resources;
 using Remotion.Globalization;
+using Remotion.Globalization.Implementation;
 using Remotion.Reflection;
 using Remotion.Utilities;
 using Remotion.Validation.Utilities;

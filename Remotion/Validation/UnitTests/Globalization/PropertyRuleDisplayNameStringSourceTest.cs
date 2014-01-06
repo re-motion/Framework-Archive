@@ -19,6 +19,7 @@ using System;
 using FluentValidation.Internal;
 using NUnit.Framework;
 using Remotion.Globalization;
+using Remotion.Globalization.Implementation;
 using Remotion.Reflection;
 using Remotion.Validation.Globalization;
 using Remotion.Validation.UnitTests.IntegrationTests.TestDomain.ComponentA;
@@ -57,10 +58,11 @@ namespace Remotion.Validation.UnitTests.Globalization
     {
       _memberInformationGlobalizationServiceMock
           .Expect (
-              mock =>
-              mock.GetPropertyDisplayName (
-                  Arg<IPropertyInformation>.Matches (pi => pi.Name == "FirstName"), Arg<ITypeInformation>.Matches (ti => ti.Name == "Customer")))
-          .Return ("FakeLocalizedPropertyName");
+              mock => mock.TryGetPropertyDisplayName (
+                  Arg<IPropertyInformation>.Matches (pi => pi.Name == "FirstName"),
+                  Arg<ITypeInformation>.Matches (ti => ti.Name == "Customer"),
+                  out Arg<string>.Out ("FakeLocalizedPropertyName").Dummy))
+          .Return (true);
 
       var result = _stringSource.GetString();
 

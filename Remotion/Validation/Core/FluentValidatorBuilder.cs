@@ -38,26 +38,26 @@ namespace Remotion.Validation
     private readonly IValidationCollectorMerger _validationCollectorMerger;
     private readonly IMetaRulesValidatorFactory _metaRulesValidatorFactory;
     private readonly IValidationRuleGlobalizationService _validationRuleGlobalizationService;
-    private readonly IMemberInfoNameResolver _memberInfoNameResolver;
+    private readonly IMemberInformationNameResolver _memberInformationNameResolver;
 
     public FluentValidatorBuilder (
         IValidationCollectorProvider validationCollectorProvider,
         IValidationCollectorMerger validationCollectorMerger,
         IMetaRulesValidatorFactory metaRuleValidatorFactory,
         IValidationRuleGlobalizationService validationRuleGlobalizationService,
-        IMemberInfoNameResolver memberInfoNameResolver)
+        IMemberInformationNameResolver memberInformationNameResolver)
     {
       ArgumentUtility.CheckNotNull ("validationCollectorProvider", validationCollectorProvider);
       ArgumentUtility.CheckNotNull ("validationCollectorMerger", validationCollectorMerger);
       ArgumentUtility.CheckNotNull ("metaRuleValidatorFactory", metaRuleValidatorFactory);
       ArgumentUtility.CheckNotNull ("validationRuleGlobalizationService", validationRuleGlobalizationService);
-      ArgumentUtility.CheckNotNull ("memberInfoNameResolver", memberInfoNameResolver);
+      ArgumentUtility.CheckNotNull ("memberInformationNameResolver", memberInformationNameResolver);
       
       _validationCollectorProvider = validationCollectorProvider;
       _validationCollectorMerger = validationCollectorMerger;
       _metaRulesValidatorFactory = metaRuleValidatorFactory;
       _validationRuleGlobalizationService = validationRuleGlobalizationService;
-      _memberInfoNameResolver = memberInfoNameResolver;
+      _memberInformationNameResolver = memberInformationNameResolver;
     }
 
     public IValidationCollectorProvider ComponentValidationCollectorProvider
@@ -80,9 +80,9 @@ namespace Remotion.Validation
       get { return _validationRuleGlobalizationService; }
     }
 
-    public IMemberInfoNameResolver MemberInfoNameResolver
+    public IMemberInformationNameResolver MemberInformationNameResolver
     {
-      get { return _memberInfoNameResolver; }
+      get { return _memberInformationNameResolver; }
     }
 
     public IValidator BuildValidator<T> ()
@@ -115,7 +115,7 @@ namespace Remotion.Validation
     private void ApplyTechnicalPropertyNames (IEnumerable<PropertyRule> propertyRules)
     {
       foreach (var propertyRule in propertyRules)
-        propertyRule.PropertyName = _memberInfoNameResolver.GetPropertyName (PropertyInfoAdapter.Create (propertyRule.GetPropertyInfo ()));
+        propertyRule.PropertyName = _memberInformationNameResolver.GetPropertyName (PropertyInfoAdapter.Create (propertyRule.GetPropertyInfo ()));
     }
 
     private void ApplyGlobalization (Type typeToValidate, IEnumerable<IValidationRule> validationRules)

@@ -19,7 +19,7 @@ using System;
 using System.Linq;
 using NUnit.Framework;
 using Remotion.Mixins;
-using Remotion.Reflection;
+using Remotion.TypePipe;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.MetaValidation;
 using Remotion.Validation.UnitTests.IntegrationTests.TestDomain.ComponentA;

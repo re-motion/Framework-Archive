@@ -58,14 +58,19 @@ namespace Remotion.Validation.Merging
 
       var collectorInfos = validationCollectorInfos.ToArray();
 
-      var beforeMergeLog = GetLogBefore (collectorInfos);
+      var beforeMergeLog = string.Empty;
+      if (_logger.IsInfoEnabled())
+        beforeMergeLog = GetLogBefore (collectorInfos);
 
       var mergedRules = _validationCollectorMerger.Merge (collectorInfos).ToArray();
 
-      var afterMergeLog = GetLogAfter (mergedRules);
+      var afterMergeLog = string.Empty;
+      if (_logger.IsInfoEnabled())
+        afterMergeLog = GetLogAfter (mergedRules);
 
-      if (_logger.IsInfoEnabled)
+      if (_logger.IsInfoEnabled())
       {
+        //TODO AO RM-5906: Why logging first 'after', then 'before'?
         _logger.Info (afterMergeLog);
         _logger.Info (beforeMergeLog);
       }
@@ -85,9 +90,6 @@ namespace Remotion.Validation.Merging
 
     private string GetLogBefore (IEnumerable<IEnumerable<ValidationCollectorInfo>> validationCollectorInfos)
     {
-      if (!_logger.IsInfoEnabled)
-        return string.Empty;
-
       var sb = new StringBuilder ();
       sb.AppendLine();
       sb.Append ("BEFORE MERGE:");
@@ -107,9 +109,6 @@ namespace Remotion.Validation.Merging
 
     private string GetLogAfter (IValidationRule[] mergedRules)
     {
-      if (!_logger.IsInfoEnabled)
-        return string.Empty;
-
       var sb = new StringBuilder ();
       sb.AppendLine();
       sb.Append ("AFTER MERGE:");

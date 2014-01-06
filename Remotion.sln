@@ -313,6 +313,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.DomainObjects.ObjectBi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.DomainObjects.Web.IntegrationTests", "Remotion\Data\DomainObjects.Web.IntegrationTests\Data.DomainObjects.Web.IntegrationTests.csproj", "{7A088A69-24BE-49C5-92CC-036C94D0E870}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Validation", "Validation", "{0C89EC19-48C8-4639-877B-A90C72C59C04}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Validation.Core", "Remotion\Validation\Core\Validation.Core.csproj", "{D057D6F3-2015-4EB0-B6BD-77BE8ED1571A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Validation.UnitTests", "Remotion\Validation\UnitTests\Validation.UnitTests.csproj", "{3CAFF072-4461-4F1A-A07F-4DEA68D0FA7F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -1135,6 +1141,22 @@ Global
 		{7A088A69-24BE-49C5-92CC-036C94D0E870}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7A088A69-24BE-49C5-92CC-036C94D0E870}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{7A088A69-24BE-49C5-92CC-036C94D0E870}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{D057D6F3-2015-4EB0-B6BD-77BE8ED1571A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D057D6F3-2015-4EB0-B6BD-77BE8ED1571A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D057D6F3-2015-4EB0-B6BD-77BE8ED1571A}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{D057D6F3-2015-4EB0-B6BD-77BE8ED1571A}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{D057D6F3-2015-4EB0-B6BD-77BE8ED1571A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D057D6F3-2015-4EB0-B6BD-77BE8ED1571A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D057D6F3-2015-4EB0-B6BD-77BE8ED1571A}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{D057D6F3-2015-4EB0-B6BD-77BE8ED1571A}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{3CAFF072-4461-4F1A-A07F-4DEA68D0FA7F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3CAFF072-4461-4F1A-A07F-4DEA68D0FA7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3CAFF072-4461-4F1A-A07F-4DEA68D0FA7F}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{3CAFF072-4461-4F1A-A07F-4DEA68D0FA7F}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{3CAFF072-4461-4F1A-A07F-4DEA68D0FA7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3CAFF072-4461-4F1A-A07F-4DEA68D0FA7F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3CAFF072-4461-4F1A-A07F-4DEA68D0FA7F}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{3CAFF072-4461-4F1A-A07F-4DEA68D0FA7F}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -1242,6 +1264,8 @@ Global
 		{FFEF40DB-3E0C-4F8A-BC6D-4483ACE3A136} = {A4439E9E-20EE-4A49-A988-253A66FCEB09}
 		{98969947-CAFA-4DC3-8C9C-C5D8FEA6CE17} = {A289495D-35D0-4C14-A3FA-D9DFE5EF9432}
 		{DFCD4E02-5B99-49C3-87AE-613600C71818} = {A289495D-35D0-4C14-A3FA-D9DFE5EF9432}
+		{D057D6F3-2015-4EB0-B6BD-77BE8ED1571A} = {0C89EC19-48C8-4639-877B-A90C72C59C04}
+		{3CAFF072-4461-4F1A-A07F-4DEA68D0FA7F} = {0C89EC19-48C8-4639-877B-A90C72C59C04}
 	EndGlobalSection
 	GlobalSection(TextTemplating) = postSolution
 		TextTemplating = 1

@@ -22,6 +22,7 @@ using FluentValidation.Internal;
 using FluentValidation.Resources;
 using NUnit.Framework;
 using Remotion.Globalization;
+using Remotion.Globalization.Implementation;
 using Remotion.Reflection;
 using Remotion.Validation.Globalization;
 using Remotion.Validation.UnitTests.IntegrationTests.TestDomain.ComponentA;
@@ -73,11 +74,11 @@ namespace Remotion.Validation.UnitTests.Globalization
     {
       _memberInformationGlobalizationServiceMock
           .Expect (
-              mock =>
-              mock.GetPropertyDisplayName (
+              mock => mock.TryGetPropertyDisplayName (
                   Arg<IPropertyInformation>.Matches (pi => ((PropertyInfoAdapter) pi).PropertyInfo == (PropertyInfo) _propertyRule.Member),
-                  Arg<ITypeInformation>.Matches (ti => ((TypeAdapter) ti).Type == typeof (Customer))))
-          .Return ("LocalizedPropertyName");
+                  Arg<ITypeInformation>.Matches (ti => ((TypeAdapter) ti).Type == typeof (Customer)),
+                  out Arg<string>.Out ("LocalizedPropertyName").Dummy))
+          .Return (true);
       Assert.That (_propertyRule.DisplayName, Is.TypeOf(typeof(LazyStringSource)));
 
       _service.ApplyLocalization (_propertyRule, typeof (Customer));

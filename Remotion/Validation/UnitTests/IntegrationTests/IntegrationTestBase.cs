@@ -19,8 +19,10 @@ using System;
 using System.Linq;
 using NUnit.Framework;
 using Remotion.Globalization;
-using Remotion.Mixins.Globalization;
+using Remotion.Globalization.Implementation;
+using Remotion.Globalization.Mixins;
 using Remotion.Reflection;
+using Remotion.ServiceLocation;
 using Remotion.Validation.Globalization;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.Merging;
@@ -45,7 +47,9 @@ namespace Remotion.Validation.UnitTests.IntegrationTests
       MemoryAppender = new MemoryAppender();
       BasicConfigurator.Configure (MemoryAppender);
 
-      var memberInfoNameResolver = GetMemberInfoNameResolver();
+      var memberInfoNameResolver = SafeServiceLocator.Current.GetInstance<IMemberInformationNameResolver>();
+      var memberInformationGlobalizationService = SafeServiceLocator.Current.GetInstance<IMemberInformationGlobalizationService>();
+
       ValidationBuilder = new FluentValidatorBuilder (
           new AggregatingValidationCollectorProvider (
               new InvolvedTypeProvider (types => types.OrderBy (t => t.Name), LoadFilteredValidationTypeFilter.Instance),
@@ -62,8 +66,7 @@ namespace Remotion.Validation.UnitTests.IntegrationTests
           new CompoundValidationRuleGlobalizationService (
               new IValidationRuleGlobalizationService[]
               {
-                  new PropertyDisplayNameGlobalizationService (
-                      new MemberInformationGlobalizationService (new MixedGlobalizationService())),
+                  new PropertyDisplayNameGlobalizationService (memberInformationGlobalizationService),
                   new ValidationRuleGlobalizationService (new DefaultMessageEvaluator(), GetValidatorGlobalizationService())
               }),
           memberInfoNameResolver);
@@ -88,11 +91,6 @@ namespace Remotion.Validation.UnitTests.IntegrationTests
     protected virtual IValidatorGlobalizationService GetValidatorGlobalizationService ()
     {
       return new NullMessageValidatorGlobalizationService();
-    }
-
-    protected virtual IMemberInfoNameResolver GetMemberInfoNameResolver ()
-    {
-      return new ReflectionBasedMemberInfoNameResolver();
     }
   }
 }

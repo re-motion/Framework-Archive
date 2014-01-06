@@ -23,7 +23,7 @@ using System.Reflection;
 // associated with an assembly.
 //
 [assembly: AssemblyTitle ("Remotion Validation Library")]
-//[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription ("Provides validation infrastructure based on the FluentValidation library.")]
 [assembly: AssemblyCulture("")]		
 [assembly: CLSCompliant(true)]
 

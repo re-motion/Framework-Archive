@@ -63,7 +63,7 @@ namespace Remotion.Validation.UnitTests
     private IAddingComponentPropertyMetaValidationRule _metaValidationRule2Stub;
     private IAddingComponentPropertyMetaValidationRule _metaValidationRule3Stub;
     private IValidationRuleGlobalizationService _validationRuleGlobalizationServiceMock;
-    private IMemberInfoNameResolver _memberInfoNameResolverMock;
+    private IMemberInformationNameResolver _memberInformationNameResolverMock;
 
     [SetUp]
     public void SetUp ()
@@ -73,7 +73,7 @@ namespace Remotion.Validation.UnitTests
       _metaRulesValidatorFactoryStub = MockRepository.GenerateStub<IMetaRulesValidatorFactory>();
       _metaRuleValidatorMock = MockRepository.GenerateStrictMock<IMetaRuleValidator>();
       _validationRuleGlobalizationServiceMock = MockRepository.GenerateStrictMock<IValidationRuleGlobalizationService>();
-      _memberInfoNameResolverMock = MockRepository.GenerateStrictMock<IMemberInfoNameResolver>();
+      _memberInformationNameResolverMock = MockRepository.GenerateStrictMock<IMemberInformationNameResolver>();
 
       _metaValidationRule1Stub = MockRepository.GenerateStub<IAddingComponentPropertyMetaValidationRule>();
       _metaValidationRule2Stub = MockRepository.GenerateStub<IAddingComponentPropertyMetaValidationRule>();
@@ -107,7 +107,7 @@ namespace Remotion.Validation.UnitTests
           _validationCollectorMergerMock,
           _metaRulesValidatorFactoryStub,
           _validationRuleGlobalizationServiceMock,
-          _memberInfoNameResolverMock);
+          _memberInformationNameResolverMock);
 
       _validMetaValidationResult1 = MetaValidationRuleValidationResult.CreateValidResult();
       _validMetaValidationResult2 = MetaValidationRuleValidationResult.CreateValidResult();
@@ -131,10 +131,10 @@ namespace Remotion.Validation.UnitTests
           .Expect (mock => mock.Validate (Arg<IValidationRule[]>.List.Equal (_fakeValidationRuleResult)))
           .Return (new[] { _validMetaValidationResult1, _validMetaValidationResult2 });
 
-      _memberInfoNameResolverMock
+      _memberInformationNameResolverMock
         .Expect (mock => mock.GetPropertyName (Arg<IPropertyInformation>.Matches (pi => pi.Name == "FirstName")))
         .Return ("FakeTechnicalPropertyName1");
-      _memberInfoNameResolverMock
+      _memberInformationNameResolverMock
         .Expect (mock => mock.GetPropertyName (Arg<IPropertyInformation>.Matches (pi => pi.Name == "LastName")))
         .Return ("FakeTechnicalPropertyName2");
 
@@ -152,7 +152,7 @@ namespace Remotion.Validation.UnitTests
       _validationCollectorProviderMock.VerifyAllExpectations();
       _validationCollectorMergerMock.VerifyAllExpectations();
       _metaRuleValidatorMock.VerifyAllExpectations();
-      _memberInfoNameResolverMock.VerifyAllExpectations();
+      _memberInformationNameResolverMock.VerifyAllExpectations();
       _validationRuleGlobalizationServiceMock.VerifyAllExpectations();
       Assert.That (result, Is.TypeOf (typeof (CompositeValidator<SpecialCustomer1>)));
       var compisteValidator = (CompositeValidator<SpecialCustomer1>) result;
