@@ -1,0 +1,153 @@
+﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
+// Copyright (c) rubicon IT GmbH, www.rubicon.eu
+// 
+// The re-motion Core Framework is free software; you can redistribute it 
+// and/or modify it under the terms of the GNU Lesser General Public License 
+// as published by the Free Software Foundation; either version 2.1 of the 
+// License, or (at your option) any later version.
+// 
+// re-motion is distributed in the hope that it will be useful, 
+// but WITHOUT ANY WARRANTY; without even the implied warranty of 
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
+// GNU Lesser General Public License for more details.
+// 
+// You should have received a copy of the GNU Lesser General Public License
+// along with re-motion; if not, see http://www.gnu.org/licenses.
+// 
+
+using System;
+using System.Linq;
+using System.Reflection;
+using FluentValidation.Validators;
+using NUnit.Framework;
+using Remotion.Validation.Implementation;
+using Remotion.Validation.MetaValidation;
+using Remotion.Validation.Rules;
+using Remotion.Validation.UnitTests.IntegrationTests.TestDomain.ComponentA;
+using Remotion.Validation.UnitTests.IntegrationTests.TestDomain.ComponentB;
+using Remotion.Validation.UnitTests.IntegrationTests.TestDomain.MetaValidation.Rules;
+using Rhino.Mocks;
+
+namespace Remotion.Validation.UnitTests.Providers
+{
+  [TestFixture]
+  public class AttributeBasedValidationCollectorProviderTest
+  {
+    private IValidationPropertyRuleReflector _validationPropertyRuleReflectorMock;
+    private IPropertyValidator _propertyValidatorStub1;
+    private IPropertyValidator _propertyValidatorStub2;
+    private IPropertyValidator _propertyValidatorStub3;
+    private ValidatorRegistration _validatorRegistration1;
+    private ValidatorRegistration _validatorRegistration2;
+    private ValidatorRegistration _validatorRegistration3;
+    private ValidatorRegistration _validatorRegistration4;
+    private IPropertyValidator _propertyValidatorStub4;
+    private IPropertyValidator _propertyValidatorStub5;
+    private IPropertyValidator _propertyValidatorStub6;
+    private MaxLengthMetaValidationRule _metaValidationRule1;
+    private MaxValidatorCountRule _metaValidationRule2;
+    private MaxLengthMetaValidationRule _metaValidationRule3;
+    private IMetaValidationRule<LengthValidator> _metaValidationRuleStub4;
+
+    [SetUp]
+    public void SetUp ()
+    {
+      _propertyValidatorStub1 = MockRepository.GenerateStub<IPropertyValidator>();
+      _propertyValidatorStub2 = MockRepository.GenerateStub<IPropertyValidator>();
+      _propertyValidatorStub3 = MockRepository.GenerateStub<IPropertyValidator>();
+      _propertyValidatorStub4 = MockRepository.GenerateStub<IPropertyValidator>();
+      _propertyValidatorStub5 = MockRepository.GenerateStub<IPropertyValidator>();
+      _propertyValidatorStub6 = MockRepository.GenerateStub<IPropertyValidator>();
+
+      _metaValidationRule1 = new MaxLengthMetaValidationRule();
+      _metaValidationRule2 = new MaxValidatorCountRule();
+      _metaValidationRule3 = new MaxLengthMetaValidationRule();
+      _metaValidationRuleStub4 = MockRepository.GenerateStub<IMetaValidationRule<LengthValidator>>();
+
+      _validatorRegistration1 = new ValidatorRegistration (typeof (NotNullValidator));
+      _validatorRegistration2 = new ValidatorRegistration (typeof (NotEmptyValidator));
+      _validatorRegistration3 = new ValidatorRegistration (typeof (NotNullValidator));
+      _validatorRegistration4 = new ValidatorRegistration (typeof (NotEmptyValidator));
+
+      _validationPropertyRuleReflectorMock = MockRepository.GenerateStrictMock<IValidationPropertyRuleReflector> ();
+    }
+
+    [Test]
+    public void GetComponentValidationCollectors ()
+    {
+      var collectorProvider =
+          new TestableAttributeBasedValidationCollectorProviderBase (
+              _validationPropertyRuleReflectorMock,
+              _propertyValidatorStub1,
+              _propertyValidatorStub2,
+              _propertyValidatorStub3,
+              _propertyValidatorStub4,
+              _propertyValidatorStub5,
+              _propertyValidatorStub6,
+              _validatorRegistration1,
+              _validatorRegistration2,
+              _validatorRegistration3,
+              _validatorRegistration4,
+              _metaValidationRule1,
+              _metaValidationRule2,
+              _metaValidationRule3);
+
+      var result = collectorProvider.GetValidationCollectors (new[] { typeof (Employee), typeof (SpecialCustomer1) }).SelectMany (g => g).ToArray();
+
+      _validationPropertyRuleReflectorMock.VerifyAllExpectations();
+      Assert.That (result.Count(), Is.EqualTo (2));
+      Assert.That (result[0].Collector, Is.TypeOf (typeof (AttributeValidationCollector<Employee>)));
+      Assert.That (result[0].ProviderType, Is.EqualTo (typeof (TestableAttributeBasedValidationCollectorProviderBase)));
+
+      Assert.That (result[0].Collector.AddedPropertyRules.Count(), Is.EqualTo (3));
+      var addingPropertyRuleValidators = result[0].Collector.AddedPropertyRules.ToArray().SelectMany (pr => pr.Validators);
+      Assert.That (
+          addingPropertyRuleValidators, Is.EquivalentTo (new[] { _propertyValidatorStub1, _propertyValidatorStub2, _propertyValidatorStub3 }));
+      Assert.That (result[0].Collector.AddedPropertyMetaValidationRules.ToArray().SelectMany (pr => pr.MetaValidationRules).Any(), Is.False);
+
+      Assert.That (result[0].Collector.RemovedPropertyRules.Count(), Is.EqualTo (1));
+      var removedPropertyRuleRegistrations =
+          result[0].Collector.RemovedPropertyRules.ToArray().SelectMany (pr => pr.Validators.Select (v => v.ValidatorType));
+      Assert.That (
+          removedPropertyRuleRegistrations, Is.EquivalentTo (new[] { _validatorRegistration1.ValidatorType, _validatorRegistration2.ValidatorType }));
+
+      Assert.That (result[1].Collector, Is.TypeOf (typeof (AttributeValidationCollector<SpecialCustomer1>)));
+      Assert.That (result[1].ProviderType, Is.EqualTo (typeof (TestableAttributeBasedValidationCollectorProviderBase)));
+
+      Assert.That (result[1].Collector.AddedPropertyRules.Count(), Is.EqualTo (4));
+      addingPropertyRuleValidators = result[1].Collector.AddedPropertyRules.ToArray().SelectMany (pr => pr.Validators);
+      Assert.That (
+          addingPropertyRuleValidators, Is.EquivalentTo (new[] { _propertyValidatorStub4, _propertyValidatorStub5, _propertyValidatorStub6 }));
+      var addingPropertyRuleMetaValidationRules =
+          result[1].Collector.AddedPropertyMetaValidationRules.ToArray().SelectMany (pr => pr.MetaValidationRules);
+      Assert.That (
+          addingPropertyRuleMetaValidationRules,
+          Is.EquivalentTo (new IMetaValidationRule[] { _metaValidationRule1, _metaValidationRule3, _metaValidationRule2 }));
+
+      Assert.That (result[1].Collector.RemovedPropertyRules.Count(), Is.EqualTo (1));
+      removedPropertyRuleRegistrations =
+          result[1].Collector.RemovedPropertyRules.ToArray().SelectMany (pr => pr.Validators.Select (v => v.ValidatorType));
+      Assert.That (
+          removedPropertyRuleRegistrations, Is.EquivalentTo (new[] { _validatorRegistration3.ValidatorType, _validatorRegistration4.ValidatorType }));
+    }
+
+    [Test]
+    public void GetComponentValidationCollectors_InvalidMetaValidationRule ()
+    {
+      _validationPropertyRuleReflectorMock = MockRepository.GenerateStrictMock<IValidationPropertyRuleReflector>();
+      _validationPropertyRuleReflectorMock.Expect (mock => mock.GetAddingPropertyValidators()).Return (new IPropertyValidator[0]);
+      _validationPropertyRuleReflectorMock.Expect (mock => mock.GetHardConstraintPropertyValidators()).Return (new IPropertyValidator[0]);
+      _validationPropertyRuleReflectorMock.Expect (mock => mock.GetRemovingPropertyRegistrations()).Return (new ValidatorRegistration[0]);
+      _validationPropertyRuleReflectorMock.Expect (mock => mock.GetMetaValidationRules())
+                                          .Return (new IMetaValidationRule[] { _metaValidationRuleStub4 });
+
+      var collectorProvider = new TestableAttributeBasedValidationCollectorProviderBase (_validationPropertyRuleReflectorMock);
+
+      var exception =
+          Assert.Throws<TargetInvocationException> (() => collectorProvider.GetValidationCollectors (new[] { typeof (Person) }).SelectMany (g => g).ToArray());
+      var innerException = exception.InnerException.InnerException; //nested reflection call!
+      Assert.That (innerException, Is.TypeOf (typeof (InvalidOperationException)));
+      Assert.That (innerException.Message.Contains ("has no generic arguments."), Is.True);
+    }
+  }
+}
