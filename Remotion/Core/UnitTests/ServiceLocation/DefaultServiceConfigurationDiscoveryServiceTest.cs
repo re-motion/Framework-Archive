@@ -188,6 +188,23 @@ namespace Remotion.UnitTests.ServiceLocation
     }
 
     [Test]
+    public void GetDefaultConfiguration_TypeDiscoveryService_WithDecoratorRegistrationType_NoException ()
+    {
+      _typeDiscoveryServiceStub.Stub (stub => stub.GetTypes (null, false))
+          .Return (new ArrayList { typeof (ITestDecoratorRegistration) });
+      _typeDiscoveryServiceStub.Stub (stub => stub.GetTypes (typeof (ITestDecoratorRegistration), true))
+          .Return (
+              new ArrayList
+              {
+                  typeof (TestDecoratorRegistrationDecoratedObject1),
+                  typeof (TestDecoratorRegistrationDecoratedObject2),
+                  typeof (TestDecoratorRegistrationDecorator),
+              });
+
+      _defaultServiceConfigurationDiscoveryService.GetDefaultConfiguration().ToArray();
+    }
+
+    [Test]
     public void GetDefaultConfiguration_TypeDiscoveryService_WithCompoundAndSingleRegistrationType ()
     {
       _typeDiscoveryServiceStub.Stub (stub => stub.GetTypes (null, false))

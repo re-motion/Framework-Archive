@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -426,44 +427,68 @@ namespace Remotion.ServiceLocation
 
     private IEnumerable<Tuple<Func<object>, RegistrationType>> CreateInstanceFactories (ServiceConfigurationEntry serviceConfigurationEntry)
     {
-      var implementationInfosByType = serviceConfigurationEntry.ImplementationInfos.ToLookup (i => i.RegistrationType);
+      return CreateInstanceFactories (serviceConfigurationEntry.ServiceType, serviceConfigurationEntry.ImplementationInfos);
+    }
+
+    private IEnumerable<Tuple<Func<object>, RegistrationType>> CreateInstanceFactories (
+        Type serviceType,
+        IEnumerable<ServiceImplementationInfo> implementationInfos)
+    {
+      var implementationInfosByType = implementationInfos.ToLookup (i => i.RegistrationType);
+
+      if (implementationInfosByType.Contains (RegistrationType.Decorator))
+        return CreateDecoratedInstanceFactory (serviceType, implementationInfosByType);
 
       if (implementationInfosByType.Contains (RegistrationType.Compound))
-        return CreateCompoundInstanceFactory(serviceConfigurationEntry, implementationInfosByType);
+        return CreateCompoundInstanceFactory (serviceType, implementationInfosByType);
 
-      return serviceConfigurationEntry.ImplementationInfos.Select (CreateInstanceFactory);
+      return implementationInfos.Select (CreateInstanceFactory);
+    }
+
+    private IEnumerable<Tuple<Func<object>, RegistrationType>> CreateDecoratedInstanceFactory (
+        Type serviceType,
+        ILookup<RegistrationType, ServiceImplementationInfo> implementationInfosByType)
+    {
+      var decorators = implementationInfosByType[RegistrationType.Decorator];
+
+      var factoriesToBeDecorated = CreateInstanceFactories (
+          serviceType,
+          implementationInfosByType.SelectMany (i => i).Where (i => i.RegistrationType != RegistrationType.Decorator))
+          .ToArray();
+
+      Func<Func<object>, object> activator = (innerActivator) => innerActivator();
+
+      foreach (var decoratorImplementationInfo in decorators)
+      {
+        var constructor = GetSingleConstructor(decoratorImplementationInfo, serviceType);
+
+        var parameterExpression = Expression.Parameter (typeof (object));
+        var activationExpression = Expression.Lambda<Func<object, object>> (
+            Expression.New (
+                constructor,
+                Expression.Convert (parameterExpression, serviceType)),
+            parameterExpression);
+        var compiledExpression = activationExpression.Compile();
+        var previousActivator = activator;
+
+        activator = (innerActivator) => compiledExpression (previousActivator(innerActivator));
+      }
+
+      return factoriesToBeDecorated.Select (
+          i => Tuple.Create ((Func<object>) (() => activator (i.Item1)), RegistrationType.Decorator)).ToArray();
     }
 
     private IEnumerable<Tuple<Func<object>, RegistrationType>> CreateCompoundInstanceFactory (
-        ServiceConfigurationEntry serviceConfigurationEntry,
+        Type serviceType,
         ILookup<RegistrationType, ServiceImplementationInfo> implementationInfosByType)
     {
       var compoundImplementation = implementationInfosByType[RegistrationType.Compound].First();
-      var constructors = compoundImplementation.ImplementationType.GetConstructors();
-      if (constructors.Length != 1)
-      {
-        throw new ActivationException (
-            string.Format (
-                "Type '{0}' cannot be instantiated. " +
-                "Compound implementations must have a single public constructor accepting an IEnumerable of ServiceType.",
-                compoundImplementation.ImplementationType));
-      }
-
-      var constructor = constructors.First();
-      var expectedParameterType = typeof (IEnumerable<>).MakeGenericType (serviceConfigurationEntry.ServiceType);
-      if (constructor.GetParameters().Length != 1 || constructor.GetParameters().First().ParameterType != expectedParameterType)
-      {
-        throw new ActivationException (
-            string.Format (
-                "Type '{0}' cannot be instantiated. " +
-                "Compound implementations must have a single public constructor accepting an IEnumerable of ServiceType.",
-                compoundImplementation.ImplementationType));
-      }
+      var constructor = GetSingleConstructor(compoundImplementation, typeof (IEnumerable<>).MakeGenericType (serviceType));
 
       var wrappedImplementations = implementationInfosByType[RegistrationType.Multiple];
 
       var castMethod = typeof (Enumerable).GetMethod ("Cast", BindingFlags.Public | BindingFlags.Static)
-        .MakeGenericMethod (serviceConfigurationEntry.ServiceType);
+        .MakeGenericMethod (serviceType);
 
       var parameterExpression = Expression.Parameter (typeof (IEnumerable<object>));
       var lambda = Expression.Lambda<Func<IEnumerable<object>, object>> (
@@ -476,6 +501,25 @@ namespace Remotion.ServiceLocation
       var factories = wrappedImplementations.Select (CreateInstanceFactory);
       var compoundFactory = (Func<object>) (() => compiledConstructor (factories.Select (f => f.Item1()).ToArray()));
       return new[] { Tuple.Create (compoundFactory, RegistrationType.Compound) };
+    }
+
+    private ConstructorInfo GetSingleConstructor (ServiceImplementationInfo compoundImplementation, Type expectedParameterType)
+    {
+      var exceptionMessage = string.Format (
+          "Type '{0}' cannot be instantiated. {1} implementations must have a single public constructor accepting a single argument of type '{2}'.",
+          compoundImplementation.ImplementationType,
+          compoundImplementation.RegistrationType,
+          expectedParameterType);
+
+      var constructors = compoundImplementation.ImplementationType.GetConstructors();
+      if (constructors.Length != 1)
+        throw new ActivationException (exceptionMessage);
+
+      var constructor = constructors.First();
+      if (constructor.GetParameters().Length != 1 || constructor.GetParameters().First().ParameterType != expectedParameterType)
+        throw new ActivationException (exceptionMessage);
+
+      return constructor;
     }
 
     private Tuple<Func<object>, RegistrationType> CreateInstanceFactory (ServiceImplementationInfo serviceImplementationInfo)

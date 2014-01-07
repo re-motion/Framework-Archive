@@ -27,6 +27,7 @@ namespace Remotion.ServiceLocation
   {
     Single,
     Multiple,
-    Compound
+    Compound,
+    Decorator
   }
 }

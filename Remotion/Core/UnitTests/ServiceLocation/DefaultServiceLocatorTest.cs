@@ -599,13 +599,75 @@ namespace Remotion.UnitTests.ServiceLocation
     [Test]
      [ExpectedException (typeof (ActivationException), ExpectedMessage =
         "Type 'Remotion.UnitTests.ServiceLocation.TestDomain.TestCompoundWithoutPublicConstructor' cannot be instantiated. " +
-        "Compound implementations must have a single public constructor accepting an IEnumerable of ServiceType.")]
+        "Compound implementations must have a single public constructor accepting a single argument of type 'System.Collections.Generic.IEnumerable`1[Remotion.UnitTests.ServiceLocation.TestDomain.ITestCompoundWithoutPublicConstructor]'.")]
     public void GetInstance_CompoundWithNoPublicConstructor ()
     {
       var compound = new ServiceImplementationInfo (typeof (TestCompoundWithoutPublicConstructor), LifetimeKind.Instance, RegistrationType.Compound);
       _serviceLocator.Register (new ServiceConfigurationEntry (typeof (ITestCompoundWithoutPublicConstructor), compound));
 
       _serviceLocator.GetInstance (typeof (ITestCompoundWithoutPublicConstructor));
+    }
+
+    [Test]
+    public void GetInstance_Decorator ()
+    {
+      var implementation1 = new ServiceImplementationInfo (typeof (TestDecoratorRegistrationDecoratedObject1),LifetimeKind.Instance, RegistrationType.Single);
+      var implementation2 = new ServiceImplementationInfo (typeof (TestDecoratorRegistrationDecoratedObject2),LifetimeKind.Instance, RegistrationType.Single);
+      var decorator = new ServiceImplementationInfo (typeof (TestDecoratorRegistrationDecorator), LifetimeKind.Instance, RegistrationType.Decorator);
+      _serviceLocator.Register (new ServiceConfigurationEntry (typeof (ITestDecoratorRegistration), implementation1, implementation2, decorator));
+
+      var instance = _serviceLocator.GetInstance (typeof (ITestDecoratorRegistration));
+
+      Assert.That (instance, Is.InstanceOf<TestDecoratorRegistrationDecorator>());
+      var decoratorInstance = (TestDecoratorRegistrationDecorator) instance;
+      Assert.That (decoratorInstance.DecoratedObject, Is.InstanceOf<TestDecoratorRegistrationDecoratedObject1>());
+    }
+
+    [Test]
+    [ExpectedException (typeof (ActivationException), ExpectedMessage =
+        "Type 'Remotion.UnitTests.ServiceLocation.TestDomain.ITestDecoratorWithoutPublicConstructor' cannot be instantiated. " +
+        "Decorator implementations must have a single public constructor accepting a single argument of type 'Remotion.UnitTests.ServiceLocation.TestDomain.ITestDecoratorWithoutPublicConstructor'.")]
+    public void GetInstance_DecoratorWithNoPublicConstructor ()
+    {
+      var compound = new ServiceImplementationInfo (typeof (ITestDecoratorWithoutPublicConstructor), LifetimeKind.Instance, RegistrationType.Decorator);
+      _serviceLocator.Register (new ServiceConfigurationEntry (typeof (ITestDecoratorWithoutPublicConstructor), compound));
+
+      _serviceLocator.GetInstance (typeof (ITestDecoratorWithoutPublicConstructor));
+    }
+    
+    [Test]
+    public void GetInstance_StackedDecorators ()
+    {
+      var implementation1 = new ServiceImplementationInfo (typeof (TestStackedDecoratorsObject1),LifetimeKind.Instance, RegistrationType.Single);
+      var decorator1 = new ServiceImplementationInfo (typeof (TestStackedDecoratorsDecorator1), LifetimeKind.Instance, RegistrationType.Decorator);
+      var decorator2 = new ServiceImplementationInfo (typeof (TestStackedDecoratorsDecorator2), LifetimeKind.Instance, RegistrationType.Decorator);
+      _serviceLocator.Register (new ServiceConfigurationEntry (typeof (ITestStackedDecorators), implementation1, decorator1, decorator2));
+
+      var instance = _serviceLocator.GetInstance (typeof (ITestStackedDecorators));
+
+      Assert.That (instance, Is.InstanceOf<TestStackedDecoratorsDecorator2>());
+      var decoratorInstance2 = (TestStackedDecoratorsDecorator2) instance;
+      Assert.That (decoratorInstance2.DecoratedObject, Is.InstanceOf<TestStackedDecoratorsDecorator1>());
+      var decoratorInstance1 = (TestStackedDecoratorsDecorator1) decoratorInstance2.DecoratedObject;
+      Assert.That (decoratorInstance1.DecoratedObject, Is.InstanceOf<TestStackedDecoratorsObject1>());
+    }
+
+    [Test]
+    public void GetInstance_DecoratedCompound ()
+    {
+      var implementation1 = new ServiceImplementationInfo (typeof (ITestDecoratedCompoundObject1),LifetimeKind.Instance, RegistrationType.Multiple);
+      var implementation2 = new ServiceImplementationInfo (typeof (ITestDecoratedCompoundObject2),LifetimeKind.Instance, RegistrationType.Multiple);
+      var decorator = new ServiceImplementationInfo (typeof (ITestDecoratedCompoundDecorator), LifetimeKind.Instance, RegistrationType.Decorator);
+      var compound = new ServiceImplementationInfo (typeof (ITestDecoratedCompoundCompound), LifetimeKind.Instance, RegistrationType.Compound);
+      _serviceLocator.Register (new ServiceConfigurationEntry (typeof (IITestDecoratedCompound), implementation1, implementation2, decorator, compound));
+
+      var instance = _serviceLocator.GetInstance (typeof (IITestDecoratedCompound));
+
+      Assert.That (instance, Is.InstanceOf<ITestDecoratedCompoundDecorator>());
+      var decoratorInstance = (ITestDecoratedCompoundDecorator) instance;
+      Assert.That (decoratorInstance.DecoratedObject, Is.InstanceOf<ITestDecoratedCompoundCompound>());
+      var compoundInstance = (ITestDecoratedCompoundCompound) decoratorInstance.DecoratedObject;
+      Assert.That (compoundInstance.InnerObjects, Is.Not.Empty);
     }
     
     [Test]
