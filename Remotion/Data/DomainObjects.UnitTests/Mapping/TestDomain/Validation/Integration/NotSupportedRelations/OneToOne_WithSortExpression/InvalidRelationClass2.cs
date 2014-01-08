@@ -18,13 +18,13 @@
 using System;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedRelations.
-    OneToManyWithInvalidSortExpression
+    OneToOne_WithSortExpression
 {
   [DBTable]
-  [ClassID ("OneToManyBidirectionalRelation_InvalidSortExpressionPropertyName_InvalidRelationClass1")]
-  public class InvalidRelationClass1 : DomainObject
+  [ClassID ("OneToManyBidirectionalRelation_SortExpressionOnTheOneSite_InvalidRelationClass2")]
+  public class InvalidRelationClass2 : DomainObject
   {
-    [DBBidirectionalRelation ("RelationProperty2")]
-    public InvalidRelationClass2 RelationProperty1 { get; set; }
+    [DBBidirectionalRelation ("RelationProperty1", ContainsForeignKey = true)]
+    public InvalidRelationClass1 RelationProperty2 { get; set; }
   }
 }
