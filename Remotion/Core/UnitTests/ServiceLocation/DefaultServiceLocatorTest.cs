@@ -579,6 +579,11 @@ namespace Remotion.UnitTests.ServiceLocation
     [Test]
     public void GetInstance_Compound ()
     {
+      var implementation1 = new ServiceImplementationInfo (typeof (TestCompoundImplementation1),LifetimeKind.Instance, RegistrationType.Multiple);
+      var implementation2 = new ServiceImplementationInfo (typeof (TestCompoundImplementation2),LifetimeKind.Instance, RegistrationType.Multiple);
+      var compound = new ServiceImplementationInfo (typeof (TestCompoundRegistration), LifetimeKind.Instance, RegistrationType.Compound);
+      _serviceLocator.Register (new ServiceConfigurationEntry (typeof (ITestCompoundRegistration), implementation1, implementation2, compound));
+
       var instance = _serviceLocator.GetInstance (typeof (ITestCompoundRegistration));
 
       Assert.That (instance, Is.InstanceOf<TestCompoundRegistration>());
@@ -617,11 +622,6 @@ namespace Remotion.UnitTests.ServiceLocation
     [Test]
     public void GetInstance_Decorator ()
     {
-      var implementation1 = new ServiceImplementationInfo (typeof (TestDecoratorRegistrationDecoratedObject1),LifetimeKind.Instance, RegistrationType.Single);
-      var implementation2 = new ServiceImplementationInfo (typeof (TestDecoratorRegistrationDecoratedObject2),LifetimeKind.Instance, RegistrationType.Single);
-      var decorator = new ServiceImplementationInfo (typeof (TestDecoratorRegistrationDecorator), LifetimeKind.Instance, RegistrationType.Decorator);
-      _serviceLocator.Register (new ServiceConfigurationEntry (typeof (ITestDecoratorRegistration), implementation1, implementation2, decorator));
-
       var instance = _serviceLocator.GetInstance (typeof (ITestDecoratorRegistration));
 
       Assert.That (instance, Is.InstanceOf<TestDecoratorRegistrationDecorator>());
