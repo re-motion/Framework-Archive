@@ -16,14 +16,9 @@
 // 
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Runtime.InteropServices;
-using System.Security.AccessControl;
-using System.Text;
-using JetBrains.Annotations;
 using Microsoft.Practices.ServiceLocation;
 using Remotion.Collections;
 using Remotion.FunctionalProgramming;
@@ -180,16 +175,20 @@ namespace Remotion.ServiceLocation
     {
       ArgumentUtility.CheckNotNull ("serviceType", serviceType);
 
-      var factories = GetOrCreateFactories (serviceType, RegistrationType.Multiple);
+      var registration = GetOrCreateRegistration (serviceType);
 
-      //if (factories.Any (f => f.Item2 == RegistrationType.Single))
-      //{
-      //  throw new ActivationException (
-      //      string.Format ("Invalid ConcreteImplementationAttribute configuration for service type '{0}'. ", serviceType)
-      //      + "The service has implementations registered with RegistrationType.Single. Use GetInstance() to retrieve the implementations.");
-      //}
+      var errorMessageFormat =
+          "Invalid ConcreteImplementationAttribute configuration for service type '{0}'. "
+          + "The service has implementations registered with RegistrationType.{1}. Use GetInstance() to retrieve the implementations.";
 
-      return factories.Select (factory => SafeInvokeInstanceFactory (Tuple.Create (factory, RegistrationType.Multiple), serviceType));
+      if (registration.SingleFactory != null)
+        throw new ActivationException (string.Format (errorMessageFormat, serviceType, RegistrationType.Single));
+
+      // TODO TT: Enable, support for compound indirect resolution, and Test
+      //if (registration.CompoundFactory != null)
+      //  throw new ActivationException (string.Format (errorMessageFormat, serviceType, RegistrationType.Compound));
+
+      return registration.MultipleFactories.Select (factory => SafeInvokeInstanceFactory (factory, serviceType));
     }
 
     /// <summary>
@@ -388,29 +387,17 @@ namespace Remotion.ServiceLocation
       }
     }
 
-    private Func<object>[] GetOrCreateFactories (Type serviceType, RegistrationType registrationType)
+    private Registration GetOrCreateRegistration (Type serviceType)
     {
-      var registration= _dataStore.GetOrCreateValue (serviceType,
+      return _dataStore.GetOrCreateValue (
+          serviceType,
           t =>
           {
             var serviceConfigurationEntry = GetServiceConfigurationEntry (t);
-            return CreateRegistration(serviceConfigurationEntry);
+            return CreateRegistration (serviceConfigurationEntry);
           });
-
-      switch (registrationType)
-      {
-        case RegistrationType.Single:
-          return new []{registration.SingleFactory};
-        case RegistrationType.Multiple:
-          return registration.MultipleFactories.ToArray();
-        case RegistrationType.Compound:
-          return new []{registration.CompoundFactory};
-        case RegistrationType.Decorator:
-        default:
-          throw new ArgumentOutOfRangeException ("registrationType");
-      }
     }
-    
+
     private ServiceConfigurationEntry GetServiceConfigurationEntry (Type serviceType)
     {
       try
@@ -435,53 +422,51 @@ namespace Remotion.ServiceLocation
           serviceConfigurationEntry.ServiceType,
           serviceConfigurationEntry.ImplementationInfos.Where (i => i.RegistrationType == RegistrationType.Decorator));
 
+      //TODO TT: Exceptions
       return new Registration (
           serviceConfigurationEntry.ServiceType,
           singleFactory:
               serviceConfigurationEntry.ImplementationInfos.Where (i => i.RegistrationType == RegistrationType.Single)
-                  .Select (i => CreateInstanceFactory (i, decoratorChain).Item1)
-                  .SingleOrDefault(()=> new InvalidOperationException("single")),
+                  .Select (i => CreateInstanceFactory (i, decoratorChain))
+                  .SingleOrDefault (
+                      () => new InvalidOperationException (
+                          string.Format (
+                              "Cannot register multiple implementations for service type '{0}' when registration type if set to '{1}'.",
+                              serviceConfigurationEntry.ServiceType,
+                              RegistrationType.Single))),
           compoundFactory:
               serviceConfigurationEntry.ImplementationInfos.Where (i => i.RegistrationType == RegistrationType.Compound)
-                  .Select (i => CreateInstanceFactory (i, decoratorChain).Item1)
-                  .SingleOrDefault(()=> new InvalidOperationException("compound")),
+                  .Select (i => CreateInstanceFactory (i, decoratorChain))
+                  .SingleOrDefault (() => new InvalidOperationException ("compound")),
           multipleFactories:
               serviceConfigurationEntry.ImplementationInfos.Where (i => i.RegistrationType == RegistrationType.Multiple)
-                  .Select (i => CreateInstanceFactory (i, isCompound ? noDecorators : decoratorChain).Item1)
+                  .Select (i => CreateInstanceFactory (i, isCompound ? noDecorators : decoratorChain))
                   .ToArray());
     }
 
     private object GetInstanceOrNull (Type serviceType)
     {
-      //if (decorator exists)
-      //return decorator instance
-      //if (compound factories exist)
-      //return safeInvokeInstanceFactory (factory.Where (r= compound).first());
-
       //TODO TT: During registration, validate that single and compound only have one registration. Then change from FirstOrDefault to SingleOrDefault
-      var singleFactory = GetOrCreateFactories (serviceType, RegistrationType.Single).FirstOrDefault();
-      if (singleFactory != null)
-        return SafeInvokeInstanceFactory (Tuple.Create (singleFactory, RegistrationType.Single), serviceType);
-      
-      var compoundFactory = GetOrCreateFactories (serviceType, RegistrationType.Compound).FirstOrDefault();
-      if (compoundFactory != null)
-        return SafeInvokeInstanceFactory (Tuple.Create (compoundFactory, RegistrationType.Compound), serviceType);
-      return null;
+      var registration = GetOrCreateRegistration (serviceType);
+      if (registration.SingleFactory != null && registration.MultipleFactories.Any())
+      {
+        throw new ActivationException (
+            string.Format ("Multiple implemetations are configured for service type '{0}'. Consider using 'GetAllInstances'.", serviceType)); //TODO TT: better message because compound?
+      }
 
-      //if (factories.Any (f => f.Item2 == RegistrationType.Multiple))
-      //{
-      //  throw new ActivationException (
-      //      string.Format ("Invalid ConcreteImplementationAttribute configuration for service type '{0}'. ", serviceType)
-      //      + "The service has implementations registered with RegistrationType.Multiple. Use GetAllInstances() to retrieve the implementations.");
-      //}
+      var factory = registration.SingleFactory ?? registration.CompoundFactory;
+      if (factory == null)
+        return null; // TODO TT: Is this really possible?
+
+      return SafeInvokeInstanceFactory (factory, serviceType);
     }
 
-    private object SafeInvokeInstanceFactory (Tuple<Func<object>, RegistrationType> factory, Type serviceType)
+    private object SafeInvokeInstanceFactory (Func<object> factory, Type serviceType)
     {
       object instance;
       try
       {
-        instance = factory.Item1();
+        instance = factory();
       }
       catch (ActivationException ex)
       {
@@ -514,24 +499,6 @@ namespace Remotion.ServiceLocation
       return instance;
     }
 
-    //private IEnumerable<Tuple<Func<object>, RegistrationType>> CreateDecoratedInstanceFactory (
-    //    Type serviceType,
-    //    ILookup<RegistrationType, ServiceImplementationInfo> implementationInfosByType)
-    //{
-
-    //  Tuple<Func<object>, RegistrationType>[] factoriesToBeDecorated = null;
-    //  CreateInstanceFactories (
-    //      serviceType,
-    //      implementationInfosByType.SelectMany (i => i).Where (i => i.RegistrationType != RegistrationType.Decorator))
-    //      .ToArray();
-
-    //  var decorators = implementationInfosByType[RegistrationType.Decorator];
-    //  var activator = CreateDecoratorChain(serviceType, decorators);
-
-    //  return factoriesToBeDecorated.Select (
-    //      i => Tuple.Create ((Func<object>) (() => activator (i.Item1)), RegistrationType.Decorator)).ToArray();
-    //}
-
     private Func<Func<object>, object> CreateDecoratorChain (Type serviceType, IEnumerable<ServiceImplementationInfo> decorators)
     {
       Func<Func<object>, object> activator = (innerActivator) => innerActivator();
@@ -563,31 +530,6 @@ namespace Remotion.ServiceLocation
       return activator;
     }
 
-    //private IEnumerable<Tuple<Func<object>, RegistrationType>> CreateCompoundInstanceFactory (
-    //    Type serviceType,
-    //    ILookup<RegistrationType, ServiceImplementationInfo> implementationInfosByType)
-    //{
-    //  var compoundImplementation = implementationInfosByType[RegistrationType.Compound].First();
-    //  var constructor = GetSingleConstructor(compoundImplementation, typeof (IEnumerable<>).MakeGenericType (serviceType));
-
-    //  var wrappedImplementations = implementationInfosByType[RegistrationType.Multiple];
-
-    //  var castMethod = typeof (Enumerable).GetMethod ("Cast", BindingFlags.Public | BindingFlags.Static)
-    //    .MakeGenericMethod (serviceType);
-
-    //  var parameterExpression = Expression.Parameter (typeof (IEnumerable<object>));
-    //  var lambda = Expression.Lambda<Func<IEnumerable<object>, object>> (
-    //      Expression.New (
-    //          constructor,
-    //          Expression.Call (null, castMethod, parameterExpression)),
-    //      parameterExpression);
-
-    //  var compiledConstructor = lambda.Compile();
-    //  var factories = wrappedImplementations.Select (CreateInstanceFactory);
-    //  var compoundFactory = (Func<object>) (() => compiledConstructor (factories.Select (f => f.Item1()).ToArray()));
-    //  return new[] { Tuple.Create (compoundFactory, RegistrationType.Compound) };
-    //}
-
     private ConstructorInfo GetSingleConstructor (ServiceImplementationInfo serviceImplementationInfo, Type expectedParameterType)
     {
       var exceptionMessage = string.Format (
@@ -612,34 +554,36 @@ namespace Remotion.ServiceLocation
       // TODO TT: Unify GetSingleConstructor to request ctor from serviceImplementationInfo and require minimum set of expected parameters
 
       var publicCtors = serviceImplementationInfo.ImplementationType.GetConstructors();
+      if (publicCtors.Length != 1)
+        throw new ActivationException (
+            string.Format (
+                "Type '{0}' has not exactly one public constructor and cannot be instantiated.",
+                serviceImplementationInfo.ImplementationType.Name));
 
-      return publicCtors.Single (
-          () => new ActivationException (
-              string.Format (
-                  "Type '{0}' has not exactly one public constructor and cannot be instantiated.",
-                  serviceImplementationInfo.ImplementationType.Name)));
+      return publicCtors.Single();
     }
 
-    private Tuple<Func<object>, RegistrationType> CreateInstanceFactory (ServiceImplementationInfo serviceImplementationInfo, Func<Func<object>, object> decoratorChain)
+    private Func<object> CreateInstanceFactory (ServiceImplementationInfo serviceImplementationInfo, Func<Func<object>, object> decoratorChain)
     {
+      // TODO TT: Write test to also decorate original factory
       if (serviceImplementationInfo.Factory != null)
-        return Tuple.Create(serviceImplementationInfo.Factory, serviceImplementationInfo.RegistrationType);
+        return serviceImplementationInfo.Factory; // return () => decoratorChain (serviceImplementationInfo.Factory)
 
-      var ctorInfo = GetSingleConstructor(serviceImplementationInfo);
-      Tuple<Func<object>, RegistrationType> factoryTuple = CreateInstanceFactory (ctorInfo, serviceImplementationInfo);
-      Func<object> factory = () => decoratorChain (factoryTuple.Item1);
+      var ctorInfo = GetSingleConstructor (serviceImplementationInfo);
+      var instanceFactory = CreateInstanceFactory (ctorInfo);
+      Func<object> decoratedFactory = () => decoratorChain (instanceFactory);
 
       switch (serviceImplementationInfo.Lifetime)
       {
         case LifetimeKind.Singleton:
-          var factoryContainer = new DoubleCheckedLockingContainer<object> (factory);
-          return Tuple.Create((Func<object>) (() => factoryContainer.Value), factoryTuple.Item2);
+          var factoryContainer = new DoubleCheckedLockingContainer<object> (decoratedFactory);
+          return () => factoryContainer.Value;
         default:
-          return Tuple.Create(factory, factoryTuple.Item2);
+          return decoratedFactory;
       }
     }
 
-    private Tuple<Func<object>, RegistrationType> CreateInstanceFactory (ConstructorInfo ctorInfo, ServiceImplementationInfo serviceImplementationInfo)
+    private Func<object> CreateInstanceFactory (ConstructorInfo ctorInfo)
     {
       var serviceLocator = Expression.Constant (this);
 
@@ -647,7 +591,7 @@ namespace Remotion.ServiceLocation
       var ctorArgExpressions = parameterInfos.Select (x => GetIndirectResolutionCall (serviceLocator, x));
 
       var factoryLambda = Expression.Lambda<Func<object>> (Expression.New (ctorInfo, ctorArgExpressions));
-      return Tuple.Create (factoryLambda.Compile(), serviceImplementationInfo.RegistrationType);
+      return factoryLambda.Compile();
     }
 
     private Expression GetIndirectResolutionCall (Expression serviceLocator, ParameterInfo parameterInfo)

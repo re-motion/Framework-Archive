@@ -269,6 +269,18 @@ namespace Remotion.UnitTests.ServiceLocation
     }
 
     [Test]
+    public void GetDefaultConfiguration_WithMultipleRegistrationsWithRegistrationTypeSingle_ReturnsFirstRegistration_OrderedByPositionAscending ()
+    {
+      Assert.Fail ("TODO implement");
+    }
+
+    [Test]
+    public void GetDefaultConfiguration_WithMultipleRegistrationsWithRegistrationTypeCompound_ReturnsFirstRegistration_OrderedByPositionAscending ()
+    {
+      Assert.Fail ("TODO implement");
+    }
+
+    [Test]
     public void GetDefaultConfiguration_Assembly ()
     {
       var defaultServiceConfigurationDiscoveryService = DefaultServiceConfigurationDiscoveryService.Create();

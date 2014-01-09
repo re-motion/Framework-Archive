@@ -121,24 +121,32 @@ namespace Remotion.UnitTests.ServiceLocation
     }
 
     [Test]
-    public void GetInstance_WithMutipleServiceImplementationsRegistered_ReturnsFirstImplementation ()
+    public void GetInstance_WithMutipleServiceImplementationsRegisteredAsMultiple_ThrowsActivationException ()
     {
-      Assert.That (
-          _serviceLocator.GetInstance<ITestMultipleImplementationsForRegistrationTypeSingle> (),
-          Is.InstanceOf<TestMultipleImplementationsForRegistrationTypeSingle2>());
-    }
-
-    [Test]
-    public void GetInstance_WithMutipleServiceImplementationsRegistered_ReturnsFirstImplementation_OrderedByPosition ()
-    {
-      var implementation1 = new ServiceImplementationInfo (typeof (TestMultipleRegistrationType1), LifetimeKind.Singleton);
-      var implementation2 = new ServiceImplementationInfo (typeof (TestMultipleRegistrationType2), LifetimeKind.Singleton);
-      var serviceConfigurationEntry = new ServiceConfigurationEntry (typeof (ITestMultipleRegistrationsType), implementation2, implementation1);
+      var implementation = new ServiceImplementationInfo (typeof (TestMultipleRegistrationType1), LifetimeKind.Singleton, RegistrationType.Multiple);
+      var serviceConfigurationEntry = new ServiceConfigurationEntry (typeof (ITestMultipleRegistrationsType), implementation);
 
       _serviceLocator.Register (serviceConfigurationEntry);
 
-      var instance = _serviceLocator.GetInstance<ITestMultipleRegistrationsType>();
-      Assert.That (instance, Is.InstanceOf<TestMultipleRegistrationType2>());
+      Assert.That (
+          () => _serviceLocator.GetInstance<ITestMultipleRegistrationsType>(),
+          Throws.TypeOf<ActivationException>().With.Message.EqualTo (
+              "Multiple implemetations are configured for service type 'Remotion.UnitTests.ServiceLocation.TestDomain.ITestMultipleRegistrationsType'. "
+              + "Consider using 'GetAllInstances'."));
+    }
+
+    [Test]
+    public void Register_WithMutipleServiceImplementationsRegisteredAsSingle_ThrowsActivationException ()
+    {
+      var implementation1 = new ServiceImplementationInfo (typeof (TestRegistrationTypeSingle1), LifetimeKind.Singleton, RegistrationType.Single);
+      var implementation2 = new ServiceImplementationInfo (typeof (TestRegistrationTypeSingle2), LifetimeKind.Singleton, RegistrationType.Single);
+      var serviceConfigurationEntry = new ServiceConfigurationEntry (typeof (ITestRegistrationTypeSingle), implementation1, implementation2);
+
+      Assert.That (
+          () => _serviceLocator.Register (serviceConfigurationEntry),
+          Throws.InvalidOperationException.With.Message.EqualTo (
+              "Cannot register multiple implementations for service type "
+              + "'Remotion.UnitTests.ServiceLocation.TestDomain.ITestMultipleRegistrationsType' when registration type if set to 'Single'."));
     }
 
     [Test]
