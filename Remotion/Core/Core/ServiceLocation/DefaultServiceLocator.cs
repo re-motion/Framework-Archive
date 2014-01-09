@@ -390,7 +390,6 @@ namespace Remotion.ServiceLocation
 
     private Func<object>[] GetOrCreateFactories (Type serviceType, RegistrationType registrationType)
     {
-
       var registration= _dataStore.GetOrCreateValue (serviceType,
           t =>
           {
@@ -429,19 +428,26 @@ namespace Remotion.ServiceLocation
 
     private Registration CreateRegistration (ServiceConfigurationEntry serviceConfigurationEntry)
     {
+      var isCompound = serviceConfigurationEntry.ImplementationInfos.Any (i => i.RegistrationType == RegistrationType.Compound);
+      Func<Func<object>, object> noDecorators = f => f();
+
+      var decoratorChain = CreateDecoratorChain (
+          serviceConfigurationEntry.ServiceType,
+          serviceConfigurationEntry.ImplementationInfos.Where (i => i.RegistrationType == RegistrationType.Decorator));
+
       return new Registration (
           serviceConfigurationEntry.ServiceType,
           singleFactory:
               serviceConfigurationEntry.ImplementationInfos.Where (i => i.RegistrationType == RegistrationType.Single)
-                  .Select (i => CreateInstanceFactory (i).Item1)
-                  .SingleOrDefault(),
+                  .Select (i => CreateInstanceFactory (i, decoratorChain).Item1)
+                  .SingleOrDefault(()=> new InvalidOperationException("single")),
           compoundFactory:
               serviceConfigurationEntry.ImplementationInfos.Where (i => i.RegistrationType == RegistrationType.Compound)
-                  .Select (i => CreateInstanceFactory (i).Item1)
-                  .SingleOrDefault(),
+                  .Select (i => CreateInstanceFactory (i, decoratorChain).Item1)
+                  .SingleOrDefault(()=> new InvalidOperationException("compound")),
           multipleFactories:
               serviceConfigurationEntry.ImplementationInfos.Where (i => i.RegistrationType == RegistrationType.Multiple)
-                  .Select (i => CreateInstanceFactory (i).Item1)
+                  .Select (i => CreateInstanceFactory (i, isCompound ? noDecorators : decoratorChain).Item1)
                   .ToArray());
     }
 
@@ -454,9 +460,10 @@ namespace Remotion.ServiceLocation
 
       //TODO TT: During registration, validate that single and compound only have one registration. Then change from FirstOrDefault to SingleOrDefault
       var singleFactory = GetOrCreateFactories (serviceType, RegistrationType.Single).FirstOrDefault();
-      var compoundFactory = GetOrCreateFactories (serviceType, RegistrationType.Compound).FirstOrDefault();
       if (singleFactory != null)
         return SafeInvokeInstanceFactory (Tuple.Create (singleFactory, RegistrationType.Single), serviceType);
+      
+      var compoundFactory = GetOrCreateFactories (serviceType, RegistrationType.Compound).FirstOrDefault();
       if (compoundFactory != null)
         return SafeInvokeInstanceFactory (Tuple.Create (compoundFactory, RegistrationType.Compound), serviceType);
       return null;
@@ -507,74 +514,89 @@ namespace Remotion.ServiceLocation
       return instance;
     }
 
-    private IEnumerable<Tuple<Func<object>, RegistrationType>> CreateDecoratedInstanceFactory (
-        Type serviceType,
-        ILookup<RegistrationType, ServiceImplementationInfo> implementationInfosByType)
+    //private IEnumerable<Tuple<Func<object>, RegistrationType>> CreateDecoratedInstanceFactory (
+    //    Type serviceType,
+    //    ILookup<RegistrationType, ServiceImplementationInfo> implementationInfosByType)
+    //{
+
+    //  Tuple<Func<object>, RegistrationType>[] factoriesToBeDecorated = null;
+    //  CreateInstanceFactories (
+    //      serviceType,
+    //      implementationInfosByType.SelectMany (i => i).Where (i => i.RegistrationType != RegistrationType.Decorator))
+    //      .ToArray();
+
+    //  var decorators = implementationInfosByType[RegistrationType.Decorator];
+    //  var activator = CreateDecoratorChain(serviceType, decorators);
+
+    //  return factoriesToBeDecorated.Select (
+    //      i => Tuple.Create ((Func<object>) (() => activator (i.Item1)), RegistrationType.Decorator)).ToArray();
+    //}
+
+    private Func<Func<object>, object> CreateDecoratorChain (Type serviceType, IEnumerable<ServiceImplementationInfo> decorators)
     {
-      var decorators = implementationInfosByType[RegistrationType.Decorator];
-
-      Tuple<Func<object>, RegistrationType>[] factoriesToBeDecorated = null;
-      //CreateInstanceFactories (
-      //    serviceType,
-      //    implementationInfosByType.SelectMany (i => i).Where (i => i.RegistrationType != RegistrationType.Decorator))
-      //    .ToArray();
-
       Func<Func<object>, object> activator = (innerActivator) => innerActivator();
+
+      //TODO TT: Write test asserting that the first decorator is the innermost decorator.
+      //TODO TT: Refactor to simple expression tree without closures etc
+      // arg => new DecoratorType3 (
+      //            new DecoratorType2 (
+      //                new DecoratorType1 ((ServiceType) arg)))
 
       foreach (var decoratorImplementationInfo in decorators)
       {
-        var constructor = GetSingleConstructor(decoratorImplementationInfo, serviceType);
+        var constructor = GetSingleConstructor (decoratorImplementationInfo, serviceType);
 
         var parameterExpression = Expression.Parameter (typeof (object));
+
+        // arg => new DecoratorType ((ServiceType) arg)
         var activationExpression = Expression.Lambda<Func<object, object>> (
             Expression.New (
                 constructor,
                 Expression.Convert (parameterExpression, serviceType)),
             parameterExpression);
         var compiledExpression = activationExpression.Compile();
+
         var previousActivator = activator;
 
-        activator = (innerActivator) => compiledExpression (previousActivator(innerActivator));
+        activator = (innerActivator) => compiledExpression (previousActivator (innerActivator));
       }
-
-      return factoriesToBeDecorated.Select (
-          i => Tuple.Create ((Func<object>) (() => activator (i.Item1)), RegistrationType.Decorator)).ToArray();
+      return activator;
     }
 
-    private IEnumerable<Tuple<Func<object>, RegistrationType>> CreateCompoundInstanceFactory (
-        Type serviceType,
-        ILookup<RegistrationType, ServiceImplementationInfo> implementationInfosByType)
-    {
-      var compoundImplementation = implementationInfosByType[RegistrationType.Compound].First();
-      var constructor = GetSingleConstructor(compoundImplementation, typeof (IEnumerable<>).MakeGenericType (serviceType));
+    //private IEnumerable<Tuple<Func<object>, RegistrationType>> CreateCompoundInstanceFactory (
+    //    Type serviceType,
+    //    ILookup<RegistrationType, ServiceImplementationInfo> implementationInfosByType)
+    //{
+    //  var compoundImplementation = implementationInfosByType[RegistrationType.Compound].First();
+    //  var constructor = GetSingleConstructor(compoundImplementation, typeof (IEnumerable<>).MakeGenericType (serviceType));
 
-      var wrappedImplementations = implementationInfosByType[RegistrationType.Multiple];
+    //  var wrappedImplementations = implementationInfosByType[RegistrationType.Multiple];
 
-      var castMethod = typeof (Enumerable).GetMethod ("Cast", BindingFlags.Public | BindingFlags.Static)
-        .MakeGenericMethod (serviceType);
+    //  var castMethod = typeof (Enumerable).GetMethod ("Cast", BindingFlags.Public | BindingFlags.Static)
+    //    .MakeGenericMethod (serviceType);
 
-      var parameterExpression = Expression.Parameter (typeof (IEnumerable<object>));
-      var lambda = Expression.Lambda<Func<IEnumerable<object>, object>> (
-          Expression.New (
-              constructor,
-              Expression.Call (null, castMethod, parameterExpression)),
-          parameterExpression);
+    //  var parameterExpression = Expression.Parameter (typeof (IEnumerable<object>));
+    //  var lambda = Expression.Lambda<Func<IEnumerable<object>, object>> (
+    //      Expression.New (
+    //          constructor,
+    //          Expression.Call (null, castMethod, parameterExpression)),
+    //      parameterExpression);
 
-      var compiledConstructor = lambda.Compile();
-      var factories = wrappedImplementations.Select (CreateInstanceFactory);
-      var compoundFactory = (Func<object>) (() => compiledConstructor (factories.Select (f => f.Item1()).ToArray()));
-      return new[] { Tuple.Create (compoundFactory, RegistrationType.Compound) };
-    }
+    //  var compiledConstructor = lambda.Compile();
+    //  var factories = wrappedImplementations.Select (CreateInstanceFactory);
+    //  var compoundFactory = (Func<object>) (() => compiledConstructor (factories.Select (f => f.Item1()).ToArray()));
+    //  return new[] { Tuple.Create (compoundFactory, RegistrationType.Compound) };
+    //}
 
-    private ConstructorInfo GetSingleConstructor (ServiceImplementationInfo compoundImplementation, Type expectedParameterType)
+    private ConstructorInfo GetSingleConstructor (ServiceImplementationInfo serviceImplementationInfo, Type expectedParameterType)
     {
       var exceptionMessage = string.Format (
           "Type '{0}' cannot be instantiated. {1} implementations must have a single public constructor accepting a single argument of type '{2}'.",
-          compoundImplementation.ImplementationType,
-          compoundImplementation.RegistrationType,
+          serviceImplementationInfo.ImplementationType,
+          serviceImplementationInfo.RegistrationType,
           expectedParameterType);
 
-      var constructors = compoundImplementation.ImplementationType.GetConstructors();
+      var constructors = serviceImplementationInfo.ImplementationType.GetConstructors();
       if (constructors.Length != 1)
         throw new ActivationException (exceptionMessage);
 
@@ -585,29 +607,35 @@ namespace Remotion.ServiceLocation
       return constructor;
     }
 
-    private Tuple<Func<object>, RegistrationType> CreateInstanceFactory (ServiceImplementationInfo serviceImplementationInfo)
+    private ConstructorInfo GetSingleConstructor (ServiceImplementationInfo serviceImplementationInfo)
+    {
+      // TODO TT: Unify GetSingleConstructor to request ctor from serviceImplementationInfo and require minimum set of expected parameters
+
+      var publicCtors = serviceImplementationInfo.ImplementationType.GetConstructors();
+
+      return publicCtors.Single (
+          () => new ActivationException (
+              string.Format (
+                  "Type '{0}' has not exactly one public constructor and cannot be instantiated.",
+                  serviceImplementationInfo.ImplementationType.Name)));
+    }
+
+    private Tuple<Func<object>, RegistrationType> CreateInstanceFactory (ServiceImplementationInfo serviceImplementationInfo, Func<Func<object>, object> decoratorChain)
     {
       if (serviceImplementationInfo.Factory != null)
         return Tuple.Create(serviceImplementationInfo.Factory, serviceImplementationInfo.RegistrationType);
 
-      var publicCtors = serviceImplementationInfo.ImplementationType.GetConstructors();
-      if (publicCtors.Length != 1)
-      {
-        throw new ActivationException (
-            string.Format (
-                "Type '{0}' has not exactly one public constructor and cannot be instantiated.", serviceImplementationInfo.ImplementationType.Name));
-      }
-
-      var ctorInfo = publicCtors.Single();
-      Tuple<Func<object>, RegistrationType> factory = CreateInstanceFactory (ctorInfo, serviceImplementationInfo);
+      var ctorInfo = GetSingleConstructor(serviceImplementationInfo);
+      Tuple<Func<object>, RegistrationType> factoryTuple = CreateInstanceFactory (ctorInfo, serviceImplementationInfo);
+      Func<object> factory = () => decoratorChain (factoryTuple.Item1);
 
       switch (serviceImplementationInfo.Lifetime)
       {
         case LifetimeKind.Singleton:
-          var factoryContainer = new DoubleCheckedLockingContainer<object> (factory.Item1);
-          return Tuple.Create((Func<object>) (() => factoryContainer.Value), factory.Item2);
+          var factoryContainer = new DoubleCheckedLockingContainer<object> (factory);
+          return Tuple.Create((Func<object>) (() => factoryContainer.Value), factoryTuple.Item2);
         default:
-          return factory;
+          return Tuple.Create(factory, factoryTuple.Item2);
       }
     }
 

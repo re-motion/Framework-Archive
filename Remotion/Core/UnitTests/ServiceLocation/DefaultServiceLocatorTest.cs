@@ -622,6 +622,10 @@ namespace Remotion.UnitTests.ServiceLocation
     [Test]
     public void GetInstance_Decorator ()
     {
+      var implementation = new ServiceImplementationInfo (typeof (TestDecoratorRegistrationDecoratedObject1),LifetimeKind.Instance, RegistrationType.Single);
+      var decorator = new ServiceImplementationInfo (typeof (TestDecoratorRegistrationDecorator), LifetimeKind.Instance, RegistrationType.Decorator);
+      _serviceLocator.Register (new ServiceConfigurationEntry (typeof (ITestDecoratorRegistration), implementation, decorator));
+
       var instance = _serviceLocator.GetInstance (typeof (ITestDecoratorRegistration));
 
       Assert.That (instance, Is.InstanceOf<TestDecoratorRegistrationDecorator>());
