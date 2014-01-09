@@ -217,10 +217,21 @@ namespace Remotion.UnitTests.ServiceLocation
     }
 
     [Test]
+    public void GetAllInstances_Compound_ReturnsOnlyMultipleRegistrations ()
+    {
+      //TODO TT: will not be supported in final implementation because getInstance and getAllInstances will be exclusive.
+      var instances = _serviceLocator.GetAllInstances (typeof (ITestCompoundRegistration));
+
+      Assert.That (
+          instances.Select (i => i.GetType()),
+          Is.EqualTo (new[] { typeof (TestCompoundImplementation1), typeof (TestCompoundImplementation2) }));
+    }
+
+    [Test]
     [ExpectedExceptionAttribute (typeof (ActivationException), ExpectedMessage =
         "Invalid ConcreteImplementationAttribute configuration for service type "
         + "'Remotion.UnitTests.ServiceLocation.TestDomain.ITestMultipleConcreteImplementationAttributesWithDuplicatePositionType'. "
-        + "Ambiguous ImplementationForAttribute: Position must be unique.")]
+        + "Ambiguous ImplementationForAttribute: Position for registration type 'Single' must be unique.")]
     public void GetAllInstances_ServiceTypeWithAmbiguousPosition ()
     {
       _serviceLocator.GetAllInstances (typeof (ITestMultipleConcreteImplementationAttributesWithDuplicatePositionType)).ToArray ();
@@ -568,11 +579,6 @@ namespace Remotion.UnitTests.ServiceLocation
     [Test]
     public void GetInstance_Compound ()
     {
-      var implementation1 = new ServiceImplementationInfo (typeof (TestCompoundImplementation1),LifetimeKind.Instance, RegistrationType.Multiple);
-      var implementation2 = new ServiceImplementationInfo (typeof (TestCompoundImplementation2),LifetimeKind.Instance, RegistrationType.Multiple);
-      var compound = new ServiceImplementationInfo (typeof (TestCompoundRegistration), LifetimeKind.Instance, RegistrationType.Compound);
-      _serviceLocator.Register (new ServiceConfigurationEntry (typeof (ITestCompoundRegistration), implementation1, implementation2, compound));
-
       var instance = _serviceLocator.GetInstance (typeof (ITestCompoundRegistration));
 
       Assert.That (instance, Is.InstanceOf<TestCompoundRegistration>());

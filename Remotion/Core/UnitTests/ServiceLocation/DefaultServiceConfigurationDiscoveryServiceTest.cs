@@ -148,7 +148,7 @@ namespace Remotion.UnitTests.ServiceLocation
           Throws.InvalidOperationException.With.Message.EqualTo (
               "Invalid configuration of service type "
               + "'Remotion.UnitTests.ServiceLocation.TestDomain.ITestMultipleConcreteImplementationAttributesWithDuplicatePositionType'. "
-              + "Ambiguous ImplementationForAttribute: Position must be unique.")
+              + "Ambiguous ImplementationForAttribute: Position for registration type 'Single' must be unique.")
               .And.InnerException.Not.Null);
     }
 

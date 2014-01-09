@@ -57,10 +57,6 @@ namespace Remotion.ServiceLocation
       _typeDiscoveryService = typeDiscoveryService;
     }
 
-    //TODO RM-5560: change to instance implementation and pass ITypeDiscoveryService via ctor. 
-    // Optionally, provide a factory method that depends on ContextAwareTypeDiscoveryUtility.GetTypeDiscoveryService()
-    // Drop ITypeDiscoveryService from method signatures.
-
     /// <summary>
     /// Gets the default service configuration for the types returned by the given <see cref="ITypeDiscoveryService"/>.
     /// </summary>

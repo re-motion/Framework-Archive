@@ -122,6 +122,24 @@ namespace Remotion.UnitTests.ServiceLocation
                   new ServiceImplementationInfo (typeof (TestMultipleConcreteImplementationAttributesType2), LifetimeKind.Instance)
               }));
     }
+    
+    [Test]
+    public void CreateFromAttributes_EqualPositions_DifferentRegistrationTypes ()
+    {
+      var attribute1 = Tuple.Create (
+          typeof (TestMultipleConcreteImplementationAttributesType1),
+          new ImplementationForAttribute (typeof (ITestMultipleConcreteImplementationAttributesType))
+          { Lifetime = LifetimeKind.Singleton, Position = 1, RegistrationType = RegistrationType.Compound});
+
+      var attribute2 = Tuple.Create (
+          typeof (TestMultipleConcreteImplementationAttributesType2),
+          new ImplementationForAttribute (typeof (ITestMultipleConcreteImplementationAttributesType))
+          { Lifetime = LifetimeKind.Instance, Position = 1, RegistrationType = RegistrationType.Multiple});
+
+      var attributes = new[] { attribute1, attribute2};
+
+      ServiceConfigurationEntry.CreateFromAttributes (typeof (ITestMultipleConcreteImplementationAttributesType), attributes);
+    }
 
     [Test]
     public void CreateFromAttributes_Multiple_EntriesAreSortedCorrectly ()
@@ -165,7 +183,7 @@ namespace Remotion.UnitTests.ServiceLocation
 
       Assert.That (
           () => ServiceConfigurationEntry.CreateFromAttributes (typeof (ITestMultipleConcreteImplementationAttributesType), attributes),
-          Throws.InvalidOperationException.With.Message.EqualTo ("Ambiguous ImplementationForAttribute: Position must be unique."));
+          Throws.InvalidOperationException.With.Message.EqualTo ("Ambiguous ImplementationForAttribute: Position for registration type 'Single' must be unique."));
     }
 
     [Test]

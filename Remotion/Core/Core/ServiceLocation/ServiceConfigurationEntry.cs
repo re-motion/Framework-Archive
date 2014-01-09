@@ -49,8 +49,10 @@ namespace Remotion.ServiceLocation
            orderby attribute.Item2.Position
            select new { Attribute = attribute.Item2, ResolvedType = attribute.Item1}).ConvertToCollection();
 
-      EnsureUniqueProperty ("Implementation type", attributes.Select (tuple => tuple.Item1));
-      EnsureUniqueProperty ("Position", attributesAndResolvedTypes.Select (tuple => tuple.Attribute.Position));
+      EnsureUniqueProperty ("Implementation type", attributesAndResolvedTypes.Select (tuple => tuple.ResolvedType));
+
+      foreach (var group in attributesAndResolvedTypes.GroupBy (a => a.Attribute.RegistrationType))
+        EnsureUniqueProperty (string.Format ("Position for registration type '{0}'", group.Key), group.Select (tuple => tuple.Attribute.Position));
 
       var serviceImplementationInfos =
           attributesAndResolvedTypes
