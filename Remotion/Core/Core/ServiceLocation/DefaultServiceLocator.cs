@@ -252,6 +252,13 @@ namespace Remotion.ServiceLocation
       return GetInstanceOrNull (serviceType);
     }
 
+    //TODO TT: register api ideas: 
+    //registerSingle(this IServiceConfigurationRegistry registry, Type serviceType, Type implementationType, Type[] decoratorTypes = null)
+    //registerMultiple(this IServiceConfigurationRegistry registry, Type serviceType, Type[] implementationType, Type[] decoratorTypes = null)
+    //registerCompound(this IServiceConfigurationRegistry registry, Type serviceType, Type compoundType, Type[] implementationTypes, Type[] decoratorTypes = null)
+    //registerXXX(this IServiceConfigurationRegistry registry, Type serviceType, Func<object>[] instanceFactories, Type[] decoratorTypes)
+
+    //as extension for IServiceConfigurationRegistry, or drop if did not exist before feature branch or if no longer needed. Obsolete if old API was used in many projects
     /// <summary>
     /// Registers factories for the specified <paramref name="serviceType"/>. 
     /// The factories are subsequently invoked whenever instances for the <paramref name="serviceType"/> is requested.
@@ -270,6 +277,7 @@ namespace Remotion.ServiceLocation
       Register (serviceType, (IEnumerable<Func<object>>) instanceFactories);
     }
 
+    //as extension for IServiceConfigurationRegistry, or drop if did not exist before feature branch or if no longer needed. Obsolete if old API was used in many projects
     /// <summary>
     /// Registers factories for the specified <paramref name="serviceType"/>. 
     /// The factories are subsequently invoked whenever instances for the <paramref name="serviceType"/> is requested.
@@ -288,6 +296,7 @@ namespace Remotion.ServiceLocation
       Register (serviceType, (IEnumerable<Tuple<Func<object>, RegistrationType>>) instanceFactories);
     }
 
+    //as extension for IServiceConfigurationRegistry, or drop if did not exist before feature branch or if no longer needed. Obsolete if old API was used in many projects
     /// <summary>
     /// Registers factories for the specified <paramref name="serviceType"/>. 
     /// The factories are subsequently invoked whenever instances for the <paramref name="serviceType"/> is requested.
@@ -306,6 +315,7 @@ namespace Remotion.ServiceLocation
       Register (serviceType, instanceFactories.Select (f => Tuple.Create (f, RegistrationType.Single)));
     }
 
+    //as extension for IServiceConfigurationRegistry, or drop if did not exist before feature branch or if no longer needed. Obsolete if old API was used in many projects
     /// <summary>
     /// Registers factories for the specified <paramref name="serviceType"/>. 
     /// The factories are subsequently invoked whenever instances for the <paramref name="serviceType"/> is requested.
@@ -335,6 +345,8 @@ namespace Remotion.ServiceLocation
         throw new InvalidOperationException (message);
       }
     }
+
+    //leave this register method:
 
     /// <summary>
     /// Registers a concrete implementation for the specified <paramref name="serviceType"/>.
@@ -366,6 +378,12 @@ namespace Remotion.ServiceLocation
       Register (serviceConfigurationEntry);
     }
 
+    // var registryStub = new FakeRegistry
+    // registryStub.RegisterSinge()
+    // Assert.that (registryStub.Entry.ServiceType, Is.EqualTo (...)
+    // Assert.that (registryStub.Entry.ImplInfos, ...
+
+    //Declared in interface IServiceConfigurationRegistry
     /// <summary>
     /// Registers a concrete implementation.
     /// </summary>
