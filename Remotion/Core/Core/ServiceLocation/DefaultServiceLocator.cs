@@ -445,7 +445,7 @@ namespace Remotion.ServiceLocation
           serviceConfigurationEntry.ServiceType,
           singleFactory:
               serviceConfigurationEntry.ImplementationInfos.Where (i => i.RegistrationType == RegistrationType.Single)
-                  .Select (i => CreateInstanceFactory (i, decoratorChain))
+                  .Select (i => CreateInstanceFactory (serviceConfigurationEntry.ServiceType, i, decoratorChain))
                   .SingleOrDefault (
                       () => new InvalidOperationException (
                           string.Format (
@@ -454,11 +454,11 @@ namespace Remotion.ServiceLocation
                               RegistrationType.Single))),
           compoundFactory:
               serviceConfigurationEntry.ImplementationInfos.Where (i => i.RegistrationType == RegistrationType.Compound)
-                  .Select (i => CreateInstanceFactory (i, decoratorChain))
+                  .Select (i => CreateInstanceFactory (serviceConfigurationEntry.ServiceType,i, decoratorChain))
                   .SingleOrDefault (() => new InvalidOperationException ("compound")),
           multipleFactories:
               serviceConfigurationEntry.ImplementationInfos.Where (i => i.RegistrationType == RegistrationType.Multiple)
-                  .Select (i => CreateInstanceFactory (i, isCompound ? noDecorators : decoratorChain))
+                  .Select (i => CreateInstanceFactory (serviceConfigurationEntry.ServiceType,i, isCompound ? noDecorators : decoratorChain))
                   .ToArray());
     }
 
@@ -550,44 +550,34 @@ namespace Remotion.ServiceLocation
 
     private ConstructorInfo GetSingleConstructor (ServiceImplementationInfo serviceImplementationInfo, Type expectedParameterType)
     {
-      var exceptionMessage = string.Format (
-          "Type '{0}' cannot be instantiated. {1} implementations must have a single public constructor accepting a single argument of type '{2}'.",
-          serviceImplementationInfo.ImplementationType,
-          serviceImplementationInfo.RegistrationType,
+      var argumentTypesDoNotMatchMessage = string.Format (
+          " The public constructor must at least accept an argument of type '{0}'.",
           expectedParameterType);
+
+      var exceptionMessage = string.Format (
+          "Type '{0}' cannot be instantiated. The type must have exactly one public constructor. {1}",
+          serviceImplementationInfo.ImplementationType,
+          expectedParameterType == null ? "" : argumentTypesDoNotMatchMessage);
 
       var constructors = serviceImplementationInfo.ImplementationType.GetConstructors();
       if (constructors.Length != 1)
         throw new ActivationException (exceptionMessage);
 
       var constructor = constructors.First();
-      if (constructor.GetParameters().Length != 1 || constructor.GetParameters().First().ParameterType != expectedParameterType)
+      if (expectedParameterType != null && constructor.GetParameters().Select (p => p.ParameterType == expectedParameterType).Count() != 1)
         throw new ActivationException (exceptionMessage);
 
       return constructor;
     }
 
-    private ConstructorInfo GetSingleConstructor (ServiceImplementationInfo serviceImplementationInfo)
-    {
-      // TODO TT: Unify GetSingleConstructor to request ctor from serviceImplementationInfo and require minimum set of expected parameters
-
-      var publicCtors = serviceImplementationInfo.ImplementationType.GetConstructors();
-      if (publicCtors.Length != 1)
-        throw new ActivationException (
-            string.Format (
-                "Type '{0}' has not exactly one public constructor and cannot be instantiated.",
-                serviceImplementationInfo.ImplementationType.Name));
-
-      return publicCtors.Single();
-    }
-
-    private Func<object> CreateInstanceFactory (ServiceImplementationInfo serviceImplementationInfo, Func<Func<object>, object> decoratorChain)
+    private Func<object> CreateInstanceFactory (Type serviceType, ServiceImplementationInfo serviceImplementationInfo, Func<Func<object>, object> decoratorChain)
     {
       // TODO TT: Write test to also decorate original factory
       if (serviceImplementationInfo.Factory != null)
         return serviceImplementationInfo.Factory; // return () => decoratorChain (serviceImplementationInfo.Factory)
 
-      var ctorInfo = GetSingleConstructor (serviceImplementationInfo);
+      var expectedParameterType = serviceImplementationInfo.RegistrationType == RegistrationType.Compound ? typeof (IEnumerable<>).MakeGenericType (serviceType) : null;
+      var ctorInfo = GetSingleConstructor (serviceImplementationInfo, expectedParameterType);
       var instanceFactory = CreateInstanceFactory (ctorInfo);
       Func<object> decoratedFactory = () => decoratorChain (instanceFactory);
 

@@ -11,5 +11,9 @@ namespace Remotion.UnitTests.ServiceLocation.TestDomain
   [ImplementationFor (typeof (ITestCompoundWithoutPublicConstructor), RegistrationType = RegistrationType.Compound)]
   public class TestCompoundWithoutPublicConstructor : ITestCompoundWithoutPublicConstructor
   {
+    private TestCompoundWithoutPublicConstructor ()
+    {
+      
+    }
   }
 }

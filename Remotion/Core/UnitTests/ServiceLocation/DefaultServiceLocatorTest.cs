@@ -186,12 +186,17 @@ namespace Remotion.UnitTests.ServiceLocation
     }
 
     [Test]
-     [ExpectedExceptionAttribute (typeof (ActivationException), ExpectedMessage =
+    [ExpectedException (typeof (ActivationException), ExpectedMessage =
         "Invalid ConcreteImplementationAttribute configuration for service type "
         + "'Remotion.UnitTests.ServiceLocation.TestDomain.ITestRegistrationTypeSingle'. "
         + "The service has implementations registered with RegistrationType.Single. Use GetInstance() to retrieve the implementations.")]
     public void GetAllInstances_ServiceWithRegistrationTypeSingle ()
     {
+      _serviceLocator.Register (
+          new ServiceConfigurationEntry (
+              typeof (ITestRegistrationTypeSingle),
+              new ServiceImplementationInfo (typeof (TestRegistrationTypeSingle1), LifetimeKind.Instance)));
+
       _serviceLocator.GetAllInstances (typeof (ITestRegistrationTypeSingle)).ToArray();
     }
 
@@ -223,18 +228,7 @@ namespace Remotion.UnitTests.ServiceLocation
               "The registered factory returned null instead of an instance implementing the requested service type "
               + "'Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTest+ISomeInterface'."));
     }
-
-    [Test]
-    public void GetAllInstances_Compound_ReturnsOnlyMultipleRegistrations ()
-    {
-      //TODO TT: will not be supported in final implementation because getInstance and getAllInstances will be exclusive.
-      var instances = _serviceLocator.GetAllInstances (typeof (ITestCompoundRegistration));
-
-      Assert.That (
-          instances.Select (i => i.GetType()),
-          Is.EqualTo (new[] { typeof (TestCompoundImplementation1), typeof (TestCompoundImplementation2) }));
-    }
-
+    
     [Test]
     [ExpectedExceptionAttribute (typeof (ActivationException), ExpectedMessage =
         "Invalid ConcreteImplementationAttribute configuration for service type "
@@ -371,15 +365,18 @@ namespace Remotion.UnitTests.ServiceLocation
 
     [Test]
     [ExpectedException (typeof (ActivationException),
-        ExpectedMessage = "Type 'TestTypeWithTooManyPublicConstructors' has not exactly one public constructor and cannot be instantiated.")]
+        ExpectedMessage = 
+        "Type 'Remotion.UnitTests.ServiceLocation.TestDomain.TestTypeWithTooManyPublicConstructors' cannot be instantiated. " +
+        "The type must have exactly one public constructor.")]
     public void GetInstance_TypeWithTooManyPublicCtors ()
     {
       _serviceLocator.GetInstance<ITestTypeWithTooManyPublicConstructors>();
     }
 
     [Test]
-    [ExpectedException (typeof (ActivationException),
-        ExpectedMessage = "Type 'TestTypeWithOnlyProtectedConstructor' has not exactly one public constructor and cannot be instantiated.")]
+    [ExpectedException (typeof (ActivationException),ExpectedMessage =
+        "Type 'Remotion.UnitTests.ServiceLocation.TestDomain.TestTypeWithOnlyProtectedConstructor' cannot be instantiated. " +
+        "The type must have exactly one public constructor.")]
     public void GetInstance_TypeWithOnlyProtectedCtor ()
     {
       _serviceLocator.GetInstance<ITestTypeWithOnlyProtectedConstructor> ();
@@ -616,15 +613,29 @@ namespace Remotion.UnitTests.ServiceLocation
     }
 
     [Test]
-     [ExpectedException (typeof (ActivationException), ExpectedMessage =
+    [ExpectedException (typeof (ActivationException), ExpectedMessage =
         "Type 'Remotion.UnitTests.ServiceLocation.TestDomain.TestCompoundWithoutPublicConstructor' cannot be instantiated. " +
-        "Compound implementations must have a single public constructor accepting a single argument of type 'System.Collections.Generic.IEnumerable`1[Remotion.UnitTests.ServiceLocation.TestDomain.ITestCompoundWithoutPublicConstructor]'.")]
+        "The type must have exactly one public constructor. The public constructor must at least accept an argument of type "
+        + "'System.Collections.Generic.IEnumerable`1[Remotion.UnitTests.ServiceLocation.TestDomain.ITestCompoundWithoutPublicConstructor]'.")]
     public void GetInstance_CompoundWithNoPublicConstructor ()
     {
       var compound = new ServiceImplementationInfo (typeof (TestCompoundWithoutPublicConstructor), LifetimeKind.Instance, RegistrationType.Compound);
       _serviceLocator.Register (new ServiceConfigurationEntry (typeof (ITestCompoundWithoutPublicConstructor), compound));
 
       _serviceLocator.GetInstance (typeof (ITestCompoundWithoutPublicConstructor));
+    }
+
+    [Test]
+    [ExpectedException (typeof (ActivationException), ExpectedMessage =
+        "Type 'Remotion.UnitTests.ServiceLocation.TestDomain.TestCompoundWithInvalidConstructor' cannot be instantiated. "
+        + "The type must have exactly one public constructor. The public constructor must at least accept an argument of type "
+        + "'System.Collections.Generic.IEnumerable`1[Remotion.UnitTests.ServiceLocation.TestDomain.ITestCompoundWithInvalidConstructor]'.")]
+    public void GetInstance_CompoundWithInvalidConstructor ()
+    {
+      var compound = new ServiceImplementationInfo (typeof (TestCompoundWithInvalidConstructor), LifetimeKind.Instance, RegistrationType.Compound);
+      _serviceLocator.Register (new ServiceConfigurationEntry (typeof (ITestCompoundWithInvalidConstructor), compound));
+
+      _serviceLocator.GetInstance (typeof (ITestCompoundWithInvalidConstructor));
     }
 
     [Test]
@@ -643,16 +654,20 @@ namespace Remotion.UnitTests.ServiceLocation
 
     [Test]
     [ExpectedException (typeof (ActivationException), ExpectedMessage =
-        "Type 'Remotion.UnitTests.ServiceLocation.TestDomain.ITestDecoratorWithoutPublicConstructor' cannot be instantiated. " +
-        "Decorator implementations must have a single public constructor accepting a single argument of type 'Remotion.UnitTests.ServiceLocation.TestDomain.ITestDecoratorWithoutPublicConstructor'.")]
+        "Type 'Remotion.UnitTests.ServiceLocation.TestDomain.TestCompoundWithoutPublicConstructor' cannot be instantiated. "
+        + "The type must have exactly one public constructor. The public constructor must at least accept an argument of type "
+        + "'Remotion.UnitTests.ServiceLocation.TestDomain.ITestDecoratorWithoutPublicConstructor'.")]
     public void GetInstance_DecoratorWithNoPublicConstructor ()
     {
-      var compound = new ServiceImplementationInfo (typeof (ITestDecoratorWithoutPublicConstructor), LifetimeKind.Instance, RegistrationType.Decorator);
+      var compound = new ServiceImplementationInfo (
+          typeof (ITestDecoratorWithoutPublicConstructor),
+          LifetimeKind.Instance,
+          RegistrationType.Decorator);
       _serviceLocator.Register (new ServiceConfigurationEntry (typeof (ITestDecoratorWithoutPublicConstructor), compound));
 
       _serviceLocator.GetInstance (typeof (ITestDecoratorWithoutPublicConstructor));
     }
-    
+
     [Test]
     public void GetInstance_StackedDecorators ()
     {
