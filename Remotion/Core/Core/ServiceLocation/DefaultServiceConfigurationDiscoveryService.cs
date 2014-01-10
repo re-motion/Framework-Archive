@@ -106,11 +106,11 @@ namespace Remotion.ServiceLocation
 
       if (attributes.Contains(RegistrationType.Compound) && attributes.Contains(RegistrationType.Single))
         throw new InvalidOperationException (
-            "RegistrationTypes compound and Single cannot be used together.");
+            "RegistrationTypes compound and Single cannot be used together."); //TODO TT: ServiceType in message
       
       if (attributes.Contains(RegistrationType.Single) && attributes.Contains(RegistrationType.Multiple))
         throw new InvalidOperationException (
-            "RegistrationTypes Single and Multiple must not be mixed. All service implementations have to have the same registration type.");
+            "RegistrationTypes Single and Multiple must not be mixed. All service implementations have to have the same registration type."); //TODO TT: ServiceType in message
 
       return ServiceConfigurationEntry.CreateFromAttributes (serviceType, FilterAttributes(attributes));
     }

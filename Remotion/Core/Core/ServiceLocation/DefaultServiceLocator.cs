@@ -175,7 +175,7 @@ namespace Remotion.ServiceLocation
     {
       ArgumentUtility.CheckNotNull ("serviceType", serviceType);
 
-      var registration = GetOrCreateRegistration (serviceType);
+      var registration = GetOrCreateRegistrationWithActivationException (serviceType);
 
       var errorMessageFormat =
           "Invalid ConcreteImplementationAttribute configuration for service type '{0}'. "
@@ -188,7 +188,7 @@ namespace Remotion.ServiceLocation
       //if (registration.CompoundFactory != null)
       //  throw new ActivationException (string.Format (errorMessageFormat, serviceType, RegistrationType.Compound));
 
-      return registration.MultipleFactories.Select (factory => SafeInvokeInstanceFactory (factory, serviceType));
+      return registration.MultipleFactories.Select (factory => InvokeInstanceFactoryWithActivationException (factory, serviceType));
     }
 
     /// <summary>
@@ -407,28 +407,21 @@ namespace Remotion.ServiceLocation
       }
     }
 
-    private Registration GetOrCreateRegistration (Type serviceType)
-    {
-      return _dataStore.GetOrCreateValue (
-          serviceType,
-          t =>
-          {
-            var serviceConfigurationEntry = GetServiceConfigurationEntry (t);
-            return CreateRegistration (serviceConfigurationEntry);
-          });
-    }
-
-    private ServiceConfigurationEntry GetServiceConfigurationEntry (Type serviceType)
+    private Registration GetOrCreateRegistrationWithActivationException (Type serviceType)
     {
       try
       {
-        return _serviceConfigurationDiscoveryService.GetDefaultConfiguration (serviceType);
+        return _dataStore.GetOrCreateValue (
+            serviceType,
+            t =>
+            {
+              var serviceConfigurationEntry = _serviceConfigurationDiscoveryService.GetDefaultConfiguration (t);
+              return CreateRegistration (serviceConfigurationEntry);
+            });
       }
-      
-      catch (InvalidOperationException ex)
+      catch (Exception ex)
       {
-        // This exception is part of the IServiceLocator contract.
-        var message = string.Format ("Invalid ConcreteImplementationAttribute configuration for service type '{0}'. {1}", serviceType, ex.Message);
+        var message = string.Format ("Error resolving service Type '{0}': {1}", serviceType, ex.Message);
         throw new ActivationException (message, ex);
       }
     }
@@ -466,9 +459,8 @@ namespace Remotion.ServiceLocation
 
     private object GetInstanceOrNull (Type serviceType)
     {
-      //TODO TT: During registration, validate that single and compound only have one registration. Then change from FirstOrDefault to SingleOrDefault
-      var registration = GetOrCreateRegistration (serviceType);
-      if (registration.SingleFactory != null && registration.MultipleFactories.Any())
+      var registration = GetOrCreateRegistrationWithActivationException (serviceType);
+      if (registration.CompoundFactory == null && registration.MultipleFactories.Any())
       {
         throw new ActivationException (
             string.Format ("Multiple implemetations are configured for service type '{0}'. Consider using 'GetAllInstances'.", serviceType)); //TODO TT: better message because compound?
@@ -478,10 +470,10 @@ namespace Remotion.ServiceLocation
       if (factory == null)
         return null; // TODO TT: Is this really possible?
 
-      return SafeInvokeInstanceFactory (factory, serviceType);
+      return InvokeInstanceFactoryWithActivationException (factory, serviceType);
     }
 
-    private object SafeInvokeInstanceFactory (Func<object> factory, Type serviceType)
+    private object InvokeInstanceFactoryWithActivationException (Func<object> factory, Type serviceType)
     {
       object instance;
       try
@@ -563,22 +555,26 @@ namespace Remotion.ServiceLocation
 
       var constructors = serviceImplementationInfo.ImplementationType.GetConstructors();
       if (constructors.Length != 1)
-        throw new ActivationException (exceptionMessage);
+        throw new InvalidOperationException (exceptionMessage);
 
       var constructor = constructors.First();
-      if (expectedParameterType != null && constructor.GetParameters().Select (p => p.ParameterType == expectedParameterType).Count() != 1)
-        throw new ActivationException (exceptionMessage);
+      if (expectedParameterType != null && constructor.GetParameters().Count(p => p.ParameterType == expectedParameterType) != 1)
+        throw new InvalidOperationException (exceptionMessage);
 
       return constructor;
     }
 
-    private Func<object> CreateInstanceFactory (Type serviceType, ServiceImplementationInfo serviceImplementationInfo, Func<Func<object>, object> decoratorChain)
+    private Func<object> CreateInstanceFactory (
+        Type serviceType,
+        ServiceImplementationInfo serviceImplementationInfo,
+        Func<Func<object>, object> decoratorChain)
     {
       // TODO TT: Write test to also decorate original factory
       if (serviceImplementationInfo.Factory != null)
         return serviceImplementationInfo.Factory; // return () => decoratorChain (serviceImplementationInfo.Factory)
 
-      var expectedParameterType = serviceImplementationInfo.RegistrationType == RegistrationType.Compound ? typeof (IEnumerable<>).MakeGenericType (serviceType) : null;
+      var expectedParameterType =
+          serviceImplementationInfo.RegistrationType == RegistrationType.Compound ? typeof (IEnumerable<>).MakeGenericType (serviceType) : null;
       var ctorInfo = GetSingleConstructor (serviceImplementationInfo, expectedParameterType);
       var instanceFactory = CreateInstanceFactory (ctorInfo);
       Func<object> decoratedFactory = () => decoratorChain (instanceFactory);

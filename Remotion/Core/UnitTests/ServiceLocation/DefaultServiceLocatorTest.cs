@@ -20,6 +20,7 @@ using System.Linq;
 using Microsoft.Practices.ServiceLocation;
 using NUnit.Framework;
 using Remotion.ServiceLocation;
+using Remotion.UnitTests.Globalization;
 using Remotion.UnitTests.ServiceLocation.TestDomain;
 
 namespace Remotion.UnitTests.ServiceLocation
@@ -109,34 +110,24 @@ namespace Remotion.UnitTests.ServiceLocation
 
       Assert.That (result, Is.TypeOf (typeof (TestConcreteImplementationAttributeType)));
     }
-    
-    [Test]
-    [ExpectedExceptionAttribute (typeof (ActivationException), ExpectedMessage =
-        "Invalid ConcreteImplementationAttribute configuration for service type "
-        + "'Remotion.UnitTests.ServiceLocation.TestDomain.ITestRegistrationTypeMultiple'. "
-        + "The service has implementations registered with RegistrationType.Multiple. Use GetAllInstances() to retrieve the implementations.")]
-    public void GetInstance_ServiceWithRegistrationTypeMultiple ()
-    {
-      _serviceLocator.GetInstance (typeof (ITestRegistrationTypeMultiple));
-    }
 
     [Test]
-    public void GetInstance_WithMutipleServiceImplementationsRegisteredAsMultiple_ThrowsActivationException ()
+    public void GetInstance_ServiceWithRegistrationTypeMultiple_ThrowsActivationException ()
     {
-      var implementation = new ServiceImplementationInfo (typeof (TestMultipleRegistrationType1), LifetimeKind.Singleton, RegistrationType.Multiple);
-      var serviceConfigurationEntry = new ServiceConfigurationEntry (typeof (ITestMultipleRegistrationsType), implementation);
+      var implementation = new ServiceImplementationInfo (typeof (TestRegistrationTypeMultiple1), LifetimeKind.Singleton, RegistrationType.Multiple);
+      var serviceConfigurationEntry = new ServiceConfigurationEntry (typeof (ITestRegistrationTypeMultiple), implementation);
 
       _serviceLocator.Register (serviceConfigurationEntry);
 
       Assert.That (
-          () => _serviceLocator.GetInstance<ITestMultipleRegistrationsType>(),
+          () => _serviceLocator.GetInstance<ITestRegistrationTypeMultiple>(),
           Throws.TypeOf<ActivationException>().With.Message.EqualTo (
-              "Multiple implemetations are configured for service type 'Remotion.UnitTests.ServiceLocation.TestDomain.ITestMultipleRegistrationsType'. "
-              + "Consider using 'GetAllInstances'."));
+              "Multiple implemetations are configured for service type "
+              + "'Remotion.UnitTests.ServiceLocation.TestDomain.ITestRegistrationTypeMultiple'. Consider using 'GetAllInstances'."));
     }
 
     [Test]
-    public void Register_WithMutipleServiceImplementationsRegisteredAsSingle_ThrowsActivationException ()
+    public void Register_WithMultipleServiceImplementationsForRegistrationTypeSingle_ThrowsInvalidOperationException ()
     {
       var implementation1 = new ServiceImplementationInfo (typeof (TestRegistrationTypeSingle1), LifetimeKind.Singleton, RegistrationType.Single);
       var implementation2 = new ServiceImplementationInfo (typeof (TestRegistrationTypeSingle2), LifetimeKind.Singleton, RegistrationType.Single);
@@ -146,7 +137,7 @@ namespace Remotion.UnitTests.ServiceLocation
           () => _serviceLocator.Register (serviceConfigurationEntry),
           Throws.InvalidOperationException.With.Message.EqualTo (
               "Cannot register multiple implementations for service type "
-              + "'Remotion.UnitTests.ServiceLocation.TestDomain.ITestMultipleRegistrationsType' when registration type if set to 'Single'."));
+              + "'Remotion.UnitTests.ServiceLocation.TestDomain.ITestRegistrationTypeSingle' when registration type if set to 'Single'."));
     }
 
     [Test]
@@ -228,27 +219,6 @@ namespace Remotion.UnitTests.ServiceLocation
               "The registered factory returned null instead of an instance implementing the requested service type "
               + "'Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTest+ISomeInterface'."));
     }
-    
-    [Test]
-    [ExpectedExceptionAttribute (typeof (ActivationException), ExpectedMessage =
-        "Invalid ConcreteImplementationAttribute configuration for service type "
-        + "'Remotion.UnitTests.ServiceLocation.TestDomain.ITestMultipleConcreteImplementationAttributesWithDuplicatePositionType'. "
-        + "Ambiguous ImplementationForAttribute: Position for registration type 'Single' must be unique.")]
-    public void GetAllInstances_ServiceTypeWithAmbiguousPosition ()
-    {
-      _serviceLocator.GetAllInstances (typeof (ITestMultipleConcreteImplementationAttributesWithDuplicatePositionType)).ToArray ();
-    }
-
-    [Test]
-    [ExpectedExceptionAttribute (typeof (ActivationException), ExpectedMessage =
-        "Invalid ConcreteImplementationAttribute configuration for service type "
-        + "'Remotion.UnitTests.ServiceLocation.TestDomain.ITestMultipleConcreteImplementationAttributesWithDuplicateImplementationType'. "
-        + "Ambiguous ImplementationForAttribute: Implementation type must be unique.")]
-    public void GetAllInstances_ServiceTypeWithDuplicateImplementation ()
-    {
-      _serviceLocator.GetAllInstances (typeof (ITestMultipleConcreteImplementationAttributesWithDuplicateImplementationType)).ToArray ();
-    }
-
 
     [Test]
     public void GetAllInstances_ServiceTypeWithMultipleConcreteImplementationAttributes ()
@@ -613,29 +583,54 @@ namespace Remotion.UnitTests.ServiceLocation
     }
 
     [Test]
-    [ExpectedException (typeof (ActivationException), ExpectedMessage =
-        "Type 'Remotion.UnitTests.ServiceLocation.TestDomain.TestCompoundWithoutPublicConstructor' cannot be instantiated. " +
-        "The type must have exactly one public constructor. The public constructor must at least accept an argument of type "
-        + "'System.Collections.Generic.IEnumerable`1[Remotion.UnitTests.ServiceLocation.TestDomain.ITestCompoundWithoutPublicConstructor]'.")]
-    public void GetInstance_CompoundWithNoPublicConstructor ()
+    public void Register_CompoundWithNoPublicConstructor_ThrowsInvalidOperationException ()
     {
-      var compound = new ServiceImplementationInfo (typeof (TestCompoundWithoutPublicConstructor), LifetimeKind.Instance, RegistrationType.Compound);
-      _serviceLocator.Register (new ServiceConfigurationEntry (typeof (ITestCompoundWithoutPublicConstructor), compound));
+      var implementation = new ServiceImplementationInfo (
+          typeof (TestCompoundWithoutPublicConstructor),
+          LifetimeKind.Instance,
+          RegistrationType.Compound);
+      var serviceConfigurationEntry = new ServiceConfigurationEntry (typeof (ITestCompoundWithErrors), implementation);
 
-      _serviceLocator.GetInstance (typeof (ITestCompoundWithoutPublicConstructor));
+      Assert.That (
+          () =>  _serviceLocator.Register (serviceConfigurationEntry),
+          Throws.InvalidOperationException.With.Message.EqualTo (
+              "Type 'Remotion.UnitTests.ServiceLocation.TestDomain.TestCompoundWithoutPublicConstructor' cannot be instantiated. "
+              + "The type must have exactly one public constructor. The public constructor must at least accept an argument of type "
+              + "'System.Collections.Generic.IEnumerable`1[Remotion.UnitTests.ServiceLocation.TestDomain.ITestCompoundWithErrors]'."));
     }
 
     [Test]
-    [ExpectedException (typeof (ActivationException), ExpectedMessage =
-        "Type 'Remotion.UnitTests.ServiceLocation.TestDomain.TestCompoundWithInvalidConstructor' cannot be instantiated. "
-        + "The type must have exactly one public constructor. The public constructor must at least accept an argument of type "
-        + "'System.Collections.Generic.IEnumerable`1[Remotion.UnitTests.ServiceLocation.TestDomain.ITestCompoundWithInvalidConstructor]'.")]
-    public void GetInstance_CompoundWithInvalidConstructor ()
+    public void Register_CompoundWithConstructorWithoutArguments_ThrowsInvalidOperationException ()
     {
-      var compound = new ServiceImplementationInfo (typeof (TestCompoundWithInvalidConstructor), LifetimeKind.Instance, RegistrationType.Compound);
-      _serviceLocator.Register (new ServiceConfigurationEntry (typeof (ITestCompoundWithInvalidConstructor), compound));
+      var implementation = new ServiceImplementationInfo (
+          typeof (TestCompoundWithConstructorWithoutArguments),
+          LifetimeKind.Instance,
+          RegistrationType.Compound);
+      var serviceConfigurationEntry = new ServiceConfigurationEntry (typeof (ITestCompoundWithErrors), implementation);
 
-      _serviceLocator.GetInstance (typeof (ITestCompoundWithInvalidConstructor));
+      Assert.That (
+          () => _serviceLocator.Register (serviceConfigurationEntry),
+          Throws.InvalidOperationException.With.Message.EqualTo (
+              "Type 'Remotion.UnitTests.ServiceLocation.TestDomain.TestCompoundWithConstructorWithoutArguments' cannot be instantiated. "
+              + "The type must have exactly one public constructor. The public constructor must at least accept an argument of type "
+              + "'System.Collections.Generic.IEnumerable`1[Remotion.UnitTests.ServiceLocation.TestDomain.ITestCompoundWithErrors]'."));
+    }
+
+    [Test]
+    public void Register_CompoundWithConstructorWithoutMatchingArgument_ThrowsInvalidOperationException ()
+    {
+      var implementation = new ServiceImplementationInfo (
+          typeof (TestCompoundWithConstructorWithoutMatchingArgument),
+          LifetimeKind.Instance,
+          RegistrationType.Compound);
+      var serviceConfigurationEntry = new ServiceConfigurationEntry (typeof (ITestCompoundWithErrors), implementation);
+
+      Assert.That (
+          () => _serviceLocator.Register (serviceConfigurationEntry),
+          Throws.InvalidOperationException.With.Message.EqualTo (
+              "Type 'Remotion.UnitTests.ServiceLocation.TestDomain.TestCompoundWithConstructorWithoutMatchingArgument' cannot be instantiated. "
+              + "The type must have exactly one public constructor. The public constructor must at least accept an argument of type "
+              + "'System.Collections.Generic.IEnumerable`1[Remotion.UnitTests.ServiceLocation.TestDomain.ITestCompoundWithErrors]'."));
     }
 
     [Test]
@@ -653,19 +648,54 @@ namespace Remotion.UnitTests.ServiceLocation
     }
 
     [Test]
-    [ExpectedException (typeof (ActivationException), ExpectedMessage =
-        "Type 'Remotion.UnitTests.ServiceLocation.TestDomain.TestCompoundWithoutPublicConstructor' cannot be instantiated. "
-        + "The type must have exactly one public constructor. The public constructor must at least accept an argument of type "
-        + "'Remotion.UnitTests.ServiceLocation.TestDomain.ITestDecoratorWithoutPublicConstructor'.")]
-    public void GetInstance_DecoratorWithNoPublicConstructor ()
+    public void Register_DecoratorWithoutPublicConstructor_ThrowsInvalidOperationException ()
     {
-      var compound = new ServiceImplementationInfo (
-          typeof (ITestDecoratorWithoutPublicConstructor),
+      var implementation = new ServiceImplementationInfo (
+          typeof (TestDecoratorWithoutPublicConstructor),
           LifetimeKind.Instance,
           RegistrationType.Decorator);
-      _serviceLocator.Register (new ServiceConfigurationEntry (typeof (ITestDecoratorWithoutPublicConstructor), compound));
+      var serviceConfigurationEntry = new ServiceConfigurationEntry (typeof (ITestDecoratorWithErrors), implementation);
 
-      _serviceLocator.GetInstance (typeof (ITestDecoratorWithoutPublicConstructor));
+      Assert.That (
+          () => _serviceLocator.Register (serviceConfigurationEntry),
+          Throws.InvalidOperationException.With.Message.EqualTo (
+              "Type 'Remotion.UnitTests.ServiceLocation.TestDomain.TestDecoratorWithoutPublicConstructor' cannot be instantiated. "
+              + "The type must have exactly one public constructor. The public constructor must at least accept an argument of type "
+              + "'Remotion.UnitTests.ServiceLocation.TestDomain.ITestDecoratorWithErrors'."));
+    }
+
+    [Test]
+    public void Register_DecoratorWithConstructorWithoutArguments_ThrowsInvalidOperationException ()
+    {
+      var implementation = new ServiceImplementationInfo (
+          typeof (TestDecoratorWithConstructorWithoutArguments),
+          LifetimeKind.Instance,
+          RegistrationType.Decorator);
+      var serviceConfigurationEntry = new ServiceConfigurationEntry (typeof (ITestDecoratorWithErrors), implementation);
+
+      Assert.That (
+          () => _serviceLocator.Register (serviceConfigurationEntry),
+          Throws.InvalidOperationException.With.Message.EqualTo (
+              "Type 'Remotion.UnitTests.ServiceLocation.TestDomain.TestDecoratorWithConstructorWithoutArguments' cannot be instantiated. "
+              + "The type must have exactly one public constructor. The public constructor must at least accept an argument of type "
+              + "'Remotion.UnitTests.ServiceLocation.TestDomain.ITestDecoratorWithErrors'."));
+    }
+
+    [Test]
+    public void Register_DecoratorWithConstructorWithoutMatchingArgument_ThrowsInvalidOperationException ()
+    {
+      var implementation = new ServiceImplementationInfo (
+          typeof (TestDecoratorWithConstructorWithoutMatchingArgument),
+          LifetimeKind.Instance,
+          RegistrationType.Decorator);
+      var serviceConfigurationEntry = new ServiceConfigurationEntry (typeof (ITestDecoratorWithErrors), implementation);
+
+      Assert.That (
+          () => _serviceLocator.Register (serviceConfigurationEntry),
+          Throws.InvalidOperationException.With.Message.EqualTo (
+              "Type 'Remotion.UnitTests.ServiceLocation.TestDomain.TestDecoratorWithConstructorWithoutMatchingArgument' cannot be instantiated. "
+              + "The type must have exactly one public constructor. The public constructor must at least accept an argument of type "
+              + "'Remotion.UnitTests.ServiceLocation.TestDomain.ITestDecoratorWithErrors'."));
     }
 
     [Test]
@@ -706,9 +736,8 @@ namespace Remotion.UnitTests.ServiceLocation
     [Test]
     public void GetInstance_Compound_ReturnsFirstCompoundImplementation_OrderedByPosition ()
     {
-      var compound1 = new ServiceImplementationInfo (typeof (TestCompoundRegistration), LifetimeKind.Instance, RegistrationType.Compound);
-      var compound2 = new ServiceImplementationInfo (typeof (TestCompoundRegistration2), LifetimeKind.Instance, RegistrationType.Compound);
-      _serviceLocator.Register (new ServiceConfigurationEntry (typeof (ITestCompoundRegistration), compound1, compound2));
+      var compound = new ServiceImplementationInfo (typeof (TestCompoundRegistration), LifetimeKind.Instance, RegistrationType.Compound);
+      _serviceLocator.Register (new ServiceConfigurationEntry (typeof (ITestCompoundRegistration), compound));
 
       var instance = _serviceLocator.GetInstance (typeof (ITestCompoundRegistration));
 
@@ -716,26 +745,41 @@ namespace Remotion.UnitTests.ServiceLocation
     }
 
     [Test]
-    [ExpectedException (typeof (ActivationException), ExpectedMessage =
-        "Could not resolve type 'Remotion.UnitTests.ServiceLocation.TestDomain.IInterfaceWithIndirectActivationException': "
-        + "Error resolving indirect dependendency of constructor parameter 'innerDependency' of type "
-        + "'Remotion.UnitTests.ServiceLocation.TestDomain.ClassWithIndirectActivationException': Cannot get a concrete implementation of type "
-        + "'Remotion.UnitTests.ServiceLocation.TestDomain.IInterfaceWithoutImplementation': "
-        + "Expected 'ConcreteImplementationAttribute' could not be found.")]
-    public void GetInstance_IndirectActivationException_CausesFullMessageToBeBuilt ()
+    public void GetInstance_IndirectActivationException_ThrowsActivationException_CausesFullMessageToBeBuilt ()
     {
-      _serviceLocator.GetInstance<IInterfaceWithIndirectActivationException>();
+      Assert.That (
+          () => _serviceLocator.GetInstance<IInterfaceWithIndirectActivationException>(),
+          Throws.TypeOf<ActivationException>().With.Message.EqualTo (
+              "Could not resolve type 'Remotion.UnitTests.ServiceLocation.TestDomain.IInterfaceWithIndirectActivationException': "
+              + "Error resolving indirect dependendency of constructor parameter 'innerDependency' of type "
+              + "'Remotion.UnitTests.ServiceLocation.TestDomain.ClassWithIndirectActivationException': Cannot get a concrete implementation of type "
+              + "'Remotion.UnitTests.ServiceLocation.TestDomain.IInterfaceWithoutImplementation': "
+              + "Expected 'ConcreteImplementationAttribute' could not be found."));
     }
 
     [Test]
-    [ExpectedException (typeof (ActivationException), ExpectedMessage =
-        "Could not resolve type 'Remotion.UnitTests.ServiceLocation.TestDomain.IInterfaceWithIndirectActivationExceptionForCollectionParameter': "
-        + "Error resolving indirect collection dependendency of constructor parameter 'innerDependency' of type "
-        + "'Remotion.UnitTests.ServiceLocation.TestDomain.ClassWithIndirectActivationExceptionForCollectionParameter': "
-        + "InvalidOperationException: This exception comes from the ctor.")]
-    public void GetInstance_IndirectActivationException_ForCollectionParameter_CausesFullMessageToBeBuilt ()
+    public void GetInstance_IndirectActivationException_ForCollectionParameter_ThrowsActivationException_CausesFullMessageToBeBuilt ()
     {
-      _serviceLocator.GetInstance<IInterfaceWithIndirectActivationExceptionForCollectionParameter> ();
+      Assert.That (
+          () => _serviceLocator.GetInstance<IInterfaceWithIndirectActivationExceptionForCollectionParameter>(),
+          Throws.TypeOf<ActivationException>().With.Message.EqualTo (
+              "Could not resolve type 'Remotion.UnitTests.ServiceLocation.TestDomain.IInterfaceWithIndirectActivationExceptionForCollectionParameter': "
+              + "Error resolving indirect collection dependendency of constructor parameter 'innerDependency' of type "
+              + "'Remotion.UnitTests.ServiceLocation.TestDomain.ClassWithIndirectActivationExceptionForCollectionParameter': "
+              + "InvalidOperationException: This exception comes from the ctor."));
+    }
+
+    [Test]
+    public void GetInstance_ExceptionDuringImplictRegistration_ThrowsActivationException_WithOriginalExceptionAsInnerException ()
+    {
+      Assert.Fail ("TODO Implement");
+      Assert.That (
+          () => _serviceLocator.GetInstance<IInterfaceWithIndirectActivationExceptionForCollectionParameter>(),
+          Throws.TypeOf<ActivationException>().With.Message.EqualTo (
+              "Could not resolve type 'Remotion.UnitTests.ServiceLocation.TestDomain.IX': "
+              + "Error resolving type "
+              + "'Remotion.UnitTests.ServiceLocation.TestDomain.X': "
+              + "InvalidOperationException: This exception comes from the Registration."));
     }
 
     class DomainType
