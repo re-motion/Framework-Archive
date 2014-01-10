@@ -170,56 +170,6 @@ namespace Remotion.UnitTests.ServiceLocation
     }
 
     [Test]
-    public void CreateFromAttributes_Multiple_WithEqualPositions_Throws ()
-    {
-      var attribute1 = Tuple.Create (
-          typeof (TestMultipleConcreteImplementationAttributesType1),
-          new ImplementationForAttribute (typeof (ITestMultipleConcreteImplementationAttributesType)) { Position = 1 });
-      var attribute2 = Tuple.Create (
-          typeof (TestMultipleConcreteImplementationAttributesType2),
-          new ImplementationForAttribute (typeof (ITestMultipleConcreteImplementationAttributesType)) { Position = 1 });
-
-      var attributes = new[] { attribute1, attribute2 };
-
-      Assert.That (
-          () => ServiceConfigurationEntry.CreateFromAttributes (typeof (ITestMultipleConcreteImplementationAttributesType), attributes),
-          Throws.InvalidOperationException.With.Message.EqualTo ("Ambiguous ImplementationForAttribute: Position for registration type 'Single' must be unique."));
-    }
-
-    [Test]
-    public void CreateFromAttributes_Multiple_WithEqualTypes_Throws ()
-    {
-      var attribute1 = Tuple.Create (
-          typeof (ITestMultipleConcreteImplementationAttributesType),
-          new ImplementationForAttribute (typeof (TestMultipleConcreteImplementationAttributesType1)) { Position = 1 });
-      var attribute2 = Tuple.Create (
-          typeof (ITestMultipleConcreteImplementationAttributesType),
-          new ImplementationForAttribute (typeof (TestMultipleConcreteImplementationAttributesType1)) { Position = 2 });
-
-      var attributes = new[] { attribute1, attribute2 };
-
-      Assert.That (
-          () => ServiceConfigurationEntry.CreateFromAttributes (typeof (ITestMultipleConcreteImplementationAttributesType), attributes),
-          Throws.InvalidOperationException.With.Message.EqualTo ("Ambiguous ImplementationForAttribute: Implementation type must be unique."));
-    }
-
-    [Test]
-    public void CreateFromAttributes_Multiple_WithEqualTypesAndPositions_ThrowsForType ()
-    {
-       var attribute1 = Tuple.Create (
-          typeof (ITestMultipleConcreteImplementationAttributesType),
-          new ImplementationForAttribute (typeof (TestMultipleConcreteImplementationAttributesType1)) { Position = 1 });
-       var attribute2 = Tuple.Create (
-          typeof (ITestMultipleConcreteImplementationAttributesType),
-          new ImplementationForAttribute (typeof (TestMultipleConcreteImplementationAttributesType1)) { Position = 1 });
-      var attributes = new[] { attribute1, attribute2 };
-
-      Assert.That (
-          () => ServiceConfigurationEntry.CreateFromAttributes (typeof (ITestMultipleConcreteImplementationAttributesType), attributes),
-          Throws.InvalidOperationException.With.Message.EqualTo ("Ambiguous ImplementationForAttribute: Implementation type must be unique."));
-    }
-
-    [Test]
     public void CreateFromAttributes_IncompatibleType ()
     {
       var attribute = Tuple.Create (typeof (object), new ImplementationForAttribute (typeof (ITestSingletonConcreteImplementationAttributeType)));

@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Linq;
 using System.Reflection;
+using log4net.Util;
 using Remotion.Collections;
 using Remotion.Reflection;
 using Remotion.Reflection.TypeDiscovery;
@@ -95,25 +96,23 @@ namespace Remotion.ServiceLocation
     public ServiceConfigurationEntry GetDefaultConfiguration (Type serviceType)
     {
       var excludeGlobalTypes = !serviceType.Assembly.GlobalAssemblyCache;
-
       var implementingTypes = _implementingTypeCache.GetOrCreateValue (serviceType, type => GetImplementingTypes (type, excludeGlobalTypes));
 
       var attributes = implementingTypes.SelectMany (
           type => AttributeUtility.GetCustomAttributes<ImplementationForAttribute> (type, false)
               .Where (attribute => attribute.ServiceType == serviceType)
-              .Select (attribute => Tuple.Create (type, attribute)));
+              .Select (attribute => Tuple.Create (type, attribute)))
+              .ToLookup (a => a.Item2.RegistrationType);
 
-      var registrationTypes = attributes.Select (a => a.Item2.RegistrationType).Distinct().ToArray();
-          
-      if (registrationTypes.Contains(RegistrationType.Compound) && registrationTypes.Contains(RegistrationType.Single))
+      if (attributes.Contains(RegistrationType.Compound) && attributes.Contains(RegistrationType.Single))
         throw new InvalidOperationException (
             "RegistrationTypes compound and Single cannot be used together.");
       
-      if (registrationTypes.Contains(RegistrationType.Single) && registrationTypes.Contains(RegistrationType.Multiple))
+      if (attributes.Contains(RegistrationType.Single) && attributes.Contains(RegistrationType.Multiple))
         throw new InvalidOperationException (
             "RegistrationTypes Single and Multiple must not be mixed. All service implementations have to have the same registration type.");
 
-      return ServiceConfigurationEntry.CreateFromAttributes (serviceType, attributes);
+      return ServiceConfigurationEntry.CreateFromAttributes (serviceType, FilterAttributes(attributes));
     }
 
     /// <summary>
@@ -143,6 +142,39 @@ namespace Remotion.ServiceLocation
         }
       }
       return implementingTypes.ToArray();
+    }
+    
+    private List<Tuple<Type, ImplementationForAttribute>> FilterAttributes (ILookup<RegistrationType, Tuple<Type, ImplementationForAttribute>> attributes)
+    {
+      var filteredAttributes = new List<Tuple<Type, ImplementationForAttribute>>();
+
+      foreach (var registrationTypeGroup in attributes)
+      {
+        EnsureUniqueProperty ("Implementation type", registrationTypeGroup.Select (r => r.Item1));
+        EnsureUniqueProperty (
+            string.Format ("Position for registration type '{0}'", registrationTypeGroup.Key),
+            registrationTypeGroup.Select (r => r.Item2.Position));
+      }
+
+      filteredAttributes.AddRange (attributes[RegistrationType.Single].OrderBy (a => a.Item2.Position).Take (1));
+      filteredAttributes.AddRange (attributes[RegistrationType.Multiple].OrderBy (a => a.Item2.Position));
+      filteredAttributes.AddRange (attributes[RegistrationType.Compound].OrderBy (a => a.Item2.Position).Take (1));
+      filteredAttributes.AddRange (attributes[RegistrationType.Decorator].OrderBy (a => a.Item2.Position));
+      return filteredAttributes;
+    }
+
+    private void EnsureUniqueProperty<T> (string propertyDescription, IEnumerable<T> propertyValues)
+    {
+      var visitedValues = new HashSet<T> ();
+      foreach (var value in propertyValues)
+      {
+        if (visitedValues.Contains (value))
+        {
+          var message = string.Format ("Ambiguous {0}: {1} must be unique.", typeof (ImplementationForAttribute).Name, propertyDescription);
+          throw new InvalidOperationException (message);
+        }
+        visitedValues.Add (value);
+      }
     }
   }
 }

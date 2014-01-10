@@ -17,10 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Linq;
-using System.Reflection;
-using log4net.Util;
 using Microsoft.Practices.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.FunctionalProgramming;
@@ -49,11 +46,6 @@ namespace Remotion.ServiceLocation
            orderby attribute.Item2.Position
            select new { Attribute = attribute.Item2, ResolvedType = attribute.Item1}).ConvertToCollection();
 
-      EnsureUniqueProperty ("Implementation type", attributesAndResolvedTypes.Select (tuple => tuple.ResolvedType));
-
-      foreach (var group in attributesAndResolvedTypes.GroupBy (a => a.Attribute.RegistrationType))
-        EnsureUniqueProperty (string.Format ("Position for registration type '{0}'", group.Key), group.Select (tuple => tuple.Attribute.Position));
-
       var serviceImplementationInfos =
           attributesAndResolvedTypes
               .ApplySideEffect (tuple => CheckImplementationType (serviceType, tuple.ResolvedType, s => new InvalidOperationException (s)))
@@ -68,20 +60,6 @@ namespace Remotion.ServiceLocation
       {
         var message = string.Format ("The implementation type '{0}' does not implement the service type.", implementationType);
         throw exceptionFactory (message);
-      }
-    }
-
-    private static void EnsureUniqueProperty<T> (string propertyDescription, IEnumerable<T> propertyValues)
-    {
-      var visitedValues = new HashSet<T> ();
-      foreach (var value in propertyValues)
-      {
-        if (visitedValues.Contains (value))
-        {
-          var message = string.Format ("Ambiguous {0}: {1} must be unique.", typeof (ImplementationForAttribute).Name, propertyDescription);
-          throw new InvalidOperationException (message);
-        }
-        visitedValues.Add (value);
       }
     }
 

@@ -19,6 +19,7 @@ using System.Collections;
 using System.ComponentModel.Design;
 using System.Runtime.InteropServices;
 using NUnit.Framework;
+using Remotion.FunctionalProgramming;
 using Remotion.ServiceLocation;
 using System.Linq;
 using Remotion.UnitTests.ServiceLocation.TestDomain;
@@ -271,13 +272,35 @@ namespace Remotion.UnitTests.ServiceLocation
     [Test]
     public void GetDefaultConfiguration_WithMultipleRegistrationsWithRegistrationTypeSingle_ReturnsFirstRegistration_OrderedByPositionAscending ()
     {
-      Assert.Fail ("TODO implement");
+      _typeDiscoveryServiceStub.Stub (stub => stub.GetTypes (null, false)).Return (new ArrayList { typeof (ITestRegistrationTypeSingle) });
+      _typeDiscoveryServiceStub.Stub (stub => stub.GetTypes (typeof (ITestRegistrationTypeSingle), true))
+          .Return (
+              new ArrayList
+              {
+                  typeof (TestRegistrationTypeSingle2),
+                  typeof (TestRegistrationTypeSingle1),
+              });
+
+      var configurationEntry = _defaultServiceConfigurationDiscoveryService.GetDefaultConfiguration().Single();
+      Assert.That (configurationEntry.ImplementationInfos, Has.Count.EqualTo (1));
+      Assert.That (configurationEntry.ImplementationInfos.Single().ImplementationType, Is.EqualTo (typeof (TestRegistrationTypeSingle1)));
     }
 
     [Test]
     public void GetDefaultConfiguration_WithMultipleRegistrationsWithRegistrationTypeCompound_ReturnsFirstRegistration_OrderedByPositionAscending ()
     {
-      Assert.Fail ("TODO implement");
+      _typeDiscoveryServiceStub.Stub (stub => stub.GetTypes (null, false)).Return (new ArrayList { typeof (ITestCompoundRegistration) });
+      _typeDiscoveryServiceStub.Stub (stub => stub.GetTypes (typeof (ITestCompoundRegistration), true))
+          .Return (
+              new ArrayList
+              {
+                  typeof (TestCompoundRegistration2),
+                  typeof (TestCompoundRegistration),
+              });
+
+      var configurationEntry = _defaultServiceConfigurationDiscoveryService.GetDefaultConfiguration().Single();
+      Assert.That (configurationEntry.ImplementationInfos, Has.Count.EqualTo (1));
+      Assert.That (configurationEntry.ImplementationInfos.Single().ImplementationType, Is.EqualTo (typeof (TestCompoundRegistration)));
     }
 
     [Test]
