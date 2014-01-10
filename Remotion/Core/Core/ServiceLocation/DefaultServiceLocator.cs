@@ -253,10 +253,12 @@ namespace Remotion.ServiceLocation
     }
 
     //TODO TT: register api ideas: 
-    //registerSingle(this IServiceConfigurationRegistry registry, Type serviceType, Type implementationType, Type[] decoratorTypes = null)
-    //registerMultiple(this IServiceConfigurationRegistry registry, Type serviceType, Type[] implementationType, Type[] decoratorTypes = null)
-    //registerCompound(this IServiceConfigurationRegistry registry, Type serviceType, Type compoundType, Type[] implementationTypes, Type[] decoratorTypes = null)
-    //registerXXX(this IServiceConfigurationRegistry registry, Type serviceType, Func<object>[] instanceFactories, Type[] decoratorTypes)
+    //registerSingle(this IServiceConfigurationRegistry registry, Type serviceType, Type implementationType, Type[] decoratorTypes = null, LifetimeKind = Instance)
+    //registerMultiple(this IServiceConfigurationRegistry registry, Type serviceType, Type[] implementationType, Type[] decoratorTypes = null, LifetimeKind = Instance)
+    //registerCompound(this IServiceConfigurationRegistry registry, Type serviceType, Type compoundType, Type[] implementationTypes, Type[] decoratorTypes = null, LifetimeKind = Instance)
+    //registerSingle(this IServiceConfigurationRegistry registry, Type serviceType, Func<object> instanceFactory, Type[] decoratorTypes = null, LifetimeKind = Instance
+    //registerMultiple(this IServiceConfigurationRegistry registry, Type serviceType, Func<object>[] instanceFactories, Type[] decoratorTypes = null, LifetimeKind = Instance
+    //registerCompound(this IServiceConfigurationRegistry registry, Type serviceType, Type compoundType, Func<object>[] instanceFactories, Type[] decoratorTypes = null, LifetimeKind = Instance
 
     //as extension for IServiceConfigurationRegistry, or drop if did not exist before feature branch or if no longer needed. Obsolete if old API was used in many projects
     /// <summary>
@@ -555,7 +557,7 @@ namespace Remotion.ServiceLocation
           expectedParameterType);
 
       var exceptionMessage = string.Format (
-          "Type '{0}' cannot be instantiated. The type must have exactly one public constructor. {1}",
+          "Type '{0}' cannot be instantiated. The type must have exactly one public constructor.{1}",
           serviceImplementationInfo.ImplementationType,
           expectedParameterType == null ? "" : argumentTypesDoNotMatchMessage);
 
