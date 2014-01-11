@@ -192,7 +192,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Queries
     {
       var factoryMock = MockRepository.GenerateStrictMock<ILinqProviderComponentFactory> ();
       var serviceLocator = DefaultServiceLocator.Create();
-      serviceLocator.Register (() => factoryMock);
+      serviceLocator.RegisterSingle (() => factoryMock);
       using (new ServiceLocatorScope (serviceLocator))
       {
         var executorStub = MockRepository.GenerateStub<IQueryExecutor>();
@@ -215,7 +215,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Queries
     {
       var factoryMock = MockRepository.GenerateStrictMock<ILinqProviderComponentFactory> ();
       var serviceLocator = DefaultServiceLocator.Create();
-      serviceLocator.Register (() => factoryMock);
+      serviceLocator.RegisterSingle (() => factoryMock);
       using (new ServiceLocatorScope (serviceLocator))
       {
         var fakeExecutor = MockRepository.GenerateStub<IQueryExecutor> ();

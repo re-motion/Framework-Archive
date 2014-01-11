@@ -51,7 +51,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.Mapping
       var registryStub = MockRepository.GenerateStub<IPipelineRegistry> ();
 
       var serviceLocator = DefaultServiceLocator.Create();
-      serviceLocator.Register (() => registryStub);
+      serviceLocator.RegisterSingle (() => registryStub);
       using (new ServiceLocatorScope (serviceLocator))
       {
         var creator = MappingReflector.CreateDomainObjectCreator();

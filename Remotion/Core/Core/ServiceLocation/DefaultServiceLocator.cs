@@ -271,7 +271,7 @@ namespace Remotion.ServiceLocation
     /// when an instance of <typeparamref name="TService"/> is requested.</param>
     /// <exception cref="InvalidOperationException">Factories have already been registered or an instance of the <typeparamref name="TService"/> has 
     /// already been retrieved. Registering factories or concrete implementations can only be done before any instances are retrieved.</exception>
-    public void Register<TService> (Func<TService> instanceFactory)
+    public void RegisterSingle<TService> (Func<TService> instanceFactory)
     {
       ArgumentUtility.CheckNotNull ("instanceFactory", instanceFactory);
 
@@ -296,7 +296,7 @@ namespace Remotion.ServiceLocation
     {
       ArgumentUtility.CheckNotNull ("instanceFactories", instanceFactories);
 
-      Register ((IEnumerable<Func<TService>>) instanceFactories);
+      RegisterMultiple ((IEnumerable<Func<TService>>) instanceFactories);
     }
 
     //as extension for IServiceConfigurationRegistry, or drop if did not exist before feature branch or if no longer needed. Obsolete if old API was used in many projects
@@ -310,7 +310,7 @@ namespace Remotion.ServiceLocation
     /// when an instance of <typeparamref name="TService"/> is requested.</param>
     /// <exception cref="InvalidOperationException">Factories have already been registered or an instance of the <typeparamref name="TService"/> has 
     /// already been retrieved. Registering factories or concrete implementations can only be done before any instances are retrieved.</exception>
-    public void Register<TService> (IEnumerable<Func<TService>> instanceFactories)
+    public void RegisterMultiple<TService> (IEnumerable<Func<TService>> instanceFactories)
     {
       ArgumentUtility.CheckNotNull ("instanceFactories", instanceFactories);
 
@@ -349,7 +349,6 @@ namespace Remotion.ServiceLocation
         throw new ArgumentException ("Implementation type must implement service type.", "concreteImplementationType", ex);
       }
 
-      //TODO TT: use different overload
       Register (serviceConfigurationEntry);
     }
 

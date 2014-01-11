@@ -110,7 +110,7 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
     [Test]
     public void GetInstance_ServiceTypeWithNullImplementation ()
     {
-      _serviceLocator.Register<DefaultServiceLocatorTest.ISomeInterface> (() => null);
+      _serviceLocator.RegisterSingle<DefaultServiceLocatorTest.ISomeInterface> (() => null);
       Assert.That (
           () => _serviceLocator.GetInstance (typeof (DefaultServiceLocatorTest.ISomeInterface)),
           Throws.TypeOf<ActivationException> ().With.Message.EqualTo (

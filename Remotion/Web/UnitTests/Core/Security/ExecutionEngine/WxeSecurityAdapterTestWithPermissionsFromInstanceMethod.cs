@@ -78,8 +78,8 @@ namespace Remotion.Web.UnitTests.Core.Security.ExecutionEngine
       SecurityConfiguration.Current.PrincipalProvider = _principalProvider;
 
       var serviceLocator = DefaultServiceLocator.Create();
-      serviceLocator.Register (() => new PermissionReflector ());
-      serviceLocator.Register (() => _mockFunctionalSecurityStrategy);
+      serviceLocator.RegisterSingle (() => new PermissionReflector ());
+      serviceLocator.RegisterSingle (() => _mockFunctionalSecurityStrategy);
       _serviceLocatorScope = new ServiceLocatorScope (serviceLocator);
     }
 

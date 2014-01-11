@@ -42,7 +42,7 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
     {
       var instance = new TestConcreteImplementationAttributeType();
 
-      _serviceLocator.Register<ITestInstanceConcreteImplementationAttributeType> (() => instance);
+      _serviceLocator.RegisterSingle<ITestInstanceConcreteImplementationAttributeType> (() => instance);
 
       Assert.That (_serviceLocator.GetInstance (typeof (ITestInstanceConcreteImplementationAttributeType)), Is.SameAs (instance));
     }
