@@ -292,6 +292,12 @@
     <Compile Include="SafeContextSingletonTest.cs" />
     <Compile Include="ServiceLocation\BootstrapServiceConfigurationTest.cs" />
     <Compile Include="ServiceLocation\DefaultServiceLocatorProviderTest.cs" />
+    <Compile Include="ServiceLocation\DefaultServiceLocatorTests\ServiceProvider_DefaultServiceLocatorTest.cs" />
+    <Compile Include="ServiceLocation\DefaultServiceLocatorTests\Muliple_DefaultServiceLocatorTest.cs" />
+    <Compile Include="ServiceLocation\DefaultServiceLocatorTests\Single_DefaultServiceLocatorTest.cs" />
+    <Compile Include="ServiceLocation\DefaultServiceLocatorTests\Errors_DefaultServiceLocatorTest.cs" />
+    <Compile Include="ServiceLocation\DefaultServiceLocatorTests\Decorator_DefaultServiceLocatorTest.cs" />
+    <Compile Include="ServiceLocation\DefaultServiceLocatorTests\Compound_DefaultServiceLocatorTest.cs" />
     <Compile Include="ServiceLocation\IMemberInformationNameResolverTest.cs" />
     <Compile Include="ServiceLocation\ServiceImplementationInfoTest.cs" />
     <Compile Include="ServiceLocation\TestDomain\IInterfaceWithIndirectActivationExceptionForCollectionParameter.cs" />
