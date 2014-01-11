@@ -188,6 +188,7 @@
     <Compile Include="Diagnostics\IDebuggerInterface.cs" />
     <Compile Include="IAdapter.cs" />
     <Compile Include="ServiceLocation\BootstrapServiceConfiguration.cs" />
+    <Compile Include="ServiceLocation\DefaultServiceLocatorRegistrationExtensions.cs" />
     <Compile Include="ServiceLocation\ImplementationForAttribute.cs" />
     <Compile Include="ServiceLocation\DefaultServiceLocatorProvider.cs" />
     <Compile Include="ServiceLocation\IBootstrapServiceConfiguration.cs" />

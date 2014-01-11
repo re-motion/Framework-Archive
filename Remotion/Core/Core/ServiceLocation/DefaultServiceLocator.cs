@@ -115,7 +115,7 @@ namespace Remotion.ServiceLocation
     private DefaultServiceLocator (IServiceConfigurationDiscoveryService serviceConfigurationDiscoveryService)
     {
       _serviceConfigurationDiscoveryService = serviceConfigurationDiscoveryService;
-      Register (typeof(ILogManager), typeof(Log4NetLogManager), LifetimeKind.Singleton);
+      Register (new ServiceConfigurationEntry (typeof (ILogManager), new ServiceImplementationInfo (typeof (Log4NetLogManager), LifetimeKind.Singleton)));
     }
 
     /// <summary>
@@ -251,111 +251,6 @@ namespace Remotion.ServiceLocation
 
       return GetInstanceOrNull (serviceType);
     }
-
-    //TODO TT: register api ideas: 
-    //registerSingle(this IServiceConfigurationRegistry registry, Type serviceType, Type implementationType, Type[] decoratorTypes = null, LifetimeKind = Instance)
-    //registerMultiple(this IServiceConfigurationRegistry registry, Type serviceType, Type[] implementationType, Type[] decoratorTypes = null, LifetimeKind = Instance)
-    //registerCompound(this IServiceConfigurationRegistry registry, Type serviceType, Type compoundType, Type[] implementationTypes, Type[] decoratorTypes = null, LifetimeKind = Instance)
-    //registerSingle(this IServiceConfigurationRegistry registry, Type serviceType, Func<object> instanceFactory, Type[] decoratorTypes = null, LifetimeKind = Instance
-    //registerMultiple(this IServiceConfigurationRegistry registry, Type serviceType, Func<object>[] instanceFactories, Type[] decoratorTypes = null, LifetimeKind = Instance
-    //registerCompound(this IServiceConfigurationRegistry registry, Type serviceType, Type compoundType, Func<object>[] instanceFactories, Type[] decoratorTypes = null, LifetimeKind = Instance
-
-    //as extension for IServiceConfigurationRegistry, or drop if did not exist before feature branch or if no longer needed. Obsolete if old API was used in many projects
-    /// <summary>
-    /// Registers factories for the specified <typeparamref name="TService"/>. 
-    /// The factories are subsequently invoked whenever instances for the <typeparamref name="TService"/> is requested.
-    /// </summary>
-    /// <typeparam name="TService">The service type to register the factories for.</typeparam>
-    /// <param name="instanceFactory">The instance factory to use when resolving instances for the <typeparamref name="TService"/>. This factory
-    /// must return a non-null instance implementing the <typeparamref name="TService"/>, otherwise an <see cref="ActivationException"/> is thrown
-    /// when an instance of <typeparamref name="TService"/> is requested.</param>
-    /// <exception cref="InvalidOperationException">Factories have already been registered or an instance of the <typeparamref name="TService"/> has 
-    /// already been retrieved. Registering factories or concrete implementations can only be done before any instances are retrieved.</exception>
-    public void RegisterSingle<TService> (Func<TService> instanceFactory)
-    {
-      ArgumentUtility.CheckNotNull ("instanceFactory", instanceFactory);
-
-      var serviceConfigurationEntry = new ServiceConfigurationEntry (
-          typeof (TService),
-          ServiceImplementationInfo.CreateSingle (instanceFactory));
-
-      Register (serviceConfigurationEntry);
-    }
-
-    /// <summary>
-    /// Registers factories for the specified <typeparamref name="TService"/>. 
-    /// The factories are subsequently invoked whenever instances for the <typeparamref name="TService"/> is requested.
-    /// </summary>
-    /// <typeparam name="TService">The service type to register the factories for.</typeparam>
-    /// <param name="instanceFactories">The instance factories to use when resolving instances for the <typeparamref name="TService"/>. These factories
-    /// must return non-null instances implementing the <typeparamref name="TService"/>, otherwise an <see cref="ActivationException"/> is thrown
-    /// when an instance of <typeparamref name="TService"/> is requested.</param>
-    /// <exception cref="InvalidOperationException">Factories have already been registered or an instance of the <typeparamref name="TService"/> has 
-    /// already been retrieved. Registering factories or concrete implementations can only be done before any instances are retrieved.</exception>
-    public void RegisterMultiple<TService> (params Func<TService>[] instanceFactories)
-    {
-      ArgumentUtility.CheckNotNull ("instanceFactories", instanceFactories);
-
-      RegisterMultiple ((IEnumerable<Func<TService>>) instanceFactories);
-    }
-
-    //as extension for IServiceConfigurationRegistry, or drop if did not exist before feature branch or if no longer needed. Obsolete if old API was used in many projects
-    /// <summary>
-    /// Registers factories for the specified <typeparamref name="TService"/>. 
-    /// The factories are subsequently invoked whenever instances for the <typeparamref name="TService"/> is requested.
-    /// </summary>
-    /// <typeparam name="TService">The service type to register the factories for.</typeparam>
-    /// <param name="instanceFactories">The instance factories to use when resolving instances for the <typeparamref name="TService"/>. These factories
-    /// must return non-null instances implementing the <typeparamref name="TService"/>, otherwise an <see cref="ActivationException"/> is thrown
-    /// when an instance of <typeparamref name="TService"/> is requested.</param>
-    /// <exception cref="InvalidOperationException">Factories have already been registered or an instance of the <typeparamref name="TService"/> has 
-    /// already been retrieved. Registering factories or concrete implementations can only be done before any instances are retrieved.</exception>
-    public void RegisterMultiple<TService> (IEnumerable<Func<TService>> instanceFactories)
-    {
-      ArgumentUtility.CheckNotNull ("instanceFactories", instanceFactories);
-
-      var serviceConfigurationEntry = new ServiceConfigurationEntry (
-          typeof (TService),
-          instanceFactories.Select (ServiceImplementationInfo.CreateMultiple));
-
-      Register (serviceConfigurationEntry);
-    }
-
-    //leave this register method:
-
-    /// <summary>
-    /// Registers a concrete implementation for the specified <paramref name="serviceType"/>.
-    /// </summary>
-    /// <param name="serviceType">The service type to register a concrete implementation for.</param>
-    /// <param name="concreteImplementationType">The type of the concrete implementation to be instantiated when an instance of the 
-    /// <paramref name="serviceType"/> is retrieved.</param>
-    /// <param name="lifetime">The lifetime of the instances.</param>
-    /// <param name="registrationType">The registration type of the implementation.</param>
-    /// <exception cref="InvalidOperationException">An instance of the <paramref name="serviceType"/> has already been retrieved. Registering factories
-    /// or concrete implementations can only be done before any instances are retrieved.</exception>
-    public void Register (Type serviceType, Type concreteImplementationType, LifetimeKind lifetime, RegistrationType registrationType = RegistrationType.Single)
-    {
-      ArgumentUtility.CheckNotNull ("serviceType", serviceType);
-      ArgumentUtility.CheckNotNull ("concreteImplementationType", concreteImplementationType);
-
-      var serviceImplemetation = new ServiceImplementationInfo (concreteImplementationType, lifetime, registrationType);
-      ServiceConfigurationEntry serviceConfigurationEntry;
-      try
-      {
-        serviceConfigurationEntry = new ServiceConfigurationEntry (serviceType, serviceImplemetation);
-      }
-      catch (ArgumentException ex)
-      {
-        throw new ArgumentException ("Implementation type must implement service type.", "concreteImplementationType", ex);
-      }
-
-      Register (serviceConfigurationEntry);
-    }
-
-    // var registryStub = new FakeRegistry
-    // registryStub.RegisterSinge()
-    // Assert.that (registryStub.Entry.ServiceType, Is.EqualTo (...)
-    // Assert.that (registryStub.Entry.ImplInfos, ...
 
     //Declared in interface IServiceConfigurationRegistry
     /// <summary>
