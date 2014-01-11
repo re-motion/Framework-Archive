@@ -68,7 +68,7 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
     public void Register_ServiceConfigurationEntry_ImplementationInfoWithFactory ()
     {
       var expectedInstance = new TestConcreteImplementationAttributeType();
-      var serviceImplementation = ServiceImplementationInfo.Create (() => expectedInstance);
+      var serviceImplementation = ServiceImplementationInfo.CreateSingle (() => expectedInstance);
 
       var serviceConfigurationEntry = new ServiceConfigurationEntry (
           typeof (ITestSingletonConcreteImplementationAttributeType),
@@ -108,20 +108,9 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
     }
 
     [Test]
-    public void GetInstance_InstanceNotCompatibleWithServiceType ()
-    {
-      _serviceLocator.Register (typeof (DefaultServiceLocatorTest.ISomeInterface), () => new object ());
-      Assert.That (
-          () => _serviceLocator.GetInstance (typeof (DefaultServiceLocatorTest.ISomeInterface)),
-          Throws.TypeOf<ActivationException> ().With.Message.EqualTo (
-              "The instance returned by the registered factory does not implement the requested type "
-              + "'Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests.DefaultServiceLocatorTest+ISomeInterface'. (Instance type: 'System.Object'.)"));
-    }
-
-    [Test]
     public void GetInstance_ServiceTypeWithNullImplementation ()
     {
-      _serviceLocator.Register (typeof (DefaultServiceLocatorTest.ISomeInterface), () => null);
+      _serviceLocator.Register<DefaultServiceLocatorTest.ISomeInterface> (() => null);
       Assert.That (
           () => _serviceLocator.GetInstance (typeof (DefaultServiceLocatorTest.ISomeInterface)),
           Throws.TypeOf<ActivationException> ().With.Message.EqualTo (

@@ -25,13 +25,25 @@ namespace Remotion.ServiceLocation
   public class ServiceImplementationInfo
   {
     /// <summary>
-    /// Initializes a new instance of the <see cref="ServiceImplementationInfo"/> class.
+    /// Initializes a new instance of the <see cref="ServiceImplementationInfo"/> class 
+    /// with <see cref="RegistrationType"/> set to <see cref="ServiceLocation.RegistrationType.Single"/>.
     /// </summary>
     /// <param name="factory">The factory delegate that creates an instance of the service implementation.</param>
-    public static ServiceImplementationInfo Create<T> (Func<T> factory)
+    public static ServiceImplementationInfo CreateSingle<T> (Func<T> factory)
     {
       ArgumentUtility.CheckNotNull ("factory", factory);
-      return new ServiceImplementationInfo (() => factory(), typeof(T));
+      return new ServiceImplementationInfo (typeof(T), () => factory(), RegistrationType.Single);
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ServiceImplementationInfo"/> class
+    /// with <see cref="RegistrationType"/> set to <see cref="ServiceLocation.RegistrationType.Multiple"/>.
+    /// </summary>
+    /// <param name="factory">The factory delegate that creates an instance of the service implementation.</param>
+    public static ServiceImplementationInfo CreateMultiple<T> (Func<T> factory)
+    {
+      ArgumentUtility.CheckNotNull ("factory", factory);
+      return new ServiceImplementationInfo (typeof(T), () => factory(), RegistrationType.Multiple);
     }
 
     private readonly Func<object> _factory;
@@ -54,12 +66,12 @@ namespace Remotion.ServiceLocation
       _factory = null;
     }
 
-    private ServiceImplementationInfo (Func<object> factory, Type implementationType)
+    private ServiceImplementationInfo (Type implementationType, Func<object> factory, RegistrationType registrationType)
     {
       _factory = factory;
       _lifetime = LifetimeKind.Instance;
       _implementationType = implementationType;
-      _registrationType = RegistrationType.Single;
+      _registrationType = registrationType;
     }
 
     /// <summary>

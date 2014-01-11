@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Security.AccessControl;
 using Microsoft.Practices.ServiceLocation;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
@@ -117,61 +116,6 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting
         Assert.That (ServiceLocator.Current.GetInstance (typeof (object)), Is.Not.SameAs (ServiceLocator.Current.GetInstance (typeof (object))));
         Assert.That (ServiceLocator.Current.GetInstance (typeof (IFormattable)), Is.TypeOf<DomainType2> ());
         Assert.That (ServiceLocator.Current.GetInstance (typeof (IFormattable)), Is.SameAs (ServiceLocator.Current.GetInstance (typeof (IFormattable))));
-      }
-
-      Assert.That (ServiceLocator.Current, Is.SameAs (_locator1));
-    }
-
-    [Test]
-    public void Initialization_AndDispose_ServiceLocator_Types ()
-    {
-      ServiceLocator.SetLocatorProvider (() => _locator1);
-      Assert.That (ServiceLocator.Current, Is.SameAs (_locator1));
-
-      using (new ServiceLocatorScope (typeof (object), typeof (DomainType1), LifetimeKind.Singleton))
-      {
-        Assert.That (ServiceLocator.Current, Is.Not.SameAs (_locator1));
-        Assert.That (ServiceLocator.Current, Is.TypeOf<DefaultServiceLocator> ());
-        Assert.That (ServiceLocator.Current.GetInstance (typeof (object)), Is.TypeOf<DomainType1> ());
-        Assert.That (ServiceLocator.Current.GetInstance (typeof (object)), Is.SameAs (ServiceLocator.Current.GetInstance (typeof (object))));
-      }
-
-      Assert.That (ServiceLocator.Current, Is.SameAs (_locator1));
-    }
-
-    [Test]
-    public void Initialization_AndDispose_ServiceLocator_TypeAndFunc ()
-    {
-      ServiceLocator.SetLocatorProvider (() => _locator1);
-      Assert.That (ServiceLocator.Current, Is.SameAs (_locator1));
-
-      var obj = new object();
-      using (new ServiceLocatorScope (typeof (object), () => obj))
-      {
-        Assert.That (ServiceLocator.Current, Is.Not.SameAs (_locator1));
-        Assert.That (ServiceLocator.Current, Is.TypeOf<DefaultServiceLocator>());
-        Assert.That (ServiceLocator.Current.GetInstance (typeof (object)), Is.SameAs (obj));
-      }
-
-      Assert.That (ServiceLocator.Current, Is.SameAs (_locator1));
-    }
-
-    [Test]
-    public void Initialization_AndDispose_ServiceLocator_TypeAndFuncs ()
-    {
-      ServiceLocator.SetLocatorProvider (() => _locator1);
-      Assert.That (ServiceLocator.Current, Is.SameAs (_locator1));
-
-      var obj1 = new object();
-      var obj2 = new object();
-      using (new ServiceLocatorScope (
-          typeof (object),
-          Tuple.Create ((Func<object>) (() => obj1), RegistrationType.Multiple),
-          Tuple.Create ((Func<object>) (() => obj2), RegistrationType.Multiple)))
-      {
-        Assert.That (ServiceLocator.Current, Is.Not.SameAs (_locator1));
-        Assert.That (ServiceLocator.Current, Is.TypeOf<DefaultServiceLocator>());
-        Assert.That (ServiceLocator.Current.GetAllInstances (typeof (object)), Is.EqualTo (new[] { obj1, obj2 }));
       }
 
       Assert.That (ServiceLocator.Current, Is.SameAs (_locator1));

@@ -75,18 +75,6 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException),
-        ExpectedMessage = "Register cannot be called twice or after GetInstance for service type: 'ITestSingletonConcreteImplementationAttributeType'.")
-    ]
-    public void Register_ServiceConfigurationEntry_ServiceAlreadyExists_ThrowsException ()
-    {
-      _serviceLocator.GetInstance<ITestSingletonConcreteImplementationAttributeType>();
-      var serviceImplementation = new ServiceImplementationInfo (typeof (TestConcreteImplementationAttributeType), LifetimeKind.Singleton);
-      var serviceConfigurationEntry = new ServiceConfigurationEntry (typeof (ITestSingletonConcreteImplementationAttributeType), serviceImplementation);
-      _serviceLocator.Register (serviceConfigurationEntry);
-    }
-
-    [Test]
     public void Register_ServiceConfigurationEntry_ServiceAdded ()
     {
       var serviceImplementation = new ServiceImplementationInfo (
@@ -120,7 +108,7 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
     public void Register_ServiceConfigurationEntry_ImplementationInfoWithFactory ()
     {
       var expectedInstance = new TestConcreteImplementationAttributeType();
-      var serviceImplementation = ServiceImplementationInfo.Create (() => expectedInstance);
+      var serviceImplementation = ServiceImplementationInfo.CreateSingle (() => expectedInstance);
 
       var serviceConfigurationEntry = new ServiceConfigurationEntry (
           typeof (ITestSingletonConcreteImplementationAttributeType),
@@ -130,29 +118,6 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
 
       var instance1 = _serviceLocator.GetInstance (typeof (ITestSingletonConcreteImplementationAttributeType));
       Assert.That (instance1, Is.SameAs (expectedInstance));
-    }
-    
-    [Test]
-    public void Register_Twice_ExceptionIsThrown ()
-    {
-      Func<object> instanceFactory = () => new object();
-      _serviceLocator.Register (typeof (ITestInstanceConcreteImplementationAttributeType), instanceFactory);
-
-      Assert.That (
-          () => _serviceLocator.Register (typeof (ITestInstanceConcreteImplementationAttributeType), instanceFactory),
-          Throws.InvalidOperationException.With.Message.EqualTo (
-              "Register cannot be called twice or after GetInstance for service type: 'ITestInstanceConcreteImplementationAttributeType'."));
-    }
-
-    [Test]
-    public void Register_ConcreteImplementation_ServiceAlreadyExists_ThrowsException ()
-    {
-      _serviceLocator.GetInstance<ITestSingletonConcreteImplementationAttributeType>();
-      Assert.That (
-          () => _serviceLocator.Register (
-          typeof (ITestSingletonConcreteImplementationAttributeType), typeof (TestConcreteImplementationAttributeType), LifetimeKind.Singleton),
-          Throws.InvalidOperationException.With.Message.EqualTo (
-              "Register cannot be called twice or after GetInstance for service type: 'ITestSingletonConcreteImplementationAttributeType'."));
     }
 
     [Test]
@@ -166,14 +131,15 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
     }
     
     [Test]
-    [ExpectedException (typeof (InvalidOperationException),
-        ExpectedMessage = "Register cannot be called twice or after GetInstance for service type: 'ITestInstanceConcreteImplementationAttributeType'.")
-    ]
-    public void Register_Factory_ServiceAlreadyExists ()
+    public void Register_Twice_ExceptionIsThrown ()
     {
-      _serviceLocator.GetInstance<ITestInstanceConcreteImplementationAttributeType>();
-      _serviceLocator.Register (typeof (ITestInstanceConcreteImplementationAttributeType), () => new object());
-    }
+      var serviceConfigurationEntry = new ServiceConfigurationEntry (typeof (ITestInstanceConcreteImplementationAttributeType), new ServiceImplementationInfo (typeof (TestConcreteImplementationAttributeType), LifetimeKind.Instance, RegistrationType.Single));
+      _serviceLocator.Register (serviceConfigurationEntry);
 
+      Assert.That (
+          () => _serviceLocator.Register (serviceConfigurationEntry),
+          Throws.InvalidOperationException.With.Message.EqualTo (
+              "Register cannot be called twice or after GetInstance for service type: 'ITestInstanceConcreteImplementationAttributeType'."));
+    }
   }
 }

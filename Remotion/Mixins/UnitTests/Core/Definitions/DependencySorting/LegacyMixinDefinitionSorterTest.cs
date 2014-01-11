@@ -59,7 +59,9 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.DependencySorting
     [Test]
     public void CanBeUsedAsAlternativeInterfaceImplementation ()
     {
-      using (new ServiceLocatorScope (typeof (IMixinDefinitionSorter), typeof (LegacyMixinDefinitionSorter)))
+      var serviceLocator = DefaultServiceLocator.Create();
+      serviceLocator.Register (typeof (IMixinDefinitionSorter), typeof (LegacyMixinDefinitionSorter), LifetimeKind.Instance);
+      using (new ServiceLocatorScope (serviceLocator))
       {
         var instance = (TargetClassDefinitionBuilder) SafeServiceLocator.Current.GetInstance<ITargetClassDefinitionBuilder>();
         Assert.That (instance.MixinSorter, Is.TypeOf<LegacyMixinDefinitionSorter>());

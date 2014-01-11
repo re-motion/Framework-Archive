@@ -262,90 +262,63 @@ namespace Remotion.ServiceLocation
 
     //as extension for IServiceConfigurationRegistry, or drop if did not exist before feature branch or if no longer needed. Obsolete if old API was used in many projects
     /// <summary>
-    /// Registers factories for the specified <paramref name="serviceType"/>. 
-    /// The factories are subsequently invoked whenever instances for the <paramref name="serviceType"/> is requested.
+    /// Registers factories for the specified <typeparamref name="TService"/>. 
+    /// The factories are subsequently invoked whenever instances for the <typeparamref name="TService"/> is requested.
     /// </summary>
-    /// <param name="serviceType">The service type to register the factories for.</param>
-    /// <param name="instanceFactories">The instance factories to use when resolving instances for the <paramref name="serviceType"/>. These factories
-    /// must return non-null instances implementing the <paramref name="serviceType"/>, otherwise an <see cref="ActivationException"/> is thrown
-    /// when an instance of <paramref name="serviceType"/> is requested.</param>
-    /// <exception cref="InvalidOperationException">Factories have already been registered or an instance of the <paramref name="serviceType"/> has 
+    /// <typeparam name="TService">The service type to register the factories for.</typeparam>
+    /// <param name="instanceFactory">The instance factory to use when resolving instances for the <typeparamref name="TService"/>. This factory
+    /// must return a non-null instance implementing the <typeparamref name="TService"/>, otherwise an <see cref="ActivationException"/> is thrown
+    /// when an instance of <typeparamref name="TService"/> is requested.</param>
+    /// <exception cref="InvalidOperationException">Factories have already been registered or an instance of the <typeparamref name="TService"/> has 
     /// already been retrieved. Registering factories or concrete implementations can only be done before any instances are retrieved.</exception>
-    public void Register (Type serviceType, params Func<object>[] instanceFactories)
+    public void Register<TService> (Func<TService> instanceFactory)
     {
-      ArgumentUtility.CheckNotNull ("serviceType", serviceType);
+      ArgumentUtility.CheckNotNull ("instanceFactory", instanceFactory);
+
+      var serviceConfigurationEntry = new ServiceConfigurationEntry (
+          typeof (TService),
+          ServiceImplementationInfo.CreateSingle (instanceFactory));
+
+      Register (serviceConfigurationEntry);
+    }
+
+    /// <summary>
+    /// Registers factories for the specified <typeparamref name="TService"/>. 
+    /// The factories are subsequently invoked whenever instances for the <typeparamref name="TService"/> is requested.
+    /// </summary>
+    /// <typeparam name="TService">The service type to register the factories for.</typeparam>
+    /// <param name="instanceFactories">The instance factories to use when resolving instances for the <typeparamref name="TService"/>. These factories
+    /// must return non-null instances implementing the <typeparamref name="TService"/>, otherwise an <see cref="ActivationException"/> is thrown
+    /// when an instance of <typeparamref name="TService"/> is requested.</param>
+    /// <exception cref="InvalidOperationException">Factories have already been registered or an instance of the <typeparamref name="TService"/> has 
+    /// already been retrieved. Registering factories or concrete implementations can only be done before any instances are retrieved.</exception>
+    public void RegisterMultiple<TService> (params Func<TService>[] instanceFactories)
+    {
       ArgumentUtility.CheckNotNull ("instanceFactories", instanceFactories);
 
-      Register (serviceType, (IEnumerable<Func<object>>) instanceFactories);
+      Register ((IEnumerable<Func<TService>>) instanceFactories);
     }
 
     //as extension for IServiceConfigurationRegistry, or drop if did not exist before feature branch or if no longer needed. Obsolete if old API was used in many projects
     /// <summary>
-    /// Registers factories for the specified <paramref name="serviceType"/>. 
-    /// The factories are subsequently invoked whenever instances for the <paramref name="serviceType"/> is requested.
+    /// Registers factories for the specified <typeparamref name="TService"/>. 
+    /// The factories are subsequently invoked whenever instances for the <typeparamref name="TService"/> is requested.
     /// </summary>
-    /// <param name="serviceType">The service type to register the factories for.</param>
-    /// <param name="instanceFactories">The instance factories to use when resolving instances for the <paramref name="serviceType"/>. These factories
-    /// must return non-null instances implementing the <paramref name="serviceType"/>, otherwise an <see cref="ActivationException"/> is thrown
-    /// when an instance of <paramref name="serviceType"/> is requested.</param>
-    /// <exception cref="InvalidOperationException">Factories have already been registered or an instance of the <paramref name="serviceType"/> has 
+    /// <typeparam name="TService">The service type to register the factories for.</typeparam>
+    /// <param name="instanceFactories">The instance factories to use when resolving instances for the <typeparamref name="TService"/>. These factories
+    /// must return non-null instances implementing the <typeparamref name="TService"/>, otherwise an <see cref="ActivationException"/> is thrown
+    /// when an instance of <typeparamref name="TService"/> is requested.</param>
+    /// <exception cref="InvalidOperationException">Factories have already been registered or an instance of the <typeparamref name="TService"/> has 
     /// already been retrieved. Registering factories or concrete implementations can only be done before any instances are retrieved.</exception>
-    public void Register (Type serviceType, params Tuple<Func<object>, RegistrationType>[] instanceFactories)
+    public void Register<TService> (IEnumerable<Func<TService>> instanceFactories)
     {
-      ArgumentUtility.CheckNotNull ("serviceType", serviceType);
       ArgumentUtility.CheckNotNull ("instanceFactories", instanceFactories);
 
-      Register (serviceType, (IEnumerable<Tuple<Func<object>, RegistrationType>>) instanceFactories);
-    }
+      var serviceConfigurationEntry = new ServiceConfigurationEntry (
+          typeof (TService),
+          instanceFactories.Select (ServiceImplementationInfo.CreateMultiple));
 
-    //as extension for IServiceConfigurationRegistry, or drop if did not exist before feature branch or if no longer needed. Obsolete if old API was used in many projects
-    /// <summary>
-    /// Registers factories for the specified <paramref name="serviceType"/>. 
-    /// The factories are subsequently invoked whenever instances for the <paramref name="serviceType"/> is requested.
-    /// </summary>
-    /// <param name="serviceType">The service type to register the factories for.</param>
-    /// <param name="instanceFactories">The instance factories to use when resolving instances for the <paramref name="serviceType"/>. These factories
-    /// must return non-null instances implementing the <paramref name="serviceType"/>, otherwise an <see cref="ActivationException"/> is thrown
-    /// when an instance of <paramref name="serviceType"/> is requested.</param>
-    /// <exception cref="InvalidOperationException">Factories have already been registered or an instance of the <paramref name="serviceType"/> has 
-    /// already been retrieved. Registering factories or concrete implementations can only be done before any instances are retrieved.</exception>
-    public void Register (Type serviceType, IEnumerable<Func<object>> instanceFactories)
-    {
-      ArgumentUtility.CheckNotNull ("serviceType", serviceType);
-      ArgumentUtility.CheckNotNull ("instanceFactories", instanceFactories);
-
-      Register (serviceType, instanceFactories.Select (f => Tuple.Create (f, RegistrationType.Single)));
-    }
-
-    //as extension for IServiceConfigurationRegistry, or drop if did not exist before feature branch or if no longer needed. Obsolete if old API was used in many projects
-    /// <summary>
-    /// Registers factories for the specified <paramref name="serviceType"/>. 
-    /// The factories are subsequently invoked whenever instances for the <paramref name="serviceType"/> is requested.
-    /// </summary>
-    /// <param name="serviceType">The service type to register the factories for.</param>
-    /// <param name="instanceFactories">The instance factories to use when resolving instances for the <paramref name="serviceType"/>. These factories
-    /// must return non-null instances implementing the <paramref name="serviceType"/>, otherwise an <see cref="ActivationException"/> is thrown
-    /// when an instance of <paramref name="serviceType"/> is requested.</param>
-    /// <exception cref="InvalidOperationException">Factories have already been registered or an instance of the <paramref name="serviceType"/> has 
-    /// already been retrieved. Registering factories or concrete implementations can only be done before any instances are retrieved.</exception>
-    public void Register (Type serviceType, IEnumerable<Tuple<Func<object>, RegistrationType>> instanceFactories)
-    {
-      ArgumentUtility.CheckNotNull ("serviceType", serviceType);
-      ArgumentUtility.CheckNotNull ("instanceFactories", instanceFactories);
-
-      var groupedFactories = instanceFactories.ToLookup (f => f.Item2, f => f.Item1);
-      var registration = new Registration (
-          serviceType,
-          singleFactory: groupedFactories[RegistrationType.Single].FirstOrDefault(), //TODO TT: Exeption for many
-          compoundFactory: groupedFactories[RegistrationType.Compound].FirstOrDefault(), //TODO TT: Exeption for many
-          multipleFactories: groupedFactories[RegistrationType.Multiple].ToArray());
-
-      var registeredValue = _dataStore.GetOrCreateValue (serviceType, key => registration);
-      if (!ReferenceEquals (registration, registeredValue))
-      {
-        var message = string.Format ("Register cannot be called twice or after GetInstance for service type: '{0}'.", serviceType.Name);
-        throw new InvalidOperationException (message);
-      }
+      Register (serviceConfigurationEntry);
     }
 
     //leave this register method:

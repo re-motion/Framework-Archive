@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Microsoft.Practices.ServiceLocation;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
@@ -39,16 +38,6 @@ namespace Remotion.Development.UnitTesting
       return defaultServiceLocator;
     }
 
-    private static DefaultServiceLocator CreateServiceLocator (Type serviceType, IEnumerable<Tuple<Func<object>, RegistrationType>> creators)
-    {
-      ArgumentUtility.CheckNotNull ("serviceType", serviceType);
-      ArgumentUtility.CheckNotNull ("creators", creators);
-
-      var defaultServiceLocator = CreateServiceLocator (Enumerable.Empty<ServiceConfigurationEntry> ());
-      defaultServiceLocator.Register (serviceType, creators);
-      return defaultServiceLocator;
-    }
-
     private readonly ServiceLocatorProvider _previousLocatorProvider;
 
     public ServiceLocatorScope (IServiceLocator temporaryServiceLocator)
@@ -68,23 +57,6 @@ namespace Remotion.Development.UnitTesting
 
     public ServiceLocatorScope (params ServiceConfigurationEntry[] temporaryConfiguration)
       : this (CreateServiceLocator (temporaryConfiguration))
-    {
-    }
-
-    public ServiceLocatorScope (Type serviceType, Type implementationType, LifetimeKind lifetimeKind = LifetimeKind.Instance, RegistrationType registrationType = RegistrationType.Single)
-        : this (
-            CreateServiceLocator (
-                new[] { new ServiceConfigurationEntry (serviceType, new ServiceImplementationInfo (implementationType, lifetimeKind, registrationType)) }))
-    {
-    }
-
-    public ServiceLocatorScope (Type serviceType, params Func<object>[] creators)
-        : this (CreateServiceLocator (serviceType, creators.Select (c => Tuple.Create (c, RegistrationType.Single))))
-    {
-    }
-
-    public ServiceLocatorScope (Type serviceType, params Tuple<Func<object>, RegistrationType>[] creators)
-        : this (CreateServiceLocator (serviceType, creators))
     {
     }
 

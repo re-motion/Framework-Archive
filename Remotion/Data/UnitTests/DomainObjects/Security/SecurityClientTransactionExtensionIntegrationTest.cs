@@ -64,7 +64,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Security
       SecurityConfiguration.Current.PrincipalProvider = _principalProviderStub;
 
       var serviceLocator = DefaultServiceLocator.Create();
-      serviceLocator.Register (typeof (IFunctionalSecurityStrategy), () => _functionalSecurityStrategyStub);
+      serviceLocator.Register (() => _functionalSecurityStrategyStub);
       _serviceLocatorScope = new ServiceLocatorScope (serviceLocator);
 
       _clientTransaction.EnterNonDiscardingScope();

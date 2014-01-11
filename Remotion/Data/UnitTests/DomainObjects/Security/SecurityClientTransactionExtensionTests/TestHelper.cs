@@ -99,9 +99,9 @@ namespace Remotion.Data.UnitTests.DomainObjects.Security.SecurityClientTransacti
       SecurityConfiguration.Current.PrincipalProvider = _stubPrincipalProvider;
 
       var serviceLocator = DefaultServiceLocator.Create();
-      serviceLocator.Register (typeof (IMemberResolver), () => _mockMemberResolver);
-      serviceLocator.Register (typeof (IPermissionProvider), () => _mockPermissionReflector);
-      serviceLocator.Register (typeof (IFunctionalSecurityStrategy), () => _mockFunctionalSecurityStrategy);
+      serviceLocator.Register(()=> _mockMemberResolver);
+      serviceLocator.Register(() => _mockPermissionReflector);
+      serviceLocator.Register(() => _mockFunctionalSecurityStrategy);
       _serviceLocatorScope = new ServiceLocatorScope (serviceLocator);
     }
 

@@ -44,7 +44,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.Queries
           .Return (new[] { _persistenceExtensionMock });
 
       var locator = DefaultServiceLocator.Create();
-      locator.Register (typeof (IPersistenceExtensionFactory), Tuple.Create((Func<object>)  (() => persistenceExtensionFactoryStub), RegistrationType.Multiple));
+      locator.RegisterMultiple (() => persistenceExtensionFactoryStub);
       _serviceLocatorScope = new ServiceLocatorScope (locator);
     }
 

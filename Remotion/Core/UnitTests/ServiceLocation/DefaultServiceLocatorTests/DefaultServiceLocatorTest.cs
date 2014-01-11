@@ -40,39 +40,11 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
     [Test]
     public void Register_Factory_ServiceIsAdded ()
     {
-      var instance = new TestConcreteImplementationAttributeType ();
-      Func<object> instanceFactory = () => instance;
+      var instance = new TestConcreteImplementationAttributeType();
 
-      _serviceLocator.Register (typeof (ITestInstanceConcreteImplementationAttributeType), instanceFactory);
+      _serviceLocator.Register<ITestInstanceConcreteImplementationAttributeType> (() => instance);
 
       Assert.That (_serviceLocator.GetInstance (typeof (ITestInstanceConcreteImplementationAttributeType)), Is.SameAs (instance));
-    }
-
-    [Test]
-    public void Register_MultipleFactories_ServiceIsAdded ()
-    {
-      var instance1 = new object ();
-      var instance2 = new object ();
-      Func<object> instanceFactory1 = () => instance1;
-      Func<object> instanceFactory2 = () => instance2;
-
-      _serviceLocator.Register (
-          typeof (object),
-          new[]
-          {
-              Tuple.Create (instanceFactory1, RegistrationType.Multiple),
-              Tuple.Create (instanceFactory2, RegistrationType.Multiple),
-          });
-
-      Assert.That (_serviceLocator.GetAllInstances (typeof (object)), Is.EqualTo (new[] { instance1, instance2 }));
-    }
-
-    [Test]
-    public void Register_NoFactories_OverridesAttributes ()
-    {
-      _serviceLocator.Register (typeof (ITestInstanceConcreteImplementationAttributeType));
-
-      Assert.That (_serviceLocator.GetAllInstances (typeof (object)), Is.Empty);
     }
 
     [Test]

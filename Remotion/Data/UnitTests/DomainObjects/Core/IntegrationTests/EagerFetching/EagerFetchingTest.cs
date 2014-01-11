@@ -25,6 +25,7 @@ using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.DomainObjects.Tracing;
 using Remotion.Data.UnitTests.DomainObjects.TestDomain;
 using Remotion.Development.UnitTesting;
+using Remotion.ServiceLocation;
 using Rhino.Mocks;
 
 namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.EagerFetching
@@ -240,7 +241,10 @@ namespace Remotion.Data.UnitTests.DomainObjects.Core.IntegrationTests.EagerFetch
       persistenceExtensionFactoryStub
           .Stub (stub => stub.CreatePersistenceExtensions (Arg<Guid>.Is.Anything))
           .Return (new[] { persistenceExtensionMock });
-      return new ServiceLocatorScope (typeof (IPersistenceExtensionFactory), () => persistenceExtensionFactoryStub);
+
+      var serviceLocator = DefaultServiceLocator.Create();
+      serviceLocator.RegisterMultiple (() => persistenceExtensionFactoryStub);
+      return new ServiceLocatorScope (serviceLocator);
     }
   }
 }

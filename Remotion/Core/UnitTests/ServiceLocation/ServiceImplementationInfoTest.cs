@@ -24,10 +24,10 @@ namespace Remotion.UnitTests.ServiceLocation
   public class ServiceImplementationInfoTest
   {
     [Test]
-    public void Create_RetrievesImplementationType ()
+    public void CreateSingle_RetrievesImplementationType ()
     {
       Func<ServiceImplementationInfoTest> factory = () => new ServiceImplementationInfoTest();
-      var implementationInfo = ServiceImplementationInfo.Create (factory);
+      var implementationInfo = ServiceImplementationInfo.CreateSingle (factory);
 
       Assert.That (implementationInfo.Factory, Is.Not.Null);
       Assert.That (implementationInfo.ImplementationType, Is.SameAs (typeof (ServiceImplementationInfoTest)));

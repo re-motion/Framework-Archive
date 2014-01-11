@@ -112,20 +112,12 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
     }
 
     [Test]
-    public void GetAllInstances_InstanceNotCompatibleWithServiceType ()
-    {
-      _serviceLocator.Register (typeof (ISomeInterface), Tuple.Create ((Func<object>) (() => new object()), RegistrationType.Multiple));
-      Assert.That (
-          () => _serviceLocator.GetAllInstances (typeof (ISomeInterface)).ToArray (),
-          Throws.TypeOf<ActivationException> ().With.Message.EqualTo (
-              "The instance returned by the registered factory does not implement the requested type " 
-              + "'Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests.Multiple_DefaultServiceLocatorTest+ISomeInterface'. (Instance type: 'System.Object'.)"));
-    }
-
-    [Test]
     public void GetAllInstances_ServiceTypeWithNullImplementation ()
     {
-      _serviceLocator.Register (typeof (ISomeInterface), Tuple.Create ((Func<object>) (() => null), RegistrationType.Multiple));
+      var implementation = ServiceImplementationInfo.CreateMultiple<ISomeInterface> (() => null);
+      var serviceConfigurationEntry = new ServiceConfigurationEntry (typeof (ISomeInterface), implementation);
+
+      _serviceLocator.Register (serviceConfigurationEntry);
       Assert.That (
           () => _serviceLocator.GetAllInstances (typeof (ISomeInterface)).ToArray(),
           Throws.TypeOf<ActivationException> ().With.Message.EqualTo (
@@ -152,6 +144,14 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
       Assert.That (result, Is.Empty);
     }
     
+    [Test]
+    public void Register_NoFactories_OverridesAttributes ()
+    {
+      _serviceLocator.RegisterMultiple<ITestInstanceConcreteImplementationAttributeType>();
+
+      Assert.That (_serviceLocator.GetAllInstances (typeof (object)), Is.Empty);
+    }
+
     class DomainType
     {
       public readonly IEnumerable<ITestMultipleRegistrationsType> AllInstances;

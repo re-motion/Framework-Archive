@@ -63,7 +63,7 @@ namespace Remotion.Data.UnitTests.DomainObjects.Web.WxeTransactedFunctionIntegra
       SecurityConfiguration.Current.PrincipalProvider = principalProviderStub;
 
       var serviceLocator = DefaultServiceLocator.Create();
-      serviceLocator.Register (typeof (IFunctionalSecurityStrategy), () => _functionalSecurityStrategyStub);
+      serviceLocator.Register (() => _functionalSecurityStrategyStub);
       _serviceLocatorScope = new ServiceLocatorScope (serviceLocator);
 
       _testAccessTypeValue = AccessType.Get (TestAccessTypes.Value);

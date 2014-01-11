@@ -37,8 +37,8 @@ namespace Remotion.Data.UnitTests.DomainObjects.UberProfIntegration
 
       var locator = DefaultServiceLocator.Create();
       var factory = new LinqToSqlExtensionFactory();
-      locator.Register (typeof (IClientTransactionExtensionFactory), Tuple.Create((Func<object>)  (() => factory), RegistrationType.Multiple));
-      locator.Register (typeof (IPersistenceExtensionFactory), Tuple.Create((Func<object>)  (() => factory), RegistrationType.Multiple));
+      locator.RegisterMultiple<IClientTransactionExtensionFactory> (() => factory);
+      locator.RegisterMultiple<IPersistenceExtensionFactory> (() => factory);
       _serviceLocatorScope = new ServiceLocatorScope (locator);
 
       _tracingLinqToSqlAppender = new TracingLinqToSqlAppender();
