@@ -16,30 +16,31 @@
 // 
 
 using System;
+using Remotion.UnitTests.ServiceLocation.TestDomain;
 
-namespace Remotion.UnitTests.ServiceLocation.TestDomain
+namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests.TestDomain
 {
-  public interface ITestDecoratorWithErrors
+  public interface ITestCompoundWithErrors
   {
   }
 
-  public class TestDecoratorWithoutPublicConstructor : ITestDecoratorWithErrors
+  public class TestCompoundWithoutPublicConstructor : ITestCompoundWithErrors
   {
-    private TestDecoratorWithoutPublicConstructor ()
+    private TestCompoundWithoutPublicConstructor ()
     {
     }
   }
   
-  public class TestDecoratorWithConstructorWithoutArguments : ITestDecoratorWithErrors
+  public class TestCompoundWithConstructorWithoutArguments : ITestCompoundWithErrors
   {
-    private TestDecoratorWithConstructorWithoutArguments ()
+    public TestCompoundWithConstructorWithoutArguments ()
     {
     }
   }
 
-  public class TestDecoratorWithConstructorWithoutMatchingArgument : ITestDecoratorWithErrors
+  public class TestCompoundWithConstructorWithoutMatchingArgument : ITestCompoundWithErrors
   {
-    private TestDecoratorWithConstructorWithoutMatchingArgument (StubService argument)
+    public TestCompoundWithConstructorWithoutMatchingArgument (StubService invalidArgument)
     {
     }
   }

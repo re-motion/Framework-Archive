@@ -16,8 +16,9 @@
 // 
 
 using System;
+using Remotion.UnitTests.ServiceLocation.TestDomain;
 
-namespace Remotion.UnitTests.ServiceLocation.TestDomain
+namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests.TestDomain
 {
   public interface ITestTypeErrors
   {

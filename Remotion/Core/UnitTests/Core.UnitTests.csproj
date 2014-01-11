@@ -298,11 +298,11 @@
     <Compile Include="ServiceLocation\TestDomain\IInterfaceWithIndirectActivationException.cs" />
     <Compile Include="ServiceLocation\TestDomain\IInterfaceWithoutImplementation.cs" />
     <Compile Include="ServiceLocation\TestDomain\ITestCompoundMixedRegistrationTypes.cs" />
-    <Compile Include="ServiceLocation\TestDomain\ITestCompoundWithErrors.cs" />
+    <Compile Include="ServiceLocation\DefaultServiceLocatorTests\TestDomain\ITestCompoundWithErrors.cs" />
     <Compile Include="ServiceLocation\TestDomain\ITestStackedDecorators.cs" />
     <Compile Include="ServiceLocation\TestDomain\ITestDecoratedCompound.cs" />
     <Compile Include="ServiceLocation\TestDomain\ITestDecoratorRegistration.cs" />
-    <Compile Include="ServiceLocation\TestDomain\ITestDecoratorWithErrors.cs" />
+    <Compile Include="ServiceLocation\DefaultServiceLocatorTests\TestDomain\ITestDecoratorWithErrors.cs" />
     <Compile Include="ServiceLocation\TestDomain\ITestCompoundRegistration.cs" />
     <Compile Include="ServiceLocation\TestDomain\ITestConcreteImplementationAttributeWithUnresolvableImplementationType.cs" />
     <Compile Include="ServiceLocation\TestDomain\ITestConcreteImplementationAttributeWithUnresolvableAndResolvableImplementationTypes.cs" />
@@ -377,7 +377,7 @@
     </Compile>
     <Compile Include="ServiceLocation\ActivationPerformanceTest.cs" />
     <Compile Include="ServiceLocation\DefaultServiceConfigurationDiscoveryServiceTest.cs" />
-    <Compile Include="ServiceLocation\DefaultServiceLocatorTest.cs" />
+    <Compile Include="ServiceLocation\DefaultServiceLocatorTests\DefaultServiceLocatorTest.cs" />
     <Compile Include="ServiceLocation\SafeServiceLocatorTest.cs" />
     <Compile Include="ServiceLocation\ServiceConfigurationEntryTest.cs" />
     <Compile Include="ServiceLocation\TestDomain\ITestRegistrationTypeMultipleTypeThrowingExceptionInCtor.cs" />
@@ -388,7 +388,7 @@
     <Compile Include="ServiceLocation\TestDomain\ITestConstructorInjectionWithThreeParameters.cs" />
     <Compile Include="ServiceLocation\TestDomain\ITestInstanceConcreteImplementationAttributeType.cs" />
     <Compile Include="ServiceLocation\TestDomain\ITestSingletonConcreteImplementationAttributeType.cs" />
-    <Compile Include="ServiceLocation\TestDomain\ITestTypeErrors.cs" />
+    <Compile Include="ServiceLocation\DefaultServiceLocatorTests\TestDomain\ITestTypeErrors.cs" />
     <Compile Include="ServiceLocation\TestDomain\TestConcreteImplementationAttributeType.cs" />
     <Compile Include="ServiceLocation\TestDomain\TestConstructorInjectionForServiceWithoutConcreteImplementationAttribute.cs" />
     <Compile Include="Utilities\AppDomainAssemblyResolverTest.cs" />

@@ -14,31 +14,33 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System;
 
-namespace Remotion.UnitTests.ServiceLocation.TestDomain
+using System;
+using Remotion.UnitTests.ServiceLocation.TestDomain;
+
+namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests.TestDomain
 {
-  public interface ITestCompoundWithErrors
+  public interface ITestDecoratorWithErrors
   {
   }
 
-  public class TestCompoundWithoutPublicConstructor : ITestCompoundWithErrors
+  public class TestDecoratorWithoutPublicConstructor : ITestDecoratorWithErrors
   {
-    private TestCompoundWithoutPublicConstructor ()
+    private TestDecoratorWithoutPublicConstructor ()
     {
     }
   }
   
-  public class TestCompoundWithConstructorWithoutArguments : ITestCompoundWithErrors
+  public class TestDecoratorWithConstructorWithoutArguments : ITestDecoratorWithErrors
   {
-    public TestCompoundWithConstructorWithoutArguments ()
+    private TestDecoratorWithConstructorWithoutArguments ()
     {
     }
   }
 
-  public class TestCompoundWithConstructorWithoutMatchingArgument : ITestCompoundWithErrors
+  public class TestDecoratorWithConstructorWithoutMatchingArgument : ITestDecoratorWithErrors
   {
-    public TestCompoundWithConstructorWithoutMatchingArgument (StubService invalidArgument)
+    private TestDecoratorWithConstructorWithoutMatchingArgument (StubService argument)
     {
     }
   }

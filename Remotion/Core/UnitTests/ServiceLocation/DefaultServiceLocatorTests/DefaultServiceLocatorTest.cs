@@ -14,15 +14,17 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Practices.ServiceLocation;
 using NUnit.Framework;
 using Remotion.ServiceLocation;
+using Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests.TestDomain;
 using Remotion.UnitTests.ServiceLocation.TestDomain;
 
-namespace Remotion.UnitTests.ServiceLocation
+namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
 {
   [TestFixture]
   public class DefaultServiceLocatorTest
@@ -70,7 +72,7 @@ namespace Remotion.UnitTests.ServiceLocation
           () => _serviceLocator.GetInstance (typeof (ISomeInterface)),
           Throws.TypeOf<ActivationException> ().With.Message.EqualTo (
               "The instance returned by the registered factory does not implement the requested type "
-              + "'Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTest+ISomeInterface'. (Instance type: 'System.Object'.)"));
+              + "'Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests.DefaultServiceLocatorTest+ISomeInterface'. (Instance type: 'System.Object'.)"));
     }
 
     [Test]
@@ -81,7 +83,7 @@ namespace Remotion.UnitTests.ServiceLocation
           () => _serviceLocator.GetInstance (typeof (ISomeInterface)),
           Throws.TypeOf<ActivationException> ().With.Message.EqualTo (
               "The registered factory returned null instead of an instance implementing the requested service type "
-              + "'Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTest+ISomeInterface'."));
+              + "'Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests.DefaultServiceLocatorTest+ISomeInterface'."));
     }
 
     [Test]
@@ -205,7 +207,7 @@ namespace Remotion.UnitTests.ServiceLocation
           () => _serviceLocator.GetAllInstances (typeof (ISomeInterface)).ToArray (),
           Throws.TypeOf<ActivationException> ().With.Message.EqualTo (
               "The instance returned by the registered factory does not implement the requested type " 
-              + "'Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTest+ISomeInterface'. (Instance type: 'System.Object'.)"));
+              + "'Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests.DefaultServiceLocatorTest+ISomeInterface'. (Instance type: 'System.Object'.)"));
     }
 
     [Test]
@@ -216,7 +218,7 @@ namespace Remotion.UnitTests.ServiceLocation
           () => _serviceLocator.GetAllInstances (typeof (ISomeInterface)).ToArray(),
           Throws.TypeOf<ActivationException> ().With.Message.EqualTo (
               "The registered factory returned null instead of an instance implementing the requested service type "
-              + "'Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTest+ISomeInterface'."));
+              + "'Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests.DefaultServiceLocatorTest+ISomeInterface'."));
     }
 
     [Test]
@@ -341,8 +343,8 @@ namespace Remotion.UnitTests.ServiceLocation
       Assert.That (
           () => _serviceLocator.Register (serviceConfigurationEntry),
           Throws.InvalidOperationException.With.Message.EqualTo (
-              "Type 'Remotion.UnitTests.ServiceLocation.TestDomain.TestTypeWithTooManyPublicConstructors' cannot be instantiated. " +
-              "The type must have exactly one public constructor."));
+              "Type 'Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests.TestDomain.TestTypeWithTooManyPublicConstructors' cannot be instantiated. "
+              + "The type must have exactly one public constructor."));
     }
 
     [Test]
@@ -354,8 +356,8 @@ namespace Remotion.UnitTests.ServiceLocation
       Assert.That (
           () => _serviceLocator.Register (serviceConfigurationEntry),
           Throws.InvalidOperationException.With.Message.EqualTo (
-              "Type 'Remotion.UnitTests.ServiceLocation.TestDomain.TestTypeWithOnlyNonPublicConstructor' cannot be instantiated. " +
-              "The type must have exactly one public constructor."));
+              "Type 'Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests.TestDomain.TestTypeWithOnlyNonPublicConstructor' cannot be instantiated. " 
+              + "The type must have exactly one public constructor."));
     }
 
     [Test]
@@ -600,9 +602,9 @@ namespace Remotion.UnitTests.ServiceLocation
       Assert.That (
           () =>  _serviceLocator.Register (serviceConfigurationEntry),
           Throws.InvalidOperationException.With.Message.EqualTo (
-              "Type 'Remotion.UnitTests.ServiceLocation.TestDomain.TestCompoundWithoutPublicConstructor' cannot be instantiated. "
+              "Type 'Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests.TestDomain.TestCompoundWithoutPublicConstructor' cannot be instantiated. "
               + "The type must have exactly one public constructor. The public constructor must at least accept an argument of type "
-              + "'System.Collections.Generic.IEnumerable`1[Remotion.UnitTests.ServiceLocation.TestDomain.ITestCompoundWithErrors]'."));
+              + "'System.Collections.Generic.IEnumerable`1[Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests.TestDomain.ITestCompoundWithErrors]'."));
     }
 
     [Test]
@@ -617,9 +619,9 @@ namespace Remotion.UnitTests.ServiceLocation
       Assert.That (
           () => _serviceLocator.Register (serviceConfigurationEntry),
           Throws.InvalidOperationException.With.Message.EqualTo (
-              "Type 'Remotion.UnitTests.ServiceLocation.TestDomain.TestCompoundWithConstructorWithoutArguments' cannot be instantiated. "
+              "Type 'Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests.TestDomain.TestCompoundWithConstructorWithoutArguments' cannot be instantiated. "
               + "The type must have exactly one public constructor. The public constructor must at least accept an argument of type "
-              + "'System.Collections.Generic.IEnumerable`1[Remotion.UnitTests.ServiceLocation.TestDomain.ITestCompoundWithErrors]'."));
+              + "'System.Collections.Generic.IEnumerable`1[Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests.TestDomain.ITestCompoundWithErrors]'."));
     }
 
     [Test]
@@ -634,9 +636,9 @@ namespace Remotion.UnitTests.ServiceLocation
       Assert.That (
           () => _serviceLocator.Register (serviceConfigurationEntry),
           Throws.InvalidOperationException.With.Message.EqualTo (
-              "Type 'Remotion.UnitTests.ServiceLocation.TestDomain.TestCompoundWithConstructorWithoutMatchingArgument' cannot be instantiated. "
+              "Type 'Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests.TestDomain.TestCompoundWithConstructorWithoutMatchingArgument' cannot be instantiated. "
               + "The type must have exactly one public constructor. The public constructor must at least accept an argument of type "
-              + "'System.Collections.Generic.IEnumerable`1[Remotion.UnitTests.ServiceLocation.TestDomain.ITestCompoundWithErrors]'."));
+              + "'System.Collections.Generic.IEnumerable`1[Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests.TestDomain.ITestCompoundWithErrors]'."));
     }
 
     [Test]
@@ -665,9 +667,9 @@ namespace Remotion.UnitTests.ServiceLocation
       Assert.That (
           () => _serviceLocator.Register (serviceConfigurationEntry),
           Throws.InvalidOperationException.With.Message.EqualTo (
-              "Type 'Remotion.UnitTests.ServiceLocation.TestDomain.TestDecoratorWithoutPublicConstructor' cannot be instantiated. "
+              "Type 'Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests.TestDomain.TestDecoratorWithoutPublicConstructor' cannot be instantiated. "
               + "The type must have exactly one public constructor. The public constructor must at least accept an argument of type "
-              + "'Remotion.UnitTests.ServiceLocation.TestDomain.ITestDecoratorWithErrors'."));
+              + "'Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests.TestDomain.ITestDecoratorWithErrors'."));
     }
 
     [Test]
@@ -682,9 +684,9 @@ namespace Remotion.UnitTests.ServiceLocation
       Assert.That (
           () => _serviceLocator.Register (serviceConfigurationEntry),
           Throws.InvalidOperationException.With.Message.EqualTo (
-              "Type 'Remotion.UnitTests.ServiceLocation.TestDomain.TestDecoratorWithConstructorWithoutArguments' cannot be instantiated. "
+              "Type 'Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests.TestDomain.TestDecoratorWithConstructorWithoutArguments' cannot be instantiated. "
               + "The type must have exactly one public constructor. The public constructor must at least accept an argument of type "
-              + "'Remotion.UnitTests.ServiceLocation.TestDomain.ITestDecoratorWithErrors'."));
+              + "'Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests.TestDomain.ITestDecoratorWithErrors'."));
     }
 
     [Test]
@@ -699,9 +701,9 @@ namespace Remotion.UnitTests.ServiceLocation
       Assert.That (
           () => _serviceLocator.Register (serviceConfigurationEntry),
           Throws.InvalidOperationException.With.Message.EqualTo (
-              "Type 'Remotion.UnitTests.ServiceLocation.TestDomain.TestDecoratorWithConstructorWithoutMatchingArgument' cannot be instantiated. "
+              "Type 'Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests.TestDomain.TestDecoratorWithConstructorWithoutMatchingArgument' cannot be instantiated. "
               + "The type must have exactly one public constructor. The public constructor must at least accept an argument of type "
-              + "'Remotion.UnitTests.ServiceLocation.TestDomain.ITestDecoratorWithErrors'."));
+              + "'Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests.TestDomain.ITestDecoratorWithErrors'."));
     }
 
     [Test]
