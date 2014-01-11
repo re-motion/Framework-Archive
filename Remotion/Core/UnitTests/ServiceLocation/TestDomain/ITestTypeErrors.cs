@@ -16,22 +16,27 @@
 // 
 
 using System;
-using Remotion.ServiceLocation;
 
 namespace Remotion.UnitTests.ServiceLocation.TestDomain
 {
-  public interface ITestTypeWithTooManyPublicConstructors
+  public interface ITestTypeErrors
   {
   }
 
-  [ImplementationFor (typeof (ITestTypeWithTooManyPublicConstructors))]
-  public class TestTypeWithTooManyPublicConstructors : ITestTypeWithTooManyPublicConstructors
+  public class TestTypeWithTooManyPublicConstructors : ITestTypeErrors
   {
     public TestTypeWithTooManyPublicConstructors ()
     {
     }
 
-    public TestTypeWithTooManyPublicConstructors (ITestSingletonConcreteImplementationAttributeType param)
+    public TestTypeWithTooManyPublicConstructors (StubService param)
+    {
+    }
+  }
+
+  public class TestTypeWithOnlyNonPublicConstructor : ITestTypeErrors
+  {
+    protected TestTypeWithOnlyNonPublicConstructor ()
     {
     }
   }

@@ -20,7 +20,6 @@ using System.Linq;
 using Microsoft.Practices.ServiceLocation;
 using NUnit.Framework;
 using Remotion.ServiceLocation;
-using Remotion.UnitTests.Globalization;
 using Remotion.UnitTests.ServiceLocation.TestDomain;
 
 namespace Remotion.UnitTests.ServiceLocation
@@ -334,22 +333,29 @@ namespace Remotion.UnitTests.ServiceLocation
     }
 
     [Test]
-    [ExpectedException (typeof (ActivationException),
-        ExpectedMessage = 
-        "Type 'Remotion.UnitTests.ServiceLocation.TestDomain.TestTypeWithTooManyPublicConstructors' cannot be instantiated. " +
-        "The type must have exactly one public constructor.")]
-    public void GetInstance_TypeWithTooManyPublicCtors ()
+    public void Register_TypeWithTooManyPublicCtors_ThrowsInvalidOperationException ()
     {
-      _serviceLocator.GetInstance<ITestTypeWithTooManyPublicConstructors>();
+      var implementation = new ServiceImplementationInfo (typeof (TestTypeWithTooManyPublicConstructors), LifetimeKind.Singleton, RegistrationType.Single);
+      var serviceConfigurationEntry = new ServiceConfigurationEntry (typeof (ITestTypeErrors), implementation);
+
+      Assert.That (
+          () => _serviceLocator.Register (serviceConfigurationEntry),
+          Throws.InvalidOperationException.With.Message.EqualTo (
+              "Type 'Remotion.UnitTests.ServiceLocation.TestDomain.TestTypeWithTooManyPublicConstructors' cannot be instantiated. " +
+              "The type must have exactly one public constructor."));
     }
 
     [Test]
-    [ExpectedException (typeof (ActivationException),ExpectedMessage =
-        "Type 'Remotion.UnitTests.ServiceLocation.TestDomain.TestTypeWithOnlyProtectedConstructor' cannot be instantiated. " +
-        "The type must have exactly one public constructor.")]
-    public void GetInstance_TypeWithOnlyProtectedCtor ()
+    public void Register_TypeWithOnlyNonPublicCtor_ThrowsInvalidOperationException ()
     {
-      _serviceLocator.GetInstance<ITestTypeWithOnlyProtectedConstructor> ();
+      var implementation = new ServiceImplementationInfo (typeof (TestTypeWithOnlyNonPublicConstructor), LifetimeKind.Singleton, RegistrationType.Single);
+      var serviceConfigurationEntry = new ServiceConfigurationEntry (typeof (ITestTypeErrors), implementation);
+
+      Assert.That (
+          () => _serviceLocator.Register (serviceConfigurationEntry),
+          Throws.InvalidOperationException.With.Message.EqualTo (
+              "Type 'Remotion.UnitTests.ServiceLocation.TestDomain.TestTypeWithOnlyNonPublicConstructor' cannot be instantiated. " +
+              "The type must have exactly one public constructor."));
     }
 
     [Test]
