@@ -175,20 +175,5 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
               + "of type 'Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests.TestDomain.TestTypeWithConstructorThrowingMultipleDependency': "
               + "ApplicationException: This exception comes from the ctor."));
     }
-
-    [Test]
-    public void GetInstance_ExceptionDuringImplictRegistration_ThrowsActivationException_WithOriginalExceptionAsInnerException ()
-    {
-      var serviceLocator = CreateServiceLocator();
-
-      Assert.Fail ("TODO Implement");
-      Assert.That (
-          () => serviceLocator.GetInstance<IInterfaceWithIndirectActivationExceptionForCollectionParameter>(),
-          Throws.TypeOf<ActivationException>().With.Message.EqualTo (
-              "Could not resolve type 'Remotion.UnitTests.ServiceLocation.TestDomain.IX': "
-              + "Error resolving type "
-              + "'Remotion.UnitTests.ServiceLocation.TestDomain.X': "
-              + "InvalidOperationException: This exception comes from the Registration."));
-    }
   }
 }
