@@ -25,14 +25,14 @@ using Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests.TestDomain;
 namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
 {
   [TestFixture]
-  public class Register_DefaultServiceLocatorTest
+  public class Register_DefaultServiceLocatorTest : TestBase
   {
     private DefaultServiceLocator _serviceLocator;
 
     [SetUp]
     public void SetUp ()
     {
-      _serviceLocator = DefaultServiceLocator.Create();
+      _serviceLocator = CreateServiceLocator();
     }
 
     [Test]
@@ -109,16 +109,6 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
           typeof (TestCompoundWithAdditionalConstructorParameters),
           new[] { typeof (TestImplementation1) });
       _serviceLocator.Register (serviceConfigurationEntry);
-
-      _serviceLocator.Register (
-          new ServiceConfigurationEntry (
-              typeof (SingleService),
-              new ServiceImplementationInfo (typeof (SingleService), LifetimeKind.Singleton, RegistrationType.Single)));
-
-      _serviceLocator.Register (
-          new ServiceConfigurationEntry (
-              typeof (MultipleService),
-              new ServiceImplementationInfo (typeof (MultipleService), LifetimeKind.Singleton, RegistrationType.Multiple)));
 
       var instance = _serviceLocator.GetInstance (typeof (ITestType));
 
