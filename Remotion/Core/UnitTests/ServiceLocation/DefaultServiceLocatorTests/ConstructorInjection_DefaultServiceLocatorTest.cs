@@ -15,13 +15,8 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Linq;
-using Microsoft.Practices.ServiceLocation;
 using NUnit.Framework;
-using Remotion.ServiceLocation;
 using Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests.TestDomain;
-using Remotion.UnitTests.ServiceLocation.TestDomain;
-using Rhino.Mocks;
 
 namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
 {
@@ -37,6 +32,7 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
 
       var serviceLocator = CreateServiceLocator();
       serviceLocator.Register (serviceConfigurationEntry);
+      serviceLocator.Register (CreateInstanceService());
 
       var instance = serviceLocator.GetInstance<ITestType>();
 
@@ -53,6 +49,9 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
 
       var serviceLocator = CreateServiceLocator();
       serviceLocator.Register (serviceConfigurationEntry);
+      serviceLocator.Register (CreateInstanceService());
+      serviceLocator.Register (CreateSingletonService());
+      serviceLocator.Register (CreateMultipleService());
 
       var instance = serviceLocator.GetInstance<ITestType>();
 
@@ -75,6 +74,8 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
 
       var serviceLocator = CreateServiceLocator();
       serviceLocator.Register (serviceConfigurationEntry);
+      serviceLocator.Register (CreateParameterizedService());
+      serviceLocator.Register (CreateSingleService());
 
       var instance = serviceLocator.GetInstance<ITestType>();
 
@@ -93,6 +94,9 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
 
       var serviceLocator = CreateServiceLocator();
       serviceLocator.Register (serviceConfigurationEntry);
+      serviceLocator.Register (CreateInstanceService());
+      serviceLocator.Register (CreateSingletonService());
+      serviceLocator.Register (CreateMultipleService());
 
       var instance1 = serviceLocator.GetInstance<ITestType>();
       var instance2 = serviceLocator.GetInstance<ITestType>();
@@ -117,6 +121,9 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
 
       var serviceLocator = CreateServiceLocator();
       serviceLocator.Register (serviceConfigurationEntry);
+      serviceLocator.Register (CreateInstanceService());
+      serviceLocator.Register (CreateSingletonService());
+      serviceLocator.Register (CreateMultipleService());
 
       var instance1 = serviceLocator.GetInstance<ITestType>();
       var instance2 = serviceLocator.GetInstance<ITestType>();
@@ -139,6 +146,8 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
 
       var serviceLocator = CreateServiceLocator();
       serviceLocator.Register (serviceConfigurationEntry);
+      serviceLocator.Register (CreateSingleService());
+      serviceLocator.Register (CreateMultipleService());
 
       var instance = serviceLocator.GetInstance (typeof (ITestType));
 
@@ -162,6 +171,8 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
 
       var serviceLocator = CreateServiceLocator();
       serviceLocator.Register (serviceConfigurationEntry);
+      serviceLocator.Register (CreateSingleService());
+      serviceLocator.Register (CreateMultipleService());
 
       var instance = serviceLocator.GetInstance (typeof (ITestType));
 

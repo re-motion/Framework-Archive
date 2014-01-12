@@ -27,36 +27,8 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
   {
     protected DefaultServiceLocator CreateServiceLocator (IServiceConfigurationDiscoveryService serviceConfigurationDiscoveryService = null)
     {
-      var serviceLocator = new DefaultServiceLocator (
+      return new DefaultServiceLocator (
           serviceConfigurationDiscoveryService ?? MockRepository.GenerateStrictMock<IServiceConfigurationDiscoveryService>());
-
-      serviceLocator.Register (
-          new ServiceConfigurationEntry (
-              typeof (SingleService),
-              new ServiceImplementationInfo (typeof (SingleService), LifetimeKind.Singleton, RegistrationType.Single)));
-
-      serviceLocator.Register (
-          new ServiceConfigurationEntry (
-              typeof (MultipleService),
-              new ServiceImplementationInfo (typeof (MultipleService), LifetimeKind.Singleton, RegistrationType.Multiple)));
-
-      serviceLocator.Register (
-          new ServiceConfigurationEntry (
-              typeof (InstanceService),
-              new ServiceImplementationInfo (typeof (InstanceService), LifetimeKind.Instance, RegistrationType.Single)));
-
-      serviceLocator.Register (
-          new ServiceConfigurationEntry (
-              typeof (SingletonService),
-              new ServiceImplementationInfo (typeof (SingletonService), LifetimeKind.Singleton, RegistrationType.Single)));
-      
-      serviceLocator.Register (
-          new ServiceConfigurationEntry (
-              typeof (ParameterizedService),
-              new ServiceImplementationInfo (typeof (ParameterizedService), LifetimeKind.Instance, RegistrationType.Single)));
-
-
-      return serviceLocator;
     }
 
     protected ServiceConfigurationEntry CreateSingleServiceConfigurationEntry (
@@ -97,6 +69,41 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
       var implementations = decoratorTypes.Select (t => new ServiceImplementationInfo (t, lifetimeKind, RegistrationType.Decorator))
           .Concat (new[] { new ServiceImplementationInfo (implementationType, lifetimeKind, RegistrationType.Single) });
       return new ServiceConfigurationEntry (serviceType, implementations);
+    }
+
+    protected ServiceConfigurationEntry CreateInstanceService ()
+    {
+      return new ServiceConfigurationEntry (
+          typeof (InstanceService),
+          new ServiceImplementationInfo (typeof (InstanceService), LifetimeKind.Instance, RegistrationType.Single));
+    }
+
+    protected ServiceConfigurationEntry CreateSingletonService ()
+    {
+      return new ServiceConfigurationEntry (
+          typeof (SingletonService),
+          new ServiceImplementationInfo (typeof (SingletonService), LifetimeKind.Singleton, RegistrationType.Single));
+    }
+
+    protected ServiceConfigurationEntry CreateSingleService ()
+    {
+      return new ServiceConfigurationEntry (
+          typeof (SingleService),
+          new ServiceImplementationInfo (typeof (SingleService), LifetimeKind.Singleton, RegistrationType.Single));
+    }
+
+    protected ServiceConfigurationEntry CreateMultipleService ()
+    {
+      return new ServiceConfigurationEntry (
+          typeof (MultipleService),
+          new ServiceImplementationInfo (typeof (MultipleService), LifetimeKind.Singleton, RegistrationType.Multiple));
+    }
+
+    protected ServiceConfigurationEntry CreateParameterizedService ()
+    {
+      return new ServiceConfigurationEntry (
+          typeof (ParameterizedService),
+          new ServiceImplementationInfo (typeof (ParameterizedService), LifetimeKind.Instance, RegistrationType.Single));
     }
   }
 }
