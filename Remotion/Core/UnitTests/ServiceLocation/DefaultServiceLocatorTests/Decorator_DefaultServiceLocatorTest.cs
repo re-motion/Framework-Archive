@@ -29,7 +29,7 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
     [Test]
     public void GetInstance_SingleDecorator_DecoratesImplementation ()
     {
-      var serviceConfigurationEntry = CreateServiceConfigurationEntry (
+      var serviceConfigurationEntry = CreateDecoratorServiceConfigurationEntry (
           typeof (ITestType),
           new[] { typeof (TestDecorator1) },
           typeof (TestImplementation1));
@@ -47,7 +47,7 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
     [Test]
     public void GetInstance_StackedDecorators_DecoratesImplementationWithFirstDecoratorBeingClosestToImplementation ()
     {
-      var serviceConfigurationEntry = CreateServiceConfigurationEntry (
+      var serviceConfigurationEntry = CreateDecoratorServiceConfigurationEntry (
           typeof (ITestType),
           new[] { typeof (TestDecorator1), typeof (TestDecorator2) },
           typeof (TestImplementation1));
@@ -99,35 +99,15 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
     }
 
     [Test]
-    public void GetInstance_DecoratorWithAdditionalConstructorParameters_PerformsIndirectResolutionCalls ()
-    {
-      var serviceConfigurationEntry = CreateServiceConfigurationEntry (
-          typeof (ITestType),
-          new[] { typeof (TestDecoratorWithAdditionalConstructorParameters) },
-          typeof (TestImplementation1));
-
-      var serviceLocator = CreateServiceLocator();
-      serviceLocator.Register (serviceConfigurationEntry);
-
-      var instance = serviceLocator.GetInstance (typeof (ITestType));
-
-      Assert.That (instance, Is.TypeOf<TestDecoratorWithAdditionalConstructorParameters>());
-      var decoratorInstance = (TestDecoratorWithAdditionalConstructorParameters) instance;
-      Assert.That (decoratorInstance.DecoratedObject, Is.TypeOf<TestImplementation1>());
-      Assert.That (decoratorInstance.SingleService, Is.TypeOf<SingleService>());
-      Assert.That (decoratorInstance.MultipleService, Is.Not.Empty);
-      Assert.That (decoratorInstance.MultipleService, Has.All.TypeOf<MultipleService>());
-    }
-
-    [Test]
     public void GetAllInstances_DecoratesImplementations ()
     {
       var implementation1 = new ServiceImplementationInfo (typeof (TestImplementation1), LifetimeKind.Instance, RegistrationType.Multiple);
       var implementation2 = new ServiceImplementationInfo (typeof (TestImplementation2), LifetimeKind.Instance, RegistrationType.Multiple);
       var decorator = new ServiceImplementationInfo (typeof (TestDecorator1), LifetimeKind.Instance, RegistrationType.Decorator);
+      var serviceConfigurationEntry = new ServiceConfigurationEntry (typeof (ITestType), implementation1, implementation2, decorator);
 
       var serviceLocator = CreateServiceLocator();
-      serviceLocator.Register (new ServiceConfigurationEntry (typeof (ITestType), implementation1, implementation2, decorator));
+      serviceLocator.Register (serviceConfigurationEntry);
 
       var instances = serviceLocator.GetAllInstances (typeof (ITestType)).ToArray();
 
@@ -147,9 +127,10 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
       var implementation2 = new ServiceImplementationInfo (typeof (TestImplementation2), LifetimeKind.Instance, RegistrationType.Multiple);
       var decorator = new ServiceImplementationInfo (typeof (TestDecorator1), LifetimeKind.Instance, RegistrationType.Decorator);
       var compound = new ServiceImplementationInfo (typeof (TestCompound), LifetimeKind.Instance, RegistrationType.Compound);
+      var serviceConfigurationEntry = new ServiceConfigurationEntry (typeof (ITestType), implementation1, implementation2, decorator, compound);
 
       var serviceLocator = CreateServiceLocator();
-      serviceLocator.Register (new ServiceConfigurationEntry (typeof (ITestType), implementation1, implementation2, decorator, compound));
+      serviceLocator.Register (serviceConfigurationEntry);
 
       var instance = serviceLocator.GetInstance (typeof (ITestType));
 
@@ -168,7 +149,7 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
     [Test]
     public void Register_DecoratorWithoutPublicConstructor_ThrowsInvalidOperationException ()
     {
-      var serviceConfigurationEntry = CreateServiceConfigurationEntry (
+      var serviceConfigurationEntry = CreateDecoratorServiceConfigurationEntry (
           typeof (ITestDecoratorWithErrors),
           new[] { typeof (TestDecoratorWithoutPublicConstructor) },
           typeof (TestDecoratorWithErrorsImplementation));
@@ -186,7 +167,7 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
     [Test]
     public void Register_DecoratorWithConstructorWithoutArguments_ThrowsInvalidOperationException ()
     {
-      var serviceConfigurationEntry = CreateServiceConfigurationEntry (
+      var serviceConfigurationEntry = CreateDecoratorServiceConfigurationEntry (
           typeof (ITestDecoratorWithErrors),
           new[] { typeof (TestDecoratorWithConstructorWithoutArguments) },
           typeof (TestDecoratorWithErrorsImplementation));
@@ -204,7 +185,7 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
     [Test]
     public void Register_DecoratorWithConstructorWithoutMatchingArgument_ThrowsInvalidOperationException ()
     {
-      var serviceConfigurationEntry = CreateServiceConfigurationEntry (
+      var serviceConfigurationEntry = CreateDecoratorServiceConfigurationEntry (
           typeof (ITestDecoratorWithErrors),
           new[] { typeof (TestDecoratorWithConstructorWithoutMatchingArgument) },
           typeof (TestDecoratorWithErrorsImplementation));
@@ -217,17 +198,6 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
               "Type 'Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests.TestDomain.TestDecoratorWithConstructorWithoutMatchingArgument' cannot be instantiated. "
               + "The type must have exactly one public constructor. The public constructor must at least accept an argument of type "
               + "'Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests.TestDomain.ITestDecoratorWithErrors'."));
-    }
-
-    private ServiceConfigurationEntry CreateServiceConfigurationEntry (
-        Type serviceType,
-        Type[] decoratorTypes,
-        Type implementationType,
-        LifetimeKind lifetimeKind = LifetimeKind.Instance)
-    {
-      var implementations = decoratorTypes.Select (t => new ServiceImplementationInfo (t, lifetimeKind, RegistrationType.Decorator))
-          .Concat (new[] { new ServiceImplementationInfo (implementationType, lifetimeKind, RegistrationType.Single) });
-      return new ServiceConfigurationEntry (serviceType, implementations);
     }
   }
 }

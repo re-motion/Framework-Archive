@@ -30,9 +30,28 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
   public class Multiple_DefaultServiceLocatorTest : TestBase
   {
     [Test]
+    public void GetAllInstances_LookUpViaServiceConfigurationDiscoveryService_InstantiatesImplementations ()
+    {
+      var serviceConfigurationEntry = CreateMultipleServiceConfigurationEntry (
+          typeof (ITestType),
+          new[] { typeof (TestImplementation1), typeof (TestImplementation2) });
+
+      var serviceConfigurationDiscoveryServiceStub = MockRepository.GenerateStrictMock<IServiceConfigurationDiscoveryService>();
+      serviceConfigurationDiscoveryServiceStub.Stub(_=>_.GetDefaultConfiguration (typeof (ITestType))).Return (serviceConfigurationEntry);
+
+      var serviceLocator = CreateServiceLocator (serviceConfigurationDiscoveryServiceStub);
+
+      var instances = serviceLocator.GetAllInstances (typeof (ITestType));
+
+      Assert.That (
+          instances.Select (c => c.GetType()),
+          Is.EqualTo (new[] { typeof (TestImplementation1), typeof (TestImplementation2) }));
+    }
+
+    [Test]
     public void GetAllInstances_InstantiatesImplementationsInOrderOfRegistration ()
     {
-      var serviceConfigurationEntry = CreateServiceConfigurationEntry (
+      var serviceConfigurationEntry = CreateMultipleServiceConfigurationEntry (
           typeof (ITestType),
           new[] { typeof (TestImplementation1), typeof (TestImplementation2) });
 
@@ -49,9 +68,7 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
     [Test]
     public void GetAllInstances_NoImplementations_ReturnsEmptySequence ()
     {
-      var serviceConfigurationEntry = CreateServiceConfigurationEntry (
-          typeof (ITestType),
-          new Type[0]);
+      var serviceConfigurationEntry = CreateMultipleServiceConfigurationEntry (typeof (ITestType), new Type[0]);
 
       var serviceLocator = CreateServiceLocator();
       serviceLocator.Register (serviceConfigurationEntry);
@@ -64,7 +81,7 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
     [Test]
     public void GetAllInstances_GenericOverload_InstantiatesImplementationsInOrderOfRegistration ()
     {
-      var serviceConfigurationEntry = CreateServiceConfigurationEntry (
+      var serviceConfigurationEntry = CreateMultipleServiceConfigurationEntry (
           typeof (ITestType),
           new[] { typeof (TestImplementation1), typeof (TestImplementation2) });
 
@@ -79,7 +96,7 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
     }
 
     [Test]
-    public void GetAllInstances_OneImplementationIsSingleton_ReturnsSingletonAsSingletonAndInstanceAsInstance ()
+    public void GetAllInstances_WithMixedLifetimeKind_ReturnsSingletonAsSingletonAndInstanceAsInstance ()
     {
       var implementation1 = new ServiceImplementationInfo (typeof (TestImplementation1), LifetimeKind.Singleton, RegistrationType.Multiple);
       var implementation2 = new ServiceImplementationInfo (typeof (TestImplementation2), LifetimeKind.Instance, RegistrationType.Multiple);
@@ -97,9 +114,15 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
     }
 
     [Test]
+    public void GetAllInstances_ImplementationIsRegisteredAsFactory ()
+    {
+      Assert.Fail ("TODO implement");
+    }
+
+    [Test]
     public void GetInstance_ThrowsActivationException ()
     {
-      var serviceConfigurationEntry = CreateServiceConfigurationEntry (
+      var serviceConfigurationEntry = CreateMultipleServiceConfigurationEntry (
           typeof (ITestType),
           new[] { typeof (TestImplementation1) });
 
@@ -109,14 +132,14 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
       Assert.That (
           () => serviceLocator.GetInstance (typeof (ITestType)),
           Throws.TypeOf<ActivationException>().With.Message.EqualTo (
-              "Multiple implemetations are configured for service type 'Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests.TestDomain.ITestType'. "
-              + "Consider using 'GetAllInstances'."));
+              "Multiple implementations are configured for service type 'Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests.TestDomain.ITestType'. "
+              + "Use GetAllInstances() to retrieve the implementations."));
     }
 
     [Test]
     public void GetAllInstances_ConstructorThrowingException_ExceptionIsWrappedInActivationException ()
     {
-      var serviceConfigurationEntry = CreateServiceConfigurationEntry (
+      var serviceConfigurationEntry = CreateMultipleServiceConfigurationEntry (
           typeof (ITestTypeWithErrors),
           new[] { typeof (TestTypeWithConstructorThrowingException) });
 
@@ -150,7 +173,7 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
     [Test]
     public void GetAllInstances_ServiceTypeWithoutImplementations_DefaultsToMultipleRegistration ()
     {
-      var serviceConfigurationEntry = CreateServiceConfigurationEntry (typeof (ITestType), new Type[0]);
+      var serviceConfigurationEntry = CreateMultipleServiceConfigurationEntry (typeof (ITestType), new Type[0]);
       var serviceConfigurationDiscoveryServiceStub = MockRepository.GenerateStrictMock<IServiceConfigurationDiscoveryService>();
       serviceConfigurationDiscoveryServiceStub.Stub(_=>_.GetDefaultConfiguration (typeof (ITestType))).Return (serviceConfigurationEntry);
 
@@ -159,15 +182,6 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
       var result = serviceLocator.GetAllInstances (typeof (ITestType));
 
       Assert.That (result, Is.Empty);
-    }
-
-    private ServiceConfigurationEntry CreateServiceConfigurationEntry (
-        Type serviceType,
-        Type[] implementationTypes,
-        LifetimeKind lifetimeKind = LifetimeKind.Instance)
-    {
-      var implementations = implementationTypes.Select (t=> new ServiceImplementationInfo (t, lifetimeKind, RegistrationType.Multiple));
-      return new ServiceConfigurationEntry (serviceType, implementations);
     }
   }
 }

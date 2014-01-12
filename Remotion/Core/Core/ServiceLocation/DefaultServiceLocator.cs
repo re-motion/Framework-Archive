@@ -140,9 +140,7 @@ namespace Remotion.ServiceLocation
 
       var registration = GetOrCreateRegistrationWithActivationException (serviceType);
 
-      var errorMessageFormat =
-          "Invalid ConcreteImplementationAttribute configuration for service type '{0}'. "
-          + "The service has implementations registered with RegistrationType.{1}. Use GetInstance() to retrieve the implementations.";
+      var errorMessageFormat = "A single implementation is configured for service type '{0}'. Use GetInstance() to retrieve the implementation.";
 
       if (registration.SingleFactory != null)
         throw new ActivationException (string.Format (errorMessageFormat, serviceType, RegistrationType.Single));
@@ -218,15 +216,16 @@ namespace Remotion.ServiceLocation
     private object GetInstanceOrNull (Type serviceType)
     {
       var registration = GetOrCreateRegistrationWithActivationException (serviceType);
-      if (registration.CompoundFactory == null && registration.MultipleFactories.Any())
+      if (registration.CompoundFactory == null && registration.SingleFactory == null)
       {
         throw new ActivationException (
-            string.Format ("Multiple implemetations are configured for service type '{0}'. Consider using 'GetAllInstances'.", serviceType)); //TODO TT: better message because compound?
+            string.Format (
+                "Multiple implementations are configured for service type '{0}'. Use GetAllInstances() to retrieve the implementations.",
+                serviceType)); //TODO TT: better message because compound?
       }
 
       var factory = registration.SingleFactory ?? registration.CompoundFactory;
-      if (factory == null)
-        return null; // TODO TT: Is this really possible?
+      Assertion.IsNotNull (factory);
 
       return InvokeInstanceFactoryWithActivationException (factory, serviceType);
     }

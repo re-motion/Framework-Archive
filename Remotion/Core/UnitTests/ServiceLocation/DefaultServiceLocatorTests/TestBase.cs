@@ -15,6 +15,8 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 
+using System;
+using System.Linq;
 using Remotion.ServiceLocation;
 using Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests.TestDomain;
 using Rhino.Mocks;
@@ -23,7 +25,7 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
 {
   public class TestBase
   {
-    protected static DefaultServiceLocator CreateServiceLocator (IServiceConfigurationDiscoveryService serviceConfigurationDiscoveryService = null)
+    protected DefaultServiceLocator CreateServiceLocator (IServiceConfigurationDiscoveryService serviceConfigurationDiscoveryService = null)
     {
       var serviceLocator = new DefaultServiceLocator (
           serviceConfigurationDiscoveryService ?? MockRepository.GenerateStrictMock<IServiceConfigurationDiscoveryService>());
@@ -38,7 +40,63 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
               typeof (MultipleService),
               new ServiceImplementationInfo (typeof (MultipleService), LifetimeKind.Singleton, RegistrationType.Multiple)));
 
+      serviceLocator.Register (
+          new ServiceConfigurationEntry (
+              typeof (InstanceService),
+              new ServiceImplementationInfo (typeof (InstanceService), LifetimeKind.Instance, RegistrationType.Single)));
+
+      serviceLocator.Register (
+          new ServiceConfigurationEntry (
+              typeof (SingletonService),
+              new ServiceImplementationInfo (typeof (SingletonService), LifetimeKind.Singleton, RegistrationType.Single)));
+      
+      serviceLocator.Register (
+          new ServiceConfigurationEntry (
+              typeof (ParameterizedService),
+              new ServiceImplementationInfo (typeof (ParameterizedService), LifetimeKind.Instance, RegistrationType.Single)));
+
+
       return serviceLocator;
+    }
+
+    protected ServiceConfigurationEntry CreateSingleServiceConfigurationEntry (
+        Type serviceType,
+        Type implementationType,
+        LifetimeKind lifetimeKind = LifetimeKind.Instance)
+    {
+      var implementation = new ServiceImplementationInfo (implementationType, lifetimeKind, RegistrationType.Single);
+      return new ServiceConfigurationEntry (serviceType, implementation);
+    }
+
+    protected ServiceConfigurationEntry CreateMultipleServiceConfigurationEntry (
+        Type serviceType,
+        Type[] implementationTypes,
+        LifetimeKind lifetimeKind = LifetimeKind.Instance)
+    {
+      var implementations = implementationTypes.Select (t=> new ServiceImplementationInfo (t, lifetimeKind, RegistrationType.Multiple));
+      return new ServiceConfigurationEntry (serviceType, implementations);
+    }
+
+    protected ServiceConfigurationEntry CreateCompoundServiceConfigurationEntry (
+        Type serviceType,
+        Type compoundType,
+        Type[] implementationTypes,
+        LifetimeKind lifetimeKind = LifetimeKind.Instance)
+    {
+      var implementations = new[] { new ServiceImplementationInfo (compoundType, lifetimeKind, RegistrationType.Compound) }
+          .Concat (implementationTypes.Select (t => new ServiceImplementationInfo (t, lifetimeKind, RegistrationType.Multiple)));
+      return new ServiceConfigurationEntry (serviceType, implementations);
+    }
+
+    protected ServiceConfigurationEntry CreateDecoratorServiceConfigurationEntry (
+        Type serviceType,
+        Type[] decoratorTypes,
+        Type implementationType,
+        LifetimeKind lifetimeKind = LifetimeKind.Instance)
+    {
+      var implementations = decoratorTypes.Select (t => new ServiceImplementationInfo (t, lifetimeKind, RegistrationType.Decorator))
+          .Concat (new[] { new ServiceImplementationInfo (implementationType, lifetimeKind, RegistrationType.Single) });
+      return new ServiceConfigurationEntry (serviceType, implementations);
     }
   }
 }

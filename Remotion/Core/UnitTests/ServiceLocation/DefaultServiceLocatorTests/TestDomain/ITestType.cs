@@ -33,66 +33,43 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests.TestDoma
   {
   }
 
-  public class TestCompound : ITestType
+  public class TestImplementationWithOneConstructorParameter : ITestType
   {
-    public ITestType[] InnerObjects { get; private set; }
+    public InstanceService InstanceService { get; private set; }
 
-    public TestCompound (IEnumerable<ITestType> innerObjects)
+    public TestImplementationWithOneConstructorParameter (InstanceService instanceService)
     {
-      InnerObjects = innerObjects.ToArray();
+      InstanceService = instanceService;
     }
   }
 
-  public class TestCompoundWithAdditionalConstructorParameters : ITestType
+  public class TestImplementationWithMultipleConstructorParameters : ITestType
   {
-    public SingleService SingleService { get; private set; }
+    public InstanceService InstanceService1 { get; private set; }
+    public InstanceService InstanceService2 { get; private set; }
+    public SingletonService SingletonService { get; private set; }
     public MultipleService[] MultipleService { get; private set; }
 
-    public IEnumerable<ITestType> InnerObjects { get; private set; }
-
-    public TestCompoundWithAdditionalConstructorParameters (
-        SingleService singleService,
-        IEnumerable<ITestType> innerObjects,
-        IEnumerable<MultipleService> stubService2)
+    public TestImplementationWithMultipleConstructorParameters (
+        InstanceService instanceService1,
+        InstanceService instanceService2,
+        SingletonService singletonService,
+        IEnumerable<MultipleService> multipleService)
     {
-      SingleService = singleService;
-      MultipleService = stubService2.ToArray();
-      InnerObjects = innerObjects.ToArray();
+      InstanceService1 = instanceService1;
+      InstanceService2 = instanceService2;
+      SingletonService = singletonService;
+      MultipleService = multipleService.ToArray();
     }
   }
 
-  public class TestDecorator1 : ITestType
+  public class TestImplementationWithRecursiceConstructorParameter : ITestType
   {
-    public ITestType DecoratedObject { get; private set; }
+    public ParameterizedService ParameterizedService { get; private set; }
 
-    public TestDecorator1 (ITestType decoratedObject)
+    public TestImplementationWithRecursiceConstructorParameter (ParameterizedService parameterizedService)
     {
-      DecoratedObject = decoratedObject;
-    }
-  }
-
-  public class TestDecorator2 : ITestType
-  {
-    public ITestType DecoratedObject { get; private set; }
-
-    public TestDecorator2 (ITestType decoratedObject)
-    {
-      DecoratedObject = decoratedObject;
-    }
-  }
-
-  public class TestDecoratorWithAdditionalConstructorParameters : ITestType
-  {
-    public SingleService SingleService { get; private set; }
-    public MultipleService[] MultipleService { get; private set; }
-
-    public ITestType DecoratedObject { get; private set; }
-
-    public TestDecoratorWithAdditionalConstructorParameters (SingleService singleService, ITestType decoratedObject, IEnumerable<MultipleService> stubService2)
-    {
-      SingleService = singleService;
-      MultipleService = stubService2.ToArray();
-      DecoratedObject = decoratedObject;
+      ParameterizedService = parameterizedService;
     }
   }
 }

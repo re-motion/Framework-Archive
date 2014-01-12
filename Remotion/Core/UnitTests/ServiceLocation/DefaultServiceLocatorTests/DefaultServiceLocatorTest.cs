@@ -83,41 +83,71 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
     }
 
     [Test]
-    public void GetInstance_IndirectActivationException_ThrowsActivationException_CausesFullMessageToBeBuilt ()
+    public void Register_ServiceConfigurationEntry_ServiceAdded ()
     {
-      Assert.That (
-          () => _serviceLocator.GetInstance<IInterfaceWithIndirectActivationException>(),
-          Throws.TypeOf<ActivationException>().With.Message.EqualTo (
-              "Could not resolve type 'Remotion.UnitTests.ServiceLocation.TestDomain.IInterfaceWithIndirectActivationException': "
-              + "Error resolving indirect dependendency of constructor parameter 'innerDependency' of type "
-              + "'Remotion.UnitTests.ServiceLocation.TestDomain.ClassWithIndirectActivationException': Cannot get a concrete implementation of type "
-              + "'Remotion.UnitTests.ServiceLocation.TestDomain.IInterfaceWithoutImplementation': "
-              + "Expected 'ConcreteImplementationAttribute' could not be found."));
+      var serviceImplementation = new ServiceImplementationInfo (
+          typeof (TestConcreteImplementationAttributeType), LifetimeKind.Singleton);
+      var serviceConfigurationEntry = new ServiceConfigurationEntry (
+          typeof (ITestSingletonConcreteImplementationAttributeType), serviceImplementation);
+
+      _serviceLocator.Register (serviceConfigurationEntry);
+
+      var instance1 = _serviceLocator.GetInstance (typeof (ITestSingletonConcreteImplementationAttributeType));
+      var instance2 = _serviceLocator.GetInstance (typeof (ITestSingletonConcreteImplementationAttributeType));
+      Assert.That (instance1, Is.SameAs (instance2));
     }
 
     [Test]
-    public void GetInstance_IndirectActivationException_ForCollectionParameter_ThrowsActivationException_CausesFullMessageToBeBuilt ()
+    public void Register_ServiceConfigurationEntry_MultipleServices ()
     {
-      Assert.That (
-          () => _serviceLocator.GetInstance<IInterfaceWithIndirectActivationExceptionForCollectionParameter>(),
-          Throws.TypeOf<ActivationException>().With.Message.EqualTo (
-              "Could not resolve type 'Remotion.UnitTests.ServiceLocation.TestDomain.IInterfaceWithIndirectActivationExceptionForCollectionParameter': "
-              + "Error resolving indirect collection dependendency of constructor parameter 'innerDependency' of type "
-              + "'Remotion.UnitTests.ServiceLocation.TestDomain.ClassWithIndirectActivationExceptionForCollectionParameter': "
-              + "InvalidOperationException: This exception comes from the ctor."));
+      var implementation1 = new ServiceImplementationInfo (typeof (TestMultipleRegistrationType1), LifetimeKind.Singleton, RegistrationType.Multiple);
+      var implementation2 = new ServiceImplementationInfo (typeof (TestMultipleRegistrationType2), LifetimeKind.Singleton, RegistrationType.Multiple);
+      var serviceConfigurationEntry = new ServiceConfigurationEntry (typeof (ITestMultipleRegistrationsType), implementation1, implementation2);
+
+      _serviceLocator.Register (serviceConfigurationEntry);
+
+      var instances = _serviceLocator.GetAllInstances<ITestMultipleRegistrationsType> ().ToArray ();
+      Assert.That (instances, Has.Length.EqualTo (2));
+      Assert.That (instances[0], Is.TypeOf<TestMultipleRegistrationType1> ());
+      Assert.That (instances[1], Is.TypeOf<TestMultipleRegistrationType2> ());
     }
 
     [Test]
-    public void GetInstance_ExceptionDuringImplictRegistration_ThrowsActivationException_WithOriginalExceptionAsInnerException ()
+    public void Register_ServiceConfigurationEntry_ImplementationInfoWithFactory ()
     {
-      Assert.Fail ("TODO Implement");
+      var expectedInstance = new TestConcreteImplementationAttributeType();
+      var serviceImplementation = ServiceImplementationInfo.CreateSingle (() => expectedInstance);
+
+      var serviceConfigurationEntry = new ServiceConfigurationEntry (
+          typeof (ITestSingletonConcreteImplementationAttributeType),
+          serviceImplementation);
+
+      _serviceLocator.Register (serviceConfigurationEntry);
+
+      var instance1 = _serviceLocator.GetInstance (typeof (ITestSingletonConcreteImplementationAttributeType));
+      Assert.That (instance1, Is.SameAs (expectedInstance));
+    }
+
+    [Test]
+    public void GetInstance_TypeWithGenericServiceInterface ()
+    {
+
+      var serviceLocator = DefaultServiceLocator.Create();
+
+      Assert.That (serviceLocator.GetInstance (typeof (ITestOpenGenericService<int>)), Is.TypeOf (typeof (TestOpenGenericIntImplementation)));
+      Assert.That (serviceLocator.GetInstance (typeof (ITestOpenGenericService<string>)), Is.TypeOf (typeof (TestOpenGenericStringImplementation)));
       Assert.That (
-          () => _serviceLocator.GetInstance<IInterfaceWithIndirectActivationExceptionForCollectionParameter>(),
-          Throws.TypeOf<ActivationException>().With.Message.EqualTo (
-              "Could not resolve type 'Remotion.UnitTests.ServiceLocation.TestDomain.IX': "
-              + "Error resolving type "
-              + "'Remotion.UnitTests.ServiceLocation.TestDomain.X': "
-              + "InvalidOperationException: This exception comes from the Registration."));
+          SafeServiceLocator.Current.GetInstance<ITestOpenGenericService<int>>(),
+          Is.InstanceOf (typeof (TestOpenGenericIntImplementation)));
+    }
+
+    [Test]
+    public void GetInstance_NotImplementedGenericServiceInterface ()
+    {
+      var serviceLocator = DefaultServiceLocator.Create();
+
+      Assert.That (() => serviceLocator.GetInstance (typeof (ITestOpenGenericService<object>)), 
+        Throws.Exception.InstanceOf<ActivationException>());
     }
 
     class DomainType
