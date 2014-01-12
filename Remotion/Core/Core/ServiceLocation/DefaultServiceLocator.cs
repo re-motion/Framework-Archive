@@ -96,12 +96,7 @@ namespace Remotion.ServiceLocation
 
       var instance = GetInstanceOrNull (serviceType);
       if (instance == null)
-      {
-        string message = string.Format (
-            "Cannot get a concrete implementation of type '{0}': Expected 'ConcreteImplementationAttribute' could not be found.",
-            serviceType.FullName);
-        throw new ActivationException (message);
-      }
+        throw new ActivationException (string.Format ("No implementation is registered for service type '{0}'.", serviceType));
 
       return instance;
     }
@@ -216,18 +211,22 @@ namespace Remotion.ServiceLocation
     private object GetInstanceOrNull (Type serviceType)
     {
       var registration = GetOrCreateRegistrationWithActivationException (serviceType);
-      if (registration.CompoundFactory == null && registration.SingleFactory == null)
+
+      if (registration.CompoundFactory != null)
+        return InvokeInstanceFactoryWithActivationException (registration.CompoundFactory, serviceType);
+
+      if (registration.SingleFactory == null && registration.MultipleFactories.Any())
       {
         throw new ActivationException (
             string.Format (
                 "Multiple implementations are configured for service type '{0}'. Use GetAllInstances() to retrieve the implementations.",
-                serviceType)); //TODO TT: better message because compound?
+                serviceType));
       }
 
-      var factory = registration.SingleFactory ?? registration.CompoundFactory;
-      Assertion.IsNotNull (factory);
+      if (registration.SingleFactory != null)
+        return InvokeInstanceFactoryWithActivationException (registration.SingleFactory, serviceType);
 
-      return InvokeInstanceFactoryWithActivationException (factory, serviceType);
+      return null;
     }
 
     private object InvokeInstanceFactoryWithActivationException (Func<object> factory, Type serviceType)

@@ -193,19 +193,18 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
     }
 
     [Test]
-    public void GetInstance_ServiceTypeWithoutImplementation_DefaultsToMultipleRegistration_ThrowsActivationException ()
+    public void GetInstance_ServiceTypeWithoutImplementation_ThrowsActivationException ()
     {
       var serviceConfigurationEntry = CreateMultipleServiceConfigurationEntry (typeof (ITestType), new Type[0]);
       var serviceConfigurationDiscoveryServiceStub = MockRepository.GenerateStrictMock<IServiceConfigurationDiscoveryService>();
-      serviceConfigurationDiscoveryServiceStub.Stub(_=>_.GetDefaultConfiguration (typeof (ITestType))).Return (serviceConfigurationEntry);
+      serviceConfigurationDiscoveryServiceStub.Stub (_ => _.GetDefaultConfiguration (typeof (ITestType))).Return (serviceConfigurationEntry);
 
       var serviceLocator = CreateServiceLocator (serviceConfigurationDiscoveryServiceStub);
 
       Assert.That (
           () => serviceLocator.GetInstance (typeof (ITestType)),
           Throws.TypeOf<ActivationException>().With.Message.EqualTo (
-              "Multiple implementations are configured for service type 'Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests.TestDomain.ITestType'. "
-              + "Use GetAllInstances() to retrieve the implementations."));
+              "No implementation is registered for service type 'Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests.TestDomain.ITestType'."));
     }
 
     [Test]
