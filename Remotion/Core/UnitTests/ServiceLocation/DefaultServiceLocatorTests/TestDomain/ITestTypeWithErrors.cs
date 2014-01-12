@@ -16,6 +16,8 @@
 // 
 
 using System;
+using System.Collections.Generic;
+using Remotion.Development.UnitTesting.Enumerables;
 using Remotion.UnitTests.ServiceLocation.TestDomain;
 
 namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests.TestDomain
@@ -39,6 +41,21 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests.TestDoma
   {
     protected TestTypeWithOnlyNonPublicConstructor ()
     {
+    }
+  }
+  
+  public class TestTypeWithConstructorThrowingSingleDependency : ITestType
+  {
+    public TestTypeWithConstructorThrowingSingleDependency (ITestTypeWithErrors param)
+    {
+    }
+  }
+
+  public class TestTypeWithConstructorThrowingMultipleDependency : ITestType
+  {
+    public TestTypeWithConstructorThrowingMultipleDependency (IEnumerable<ITestTypeWithErrors> param)
+    {
+      param.ForceEnumeration();
     }
   }
 

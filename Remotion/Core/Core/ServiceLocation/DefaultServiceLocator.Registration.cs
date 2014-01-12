@@ -84,7 +84,7 @@ namespace Remotion.ServiceLocation
       {
         var message = string.Format (
             "Register cannot be called twice or after GetInstance for service type: '{0}'.",
-            serviceConfigurationEntry.ServiceType.Name);
+            serviceConfigurationEntry.ServiceType);
         throw new InvalidOperationException (message);
       }
     }
@@ -261,17 +261,28 @@ namespace Remotion.ServiceLocation
       }
       catch (ActivationException ex)
       {
-        var message = string.Format ("Error resolving indirect dependendency of {0}: {1}", context, ex.Message);
+        var message = string.Format ("Error resolving indirect dependency of {0}: {1}", context, ex.Message);
         throw new ActivationException (message, ex);
       }
     }
 
     private IEnumerable<T> ResolveIndirectCollectionDependency<T> (string context)
     {
+      IEnumerable<T> enumerable;
+      try
+      {
+        enumerable = GetAllInstances<T>();
+      }
+      catch (ActivationException ex)
+      {
+        var message = string.Format ("Error resolving indirect collection dependency of {0}: {1}", context, ex.Message);
+        throw new ActivationException (message, ex);
+      }
+
       // To keep the lazy sequence semantics of GetAllInstances, and still be able to catch the ActivationException, we need to manually iterate
       // the input sequence from within a try/catch block and yield return from outside the try/catch block. (Yield return is not allowed to stand
       // within a try/catch block.)
-      using (var enumerator = GetAllInstances<T>().GetEnumerator())
+      using (var enumerator = enumerable.GetEnumerator())
       {
         while (true)
         {
@@ -284,7 +295,7 @@ namespace Remotion.ServiceLocation
           }
           catch (ActivationException ex)
           {
-            var message = string.Format ("Error resolving indirect collection dependendency of {0}: {1}", context, ex.Message);
+            var message = string.Format ("Error resolving indirect collection dependency of {0}: {1}", context, ex.Message);
             throw new ActivationException (message, ex);
           }
           yield return current;
