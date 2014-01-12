@@ -35,25 +35,64 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests.TestDoma
 
   public class TestCompound : ITestType
   {
-    public IEnumerable<ITestType> CompoundRegistrations { get; private set; }
+    public ITestType[] InnerObjects { get; private set; }
 
-    public TestCompound (IEnumerable<ITestType> compoundRegistrations)
+    public TestCompound (IEnumerable<ITestType> innerObjects)
     {
-      CompoundRegistrations = compoundRegistrations.ToArray();
+      InnerObjects = innerObjects.ToArray();
     }
   }
 
-
   public class TestCompoundWithAdditionalConstructorParameters : ITestType
   {
-    public StubService StubService { get; private set; }
+    public SingleService SingleService { get; private set; }
+    public MultipleService[] MultipleService { get; private set; }
 
-    public IEnumerable<ITestType> CompoundRegistrations { get; private set; }
+    public IEnumerable<ITestType> InnerObjects { get; private set; }
 
-    public TestCompoundWithAdditionalConstructorParameters (StubService stubService, IEnumerable<ITestType> compoundRegistrations)
+    public TestCompoundWithAdditionalConstructorParameters (
+        SingleService singleService,
+        IEnumerable<ITestType> innerObjects,
+        IEnumerable<MultipleService> stubService2)
     {
-      StubService = stubService;
-      CompoundRegistrations = compoundRegistrations.ToArray();
+      SingleService = singleService;
+      MultipleService = stubService2.ToArray();
+      InnerObjects = innerObjects.ToArray();
+    }
+  }
+
+  public class TestDecorator1 : ITestType
+  {
+    public ITestType DecoratedObject { get; private set; }
+
+    public TestDecorator1 (ITestType decoratedObject)
+    {
+      DecoratedObject = decoratedObject;
+    }
+  }
+
+  public class TestDecorator2 : ITestType
+  {
+    public ITestType DecoratedObject { get; private set; }
+
+    public TestDecorator2 (ITestType decoratedObject)
+    {
+      DecoratedObject = decoratedObject;
+    }
+  }
+
+  public class TestDecoratorWithAdditionalConstructorParameters : ITestType
+  {
+    public SingleService SingleService { get; private set; }
+    public MultipleService[] MultipleService { get; private set; }
+
+    public ITestType DecoratedObject { get; private set; }
+
+    public TestDecoratorWithAdditionalConstructorParameters (SingleService singleService, ITestType decoratedObject, IEnumerable<MultipleService> stubService2)
+    {
+      SingleService = singleService;
+      MultipleService = stubService2.ToArray();
+      DecoratedObject = decoratedObject;
     }
   }
 }

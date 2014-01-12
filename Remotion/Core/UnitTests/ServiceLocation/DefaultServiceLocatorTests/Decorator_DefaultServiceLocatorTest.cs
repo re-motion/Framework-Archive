@@ -14,12 +14,12 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
 using System.Linq;
 using NUnit.Framework;
 using Remotion.ServiceLocation;
 using Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests.TestDomain;
-using Remotion.UnitTests.ServiceLocation.TestDomain;
 
 namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
 {
@@ -32,6 +32,141 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
     public void SetUp ()
     {
       _serviceLocator = DefaultServiceLocator.Create();
+    }
+
+    [Test]
+    public void GetInstance_SingleDecorator_DecoratesImplementation ()
+    {
+      var serviceConfigurationEntry = CreateServiceConfigurationEntry (
+          typeof (ITestType),
+          new[] { typeof (TestDecorator1) },
+          typeof (TestImplementation1));
+      _serviceLocator.Register (serviceConfigurationEntry);
+
+      var instance = _serviceLocator.GetInstance (typeof (ITestType));
+
+      Assert.That (instance, Is.TypeOf<TestDecorator1>());
+      var decoratorInstance = (TestDecorator1) instance;
+      Assert.That (decoratorInstance.DecoratedObject, Is.TypeOf<TestImplementation1>());
+    }
+
+    [Test]
+    public void GetInstance_StackedDecorators_DecoratesImplementationWithFirstDecoratorBeingClosestToImplementation ()
+    {
+      var serviceConfigurationEntry = CreateServiceConfigurationEntry (
+          typeof (ITestType),
+          new[] { typeof (TestDecorator1), typeof (TestDecorator2) },
+          typeof (TestImplementation1));
+      _serviceLocator.Register (serviceConfigurationEntry);
+
+      var instance = _serviceLocator.GetInstance (typeof (ITestType));
+
+      Assert.That (instance, Is.TypeOf<TestDecorator2>());
+      var decoratorInstance2 = (TestDecorator2) instance;
+
+      Assert.That (decoratorInstance2.DecoratedObject, Is.TypeOf<TestDecorator1>());
+      var decoratorInstance1 = (TestDecorator1) decoratorInstance2.DecoratedObject;
+
+      Assert.That (decoratorInstance1.DecoratedObject, Is.TypeOf<TestImplementation1>());
+    }
+
+    [Test]
+    public void GetInstance_DecoratorIsInstance_ImplementationIsSingleton_DecoratorBehaveAsSingleton ()
+    {
+      var implementation = new ServiceImplementationInfo (typeof (TestImplementation1), LifetimeKind.Singleton, RegistrationType.Single);
+      var decorator = new ServiceImplementationInfo (typeof (TestDecorator1), LifetimeKind.Instance, RegistrationType.Decorator);
+      _serviceLocator.Register (new ServiceConfigurationEntry (typeof (ITestType), implementation, decorator));
+
+      var instance1 = _serviceLocator.GetInstance (typeof (ITestType));
+      var instance2 = _serviceLocator.GetInstance (typeof (ITestType));
+
+      Assert.That (instance1, Is.SameAs (instance2));
+      Assert.That (((TestDecorator1) instance1).DecoratedObject, Is.SameAs (((TestDecorator1) instance2).DecoratedObject));
+    }
+
+    [Test]
+    public void GetInstance_DecoratorIsSingleton_ImplementationIsInstance_DecoratorBehaveAsInstance ()
+    {
+      var implementation = new ServiceImplementationInfo (typeof (TestImplementation1), LifetimeKind.Instance, RegistrationType.Single);
+      var decorator = new ServiceImplementationInfo (typeof (TestDecorator1), LifetimeKind.Singleton, RegistrationType.Decorator);
+      _serviceLocator.Register (new ServiceConfigurationEntry (typeof (ITestType), implementation, decorator));
+
+      var instance1 = _serviceLocator.GetInstance (typeof (ITestType));
+      var instance2 = _serviceLocator.GetInstance (typeof (ITestType));
+
+      Assert.That (instance1, Is.Not.SameAs (instance2));
+      Assert.That (((TestDecorator1) instance1).DecoratedObject, Is.Not.SameAs (((TestDecorator1) instance2).DecoratedObject));
+    }
+
+    [Test]
+    public void GetInstance_DecoratorWithAdditionalConstructorParameters_PerformsIndirectResolutionCalls ()
+    {
+      var serviceConfigurationEntry = CreateServiceConfigurationEntry (
+          typeof (ITestType),
+          new[] { typeof (TestDecoratorWithAdditionalConstructorParameters) },
+          typeof (TestImplementation1));
+      _serviceLocator.Register (serviceConfigurationEntry);
+
+      _serviceLocator.Register (
+          new ServiceConfigurationEntry (
+              typeof (SingleService),
+              new ServiceImplementationInfo (typeof (SingleService), LifetimeKind.Singleton, RegistrationType.Single)));
+
+      _serviceLocator.Register (
+          new ServiceConfigurationEntry (
+              typeof (MultipleService),
+              new ServiceImplementationInfo (typeof (MultipleService), LifetimeKind.Singleton, RegistrationType.Multiple)));
+
+      var instance = _serviceLocator.GetInstance (typeof (ITestType));
+
+      Assert.That (instance, Is.TypeOf<TestDecoratorWithAdditionalConstructorParameters>());
+      var decoratorInstance = (TestDecoratorWithAdditionalConstructorParameters) instance;
+      Assert.That (decoratorInstance.DecoratedObject, Is.TypeOf<TestImplementation1>());
+      Assert.That (decoratorInstance.SingleService, Is.TypeOf<SingleService>());
+      Assert.That (decoratorInstance.MultipleService, Is.Not.Empty);
+      Assert.That (decoratorInstance.MultipleService, Has.All.TypeOf<MultipleService>());
+    }
+
+    [Test]
+    public void GetAllInstances_DecoratesImplementations ()
+    {
+      var implementation1 = new ServiceImplementationInfo (typeof (TestImplementation1), LifetimeKind.Instance, RegistrationType.Multiple);
+      var implementation2 = new ServiceImplementationInfo (typeof (TestImplementation2), LifetimeKind.Instance, RegistrationType.Multiple);
+      var decorator = new ServiceImplementationInfo (typeof (TestDecorator1), LifetimeKind.Instance, RegistrationType.Decorator);
+      _serviceLocator.Register (new ServiceConfigurationEntry (typeof (ITestType), implementation1, implementation2, decorator));
+
+      var instances = _serviceLocator.GetAllInstances (typeof (ITestType)).ToArray();
+
+      Assert.That (instances, Has.All.TypeOf<TestDecorator1>());
+
+      var decoratorInstance1 = (TestDecorator1) instances[0];
+      Assert.That (decoratorInstance1.DecoratedObject, Is.TypeOf<TestImplementation1>());
+
+      var decoratorInstance2 = (TestDecorator1) instances[1];
+      Assert.That (decoratorInstance2.DecoratedObject, Is.TypeOf<TestImplementation2>());
+    }
+
+    [Test]
+    public void GetInstance_DecoratedCompound_DecoratesCompound_DoesNotDecorateImplementations ()
+    {
+      var implementation1 = new ServiceImplementationInfo (typeof (TestImplementation1), LifetimeKind.Instance, RegistrationType.Multiple);
+      var implementation2 = new ServiceImplementationInfo (typeof (TestImplementation2), LifetimeKind.Instance, RegistrationType.Multiple);
+      var decorator = new ServiceImplementationInfo (typeof (TestDecorator1), LifetimeKind.Instance, RegistrationType.Decorator);
+      var compound = new ServiceImplementationInfo (typeof (TestCompound), LifetimeKind.Instance, RegistrationType.Compound);
+      _serviceLocator.Register (new ServiceConfigurationEntry (typeof (ITestType), implementation1, implementation2, decorator, compound));
+
+      var instance = _serviceLocator.GetInstance (typeof (ITestType));
+
+      Assert.That (instance, Is.TypeOf<TestDecorator1>());
+      var decoratorInstance = (TestDecorator1) instance;
+
+      Assert.That (decoratorInstance.DecoratedObject, Is.TypeOf<TestCompound>());
+      var compoundInstance = (TestCompound) decoratorInstance.DecoratedObject;
+
+      Assert.That (compoundInstance.InnerObjects, Is.Not.Empty);
+      Assert.That (
+          compoundInstance.InnerObjects.Select (i => i.GetType()),
+          Is.EqualTo (new[] { typeof (TestImplementation1), typeof (TestImplementation2) }));
     }
 
     [Test]
@@ -82,58 +217,6 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
               + "'Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests.TestDomain.ITestDecoratorWithErrors'."));
     }
 
-    [Test]
-    public void GetInstance_Decorator ()
-    {
-      var serviceConfigurationEntry = CreateServiceConfigurationEntry (
-          typeof (ITestDecoratorRegistration),
-          new[] { typeof (TestDecoratorRegistrationDecorator) },
-          typeof (TestDecoratorRegistrationDecoratedObject1));
-      _serviceLocator.Register (serviceConfigurationEntry);
-
-      var instance = _serviceLocator.GetInstance (typeof (ITestDecoratorRegistration));
-
-      Assert.That (instance, Is.InstanceOf<TestDecoratorRegistrationDecorator>());
-      var decoratorInstance = (TestDecoratorRegistrationDecorator) instance;
-      Assert.That (decoratorInstance.DecoratedObject, Is.InstanceOf<TestDecoratorRegistrationDecoratedObject1>());
-    }
-    
-    [Test]
-    public void GetInstance_StackedDecorators ()
-    {
-      var serviceConfigurationEntry = CreateServiceConfigurationEntry (
-          typeof (ITestStackedDecorators),
-          new[] { typeof (TestStackedDecoratorsDecorator1), typeof (TestStackedDecoratorsDecorator2) },
-          typeof (TestStackedDecoratorsObject1));
-      _serviceLocator.Register (serviceConfigurationEntry);
-
-      var instance = _serviceLocator.GetInstance (typeof (ITestStackedDecorators));
-
-      Assert.That (instance, Is.InstanceOf<TestStackedDecoratorsDecorator2>());
-      var decoratorInstance2 = (TestStackedDecoratorsDecorator2) instance;
-      Assert.That (decoratorInstance2.DecoratedObject, Is.InstanceOf<TestStackedDecoratorsDecorator1>());
-      var decoratorInstance1 = (TestStackedDecoratorsDecorator1) decoratorInstance2.DecoratedObject;
-      Assert.That (decoratorInstance1.DecoratedObject, Is.InstanceOf<TestStackedDecoratorsObject1>());
-    }
-
-    [Test]
-    public void GetInstance_DecoratedCompound ()
-    {
-      var implementation1 = new ServiceImplementationInfo (typeof (ITestDecoratedCompoundObject1),LifetimeKind.Instance, RegistrationType.Multiple);
-      var implementation2 = new ServiceImplementationInfo (typeof (ITestDecoratedCompoundObject2),LifetimeKind.Instance, RegistrationType.Multiple);
-      var decorator = new ServiceImplementationInfo (typeof (ITestDecoratedCompoundDecorator), LifetimeKind.Instance, RegistrationType.Decorator);
-      var compound = new ServiceImplementationInfo (typeof (ITestDecoratedCompoundCompound), LifetimeKind.Instance, RegistrationType.Compound);
-      _serviceLocator.Register (new ServiceConfigurationEntry (typeof (IITestDecoratedCompound), implementation1, implementation2, decorator, compound));
-
-      var instance = _serviceLocator.GetInstance (typeof (IITestDecoratedCompound));
-
-      Assert.That (instance, Is.InstanceOf<ITestDecoratedCompoundDecorator>());
-      var decoratorInstance = (ITestDecoratedCompoundDecorator) instance;
-      Assert.That (decoratorInstance.DecoratedObject, Is.InstanceOf<ITestDecoratedCompoundCompound>());
-      var compoundInstance = (ITestDecoratedCompoundCompound) decoratorInstance.DecoratedObject;
-      Assert.That (compoundInstance.InnerObjects, Is.Not.Empty);
-    }
-    
     private ServiceConfigurationEntry CreateServiceConfigurationEntry (
         Type serviceType,
         Type[] decoratorTypes,

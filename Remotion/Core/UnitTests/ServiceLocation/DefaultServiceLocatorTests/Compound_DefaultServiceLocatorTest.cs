@@ -36,7 +36,7 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
     }
 
     [Test]
-    public void GetInstance_Compound_InstantiatesImplementationsInOrderOfRegistration ()
+    public void GetInstance_InstantiatesImplementationsInOrderOfRegistration ()
     {
       var serviceConfigurationEntry = CreateServiceConfigurationEntry (
           typeof (ITestType),
@@ -47,9 +47,9 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
       var instance = _serviceLocator.GetInstance (typeof (ITestType));
 
       Assert.That (instance, Is.TypeOf<TestCompound>());
-      var compoundRegistration = (TestCompound) instance;
+      var compoundInstance = (TestCompound) instance;
       Assert.That (
-          compoundRegistration.CompoundRegistrations.Select (c => c.GetType()),
+          compoundInstance.InnerObjects.Select (c => c.GetType()),
           Is.EqualTo (new[] { typeof (TestImplementation1), typeof (TestImplementation2) }));
     }
 
@@ -65,8 +65,8 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
       var instance = _serviceLocator.GetInstance (typeof (ITestType));
 
       Assert.That (instance, Is.TypeOf<TestCompound>());
-      var compoundRegistration = (TestCompound) instance;
-      Assert.That (compoundRegistration.CompoundRegistrations, Is.Empty);
+      var compoundInstance = (TestCompound) instance;
+      Assert.That (compoundInstance.InnerObjects, Is.Empty);
     }
 
     [Test]
@@ -82,7 +82,7 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
       var instance2 = _serviceLocator.GetInstance (typeof (ITestType));
 
       Assert.That (instance1, Is.Not.SameAs (instance2));
-      Assert.That (((TestCompound) instance1).CompoundRegistrations, Is.EqualTo (((TestCompound) instance2).CompoundRegistrations));
+      Assert.That (((TestCompound) instance1).InnerObjects, Is.EqualTo (((TestCompound) instance2).InnerObjects));
     }
 
     [Test]
@@ -98,7 +98,7 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
       var instance2 = _serviceLocator.GetInstance (typeof (ITestType));
 
       Assert.That (instance1, Is.SameAs (instance2));
-      Assert.That (((TestCompound) instance1).CompoundRegistrations, Is.EqualTo (((TestCompound) instance2).CompoundRegistrations));
+      Assert.That (((TestCompound) instance1).InnerObjects, Is.EqualTo (((TestCompound) instance2).InnerObjects));
     }
 
     [Test]
@@ -112,15 +112,22 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
 
       _serviceLocator.Register (
           new ServiceConfigurationEntry (
-              typeof (StubService),
-              new ServiceImplementationInfo (typeof (StubService), LifetimeKind.Singleton, RegistrationType.Single)));
+              typeof (SingleService),
+              new ServiceImplementationInfo (typeof (SingleService), LifetimeKind.Singleton, RegistrationType.Single)));
+
+      _serviceLocator.Register (
+          new ServiceConfigurationEntry (
+              typeof (MultipleService),
+              new ServiceImplementationInfo (typeof (MultipleService), LifetimeKind.Singleton, RegistrationType.Multiple)));
 
       var instance = _serviceLocator.GetInstance (typeof (ITestType));
 
       Assert.That (instance, Is.TypeOf<TestCompoundWithAdditionalConstructorParameters>());
-      var compoundRegistration = (TestCompoundWithAdditionalConstructorParameters) instance;
-      Assert.That (compoundRegistration.CompoundRegistrations, Is.Not.Empty);
-      Assert.That (compoundRegistration.StubService, Is.TypeOf<StubService>());
+      var compoundInstance = (TestCompoundWithAdditionalConstructorParameters) instance;
+      Assert.That (compoundInstance.InnerObjects, Is.Not.Empty);
+      Assert.That (compoundInstance.SingleService, Is.TypeOf<SingleService>());
+      Assert.That (compoundInstance.MultipleService, Is.Not.Empty);
+      Assert.That (compoundInstance.MultipleService, Has.All.TypeOf<MultipleService>());
     }
 
     [Test]
@@ -140,7 +147,7 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
     }
 
     [Test]
-    public void Register_CompoundWithNoPublicConstructor_ThrowsInvalidOperationException ()
+    public void Register_CompoundWithoutPublicConstructor_ThrowsInvalidOperationException ()
     {
       var serviceConfigurationEntry = CreateServiceConfigurationEntry (
           typeof (ITestCompoundWithErrors),

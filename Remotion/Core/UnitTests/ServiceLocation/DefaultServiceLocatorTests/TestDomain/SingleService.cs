@@ -19,9 +19,9 @@ using System;
 
 namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests.TestDomain
 {
-  public class StubService
+  public class SingleService
   {
-    public StubService ()
+    public SingleService ()
     {
     }
   }

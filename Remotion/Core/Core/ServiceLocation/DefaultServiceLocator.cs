@@ -385,7 +385,6 @@ namespace Remotion.ServiceLocation
     {
       Func<Func<object>, object> activator = (innerActivator) => innerActivator();
 
-      //TODO TT: Write test asserting that the first decorator is the innermost decorator.
       //TODO TT: Refactor to simple expression tree without closures etc
       // arg => new DecoratorType3 (
       //            new DecoratorType2 (
@@ -393,16 +392,20 @@ namespace Remotion.ServiceLocation
 
       foreach (var decoratorImplementationInfo in decorators)
       {
-        var constructor = GetSingleConstructor (decoratorImplementationInfo, serviceType);
+        var ctorInfo = GetSingleConstructor (decoratorImplementationInfo, serviceType);
 
-        var parameterExpression = Expression.Parameter (typeof (object));
+        var decoratedObjectArgumentExpression = Expression.Parameter (typeof (object));
+        var serviceLocator = Expression.Constant (this);
+        var parameterInfos = ctorInfo.GetParameters();
+        var ctorArgExpressions = parameterInfos.Select (
+            x => x.ParameterType == serviceType
+                ? Expression.Convert (decoratedObjectArgumentExpression, serviceType)
+                : GetIndirectResolutionCall (serviceLocator, x));
 
-        // arg => new DecoratorType ((ServiceType) arg)
+        // arg => new DecoratorType (<this.GetInstance(),> (ServiceType) arg <,this.GetInstance()>)
         var activationExpression = Expression.Lambda<Func<object, object>> (
-            Expression.New (
-                constructor,
-                Expression.Convert (parameterExpression, serviceType)),
-            parameterExpression);
+            Expression.New (ctorInfo, ctorArgExpressions),
+            decoratedObjectArgumentExpression);
         var compiledExpression = activationExpression.Compile();
 
         var previousActivator = activator;
