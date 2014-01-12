@@ -299,6 +299,7 @@
     <Compile Include="ServiceLocation\DefaultServiceLocatorTests\Decorator_DefaultServiceLocatorTest.cs" />
     <Compile Include="ServiceLocation\DefaultServiceLocatorTests\Compound_DefaultServiceLocatorTest.cs" />
     <Compile Include="ServiceLocation\DefaultServiceLocatorTests\TestDomain\ITestType.cs" />
+    <Compile Include="ServiceLocation\DefaultServiceLocatorTests\TestDomain\StubService.cs" />
     <Compile Include="ServiceLocation\IMemberInformationNameResolverTest.cs" />
     <Compile Include="ServiceLocation\ServiceImplementationInfoTest.cs" />
     <Compile Include="ServiceLocation\TestDomain\IInterfaceWithIndirectActivationExceptionForCollectionParameter.cs" />

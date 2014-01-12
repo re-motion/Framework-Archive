@@ -17,6 +17,7 @@
 
 using System;
 using System.Linq;
+using Microsoft.Practices.ServiceLocation;
 using NUnit.Framework;
 using Remotion.ServiceLocation;
 using Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests.TestDomain;
@@ -35,7 +36,7 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
     }
 
     [Test]
-    public void GetInstance_Compound ()
+    public void GetInstance_Compound_InstantiatesImplementationsInOrderOfRegistration ()
     {
       var serviceConfigurationEntry = CreateServiceConfigurationEntry (
           typeof (ITestType),
@@ -53,7 +54,7 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
     }
 
     [Test]
-    public void GetInstance_CompoundWithEmptyImplementationsList ()
+    public void GetInstance_CompoundWithEmptyImplementationsList_InstantiatesEmptyCompound ()
     {
       var serviceConfigurationEntry = CreateServiceConfigurationEntry (
           typeof (ITestType),
@@ -63,9 +64,79 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
 
       var instance = _serviceLocator.GetInstance (typeof (ITestType));
 
-      Assert.That (instance, Is.InstanceOf<TestCompound>());
+      Assert.That (instance, Is.TypeOf<TestCompound>());
       var compoundRegistration = (TestCompound) instance;
       Assert.That (compoundRegistration.CompoundRegistrations, Is.Empty);
+    }
+
+    [Test]
+    public void GetInstance_CompoundIsInstance_ImplementationIsSingleton_ImplementationsBehaveAsSingleton ()
+    {
+      var compound = new ServiceImplementationInfo (typeof (TestCompound), LifetimeKind.Instance, RegistrationType.Compound);
+      var implementation = new ServiceImplementationInfo (typeof (TestImplementation1), LifetimeKind.Singleton, RegistrationType.Multiple);
+      var serviceConfigurationEntry = new ServiceConfigurationEntry (typeof (ITestType), compound, implementation);
+
+      _serviceLocator.Register (serviceConfigurationEntry);
+
+      var instance1 = _serviceLocator.GetInstance (typeof (ITestType));
+      var instance2 = _serviceLocator.GetInstance (typeof (ITestType));
+
+      Assert.That (instance1, Is.Not.SameAs (instance2));
+      Assert.That (((TestCompound) instance1).CompoundRegistrations, Is.EqualTo (((TestCompound) instance2).CompoundRegistrations));
+    }
+
+    [Test]
+    public void GetInstance_CompoundIsSingleton_ImplementationIsInstance_ImplementationsBehaveAsSingleton()
+    {
+      var compound = new ServiceImplementationInfo (typeof (TestCompound), LifetimeKind.Singleton, RegistrationType.Compound);
+      var implementation = new ServiceImplementationInfo (typeof (TestImplementation1), LifetimeKind.Instance, RegistrationType.Multiple);
+      var serviceConfigurationEntry = new ServiceConfigurationEntry (typeof (ITestType), compound, implementation);
+
+      _serviceLocator.Register (serviceConfigurationEntry);
+
+      var instance1 = _serviceLocator.GetInstance (typeof (ITestType));
+      var instance2 = _serviceLocator.GetInstance (typeof (ITestType));
+
+      Assert.That (instance1, Is.SameAs (instance2));
+      Assert.That (((TestCompound) instance1).CompoundRegistrations, Is.EqualTo (((TestCompound) instance2).CompoundRegistrations));
+    }
+
+    [Test]
+    public void GetInstance_CompoundWithAdditionalConstructorParameters_PerformsIndirectResolutionCalls ()
+    {
+      var serviceConfigurationEntry = CreateServiceConfigurationEntry (
+          typeof (ITestType),
+          typeof (TestCompoundWithAdditionalConstructorParameters),
+          new[] { typeof (TestImplementation1) });
+      _serviceLocator.Register (serviceConfigurationEntry);
+
+      _serviceLocator.Register (
+          new ServiceConfigurationEntry (
+              typeof (StubService),
+              new ServiceImplementationInfo (typeof (StubService), LifetimeKind.Singleton, RegistrationType.Single)));
+
+      var instance = _serviceLocator.GetInstance (typeof (ITestType));
+
+      Assert.That (instance, Is.TypeOf<TestCompoundWithAdditionalConstructorParameters>());
+      var compoundRegistration = (TestCompoundWithAdditionalConstructorParameters) instance;
+      Assert.That (compoundRegistration.CompoundRegistrations, Is.Not.Empty);
+      Assert.That (compoundRegistration.StubService, Is.TypeOf<StubService>());
+    }
+
+    [Test]
+    public void GetAllInstances_ThrowsActivationException ()
+    {
+      var serviceConfigurationEntry = CreateServiceConfigurationEntry (
+          typeof (ITestType),
+          typeof (TestCompound),
+          new Type[0]);
+      _serviceLocator.Register (serviceConfigurationEntry);
+
+      Assert.That (
+          () => _serviceLocator.GetInstance<ITestType>(),
+          Throws.TypeOf<ActivationException>().With.Message.EqualTo (
+              "A compound implemetation is configured for service type 'Remotion.UnitTests.ServiceLocation.ServiceLocatorTests.TestDomain.ITestType'. "
+              + "Consider using 'GetInstance'."));
     }
 
     [Test]

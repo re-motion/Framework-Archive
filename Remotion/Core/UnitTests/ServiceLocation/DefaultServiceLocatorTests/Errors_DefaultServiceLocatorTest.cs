@@ -33,20 +33,6 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
     {
       _serviceLocator = DefaultServiceLocator.Create();
     }
-
-    [Test]
-    public void Register_WithMultipleServiceImplementationsForRegistrationTypeSingle_ThrowsInvalidOperationException ()
-    {
-      var implementation1 = new ServiceImplementationInfo (typeof (TestRegistrationTypeSingle1), LifetimeKind.Singleton, RegistrationType.Single);
-      var implementation2 = new ServiceImplementationInfo (typeof (TestRegistrationTypeSingle2), LifetimeKind.Singleton, RegistrationType.Single);
-      var serviceConfigurationEntry = new ServiceConfigurationEntry (typeof (ITestRegistrationTypeSingle), implementation1, implementation2);
-
-      Assert.That (
-          () => _serviceLocator.Register (serviceConfigurationEntry),
-          Throws.InvalidOperationException.With.Message.EqualTo (
-              "Cannot register multiple implementations for service type "
-              + "'Remotion.UnitTests.ServiceLocation.TestDomain.ITestRegistrationTypeSingle' when registration type if set to 'Single'."));
-    }
     
     [Test]
     public void Register_TypeWithTooManyPublicCtors_ThrowsInvalidOperationException ()

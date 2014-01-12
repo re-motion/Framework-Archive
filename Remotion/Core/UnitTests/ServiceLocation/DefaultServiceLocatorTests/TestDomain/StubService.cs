@@ -16,44 +16,13 @@
 // 
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests.TestDomain
 {
-  public interface ITestType
+  public class StubService
   {
-  }
-
-  public class TestImplementation1 : ITestType
-  {
-  }
-
-  public class TestImplementation2 : ITestType
-  {
-  }
-
-  public class TestCompound : ITestType
-  {
-    public IEnumerable<ITestType> CompoundRegistrations { get; private set; }
-
-    public TestCompound (IEnumerable<ITestType> compoundRegistrations)
+    public StubService ()
     {
-      CompoundRegistrations = compoundRegistrations.ToArray();
-    }
-  }
-
-
-  public class TestCompoundWithAdditionalConstructorParameters : ITestType
-  {
-    public StubService StubService { get; private set; }
-
-    public IEnumerable<ITestType> CompoundRegistrations { get; private set; }
-
-    public TestCompoundWithAdditionalConstructorParameters (StubService stubService, IEnumerable<ITestType> compoundRegistrations)
-    {
-      StubService = stubService;
-      CompoundRegistrations = compoundRegistrations.ToArray();
     }
   }
 }
