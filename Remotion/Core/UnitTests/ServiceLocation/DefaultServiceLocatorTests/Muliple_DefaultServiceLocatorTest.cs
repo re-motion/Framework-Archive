@@ -19,140 +19,146 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Practices.ServiceLocation;
 using NUnit.Framework;
+using Remotion.Development.UnitTesting.Enumerables;
 using Remotion.ServiceLocation;
 using Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests.TestDomain;
-using Remotion.UnitTests.ServiceLocation.TestDomain;
+using Rhino.Mocks;
 
 namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
 {
   [TestFixture]
-  public class Multiple_DefaultServiceLocatorTest
+  public class Multiple_DefaultServiceLocatorTest : TestBase
   {
-    private DefaultServiceLocator _serviceLocator;
-
-    [SetUp]
-    public void SetUp ()
-    {
-      _serviceLocator = DefaultServiceLocator.Create();
-    }
-
-
     [Test]
-    public void Register_ServiceConfigurationEntry_MultipleServices ()
+    public void GetAllInstances_InstantiatesImplementationsInOrderOfRegistration ()
     {
       var serviceConfigurationEntry = CreateServiceConfigurationEntry (
-          typeof (ITestMultipleRegistrationsType),
-          new[] { typeof (TestMultipleRegistrationType1), typeof (TestMultipleRegistrationType2) });
+          typeof (ITestType),
+          new[] { typeof (TestImplementation1), typeof (TestImplementation2) });
 
-      _serviceLocator.Register (serviceConfigurationEntry);
+      var serviceLocator = CreateServiceLocator();
+      serviceLocator.Register (serviceConfigurationEntry);
 
-      var instances = _serviceLocator.GetAllInstances<ITestMultipleRegistrationsType> ().ToArray ();
-      Assert.That (instances, Has.Length.EqualTo (2));
-      Assert.That (instances[0], Is.TypeOf<TestMultipleRegistrationType1> ());
-      Assert.That (instances[1], Is.TypeOf<TestMultipleRegistrationType2> ());
-    }
-
-    [Test]
-    public void GetAllInstances_Generic_ServiceTypeWithoutConcreteImplementationAttribute ()
-    {
-      var result = _serviceLocator.GetAllInstances<IServiceLocator>();
-
-      Assert.That (result, Is.Empty);
-    }
-
-    [Test]
-    public void GetAllInstances_Generic_ServiceTypeWithMultipleConcreteImplementationAttributes ()
-    {
-      var result = _serviceLocator.GetAllInstances<ITestMultipleConcreteImplementationAttributesType> ().ToArray();
-
-      Assert.That (result, Has.Length.EqualTo(3));
-      Assert.That (result[0], Is.TypeOf (typeof (TestMultipleConcreteImplementationAttributesType2)));
-      Assert.That (result[1], Is.TypeOf (typeof (TestMultipleConcreteImplementationAttributesType3)));
-      Assert.That (result[2], Is.TypeOf (typeof (TestMultipleConcreteImplementationAttributesType1)));
-    }
-    [Test]
-    public void GetAllInstances ()
-    {
-      var result = _serviceLocator.GetAllInstances (typeof (ITestImplementationForAttributeType)).ToArray();
-
-      Assert.That (result, Has.Length.EqualTo (1));
-      Assert.That (result.Single(), Is.TypeOf (typeof (TestImplementationForAttributeType)));
-    }
-
-    [Test]
-    public void GetAllInstances_ServiceWithRegistrationTypeMultiple ()
-    {
-      var instances = _serviceLocator.GetAllInstances (typeof (ITestRegistrationTypeMultiple)).ToArray();
+      IEnumerable<object> instances = serviceLocator.GetAllInstances (typeof (ITestType));
 
       Assert.That (
-          instances.Select (i => i.GetType()),
-          Is.EqualTo (new[] { typeof (TestRegistrationTypeMultiple1), typeof (TestRegistrationTypeMultiple2) }));
+          instances.Select (c => c.GetType()),
+          Is.EqualTo (new[] { typeof (TestImplementation1), typeof (TestImplementation2) }));
     }
 
     [Test]
-    [ExpectedException (typeof (ActivationException), ExpectedMessage =
-        "Invalid ConcreteImplementationAttribute configuration for service type "
-        + "'Remotion.UnitTests.ServiceLocation.TestDomain.ITestRegistrationTypeSingle'. "
-        + "The service has implementations registered with RegistrationType.Single. Use GetInstance() to retrieve the implementations.")]
-    public void GetAllInstances_ServiceWithRegistrationTypeSingle ()
+    public void GetAllInstances_NoImplementations_ReturnsEmptySequence ()
     {
-      var serviceConfigurationEntry = new ServiceConfigurationEntry (
-          typeof (ITestRegistrationTypeSingle),
-          new ServiceImplementationInfo (typeof (TestRegistrationTypeSingle1), LifetimeKind.Instance, RegistrationType.Single));
-      _serviceLocator.Register (serviceConfigurationEntry);
+      var serviceConfigurationEntry = CreateServiceConfigurationEntry (
+          typeof (ITestType),
+          new Type[0]);
 
-      _serviceLocator.GetAllInstances (typeof (ITestRegistrationTypeSingle)).ToArray();
+      var serviceLocator = CreateServiceLocator();
+      serviceLocator.Register (serviceConfigurationEntry);
+
+      var instances = serviceLocator.GetAllInstances (typeof (ITestType));
+
+      Assert.That (instances, Is.Empty);
     }
 
     [Test]
-    [ExpectedException (typeof (ActivationException), ExpectedMessage = "InvalidOperationException: This exception comes from the ctor.")]
-    public void GetAllInstances_ConstructorThrowingException ()
+    public void GetAllInstances_GenericOverload_InstantiatesImplementationsInOrderOfRegistration ()
     {
-      _serviceLocator.GetAllInstances (typeof (ITestRegistrationTypeMultipleTypeThrowingExceptionInCtor)).ToArray();
-    }
+      var serviceConfigurationEntry = CreateServiceConfigurationEntry (
+          typeof (ITestType),
+          new[] { typeof (TestImplementation1), typeof (TestImplementation2) });
 
-    [Test]
-    public void GetAllInstances_ServiceTypeWithNullImplementation ()
-    {
-      var implementation = ServiceImplementationInfo.CreateMultiple<ISomeInterface> (() => null);
-      var serviceConfigurationEntry = new ServiceConfigurationEntry (typeof (ISomeInterface), implementation);
+      var serviceLocator = CreateServiceLocator();
+      serviceLocator.Register (serviceConfigurationEntry);
 
-      _serviceLocator.Register (serviceConfigurationEntry);
+      IEnumerable<ITestType> instances = serviceLocator.GetAllInstances<ITestType>();
+
       Assert.That (
-          () => _serviceLocator.GetAllInstances (typeof (ISomeInterface)).ToArray(),
+          instances.Select (c => c.GetType()),
+          Is.EqualTo (new[] { typeof (TestImplementation1), typeof (TestImplementation2) }));
+    }
+
+    [Test]
+    public void GetAllInstances_OneImplementationIsSingleton_ReturnsSingletonAsSingletonAndInstanceAsInstance ()
+    {
+      var implementation1 = new ServiceImplementationInfo (typeof (TestImplementation1), LifetimeKind.Singleton, RegistrationType.Multiple);
+      var implementation2 = new ServiceImplementationInfo (typeof (TestImplementation2), LifetimeKind.Instance, RegistrationType.Multiple);
+      var serviceConfigurationEntry = new ServiceConfigurationEntry (typeof (ITestType), implementation1, implementation2);
+
+      var serviceLocator = CreateServiceLocator();
+      serviceLocator.Register (serviceConfigurationEntry);
+
+      var instances1 = serviceLocator.GetAllInstances (typeof (ITestType)).ToArray();
+      var instances2 = serviceLocator.GetAllInstances (typeof (ITestType)).ToArray();
+
+      Assert.That (instances1, Is.Not.SameAs (instances2));
+      Assert.That (instances1[0], Is.SameAs (instances2[0]));
+      Assert.That (instances1[1], Is.Not.SameAs (instances2[1]));
+    }
+
+    [Test]
+    public void GetInstance_ThrowsActivationException ()
+    {
+      var serviceConfigurationEntry = CreateServiceConfigurationEntry (
+          typeof (ITestType),
+          new[] { typeof (TestImplementation1) });
+
+      var serviceLocator = CreateServiceLocator();
+      serviceLocator.Register (serviceConfigurationEntry);
+
+      Assert.That (
+          () => serviceLocator.GetInstance (typeof (ITestType)),
+          Throws.TypeOf<ActivationException>().With.Message.EqualTo (
+              "Multiple implemetations are configured for service type 'Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests.TestDomain.ITestType'. "
+              + "Consider using 'GetAllInstances'."));
+    }
+
+    [Test]
+    public void GetAllInstances_ConstructorThrowingException_ExceptionIsWrappedInActivationException ()
+    {
+      var serviceConfigurationEntry = CreateServiceConfigurationEntry (
+          typeof (ITestTypeWithErrors),
+          new[] { typeof (TestTypeWithConstructorThrowingException) });
+
+      var serviceLocator = CreateServiceLocator();
+      serviceLocator.Register (serviceConfigurationEntry);
+
+      var instances = serviceLocator.GetAllInstances (typeof (ITestTypeWithErrors));
+      var exception = Assert.Throws<ActivationException> (() => instances.ForceEnumeration());
+      Assert.That (exception.Message, Is.EqualTo ("ApplicationException: This exception comes from the ctor."));
+      Assert.That (exception.InnerException, Is.TypeOf<ApplicationException>());
+      Assert.That (exception.InnerException.Message, Is.EqualTo ("This exception comes from the ctor."));
+    }
+
+    [Test]
+    public void GetAllInstances_ServiceTypeWithNullImplementation_ThrowsActivationException ()
+    {
+      var implementation = ServiceImplementationInfo.CreateMultiple<ITestTypeWithErrors> (() => null);
+      var serviceConfigurationEntry = new ServiceConfigurationEntry (typeof (ITestTypeWithErrors), implementation);
+
+      var serviceLocator = CreateServiceLocator();
+      serviceLocator.Register (serviceConfigurationEntry);
+
+      Assert.That (
+          () => serviceLocator.GetAllInstances (typeof (ITestTypeWithErrors)).ToArray(),
           Throws.TypeOf<ActivationException> ().With.Message.EqualTo (
               "The registered factory returned null instead of an instance implementing the requested service type "
-              + "'Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests.Multiple_DefaultServiceLocatorTest+ISomeInterface'."));
+              + "'Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests.TestDomain.ITestTypeWithErrors'."));
     }
 
+    //TODO TT: Integration test
     [Test]
-    public void GetAllInstances_ServiceTypeWithMultipleConcreteImplementationAttributes ()
+    public void GetAllInstances_ServiceTypeWithoutImplementations_DefaultsToMultipleRegistration ()
     {
-      var result = _serviceLocator.GetAllInstances (typeof (ITestMultipleConcreteImplementationAttributesType)).ToArray ();
+      var serviceConfigurationEntry = CreateServiceConfigurationEntry (typeof (ITestType), new Type[0]);
+      var serviceConfigurationDiscoveryServiceStub = MockRepository.GenerateStrictMock<IServiceConfigurationDiscoveryService>();
+      serviceConfigurationDiscoveryServiceStub.Stub(_=>_.GetDefaultConfiguration (typeof (ITestType))).Return (serviceConfigurationEntry);
 
-      Assert.That (result, Has.Length.EqualTo (3));
-      Assert.That (result[0], Is.TypeOf (typeof (TestMultipleConcreteImplementationAttributesType2)));
-      Assert.That (result[1], Is.TypeOf (typeof (TestMultipleConcreteImplementationAttributesType3)));
-      Assert.That (result[2], Is.TypeOf (typeof (TestMultipleConcreteImplementationAttributesType1)));
-    }
+      var serviceLocator = CreateServiceLocator (serviceConfigurationDiscoveryServiceStub);
 
-    [Test]
-    public void GetAllInstances_ServiceTypeWithoutConcreteImplementationAttribute ()
-    {
-      var result = _serviceLocator.GetAllInstances (typeof (IServiceLocator));
+      var result = serviceLocator.GetAllInstances (typeof (ITestType));
 
       Assert.That (result, Is.Empty);
-    }
-
-    [Test]
-    public void Register_NoFactories_OverridesAttributes ()
-    {
-      var serviceConfigurationEntry = CreateServiceConfigurationEntry (
-          typeof (ITestInstanceConcreteImplementationAttributeType),
-          new Type[0]);
-      _serviceLocator.Register (serviceConfigurationEntry);
-
-      Assert.That (_serviceLocator.GetAllInstances (typeof (object)), Is.Empty);
     }
 
     private ServiceConfigurationEntry CreateServiceConfigurationEntry (
@@ -163,18 +169,5 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
       var implementations = implementationTypes.Select (t=> new ServiceImplementationInfo (t, lifetimeKind, RegistrationType.Multiple));
       return new ServiceConfigurationEntry (serviceType, implementations);
     }
-
-    class DomainType
-    {
-      public readonly IEnumerable<ITestMultipleRegistrationsType> AllInstances;
-
-      public DomainType (IEnumerable<ITestMultipleRegistrationsType> allInstances)
-      {
-        AllInstances = allInstances;
-      }
-    }
-
-    public interface ISomeInterface { }
-
   }
 }

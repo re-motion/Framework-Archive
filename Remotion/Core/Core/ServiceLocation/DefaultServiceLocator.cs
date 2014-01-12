@@ -73,8 +73,10 @@ namespace Remotion.ServiceLocation
       return new DefaultServiceLocator (DefaultServiceConfigurationDiscoveryService.Create());
     }
 
-    private DefaultServiceLocator (IServiceConfigurationDiscoveryService serviceConfigurationDiscoveryService)
+    public DefaultServiceLocator (IServiceConfigurationDiscoveryService serviceConfigurationDiscoveryService)
     {
+      ArgumentUtility.CheckNotNull ("serviceConfigurationDiscoveryService", serviceConfigurationDiscoveryService);
+
       _serviceConfigurationDiscoveryService = serviceConfigurationDiscoveryService;
       Register (new ServiceConfigurationEntry (typeof (ILogManager), new ServiceImplementationInfo (typeof (Log4NetLogManager), LifetimeKind.Singleton)));
     }

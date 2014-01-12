@@ -17,15 +17,17 @@
 
 using Remotion.ServiceLocation;
 using Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests.TestDomain;
+using Rhino.Mocks;
 
 namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
 {
   public class TestBase
   {
-    protected static DefaultServiceLocator CreateServiceLocator ()
+    protected static DefaultServiceLocator CreateServiceLocator (IServiceConfigurationDiscoveryService serviceConfigurationDiscoveryService = null)
     {
-      var serviceLocator = DefaultServiceLocator.Create();
- 
+      var serviceLocator = new DefaultServiceLocator (
+          serviceConfigurationDiscoveryService ?? MockRepository.GenerateStrictMock<IServiceConfigurationDiscoveryService>());
+
       serviceLocator.Register (
           new ServiceConfigurationEntry (
               typeof (SingleService),

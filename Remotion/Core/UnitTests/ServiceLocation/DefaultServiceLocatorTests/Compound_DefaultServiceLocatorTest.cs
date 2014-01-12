@@ -27,14 +27,6 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
   [TestFixture]
   public class Register_DefaultServiceLocatorTest : TestBase
   {
-    private DefaultServiceLocator _serviceLocator;
-
-    [SetUp]
-    public void SetUp ()
-    {
-      _serviceLocator = CreateServiceLocator();
-    }
-
     [Test]
     public void GetInstance_InstantiatesImplementationsInOrderOfRegistration ()
     {
@@ -42,9 +34,11 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
           typeof (ITestType),
           typeof (TestCompound),
           new[] { typeof (TestImplementation1), typeof (TestImplementation2) });
-      _serviceLocator.Register (serviceConfigurationEntry);
 
-      var instance = _serviceLocator.GetInstance (typeof (ITestType));
+      var serviceLocator = CreateServiceLocator();
+      serviceLocator.Register (serviceConfigurationEntry);
+
+      var instance = serviceLocator.GetInstance (typeof (ITestType));
 
       Assert.That (instance, Is.TypeOf<TestCompound>());
       var compoundInstance = (TestCompound) instance;
@@ -60,9 +54,11 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
           typeof (ITestType),
           typeof (TestCompound),
           new Type[0]);
-      _serviceLocator.Register (serviceConfigurationEntry);
 
-      var instance = _serviceLocator.GetInstance (typeof (ITestType));
+      var serviceLocator = CreateServiceLocator();
+      serviceLocator.Register (serviceConfigurationEntry);
+
+      var instance = serviceLocator.GetInstance (typeof (ITestType));
 
       Assert.That (instance, Is.TypeOf<TestCompound>());
       var compoundInstance = (TestCompound) instance;
@@ -76,10 +72,11 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
       var implementation = new ServiceImplementationInfo (typeof (TestImplementation1), LifetimeKind.Singleton, RegistrationType.Multiple);
       var serviceConfigurationEntry = new ServiceConfigurationEntry (typeof (ITestType), compound, implementation);
 
-      _serviceLocator.Register (serviceConfigurationEntry);
+      var serviceLocator = CreateServiceLocator();
+      serviceLocator.Register (serviceConfigurationEntry);
 
-      var instance1 = _serviceLocator.GetInstance (typeof (ITestType));
-      var instance2 = _serviceLocator.GetInstance (typeof (ITestType));
+      var instance1 = serviceLocator.GetInstance (typeof (ITestType));
+      var instance2 = serviceLocator.GetInstance (typeof (ITestType));
 
       Assert.That (instance1, Is.Not.SameAs (instance2));
       Assert.That (((TestCompound) instance1).InnerObjects, Is.EqualTo (((TestCompound) instance2).InnerObjects));
@@ -92,10 +89,11 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
       var implementation = new ServiceImplementationInfo (typeof (TestImplementation1), LifetimeKind.Instance, RegistrationType.Multiple);
       var serviceConfigurationEntry = new ServiceConfigurationEntry (typeof (ITestType), compound, implementation);
 
-      _serviceLocator.Register (serviceConfigurationEntry);
+      var serviceLocator = CreateServiceLocator();
+      serviceLocator.Register (serviceConfigurationEntry);
 
-      var instance1 = _serviceLocator.GetInstance (typeof (ITestType));
-      var instance2 = _serviceLocator.GetInstance (typeof (ITestType));
+      var instance1 = serviceLocator.GetInstance (typeof (ITestType));
+      var instance2 = serviceLocator.GetInstance (typeof (ITestType));
 
       Assert.That (instance1, Is.SameAs (instance2));
       Assert.That (((TestCompound) instance1).InnerObjects, Is.EqualTo (((TestCompound) instance2).InnerObjects));
@@ -108,9 +106,11 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
           typeof (ITestType),
           typeof (TestCompoundWithAdditionalConstructorParameters),
           new[] { typeof (TestImplementation1) });
-      _serviceLocator.Register (serviceConfigurationEntry);
 
-      var instance = _serviceLocator.GetInstance (typeof (ITestType));
+      var serviceLocator = CreateServiceLocator();
+      serviceLocator.Register (serviceConfigurationEntry);
+
+      var instance = serviceLocator.GetInstance (typeof (ITestType));
 
       Assert.That (instance, Is.TypeOf<TestCompoundWithAdditionalConstructorParameters>());
       var compoundInstance = (TestCompoundWithAdditionalConstructorParameters) instance;
@@ -127,10 +127,12 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
           typeof (ITestType),
           typeof (TestCompound),
           new Type[0]);
-      _serviceLocator.Register (serviceConfigurationEntry);
+
+      var serviceLocator = CreateServiceLocator();
+      serviceLocator.Register (serviceConfigurationEntry);
 
       Assert.That (
-          () => _serviceLocator.GetInstance<ITestType>(),
+          () => serviceLocator.GetInstance (typeof (ITestType)),
           Throws.TypeOf<ActivationException>().With.Message.EqualTo (
               "A compound implemetation is configured for service type 'Remotion.UnitTests.ServiceLocation.ServiceLocatorTests.TestDomain.ITestType'. "
               + "Consider using 'GetInstance'."));
@@ -144,8 +146,10 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
           typeof (TestCompoundWithoutPublicConstructor),
           new Type[0]);
 
+      var serviceLocator = CreateServiceLocator();
+
       Assert.That (
-          () => _serviceLocator.Register (serviceConfigurationEntry),
+          () => serviceLocator.Register (serviceConfigurationEntry),
           Throws.InvalidOperationException.With.Message.EqualTo (
               "Type 'Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests.TestDomain.TestCompoundWithoutPublicConstructor' cannot be instantiated. "
               + "The type must have exactly one public constructor. The public constructor must at least accept an argument of type "
@@ -160,8 +164,10 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
           typeof (TestCompoundWithConstructorWithoutArguments),
           new Type[0]);
 
+      var serviceLocator = CreateServiceLocator();
+
       Assert.That (
-          () => _serviceLocator.Register (serviceConfigurationEntry),
+          () => serviceLocator.Register (serviceConfigurationEntry),
           Throws.InvalidOperationException.With.Message.EqualTo (
               "Type 'Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests.TestDomain.TestCompoundWithConstructorWithoutArguments' cannot be instantiated. "
               + "The type must have exactly one public constructor. The public constructor must at least accept an argument of type "
@@ -176,8 +182,10 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
           typeof (TestCompoundWithConstructorWithoutMatchingArgument),
           new Type[0]);
 
+      var serviceLocator = CreateServiceLocator();
+
       Assert.That (
-          () => _serviceLocator.Register (serviceConfigurationEntry),
+          () => serviceLocator.Register (serviceConfigurationEntry),
           Throws.InvalidOperationException.With.Message.EqualTo (
               "Type 'Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests.TestDomain.TestCompoundWithConstructorWithoutMatchingArgument' cannot be instantiated. "
               + "The type must have exactly one public constructor. The public constructor must at least accept an argument of type "
@@ -197,8 +205,10 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
           RegistrationType.Compound);
       var serviceConfigurationEntry = new ServiceConfigurationEntry (typeof (ITestCompoundWithErrors), compound1, compound2);
 
+      var serviceLocator = CreateServiceLocator();
+
       Assert.That (
-          () => _serviceLocator.Register (serviceConfigurationEntry),
+          () => serviceLocator.Register (serviceConfigurationEntry),
           Throws.InvalidOperationException.With.Message.EqualTo (
               "Cannot register multiple implementations with registration type 'Compound' "
               + "for service type 'Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests.TestDomain.ITestCompoundWithErrors'."));
