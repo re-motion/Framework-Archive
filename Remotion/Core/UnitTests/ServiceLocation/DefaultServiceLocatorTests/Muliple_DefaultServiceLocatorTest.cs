@@ -40,9 +40,9 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
     [Test]
     public void Register_ServiceConfigurationEntry_MultipleServices ()
     {
-      var implementation1 = new ServiceImplementationInfo (typeof (TestMultipleRegistrationType1), LifetimeKind.Singleton, RegistrationType.Multiple);
-      var implementation2 = new ServiceImplementationInfo (typeof (TestMultipleRegistrationType2), LifetimeKind.Singleton, RegistrationType.Multiple);
-      var serviceConfigurationEntry = new ServiceConfigurationEntry (typeof (ITestMultipleRegistrationsType), implementation1, implementation2);
+      var serviceConfigurationEntry = CreateServiceConfigurationEntry (
+          typeof (ITestMultipleRegistrationsType),
+          new[] { typeof (TestMultipleRegistrationType1), typeof (TestMultipleRegistrationType2) });
 
       _serviceLocator.Register (serviceConfigurationEntry);
 
@@ -96,10 +96,10 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
         + "The service has implementations registered with RegistrationType.Single. Use GetInstance() to retrieve the implementations.")]
     public void GetAllInstances_ServiceWithRegistrationTypeSingle ()
     {
-      _serviceLocator.Register (
-          new ServiceConfigurationEntry (
-              typeof (ITestRegistrationTypeSingle),
-              new ServiceImplementationInfo (typeof (TestRegistrationTypeSingle1), LifetimeKind.Instance)));
+      var serviceConfigurationEntry = new ServiceConfigurationEntry (
+          typeof (ITestRegistrationTypeSingle),
+          new ServiceImplementationInfo (typeof (TestRegistrationTypeSingle1), LifetimeKind.Instance, RegistrationType.Single));
+      _serviceLocator.Register (serviceConfigurationEntry);
 
       _serviceLocator.GetAllInstances (typeof (ITestRegistrationTypeSingle)).ToArray();
     }
@@ -143,13 +143,25 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
 
       Assert.That (result, Is.Empty);
     }
-    
+
     [Test]
     public void Register_NoFactories_OverridesAttributes ()
     {
-      _serviceLocator.RegisterMultiple<ITestInstanceConcreteImplementationAttributeType>();
+      var serviceConfigurationEntry = CreateServiceConfigurationEntry (
+          typeof (ITestInstanceConcreteImplementationAttributeType),
+          new Type[0]);
+      _serviceLocator.Register (serviceConfigurationEntry);
 
       Assert.That (_serviceLocator.GetAllInstances (typeof (object)), Is.Empty);
+    }
+
+    private ServiceConfigurationEntry CreateServiceConfigurationEntry (
+        Type serviceType,
+        Type[] implementationTypes,
+        LifetimeKind lifetimeKind = LifetimeKind.Instance)
+    {
+      var implementations = implementationTypes.Select (t=> new ServiceImplementationInfo (t, lifetimeKind, RegistrationType.Multiple));
+      return new ServiceConfigurationEntry (serviceType, implementations);
     }
 
     class DomainType

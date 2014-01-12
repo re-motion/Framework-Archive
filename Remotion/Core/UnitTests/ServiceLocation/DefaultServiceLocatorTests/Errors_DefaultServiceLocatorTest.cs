@@ -121,16 +121,6 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
     }
 
     [Test]
-    public void Register_ConcreteImplementation_ImplementationTypeDoesNotImplementServiceType_ThrowsException ()
-    {
-      Assert.That (
-          () => _serviceLocator.Register (
-          typeof (ITestSingletonConcreteImplementationAttributeType), typeof (object), LifetimeKind.Singleton),
-          Throws.ArgumentException.With.Message.EqualTo (
-              "Implementation type must implement service type.\r\nParameter name: concreteImplementationType"));
-    }
-    
-    [Test]
     public void Register_Twice_ExceptionIsThrown ()
     {
       var serviceConfigurationEntry = new ServiceConfigurationEntry (typeof (ITestInstanceConcreteImplementationAttributeType), new ServiceImplementationInfo (typeof (TestConcreteImplementationAttributeType), LifetimeKind.Instance, RegistrationType.Single));

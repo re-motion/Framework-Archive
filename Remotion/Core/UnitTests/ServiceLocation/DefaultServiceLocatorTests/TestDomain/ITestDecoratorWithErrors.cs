@@ -24,6 +24,10 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests.TestDoma
   {
   }
 
+  public class TestDecoratorWithErrorsImplementation : ITestDecoratorWithErrors
+  {
+  }
+
   public class TestDecoratorWithoutPublicConstructor : ITestDecoratorWithErrors
   {
     private TestDecoratorWithoutPublicConstructor ()

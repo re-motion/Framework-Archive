@@ -52,16 +52,14 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
     [Test]
     public void Register_ServiceConfigurationEntry_ServiceAdded ()
     {
-      var serviceImplementation = new ServiceImplementationInfo (
-          typeof (TestConcreteImplementationAttributeType), LifetimeKind.Singleton);
-      var serviceConfigurationEntry = new ServiceConfigurationEntry (
-          typeof (ITestSingletonConcreteImplementationAttributeType), serviceImplementation);
+      var serviceConfigurationEntry = CreateServiceConfigurationEntry (
+          typeof (ITestSingletonConcreteImplementationAttributeType),
+          typeof (TestConcreteImplementationAttributeType));
 
       _serviceLocator.Register (serviceConfigurationEntry);
 
-      var instance1 = _serviceLocator.GetInstance (typeof (ITestSingletonConcreteImplementationAttributeType));
-      var instance2 = _serviceLocator.GetInstance (typeof (ITestSingletonConcreteImplementationAttributeType));
-      Assert.That (instance1, Is.SameAs (instance2));
+      var instance = _serviceLocator.GetInstance (typeof (ITestSingletonConcreteImplementationAttributeType));
+      Assert.That (instance, Is.TypeOf<TestConcreteImplementationAttributeType>());
     }
 
     [Test]
@@ -251,5 +249,13 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
           Is.SameAs (((TestConstructorInjectionWithOneParameterWithSingletonLifetime) instance2).Param));
     }
 
+    private ServiceConfigurationEntry CreateServiceConfigurationEntry (
+        Type serviceType,
+        Type implementationType,
+        LifetimeKind lifetimeKind = LifetimeKind.Instance)
+    {
+      var implementation = new ServiceImplementationInfo (implementationType, lifetimeKind, RegistrationType.Single);
+      return new ServiceConfigurationEntry (serviceType, implementation);
+    }
   }
 }
