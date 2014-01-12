@@ -52,7 +52,7 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
     public void Register_TypeWithTooManyPublicCtors_ThrowsInvalidOperationException ()
     {
       var implementation = new ServiceImplementationInfo (typeof (TestTypeWithTooManyPublicConstructors), LifetimeKind.Singleton, RegistrationType.Single);
-      var serviceConfigurationEntry = new ServiceConfigurationEntry (typeof (ITestTypeErrors), implementation);
+      var serviceConfigurationEntry = new ServiceConfigurationEntry (typeof (ITestTypeWithErrors), implementation);
 
       Assert.That (
           () => _serviceLocator.Register (serviceConfigurationEntry),
@@ -65,7 +65,7 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
     public void Register_TypeWithOnlyNonPublicCtor_ThrowsInvalidOperationException ()
     {
       var implementation = new ServiceImplementationInfo (typeof (TestTypeWithOnlyNonPublicConstructor), LifetimeKind.Singleton, RegistrationType.Single);
-      var serviceConfigurationEntry = new ServiceConfigurationEntry (typeof (ITestTypeErrors), implementation);
+      var serviceConfigurationEntry = new ServiceConfigurationEntry (typeof (ITestTypeWithErrors), implementation);
 
       Assert.That (
           () => _serviceLocator.Register (serviceConfigurationEntry),

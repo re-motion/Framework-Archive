@@ -252,7 +252,6 @@ namespace Remotion.ServiceLocation
       return GetInstanceOrNull (serviceType);
     }
 
-    //Declared in interface IServiceConfigurationRegistry
     /// <summary>
     /// Registers a concrete implementation.
     /// </summary>
@@ -302,7 +301,6 @@ namespace Remotion.ServiceLocation
           serviceConfigurationEntry.ServiceType,
           serviceConfigurationEntry.ImplementationInfos.Where (i => i.RegistrationType == RegistrationType.Decorator));
 
-      //TODO TT: Exceptions
       return new Registration (
           serviceConfigurationEntry.ServiceType,
           singleFactory:
@@ -311,16 +309,21 @@ namespace Remotion.ServiceLocation
                   .SingleOrDefault (
                       () => new InvalidOperationException (
                           string.Format (
-                              "Cannot register multiple implementations for service type '{0}' when registration type if set to '{1}'.",
-                              serviceConfigurationEntry.ServiceType,
-                              RegistrationType.Single))),
+                              "Cannot register multiple implementations with registration type '{0}' for service type '{1}'.",
+                              RegistrationType.Single,
+                              serviceConfigurationEntry.ServiceType))),
           compoundFactory:
               serviceConfigurationEntry.ImplementationInfos.Where (i => i.RegistrationType == RegistrationType.Compound)
-                  .Select (i => CreateInstanceFactory (serviceConfigurationEntry.ServiceType,i, decoratorChain))
-                  .SingleOrDefault (() => new InvalidOperationException ("compound")),
+                  .Select (i => CreateInstanceFactory (serviceConfigurationEntry.ServiceType, i, decoratorChain))
+                  .SingleOrDefault (
+                      () => new InvalidOperationException (
+                          string.Format (
+                              "Cannot register multiple implementations with registration type '{0}' for service type '{1}'.",
+                              RegistrationType.Compound,
+                              serviceConfigurationEntry.ServiceType))),
           multipleFactories:
               serviceConfigurationEntry.ImplementationInfos.Where (i => i.RegistrationType == RegistrationType.Multiple)
-                  .Select (i => CreateInstanceFactory (serviceConfigurationEntry.ServiceType,i, isCompound ? noDecorators : decoratorChain))
+                  .Select (i => CreateInstanceFactory (serviceConfigurationEntry.ServiceType, i, isCompound ? noDecorators : decoratorChain))
                   .ToArray());
     }
 

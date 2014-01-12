@@ -45,8 +45,8 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
       Assert.That (
           () => _serviceLocator.Register (serviceConfigurationEntry),
           Throws.InvalidOperationException.With.Message.EqualTo (
-              "Cannot register multiple implementations for service type "
-              + "'Remotion.UnitTests.ServiceLocation.TestDomain.ITestRegistrationTypeSingle' when registration type if set to 'Single'."));
+              "Cannot register multiple implementations with registration type 'Single' "
+              + "for service type 'Remotion.UnitTests.ServiceLocation.TestDomain.ITestRegistrationTypeSingle'."));
     }
 
     [Test]

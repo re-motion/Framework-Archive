@@ -20,11 +20,11 @@ using Remotion.UnitTests.ServiceLocation.TestDomain;
 
 namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests.TestDomain
 {
-  public interface ITestTypeErrors
+  public interface ITestTypeWithErrors
   {
   }
 
-  public class TestTypeWithTooManyPublicConstructors : ITestTypeErrors
+  public class TestTypeWithTooManyPublicConstructors : ITestTypeWithErrors
   {
     public TestTypeWithTooManyPublicConstructors ()
     {
@@ -35,7 +35,7 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests.TestDoma
     }
   }
 
-  public class TestTypeWithOnlyNonPublicConstructor : ITestTypeErrors
+  public class TestTypeWithOnlyNonPublicConstructor : ITestTypeWithErrors
   {
     protected TestTypeWithOnlyNonPublicConstructor ()
     {

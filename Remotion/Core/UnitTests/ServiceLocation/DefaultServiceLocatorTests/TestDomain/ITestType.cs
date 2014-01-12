@@ -17,46 +17,33 @@
 
 using System;
 using System.Collections.Generic;
-using Remotion.UnitTests.ServiceLocation.TestDomain;
 
 namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests.TestDomain
 {
-  public interface ITestCompoundWithErrors
+  public interface ITestType
   {
   }
 
-  public class TestCompoundWithMultipleRegistrations1 : ITestCompoundWithErrors
+  public class TestImplementation1 : ITestType
   {
-    public TestCompoundWithMultipleRegistrations1 (IEnumerable<ITestCompoundWithErrors> args)
+  }
+
+  public class TestImplementation2 : ITestType
+  {
+  }
+
+  public class TestCompound : ITestType
+  {
+    private readonly IEnumerable<ITestType> _compoundRegistrations;
+
+    public TestCompound (IEnumerable<ITestType> compoundRegistrations)
     {
+      _compoundRegistrations = compoundRegistrations;
     }
-  }
 
-  public class TestCompoundWithMultipleRegistrations2 : ITestCompoundWithErrors
-  {
-    public TestCompoundWithMultipleRegistrations2 (IEnumerable<ITestCompoundWithErrors> args)
+    public IEnumerable<ITestType> CompoundRegistrations
     {
-    }
-  }
-
-  public class TestCompoundWithoutPublicConstructor : ITestCompoundWithErrors
-  {
-    private TestCompoundWithoutPublicConstructor ()
-    {
-    }
-  }
-
-  public class TestCompoundWithConstructorWithoutArguments : ITestCompoundWithErrors
-  {
-    public TestCompoundWithConstructorWithoutArguments ()
-    {
-    }
-  }
-
-  public class TestCompoundWithConstructorWithoutMatchingArgument : ITestCompoundWithErrors
-  {
-    public TestCompoundWithConstructorWithoutMatchingArgument (StubService invalidArgument)
-    {
+      get { return _compoundRegistrations; }
     }
   }
 }
