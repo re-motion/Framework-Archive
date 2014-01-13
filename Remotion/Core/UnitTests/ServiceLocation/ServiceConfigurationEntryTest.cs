@@ -90,9 +90,10 @@ namespace Remotion.UnitTests.ServiceLocation
           });
 
       Assert.That (entry.ServiceType, Is.EqualTo (typeof (ITestSingletonConcreteImplementationAttributeType)));
-      Assert.That (
-          entry.ImplementationInfos, 
-          Is.EqualTo (new[] { new ServiceImplementationInfo (typeof (TestConcreteImplementationAttributeType), LifetimeKind.Singleton) }));
+
+      Assert.That (entry.ImplementationInfos.Count, Is.EqualTo (1));
+      Assert.That (entry.ImplementationInfos[0].ImplementationType, Is.EqualTo (typeof (TestConcreteImplementationAttributeType)));
+      Assert.That (entry.ImplementationInfos[0].Lifetime, Is.EqualTo (LifetimeKind.Singleton));
     }
 
     [Test]
@@ -113,14 +114,12 @@ namespace Remotion.UnitTests.ServiceLocation
       var entry = ServiceConfigurationEntry.CreateFromAttributes (typeof (ITestMultipleConcreteImplementationAttributesType), attributes);
 
       Assert.That (entry.ServiceType, Is.EqualTo (typeof (ITestMultipleConcreteImplementationAttributesType)));
-      Assert.That (
-          entry.ImplementationInfos,
-          Is.EqualTo (
-              new[]
-              {
-                  new ServiceImplementationInfo (typeof (TestMultipleConcreteImplementationAttributesType1), LifetimeKind.Singleton),
-                  new ServiceImplementationInfo (typeof (TestMultipleConcreteImplementationAttributesType2), LifetimeKind.Instance)
-              }));
+
+      Assert.That (entry.ImplementationInfos.Count, Is.EqualTo (2));
+      Assert.That (entry.ImplementationInfos[0].ImplementationType, Is.EqualTo (typeof (TestMultipleConcreteImplementationAttributesType1)));
+      Assert.That (entry.ImplementationInfos[0].Lifetime, Is.EqualTo (LifetimeKind.Singleton));
+      Assert.That (entry.ImplementationInfos[1].ImplementationType, Is.EqualTo (typeof (TestMultipleConcreteImplementationAttributesType2)));
+      Assert.That (entry.ImplementationInfos[1].Lifetime, Is.EqualTo (LifetimeKind.Instance));
     }
     
     [Test]
@@ -159,14 +158,12 @@ namespace Remotion.UnitTests.ServiceLocation
       var entry = ServiceConfigurationEntry.CreateFromAttributes (typeof (ITestMultipleConcreteImplementationAttributesType), attributes);
 
       Assert.That (entry.ServiceType, Is.EqualTo (typeof (ITestMultipleConcreteImplementationAttributesType)));
-      Assert.That (
-          entry.ImplementationInfos,
-          Is.EqualTo (
-              new[]
-              {
-                  new ServiceImplementationInfo (typeof (TestMultipleConcreteImplementationAttributesType2), LifetimeKind.Instance),
-                  new ServiceImplementationInfo (typeof (TestMultipleConcreteImplementationAttributesType1), LifetimeKind.Singleton)
-              }));
+
+      Assert.That (entry.ImplementationInfos.Count, Is.EqualTo (2));
+      Assert.That (entry.ImplementationInfos[0].ImplementationType, Is.EqualTo (typeof (TestMultipleConcreteImplementationAttributesType2)));
+      Assert.That (entry.ImplementationInfos[0].Lifetime, Is.EqualTo (LifetimeKind.Instance));
+      Assert.That (entry.ImplementationInfos[1].ImplementationType, Is.EqualTo (typeof (TestMultipleConcreteImplementationAttributesType1)));
+      Assert.That (entry.ImplementationInfos[1].Lifetime, Is.EqualTo (LifetimeKind.Singleton));
     }
 
     [Test]
@@ -192,11 +189,11 @@ namespace Remotion.UnitTests.ServiceLocation
     {
       var entry = new ServiceConfigurationEntry (
           typeof (IComparable),
-          new ServiceImplementationInfo (typeof (int), LifetimeKind.Singleton),
-          new ServiceImplementationInfo (typeof (string), LifetimeKind.Instance));
+          new ServiceImplementationInfo (typeof (int), LifetimeKind.Singleton, RegistrationType.Single),
+          new ServiceImplementationInfo (typeof (string), LifetimeKind.Instance, RegistrationType.Decorator));
 
       Assert.That (entry.ToString (), Is.EqualTo (
-        "System.IComparable implementations: [{System.Int32, Singleton}, {System.String, Instance}]"));
+        "System.IComparable implementations: [{System.Int32, Singleton, Single}, {System.String, Instance, Decorator}]"));
     }
   }
 }

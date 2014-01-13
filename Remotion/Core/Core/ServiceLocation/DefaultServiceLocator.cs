@@ -17,11 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Reflection;
 using Microsoft.Practices.ServiceLocation;
-using Remotion.Collections;
-using Remotion.FunctionalProgramming;
 using Remotion.Logging;
 using Remotion.Utilities;
 
@@ -64,7 +60,7 @@ namespace Remotion.ServiceLocation
   /// </para>
   /// </remarks>
   /// <threadsafety static="true" instance="true" />
-  public partial class DefaultServiceLocator : IServiceLocator
+  public sealed partial class DefaultServiceLocator : IServiceLocator
   {
     private readonly IServiceConfigurationDiscoveryService _serviceConfigurationDiscoveryService;
 

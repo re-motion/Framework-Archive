@@ -48,14 +48,15 @@ namespace Remotion.UnitTests.ServiceLocation
       _typeDiscoveryServiceStub.Stub (stub => stub.GetTypes (typeof (ITestSingletonConcreteImplementationAttributeType), true))
           .Return (new ArrayList { typeof (TestConcreteImplementationAttributeType) });
 
-      var serviceConfigurationEntries = _defaultServiceConfigurationDiscoveryService.GetDefaultConfiguration ().ToArray();
+      var serviceConfigurationEntries = _defaultServiceConfigurationDiscoveryService.GetDefaultConfiguration().ToArray();
 
       Assert.That (serviceConfigurationEntries, Has.Length.EqualTo (1));
-      var serviceConfigurationEntry = serviceConfigurationEntries.Single ();
+      var serviceConfigurationEntry = serviceConfigurationEntries.Single();
       Assert.That (serviceConfigurationEntry.ServiceType, Is.SameAs (typeof (ITestSingletonConcreteImplementationAttributeType)));
-      Assert.That (
-          serviceConfigurationEntry.ImplementationInfos, 
-          Is.EqualTo (new[] { new ServiceImplementationInfo (typeof (TestConcreteImplementationAttributeType), LifetimeKind.Singleton) }));
+
+      Assert.That (serviceConfigurationEntry.ImplementationInfos.Count, Is.EqualTo (1));
+      Assert.That (serviceConfigurationEntry.ImplementationInfos[0].ImplementationType, Is.EqualTo (typeof (TestConcreteImplementationAttributeType)));
+      Assert.That (serviceConfigurationEntry.ImplementationInfos[0].Lifetime, Is.EqualTo (LifetimeKind.Singleton));
     }
 
     [Test]
@@ -72,22 +73,29 @@ namespace Remotion.UnitTests.ServiceLocation
                   typeof (TestMultipleConcreteImplementationAttributesType3)
               });
 
-      var serviceConfigurationEntries = _defaultServiceConfigurationDiscoveryService.GetDefaultConfiguration ().ToArray ();
+      var serviceConfigurationEntries = _defaultServiceConfigurationDiscoveryService.GetDefaultConfiguration().ToArray();
 
       Assert.That (serviceConfigurationEntries, Has.Length.EqualTo (1));
-      var serviceConfigurationEntry = serviceConfigurationEntries.Single ();
+      var serviceConfigurationEntry = serviceConfigurationEntries.Single();
       Assert.That (serviceConfigurationEntry.ServiceType, Is.SameAs (typeof (ITestMultipleConcreteImplementationAttributesType)));
+
+      Assert.That (serviceConfigurationEntry.ImplementationInfos.Count, Is.EqualTo (3));
       Assert.That (
-          serviceConfigurationEntry.ImplementationInfos,
-          Is.EqualTo (
-              new[]
-              {
-                  new ServiceImplementationInfo (typeof (TestMultipleConcreteImplementationAttributesType2), LifetimeKind.Instance),
-                  new ServiceImplementationInfo (typeof (TestMultipleConcreteImplementationAttributesType3), LifetimeKind.Instance),
-                  new ServiceImplementationInfo (typeof (TestMultipleConcreteImplementationAttributesType1), LifetimeKind.Singleton),
-              }));
+          serviceConfigurationEntry.ImplementationInfos[0].ImplementationType,
+          Is.EqualTo (typeof (TestMultipleConcreteImplementationAttributesType2)));
+      Assert.That (serviceConfigurationEntry.ImplementationInfos[0].Lifetime, Is.EqualTo (LifetimeKind.Instance));
+
+      Assert.That (
+          serviceConfigurationEntry.ImplementationInfos[1].ImplementationType,
+          Is.EqualTo (typeof (TestMultipleConcreteImplementationAttributesType3)));
+      Assert.That (serviceConfigurationEntry.ImplementationInfos[1].Lifetime, Is.EqualTo (LifetimeKind.Instance));
+
+      Assert.That (
+          serviceConfigurationEntry.ImplementationInfos[2].ImplementationType,
+          Is.EqualTo (typeof (TestMultipleConcreteImplementationAttributesType1)));
+      Assert.That (serviceConfigurationEntry.ImplementationInfos[2].Lifetime, Is.EqualTo (LifetimeKind.Singleton));
     }
-    
+
     [Test]
     public void GetDefaultConfiguration_TypeDiscoveryService_WithMultipleConcreteImplementationAttributes_ReturnsSortedByPosition ()
     {
@@ -252,9 +260,10 @@ namespace Remotion.UnitTests.ServiceLocation
       Assert.That (serviceConfigurationEntries, Has.Length.EqualTo (1));
       var entry = serviceConfigurationEntries.Single();
       Assert.That (entry.ServiceType, Is.EqualTo (typeof (ITestSingletonConcreteImplementationAttributeType)));
-      Assert.That (
-          entry.ImplementationInfos,
-          Is.EqualTo (new[] { new ServiceImplementationInfo (typeof (TestConcreteImplementationAttributeType), LifetimeKind.Singleton) }));
+
+      Assert.That (entry.ImplementationInfos.Count, Is.EqualTo (1));
+      Assert.That (entry.ImplementationInfos[0].ImplementationType, Is.EqualTo (typeof (TestConcreteImplementationAttributeType)));
+      Assert.That (entry.ImplementationInfos[0].Lifetime, Is.EqualTo (LifetimeKind.Singleton));
     }
 
     [Test]

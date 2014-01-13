@@ -28,7 +28,7 @@ namespace Remotion.ServiceLocation
   /// Holds the parameters used by <see cref="DefaultServiceLocator"/> for instantiating instances of service types. Use 
   /// <see cref="DefaultServiceConfigurationDiscoveryService"/> to retrieve the <see cref="ServiceConfigurationEntry"/> data for a specific type.
   /// </summary>
-  public class ServiceConfigurationEntry
+  public sealed class ServiceConfigurationEntry
   {
     /// <summary>
     /// Creates a <see cref="ServiceConfigurationEntry"/> from a <see cref="ImplementationForAttribute"/>.

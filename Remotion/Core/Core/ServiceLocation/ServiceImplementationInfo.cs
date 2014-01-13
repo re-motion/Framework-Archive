@@ -22,7 +22,7 @@ namespace Remotion.ServiceLocation
   /// <summary>
   /// Encapsulates a service implementation type and <see cref="LifetimeKind"/>.
   /// </summary>
-  public class ServiceImplementationInfo
+  public sealed class ServiceImplementationInfo
   {
     /// <summary>
     /// Initializes a new instance of the <see cref="ServiceImplementationInfo"/> class 
@@ -110,34 +110,7 @@ namespace Remotion.ServiceLocation
     /// <inheritdoc />
     public override string ToString ()
     {
-      return string.Format ("{{{0}, {1}}}", _implementationType, _lifetime);
-    }
-
-    protected bool Equals (ServiceImplementationInfo other)
-    {
-      return Equals (_factory, other._factory) && Equals (_implementationType, other._implementationType) && _lifetime == other._lifetime;
-    }
-
-    public override bool Equals (object obj)
-    {
-      if (ReferenceEquals (null, obj))
-        return false;
-      if (ReferenceEquals (this, obj))
-        return true;
-      if (obj.GetType() != this.GetType())
-        return false;
-      return Equals ((ServiceImplementationInfo) obj);
-    }
-
-    public override int GetHashCode ()
-    {
-      unchecked
-      {
-        int hashCode = (_factory != null ? _factory.GetHashCode() : 0);
-        hashCode = (hashCode * 397) ^ (_implementationType != null ? _implementationType.GetHashCode() : 0);
-        hashCode = (hashCode * 397) ^ (int) _lifetime;
-        return hashCode;
-      }
+      return string.Format ("{{{0}, {1}, {2}}}", _implementationType, _lifetime, _registrationType);
     }
   }
 }
