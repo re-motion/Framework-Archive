@@ -133,7 +133,7 @@ namespace Remotion.ServiceLocation
       {
         throw new InvalidOperationException (
             string.Format (
-                "Service type '{0}': Single and Multiple registration types are mutually exclusive.",
+                "Service type '{0}': Registrations of type 'Single' and 'Multiple' are mutually exclusive.",
                 serviceConfigurationEntry.ServiceType));
       }
 
@@ -141,7 +141,7 @@ namespace Remotion.ServiceLocation
       {
         throw new InvalidOperationException (
             string.Format (
-                "Service type '{0}': Single and Compound registration types are mutually exclusive.",
+                "Service type '{0}': Registrations of type 'Single' and 'Compound' are mutually exclusive.",
                 serviceConfigurationEntry.ServiceType));
       }
 

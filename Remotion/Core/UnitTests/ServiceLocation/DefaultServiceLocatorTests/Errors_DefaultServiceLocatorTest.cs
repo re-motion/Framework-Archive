@@ -29,6 +29,38 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
   public class Errors_DefaultServiceLocatorTest : TestBase
   {
     [Test]
+    public void Register_SingleAndCompoundImplementations_ThrowsInvalidOperationException ()
+    {
+      var single = new ServiceImplementationInfo (typeof (TestImplementation1), LifetimeKind.Instance, RegistrationType.Single);
+      var compound = new ServiceImplementationInfo (typeof (TestCompound), LifetimeKind.Instance, RegistrationType.Compound);
+      var serviceConfigurationEntry = new ServiceConfigurationEntry (typeof (ITestType), single, compound);
+
+      var serviceLocator = CreateServiceLocator();
+
+      Assert.That (
+          () => serviceLocator.Register (serviceConfigurationEntry),
+          Throws.InvalidOperationException.With.Message.EqualTo (
+              "Service type 'Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests.TestDomain.ITestType': "
+              + "Registrations of type 'Single' and 'Compound' are mutually exclusive."));
+    }
+
+    [Test]
+    public void Register_SingleAndMultipleImplementations_ThrowsInvalidOperationException ()
+    {
+      var single = new ServiceImplementationInfo (typeof (TestImplementation1), LifetimeKind.Instance, RegistrationType.Single);
+      var multiple = new ServiceImplementationInfo (typeof (TestImplementation2), LifetimeKind.Instance, RegistrationType.Multiple);
+      var serviceConfigurationEntry = new ServiceConfigurationEntry (typeof (ITestType), single, multiple);
+
+      var serviceLocator = CreateServiceLocator();
+
+      Assert.That (
+          () => serviceLocator.Register (serviceConfigurationEntry),
+          Throws.InvalidOperationException.With.Message.EqualTo (
+              "Service type 'Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests.TestDomain.ITestType': "
+              + "Registrations of type 'Single' and 'Multiple' are mutually exclusive."));
+    }
+
+    [Test]
     public void Register_TypeWithTooManyPublicCtors_ThrowsInvalidOperationException ()
     {
       var serviceConfigurationEntry = CreateSingleServiceConfigurationEntry (
@@ -68,6 +100,25 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
           typeof (TestImplementation1));
 
       var serviceLocator = CreateServiceLocator();
+      serviceLocator.Register (serviceConfigurationEntry);
+
+      Assert.That (
+          () => serviceLocator.Register (serviceConfigurationEntry),
+          Throws.InvalidOperationException.With.Message.EqualTo (
+              "Register cannot be called twice or after GetInstance for service type: 'Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests.TestDomain.ITestType'."));
+    }
+    
+    [Test]
+    public void Register_AfterGetInstance_ExceptionIsThrown ()
+    {
+      var serviceConfigurationEntry = CreateSingleServiceConfigurationEntry (
+          typeof (ITestType),
+          typeof (TestImplementation1));
+
+      var serviceConfigurationDiscoveryServiceMock = MockRepository.GenerateStrictMock<IServiceConfigurationDiscoveryService>();
+      serviceConfigurationDiscoveryServiceMock.Stub (_ => _.GetDefaultConfiguration (typeof (ITestType))).Return (serviceConfigurationEntry);
+
+      var serviceLocator = CreateServiceLocator(serviceConfigurationDiscoveryServiceMock);
       serviceLocator.Register (serviceConfigurationEntry);
 
       Assert.That (
