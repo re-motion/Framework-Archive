@@ -152,7 +152,7 @@ namespace Remotion.ServiceLocation
     {
       Func<Func<object>, object> activator = (innerActivator) => innerActivator();
 
-      //TODO TT: Refactor to simple expression tree without closures etc
+      //TODO RM-5506: Refactor to simple expression tree without closures etc
       // arg => new DecoratorType3 (
       //            new DecoratorType2 (
       //                new DecoratorType1 ((ServiceType) arg)))
