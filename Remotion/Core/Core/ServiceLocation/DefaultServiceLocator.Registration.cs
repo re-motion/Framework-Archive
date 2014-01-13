@@ -36,23 +36,10 @@ namespace Remotion.ServiceLocation
       public readonly IReadOnlyCollection<Func<object>> MultipleFactories;
 
       public Registration (
-          Type serviceType,
           Func<object> singleFactory,
           Func<object> compoundFactory,
           IReadOnlyCollection<Func<object>> multipleFactories)
       {
-        if (singleFactory != null && multipleFactories.Any())
-        {
-          throw new ArgumentException (
-              string.Format ("Service type '{0}': Single and Multiple registration types are mutually exclusive.", serviceType));
-        }
-
-        if (singleFactory != null && compoundFactory != null)
-        {
-          throw new ArgumentException (
-              string.Format ("Service type '{0}': Single and Compound registration types are mutually exclusive.", serviceType));
-        }
-
         SingleFactory = singleFactory;
         CompoundFactory = compoundFactory;
         MultipleFactories = multipleFactories;
@@ -117,30 +104,48 @@ namespace Remotion.ServiceLocation
           serviceConfigurationEntry.ServiceType,
           serviceConfigurationEntry.ImplementationInfos.Where (i => i.RegistrationType == RegistrationType.Decorator));
 
-      return new Registration (
-          serviceConfigurationEntry.ServiceType,
-          singleFactory:
-              serviceConfigurationEntry.ImplementationInfos.Where (i => i.RegistrationType == RegistrationType.Single)
-                  .Select (i => CreateInstanceFactory (serviceConfigurationEntry.ServiceType, i, decoratorChain))
-                  .SingleOrDefault (
-                      () => new InvalidOperationException (
-                          string.Format (
-                              "Cannot register multiple implementations with registration type '{0}' for service type '{1}'.",
-                              RegistrationType.Single,
-                              serviceConfigurationEntry.ServiceType))),
-          compoundFactory:
-              serviceConfigurationEntry.ImplementationInfos.Where (i => i.RegistrationType == RegistrationType.Compound)
-                  .Select (i => CreateInstanceFactory (serviceConfigurationEntry.ServiceType, i, decoratorChain))
-                  .SingleOrDefault (
-                      () => new InvalidOperationException (
-                          string.Format (
-                              "Cannot register multiple implementations with registration type '{0}' for service type '{1}'.",
-                              RegistrationType.Compound,
-                              serviceConfigurationEntry.ServiceType))),
-          multipleFactories:
-              serviceConfigurationEntry.ImplementationInfos.Where (i => i.RegistrationType == RegistrationType.Multiple)
-                  .Select (i => CreateInstanceFactory (serviceConfigurationEntry.ServiceType, i, isCompound ? noDecorators : decoratorChain))
-                  .ToArray());
+      var singleFactory = serviceConfigurationEntry.ImplementationInfos
+          .Where (i => i.RegistrationType == RegistrationType.Single)
+          .Select (i => CreateInstanceFactory (serviceConfigurationEntry.ServiceType, i, decoratorChain))
+          .SingleOrDefault (
+              () => new InvalidOperationException (
+                  string.Format (
+                      "Cannot register multiple implementations with registration type '{0}' for service type '{1}'.",
+                      RegistrationType.Single,
+                      serviceConfigurationEntry.ServiceType)));
+
+      var compoundFactory = serviceConfigurationEntry.ImplementationInfos
+          .Where (i => i.RegistrationType == RegistrationType.Compound)
+          .Select (i => CreateInstanceFactory (serviceConfigurationEntry.ServiceType, i, decoratorChain))
+          .SingleOrDefault (
+              () => new InvalidOperationException (
+                  string.Format (
+                      "Cannot register multiple implementations with registration type '{0}' for service type '{1}'.",
+                      RegistrationType.Compound,
+                      serviceConfigurationEntry.ServiceType)));
+
+      var multipleFactories = serviceConfigurationEntry.ImplementationInfos
+          .Where (i => i.RegistrationType == RegistrationType.Multiple)
+          .Select (i => CreateInstanceFactory (serviceConfigurationEntry.ServiceType, i, isCompound ? noDecorators : decoratorChain))
+          .ToArray();
+
+      if (singleFactory != null && multipleFactories.Any())
+      {
+        throw new InvalidOperationException (
+            string.Format (
+                "Service type '{0}': Single and Multiple registration types are mutually exclusive.",
+                serviceConfigurationEntry.ServiceType));
+      }
+
+      if (singleFactory != null && compoundFactory != null)
+      {
+        throw new InvalidOperationException (
+            string.Format (
+                "Service type '{0}': Single and Compound registration types are mutually exclusive.",
+                serviceConfigurationEntry.ServiceType));
+      }
+
+      return new Registration (singleFactory, compoundFactory, multipleFactories);
     }
 
     private Func<Func<object>, object> CreateDecoratorChain (Type serviceType, IEnumerable<ServiceImplementationInfo> decorators)
@@ -188,7 +193,7 @@ namespace Remotion.ServiceLocation
         var expectedParameterType =
             serviceImplementationInfo.RegistrationType == RegistrationType.Compound ? typeof (IEnumerable<>).MakeGenericType (serviceType) : null;
         var ctorInfo = GetSingleConstructor (serviceImplementationInfo, expectedParameterType);
-        instanceFactory = CreateInstanceFactory (ctorInfo);
+        instanceFactory = CreateInstanceFactoryFromConstructorInfo (ctorInfo);
       }
       else
       {
@@ -207,7 +212,7 @@ namespace Remotion.ServiceLocation
       }
     }
 
-    private Func<object> CreateInstanceFactory (ConstructorInfo ctorInfo)
+    private Func<object> CreateInstanceFactoryFromConstructorInfo (ConstructorInfo ctorInfo)
     {
       var serviceLocator = Expression.Constant (this);
 
