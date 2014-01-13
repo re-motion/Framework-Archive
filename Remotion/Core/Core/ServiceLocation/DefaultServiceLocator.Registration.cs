@@ -177,41 +177,24 @@ namespace Remotion.ServiceLocation
       return activator;
     }
 
-    private ConstructorInfo GetSingleConstructor (ServiceImplementationInfo serviceImplementationInfo, Type expectedParameterType)
-    {
-      var argumentTypesDoNotMatchMessage = string.Format (
-          " The public constructor must at least accept an argument of type '{0}'.",
-          expectedParameterType);
-
-      var exceptionMessage = string.Format (
-          "Type '{0}' cannot be instantiated. The type must have exactly one public constructor.{1}",
-          serviceImplementationInfo.ImplementationType,
-          expectedParameterType == null ? "" : argumentTypesDoNotMatchMessage);
-
-      var constructors = serviceImplementationInfo.ImplementationType.GetConstructors();
-      if (constructors.Length != 1)
-        throw new InvalidOperationException (exceptionMessage);
-
-      var constructor = constructors.First();
-      if (expectedParameterType != null && constructor.GetParameters().Count(p => p.ParameterType == expectedParameterType) != 1)
-        throw new InvalidOperationException (exceptionMessage);
-
-      return constructor;
-    }
-
     private Func<object> CreateInstanceFactory (
         Type serviceType,
         ServiceImplementationInfo serviceImplementationInfo,
         Func<Func<object>, object> decoratorChain)
     {
-      // TODO TT: Write test to also decorate original factory
-      if (serviceImplementationInfo.Factory != null)
-        return serviceImplementationInfo.Factory; // return () => decoratorChain (serviceImplementationInfo.Factory)
+      Func<object> instanceFactory;
+      if (serviceImplementationInfo.Factory == null)
+      {
+        var expectedParameterType =
+            serviceImplementationInfo.RegistrationType == RegistrationType.Compound ? typeof (IEnumerable<>).MakeGenericType (serviceType) : null;
+        var ctorInfo = GetSingleConstructor (serviceImplementationInfo, expectedParameterType);
+        instanceFactory = CreateInstanceFactory (ctorInfo);
+      }
+      else
+      {
+        instanceFactory = serviceImplementationInfo.Factory;
+      }
 
-      var expectedParameterType =
-          serviceImplementationInfo.RegistrationType == RegistrationType.Compound ? typeof (IEnumerable<>).MakeGenericType (serviceType) : null;
-      var ctorInfo = GetSingleConstructor (serviceImplementationInfo, expectedParameterType);
-      var instanceFactory = CreateInstanceFactory (ctorInfo);
       Func<object> decoratedFactory = () => decoratorChain (instanceFactory);
 
       switch (serviceImplementationInfo.Lifetime)
@@ -233,6 +216,28 @@ namespace Remotion.ServiceLocation
 
       var factoryLambda = Expression.Lambda<Func<object>> (Expression.New (ctorInfo, ctorArgExpressions));
       return factoryLambda.Compile();
+    }
+
+    private ConstructorInfo GetSingleConstructor (ServiceImplementationInfo serviceImplementationInfo, Type expectedParameterType)
+    {
+      var argumentTypesDoNotMatchMessage = string.Format (
+          " The public constructor must at least accept an argument of type '{0}'.",
+          expectedParameterType);
+
+      var exceptionMessage = string.Format (
+          "Type '{0}' cannot be instantiated. The type must have exactly one public constructor.{1}",
+          serviceImplementationInfo.ImplementationType,
+          expectedParameterType == null ? "" : argumentTypesDoNotMatchMessage);
+
+      var constructors = serviceImplementationInfo.ImplementationType.GetConstructors();
+      if (constructors.Length != 1)
+        throw new InvalidOperationException (exceptionMessage);
+
+      var constructor = constructors.First();
+      if (expectedParameterType != null && constructor.GetParameters().Count(p => p.ParameterType == expectedParameterType) != 1)
+        throw new InvalidOperationException (exceptionMessage);
+
+      return constructor;
     }
 
     private Expression GetIndirectResolutionCall (Expression serviceLocator, ParameterInfo parameterInfo)

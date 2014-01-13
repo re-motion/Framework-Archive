@@ -98,7 +98,7 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
     public void GetInstance_ImplementationIsRegisteredAsFactoryWithInstanceLifetime ()
     {
       TestImplementation1 expectedInstance = null;
-      var serviceImplementation = ServiceImplementationInfo.CreateSingle (() => expectedInstance = new TestImplementation1());
+      var serviceImplementation = ServiceImplementationInfo.CreateSingle (() => expectedInstance = new TestImplementation1(), LifetimeKind.Instance);
       var serviceConfigurationEntry = new ServiceConfigurationEntry (typeof (ITestType), serviceImplementation);
 
       var serviceLocator = CreateServiceLocator();
@@ -114,7 +114,18 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
     [Test]
     public void GetInstance_ImplementationIsRegisteredAsFactoryWithSingletonLifetime ()
     {
-      Assert.Fail ("TODO implement");
+      TestImplementation1 expectedInstance = null;
+      var serviceImplementation = ServiceImplementationInfo.CreateSingle (() => expectedInstance = new TestImplementation1(), LifetimeKind.Singleton);
+      var serviceConfigurationEntry = new ServiceConfigurationEntry (typeof (ITestType), serviceImplementation);
+
+      var serviceLocator = CreateServiceLocator();
+      serviceLocator.Register (serviceConfigurationEntry);
+
+      var instance1 = serviceLocator.GetInstance (typeof (ITestType));
+      Assert.That (expectedInstance, Is.Not.Null);
+
+      var instance2 = serviceLocator.GetInstance (typeof (ITestType));
+      Assert.That (instance1, Is.SameAs (instance2));
     }
 
     [Test]

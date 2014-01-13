@@ -29,10 +29,11 @@ namespace Remotion.ServiceLocation
     /// with <see cref="RegistrationType"/> set to <see cref="ServiceLocation.RegistrationType.Single"/>.
     /// </summary>
     /// <param name="factory">The factory delegate that creates an instance of the service implementation.</param>
-    public static ServiceImplementationInfo CreateSingle<T> (Func<T> factory)
+    /// <param name="lifetime">The lifetime of the instances created by the <paramref name="factory"/>.</param>
+    public static ServiceImplementationInfo CreateSingle<T> (Func<T> factory, LifetimeKind lifetime = LifetimeKind.Instance)
     {
       ArgumentUtility.CheckNotNull ("factory", factory);
-      return new ServiceImplementationInfo (typeof(T), () => factory(), RegistrationType.Single);
+      return new ServiceImplementationInfo (typeof(T), () => factory(), lifetime, RegistrationType.Single);
     }
 
     /// <summary>
@@ -40,10 +41,11 @@ namespace Remotion.ServiceLocation
     /// with <see cref="RegistrationType"/> set to <see cref="ServiceLocation.RegistrationType.Multiple"/>.
     /// </summary>
     /// <param name="factory">The factory delegate that creates an instance of the service implementation.</param>
-    public static ServiceImplementationInfo CreateMultiple<T> (Func<T> factory)
+    /// <param name="lifetime">The lifetime of the instances created by the <paramref name="factory"/>.</param>
+    public static ServiceImplementationInfo CreateMultiple<T> (Func<T> factory, LifetimeKind lifetime = LifetimeKind.Instance)
     {
       ArgumentUtility.CheckNotNull ("factory", factory);
-      return new ServiceImplementationInfo (typeof(T), () => factory(), RegistrationType.Multiple);
+      return new ServiceImplementationInfo (typeof(T), () => factory(), lifetime, RegistrationType.Multiple);
     }
 
     private readonly Func<object> _factory;
@@ -66,10 +68,10 @@ namespace Remotion.ServiceLocation
       _factory = null;
     }
 
-    private ServiceImplementationInfo (Type implementationType, Func<object> factory, RegistrationType registrationType)
+    private ServiceImplementationInfo (Type implementationType, Func<object> factory, LifetimeKind lifetime, RegistrationType registrationType)
     {
       _factory = factory;
-      _lifetime = LifetimeKind.Instance;
+      _lifetime = lifetime;
       _implementationType = implementationType;
       _registrationType = registrationType;
     }

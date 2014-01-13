@@ -59,7 +59,7 @@ namespace Remotion.ServiceLocation
 
       var serviceConfigurationEntry = new ServiceConfigurationEntry (
           typeof (TService),
-          ServiceImplementationInfo.CreateSingle (instanceFactory));
+          ServiceImplementationInfo.CreateSingle (instanceFactory, LifetimeKind.Instance));
 
       serviceLocator.Register (serviceConfigurationEntry);
     }
@@ -102,7 +102,7 @@ namespace Remotion.ServiceLocation
 
       var serviceConfigurationEntry = new ServiceConfigurationEntry (
           typeof (TService),
-          instanceFactories.Select (ServiceImplementationInfo.CreateMultiple));
+          instanceFactories.Select (f => ServiceImplementationInfo.CreateMultiple (f, LifetimeKind.Instance)));
 
       serviceLocator.Register (serviceConfigurationEntry);
     }

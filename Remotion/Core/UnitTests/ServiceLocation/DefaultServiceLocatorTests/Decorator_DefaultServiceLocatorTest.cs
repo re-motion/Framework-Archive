@@ -71,9 +71,10 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
     {
       var implementation = new ServiceImplementationInfo (typeof (TestImplementation1), LifetimeKind.Singleton, RegistrationType.Single);
       var decorator = new ServiceImplementationInfo (typeof (TestDecorator1), LifetimeKind.Instance, RegistrationType.Decorator);
+      var serviceConfigurationEntry = new ServiceConfigurationEntry (typeof (ITestType), implementation, decorator);
 
       var serviceLocator = CreateServiceLocator();
-      serviceLocator.Register (new ServiceConfigurationEntry (typeof (ITestType), implementation, decorator));
+      serviceLocator.Register (serviceConfigurationEntry);
 
       var instance1 = serviceLocator.GetInstance (typeof (ITestType));
       var instance2 = serviceLocator.GetInstance (typeof (ITestType));
@@ -87,15 +88,58 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
     {
       var implementation = new ServiceImplementationInfo (typeof (TestImplementation1), LifetimeKind.Instance, RegistrationType.Single);
       var decorator = new ServiceImplementationInfo (typeof (TestDecorator1), LifetimeKind.Singleton, RegistrationType.Decorator);
+      var serviceConfigurationEntry = new ServiceConfigurationEntry (typeof (ITestType), implementation, decorator);
 
       var serviceLocator = CreateServiceLocator();
-      serviceLocator.Register (new ServiceConfigurationEntry (typeof (ITestType), implementation, decorator));
+      serviceLocator.Register (serviceConfigurationEntry);
 
       var instance1 = serviceLocator.GetInstance (typeof (ITestType));
       var instance2 = serviceLocator.GetInstance (typeof (ITestType));
 
       Assert.That (instance1, Is.Not.SameAs (instance2));
       Assert.That (((TestDecorator1) instance1).DecoratedObject, Is.Not.SameAs (((TestDecorator1) instance2).DecoratedObject));
+    }
+
+    [Test]
+    public void GetInstance_ImplementationIsRegisteredAsFactoryWithInstanceLifetime_DecoratedFactoryIsUsed ()
+    {
+      TestImplementation1 expectedInstance = null;
+      var implementation = ServiceImplementationInfo.CreateSingle (() => expectedInstance = new TestImplementation1(), LifetimeKind.Instance);
+      var decorator = new ServiceImplementationInfo (typeof (TestDecorator1), LifetimeKind.Singleton, RegistrationType.Decorator);
+      var serviceConfigurationEntry = new ServiceConfigurationEntry (typeof (ITestType), implementation, decorator);
+
+      var serviceLocator = CreateServiceLocator();
+      serviceLocator.Register (serviceConfigurationEntry);
+
+      var instance1 = serviceLocator.GetInstance (typeof (ITestType));
+      Assert.That (expectedInstance, Is.Not.Null);
+      Assert.That (((TestDecorator1) instance1).DecoratedObject, Is.SameAs (expectedInstance));
+
+      var instance2 = serviceLocator.GetInstance (typeof (ITestType));
+      Assert.That (instance1, Is.Not.SameAs (instance2));
+
+      Assert.That (((TestDecorator1) instance1).DecoratedObject, Is.Not.SameAs (((TestDecorator1) instance2).DecoratedObject));
+    }
+
+    [Test]
+    public void GetInstance_ImplementationIsRegisteredAsFactoryWithSingletonLifetime_DecoratedFactoryIsUsed ()
+    {
+      TestImplementation1 expectedInstance = null;
+      var implementation = ServiceImplementationInfo.CreateSingle (() => expectedInstance = new TestImplementation1(), LifetimeKind.Singleton);
+      var decorator = new ServiceImplementationInfo (typeof (TestDecorator1), LifetimeKind.Instance, RegistrationType.Decorator);
+      var serviceConfigurationEntry = new ServiceConfigurationEntry (typeof (ITestType), implementation, decorator);
+
+      var serviceLocator = CreateServiceLocator();
+      serviceLocator.Register (serviceConfigurationEntry);
+
+      var instance1 = serviceLocator.GetInstance (typeof (ITestType));
+      Assert.That (expectedInstance, Is.Not.Null);
+      Assert.That (((TestDecorator1) instance1).DecoratedObject, Is.SameAs (expectedInstance));
+
+      var instance2 = serviceLocator.GetInstance (typeof (ITestType));
+      Assert.That (instance1, Is.SameAs (instance2));
+
+      Assert.That (((TestDecorator1) instance1).DecoratedObject, Is.SameAs (((TestDecorator1) instance2).DecoratedObject));
     }
 
     [Test]
