@@ -95,6 +95,18 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
     }
 
     [Test]
+    public void GetInstance_WithSingletonLifetimeKind_AndSingletonIsLazyInitialized ()
+    {
+      var serviceConfigurationEntry = CreateSingleServiceConfigurationEntry (
+          typeof (ITestType),
+          typeof (TestImplementationWithOneConstructorParameter),
+          LifetimeKind.Singleton);
+
+      var serviceLocator = CreateServiceLocator();
+      Assert.That (() => serviceLocator.Register (serviceConfigurationEntry), Throws.Nothing);
+    }
+
+    [Test]
     public void GetInstance_ImplementationIsRegisteredAsFactoryWithInstanceLifetime ()
     {
       TestImplementation1 expectedInstance = null;
@@ -112,7 +124,7 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
     }
 
     [Test]
-    public void GetInstance_ImplementationIsRegisteredAsFactoryWithSingletonLifetime ()
+    public void GetInstance_ImplementationIsRegisteredAsFactoryWithSingletonLifetime_AndSingletonIsLazyInitialized ()
     {
       TestImplementation1 expectedInstance = null;
       var serviceImplementation = ServiceImplementationInfo.CreateSingle (() => expectedInstance = new TestImplementation1(), LifetimeKind.Singleton);
@@ -121,6 +133,7 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
       var serviceLocator = CreateServiceLocator();
       serviceLocator.Register (serviceConfigurationEntry);
 
+      Assert.That (expectedInstance, Is.Null);
       var instance1 = serviceLocator.GetInstance (typeof (ITestType));
       Assert.That (expectedInstance, Is.Not.Null);
 

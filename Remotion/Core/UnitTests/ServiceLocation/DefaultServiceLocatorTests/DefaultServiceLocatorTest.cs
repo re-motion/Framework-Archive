@@ -38,15 +38,6 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
     }
 
     [Test]
-    public void Register_SingletonServiceIsLazyInitialized ()
-    {
-      _serviceLocator.Register (
-          typeof (TestConstructorInjectionForServiceWithoutConcreteImplementationAttribute),
-          typeof (TestConstructorInjectionForServiceWithoutConcreteImplementationAttribute),
-          LifetimeKind.Singleton);
-    }
-
-    [Test]
     public void GetInstance_TypeWithGenericServiceInterface ()
     {
 
