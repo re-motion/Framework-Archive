@@ -18,6 +18,7 @@
 using System;
 using Microsoft.Practices.ServiceLocation;
 using NUnit.Framework;
+using Remotion.Development.UnitTesting;
 using Remotion.ServiceLocation;
 using Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests.TestDomain;
 using Remotion.UnitTests.ServiceLocation.TestDomain;
@@ -225,6 +226,26 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
               + "Error resolving indirect collection dependency of constructor parameter 'param' "
               + "of type 'Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests.TestDomain.TestTypeWithConstructorThrowingMultipleDependency': "
               + "ApplicationException: This exception comes from the ctor."));
+    }
+
+    [Test]
+    public void GetInstance_WithFactoryReturningWrongType_ThrowsActivationException ()
+    {
+      Func<ITestType> factory = () => new TestImplementation1();
+      Func<object> factoryAsObject = factory;
+      var implementation = ServiceImplementationInfo.CreateSingle<ITestTypeWithErrors> (() => null);
+      PrivateInvoke.SetNonPublicField (implementation, "_factory", factoryAsObject);
+      var serviceConfigurationEntry = new ServiceConfigurationEntry (typeof (ITestTypeWithErrors), implementation);
+
+      var serviceLocator = CreateServiceLocator();
+      serviceLocator.Register (serviceConfigurationEntry);
+
+      Assert.That (
+          () => serviceLocator.GetInstance (typeof (ITestTypeWithErrors)),
+          Throws.TypeOf<ActivationException>().With.Message.EqualTo (
+              "The instance returned by the registered factory does not implement the requested type "
+              + "'Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests.TestDomain.ITestTypeWithErrors'. "
+              + "(Instance type: 'Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests.TestDomain.TestImplementation1'.)"));
     }
   }
 }
