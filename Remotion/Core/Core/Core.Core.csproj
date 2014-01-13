@@ -189,11 +189,12 @@
     <Compile Include="IAdapter.cs" />
     <Compile Include="ServiceLocation\BootstrapServiceConfiguration.cs" />
     <Compile Include="ServiceLocation\DefaultServiceLocator.Registration.cs" />
-    <Compile Include="ServiceLocation\DefaultServiceLocatorRegistrationExtensions.cs" />
+    <Compile Include="ServiceLocation\ServiceConfigurationRegistryExtensions.cs" />
     <Compile Include="ServiceLocation\ImplementationForAttribute.cs" />
     <Compile Include="ServiceLocation\DefaultServiceLocatorProvider.cs" />
     <Compile Include="ServiceLocation\IBootstrapServiceConfiguration.cs" />
     <Compile Include="ServiceLocation\IServiceConfigurationDiscoveryService.cs" />
+    <Compile Include="ServiceLocation\IServiceConfigurationRegistry.cs" />
     <Compile Include="ServiceLocation\IServiceLocatorProvider.cs" />
     <Compile Include="ServiceLocation\LifetimeKind.cs" />
     <Compile Include="ServiceLocation\RegistrationType.cs" />

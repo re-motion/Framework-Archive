@@ -26,7 +26,7 @@ using Remotion.Utilities;
 
 namespace Remotion.ServiceLocation
 {
-  public partial class DefaultServiceLocator
+  public partial class DefaultServiceLocator : IServiceConfigurationRegistry
   {
     private class Registration
     {
@@ -54,12 +54,7 @@ namespace Remotion.ServiceLocation
 
     private readonly IDataStore<Type, Registration> _dataStore = DataStoreFactory.CreateWithLocking<Type, Registration>();
 
-    /// <summary>
-    /// Registers a concrete implementation.
-    /// </summary>
-    /// <param name="serviceConfigurationEntry">A <see cref="ServiceConfigurationEntry"/> describing the concrete implementation to be registered.</param>
-    /// <exception cref="InvalidOperationException">An instance of the service type described by the <paramref name="serviceConfigurationEntry"/>
-    /// has already been retrieved. Registering factories or concrete implementations can only be done before any instances are retrieved.</exception>
+    /// <inheritdoc/>
     public void Register (ServiceConfigurationEntry serviceConfigurationEntry)
     {
       ArgumentUtility.CheckNotNull ("serviceConfigurationEntry", serviceConfigurationEntry);

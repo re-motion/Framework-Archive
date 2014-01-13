@@ -31,9 +31,10 @@ namespace Remotion.ServiceLocation
     /// <param name="factory">The factory delegate that creates an instance of the service implementation.</param>
     /// <param name="lifetime">The lifetime of the instances created by the <paramref name="factory"/>.</param>
     public static ServiceImplementationInfo CreateSingle<T> (Func<T> factory, LifetimeKind lifetime = LifetimeKind.Instance)
+        where T : class
     {
       ArgumentUtility.CheckNotNull ("factory", factory);
-      return new ServiceImplementationInfo (typeof(T), () => factory(), lifetime, RegistrationType.Single);
+      return new ServiceImplementationInfo (typeof (T), factory, lifetime, RegistrationType.Single);
     }
 
     /// <summary>
@@ -43,9 +44,10 @@ namespace Remotion.ServiceLocation
     /// <param name="factory">The factory delegate that creates an instance of the service implementation.</param>
     /// <param name="lifetime">The lifetime of the instances created by the <paramref name="factory"/>.</param>
     public static ServiceImplementationInfo CreateMultiple<T> (Func<T> factory, LifetimeKind lifetime = LifetimeKind.Instance)
+        where T : class
     {
       ArgumentUtility.CheckNotNull ("factory", factory);
-      return new ServiceImplementationInfo (typeof(T), () => factory(), lifetime, RegistrationType.Multiple);
+      return new ServiceImplementationInfo (typeof(T), factory, lifetime, RegistrationType.Multiple);
     }
 
     private readonly Func<object> _factory;
