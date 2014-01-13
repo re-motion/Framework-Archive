@@ -110,11 +110,10 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
       var serviceLocator = CreateServiceLocator();
       serviceLocator.Register (serviceConfigurationEntry);
 
-      Assert.Fail ("TODO implement");
       Assert.That (
           () => serviceLocator.GetAllInstances (typeof (ITestType)),
           Throws.TypeOf<ActivationException>().With.Message.EqualTo (
-              "A compound implementation is configured for service type 'Remotion.UnitTests.ServiceLocation.ServiceLocatorTests.TestDomain.ITestType'. "
+              "A compound implementation is configured for service type 'Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests.TestDomain.ITestType'. "
               + "Use GetInstance() to retrieve the implementation."));
     }
 

@@ -50,7 +50,7 @@ namespace Remotion.ServiceLocation
         MemberInfoFromExpressionUtility.GetMethod ((DefaultServiceLocator sl) => sl.ResolveIndirectDependency<object> (null))
         .GetGenericMethodDefinition();
     private static readonly MethodInfo s_resolveIndirectCollectionDependencyMethod =
-        MemberInfoFromExpressionUtility.GetMethod ((DefaultServiceLocator sl) => sl.ResolveIndirectCollectionDependency<object> (null))
+        MemberInfoFromExpressionUtility.GetMethod ((DefaultServiceLocator sl) => sl.ResolveIndirectCollectionDependency<object> (null, false))
         .GetGenericMethodDefinition();
 
     private readonly IDataStore<Type, Registration> _dataStore = DataStoreFactory.CreateWithLocking<Type, Registration>();
@@ -167,7 +167,7 @@ namespace Remotion.ServiceLocation
         var ctorArgExpressions = parameterInfos.Select (
             x => x.ParameterType == serviceType
                 ? Expression.Convert (decoratedObjectArgumentExpression, serviceType)
-                : GetIndirectResolutionCall (serviceLocator, x));
+                : GetIndirectResolutionCall (serviceLocator, x, false));
 
         // arg => new DecoratorType (<this.GetInstance(),> (ServiceType) arg <,this.GetInstance()>)
         var activationExpression = Expression.Lambda<Func<object, object>> (
@@ -190,10 +190,10 @@ namespace Remotion.ServiceLocation
       Func<object> instanceFactory;
       if (serviceImplementationInfo.Factory == null)
       {
-        var expectedParameterType =
-            serviceImplementationInfo.RegistrationType == RegistrationType.Compound ? typeof (IEnumerable<>).MakeGenericType (serviceType) : null;
+        var isCompound = serviceImplementationInfo.RegistrationType == RegistrationType.Compound;
+        var expectedParameterType = isCompound ? typeof (IEnumerable<>).MakeGenericType (serviceType) : null;
         var ctorInfo = GetSingleConstructor (serviceImplementationInfo, expectedParameterType);
-        instanceFactory = CreateInstanceFactoryFromConstructorInfo (ctorInfo);
+        instanceFactory = CreateInstanceFactoryFromConstructorInfo (ctorInfo, isCompound);
       }
       else
       {
@@ -212,12 +212,12 @@ namespace Remotion.ServiceLocation
       }
     }
 
-    private Func<object> CreateInstanceFactoryFromConstructorInfo (ConstructorInfo ctorInfo)
+    private Func<object> CreateInstanceFactoryFromConstructorInfo (ConstructorInfo ctorInfo, bool isCompoundResolution)
     {
       var serviceLocator = Expression.Constant (this);
 
       var parameterInfos = ctorInfo.GetParameters();
-      var ctorArgExpressions = parameterInfos.Select (x => GetIndirectResolutionCall (serviceLocator, x));
+      var ctorArgExpressions = parameterInfos.Select (x => GetIndirectResolutionCall (serviceLocator, x, isCompoundResolution));
 
       var factoryLambda = Expression.Lambda<Func<object>> (Expression.New (ctorInfo, ctorArgExpressions));
       return factoryLambda.Compile();
@@ -245,22 +245,25 @@ namespace Remotion.ServiceLocation
       return constructor;
     }
 
-    private Expression GetIndirectResolutionCall (Expression serviceLocator, ParameterInfo parameterInfo)
+    private Expression GetIndirectResolutionCall (Expression serviceLocator, ParameterInfo parameterInfo, bool isCompoundResolution)
     {
+      var context = string.Format ("constructor parameter '{0}' of type '{1}'", parameterInfo.Name, parameterInfo.Member.DeclaringType);
+
       MethodInfo resolutionMethod;
+      Expression[] arguments;
       if (parameterInfo.ParameterType.IsGenericType && parameterInfo.ParameterType.GetGenericTypeDefinition() == typeof (IEnumerable<>))
       {
         var elementType = parameterInfo.ParameterType.GetGenericArguments().Single();
         resolutionMethod = s_resolveIndirectCollectionDependencyMethod.MakeGenericMethod (elementType);
+        arguments = new Expression[] { Expression.Constant (context), Expression.Constant (isCompoundResolution) };
       }
       else
+      {
         resolutionMethod = s_resolveIndirectDependencyMethod.MakeGenericMethod (parameterInfo.ParameterType);
+        arguments = new Expression[] { Expression.Constant (context) };
+      }
 
-      var context = string.Format (
-          "constructor parameter '{0}' of type '{1}'",
-          parameterInfo.Name,
-          parameterInfo.Member.DeclaringType);
-      return Expression.Call (serviceLocator, resolutionMethod, Expression.Constant (context));
+      return Expression.Call (serviceLocator, resolutionMethod, arguments);
     }
 
     private T ResolveIndirectDependency<T> (string context)
@@ -276,12 +279,12 @@ namespace Remotion.ServiceLocation
       }
     }
 
-    private IEnumerable<T> ResolveIndirectCollectionDependency<T> (string context)
+    private IEnumerable<T> ResolveIndirectCollectionDependency<T> (string context, bool isCompoundResolution)
     {
-      IEnumerable<T> enumerable;
+      IEnumerable<object> enumerable;
       try
       {
-        enumerable = GetAllInstances<T>();
+        enumerable = GetAllInstances(typeof (T), isCompoundResolution);
       }
       catch (ActivationException ex)
       {
@@ -301,7 +304,7 @@ namespace Remotion.ServiceLocation
           {
             if (!enumerator.MoveNext())
               yield break;
-            current = enumerator.Current;
+            current = (T) enumerator.Current;
           }
           catch (ActivationException ex)
           {

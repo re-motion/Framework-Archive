@@ -133,18 +133,7 @@ namespace Remotion.ServiceLocation
     {
       ArgumentUtility.CheckNotNull ("serviceType", serviceType);
 
-      var registration = GetOrCreateRegistrationWithActivationException (serviceType);
-
-      var errorMessageFormat = "A single implementation is configured for service type '{0}'. Use GetInstance() to retrieve the implementation.";
-
-      if (registration.SingleFactory != null)
-        throw new ActivationException (string.Format (errorMessageFormat, serviceType, RegistrationType.Single));
-
-      // TODO TT: Enable, support for compound indirect resolution, and Test
-      //if (registration.CompoundFactory != null)
-      //  throw new ActivationException (string.Format (errorMessageFormat, serviceType, RegistrationType.Compound));
-
-      return registration.MultipleFactories.Select (factory => InvokeInstanceFactoryWithActivationException (factory, serviceType));
+      return GetAllInstances (serviceType, false);
     }
 
     /// <summary>
@@ -227,6 +216,29 @@ namespace Remotion.ServiceLocation
         return InvokeInstanceFactoryWithActivationException (registration.SingleFactory, serviceType);
 
       return null;
+    }
+
+    private IEnumerable<object> GetAllInstances (Type serviceType, bool isCompoundResolution)
+    {
+      var registration = GetOrCreateRegistrationWithActivationException (serviceType);
+
+      if (registration.SingleFactory != null)
+      {
+        throw new ActivationException (
+            string.Format (
+                "A single implementation is configured for service type '{0}'. Use GetInstance() to retrieve the implementation.",
+                serviceType));
+      }
+
+      if (!isCompoundResolution && registration.CompoundFactory != null)
+      {
+        throw new ActivationException (
+            string.Format (
+                "A compound implementation is configured for service type '{0}'. Use GetInstance() to retrieve the implementation.",
+                serviceType));
+      }
+
+      return registration.MultipleFactories.Select (factory => InvokeInstanceFactoryWithActivationException (factory, serviceType));
     }
 
     private object InvokeInstanceFactoryWithActivationException (Func<object> factory, Type serviceType)
