@@ -38,94 +38,12 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
     }
 
     [Test]
-    public void Register_Factory_ServiceIsAdded ()
-    {
-      var instance = new TestConcreteImplementationAttributeType();
-
-      _serviceLocator.RegisterSingle<ITestInstanceConcreteImplementationAttributeType> (() => instance);
-
-      Assert.That (_serviceLocator.GetInstance (typeof (ITestInstanceConcreteImplementationAttributeType)), Is.SameAs (instance));
-    }
-
-    [Test]
-    public void Register_ConcreteImplementation_ServiceIsAdded ()
-    {
-      _serviceLocator.Register (
-          typeof (ITestSingletonConcreteImplementationAttributeType), typeof (TestConcreteImplementationAttributeType), LifetimeKind.Singleton);
-
-      var instance1 = _serviceLocator.GetInstance (typeof (ITestSingletonConcreteImplementationAttributeType));
-      var instance2 = _serviceLocator.GetInstance (typeof (ITestSingletonConcreteImplementationAttributeType));
-      Assert.That (instance1, Is.SameAs (instance2));
-    }
-
-    [Test]
     public void Register_SingletonServiceIsLazyInitialized ()
     {
       _serviceLocator.Register (
           typeof (TestConstructorInjectionForServiceWithoutConcreteImplementationAttribute),
           typeof (TestConstructorInjectionForServiceWithoutConcreteImplementationAttribute),
           LifetimeKind.Singleton);
-    }
-
-    [Test]
-    public void GetInstance_IEnumerable ()
-    {
-      var implementation1 = new ServiceImplementationInfo (typeof (TestMultipleRegistrationType1), LifetimeKind.Singleton, RegistrationType.Multiple);
-      var implementation2 = new ServiceImplementationInfo (typeof (TestMultipleRegistrationType2), LifetimeKind.Singleton, RegistrationType.Multiple);
-      _serviceLocator.Register (new ServiceConfigurationEntry (typeof (ITestMultipleRegistrationsType), implementation1, implementation2));
-      _serviceLocator.Register (typeof (DomainType), typeof (DomainType), LifetimeKind.Singleton);
-
-      var instances = ((DomainType) _serviceLocator.GetInstance (typeof (DomainType))).AllInstances.ToArray();
-
-      Assert.That (instances, Has.Length.EqualTo (2));
-      Assert.That (instances[0], Is.TypeOf<TestMultipleRegistrationType1> ());
-      Assert.That (instances[1], Is.TypeOf<TestMultipleRegistrationType2> ());
-    }
-
-    [Test]
-    public void Register_ServiceConfigurationEntry_ServiceAdded ()
-    {
-      var serviceImplementation = new ServiceImplementationInfo (
-          typeof (TestConcreteImplementationAttributeType), LifetimeKind.Singleton);
-      var serviceConfigurationEntry = new ServiceConfigurationEntry (
-          typeof (ITestSingletonConcreteImplementationAttributeType), serviceImplementation);
-
-      _serviceLocator.Register (serviceConfigurationEntry);
-
-      var instance1 = _serviceLocator.GetInstance (typeof (ITestSingletonConcreteImplementationAttributeType));
-      var instance2 = _serviceLocator.GetInstance (typeof (ITestSingletonConcreteImplementationAttributeType));
-      Assert.That (instance1, Is.SameAs (instance2));
-    }
-
-    [Test]
-    public void Register_ServiceConfigurationEntry_MultipleServices ()
-    {
-      var implementation1 = new ServiceImplementationInfo (typeof (TestMultipleRegistrationType1), LifetimeKind.Singleton, RegistrationType.Multiple);
-      var implementation2 = new ServiceImplementationInfo (typeof (TestMultipleRegistrationType2), LifetimeKind.Singleton, RegistrationType.Multiple);
-      var serviceConfigurationEntry = new ServiceConfigurationEntry (typeof (ITestMultipleRegistrationsType), implementation1, implementation2);
-
-      _serviceLocator.Register (serviceConfigurationEntry);
-
-      var instances = _serviceLocator.GetAllInstances<ITestMultipleRegistrationsType> ().ToArray ();
-      Assert.That (instances, Has.Length.EqualTo (2));
-      Assert.That (instances[0], Is.TypeOf<TestMultipleRegistrationType1> ());
-      Assert.That (instances[1], Is.TypeOf<TestMultipleRegistrationType2> ());
-    }
-
-    [Test]
-    public void Register_ServiceConfigurationEntry_ImplementationInfoWithFactory ()
-    {
-      var expectedInstance = new TestConcreteImplementationAttributeType();
-      var serviceImplementation = ServiceImplementationInfo.CreateSingle (() => expectedInstance);
-
-      var serviceConfigurationEntry = new ServiceConfigurationEntry (
-          typeof (ITestSingletonConcreteImplementationAttributeType),
-          serviceImplementation);
-
-      _serviceLocator.Register (serviceConfigurationEntry);
-
-      var instance1 = _serviceLocator.GetInstance (typeof (ITestSingletonConcreteImplementationAttributeType));
-      Assert.That (instance1, Is.SameAs (expectedInstance));
     }
 
     [Test]
@@ -140,26 +58,5 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
           SafeServiceLocator.Current.GetInstance<ITestOpenGenericService<int>>(),
           Is.InstanceOf (typeof (TestOpenGenericIntImplementation)));
     }
-
-    [Test]
-    public void GetInstance_NotImplementedGenericServiceInterface ()
-    {
-      var serviceLocator = DefaultServiceLocator.Create();
-
-      Assert.That (() => serviceLocator.GetInstance (typeof (ITestOpenGenericService<object>)), 
-        Throws.Exception.InstanceOf<ActivationException>());
-    }
-
-    class DomainType
-    {
-      public readonly IEnumerable<ITestMultipleRegistrationsType> AllInstances;
-
-      public DomainType (IEnumerable<ITestMultipleRegistrationsType> allInstances)
-      {
-        AllInstances = allInstances;
-      }
-    }
-
-    public interface ISomeInterface { }
   }
 }

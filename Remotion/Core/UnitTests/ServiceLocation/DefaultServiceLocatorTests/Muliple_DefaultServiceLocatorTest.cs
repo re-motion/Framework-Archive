@@ -201,10 +201,10 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
               + "'Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests.TestDomain.ITestTypeWithErrors'."));
     }
 
-    //TODO TT: Integration test
     [Test]
     public void GetAllInstances_ServiceTypeWithoutImplementations_DefaultsToMultipleRegistration ()
     {
+      //TODO RM-5506: Integration Test
       var serviceConfigurationEntry = CreateMultipleServiceConfigurationEntry (typeof (ITestType), new Type[0]);
       var serviceConfigurationDiscoveryServiceStub = MockRepository.GenerateStrictMock<IServiceConfigurationDiscoveryService>();
       serviceConfigurationDiscoveryServiceStub.Stub(_=>_.GetDefaultConfiguration (typeof (ITestType))).Return (serviceConfigurationEntry);

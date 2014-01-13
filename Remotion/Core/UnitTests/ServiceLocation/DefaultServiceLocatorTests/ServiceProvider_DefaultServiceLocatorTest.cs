@@ -16,50 +16,43 @@
 // 
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using Microsoft.Practices.ServiceLocation;
 using NUnit.Framework;
 using Remotion.ServiceLocation;
 using Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests.TestDomain;
-using Remotion.UnitTests.ServiceLocation.TestDomain;
+using Rhino.Mocks;
 
 namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
 {
   [TestFixture]
-  public class ServiceProvider_DefaultServiceLocatorTest
+  public class ServiceProvider_DefaultServiceLocatorTest : TestBase
   {
-    private DefaultServiceLocator _serviceLocator;
-
-    [SetUp]
-    public void SetUp ()
-    {
-      _serviceLocator = DefaultServiceLocator.Create();
-    }
-
     [Test]
     public void GetService_TypeWithConcreteImplementationAttribute ()
     {
-      var result = ((IServiceLocator) _serviceLocator).GetService (typeof (ITestInstanceConcreteImplementationAttributeType));
+      var serviceConfigurationEntry = CreateSingleServiceConfigurationEntry (typeof (ITestType), typeof (TestImplementation1));
 
-      Assert.That (result, Is.TypeOf (typeof (TestConcreteImplementationAttributeType)));
+      var serviceLocator = CreateServiceLocator();
+      serviceLocator.Register (serviceConfigurationEntry);
+
+      var result = ((IServiceLocator) serviceLocator).GetService (typeof (ITestType));
+
+      Assert.That (result, Is.TypeOf<TestImplementation1>());
     }
 
     [Test]
     public void GetService_TypeWithoutConcreteImplementatioAttribute ()
     {
-      var result = ((IServiceLocator) _serviceLocator).GetService (typeof (string));
+      //TODO RM-5506: Integration Test
+      var serviceConfigurationEntry = CreateMultipleServiceConfigurationEntry (typeof (ITestType), new Type[0]);
+
+      var serviceConfigurationDiscoveryServiceMock = MockRepository.GenerateStrictMock<IServiceConfigurationDiscoveryService>();
+      serviceConfigurationDiscoveryServiceMock.Stub (_ => _.GetDefaultConfiguration (typeof (ITestType))).Return (serviceConfigurationEntry);
+      var serviceLocator = CreateServiceLocator (serviceConfigurationDiscoveryServiceMock);
+
+      var result = ((IServiceLocator) serviceLocator).GetService (typeof (ITestType));
 
       Assert.That (result, Is.Null);
-    }
-
-    [Test]
-    public void GetService_ServiceTypeWithUnresolvableAndResolveImplementationTypes ()
-    {
-      var result =
-        ((IServiceLocator) _serviceLocator).GetService (typeof (ITestConcreteImplementationAttributeWithUnresolvableAndResolvableImplementationTypes));
-
-      Assert.That (result, Is.TypeOf<TestConcreteImplementationAttributeWithUnresolvableAndResolvableImplementationTypesExisting> ());
     }
   }
 }
