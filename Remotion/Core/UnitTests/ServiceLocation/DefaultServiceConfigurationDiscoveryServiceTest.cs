@@ -140,7 +140,7 @@ namespace Remotion.UnitTests.ServiceLocation
           Throws.InvalidOperationException.With.Message.EqualTo (
               "Invalid configuration of service type "
               + "'Remotion.UnitTests.ServiceLocation.TestDomain.ITestMixedRegistrationTypes'. "
-              + "RegistrationTypes Single and Multiple must not be mixed. All service implementations have to have the same registration type.")
+              + "Registration types 'Single' and 'Multiple' cannot be used together.")
               .And.InnerException.Not.Null);
     }
 
@@ -233,7 +233,7 @@ namespace Remotion.UnitTests.ServiceLocation
               .With.Message.EqualTo (
                   "Invalid configuration of service type "
                   + "'Remotion.UnitTests.ServiceLocation.TestDomain.ITestCompoundMixedRegistrationTypes'. "
-                  + "RegistrationTypes compound and Single cannot be used together.")
+                  + "Registration types 'Compound' and 'Single' cannot be used together.")
               .And.InnerException.Not.Null);
     }
 

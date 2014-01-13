@@ -78,41 +78,36 @@ namespace Remotion.ServiceLocation
     {
       ArgumentUtility.CheckNotNull ("types", types);
 
-      return types.Select (
-          type =>
-          {
-            try
-            {
-              return GetDefaultConfiguration (type);
-            }
-            catch (InvalidOperationException ex)
-            {
-              var message = string.Format ("Invalid configuration of service type '{0}'. {1}", type, ex.Message);
-              throw new InvalidOperationException (message, ex);
-            }
-          }).Where (configuration => configuration.ImplementationInfos.Any());
+      return types.Select (GetDefaultConfiguration).Where (configuration => configuration.ImplementationInfos.Any());
     }
 
     public ServiceConfigurationEntry GetDefaultConfiguration (Type serviceType)
     {
-      var excludeGlobalTypes = !serviceType.Assembly.GlobalAssemblyCache;
-      var implementingTypes = _implementingTypeCache.GetOrCreateValue (serviceType, type => GetImplementingTypes (type, excludeGlobalTypes));
+      try
+      {
+        var excludeGlobalTypes = !serviceType.Assembly.GlobalAssemblyCache;
+        var implementingTypes = _implementingTypeCache.GetOrCreateValue (serviceType, type => GetImplementingTypes (type, excludeGlobalTypes));
 
-      var attributes = implementingTypes.SelectMany (
-          type => AttributeUtility.GetCustomAttributes<ImplementationForAttribute> (type, false)
-              .Where (attribute => attribute.ServiceType == serviceType)
-              .Select (attribute => Tuple.Create (type, attribute)))
-              .ToLookup (a => a.Item2.RegistrationType);
+        var attributes = implementingTypes
+            .SelectMany (
+                type => AttributeUtility.GetCustomAttributes<ImplementationForAttribute> (type, false)
+                    .Where (attribute => attribute.ServiceType == serviceType)
+                    .Select (attribute => Tuple.Create (type, attribute)))
+            .ToLookup (a => a.Item2.RegistrationType);
 
-      if (attributes.Contains(RegistrationType.Compound) && attributes.Contains(RegistrationType.Single))
-        throw new InvalidOperationException (
-            "RegistrationTypes compound and Single cannot be used together."); //TODO TT: ServiceType in message
-      
-      if (attributes.Contains(RegistrationType.Single) && attributes.Contains(RegistrationType.Multiple))
-        throw new InvalidOperationException (
-            "RegistrationTypes Single and Multiple must not be mixed. All service implementations have to have the same registration type."); //TODO TT: ServiceType in message
+        if (attributes.Contains (RegistrationType.Compound) && attributes.Contains (RegistrationType.Single))
+          throw new InvalidOperationException ("Registration types 'Compound' and 'Single' cannot be used together.");
 
-      return ServiceConfigurationEntry.CreateFromAttributes (serviceType, FilterAttributes(attributes));
+        if (attributes.Contains (RegistrationType.Single) && attributes.Contains (RegistrationType.Multiple))
+          throw new InvalidOperationException ("Registration types 'Single' and 'Multiple' cannot be used together.");
+
+        return ServiceConfigurationEntry.CreateFromAttributes (serviceType, FilterAttributes (attributes));
+      }
+      catch (Exception ex)
+      {
+        var message = string.Format ("Invalid configuration of service type '{0}'. {1}", serviceType, ex.Message);
+        throw new InvalidOperationException (message, ex);
+      }
     }
 
     /// <summary>
