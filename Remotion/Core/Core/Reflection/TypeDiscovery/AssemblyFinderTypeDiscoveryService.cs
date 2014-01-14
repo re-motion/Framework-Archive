@@ -54,6 +54,7 @@ namespace Remotion.Reflection.TypeDiscovery
     }
 
     private readonly IAssemblyFinder _assemblyFinder;
+    private readonly Lazy<BaseTypeCache> _baseTypeCache;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="AssemblyFinderTypeDiscoveryService"/> class with a specific <see cref="AssemblyFinder"/>
@@ -64,6 +65,7 @@ namespace Remotion.Reflection.TypeDiscovery
     {
       ArgumentUtility.CheckNotNull ("assemblyFinder", assemblyFinder);
       _assemblyFinder = assemblyFinder;
+      _baseTypeCache = new Lazy<BaseTypeCache> (() => new BaseTypeCache ().BuildCaches(GetAllTypes()));
     }
 
     /// <summary>
@@ -88,18 +90,23 @@ namespace Remotion.Reflection.TypeDiscovery
     {
       using (StopwatchScope.CreateScope (LazyStaticFields.s_log, LogLevel.Debug, "Time needed to discover types: {elapsed}."))
       {
-        var types = new List<Type>();
-        foreach (var assembly in GetAssemblies (excludeGlobalTypes))
-          types.AddRange (GetTypes (assembly, baseType));
+        if (baseType != null && (baseType.IsSealed || baseType.IsValueType))
+          return new[] { baseType };
 
-        return types.LogAndReturn (LazyStaticFields.s_log, LogLevel.Debug, typeList => string.Format ("Discovered {0} types.", typeList.Count));
+        if (baseType == null && excludeGlobalTypes)
+          return _baseTypeCache.Value.GetAllTypesFromCache();
+
+        if (baseType != null && excludeGlobalTypes)
+          return _baseTypeCache.Value.GetFromCache (baseType);
+
+        return GetAssemblies (excludeGlobalTypes).AsParallel().SelectMany (a => GetTypesFromBaseType (a, baseType)).ToArray();
       }
     }
 
-    private IEnumerable<Type> GetTypes (_Assembly assembly, Type baseType)
+    private IEnumerable<Type> GetTypesFromBaseType (_Assembly assembly, Type baseType)
     {
       ReadOnlyCollection<Type> allTypesInAssembly;
-      
+
       try
       {
         allTypesInAssembly = AssemblyTypeCache.GetTypes (assembly);
@@ -116,8 +123,8 @@ namespace Remotion.Reflection.TypeDiscovery
 
       if (baseType == null)
         return allTypesInAssembly;
-      else
-        return GetFilteredTypes (allTypesInAssembly, baseType);
+      
+      return GetFilteredTypes (allTypesInAssembly, baseType);
     }
 
     private IEnumerable<Type> GetFilteredTypes (IEnumerable<Type> types, Type baseType)
@@ -129,6 +136,11 @@ namespace Remotion.Reflection.TypeDiscovery
     {
       var assemblies = _assemblyFinder.FindAssemblies();
       return assemblies.Where (assembly => !excludeGlobalTypes || !assembly.GlobalAssemblyCache);
+    }
+
+    private ParallelQuery<Type> GetAllTypes ()
+    {
+      return GetAssemblies (true).AsParallel().SelectMany (a => GetTypesFromBaseType (a, null));
     }
   }
 }
