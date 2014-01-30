@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,17 +34,18 @@ namespace Remotion.Validation
   public abstract class ComponentValidationCollector<T> : IComponentValidationCollector<T>
   {
     private readonly TrackingCollection<IAddingComponentPropertyRule> _addedPropertyRules;
-    private readonly List<IAddingComponentPropertyMetaValidationRule> _addedPropertyMetaValidationRules;
-    private readonly List<IRemovingComponentPropertyRule> _removedPropertyRules;
-    
+    private readonly TrackingCollection<IAddingComponentPropertyMetaValidationRule> _addedPropertyMetaValidationRules;
+    private readonly TrackingCollection<IRemovingComponentPropertyRule> _removedPropertyRules;
+
     protected ComponentValidationCollector ()
     {
       _addedPropertyRules = new TrackingCollection<IAddingComponentPropertyRule>();
-      _addedPropertyMetaValidationRules = new List<IAddingComponentPropertyMetaValidationRule>();
-      _removedPropertyRules = new List<IRemovingComponentPropertyRule>();
+      _addedPropertyMetaValidationRules = new TrackingCollection<IAddingComponentPropertyMetaValidationRule>();
+      _removedPropertyRules = new TrackingCollection<IRemovingComponentPropertyRule>();
     }
 
-    public Type ValidatedType {
+    public Type ValidatedType
+    {
       get { return typeof (T); }
     }
 
@@ -56,20 +58,20 @@ namespace Remotion.Validation
     /// <inheritdoc />
     public IReadOnlyCollection<IAddingComponentPropertyMetaValidationRule> AddedPropertyMetaValidationRules
     {
-      get { return _addedPropertyMetaValidationRules.AsReadOnly(); }
+      get { return _addedPropertyMetaValidationRules.ToList().AsReadOnly(); }
     }
 
     /// <inheritdoc />
     public IReadOnlyCollection<IRemovingComponentPropertyRule> RemovedPropertyRules
     {
-      get { return _removedPropertyRules.AsReadOnly(); }
+      get { return _removedPropertyRules.ToList().AsReadOnly(); }
     }
 
     /// <inheritdoc />
     public IComponentAddingRuleBuilderOptions<T, TProperty> AddRule<TProperty> (Expression<Func<T, TProperty>> propertySelector)
     {
       ArgumentUtility.CheckNotNull ("propertySelector", propertySelector);
-      CheckNoMixinType ();
+      CheckNoMixinType();
 
       var componentPropertyRule = AddingComponentPropertyRule.Create (propertySelector, GetType());
       _addedPropertyRules.Add (componentPropertyRule);
@@ -84,7 +86,7 @@ namespace Remotion.Validation
     public IComponentRemovingRuleBuilderOptions<T, TProperty> RemoveRule<TProperty> (Expression<Func<T, TProperty>> propertySelector)
     {
       ArgumentUtility.CheckNotNull ("propertySelector", propertySelector);
-      CheckNoMixinType ();
+      CheckNoMixinType();
 
       var componentPropertyRule = RemovingComponentPropertyRule.Create (propertySelector, GetType());
       _removedPropertyRules.Add (componentPropertyRule);
@@ -95,14 +97,17 @@ namespace Remotion.Validation
     /// <inheritdoc />
     public void When (Func<T, bool> predicate, Action action)
     {
-      //TODO AO: throw exception if remove or metavalidation rule is added inside an When block (use TrackingCollection instead of list. Possibly switch all to ObservableCollections)
-
       var addedPropertyRules = new List<IAddingComponentPropertyRule>();
       Action<IAddingComponentPropertyRule> onRuleAdded = addedPropertyRules.Add;
+      Action<IRemovingComponentPropertyRule> onRuleRemoved =
+          a => { throw new InvalidOperationException ("Conditions are not allowed for removing validation rules registrations."); };
 
       using (_addedPropertyRules.OnItemAdded (onRuleAdded))
       {
-        action();
+        using (_removedPropertyRules.OnItemAdded (onRuleRemoved))
+        {
+          action();
+        }
       }
 
       // Must apply the predictae after the rule has been fully created to ensure any rules-specific conditions have already been applied.
@@ -125,6 +130,5 @@ namespace Remotion.Validation
                 typeof (T).FullName));
       }
     }
-
   }
 }

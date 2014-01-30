@@ -52,7 +52,7 @@ namespace Remotion.Validation.UnitTests
     [Test]
     public void Initialization ()
     {
-      Assert.That (_customerValidationCollector.ValidatedType, Is.EqualTo (typeof(Customer)));
+      Assert.That (_customerValidationCollector.ValidatedType, Is.EqualTo (typeof (Customer)));
       Assert.That (_customerValidationCollector.AddedPropertyRules.Count(), Is.EqualTo (0));
       Assert.That (_customerValidationCollector.AddedPropertyMetaValidationRules.Count(), Is.EqualTo (0));
       Assert.That (_customerValidationCollector.RemovedPropertyRules.Count(), Is.EqualTo (0));
@@ -195,16 +195,14 @@ namespace Remotion.Validation.UnitTests
     }
 
     [Test]
-    public void When_RemovedPropertyRules_RulesAreAddedAndConditionIsIgnored ()
+    public void When_RemovedPropertyRules_InvalidOperationExceptionIsThrown ()
     {
-      _customerValidationCollector.When (
-          c => c.FirstName == "Test",
-          () =>
-          _customerValidationCollector.RemoveRule (_firstNameExpression).Validator<StubPropertyValidator>());
-
-      Assert.That (_customerValidationCollector.RemovedPropertyRules.Count(), Is.EqualTo (1));
-      Assert.That (_customerValidationCollector.AddedPropertyRules.Count(), Is.EqualTo (0));
-      Assert.That (_customerValidationCollector.AddedPropertyMetaValidationRules.Count(), Is.EqualTo (0));
+      Assert.Throws<InvalidOperationException> (
+          () => _customerValidationCollector.When (
+              c => c.FirstName == "Test",
+              () =>
+                  _customerValidationCollector.RemoveRule (_firstNameExpression).Validator<StubPropertyValidator>()),
+          "Conditions are not allowed for removing validation rules registrations.");
     }
 
     [Test]
