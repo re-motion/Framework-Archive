@@ -39,41 +39,44 @@ namespace Remotion.Validation
       _removedPropertyRules = new List<IRemovingComponentPropertyRule>();
     }
 
+    //TODO AO: change to IReadOnlyCollection
     public IEnumerable<IAddingComponentPropertyRule> AddedPropertyRules
     {
       get { return _addedPropertyRules.ToList().AsReadOnly(); }
     }
 
+    //TODO AO: change to IReadOnlyCollection
     public IEnumerable<IAddingComponentPropertyMetaValidationRule> AddedPropertyMetaValidationRules
     {
       get { return _addedPropertyMetaValidationRules.AsReadOnly(); }
     }
 
+    //TODO AO: change to IReadOnlyCollection
     public IEnumerable<IRemovingComponentPropertyRule> RemovedPropertyRules
     {
       get { return _removedPropertyRules.AsReadOnly(); }
     }
 
-    public IComponentAddingRuleBuilderOptions<T, TProperty> AddRule<TProperty> (Expression<Func<T, TProperty>> expression)
+    public IComponentAddingRuleBuilderOptions<T, TProperty> AddRule<TProperty> (Expression<Func<T, TProperty>> propertySelector)
     {
-      ArgumentUtility.CheckNotNull ("expression", expression);
+      ArgumentUtility.CheckNotNull ("propertySelector", propertySelector);
       CheckNoMixinType ();
 
-      var componentPropertyRule = AddingComponentPropertyRule.Create (expression, GetType());
+      var componentPropertyRule = AddingComponentPropertyRule.Create (propertySelector, GetType());
       _addedPropertyRules.Add (componentPropertyRule);
 
-      var metaValidationPropertyRule = AddingComponentPropertyMetaValidationRule.Create (expression, GetType());
+      var metaValidationPropertyRule = AddingComponentPropertyMetaValidationRule.Create (propertySelector, GetType());
       _addedPropertyMetaValidationRules.Add (metaValidationPropertyRule);
 
       return new AddingComponentRuleBuilder<T, TProperty> (componentPropertyRule, metaValidationPropertyRule);
     }
 
-    public IComponentRemovingRuleBuilderOptions<T, TProperty> RemoveRule<TProperty> (Expression<Func<T, TProperty>> expression)
+    public IComponentRemovingRuleBuilderOptions<T, TProperty> RemoveRule<TProperty> (Expression<Func<T, TProperty>> propertySelector)
     {
-      ArgumentUtility.CheckNotNull ("expression", expression);
+      ArgumentUtility.CheckNotNull ("propertySelector", propertySelector);
       CheckNoMixinType ();
 
-      var componentPropertyRule = RemovingComponentPropertyRule.Create (expression, GetType());
+      var componentPropertyRule = RemovingComponentPropertyRule.Create (propertySelector, GetType());
       _removedPropertyRules.Add (componentPropertyRule);
 
       return new RemovingComponentRuleBuilder<T, TProperty> (componentPropertyRule);
@@ -81,6 +84,8 @@ namespace Remotion.Validation
 
     public void When (Func<T, bool> predicate, Action action)
     {
+      //TODO AO: throw exception if remove or metavalidation rule is added inside an When block (use TrackingCollection instead of list. Possibly switch all to ObservableCollections)
+
       var addedPropertyRules = new List<IAddingComponentPropertyRule>();
       Action<IAddingComponentPropertyRule> onRuleAdded = addedPropertyRules.Add;
 

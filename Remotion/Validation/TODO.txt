@@ -1,3 +1,12 @@
+Aufteilung:
+  -> Neues Project -> ProjectFile kopieren (Guid erstzen - CoreCodeGenerationTypePipe)
+      -> Template: \\mk-pc\c$\Development\Remotion\Stuff
+  -> Validation.Mixins
+  -> Validation.Globalization ??  
+  -> Data.DomainObjects.Validation
+  -> Data.DomainObjects.Validation.IntegrationTests
+  -> Validation.IntegrationTests
+
 -> Build testen
 
 -> Re-motion Integration
