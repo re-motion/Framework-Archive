@@ -43,23 +43,20 @@ namespace Remotion.Validation
       _removedPropertyRules = new List<IRemovingComponentPropertyRule>();
     }
 
-    //TODO AO: change to IReadOnlyCollection
     /// <inheritdoc />
-    public IEnumerable<IAddingComponentPropertyRule> AddedPropertyRules
+    public IReadOnlyCollection<IAddingComponentPropertyRule> AddedPropertyRules
     {
       get { return _addedPropertyRules.ToList().AsReadOnly(); }
     }
 
-    //TODO AO: change to IReadOnlyCollection
     /// <inheritdoc />
-    public IEnumerable<IAddingComponentPropertyMetaValidationRule> AddedPropertyMetaValidationRules
+    public IReadOnlyCollection<IAddingComponentPropertyMetaValidationRule> AddedPropertyMetaValidationRules
     {
       get { return _addedPropertyMetaValidationRules.AsReadOnly(); }
     }
 
-    //TODO AO: change to IReadOnlyCollection
     /// <inheritdoc />
-    public IEnumerable<IRemovingComponentPropertyRule> RemovedPropertyRules
+    public IReadOnlyCollection<IRemovingComponentPropertyRule> RemovedPropertyRules
     {
       get { return _removedPropertyRules.AsReadOnly(); }
     }

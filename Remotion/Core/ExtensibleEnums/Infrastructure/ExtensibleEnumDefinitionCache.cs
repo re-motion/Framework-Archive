@@ -14,9 +14,9 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
 using Remotion.Collections;
-using Remotion.Reflection.TypeDiscovery;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 
@@ -26,10 +26,7 @@ namespace Remotion.ExtensibleEnums.Infrastructure
   /// Caches <see cref="ExtensibleEnumDefinition{T}"/> instances for non-generic, reflective access.
   /// </summary>
   /// <threadsafety static="true" instance="true" />
-  // TODO AO: 
-  // Implement TestableExtensibleEnumValueDiscoveryService with public ctor within unittests as netsted type in test fixture
-  // ConcreteImplAtt on IExtensibleEnumValueDiscoveryService.
-  [ConcreteImplementation(typeof(ExtensibleEnumDefinitionCache),Lifetime = LifetimeKind.Singleton)]
+  [ConcreteImplementation (typeof (ExtensibleEnumDefinitionCache), Lifetime = LifetimeKind.Singleton)]
   public sealed class ExtensibleEnumDefinitionCache
   {
     private readonly LockingCacheDecorator<Type, IExtensibleEnumDefinition> _cache = CacheFactory.CreateWithLocking<Type, IExtensibleEnumDefinition>();
@@ -38,7 +35,7 @@ namespace Remotion.ExtensibleEnums.Infrastructure
     public ExtensibleEnumDefinitionCache (IExtensibleEnumValueDiscoveryService valueDiscoveryService)
     {
       ArgumentUtility.CheckNotNull ("valueDiscoveryService", valueDiscoveryService);
-      
+
       _valueDiscoveryService = valueDiscoveryService;
     }
 

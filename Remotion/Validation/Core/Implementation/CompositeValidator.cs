@@ -28,17 +28,16 @@ namespace Remotion.Validation.Implementation
 {
   public sealed class CompositeValidator<T> : IValidator<T>
   {
-    private readonly List<IValidator> _validators; 
+    private readonly IReadOnlyCollection<IValidator> _validators; 
 
     public CompositeValidator (IEnumerable<IValidator> validators)
     {
-      _validators = validators.ToList(); //TODO AO: validators.ToList.AsReadOnly()
+      _validators = validators.ToList().AsReadOnly();
     }
 
-    //TODO AO: to read only collection
-    public IEnumerable<IValidator> Validators
+    public IReadOnlyCollection<IValidator> Validators
     {
-      get { return _validators.AsReadOnly(); }
+      get { return _validators; }
     }
 
     public ValidationResult Validate (T instance)
@@ -77,7 +76,7 @@ namespace Remotion.Validation.Implementation
     {
       ArgumentUtility.CheckNotNull ("instance", instance);
 
-      if (!((IValidator) this).CanValidateInstancesOfType (instance.GetType ()))
+      if (!CanValidateInstancesOfType (instance.GetType ()))
         throw new InvalidOperationException (string.Format ("Cannot validate instances of type '{0}'. This validator can only validate instances of type '{1}'.", instance.GetType ().Name, typeof (T).Name));
 
       return Validate ((T) instance);

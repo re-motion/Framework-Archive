@@ -80,18 +80,18 @@ namespace Remotion.Validation
     /// <summary>
     /// Gets the <see cref="IAddingComponentPropertyRule"/>s added to the validation semtantic of the <see cref="Type"/>.
     /// </summary>
-    IEnumerable<IAddingComponentPropertyRule> AddedPropertyRules { get; }
+    IReadOnlyCollection<IAddingComponentPropertyRule> AddedPropertyRules { get; }
 
     /// <summary>
     /// Gets the <see cref="IAddingComponentPropertyMetaValidationRule"/>s added to the validation semtantic of the <see cref="Type"/>.
     /// Meta validation rules are used to ensure that the validation semantic of the type is still consistent after all valiation rules 
     /// from all components are applied.
     /// </summary>
-    IEnumerable<IAddingComponentPropertyMetaValidationRule> AddedPropertyMetaValidationRules { get; }
+    IReadOnlyCollection<IAddingComponentPropertyMetaValidationRule> AddedPropertyMetaValidationRules { get; }
 
     /// <summary>
     /// Gets the <see cref="IRemovingComponentPropertyRule"/>s used to remove validation rules from the <see cref="Type"/>.
     /// </summary>
-    IEnumerable<IRemovingComponentPropertyRule> RemovedPropertyRules { get; }
+    IReadOnlyCollection<IRemovingComponentPropertyRule> RemovedPropertyRules { get; }
   }
 }
