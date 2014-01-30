@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -27,33 +28,32 @@ namespace Remotion.Validation
 {
   public sealed class Validator<T> : IValidator<T>
   {
-    private readonly List<IValidationRule> _validationRules;
+    private readonly IReadOnlyCollection<IValidationRule> _validationRules;
 
     public Validator (IValidationRule[] validationRules)
     {
       ArgumentUtility.CheckNotNull ("validationRules", validationRules);
-      
-      _validationRules = validationRules.ToList();
+
+      _validationRules = validationRules.ToList().AsReadOnly();
     }
 
-    //TODO AO: readonly pattern
-    public IEnumerable<IValidationRule> ValidationRules
+    public IReadOnlyCollection<IValidationRule> ValidationRules
     {
-      get { return _validationRules.AsReadOnly(); }
+      get { return _validationRules; }
     }
 
     public ValidationResult Validate (T instance)
     {
       ArgumentUtility.CheckNotNull ("instance", instance);
-      
-      return Validate (new ValidationContext<T> (instance, new PropertyChain (), new DefaultValidatorSelector ()));
+
+      return Validate (new ValidationContext<T> (instance, new PropertyChain(), new DefaultValidatorSelector()));
     }
 
     public ValidationResult Validate (ValidationContext<T> context)
     {
       ArgumentUtility.CheckNotNull ("context", context);
 
-      var failures = _validationRules.SelectMany (r => r.Validate (context)).ToList ();
+      var failures = _validationRules.SelectMany (r => r.Validate (context)).ToList();
       return new ValidationResult (failures);
     }
 
@@ -65,7 +65,7 @@ namespace Remotion.Validation
     public bool CanValidateInstancesOfType (Type type)
     {
       ArgumentUtility.CheckNotNull ("type", type);
-      
+
       return typeof (T).IsAssignableFrom (type);
     }
 
@@ -73,8 +73,14 @@ namespace Remotion.Validation
     {
       ArgumentUtility.CheckNotNull ("instance", instance);
 
-      if (!((IValidator) this).CanValidateInstancesOfType (instance.GetType ()))
-        throw new InvalidOperationException (string.Format ("Cannot validate instances of type '{0}'. This validator can only validate instances of type '{1}'.", instance.GetType ().Name, typeof (T).Name));
+      if (!CanValidateInstancesOfType (instance.GetType()))
+      {
+        throw new InvalidOperationException (
+            string.Format (
+                "Cannot validate instances of type '{0}'. This validator can only validate instances of type '{1}'.",
+                instance.GetType().Name,
+                typeof (T).Name));
+      }
 
       return Validate ((T) instance);
     }
@@ -89,7 +95,7 @@ namespace Remotion.Validation
 
     IEnumerator IEnumerable.GetEnumerator ()
     {
-      return GetEnumerator ();
+      return GetEnumerator();
     }
 
     public IEnumerator<IValidationRule> GetEnumerator ()

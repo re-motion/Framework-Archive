@@ -52,6 +52,7 @@ namespace Remotion.Validation.UnitTests
     [Test]
     public void Initialization ()
     {
+      Assert.That (_customerValidationCollector.ValidatedType, Is.EqualTo (typeof(Customer)));
       Assert.That (_customerValidationCollector.AddedPropertyRules.Count(), Is.EqualTo (0));
       Assert.That (_customerValidationCollector.AddedPropertyMetaValidationRules.Count(), Is.EqualTo (0));
       Assert.That (_customerValidationCollector.RemovedPropertyRules.Count(), Is.EqualTo (0));

@@ -43,6 +43,10 @@ namespace Remotion.Validation
       _removedPropertyRules = new List<IRemovingComponentPropertyRule>();
     }
 
+    public Type ValidatedType {
+      get { return typeof (T); }
+    }
+
     /// <inheritdoc />
     public IReadOnlyCollection<IAddingComponentPropertyRule> AddedPropertyRules
     {
