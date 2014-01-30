@@ -82,6 +82,7 @@
     <Compile Include="Implementation\DefaultValidatorFormatter.cs" />
     <Compile Include="Implementation\FluentValidationValidatorFormatterDecorator.cs" />
     <Compile Include="Implementation\IValidatorFormatter.cs" />
+    <Compile Include="IValidatorBuilder.cs" />
     <Compile Include="Merging\DefaultPropertyValidatorExtractor.cs" />
     <Compile Include="Implementation\ILogContext.cs" />
     <Compile Include="Merging\IPropertyValidatorExtractor.cs" />
@@ -96,7 +97,7 @@
     <Compile Include="Rules\AddingComponentPropertyMetaValidationRule.cs" />
     <Compile Include="Rules\IAddingComponentPropertyMetaValidationRule.cs" />
     <Compile Include="Implementation\ComponentValidationException.cs" />
-    <Compile Include="CompositeValidator.cs" />
+    <Compile Include="Implementation\CompositeValidator.cs" />
     <Compile Include="IComponentValidationCollector.cs" />
     <Compile Include="MetaValidation\DelegateMetaValidationRule.cs" />
     <Compile Include="MetaValidation\IMetaRulesValidatorFactory.cs" />
@@ -139,7 +140,6 @@
     <Compile Include="ComponentValidationCollector.cs" />
     <Compile Include="RuleBuilders\IComponentAddingRuleBuilder.cs" />
     <Compile Include="RuleBuilders\IComponentRemovingRuleBuilder.cs" />
-    <Compile Include="RuleBuilders\IComponentRuleBuilder.cs" />
     <Compile Include="RuleBuilders\IComponentAddingRuleBuilderOptions.cs" />
     <Compile Include="RuleBuilders\IComponentRemovingRuleBuilderOptions.cs" />
     <Compile Include="Rules\IAddingComponentPropertyRule.cs" />
@@ -147,7 +147,7 @@
     <Compile Include="Rules\IRemovingComponentPropertyRule.cs" />
     <Compile Include="Rules\RemovingComponentPropertyRule.cs" />
     <Compile Include="Rules\ValidatorRegistration.cs" />
-    <Compile Include="FluentValidatorBuilder.cs" />
+    <Compile Include="Implementation\FluentValidatorBuilder.cs" />
     <Compile Include="Providers\IValidationCollectorProvider.cs" />
     <Compile Include="Providers\ApiBasedComponentValidationCollectorProvider.cs" />
     <Compile Include="Implementation\InvolvedTypeProvider.cs" />

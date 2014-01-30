@@ -15,10 +15,14 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using FluentValidation.Internal;
 
 namespace Remotion.Validation.RuleBuilders
 {
-  public interface IComponentRemovingRuleBuilderOptions<T, out TProperty> : IComponentRemovingRuleBuilder<T, TProperty>
+  /// <summary>
+  /// Provides a fluent API for removing a validation rule added by another component.
+  /// </summary>
+  public interface IComponentRemovingRuleBuilderOptions<T, out TProperty> : IComponentRemovingRuleBuilder<T, TProperty>, IFluentInterface
   {
     
   }

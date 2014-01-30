@@ -14,15 +14,17 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System;
 
-namespace Remotion.Validation.RuleBuilders
+using System;
+using FluentValidation;
+
+namespace Remotion.Validation
 {
   /// <summary>
-  /// Component rule builder that starts the chain.
+  /// The <see cref="IValidatorBuilder"/> interface provides an API for creating an <see cref="IValidator"/> for a <see cref="Type"/>.
   /// </summary>
-  public interface IComponentRuleBuilder<T, out TProperty>  //TOOD: implement IFluentInterface?
+  public interface IValidatorBuilder
   {
-    
+    IValidator BuildValidator<T> ();
   }
 }

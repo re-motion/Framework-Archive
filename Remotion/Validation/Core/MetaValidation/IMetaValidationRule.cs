@@ -20,10 +20,10 @@ using FluentValidation.Validators;
 
 namespace Remotion.Validation.MetaValidation
 {
-  public interface IMetaValidationRule<T> : IMetaValidationRule
-      where T: IPropertyValidator
+  public interface IMetaValidationRule<in TValidator> : IMetaValidationRule
+      where TValidator: IPropertyValidator
   {
-    IEnumerable<MetaValidationRuleValidationResult> Validate (IEnumerable<T> validationRules);
+    IEnumerable<MetaValidationRuleValidationResult> Validate (IEnumerable<TValidator> validationRules);
   }
 
   public interface IMetaValidationRule

@@ -74,7 +74,7 @@
     <Compile Include="Attributes\Validation\NotNullAttributeTest.cs" />
     <Compile Include="Attributes\Validation\RemoveValidatorAttributeTest.cs" />
     <Compile Include="Attributes\Validation\StringPropertyAttributeTest.cs" />
-    <Compile Include="CompositeValidatorTest.cs" />
+    <Compile Include="Implementation\CompositeValidatorTest.cs" />
     <Compile Include="Globalization\CompoundValidationRuleGlobalizationServiceTest.cs" />
     <Compile Include="Globalization\DefaultMessageEvaluatorTest.cs" />
     <Compile Include="Globalization\NullMessageValidatorGlobalizationServiceTest.cs" />
@@ -205,7 +205,7 @@
     <Compile Include="IntegrationTests\TestDomain\ComponentA\Person.cs" />
     <Compile Include="IntegrationTests\TestDomain\ComponentA\Product.cs" />
     <Compile Include="IntegrationTests\TestDomain\ComponentB\SpecialCustomer1.cs" />
-    <Compile Include="FluentValidatorBuilderTest.cs" />
+    <Compile Include="Implementation\FluentValidatorBuilderTest.cs" />
     <Compile Include="Utilities\MixinHelperTest.cs" />
     <Compile Include="Utilities\TopologySortLinqExtensionsTest.cs" />
     <Compile Include="ValidatorTest.cs" />

@@ -33,7 +33,7 @@ using Remotion.Validation.UnitTests.IntegrationTests.TestDomain.ComponentB;
 using Remotion.Validation.UnitTests.TestHelpers;
 using Rhino.Mocks;
 
-namespace Remotion.Validation.UnitTests
+namespace Remotion.Validation.UnitTests.Implementation
 {
   [TestFixture]
   public class FluentValidatorBuilderTest

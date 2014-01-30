@@ -14,23 +14,25 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
 using System.Collections.Generic;
-using FluentValidation.Validators;
 using System.Linq;
+using FluentValidation.Validators;
 using Remotion.Utilities;
 
 namespace Remotion.Validation.MetaValidation
 {
-  public abstract class MetaValidationRuleBase<TValidatorType> : IMetaValidationRule<TValidatorType> where TValidatorType : IPropertyValidator
+  public abstract class MetaValidationRuleBase<TValidatorType> : IMetaValidationRule<TValidatorType>
+      where TValidatorType: IPropertyValidator
   {
+    public abstract IEnumerable<MetaValidationRuleValidationResult> Validate (IEnumerable<TValidatorType> validationRules);
+
     IEnumerable<MetaValidationRuleValidationResult> IMetaValidationRule.Validate (IEnumerable<IPropertyValidator> validationRules)
     {
       ArgumentUtility.CheckNotNull ("validationRules", validationRules);
 
       return Validate (validationRules.OfType<TValidatorType>());
     }
-
-    public abstract IEnumerable<MetaValidationRuleValidationResult> Validate (IEnumerable<TValidatorType> validationRules);
   }
 }

@@ -14,26 +14,28 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using FluentValidation;
 using FluentValidation.Internal;
 using FluentValidation.Results;
 using Remotion.Utilities;
-using System.Linq;
 
-namespace Remotion.Validation
+namespace Remotion.Validation.Implementation
 {
   public sealed class CompositeValidator<T> : IValidator<T>
   {
     private readonly List<IValidator> _validators; 
 
-    public CompositeValidator (IValidator[] validators)
+    public CompositeValidator (IEnumerable<IValidator> validators)
     {
-      _validators = validators.ToList();
+      _validators = validators.ToList(); //TODO AO: validators.ToList.AsReadOnly()
     }
 
+    //TODO AO: to read only collection
     public IEnumerable<IValidator> Validators
     {
       get { return _validators.AsReadOnly(); }

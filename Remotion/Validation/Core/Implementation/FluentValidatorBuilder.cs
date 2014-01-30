@@ -24,15 +24,18 @@ using FluentValidation.Internal;
 using Remotion.Reflection;
 using Remotion.Utilities;
 using Remotion.Validation.Globalization;
-using Remotion.Validation.Implementation;
 using Remotion.Validation.Merging;
 using Remotion.Validation.MetaValidation;
 using Remotion.Validation.Providers;
 using Remotion.Validation.Utilities;
 
-namespace Remotion.Validation
+namespace Remotion.Validation.Implementation
 {
-  public class FluentValidatorBuilder
+  /// <summary>
+  ///  
+  /// </summary>
+  //TODO AO: IoC
+  public class FluentValidatorBuilder : IValidatorBuilder
   {
     private readonly IValidationCollectorProvider _validationCollectorProvider;
     private readonly IValidationCollectorMerger _validationCollectorMerger;
@@ -85,6 +88,7 @@ namespace Remotion.Validation
       get { return _memberInformationNameResolver; }
     }
 
+    //TODO AO: add non-generic overload
     public IValidator BuildValidator<T> ()
     {
       var typeToValidate = typeof (T);

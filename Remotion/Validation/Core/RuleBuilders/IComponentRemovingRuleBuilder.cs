@@ -14,15 +14,45 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
+using JetBrains.Annotations;
 
 namespace Remotion.Validation.RuleBuilders
 {
-  public interface IComponentRemovingRuleBuilder<T, out TProperty>
+  /// <summary>
+  /// Provides an API for removing a validation rule added by another component.
+  /// </summary>
+  public interface IComponentRemovingRuleBuilder<TValidatedType, out TProperty>
   {
-    IComponentRemovingRuleBuilderOptions<T, TProperty> Validator<TValidatorType> ();
-    IComponentRemovingRuleBuilderOptions<T, TProperty> Validator<TValidatorType, TCollectorTypeToRemoveFrom> ();
-    IComponentRemovingRuleBuilderOptions<T, TProperty> Validator (Type validatorType);
-    IComponentRemovingRuleBuilderOptions<T, TProperty> Validator (Type validatorType, Type collectorTypeToRemoveFrom);
+    /// <summary>
+    /// Removes validators of type <typeparamref name="TValidator"/>.
+    /// </summary>
+    /// <returns>An object to continue the fluent specification.</returns>
+    [NotNull]
+    IComponentRemovingRuleBuilderOptions<TValidatedType, TProperty> Validator<TValidator> ();
+
+    /// <summary>
+    /// Removes validators of type <typeparamref name="TValidator"/> registered by the specified collector <typeparamref name="TCollectorTypeToRemoveFrom"/>.
+    /// </summary>
+    /// <returns>An object to continue the fluent specification.</returns>
+    [NotNull]
+    IComponentRemovingRuleBuilderOptions<TValidatedType, TProperty> Validator<TValidator, TCollectorTypeToRemoveFrom> ();
+
+    /// <summary>
+    /// Removes validators of type <paramref name="validatorType"/>.
+    /// </summary>
+    /// <returns>An object to continue the fluent specification.</returns>
+    [NotNull]
+    IComponentRemovingRuleBuilderOptions<TValidatedType, TProperty> Validator ([NotNull] Type validatorType);
+
+    /// <summary>
+    /// Removes validators of type <paramref name="validatorType"/> registered by the specified collector <paramref name="collectorTypeToRemoveFrom"/>.
+    /// </summary>
+    /// <returns>An object to continue the fluent specification.</returns>
+    [NotNull]
+    IComponentRemovingRuleBuilderOptions<TValidatedType, TProperty> Validator (
+        [NotNull] Type validatorType,
+        [CanBeNull] Type collectorTypeToRemoveFrom);
   }
 }

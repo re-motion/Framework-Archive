@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
@@ -21,23 +22,27 @@ using FluentValidation;
 using FluentValidation.Internal;
 using FluentValidation.Validators;
 using Remotion.Utilities;
-using Remotion.Validation.Implementation;
 using Remotion.Validation.MetaValidation;
 using Remotion.Validation.Rules;
 
 namespace Remotion.Validation.RuleBuilders
 {
   //TODO MK: Review
+  /// <summary>
+  /// Default implementation of the <see cref="IComponentAddingRuleBuilder{TValidatedType,TProperty}"/>.
+  /// </summary>
   public class AddingComponentRuleBuilder<T, TProperty> : IComponentAddingRuleBuilderOptions<T, TProperty>
   {
     private readonly IAddingComponentPropertyRule _addingComponentPropertyRule;
     private readonly IAddingComponentPropertyMetaValidationRule _addingMetaValidationPropertyRule;
 
-    public AddingComponentRuleBuilder (IAddingComponentPropertyRule addingComponentPropertyPropertyRule, IAddingComponentPropertyMetaValidationRule addingMetaValidationPropertyRule)
+    public AddingComponentRuleBuilder (
+        IAddingComponentPropertyRule addingComponentPropertyPropertyRule,
+        IAddingComponentPropertyMetaValidationRule addingMetaValidationPropertyRule)
     {
       ArgumentUtility.CheckNotNull ("addingComponentPropertyPropertyRule", addingComponentPropertyPropertyRule);
       ArgumentUtility.CheckNotNull ("addingMetaValidationPropertyRule", addingMetaValidationPropertyRule);
-      
+
       _addingComponentPropertyRule = addingComponentPropertyPropertyRule;
       _addingMetaValidationPropertyRule = addingMetaValidationPropertyRule;
     }
@@ -81,7 +86,7 @@ namespace Remotion.Validation.RuleBuilders
         Expression<Func<IEnumerable<TValidator>, bool>> metaValidationRuleExpression) where TValidator: IPropertyValidator
     {
       var metaValidationRuleExecutor = metaValidationRuleExpression.Compile();
-     
+
       var metaValidationRule = new DelegateMetaValidationRule<TValidator> (
           validationRules =>
           {

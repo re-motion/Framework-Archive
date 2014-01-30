@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
@@ -23,12 +24,41 @@ using Remotion.Validation.MetaValidation;
 
 namespace Remotion.Validation.RuleBuilders
 {
-  public interface IComponentAddingRuleBuilder<T, out TProperty> : IComponentRuleBuilder<T, TProperty>
+  /// <summary>
+  /// Provides an API for extending a validation rule with metadata, such as whether the validation rule can be removed by another component.
+  /// </summary>
+  public interface IComponentAddingRuleBuilder<TValidatedType, out TProperty>
   {
-    IRuleBuilderOptions<T, TProperty> NotRemovable ();
+    /// <summary>
+    /// Declares that the registered validation rule cannot be removed by another component.
+    /// </summary>
+    /// <returns>An object to continue the fluent specification.</returns>
+    IRuleBuilderOptions<TValidatedType, TProperty> NotRemovable ();
 
-    IRuleBuilderOptions<T, TProperty> AddMetaValidationRule<TValidator> (IMetaValidationRule<TValidator> metaValidationRule) where TValidator : IPropertyValidator;
-    IRuleBuilderOptions<T, TProperty> AddMetaValidationRule<TValidator> (Func<IEnumerable<TValidator>, MetaValidationRuleValidationResult> metaValidationRuleExecutor) where TValidator : IPropertyValidator;
-    IRuleBuilderOptions<T, TProperty> AddMetaValidationRule<TValidator> (Expression<Func<IEnumerable<TValidator>, bool>>  metaValidationRuleExecutor) where TValidator : IPropertyValidator;
+    /// <summary>
+    /// Registers an <see cref="IMetaValidationRule{T}"/> for validators of type <typeparamref name="TValidator"/>.
+    /// </summary>
+    /// <returns>An object to continue the fluent specification.</returns>
+    IRuleBuilderOptions<TValidatedType, TProperty> AddMetaValidationRule<TValidator> (IMetaValidationRule<TValidator> metaValidationRule)
+        where TValidator: IPropertyValidator;
+
+    /// <summary>
+    /// Registers a delegate which will be used for performing consistency checks on validators of type <typeparamref name="TValidator"/>.
+    /// </summary>
+    /// <returns>An object to continue the fluent specification.</returns>
+    IRuleBuilderOptions<TValidatedType, TProperty> AddMetaValidationRule<TValidator> (
+        Func<IEnumerable<TValidator>, MetaValidationRuleValidationResult> metaValidationRuleExecutor)
+        where TValidator: IPropertyValidator;
+
+    /// <summary>
+    /// Registers a predicate expression which will be used for performing consistency checks on validators of type <typeparamref name="TValidator"/>.
+    /// </summary>
+    /// <returns>An object to continue the fluent specification.</returns>
+    /// <remarks>
+    /// The infrastructure can include the logic encapsulated within the expression when generating the validation error message. 
+    /// </remarks>
+    IRuleBuilderOptions<TValidatedType, TProperty> AddMetaValidationRule<TValidator> (
+        Expression<Func<IEnumerable<TValidator>, bool>> metaValidationRuleExpression)
+        where TValidator: IPropertyValidator;
   }
 }

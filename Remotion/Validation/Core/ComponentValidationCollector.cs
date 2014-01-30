@@ -26,6 +26,10 @@ using Remotion.Validation.Utilities;
 
 namespace Remotion.Validation
 {
+  /// <summary>
+  /// Provides a base class for declaring the validation rules within a component.
+  /// </summary>
+  /// <remarks>TODO MK: sample</remarks>
   public abstract class ComponentValidationCollector<T> : IComponentValidationCollector<T>
   {
     private readonly TrackingCollection<IAddingComponentPropertyRule> _addedPropertyRules;
@@ -40,23 +44,27 @@ namespace Remotion.Validation
     }
 
     //TODO AO: change to IReadOnlyCollection
+    /// <inheritdoc />
     public IEnumerable<IAddingComponentPropertyRule> AddedPropertyRules
     {
       get { return _addedPropertyRules.ToList().AsReadOnly(); }
     }
 
     //TODO AO: change to IReadOnlyCollection
+    /// <inheritdoc />
     public IEnumerable<IAddingComponentPropertyMetaValidationRule> AddedPropertyMetaValidationRules
     {
       get { return _addedPropertyMetaValidationRules.AsReadOnly(); }
     }
 
     //TODO AO: change to IReadOnlyCollection
+    /// <inheritdoc />
     public IEnumerable<IRemovingComponentPropertyRule> RemovedPropertyRules
     {
       get { return _removedPropertyRules.AsReadOnly(); }
     }
 
+    /// <inheritdoc />
     public IComponentAddingRuleBuilderOptions<T, TProperty> AddRule<TProperty> (Expression<Func<T, TProperty>> propertySelector)
     {
       ArgumentUtility.CheckNotNull ("propertySelector", propertySelector);
@@ -71,6 +79,7 @@ namespace Remotion.Validation
       return new AddingComponentRuleBuilder<T, TProperty> (componentPropertyRule, metaValidationPropertyRule);
     }
 
+    /// <inheritdoc />
     public IComponentRemovingRuleBuilderOptions<T, TProperty> RemoveRule<TProperty> (Expression<Func<T, TProperty>> propertySelector)
     {
       ArgumentUtility.CheckNotNull ("propertySelector", propertySelector);
@@ -82,6 +91,7 @@ namespace Remotion.Validation
       return new RemovingComponentRuleBuilder<T, TProperty> (componentPropertyRule);
     }
 
+    /// <inheritdoc />
     public void When (Func<T, bool> predicate, Action action)
     {
       //TODO AO: throw exception if remove or metavalidation rule is added inside an When block (use TrackingCollection instead of list. Possibly switch all to ObservableCollections)
@@ -98,6 +108,7 @@ namespace Remotion.Validation
       addedPropertyRules.ForEach (x => x.ApplyCondition (predicate.CoerceToNonGeneric()));
     }
 
+    /// <inheritdoc />
     public void Unless (Func<T, bool> predicate, Action action)
     {
       When (x => !predicate (x), action);

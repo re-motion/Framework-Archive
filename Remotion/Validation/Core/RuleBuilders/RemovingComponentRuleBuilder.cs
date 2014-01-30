@@ -21,6 +21,9 @@ using Remotion.Validation.Rules;
 namespace Remotion.Validation.RuleBuilders
 {
   //TODO MK: Review
+  /// <summary>
+  /// Default implementation of the <see cref="IComponentRemovingRuleBuilder{TValidatedType,TProperty}"/>.
+  /// </summary>
   public class RemovingComponentRuleBuilder<T, TProperty> : IComponentRemovingRuleBuilderOptions<T, TProperty>
   {
     private readonly IRemovingComponentPropertyRule _removingComponentPropertyRule;

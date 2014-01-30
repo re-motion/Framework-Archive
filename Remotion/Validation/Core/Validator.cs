@@ -36,6 +36,7 @@ namespace Remotion.Validation
       _validationRules = validationRules.ToList();
     }
 
+    //TODO AO: readonly pattern
     public IEnumerable<IValidationRule> ValidationRules
     {
       get { return _validationRules.AsReadOnly(); }
