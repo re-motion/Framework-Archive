@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
 using System.Linq;
 using System.Linq.Expressions;
@@ -28,12 +29,13 @@ using Remotion.Validation.Merging;
 
 namespace Remotion.Validation.Rules
 {
-  /*Note: this class has to inherit from PropertyRule to make IRuleBuilder.Configure work!*/
-
   /// <summary>
   /// Default implementation of the <see cref="IAddingComponentPropertyRule"/> interface.
   /// </summary>
-  public sealed class AddingComponentPropertyRule : PropertyRule, IAddingComponentPropertyRule
+  public sealed class AddingComponentPropertyRule
+      // Note: this class has to inherit from PropertyRule to make IRuleBuilder.Configure work
+      : PropertyRule,
+          IAddingComponentPropertyRule
   {
     private readonly Type _collectorType;
     private bool _isHardConstraint;
@@ -44,7 +46,13 @@ namespace Remotion.Validation.Rules
       var compiled = expression.Compile();
 
       return new AddingComponentPropertyRule (
-          collectorType, member, compiled.CoerceToNonGeneric(), expression, () => ValidatorOptions.CascadeMode, typeof (TProperty), typeof (T));
+          collectorType,
+          member,
+          compiled.CoerceToNonGeneric(),
+          expression,
+          () => ValidatorOptions.CascadeMode,
+          typeof (TProperty),
+          typeof (T));
     }
 
     private AddingComponentPropertyRule (

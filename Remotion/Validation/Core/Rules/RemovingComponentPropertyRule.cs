@@ -14,17 +14,20 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
-using Remotion.Utilities;
 using FluentValidation.Internal;
+using Remotion.Utilities;
 
 namespace Remotion.Validation.Rules
 {
-  //TODO MK: Review
+  /// <summary>
+  /// Default implementation of the <see cref="IRemovingComponentPropertyRule"/> interface.
+  /// </summary>
   public sealed class RemovingComponentPropertyRule : IRemovingComponentPropertyRule
   {
     private readonly MemberInfo _property;
@@ -43,7 +46,7 @@ namespace Remotion.Validation.Rules
 
       _property = member;
       _collectorType = collectorType;
-      _registeredValidators = new List<ValidatorRegistration> ();
+      _registeredValidators = new List<ValidatorRegistration>();
     }
 
     public MemberInfo Property
@@ -75,8 +78,9 @@ namespace Remotion.Validation.Rules
 
     public override string ToString ()
     {
-      var sb = new StringBuilder(GetType().Name + ": ");
-      sb.Append(Property.DeclaringType != null ? Property.DeclaringType.FullName + "#" : string.Empty);
+      var sb = new StringBuilder (GetType().Name);
+      sb.Append (": ");
+      sb.Append (Property.DeclaringType != null ? Property.DeclaringType.FullName + "#" : string.Empty);
       sb.Append (Property.Name);
 
       return sb.ToString();

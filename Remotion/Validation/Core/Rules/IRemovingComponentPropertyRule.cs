@@ -25,6 +25,7 @@ namespace Remotion.Validation.Rules
   /// Defines a rule associated with a <see cref="Property"/> which specifies the validators to remove from the validation specification. The rule belongs to a component 
   /// via the <see cref="CollectorType"/> and is applied to the validation specification if the component is used within the application.
   /// </summary>
+  /// <seealso cref="RemovingComponentPropertyRule"/>
   public interface IRemovingComponentPropertyRule
   {
     /// <summary>

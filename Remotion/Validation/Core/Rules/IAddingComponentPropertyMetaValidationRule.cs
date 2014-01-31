@@ -28,6 +28,7 @@ namespace Remotion.Validation.Rules
   /// Defines a rule which ensures the consistency of the merged set of <see cref="IPropertyValidator"/>s for the <see cref="Property"/>. 
   /// The rules belong to a component via the <see cref="CollectorType"/> and are applied to the validation specification if the component is used within the application.
   /// </summary>
+  /// <seealso cref="AddingComponentPropertyMetaValidationRule"/>
   public interface IAddingComponentPropertyMetaValidationRule
   {
     /// <summary>

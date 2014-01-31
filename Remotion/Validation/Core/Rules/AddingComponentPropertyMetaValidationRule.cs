@@ -26,6 +26,9 @@ using Remotion.Validation.MetaValidation;
 
 namespace Remotion.Validation.Rules
 {
+  /// <summary>
+  /// Default implementation of the <see cref="IAddingComponentPropertyMetaValidationRule"/> interface.
+  /// </summary>
   public sealed class AddingComponentPropertyMetaValidationRule : IAddingComponentPropertyMetaValidationRule
   {
     private readonly MemberInfo _property;
