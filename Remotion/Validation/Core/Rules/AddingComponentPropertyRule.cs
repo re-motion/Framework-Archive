@@ -43,7 +43,6 @@ namespace Remotion.Validation.Rules
       var member = expression.GetMember();
       var compiled = expression.Compile();
 
-      //TODO AO: test if coerceToNonGeneric is still necessary
       return new AddingComponentPropertyRule (
           collectorType, member, compiled.CoerceToNonGeneric(), expression, () => ValidatorOptions.CascadeMode, typeof (TProperty), typeof (T));
     }
