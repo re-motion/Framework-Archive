@@ -83,7 +83,7 @@ namespace Remotion.Validation
     }
 
     /// <inheritdoc />
-    public IComponentRemovingRuleBuilderOptions<T, TProperty> RemoveRule<TProperty> (Expression<Func<T, TProperty>> propertySelector)
+    public IRemovingComponentRuleBuilderOptions<T, TProperty> RemoveRule<TProperty> (Expression<Func<T, TProperty>> propertySelector)
     {
       ArgumentUtility.CheckNotNull ("propertySelector", propertySelector);
       CheckNoMixinType();

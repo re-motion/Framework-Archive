@@ -134,7 +134,7 @@
     <Compile Include="RuleBuilders\IComponentAddingRuleBuilder.cs" />
     <Compile Include="RuleBuilders\IComponentRemovingRuleBuilder.cs" />
     <Compile Include="RuleBuilders\IComponentAddingRuleBuilderOptions.cs" />
-    <Compile Include="RuleBuilders\IComponentRemovingRuleBuilderOptions.cs" />
+    <Compile Include="RuleBuilders\IRemovingComponentRuleBuilderOptions.cs" />
     <Compile Include="Rules\IAddingComponentPropertyRule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Rules\IRemovingComponentPropertyRule.cs" />

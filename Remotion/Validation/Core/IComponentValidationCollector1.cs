@@ -42,7 +42,7 @@ namespace Remotion.Validation
     /// <param name="propertySelector">Specifies the property for which a specific validation rule should be removed.</param>
     /// <returns>A builder object used for specifying the validation rules to be removed from the property.</returns>
     /// <remarks>TODO MK: usage sample</remarks>
-    IComponentRemovingRuleBuilderOptions<TValidatedType, TProperty> RemoveRule<TProperty> (
+    IRemovingComponentRuleBuilderOptions<TValidatedType, TProperty> RemoveRule<TProperty> (
         Expression<Func<TValidatedType, TProperty>> propertySelector);
 
     /// <summary>

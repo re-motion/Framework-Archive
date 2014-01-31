@@ -27,7 +27,6 @@ using Remotion.Validation.Rules;
 
 namespace Remotion.Validation.RuleBuilders
 {
-  //TODO MK: Review
   /// <summary>
   /// Default implementation of the <see cref="IComponentAddingRuleBuilder{TValidatedType,TProperty}"/>.
   /// </summary>
@@ -73,7 +72,8 @@ namespace Remotion.Validation.RuleBuilders
     }
 
     public IRuleBuilderOptions<T, TProperty> AddMetaValidationRule<TValidator> (
-        Func<IEnumerable<TValidator>, MetaValidationRuleValidationResult> metaValidationRuleExecutor) where TValidator: IPropertyValidator
+        Func<IEnumerable<TValidator>, MetaValidationRuleValidationResult> metaValidationRuleExecutor)
+        where TValidator: IPropertyValidator
     {
       ArgumentUtility.CheckNotNull ("metaValidationRuleExecutor", metaValidationRuleExecutor);
 
@@ -83,8 +83,11 @@ namespace Remotion.Validation.RuleBuilders
     }
 
     public IRuleBuilderOptions<T, TProperty> AddMetaValidationRule<TValidator> (
-        Expression<Func<IEnumerable<TValidator>, bool>> metaValidationRuleExpression) where TValidator: IPropertyValidator
+        Expression<Func<IEnumerable<TValidator>, bool>> metaValidationRuleExpression)
+        where TValidator: IPropertyValidator
     {
+      ArgumentUtility.CheckNotNull ("metaValidationRuleExpression", metaValidationRuleExpression);
+
       var metaValidationRuleExecutor = metaValidationRuleExpression.Compile();
 
       var metaValidationRule = new DelegateMetaValidationRule<TValidator> (
@@ -125,7 +128,7 @@ namespace Remotion.Validation.RuleBuilders
     {
       ArgumentUtility.CheckNotNull ("configurator", configurator);
 
-      configurator ((PropertyRule) AddingComponentPropertyRule);
+      configurator ((PropertyRule) _addingComponentPropertyRule);
       return this;
     }
 

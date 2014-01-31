@@ -18,11 +18,13 @@
 using System;
 using JetBrains.Annotations;
 
+//TODO AO: rename interfaces + T=TValidatedType
 namespace Remotion.Validation.RuleBuilders
 {
   /// <summary>
   /// Provides an API for removing a validation rule added by another component.
   /// </summary>
+  /// <seealso cref="RemovingComponentRuleBuilder{T,TProperty}"/>
   public interface IComponentRemovingRuleBuilder<TValidatedType, out TProperty>
   {
     /// <summary>
@@ -30,28 +32,28 @@ namespace Remotion.Validation.RuleBuilders
     /// </summary>
     /// <returns>An object to continue the fluent specification.</returns>
     [NotNull]
-    IComponentRemovingRuleBuilderOptions<TValidatedType, TProperty> Validator<TValidator> ();
+    IRemovingComponentRuleBuilderOptions<TValidatedType, TProperty> Validator<TValidator> ();
 
     /// <summary>
     /// Removes validators of type <typeparamref name="TValidator"/> registered by the specified collector <typeparamref name="TCollectorTypeToRemoveFrom"/>.
     /// </summary>
     /// <returns>An object to continue the fluent specification.</returns>
     [NotNull]
-    IComponentRemovingRuleBuilderOptions<TValidatedType, TProperty> Validator<TValidator, TCollectorTypeToRemoveFrom> ();
+    IRemovingComponentRuleBuilderOptions<TValidatedType, TProperty> Validator<TValidator, TCollectorTypeToRemoveFrom> ();
 
     /// <summary>
     /// Removes validators of type <paramref name="validatorType"/>.
     /// </summary>
     /// <returns>An object to continue the fluent specification.</returns>
     [NotNull]
-    IComponentRemovingRuleBuilderOptions<TValidatedType, TProperty> Validator ([NotNull] Type validatorType);
+    IRemovingComponentRuleBuilderOptions<TValidatedType, TProperty> Validator ([NotNull] Type validatorType);
 
     /// <summary>
     /// Removes validators of type <paramref name="validatorType"/> registered by the specified collector <paramref name="collectorTypeToRemoveFrom"/>.
     /// </summary>
     /// <returns>An object to continue the fluent specification.</returns>
     [NotNull]
-    IComponentRemovingRuleBuilderOptions<TValidatedType, TProperty> Validator (
+    IRemovingComponentRuleBuilderOptions<TValidatedType, TProperty> Validator (
         [NotNull] Type validatorType,
         [CanBeNull] Type collectorTypeToRemoveFrom);
   }

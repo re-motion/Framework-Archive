@@ -1,3 +1,4 @@
+-> Mixin/re-store-Dependency auslagern aus Validation.Core
 Aufteilung:
   -> Neues Project -> ProjectFile kopieren (Guid erstzen - CoreCodeGenerationTypePipe)
       -> Template: \\mk-pc\c$\Development\Remotion\Stuff
@@ -9,18 +10,14 @@ Aufteilung:
 
 -> check if MemberInfo can be replace with PropertyInfo (then use IPropertyInformation)
 
+-> NotSupportedExceptions checken!
+
 -> Build testen
 
 -> Re-motion Integration
-   -> sinnvolle klassen- und interface kommentare!
-   
-   -> BindableObjectGlobalizationService auf IoC umstellen
-       
    -> TODO MK: TypeElement.CreateInstance über IoC machen (custom service locators wieder rausnehmen)	=> JIRA-Task!  
    -> TODO: IoC für Validation
-   -> TODO MK: change MixedGlobalizationService to only resolve resources from mixins => JIRA Task Performance
-   -> TODO: Validation-Library mit Preview-Prefix (bei Build!)
-
+   
 -> ActaNova-Integration
         -> neuer provider für dynamic types
  	-> fachdaten in eigenem layer rundherum - parallel zu fluent validator und beide instanzen in eigenem aggregating validator
@@ -43,7 +40,8 @@ Aufteilung:
                 > Lösung: ähnlich zum BO-Proxy einen Validtor-Proxy machen!?
 
 
--> Message für When/Unless Rule Gruppen Feature
+
+-> Neues Feature: Message für When/Unless Rule Gruppen
 	When (
           a => a.Street == "Maria Hilferstrasse 145",
           () =>
@@ -51,8 +49,6 @@ Aufteilung:
             AddRule (a => a.City).Matches ("Wien");
             AddRule (a => a.PostalCode).Matches ("1090");
           }).WithMessage("Für Maria Hilferstrasse 145 gilt:");
-
--> Mixin/re-store-Dependency auslagern aus Validation.Core
 
 -> erweiterte/neue (vordefinierte) Validation-Rules und MetaValidation-Rules ??
 

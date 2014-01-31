@@ -20,11 +20,10 @@ using Remotion.Validation.Rules;
 
 namespace Remotion.Validation.RuleBuilders
 {
-  //TODO MK: Review
   /// <summary>
   /// Default implementation of the <see cref="IComponentRemovingRuleBuilder{TValidatedType,TProperty}"/>.
   /// </summary>
-  public class RemovingComponentRuleBuilder<T, TProperty> : IComponentRemovingRuleBuilderOptions<T, TProperty>
+  public class RemovingComponentRuleBuilder<T, TProperty> : IRemovingComponentRuleBuilderOptions<T, TProperty>
   {
     private readonly IRemovingComponentPropertyRule _removingComponentPropertyRule;
     
@@ -40,17 +39,17 @@ namespace Remotion.Validation.RuleBuilders
       get { return _removingComponentPropertyRule; }
     }
 
-    public IComponentRemovingRuleBuilderOptions<T, TProperty> Validator<TValidatorType> ()
+    public IRemovingComponentRuleBuilderOptions<T, TProperty> Validator<TValidatorType> ()
     {
       return Validator (typeof (TValidatorType));
     }
 
-    public IComponentRemovingRuleBuilderOptions<T, TProperty> Validator<TValidatorType, TCollectorTypeToRemoveFrom> ()
+    public IRemovingComponentRuleBuilderOptions<T, TProperty> Validator<TValidatorType, TCollectorTypeToRemoveFrom> ()
     {
       return Validator (typeof (TValidatorType), typeof(TCollectorTypeToRemoveFrom));
     }
 
-    public IComponentRemovingRuleBuilderOptions<T, TProperty> Validator (Type validatorType)
+    public IRemovingComponentRuleBuilderOptions<T, TProperty> Validator (Type validatorType)
     {
       ArgumentUtility.CheckNotNull ("validatorType", validatorType);
 
@@ -58,7 +57,7 @@ namespace Remotion.Validation.RuleBuilders
       return this;
     }
 
-    public IComponentRemovingRuleBuilderOptions<T, TProperty> Validator (Type validatorType, Type collectorTypeToRemoveFrom)
+    public IRemovingComponentRuleBuilderOptions<T, TProperty> Validator (Type validatorType, Type collectorTypeToRemoveFrom)
     {
       ArgumentUtility.CheckNotNull ("validatorType", validatorType);
       
