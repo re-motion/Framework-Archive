@@ -23,7 +23,7 @@ namespace Remotion.Validation.Utilities
 {
   public static class ExpressionExtensions
   {
-    public static MemberInfo ExtractDynamicMemberInfo<T, TProperty> (this Expression<Func<T, TProperty>> propertyExpression)
+    public static MemberInfo ExtractDynamicMemberInfo<TValidatedType, TProperty> (this Expression<Func<TValidatedType, TProperty>> propertyExpression)
     {
       ArgumentUtility.CheckNotNull ("propertyExpression", propertyExpression);
 

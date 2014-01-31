@@ -40,7 +40,7 @@ namespace Remotion.Validation.Rules
     private readonly Type _collectorType;
     private bool _isHardConstraint;
 
-    public static AddingComponentPropertyRule Create<T, TProperty> (Expression<Func<T, TProperty>> expression, Type collectorType)
+    public static AddingComponentPropertyRule Create<TValidatedType, TProperty> (Expression<Func<TValidatedType, TProperty>> expression, Type collectorType)
     {
       var member = expression.GetMember();
       var compiled = expression.Compile();
@@ -52,7 +52,7 @@ namespace Remotion.Validation.Rules
           expression,
           () => ValidatorOptions.CascadeMode,
           typeof (TProperty),
-          typeof (T));
+          typeof (TValidatedType));
     }
 
     private AddingComponentPropertyRule (

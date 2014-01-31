@@ -18,14 +18,13 @@
 using System;
 using JetBrains.Annotations;
 
-//TODO AO: rename interfaces + T=TValidatedType
 namespace Remotion.Validation.RuleBuilders
 {
   /// <summary>
   /// Provides an API for removing a validation rule added by another component.
   /// </summary>
   /// <seealso cref="RemovingComponentRuleBuilder{T,TProperty}"/>
-  public interface IComponentRemovingRuleBuilder<TValidatedType, out TProperty>
+  public interface IRemovingComponentRuleBuilder<TValidatedType, out TProperty>
   {
     /// <summary>
     /// Removes validators of type <typeparamref name="TValidator"/>.

@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,7 +35,6 @@ namespace Remotion.Validation.Providers
     {
       public AttributeValidationCollector ()
       {
-
       }
     }
 
@@ -43,7 +43,8 @@ namespace Remotion.Validation.Providers
 
     private static readonly MethodInfo s_SetValidationRulesForPropertyMethod =
         typeof (AttributeBasedValidationCollectorProviderBase).GetMethod (
-            "SetValidationRulesForProperty", BindingFlags.Instance | BindingFlags.NonPublic);
+            "SetValidationRulesForProperty",
+            BindingFlags.Instance | BindingFlags.NonPublic);
 
     public const BindingFlags PropertyBindingFlags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
 
@@ -59,7 +60,7 @@ namespace Remotion.Validation.Providers
 
       return
           types.Select (type => (IComponentValidationCollector) s_GetValidationCollectorMethod.MakeGenericMethod (type).Invoke (this, null))
-               .Select (collector => Enumerable.Repeat (new ValidationCollectorInfo (collector, GetType()), 1));
+              .Select (collector => Enumerable.Repeat (new ValidationCollectorInfo (collector, GetType()), 1));
     }
 
     // ReSharper disable UnusedMember.Local
@@ -71,29 +72,32 @@ namespace Remotion.Validation.Providers
       foreach (var property in properties)
       {
         s_SetValidationRulesForPropertyMethod.MakeGenericMethod (typeof (T), property.PropertyType)
-                                             .Invoke (this, new object[] { property, collectorInstance });
+            .Invoke (this, new object[] { property, collectorInstance });
       }
       return collectorInstance;
     }
 
     // ReSharper disable UnusedMember.Local
-    private void SetValidationRulesForProperty<T, TProperty> (PropertyInfo property, AttributeValidationCollector<T> collectorInstance)
+    private void SetValidationRulesForProperty<TValidatedType, TProperty> (
+        PropertyInfo property,
+        AttributeValidationCollector<TValidatedType> collectorInstance)
         // ReSharper restore UnusedMember.Local
     {
       var propertyRuleReflector = CreatePropertyRuleReflector (property);
-      var parameterExpression = Expression.Parameter (typeof (T), "t");
+      var parameterExpression = Expression.Parameter (typeof (TValidatedType), "t");
       var propertyPression = Expression.Property (parameterExpression, property);
       var propertyAccessExpression =
-          (Expression<Func<T, TProperty>>) Expression.Lambda (typeof (Func<T, TProperty>), propertyPression, parameterExpression);
+          (Expression<Func<TValidatedType, TProperty>>)
+              Expression.Lambda (typeof (Func<TValidatedType, TProperty>), propertyPression, parameterExpression);
 
       AddValidationRules (collectorInstance, propertyRuleReflector, propertyAccessExpression);
       RemoveValidationRules (collectorInstance, propertyRuleReflector, propertyAccessExpression);
     }
 
-    private void AddValidationRules<T, TProperty> (
-        IComponentValidationCollector<T> collectorInstance,
+    private void AddValidationRules<TValidatedType, TProperty> (
+        IComponentValidationCollector<TValidatedType> collectorInstance,
         IValidationPropertyRuleReflector propertyRuleReflector,
-        Expression<Func<T, TProperty>> propertyAccessExpression)
+        Expression<Func<TValidatedType, TProperty>> propertyAccessExpression)
     {
       var addingValidators = propertyRuleReflector.GetAddingPropertyValidators().ToArray();
       if (addingValidators.Any())
@@ -108,10 +112,10 @@ namespace Remotion.Validation.Providers
         SetMetaValidationRules (collectorInstance.AddRule (propertyAccessExpression), metaValidationRules);
     }
 
-    private void RemoveValidationRules<T, TProperty> (
-        IComponentValidationCollector<T> collectorInstance,
+    private void RemoveValidationRules<TValidatedType, TProperty> (
+        IComponentValidationCollector<TValidatedType> collectorInstance,
         IValidationPropertyRuleReflector propertyRuleReflector,
-        Expression<Func<T, TProperty>> propertyAccessExpression)
+        Expression<Func<TValidatedType, TProperty>> propertyAccessExpression)
     {
       var removingValidators = propertyRuleReflector.GetRemovingPropertyRegistrations().ToArray();
       if (removingValidators.Any())
@@ -122,26 +126,29 @@ namespace Remotion.Validation.Providers
       }
     }
 
-    private void SetValidators<T, TProperty> (
-        IComponentAddingRuleBuilderOptions<T, TProperty> componentRuleBuilder, IPropertyValidator[] addingValidators, bool isHardConstraint)
+    private void SetValidators<TValidatedType, TProperty> (
+        IAddingComponentRuleBuilderOptions<TValidatedType, TProperty> addingComponentRuleBuilder,
+        IPropertyValidator[] addingValidators,
+        bool isHardConstraint)
     {
       if (isHardConstraint)
-        componentRuleBuilder.NotRemovable();
+        addingComponentRuleBuilder.NotRemovable();
       foreach (var propertyValidator in addingValidators)
-        componentRuleBuilder.SetValidator (propertyValidator);
+        addingComponentRuleBuilder.SetValidator (propertyValidator);
     }
 
-    private void SetMetaValidationRules<T, TProperty> (
-        IComponentAddingRuleBuilderOptions<T, TProperty> componentRuleBuilder, IMetaValidationRule[] metaValidationRules)
+    private void SetMetaValidationRules<TValidatedType, TProperty> (
+        IAddingComponentRuleBuilderOptions<TValidatedType, TProperty> addingComponentRuleBuilder,
+        IMetaValidationRule[] metaValidationRules)
     {
-      var builderType = componentRuleBuilder.GetType();
+      var builderType = addingComponentRuleBuilder.GetType();
       var genericAddMetadataRuleMethod = builderType.GetMethods().Single (GenericMethodFilter);
 
       foreach (var metaValidationRule in metaValidationRules)
       {
         var genericType = metaValidationRule.GetType().GetFirstGenericTypeParameterInHierarchy();
         var addMetadataRuleMethod = genericAddMetadataRuleMethod.MakeGenericMethod (genericType);
-        addMetadataRuleMethod.Invoke (componentRuleBuilder, new[] { metaValidationRule });
+        addMetadataRuleMethod.Invoke (addingComponentRuleBuilder, new[] { metaValidationRule });
       }
     }
 

@@ -28,9 +28,9 @@ using Remotion.Validation.Rules;
 namespace Remotion.Validation.RuleBuilders
 {
   /// <summary>
-  /// Default implementation of the <see cref="IComponentAddingRuleBuilder{TValidatedType,TProperty}"/>.
+  /// Default implementation of the <see cref="IAddingComponentRuleBuilder{TValidatedType,TProperty}"/>.
   /// </summary>
-  public class AddingComponentRuleBuilder<T, TProperty> : IComponentAddingRuleBuilderOptions<T, TProperty>
+  public class AddingComponentRuleBuilder<TValidatedType, TProperty> : IAddingComponentRuleBuilderOptions<TValidatedType, TProperty>
   {
     private readonly IAddingComponentPropertyRule _addingComponentPropertyRule;
     private readonly IAddingComponentPropertyMetaValidationRule _addingMetaValidationPropertyRule;
@@ -56,13 +56,13 @@ namespace Remotion.Validation.RuleBuilders
       get { return _addingMetaValidationPropertyRule; }
     }
 
-    public IRuleBuilderOptions<T, TProperty> NotRemovable ()
+    public IRuleBuilderOptions<TValidatedType, TProperty> NotRemovable ()
     {
       _addingComponentPropertyRule.SetHardConstraint();
       return this;
     }
 
-    public IRuleBuilderOptions<T, TProperty> AddMetaValidationRule<TValidator> (IMetaValidationRule<TValidator> metaValidationRule)
+    public IRuleBuilderOptions<TValidatedType, TProperty> AddMetaValidationRule<TValidator> (IMetaValidationRule<TValidator> metaValidationRule)
         where TValidator: IPropertyValidator
     {
       ArgumentUtility.CheckNotNull ("metaValidationRule", metaValidationRule);
@@ -71,7 +71,7 @@ namespace Remotion.Validation.RuleBuilders
       return this;
     }
 
-    public IRuleBuilderOptions<T, TProperty> AddMetaValidationRule<TValidator> (
+    public IRuleBuilderOptions<TValidatedType, TProperty> AddMetaValidationRule<TValidator> (
         Func<IEnumerable<TValidator>, MetaValidationRuleValidationResult> metaValidationRuleExecutor)
         where TValidator: IPropertyValidator
     {
@@ -82,7 +82,7 @@ namespace Remotion.Validation.RuleBuilders
       return this;
     }
 
-    public IRuleBuilderOptions<T, TProperty> AddMetaValidationRule<TValidator> (
+    public IRuleBuilderOptions<TValidatedType, TProperty> AddMetaValidationRule<TValidator> (
         Expression<Func<IEnumerable<TValidator>, bool>> metaValidationRuleExpression)
         where TValidator: IPropertyValidator
     {
@@ -109,7 +109,7 @@ namespace Remotion.Validation.RuleBuilders
       return this;
     }
 
-    public IRuleBuilderOptions<T, TProperty> SetValidator (IPropertyValidator validator)
+    public IRuleBuilderOptions<TValidatedType, TProperty> SetValidator (IPropertyValidator validator)
     {
       ArgumentUtility.CheckNotNull ("validator", validator);
 
@@ -117,14 +117,14 @@ namespace Remotion.Validation.RuleBuilders
       return this;
     }
 
-    IRuleBuilderOptions<T, TProperty> IRuleBuilder<T, TProperty>.SetValidator (IValidator<TProperty> validator)
+    IRuleBuilderOptions<TValidatedType, TProperty> IRuleBuilder<TValidatedType, TProperty>.SetValidator (IValidator<TProperty> validator)
         //called from FluentValidation ExtensionMethod
     {
       AddValidator (new ChildValidatorAdaptor (validator));
       return this;
     }
 
-    IRuleBuilderOptions<T, TProperty> IConfigurable<PropertyRule, IRuleBuilderOptions<T, TProperty>>.Configure (Action<PropertyRule> configurator)
+    IRuleBuilderOptions<TValidatedType, TProperty> IConfigurable<PropertyRule, IRuleBuilderOptions<TValidatedType, TProperty>>.Configure (Action<PropertyRule> configurator)
     {
       ArgumentUtility.CheckNotNull ("configurator", configurator);
 
@@ -137,7 +137,7 @@ namespace Remotion.Validation.RuleBuilders
       _addingComponentPropertyRule.RegisterValidator (validator);
     }
 
-    IRuleBuilderOptions<T, TProperty> IRuleBuilder<T, TProperty>.SetValidator (IValidator validator)
+    IRuleBuilderOptions<TValidatedType, TProperty> IRuleBuilder<TValidatedType, TProperty>.SetValidator (IValidator validator)
     {
       throw new NotSupportedException (
           "This overload of SetValidator is no longer used. If you are trying to set a child validator for a collection, use SetCollectionValidator instead.");

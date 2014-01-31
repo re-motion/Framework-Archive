@@ -19,7 +19,7 @@ using System;
 namespace Remotion.Validation.Utilities
 {
   /// <summary>
-  /// Defines how <see cref="TopologySortExtensions.TopologySort{T}(System.Collections.Generic.IEnumerable{T},System.Func{T,System.Collections.Generic.IEnumerable{T}},System.Func{System.Collections.Generic.IEnumerable{T},System.Collections.Generic.IEnumerable{T}},TopologySortMissingDependencyBehavior)"/>
+  /// Defines how <see cref="TopologySortExtensions.TopologySort{TValidatedType}(System.Collections.Generic.IEnumerable{TValidatedType},System.Func{TValidatedType,System.Collections.Generic.IEnumerable{TValidatedType}},System.Func{System.Collections.Generic.IEnumerable{TValidatedType},System.Collections.Generic.IEnumerable{TValidatedType}},TopologySortMissingDependencyBehavior)"/>
   /// handles dependencies that had not already been included in the set of objects to sort.
   /// </summary>
   public enum TopologySortMissingDependencyBehavior

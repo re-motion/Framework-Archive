@@ -32,7 +32,7 @@ namespace Remotion.Validation
     /// <param name="propertySelector">Specifies the property for which the validation rule is added.</param>
     /// <returns>A builder object used for specifying the validation rules of the property.</returns>
     /// <remarks>TODO MK: usage sample</remarks>
-    IComponentAddingRuleBuilderOptions<TValidatedType, TProperty> AddRule<TProperty> (Expression<Func<TValidatedType, TProperty>> propertySelector);
+    IAddingComponentRuleBuilderOptions<TValidatedType, TProperty> AddRule<TProperty> (Expression<Func<TValidatedType, TProperty>> propertySelector);
 
     /// <summary>
     /// Registers which validation rules should be removed from the property. This is used to remove validation rules introduced by other validation 
@@ -46,22 +46,22 @@ namespace Remotion.Validation
         Expression<Func<TValidatedType, TProperty>> propertySelector);
 
     /// <summary>
-    /// Wraps multiple calls of <see cref="AddRule{T}"/> with a common <paramref name="predicate"/>. 
+    /// Wraps multiple calls of <see cref="AddRule{TValidatedType}"/> with a common <paramref name="predicate"/>. 
     /// The rule is only active if the predicate evaluates <see langword="true" />.
     /// It is not supported to remove validation rules or apply meta validation rules.
     /// </summary>
     /// <param name="predicate">The condition applied to each added validation rule.</param>
-    /// <param name="action">Place calls to <see cref="AddRule{T}"/> within this delegate.</param>
+    /// <param name="action">Place calls to <see cref="AddRule{TValidatedType}"/> within this delegate.</param>
     /// <remarks>TODO MK: usage sample</remarks>
     void When (Func<TValidatedType, bool> predicate, Action action);
 
     /// <summary>
-    /// Wraps multiple calls of <see cref="AddRule{T}"/> with a common <paramref name="predicate"/>. 
+    /// Wraps multiple calls of <see cref="AddRule{TValidatedType}"/> with a common <paramref name="predicate"/>. 
     /// The rule is only active if the predicate evaluates <see langword="false" />.
     /// It is not supported to remove validation rules or apply meta validation rules.
     /// </summary>
     /// <param name="predicate">The condition applied to each added validation rule.</param>
-    /// <param name="action">Place calls to <see cref="AddRule{T}"/> within this delegate.</param>
+    /// <param name="action">Place calls to <see cref="AddRule{TValidatedType}"/> within this delegate.</param>
     /// <remarks>TODO MK: usage sample</remarks>
     void Unless (Func<TValidatedType, bool> predicate, Action action);
   }

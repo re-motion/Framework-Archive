@@ -32,9 +32,8 @@ namespace Remotion.Validation.Providers
   public class AggregatingValidationCollectorProvider : IValidationCollectorProvider
   {
     private readonly IInvolvedTypeProvider _involvedTypeProvider;
-    private readonly IValidationCollectorProvider[] _validationCollectorProviders;
+    private readonly IReadOnlyList<IValidationCollectorProvider> _validationCollectorProviders;
 
-    //TODO AO: read-only pattern
     public AggregatingValidationCollectorProvider (
         IInvolvedTypeProvider involvedTypeProvider,
         IValidationCollectorProvider[] validationCollectorProviders)
@@ -43,7 +42,7 @@ namespace Remotion.Validation.Providers
       ArgumentUtility.CheckNotNull ("validationCollectorProviders", validationCollectorProviders);
 
       _involvedTypeProvider = involvedTypeProvider;
-      _validationCollectorProviders = validationCollectorProviders;
+      _validationCollectorProviders = validationCollectorProviders.ToList();
     }
 
     public IInvolvedTypeProvider InvolvedTypeProvider
@@ -51,10 +50,9 @@ namespace Remotion.Validation.Providers
       get { return _involvedTypeProvider; }
     }
 
-    //TODO AO: IReadOnlyList
-    public IEnumerable<IValidationCollectorProvider> ValidationCollectorProviders
+    public IReadOnlyList<IValidationCollectorProvider> ValidationCollectorProviders
     {
-      get { return _validationCollectorProviders.AsReadOnly(); }
+      get { return _validationCollectorProviders; }
     }
 
     //TODO MK: check!

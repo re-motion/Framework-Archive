@@ -35,7 +35,7 @@ namespace Remotion.Validation.Rules
     private readonly Type _collectorType;
     private readonly List<IMetaValidationRule> _metaValidationRules;
 
-    public static AddingComponentPropertyMetaValidationRule Create<T, TProperty> (Expression<Func<T, TProperty>> expression, Type collectorType)
+    public static AddingComponentPropertyMetaValidationRule Create<TValidatedType, TProperty> (Expression<Func<TValidatedType, TProperty>> expression, Type collectorType)
     {
       return new AddingComponentPropertyMetaValidationRule (expression.GetMember(), collectorType);
     }

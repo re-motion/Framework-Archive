@@ -22,8 +22,8 @@ namespace Remotion.Validation.RuleBuilders
   /// <summary>
   /// Provides a fluent API for removing a validation rule added by another component.
   /// </summary>
-  /// <seealso cref="RemovingComponentRuleBuilder{T,TProperty}"/>
-  public interface IRemovingComponentRuleBuilderOptions<T, out TProperty> : IComponentRemovingRuleBuilder<T, TProperty>, IFluentInterface
+  /// <seealso cref="RemovingComponentRuleBuilder{TValidatedType,TProperty}"/>
+  public interface IRemovingComponentRuleBuilderOptions<TValidatedType, out TProperty> : IRemovingComponentRuleBuilder<TValidatedType, TProperty>, IFluentInterface
   {
     
   }

@@ -34,7 +34,7 @@ namespace Remotion.Validation.Rules
     private readonly Type _collectorType;
     private readonly List<ValidatorRegistration> _registeredValidators;
 
-    public static RemovingComponentPropertyRule Create<T, TProperty> (Expression<Func<T, TProperty>> expression, Type collectorType)
+    public static RemovingComponentPropertyRule Create<TValidatedType, TProperty> (Expression<Func<TValidatedType, TProperty>> expression, Type collectorType)
     {
       return new RemovingComponentPropertyRule (expression.GetMember(), collectorType);
     }

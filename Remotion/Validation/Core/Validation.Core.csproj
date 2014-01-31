@@ -131,9 +131,9 @@
     <Compile Include="Rules\AddingComponentPropertyRule.cs" />
     <Compile Include="RuleBuilders\AddingComponentRuleBuilder.cs" />
     <Compile Include="ComponentValidationCollector.cs" />
-    <Compile Include="RuleBuilders\IComponentAddingRuleBuilder.cs" />
-    <Compile Include="RuleBuilders\IComponentRemovingRuleBuilder.cs" />
-    <Compile Include="RuleBuilders\IComponentAddingRuleBuilderOptions.cs" />
+    <Compile Include="RuleBuilders\IAddingComponentRuleBuilder.cs" />
+    <Compile Include="RuleBuilders\IRemovingComponentRuleBuilder.cs" />
+    <Compile Include="RuleBuilders\IAddingComponentRuleBuilderOptions.cs" />
     <Compile Include="RuleBuilders\IRemovingComponentRuleBuilderOptions.cs" />
     <Compile Include="Rules\IAddingComponentPropertyRule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

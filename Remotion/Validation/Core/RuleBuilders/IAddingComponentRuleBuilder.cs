@@ -27,8 +27,8 @@ namespace Remotion.Validation.RuleBuilders
   /// <summary>
   /// Provides an API for extending a validation rule with metadata, such as whether the validation rule can be removed by another component.
   /// </summary>
-  ///<seealso cref="AddingComponentRuleBuilder{T,TProperty}"/>
-  public interface IComponentAddingRuleBuilder<TValidatedType, out TProperty>
+  ///<seealso cref="AddingComponentRuleBuilder{TValidatedType,TProperty}"/>
+  public interface IAddingComponentRuleBuilder<TValidatedType, out TProperty>
   {
     /// <summary>
     /// Declares that the registered validation rule cannot be removed by another component.
@@ -37,7 +37,7 @@ namespace Remotion.Validation.RuleBuilders
     IRuleBuilderOptions<TValidatedType, TProperty> NotRemovable ();
 
     /// <summary>
-    /// Registers an <see cref="IMetaValidationRule{T}"/> for validators of type <typeparamref name="TValidator"/>.
+    /// Registers an <see cref="IMetaValidationRule{TValidatedType}"/> for validators of type <typeparamref name="TValidator"/>.
     /// </summary>
     /// <returns>An object to continue the fluent specification.</returns>
     IRuleBuilderOptions<TValidatedType, TProperty> AddMetaValidationRule<TValidator> (IMetaValidationRule<TValidator> metaValidationRule)

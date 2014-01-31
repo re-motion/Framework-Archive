@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +23,6 @@ using System.Text;
 using FluentValidation;
 using FluentValidation.Internal;
 using FluentValidation.Validators;
-using Remotion.Collections;
 using Remotion.Logging;
 using Remotion.Utilities;
 using Remotion.Validation.Implementation;
@@ -90,7 +90,7 @@ namespace Remotion.Validation.Merging
 
     private string GetLogBefore (IEnumerable<IEnumerable<ValidationCollectorInfo>> validationCollectorInfos)
     {
-      var sb = new StringBuilder ();
+      var sb = new StringBuilder();
       sb.AppendLine();
       sb.Append ("BEFORE MERGE:");
       foreach (var validationCollectorInfo in validationCollectorInfos.SelectMany (v => v))
@@ -109,7 +109,7 @@ namespace Remotion.Validation.Merging
 
     private string GetLogAfter (IValidationRule[] mergedRules)
     {
-      var sb = new StringBuilder ();
+      var sb = new StringBuilder();
       sb.AppendLine();
       sb.Append ("AFTER MERGE:");
 
@@ -143,27 +143,27 @@ namespace Remotion.Validation.Merging
         {
           MemberInfo actualProperty = property;
           var removedRegistrations = validationCollectorInfo.Collector.RemovedPropertyRules
-                                                            .Where (
-                                                                pr =>
-                                                                MemberInfoEqualityComparer<MemberInfo>.Instance.Equals (pr.Property, actualProperty))
-                                                            .SelectMany (pr => pr.Validators).ToArray();
+              .Where (
+                  pr =>
+                      MemberInfoEqualityComparer<MemberInfo>.Instance.Equals (pr.Property, actualProperty))
+              .SelectMany (pr => pr.Validators).ToArray();
           var addedHardValidators = validationCollectorInfo.Collector.AddedPropertyRules
-                                                           .Where (
-                                                               pr =>
-                                                               pr.IsHardConstraint
-                                                               && MemberInfoEqualityComparer<MemberInfo>.Instance.Equals (pr.Property, actualProperty))
-                                                           .SelectMany (pr => pr.Validators).ToArray();
+              .Where (
+                  pr =>
+                      pr.IsHardConstraint
+                      && MemberInfoEqualityComparer<MemberInfo>.Instance.Equals (pr.Property, actualProperty))
+              .SelectMany (pr => pr.Validators).ToArray();
           var addedSoftValidators = validationCollectorInfo.Collector.AddedPropertyRules
-                                                           .Where (
-                                                               pr =>
-                                                               !pr.IsHardConstraint
-                                                               && MemberInfoEqualityComparer<MemberInfo>.Instance.Equals (pr.Property, actualProperty))
-                                                           .SelectMany (pr => pr.Validators).ToArray();
+              .Where (
+                  pr =>
+                      !pr.IsHardConstraint
+                      && MemberInfoEqualityComparer<MemberInfo>.Instance.Equals (pr.Property, actualProperty))
+              .SelectMany (pr => pr.Validators).ToArray();
           var addedMetaValidations = validationCollectorInfo.Collector.AddedPropertyMetaValidationRules
-                                                            .Where (
-                                                                pr =>
-                                                                MemberInfoEqualityComparer<MemberInfo>.Instance.Equals (pr.Property, actualProperty))
-                                                            .SelectMany (pr => pr.MetaValidationRules).ToArray();
+              .Where (
+                  pr =>
+                      MemberInfoEqualityComparer<MemberInfo>.Instance.Equals (pr.Property, actualProperty))
+              .SelectMany (pr => pr.MetaValidationRules).ToArray();
 
           if (removedRegistrations.Any() || addedHardValidators.Any() || addedSoftValidators.Any() || addedMetaValidations.Any())
             AppendPropertyOutput (actualProperty, removedRegistrations, addedHardValidators, addedSoftValidators, addedMetaValidations, sb);
@@ -189,7 +189,10 @@ namespace Remotion.Validation.Merging
     }
 
     private void AppendPropertyRuleOutput (
-        MemberInfo actualProperty, IPropertyValidator[] validators, LogContextInfo[] logContextInfos, StringBuilder sb)
+        MemberInfo actualProperty,
+        IPropertyValidator[] validators,
+        LogContextInfo[] logContextInfos,
+        StringBuilder sb)
     {
       AppendPropertyName (actualProperty, sb);
       AppendGroupedValidatorsOutput (validators, "VALIDATORS:", sb);
@@ -217,8 +220,8 @@ namespace Remotion.Validation.Merging
       {
         var removingCollectors =
             logContextInfo.RemovingValidatorRegistrationsWithContext.Select (ci => ci.RemovingComponentPropertyRule.CollectorType.Name)
-                          .Distinct()
-                          .ToArray();
+                .Distinct()
+                .ToArray();
         var logEntry = string.Format (
             "'{0}' was removed from {1} '{2}'",
             GetTypeName (logContextInfo.RemvovedValidator.GetType()),
@@ -233,8 +236,8 @@ namespace Remotion.Validation.Merging
     {
       var groupedValidators =
           validators.Select (v => _validatorFormatter.Format (v, GetTypeName))
-                    .GroupBy (f => f, (f, elements) => Tuple.Create (f, elements.Count()))
-                    .ToArray();
+              .GroupBy (f => f, (f, elements) => Tuple.Create (f, elements.Count()))
+              .ToArray();
       AppendCollectionData (sb, groupedValidators, title, i => i.Item1 + " (x" + i.Item2 + ")");
     }
 
@@ -244,13 +247,13 @@ namespace Remotion.Validation.Merging
           validatorRegistrations
               .Select (
                   vr =>
-                  GetTypeName (vr.ValidatorType)
-                  + (vr.CollectorTypeToRemoveFrom != null ? "#" + GetTypeName (vr.CollectorTypeToRemoveFrom) : string.Empty))
+                      GetTypeName (vr.ValidatorType)
+                      + (vr.CollectorTypeToRemoveFrom != null ? "#" + GetTypeName (vr.CollectorTypeToRemoveFrom) : string.Empty))
               .GroupBy (f => f, (f, elements) => Tuple.Create (f, elements.Count())).ToArray();
       AppendCollectionData (sb, groupedValidatorRegistrations, title, i => i.Item1 + " (x" + i.Item2 + ")");
     }
 
-    private void AppendCollectionData<T> (StringBuilder sb, T[] data, string title, Func<T, string> formater)
+    private void AppendCollectionData<TValidatedType> (StringBuilder sb, TValidatedType[] data, string title, Func<TValidatedType, string> formater)
     {
       if (!data.Any())
         return;
@@ -268,9 +271,9 @@ namespace Remotion.Validation.Merging
     private IEnumerable<MemberInfo> GetAllPropertiesForCollector (ValidationCollectorInfo validationCollectorInfo)
     {
       return validationCollectorInfo.Collector.RemovedPropertyRules.Select (pr => pr.Property)
-                                    .Concat (validationCollectorInfo.Collector.AddedPropertyRules.Select (pr => pr.Property))
-                                    .Concat (validationCollectorInfo.Collector.AddedPropertyMetaValidationRules.Select (pr => pr.Property))
-                                    .Distinct (MemberInfoEqualityComparer<MemberInfo>.Instance);
+          .Concat (validationCollectorInfo.Collector.AddedPropertyRules.Select (pr => pr.Property))
+          .Concat (validationCollectorInfo.Collector.AddedPropertyMetaValidationRules.Select (pr => pr.Property))
+          .Distinct (MemberInfoEqualityComparer<MemberInfo>.Instance);
     }
 
     private string DisplayCollectorType (ValidationCollectorInfo validationCollectorInfo)

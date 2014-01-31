@@ -21,9 +21,9 @@ using Remotion.Validation.Rules;
 namespace Remotion.Validation.RuleBuilders
 {
   /// <summary>
-  /// Default implementation of the <see cref="IComponentRemovingRuleBuilder{TValidatedType,TProperty}"/>.
+  /// Default implementation of the <see cref="IRemovingComponentRuleBuilder{TValidatedType,TProperty}"/>.
   /// </summary>
-  public class RemovingComponentRuleBuilder<T, TProperty> : IRemovingComponentRuleBuilderOptions<T, TProperty>
+  public class RemovingComponentRuleBuilder<TValidatedType, TProperty> : IRemovingComponentRuleBuilderOptions<TValidatedType, TProperty>
   {
     private readonly IRemovingComponentPropertyRule _removingComponentPropertyRule;
     
@@ -39,17 +39,17 @@ namespace Remotion.Validation.RuleBuilders
       get { return _removingComponentPropertyRule; }
     }
 
-    public IRemovingComponentRuleBuilderOptions<T, TProperty> Validator<TValidatorType> ()
+    public IRemovingComponentRuleBuilderOptions<TValidatedType, TProperty> Validator<TValidatorType> ()
     {
       return Validator (typeof (TValidatorType));
     }
 
-    public IRemovingComponentRuleBuilderOptions<T, TProperty> Validator<TValidatorType, TCollectorTypeToRemoveFrom> ()
+    public IRemovingComponentRuleBuilderOptions<TValidatedType, TProperty> Validator<TValidatorType, TCollectorTypeToRemoveFrom> ()
     {
       return Validator (typeof (TValidatorType), typeof(TCollectorTypeToRemoveFrom));
     }
 
-    public IRemovingComponentRuleBuilderOptions<T, TProperty> Validator (Type validatorType)
+    public IRemovingComponentRuleBuilderOptions<TValidatedType, TProperty> Validator (Type validatorType)
     {
       ArgumentUtility.CheckNotNull ("validatorType", validatorType);
 
@@ -57,7 +57,7 @@ namespace Remotion.Validation.RuleBuilders
       return this;
     }
 
-    public IRemovingComponentRuleBuilderOptions<T, TProperty> Validator (Type validatorType, Type collectorTypeToRemoveFrom)
+    public IRemovingComponentRuleBuilderOptions<TValidatedType, TProperty> Validator (Type validatorType, Type collectorTypeToRemoveFrom)
     {
       ArgumentUtility.CheckNotNull ("validatorType", validatorType);
       

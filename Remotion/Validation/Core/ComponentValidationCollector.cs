@@ -31,7 +31,7 @@ namespace Remotion.Validation
   /// Provides a base class for declaring the validation rules within a component.
   /// </summary>
   /// <remarks>TODO MK: sample</remarks>
-  public abstract class ComponentValidationCollector<T> : IComponentValidationCollector<T>
+  public abstract class ComponentValidationCollector<TValidatedType> : IComponentValidationCollector<TValidatedType>
   {
     private readonly TrackingCollection<IAddingComponentPropertyRule> _addedPropertyRules;
     private readonly TrackingCollection<IAddingComponentPropertyMetaValidationRule> _addedPropertyMetaValidationRules;
@@ -46,7 +46,7 @@ namespace Remotion.Validation
 
     public Type ValidatedType
     {
-      get { return typeof (T); }
+      get { return typeof (TValidatedType); }
     }
 
     /// <inheritdoc />
@@ -68,7 +68,7 @@ namespace Remotion.Validation
     }
 
     /// <inheritdoc />
-    public IComponentAddingRuleBuilderOptions<T, TProperty> AddRule<TProperty> (Expression<Func<T, TProperty>> propertySelector)
+    public IAddingComponentRuleBuilderOptions<TValidatedType, TProperty> AddRule<TProperty> (Expression<Func<TValidatedType, TProperty>> propertySelector)
     {
       ArgumentUtility.CheckNotNull ("propertySelector", propertySelector);
       CheckNoMixinType();
@@ -79,11 +79,11 @@ namespace Remotion.Validation
       var metaValidationPropertyRule = AddingComponentPropertyMetaValidationRule.Create (propertySelector, GetType());
       _addedPropertyMetaValidationRules.Add (metaValidationPropertyRule);
 
-      return new AddingComponentRuleBuilder<T, TProperty> (componentPropertyRule, metaValidationPropertyRule);
+      return new AddingComponentRuleBuilder<TValidatedType, TProperty> (componentPropertyRule, metaValidationPropertyRule);
     }
 
     /// <inheritdoc />
-    public IRemovingComponentRuleBuilderOptions<T, TProperty> RemoveRule<TProperty> (Expression<Func<T, TProperty>> propertySelector)
+    public IRemovingComponentRuleBuilderOptions<TValidatedType, TProperty> RemoveRule<TProperty> (Expression<Func<TValidatedType, TProperty>> propertySelector)
     {
       ArgumentUtility.CheckNotNull ("propertySelector", propertySelector);
       CheckNoMixinType();
@@ -91,11 +91,11 @@ namespace Remotion.Validation
       var componentPropertyRule = RemovingComponentPropertyRule.Create (propertySelector, GetType());
       _removedPropertyRules.Add (componentPropertyRule);
 
-      return new RemovingComponentRuleBuilder<T, TProperty> (componentPropertyRule);
+      return new RemovingComponentRuleBuilder<TValidatedType, TProperty> (componentPropertyRule);
     }
 
     /// <inheritdoc />
-    public void When (Func<T, bool> predicate, Action action)
+    public void When (Func<TValidatedType, bool> predicate, Action action)
     {
       var addedPropertyRules = new List<IAddingComponentPropertyRule>();
       Action<IAddingComponentPropertyRule> onRuleAdded = addedPropertyRules.Add;
@@ -115,19 +115,19 @@ namespace Remotion.Validation
     }
 
     /// <inheritdoc />
-    public void Unless (Func<T, bool> predicate, Action action)
+    public void Unless (Func<TValidatedType, bool> predicate, Action action)
     {
       When (x => !predicate (x), action);
     }
 
     private static void CheckNoMixinType ()
     {
-      if (MixinHelper.IsMixinType (typeof (T)))
+      if (MixinHelper.IsMixinType (typeof (TValidatedType)))
       {
         throw new NotSupportedException (
             string.Format (
                 "Validation rules for concrete mixins are not supported. Please ensure to apply the rules to 'ITargetInterface' or 'IIntroducedInterface' of mixin '{0}' instead.",
-                typeof (T).FullName));
+                typeof (TValidatedType).FullName));
       }
     }
   }
