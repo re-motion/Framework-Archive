@@ -60,7 +60,6 @@
     <Compile Include="Attributes\Validation\RemoveValidatorAttribute.cs" />
     <Compile Include="Attributes\Validation\StringPropertyAttribute.cs" />
     <Compile Include="Attributes\Validation\AddingValidationAttributeBase.cs" />
-    <Compile Include="AttributeValidationCollector.cs" />
     <Compile Include="Globalization\CompoundValidationRuleGlobalizationService.cs" />
     <Compile Include="Globalization\DefaultMessageEvaluator.cs" />
     <Compile Include="Globalization\IDefaultMessageEvaluator.cs" />

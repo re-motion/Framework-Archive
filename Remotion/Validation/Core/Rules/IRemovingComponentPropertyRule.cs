@@ -17,16 +17,43 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using JetBrains.Annotations;
 
 namespace Remotion.Validation.Rules
 {
+  /// <summary>
+  /// Defines a rule associated with a <see cref="Property"/> which specifies the validators to remove from the validation specification. The rule belongs to a component 
+  /// via the <see cref="CollectorType"/> and is applied to the validation specification if the component is used within the application.
+  /// </summary>
   public interface IRemovingComponentPropertyRule
   {
-    MemberInfo Property { get; }
+    /// <summary>
+    /// Gets the <see cref="Type"/> of the <see cref="IComponentValidationCollector"/> with which the rule is associated.
+    /// </summary>
     Type CollectorType { get; }
+
+    /// <summary>
+    /// Gets the property for which the validators should be removed.
+    /// </summary>
+    MemberInfo Property { get; }
+
+    /// <summary>
+    /// Gets the validators registered for removal.
+    /// </summary>
     IEnumerable<ValidatorRegistration> Validators { get; }
 
-    void RegisterValidator (Type validatorType);
-    void RegisterValidator (Type validatorType, Type collectorTypeToRemoveFrom);
+    /// <summary>
+    /// Specifies that all validators of <paramref name="validatorType"/> should be removed.
+    /// Note: It is not supported to remove validators which are registered with the <see cref="IAddingComponentPropertyRule.IsHardConstraint"/> flag set to <see langword="true" />.
+    /// Attempting to do so will result in an exception when the validation rules aggregated.
+    /// </summary>
+    void RegisterValidator ([NotNull] Type validatorType);
+
+    /// <summary>
+    /// Specifies that all validators of <paramref name="validatorType"/> registered by <paramref name="collectorTypeToRemoveFrom"/> should be removed.
+    /// Note: It is not supported to remove validators which are registered with the <see cref="IAddingComponentPropertyRule.IsHardConstraint"/> flag set to <see langword="true" />.
+    /// Attempting to do so will result in an exception when the validation rules aggregated.
+    /// </summary>
+    void RegisterValidator ([NotNull] Type validatorType, [CanBeNull] Type collectorTypeToRemoveFrom);
   }
 }

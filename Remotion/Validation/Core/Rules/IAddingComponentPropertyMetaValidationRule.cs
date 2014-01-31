@@ -14,20 +14,41 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 using FluentValidation.Validators;
+using JetBrains.Annotations;
 using Remotion.Validation.MetaValidation;
 
 namespace Remotion.Validation.Rules
 {
+  /// <summary>
+  /// Defines a rule which ensures the consistency of the merged set of <see cref="IPropertyValidator"/>s for the <see cref="Property"/>. 
+  /// The rules belong to a component via the <see cref="CollectorType"/> and are applied to the validation specification if the component is used within the application.
+  /// </summary>
   public interface IAddingComponentPropertyMetaValidationRule
   {
-    MemberInfo Property { get; }
+    /// <summary>
+    /// Gets the <see cref="Type"/> of the <see cref="IComponentValidationCollector"/> with which the rule is associated.
+    /// </summary>
     Type CollectorType { get; }
+
+    /// <summary>
+    /// Gets the property for which the validation specification will be verified.
+    /// </summary>
+    MemberInfo Property { get; }
+
+    /// <summary>
+    /// Gets the set of <see cref="IMetaValidationRule"/>s registered for the <see cref="Property"/> by the <see cref="CollectorType"/>.
+    /// </summary>
     IEnumerable<IMetaValidationRule> MetaValidationRules { get; }
 
-    void RegisterMetaValidationRule<TValidatorType> (IMetaValidationRule<TValidatorType> metaValidationRule) where TValidatorType : IPropertyValidator;
+    /// <summary>
+    /// Registers a <see cref="IMetaValidationRule{TValidator}"/> for the <see cref="Property"/> by the <see cref="CollectorType"/>.
+    /// </summary>
+    void RegisterMetaValidationRule<TValidatorType> ([NotNull] IMetaValidationRule<TValidatorType> metaValidationRule)
+        where TValidatorType: IPropertyValidator;
   }
 }

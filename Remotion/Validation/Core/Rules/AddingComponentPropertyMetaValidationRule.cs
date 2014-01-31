@@ -26,7 +26,7 @@ using Remotion.Validation.MetaValidation;
 
 namespace Remotion.Validation.Rules
 {
-  public class AddingComponentPropertyMetaValidationRule : IAddingComponentPropertyMetaValidationRule
+  public sealed class AddingComponentPropertyMetaValidationRule : IAddingComponentPropertyMetaValidationRule
   {
     private readonly MemberInfo _property;
     private readonly Type _collectorType;
@@ -37,7 +37,7 @@ namespace Remotion.Validation.Rules
       return new AddingComponentPropertyMetaValidationRule (expression.GetMember(), collectorType);
     }
 
-    protected AddingComponentPropertyMetaValidationRule (MemberInfo member, Type collectorType)
+    private AddingComponentPropertyMetaValidationRule (MemberInfo member, Type collectorType)
     {
       ArgumentUtility.CheckNotNull ("member", member);
       ArgumentUtility.CheckNotNull ("collectorType", collectorType);

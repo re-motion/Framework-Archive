@@ -59,12 +59,12 @@ namespace Remotion.Validation.UnitTests.Merging
     [SetUp]
     public void SetUp ()
     {
-      _validatorRegistration1 = new ValidatorRegistration (typeof (NotEmptyValidator));
+      _validatorRegistration1 = new ValidatorRegistration (typeof (NotEmptyValidator), null);
       _validatorRegistration2 = new ValidatorRegistration (typeof (NotEqualValidator), typeof (CustomerValidationCollector1));
-      _validatorRegistration3 = new ValidatorRegistration (typeof (NotNullValidator));
+      _validatorRegistration3 = new ValidatorRegistration (typeof (NotNullValidator), null);
       _validatorRegistration4 = new ValidatorRegistration (typeof (LengthValidator), typeof (CustomerValidationCollector2));
       _validatorRegistration5 = new ValidatorRegistration (typeof (NotEqualValidator), typeof (CustomerValidationCollector2));
-      _validatorRegistration6 = new ValidatorRegistration (typeof (LengthValidator));
+      _validatorRegistration6 = new ValidatorRegistration (typeof (LengthValidator), null);
       
       _removingPropertyRuleStub1 = MockRepository.GenerateStub<IRemovingComponentPropertyRule>();
       _removingPropertyRuleStub1.Stub (stub => stub.Property).Return (typeof (Customer).GetProperty ("LastName"));

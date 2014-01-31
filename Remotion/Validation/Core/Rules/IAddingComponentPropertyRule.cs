@@ -15,22 +15,51 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.ComponentModel;
 using System.Reflection;
 using FluentValidation;
 using FluentValidation.Validators;
+using JetBrains.Annotations;
 using Remotion.Validation.Merging;
 
 namespace Remotion.Validation.Rules
 {
+  /// <summary>
+  /// Defines a rule associated with a <see cref="Property"/> which can have multiple validators. The validators of this rule belong to a component via 
+  /// the <see cref="CollectorType"/> and are added to the validation specification if the component is used within the application.
+  /// </summary>
+  /// <seealso cref="AddingComponentPropertyRule"/>
   public interface IAddingComponentPropertyRule : IValidationRule
   {
-    MemberInfo Property { get; }
+    /// <summary>
+    /// Gets the <see cref="Type"/> of the <see cref="IComponentValidationCollector"/> with which the rule is associated.
+    /// </summary>
     Type CollectorType { get; }
+
+    /// <summary>
+    /// Gets the property for which the validators will be added.
+    /// </summary>
+    MemberInfo Property { get; }
+
+    /// <summary>
+    /// Gets a flag whether the rule can be removed via an <see cref="IRemovingComponentPropertyRule"/>. 
+    /// </summary>
     bool IsHardConstraint { get; }
 
-    void RegisterValidator (IPropertyValidator validator);
+    /// <summary>
+    /// Registers a validator with this <see cref="IAddingComponentPropertyRule"/>.
+    /// </summary>
+    void RegisterValidator ([NotNull] IPropertyValidator validator);
+
+    /// <summary>
+    /// Sets the <see cref="IsHardConstraint"/> flag, making the rule non-removeable.
+    /// </summary>
     void SetHardConstraint ();
 
-    void ApplyRemoveValidatorRegistrations (IPropertyValidatorExtractor propertyValidatorExtractor);
+    /// <summary>
+    /// Applies the <paramref name="propertyValidatorExtractor"/> to the registered <see cref="IValidationRule.Validators"/>.
+    /// </summary>
+    [EditorBrowsable (EditorBrowsableState.Never)]
+    void ApplyRemoveValidatorRegistrations ([NotNull] IPropertyValidatorExtractor propertyValidatorExtractor);
   }
 }

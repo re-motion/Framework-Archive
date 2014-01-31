@@ -22,6 +22,7 @@ using FluentValidation.Validators;
 using NUnit.Framework;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.MetaValidation;
+using Remotion.Validation.Providers;
 using Remotion.Validation.Rules;
 using Remotion.Validation.UnitTests.IntegrationTests.TestDomain.ComponentA;
 using Remotion.Validation.UnitTests.IntegrationTests.TestDomain.ComponentB;
@@ -64,10 +65,10 @@ namespace Remotion.Validation.UnitTests.Providers
       _metaValidationRule3 = new MaxLengthMetaValidationRule();
       _metaValidationRuleStub4 = MockRepository.GenerateStub<IMetaValidationRule<LengthValidator>>();
 
-      _validatorRegistration1 = new ValidatorRegistration (typeof (NotNullValidator));
-      _validatorRegistration2 = new ValidatorRegistration (typeof (NotEmptyValidator));
-      _validatorRegistration3 = new ValidatorRegistration (typeof (NotNullValidator));
-      _validatorRegistration4 = new ValidatorRegistration (typeof (NotEmptyValidator));
+      _validatorRegistration1 = new ValidatorRegistration (typeof (NotNullValidator), null);
+      _validatorRegistration2 = new ValidatorRegistration (typeof (NotEmptyValidator), null);
+      _validatorRegistration3 = new ValidatorRegistration (typeof (NotNullValidator), null);
+      _validatorRegistration4 = new ValidatorRegistration (typeof (NotEmptyValidator), null);
 
       _validationPropertyRuleReflectorMock = MockRepository.GenerateStrictMock<IValidationPropertyRuleReflector> ();
     }
@@ -96,7 +97,7 @@ namespace Remotion.Validation.UnitTests.Providers
 
       _validationPropertyRuleReflectorMock.VerifyAllExpectations();
       Assert.That (result.Count(), Is.EqualTo (2));
-      Assert.That (result[0].Collector, Is.TypeOf (typeof (AttributeValidationCollector<Employee>)));
+      Assert.That (result[0].Collector, Is.TypeOf (typeof (AttributeBasedValidationCollectorProviderBase.AttributeValidationCollector<Employee>)));
       Assert.That (result[0].ProviderType, Is.EqualTo (typeof (TestableAttributeBasedValidationCollectorProviderBase)));
 
       Assert.That (result[0].Collector.AddedPropertyRules.Count(), Is.EqualTo (3));
@@ -111,7 +112,7 @@ namespace Remotion.Validation.UnitTests.Providers
       Assert.That (
           removedPropertyRuleRegistrations, Is.EquivalentTo (new[] { _validatorRegistration1.ValidatorType, _validatorRegistration2.ValidatorType }));
 
-      Assert.That (result[1].Collector, Is.TypeOf (typeof (AttributeValidationCollector<SpecialCustomer1>)));
+      Assert.That (result[1].Collector, Is.TypeOf (typeof (AttributeBasedValidationCollectorProviderBase.AttributeValidationCollector<SpecialCustomer1>)));
       Assert.That (result[1].ProviderType, Is.EqualTo (typeof (TestableAttributeBasedValidationCollectorProviderBase)));
 
       Assert.That (result[1].Collector.AddedPropertyRules.Count(), Is.EqualTo (4));

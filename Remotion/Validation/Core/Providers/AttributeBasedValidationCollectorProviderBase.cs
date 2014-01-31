@@ -30,6 +30,14 @@ namespace Remotion.Validation.Providers
 {
   public abstract class AttributeBasedValidationCollectorProviderBase : IValidationCollectorProvider
   {
+    public class AttributeValidationCollector<T> : ComponentValidationCollector<T>
+    {
+      public AttributeValidationCollector ()
+      {
+
+      }
+    }
+
     private static readonly MethodInfo s_GetValidationCollectorMethod =
         typeof (AttributeBasedValidationCollectorProviderBase).GetMethod ("GetValidationCollector", BindingFlags.Instance | BindingFlags.NonPublic);
 

@@ -25,7 +25,7 @@ using FluentValidation.Internal;
 namespace Remotion.Validation.Rules
 {
   //TODO MK: Review
-  public class RemovingComponentPropertyRule : IRemovingComponentPropertyRule
+  public sealed class RemovingComponentPropertyRule : IRemovingComponentPropertyRule
   {
     private readonly MemberInfo _property;
     private readonly Type _collectorType;
@@ -36,7 +36,7 @@ namespace Remotion.Validation.Rules
       return new RemovingComponentPropertyRule (expression.GetMember(), collectorType);
     }
 
-    protected RemovingComponentPropertyRule (MemberInfo member, Type collectorType)
+    private RemovingComponentPropertyRule (MemberInfo member, Type collectorType)
     {
       ArgumentUtility.CheckNotNull ("member", member);
       ArgumentUtility.CheckNotNull ("collectorType", collectorType);

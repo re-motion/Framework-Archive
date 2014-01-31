@@ -15,18 +15,20 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using JetBrains.Annotations;
 using Remotion.Utilities;
 
 namespace Remotion.Validation.Rules
 {
-  public class ValidatorRegistration
+  /// <summary>
+  /// Represents the information required to remove validators of type <see cref="ValidatorType"/> registered by collector type <see cref="CollectorTypeToRemoveFrom"/>.
+  /// </summary>
+  public sealed class ValidatorRegistration
   {
     private readonly Type _validatorType;
     private readonly Type _collectorTypeToRemoveFrom;
 
-    public ValidatorRegistration (Type validatorType) : this(validatorType, null) { }
-
-    public ValidatorRegistration (Type validatorType, Type collectorTypeToRemoveFrom)
+    public ValidatorRegistration ([NotNull] Type validatorType, [CanBeNull] Type collectorTypeToRemoveFrom)
     {
       ArgumentUtility.CheckNotNull ("validatorType", validatorType);
 
@@ -34,11 +36,13 @@ namespace Remotion.Validation.Rules
       _collectorTypeToRemoveFrom = collectorTypeToRemoveFrom;
     }
 
+    [NotNull]
     public Type ValidatorType
     {
       get { return _validatorType; }
     }
 
+    [CanBeNull]
     public Type CollectorTypeToRemoveFrom
     {
       get { return _collectorTypeToRemoveFrom; }

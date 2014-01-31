@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -31,22 +30,25 @@ namespace Remotion.Validation.Rules
 {
   /*Note: this class has to inherit from PropertyRule to make IRuleBuilder.Configure work!*/
 
-  //TODO MK: Review
-  public class AddingComponentPropertyRule : PropertyRule, IAddingComponentPropertyRule
+  /// <summary>
+  /// Default implementation of the <see cref="IAddingComponentPropertyRule"/> interface.
+  /// </summary>
+  public sealed class AddingComponentPropertyRule : PropertyRule, IAddingComponentPropertyRule
   {
     private readonly Type _collectorType;
     private bool _isHardConstraint;
 
     public static AddingComponentPropertyRule Create<T, TProperty> (Expression<Func<T, TProperty>> expression, Type collectorType)
     {
-      var member = expression.GetMember(); // .ExtractDynamicMemberInfo ();
+      var member = expression.GetMember();
       var compiled = expression.Compile();
 
+      //TODO AO: test if coerceToNonGeneric is still necessary
       return new AddingComponentPropertyRule (
           collectorType, member, compiled.CoerceToNonGeneric(), expression, () => ValidatorOptions.CascadeMode, typeof (TProperty), typeof (T));
     }
 
-    protected AddingComponentPropertyRule (
+    private AddingComponentPropertyRule (
         Type collectorType,
         MemberInfo member,
         Func<object, object> propertyFunc,

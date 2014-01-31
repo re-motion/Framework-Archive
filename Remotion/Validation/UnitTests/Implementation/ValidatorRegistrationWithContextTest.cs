@@ -34,7 +34,7 @@ namespace Remotion.Validation.UnitTests.Implementation
     [SetUp]
     public void SetUp ()
     {
-      _validatorRegistration = new ValidatorRegistration (typeof (NotEqualValidator));
+      _validatorRegistration = new ValidatorRegistration (typeof (NotEqualValidator), null);
       _removingPropertyRuleStub = MockRepository.GenerateStub<IRemovingComponentPropertyRule>();
       _registrationWithContext = new ValidatorRegistrationWithContext (_validatorRegistration, _removingPropertyRuleStub);
     }

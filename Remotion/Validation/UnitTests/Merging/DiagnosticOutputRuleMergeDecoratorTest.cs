@@ -120,18 +120,18 @@ namespace Remotion.Validation.UnitTests.Merging
           stubValidator2,
           new[]
           {
-              new ValidatorRegistrationWithContext (new ValidatorRegistration (typeof (NotEmptyValidator)), removingPropertyRuleStub1),
-              new ValidatorRegistrationWithContext (new ValidatorRegistration (typeof (NotEmptyValidator)), removingPropertyRuleStub1),
-              new ValidatorRegistrationWithContext (new ValidatorRegistration (typeof (NotEmptyValidator)), removingPropertyRuleStub2)
+              new ValidatorRegistrationWithContext (new ValidatorRegistration (typeof (NotEmptyValidator), null), removingPropertyRuleStub1),
+              new ValidatorRegistrationWithContext (new ValidatorRegistration (typeof (NotEmptyValidator), null), removingPropertyRuleStub1),
+              new ValidatorRegistrationWithContext (new ValidatorRegistration (typeof (NotEmptyValidator), null), removingPropertyRuleStub2)
           });
       var logContextInfo2 = new LogContextInfo (
           stubValidator1,
           new[]
-          { new ValidatorRegistrationWithContext (new ValidatorRegistration (typeof (NotNullValidator)), removingPropertyRuleStub2) });
+          { new ValidatorRegistrationWithContext (new ValidatorRegistration (typeof (NotNullValidator), null), removingPropertyRuleStub2) });
       var logContextInfo3 = new LogContextInfo (
           stubValidator3,
           new[]
-          { new ValidatorRegistrationWithContext (new ValidatorRegistration (typeof (NotEqualValidator)), removingPropertyRuleStub1) });
+          { new ValidatorRegistrationWithContext (new ValidatorRegistration (typeof (NotEqualValidator), null), removingPropertyRuleStub1) });
 
       _validatorFormatterStub.Stub (
           stub => stub.Format (Arg<IPropertyValidator>.Matches (c => c.GetType() == typeof (NotNullValidator)), Arg<Func<Type, string>>.Is.Anything))

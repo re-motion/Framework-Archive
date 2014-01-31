@@ -136,16 +136,16 @@ namespace Remotion.Validation.UnitTests.Merging
           stubValidator2,
           new[]
           {
-              new ValidatorRegistrationWithContext (new ValidatorRegistration (typeof (NotEmptyValidator)), removingPropertyRuleStub1),
-              new ValidatorRegistrationWithContext (new ValidatorRegistration (typeof (NotEmptyValidator)), removingPropertyRuleStub1),
-              new ValidatorRegistrationWithContext (new ValidatorRegistration (typeof (NotEmptyValidator)), removingPropertyRuleStub2)
+              new ValidatorRegistrationWithContext (new ValidatorRegistration (typeof (NotEmptyValidator), null), removingPropertyRuleStub1),
+              new ValidatorRegistrationWithContext (new ValidatorRegistration (typeof (NotEmptyValidator), null), removingPropertyRuleStub1),
+              new ValidatorRegistrationWithContext (new ValidatorRegistration (typeof (NotEmptyValidator), null), removingPropertyRuleStub2)
           });
       var logContextInfo2 = new LogContextInfo (
           stubValidator1,
-          new[] { new ValidatorRegistrationWithContext (new ValidatorRegistration (typeof (NotNullValidator)), removingPropertyRuleStub2) });
+          new[] { new ValidatorRegistrationWithContext (new ValidatorRegistration (typeof (NotNullValidator), null), removingPropertyRuleStub2) });
       var logContextInfo3 = new LogContextInfo (
           stubValidator3,
-          new[] { new ValidatorRegistrationWithContext (new ValidatorRegistration (typeof (NotEqualValidator)), removingPropertyRuleStub1) });
+          new[] { new ValidatorRegistrationWithContext (new ValidatorRegistration (typeof (NotEqualValidator), null), removingPropertyRuleStub1) });
 
       _logContextStub.Stub (stub => stub.GetLogContextInfos (userNamePropertyRule)).Return (new[] { logContextInfo1, logContextInfo2 });
       _logContextStub.Stub (stub => stub.GetLogContextInfos (lastNamePropertyRule)).Return (new[] { logContextInfo3 });

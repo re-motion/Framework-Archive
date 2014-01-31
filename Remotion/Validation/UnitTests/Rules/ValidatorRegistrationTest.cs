@@ -29,7 +29,7 @@ namespace Remotion.Validation.UnitTests.Rules
     [Test]
     public void Initialiuation_OneParameter ()
     {
-      var validatorRegistration = new ValidatorRegistration (typeof (NotEmptyValidator));
+      var validatorRegistration = new ValidatorRegistration (typeof (NotEmptyValidator), null);
 
       Assert.That (validatorRegistration.ValidatorType, Is.EqualTo (typeof (NotEmptyValidator)));
       Assert.That (validatorRegistration.CollectorTypeToRemoveFrom, Is.Null);
