@@ -15,6 +15,8 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using Remotion.Utilities;
 using Remotion.Validation.Rules;
@@ -32,12 +34,11 @@ namespace Remotion.Validation.MetaValidation
       _systemMetaValidationRulesProviderFactory = systemMetaValidationRulesProviderFactory;
     }
 
-    public IMetaRuleValidator CreateMetaRuleValidator (
-        IAddingComponentPropertyMetaValidationRule[] addingComponentPropertyMetaValidationRules)
+    public IMetaRuleValidator CreateMetaRuleValidator (IEnumerable<IAddingComponentPropertyMetaValidationRule> addingComponentPropertyMetaValidationRules)
     {
       ArgumentUtility.CheckNotNull ("addingComponentPropertyMetaValidationRules", addingComponentPropertyMetaValidationRules);
 
-      return new MetaRulesValidator (addingComponentPropertyMetaValidationRules, _systemMetaValidationRulesProviderFactory);
+      return new MetaRulesValidator (addingComponentPropertyMetaValidationRules.ToArray(), _systemMetaValidationRulesProviderFactory);
     }
   }
 }

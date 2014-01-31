@@ -15,12 +15,13 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using Remotion.Validation.Rules;
 
 namespace Remotion.Validation.MetaValidation
 {
   public interface IMetaRulesValidatorFactory
   {
-    IMetaRuleValidator CreateMetaRuleValidator (IAddingComponentPropertyMetaValidationRule[] collectors);
+    IMetaRuleValidator CreateMetaRuleValidator (IEnumerable<IAddingComponentPropertyMetaValidationRule> collectors);
   }
 }

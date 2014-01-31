@@ -108,9 +108,7 @@ namespace Remotion.Validation.Implementation
     {
       var addingComponentPropertyMetaValidationRules =
           allCollectors.SelectMany (cg => cg).Select (ci => ci.Collector).SelectMany (c => c.AddedPropertyMetaValidationRules);
-      //TODO AO: change to IENumerable and remove ToArray
-      var metaRulesValidator =
-          _metaRulesValidatorFactory.CreateMetaRuleValidator (addingComponentPropertyMetaValidationRules.ToArray());
+      var metaRulesValidator = _metaRulesValidatorFactory.CreateMetaRuleValidator (addingComponentPropertyMetaValidationRules);
       
       var metaValidationResults = metaRulesValidator.Validate (allRules).Where (r => !r.IsValid).ToArray();
       if (metaValidationResults.Any())
