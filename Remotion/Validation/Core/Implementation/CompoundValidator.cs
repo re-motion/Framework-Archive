@@ -29,12 +29,11 @@ namespace Remotion.Validation.Implementation
   //TODO AO: extract TypedValidatorDecorator<T>
   //TODO AO: add Create<T> method
   //TODO AO: pass validator type to ctor
-  //TODO AO: rename to CompoundValidator
-  public sealed class CompositeValidator<T> : IValidator<T>
+  public sealed class CompoundValidator<T> : IValidator<T>
   {
     private readonly IReadOnlyCollection<IValidator> _validators;
 
-    public CompositeValidator (IEnumerable<IValidator> validators)
+    public CompoundValidator (IEnumerable<IValidator> validators)
     {
       _validators = validators.ToList().AsReadOnly();
     }
@@ -73,8 +72,8 @@ namespace Remotion.Validation.Implementation
 
     CascadeMode IValidator<T>.CascadeMode
     {
-      get { throw new NotSupportedException (string.Format ("CascadeMode is not supported for a '{0}'", typeof (CompositeValidator<>).FullName)); }
-      set { throw new NotSupportedException (string.Format ("CascadeMode is not supported for a '{0}'", typeof (CompositeValidator<>).FullName)); }
+      get { throw new NotSupportedException (string.Format ("CascadeMode is not supported for a '{0}'", typeof (CompoundValidator<>).FullName)); }
+      set { throw new NotSupportedException (string.Format ("CascadeMode is not supported for a '{0}'", typeof (CompoundValidator<>).FullName)); }
     }
 
     ValidationResult IValidator.Validate (object instance)

@@ -90,7 +90,7 @@
     <Compile Include="Rules\AddingComponentPropertyMetaValidationRule.cs" />
     <Compile Include="Rules\IAddingComponentPropertyMetaValidationRule.cs" />
     <Compile Include="Implementation\ComponentValidationException.cs" />
-    <Compile Include="Implementation\CompositeValidator.cs" />
+    <Compile Include="Implementation\CompoundValidator.cs" />
     <Compile Include="IComponentValidationCollector.cs" />
     <Compile Include="MetaValidation\DelegateMetaValidationRule.cs" />
     <Compile Include="MetaValidation\IMetaRulesValidatorFactory.cs" />

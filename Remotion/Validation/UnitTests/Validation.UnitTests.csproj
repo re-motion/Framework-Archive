@@ -70,7 +70,7 @@
     <Compile Include="Attributes\Validation\NotNullAttributeTest.cs" />
     <Compile Include="Attributes\Validation\RemoveValidatorAttributeTest.cs" />
     <Compile Include="Attributes\Validation\StringPropertyAttributeTest.cs" />
-    <Compile Include="Implementation\CompositeValidatorTest.cs" />
+    <Compile Include="Implementation\CompoundValidatorTest.cs" />
     <Compile Include="Globalization\CompoundValidationRuleGlobalizationServiceTest.cs" />
     <Compile Include="Globalization\DefaultMessageEvaluatorTest.cs" />
     <Compile Include="Globalization\NullMessageValidatorGlobalizationServiceTest.cs" />

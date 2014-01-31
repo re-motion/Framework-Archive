@@ -27,11 +27,11 @@ using Rhino.Mocks;
 namespace Remotion.Validation.UnitTests.Implementation
 {
   [TestFixture]
-  public class CompositeValidatorTest
+  public class CompoundValidatorTest
   {
     private IValidator<Customer> _validatorStub1;
     private IValidator<Customer> _validatorStub2;
-    private CompositeValidator<Customer> _compositeValidator;
+    private CompoundValidator<Customer> _compoundValidator;
     private ValidationFailure _validationFailure1;
     private ValidationFailure _validationFailure2;
     private ValidationFailure _validationFailure3;
@@ -49,7 +49,7 @@ namespace Remotion.Validation.UnitTests.Implementation
       _validatorStub1 = MockRepository.GenerateStub<IValidator<Customer>>();
       _validatorStub2 = MockRepository.GenerateStub<IValidator<Customer>>();
 
-      _compositeValidator = new CompositeValidator<Customer> (new[] { _validatorStub1, _validatorStub2 });
+      _compoundValidator = new CompoundValidator<Customer> (new[] { _validatorStub1, _validatorStub2 });
 
       _validationFailure1 = new ValidationFailure ("PropertyName1", "Failes");
       _validationFailure2 = new ValidationFailure ("PropertyName2", "Failes");
@@ -62,7 +62,7 @@ namespace Remotion.Validation.UnitTests.Implementation
     [Test]
     public void Initialization ()
     {
-      Assert.That (_compositeValidator.Validators, Is.EquivalentTo (new[] { _validatorStub1, _validatorStub2 }));
+      Assert.That (_compoundValidator.Validators, Is.EquivalentTo (new[] { _validatorStub1, _validatorStub2 }));
     }
 
     [Test]
@@ -73,7 +73,7 @@ namespace Remotion.Validation.UnitTests.Implementation
       _validatorStub1.Stub (stub => stub.Validate (Arg<ValidationContext<Customer>>.Is.NotNull)).Return (_validationResult1);
       _validatorStub2.Stub (stub => stub.Validate (Arg<ValidationContext<Customer>>.Is.NotNull)).Return (_validationResult2);
 
-      var result = _compositeValidator.Validate (customer);
+      var result = _compoundValidator.Validate (customer);
 
       Assert.That (result.Errors, Is.EquivalentTo (new[] { _validationFailure1, _validationFailure2, _validationFailure3 }));
     }
@@ -82,7 +82,7 @@ namespace Remotion.Validation.UnitTests.Implementation
     public void Validate_InvalidInstance ()
     {
       Assert.That (
-          () => ((IValidator) _compositeValidator).Validate ("Invalid"),
+          () => ((IValidator) _compoundValidator).Validate ("Invalid"),
           Throws.InvalidOperationException.And.Message.EqualTo (
               "Cannot validate instances of type 'String'. This validator can only validate instances of type 'Customer'."));
     }
@@ -92,7 +92,7 @@ namespace Remotion.Validation.UnitTests.Implementation
     {
       var validator1 = new Validator<Customer> (new[] { _validationRuleStub1 });
       var validator2 = new Validator<Customer> (new[] { _validationRuleStub2 });
-      var compositeValidator = new CompositeValidator<Customer> (new[] { validator1, validator2 });
+      var compositeValidator = new CompoundValidator<Customer> (new[] { validator1, validator2 });
 
       var result = compositeValidator.CreateDescriptor();
 
@@ -106,31 +106,31 @@ namespace Remotion.Validation.UnitTests.Implementation
       _validatorStub1.Stub (stub => stub.CanValidateInstancesOfType (typeof (Customer))).Return (true);
       _validatorStub2.Stub (stub => stub.CanValidateInstancesOfType (typeof (Customer))).Return (true);
 
-      Assert.That (_compositeValidator.CanValidateInstancesOfType (typeof (Customer)), Is.True);
+      Assert.That (_compoundValidator.CanValidateInstancesOfType (typeof (Customer)), Is.True);
     }
 
     [Test]
     public void CanValidateInstancesOfType_NoCustomer_False ()
     {
-      Assert.That (_compositeValidator.CanValidateInstancesOfType (typeof (Address)), Is.False);
+      Assert.That (_compoundValidator.CanValidateInstancesOfType (typeof (Address)), Is.False);
     }
 
     [Test]
     public void CascadeMode_Setter ()
     {
       Assert.That (
-          () => ((IValidator<Customer>) _compositeValidator).CascadeMode = CascadeMode.StopOnFirstFailure,
+          () => ((IValidator<Customer>) _compoundValidator).CascadeMode = CascadeMode.StopOnFirstFailure,
           Throws.TypeOf<NotSupportedException>().And.Message.EqualTo (
-              "CascadeMode is not supported for a 'Remotion.Validation.Implementation.CompositeValidator`1'"));
+              "CascadeMode is not supported for a 'Remotion.Validation.Implementation.CompoundValidator`1'"));
     }
 
     [Test]
     public void CascadeMode_Getter ()
     {
       Assert.That (
-          () => ((IValidator<Customer>) _compositeValidator).CascadeMode,
+          () => ((IValidator<Customer>) _compoundValidator).CascadeMode,
           Throws.TypeOf<NotSupportedException>().And.Message.EqualTo (
-              "CascadeMode is not supported for a 'Remotion.Validation.Implementation.CompositeValidator`1'"));
+              "CascadeMode is not supported for a 'Remotion.Validation.Implementation.CompoundValidator`1'"));
     }
 
     [Test]
@@ -138,7 +138,7 @@ namespace Remotion.Validation.UnitTests.Implementation
     {
       var validator1 = new Validator<Customer> (new[] { _validationRuleStub1 });
       var validator2 = new Validator<Customer> (new[] { _validationRuleStub2 });
-      var compositeValidator = new CompositeValidator<Customer> (new[] { validator1, validator2 });
+      var compositeValidator = new CompoundValidator<Customer> (new[] { validator1, validator2 });
 
       var enumerator = compositeValidator.GetEnumerator();
       Assert.That (enumerator.MoveNext(), Is.True);
