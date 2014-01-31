@@ -20,8 +20,11 @@ using Remotion.Validation.Implementation;
 
 namespace Remotion.Validation.Providers
 {
+  /// <summary>
+  /// 
+  /// </summary>
   public interface IValidationCollectorProvider
   {
-    IEnumerable<IEnumerable<ValidationCollectorInfo>> GetValidationCollectors (Type[] types);
+    IEnumerable<IEnumerable<ValidationCollectorInfo>> GetValidationCollectors (IEnumerable<Type> types);
   }
 }

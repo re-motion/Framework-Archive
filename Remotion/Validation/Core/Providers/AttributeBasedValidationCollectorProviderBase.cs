@@ -53,7 +53,7 @@ namespace Remotion.Validation.Providers
 
     protected abstract IValidationPropertyRuleReflector CreatePropertyRuleReflector (PropertyInfo property);
 
-    public IEnumerable<IEnumerable<ValidationCollectorInfo>> GetValidationCollectors (Type[] types)
+    public IEnumerable<IEnumerable<ValidationCollectorInfo>> GetValidationCollectors (IEnumerable<Type> types)
     {
       ArgumentUtility.CheckNotNull ("types", types);
 

@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,8 +23,11 @@ using Remotion.Validation.Implementation;
 
 namespace Remotion.Validation.Providers
 {
+  /// <summary>
+  /// Use this class to retrieve the <see cref="IComponentValidationCollector"/>s for a <see cref="Type"/> based on reflection metadata.
+  /// </summary>
   public class ApiBasedComponentValidationCollectorProvider : IValidationCollectorProvider
- {
+  {
     private readonly ITypeCollectorReflector _typeCollectorReflector;
 
     public ApiBasedComponentValidationCollectorProvider (ITypeCollectorReflector typeCollectorReflector)
@@ -38,13 +42,15 @@ namespace Remotion.Validation.Providers
       get { return _typeCollectorReflector; }
     }
 
-    public IEnumerable<IEnumerable<ValidationCollectorInfo>> GetValidationCollectors (Type[] types) //should be decorated by AN to return collector-groups sorted by component!
+    public IEnumerable<IEnumerable<ValidationCollectorInfo>> GetValidationCollectors (IEnumerable<Type> types)
+        //TODO AO: should be decorated by AN to return collector-groups sorted by component! -> integration test!
     {
       ArgumentUtility.CheckNotNull ("types", types);
 
-      var result = types.SelectMany (_typeCollectorReflector.GetCollectorsForType)
-                        .Select (c => new ValidationCollectorInfo ((IComponentValidationCollector) Activator.CreateInstance (c), GetType())).ToArray();
+      var result = types
+          .SelectMany (_typeCollectorReflector.GetCollectorsForType)
+          .Select (c => new ValidationCollectorInfo ((IComponentValidationCollector) Activator.CreateInstance (c), GetType())).ToArray();
       return result.Any() ? new[] { result } : Enumerable.Empty<IEnumerable<ValidationCollectorInfo>>();
     }
- }
+  }
 }

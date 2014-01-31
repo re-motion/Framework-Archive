@@ -27,6 +27,7 @@ using Remotion.Validation.Rules;
 
 namespace Remotion.Validation.Implementation
 {
+  //TODO AO: move to re-store
   public class RemotionValidationPropertyRuleReflector : IValidationPropertyRuleReflector
   {
     private readonly PropertyInfo _property;

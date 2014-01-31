@@ -20,6 +20,7 @@ using Remotion.Validation.Implementation;
 
 namespace Remotion.Validation.Providers
 {
+  //TODO AO: move to re-store
   public class RemotionAttributeBasedValidationCollectorProvider : AttributeBasedValidationCollectorProviderBase
   {
     protected override IValidationPropertyRuleReflector CreatePropertyRuleReflector (PropertyInfo property)

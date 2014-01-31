@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,12 +24,17 @@ using Remotion.Validation.Implementation;
 
 namespace Remotion.Validation.Providers
 {
-  //TODO MK: Review
+  /// <summary>
+  /// Use this class to retrieve the combined <see cref="IComponentValidationCollector"/>s for a <see cref="Type"/> 
+  /// provided by the individual <see cref="IValidationCollectorProvider"/>s registered with the application's IoC container.
+  /// </summary>
+  // TODO AO: IoC registrationKind = Compound
   public class AggregatingValidationCollectorProvider : IValidationCollectorProvider
   {
     private readonly IInvolvedTypeProvider _involvedTypeProvider;
     private readonly IValidationCollectorProvider[] _validationCollectorProviders;
 
+    //TODO AO: read-only pattern
     public AggregatingValidationCollectorProvider (
         IInvolvedTypeProvider involvedTypeProvider,
         IValidationCollectorProvider[] validationCollectorProviders)
@@ -45,22 +51,44 @@ namespace Remotion.Validation.Providers
       get { return _involvedTypeProvider; }
     }
 
+    //TODO AO: IReadOnlyList
     public IEnumerable<IValidationCollectorProvider> ValidationCollectorProviders
     {
       get { return _validationCollectorProviders.AsReadOnly(); }
     }
 
-    public IEnumerable<IEnumerable<ValidationCollectorInfo>> GetValidationCollectors (Type[] types)
+    //TODO MK: check!
+    //public ILookup<Type, ValidationCollectorInfo> GetValidationCollectors (IEnumerable<IEnumerable<Type>> typeGroups)
+    //{
+    //  foreach (var typesInGroup in typeGroups)
+    //  {
+    //    var involvedTypesInGroup = typesInGroup.SelectMany (t => _involvedTypeProvider.GetTypes (t)).ToArray();
+    //    _validationCollectorProviders.SelectMany (p => p.GetValidationCollectors (involvedTypesInGroup));
+
+
+    //  }
+    //  return null;
+    //}
+
+    public IEnumerable<IEnumerable<ValidationCollectorInfo>> GetValidationCollectors (IEnumerable<Type> types)
     {
       ArgumentUtility.CheckNotNull ("types", types);
 
-      var typeGroups = types.SelectMany (t => _involvedTypeProvider.GetTypes (t)).Select(g=>g.ToArray());
-
-      return typeGroups
+      return GetTypeGroups (types)
           .Aggregate (
               Enumerable.Empty<IEnumerable<ValidationCollectorInfo>>(),
-              (current, @group) => current.Concat (_validationCollectorProviders.SelectMany (p => p.GetValidationCollectors (@group))))
-          .ToArray();
+              (validationCollectors, typeGroup) => validationCollectors.Concat (GetValidationCollectorsForTypeGroup (typeGroup)));
+    }
+
+    private IEnumerable<IEnumerable<Type>> GetTypeGroups (IEnumerable<Type> types)
+    {
+      return types.SelectMany (t => _involvedTypeProvider.GetTypes (t));
+    }
+
+    private IEnumerable<IEnumerable<ValidationCollectorInfo>> GetValidationCollectorsForTypeGroup (IEnumerable<Type> typeGroup)
+    {
+      var evaluatedTypeGroup = typeGroup.ToArray();
+      return _validationCollectorProviders.SelectMany (p => p.GetValidationCollectors (evaluatedTypeGroup));
     }
   }
 }
