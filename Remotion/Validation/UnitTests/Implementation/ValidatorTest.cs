@@ -20,10 +20,11 @@ using FluentValidation;
 using FluentValidation.Results;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
+using Remotion.Validation.Implementation;
 using Remotion.Validation.UnitTests.IntegrationTests.TestDomain.ComponentA;
 using Rhino.Mocks;
 
-namespace Remotion.Validation.UnitTests
+namespace Remotion.Validation.UnitTests.Implementation
 {
   [TestFixture]
   public class ValidatorTest
@@ -113,7 +114,7 @@ namespace Remotion.Validation.UnitTests
     {
       Assert.That (
           () => ((IValidator<Customer>) _validator).CascadeMode = CascadeMode.StopOnFirstFailure,
-          Throws.TypeOf<NotSupportedException> ().And.Message.EqualTo ("CascadeMode is not supported for a 'Remotion.Validation.Validator`1'"));
+          Throws.TypeOf<NotSupportedException> ().And.Message.EqualTo ("CascadeMode is not supported for a 'Remotion.Validation.Implementation.Validator`1'"));
     }
 
     [Test]
@@ -121,7 +122,7 @@ namespace Remotion.Validation.UnitTests
     {
       Assert.That (
           () => ((IValidator<Customer>) _validator).CascadeMode,
-          Throws.TypeOf<NotSupportedException> ().And.Message.EqualTo ("CascadeMode is not supported for a 'Remotion.Validation.Validator`1'"));
+          Throws.TypeOf<NotSupportedException> ().And.Message.EqualTo ("CascadeMode is not supported for a 'Remotion.Validation.Implementation.Validator`1'"));
     }
   }
 }

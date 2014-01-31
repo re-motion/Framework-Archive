@@ -24,13 +24,16 @@ using FluentValidation.Internal;
 using FluentValidation.Results;
 using Remotion.Utilities;
 
-namespace Remotion.Validation
+namespace Remotion.Validation.Implementation
 {
+  //TODO AO: extract TypedValidatorDecorator<T>
+  //TODO AO: add Create<T> method
+  //TODO AO: pass validator type to ctor
   public sealed class Validator<T> : IValidator<T>
   {
     private readonly IReadOnlyCollection<IValidationRule> _validationRules;
 
-    public Validator (IValidationRule[] validationRules)
+    public Validator (IEnumerable<IValidationRule> validationRules)
     {
       ArgumentUtility.CheckNotNull ("validationRules", validationRules);
 

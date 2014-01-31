@@ -26,9 +26,13 @@ using Remotion.Utilities;
 
 namespace Remotion.Validation.Implementation
 {
+  //TODO AO: extract TypedValidatorDecorator<T>
+  //TODO AO: add Create<T> method
+  //TODO AO: pass validator type to ctor
+  //TODO AO: rename to CompoundValidator
   public sealed class CompositeValidator<T> : IValidator<T>
   {
-    private readonly IReadOnlyCollection<IValidator> _validators; 
+    private readonly IReadOnlyCollection<IValidator> _validators;
 
     public CompositeValidator (IEnumerable<IValidator> validators)
     {
@@ -44,15 +48,15 @@ namespace Remotion.Validation.Implementation
     {
       ArgumentUtility.CheckNotNull ("instance", instance);
 
-      return Validate (new ValidationContext<T> (instance, new PropertyChain (), new DefaultValidatorSelector ()));
+      return Validate (new ValidationContext<T> (instance, new PropertyChain(), new DefaultValidatorSelector()));
     }
 
     public ValidationResult Validate (ValidationContext context)
     {
       ArgumentUtility.CheckNotNull ("context", context);
 
-      var failures = _validators.SelectMany(v=>v.Validate(context).Errors);
-      return new ValidationResult(failures);
+      var failures = _validators.SelectMany (v => v.Validate (context).Errors);
+      return new ValidationResult (failures);
     }
 
     public IValidatorDescriptor CreateDescriptor ()
@@ -67,8 +71,9 @@ namespace Remotion.Validation.Implementation
       return _validators.All (v => v.CanValidateInstancesOfType (type));
     }
 
-    CascadeMode IValidator<T>.CascadeMode {
-      get { throw new NotSupportedException(string.Format ("CascadeMode is not supported for a '{0}'", typeof(CompositeValidator<>).FullName)); }
+    CascadeMode IValidator<T>.CascadeMode
+    {
+      get { throw new NotSupportedException (string.Format ("CascadeMode is not supported for a '{0}'", typeof (CompositeValidator<>).FullName)); }
       set { throw new NotSupportedException (string.Format ("CascadeMode is not supported for a '{0}'", typeof (CompositeValidator<>).FullName)); }
     }
 
@@ -76,15 +81,21 @@ namespace Remotion.Validation.Implementation
     {
       ArgumentUtility.CheckNotNull ("instance", instance);
 
-      if (!CanValidateInstancesOfType (instance.GetType ()))
-        throw new InvalidOperationException (string.Format ("Cannot validate instances of type '{0}'. This validator can only validate instances of type '{1}'.", instance.GetType ().Name, typeof (T).Name));
+      if (!CanValidateInstancesOfType (instance.GetType()))
+      {
+        throw new InvalidOperationException (
+            string.Format (
+                "Cannot validate instances of type '{0}'. This validator can only validate instances of type '{1}'.",
+                instance.GetType().Name,
+                typeof (T).Name));
+      }
 
       return Validate ((T) instance);
     }
 
     IEnumerator IEnumerable.GetEnumerator ()
     {
-      return GetEnumerator ();
+      return GetEnumerator();
     }
 
     public IEnumerator<IValidationRule> GetEnumerator ()

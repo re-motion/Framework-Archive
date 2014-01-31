@@ -18,7 +18,6 @@ using System;
 using System.Reflection;
 using FluentValidation;
 using FluentValidation.Validators;
-using Remotion.Validation.Implementation;
 using Remotion.Validation.Merging;
 
 namespace Remotion.Validation.Rules

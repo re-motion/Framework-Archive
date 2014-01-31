@@ -32,9 +32,10 @@ using Remotion.Validation.Utilities;
 namespace Remotion.Validation.Implementation
 {
   /// <summary>
-  ///  
+  /// Collector-based validator builder.  
   /// </summary>
   //TODO AO: IoC
+  //TODO AO: also introduce CompoundValidatorBuilder
   public class FluentValidatorBuilder : IValidatorBuilder
   {
     private readonly IValidationCollectorProvider _validationCollectorProvider;
@@ -88,7 +89,8 @@ namespace Remotion.Validation.Implementation
       get { return _memberInformationNameResolver; }
     }
 
-    //TODO AO: add non-generic overload
+    //TODO AO: replace with non-generic overload
+    //TODO AO: move to extension method (change return type to IValidator<T>) 
     public IValidator BuildValidator<T> ()
     {
       var typeToValidate = typeof (T);
@@ -96,21 +98,20 @@ namespace Remotion.Validation.Implementation
       var allRules = _validationCollectorMerger.Merge (allCollectors).ToArray();
       ValidateMetaRules (allCollectors, allRules);
 
-      var allPropertyRules = allRules.OfType<PropertyRule>().ToArray();
-      ApplyTechnicalPropertyNames (allPropertyRules);
+      ApplyTechnicalPropertyNames (allRules.OfType<PropertyRule>());
       ApplyGlobalization (typeToValidate, allRules);
 
-      var domainTypeValidator = new Validator<T> (allRules.ToArray());
-      var compositeValidator = new CompositeValidator<T> (new[] { domainTypeValidator });
-      return compositeValidator;
+      return new Validator<T> (allRules);
     }
 
     private void ValidateMetaRules (IEnumerable<IEnumerable<ValidationCollectorInfo>> allCollectors, IValidationRule[] allRules)
     {
       var addingComponentPropertyMetaValidationRules =
           allCollectors.SelectMany (cg => cg).Select (ci => ci.Collector).SelectMany (c => c.AddedPropertyMetaValidationRules);
+      //TODO AO: change to IENumerable and remove ToArray
       var metaRulesValidator =
           _metaRulesValidatorFactory.CreateMetaRuleValidator (addingComponentPropertyMetaValidationRules.ToArray());
+      
       var metaValidationResults = metaRulesValidator.Validate (allRules).Where (r => !r.IsValid).ToArray();
       if (metaValidationResults.Any())
         throw CreateMetaValidationException (metaValidationResults);

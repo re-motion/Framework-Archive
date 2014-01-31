@@ -18,6 +18,7 @@ using System;
 
 namespace Remotion.Validation
 {
+  //TODO AO: move to AttributeBasedValidationCollector (nested and private)
   public class AttributeValidationCollector<T> : ComponentValidationCollector<T>
   {
     public AttributeValidationCollector ()

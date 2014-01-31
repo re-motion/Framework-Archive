@@ -12,7 +12,7 @@
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
-	<SignAssembly>false</SignAssembly>
+    <SignAssembly>false</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\..\remotion.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -204,7 +204,7 @@
     <Compile Include="Implementation\FluentValidatorBuilderTest.cs" />
     <Compile Include="Utilities\MixinHelperTest.cs" />
     <Compile Include="Utilities\TopologySortLinqExtensionsTest.cs" />
-    <Compile Include="ValidatorTest.cs" />
+    <Compile Include="Implementation\ValidatorTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core\Core.Core.csproj">

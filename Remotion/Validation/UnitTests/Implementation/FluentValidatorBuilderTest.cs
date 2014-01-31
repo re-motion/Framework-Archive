@@ -154,10 +154,8 @@ namespace Remotion.Validation.UnitTests.Implementation
       _metaRuleValidatorMock.VerifyAllExpectations();
       _memberInformationNameResolverMock.VerifyAllExpectations();
       _validationRuleGlobalizationServiceMock.VerifyAllExpectations();
-      Assert.That (result, Is.TypeOf (typeof (CompositeValidator<SpecialCustomer1>)));
-      var compisteValidator = (CompositeValidator<SpecialCustomer1>) result;
-      Assert.That (compisteValidator.Validators.Count(), Is.EqualTo (1));
-      var validator = (Validator<SpecialCustomer1>) compisteValidator.Validators.ElementAt (0);
+      Assert.That (result, Is.TypeOf (typeof (Validator<SpecialCustomer1>)));
+      var validator = (Validator<SpecialCustomer1>) result;
       Assert.That (validator.ValidationRules, Is.EqualTo (_fakeValidationRuleResult));
       Assert.That (_validationRuleStub3.PropertyName, Is.EqualTo ("FakeTechnicalPropertyName1"));
       Assert.That (_validationRuleStub4.PropertyName, Is.EqualTo ("FakeTechnicalPropertyName2"));
