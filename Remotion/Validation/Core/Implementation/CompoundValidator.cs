@@ -26,9 +26,6 @@ using Remotion.Utilities;
 
 namespace Remotion.Validation.Implementation
 {
-  //TODO AO: extract TypedValidatorDecorator<T>
-  //TODO AO: add Create<T> method
-  //TODO AO: pass validator type to ctor
   public sealed class CompoundValidator<T> : IValidator<T>
   {
     private readonly IReadOnlyCollection<IValidator> _validators;
