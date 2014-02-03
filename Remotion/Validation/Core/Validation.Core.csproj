@@ -71,6 +71,7 @@
     <Compile Include="Globalization\ErrorMessageStringSource.cs" />
     <Compile Include="Globalization\NullMessageValidatorGlobalizationService.cs" />
     <Compile Include="IComponentValidationCollector1.cs" />
+    <Compile Include="Implementation\CompoundValidatorBuilder.cs" />
     <Compile Include="Implementation\DefaultLogContext.cs" />
     <Compile Include="Implementation\DefaultValidatorFormatter.cs" />
     <Compile Include="Implementation\FluentValidationBuilderExtensions.cs" />

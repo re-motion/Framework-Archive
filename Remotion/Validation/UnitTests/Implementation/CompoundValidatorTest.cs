@@ -31,7 +31,7 @@ namespace Remotion.Validation.UnitTests.Implementation
   {
     private IValidator<Customer> _validatorStub1;
     private IValidator<Customer> _validatorStub2;
-    private CompoundValidator<Customer> _compoundValidator;
+    private CompoundValidator _compoundValidator;
     private ValidationFailure _validationFailure1;
     private ValidationFailure _validationFailure2;
     private ValidationFailure _validationFailure3;
@@ -49,7 +49,7 @@ namespace Remotion.Validation.UnitTests.Implementation
       _validatorStub1 = MockRepository.GenerateStub<IValidator<Customer>>();
       _validatorStub2 = MockRepository.GenerateStub<IValidator<Customer>>();
 
-      _compoundValidator = new CompoundValidator<Customer> (new[] { _validatorStub1, _validatorStub2 });
+      _compoundValidator = new CompoundValidator (new[] { _validatorStub1, _validatorStub2 }, typeof(Customer));
 
       _validationFailure1 = new ValidationFailure ("PropertyName1", "Failes");
       _validationFailure2 = new ValidationFailure ("PropertyName2", "Failes");
@@ -92,7 +92,7 @@ namespace Remotion.Validation.UnitTests.Implementation
     {
       var validator1 = new Validator (new[] { _validationRuleStub1 }, typeof(Customer));
       var validator2 = new Validator (new[] { _validationRuleStub2 }, typeof(Customer));
-      var compositeValidator = new CompoundValidator<Customer> (new[] { validator1, validator2 });
+      var compositeValidator = new CompoundValidator (new[] { validator1, validator2 }, typeof(Customer));
 
       var result = compositeValidator.CreateDescriptor();
 
@@ -116,29 +116,11 @@ namespace Remotion.Validation.UnitTests.Implementation
     }
 
     [Test]
-    public void CascadeMode_Setter ()
-    {
-      Assert.That (
-          () => ((IValidator<Customer>) _compoundValidator).CascadeMode = CascadeMode.StopOnFirstFailure,
-          Throws.TypeOf<NotSupportedException>().And.Message.EqualTo (
-              "CascadeMode is not supported for a 'Remotion.Validation.Implementation.CompoundValidator`1'"));
-    }
-
-    [Test]
-    public void CascadeMode_Getter ()
-    {
-      Assert.That (
-          () => ((IValidator<Customer>) _compoundValidator).CascadeMode,
-          Throws.TypeOf<NotSupportedException>().And.Message.EqualTo (
-              "CascadeMode is not supported for a 'Remotion.Validation.Implementation.CompoundValidator`1'"));
-    }
-
-    [Test]
     public void GetEnumerator ()
     {
       var validator1 = new Validator (new[] { _validationRuleStub1 }, typeof(Customer));
       var validator2 = new Validator (new[] { _validationRuleStub2 }, typeof(Customer));
-      var compositeValidator = new CompoundValidator<Customer> (new[] { validator1, validator2 });
+      var compositeValidator = new CompoundValidator(new[] { validator1, validator2 }, typeof(Customer));
 
       var enumerator = compositeValidator.GetEnumerator();
       Assert.That (enumerator.MoveNext(), Is.True);

@@ -26,13 +26,18 @@ using Remotion.Utilities;
 
 namespace Remotion.Validation.Implementation
 {
-  public sealed class CompoundValidator<T> : IValidator<T>
+  public sealed class CompoundValidator : IValidator
   {
     private readonly IReadOnlyCollection<IValidator> _validators;
+    private readonly Type _typeToValidate;
 
-    public CompoundValidator (IEnumerable<IValidator> validators)
+    public CompoundValidator (IEnumerable<IValidator> validators, Type typeToValidate)
     {
+      ArgumentUtility.CheckNotNull ("validators", validators);
+      ArgumentUtility.CheckNotNull ("typeToValidate", typeToValidate);
+      
       _validators = validators.ToList().AsReadOnly();
+      _typeToValidate = typeToValidate;
     }
 
     public IReadOnlyCollection<IValidator> Validators
@@ -40,11 +45,11 @@ namespace Remotion.Validation.Implementation
       get { return _validators; }
     }
 
-    public ValidationResult Validate (T instance)
+    public ValidationResult Validate (object instance)
     {
       ArgumentUtility.CheckNotNull ("instance", instance);
 
-      return Validate (new ValidationContext<T> (instance, new PropertyChain(), new DefaultValidatorSelector()));
+      return Validate (new ValidationContext (instance, new PropertyChain(), new DefaultValidatorSelector()));
     }
 
     public ValidationResult Validate (ValidationContext context)
@@ -57,7 +62,8 @@ namespace Remotion.Validation.Implementation
 
     public IValidatorDescriptor CreateDescriptor ()
     {
-      return new ValidatorDescriptor<T> (GetAllValidationRules());
+      var typeToInstantiate = typeof (ValidatorDescriptor<>).MakeGenericType (_typeToValidate);
+      return (IValidatorDescriptor) Activator.CreateInstance (typeToInstantiate, GetAllValidationRules ());
     }
 
     public bool CanValidateInstancesOfType (Type type)
@@ -65,12 +71,6 @@ namespace Remotion.Validation.Implementation
       ArgumentUtility.CheckNotNull ("type", type);
 
       return _validators.All (v => v.CanValidateInstancesOfType (type));
-    }
-
-    CascadeMode IValidator<T>.CascadeMode
-    {
-      get { throw new NotSupportedException (string.Format ("CascadeMode is not supported for a '{0}'", typeof (CompoundValidator<>).FullName)); }
-      set { throw new NotSupportedException (string.Format ("CascadeMode is not supported for a '{0}'", typeof (CompoundValidator<>).FullName)); }
     }
 
     ValidationResult IValidator.Validate (object instance)
@@ -83,10 +83,10 @@ namespace Remotion.Validation.Implementation
             string.Format (
                 "Cannot validate instances of type '{0}'. This validator can only validate instances of type '{1}'.",
                 instance.GetType().Name,
-                typeof (T).Name));
+                _typeToValidate.Name));
       }
 
-      return Validate ((T) instance);
+      return Validate (instance);
     }
 
     IEnumerator IEnumerable.GetEnumerator ()
