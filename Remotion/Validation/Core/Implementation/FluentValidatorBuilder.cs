@@ -101,7 +101,8 @@ namespace Remotion.Validation.Implementation
       ApplyTechnicalPropertyNames (allRules.OfType<PropertyRule>());
       ApplyGlobalization (typeToValidate, allRules);
 
-      return new Validator<T> (allRules);
+      var validator = new Validator (allRules, typeof(T));
+      return new TypedValidatorDecorator<T> (validator);
     }
 
     private void ValidateMetaRules (IEnumerable<IEnumerable<ValidationCollectorInfo>> allCollectors, IValidationRule[] allRules)

@@ -90,8 +90,8 @@ namespace Remotion.Validation.UnitTests.Implementation
     [Test]
     public void CreateDescriptor ()
     {
-      var validator1 = new Validator<Customer> (new[] { _validationRuleStub1 });
-      var validator2 = new Validator<Customer> (new[] { _validationRuleStub2 });
+      var validator1 = new Validator (new[] { _validationRuleStub1 }, typeof(Customer));
+      var validator2 = new Validator (new[] { _validationRuleStub2 }, typeof(Customer));
       var compositeValidator = new CompoundValidator<Customer> (new[] { validator1, validator2 });
 
       var result = compositeValidator.CreateDescriptor();
@@ -136,8 +136,8 @@ namespace Remotion.Validation.UnitTests.Implementation
     [Test]
     public void GetEnumerator ()
     {
-      var validator1 = new Validator<Customer> (new[] { _validationRuleStub1 });
-      var validator2 = new Validator<Customer> (new[] { _validationRuleStub2 });
+      var validator1 = new Validator (new[] { _validationRuleStub1 }, typeof(Customer));
+      var validator2 = new Validator (new[] { _validationRuleStub2 }, typeof(Customer));
       var compositeValidator = new CompoundValidator<Customer> (new[] { validator1, validator2 });
 
       var enumerator = compositeValidator.GetEnumerator();

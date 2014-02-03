@@ -26,56 +26,52 @@ using Remotion.Utilities;
 
 namespace Remotion.Validation.Implementation
 {
-  public sealed class Validator : IValidator
+  public class TypedValidatorDecorator<T> : IValidator<T>
   {
-    private readonly Type _validatorType;
-    private readonly IReadOnlyCollection<IValidationRule> _validationRules;
+    private readonly IValidator _validator;
 
-    public Validator (IEnumerable<IValidationRule> validationRules, Type validatorType)
+    public TypedValidatorDecorator (IValidator validator)
     {
-      ArgumentUtility.CheckNotNull ("validationRules", validationRules);
-      ArgumentUtility.CheckNotNull ("validatorType", validatorType);
+      ArgumentUtility.CheckNotNull ("validator", validator);
 
-      _validatorType = validatorType;
-      _validationRules = validationRules.ToList().AsReadOnly();
+      _validator = validator;
+    }
+
+    public IValidator Validator
+    {
+      get { return _validator; }
     }
 
     public IReadOnlyCollection<IValidationRule> ValidationRules
     {
-      get { return _validationRules; }
+      get { return GetValidationRules (_validator.GetEnumerator()).ToList().AsReadOnly(); }
     }
 
-    public TypedValidatorDecorator<T> Create<T> ()
-    {
-      return new TypedValidatorDecorator<T> (this);
-    }
-
-    public ValidationResult Validate (object instance)
+    public ValidationResult Validate (T instance)
     {
       ArgumentUtility.CheckNotNull ("instance", instance);
 
-      return Validate (new ValidationContext (instance, new PropertyChain(), new DefaultValidatorSelector()));
+      return Validate (new ValidationContext<T> (instance, new PropertyChain(), new DefaultValidatorSelector()));
     }
 
-    public ValidationResult Validate (ValidationContext context)
+    public ValidationResult Validate (ValidationContext<T> context)
     {
       ArgumentUtility.CheckNotNull ("context", context);
 
-      var failures = _validationRules.SelectMany (r => r.Validate (context)).ToList();
+      var failures = ValidationRules.SelectMany (r => r.Validate (context)).ToList ();
       return new ValidationResult (failures);
     }
 
     public IValidatorDescriptor CreateDescriptor ()
     {
-      var typeToInstantiate = typeof (ValidatorDescriptor<>).MakeGenericType (_validatorType);
-      return (IValidatorDescriptor) Activator.CreateInstance (typeToInstantiate, _validationRules);
+      return new ValidatorDescriptor<T> (ValidationRules);
     }
 
     public bool CanValidateInstancesOfType (Type type)
     {
       ArgumentUtility.CheckNotNull ("type", type);
 
-      return _validatorType.IsAssignableFrom (type);
+      return typeof (T).IsAssignableFrom (type);
     }
 
     ValidationResult IValidator.Validate (object instance)
@@ -88,17 +84,17 @@ namespace Remotion.Validation.Implementation
             string.Format (
                 "Cannot validate instances of type '{0}'. This validator can only validate instances of type '{1}'.",
                 instance.GetType().Name,
-                _validatorType.Name));
+                typeof (T).Name));
       }
 
-      return Validate (instance);
+      return Validate ((T) instance);
     }
 
     ValidationResult IValidator.Validate (ValidationContext context)
     {
       ArgumentUtility.CheckNotNull ("context", context);
 
-      var newContext = new ValidationContext (context.InstanceToValidate, context.PropertyChain, context.Selector);
+      var newContext = new ValidationContext<T> ((T) context.InstanceToValidate, context.PropertyChain, context.Selector);
       return Validate (newContext);
     }
 
@@ -109,7 +105,25 @@ namespace Remotion.Validation.Implementation
 
     public IEnumerator<IValidationRule> GetEnumerator ()
     {
-      return _validationRules.GetEnumerator();
+      return _validator.GetEnumerator();
+    }
+
+    private IEnumerable<IValidationRule> GetValidationRules (IEnumerator<IValidationRule> enumerator)
+    {
+      while (enumerator.MoveNext())
+        yield return enumerator.Current;
+    }
+
+    CascadeMode IValidator<T>.CascadeMode
+    {
+      get
+      {
+        throw new NotSupportedException (string.Format ("CascadeMode is not supported for a '{0}'", typeof (TypedValidatorDecorator<>).FullName));
+      }
+      set
+      {
+        throw new NotSupportedException (string.Format ("CascadeMode is not supported for a '{0}'", typeof (TypedValidatorDecorator<>).FullName));
+      }
     }
   }
 }
