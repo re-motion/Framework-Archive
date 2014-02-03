@@ -17,6 +17,7 @@
 
 using System;
 using NUnit.Framework;
+using Remotion.Validation.Implementation;
 using Remotion.Validation.MetaValidation;
 using Remotion.Validation.UnitTests.IntegrationTests.TestDomain.MetaValidation;
 

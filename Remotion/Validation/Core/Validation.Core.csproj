@@ -73,10 +73,12 @@
     <Compile Include="IComponentValidationCollector1.cs" />
     <Compile Include="Implementation\DefaultLogContext.cs" />
     <Compile Include="Implementation\DefaultValidatorFormatter.cs" />
+    <Compile Include="Implementation\FluentValidationBuilderExtensions.cs" />
     <Compile Include="Implementation\FluentValidationValidatorFormatterDecorator.cs" />
     <Compile Include="Implementation\IValidatorFormatter.cs" />
     <Compile Include="Implementation\TypedValidatorDecorator.cs" />
     <Compile Include="IValidatorBuilder.cs" />
+    <Compile Include="IValidatorBuilder1.cs" />
     <Compile Include="Merging\DefaultPropertyValidatorExtractor.cs" />
     <Compile Include="Implementation\ILogContext.cs" />
     <Compile Include="Merging\IPropertyValidatorExtractor.cs" />

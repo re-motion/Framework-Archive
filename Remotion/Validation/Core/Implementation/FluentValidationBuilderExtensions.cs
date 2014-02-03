@@ -17,20 +17,18 @@
 
 using System;
 using FluentValidation;
+using Remotion.Utilities;
 
-namespace Remotion.Validation
+namespace Remotion.Validation.Implementation
 {
-  /// <summary>
-  /// The <see cref="IValidatorBuilder"/> interface provides an API for creating an <see cref="IValidator"/> for a <see cref="Type"/>.
-  /// Use the application's IoC container to retrieve an instance of <see cref="IValidatorBuilder"/>.
-  /// </summary>
-  //TODO AO: use IoC
-  public interface IValidatorBuilder
+  public static class FluentValidatorBuilderExtensions
   {
-    /// <summary>
-    /// Returns a validator for <paramref name="validatedType"/>.
-    /// </summary>
-    /// <returns>An implementation of <see cref="IValidator"/> which can be used to validate instances of <paramref name="validatedType"/>.</returns>
-    IValidator BuildValidator (Type validatedType);
+    public static IValidator<T> BuildValidator<T> (this FluentValidatorBuilder builder)
+    {
+      ArgumentUtility.CheckNotNull ("builder", builder);
+
+      var validator = builder.BuildValidator (typeof (T));
+      return new TypedValidatorDecorator<T> (validator);
+    }
   }
 }

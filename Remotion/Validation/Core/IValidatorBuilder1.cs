@@ -20,17 +20,13 @@ using FluentValidation;
 
 namespace Remotion.Validation
 {
-  /// <summary>
-  /// The <see cref="IValidatorBuilder"/> interface provides an API for creating an <see cref="IValidator"/> for a <see cref="Type"/>.
-  /// Use the application's IoC container to retrieve an instance of <see cref="IValidatorBuilder"/>.
-  /// </summary>
-  //TODO AO: use IoC
-  public interface IValidatorBuilder
+  public interface IValidatorBuilder1<in T> : IValidatorBuilder
   {
     /// <summary>
-    /// Returns a validator for <paramref name="validatedType"/>.
+    /// Returns a validator for <typeparamref name="TValidatedType"/>.
     /// </summary>
-    /// <returns>An implementation of <see cref="IValidator"/> which can be used to validate instances of <paramref name="validatedType"/>.</returns>
-    IValidator BuildValidator (Type validatedType);
+    /// <typeparam name="TValidatedType"></typeparam>
+    /// <returns>An implementation of <see cref="IValidator"/> which can be used to validate instances of <typeparamref name="TValidatedType"/>.</returns>
+    IValidator<T> BuildValidator<TValidatedType> ();
   }
 }

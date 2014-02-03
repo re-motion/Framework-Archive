@@ -125,6 +125,45 @@ namespace Remotion.Validation.UnitTests.Implementation
     [Test]
     public void BuildValidator ()
     {
+      ExpectMocks ();
+
+      _metaRuleValidatorMock
+          .Expect (mock => mock.Validate (Arg<IValidationRule[]>.List.Equal (_fakeValidationRuleResult)))
+          .Return (new[] { _validMetaValidationResult1, _validMetaValidationResult2 });
+
+      _memberInformationNameResolverMock
+        .Expect (mock => mock.GetPropertyName (Arg<IPropertyInformation>.Matches (pi => pi.Name == "FirstName")))
+        .Return ("FakeTechnicalPropertyName1");
+      _memberInformationNameResolverMock
+        .Expect (mock => mock.GetPropertyName (Arg<IPropertyInformation>.Matches (pi => pi.Name == "LastName")))
+        .Return ("FakeTechnicalPropertyName2");
+
+      _validationRuleGlobalizationServiceMock
+        .Expect (mock => mock.ApplyLocalization (_validationRuleStub1, typeof (SpecialCustomer1)));
+      _validationRuleGlobalizationServiceMock
+        .Expect (mock => mock.ApplyLocalization (_validationRuleStub2, typeof (SpecialCustomer1)));
+      _validationRuleGlobalizationServiceMock
+        .Expect (mock => mock.ApplyLocalization (_validationRuleStub3, typeof (SpecialCustomer1)));
+      _validationRuleGlobalizationServiceMock
+        .Expect (mock => mock.ApplyLocalization (_validationRuleStub4, typeof (SpecialCustomer1)));
+
+      var result = _fluentValidationBuilder.BuildValidator (typeof(SpecialCustomer1));
+
+      _validationCollectorProviderMock.VerifyAllExpectations ();
+      _validationCollectorMergerMock.VerifyAllExpectations ();
+      _metaRuleValidatorMock.VerifyAllExpectations ();
+      _memberInformationNameResolverMock.VerifyAllExpectations ();
+      _validationRuleGlobalizationServiceMock.VerifyAllExpectations ();
+      Assert.That (result, Is.TypeOf (typeof (Validator)));
+      var validator = (Validator) result;
+      Assert.That (validator.ValidationRules, Is.EqualTo (_fakeValidationRuleResult));
+      Assert.That (_validationRuleStub3.PropertyName, Is.EqualTo ("FakeTechnicalPropertyName1"));
+      Assert.That (_validationRuleStub4.PropertyName, Is.EqualTo ("FakeTechnicalPropertyName2"));
+    }
+
+    [Test]
+    public void BuildValidator_ExtensionMethod ()
+    {
       ExpectMocks();
 
       _metaRuleValidatorMock

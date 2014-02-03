@@ -89,20 +89,18 @@ namespace Remotion.Validation.Implementation
       get { return _memberInformationNameResolver; }
     }
 
-    //TODO AO: replace with non-generic overload
-    //TODO AO: move to extension method (change return type to IValidator<T>) 
-    public IValidator BuildValidator<T> ()
+    public IValidator BuildValidator (Type validatedType)
     {
-      var typeToValidate = typeof (T);
-      var allCollectors = _validationCollectorProvider.GetValidationCollectors (new[] { typeToValidate }).Select (c => c.ToArray()).ToArray();
+      ArgumentUtility.CheckNotNull ("validatedType", validatedType);
+      
+      var allCollectors = _validationCollectorProvider.GetValidationCollectors (new[] { validatedType }).Select (c => c.ToArray ()).ToArray ();
       var allRules = _validationCollectorMerger.Merge (allCollectors).ToArray();
       ValidateMetaRules (allCollectors, allRules);
 
       ApplyTechnicalPropertyNames (allRules.OfType<PropertyRule>());
-      ApplyGlobalization (typeToValidate, allRules);
+      ApplyGlobalization (validatedType, allRules);
 
-      var validator = new Validator (allRules, typeof(T));
-      return new TypedValidatorDecorator<T> (validator);
+      return new Validator (allRules, validatedType);
     }
 
     private void ValidateMetaRules (IEnumerable<IEnumerable<ValidationCollectorInfo>> allCollectors, IValidationRule[] allRules)
