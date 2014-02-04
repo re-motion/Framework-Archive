@@ -21,7 +21,7 @@ using FluentValidation.Results;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
 using Remotion.Validation.Implementation;
-using Remotion.Validation.UnitTests.IntegrationTests.TestDomain.ComponentA;
+using Remotion.Validation.UnitTests.TestDomain;
 using Rhino.Mocks;
 
 namespace Remotion.Validation.UnitTests.Implementation
@@ -49,7 +49,7 @@ namespace Remotion.Validation.UnitTests.Implementation
       _validatorStub1 = MockRepository.GenerateStub<IValidator<Customer>>();
       _validatorStub2 = MockRepository.GenerateStub<IValidator<Customer>>();
 
-      _compoundValidator = new CompoundValidator (new[] { _validatorStub1, _validatorStub2 }, typeof(Customer));
+      _compoundValidator = new CompoundValidator (new[] { _validatorStub1, _validatorStub2 }, typeof (Customer));
 
       _validationFailure1 = new ValidationFailure ("PropertyName1", "Failes");
       _validationFailure2 = new ValidationFailure ("PropertyName2", "Failes");
@@ -90,9 +90,9 @@ namespace Remotion.Validation.UnitTests.Implementation
     [Test]
     public void CreateDescriptor ()
     {
-      var validator1 = new Validator (new[] { _validationRuleStub1 }, typeof(Customer));
-      var validator2 = new Validator (new[] { _validationRuleStub2 }, typeof(Customer));
-      var compositeValidator = new CompoundValidator (new[] { validator1, validator2 }, typeof(Customer));
+      var validator1 = new Validator (new[] { _validationRuleStub1 }, typeof (Customer));
+      var validator2 = new Validator (new[] { _validationRuleStub2 }, typeof (Customer));
+      var compositeValidator = new CompoundValidator (new[] { validator1, validator2 }, typeof (Customer));
 
       var result = compositeValidator.CreateDescriptor();
 
@@ -118,9 +118,9 @@ namespace Remotion.Validation.UnitTests.Implementation
     [Test]
     public void GetEnumerator ()
     {
-      var validator1 = new Validator (new[] { _validationRuleStub1 }, typeof(Customer));
-      var validator2 = new Validator (new[] { _validationRuleStub2 }, typeof(Customer));
-      var compositeValidator = new CompoundValidator(new[] { validator1, validator2 }, typeof(Customer));
+      var validator1 = new Validator (new[] { _validationRuleStub1 }, typeof (Customer));
+      var validator2 = new Validator (new[] { _validationRuleStub2 }, typeof (Customer));
+      var compositeValidator = new CompoundValidator (new[] { validator1, validator2 }, typeof (Customer));
 
       var enumerator = compositeValidator.GetEnumerator();
       Assert.That (enumerator.MoveNext(), Is.True);

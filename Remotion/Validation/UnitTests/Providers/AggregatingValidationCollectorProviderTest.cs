@@ -21,7 +21,7 @@ using System.Linq;
 using NUnit.Framework;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.Providers;
-using Remotion.Validation.UnitTests.IntegrationTests.TestDomain.ComponentA;
+using Remotion.Validation.UnitTests.TestDomain;
 using Rhino.Mocks;
 
 namespace Remotion.Validation.UnitTests.Providers
@@ -87,7 +87,8 @@ namespace Remotion.Validation.UnitTests.Providers
       Assert.That (
           new[]
           {
-              _validationCollectorProviderMock1, _validationCollectorProviderMock2, _validationCollectorProviderMock3, _validationCollectorProviderMock4
+              _validationCollectorProviderMock1, _validationCollectorProviderMock2, _validationCollectorProviderMock3,
+              _validationCollectorProviderMock4
           },
           Is.EqualTo (_componentValidationCollectorProvider.ValidationCollectorProviders));
     }
@@ -100,7 +101,7 @@ namespace Remotion.Validation.UnitTests.Providers
       var typeGroup3 = new[] { typeof (Customer) };
       _involvedTypeProviderStub.Stub (
           stub => stub.GetTypes (Arg<Type>.Is.Equal (typeof (Customer))))
-                               .Return (new[] { typeGroup1, typeGroup2, typeGroup3 });
+          .Return (new[] { typeGroup1, typeGroup2, typeGroup3 });
 
       using (_mockRepository.Ordered())
       {
@@ -118,10 +119,10 @@ namespace Remotion.Validation.UnitTests.Providers
 
         _validationCollectorProviderMock1
             .Expect (mock => mock.GetValidationCollectors (typeGroup2))
-            .Return (Enumerable.Empty<IEnumerable<ValidationCollectorInfo>> ());
+            .Return (Enumerable.Empty<IEnumerable<ValidationCollectorInfo>>());
         _validationCollectorProviderMock2
             .Expect (mock => mock.GetValidationCollectors (typeGroup2))
-            .Return (Enumerable.Empty<IEnumerable<ValidationCollectorInfo>> ());
+            .Return (Enumerable.Empty<IEnumerable<ValidationCollectorInfo>>());
 
         _validationCollectorProviderMock3
             .Expect (mock => mock.GetValidationCollectors (typeGroup2)).Return (new[] { new[] { _validationCollectorInfo6 } });
@@ -133,16 +134,16 @@ namespace Remotion.Validation.UnitTests.Providers
             .Return (new[] { new[] { _validationCollectorInfo8, _validationCollectorInfo9 }, new[] { _validationCollectorInfo10 } });
         _validationCollectorProviderMock2
             .Expect (mock => mock.GetValidationCollectors (typeGroup3))
-            .Return (Enumerable.Empty<IEnumerable<ValidationCollectorInfo>> ());
+            .Return (Enumerable.Empty<IEnumerable<ValidationCollectorInfo>>());
 
         _validationCollectorProviderMock3
-            .Expect (mock => mock.GetValidationCollectors (typeGroup3)).Return (Enumerable.Empty<IEnumerable<ValidationCollectorInfo>> ());
+            .Expect (mock => mock.GetValidationCollectors (typeGroup3)).Return (Enumerable.Empty<IEnumerable<ValidationCollectorInfo>>());
         _validationCollectorProviderMock4
-            .Expect (mock => mock.GetValidationCollectors (typeGroup3)).Return (Enumerable.Empty<IEnumerable<ValidationCollectorInfo>> ());
+            .Expect (mock => mock.GetValidationCollectors (typeGroup3)).Return (Enumerable.Empty<IEnumerable<ValidationCollectorInfo>>());
       }
       _mockRepository.ReplayAll();
 
-      var result = _componentValidationCollectorProvider.GetValidationCollectors (new[] { typeof (Customer) }).SelectMany(g=>g).ToArray();
+      var result = _componentValidationCollectorProvider.GetValidationCollectors (new[] { typeof (Customer) }).SelectMany (g => g).ToArray();
 
       _mockRepository.VerifyAll();
       Assert.That (

@@ -20,7 +20,7 @@ using System.Linq;
 using FluentValidation.Validators;
 using NUnit.Framework;
 using Remotion.Validation.Attributes.Validation;
-using Remotion.Validation.UnitTests.IntegrationTests.TestDomain.ComponentA;
+using Remotion.Validation.UnitTests.TestDomain;
 
 namespace Remotion.Validation.UnitTests.Attributes.Validation
 {
@@ -44,11 +44,11 @@ namespace Remotion.Validation.UnitTests.Attributes.Validation
     [Test]
     public void GetPropertyValidator ()
     {
-      var result = _attribute.GetPropertyValidators (typeof (Customer).GetProperty ("LastName")).ToArray ();
+      var result = _attribute.GetPropertyValidators (typeof (Customer).GetProperty ("LastName")).ToArray();
 
-      Assert.That (result.Count (), Is.EqualTo (1));
+      Assert.That (result.Count(), Is.EqualTo (1));
       Assert.That (result[0], Is.TypeOf (typeof (NotEqualValidator)));
-      Assert.That (result[0].ErrorMessageSource.GetString (), Is.EqualTo ("'{PropertyName}' should not be equal to '{ComparisonValue}'."));
+      Assert.That (result[0].ErrorMessageSource.GetString(), Is.EqualTo ("'{PropertyName}' should not be equal to '{ComparisonValue}'."));
       Assert.That (((NotEqualValidator) result[0]).ValueToCompare, Is.EqualTo ("test"));
     }
 
@@ -57,10 +57,10 @@ namespace Remotion.Validation.UnitTests.Attributes.Validation
     {
       _attribute.ErrorMessage = "CustomMessage";
 
-      var result = _attribute.GetPropertyValidators (typeof (Customer).GetProperty ("LastName")).ToArray ();
+      var result = _attribute.GetPropertyValidators (typeof (Customer).GetProperty ("LastName")).ToArray();
 
-      Assert.That (result.Count (), Is.EqualTo (1));
-      Assert.That (result[0].ErrorMessageSource.GetString(), Is.EqualTo("CustomMessage"));
+      Assert.That (result.Count(), Is.EqualTo (1));
+      Assert.That (result[0].ErrorMessageSource.GetString(), Is.EqualTo ("CustomMessage"));
     }
   }
 }

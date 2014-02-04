@@ -24,9 +24,8 @@ using Remotion.Validation.Implementation;
 using Remotion.Validation.MetaValidation;
 using Remotion.Validation.Providers;
 using Remotion.Validation.Rules;
-using Remotion.Validation.UnitTests.IntegrationTests.TestDomain.ComponentA;
-using Remotion.Validation.UnitTests.IntegrationTests.TestDomain.ComponentB;
-using Remotion.Validation.UnitTests.IntegrationTests.TestDomain.MetaValidation.Rules;
+using Remotion.Validation.UnitTests.TestDomain;
+using Remotion.Validation.UnitTests.TestDomain.ValidationRules;
 using Rhino.Mocks;
 
 namespace Remotion.Validation.UnitTests.Providers
@@ -70,7 +69,7 @@ namespace Remotion.Validation.UnitTests.Providers
       _validatorRegistration3 = new ValidatorRegistration (typeof (NotNullValidator), null);
       _validatorRegistration4 = new ValidatorRegistration (typeof (NotEmptyValidator), null);
 
-      _validationPropertyRuleReflectorMock = MockRepository.GenerateStrictMock<IValidationPropertyRuleReflector> ();
+      _validationPropertyRuleReflectorMock = MockRepository.GenerateStrictMock<IValidationPropertyRuleReflector>();
     }
 
     [Test]
@@ -103,22 +102,27 @@ namespace Remotion.Validation.UnitTests.Providers
       Assert.That (result[0].Collector.AddedPropertyRules.Count(), Is.EqualTo (3));
       var addingPropertyRuleValidators = result[0].Collector.AddedPropertyRules.ToArray().SelectMany (pr => pr.Validators);
       Assert.That (
-          addingPropertyRuleValidators, Is.EquivalentTo (new[] { _propertyValidatorStub1, _propertyValidatorStub2, _propertyValidatorStub3 }));
+          addingPropertyRuleValidators,
+          Is.EquivalentTo (new[] { _propertyValidatorStub1, _propertyValidatorStub2, _propertyValidatorStub3 }));
       Assert.That (result[0].Collector.AddedPropertyMetaValidationRules.ToArray().SelectMany (pr => pr.MetaValidationRules).Any(), Is.False);
 
       Assert.That (result[0].Collector.RemovedPropertyRules.Count(), Is.EqualTo (1));
       var removedPropertyRuleRegistrations =
           result[0].Collector.RemovedPropertyRules.ToArray().SelectMany (pr => pr.Validators.Select (v => v.ValidatorType));
       Assert.That (
-          removedPropertyRuleRegistrations, Is.EquivalentTo (new[] { _validatorRegistration1.ValidatorType, _validatorRegistration2.ValidatorType }));
+          removedPropertyRuleRegistrations,
+          Is.EquivalentTo (new[] { _validatorRegistration1.ValidatorType, _validatorRegistration2.ValidatorType }));
 
-      Assert.That (result[1].Collector, Is.TypeOf (typeof (AttributeBasedValidationCollectorProviderBase.AttributeValidationCollector<SpecialCustomer1>)));
+      Assert.That (
+          result[1].Collector,
+          Is.TypeOf (typeof (AttributeBasedValidationCollectorProviderBase.AttributeValidationCollector<SpecialCustomer1>)));
       Assert.That (result[1].ProviderType, Is.EqualTo (typeof (TestableAttributeBasedValidationCollectorProviderBase)));
 
       Assert.That (result[1].Collector.AddedPropertyRules.Count(), Is.EqualTo (4));
       addingPropertyRuleValidators = result[1].Collector.AddedPropertyRules.ToArray().SelectMany (pr => pr.Validators);
       Assert.That (
-          addingPropertyRuleValidators, Is.EquivalentTo (new[] { _propertyValidatorStub4, _propertyValidatorStub5, _propertyValidatorStub6 }));
+          addingPropertyRuleValidators,
+          Is.EquivalentTo (new[] { _propertyValidatorStub4, _propertyValidatorStub5, _propertyValidatorStub6 }));
       var addingPropertyRuleMetaValidationRules =
           result[1].Collector.AddedPropertyMetaValidationRules.ToArray().SelectMany (pr => pr.MetaValidationRules);
       Assert.That (
@@ -129,7 +133,8 @@ namespace Remotion.Validation.UnitTests.Providers
       removedPropertyRuleRegistrations =
           result[1].Collector.RemovedPropertyRules.ToArray().SelectMany (pr => pr.Validators.Select (v => v.ValidatorType));
       Assert.That (
-          removedPropertyRuleRegistrations, Is.EquivalentTo (new[] { _validatorRegistration3.ValidatorType, _validatorRegistration4.ValidatorType }));
+          removedPropertyRuleRegistrations,
+          Is.EquivalentTo (new[] { _validatorRegistration3.ValidatorType, _validatorRegistration4.ValidatorType }));
     }
 
     [Test]
@@ -140,12 +145,13 @@ namespace Remotion.Validation.UnitTests.Providers
       _validationPropertyRuleReflectorMock.Expect (mock => mock.GetHardConstraintPropertyValidators()).Return (new IPropertyValidator[0]);
       _validationPropertyRuleReflectorMock.Expect (mock => mock.GetRemovingPropertyRegistrations()).Return (new ValidatorRegistration[0]);
       _validationPropertyRuleReflectorMock.Expect (mock => mock.GetMetaValidationRules())
-                                          .Return (new IMetaValidationRule[] { _metaValidationRuleStub4 });
+          .Return (new IMetaValidationRule[] { _metaValidationRuleStub4 });
 
       var collectorProvider = new TestableAttributeBasedValidationCollectorProviderBase (_validationPropertyRuleReflectorMock);
 
       var exception =
-          Assert.Throws<TargetInvocationException> (() => collectorProvider.GetValidationCollectors (new[] { typeof (Person) }).SelectMany (g => g).ToArray());
+          Assert.Throws<TargetInvocationException> (
+              () => collectorProvider.GetValidationCollectors (new[] { typeof (Person) }).SelectMany (g => g).ToArray());
       var innerException = exception.InnerException.InnerException; //nested reflection call!
       Assert.That (innerException, Is.TypeOf (typeof (InvalidOperationException)));
       Assert.That (innerException.Message.Contains ("has no generic arguments."), Is.True);

@@ -20,7 +20,7 @@ using System.Linq;
 using FluentValidation.Validators;
 using NUnit.Framework;
 using Remotion.Validation.Attributes.Validation;
-using Remotion.Validation.UnitTests.IntegrationTests.TestDomain.ComponentA;
+using Remotion.Validation.UnitTests.TestDomain;
 
 namespace Remotion.Validation.UnitTests.Attributes.Validation
 {
@@ -32,17 +32,17 @@ namespace Remotion.Validation.UnitTests.Attributes.Validation
     [SetUp]
     public void SetUp ()
     {
-      _attribute = new NotEmptyAttribute ();
+      _attribute = new NotEmptyAttribute();
     }
 
     [Test]
     public void GetPropertyValidator ()
     {
-      var result = _attribute.GetPropertyValidators (typeof (Customer).GetProperty ("LastName")).ToArray ();
+      var result = _attribute.GetPropertyValidators (typeof (Customer).GetProperty ("LastName")).ToArray();
 
-      Assert.That (result.Count (), Is.EqualTo (1));
+      Assert.That (result.Count(), Is.EqualTo (1));
       Assert.That (result[0], Is.TypeOf (typeof (NotEmptyValidator)));
-      Assert.That (result[0].ErrorMessageSource.GetString (), Is.EqualTo ("'{PropertyName}' should not be empty."));
+      Assert.That (result[0].ErrorMessageSource.GetString(), Is.EqualTo ("'{PropertyName}' should not be empty."));
     }
 
     [Test]
@@ -50,10 +50,10 @@ namespace Remotion.Validation.UnitTests.Attributes.Validation
     {
       _attribute.ErrorMessage = "CustomMessage";
 
-      var result = _attribute.GetPropertyValidators (typeof (Customer).GetProperty ("LastName")).ToArray ();
+      var result = _attribute.GetPropertyValidators (typeof (Customer).GetProperty ("LastName")).ToArray();
 
-      Assert.That (result.Count (), Is.EqualTo (1));
-      Assert.That (result[0].ErrorMessageSource.GetString(), Is.EqualTo("CustomMessage"));
+      Assert.That (result.Count(), Is.EqualTo (1));
+      Assert.That (result[0].ErrorMessageSource.GetString(), Is.EqualTo ("CustomMessage"));
     }
   }
 }

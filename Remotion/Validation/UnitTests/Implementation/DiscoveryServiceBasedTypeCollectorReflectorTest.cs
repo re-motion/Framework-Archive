@@ -22,9 +22,8 @@ using NUnit.Framework;
 using Remotion.Validation.Attributes;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.Providers;
-using Remotion.Validation.UnitTests.IntegrationTests.TestDomain.ComponentA;
-using Remotion.Validation.UnitTests.IntegrationTests.TestDomain.ComponentA.ValidationCollectors;
-using Remotion.Validation.UnitTests.IntegrationTests.TestDomain.ComponentB.ValidationCollectors;
+using Remotion.Validation.UnitTests.TestDomain;
+using Remotion.Validation.UnitTests.TestDomain.Collectors;
 using Remotion.Validation.UnitTests.TestHelpers;
 using Rhino.Mocks;
 
@@ -45,34 +44,35 @@ namespace Remotion.Validation.UnitTests.Implementation
     public void GetComponentValidationCollectors_WithFakeTypeDiscoveryService ()
     {
       var appliedWithAttributeTypes = new[]
-      {
-          typeof (CustomerMixinTargetValidationCollector1), typeof (CustomerMixinIntroducedValidationCollector1),
-          typeof (CustomerMixinIntroducedValidationCollector2),
-          typeof (IPersonValidationCollector1), typeof (IPersonValidationCollector2), typeof (PersonValidationCollector1),
-          typeof (CustomerValidationCollector1), typeof (CustomerValidationCollector2)
-      };
+                                      {
+                                          typeof (CustomerMixinTargetValidationCollector1), typeof (CustomerMixinIntroducedValidationCollector1),
+                                          typeof (CustomerMixinIntroducedValidationCollector2),
+                                          typeof (IPersonValidationCollector1), typeof (IPersonValidationCollector2),
+                                          typeof (PersonValidationCollector1),
+                                          typeof (CustomerValidationCollector1), typeof (CustomerValidationCollector2)
+                                      };
       _typeDescoveryServiceStub.Stub (stub => stub.GetTypes (typeof (IComponentValidationCollector), true)).Return (appliedWithAttributeTypes);
 
       var typeCollectorProvider = new DiscoveryServiceBasedTypeCollectorReflector (_typeDescoveryServiceStub);
 
       Assert.That (typeCollectorProvider.GetCollectorsForType (typeof (IPerson)), Is.EqualTo (new[] { typeof (IPersonValidationCollector1) }));
-      
+
       Assert.That (
           typeCollectorProvider.GetCollectorsForType (typeof (Person)),
           Is.EquivalentTo (new[] { typeof (IPersonValidationCollector2), typeof (PersonValidationCollector1) })); //ApplyWithClass(typeof(Person))!
-      
+
       Assert.That (
           typeCollectorProvider.GetCollectorsForType (typeof (Customer)),
           Is.EqualTo (new[] { typeof (CustomerValidationCollector1), typeof (CustomerValidationCollector2) }));
-     
+
       Assert.That (
           typeCollectorProvider.GetCollectorsForType (typeof (ICustomerIntroduced)),
           Is.EqualTo (new[] { typeof (CustomerMixinIntroducedValidationCollector2) }));
-      
+
       Assert.That (
           typeCollectorProvider.GetCollectorsForType (typeof (CustomerMixin)),
           Is.EquivalentTo (new[] { typeof (CustomerMixinTargetValidationCollector1), typeof (CustomerMixinIntroducedValidationCollector1) }));
-          //ApplyWithMixin attribute!
+      //ApplyWithMixin attribute!
     }
 
     [Test]
@@ -83,7 +83,7 @@ namespace Remotion.Validation.UnitTests.Implementation
       Assert.That (
           () => new DiscoveryServiceBasedTypeCollectorReflector (_typeDescoveryServiceStub),
           Throws.InvalidOperationException.And.Message.EqualTo (
-              "Type 'Remotion.Validation.UnitTests.IntegrationTests.TestDomain.ComponentA.Person' has no generic arguments."));
+              "Type 'Remotion.Validation.UnitTests.TestDomain.Person' has no generic arguments."));
     }
 
     [Test]
@@ -97,21 +97,21 @@ namespace Remotion.Validation.UnitTests.Implementation
           new object[0]);
 
       _typeDescoveryServiceStub.Stub (stub => stub.GetTypes (typeof (IComponentValidationCollector), true))
-                               .Return (
-                                   new[]
-                                   {
-                                       typeof (IPerson),
-                                       typeof (ComponentValidationCollector<>),
-                                       typeof (AttributeBasedValidationCollectorProviderBase.AttributeValidationCollector<>),
-                                       programmaticallyCollectorType
-                                   });
+          .Return (
+              new[]
+              {
+                  typeof (IPerson),
+                  typeof (ComponentValidationCollector<>),
+                  typeof (AttributeBasedValidationCollectorProviderBase.AttributeValidationCollector<>),
+                  programmaticallyCollectorType
+              });
 
       var typeCollectorProvider = new DiscoveryServiceBasedTypeCollectorReflector (_typeDescoveryServiceStub);
 
       var result =
           typeCollectorProvider.GetCollectorsForType (typeof (Person))
-                               .Concat (typeCollectorProvider.GetCollectorsForType (typeof (Person)))
-                               .ToArray();
+              .Concat (typeCollectorProvider.GetCollectorsForType (typeof (Person)))
+              .ToArray();
 
       Assert.That (result.Any(), Is.False);
     }
@@ -128,10 +128,12 @@ namespace Remotion.Validation.UnitTests.Implementation
 
       _typeDescoveryServiceStub.Stub (stub => stub.GetTypes (typeof (IComponentValidationCollector), true)).Return (new[] { collectorType });
 
-      Assert.That(() => new DiscoveryServiceBasedTypeCollectorReflector (_typeDescoveryServiceStub), Throws.TypeOf<InvalidOperationException>().And.Message.EqualTo(
-        "Invalid 'ApplyWithClassAttribute'-definition for collector 'Remotion.Validation.UnitTests.DynamicInvalidCollector2': "
-        + "type 'Remotion.Validation.UnitTests.IntegrationTests.TestDomain.ComponentA.Address' "
-        + "is not assignable from 'Remotion.Validation.UnitTests.IntegrationTests.TestDomain.ComponentA.IPerson'."));
+      Assert.That (
+          () => new DiscoveryServiceBasedTypeCollectorReflector (_typeDescoveryServiceStub),
+          Throws.TypeOf<InvalidOperationException>().And.Message.EqualTo (
+              "Invalid 'ApplyWithClassAttribute'-definition for collector 'Remotion.Validation.UnitTests.DynamicInvalidCollector2': "
+              + "type 'Remotion.Validation.UnitTests.TestDomain.Address' "
+              + "is not assignable from 'Remotion.Validation.UnitTests.TestDomain.IPerson'."));
     }
 
     [Test]

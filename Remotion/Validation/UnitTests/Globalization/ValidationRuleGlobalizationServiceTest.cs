@@ -16,15 +16,12 @@
 // 
 
 using System;
-using System.Reflection;
 using FluentValidation.Internal;
 using FluentValidation.Resources;
 using FluentValidation.Validators;
 using NUnit.Framework;
-using Remotion.Globalization;
-using Remotion.Reflection;
 using Remotion.Validation.Globalization;
-using Remotion.Validation.UnitTests.IntegrationTests.TestDomain.ComponentA;
+using Remotion.Validation.UnitTests.TestDomain;
 using Remotion.Validation.UnitTests.TestHelpers;
 using Rhino.Mocks;
 
@@ -43,7 +40,7 @@ namespace Remotion.Validation.UnitTests.Globalization
     private IStringSource _errorMessageSource1;
     private IStringSource _errorMessageSource2;
     private IStringSource _errorMessageSource3;
-    
+
     [SetUp]
     public void SetUp ()
     {
@@ -71,7 +68,7 @@ namespace Remotion.Validation.UnitTests.Globalization
       _defaultMessageEvaluatorMock.Expect (mock => mock.HasDefaultMessageAssigned (_validator1)).Return (false);
       _defaultMessageEvaluatorMock.Expect (mock => mock.HasDefaultMessageAssigned (_validator2)).Return (false);
       _defaultMessageEvaluatorMock.Expect (mock => mock.HasDefaultMessageAssigned (_validator3)).Return (false);
-      
+
       _service.ApplyLocalization (_propertyRule, typeof (Customer));
 
       _defaultMessageEvaluatorMock.VerifyAllExpectations();
@@ -89,7 +86,7 @@ namespace Remotion.Validation.UnitTests.Globalization
       _defaultMessageEvaluatorMock.Expect (mock => mock.HasDefaultMessageAssigned (_validator3)).Return (true);
       _validatorGlobalizationServiceMock.Expect (mock => mock.GetErrorMessage (_validator1)).Return ("FakeErrorMsg1");
       _validatorGlobalizationServiceMock.Expect (mock => mock.GetErrorMessage (_validator3)).Return ("FakeErrorMsg2");
-      
+
       _service.ApplyLocalization (_propertyRule, typeof (Customer));
 
       _defaultMessageEvaluatorMock.VerifyAllExpectations();

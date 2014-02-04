@@ -23,7 +23,7 @@ using NUnit.Framework;
 using Remotion.Validation.MetaValidation;
 using Remotion.Validation.RuleBuilders;
 using Remotion.Validation.Rules;
-using Remotion.Validation.UnitTests.IntegrationTests.TestDomain.ComponentA;
+using Remotion.Validation.UnitTests.TestDomain;
 using Rhino.Mocks;
 
 namespace Remotion.Validation.UnitTests.RuleBuilders
@@ -42,10 +42,12 @@ namespace Remotion.Validation.UnitTests.RuleBuilders
       _addingComponentPropertyRuleMock = MockRepository.GenerateStrictMock<IAddingComponentPropertyRule>();
       _addingComponentPropertyRuleMock.Stub (stub => stub.Property).Return (typeof (Customer).GetProperty ("UserName"));
 
-      _addingComponentPropertyMetaValidationRuleMock = MockRepository.GenerateStrictMock<IAddingComponentPropertyMetaValidationRule> ();
+      _addingComponentPropertyMetaValidationRuleMock = MockRepository.GenerateStrictMock<IAddingComponentPropertyMetaValidationRule>();
       _addingComponentPropertyRuleMock.Stub (stub => stub.Property).Return (typeof (Customer).GetProperty ("UserName"));
 
-      _addingComponentBuilder = new AddingComponentRuleBuilder<Customer, string> (_addingComponentPropertyRuleMock, _addingComponentPropertyMetaValidationRuleMock);
+      _addingComponentBuilder = new AddingComponentRuleBuilder<Customer, string> (
+          _addingComponentPropertyRuleMock,
+          _addingComponentPropertyMetaValidationRuleMock);
 
       _propertyValidatorStub = MockRepository.GenerateStub<IPropertyValidator>();
     }
@@ -86,7 +88,7 @@ namespace Remotion.Validation.UnitTests.RuleBuilders
 
       _addingComponentBuilder.AddMetaValidationRule (metaValidationRuleStub);
 
-      _addingComponentPropertyMetaValidationRuleMock.VerifyAllExpectations ();
+      _addingComponentPropertyMetaValidationRuleMock.VerifyAllExpectations();
     }
 
     [Test]
@@ -98,12 +100,12 @@ namespace Remotion.Validation.UnitTests.RuleBuilders
           mock => mock.RegisterMetaValidationRule (
               Arg<IMetaValidationRule<LengthValidator>>.Matches (
                   rule =>
-                  rule.GetType() == typeof (DelegateMetaValidationRule<LengthValidator>) &&
-                  rule.Validate (new IPropertyValidator[0]).First() == fakeValidationResult)));
+                      rule.GetType() == typeof (DelegateMetaValidationRule<LengthValidator>) &&
+                      rule.Validate (new IPropertyValidator[0]).First() == fakeValidationResult)));
 
       _addingComponentBuilder.AddMetaValidationRule<LengthValidator> (v => fakeValidationResult);
 
-      _addingComponentPropertyMetaValidationRuleMock.VerifyAllExpectations ();
+      _addingComponentPropertyMetaValidationRuleMock.VerifyAllExpectations();
     }
 
     [Test]
@@ -113,11 +115,12 @@ namespace Remotion.Validation.UnitTests.RuleBuilders
           mock => mock.RegisterMetaValidationRule (
               Arg<IMetaValidationRule<LengthValidator>>.Matches (
                   rule =>
-                  rule.GetType() == typeof (DelegateMetaValidationRule<LengthValidator>) && rule.Validate (new IPropertyValidator[0]).First().IsValid)));
+                      rule.GetType() == typeof (DelegateMetaValidationRule<LengthValidator>)
+                      && rule.Validate (new IPropertyValidator[0]).First().IsValid)));
 
       _addingComponentBuilder.AddMetaValidationRule<LengthValidator> (v => true);
 
-      _addingComponentPropertyMetaValidationRuleMock.VerifyAllExpectations ();
+      _addingComponentPropertyMetaValidationRuleMock.VerifyAllExpectations();
     }
 
     [Test]
@@ -127,15 +130,15 @@ namespace Remotion.Validation.UnitTests.RuleBuilders
           mock => mock.RegisterMetaValidationRule (
               Arg<IMetaValidationRule<LengthValidator>>.Matches (
                   rule =>
-                  rule.GetType() == typeof (DelegateMetaValidationRule<LengthValidator>) &&
-                  !rule.Validate (new IPropertyValidator[0]).First().IsValid &&
-                  rule.Validate (new IPropertyValidator[0]).First().Message
-                  == "Meta validation rule 'v => False' failed for validator 'FluentValidation.Validators.LengthValidator' "
-                  + "on property 'Remotion.Validation.UnitTests.IntegrationTests.TestDomain.ComponentA.Customer.UserName'.")));
+                      rule.GetType() == typeof (DelegateMetaValidationRule<LengthValidator>) &&
+                      !rule.Validate (new IPropertyValidator[0]).First().IsValid &&
+                      rule.Validate (new IPropertyValidator[0]).First().Message
+                      == "Meta validation rule 'v => False' failed for validator 'FluentValidation.Validators.LengthValidator' "
+                      + "on property 'Remotion.Validation.UnitTests.TestDomain.Customer.UserName'.")));
 
       _addingComponentBuilder.AddMetaValidationRule<LengthValidator> (v => false);
 
-      _addingComponentPropertyMetaValidationRuleMock.VerifyAllExpectations ();
+      _addingComponentPropertyMetaValidationRuleMock.VerifyAllExpectations();
     }
   }
 }

@@ -61,6 +61,68 @@
     <Compile Include="..\..\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
+    <Compile Include="CustomImplementations\FakeMessageValidatorGlobalizationService.cs" />
+    <Compile Include="FluentValidationGlobalizationIntegrationTests.cs" />
+    <Compile Include="IntegrationTestBase.cs" />
+    <Compile Include="MetaValidationRulesIntegrationTests.cs" />
+    <Compile Include="TestDomain\ComponentA\Address.cs" />
+    <Compile Include="TestDomain\ComponentA\Customer.cs" />
+    <Compile Include="TestDomain\ComponentA\CustomerMixin.cs" />
+    <Compile Include="TestDomain\ComponentA\Employee.cs" />
+    <Compile Include="TestDomain\ComponentA\IPerson.cs" />
+    <Compile Include="TestDomain\ComponentA\Order.cs" />
+    <Compile Include="TestDomain\ComponentA\OrderItem.cs" />
+    <Compile Include="TestDomain\ComponentA\Person.cs" />
+    <Compile Include="TestDomain\ComponentA\Product.cs" />
+    <Compile Include="TestDomain\ComponentA\ValidationCollectors\AddressValidationCollector1.cs" />
+    <Compile Include="TestDomain\ComponentA\ValidationCollectors\CustomerMixinIntroducedValidationCollector1.cs" />
+    <Compile Include="TestDomain\ComponentA\ValidationCollectors\CustomerMixinTargetValidationCollector1.cs" />
+    <Compile Include="TestDomain\ComponentA\ValidationCollectors\CustomerValidationCollector1.cs" />
+    <Compile Include="TestDomain\ComponentA\ValidationCollectors\EmployeeValidationCollector1.cs" />
+    <Compile Include="TestDomain\ComponentA\ValidationCollectors\IPersonValidationCollector1.cs" />
+    <Compile Include="TestDomain\ComponentA\ValidationCollectors\OrderValidationCollector1.cs" />
+    <Compile Include="TestDomain\ComponentA\ValidationCollectors\PersonValidationCollector1.cs" />
+    <Compile Include="TestDomain\ComponentB\SpecialCustomer1.cs" />
+    <Compile Include="TestDomain\ComponentB\SpecialCustomer2.cs" />
+    <Compile Include="TestDomain\ComponentB\ValidationCollectors\CustomerMixinIntroducedValidationCollector2.cs" />
+    <Compile Include="TestDomain\ComponentB\ValidationCollectors\CustomerValidationCollector2.cs" />
+    <Compile Include="TestDomain\ComponentB\ValidationCollectors\IPersonValidationCollector2.cs" />
+    <Compile Include="TestDomain\ComponentB\ValidationCollectors\SpecialCustomerValidationCollector1.cs" />
+    <Compile Include="TestDomain\MetaValidation\BaseMetaValidationTestClass1.cs" />
+    <Compile Include="TestDomain\MetaValidation\BaseMetaValidationTestClassCollector1.cs" />
+    <Compile Include="TestDomain\MetaValidation\DerivedMetaValidationTestClass1.cs" />
+    <Compile Include="TestDomain\MetaValidation\DerivedMetaValidationTestClass2.cs" />
+    <Compile Include="TestDomain\MetaValidation\DerivedMetaValidationTestClassCollector1.cs" />
+    <Compile Include="TestDomain\MetaValidation\MetaValidationTestClass1.cs" />
+    <Compile Include="TestDomain\MetaValidation\MetaValidationTestClass2.cs" />
+    <Compile Include="TestDomain\MetaValidation\MetaValidationTestClass3.cs" />
+    <Compile Include="TestDomain\MetaValidation\MetaValidationTestClass4.cs" />
+    <Compile Include="TestDomain\MetaValidation\MetaValidationTestClass5.cs" />
+    <Compile Include="TestDomain\MetaValidation\MetaValidationTestClassCollector1.cs" />
+    <Compile Include="TestDomain\MetaValidation\MetaValidationTestClassCollector2.cs" />
+    <Compile Include="TestDomain\MetaValidation\MetaValidationTestClassCollector3.cs" />
+    <Compile Include="TestDomain\MetaValidation\MetaValidationTestClassCollector4.cs" />
+    <Compile Include="TestDomain\MetaValidation\MetaValidationTestClassCollector5.cs" />
+    <Compile Include="TestDomain\MetaValidation\Rules\MaxLengthMetaValidationRule.cs" />
+    <Compile Include="TestDomain\MetaValidation\Rules\MaxValidatorCountRule.cs" />
+    <Compile Include="TestDomain\Resources\CustomerMixin.Designer.cs">
+      <DependentUpon>CustomerMixin.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="TestDomain\Resources\Person.Designer.cs">
+      <DependentUpon>Person.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="TestDomain\Resources\SpecialCustomer.Designer.cs">
+      <DependentUpon>SpecialCustomer.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="TestHelpers\ExpressionHelper.cs" />
+    <Compile Include="ValidationGlobalizationIntegrationTests.cs" />
+    <Compile Include="ValidationRulesIntegrationTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core\Core.Core.csproj">
@@ -95,8 +157,24 @@
       <Project>{d057d6f3-2015-4eb0-b6bd-77be8ed1571a}</Project>
       <Name>Validation.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Validation.Mixins\Validation.Mixins.csproj">
+      <Project>{B34D9485-39D7-4F73-805C-39A65059001E}</Project>
+      <Name>Validation.Mixins</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="TestDomain\Resources\CustomerMixin.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>CustomerMixin.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TestDomain\Resources\Person.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Person.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TestDomain\Resources\SpecialCustomer.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>SpecialCustomer.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\remotion.snk">

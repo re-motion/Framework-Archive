@@ -19,8 +19,8 @@ using System;
 using NUnit.Framework;
 using Remotion.Validation.RuleBuilders;
 using Remotion.Validation.Rules;
-using Remotion.Validation.UnitTests.IntegrationTests.TestDomain.ComponentA;
-using Remotion.Validation.UnitTests.IntegrationTests.TestDomain.ComponentA.ValidationCollectors;
+using Remotion.Validation.UnitTests.TestDomain;
+using Remotion.Validation.UnitTests.TestDomain.Collectors;
 using Remotion.Validation.UnitTests.TestHelpers;
 using Rhino.Mocks;
 

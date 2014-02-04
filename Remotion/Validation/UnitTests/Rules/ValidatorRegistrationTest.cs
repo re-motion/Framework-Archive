@@ -19,7 +19,7 @@ using System;
 using FluentValidation.Validators;
 using NUnit.Framework;
 using Remotion.Validation.Rules;
-using Remotion.Validation.UnitTests.IntegrationTests.TestDomain.ComponentA.ValidationCollectors;
+using Remotion.Validation.UnitTests.TestDomain.Collectors;
 
 namespace Remotion.Validation.UnitTests.Rules
 {

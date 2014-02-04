@@ -19,7 +19,7 @@ using System;
 using FluentValidation.Validators;
 using NUnit.Framework;
 using Remotion.Validation.Attributes.Validation;
-using Remotion.Validation.UnitTests.IntegrationTests.TestDomain.ComponentA.ValidationCollectors;
+using Remotion.Validation.UnitTests.TestDomain.Collectors;
 
 namespace Remotion.Validation.UnitTests.Attributes.Validation
 {
@@ -31,7 +31,7 @@ namespace Remotion.Validation.UnitTests.Attributes.Validation
     [SetUp]
     public void SetUp ()
     {
-      _attribute = new RemoveValidatorAttribute (typeof(NotEmptyValidator), typeof(CustomerValidationCollector1));
+      _attribute = new RemoveValidatorAttribute (typeof (NotEmptyValidator), typeof (CustomerValidationCollector1));
     }
 
     [Test]

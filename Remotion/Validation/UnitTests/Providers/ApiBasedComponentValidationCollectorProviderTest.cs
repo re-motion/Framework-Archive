@@ -16,14 +16,13 @@
 // 
 
 using System;
+using System.Linq;
 using NUnit.Framework;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.Providers;
-using Remotion.Validation.UnitTests.IntegrationTests.TestDomain.ComponentA;
-using Remotion.Validation.UnitTests.IntegrationTests.TestDomain.ComponentA.ValidationCollectors;
-using Remotion.Validation.UnitTests.IntegrationTests.TestDomain.ComponentB.ValidationCollectors;
+using Remotion.Validation.UnitTests.TestDomain;
+using Remotion.Validation.UnitTests.TestDomain.Collectors;
 using Rhino.Mocks;
-using System.Linq;
 
 namespace Remotion.Validation.UnitTests.Providers
 {
@@ -51,24 +50,23 @@ namespace Remotion.Validation.UnitTests.Providers
     public void GetValidationCollectors ()
     {
       _typeCollectorReflectorMock.Expect (mock => mock.GetCollectorsForType (typeof (Customer)))
-                                 .Return (new[] { typeof (CustomerValidationCollector1), typeof (CustomerValidationCollector2) });
+          .Return (new[] { typeof (CustomerValidationCollector1), typeof (CustomerValidationCollector2) });
       _typeCollectorReflectorMock.Expect (mock => mock.GetCollectorsForType (typeof (CustomerMixin)))
-                                 .Return (
-                                     new[]
-                                     { typeof (CustomerMixinIntroducedValidationCollector1), typeof (CustomerMixinIntroducedValidationCollector2) });
+          .Return (
+              new[]
+              { typeof (CustomerMixinIntroducedValidationCollector1), typeof (CustomerMixinIntroducedValidationCollector2) });
 
-      var result = _provider.GetValidationCollectors (new[] { typeof (Customer), typeof (CustomerMixin) }).SelectMany(g=>g).ToArray();
+      var result = _provider.GetValidationCollectors (new[] { typeof (Customer), typeof (CustomerMixin) }).SelectMany (g => g).ToArray();
 
       _typeCollectorReflectorMock.VerifyAllExpectations();
-      Assert.That (result[0].Collector.GetType(), Is.EqualTo (typeof(CustomerValidationCollector1)));
+      Assert.That (result[0].Collector.GetType(), Is.EqualTo (typeof (CustomerValidationCollector1)));
       Assert.That (result[0].ProviderType, Is.EqualTo (typeof (ApiBasedComponentValidationCollectorProvider)));
-      Assert.That (result[1].Collector.GetType (), Is.EqualTo (typeof (CustomerValidationCollector2)));
+      Assert.That (result[1].Collector.GetType(), Is.EqualTo (typeof (CustomerValidationCollector2)));
       Assert.That (result[1].ProviderType, Is.EqualTo (typeof (ApiBasedComponentValidationCollectorProvider)));
-      Assert.That (result[2].Collector.GetType (), Is.EqualTo (typeof (CustomerMixinIntroducedValidationCollector1)));
+      Assert.That (result[2].Collector.GetType(), Is.EqualTo (typeof (CustomerMixinIntroducedValidationCollector1)));
       Assert.That (result[2].ProviderType, Is.EqualTo (typeof (ApiBasedComponentValidationCollectorProvider)));
-      Assert.That (result[3].Collector.GetType (), Is.EqualTo (typeof (CustomerMixinIntroducedValidationCollector2)));
+      Assert.That (result[3].Collector.GetType(), Is.EqualTo (typeof (CustomerMixinIntroducedValidationCollector2)));
       Assert.That (result[3].ProviderType, Is.EqualTo (typeof (ApiBasedComponentValidationCollectorProvider)));
     }
-
   }
 }

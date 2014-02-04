@@ -18,7 +18,7 @@
 using System;
 using NUnit.Framework;
 using Remotion.Validation.Implementation;
-using Remotion.Validation.UnitTests.IntegrationTests.TestDomain.ComponentA;
+using Remotion.Validation.UnitTests.TestDomain;
 
 namespace Remotion.Validation.UnitTests.Providers
 {
@@ -30,7 +30,7 @@ namespace Remotion.Validation.UnitTests.Providers
     [SetUp]
     public void SetUp ()
     {
-      _provider = new TestableComponentValidationAttributeBasedValidationCollectorProvider ();
+      _provider = new TestableComponentValidationAttributeBasedValidationCollectorProvider();
     }
 
     [Test]

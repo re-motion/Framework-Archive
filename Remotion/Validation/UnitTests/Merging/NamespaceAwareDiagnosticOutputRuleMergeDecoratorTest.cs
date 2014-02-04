@@ -21,6 +21,10 @@ using System.Linq;
 using FluentValidation;
 using FluentValidation.Internal;
 using FluentValidation.Validators;
+using log4net;
+using log4net.Appender;
+using log4net.Config;
+using log4net.Core;
 using NUnit.Framework;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.Merging;
@@ -28,15 +32,10 @@ using Remotion.Validation.Providers;
 using Remotion.Validation.Rules;
 using Remotion.Validation.UnitTests.Implementation;
 using Remotion.Validation.UnitTests.Implementation.TestDomain;
-using Remotion.Validation.UnitTests.IntegrationTests.TestDomain.ComponentA;
-using Remotion.Validation.UnitTests.IntegrationTests.TestDomain.ComponentA.ValidationCollectors;
-using Remotion.Validation.UnitTests.IntegrationTests.TestDomain.ComponentB.ValidationCollectors;
+using Remotion.Validation.UnitTests.TestDomain;
+using Remotion.Validation.UnitTests.TestDomain.Collectors;
 using Remotion.Validation.UnitTests.TestHelpers;
 using Rhino.Mocks;
-using log4net;
-using log4net.Appender;
-using log4net.Config;
-using log4net.Core;
 
 namespace Remotion.Validation.UnitTests.Merging
 {
@@ -52,11 +51,11 @@ namespace Remotion.Validation.UnitTests.Merging
     [SetUp]
     public void SetUp ()
     {
-      _memoryAppender = new MemoryAppender ();
+      _memoryAppender = new MemoryAppender();
       BasicConfigurator.Configure (_memoryAppender);
 
-      _logContextStub = MockRepository.GenerateStub<ILogContext> ();
-      _wrappedMergerStub = MockRepository.GenerateStub<IValidationCollectorMerger> ();
+      _logContextStub = MockRepository.GenerateStub<ILogContext>();
+      _wrappedMergerStub = MockRepository.GenerateStub<IValidationCollectorMerger>();
       _wrappedMergerStub.Stub (stub => stub.LogContext).Return (_logContextStub);
       _validatorFormatterStub = MockRepository.GenerateStub<IValidatorFormatter>();
 
@@ -66,8 +65,8 @@ namespace Remotion.Validation.UnitTests.Merging
     [TearDown]
     public void TearDown ()
     {
-      _memoryAppender.Clear ();
-      LogManager.ResetConfiguration ();
+      _memoryAppender.Clear();
+      LogManager.ResetConfiguration();
 
       Assert.That (LogManager.GetLogger (typeof (DiagnosticOutputRuleMergeDecorator)).IsDebugEnabled, Is.False);
     }
@@ -75,7 +74,7 @@ namespace Remotion.Validation.UnitTests.Merging
     [Test]
     public void Merge_NoValidationCollectors ()
     {
-      var collectors = Enumerable.Empty<IEnumerable<ValidationCollectorInfo>> ();
+      var collectors = Enumerable.Empty<IEnumerable<ValidationCollectorInfo>>();
       _wrappedMergerStub.Stub (stub => stub.Merge (collectors)).Return (new IValidationRule[0]);
 
       CheckLoggingMethod (() => _diagnosticOutputRuleMergeDecorator.Merge (collectors), "\r\nAFTER MERGE:", 0);
@@ -85,38 +84,43 @@ namespace Remotion.Validation.UnitTests.Merging
     [Test]
     public void Merge_WithValidationCollectors ()
     {
-      var collector1 = new TypeWithoutBaseTypeCollector1 ();
-      var collector2 = new TypeWithoutBaseTypeCollector2 ();
+      var collector1 = new TypeWithoutBaseTypeCollector1();
+      var collector2 = new TypeWithoutBaseTypeCollector2();
       var validationCollectorInfos = new[]
-      {
-          new[] { new ValidationCollectorInfo (collector1, typeof (ComponentValidationAttributeBasedValidationCollectorProvider)) },
-          new[] { new ValidationCollectorInfo (collector2, typeof (ApiBasedComponentValidationCollectorProvider)) }
-      };
+                                     {
+                                         new[]
+                                         {
+                                             new ValidationCollectorInfo (
+                                                 collector1,
+                                                 typeof (ComponentValidationAttributeBasedValidationCollectorProvider))
+                                         },
+                                         new[] { new ValidationCollectorInfo (collector2, typeof (ApiBasedComponentValidationCollectorProvider)) }
+                                     };
 
       var userNameExpression = ExpressionHelper.GetTypedMemberExpression<Customer, string> (c => c.UserName);
       var lastNameExpression = ExpressionHelper.GetTypedMemberExpression<Customer, string> (c => c.LastName);
-      var stubValidator1 = new NotNullValidator ();
+      var stubValidator1 = new NotNullValidator();
       var stubValidator2 = new NotEmptyValidator (null);
       var stubValidator3 = new NotEqualValidator ("test");
-      var stubValidator4 = new StubPropertyValidator ();
+      var stubValidator4 = new StubPropertyValidator();
 
       _validatorFormatterStub.Stub (
-          stub => stub.Format (Arg<IPropertyValidator>.Matches (c => c.GetType () == typeof (NotNullValidator)), Arg<Func<Type, string>>.Is.Anything))
-                             .Return ("FluentValidation.Validators.NotNullValidator");
+          stub => stub.Format (Arg<IPropertyValidator>.Matches (c => c.GetType() == typeof (NotNullValidator)), Arg<Func<Type, string>>.Is.Anything))
+          .Return ("FluentValidation.Validators.NotNullValidator");
       _validatorFormatterStub.Stub (
-          stub => stub.Format (Arg<IPropertyValidator>.Matches (c => c.GetType () == typeof (LengthValidator)), Arg<Func<Type, string>>.Is.Anything))
-                             .Return ("FluentValidation.Validators.LengthValidator");
+          stub => stub.Format (Arg<IPropertyValidator>.Matches (c => c.GetType() == typeof (LengthValidator)), Arg<Func<Type, string>>.Is.Anything))
+          .Return ("FluentValidation.Validators.LengthValidator");
       _validatorFormatterStub.Stub (
-          stub => stub.Format (Arg<IPropertyValidator>.Matches (c => c.GetType () == typeof (NotEmptyValidator)), Arg<Func<Type, string>>.Is.Anything))
-                             .Return ("FluentValidation.Validators.NotEmptyValidator");
+          stub => stub.Format (Arg<IPropertyValidator>.Matches (c => c.GetType() == typeof (NotEmptyValidator)), Arg<Func<Type, string>>.Is.Anything))
+          .Return ("FluentValidation.Validators.NotEmptyValidator");
       _validatorFormatterStub.Stub (
-          stub => stub.Format (Arg<IPropertyValidator>.Matches (c => c.GetType () == typeof (NotEqualValidator)), Arg<Func<Type, string>>.Is.Anything))
-                             .Return ("FluentValidation.Validators.NotEqualValidator");
+          stub => stub.Format (Arg<IPropertyValidator>.Matches (c => c.GetType() == typeof (NotEqualValidator)), Arg<Func<Type, string>>.Is.Anything))
+          .Return ("FluentValidation.Validators.NotEqualValidator");
       _validatorFormatterStub.Stub (
           stub =>
-          stub.Format (Arg<IPropertyValidator>.Matches (c => c.GetType () == typeof (StubPropertyValidator)), Arg<Func<Type, string>>.Is.Anything))
-                             .Return ("Remotion.Validation.UnitTests.TestHelpers.StubPropertyValidator");
-      
+              stub.Format (Arg<IPropertyValidator>.Matches (c => c.GetType() == typeof (StubPropertyValidator)), Arg<Func<Type, string>>.Is.Anything))
+          .Return ("Remotion.Validation.UnitTests.TestHelpers.StubPropertyValidator");
+
       var userNamePropertyRule = PropertyRule.Create (userNameExpression);
       userNamePropertyRule.AddValidator (stubValidator1);
       userNamePropertyRule.AddValidator (stubValidator1);
@@ -124,12 +128,12 @@ namespace Remotion.Validation.UnitTests.Merging
       var lastNamePropertyRule = PropertyRule.Create (lastNameExpression);
       lastNamePropertyRule.AddValidator (stubValidator3);
 
-      var noPropertyRuleStub = new ValidationRuleStub ();
+      var noPropertyRuleStub = new ValidationRuleStub();
       noPropertyRuleStub.AddValidator (stubValidator4);
 
-      var removingPropertyRuleStub1 = MockRepository.GenerateStub<IRemovingComponentPropertyRule> ();
+      var removingPropertyRuleStub1 = MockRepository.GenerateStub<IRemovingComponentPropertyRule>();
       removingPropertyRuleStub1.Stub (stub => stub.CollectorType).Return (typeof (CustomerValidationCollector1));
-      var removingPropertyRuleStub2 = MockRepository.GenerateStub<IRemovingComponentPropertyRule> ();
+      var removingPropertyRuleStub2 = MockRepository.GenerateStub<IRemovingComponentPropertyRule>();
       removingPropertyRuleStub2.Stub (stub => stub.CollectorType).Return (typeof (CustomerValidationCollector2));
 
       var logContextInfo1 = new LogContextInfo (
@@ -153,19 +157,19 @@ namespace Remotion.Validation.UnitTests.Merging
 
       _wrappedMergerStub.Stub (
           stub =>
-          stub.Merge (
-              validationCollectorInfos)).Return (new IValidationRule[] { userNamePropertyRule, lastNamePropertyRule, noPropertyRuleStub });
+              stub.Merge (
+                  validationCollectorInfos)).Return (new IValidationRule[] { userNamePropertyRule, lastNamePropertyRule, noPropertyRuleStub });
 
       var expectedAfterMerge =
           "\r\nAFTER MERGE:"
-          + "\r\n\r\n    -> Remotion.Validation.UnitTests.IntegrationTests.TestDomain.ComponentA.Customer#UserName"
+          + "\r\n\r\n    -> Remotion.Validation.UnitTests.TestDomain.Customer#UserName"
           + "\r\n        VALIDATORS:"
           + "\r\n        -> FluentValidation.Validators.NotNullValidator (x2)"
           + "\r\n        -> FluentValidation.Validators.NotEmptyValidator (x1)"
           + "\r\n        MERGE LOG:"
           + "\r\n        -> 'FluentValidation.Validators.NotEmptyValidator' was removed from collectors 'CustomerValidationCollector1, CustomerValidationCollector2'"
           + "\r\n        -> 'FluentValidation.Validators.NotNullValidator' was removed from collector 'CustomerValidationCollector2'"
-          + "\r\n\r\n    -> Remotion.Validation.UnitTests.IntegrationTests.TestDomain.ComponentA.Person#LastName"
+          + "\r\n\r\n    -> Remotion.Validation.UnitTests.TestDomain.Person#LastName"
           + "\r\n        VALIDATORS:"
           + "\r\n        -> FluentValidation.Validators.NotEqualValidator (x1)"
           + "\r\n        MERGE LOG:"
@@ -186,7 +190,7 @@ namespace Remotion.Validation.UnitTests.Merging
           + "\r\n        ADDED SOFT CONSTRAINT VALIDATORS:"
           + "\r\n        -> FluentValidation.Validators.LengthValidator (x1)"
           + "\r\n        ADDED META VALIDATION RULES:"
-          + "\r\n        -> Remotion.Validation.UnitTests.IntegrationTests.TestDomain.MetaValidation.Rules.MaxLengthMetaValidationRule"
+          + "\r\n        -> Remotion.Validation.UnitTests.TestDomain.ValidationRules.MaxLengthMetaValidationRule"
           + "\r\n\r\n-> Remotion.Validation.Providers.ApiBasedComponentValidationCollectorProvider#Remotion.Validation.UnitTests.Implementation.TestDomain.TypeWithoutBaseTypeCollector2"
           + "\r\n\r\n    -> Remotion.Validation.UnitTests.Implementation.TestDomain.TypeWithoutBaseType#Property2"
           + "\r\n        REMOVED VALIDATORS:"
@@ -197,13 +201,13 @@ namespace Remotion.Validation.UnitTests.Merging
 
     private IEnumerable<LoggingEvent> GetLoggingEvents ()
     {
-      return _memoryAppender.GetEvents ();
+      return _memoryAppender.GetEvents();
     }
 
     private void CheckLoggingMethod (Action action, string expectedMessage, int loggingEventIndex)
     {
-      action ();
-      var loggingEvents = GetLoggingEvents ().ToArray ();
+      action();
+      var loggingEvents = GetLoggingEvents().ToArray();
 
       Assert.That (loggingEvents[loggingEventIndex].RenderedMessage, Is.EqualTo (expectedMessage));
     }

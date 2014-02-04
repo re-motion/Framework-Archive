@@ -19,7 +19,7 @@ using System;
 using FluentValidation;
 using NUnit.Framework;
 using Remotion.Validation.Globalization;
-using Remotion.Validation.UnitTests.IntegrationTests.TestDomain.ComponentA;
+using Remotion.Validation.UnitTests.TestDomain;
 using Rhino.Mocks;
 
 namespace Remotion.Validation.UnitTests.Globalization
@@ -53,14 +53,14 @@ namespace Remotion.Validation.UnitTests.Globalization
     public void ApplyLocalization ()
     {
       _validationRuleGlobalizationServiceMock1.Expect (mock => mock.ApplyLocalization (_validationRuleStub, _typeToValidate)).Repeat.Once();
-      _validationRuleGlobalizationServiceMock2.Expect (mock => mock.ApplyLocalization (_validationRuleStub, _typeToValidate)).Repeat.Once ();
-      _validationRuleGlobalizationServiceMock3.Expect (mock => mock.ApplyLocalization (_validationRuleStub, _typeToValidate)).Repeat.Once ();
+      _validationRuleGlobalizationServiceMock2.Expect (mock => mock.ApplyLocalization (_validationRuleStub, _typeToValidate)).Repeat.Once();
+      _validationRuleGlobalizationServiceMock3.Expect (mock => mock.ApplyLocalization (_validationRuleStub, _typeToValidate)).Repeat.Once();
 
       _service.ApplyLocalization (_validationRuleStub, _typeToValidate);
 
       _validationRuleGlobalizationServiceMock1.VerifyAllExpectations();
-      _validationRuleGlobalizationServiceMock2.VerifyAllExpectations ();
-      _validationRuleGlobalizationServiceMock3.VerifyAllExpectations ();
+      _validationRuleGlobalizationServiceMock2.VerifyAllExpectations();
+      _validationRuleGlobalizationServiceMock3.VerifyAllExpectations();
     }
   }
 }

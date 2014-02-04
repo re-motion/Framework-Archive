@@ -19,10 +19,9 @@ using System;
 using FluentValidation.Internal;
 using NUnit.Framework;
 using Remotion.Globalization;
-using Remotion.Globalization.Implementation;
 using Remotion.Reflection;
 using Remotion.Validation.Globalization;
-using Remotion.Validation.UnitTests.IntegrationTests.TestDomain.ComponentA;
+using Remotion.Validation.UnitTests.TestDomain;
 using Remotion.Validation.UnitTests.TestHelpers;
 using Rhino.Mocks;
 

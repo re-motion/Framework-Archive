@@ -19,7 +19,7 @@ using System;
 using NUnit.Framework;
 using Remotion.Validation.Attributes.MetaValidation;
 using Remotion.Validation.MetaValidation.Rules.Custom;
-using Remotion.Validation.UnitTests.IntegrationTests.TestDomain.ComponentA;
+using Remotion.Validation.UnitTests.TestDomain;
 
 namespace Remotion.Validation.UnitTests.Attributes.MetaValidation
 {
@@ -31,7 +31,7 @@ namespace Remotion.Validation.UnitTests.Attributes.MetaValidation
     [SetUp]
     public void SetUp ()
     {
-      _attribute = new AnyRuleAppliedMetaValidationRuleAttribute ();
+      _attribute = new AnyRuleAppliedMetaValidationRuleAttribute();
     }
 
     [Test]

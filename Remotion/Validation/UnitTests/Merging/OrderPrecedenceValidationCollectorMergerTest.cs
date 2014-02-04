@@ -25,8 +25,8 @@ using Remotion.Validation.Implementation;
 using Remotion.Validation.Merging;
 using Remotion.Validation.Providers;
 using Remotion.Validation.Rules;
-using Remotion.Validation.UnitTests.IntegrationTests.TestDomain.ComponentA;
-using Remotion.Validation.UnitTests.IntegrationTests.TestDomain.ComponentA.ValidationCollectors;
+using Remotion.Validation.UnitTests.TestDomain;
+using Remotion.Validation.UnitTests.TestDomain.Collectors;
 using Remotion.Validation.UnitTests.TestHelpers;
 using Rhino.Mocks;
 
@@ -56,7 +56,7 @@ namespace Remotion.Validation.UnitTests.Merging
     private AddingComponentPropertyRule _addingPropertyRule4;
     private IPropertyValidatorExtractorFactory _propertyValidatorExtractorFactoryMock;
     private IPropertyValidatorExtractor _propertyValidatorExtractorMock;
-    
+
     [SetUp]
     public void SetUp ()
     {
@@ -129,10 +129,10 @@ namespace Remotion.Validation.UnitTests.Merging
       _propertyValidatorExtractorFactoryMock
           .Expect (
               mock =>
-              mock.Create (
-                  Arg<IEnumerable<ValidatorRegistrationWithContext>>.Matches (
-                      c => c.Count() == 1 && c.ToArray()[0].ValidatorRegistration.ValidatorType == typeof (NotEmptyValidator)),
-                  Arg<ILogContext>.Is.NotNull))
+                  mock.Create (
+                      Arg<IEnumerable<ValidatorRegistrationWithContext>>.Matches (
+                          c => c.Count() == 1 && c.ToArray()[0].ValidatorRegistration.ValidatorType == typeof (NotEmptyValidator)),
+                      Arg<ILogContext>.Is.NotNull))
           .Return (_propertyValidatorExtractorMock);
 
       _propertyValidatorExtractorMock
@@ -167,10 +167,10 @@ namespace Remotion.Validation.UnitTests.Merging
       _propertyValidatorExtractorFactoryMock
           .Expect (
               mock =>
-              mock.Create (
-                  Arg<IEnumerable<ValidatorRegistrationWithContext>>.Matches (
-                      c => c.Count() == 1 && c.ToArray()[0].ValidatorRegistration.ValidatorType == typeof (NotNullValidator)),
-                  Arg<ILogContext>.Is.NotNull))
+                  mock.Create (
+                      Arg<IEnumerable<ValidatorRegistrationWithContext>>.Matches (
+                          c => c.Count() == 1 && c.ToArray()[0].ValidatorRegistration.ValidatorType == typeof (NotNullValidator)),
+                      Arg<ILogContext>.Is.NotNull))
           .Return (_propertyValidatorExtractorMock);
 
       _propertyValidatorExtractorMock

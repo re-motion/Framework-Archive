@@ -20,7 +20,7 @@ using System.Linq;
 using FluentValidation.Validators;
 using NUnit.Framework;
 using Remotion.Validation.MetaValidation.Rules.Custom;
-using Remotion.Validation.UnitTests.IntegrationTests.TestDomain.ComponentA;
+using Remotion.Validation.UnitTests.TestDomain;
 
 namespace Remotion.Validation.UnitTests.MetaValidation.Rules.Custom
 {
@@ -44,26 +44,26 @@ namespace Remotion.Validation.UnitTests.MetaValidation.Rules.Custom
       Assert.That (
           result.Message,
           Is.EqualTo (
-              "'RemotionMaxLengthMetaValidationRule' failed for property 'Remotion.Validation.UnitTests.IntegrationTests.TestDomain.ComponentA.Customer.UserName': No max-length validation rules defined."));
+              "'RemotionMaxLengthMetaValidationRule' failed for property 'Remotion.Validation.UnitTests.TestDomain.Customer.UserName': No max-length validation rules defined."));
     }
 
     [Test]
     public void Validate_MaxLengthExceeds ()
     {
-      var result = _rule.Validate (new[] { new MaximumLengthValidator(60) }).ToArray ().Single ();
+      var result = _rule.Validate (new[] { new MaximumLengthValidator (60) }).ToArray().Single();
 
       Assert.That (result.IsValid, Is.False);
       Assert.That (
           result.Message,
           Is.EqualTo (
-              "'RemotionMaxLengthMetaValidationRule' failed for property 'Remotion.Validation.UnitTests.IntegrationTests.TestDomain.ComponentA.Customer.UserName': "
-              +"Max-length validation rule value '60' exceeds meta validation rule max-length value of '50'."));
+              "'RemotionMaxLengthMetaValidationRule' failed for property 'Remotion.Validation.UnitTests.TestDomain.Customer.UserName': "
+              + "Max-length validation rule value '60' exceeds meta validation rule max-length value of '50'."));
     }
 
     [Test]
     public void Validate_ValidMaxLength ()
     {
-      var result = _rule.Validate (new[] { new MaximumLengthValidator (40) }).ToArray ().Single ();
+      var result = _rule.Validate (new[] { new MaximumLengthValidator (40) }).ToArray().Single();
 
       Assert.That (result.IsValid, Is.True);
     }

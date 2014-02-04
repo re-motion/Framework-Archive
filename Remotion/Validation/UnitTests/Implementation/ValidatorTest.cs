@@ -21,7 +21,7 @@ using FluentValidation.Results;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
 using Remotion.Validation.Implementation;
-using Remotion.Validation.UnitTests.IntegrationTests.TestDomain.ComponentA;
+using Remotion.Validation.UnitTests.TestDomain;
 using Rhino.Mocks;
 
 namespace Remotion.Validation.UnitTests.Implementation
@@ -42,7 +42,7 @@ namespace Remotion.Validation.UnitTests.Implementation
 
       _validationFailure = new ValidationFailure ("PropertyName", "Failes");
 
-      _validator = new Validator (new[] { _validationRuleStub1, _validationRuleStub2 }, typeof(Customer));
+      _validator = new Validator (new[] { _validationRuleStub1, _validationRuleStub2 }, typeof (Customer));
     }
 
     [Test]

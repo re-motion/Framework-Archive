@@ -21,7 +21,7 @@ using FluentValidation.Results;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
 using Remotion.Validation.Implementation;
-using Remotion.Validation.UnitTests.IntegrationTests.TestDomain.ComponentA;
+using Remotion.Validation.UnitTests.TestDomain;
 using Rhino.Mocks;
 
 namespace Remotion.Validation.UnitTests.Implementation
@@ -43,14 +43,14 @@ namespace Remotion.Validation.UnitTests.Implementation
 
       _validationFailure = new ValidationFailure ("PropertyName", "Failes");
 
-      _validator = new Validator (new[] { _validationRuleStub1, _validationRuleStub2 }, typeof(Customer));
+      _validator = new Validator (new[] { _validationRuleStub1, _validationRuleStub2 }, typeof (Customer));
       _validatorDecorator = new TypedValidatorDecorator<Customer> (_validator);
     }
 
     [Test]
     public void Initialization ()
     {
-      Assert.That (_validatorDecorator.Validator, Is.SameAs(_validator));
+      Assert.That (_validatorDecorator.Validator, Is.SameAs (_validator));
       Assert.That (_validatorDecorator.ValidationRules, Is.EqualTo (_validator.ValidationRules));
     }
 
@@ -83,7 +83,7 @@ namespace Remotion.Validation.UnitTests.Implementation
     [Test]
     public void CreateDescriptor ()
     {
-      var result = _validatorDecorator.CreateDescriptor ();
+      var result = _validatorDecorator.CreateDescriptor();
 
       Assert.That (result, Is.TypeOf (typeof (ValidatorDescriptor<Customer>)));
       Assert.That (PrivateInvoke.GetNonPublicProperty (result, "Rules"), Is.EquivalentTo (new[] { _validationRuleStub1, _validationRuleStub2 }));
@@ -104,7 +104,7 @@ namespace Remotion.Validation.UnitTests.Implementation
     [Test]
     public void GetEnumerator ()
     {
-      var enumerator = _validatorDecorator.GetEnumerator ();
+      var enumerator = _validatorDecorator.GetEnumerator();
       Assert.That (enumerator.MoveNext(), Is.True);
       Assert.That (enumerator.Current, Is.SameAs (_validationRuleStub1));
       Assert.That (enumerator.MoveNext(), Is.True);
@@ -117,7 +117,8 @@ namespace Remotion.Validation.UnitTests.Implementation
     {
       Assert.That (
           () => ((IValidator<Customer>) _validatorDecorator).CascadeMode = CascadeMode.StopOnFirstFailure,
-          Throws.TypeOf<NotSupportedException> ().And.Message.EqualTo ("CascadeMode is not supported for a 'Remotion.Validation.Implementation.TypedValidatorDecorator`1'"));
+          Throws.TypeOf<NotSupportedException>()
+              .And.Message.EqualTo ("CascadeMode is not supported for a 'Remotion.Validation.Implementation.TypedValidatorDecorator`1'"));
     }
 
     [Test]
@@ -125,7 +126,8 @@ namespace Remotion.Validation.UnitTests.Implementation
     {
       Assert.That (
           () => ((IValidator<Customer>) _validatorDecorator).CascadeMode,
-          Throws.TypeOf<NotSupportedException> ().And.Message.EqualTo ("CascadeMode is not supported for a 'Remotion.Validation.Implementation.TypedValidatorDecorator`1'"));
+          Throws.TypeOf<NotSupportedException>()
+              .And.Message.EqualTo ("CascadeMode is not supported for a 'Remotion.Validation.Implementation.TypedValidatorDecorator`1'"));
     }
   }
 }

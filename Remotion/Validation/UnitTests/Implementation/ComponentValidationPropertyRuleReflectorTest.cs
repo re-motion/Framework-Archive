@@ -16,14 +16,13 @@
 // 
 
 using System;
+using System.Linq;
 using System.Reflection;
 using FluentValidation.Validators;
 using NUnit.Framework;
 using Remotion.Validation.Implementation;
-using System.Linq;
 using Remotion.Validation.MetaValidation.Rules.Custom;
-using Remotion.Validation.UnitTests.IntegrationTests.TestDomain.ComponentA;
-using Remotion.Validation.UnitTests.IntegrationTests.TestDomain.ComponentB;
+using Remotion.Validation.UnitTests.TestDomain;
 
 namespace Remotion.Validation.UnitTests.Implementation
 {
@@ -57,36 +56,35 @@ namespace Remotion.Validation.UnitTests.Implementation
       Assert.That (addingPropertyValidators.Count(), Is.EqualTo (2));
       Assert.That (
           addingPropertyValidators.Select (v => v.GetType()),
-          Is.EquivalentTo( new[] { typeof (LengthValidator), typeof (NotNullValidator) }));
+          Is.EquivalentTo (new[] { typeof (LengthValidator), typeof (NotNullValidator) }));
     }
 
     [Test]
     public void GetAddingPropertyValidators_SpecialCustomer ()
     {
-      var addingPropertyValidators = _specialCustomerPropertyReflector.GetAddingPropertyValidators ().ToArray();
+      var addingPropertyValidators = _specialCustomerPropertyReflector.GetAddingPropertyValidators().ToArray();
 
-      Assert.That (addingPropertyValidators.Count (), Is.EqualTo (2));
+      Assert.That (addingPropertyValidators.Count(), Is.EqualTo (2));
       Assert.That (
-          addingPropertyValidators.Select (v => v.GetType ()),
-          Is.EquivalentTo( new[] { typeof (LengthValidator), typeof (NotNullValidator) }));
+          addingPropertyValidators.Select (v => v.GetType()),
+          Is.EquivalentTo (new[] { typeof (LengthValidator), typeof (NotNullValidator) }));
     }
 
     [Test]
     public void GetHardConstraintPropertyValidators_Customer ()
     {
-      var hardConstraintPropertyValidators = _customerPropertyReflector.GetHardConstraintPropertyValidators ().ToArray();
+      var hardConstraintPropertyValidators = _customerPropertyReflector.GetHardConstraintPropertyValidators().ToArray();
 
       Assert.That (hardConstraintPropertyValidators.Count(), Is.EqualTo (1));
-      Assert.That (hardConstraintPropertyValidators[0].GetType(), Is.EqualTo(typeof(NotEqualValidator)));
-
+      Assert.That (hardConstraintPropertyValidators[0].GetType(), Is.EqualTo (typeof (NotEqualValidator)));
     }
 
     [Test]
     public void GetHardConstraintPropertyValidators_SpecialCustomer ()
     {
-      var hardConstraintPropertyValidators = _specialCustomerPropertyReflector.GetHardConstraintPropertyValidators ().ToArray();
+      var hardConstraintPropertyValidators = _specialCustomerPropertyReflector.GetHardConstraintPropertyValidators().ToArray();
 
-      Assert.That (hardConstraintPropertyValidators.Count (), Is.EqualTo (0));
+      Assert.That (hardConstraintPropertyValidators.Count(), Is.EqualTo (0));
     }
 
     [Test]
@@ -100,9 +98,9 @@ namespace Remotion.Validation.UnitTests.Implementation
     [Test]
     public void GetRemovingPropertyRegistrations_SpecialCustomer ()
     {
-      var removingPropertyRegistrations = _specialCustomerPropertyReflector.GetRemovingPropertyRegistrations ().ToArray();
+      var removingPropertyRegistrations = _specialCustomerPropertyReflector.GetRemovingPropertyRegistrations().ToArray();
 
-      Assert.That (removingPropertyRegistrations.Count (), Is.EqualTo (1));
+      Assert.That (removingPropertyRegistrations.Count(), Is.EqualTo (1));
       Assert.That (removingPropertyRegistrations[0].ValidatorType, Is.EqualTo (typeof (LengthValidator)));
     }
 
@@ -117,9 +115,8 @@ namespace Remotion.Validation.UnitTests.Implementation
     {
       var result = _addressPropertyReflector.GetMetaValidationRules().ToArray();
 
-      Assert.That (result.Count(), Is.EqualTo(1));
-      Assert.That (result.Select(r=>r.GetType()), Is.EquivalentTo (new[] { typeof(AnyRuleAppliedMetaValidationRule)}));
+      Assert.That (result.Count(), Is.EqualTo (1));
+      Assert.That (result.Select (r => r.GetType()), Is.EquivalentTo (new[] { typeof (AnyRuleAppliedMetaValidationRule) }));
     }
-
   }
 }

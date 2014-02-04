@@ -25,8 +25,8 @@ using Remotion.Utilities;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.Merging;
 using Remotion.Validation.Rules;
-using Remotion.Validation.UnitTests.IntegrationTests.TestDomain.ComponentA;
-using Remotion.Validation.UnitTests.IntegrationTests.TestDomain.ComponentA.ValidationCollectors;
+using Remotion.Validation.UnitTests.TestDomain;
+using Remotion.Validation.UnitTests.TestDomain.Collectors;
 using Remotion.Validation.UnitTests.TestHelpers;
 using Rhino.Mocks;
 
@@ -79,7 +79,8 @@ namespace Remotion.Validation.UnitTests.Rules
       var componentPropertyRule = AddingComponentPropertyRule.Create (_lastNameExpression, typeof (CustomerValidationCollector1));
 
       Assert.That (
-          MemberInfoEqualityComparer<MemberInfo>.Instance.Equals (componentPropertyRule.Member, typeof (Customer).GetMember ("LastName")[0]), Is.True);
+          MemberInfoEqualityComparer<MemberInfo>.Instance.Equals (componentPropertyRule.Member, typeof (Customer).GetMember ("LastName")[0]),
+          Is.True);
       Assert.That (componentPropertyRule.PropertyName, Is.EqualTo ("LastName"));
       Assert.That (componentPropertyRule.Member.DeclaringType, Is.EqualTo (typeof (Person)));
       Assert.That (componentPropertyRule.Member.ReflectedType, Is.EqualTo (typeof (Person)));
@@ -95,7 +96,8 @@ namespace Remotion.Validation.UnitTests.Rules
 
       Assert.That (_addingComponentPropertyRule.Validators.Count(), Is.EqualTo (2));
       Assert.That (
-          _addingComponentPropertyRule.Validators, Is.EquivalentTo (new IPropertyValidator[] { _stubPropertyValidator1, _stubPropertyValidator2 }));
+          _addingComponentPropertyRule.Validators,
+          Is.EquivalentTo (new IPropertyValidator[] { _stubPropertyValidator1, _stubPropertyValidator2 }));
     }
 
     [Test]
@@ -153,7 +155,7 @@ namespace Remotion.Validation.UnitTests.Rules
           () => _addingComponentPropertyRule.ApplyRemoveValidatorRegistrations (_propertyValidatorExtractorMock),
           Throws.TypeOf<ComponentValidationException>().And.Message.EqualTo (
               "Hard constraint validator(s) 'StubPropertyValidator, NotEqualValidator' on property "
-              + "'Remotion.Validation.UnitTests.IntegrationTests.TestDomain.ComponentA.Customer.UserName' cannot be removed."));
+              + "'Remotion.Validation.UnitTests.TestDomain.Customer.UserName' cannot be removed."));
     }
 
     [Test]
@@ -162,7 +164,8 @@ namespace Remotion.Validation.UnitTests.Rules
       var result = _addingComponentPropertyRule.ToString();
 
       Assert.That (
-          result, Is.EqualTo ("AddingComponentPropertyRule: Remotion.Validation.UnitTests.IntegrationTests.TestDomain.ComponentA.Customer#UserName"));
+          result,
+          Is.EqualTo ("AddingComponentPropertyRule: Remotion.Validation.UnitTests.TestDomain.Customer#UserName"));
     }
 
     [Test]
@@ -174,8 +177,7 @@ namespace Remotion.Validation.UnitTests.Rules
       Assert.That (
           result,
           Is.EqualTo (
-              "AddingComponentPropertyRule (HARD CONSTRAINT): Remotion.Validation.UnitTests.IntegrationTests.TestDomain.ComponentA.Customer#UserName"));
+              "AddingComponentPropertyRule (HARD CONSTRAINT): Remotion.Validation.UnitTests.TestDomain.Customer#UserName"));
     }
-    
   }
 }

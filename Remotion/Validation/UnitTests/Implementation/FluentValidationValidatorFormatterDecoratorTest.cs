@@ -19,7 +19,7 @@ using System;
 using FluentValidation.Validators;
 using NUnit.Framework;
 using Remotion.Validation.Implementation;
-using Remotion.Validation.UnitTests.IntegrationTests.TestDomain.ComponentA;
+using Remotion.Validation.UnitTests.TestDomain;
 using Remotion.Validation.UnitTests.TestHelpers;
 using Rhino.Mocks;
 
@@ -64,7 +64,7 @@ namespace Remotion.Validation.UnitTests.Implementation
     [Test]
     public void Format_EmailValidator ()
     {
-      var validator = new EmailValidator ();
+      var validator = new EmailValidator();
 
       var result = _formatter.Format (validator, _typeNameFormatter);
 
@@ -74,7 +74,7 @@ namespace Remotion.Validation.UnitTests.Implementation
     [Test]
     public void Format_CreditCardValidator ()
     {
-      var validator = new CreditCardValidator ();
+      var validator = new CreditCardValidator();
 
       var result = _formatter.Format (validator, _typeNameFormatter);
 

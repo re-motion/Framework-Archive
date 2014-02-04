@@ -20,7 +20,7 @@ using System.Linq;
 using FluentValidation.Validators;
 using NUnit.Framework;
 using Remotion.Validation.MetaValidation.Rules.System;
-using Remotion.Validation.UnitTests.IntegrationTests.TestDomain.ComponentA;
+using Remotion.Validation.UnitTests.TestDomain;
 
 namespace Remotion.Validation.UnitTests.MetaValidation.Rules.System
 {
@@ -66,11 +66,14 @@ namespace Remotion.Validation.UnitTests.MetaValidation.Rules.System
     {
       var result =
           _rule.Validate (new LengthValidator[] { _minLengthValidator1, _minLengthValidator2, _maxLengthValidator1, _maxLengthValidator2 })
-               .ToArray()
-               .Single();
+              .ToArray()
+              .Single();
 
       Assert.That (result.IsValid, Is.False);
-      Assert.That (result.Message, Is.EqualTo ("'LengthSystemMetaValidationRule' failed for member 'Remotion.Validation.UnitTests.IntegrationTests.TestDomain.ComponentA.Customer.UserName'."));
+      Assert.That (
+          result.Message,
+          Is.EqualTo (
+              "'LengthSystemMetaValidationRule' failed for member 'Remotion.Validation.UnitTests.TestDomain.Customer.UserName'."));
     }
   }
 }

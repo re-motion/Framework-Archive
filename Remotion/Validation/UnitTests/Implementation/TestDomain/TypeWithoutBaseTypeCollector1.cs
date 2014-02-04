@@ -17,7 +17,7 @@
 
 using System;
 using FluentValidation;
-using Remotion.Validation.UnitTests.IntegrationTests.TestDomain.MetaValidation.Rules;
+using Remotion.Validation.UnitTests.TestDomain.ValidationRules;
 
 namespace Remotion.Validation.UnitTests.Implementation.TestDomain
 {
@@ -26,7 +26,7 @@ namespace Remotion.Validation.UnitTests.Implementation.TestDomain
     public TypeWithoutBaseTypeCollector1 ()
     {
       AddRule (t => t.Property1).NotRemovable().NotNull().NotEqual ("test");
-      AddRule (t => t.Property2).AddMetaValidationRule(new MaxLengthMetaValidationRule()).Length (0, 20);
+      AddRule (t => t.Property2).AddMetaValidationRule (new MaxLengthMetaValidationRule()).Length (0, 20);
     }
   }
 }

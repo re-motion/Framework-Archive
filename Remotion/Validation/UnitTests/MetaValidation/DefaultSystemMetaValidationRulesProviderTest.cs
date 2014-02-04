@@ -16,10 +16,10 @@
 // 
 
 using System;
+using System.Linq;
 using NUnit.Framework;
 using Remotion.Validation.MetaValidation;
-using System.Linq;
-using Remotion.Validation.UnitTests.IntegrationTests.TestDomain.ComponentA;
+using Remotion.Validation.UnitTests.TestDomain;
 
 namespace Remotion.Validation.UnitTests.MetaValidation
 {

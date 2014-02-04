@@ -16,7 +16,6 @@
 // 
 
 using System;
-using System.Collections;
 using System.Linq;
 using NUnit.Framework;
 using Remotion.ServiceLocation;
@@ -33,16 +32,16 @@ namespace Remotion.Validation.UnitTests.Implementation
     [SetUp]
     public void SetUp ()
     {
-      _serviceLocator = new DefaultServiceLocator ();
+      _serviceLocator = new DefaultServiceLocator();
     }
 
     [Test]
     public void GetInstance_Once ()
     {
-      var factory = (_serviceLocator.GetAllInstances<IValidationTypeFilter> ()).ToArray();
+      var factory = (_serviceLocator.GetAllInstances<IValidationTypeFilter>()).ToArray();
 
-      Assert.That (factory[0], Is.TypeOf<LoadFilteredValidationTypeFilter> ());
-      Assert.That (factory[1], Is.TypeOf<MixedLoadFilteredValidationTypeFilter> ());
+      Assert.That (factory[0], Is.TypeOf<LoadFilteredValidationTypeFilter>());
+      Assert.That (factory[1], Is.TypeOf<MixedLoadFilteredValidationTypeFilter>());
     }
   }
 }

@@ -24,7 +24,7 @@ using NUnit.Framework;
 using Remotion.Utilities;
 using Remotion.Validation.MetaValidation;
 using Remotion.Validation.Rules;
-using Remotion.Validation.UnitTests.IntegrationTests.TestDomain.ComponentA;
+using Remotion.Validation.UnitTests.TestDomain;
 using Remotion.Validation.UnitTests.TestHelpers;
 using Rhino.Mocks;
 
@@ -51,33 +51,34 @@ namespace Remotion.Validation.UnitTests.Rules
       Assert.That (MemberInfoEqualityComparer<MemberInfo>.Instance.Equals (_rule.Property, _property), Is.True);
       Assert.That (_rule.Property, Is.EqualTo (_property));
       Assert.That (_rule.CollectorType, Is.EqualTo (typeof (RemovingComponentPropertyRuleTest)));
-      Assert.That (_rule.MetaValidationRules.Any (), Is.False);
+      Assert.That (_rule.MetaValidationRules.Any(), Is.False);
     }
 
     [Test]
     public void RegisterMetaValidationRule ()
     {
-      var metaValidationRuleStub1 = MockRepository.GenerateStub<IMetaValidationRule<LengthValidator>> ();
-      var metaValidationRuleStub2 = MockRepository.GenerateStub<IMetaValidationRule<NotNullValidator>> ();
-      Assert.That (_rule.MetaValidationRules.Count (), Is.EqualTo (0));
+      var metaValidationRuleStub1 = MockRepository.GenerateStub<IMetaValidationRule<LengthValidator>>();
+      var metaValidationRuleStub2 = MockRepository.GenerateStub<IMetaValidationRule<NotNullValidator>>();
+      Assert.That (_rule.MetaValidationRules.Count(), Is.EqualTo (0));
 
       _rule.RegisterMetaValidationRule (metaValidationRuleStub1);
       _rule.RegisterMetaValidationRule (metaValidationRuleStub2);
 
-      Assert.That (_rule.MetaValidationRules.Count (), Is.EqualTo (2));
+      Assert.That (_rule.MetaValidationRules.Count(), Is.EqualTo (2));
       Assert.That (
-          _rule.MetaValidationRules, Is.EquivalentTo (new IMetaValidationRule[] { metaValidationRuleStub1, metaValidationRuleStub2 }));
+          _rule.MetaValidationRules,
+          Is.EquivalentTo (new IMetaValidationRule[] { metaValidationRuleStub1, metaValidationRuleStub2 }));
     }
 
     [Test]
     public void To_String ()
     {
-      var result = _rule.ToString ();
+      var result = _rule.ToString();
 
       Assert.That (
-          result, Is.EqualTo (
-          "AddingComponentPropertyMetaValidationRule: Remotion.Validation.UnitTests.IntegrationTests.TestDomain.ComponentA.Customer#UserName"));
+          result,
+          Is.EqualTo (
+              "AddingComponentPropertyMetaValidationRule: Remotion.Validation.UnitTests.TestDomain.Customer#UserName"));
     }
-   
   }
 }

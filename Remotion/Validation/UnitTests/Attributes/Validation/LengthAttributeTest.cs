@@ -20,7 +20,7 @@ using System.Linq;
 using FluentValidation.Validators;
 using NUnit.Framework;
 using Remotion.Validation.Attributes.Validation;
-using Remotion.Validation.UnitTests.IntegrationTests.TestDomain.ComponentA;
+using Remotion.Validation.UnitTests.TestDomain;
 
 namespace Remotion.Validation.UnitTests.Attributes.Validation
 {
@@ -45,12 +45,14 @@ namespace Remotion.Validation.UnitTests.Attributes.Validation
     [Test]
     public void GetPropertyValidator ()
     {
-      var result = _attribute.GetPropertyValidators (typeof (Customer).GetProperty ("LastName")).ToArray ();
+      var result = _attribute.GetPropertyValidators (typeof (Customer).GetProperty ("LastName")).ToArray();
 
-      Assert.That (result.Count (), Is.EqualTo (1));
+      Assert.That (result.Count(), Is.EqualTo (1));
       Assert.That (result[0], Is.TypeOf (typeof (LengthValidator)));
-      Assert.That (result[0].ErrorMessageSource.GetString (), Is.EqualTo (
-        "'{PropertyName}' must be between {MinLength} and {MaxLength} characters. You entered {TotalLength} characters."));
+      Assert.That (
+          result[0].ErrorMessageSource.GetString(),
+          Is.EqualTo (
+              "'{PropertyName}' must be between {MinLength} and {MaxLength} characters. You entered {TotalLength} characters."));
       Assert.That (((LengthValidator) result[0]).Min, Is.EqualTo (10));
       Assert.That (((LengthValidator) result[0]).Max, Is.EqualTo (20));
     }
@@ -60,10 +62,10 @@ namespace Remotion.Validation.UnitTests.Attributes.Validation
     {
       _attribute.ErrorMessage = "CustomMessage";
 
-      var result = _attribute.GetPropertyValidators (typeof (Customer).GetProperty ("LastName")).ToArray ();
+      var result = _attribute.GetPropertyValidators (typeof (Customer).GetProperty ("LastName")).ToArray();
 
-      Assert.That (result.Count (), Is.EqualTo (1));
-      Assert.That (result[0].ErrorMessageSource.GetString (), Is.EqualTo ("CustomMessage"));
+      Assert.That (result.Count(), Is.EqualTo (1));
+      Assert.That (result[0].ErrorMessageSource.GetString(), Is.EqualTo ("CustomMessage"));
     }
   }
 }

@@ -16,12 +16,12 @@
 // 
 
 using System;
+using System.Linq;
 using FluentValidation.Validators;
 using NUnit.Framework;
 using Remotion.Validation.MetaValidation.Rules.Custom;
-using Remotion.Validation.UnitTests.IntegrationTests.TestDomain.ComponentA;
+using Remotion.Validation.UnitTests.TestDomain;
 using Rhino.Mocks;
-using System.Linq;
 
 namespace Remotion.Validation.UnitTests.MetaValidation.Rules.Custom
 {
@@ -36,8 +36,8 @@ namespace Remotion.Validation.UnitTests.MetaValidation.Rules.Custom
     public void SetUp ()
     {
       _propertyValidatorStub1 = MockRepository.GenerateStub<IPropertyValidator>();
-      _propertyValidatorStub2 = MockRepository.GenerateStub<IPropertyValidator> ();
-      
+      _propertyValidatorStub2 = MockRepository.GenerateStub<IPropertyValidator>();
+
       _rule = new AnyRuleAppliedMetaValidationRule (typeof (Customer).GetProperty ("UserName"));
     }
 
@@ -50,8 +50,8 @@ namespace Remotion.Validation.UnitTests.MetaValidation.Rules.Custom
       Assert.That (
           result.Message,
           Is.EqualTo (
-              "'AnyRuleAppliedMetaValidationRule' failed for property 'Remotion.Validation.UnitTests.IntegrationTests.TestDomain.ComponentA.Customer.UserName': "
-              +"No validation rules defined."));
+              "'AnyRuleAppliedMetaValidationRule' failed for property 'Remotion.Validation.UnitTests.TestDomain.Customer.UserName': "
+              + "No validation rules defined."));
     }
 
     [Test]

@@ -20,32 +20,34 @@ using System.Linq;
 using FluentValidation.Validators;
 using NUnit.Framework;
 using Remotion.Validation.Attributes.Validation;
-using Remotion.Validation.UnitTests.IntegrationTests.TestDomain.ComponentA;
+using Remotion.Validation.UnitTests.TestDomain;
 
 namespace Remotion.Validation.UnitTests.Attributes.Validation
 {
   [TestFixture]
   public class StringPropertyAttributeTest
   {
-     private StringPropertyAttribute _attribute;
+    private StringPropertyAttribute _attribute;
 
     [SetUp]
     public void SetUp ()
     {
-      _attribute = new StringPropertyAttribute ();
+      _attribute = new StringPropertyAttribute();
     }
 
     [Test]
     public void GetPropertyValidator ()
     {
-      var result = _attribute.GetPropertyValidators (typeof (Customer).GetProperty("LastName")).ToArray ();
+      var result = _attribute.GetPropertyValidators (typeof (Customer).GetProperty ("LastName")).ToArray();
 
-      Assert.That (result.Count (), Is.EqualTo (2));
+      Assert.That (result.Count(), Is.EqualTo (2));
       Assert.That (result[0], Is.TypeOf (typeof (LengthValidator)));
-      Assert.That (result[0].ErrorMessageSource.GetString (), Is.EqualTo (
-        "'{PropertyName}' must be between {MinLength} and {MaxLength} characters. You entered {TotalLength} characters."));
+      Assert.That (
+          result[0].ErrorMessageSource.GetString(),
+          Is.EqualTo (
+              "'{PropertyName}' must be between {MinLength} and {MaxLength} characters. You entered {TotalLength} characters."));
       Assert.That (result[1], Is.TypeOf (typeof (NotNullValidator)));
-      Assert.That (result[1].ErrorMessageSource.GetString (), Is.EqualTo ("'{PropertyName}' must not be empty."));
+      Assert.That (result[1].ErrorMessageSource.GetString(), Is.EqualTo ("'{PropertyName}' must not be empty."));
     }
 
     [Test]
@@ -53,11 +55,11 @@ namespace Remotion.Validation.UnitTests.Attributes.Validation
     {
       _attribute.ErrorMessage = "CustomMessage";
 
-      var result = _attribute.GetPropertyValidators (typeof (Customer).GetProperty ("LastName")).ToArray ();
+      var result = _attribute.GetPropertyValidators (typeof (Customer).GetProperty ("LastName")).ToArray();
 
-      Assert.That (result.Count (), Is.EqualTo (2));
-      Assert.That (result[0].ErrorMessageSource.GetString(), Is.EqualTo("CustomMessage"));
-      Assert.That (result[1].ErrorMessageSource.GetString(), Is.EqualTo("CustomMessage"));
+      Assert.That (result.Count(), Is.EqualTo (2));
+      Assert.That (result[0].ErrorMessageSource.GetString(), Is.EqualTo ("CustomMessage"));
+      Assert.That (result[1].ErrorMessageSource.GetString(), Is.EqualTo ("CustomMessage"));
     }
   }
 }

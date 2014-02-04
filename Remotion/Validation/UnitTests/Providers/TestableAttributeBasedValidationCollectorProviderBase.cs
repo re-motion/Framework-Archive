@@ -22,7 +22,7 @@ using Remotion.Validation.Implementation;
 using Remotion.Validation.MetaValidation;
 using Remotion.Validation.Providers;
 using Remotion.Validation.Rules;
-using Remotion.Validation.UnitTests.IntegrationTests.TestDomain.ComponentA;
+using Remotion.Validation.UnitTests.TestDomain;
 using Rhino.Mocks;
 
 namespace Remotion.Validation.UnitTests.Providers
@@ -82,7 +82,7 @@ namespace Remotion.Validation.UnitTests.Providers
       {
         _validationPropertyRuleReflectorMock.Expect (mock => mock.GetAddingPropertyValidators()).Return (new[] { _propertyValidatorStub1 });
         _validationPropertyRuleReflectorMock.Expect (mock => mock.GetHardConstraintPropertyValidators())
-                                            .Return (new[] { _propertyValidatorStub2 });
+            .Return (new[] { _propertyValidatorStub2 });
         _validationPropertyRuleReflectorMock.Expect (mock => mock.GetRemovingPropertyRegistrations()).Return (new ValidatorRegistration[0]);
         _validationPropertyRuleReflectorMock.Expect (mock => mock.GetMetaValidationRules()).Return (new IMetaValidationRule[0]);
       }
@@ -91,29 +91,29 @@ namespace Remotion.Validation.UnitTests.Providers
         _validationPropertyRuleReflectorMock.Expect (mock => mock.GetAddingPropertyValidators()).Return (new[] { _propertyValidatorStub3 });
         _validationPropertyRuleReflectorMock.Expect (mock => mock.GetHardConstraintPropertyValidators()).Return (new IPropertyValidator[0]);
         _validationPropertyRuleReflectorMock.Expect (mock => mock.GetRemovingPropertyRegistrations())
-                                            .Return (new[] { _validatorRegistration1, _validatorRegistration2 });
+            .Return (new[] { _validatorRegistration1, _validatorRegistration2 });
         _validationPropertyRuleReflectorMock.Expect (mock => mock.GetMetaValidationRules()).Return (new IMetaValidationRule[0]);
       }
       else if (property.Name == "LastName")
       {
         _validationPropertyRuleReflectorMock.Expect (mock => mock.GetAddingPropertyValidators())
-                                            .Return (new[] { _propertyValidatorStub4, _propertyValidatorStub5 });
+            .Return (new[] { _propertyValidatorStub4, _propertyValidatorStub5 });
         _validationPropertyRuleReflectorMock.Expect (mock => mock.GetHardConstraintPropertyValidators()).Return (new IPropertyValidator[0]);
         _validationPropertyRuleReflectorMock.Expect (mock => mock.GetRemovingPropertyRegistrations()).Return (new ValidatorRegistration[0]);
         _validationPropertyRuleReflectorMock.Expect (mock => mock.GetMetaValidationRules())
-                                            .Return (new[] { _metaValidationRule1, _metaValidationRule3 });
+            .Return (new[] { _metaValidationRule1, _metaValidationRule3 });
       }
       else if (property.Name == "UserName")
       {
         _validationPropertyRuleReflectorMock.Expect (mock => mock.GetAddingPropertyValidators()).Return (new[] { _propertyValidatorStub6 });
         _validationPropertyRuleReflectorMock.Expect (mock => mock.GetHardConstraintPropertyValidators()).Return (new IPropertyValidator[0]);
         _validationPropertyRuleReflectorMock.Expect (mock => mock.GetRemovingPropertyRegistrations())
-                                            .Return (new[] { _validatorRegistration3, _validatorRegistration4 });
+            .Return (new[] { _validatorRegistration3, _validatorRegistration4 });
         _validationPropertyRuleReflectorMock.Expect (mock => mock.GetMetaValidationRules()).Return (new[] { _metaValidationRule2 });
       }
       else
       {
-        if(property.DeclaringType!=typeof(Person))
+        if (property.DeclaringType != typeof (Person))
           throw new Exception (string.Format ("Property '{0}' not expected.", property.Name));
       }
 

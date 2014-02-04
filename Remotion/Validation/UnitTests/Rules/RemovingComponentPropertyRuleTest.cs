@@ -23,8 +23,8 @@ using FluentValidation.Validators;
 using NUnit.Framework;
 using Remotion.Utilities;
 using Remotion.Validation.Rules;
-using Remotion.Validation.UnitTests.IntegrationTests.TestDomain.ComponentA;
-using Remotion.Validation.UnitTests.IntegrationTests.TestDomain.ComponentA.ValidationCollectors;
+using Remotion.Validation.UnitTests.TestDomain;
+using Remotion.Validation.UnitTests.TestDomain.Collectors;
 using Remotion.Validation.UnitTests.TestHelpers;
 
 namespace Remotion.Validation.UnitTests.Rules
@@ -63,7 +63,8 @@ namespace Remotion.Validation.UnitTests.Rules
       var componentPropertyRule = AddingComponentPropertyRule.Create (_lastNameExpression, typeof (RemovingComponentPropertyRuleTest));
 
       Assert.That (
-          MemberInfoEqualityComparer<MemberInfo>.Instance.Equals (componentPropertyRule.Member, typeof (Customer).GetMember ("LastName")[0]), Is.True);
+          MemberInfoEqualityComparer<MemberInfo>.Instance.Equals (componentPropertyRule.Member, typeof (Customer).GetMember ("LastName")[0]),
+          Is.True);
       Assert.That (componentPropertyRule.PropertyName, Is.EqualTo ("LastName"));
       Assert.That (componentPropertyRule.Expression, Is.SameAs (_lastNameExpression));
     }
@@ -81,7 +82,8 @@ namespace Remotion.Validation.UnitTests.Rules
 
       Assert.That (_removingComponentPropertyRule.Validators.ElementAt (1).ValidatorType, Is.EqualTo (typeof (NotEmptyValidator)));
       Assert.That (
-          _removingComponentPropertyRule.Validators.ElementAt (1).CollectorTypeToRemoveFrom, Is.EqualTo (typeof (CustomerValidationCollector1)));
+          _removingComponentPropertyRule.Validators.ElementAt (1).CollectorTypeToRemoveFrom,
+          Is.EqualTo (typeof (CustomerValidationCollector1)));
     }
 
     [Test]
@@ -90,8 +92,8 @@ namespace Remotion.Validation.UnitTests.Rules
       var result = _removingComponentPropertyRule.ToString();
 
       Assert.That (
-          result, Is.EqualTo ("RemovingComponentPropertyRule: Remotion.Validation.UnitTests.IntegrationTests.TestDomain.ComponentA.Customer#UserName"));
+          result,
+          Is.EqualTo ("RemovingComponentPropertyRule: Remotion.Validation.UnitTests.TestDomain.Customer#UserName"));
     }
-   
   }
 }

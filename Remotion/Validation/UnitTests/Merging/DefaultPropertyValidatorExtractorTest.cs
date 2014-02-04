@@ -23,9 +23,8 @@ using NUnit.Framework;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.Merging;
 using Remotion.Validation.Rules;
-using Remotion.Validation.UnitTests.IntegrationTests.TestDomain.ComponentA;
-using Remotion.Validation.UnitTests.IntegrationTests.TestDomain.ComponentA.ValidationCollectors;
-using Remotion.Validation.UnitTests.IntegrationTests.TestDomain.ComponentB.ValidationCollectors;
+using Remotion.Validation.UnitTests.TestDomain;
+using Remotion.Validation.UnitTests.TestDomain.Collectors;
 using Remotion.Validation.UnitTests.TestHelpers;
 using Rhino.Mocks;
 
@@ -65,10 +64,10 @@ namespace Remotion.Validation.UnitTests.Merging
       _validatorRegistration4 = new ValidatorRegistration (typeof (LengthValidator), typeof (CustomerValidationCollector2));
       _validatorRegistration5 = new ValidatorRegistration (typeof (NotEqualValidator), typeof (CustomerValidationCollector2));
       _validatorRegistration6 = new ValidatorRegistration (typeof (LengthValidator), null);
-      
+
       _removingPropertyRuleStub1 = MockRepository.GenerateStub<IRemovingComponentPropertyRule>();
       _removingPropertyRuleStub1.Stub (stub => stub.Property).Return (typeof (Customer).GetProperty ("LastName"));
-      _removingPropertyRuleStub2 = MockRepository.GenerateStub<IRemovingComponentPropertyRule> ();
+      _removingPropertyRuleStub2 = MockRepository.GenerateStub<IRemovingComponentPropertyRule>();
       _removingPropertyRuleStub2.Stub (stub => stub.Property).Return (typeof (Customer).GetProperty ("FirstName"));
 
       _registrationWithContext1 = new ValidatorRegistrationWithContext (_validatorRegistration1, _removingPropertyRuleStub1);
@@ -77,7 +76,8 @@ namespace Remotion.Validation.UnitTests.Merging
       _registrationWithContext4 = new ValidatorRegistrationWithContext (_validatorRegistration4, _removingPropertyRuleStub1);
       _registrationWithContext5 = new ValidatorRegistrationWithContext (_validatorRegistration5, _removingPropertyRuleStub1);
       _registrationWithContext6 = new ValidatorRegistrationWithContext (_validatorRegistration1, _removingPropertyRuleStub1);
-      _registrationWithContext7 = new ValidatorRegistrationWithContext (_validatorRegistration6, _removingPropertyRuleStub2); //other property -> filtered!
+      _registrationWithContext7 = new ValidatorRegistrationWithContext (_validatorRegistration6, _removingPropertyRuleStub2);
+          //other property -> filtered!
 
       _stubPropertyValidator1 = new StubPropertyValidator(); //not extracted
       _stubPropertyValidator2 = new NotEmptyValidator (null); //extracted
@@ -100,24 +100,24 @@ namespace Remotion.Validation.UnitTests.Merging
     {
       var addingComponentPropertyRule = MockRepository.GenerateStub<IAddingComponentPropertyRule>();
       addingComponentPropertyRule.Stub (stub => stub.Validators)
-                                 .Return (
-                                     new IPropertyValidator[]
-                                     { _stubPropertyValidator1, _stubPropertyValidator2, _stubPropertyValidator3, _stubPropertyValidator4 });
+          .Return (
+              new IPropertyValidator[]
+              { _stubPropertyValidator1, _stubPropertyValidator2, _stubPropertyValidator3, _stubPropertyValidator4 });
       addingComponentPropertyRule.Stub (stub => stub.CollectorType).Return (typeof (CustomerValidationCollector1));
       addingComponentPropertyRule.Stub (stub => stub.Property).Return (typeof (Customer).GetProperty ("LastName"));
 
       _logContextMock.Expect (
           mock =>
-          mock.ValidatorRemoved (
-              Arg<IPropertyValidator>.Is.Same (_stubPropertyValidator2),
-              Arg<ValidatorRegistrationWithContext[]>.List.Equal(new[] { _registrationWithContext1, _registrationWithContext6 }),
-              Arg<IValidationRule>.Is.Same (addingComponentPropertyRule))).Repeat.Once();
+              mock.ValidatorRemoved (
+                  Arg<IPropertyValidator>.Is.Same (_stubPropertyValidator2),
+                  Arg<ValidatorRegistrationWithContext[]>.List.Equal (new[] { _registrationWithContext1, _registrationWithContext6 }),
+                  Arg<IValidationRule>.Is.Same (addingComponentPropertyRule))).Repeat.Once();
       _logContextMock.Expect (
           mock =>
-          mock.ValidatorRemoved (
-              Arg<IPropertyValidator>.Is.Same (_stubPropertyValidator3),
-              Arg<ValidatorRegistrationWithContext[]>.List.Equal(new[] { _registrationWithContext2 }),
-              Arg<IValidationRule>.Is.Same (addingComponentPropertyRule))).Repeat.Once();
+              mock.ValidatorRemoved (
+                  Arg<IPropertyValidator>.Is.Same (_stubPropertyValidator3),
+                  Arg<ValidatorRegistrationWithContext[]>.List.Equal (new[] { _registrationWithContext2 }),
+                  Arg<IValidationRule>.Is.Same (addingComponentPropertyRule))).Repeat.Once();
 
       var result = _extractor.ExtractPropertyValidatorsToRemove (addingComponentPropertyRule).ToArray();
 
