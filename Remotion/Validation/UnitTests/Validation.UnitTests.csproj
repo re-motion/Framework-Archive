@@ -79,6 +79,7 @@
     <Compile Include="Globalization\ValidationRuleGlobalizationServiceTest.cs" />
     <Compile Include="Globalization\ErrorMessageStringSourceTest.cs" />
     <Compile Include="Implementation\CompoundValidatorBuilderTest.cs" />
+    <Compile Include="Implementation\IInvolvedTypeProviderTest.cs" />
     <Compile Include="Implementation\TypedValidatorDecoratorTest.cs" />
     <Compile Include="Implementation\DefaultLogContextTest.cs" />
     <Compile Include="Implementation\DefaultValidatorFormatterTest.cs" />

@@ -14,15 +14,32 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System;
-using System.Collections.Generic;
-using Remotion.ServiceLocation;
 
-namespace Remotion.Validation.Implementation
+using System;
+using NUnit.Framework;
+using Remotion.ServiceLocation;
+using Remotion.Validation.Implementation;
+
+namespace Remotion.Validation.UnitTests.Implementation
 {
-  [ConcreteImplementation(typeof(InvolvedTypeProvider))]
-  public interface IInvolvedTypeProvider
+  [TestFixture]
+  public class IInvolvedTypeProviderTest
   {
-    IEnumerable<IEnumerable<Type>> GetTypes (Type type);
+    private DefaultServiceLocator _serviceLocator;
+
+    [SetUp]
+    public void SetUp ()
+    {
+      _serviceLocator = new DefaultServiceLocator ();
+    }
+
+    [Test]
+    public void GetInstance ()
+    {
+      var factory = _serviceLocator.GetInstance<IInvolvedTypeProvider> ();
+
+      Assert.That (factory, Is.Not.Null);
+      Assert.That (factory, Is.TypeOf (typeof (InvolvedTypeProvider)));
+    }
   }
 }

@@ -17,10 +17,11 @@
 
 using System;
 using System.Linq;
+using log4net;
+using log4net.Appender;
+using log4net.Config;
 using NUnit.Framework;
 using Remotion.Globalization;
-using Remotion.Globalization.Implementation;
-using Remotion.Globalization.Mixins;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Validation.Globalization;
@@ -28,9 +29,6 @@ using Remotion.Validation.Implementation;
 using Remotion.Validation.Merging;
 using Remotion.Validation.MetaValidation;
 using Remotion.Validation.Providers;
-using log4net;
-using log4net.Appender;
-using log4net.Config;
 
 namespace Remotion.Validation.UnitTests.IntegrationTests
 {
@@ -52,7 +50,7 @@ namespace Remotion.Validation.UnitTests.IntegrationTests
 
       ValidationBuilder = new FluentValidatorBuilder (
           new AggregatingValidationCollectorProvider (
-              new InvolvedTypeProvider (types => types.OrderBy (t => t.Name), LoadFilteredValidationTypeFilter.Instance),
+              InvolvedTypeProvider.Create (types => types.OrderBy (t => t.Name), LoadFilteredValidationTypeFilter.Instance),
               new IValidationCollectorProvider[]
               {
                   new RemotionAttributeBasedValidationCollectorProvider(),

@@ -28,17 +28,33 @@ namespace Remotion.Validation.Implementation
   /// <summary>
   /// Returns all base classes, interfaces and mixins for the given type hierarchy.
   /// </summary>
-  public class InvolvedTypeProvider : IInvolvedTypeProvider //TODO: rename (check with MK)?
+  public class InvolvedTypeProvider : IInvolvedTypeProvider
   {
     private readonly Func<IEnumerable<Type>, IEnumerable<Type>> _hierarchyLevelsubSort;
     private readonly IValidationTypeFilter _validationTypeFilter;
 
-    public InvolvedTypeProvider (Func<IEnumerable<Type>, IEnumerable<Type>> hierarchyLevelsubSort)
-        : this (hierarchyLevelsubSort, new LoadAllValidationTypeFilter())
+    public static IInvolvedTypeProvider Create (Func<IEnumerable<Type>, IEnumerable<Type>> hierarchyLevelsubSort)
     {
+      ArgumentUtility.CheckNotNull ("hierarchyLevelsubSort", hierarchyLevelsubSort);
+
+      return Create (hierarchyLevelsubSort, new LoadAllValidationTypeFilter ());
     }
 
-    public InvolvedTypeProvider (Func<IEnumerable<Type>, IEnumerable<Type>> hierarchyLevelsubSort, IValidationTypeFilter validationTypeFilter)
+    public static IInvolvedTypeProvider Create (Func<IEnumerable<Type>, IEnumerable<Type>> hierarchyLevelsubSort, IValidationTypeFilter validationTypeFilter)
+    {
+      ArgumentUtility.CheckNotNull ("hierarchyLevelsubSort", hierarchyLevelsubSort);
+      ArgumentUtility.CheckNotNull ("validationTypeFilter", validationTypeFilter);
+      
+      return new InvolvedTypeProvider (hierarchyLevelsubSort, validationTypeFilter);
+    }
+
+    public InvolvedTypeProvider ()
+      : this (c => c.OrderBy (t => t.Name), new LoadAllValidationTypeFilter ())
+    {
+      
+    }
+
+    protected InvolvedTypeProvider (Func<IEnumerable<Type>, IEnumerable<Type>> hierarchyLevelsubSort, IValidationTypeFilter validationTypeFilter)
     {
       ArgumentUtility.CheckNotNull ("hierarchyLevelsubSort", hierarchyLevelsubSort);
       ArgumentUtility.CheckNotNull ("validationTypeFilter", validationTypeFilter);

@@ -26,12 +26,12 @@ namespace Remotion.Validation.UnitTests.Implementation
   [TestFixture]
   public class InvolvedTypeProviderTest
   {
-    private InvolvedTypeProvider _inheritanceAndMxinBasedStrategy;
+    private IInvolvedTypeProvider _inheritanceAndMxinBasedStrategy;
 
     [SetUp]
     public void SetUp ()
     {
-      _inheritanceAndMxinBasedStrategy = new InvolvedTypeProvider (col => col.OrderBy (t => t.Name), LoadFilteredValidationTypeFilter.Instance);
+      _inheritanceAndMxinBasedStrategy = InvolvedTypeProvider.Create (col => col.OrderBy (t => t.Name), LoadFilteredValidationTypeFilter.Instance);
     }
 
     [Test]

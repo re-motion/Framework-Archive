@@ -35,7 +35,6 @@ namespace Remotion.Validation.Implementation
   /// Collector-based validator builder.  
   /// </summary>
   //TODO AO: IoC
-  //TODO AO: also introduce CompoundValidatorBuilder
   public class FluentValidatorBuilder : IValidatorBuilder
   {
     private readonly IValidationCollectorProvider _validationCollectorProvider;
