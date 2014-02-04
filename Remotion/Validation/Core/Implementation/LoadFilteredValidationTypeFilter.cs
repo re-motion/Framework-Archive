@@ -14,25 +14,20 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
-using Remotion.Mixins;
-using Remotion.Mixins.CodeGeneration.DynamicProxy;
+using Remotion.TypePipe.Implementation;
 using Remotion.Utilities;
 
 namespace Remotion.Validation.Implementation
 {
   public class LoadFilteredValidationTypeFilter : IValidationTypeFilter
   {
-    /// <summary>
-    /// Returns the global instance of this filter. There is only this one instance of the filter in the validation framework.
-    /// </summary>
-    public static readonly LoadFilteredValidationTypeFilter Instance = new LoadFilteredValidationTypeFilter ();
-
     private List<Type> _filterTypes;
 
-    protected LoadFilteredValidationTypeFilter ()
+    public LoadFilteredValidationTypeFilter ()
     {
       Initialize();
     }
@@ -49,11 +44,9 @@ namespace Remotion.Validation.Implementation
       _filterTypes = new List<Type> (
           new[]
           {
-             typeof(object),
-             typeof(ISerializable),
-             typeof(IMixinTarget),
-             typeof(IInitializableMixin),
-             typeof(IInitializableMixinTarget)
+              typeof (object),
+              typeof (ISerializable),
+              typeof (IInitializableObject)
           });
     }
   }

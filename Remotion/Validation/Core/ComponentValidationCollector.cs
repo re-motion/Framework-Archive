@@ -20,10 +20,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using FluentValidation.Internal;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
+using Remotion.Validation.Implementation;
 using Remotion.Validation.RuleBuilders;
 using Remotion.Validation.Rules;
-using Remotion.Validation.Utilities;
 
 namespace Remotion.Validation
 {
@@ -49,6 +50,11 @@ namespace Remotion.Validation
       get { return typeof (TValidatedType); }
     }
 
+    public ITypeValidator TypeValidator 
+    {
+      get { return SafeServiceLocator.Current.GetInstance<ICompoundTypeValidator>(); }
+    }
+
     /// <inheritdoc />
     public IReadOnlyCollection<IAddingComponentPropertyRule> AddedPropertyRules
     {
@@ -68,10 +74,11 @@ namespace Remotion.Validation
     }
 
     /// <inheritdoc />
-    public IAddingComponentRuleBuilderOptions<TValidatedType, TProperty> AddRule<TProperty> (Expression<Func<TValidatedType, TProperty>> propertySelector)
+    public IAddingComponentRuleBuilderOptions<TValidatedType, TProperty> AddRule<TProperty> (
+        Expression<Func<TValidatedType, TProperty>> propertySelector)
     {
       ArgumentUtility.CheckNotNull ("propertySelector", propertySelector);
-      CheckNoMixinType();
+      CheckIfIsValidType();
 
       var componentPropertyRule = AddingComponentPropertyRule.Create (propertySelector, GetType());
       _addedPropertyRules.Add (componentPropertyRule);
@@ -83,10 +90,11 @@ namespace Remotion.Validation
     }
 
     /// <inheritdoc />
-    public IRemovingComponentRuleBuilderOptions<TValidatedType, TProperty> RemoveRule<TProperty> (Expression<Func<TValidatedType, TProperty>> propertySelector)
+    public IRemovingComponentRuleBuilderOptions<TValidatedType, TProperty> RemoveRule<TProperty> (
+        Expression<Func<TValidatedType, TProperty>> propertySelector)
     {
       ArgumentUtility.CheckNotNull ("propertySelector", propertySelector);
-      CheckNoMixinType();
+      CheckIfIsValidType();
 
       var componentPropertyRule = RemovingComponentPropertyRule.Create (propertySelector, GetType());
       _removedPropertyRules.Add (componentPropertyRule);
@@ -120,13 +128,13 @@ namespace Remotion.Validation
       When (x => !predicate (x), action);
     }
 
-    private static void CheckNoMixinType ()
+    private void CheckIfIsValidType ()
     {
-      if (MixinHelper.IsMixinType (typeof (TValidatedType)))
+      if (!TypeValidator.IsValid (typeof (TValidatedType)))
       {
         throw new NotSupportedException (
             string.Format (
-                "Validation rules for concrete mixins are not supported. Please ensure to apply the rules to 'ITargetInterface' or 'IIntroducedInterface' of mixin '{0}' instead.",
+                "Validation rules for type '{0}' are not supported. If validation rules should be defined for mixins please ensure to apply the rules to 'ITargetInterface' or 'IIntroducedInterface' instead.",
                 typeof (TValidatedType).FullName));
       }
     }

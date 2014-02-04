@@ -14,21 +14,36 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System;
-using System.Linq;
-using Remotion.FunctionalProgramming;
-using Remotion.Mixins;
-using Remotion.Utilities;
 
-namespace Remotion.Validation.Utilities
+using System;
+using NUnit.Framework;
+using Remotion.Mixins;
+using Remotion.Validation.Mixins.Implementation;
+
+namespace Remotion.Validation.UnitTests.Implementation
 {
-  public static class MixinHelper
+  [TestFixture]
+  public class MixedLoadFilteredValidationTypeFilterTest
   {
-    public static bool IsMixinType (Type type)
+    private MixedLoadFilteredValidationTypeFilter _filter;
+
+    [SetUp]
+    public void SetUp ()
     {
-      ArgumentUtility.CheckNotNull ("type", type);
-      
-      return type.CreateSequence (t => t.BaseType).Any (t => t.IsGenericType && t.GetGenericTypeDefinition () == typeof (Mixin<>));
+      _filter = new MixedLoadFilteredValidationTypeFilter();
+    }
+
+    [Test]
+    public void IsValid_FilteredTypes_ReturnFalse ()
+    {
+      Assert.That (_filter.IsValid (typeof (IMixinTarget)), Is.False);
+      Assert.That (_filter.IsValid (typeof (IInitializableMixin)), Is.False);
+    }
+
+    [Test]
+    public void IsValid_NoneFilteredType_ReturnTrue ()
+    {
+      Assert.That (_filter.IsValid (typeof (string)), Is.True);
     }
   }
 }

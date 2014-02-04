@@ -41,6 +41,7 @@
     <Reference Include="FluentValidation">
       <HintPath>..\..\..\prereq\Assemblies\FluentValidation-5.0\net-4.0\FluentValidation.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
   </ItemGroup>
@@ -71,11 +72,16 @@
     <Compile Include="Globalization\ErrorMessageStringSource.cs" />
     <Compile Include="Globalization\NullMessageValidatorGlobalizationService.cs" />
     <Compile Include="IComponentValidationCollector1.cs" />
+    <Compile Include="Implementation\CompoundTypeValidator.cs" />
+    <Compile Include="Implementation\CompoundValidationTypeFilter.cs" />
     <Compile Include="Implementation\CompoundValidatorBuilder.cs" />
     <Compile Include="Implementation\DefaultLogContext.cs" />
     <Compile Include="Implementation\DefaultValidatorFormatter.cs" />
     <Compile Include="Implementation\FluentValidationBuilderExtensions.cs" />
     <Compile Include="Implementation\FluentValidationValidatorFormatterDecorator.cs" />
+    <Compile Include="Implementation\ICompoundTypeValidator.cs" />
+    <Compile Include="Implementation\ICompoundValidationTypeFilter.cs" />
+    <Compile Include="Implementation\ITypeValidator.cs" />
     <Compile Include="Implementation\IValidatorFormatter.cs" />
     <Compile Include="Implementation\TypedValidatorDecorator.cs" />
     <Compile Include="IValidatorBuilder.cs" />
@@ -124,7 +130,6 @@
     <Compile Include="MetaValidation\SystemMetaValidationRuleBase.cs" />
     <Compile Include="Implementation\DiscoveryServiceBasedTypeCollectorReflector.cs" />
     <Compile Include="Implementation\ITypeCollectorReflector.cs" />
-    <Compile Include="Utilities\MixinHelper.cs" />
     <Compile Include="Utilities\PropertyRuleExtensions.cs" />
     <Compile Include="Utilities\TopologySortExtensions.cs" />
     <Compile Include="Utilities\TopologySortMissingDependencyBehavior.cs" />
@@ -175,10 +180,6 @@
     <ProjectReference Include="..\..\Globalization\Core\Globalization.Core.csproj">
       <Project>{AC6AB6EB-F6AC-45A4-88A7-877D11A65CCB}</Project>
       <Name>Globalization.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Mixins\Core\Mixins.Core.csproj">
-      <Project>{d641e4e2-23f3-4454-8074-1327ef07baa1}</Project>
-      <Name>Mixins.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

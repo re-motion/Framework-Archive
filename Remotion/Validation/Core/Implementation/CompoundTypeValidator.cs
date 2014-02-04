@@ -14,18 +14,35 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
-using Remotion.ServiceLocation;
+using System.Collections.Generic;
+using System.Linq;
+using Remotion.Utilities;
 
 namespace Remotion.Validation.Implementation
 {
-  [ConcreteImplementation (
-      "Remotion.Validation.Mixins.Implementation.MixedLoadFilteredValidationTypeFilter, Remotion.Validation.Mixins, Version=<version>, Culture=neutral, PublicKeyToken=<publicKeyToken>",
-      ignoreIfNotFound: true,
-      Position = 1, Lifetime = LifetimeKind.Singleton)]
-  [ConcreteImplementation (typeof (LoadFilteredValidationTypeFilter), Position = 0, Lifetime = LifetimeKind.Singleton)]
-  public interface IValidationTypeFilter
+  public class CompoundTypeValidator : ICompoundTypeValidator
   {
-    bool IsValid (Type type);
+    private readonly IReadOnlyCollection<ITypeValidator> _typeValidators;
+
+    public CompoundTypeValidator (IEnumerable<ITypeValidator> typeValidators)
+    {
+      ArgumentUtility.CheckNotNull ("typeValidators", typeValidators);
+
+      _typeValidators = typeValidators.ToList().AsReadOnly();
+    }
+
+    public IReadOnlyCollection<ITypeValidator> TypeValidators
+    {
+      get { return _typeValidators; }
+    }
+
+    public bool IsValid (Type type)
+    {
+      ArgumentUtility.CheckNotNull ("type", type);
+
+      return _typeValidators.All (v => v.IsValid (type));
+    }
   }
 }

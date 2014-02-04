@@ -19,6 +19,7 @@ using System;
 using System.Linq;
 using NUnit.Framework;
 using Remotion.Validation.Implementation;
+using Remotion.Validation.Mixins.Implementation;
 using Remotion.Validation.UnitTests.Implementation.TestDomain;
 
 namespace Remotion.Validation.UnitTests.Implementation
@@ -26,18 +27,21 @@ namespace Remotion.Validation.UnitTests.Implementation
   [TestFixture]
   public class InvolvedTypeProviderTest
   {
-    private IInvolvedTypeProvider _inheritanceAndMxinBasedStrategy;
+    private IInvolvedTypeProvider _involvedTypeProvider;
 
     [SetUp]
     public void SetUp ()
     {
-      _inheritanceAndMxinBasedStrategy = InvolvedTypeProvider.Create (col => col.OrderBy (t => t.Name), LoadFilteredValidationTypeFilter.Instance);
+      _involvedTypeProvider = InvolvedTypeProvider.Create (
+          col => col.OrderBy (t => t.Name),
+          new CompoundValidationTypeFilter (
+              new IValidationTypeFilter[] { new LoadFilteredValidationTypeFilter(), new MixedLoadFilteredValidationTypeFilter() }));
     }
 
     [Test]
     public void GetAffectedType_NoBaseTypesAndNoInterfacesAndMixins ()
     {
-      var result = _inheritanceAndMxinBasedStrategy.GetTypes (typeof (TypeWithoutBaseType)).SelectMany (t => t).ToList();
+      var result = _involvedTypeProvider.GetTypes (typeof (TypeWithoutBaseType)).SelectMany (t => t).ToList();
 
       Assert.That (result, Is.EqualTo (new[] { typeof (TypeWithoutBaseType) }));
     }
@@ -45,7 +49,7 @@ namespace Remotion.Validation.UnitTests.Implementation
     [Test]
     public void GetAffectedType_WithBaseTypesAndNoInterfacesAndMixins ()
     {
-      var result = _inheritanceAndMxinBasedStrategy.GetTypes (typeof (TypeWithSeveralBaseTypes)).SelectMany (t => t).ToList();
+      var result = _involvedTypeProvider.GetTypes (typeof (TypeWithSeveralBaseTypes)).SelectMany (t => t).ToList();
 
       Assert.That (result, Is.EqualTo (new[] { typeof (BaseType2), typeof (BaseType1), typeof (TypeWithSeveralBaseTypes) }));
     }
@@ -53,7 +57,7 @@ namespace Remotion.Validation.UnitTests.Implementation
     [Test]
     public void GetAffectedType_WithOneInterfacesAndNoBaseTypesAndMixins ()
     {
-      var result = _inheritanceAndMxinBasedStrategy.GetTypes (typeof (TypeWithOneInterface)).SelectMany (t => t).ToList();
+      var result = _involvedTypeProvider.GetTypes (typeof (TypeWithOneInterface)).SelectMany (t => t).ToList();
 
       Assert.That (result, Is.EqualTo (new[] { typeof (ITypeWithOneInterface), typeof (TypeWithOneInterface) }));
     }
@@ -61,7 +65,7 @@ namespace Remotion.Validation.UnitTests.Implementation
     [Test]
     public void GetAffectedType_WithSeveralInterfacesAndNoBaseTypesAndMixins ()
     {
-      var result = _inheritanceAndMxinBasedStrategy.GetTypes (typeof (TypeWithSeveralInterfaces)).SelectMany (t => t).ToList();
+      var result = _involvedTypeProvider.GetTypes (typeof (TypeWithSeveralInterfaces)).SelectMany (t => t).ToList();
 
       Assert.That (
           result,
@@ -77,8 +81,8 @@ namespace Remotion.Validation.UnitTests.Implementation
     public void GetAffectedType_WithSeveralInterfacesHavingBaseInterfacesAndNoBaseTypesAndMixins ()
     {
       var result =
-          _inheritanceAndMxinBasedStrategy.GetTypes (typeof (TypeWithSeveralInterfacesImplementingInterface)).SelectMany (t => t)
-                                          .ToList();
+          _involvedTypeProvider.GetTypes (typeof (TypeWithSeveralInterfacesImplementingInterface)).SelectMany (t => t)
+              .ToList();
 
       Assert.That (
           result,
@@ -95,8 +99,8 @@ namespace Remotion.Validation.UnitTests.Implementation
     public void GetAffectedType_WithTwoInterfacesHavingCommonBaseInterface ()
     {
       var result =
-          _inheritanceAndMxinBasedStrategy.GetTypes (typeof (TypeWithTwoInterfacesHavingCommingBaseInterface)).SelectMany (t => t)
-                                          .ToList();
+          _involvedTypeProvider.GetTypes (typeof (TypeWithTwoInterfacesHavingCommingBaseInterface)).SelectMany (t => t)
+              .ToList();
 
       Assert.That (
           result,
@@ -112,7 +116,7 @@ namespace Remotion.Validation.UnitTests.Implementation
     public void GetAffectedType_WithBaseTypeAndSeveralInterfacesAndNoMixins ()
     {
       var result =
-          _inheritanceAndMxinBasedStrategy.GetTypes (typeof (TypeWithSeveralInterfacesAndBaseType)).SelectMany (t => t).ToList();
+          _involvedTypeProvider.GetTypes (typeof (TypeWithSeveralInterfacesAndBaseType)).SelectMany (t => t).ToList();
 
       Assert.That (
           result,
@@ -131,7 +135,7 @@ namespace Remotion.Validation.UnitTests.Implementation
     public void GetAffectedType_WithBaseTypeAndSeveralInterfacesReImplementingInterfaceAndNoMixins ()
     {
       var result =
-          _inheritanceAndMxinBasedStrategy.GetTypes (
+          _involvedTypeProvider.GetTypes (
               typeof (TypeWithSeveralInterfacesAndBaseTypeReImplementingInterface)).SelectMany (t => t).ToList();
 
       Assert.That (
@@ -144,28 +148,6 @@ namespace Remotion.Validation.UnitTests.Implementation
                   typeof (ITypeWithSeveralInterfacesAndBaseTypes2), typeof (ITypeWithSeveralInterfacesAndBaseTypes3),
                   typeof (TypeWithSeveralInterfacesAndBaseTypeReImplementingInterface)
               }));
-    }
-
-    [Test]
-    public void GetAffectedType_WithMixinHierarchy ()
-    {
-      var result = _inheritanceAndMxinBasedStrategy.GetTypes (typeof (DerivedConcreteTypeForMixin)).SelectMany (t => t).ToList();
-
-      Assert.That (result[0], Is.EqualTo (typeof (IBaseConcreteTypeForMixin)));
-      Assert.That (result[1], Is.EqualTo (typeof (BaseConcreteTypeForMixin)));
-      Assert.That (result[2], Is.EqualTo (typeof (IDerivedConcreteTypeForMixin)));
-      Assert.That (result[3], Is.EqualTo (typeof (DerivedConcreteTypeForMixin)));
-      Assert.That (result[4], Is.EqualTo (typeof (IBaseBaseIntroducedFromMixinForDerivedType1)));
-      Assert.That (result[5], Is.EqualTo (typeof (IBaseIntroducedFromMixinForDerivedTypeA1)));
-      Assert.That (result[6], Is.EqualTo (typeof (IBaseIntroducedFromMixinForDerivedTypeB1)));
-      Assert.That (result[7], Is.EqualTo (typeof (IIntroducedFromMixinForBaseType)));
-      Assert.That (result[8], Is.EqualTo (typeof (IIntroducedFromMixinForDerivedType1)));
-      Assert.That (result[9], Is.EqualTo (typeof (IIntroducedFromMixinForDerivedType2)));
-      Assert.That (result[10].Name.StartsWith ("DerivedConcreteTypeForMixin_AssembledTypeProxy_"), Is.True);
-      Assert.That (result[11], Is.EqualTo (typeof (BaseMixinForDerivedType)));
-      Assert.That (result[12], Is.EqualTo (typeof (MixinForBaseType)));
-      Assert.That (result[13], Is.EqualTo (typeof (MixinForDerivedType1)));
-      Assert.That (result[14], Is.EqualTo (typeof (MixinForDerivedType2)));
     }
   }
 }

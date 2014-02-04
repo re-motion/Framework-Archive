@@ -100,9 +100,8 @@ namespace Remotion.Validation.UnitTests
       Assert.That (
           () => _customerMixinValidationCollector.AddRule (_mixinTitleExpression),
           Throws.TypeOf<NotSupportedException>().And.Message.EqualTo (
-              "Validation rules for concrete mixins are not supported. "
-              + "Please ensure to apply the rules to 'ITargetInterface' or 'IIntroducedInterface' of mixin "
-              + "'Remotion.Validation.UnitTests.IntegrationTests.TestDomain.ComponentA.CustomerMixin' instead."
+              "Validation rules for type 'Remotion.Validation.UnitTests.IntegrationTests.TestDomain.ComponentA.CustomerMixin' are not supported. "
+              + "If validation rules should be defined for mixins please ensure to apply the rules to 'ITargetInterface' or 'IIntroducedInterface' instead."
               ));
     }
 
@@ -143,9 +142,8 @@ namespace Remotion.Validation.UnitTests
       Assert.That (
           () => _customerMixinValidationCollector.RemoveRule (_mixinTitleExpression),
           Throws.TypeOf<NotSupportedException>().And.Message.EqualTo (
-              "Validation rules for concrete mixins are not supported. "
-              + "Please ensure to apply the rules to 'ITargetInterface' or 'IIntroducedInterface' of mixin "
-              + "'Remotion.Validation.UnitTests.IntegrationTests.TestDomain.ComponentA.CustomerMixin' instead."
+              "Validation rules for type 'Remotion.Validation.UnitTests.IntegrationTests.TestDomain.ComponentA.CustomerMixin' are not supported. "
+              + "If validation rules should be defined for mixins please ensure to apply the rules to 'ITargetInterface' or 'IIntroducedInterface' instead."
               ));
     }
 

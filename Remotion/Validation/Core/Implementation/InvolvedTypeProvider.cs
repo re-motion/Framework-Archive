@@ -14,12 +14,12 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Remotion.FunctionalProgramming;
-using Remotion.Mixins;
 using Remotion.Utilities;
 using Remotion.Validation.Utilities;
 
@@ -37,21 +37,27 @@ namespace Remotion.Validation.Implementation
     {
       ArgumentUtility.CheckNotNull ("hierarchyLevelsubSort", hierarchyLevelsubSort);
 
-      return Create (hierarchyLevelsubSort, new LoadAllValidationTypeFilter ());
+      return Create (hierarchyLevelsubSort, new LoadAllValidationTypeFilter());
     }
 
-    public static IInvolvedTypeProvider Create (Func<IEnumerable<Type>, IEnumerable<Type>> hierarchyLevelsubSort, IValidationTypeFilter validationTypeFilter)
+    public static IInvolvedTypeProvider Create (
+        Func<IEnumerable<Type>, IEnumerable<Type>> hierarchyLevelsubSort,
+        IValidationTypeFilter validationTypeFilter)
     {
       ArgumentUtility.CheckNotNull ("hierarchyLevelsubSort", hierarchyLevelsubSort);
       ArgumentUtility.CheckNotNull ("validationTypeFilter", validationTypeFilter);
-      
+
       return new InvolvedTypeProvider (hierarchyLevelsubSort, validationTypeFilter);
     }
 
     public InvolvedTypeProvider ()
-      : this (c => c.OrderBy (t => t.Name), new LoadAllValidationTypeFilter ())
+        : this (c => c.OrderBy (t => t.Name), new LoadAllValidationTypeFilter())
     {
-      
+    }
+
+    public IValidationTypeFilter ValidationTypeFilter
+    {
+      get { return _validationTypeFilter; }
     }
 
     protected InvolvedTypeProvider (Func<IEnumerable<Type>, IEnumerable<Type>> hierarchyLevelsubSort, IValidationTypeFilter validationTypeFilter)
@@ -67,8 +73,7 @@ namespace Remotion.Validation.Implementation
     {
       ArgumentUtility.CheckNotNull ("type", type);
 
-      var concreteOrMixedType = MixinTypeUtility.GetConcreteMixedType (type);
-      var inheritanceHierarchy = GetInheritanceHierarchy (concreteOrMixedType).ToArray();
+      var inheritanceHierarchy = GetInheritanceHierarchy (type).ToArray();
       foreach (var classType in inheritanceHierarchy)
       {
         foreach (var interfaceGroup in GetInterfaces (classType))
@@ -76,9 +81,6 @@ namespace Remotion.Validation.Implementation
 
         yield return new[] { classType };
       }
-
-      foreach (var typeGroup in GetMixins (type))
-        yield return typeGroup;
     }
 
     private IEnumerable<Type> GetInheritanceHierarchy (Type type)
@@ -100,11 +102,6 @@ namespace Remotion.Validation.Implementation
         dependencies[interfaceType] = interfaceType.GetInterfaces().ToList();
 
       return interfaces.TopologySortDesc (t => dependencies[t], _hierarchyLevelsubSort);
-    }
-
-    private IEnumerable<IEnumerable<Type>> GetMixins (Type type)
-    {
-      return MixinTypeUtility.GetMixinTypesExact (type).Where (_validationTypeFilter.IsValid).Select (mixinType => new[] { mixinType }).ToArray();
     }
   }
 }

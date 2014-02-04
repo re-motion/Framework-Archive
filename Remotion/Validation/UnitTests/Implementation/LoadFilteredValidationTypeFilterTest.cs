@@ -18,8 +18,7 @@
 using System;
 using System.Runtime.Serialization;
 using NUnit.Framework;
-using Remotion.Mixins;
-using Remotion.Mixins.CodeGeneration.DynamicProxy;
+using Remotion.TypePipe.Implementation;
 using Remotion.Validation.Implementation;
 
 namespace Remotion.Validation.UnitTests.Implementation
@@ -32,7 +31,7 @@ namespace Remotion.Validation.UnitTests.Implementation
     [SetUp]
     public void SetUp ()
     {
-      _filter = LoadFilteredValidationTypeFilter.Instance;
+      _filter = new LoadFilteredValidationTypeFilter();
     }
 
     [Test]
@@ -40,9 +39,7 @@ namespace Remotion.Validation.UnitTests.Implementation
     {
       Assert.That (_filter.IsValid (typeof (object)), Is.False);
       Assert.That (_filter.IsValid (typeof (ISerializable)), Is.False);
-      Assert.That (_filter.IsValid (typeof (IMixinTarget)), Is.False);
-      Assert.That (_filter.IsValid (typeof (IInitializableMixin)), Is.False);
-      Assert.That (_filter.IsValid (typeof (IInitializableMixinTarget)), Is.False);
+      Assert.That (_filter.IsValid (typeof (IInitializableObject)), Is.False);
     }
 
     [Test]

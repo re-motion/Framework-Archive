@@ -24,5 +24,6 @@ namespace Remotion.Validation.Implementation
   public interface IInvolvedTypeProvider
   {
     IEnumerable<IEnumerable<Type>> GetTypes (Type type);
+    IValidationTypeFilter ValidationTypeFilter { get; }
   }
 }

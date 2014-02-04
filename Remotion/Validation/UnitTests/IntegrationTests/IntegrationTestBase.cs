@@ -28,6 +28,7 @@ using Remotion.Validation.Globalization;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.Merging;
 using Remotion.Validation.MetaValidation;
+using Remotion.Validation.Mixins.Implementation;
 using Remotion.Validation.Providers;
 
 namespace Remotion.Validation.UnitTests.IntegrationTests
@@ -50,7 +51,10 @@ namespace Remotion.Validation.UnitTests.IntegrationTests
 
       ValidationBuilder = new FluentValidatorBuilder (
           new AggregatingValidationCollectorProvider (
-              InvolvedTypeProvider.Create (types => types.OrderBy (t => t.Name), LoadFilteredValidationTypeFilter.Instance),
+              new MixedInvolvedTypeProviderDecorator (
+                  InvolvedTypeProvider.Create (
+                      types => types.OrderBy (t => t.Name),
+                      SafeServiceLocator.Current.GetInstance<ICompoundValidationTypeFilter>())),
               new IValidationCollectorProvider[]
               {
                   new RemotionAttributeBasedValidationCollectorProvider(),

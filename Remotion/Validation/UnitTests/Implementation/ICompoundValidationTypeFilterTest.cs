@@ -16,33 +16,34 @@
 // 
 
 using System;
+using System.Linq;
 using NUnit.Framework;
-using Remotion.Mixins.Utilities;
-using Remotion.Validation.UnitTests.Implementation.TestDomain;
-using Remotion.Validation.UnitTests.IntegrationTests.TestDomain.ComponentA;
-using Remotion.Validation.Utilities;
+using Remotion.ServiceLocation;
+using Remotion.Validation.Implementation;
+using Remotion.Validation.Mixins.Implementation;
 
-namespace Remotion.Validation.UnitTests.Utilities
+namespace Remotion.Validation.UnitTests.Implementation
 {
   [TestFixture]
-  public class MixinHelperTest
+  public class ICompoundValidationTypeFilterTest
   {
-    [Test]
-    public void NoMixinType ()
+    private DefaultServiceLocator _serviceLocator;
+
+    [SetUp]
+    public void SetUp ()
     {
-      Assert.That (MixinHelper.IsMixinType (typeof (string)), Is.False);
+      _serviceLocator = new DefaultServiceLocator ();
     }
 
     [Test]
-    public void MixinType ()
+    public void GetInstance_Once ()
     {
-      Assert.That (MixinHelper.IsMixinType (typeof (CustomerMixin)), Is.True);
-    }
+      var factory = _serviceLocator.GetInstance<ICompoundValidationTypeFilter> ();
 
-    [Test]
-    public void BaseMixinType ()
-    {
-      Assert.That (MixinHelper.IsMixinType (typeof (MixinForDerivedType1)), Is.True);
+      Assert.That (factory, Is.TypeOf (typeof (CompoundValidationTypeFilter)));
+      var compoundGlobalizationServices = ((CompoundValidationTypeFilter) factory).ValidationTypeFilters.ToArray ();
+      Assert.That (compoundGlobalizationServices[0], Is.TypeOf<LoadFilteredValidationTypeFilter> ());
+      Assert.That (compoundGlobalizationServices[1], Is.TypeOf<MixedLoadFilteredValidationTypeFilter> ());
     }
   }
 }

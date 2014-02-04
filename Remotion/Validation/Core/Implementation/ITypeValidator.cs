@@ -14,17 +14,16 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
 using Remotion.ServiceLocation;
 
 namespace Remotion.Validation.Implementation
 {
   [ConcreteImplementation (
-      "Remotion.Validation.Mixins.Implementation.MixedLoadFilteredValidationTypeFilter, Remotion.Validation.Mixins, Version=<version>, Culture=neutral, PublicKeyToken=<publicKeyToken>",
-      ignoreIfNotFound: true,
-      Position = 1, Lifetime = LifetimeKind.Singleton)]
-  [ConcreteImplementation (typeof (LoadFilteredValidationTypeFilter), Position = 0, Lifetime = LifetimeKind.Singleton)]
-  public interface IValidationTypeFilter
+      "Remotion.Validation.Mixins.Implementation.CheckNoMixinTypeValidator, Remotion.Validation.Mixins, Version=<version>, Culture=neutral, PublicKeyToken=<publicKeyToken>",
+      ignoreIfNotFound: true)]
+  public interface ITypeValidator
   {
     bool IsValid (Type type);
   }

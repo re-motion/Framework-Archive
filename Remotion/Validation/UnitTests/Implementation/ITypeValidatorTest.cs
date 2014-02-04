@@ -14,18 +14,33 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System;
-using Remotion.ServiceLocation;
 
-namespace Remotion.Validation.Implementation
+using System;
+using NUnit.Framework;
+using Remotion.ServiceLocation;
+using Remotion.Validation.Implementation;
+using Remotion.Validation.Mixins.Implementation;
+
+namespace Remotion.Validation.UnitTests.Implementation
 {
-  [ConcreteImplementation (
-      "Remotion.Validation.Mixins.Implementation.MixedLoadFilteredValidationTypeFilter, Remotion.Validation.Mixins, Version=<version>, Culture=neutral, PublicKeyToken=<publicKeyToken>",
-      ignoreIfNotFound: true,
-      Position = 1, Lifetime = LifetimeKind.Singleton)]
-  [ConcreteImplementation (typeof (LoadFilteredValidationTypeFilter), Position = 0, Lifetime = LifetimeKind.Singleton)]
-  public interface IValidationTypeFilter
+  [TestFixture]
+  public class ITypeValidatorTest
   {
-    bool IsValid (Type type);
+    private DefaultServiceLocator _serviceLocator;
+
+    [SetUp]
+    public void SetUp ()
+    {
+      _serviceLocator = new DefaultServiceLocator ();
+    }
+
+    [Test]
+    public void GetInstance ()
+    {
+      var factory = _serviceLocator.GetInstance<ITypeValidator> ();
+
+      Assert.That (factory, Is.Not.Null);
+      Assert.That (factory, Is.TypeOf (typeof (CheckNoMixinTypeValidator)));
+    }
   }
 }
