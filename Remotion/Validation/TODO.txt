@@ -2,8 +2,6 @@ Aufteilung:
   -> Validation.Globalization ??  
   -> Data.DomainObjects.Validation.IntegrationTests ??
   
--> check if MemberInfo can be replace with PropertyInfo (then use IPropertyInformation)
-
 -> NotSupportedExceptions checken!
 
 -> Build testen
