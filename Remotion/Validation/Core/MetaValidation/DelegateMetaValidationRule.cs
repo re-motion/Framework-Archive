@@ -21,21 +21,25 @@ using Remotion.Utilities;
 
 namespace Remotion.Validation.MetaValidation
 {
-
-  public class DelegateMetaValidationRule<TValidator> : MetaValidationRuleBase<TValidator> where TValidator : IPropertyValidator
+  /// <summary>
+  /// Implementation of <seealso cref="IMetaValidationRule"/> which uses a <see cref="Delegate"/> to validate a set of <see cref="IPropertyValidator"/>s.
+  /// </summary>
+  /// <typeparam name="TValidator">The type of the <see cref="IPropertyValidator"/> to which the validation is constrained.</typeparam>
+  public class DelegateMetaValidationRule<TValidator> : MetaValidationRuleBase<TValidator> 
+    where TValidator : IPropertyValidator
   {
-    private readonly Func<IEnumerable<TValidator>, MetaValidationRuleValidationResult> _metaValidationRuleExecutor;
+    private readonly Func<IEnumerable<TValidator>, MetaValidationRuleValidationResult> _metaValidationRule;
 
-    public DelegateMetaValidationRule (Func<IEnumerable<TValidator>, MetaValidationRuleValidationResult> metaValidationRuleExecutor)
+    public DelegateMetaValidationRule (Func<IEnumerable<TValidator>, MetaValidationRuleValidationResult> metaValidationRule)
     {
-      ArgumentUtility.CheckNotNull ("metaValidationRuleExecutor", metaValidationRuleExecutor);
+      ArgumentUtility.CheckNotNull ("metaValidationRule", metaValidationRule);
       
-      _metaValidationRuleExecutor = metaValidationRuleExecutor;
+      _metaValidationRule = metaValidationRule;
     }
 
     public override IEnumerable<MetaValidationRuleValidationResult> Validate (IEnumerable<TValidator> validationRules)
     {
-      yield return _metaValidationRuleExecutor (validationRules);
+      yield return _metaValidationRule (validationRules);
     }
   }
 }

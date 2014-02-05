@@ -14,15 +14,21 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using FluentValidation.Validators;
-using System.Linq;
 using Remotion.Utilities;
+using Remotion.Validation.Attributes.MetaValidation;
 
 namespace Remotion.Validation.MetaValidation.Rules.Custom
 {
+  /// <summary>
+  /// Implements the <see cref="IMetaValidationRule"/> interface to verify that there is at least one rule applied to a property.
+  /// </summary>
+  /// <seealso cref="AnyRuleAppliedMetaValidationRuleAttribute"/>
   public class AnyRuleAppliedMetaValidationRule : MetaValidationRuleBase<IPropertyValidator>
   {
     private readonly PropertyInfo _property;
@@ -30,13 +36,13 @@ namespace Remotion.Validation.MetaValidation.Rules.Custom
     public AnyRuleAppliedMetaValidationRule (PropertyInfo property)
     {
       ArgumentUtility.CheckNotNull ("property", property);
-      
+
       _property = property;
     }
 
     public override IEnumerable<MetaValidationRuleValidationResult> Validate (IEnumerable<IPropertyValidator> validationRules)
     {
-      if (!validationRules.Any())
+      if (!validationRules.Any ())
       {
         yield return
             MetaValidationRuleValidationResult.CreateInvalidResult (
@@ -47,7 +53,7 @@ namespace Remotion.Validation.MetaValidation.Rules.Custom
       }
       else
       {
-        yield return MetaValidationRuleValidationResult.CreateValidResult();
+        yield return MetaValidationRuleValidationResult.CreateValidResult ();
       }
     }
   }

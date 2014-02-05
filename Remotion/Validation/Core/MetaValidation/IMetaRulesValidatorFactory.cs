@@ -24,6 +24,7 @@ namespace Remotion.Validation.MetaValidation
   /// Defines a API for instantiating an implementation of the <see cref="IMetaRuleValidator"/> interface based on a set of 
   /// <see cref="IAddingComponentPropertyMetaValidationRule"/>s.
   /// </summary>
+  /// <seealso cref="MetaRulesValidatorFactory"/>
   public interface IMetaRulesValidatorFactory
   {
     IMetaRuleValidator CreateMetaRuleValidator (IEnumerable<IAddingComponentPropertyMetaValidationRule> metaValidatorRules);

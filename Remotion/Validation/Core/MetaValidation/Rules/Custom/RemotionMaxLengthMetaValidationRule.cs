@@ -25,20 +25,20 @@ namespace Remotion.Validation.MetaValidation.Rules.Custom
 {
   public class RemotionMaxLengthMetaValidationRule : MetaValidationRuleBase<LengthValidator>
   {
-    private readonly int _maxLenght;
+    private readonly int _maxLength;
     private readonly PropertyInfo _propertyInfo;
 
     public RemotionMaxLengthMetaValidationRule (PropertyInfo propertyInfo, int maxLength)
     {
       ArgumentUtility.CheckNotNull ("propertyInfo", propertyInfo);
 
-      _maxLenght = maxLength;
+      _maxLength = maxLength;
       _propertyInfo = propertyInfo;
     }
 
-    public int MaxLenght
+    public int MaxLength
     {
-      get { return _maxLenght; }
+      get { return _maxLength; }
     }
 
     public override IEnumerable<MetaValidationRuleValidationResult> Validate (IEnumerable<LengthValidator> validationRules)
@@ -54,7 +54,7 @@ namespace Remotion.Validation.MetaValidation.Rules.Custom
                 _propertyInfo.ReflectedType.FullName,
                 _propertyInfo.Name);
       }
-      else if (rules.Where (r => r.Max > _maxLenght).Any())
+      else if (rules.Where (r => r.Max > _maxLength).Any())
       {
         yield return
             MetaValidationRuleValidationResult.CreateInvalidResult (
@@ -63,7 +63,7 @@ namespace Remotion.Validation.MetaValidation.Rules.Custom
                 _propertyInfo.ReflectedType.FullName,
                 _propertyInfo.Name,
                 rules.Max(r=>r.Max),
-                _maxLenght);
+                _maxLength);
       }
       else
         yield return MetaValidationRuleValidationResult.CreateValidResult();

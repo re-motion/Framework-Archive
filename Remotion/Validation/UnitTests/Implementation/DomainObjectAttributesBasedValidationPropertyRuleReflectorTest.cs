@@ -130,7 +130,7 @@ namespace Remotion.Validation.UnitTests.Implementation
 
       Assert.That (result.Count (), Is.EqualTo (1));
       Assert.That (result[0], Is.TypeOf (typeof (RemotionMaxLengthMetaValidationRule)));
-      Assert.That (((RemotionMaxLengthMetaValidationRule) result[0]).MaxLenght, Is.EqualTo(10));
+      Assert.That (((RemotionMaxLengthMetaValidationRule) result[0]).MaxLength, Is.EqualTo(10));
 
     }
   }

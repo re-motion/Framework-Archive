@@ -19,7 +19,10 @@ using Remotion.Utilities;
 
 namespace Remotion.Validation.MetaValidation
 {
-  public class MetaValidationRuleValidationResult
+  /// <summary>
+  /// Encapsulates the result of a validation rule consistency verification.
+  /// </summary>
+  public sealed class MetaValidationRuleValidationResult
   {
     public static MetaValidationRuleValidationResult CreateValidResult ()
     {
@@ -38,7 +41,7 @@ namespace Remotion.Validation.MetaValidation
     private readonly bool _isValid;
     private readonly string _message;
 
-    protected MetaValidationRuleValidationResult (bool isValid, string message)
+    private MetaValidationRuleValidationResult (bool isValid, string message)
     {
       _isValid = isValid;
       _message = message;

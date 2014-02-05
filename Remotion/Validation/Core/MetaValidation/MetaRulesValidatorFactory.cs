@@ -23,6 +23,9 @@ using Remotion.Validation.Rules;
 
 namespace Remotion.Validation.MetaValidation
 {
+  /// <summary>
+  /// Default implementation of the <see cref="IMetaRulesValidatorFactory"/> interface.
+  /// </summary>
   public class MetaRulesValidatorFactory : IMetaRulesValidatorFactory
   {
     private readonly Func<IPropertyInformation, ISystemMetaValidationRulesProvider> _systemMetaValidationRulesProviderFactory;

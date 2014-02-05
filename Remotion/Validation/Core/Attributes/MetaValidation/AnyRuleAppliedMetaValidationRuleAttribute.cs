@@ -22,6 +22,11 @@ using Remotion.Validation.MetaValidation.Rules.Custom;
 
 namespace Remotion.Validation.Attributes.MetaValidation
 {
+  /// <summary>
+  /// Apply the <see cref="AnyRuleAppliedMetaValidationRuleAttribute"/> to a property to ensure that there is at least one validation rule 
+  /// specified. This is used if a domain library provides a property that obviously requires some constraints, but the exact usage can vary 
+  /// from project to project.
+  /// </summary>
   public class AnyRuleAppliedMetaValidationRuleAttribute : AddingMetaValidationRuleAttributeBase
   {
     public override IMetaValidationRule GetMetaValidationRule (PropertyInfo property)

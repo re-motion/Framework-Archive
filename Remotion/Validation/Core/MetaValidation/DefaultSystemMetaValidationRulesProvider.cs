@@ -22,22 +22,23 @@ using Remotion.Validation.MetaValidation.Rules.System;
 
 namespace Remotion.Validation.MetaValidation
 {
+  /// <summary>
+  /// Default implementation of the <see cref="ISystemMetaValidationRulesProvider"/> interface. Provides a <see cref="LengthSystemMetaValidationRule"/>.
+  /// </summary>
   public class DefaultSystemMetaValidationRulesProvider : ISystemMetaValidationRulesProvider
   {
-    protected readonly IPropertyInformation MemberInfo;
+    protected readonly IPropertyInformation PropertyInformation;
 
-    public DefaultSystemMetaValidationRulesProvider (IPropertyInformation memberInfo)
+    public DefaultSystemMetaValidationRulesProvider (IPropertyInformation propertyInformation)
     {
-      ArgumentUtility.CheckNotNull ("memberInfo", memberInfo);
+      ArgumentUtility.CheckNotNull ("propertyInformation", propertyInformation);
 
-      MemberInfo = memberInfo;
+      PropertyInformation = propertyInformation;
     }
 
     public IEnumerable<IMetaValidationRule> GetSystemMetaValidationRules ()
     {
-      yield return new LengthSystemMetaValidationRule (MemberInfo);
-
-      //TODO: add additional system meta validation rules
+      yield return new LengthSystemMetaValidationRule (PropertyInformation);
     }
   }
 }

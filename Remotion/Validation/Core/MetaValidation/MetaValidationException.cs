@@ -18,6 +18,9 @@ using System;
 
 namespace Remotion.Validation.MetaValidation
 {
+  /// <summary>
+  /// This exception represents an inconsistent validation rule configuration.
+  /// </summary>
   public class MetaValidationException : Exception
   {
     public MetaValidationException (string message)

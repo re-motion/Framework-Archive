@@ -15,12 +15,17 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 
+using System;
 using FluentValidation.Validators;
 using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.Validation.MetaValidation
 {
+  /// <summary>
+  /// Base class for implementations of the <see cref="IMetaValidationRule"/> interface which are inherent to the validation specification of any given any application.
+  /// </summary>
+  /// <typeparam name="TValidator">The type of the <see cref="IPropertyValidator"/> validated by this meta validator.</typeparam>
   public abstract class SystemMetaValidationRuleBase<TValidator> : MetaValidationRuleBase<TValidator>
       where TValidator: IPropertyValidator
   {
@@ -38,17 +43,16 @@ namespace Remotion.Validation.MetaValidation
       get { return _propertyInfo; }
     }
 
-    protected MetaValidationRuleValidationResult GetValidationResult (bool condition)
+    protected MetaValidationRuleValidationResult GetValidationResult (bool isValid)
     {
-      if (condition)
-        return MetaValidationRuleValidationResult.CreateValidResult ();
-      else
-      {
-        return
-            MetaValidationRuleValidationResult.CreateInvalidResult (
-                "'{0}' failed for member '{1}.{2}'.", GetType ().Name, PropertyInfo.DeclaringType.FullName, PropertyInfo.Name);
-      }
+      if (isValid)
+        return MetaValidationRuleValidationResult.CreateValidResult();
+
+      return MetaValidationRuleValidationResult.CreateInvalidResult (
+          "'{0}' failed for member '{1}.{2}'.",
+          GetType().Name,
+          PropertyInfo.DeclaringType.FullName,
+          PropertyInfo.Name);
     }
   }
-
 }
