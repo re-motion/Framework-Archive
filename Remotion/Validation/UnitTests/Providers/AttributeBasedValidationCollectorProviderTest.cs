@@ -47,7 +47,7 @@ namespace Remotion.Validation.UnitTests.Providers
     private MaxLengthMetaValidationRule _metaValidationRule1;
     private MaxValidatorCountRule _metaValidationRule2;
     private MaxLengthMetaValidationRule _metaValidationRule3;
-    private IMetaValidationRule<LengthValidator> _metaValidationRuleStub4;
+    private IMetaValidationRule _metaValidationRuleStub4;
 
     [SetUp]
     public void SetUp ()
@@ -62,7 +62,7 @@ namespace Remotion.Validation.UnitTests.Providers
       _metaValidationRule1 = new MaxLengthMetaValidationRule();
       _metaValidationRule2 = new MaxValidatorCountRule();
       _metaValidationRule3 = new MaxLengthMetaValidationRule();
-      _metaValidationRuleStub4 = MockRepository.GenerateStub<IMetaValidationRule<LengthValidator>>();
+      _metaValidationRuleStub4 = MockRepository.GenerateStub<IMetaValidationRule>();
 
       _validatorRegistration1 = new ValidatorRegistration (typeof (NotNullValidator), null);
       _validatorRegistration2 = new ValidatorRegistration (typeof (NotEmptyValidator), null);
@@ -135,26 +135,6 @@ namespace Remotion.Validation.UnitTests.Providers
       Assert.That (
           removedPropertyRuleRegistrations,
           Is.EquivalentTo (new[] { _validatorRegistration3.ValidatorType, _validatorRegistration4.ValidatorType }));
-    }
-
-    [Test]
-    public void GetComponentValidationCollectors_InvalidMetaValidationRule ()
-    {
-      _validationPropertyRuleReflectorMock = MockRepository.GenerateStrictMock<IValidationPropertyRuleReflector>();
-      _validationPropertyRuleReflectorMock.Expect (mock => mock.GetAddingPropertyValidators()).Return (new IPropertyValidator[0]);
-      _validationPropertyRuleReflectorMock.Expect (mock => mock.GetHardConstraintPropertyValidators()).Return (new IPropertyValidator[0]);
-      _validationPropertyRuleReflectorMock.Expect (mock => mock.GetRemovingPropertyRegistrations()).Return (new ValidatorRegistration[0]);
-      _validationPropertyRuleReflectorMock.Expect (mock => mock.GetMetaValidationRules())
-          .Return (new IMetaValidationRule[] { _metaValidationRuleStub4 });
-
-      var collectorProvider = new TestableAttributeBasedValidationCollectorProviderBase (_validationPropertyRuleReflectorMock);
-
-      var exception =
-          Assert.Throws<TargetInvocationException> (
-              () => collectorProvider.GetValidationCollectors (new[] { typeof (Person) }).SelectMany (g => g).ToArray());
-      var innerException = exception.InnerException.InnerException; //nested reflection call!
-      Assert.That (innerException, Is.TypeOf (typeof (InvalidOperationException)));
-      Assert.That (innerException.Message.Contains ("has no generic arguments."), Is.True);
     }
   }
 }

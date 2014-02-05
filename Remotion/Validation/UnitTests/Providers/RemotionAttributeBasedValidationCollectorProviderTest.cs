@@ -25,12 +25,12 @@ namespace Remotion.Validation.UnitTests.Providers
   [TestFixture]
   public class RemotionAttributeBasedValidationCollectorProviderTest
   {
-    private TestableReStoreAttributeBasedValidationCollectorProvider _provider;
+    private TestableDomainObjectAttributesBasedValidationCollectorProvider _provider;
 
     [SetUp]
     public void SetUp ()
     {
-      _provider = new TestableReStoreAttributeBasedValidationCollectorProvider();
+      _provider = new TestableDomainObjectAttributesBasedValidationCollectorProvider();
     }
 
     [Test]
@@ -38,7 +38,7 @@ namespace Remotion.Validation.UnitTests.Providers
     {
       var result = _provider.CreatePropertyRuleReflector (typeof (Customer).GetProperty ("UserName"));
 
-      Assert.That (result, Is.TypeOf (typeof (ReStoreValidationPropertyRuleReflector)));
+      Assert.That (result, Is.TypeOf (typeof (DomainObjectAttributesBasedValidationPropertyRuleReflector)));
     }
   }
 }

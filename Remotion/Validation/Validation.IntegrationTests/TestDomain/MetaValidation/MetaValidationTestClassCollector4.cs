@@ -18,7 +18,6 @@
 using System;
 using System.Linq;
 using FluentValidation;
-using FluentValidation.Validators;
 using Remotion.Validation.MetaValidation;
 
 namespace Remotion.Validation.IntegrationTests.TestDomain.MetaValidation
@@ -27,7 +26,7 @@ namespace Remotion.Validation.IntegrationTests.TestDomain.MetaValidation
   {
     public MetaValidationTestClassCollector4 ()
     {
-      AddRule (c => c.Property1).AddMetaValidationRule<LengthValidator> (lengthRules =>
+      AddRule (c => c.Property1).AddMetaValidationRule(lengthRules =>
       {
         if (lengthRules.Count() > 1)
           return MetaValidationRuleValidationResult.CreateInvalidResult ("Invalid length validator count!");

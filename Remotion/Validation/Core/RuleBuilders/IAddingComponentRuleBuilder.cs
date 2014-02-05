@@ -37,20 +37,18 @@ namespace Remotion.Validation.RuleBuilders
     IRuleBuilderOptions<TValidatedType, TProperty> NotRemovable ();
 
     /// <summary>
-    /// Registers an <see cref="IMetaValidationRule{TValidatedType}"/> for validators of type <typeparamref name="TValidator"/>.
+    /// Registers an <see cref="IMetaValidationRule"/> for the given validators.
     /// </summary>
     /// <returns>An object to continue the fluent specification.</returns>
-    IRuleBuilderOptions<TValidatedType, TProperty> AddMetaValidationRule<TValidator> (IMetaValidationRule<TValidator> metaValidationRule)
-        where TValidator: IPropertyValidator;
+    IRuleBuilderOptions<TValidatedType, TProperty> AddMetaValidationRule (IMetaValidationRule metaValidationRule);
 
     /// <summary>
-    /// Registers a delegate which will be used for performing consistency checks on validators of type <typeparamref name="TValidator"/>.
+    /// Registers a delegate which will be used for performing consistency checks on the given validators.
     /// </summary>
     /// <returns>An object to continue the fluent specification.</returns>
-    IRuleBuilderOptions<TValidatedType, TProperty> AddMetaValidationRule<TValidator> (
-        Func<IEnumerable<TValidator>, MetaValidationRuleValidationResult> metaValidationRuleExecutor)
-        where TValidator: IPropertyValidator;
-
+    IRuleBuilderOptions<TValidatedType, TProperty> AddMetaValidationRule (
+        Func<IEnumerable<IPropertyValidator>, MetaValidationRuleValidationResult> rule);
+    
     /// <summary>
     /// Registers a predicate expression which will be used for performing consistency checks on validators of type <typeparamref name="TValidator"/>.
     /// </summary>

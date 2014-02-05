@@ -22,7 +22,7 @@ using Remotion.Validation.Implementation;
 
 namespace Remotion.Validation.UnitTests.Providers
 {
-  public class TestableReStoreAttributeBasedValidationCollectorProvider : ReStoreAttributeBasedValidationCollectorProvider
+  public class TestableDomainObjectAttributesBasedValidationCollectorProvider : DomainObjectAttributesBasedValidationCollectorProvider
   {
     public new IValidationPropertyRuleReflector CreatePropertyRuleReflector (PropertyInfo property)
     {

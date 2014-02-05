@@ -17,7 +17,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Reflection;
 using FluentValidation.Validators;
 using JetBrains.Annotations;
 using Remotion.Reflection;
@@ -48,9 +47,10 @@ namespace Remotion.Validation.Rules
     IEnumerable<IMetaValidationRule> MetaValidationRules { get; }
 
     /// <summary>
-    /// Registers a <see cref="IMetaValidationRule{TValidator}"/> for the <see cref="Property"/> by the <see cref="CollectorType"/>.
+    /// Registers a <see cref="IMetaValidationRule"/> for validators of type <typeparamref name="TValidator"/> for 
+    /// the <see cref="Property"/> by the <see cref="CollectorType"/>.
     /// </summary>
-    void RegisterMetaValidationRule<TValidatorType> ([NotNull] IMetaValidationRule<TValidatorType> metaValidationRule)
-        where TValidatorType: IPropertyValidator;
+    void RegisterMetaValidationRule<TValidator> ([NotNull] IMetaValidationRule metaValidationRule)
+        where TValidator: IPropertyValidator;
   }
 }

@@ -62,23 +62,21 @@ namespace Remotion.Validation.RuleBuilders
       return this;
     }
 
-    public IRuleBuilderOptions<TValidatedType, TProperty> AddMetaValidationRule<TValidator> (IMetaValidationRule<TValidator> metaValidationRule)
-        where TValidator: IPropertyValidator
+    public IRuleBuilderOptions<TValidatedType, TProperty> AddMetaValidationRule (IMetaValidationRule metaValidationRule)
     {
       ArgumentUtility.CheckNotNull ("metaValidationRule", metaValidationRule);
 
-      _addingMetaValidationPropertyRule.RegisterMetaValidationRule (metaValidationRule);
+      _addingMetaValidationPropertyRule.RegisterMetaValidationRule<IPropertyValidator> (metaValidationRule);
       return this;
     }
 
-    public IRuleBuilderOptions<TValidatedType, TProperty> AddMetaValidationRule<TValidator> (
-        Func<IEnumerable<TValidator>, MetaValidationRuleValidationResult> metaValidationRuleExecutor)
-        where TValidator: IPropertyValidator
+    public IRuleBuilderOptions<TValidatedType, TProperty> AddMetaValidationRule (
+        Func<IEnumerable<IPropertyValidator>, MetaValidationRuleValidationResult> rule)
     {
-      ArgumentUtility.CheckNotNull ("metaValidationRuleExecutor", metaValidationRuleExecutor);
+      ArgumentUtility.CheckNotNull ("rule", rule);
 
-      var metaValidationRule = new DelegateMetaValidationRule<TValidator> (metaValidationRuleExecutor);
-      _addingMetaValidationPropertyRule.RegisterMetaValidationRule (metaValidationRule);
+      var metaValidationRule = new DelegateMetaValidationRule<IPropertyValidator> (rule);
+      _addingMetaValidationPropertyRule.RegisterMetaValidationRule<IPropertyValidator> (metaValidationRule);
       return this;
     }
 
@@ -105,7 +103,7 @@ namespace Remotion.Validation.RuleBuilders
                 _addingComponentPropertyRule.Property.Name);
           });
 
-      _addingMetaValidationPropertyRule.RegisterMetaValidationRule (metaValidationRule);
+      _addingMetaValidationPropertyRule.RegisterMetaValidationRule<TValidator> (metaValidationRule);
       return this;
     }
 

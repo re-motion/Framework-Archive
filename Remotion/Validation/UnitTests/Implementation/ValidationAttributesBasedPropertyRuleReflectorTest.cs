@@ -27,14 +27,14 @@ using Remotion.Validation.UnitTests.TestDomain;
 namespace Remotion.Validation.UnitTests.Implementation
 {
   [TestFixture]
-  public class ComponentValidationPropertyRuleReflectorTest
+  public class ValidationAttributesBasedPropertyRuleReflectorTest
   {
     private PropertyInfo _customerLastNameProperty;
     private PropertyInfo _specialCustomerLastNameProperty;
-    private ComponentValidationPropertyRuleReflector _customerPropertyReflector;
-    private ComponentValidationPropertyRuleReflector _specialCustomerPropertyReflector;
+    private ValidationAttributesBasedPropertyRuleReflector _customerPropertyReflector;
+    private ValidationAttributesBasedPropertyRuleReflector _specialCustomerPropertyReflector;
     private PropertyInfo _addressPostalCodeProperty;
-    private ComponentValidationPropertyRuleReflector _addressPropertyReflector;
+    private ValidationAttributesBasedPropertyRuleReflector _addressPropertyReflector;
 
     [SetUp]
     public void SetUp ()
@@ -43,9 +43,9 @@ namespace Remotion.Validation.UnitTests.Implementation
       _specialCustomerLastNameProperty = typeof (SpecialCustomer1).GetProperty ("UserName");
       _addressPostalCodeProperty = typeof (Address).GetProperty ("PostalCode");
 
-      _customerPropertyReflector = new ComponentValidationPropertyRuleReflector (_customerLastNameProperty);
-      _specialCustomerPropertyReflector = new ComponentValidationPropertyRuleReflector (_specialCustomerLastNameProperty);
-      _addressPropertyReflector = new ComponentValidationPropertyRuleReflector (_addressPostalCodeProperty);
+      _customerPropertyReflector = new ValidationAttributesBasedPropertyRuleReflector (_customerLastNameProperty);
+      _specialCustomerPropertyReflector = new ValidationAttributesBasedPropertyRuleReflector (_specialCustomerLastNameProperty);
+      _addressPropertyReflector = new ValidationAttributesBasedPropertyRuleReflector (_addressPostalCodeProperty);
     }
 
     [Test]

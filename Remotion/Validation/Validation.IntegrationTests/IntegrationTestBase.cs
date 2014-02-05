@@ -58,8 +58,8 @@ namespace Remotion.Validation.IntegrationTests
                       SafeServiceLocator.Current.GetInstance<ICompoundValidationTypeFilter>())),
               new IValidationCollectorProvider[]
               {
-                  new ReStoreAttributeBasedValidationCollectorProvider(),
-                  new ComponentValidationAttributeBasedValidationCollectorProvider(),
+                  new DomainObjectAttributesBasedValidationCollectorProvider(),
+                  new ValidationAttributesBasedCollectorProvider(),
                   new ApiBasedComponentValidationCollectorProvider (new DiscoveryServiceBasedTypeCollectorReflector())
               }),
           new DiagnosticOutputRuleMergeDecorator (

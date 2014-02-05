@@ -20,7 +20,6 @@ using System.Reflection;
 using FluentValidation.Validators;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Validation;
-using Remotion.Validation.Implementation;
 using Remotion.Validation.MetaValidation.Rules.Custom;
 using System.Linq;
 using Remotion.Validation.UnitTests.Implementation.TestDomain;
@@ -28,16 +27,16 @@ using Remotion.Validation.UnitTests.Implementation.TestDomain;
 namespace Remotion.Validation.UnitTests.Implementation
 {
   [TestFixture]
-  public class RemotionValidationPropertyRuleReflectorTest
+  public class DomainObjectAttributesBasedValidationPropertyRuleReflectorTest
   {
     private PropertyInfo _propertyWithoutAttribute;
     private PropertyInfo _propertyWithMandatoryAttribute;
     private PropertyInfo _propertyWithNullableStringPropertyAttribute;
     private PropertyInfo _propertyWithMandatoryStringPropertyAttribute;
-    private ReStoreValidationPropertyRuleReflector _propertyWithoutAttributeReflector;
-    private ReStoreValidationPropertyRuleReflector _propertyWithNullableStringPropertyAttributeReflector;
-    private ReStoreValidationPropertyRuleReflector _propertyWithMandatoryStringPropertyAttributeReflector;
-    private ReStoreValidationPropertyRuleReflector _propertyWithMandatoryAttributeReflector;
+    private DomainObjectAttributesBasedValidationPropertyRuleReflector _propertyWithoutAttributeReflector;
+    private DomainObjectAttributesBasedValidationPropertyRuleReflector _propertyWithNullableStringPropertyAttributeReflector;
+    private DomainObjectAttributesBasedValidationPropertyRuleReflector _propertyWithMandatoryStringPropertyAttributeReflector;
+    private DomainObjectAttributesBasedValidationPropertyRuleReflector _propertyWithMandatoryAttributeReflector;
 
     [SetUp]
     public void SetUp ()
@@ -47,10 +46,10 @@ namespace Remotion.Validation.UnitTests.Implementation
       _propertyWithNullableStringPropertyAttribute = typeof (TypeWithReStoreAttributes).GetProperty ("PropertyWithNullableStringPropertyAttribute");
       _propertyWithMandatoryStringPropertyAttribute = typeof (TypeWithReStoreAttributes).GetProperty ("PropertyWithMandatoryStringPropertyAttribute");
 
-      _propertyWithoutAttributeReflector = new ReStoreValidationPropertyRuleReflector (_propertyWithoutAttribute);
-      _propertyWithMandatoryAttributeReflector = new ReStoreValidationPropertyRuleReflector (_propertyWithMandatoryAttribute);
-      _propertyWithNullableStringPropertyAttributeReflector = new ReStoreValidationPropertyRuleReflector (_propertyWithNullableStringPropertyAttribute);
-      _propertyWithMandatoryStringPropertyAttributeReflector = new ReStoreValidationPropertyRuleReflector (_propertyWithMandatoryStringPropertyAttribute);
+      _propertyWithoutAttributeReflector = new DomainObjectAttributesBasedValidationPropertyRuleReflector (_propertyWithoutAttribute);
+      _propertyWithMandatoryAttributeReflector = new DomainObjectAttributesBasedValidationPropertyRuleReflector (_propertyWithMandatoryAttribute);
+      _propertyWithNullableStringPropertyAttributeReflector = new DomainObjectAttributesBasedValidationPropertyRuleReflector (_propertyWithNullableStringPropertyAttribute);
+      _propertyWithMandatoryStringPropertyAttributeReflector = new DomainObjectAttributesBasedValidationPropertyRuleReflector (_propertyWithMandatoryStringPropertyAttribute);
     }
 
     [Test]

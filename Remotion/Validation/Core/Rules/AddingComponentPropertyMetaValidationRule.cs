@@ -70,7 +70,8 @@ namespace Remotion.Validation.Rules
       get { return _metaValidationRules.AsReadOnly(); }
     }
 
-    public void RegisterMetaValidationRule<TValidatorType> (IMetaValidationRule<TValidatorType> metaValidationRule) where TValidatorType: IPropertyValidator
+    public void RegisterMetaValidationRule<TValidator> (IMetaValidationRule metaValidationRule) 
+        where TValidator: IPropertyValidator // TODO AO: Drop generic
     {
       ArgumentUtility.CheckNotNull ("metaValidationRule", metaValidationRule);
 

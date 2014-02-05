@@ -17,6 +17,7 @@
 
 using System;
 using FluentValidation;
+using FluentValidation.Validators;
 using Remotion.Validation.IntegrationTests.TestDomain.MetaValidation.Rules;
 
 namespace Remotion.Validation.IntegrationTests.TestDomain.MetaValidation

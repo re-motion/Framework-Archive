@@ -106,7 +106,7 @@
     <Compile Include="Implementation\TestDomain\MixinForDerivedType2.cs" />
     <Compile Include="Merging\OrderPrecedenceValidationCollectorMergerTest.cs" />
     <Compile Include="Merging\DiagnosticOutputRuleMergeDecoratorTest.cs" />
-    <Compile Include="Implementation\RemotionValidationPropertyRuleReflectorTest.cs" />
+    <Compile Include="Implementation\DomainObjectAttributesBasedValidationPropertyRuleReflectorTest.cs" />
     <Compile Include="Implementation\TestDomain\TypeWithoutBaseTypeCollector1.cs" />
     <Compile Include="Implementation\TestDomain\TypeWithoutBaseTypeCollector2.cs" />
     <Compile Include="Implementation\TestDomain\TypeWithReStoreAttributes.cs" />
@@ -117,7 +117,7 @@
     <Compile Include="Implementation\TestDomain\TypeWithSeveralBaseTypes.cs" />
     <Compile Include="Implementation\TestDomain\TypeWithOneInterface.cs" />
     <Compile Include="Implementation\TestDomain\TypeWithSeveralInterfaces.cs" />
-    <Compile Include="Implementation\ComponentValidationPropertyRuleReflectorTest.cs" />
+    <Compile Include="Implementation\ValidationAttributesBasedPropertyRuleReflectorTest.cs" />
     <Compile Include="Implementation\TestDomain\TypeWithTwoInterfacesHavingCommingBaseInterface.cs" />
     <Compile Include="Implementation\ValidationCollectorInfoTest.cs" />
     <Compile Include="Implementation\ValidationRuleStub.cs" />
@@ -136,8 +136,8 @@
     <Compile Include="Providers\ComponentValidationAttributeBasedValidationCollectorProviderTest.cs" />
     <Compile Include="Providers\RemotionAttributeBasedValidationCollectorProviderTest.cs" />
     <Compile Include="Providers\TestableAttributeBasedValidationCollectorProviderBase.cs" />
-    <Compile Include="Providers\TestableComponentValidationAttributeBasedValidationCollectorProvider.cs" />
-    <Compile Include="Providers\TestableReStoreAttributeBasedValidationCollectorProvider.cs" />
+    <Compile Include="Providers\TestableValidationAttributesBasedCollectorProvider.cs" />
+    <Compile Include="Providers\TestableDomainObjectAttributesBasedValidationCollectorProvider.cs" />
     <Compile Include="Rules\AddingComponentPropertyMetaValidationRuleTest.cs" />
     <Compile Include="TestDomain\Address.cs" />
     <Compile Include="TestDomain\Collectors\CustomerMixinIntroducedValidationCollector1.cs" />

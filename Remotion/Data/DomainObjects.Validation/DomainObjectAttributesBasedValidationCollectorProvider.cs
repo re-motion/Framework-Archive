@@ -14,17 +14,25 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
 using System.Reflection;
+using FluentValidation.Validators;
+using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.Validation.Implementation;
+using Remotion.Validation.Providers;
 
-namespace Remotion.Validation.Providers
+namespace Remotion.Data.DomainObjects.Validation
 {
-  public class ComponentValidationAttributeBasedValidationCollectorProvider : AttributeBasedValidationCollectorProviderBase
+  /// <summary>
+  /// Uses the <see cref="ILengthConstrainedPropertyAttribute"/> and the <see cref="INullablePropertyAttribute"/> to build <see cref="LengthValidator"/> 
+  /// and <see cref="NotNullValidator"/> for properties.
+  /// </summary>
+  public class DomainObjectAttributesBasedValidationCollectorProvider : AttributeBasedValidationCollectorProviderBase
   {
     protected override IValidationPropertyRuleReflector CreatePropertyRuleReflector (PropertyInfo property)
     {
-      return new ComponentValidationPropertyRuleReflector (property);
+      return new DomainObjectAttributesBasedValidationPropertyRuleReflector (property);
     }
   }
 }

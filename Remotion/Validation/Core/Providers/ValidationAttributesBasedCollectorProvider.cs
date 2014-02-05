@@ -14,17 +14,21 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-
 using System;
-using Remotion.Validation.Providers;
+using System.Reflection;
+using Remotion.Validation.Attributes.Validation;
+using Remotion.Validation.Implementation;
 
-namespace Remotion.Validation.UnitTests.Providers
+namespace Remotion.Validation.Providers
 {
-  public class TestableComponentValidationAttributeBasedValidationCollectorProvider : ComponentValidationAttributeBasedValidationCollectorProvider
+  /// <summary>
+  /// Uses attributes derived from the <see cref="AddingValidationAttributeBase"/> type to build constraints for the properties.
+  /// </summary>
+  public class ValidationAttributesBasedCollectorProvider : AttributeBasedValidationCollectorProviderBase
   {
-    public new Validation.Implementation.IValidationPropertyRuleReflector CreatePropertyRuleReflector (System.Reflection.PropertyInfo property)
+    protected override IValidationPropertyRuleReflector CreatePropertyRuleReflector (PropertyInfo property)
     {
-      return base.CreatePropertyRuleReflector (property);
+      return new ValidationAttributesBasedPropertyRuleReflector (property);
     }
   }
 }

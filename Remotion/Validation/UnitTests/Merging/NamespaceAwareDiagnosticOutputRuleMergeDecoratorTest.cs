@@ -92,7 +92,7 @@ namespace Remotion.Validation.UnitTests.Merging
                                          {
                                              new ValidationCollectorInfo (
                                                  collector1,
-                                                 typeof (ComponentValidationAttributeBasedValidationCollectorProvider))
+                                                 typeof (ValidationAttributesBasedCollectorProvider))
                                          },
                                          new[] { new ValidationCollectorInfo (collector2, typeof (ApiBasedComponentValidationCollectorProvider)) }
                                      };
@@ -181,7 +181,7 @@ namespace Remotion.Validation.UnitTests.Merging
 
       var expectedBeforeMerge =
           "\r\nBEFORE MERGE:"
-          + "\r\n\r\n-> Remotion.Validation.Providers.ComponentValidationAttributeBasedValidationCollectorProvider#Remotion.Validation.UnitTests.Implementation.TestDomain.TypeWithoutBaseTypeCollector1"
+          + "\r\n\r\n-> Remotion.Validation.Providers.ValidationAttributesBasedCollectorProvider#Remotion.Validation.UnitTests.Implementation.TestDomain.TypeWithoutBaseTypeCollector1"
           + "\r\n\r\n    -> Remotion.Validation.UnitTests.Implementation.TestDomain.TypeWithoutBaseType#Property1"
           + "\r\n        ADDED HARD CONSTRAINT VALIDATORS:"
           + "\r\n        -> FluentValidation.Validators.NotNullValidator (x1)"

@@ -27,11 +27,14 @@ using Remotion.Validation.Rules;
 
 namespace Remotion.Validation.Implementation
 {
-  public class ComponentValidationPropertyRuleReflector : IValidationPropertyRuleReflector
+  /// <summary>
+  /// Creates <see cref="IPropertyValidator"/>s based on attributes derived from <see cref="AddingValidationAttributeBase"/>.
+  /// </summary>
+  public class ValidationAttributesBasedPropertyRuleReflector : IValidationPropertyRuleReflector
   {
     private readonly PropertyInfo _property;
 
-    public ComponentValidationPropertyRuleReflector (PropertyInfo property)
+    public ValidationAttributesBasedPropertyRuleReflector (PropertyInfo property)
     {
       ArgumentUtility.CheckNotNull ("property", property);
 

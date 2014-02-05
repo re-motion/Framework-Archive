@@ -49,8 +49,8 @@
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ReStoreAttributeBasedValidationCollectorProvider.cs" />
-    <Compile Include="ReStoreValidationPropertyRuleReflector.cs" />
+    <Compile Include="DomainObjectAttributesBasedValidationCollectorProvider.cs" />
+    <Compile Include="DomainObjectAttributesBasedValidationPropertyRuleReflector.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\remotion.snk">

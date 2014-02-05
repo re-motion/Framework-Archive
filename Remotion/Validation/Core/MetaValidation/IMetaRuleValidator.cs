@@ -20,6 +20,11 @@ using FluentValidation;
 
 namespace Remotion.Validation.MetaValidation
 {
+  /// <summary>
+  /// Implementations of the <see cref="IMetaRuleValidator"/> interface can be used to validate the consistency of a 
+  /// set of <see cref="IValidationRule"/>s.
+  /// </summary>
+  /// <seealso cref="MetaRulesValidator"/>
   public interface IMetaRuleValidator
   {
     IEnumerable<MetaValidationRuleValidationResult> Validate (IValidationRule[] validationRules);

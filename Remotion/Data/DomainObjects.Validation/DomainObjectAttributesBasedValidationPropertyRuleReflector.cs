@@ -29,11 +29,14 @@ using Remotion.Validation.Rules;
 
 namespace Remotion.Data.DomainObjects.Validation
 {
-  public class ReStoreValidationPropertyRuleReflector : IValidationPropertyRuleReflector
+  /// <summary>
+  /// Create <see cref="IPropertyValidator"/>s based on the <see cref="ILengthConstrainedPropertyAttribute"/> and the <see cref="INullablePropertyAttribute"/>.
+  /// </summary>
+  public class DomainObjectAttributesBasedValidationPropertyRuleReflector : IValidationPropertyRuleReflector
   {
     private readonly PropertyInfo _property;
 
-    public ReStoreValidationPropertyRuleReflector (PropertyInfo property)
+    public DomainObjectAttributesBasedValidationPropertyRuleReflector (PropertyInfo property)
     {
       ArgumentUtility.CheckNotNull ("property", property);
 

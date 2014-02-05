@@ -21,6 +21,7 @@ using Remotion.Utilities;
 
 namespace Remotion.Validation.MetaValidation
 {
+
   public class DelegateMetaValidationRule<TValidator> : MetaValidationRuleBase<TValidator> where TValidator : IPropertyValidator
   {
     private readonly Func<IEnumerable<TValidator>, MetaValidationRuleValidationResult> _metaValidationRuleExecutor;

@@ -29,8 +29,12 @@ using Remotion.Validation.Utilities;
 
 namespace Remotion.Validation.Providers
 {
+  /// <summary>
+  /// Base class for <see cref="IValidationCollectorProvider"/> implementations which use property annotations to define the constraints. 
+  /// </summary>
   public abstract class AttributeBasedValidationCollectorProviderBase : IValidationCollectorProvider
   {
+    //TODO AO: make private
     public class AttributeValidationCollector<T> : ComponentValidationCollector<T>
     {
       public AttributeValidationCollector ()
@@ -141,22 +145,8 @@ namespace Remotion.Validation.Providers
         IAddingComponentRuleBuilderOptions<TValidatedType, TProperty> addingComponentRuleBuilder,
         IMetaValidationRule[] metaValidationRules)
     {
-      var builderType = addingComponentRuleBuilder.GetType();
-      var genericAddMetadataRuleMethod = builderType.GetMethods().Single (GenericMethodFilter);
-
       foreach (var metaValidationRule in metaValidationRules)
-      {
-        var genericType = metaValidationRule.GetType().GetFirstGenericTypeParameterInHierarchy();
-        var addMetadataRuleMethod = genericAddMetadataRuleMethod.MakeGenericMethod (genericType);
-        addMetadataRuleMethod.Invoke (addingComponentRuleBuilder, new[] { metaValidationRule });
-      }
-    }
-
-    private static bool GenericMethodFilter (MethodInfo m)
-    {
-      return m.Name == "AddMetaValidationRule" && m.GetParameters().Any()
-             && m.GetParameters().First().ParameterType.Namespace + "." + m.GetParameters().First().ParameterType.Name
-             == typeof (IMetaValidationRule<>).FullName;
+        addingComponentRuleBuilder.AddMetaValidationRule (metaValidationRule);
     }
   }
 }

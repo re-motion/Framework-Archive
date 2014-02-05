@@ -23,16 +23,20 @@ using Remotion.Utilities;
 
 namespace Remotion.Validation.MetaValidation
 {
-  public abstract class MetaValidationRuleBase<TValidatorType> : IMetaValidationRule<TValidatorType>
-      where TValidatorType: IPropertyValidator
+  /// <summary>
+  /// Base class for implementations of the <see cref="IMetaValidationRule"/> interface which are constrained to a specific <see cref="IPropertyValidator"/> type.
+  /// </summary>
+  /// <typeparam name="TValidator">The type of the <see cref="IPropertyValidator"/> validated by this meta validator.</typeparam>
+  public abstract class MetaValidationRuleBase<TValidator> : IMetaValidationRule
+      where TValidator: IPropertyValidator
   {
-    public abstract IEnumerable<MetaValidationRuleValidationResult> Validate (IEnumerable<TValidatorType> validationRules);
+    public abstract IEnumerable<MetaValidationRuleValidationResult> Validate (IEnumerable<TValidator> validationRules);
 
     IEnumerable<MetaValidationRuleValidationResult> IMetaValidationRule.Validate (IEnumerable<IPropertyValidator> validationRules)
     {
       ArgumentUtility.CheckNotNull ("validationRules", validationRules);
 
-      return Validate (validationRules.OfType<TValidatorType>());
+      return Validate (validationRules.OfType<TValidator>());
     }
   }
 }

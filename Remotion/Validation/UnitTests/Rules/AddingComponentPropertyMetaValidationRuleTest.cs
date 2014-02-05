@@ -69,17 +69,17 @@ namespace Remotion.Validation.UnitTests.Rules
     [Test]
     public void RegisterMetaValidationRule ()
     {
-      var metaValidationRuleStub1 = MockRepository.GenerateStub<IMetaValidationRule<LengthValidator>>();
-      var metaValidationRuleStub2 = MockRepository.GenerateStub<IMetaValidationRule<NotNullValidator>>();
+      var metaValidationRuleStub1 = MockRepository.GenerateStub<IMetaValidationRule>();
+      var metaValidationRuleStub2 = MockRepository.GenerateStub<IMetaValidationRule>();
       Assert.That (_rule.MetaValidationRules.Count(), Is.EqualTo (0));
 
-      _rule.RegisterMetaValidationRule (metaValidationRuleStub1);
-      _rule.RegisterMetaValidationRule (metaValidationRuleStub2);
+      _rule.RegisterMetaValidationRule<IPropertyValidator> (metaValidationRuleStub1);
+      _rule.RegisterMetaValidationRule<IPropertyValidator> (metaValidationRuleStub2);
 
       Assert.That (_rule.MetaValidationRules.Count(), Is.EqualTo (2));
       Assert.That (
           _rule.MetaValidationRules,
-          Is.EquivalentTo (new IMetaValidationRule[] { metaValidationRuleStub1, metaValidationRuleStub2 }));
+          Is.EquivalentTo (new[] { metaValidationRuleStub1, metaValidationRuleStub2 }));
     }
 
     [Test]

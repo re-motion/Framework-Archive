@@ -29,7 +29,7 @@ namespace Remotion.Validation.IntegrationTests.TestDomain.MetaValidation
       AddRule (c => c.Property1).Length (0, 20);
       AddRule (c => c.Property2).AddMetaValidationRule<IPropertyValidator>(rules=>rules.Any());
       AddRule (c => c.Property3).NotNull ();
-      AddRule (c => c.Property5).AddMetaValidationRule<IPropertyValidator> (rules => rules.Any ());
+      AddRule (c => c.Property5).AddMetaValidationRule<IPropertyValidator>(rules => rules.Any ());
     }
   }
 }
