@@ -77,7 +77,8 @@ namespace Remotion.Validation.Rules
 
     public IPropertyInformation Property
     {
-      get { return PropertyInfoAdapter.Create((PropertyInfo) Member); }
+      get { return PropertyInfoAdapter.Create((PropertyInfo) Member); //TODO AO: local variable  
+      }
     }
 
     public Type CollectorType

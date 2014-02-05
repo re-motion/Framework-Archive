@@ -50,6 +50,7 @@ namespace Remotion.Validation
       get { return typeof (TValidatedType); }
     }
 
+    //TODO AO: remove (validate collectors in FluentValidationBuilder)
     public ITypeValidator TypeValidator 
     {
       get { return SafeServiceLocator.Current.GetInstance<ICompoundTypeValidator>(); }
