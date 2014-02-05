@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using Remotion.Reflection;
 using Remotion.Utilities;
 using Remotion.Validation.MetaValidation.Rules.System;
 
@@ -24,9 +25,9 @@ namespace Remotion.Validation.MetaValidation
 {
   public class DefaultSystemMetaValidationRulesProvider : ISystemMetaValidationRulesProvider
   {
-    protected readonly MemberInfo MemberInfo;
+    protected readonly IPropertyInformation MemberInfo;
 
-    public DefaultSystemMetaValidationRulesProvider (MemberInfo memberInfo)
+    public DefaultSystemMetaValidationRulesProvider (IPropertyInformation memberInfo)
     {
       ArgumentUtility.CheckNotNull ("memberInfo", memberInfo);
 

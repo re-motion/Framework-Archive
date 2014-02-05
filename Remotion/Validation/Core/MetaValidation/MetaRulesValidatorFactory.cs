@@ -17,7 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
+using Remotion.Reflection;
 using Remotion.Utilities;
 using Remotion.Validation.Rules;
 
@@ -25,9 +25,9 @@ namespace Remotion.Validation.MetaValidation
 {
   public class MetaRulesValidatorFactory : IMetaRulesValidatorFactory
   {
-    private readonly Func<MemberInfo, ISystemMetaValidationRulesProvider> _systemMetaValidationRulesProviderFactory;
+    private readonly Func<IPropertyInformation, ISystemMetaValidationRulesProvider> _systemMetaValidationRulesProviderFactory;
 
-    public MetaRulesValidatorFactory (Func<MemberInfo, ISystemMetaValidationRulesProvider> systemMetaValidationRulesProviderFactory)
+    public MetaRulesValidatorFactory (Func<IPropertyInformation, ISystemMetaValidationRulesProvider> systemMetaValidationRulesProviderFactory)
     {
       ArgumentUtility.CheckNotNull ("systemMetaValidationRulesProviderFactory", systemMetaValidationRulesProviderFactory);
 

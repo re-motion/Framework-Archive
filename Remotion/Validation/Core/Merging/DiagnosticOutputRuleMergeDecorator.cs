@@ -24,6 +24,7 @@ using FluentValidation;
 using FluentValidation.Internal;
 using FluentValidation.Validators;
 using Remotion.Logging;
+using Remotion.Reflection;
 using Remotion.Utilities;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.MetaValidation;
@@ -114,12 +115,11 @@ namespace Remotion.Validation.Merging
       sb.Append ("AFTER MERGE:");
 
       var propertyRules = mergedRules.OfType<PropertyRule>().ToArray();
-      var allProperties = propertyRules.Select (mr => mr.Member).Distinct (MemberInfoEqualityComparer<MemberInfo>.Instance);
+      var allProperties = propertyRules.Select (mr => (PropertyInfo) mr.Member).Distinct ();
       foreach (var property in allProperties)
       {
-        MemberInfo actualProperty = property;
-        var propertyRulesForMember =
-            propertyRules.Where (pr => MemberInfoEqualityComparer<MemberInfo>.Instance.Equals (pr.Member, actualProperty)).ToArray();
+        IPropertyInformation actualProperty = PropertyInfoAdapter.Create(property);
+        var propertyRulesForMember = propertyRules.Where (pr =>(PropertyInfoAdapter.Create( (PropertyInfo) pr.Member)).Equals(actualProperty)).ToArray();
         var validators = propertyRulesForMember.SelectMany (pr => pr.Validators).ToArray();
         var logContextInfos = propertyRulesForMember.SelectMany (pr => LogContext.GetLogContextInfos (pr)).ToArray();
         AppendPropertyRuleOutput (actualProperty, validators, logContextInfos, sb);
@@ -132,37 +132,27 @@ namespace Remotion.Validation.Merging
     }
 
     private void AppendPropertyCollectionOutput (
-        MemberInfo[] allProperties,
+        IPropertyInformation[] allProperties,
         ValidationCollectorInfo validationCollectorInfo,
         StringBuilder sb)
     {
-      var loggedProperties = new Dictionary<MemberInfo, bool> (MemberInfoEqualityComparer<MemberInfo>.Instance);
+      var loggedProperties = new Dictionary<IPropertyInformation, bool> ();
       foreach (var property in allProperties)
       {
         if (!loggedProperties.ContainsKey (property))
         {
-          MemberInfo actualProperty = property;
+          IPropertyInformation actualProperty = property;
           var removedRegistrations = validationCollectorInfo.Collector.RemovedPropertyRules
-              .Where (
-                  pr =>
-                      MemberInfoEqualityComparer<MemberInfo>.Instance.Equals (pr.Property, actualProperty))
+              .Where (pr => pr.Property.Equals(actualProperty))
               .SelectMany (pr => pr.Validators).ToArray();
           var addedHardValidators = validationCollectorInfo.Collector.AddedPropertyRules
-              .Where (
-                  pr =>
-                      pr.IsHardConstraint
-                      && MemberInfoEqualityComparer<MemberInfo>.Instance.Equals (pr.Property, actualProperty))
+              .Where (pr => pr.IsHardConstraint && pr.Property.Equals(actualProperty))
               .SelectMany (pr => pr.Validators).ToArray();
           var addedSoftValidators = validationCollectorInfo.Collector.AddedPropertyRules
-              .Where (
-                  pr =>
-                      !pr.IsHardConstraint
-                      && MemberInfoEqualityComparer<MemberInfo>.Instance.Equals (pr.Property, actualProperty))
+              .Where (pr => !pr.IsHardConstraint && pr.Property.Equals(actualProperty))
               .SelectMany (pr => pr.Validators).ToArray();
           var addedMetaValidations = validationCollectorInfo.Collector.AddedPropertyMetaValidationRules
-              .Where (
-                  pr =>
-                      MemberInfoEqualityComparer<MemberInfo>.Instance.Equals (pr.Property, actualProperty))
+              .Where (pr => pr.Property.Equals(actualProperty))
               .SelectMany (pr => pr.MetaValidationRules).ToArray();
 
           if (removedRegistrations.Any() || addedHardValidators.Any() || addedSoftValidators.Any() || addedMetaValidations.Any())
@@ -174,7 +164,7 @@ namespace Remotion.Validation.Merging
     }
 
     private void AppendPropertyOutput (
-        MemberInfo actualProperty,
+        IPropertyInformation actualProperty,
         ValidatorRegistration[] removedRegistrations,
         IPropertyValidator[] addedHardValidators,
         IPropertyValidator[] addedSoftValidators,
@@ -189,7 +179,7 @@ namespace Remotion.Validation.Merging
     }
 
     private void AppendPropertyRuleOutput (
-        MemberInfo actualProperty,
+        IPropertyInformation actualProperty,
         IPropertyValidator[] validators,
         LogContextInfo[] logContextInfos,
         StringBuilder sb)
@@ -268,12 +258,12 @@ namespace Remotion.Validation.Merging
       }
     }
 
-    private IEnumerable<MemberInfo> GetAllPropertiesForCollector (ValidationCollectorInfo validationCollectorInfo)
+    private IEnumerable<IPropertyInformation> GetAllPropertiesForCollector (ValidationCollectorInfo validationCollectorInfo)
     {
       return validationCollectorInfo.Collector.RemovedPropertyRules.Select (pr => pr.Property)
           .Concat (validationCollectorInfo.Collector.AddedPropertyRules.Select (pr => pr.Property))
           .Concat (validationCollectorInfo.Collector.AddedPropertyMetaValidationRules.Select (pr => pr.Property))
-          .Distinct (MemberInfoEqualityComparer<MemberInfo>.Instance);
+          .Distinct ();
     }
 
     private string DisplayCollectorType (ValidationCollectorInfo validationCollectorInfo)
@@ -290,11 +280,11 @@ namespace Remotion.Validation.Merging
       return typeName;
     }
 
-    private void AppendPropertyName (MemberInfo actualProperty, StringBuilder sb)
+    private void AppendPropertyName (IPropertyInformation actualProperty, StringBuilder sb)
     {
       sb.AppendLine().AppendLine();
       sb.Append (new string (' ', 4) + "-> ");
-      sb.Append (actualProperty.DeclaringType != null ? GetDomainTypeName (actualProperty.DeclaringType) + "#" : string.Empty);
+      sb.Append (actualProperty.DeclaringType != null ? GetDomainTypeName (actualProperty.DeclaringType.ConvertToRuntimeType()) + "#" : string.Empty);
       sb.Append (actualProperty.Name);
     }
   }

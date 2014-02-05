@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using FluentValidation.Validators;
+using Remotion.Reflection;
 
 namespace Remotion.Validation.MetaValidation.Rules.System
 {
@@ -27,8 +28,8 @@ namespace Remotion.Validation.MetaValidation.Rules.System
     private const int c_defaultMin = 0;
     private const int c_defaultMax = -1;
 
-    public LengthSystemMetaValidationRule (MemberInfo memberInfo)
-        : base (memberInfo)
+    public LengthSystemMetaValidationRule (IPropertyInformation propertyInfo)
+        : base (propertyInfo)
     {
     }
 

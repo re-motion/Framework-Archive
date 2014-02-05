@@ -15,8 +15,8 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 
-using System.Reflection;
 using FluentValidation.Validators;
+using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.Validation.MetaValidation
@@ -24,18 +24,18 @@ namespace Remotion.Validation.MetaValidation
   public abstract class SystemMetaValidationRuleBase<TValidator> : MetaValidationRuleBase<TValidator>
       where TValidator: IPropertyValidator
   {
-    private readonly MemberInfo _memberInfo;
+    private readonly IPropertyInformation _propertyInfo;
 
-    protected SystemMetaValidationRuleBase (MemberInfo memberInfo)
+    protected SystemMetaValidationRuleBase (IPropertyInformation propertyInfo)
     {
-      ArgumentUtility.CheckNotNull ("memberInfo", memberInfo);
+      ArgumentUtility.CheckNotNull ("propertyInfo", propertyInfo);
 
-      _memberInfo = memberInfo;
+      _propertyInfo = propertyInfo;
     }
 
-    public MemberInfo MemberInfo
+    public IPropertyInformation PropertyInfo
     {
-      get { return _memberInfo; }
+      get { return _propertyInfo; }
     }
 
     protected MetaValidationRuleValidationResult GetValidationResult (bool condition)
@@ -46,7 +46,7 @@ namespace Remotion.Validation.MetaValidation
       {
         return
             MetaValidationRuleValidationResult.CreateInvalidResult (
-                "'{0}' failed for member '{1}.{2}'.", GetType ().Name, MemberInfo.ReflectedType.FullName, MemberInfo.Name);
+                "'{0}' failed for member '{1}.{2}'.", GetType ().Name, PropertyInfo.DeclaringType.FullName, PropertyInfo.Name);
       }
     }
   }

@@ -20,6 +20,7 @@ using System.Linq;
 using FluentValidation;
 using FluentValidation.Validators;
 using NUnit.Framework;
+using Remotion.Reflection;
 using Remotion.Validation.MetaValidation;
 using Remotion.Validation.RuleBuilders;
 using Remotion.Validation.Rules;
@@ -40,10 +41,10 @@ namespace Remotion.Validation.UnitTests.RuleBuilders
     public void SetUp ()
     {
       _addingComponentPropertyRuleMock = MockRepository.GenerateStrictMock<IAddingComponentPropertyRule>();
-      _addingComponentPropertyRuleMock.Stub (stub => stub.Property).Return (typeof (Customer).GetProperty ("UserName"));
+      _addingComponentPropertyRuleMock.Stub (stub => stub.Property).Return (PropertyInfoAdapter.Create(typeof (Customer).GetProperty ("UserName")));
 
       _addingComponentPropertyMetaValidationRuleMock = MockRepository.GenerateStrictMock<IAddingComponentPropertyMetaValidationRule>();
-      _addingComponentPropertyRuleMock.Stub (stub => stub.Property).Return (typeof (Customer).GetProperty ("UserName"));
+      _addingComponentPropertyRuleMock.Stub (stub => stub.Property).Return (PropertyInfoAdapter.Create(typeof (Customer).GetProperty ("UserName")));
 
       _addingComponentBuilder = new AddingComponentRuleBuilder<Customer, string> (
           _addingComponentPropertyRuleMock,

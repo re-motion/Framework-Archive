@@ -23,6 +23,7 @@ using System.Text;
 using FluentValidation;
 using FluentValidation.Internal;
 using FluentValidation.Validators;
+using Remotion.Reflection;
 using Remotion.Utilities;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.Merging;
@@ -42,7 +43,10 @@ namespace Remotion.Validation.Rules
 
     public static AddingComponentPropertyRule Create<TValidatedType, TProperty> (Expression<Func<TValidatedType, TProperty>> expression, Type collectorType)
     {
-      var member = expression.GetMember();
+      var member = expression.GetMember() as PropertyInfo;
+      if (member == null)
+        throw new InvalidOperationException (string.Format ("An '{0}' can only created for property members.", typeof (AddingComponentPropertyRule).Name));
+
       var compiled = expression.Compile();
 
       return new AddingComponentPropertyRule (
@@ -57,7 +61,7 @@ namespace Remotion.Validation.Rules
 
     private AddingComponentPropertyRule (
         Type collectorType,
-        MemberInfo member,
+        PropertyInfo member,
         Func<object, object> propertyFunc,
         LambdaExpression expression,
         Func<CascadeMode> cascadeModeThunk,
@@ -71,9 +75,9 @@ namespace Remotion.Validation.Rules
       _isHardConstraint = false;
     }
 
-    public MemberInfo Property
+    public IPropertyInformation Property
     {
-      get { return Member; }
+      get { return PropertyInfoAdapter.Create((PropertyInfo) Member); }
     }
 
     public Type CollectorType
@@ -116,7 +120,7 @@ namespace Remotion.Validation.Rules
             string.Format (
                 "Hard constraint validator(s) '{0}' on property '{1}.{2}' cannot be removed.",
                 string.Join (", ", validatorsToRemove.Select (v => v.GetType().Name).ToArray()),
-                Property.ReflectedType.FullName,
+                Property.DeclaringType.FullName,
                 Property.Name));
       }
     }

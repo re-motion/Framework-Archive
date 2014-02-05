@@ -17,13 +17,14 @@
 using System;
 using System.Linq.Expressions;
 using System.Reflection;
+using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.Validation.Utilities
 {
   public static class ExpressionExtensions
   {
-    public static MemberInfo ExtractDynamicMemberInfo<TValidatedType, TProperty> (this Expression<Func<TValidatedType, TProperty>> propertyExpression)
+    public static IPropertyInformation ExtractDynamicMemberInfo<TValidatedType, TProperty> (this Expression<Func<TValidatedType, TProperty>> propertyExpression)
     {
       ArgumentUtility.CheckNotNull ("propertyExpression", propertyExpression);
 
@@ -43,7 +44,7 @@ namespace Remotion.Validation.Utilities
       if (realType == null)
         throw new ArgumentException (string.Format ("Expression has no DeclaringType: {0}", propertyExpression), "propertyExpression");
 
-      return realType.GetProperty (property.Name);
+      return PropertyInfoAdapter.Create(realType.GetProperty (property.Name));
     }
   }
 }

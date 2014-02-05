@@ -21,10 +21,12 @@ using System.Linq.Expressions;
 using System.Reflection;
 using FluentValidation.Validators;
 using NUnit.Framework;
+using Remotion.Reflection;
 using Remotion.Utilities;
 using Remotion.Validation.MetaValidation;
 using Remotion.Validation.Rules;
 using Remotion.Validation.UnitTests.TestDomain;
+using Remotion.Validation.UnitTests.TestDomain.Collectors;
 using Remotion.Validation.UnitTests.TestHelpers;
 using Rhino.Mocks;
 
@@ -33,14 +35,14 @@ namespace Remotion.Validation.UnitTests.Rules
   [TestFixture]
   public class AddingComponentPropertyMetaValidationRuleTest
   {
-    private PropertyInfo _property;
+    private IPropertyInformation _property;
     private Expression<Func<Customer, string>> _userNameExpression;
     private AddingComponentPropertyMetaValidationRule _rule;
 
     [SetUp]
     public void SetUp ()
     {
-      _property = typeof (Customer).GetProperty ("UserName");
+      _property = PropertyInfoAdapter.Create(typeof (Customer).GetProperty ("UserName"));
       _userNameExpression = ExpressionHelper.GetTypedMemberExpression<Customer, string> (c => c.UserName);
       _rule = AddingComponentPropertyMetaValidationRule.Create (_userNameExpression, typeof (RemovingComponentPropertyRuleTest));
     }
@@ -48,10 +50,20 @@ namespace Remotion.Validation.UnitTests.Rules
     [Test]
     public void Initialization ()
     {
-      Assert.That (MemberInfoEqualityComparer<MemberInfo>.Instance.Equals (_rule.Property, _property), Is.True);
+      Assert.That (_rule.Property.Equals(_property), Is.True);
       Assert.That (_rule.Property, Is.EqualTo (_property));
       Assert.That (_rule.CollectorType, Is.EqualTo (typeof (RemovingComponentPropertyRuleTest)));
       Assert.That (_rule.MetaValidationRules.Any(), Is.False);
+    }
+
+    [Test]
+    public void Create_MemberInfoIsNoPropertyInfo_ExceptionIsThrown ()
+    {
+      var dummyExpression = ExpressionHelper.GetTypedMemberExpression<Customer, string> (c => c.Dummy ());
+
+      Assert.Throws<InvalidOperationException> (
+          () => AddingComponentPropertyMetaValidationRule.Create (dummyExpression, typeof (CustomerMixinIntroducedValidationCollector1)),
+          "An 'AddingComponentPropertyMetaValidationRule' can only created for property members.");
     }
 
     [Test]

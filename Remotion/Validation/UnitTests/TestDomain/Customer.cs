@@ -36,5 +36,10 @@ namespace Remotion.Validation.UnitTests.TestDomain
     public virtual Address BillingAddress { get; set; }
 
     public virtual ICollection<Address> ShippingAddresses { get; set; }
+
+    public string Dummy ()
+    {
+      return "Dummy";
+    }
   }
 }

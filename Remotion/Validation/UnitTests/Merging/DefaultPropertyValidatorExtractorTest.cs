@@ -20,6 +20,7 @@ using System.Linq;
 using FluentValidation;
 using FluentValidation.Validators;
 using NUnit.Framework;
+using Remotion.Reflection;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.Merging;
 using Remotion.Validation.Rules;
@@ -66,9 +67,9 @@ namespace Remotion.Validation.UnitTests.Merging
       _validatorRegistration6 = new ValidatorRegistration (typeof (LengthValidator), null);
 
       _removingPropertyRuleStub1 = MockRepository.GenerateStub<IRemovingComponentPropertyRule>();
-      _removingPropertyRuleStub1.Stub (stub => stub.Property).Return (typeof (Customer).GetProperty ("LastName"));
+      _removingPropertyRuleStub1.Stub (stub => stub.Property).Return (PropertyInfoAdapter.Create(typeof (Customer).GetProperty ("LastName")));
       _removingPropertyRuleStub2 = MockRepository.GenerateStub<IRemovingComponentPropertyRule>();
-      _removingPropertyRuleStub2.Stub (stub => stub.Property).Return (typeof (Customer).GetProperty ("FirstName"));
+      _removingPropertyRuleStub2.Stub (stub => stub.Property).Return (PropertyInfoAdapter.Create(typeof (Customer).GetProperty ("FirstName")));
 
       _registrationWithContext1 = new ValidatorRegistrationWithContext (_validatorRegistration1, _removingPropertyRuleStub1);
       _registrationWithContext2 = new ValidatorRegistrationWithContext (_validatorRegistration2, _removingPropertyRuleStub1);
@@ -104,7 +105,7 @@ namespace Remotion.Validation.UnitTests.Merging
               new IPropertyValidator[]
               { _stubPropertyValidator1, _stubPropertyValidator2, _stubPropertyValidator3, _stubPropertyValidator4 });
       addingComponentPropertyRule.Stub (stub => stub.CollectorType).Return (typeof (CustomerValidationCollector1));
-      addingComponentPropertyRule.Stub (stub => stub.Property).Return (typeof (Customer).GetProperty ("LastName"));
+      addingComponentPropertyRule.Stub (stub => stub.Property).Return (PropertyInfoAdapter.Create(typeof (Customer).GetProperty ("LastName")));
 
       _logContextMock.Expect (
           mock =>

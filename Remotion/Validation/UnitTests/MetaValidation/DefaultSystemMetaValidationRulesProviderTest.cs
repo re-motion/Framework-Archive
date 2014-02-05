@@ -18,6 +18,7 @@
 using System;
 using System.Linq;
 using NUnit.Framework;
+using Remotion.Reflection;
 using Remotion.Validation.MetaValidation;
 using Remotion.Validation.UnitTests.TestDomain;
 
@@ -31,7 +32,7 @@ namespace Remotion.Validation.UnitTests.MetaValidation
     [SetUp]
     public void SetUp ()
     {
-      _provider = new DefaultSystemMetaValidationRulesProvider (typeof (Customer).GetProperty ("UserName"));
+      _provider = new DefaultSystemMetaValidationRulesProvider (PropertyInfoAdapter.Create(typeof (Customer).GetProperty ("UserName")));
     }
 
     [Test]

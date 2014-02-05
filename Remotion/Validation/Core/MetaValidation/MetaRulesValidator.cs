@@ -17,9 +17,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using FluentValidation;
-using FluentValidation.Internal;
+using Remotion.Reflection;
 using Remotion.Utilities;
 using Remotion.Validation.Rules;
 
@@ -28,11 +27,11 @@ namespace Remotion.Validation.MetaValidation
   public class MetaRulesValidator : IMetaRuleValidator
   {
     private readonly IAddingComponentPropertyMetaValidationRule[] _addedPropertyMetaValidationRules;
-    private readonly Func<MemberInfo, ISystemMetaValidationRulesProvider> _systemMetaValidationRulesProviderFactory;
+    private readonly Func<IPropertyInformation, ISystemMetaValidationRulesProvider> _systemMetaValidationRulesProviderFactory;
 
     public MetaRulesValidator (
         IAddingComponentPropertyMetaValidationRule[] addingComponentPropertyMetaValidationRules,
-        Func<MemberInfo, ISystemMetaValidationRulesProvider> systemMetaValidationRulesProviderFactory)
+        Func<IPropertyInformation, ISystemMetaValidationRulesProvider> systemMetaValidationRulesProviderFactory)
     {
       ArgumentUtility.CheckNotNull ("addingComponentPropertyMetaValidationRules", addingComponentPropertyMetaValidationRules);
       ArgumentUtility.CheckNotNull ("systemMetaValidationRulesProviderFactory", systemMetaValidationRulesProviderFactory);
@@ -46,7 +45,7 @@ namespace Remotion.Validation.MetaValidation
       ArgumentUtility.CheckNotNull ("validationRules", validationRules);
 
       //DelegateValidators (e.g. Conditions) are filtered!
-      var propertyRulesByMemberInfo = validationRules.OfType<PropertyRule>().ToLookup (pr => pr.Member, pr => pr.Validators);
+      var propertyRulesByMemberInfo = validationRules.OfType<AddingComponentPropertyRule>().ToLookup (pr => pr.Property, pr => pr.Validators);
 
       return from propertyRuleGroup in _addedPropertyMetaValidationRules.ToLookup (pr => pr.Property)
              let metaValidationRules = GetAllMetaValidationRules (propertyRuleGroup)
@@ -55,7 +54,7 @@ namespace Remotion.Validation.MetaValidation
              select metaValidationRule;
     }
 
-    private IEnumerable<IMetaValidationRule> GetAllMetaValidationRules (IGrouping<MemberInfo, IAddingComponentPropertyMetaValidationRule> propertyRuleGroup)
+    private IEnumerable<IMetaValidationRule> GetAllMetaValidationRules (IGrouping<IPropertyInformation, IAddingComponentPropertyMetaValidationRule> propertyRuleGroup)
     {
       return
           _systemMetaValidationRulesProviderFactory (propertyRuleGroup.Key)

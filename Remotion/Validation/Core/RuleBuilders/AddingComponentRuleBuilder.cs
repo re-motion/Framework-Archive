@@ -101,7 +101,7 @@ namespace Remotion.Validation.RuleBuilders
                 "Meta validation rule '{0}' failed for validator '{1}' on property '{2}.{3}'.",
                 metaValidationRuleExpression,
                 typeof (TValidator).FullName,
-                _addingComponentPropertyRule.Property.ReflectedType.FullName,
+                _addingComponentPropertyRule.Property.DeclaringType.FullName,
                 _addingComponentPropertyRule.Property.Name);
           });
 

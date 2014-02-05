@@ -19,6 +19,7 @@ using System;
 using System.Linq;
 using FluentValidation.Validators;
 using NUnit.Framework;
+using Remotion.Reflection;
 using Remotion.Validation.MetaValidation.Rules.System;
 using Remotion.Validation.UnitTests.TestDomain;
 
@@ -42,7 +43,7 @@ namespace Remotion.Validation.UnitTests.MetaValidation.Rules.System
       _minLengthValidator1 = new MinimumLengthValidator (10);
       _minLengthValidator2 = new MinimumLengthValidator (20);
 
-      _rule = new LengthSystemMetaValidationRule (typeof (Customer).GetProperty ("UserName"));
+      _rule = new LengthSystemMetaValidationRule (PropertyInfoAdapter.Create(typeof (Customer).GetProperty ("UserName")));
     }
 
     [Test]

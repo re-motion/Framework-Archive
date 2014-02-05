@@ -20,6 +20,7 @@ using System.Reflection;
 using FluentValidation;
 using FluentValidation.Validators;
 using JetBrains.Annotations;
+using Remotion.Reflection;
 using Remotion.Validation.Merging;
 
 namespace Remotion.Validation.Rules
@@ -39,7 +40,7 @@ namespace Remotion.Validation.Rules
     /// <summary>
     /// Gets the property for which the validators will be added.
     /// </summary>
-    MemberInfo Property { get; }
+    IPropertyInformation Property { get; }
 
     /// <summary>
     /// Gets a flag whether the rule can be removed via an <see cref="IRemovingComponentPropertyRule"/>. 

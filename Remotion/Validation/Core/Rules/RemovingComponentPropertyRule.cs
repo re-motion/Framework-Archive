@@ -21,6 +21,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
 using FluentValidation.Internal;
+using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.Validation.Rules
@@ -30,26 +31,30 @@ namespace Remotion.Validation.Rules
   /// </summary>
   public sealed class RemovingComponentPropertyRule : IRemovingComponentPropertyRule
   {
-    private readonly MemberInfo _property;
+    private readonly IPropertyInformation _property;
     private readonly Type _collectorType;
     private readonly List<ValidatorRegistration> _registeredValidators;
 
     public static RemovingComponentPropertyRule Create<TValidatedType, TProperty> (Expression<Func<TValidatedType, TProperty>> expression, Type collectorType)
     {
-      return new RemovingComponentPropertyRule (expression.GetMember(), collectorType);
+      var member = expression.GetMember() as PropertyInfo;
+      if (member == null)
+        throw new InvalidOperationException (string.Format ("A '{0}' can only created for property members.", typeof(RemovingComponentPropertyRule).Name));
+
+      return new RemovingComponentPropertyRule (member, collectorType);
     }
 
-    private RemovingComponentPropertyRule (MemberInfo member, Type collectorType)
+    private RemovingComponentPropertyRule (PropertyInfo member, Type collectorType)
     {
       ArgumentUtility.CheckNotNull ("member", member);
       ArgumentUtility.CheckNotNull ("collectorType", collectorType);
 
-      _property = member;
+      _property = PropertyInfoAdapter.Create(member);
       _collectorType = collectorType;
       _registeredValidators = new List<ValidatorRegistration>();
     }
 
-    public MemberInfo Property
+    public IPropertyInformation Property
     {
       get { return _property; }
     }

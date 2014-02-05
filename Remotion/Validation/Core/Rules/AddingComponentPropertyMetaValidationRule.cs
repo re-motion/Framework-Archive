@@ -21,6 +21,7 @@ using System.Reflection;
 using System.Text;
 using FluentValidation.Internal;
 using FluentValidation.Validators;
+using Remotion.Reflection;
 using Remotion.Utilities;
 using Remotion.Validation.MetaValidation;
 
@@ -31,26 +32,30 @@ namespace Remotion.Validation.Rules
   /// </summary>
   public sealed class AddingComponentPropertyMetaValidationRule : IAddingComponentPropertyMetaValidationRule
   {
-    private readonly MemberInfo _property;
+    private readonly IPropertyInformation _property;
     private readonly Type _collectorType;
     private readonly List<IMetaValidationRule> _metaValidationRules;
 
     public static AddingComponentPropertyMetaValidationRule Create<TValidatedType, TProperty> (Expression<Func<TValidatedType, TProperty>> expression, Type collectorType)
     {
-      return new AddingComponentPropertyMetaValidationRule (expression.GetMember(), collectorType);
+      var member = expression.GetMember () as PropertyInfo;
+      if (member == null)
+        throw new InvalidOperationException (string.Format ("A '{0}' can only created for property members.", typeof (AddingComponentPropertyMetaValidationRule).Name));
+
+      return new AddingComponentPropertyMetaValidationRule (member, collectorType);
     }
 
-    private AddingComponentPropertyMetaValidationRule (MemberInfo member, Type collectorType)
+    private AddingComponentPropertyMetaValidationRule (PropertyInfo member, Type collectorType)
     {
       ArgumentUtility.CheckNotNull ("member", member);
       ArgumentUtility.CheckNotNull ("collectorType", collectorType);
 
-      _property = member;
+      _property = PropertyInfoAdapter.Create(member);
       _collectorType = collectorType;
       _metaValidationRules = new List<IMetaValidationRule> ();
     }
 
-    public MemberInfo Property
+    public IPropertyInformation Property
     {
       get { return _property; }
     }

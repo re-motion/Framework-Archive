@@ -21,6 +21,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using FluentValidation.Validators;
 using NUnit.Framework;
+using Remotion.Reflection;
 using Remotion.Utilities;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.Merging;
@@ -38,7 +39,7 @@ namespace Remotion.Validation.UnitTests.Rules
     private Expression<Func<Customer, string>> _userNameExpression;
     private Expression<Func<Customer, string>> _lastNameExpression;
     private AddingComponentPropertyRule _addingComponentPropertyRule;
-    private PropertyInfo _property;
+    private IPropertyInformation _property;
     private IPropertyValidatorExtractor _propertyValidatorExtractorMock;
     private StubPropertyValidator _stubPropertyValidator1;
     private NotEmptyValidator _stubPropertyValidator2;
@@ -47,7 +48,7 @@ namespace Remotion.Validation.UnitTests.Rules
     [SetUp]
     public void SetUp ()
     {
-      _property = typeof (Customer).GetProperty ("UserName");
+      _property = PropertyInfoAdapter.Create(typeof (Customer).GetProperty ("UserName"));
 
       _userNameExpression = ExpressionHelper.GetTypedMemberExpression<Customer, string> (c => c.UserName);
       _lastNameExpression = ExpressionHelper.GetTypedMemberExpression<Customer, string> (c => c.LastName);
@@ -64,13 +65,23 @@ namespace Remotion.Validation.UnitTests.Rules
     [Test]
     public void Initialization_PropertyDeclaredInSameClass ()
     {
-      Assert.That (MemberInfoEqualityComparer<MemberInfo>.Instance.Equals (_addingComponentPropertyRule.Property, _property), Is.True);
+      Assert.That (_addingComponentPropertyRule.Property.Equals(_property), Is.True);
       Assert.That (_addingComponentPropertyRule.Property, Is.EqualTo (_property));
       Assert.That (_addingComponentPropertyRule.Member.DeclaringType, Is.EqualTo (typeof (Customer)));
       Assert.That (_addingComponentPropertyRule.Member.ReflectedType, Is.EqualTo (typeof (Customer)));
       Assert.That (_addingComponentPropertyRule.CollectorType, Is.EqualTo (typeof (CustomerValidationCollector1)));
       Assert.That (_addingComponentPropertyRule.Validators.Any(), Is.False);
       Assert.That (_addingComponentPropertyRule.IsHardConstraint, Is.False);
+    }
+
+    [Test]
+    public void Create_MemberInfoIsNoPropertyInfo_ExceptionIsThrown ()
+    {
+      var dummyExpression = ExpressionHelper.GetTypedMemberExpression<Customer, string> (c => c.Dummy());
+
+      Assert.Throws<InvalidOperationException> (
+          () => AddingComponentPropertyRule.Create (dummyExpression, typeof (CustomerMixinIntroducedValidationCollector1)),
+          "An 'AddingComponentPropertyRule' can only created for property members.");
     }
 
     [Test]

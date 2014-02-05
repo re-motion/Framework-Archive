@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using JetBrains.Annotations;
+using Remotion.Reflection;
 
 namespace Remotion.Validation.Rules
 {
@@ -36,7 +37,7 @@ namespace Remotion.Validation.Rules
     /// <summary>
     /// Gets the property for which the validators should be removed.
     /// </summary>
-    MemberInfo Property { get; }
+    IPropertyInformation Property { get; }
 
     /// <summary>
     /// Gets the validators registered for removal.
