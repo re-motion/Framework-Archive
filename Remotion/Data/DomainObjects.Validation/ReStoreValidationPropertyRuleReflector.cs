@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,18 +22,18 @@ using System.Reflection;
 using FluentValidation.Validators;
 using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.Utilities;
+using Remotion.Validation.Implementation;
 using Remotion.Validation.MetaValidation;
 using Remotion.Validation.MetaValidation.Rules.Custom;
 using Remotion.Validation.Rules;
 
-namespace Remotion.Validation.Implementation
+namespace Remotion.Data.DomainObjects.Validation
 {
-  //TODO AO: move to re-store
-  public class RemotionValidationPropertyRuleReflector : IValidationPropertyRuleReflector
+  public class ReStoreValidationPropertyRuleReflector : IValidationPropertyRuleReflector
   {
     private readonly PropertyInfo _property;
 
-    public RemotionValidationPropertyRuleReflector (PropertyInfo property)
+    public ReStoreValidationPropertyRuleReflector (PropertyInfo property)
     {
       ArgumentUtility.CheckNotNull ("property", property);
 

@@ -21,6 +21,7 @@ using log4net;
 using log4net.Appender;
 using log4net.Config;
 using NUnit.Framework;
+using Remotion.Data.DomainObjects.Validation;
 using Remotion.Globalization;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
@@ -57,7 +58,7 @@ namespace Remotion.Validation.IntegrationTests
                       SafeServiceLocator.Current.GetInstance<ICompoundValidationTypeFilter>())),
               new IValidationCollectorProvider[]
               {
-                  new RemotionAttributeBasedValidationCollectorProvider(),
+                  new ReStoreAttributeBasedValidationCollectorProvider(),
                   new ComponentValidationAttributeBasedValidationCollectorProvider(),
                   new ApiBasedComponentValidationCollectorProvider (new DiscoveryServiceBasedTypeCollectorReflector())
               }),

@@ -16,13 +16,15 @@
 // 
 
 using System;
-using Remotion.Validation.Providers;
+using System.Reflection;
+using Remotion.Data.DomainObjects.Validation;
+using Remotion.Validation.Implementation;
 
 namespace Remotion.Validation.UnitTests.Providers
 {
-  public class TestableRemotionAttributeBasedValidationCollectorProvider : RemotionAttributeBasedValidationCollectorProvider
+  public class TestableReStoreAttributeBasedValidationCollectorProvider : ReStoreAttributeBasedValidationCollectorProvider
   {
-    public new Validation.Implementation.IValidationPropertyRuleReflector CreatePropertyRuleReflector (System.Reflection.PropertyInfo property)
+    public new IValidationPropertyRuleReflector CreatePropertyRuleReflector (PropertyInfo property)
     {
       return base.CreatePropertyRuleReflector (property);
     }

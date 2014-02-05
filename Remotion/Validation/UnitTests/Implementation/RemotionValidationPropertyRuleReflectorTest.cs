@@ -19,6 +19,7 @@ using System;
 using System.Reflection;
 using FluentValidation.Validators;
 using NUnit.Framework;
+using Remotion.Data.DomainObjects.Validation;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.MetaValidation.Rules.Custom;
 using System.Linq;
@@ -33,10 +34,10 @@ namespace Remotion.Validation.UnitTests.Implementation
     private PropertyInfo _propertyWithMandatoryAttribute;
     private PropertyInfo _propertyWithNullableStringPropertyAttribute;
     private PropertyInfo _propertyWithMandatoryStringPropertyAttribute;
-    private RemotionValidationPropertyRuleReflector _propertyWithoutAttributeReflector;
-    private RemotionValidationPropertyRuleReflector _propertyWithNullableStringPropertyAttributeReflector;
-    private RemotionValidationPropertyRuleReflector _propertyWithMandatoryStringPropertyAttributeReflector;
-    private RemotionValidationPropertyRuleReflector _propertyWithMandatoryAttributeReflector;
+    private ReStoreValidationPropertyRuleReflector _propertyWithoutAttributeReflector;
+    private ReStoreValidationPropertyRuleReflector _propertyWithNullableStringPropertyAttributeReflector;
+    private ReStoreValidationPropertyRuleReflector _propertyWithMandatoryStringPropertyAttributeReflector;
+    private ReStoreValidationPropertyRuleReflector _propertyWithMandatoryAttributeReflector;
 
     [SetUp]
     public void SetUp ()
@@ -46,10 +47,10 @@ namespace Remotion.Validation.UnitTests.Implementation
       _propertyWithNullableStringPropertyAttribute = typeof (TypeWithReStoreAttributes).GetProperty ("PropertyWithNullableStringPropertyAttribute");
       _propertyWithMandatoryStringPropertyAttribute = typeof (TypeWithReStoreAttributes).GetProperty ("PropertyWithMandatoryStringPropertyAttribute");
 
-      _propertyWithoutAttributeReflector = new RemotionValidationPropertyRuleReflector (_propertyWithoutAttribute);
-      _propertyWithMandatoryAttributeReflector = new RemotionValidationPropertyRuleReflector (_propertyWithMandatoryAttribute);
-      _propertyWithNullableStringPropertyAttributeReflector = new RemotionValidationPropertyRuleReflector (_propertyWithNullableStringPropertyAttribute);
-      _propertyWithMandatoryStringPropertyAttributeReflector = new RemotionValidationPropertyRuleReflector (_propertyWithMandatoryStringPropertyAttribute);
+      _propertyWithoutAttributeReflector = new ReStoreValidationPropertyRuleReflector (_propertyWithoutAttribute);
+      _propertyWithMandatoryAttributeReflector = new ReStoreValidationPropertyRuleReflector (_propertyWithMandatoryAttribute);
+      _propertyWithNullableStringPropertyAttributeReflector = new ReStoreValidationPropertyRuleReflector (_propertyWithNullableStringPropertyAttribute);
+      _propertyWithMandatoryStringPropertyAttributeReflector = new ReStoreValidationPropertyRuleReflector (_propertyWithMandatoryStringPropertyAttribute);
     }
 
     [Test]

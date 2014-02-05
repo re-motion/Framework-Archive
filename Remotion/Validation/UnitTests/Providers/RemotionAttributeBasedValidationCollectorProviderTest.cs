@@ -17,7 +17,7 @@
 
 using System;
 using NUnit.Framework;
-using Remotion.Validation.Implementation;
+using Remotion.Data.DomainObjects.Validation;
 using Remotion.Validation.UnitTests.TestDomain;
 
 namespace Remotion.Validation.UnitTests.Providers
@@ -25,12 +25,12 @@ namespace Remotion.Validation.UnitTests.Providers
   [TestFixture]
   public class RemotionAttributeBasedValidationCollectorProviderTest
   {
-    private TestableRemotionAttributeBasedValidationCollectorProvider _provider;
+    private TestableReStoreAttributeBasedValidationCollectorProvider _provider;
 
     [SetUp]
     public void SetUp ()
     {
-      _provider = new TestableRemotionAttributeBasedValidationCollectorProvider();
+      _provider = new TestableReStoreAttributeBasedValidationCollectorProvider();
     }
 
     [Test]
@@ -38,7 +38,7 @@ namespace Remotion.Validation.UnitTests.Providers
     {
       var result = _provider.CreatePropertyRuleReflector (typeof (Customer).GetProperty ("UserName"));
 
-      Assert.That (result, Is.TypeOf (typeof (RemotionValidationPropertyRuleReflector)));
+      Assert.That (result, Is.TypeOf (typeof (ReStoreValidationPropertyRuleReflector)));
     }
   }
 }

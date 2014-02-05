@@ -321,6 +321,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Validation.Mixins", "Remoti
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Validation.IntegrationTests", "Remotion\Validation\Validation.IntegrationTests\Validation.IntegrationTests.csproj", "{039B28BB-042E-4CF8-A59E-6F717F9251C0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.DomainObjects.Validation", "Remotion\Data\DomainObjects.Validation\Data.DomainObjects.Validation.csproj", "{04FA07E3-B868-4846-A5E2-4D375F607C22}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -1175,6 +1177,14 @@ Global
 		{039B28BB-042E-4CF8-A59E-6F717F9251C0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{039B28BB-042E-4CF8-A59E-6F717F9251C0}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{039B28BB-042E-4CF8-A59E-6F717F9251C0}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{04FA07E3-B868-4846-A5E2-4D375F607C22}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{04FA07E3-B868-4846-A5E2-4D375F607C22}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{04FA07E3-B868-4846-A5E2-4D375F607C22}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{04FA07E3-B868-4846-A5E2-4D375F607C22}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{04FA07E3-B868-4846-A5E2-4D375F607C22}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{04FA07E3-B868-4846-A5E2-4D375F607C22}.Release|Any CPU.Build.0 = Release|Any CPU
+		{04FA07E3-B868-4846-A5E2-4D375F607C22}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{04FA07E3-B868-4846-A5E2-4D375F607C22}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -1207,6 +1217,7 @@ Global
 		{ABDD62A5-7490-418E-8D30-23E480621E8B} = {040CC4EF-ACE9-4832-AC0C-56640F2AB337}
 		{FBEAC696-BF2A-4839-9587-44DDF80E8C6A} = {040CC4EF-ACE9-4832-AC0C-56640F2AB337}
 		{7A088A69-24BE-49C5-92CC-036C94D0E870} = {040CC4EF-ACE9-4832-AC0C-56640F2AB337}
+		{04FA07E3-B868-4846-A5E2-4D375F607C22} = {040CC4EF-ACE9-4832-AC0C-56640F2AB337}
 		{B719A305-0493-4C72-88FE-9A2FC6964578} = {9F4D90EC-6AD2-495D-BFC3-270DC15974DD}
 		{AD1A0CD9-C08C-449C-9A7D-2D8BC5439BDC} = {9F4D90EC-6AD2-495D-BFC3-270DC15974DD}
 		{F5416318-15B4-421E-9B44-03CD4C052D5A} = {9F4D90EC-6AD2-495D-BFC3-270DC15974DD}

@@ -14,18 +14,19 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
 using System.Reflection;
 using Remotion.Validation.Implementation;
+using Remotion.Validation.Providers;
 
-namespace Remotion.Validation.Providers
+namespace Remotion.Data.DomainObjects.Validation
 {
-  //TODO AO: move to re-store
-  public class RemotionAttributeBasedValidationCollectorProvider : AttributeBasedValidationCollectorProviderBase
+  public class ReStoreAttributeBasedValidationCollectorProvider : AttributeBasedValidationCollectorProviderBase
   {
     protected override IValidationPropertyRuleReflector CreatePropertyRuleReflector (PropertyInfo property)
     {
-      return new RemotionValidationPropertyRuleReflector (property);
+      return new ReStoreValidationPropertyRuleReflector (property);
     }
   }
 }
