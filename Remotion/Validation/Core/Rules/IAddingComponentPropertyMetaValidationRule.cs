@@ -47,10 +47,8 @@ namespace Remotion.Validation.Rules
     IEnumerable<IMetaValidationRule> MetaValidationRules { get; }
 
     /// <summary>
-    /// Registers a <see cref="IMetaValidationRule"/> for validators of type <typeparamref name="TValidator"/> for 
-    /// the <see cref="Property"/> by the <see cref="CollectorType"/>.
+    /// Registers a <see cref="IMetaValidationRule"/> for the <see cref="Property"/> by the <see cref="CollectorType"/>.
     /// </summary>
-    void RegisterMetaValidationRule<TValidator> ([NotNull] IMetaValidationRule metaValidationRule)
-        where TValidator: IPropertyValidator;
+    void RegisterMetaValidationRule ([NotNull] IMetaValidationRule metaValidationRule);
   }
 }

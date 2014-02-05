@@ -19,7 +19,6 @@ using System;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using FluentValidation.Validators;
 using NUnit.Framework;
 using Remotion.Reflection;
 using Remotion.Utilities;
@@ -73,8 +72,8 @@ namespace Remotion.Validation.UnitTests.Rules
       var metaValidationRuleStub2 = MockRepository.GenerateStub<IMetaValidationRule>();
       Assert.That (_rule.MetaValidationRules.Count(), Is.EqualTo (0));
 
-      _rule.RegisterMetaValidationRule<IPropertyValidator> (metaValidationRuleStub1);
-      _rule.RegisterMetaValidationRule<IPropertyValidator> (metaValidationRuleStub2);
+      _rule.RegisterMetaValidationRule (metaValidationRuleStub1);
+      _rule.RegisterMetaValidationRule (metaValidationRuleStub2);
 
       Assert.That (_rule.MetaValidationRules.Count(), Is.EqualTo (2));
       Assert.That (

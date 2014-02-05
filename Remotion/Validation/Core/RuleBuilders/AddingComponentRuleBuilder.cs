@@ -66,7 +66,7 @@ namespace Remotion.Validation.RuleBuilders
     {
       ArgumentUtility.CheckNotNull ("metaValidationRule", metaValidationRule);
 
-      _addingMetaValidationPropertyRule.RegisterMetaValidationRule<IPropertyValidator> (metaValidationRule);
+      _addingMetaValidationPropertyRule.RegisterMetaValidationRule (metaValidationRule);
       return this;
     }
 
@@ -76,7 +76,7 @@ namespace Remotion.Validation.RuleBuilders
       ArgumentUtility.CheckNotNull ("rule", rule);
 
       var metaValidationRule = new DelegateMetaValidationRule<IPropertyValidator> (rule);
-      _addingMetaValidationPropertyRule.RegisterMetaValidationRule<IPropertyValidator> (metaValidationRule);
+      _addingMetaValidationPropertyRule.RegisterMetaValidationRule (metaValidationRule);
       return this;
     }
 
@@ -103,7 +103,7 @@ namespace Remotion.Validation.RuleBuilders
                 _addingComponentPropertyRule.Property.Name);
           });
 
-      _addingMetaValidationPropertyRule.RegisterMetaValidationRule<TValidator> (metaValidationRule);
+      _addingMetaValidationPropertyRule.RegisterMetaValidationRule (metaValidationRule);
       return this;
     }
 

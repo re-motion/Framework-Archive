@@ -85,7 +85,7 @@ namespace Remotion.Validation.UnitTests.RuleBuilders
     {
       var metaValidationRuleStub = MockRepository.GenerateStub<IMetaValidationRule>();
 
-      _addingComponentPropertyMetaValidationRuleMock.Expect (mock => mock.RegisterMetaValidationRule<IPropertyValidator> (metaValidationRuleStub));
+      _addingComponentPropertyMetaValidationRuleMock.Expect (mock => mock.RegisterMetaValidationRule (metaValidationRuleStub));
 
       _addingComponentBuilder.AddMetaValidationRule (metaValidationRuleStub);
 
@@ -98,7 +98,7 @@ namespace Remotion.Validation.UnitTests.RuleBuilders
       var fakeValidationResult = MetaValidationRuleValidationResult.CreateValidResult();
 
       _addingComponentPropertyMetaValidationRuleMock.Expect (
-          mock => mock.RegisterMetaValidationRule<IPropertyValidator> (
+          mock => mock.RegisterMetaValidationRule (
               Arg<IMetaValidationRule>.Matches (
                   rule =>
                       rule.GetType() == typeof (DelegateMetaValidationRule<IPropertyValidator>) &&
@@ -113,7 +113,7 @@ namespace Remotion.Validation.UnitTests.RuleBuilders
     public void AddMetaValidationRule_ExpressionOverload_IsValidIsTrue ()
     {
       _addingComponentPropertyMetaValidationRuleMock.Expect (
-          mock => mock.RegisterMetaValidationRule<IPropertyValidator> (
+          mock => mock.RegisterMetaValidationRule (
               Arg<IMetaValidationRule>.Matches (
                   rule =>
                       rule.GetType() == typeof (DelegateMetaValidationRule<IPropertyValidator>)
@@ -128,7 +128,7 @@ namespace Remotion.Validation.UnitTests.RuleBuilders
     public void AddMetaValidationRule_ExpressionOverload_IsValidIsFalse ()
     {
       _addingComponentPropertyMetaValidationRuleMock.Expect (
-          mock => mock.RegisterMetaValidationRule<IPropertyValidator> (
+          mock => mock.RegisterMetaValidationRule (
               Arg<IMetaValidationRule>.Matches (
                   rule =>
                       rule.GetType() == typeof (DelegateMetaValidationRule<IPropertyValidator>) &&

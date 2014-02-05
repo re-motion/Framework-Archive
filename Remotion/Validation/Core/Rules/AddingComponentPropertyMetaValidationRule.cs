@@ -20,7 +20,6 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
 using FluentValidation.Internal;
-using FluentValidation.Validators;
 using Remotion.Reflection;
 using Remotion.Utilities;
 using Remotion.Validation.MetaValidation;
@@ -70,8 +69,7 @@ namespace Remotion.Validation.Rules
       get { return _metaValidationRules.AsReadOnly(); }
     }
 
-    public void RegisterMetaValidationRule<TValidator> (IMetaValidationRule metaValidationRule) 
-        where TValidator: IPropertyValidator // TODO AO: Drop generic
+    public void RegisterMetaValidationRule (IMetaValidationRule metaValidationRule)
     {
       ArgumentUtility.CheckNotNull ("metaValidationRule", metaValidationRule);
 
