@@ -39,13 +39,19 @@ namespace Remotion.Validation.Rules
           IAddingComponentPropertyRule
   {
     private readonly Type _collectorType;
+    private readonly PropertyInfoAdapter _property;
     private bool _isHardConstraint;
 
-    public static AddingComponentPropertyRule Create<TValidatedType, TProperty> (Expression<Func<TValidatedType, TProperty>> expression, Type collectorType)
+    public static AddingComponentPropertyRule Create<TValidatedType, TProperty> (
+        Expression<Func<TValidatedType, TProperty>> expression,
+        Type collectorType)
     {
       var member = expression.GetMember() as PropertyInfo;
       if (member == null)
-        throw new InvalidOperationException (string.Format ("An '{0}' can only created for property members.", typeof (AddingComponentPropertyRule).Name));
+      {
+        throw new InvalidOperationException (
+            string.Format ("An '{0}' can only created for property members.", typeof (AddingComponentPropertyRule).Name));
+      }
 
       var compiled = expression.Compile();
 
@@ -70,15 +76,16 @@ namespace Remotion.Validation.Rules
         : base (member, propertyFunc, expression, cascadeModeThunk, typeToValidate, containerType)
     {
       ArgumentUtility.CheckNotNull ("collectorType", collectorType);
+      ArgumentUtility.CheckNotNull ("member", member);
 
       _collectorType = collectorType;
+      _property = PropertyInfoAdapter.Create (member);
       _isHardConstraint = false;
     }
 
     public IPropertyInformation Property
     {
-      get { return PropertyInfoAdapter.Create((PropertyInfo) Member); //TODO AO: local variable  
-      }
+      get { return _property; }
     }
 
     public Type CollectorType
