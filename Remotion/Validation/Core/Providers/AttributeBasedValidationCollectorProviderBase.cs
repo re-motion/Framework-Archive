@@ -25,7 +25,6 @@ using Remotion.Utilities;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.MetaValidation;
 using Remotion.Validation.RuleBuilders;
-using Remotion.Validation.Utilities;
 
 namespace Remotion.Validation.Providers
 {
@@ -34,8 +33,7 @@ namespace Remotion.Validation.Providers
   /// </summary>
   public abstract class AttributeBasedValidationCollectorProviderBase : IValidationCollectorProvider
   {
-    //TODO AO: make private
-    public class AttributeValidationCollector<T> : ComponentValidationCollector<T>
+    private class AttributeValidationCollector<T> : ComponentValidationCollector<T>
     {
       public AttributeValidationCollector ()
       {

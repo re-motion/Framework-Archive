@@ -21,7 +21,6 @@ using System.Linq;
 using NUnit.Framework;
 using Remotion.Validation.Attributes;
 using Remotion.Validation.Implementation;
-using Remotion.Validation.Providers;
 using Remotion.Validation.UnitTests.TestDomain;
 using Remotion.Validation.UnitTests.TestDomain.Collectors;
 using Remotion.Validation.UnitTests.TestHelpers;
@@ -33,6 +32,13 @@ namespace Remotion.Validation.UnitTests.Implementation
   public class DiscoveryServiceBasedTypeCollectorReflectorTest
   {
     private ITypeDiscoveryService _typeDescoveryServiceStub;
+
+    public class FakeValidationCollector<T> : ComponentValidationCollector<T>
+    {
+      public FakeValidationCollector ()
+      {
+      }
+    }
 
     [SetUp]
     public void SetUp ()
@@ -90,7 +96,7 @@ namespace Remotion.Validation.UnitTests.Implementation
     public void GetComponentValidationCollectors_AbstractAndInterfaceAndOpenGenericCollectorsAndProgrammaticallyCollectorsAreFiltered ()
     {
       var programmaticallyCollectorType = TypeUtility.CreateDynamicTypeWithCustomAttribute (
-          typeof (AttributeBasedValidationCollectorProviderBase.AttributeValidationCollector<>).MakeGenericType (typeof (Address)),
+          typeof (FakeValidationCollector<>).MakeGenericType (typeof (Address)),
           "Remotion.Validation.UnitTests.DynamicInvalidCollector1",
           typeof (ApplyProgrammaticallyAttribute),
           new Type[0],
@@ -102,7 +108,7 @@ namespace Remotion.Validation.UnitTests.Implementation
               {
                   typeof (IPerson),
                   typeof (ComponentValidationCollector<>),
-                  typeof (AttributeBasedValidationCollectorProviderBase.AttributeValidationCollector<>),
+                  typeof (FakeValidationCollector<>),
                   programmaticallyCollectorType
               });
 
@@ -120,7 +126,7 @@ namespace Remotion.Validation.UnitTests.Implementation
     public void GetComponentValidationCollectors_GenericTypeNotAssignableFromClassType ()
     {
       var collectorType = TypeUtility.CreateDynamicTypeWithCustomAttribute (
-          typeof (AttributeBasedValidationCollectorProviderBase.AttributeValidationCollector<>).MakeGenericType (typeof (Address)),
+          typeof (FakeValidationCollector<>).MakeGenericType (typeof (Address)),
           "Remotion.Validation.UnitTests.DynamicInvalidCollector2",
           typeof (ApplyWithClassAttribute),
           new[] { typeof (Type) },

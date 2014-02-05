@@ -47,7 +47,6 @@ namespace Remotion.Validation.UnitTests.Providers
     private MaxLengthMetaValidationRule _metaValidationRule1;
     private MaxValidatorCountRule _metaValidationRule2;
     private MaxLengthMetaValidationRule _metaValidationRule3;
-    private IMetaValidationRule _metaValidationRuleStub4;
 
     [SetUp]
     public void SetUp ()
@@ -62,7 +61,6 @@ namespace Remotion.Validation.UnitTests.Providers
       _metaValidationRule1 = new MaxLengthMetaValidationRule();
       _metaValidationRule2 = new MaxValidatorCountRule();
       _metaValidationRule3 = new MaxLengthMetaValidationRule();
-      _metaValidationRuleStub4 = MockRepository.GenerateStub<IMetaValidationRule>();
 
       _validatorRegistration1 = new ValidatorRegistration (typeof (NotNullValidator), null);
       _validatorRegistration2 = new ValidatorRegistration (typeof (NotEmptyValidator), null);
@@ -96,7 +94,7 @@ namespace Remotion.Validation.UnitTests.Providers
 
       _validationPropertyRuleReflectorMock.VerifyAllExpectations();
       Assert.That (result.Count(), Is.EqualTo (2));
-      Assert.That (result[0].Collector, Is.TypeOf (typeof (AttributeBasedValidationCollectorProviderBase.AttributeValidationCollector<Employee>)));
+      Assert.That (result[0].Collector.GetType ().Name, Is.EqualTo ("AttributeValidationCollector`1"));
       Assert.That (result[0].ProviderType, Is.EqualTo (typeof (TestableAttributeBasedValidationCollectorProviderBase)));
 
       Assert.That (result[0].Collector.AddedPropertyRules.Count(), Is.EqualTo (3));
@@ -114,8 +112,8 @@ namespace Remotion.Validation.UnitTests.Providers
           Is.EquivalentTo (new[] { _validatorRegistration1.ValidatorType, _validatorRegistration2.ValidatorType }));
 
       Assert.That (
-          result[1].Collector,
-          Is.TypeOf (typeof (AttributeBasedValidationCollectorProviderBase.AttributeValidationCollector<SpecialCustomer1>)));
+          result[1].Collector.GetType().Name,
+          Is.EqualTo ("AttributeValidationCollector`1"));
       Assert.That (result[1].ProviderType, Is.EqualTo (typeof (TestableAttributeBasedValidationCollectorProviderBase)));
 
       Assert.That (result[1].Collector.AddedPropertyRules.Count(), Is.EqualTo (4));
