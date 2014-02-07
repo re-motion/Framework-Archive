@@ -1,6 +1,5 @@
 Aufteilung:
   -> Validation.Globalization ??  
-  -> Data.DomainObjects.Validation.IntegrationTests ??
   
 -> NotSupportedExceptions checken!
 
