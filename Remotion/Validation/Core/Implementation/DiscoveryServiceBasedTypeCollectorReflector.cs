@@ -30,8 +30,8 @@ namespace Remotion.Validation.Implementation
   public class DiscoveryServiceBasedTypeCollectorReflector : ITypeCollectorReflector
   {
     private readonly ITypeDiscoveryService _typeDiscoveryService;
-    private readonly MultiDictionary<Type, Type> _typeCollectors;
-
+    private readonly Lazy<MultiDictionary<Type, Type>> _typeCollectors;
+    
     public DiscoveryServiceBasedTypeCollectorReflector ()
         : this (ContextAwareTypeDiscoveryUtility.GetTypeDiscoveryService())
     {
@@ -42,23 +42,20 @@ namespace Remotion.Validation.Implementation
       ArgumentUtility.CheckNotNull ("typeDiscoveryService", typeDiscoveryService);
 
       _typeDiscoveryService = typeDiscoveryService;
-      _typeCollectors = new MultiDictionary<Type, Type> ();
-
-      //TODO AO: Move to lazy initiazied _typeCollectors 
-      //_typeCollectors = new Lazy<MultiDictionary<Type, Type>> (Initialize, LazyThreadSafetyMode.ExecutionAndPublication);
-      Initialize ();
+      _typeCollectors = new Lazy<MultiDictionary<Type, Type>> (Initialize, LazyThreadSafetyMode.ExecutionAndPublication);
     }
 
     public IEnumerable<Type> GetCollectorsForType (Type type)
     {
       ArgumentUtility.CheckNotNull ("type", type);
 
-      return _typeCollectors[type];
+      return _typeCollectors.Value[type];
     }
 
-    private void Initialize ()
+    private MultiDictionary<Type, Type> Initialize ()
     {
       var allCollectors = _typeDiscoveryService.GetTypes (typeof (IComponentValidationCollector), true).Cast<Type> ();
+      var typeCollectors = new MultiDictionary<Type, Type> ();
       foreach (var collectorType in allCollectors)
       {
         if (collectorType.IsAbstract || collectorType.IsInterface || collectorType.IsGenericTypeDefinition || collectorType.IsDefined (typeof (ApplyProgrammaticallyAttribute), false))
@@ -70,18 +67,20 @@ namespace Remotion.Validation.Implementation
           var classType = AttributeUtility.GetCustomAttribute<ApplyWithClassAttribute> (collectorType, false).ClassType;
           CheckGenericTypeAssignableFromDefinedType (collectorType, genericType, classType, typeof (ApplyWithClassAttribute).Name);
 
-          _typeCollectors[classType].Add (collectorType);
+          typeCollectors[classType].Add (collectorType);
         }
         else if (collectorType.IsDefined (typeof (ApplyWithMixinAttribute), false))
         {
           var mixinType = AttributeUtility.GetCustomAttribute<ApplyWithMixinAttribute> (collectorType, false).MixinType;
-          _typeCollectors[mixinType].Add (collectorType);
+          typeCollectors[mixinType].Add (collectorType);
         }
         else
         {
-          _typeCollectors[genericType].Add (collectorType);
+          typeCollectors[genericType].Add (collectorType);
         }
       }
+
+      return typeCollectors;
     }
 
     private static void CheckGenericTypeAssignableFromDefinedType (Type collectorType, Type genericType, Type classOrMixinTypee, string attributeName)

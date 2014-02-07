@@ -87,7 +87,7 @@ namespace Remotion.Validation.UnitTests.Implementation
       _typeDescoveryServiceStub.Stub (stub => stub.GetTypes (typeof (IComponentValidationCollector), true)).Return (new[] { typeof (Person) });
 
       Assert.That (
-          () => new DiscoveryServiceBasedTypeCollectorReflector (_typeDescoveryServiceStub),
+          () => new DiscoveryServiceBasedTypeCollectorReflector (_typeDescoveryServiceStub).GetCollectorsForType(typeof(IComponentValidationCollector)),
           Throws.InvalidOperationException.And.Message.EqualTo (
               "Type 'Remotion.Validation.UnitTests.TestDomain.Person' has no generic arguments."));
     }
@@ -135,7 +135,7 @@ namespace Remotion.Validation.UnitTests.Implementation
       _typeDescoveryServiceStub.Stub (stub => stub.GetTypes (typeof (IComponentValidationCollector), true)).Return (new[] { collectorType });
 
       Assert.That (
-          () => new DiscoveryServiceBasedTypeCollectorReflector (_typeDescoveryServiceStub),
+          () => new DiscoveryServiceBasedTypeCollectorReflector (_typeDescoveryServiceStub).GetCollectorsForType(typeof(IComponentValidationCollector)),
           Throws.TypeOf<InvalidOperationException>().And.Message.EqualTo (
               "Invalid 'ApplyWithClassAttribute'-definition for collector 'Remotion.Validation.UnitTests.DynamicInvalidCollector2': "
               + "type 'Remotion.Validation.UnitTests.TestDomain.Address' "
