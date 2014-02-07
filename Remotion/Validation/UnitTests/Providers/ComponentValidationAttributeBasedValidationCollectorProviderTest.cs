@@ -16,6 +16,7 @@
 // 
 
 using System;
+using System.Linq;
 using NUnit.Framework;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.UnitTests.TestDomain;
@@ -36,9 +37,12 @@ namespace Remotion.Validation.UnitTests.Providers
     [Test]
     public void CreatePropertyRuleReflector ()
     {
-      var result = _provider.CreatePropertyRuleReflector (typeof (Customer).GetProperty ("UserName"));
+      var result = _provider.CreatePropertyRuleReflectors (new [] { typeof (Customer) });
 
-      Assert.That (result, Is.TypeOf (typeof (ValidationAttributesBasedPropertyRuleReflector)));
+      Assert.That (result, Is.Not.Null);
+      var propertyReflectors = result[typeof (Customer)].ToArray();
+      Assert.That (propertyReflectors.Count(), Is.EqualTo (6));
+      CollectionAssert.AllItemsAreInstancesOfType (propertyReflectors, typeof (ValidationAttributesBasedPropertyRuleReflector));
     }
   }
 }

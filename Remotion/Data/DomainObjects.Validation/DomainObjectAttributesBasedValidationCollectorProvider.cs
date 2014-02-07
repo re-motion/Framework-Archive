@@ -16,9 +16,12 @@
 // 
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using FluentValidation.Validators;
 using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
+using Remotion.Utilities;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.Providers;
 
@@ -30,9 +33,14 @@ namespace Remotion.Data.DomainObjects.Validation
   /// </summary>
   public class DomainObjectAttributesBasedValidationCollectorProvider : AttributeBasedValidationCollectorProviderBase
   {
-    protected override IValidationPropertyRuleReflector CreatePropertyRuleReflector (PropertyInfo property)
+    protected override ILookup<Type, IAttributesBasedValidationPropertyRuleReflector> CreatePropertyRuleReflectors (IEnumerable<Type> types)
     {
-      return new DomainObjectAttributesBasedValidationPropertyRuleReflector (property);
+      ArgumentUtility.CheckNotNull ("types", types);
+      
+      return
+          types.SelectMany (t => t.GetProperties (PropertyBindingFlags | BindingFlags.DeclaredOnly))
+              .Select (p => (IAttributesBasedValidationPropertyRuleReflector) new DomainObjectAttributesBasedValidationPropertyRuleReflector (p))
+              .ToLookup (c => c.ValidatedProperty.DeclaringType);
     }
   }
 }

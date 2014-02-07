@@ -32,15 +32,20 @@ namespace Remotion.Data.DomainObjects.Validation
   /// <summary>
   /// Create <see cref="IPropertyValidator"/>s based on the <see cref="ILengthConstrainedPropertyAttribute"/> and the <see cref="INullablePropertyAttribute"/>.
   /// </summary>
-  public class DomainObjectAttributesBasedValidationPropertyRuleReflector : IValidationPropertyRuleReflector
+  public class DomainObjectAttributesBasedValidationPropertyRuleReflector : IAttributesBasedValidationPropertyRuleReflector
   {
     private readonly PropertyInfo _property;
 
     public DomainObjectAttributesBasedValidationPropertyRuleReflector (PropertyInfo property)
     {
       ArgumentUtility.CheckNotNull ("property", property);
-                    
+
       _property = property;
+    }
+
+    public PropertyInfo ValidatedProperty
+    {
+      get { return _property; }
     }
 
     public IEnumerable<IPropertyValidator> GetAddingPropertyValidators ()

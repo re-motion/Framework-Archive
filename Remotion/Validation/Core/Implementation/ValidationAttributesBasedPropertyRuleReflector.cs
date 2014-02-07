@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using FluentValidation.Validators;
+using Remotion.TypePipe.Dlr.Ast;
 using Remotion.Utilities;
 using Remotion.Validation.Attributes.MetaValidation;
 using Remotion.Validation.Attributes.Validation;
@@ -30,7 +31,7 @@ namespace Remotion.Validation.Implementation
   /// <summary>
   /// Creates <see cref="IPropertyValidator"/>s based on attributes derived from <see cref="AddingValidationAttributeBase"/>.
   /// </summary>
-  public class ValidationAttributesBasedPropertyRuleReflector : IValidationPropertyRuleReflector
+  public class ValidationAttributesBasedPropertyRuleReflector : IAttributesBasedValidationPropertyRuleReflector
   {
     private readonly PropertyInfo _property;
 
@@ -39,6 +40,10 @@ namespace Remotion.Validation.Implementation
       ArgumentUtility.CheckNotNull ("property", property);
 
       _property = property;
+    }
+
+    public PropertyInfo ValidatedProperty {
+      get { return _property; }
     }
 
     public IEnumerable<IPropertyValidator> GetAddingPropertyValidators ()

@@ -31,9 +31,12 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests
     public void CreatePropertyRuleReflector ()
     {
       var provider = new TestableDomainObjectAttributesBasedValidationCollectorProvider ();
-      var result = provider.CreatePropertyRuleReflector (typeof (Customer).GetProperty ("Name"));
+      var result = provider.CreatePropertyRuleReflectors (new [] { typeof (Customer) });
 
-      Assert.That (result, Is.TypeOf (typeof (DomainObjectAttributesBasedValidationPropertyRuleReflector)));
+      Assert.That (result, Is.Not.Null);
+      var propertyRuleReflectors = result[typeof (Customer)].ToArray();
+      Assert.That (propertyRuleReflectors.Length, Is.EqualTo (1));
+      CollectionAssert.AllItemsAreInstancesOfType (propertyRuleReflectors, typeof (DomainObjectAttributesBasedValidationPropertyRuleReflector));
     }
 
     [Test]

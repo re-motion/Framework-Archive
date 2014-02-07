@@ -16,6 +16,7 @@
 // 
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using FluentValidation.Validators;
@@ -33,7 +34,7 @@ namespace Remotion.Validation.UnitTests.Providers
   [TestFixture]
   public class AttributeBasedValidationCollectorProviderTest
   {
-    private IValidationPropertyRuleReflector _validationPropertyRuleReflectorMock;
+    private IAttributesBasedValidationPropertyRuleReflector _validationPropertyRuleReflectorMock1;
     private IPropertyValidator _propertyValidatorStub1;
     private IPropertyValidator _propertyValidatorStub2;
     private IPropertyValidator _propertyValidatorStub3;
@@ -47,6 +48,7 @@ namespace Remotion.Validation.UnitTests.Providers
     private MaxLengthMetaValidationRule _metaValidationRule1;
     private MaxValidatorCountRule _metaValidationRule2;
     private MaxLengthMetaValidationRule _metaValidationRule3;
+    private IAttributesBasedValidationPropertyRuleReflector _validationPropertyRuleReflectorMock2;
 
     [SetUp]
     public void SetUp ()
@@ -67,15 +69,20 @@ namespace Remotion.Validation.UnitTests.Providers
       _validatorRegistration3 = new ValidatorRegistration (typeof (NotNullValidator), null);
       _validatorRegistration4 = new ValidatorRegistration (typeof (NotEmptyValidator), null);
 
-      _validationPropertyRuleReflectorMock = MockRepository.GenerateStrictMock<IValidationPropertyRuleReflector>();
+      _validationPropertyRuleReflectorMock1 = MockRepository.GenerateStrictMock<IAttributesBasedValidationPropertyRuleReflector>();
+      _validationPropertyRuleReflectorMock2 = MockRepository.GenerateStrictMock<IAttributesBasedValidationPropertyRuleReflector> ();
     }
 
     [Test]
     public void GetComponentValidationCollectors ()
     {
+      var dictionary = new Dictionary<Type, IAttributesBasedValidationPropertyRuleReflector>();
+      dictionary.Add (typeof (Employee), _validationPropertyRuleReflectorMock1);
+      dictionary.Add (typeof (SpecialCustomer1), _validationPropertyRuleReflectorMock2);
+
       var collectorProvider =
           new TestableAttributeBasedValidationCollectorProviderBase (
-              _validationPropertyRuleReflectorMock,
+              dictionary,
               _propertyValidatorStub1,
               _propertyValidatorStub2,
               _propertyValidatorStub3,
@@ -92,7 +99,8 @@ namespace Remotion.Validation.UnitTests.Providers
 
       var result = collectorProvider.GetValidationCollectors (new[] { typeof (Employee), typeof (SpecialCustomer1) }).SelectMany (g => g).ToArray();
 
-      _validationPropertyRuleReflectorMock.VerifyAllExpectations();
+      _validationPropertyRuleReflectorMock1.VerifyAllExpectations();
+      _validationPropertyRuleReflectorMock2.VerifyAllExpectations ();
       Assert.That (result.Count(), Is.EqualTo (2));
       Assert.That (result[0].Collector.GetType ().Name, Is.EqualTo ("AttributeValidationCollector`1"));
       Assert.That (result[0].ProviderType, Is.EqualTo (typeof (TestableAttributeBasedValidationCollectorProviderBase)));

@@ -114,7 +114,7 @@
     <Compile Include="Merging\DiagnosticOutputRuleMergeDecorator.cs" />
     <Compile Include="Merging\IValidationCollectorMerger.cs" />
     <Compile Include="Implementation\IInvolvedTypeProvider.cs" />
-    <Compile Include="Implementation\IValidationPropertyRuleReflector.cs" />
+    <Compile Include="Implementation\IAttributesBasedValidationPropertyRuleReflector.cs" />
     <Compile Include="Implementation\ValidationAttributesBasedPropertyRuleReflector.cs" />
     <Compile Include="MetaValidation\ISystemMetaValidationRulesProvider.cs" />
     <Compile Include="MetaValidation\Rules\Custom\RemotionMaxLengthMetaValidationRule.cs" />

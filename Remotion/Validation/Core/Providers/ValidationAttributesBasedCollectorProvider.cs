@@ -15,7 +15,10 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
+using Remotion.Utilities;
 using Remotion.Validation.Attributes.Validation;
 using Remotion.Validation.Implementation;
 
@@ -26,9 +29,14 @@ namespace Remotion.Validation.Providers
   /// </summary>
   public class ValidationAttributesBasedCollectorProvider : AttributeBasedValidationCollectorProviderBase
   {
-    protected override IValidationPropertyRuleReflector CreatePropertyRuleReflector (PropertyInfo property)
+    protected override ILookup<Type, IAttributesBasedValidationPropertyRuleReflector> CreatePropertyRuleReflectors (IEnumerable<Type> types)
     {
-      return new ValidationAttributesBasedPropertyRuleReflector (property);
+      ArgumentUtility.CheckNotNull ("types", types);
+
+      return
+          types.SelectMany (t => t.GetProperties (PropertyBindingFlags | BindingFlags.DeclaredOnly))
+              .Select (p => (IAttributesBasedValidationPropertyRuleReflector) new ValidationAttributesBasedPropertyRuleReflector (p))
+              .ToLookup (c => c.ValidatedProperty.DeclaringType);
     }
   }
 }

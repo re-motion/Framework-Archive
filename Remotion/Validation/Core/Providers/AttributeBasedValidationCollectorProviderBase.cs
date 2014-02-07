@@ -52,44 +52,44 @@ namespace Remotion.Validation.Providers
     {
     }
 
-    protected abstract IValidationPropertyRuleReflector CreatePropertyRuleReflector (PropertyInfo property); // TODO AO: Rename to IAttributeBasedVPRR
+    protected abstract ILookup<Type, IAttributesBasedValidationPropertyRuleReflector> CreatePropertyRuleReflectors (IEnumerable<Type> types);
 
     public IEnumerable<IEnumerable<ValidationCollectorInfo>> GetValidationCollectors (IEnumerable<Type> types)
     {
       ArgumentUtility.CheckNotNull ("types", types);
 
-      return types.Select (type => GetValidationCollector (type)) // TODO AO: use mixin to get properties. or pass IValidationPropertyRuleReflector
+      var reflectorLookUp = CreatePropertyRuleReflectors (types);
+      return reflectorLookUp.Select (g => GetValidationCollector (g.Key, g))
           .Select (collector => EnumerableUtility.Singleton (new ValidationCollectorInfo (collector, GetType())));
     }
 
-    private IComponentValidationCollector GetValidationCollector (Type validatedType) // TODO AO: pass validatedType and properties to get collector for
-
+    private IComponentValidationCollector GetValidationCollector (
+        Type validatedType,
+        IEnumerable<IAttributesBasedValidationPropertyRuleReflector> propertyRuleReflectors)
     {
-      var collectorType = typeof (AttributeValidationCollector<>).MakeGenericType (validatedType); // TODO AO: use interface instead of mixin, can be more than one
-      var collectorInstance = (IComponentValidationCollector)Activator.CreateInstance (collectorType);
+      var collectorType = typeof (AttributeValidationCollector<>).MakeGenericType (validatedType);
+      var collectorInstance = (IComponentValidationCollector) Activator.CreateInstance (collectorType);
 
-      var properties = validatedType.GetProperties (PropertyBindingFlags | BindingFlags.DeclaredOnly); 
-      foreach (var property in properties)
+      foreach (var propertyRuleReflector in propertyRuleReflectors)
       {
-        s_SetValidationRulesForPropertyMethod.MakeGenericMethod (validatedType, property.PropertyType)
-            .Invoke (this, new object[] { property, collectorInstance });
+        s_SetValidationRulesForPropertyMethod.MakeGenericMethod (validatedType, propertyRuleReflector.ValidatedProperty.PropertyType)
+            .Invoke (this, new object[] { propertyRuleReflector, collectorInstance });
       }
       return collectorInstance;
     }
 
     // ReSharper disable UnusedMember.Local
     private void SetValidationRulesForProperty<TValidatedType, TProperty> (
-        PropertyInfo property, //TODO AO: must be from Interface, TvalidatedType must be itnerface
+        IAttributesBasedValidationPropertyRuleReflector propertyRuleReflector,
         AttributeValidationCollector<TValidatedType> collectorInstance)
         // ReSharper restore UnusedMember.Local
     {
-      var propertyRuleReflector = CreatePropertyRuleReflector (property); 
       //TODO AO: property rule is based on mixin (done), propertyAccess is based on Interface, validatedType is interface
       // if (!property.DeclaringType.IsAssignableFrom(validatedType) -> throw
       // if validatedType.isInterface && property.DeclaringType.IsAssignableFrom (validatedType), then do nothing special
       // else get property from validatedType and use this for propertyAccessException
       var parameterExpression = Expression.Parameter (typeof (TValidatedType), "t");
-      var propertyExpression = Expression.Property (parameterExpression, property); // use IValidationPropertyRuleReflector to get propertyExpression
+      var propertyExpression = Expression.Property (parameterExpression, propertyRuleReflector.ValidatedProperty);
       var propertyAccessExpression =
           (Expression<Func<TValidatedType, TProperty>>)
               Expression.Lambda (typeof (Func<TValidatedType, TProperty>), propertyExpression, parameterExpression);
@@ -100,7 +100,7 @@ namespace Remotion.Validation.Providers
 
     private void AddValidationRules<TValidatedType, TProperty> (
         IComponentValidationCollector<TValidatedType> collectorInstance,
-        IValidationPropertyRuleReflector propertyRuleReflector,
+        IAttributesBasedValidationPropertyRuleReflector propertyRuleReflector,
         Expression<Func<TValidatedType, TProperty>> propertyAccessExpression)
     {
       var addingValidators = propertyRuleReflector.GetAddingPropertyValidators().ToArray();
@@ -118,7 +118,7 @@ namespace Remotion.Validation.Providers
 
     private void RemoveValidationRules<TValidatedType, TProperty> (
         IComponentValidationCollector<TValidatedType> collectorInstance,
-        IValidationPropertyRuleReflector propertyRuleReflector,
+        IAttributesBasedValidationPropertyRuleReflector propertyRuleReflector,
         Expression<Func<TValidatedType, TProperty>> propertyAccessExpression)
     {
       var removingValidators = propertyRuleReflector.GetRemovingPropertyRegistrations().ToArray();

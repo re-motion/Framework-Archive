@@ -14,16 +14,19 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using FluentValidation.Validators;
 using Remotion.Validation.MetaValidation;
 using Remotion.Validation.Rules;
 
 namespace Remotion.Validation.Implementation
 {
-  public interface IValidationPropertyRuleReflector
+  public interface IAttributesBasedValidationPropertyRuleReflector
   {
+    PropertyInfo ValidatedProperty { get; }
     IEnumerable<IPropertyValidator> GetAddingPropertyValidators ();
     IEnumerable<IPropertyValidator> GetHardConstraintPropertyValidators ();
     IEnumerable<ValidatorRegistration> GetRemovingPropertyRegistrations ();

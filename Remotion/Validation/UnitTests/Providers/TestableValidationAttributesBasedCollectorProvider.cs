@@ -16,15 +16,22 @@
 // 
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using Remotion.Validation.Implementation;
 using Remotion.Validation.Providers;
 
 namespace Remotion.Validation.UnitTests.Providers
 {
   public class TestableValidationAttributesBasedCollectorProvider : ValidationAttributesBasedCollectorProvider
   {
-    public new Validation.Implementation.IValidationPropertyRuleReflector CreatePropertyRuleReflector (System.Reflection.PropertyInfo property)
+    public new ILookup<Type, IAttributesBasedValidationPropertyRuleReflector> CreatePropertyRuleReflectors (IEnumerable<Type> types)
     {
-      return base.CreatePropertyRuleReflector (property);
+      return
+          types.SelectMany (t => t.GetProperties (PropertyBindingFlags | BindingFlags.DeclaredOnly))
+              .Select (p => (IAttributesBasedValidationPropertyRuleReflector) new ValidationAttributesBasedPropertyRuleReflector (p))
+              .ToLookup (c => c.ValidatedProperty.DeclaringType);
     }
   }
 }
