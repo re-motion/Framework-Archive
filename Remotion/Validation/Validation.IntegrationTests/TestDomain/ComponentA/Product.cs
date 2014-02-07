@@ -16,13 +16,11 @@
 // 
 
 using System;
-using Remotion.Data.DomainObjects;
 
 namespace Remotion.Validation.IntegrationTests.TestDomain.ComponentA
 {
   public class Product
   {
-    [Mandatory]
     public virtual string Name { get; set; }
 
     public virtual decimal Price { get; set; }

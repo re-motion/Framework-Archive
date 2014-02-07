@@ -1,4 +1,4 @@
-// This file is part of the re-motion Core Framework (www.re-motion.org)
+﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -14,15 +14,23 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
-using System.Reflection;
+using Remotion.Mixins;
 
-//
-// General Information about an assembly is controlled through the following 
-// set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
-//
+namespace Remotion.Data.DomainObjects.Validation.IntegrationTests.Testdomain
+{
+  [Extends (typeof (Customer))]
+  public class CustomerMixin : Mixin<Customer>
+  {
+    [OverrideTarget]
+    [Mandatory]
+    public string UserName
+    {
+      get { return Target.UserName; }
+      set { Target.UserName = value; }
+    }
 
-[assembly: AssemblyTitle("Unit Tests for Remotion DomainObjects Validation")]
-[assembly: AssemblyCulture("")]		
-[assembly: CLSCompliant(true)]
+  
+  }
+}

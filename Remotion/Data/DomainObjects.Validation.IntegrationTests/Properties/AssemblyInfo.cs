@@ -23,6 +23,6 @@ using System.Reflection;
 // associated with an assembly.
 //
 
-[assembly: AssemblyTitle("Unit Tests for Remotion DomainObjects Validation")]
+[assembly: AssemblyTitle("Integration Tests for Remotion DomainObjects Validation")]
 [assembly: AssemblyCulture("")]		
 [assembly: CLSCompliant(true)]

@@ -31,7 +31,7 @@ using Remotion.Validation.MetaValidation;
 using Remotion.Validation.Mixins.Implementation;
 using Remotion.Validation.Providers;
 
-namespace Remotion.Validation.IntegrationTests
+namespace Remotion.Data.DomainObjects.Validation.IntegrationTests
 {
   [TestFixture]
   public abstract class IntegrationTestBase
@@ -57,6 +57,7 @@ namespace Remotion.Validation.IntegrationTests
                       SafeServiceLocator.Current.GetInstance<ICompoundValidationTypeFilter>())),
               new IValidationCollectorProvider[]
               {
+                  new DomainObjectAttributesBasedValidationCollectorProvider(),
                   new ValidationAttributesBasedCollectorProvider(),
                   new ApiBasedComponentValidationCollectorProvider (new DiscoveryServiceBasedTypeCollectorReflector())
               }),

@@ -148,33 +148,6 @@ namespace Remotion.Validation.IntegrationTests
     }
 
     [Test]
-    public void BuildOrderValidator_StringPropertyReStoreAttributeIsReplaced_MaxLengthMetaValidationRuleFails ()
-    {
-      Assert.That (
-          () => ValidationBuilder.BuildValidator<Order>(),
-          Throws.TypeOf<MetaValidationException>().And.Message.EqualTo (
-              "'RemotionMaxLengthMetaValidationRule' failed for property 'Remotion.Validation.IntegrationTests.TestDomain.ComponentA.Order.Number': "
-              + "Max-length validation rule value '15' exceeds meta validation rule max-length value of '10'."));
-    }
-
-    [Test]
-    public void BuildProductValidator_MandatoryReStoreAttributeIsApplied ()
-    {
-      var product1 = new Product();
-      var product2 = new Product { Name = "Test1" };
-
-      var validator = ValidationBuilder.BuildValidator<Product>();
-
-      var result1 = validator.Validate (product1);
-      Assert.That (result1.IsValid, Is.False);
-      Assert.That (result1.Errors.Count, Is.EqualTo (1));
-      Assert.That (result1.Errors[0].ErrorMessage, Is.EqualTo ("'Name' must not be empty."));
-
-      var result2 = validator.Validate (product2);
-      Assert.That (result2.IsValid, Is.True);
-    }
-
-    [Test]
     public void BuildEmployeeValidator_ConditionalMessage ()
     {
       var employee = new Employee { FirstName = "FirstName", LastName = "LastName" };

@@ -17,13 +17,11 @@
 
 using System;
 using System.Collections.Generic;
-using Remotion.Data.DomainObjects;
 
 namespace Remotion.Validation.IntegrationTests.TestDomain.ComponentA
 {
   public class Order
   {
-    [StringProperty(IsNullable = false, MaximumLength = 10)]
     public virtual string Number { get; set; }
 
     public virtual ICollection<OrderItem> Items { get; set; }
