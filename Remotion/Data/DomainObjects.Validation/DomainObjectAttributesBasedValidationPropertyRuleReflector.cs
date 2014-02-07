@@ -39,7 +39,7 @@ namespace Remotion.Data.DomainObjects.Validation
     public DomainObjectAttributesBasedValidationPropertyRuleReflector (PropertyInfo property)
     {
       ArgumentUtility.CheckNotNull ("property", property);
-
+                    
       _property = property;
     }
 

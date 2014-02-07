@@ -19,7 +19,7 @@ using System;
 
 namespace Remotion.Data.DomainObjects.Validation.UnitTests.Testdomain
 {
-  public class TypeWithReStoreAttributes
+  public class TypeWithDomainObjectAttributes
   {
     public string PropertyWithoutAttribute { get; set; }
 

@@ -40,10 +40,10 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests
     [SetUp]
     public void SetUp ()
     {
-      _propertyWithoutAttribute = typeof (TypeWithReStoreAttributes).GetProperty ("PropertyWithoutAttribute");
-      _propertyWithMandatoryAttribute = typeof (TypeWithReStoreAttributes).GetProperty ("PropertyWithMandatoryAttribute");
-      _propertyWithNullableStringPropertyAttribute = typeof (TypeWithReStoreAttributes).GetProperty ("PropertyWithNullableStringPropertyAttribute");
-      _propertyWithMandatoryStringPropertyAttribute = typeof (TypeWithReStoreAttributes).GetProperty ("PropertyWithMandatoryStringPropertyAttribute");
+      _propertyWithoutAttribute = typeof (TypeWithDomainObjectAttributes).GetProperty ("PropertyWithoutAttribute");
+      _propertyWithMandatoryAttribute = typeof (TypeWithDomainObjectAttributes).GetProperty ("PropertyWithMandatoryAttribute");
+      _propertyWithNullableStringPropertyAttribute = typeof (TypeWithDomainObjectAttributes).GetProperty ("PropertyWithNullableStringPropertyAttribute");
+      _propertyWithMandatoryStringPropertyAttribute = typeof (TypeWithDomainObjectAttributes).GetProperty ("PropertyWithMandatoryStringPropertyAttribute");
 
       _propertyWithoutAttributeReflector = new DomainObjectAttributesBasedValidationPropertyRuleReflector (_propertyWithoutAttribute);
       _propertyWithMandatoryAttributeReflector = new DomainObjectAttributesBasedValidationPropertyRuleReflector (_propertyWithMandatoryAttribute);

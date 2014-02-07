@@ -4,7 +4,11 @@ Aufteilung:
   
 -> NotSupportedExceptions checken!
 
+-> InvolvedTypes: Generated mixin type rausfiltern  (mit MixedLoadValidationTypeFilter) ??
+
 -> Build testen
+
+-> attribute reflector: wieso für hard conatraint und normale property eigene add-methoden
 
 -> Re-motion Integration
    -> TODO MK: TypeElement.CreateInstance über IoC machen (custom service locators wieder rausnehmen)	=> JIRA-Task!  

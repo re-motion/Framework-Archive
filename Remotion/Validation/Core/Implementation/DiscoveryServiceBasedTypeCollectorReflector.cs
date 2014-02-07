@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Linq;
+using System.Threading;
 using Remotion.Collections;
 using Remotion.Reflection.TypeDiscovery;
 using Remotion.Utilities;
@@ -43,6 +44,8 @@ namespace Remotion.Validation.Implementation
       _typeDiscoveryService = typeDiscoveryService;
       _typeCollectors = new MultiDictionary<Type, Type> ();
 
+      //TODO AO: Move to lazy initiazied _typeCollectors 
+      //_typeCollectors = new Lazy<MultiDictionary<Type, Type>> (Initialize, LazyThreadSafetyMode.ExecutionAndPublication);
       Initialize ();
     }
 

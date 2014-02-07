@@ -16,37 +16,15 @@
 // 
 
 using System;
-using System.Collections.Generic;
-using Remotion.Mixins;
-using Remotion.Utilities;
-using Remotion.Validation.Implementation;
 
-namespace Remotion.Validation.Mixins.Implementation
+namespace Remotion.Data.DomainObjects.Validation
 {
-  public class MixedLoadFilteredValidationTypeFilter : IValidationTypeFilter
+  /// <summary>
+  /// Apply this <see cref="Attribute"/> to an assembly to force the inclusing of the mixins-extension for domain objects.
+  /// </summary>
+  [AttributeUsage (AttributeTargets.Assembly)]
+  public class EnsureValidationSupportForDomainObjectsAttribute : Attribute
   {
-    private List<Type> _filterTypes;
 
-    public MixedLoadFilteredValidationTypeFilter ()
-    {
-      Initialize();
-    }
-
-    public bool IsValid (Type type)
-    {
-      ArgumentUtility.CheckNotNull ("type", type);
-
-      return !_filterTypes.Contains (type);
-    }
-
-    private void Initialize ()
-    {
-      _filterTypes = new List<Type>(
-          new[]
-          {
-              typeof (IMixinTarget),
-              typeof (IInitializableMixin)
-          });
-    }
   }
 }

@@ -16,28 +16,44 @@
 // 
 
 using System;
+using System.Linq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Validation.UnitTests.Testdomain;
+using Remotion.Validation.Implementation;
+using Remotion.Validation.Rules;
 
 namespace Remotion.Data.DomainObjects.Validation.UnitTests
 {
   [TestFixture]
   public class DomainObjectAttributesBasedValidationCollectorProviderTest
   {
-    private TestableDomainObjectAttributesBasedValidationCollectorProvider _provider;
-
-    [SetUp]
-    public void SetUp ()
-    {
-      _provider = new TestableDomainObjectAttributesBasedValidationCollectorProvider();
-    }
-
     [Test]
     public void CreatePropertyRuleReflector ()
     {
-      var result = _provider.CreatePropertyRuleReflector (typeof (Customer).GetProperty ("Name"));
+      var provider = new TestableDomainObjectAttributesBasedValidationCollectorProvider ();
+      var result = provider.CreatePropertyRuleReflector (typeof (Customer).GetProperty ("Name"));
 
       Assert.That (result, Is.TypeOf (typeof (DomainObjectAttributesBasedValidationPropertyRuleReflector)));
+    }
+
+    [Test]
+    public void GetValidationCollectorsForMixinProperties ()
+    {
+      var provider = new DomainObjectAttributesBasedValidationCollectorProvider ();
+      var result = provider.GetValidationCollectors (new[] { typeof (MixinTypeWithDomainObjectAttributes) }).SelectMany (c => c).SingleOrDefault ();
+
+      Assert.That (result, Is.Not.Null);
+      Assert.That (result.Collector.ValidatedType, Is.EqualTo (typeof (MixinTypeWithDomainObjectAttributes)));
+      Assert.That (result.Collector.AddedPropertyRules.Count, Is.EqualTo (6));
+
+      var addingComponentPropertyRule = GetPropertyRule (result, "PropertyWithoutAttribute");
+      Assert.That (addingComponentPropertyRule, Is.EqualTo (4));
+
+    }
+
+    private static IAddingComponentPropertyRule GetPropertyRule (ValidationCollectorInfo result, string propertyName)
+    {
+      return result.Collector.AddedPropertyRules.Single (r=>r.Property.Name == propertyName);
     }
   }
 }

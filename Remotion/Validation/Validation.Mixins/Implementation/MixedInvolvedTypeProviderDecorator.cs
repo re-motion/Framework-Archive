@@ -32,10 +32,10 @@ namespace Remotion.Validation.Mixins.Implementation
     public MixedInvolvedTypeProviderDecorator (IInvolvedTypeProvider involvedTypeProvider)
     {
       ArgumentUtility.CheckNotNull ("involvedTypeProvider", involvedTypeProvider);
-      
+
       _involvedTypeProvider = involvedTypeProvider;
     }
-    
+
     public IValidationTypeFilter ValidationTypeFilter
     {
       get { return _involvedTypeProvider.ValidationTypeFilter; }
@@ -44,14 +44,12 @@ namespace Remotion.Validation.Mixins.Implementation
     public IEnumerable<IEnumerable<Type>> GetTypes (Type type)
     {
       ArgumentUtility.CheckNotNull ("type", type);
-      
+
       var concreteOrMixedType = MixinTypeUtility.GetConcreteMixedType (type);
 
-      foreach (var involvedType in _involvedTypeProvider.GetTypes (concreteOrMixedType))
-        yield return involvedType;
-
-      foreach (var typeGroup in GetMixins (type))
-        yield return typeGroup;
+      var involvedTypes = _involvedTypeProvider.GetTypes (concreteOrMixedType);
+      var involvedMixins = GetMixins (type);
+      return involvedTypes.Concat (involvedMixins);
     }
 
     private IEnumerable<IEnumerable<Type>> GetMixins (Type type)

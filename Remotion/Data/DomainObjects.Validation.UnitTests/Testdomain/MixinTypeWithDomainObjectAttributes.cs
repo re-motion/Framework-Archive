@@ -16,37 +16,20 @@
 // 
 
 using System;
-using System.Collections.Generic;
-using Remotion.Mixins;
-using Remotion.Utilities;
-using Remotion.Validation.Implementation;
 
-namespace Remotion.Validation.Mixins.Implementation
+namespace Remotion.Data.DomainObjects.Validation.UnitTests.Testdomain
 {
-  public class MixedLoadFilteredValidationTypeFilter : IValidationTypeFilter
+  public class MixinTypeWithDomainObjectAttributes : DomainObjectMixin<MixinTarget>
   {
-    private List<Type> _filterTypes;
+    public string PropertyWithoutAttribute { get; set; }
 
-    public MixedLoadFilteredValidationTypeFilter ()
-    {
-      Initialize();
-    }
+    [Mandatory]
+    public string PropertyWithMandatoryAttribute { get; set; }
 
-    public bool IsValid (Type type)
-    {
-      ArgumentUtility.CheckNotNull ("type", type);
+    [StringProperty (IsNullable = true, MaximumLength = 10)]
+    public string PropertyWithNullableStringPropertyAttribute { get; set; }
 
-      return !_filterTypes.Contains (type);
-    }
-
-    private void Initialize ()
-    {
-      _filterTypes = new List<Type>(
-          new[]
-          {
-              typeof (IMixinTarget),
-              typeof (IInitializableMixin)
-          });
-    }
+    [StringProperty (IsNullable = false, MaximumLength = 20)]
+    public string PropertyWithMandatoryStringPropertyAttribute { get; set; }
   }
 }
