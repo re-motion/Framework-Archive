@@ -58,10 +58,5 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests
       Assert.That (result.Collector.ValidatedType, Is.EqualTo (typeof (IMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface)));
       Assert.That (result.Collector.AddedPropertyRules.Count, Is.EqualTo (6));
     }
-
-    private static IAddingComponentPropertyRule GetPropertyRule (ValidationCollectorInfo result, string propertyName)
-    {
-      return result.Collector.AddedPropertyRules.Single (r=>r.Property.Name == propertyName);
-    }
   }
 }
