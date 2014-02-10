@@ -19,7 +19,7 @@ using System;
 
 namespace Remotion.Data.DomainObjects.Validation.UnitTests.Testdomain
 {
-  public class MixinTypeWithDomainObjectAttributes : DomainObjectMixin<MixinTarget>
+  public class MixinTypeWithDomainObjectAttributes_AnnotatedPropertiesNotPartOfInterface : DomainObjectMixin<MixinTarget>
   {
     public string PropertyWithoutAttribute { get; set; }
 

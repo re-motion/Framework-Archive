@@ -18,7 +18,6 @@
 using System;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Validation.IntegrationTests.Testdomain;
-using Remotion.Mixins;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.MetaValidation;
 
@@ -36,18 +35,22 @@ namespace Remotion.Data.DomainObjects.Validation.IntegrationTests
     [Test]
     public void BuildProductValidator_MandatoryReStoreAttributeIsApplied ()
     {
-      var product1 = new Product ();
-      var product2 = new Product { Name = "Test1" };
+      using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
+      {
+        var product1 = Product.NewObject ();
+        var product2 = Product.NewObject ();
+        product2.Order = Order.NewObject();;
 
-      var validator = ValidationBuilder.BuildValidator<Product> ();
+        var validator = ValidationBuilder.BuildValidator<Product> ();
 
-      var result1 = validator.Validate (product1);
-      Assert.That (result1.IsValid, Is.False);
-      Assert.That (result1.Errors.Count, Is.EqualTo (1));
-      Assert.That (result1.Errors[0].ErrorMessage, Is.EqualTo ("'Name' must not be empty."));
+        var result1 = validator.Validate (product1);
+        Assert.That (result1.IsValid, Is.False);
+        Assert.That (result1.Errors.Count, Is.EqualTo (1));
+        Assert.That (result1.Errors[0].ErrorMessage, Is.EqualTo ("'Order' must not be empty."));
 
-      var result2 = validator.Validate (product2);
-      Assert.That (result2.IsValid, Is.True);
+        var result2 = validator.Validate (product2);
+        Assert.That (result2.IsValid, Is.True);
+      }
     }
 
     [Test]

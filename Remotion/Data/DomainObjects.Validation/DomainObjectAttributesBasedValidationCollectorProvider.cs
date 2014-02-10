@@ -21,6 +21,8 @@ using System.Linq;
 using System.Reflection;
 using FluentValidation.Validators;
 using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
+using Remotion.FunctionalProgramming;
+using Remotion.Reflection;
 using Remotion.Utilities;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.Providers;
@@ -36,11 +38,73 @@ namespace Remotion.Data.DomainObjects.Validation
     protected override ILookup<Type, IAttributesBasedValidationPropertyRuleReflector> CreatePropertyRuleReflectors (IEnumerable<Type> types)
     {
       ArgumentUtility.CheckNotNull ("types", types);
-      
-      return
-          types.SelectMany (t => t.GetProperties (PropertyBindingFlags | BindingFlags.DeclaredOnly))
-              .Select (p => (IAttributesBasedValidationPropertyRuleReflector) new DomainObjectAttributesBasedValidationPropertyRuleReflector (p))
-              .ToLookup (c => c.ValidatedProperty.DeclaringType);
+
+      var interfaceTypes = new List<Type>();
+      var allTypes = types.ApplySideEffect (
+          t =>
+          {
+            if (t.IsInterface)
+              interfaceTypes.Add (t);
+          }).ToList();
+
+      //return allTypes.SelectMany (
+      //    t => t.GetProperties (PropertyBindingFlags | BindingFlags.DeclaredOnly).Select (p => new { Type = t, Property = p }))
+      //    .Select (r => new { r.Type, Reflector = new DomainObjectAttributesBasedValidationPropertyRuleReflector (r.Property, r.Property) })
+      //    .ToLookup (r => r.Type, c => (IAttributesBasedValidationPropertyRuleReflector) c.Reflector);
+      return allTypes.SelectMany (t => CreatePropertyRuleReflectors (t, t.GetInterfaces())).ToLookup (r => r.Item1, r => r.Item2);
+    }
+
+    private IEnumerable<Tuple<Type, IAttributesBasedValidationPropertyRuleReflector>> CreatePropertyRuleReflectors (
+        Type annotatedType,
+        IReadOnlyCollection<Type> interfaceTypes)
+    {
+      if (ReflectionUtility.IsDomainObject (annotatedType))
+      {
+        return annotatedType.GetProperties (PropertyBindingFlags | BindingFlags.DeclaredOnly)
+            .Select (
+                p => new Tuple<Type, IAttributesBasedValidationPropertyRuleReflector> (
+                    annotatedType,
+                    new DomainObjectAttributesBasedValidationPropertyRuleReflector (p, p)));
+      }
+
+      if (typeof (IDomainObjectMixin).IsAssignableFrom (annotatedType) && !annotatedType.IsInterface)
+      {
+        var implementedInterfaces = interfaceTypes.Where (i => i.IsAssignableFrom (annotatedType)).ToList();
+        var interfaceProperties = implementedInterfaces.SelectMany (t => t.GetProperties()).Select (PropertyInfoAdapter.Create).ToList();
+        var annotatedProperties = annotatedType.GetProperties (PropertyBindingFlags | BindingFlags.DeclaredOnly)
+            .Where (HasValidationRulesOnMixinProperty)
+            .Select (PropertyInfoAdapter.Create)
+            .ToDictionary (p => (IPropertyInformation) p);
+
+        var propertyMapping = interfaceProperties
+            .Select (p => new { InterfaceProperty = p, ImplementationProperty = p.FindInterfaceImplementation (annotatedType) })
+            .Where (mapping => annotatedProperties.ContainsKey (mapping.ImplementationProperty))
+            .ToList();
+
+        if (annotatedProperties.Any() && !propertyMapping.Any())
+        {
+          throw new InvalidOperationException (
+              string.Format ("Annotated properties of mixin '{0}' have to be part of an interface.", annotatedType.Name));
+        }
+
+        return propertyMapping.Select (
+            mapping => new Tuple<Type, IAttributesBasedValidationPropertyRuleReflector> (
+                mapping.InterfaceProperty.DeclaringType.AsRuntimeType(),
+                new DomainObjectAttributesBasedValidationPropertyRuleReflector (
+                    mapping.InterfaceProperty.AsRuntimePropertyInfo(),
+                    mapping.ImplementationProperty.AsRuntimePropertyInfo())));
+      }
+
+      return Enumerable.Empty<Tuple<Type, IAttributesBasedValidationPropertyRuleReflector>>();
+    }
+
+    private bool HasValidationRulesOnMixinProperty (PropertyInfo property)
+    {
+      var dummyInterfaceProperty = property;
+      // The interface property does not matter in this particular instance, so any property could be passed into the reflector.
+      var reflector = new DomainObjectAttributesBasedValidationPropertyRuleReflector (dummyInterfaceProperty, property);
+
+      return reflector.GetAddingPropertyValidators().Any() || reflector.GetHardConstraintPropertyValidators().Any();
     }
   }
 }

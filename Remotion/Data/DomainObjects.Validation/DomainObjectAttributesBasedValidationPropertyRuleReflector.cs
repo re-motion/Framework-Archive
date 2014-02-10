@@ -18,6 +18,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
 using FluentValidation.Validators;
 using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
@@ -34,30 +35,44 @@ namespace Remotion.Data.DomainObjects.Validation
   /// </summary>
   public class DomainObjectAttributesBasedValidationPropertyRuleReflector : IAttributesBasedValidationPropertyRuleReflector
   {
-    private readonly PropertyInfo _property;
+    private readonly PropertyInfo _interfaceProperty;
+    private readonly PropertyInfo _implementationProperty;
 
-    public DomainObjectAttributesBasedValidationPropertyRuleReflector (PropertyInfo property)
+    public DomainObjectAttributesBasedValidationPropertyRuleReflector (PropertyInfo interfaceProperty, PropertyInfo implementationProperty)
     {
-      ArgumentUtility.CheckNotNull ("property", property);
+      ArgumentUtility.CheckNotNull ("interfaceProperty", interfaceProperty);
+      ArgumentUtility.CheckNotNull ("implementationProperty", implementationProperty);
 
-      _property = property;
+      _interfaceProperty = interfaceProperty;
+      _implementationProperty = implementationProperty;
     }
 
-    public PropertyInfo ValidatedProperty
+    public Type PropertyType
     {
-      get { return _property; }
+      get { return _interfaceProperty.PropertyType; }
+    }
+
+    public Expression<Func<TValidatedType, TProperty>> GetPropertyAccessExpression<TValidatedType, TProperty> ()
+    {
+      //TODO AO: check TValidatedType isAssignable DeclaringType of interface property and TProperty matches property type
+      
+      var parameterExpression = Expression.Parameter (typeof(TValidatedType), "t");
+      var propertyExpression = Expression.Property (parameterExpression, _interfaceProperty);
+      return
+          (Expression<Func<TValidatedType, TProperty>>)
+              Expression.Lambda (typeof (Func<TValidatedType, TProperty>), propertyExpression, parameterExpression);
     }
 
     public IEnumerable<IPropertyValidator> GetAddingPropertyValidators ()
     {
-      var lengthConstraintAttribute = AttributeUtility.GetCustomAttribute<ILengthConstrainedPropertyAttribute> (_property, false);
+      var lengthConstraintAttribute = AttributeUtility.GetCustomAttribute<ILengthConstrainedPropertyAttribute> (_implementationProperty, false);
       if (lengthConstraintAttribute != null && lengthConstraintAttribute.MaximumLength.HasValue)
         yield return new LengthValidator (0, lengthConstraintAttribute.MaximumLength.Value);
     }
 
     public IEnumerable<IPropertyValidator> GetHardConstraintPropertyValidators ()
     {
-      var nullableAttribute = AttributeUtility.GetCustomAttribute<INullablePropertyAttribute> (_property, false);
+      var nullableAttribute = AttributeUtility.GetCustomAttribute<INullablePropertyAttribute> (_implementationProperty, false);
       if (nullableAttribute != null && !nullableAttribute.IsNullable)
         yield return new NotNullValidator();
     }
@@ -69,9 +84,9 @@ namespace Remotion.Data.DomainObjects.Validation
 
     public IEnumerable<IMetaValidationRule> GetMetaValidationRules ()
     {
-      var lengthConstraintAttribute = AttributeUtility.GetCustomAttribute<ILengthConstrainedPropertyAttribute> (_property, false);
+      var lengthConstraintAttribute = AttributeUtility.GetCustomAttribute<ILengthConstrainedPropertyAttribute> (_implementationProperty, false);
       if (lengthConstraintAttribute != null && lengthConstraintAttribute.MaximumLength.HasValue)
-        yield return new RemotionMaxLengthMetaValidationRule (_property, lengthConstraintAttribute.MaximumLength.Value);
+        yield return new RemotionMaxLengthMetaValidationRule (_implementationProperty, lengthConstraintAttribute.MaximumLength.Value);
     }
   }
 }

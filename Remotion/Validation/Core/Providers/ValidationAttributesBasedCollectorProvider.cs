@@ -33,10 +33,9 @@ namespace Remotion.Validation.Providers
     {
       ArgumentUtility.CheckNotNull ("types", types);
 
-      return
-          types.SelectMany (t => t.GetProperties (PropertyBindingFlags | BindingFlags.DeclaredOnly))
-              .Select (p => (IAttributesBasedValidationPropertyRuleReflector) new ValidationAttributesBasedPropertyRuleReflector (p))
-              .ToLookup (c => c.ValidatedProperty.DeclaringType);
+      return types.SelectMany (t => t.GetProperties (PropertyBindingFlags | BindingFlags.DeclaredOnly).Select (p => new { Type = t, Property = p }))
+          .Select (r => new { r.Type, Reflector = new ValidationAttributesBasedPropertyRuleReflector (r.Property) })
+          .ToLookup (r => r.Type, c => (IAttributesBasedValidationPropertyRuleReflector) c.Reflector);
     }
   }
 }

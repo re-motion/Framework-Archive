@@ -19,10 +19,16 @@ using System;
 
 namespace Remotion.Data.DomainObjects.Validation.IntegrationTests.Testdomain
 {
-  public class Product
+  [DBTable]
+  public class Product : DomainObject
   {
+    public static Product NewObject ()
+    {
+      return NewObject<Product> ();
+    }
+
     [Mandatory]
-    public virtual string Name { get; set; }
+    public virtual Order Order { get; set; }
 
     public virtual decimal Price { get; set; }
   }

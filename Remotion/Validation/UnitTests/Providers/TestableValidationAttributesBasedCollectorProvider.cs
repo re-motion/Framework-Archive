@@ -30,8 +30,9 @@ namespace Remotion.Validation.UnitTests.Providers
     {
       return
           types.SelectMany (t => t.GetProperties (PropertyBindingFlags | BindingFlags.DeclaredOnly))
-              .Select (p => (IAttributesBasedValidationPropertyRuleReflector) new ValidationAttributesBasedPropertyRuleReflector (p))
-              .ToLookup (c => c.ValidatedProperty.DeclaringType);
+              .Select (p => new { Type = p.DeclaringType, Property = p })
+              .Select (t => new Tuple<Type, IAttributesBasedValidationPropertyRuleReflector>(t.Type,  new ValidationAttributesBasedPropertyRuleReflector (t.Property)))
+              .ToLookup (c => c.Item1, c=>c.Item2);
     }
   }
 }

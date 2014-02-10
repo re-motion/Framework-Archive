@@ -72,7 +72,7 @@ namespace Remotion.Validation.Providers
 
       foreach (var propertyRuleReflector in propertyRuleReflectors)
       {
-        s_SetValidationRulesForPropertyMethod.MakeGenericMethod (validatedType, propertyRuleReflector.ValidatedProperty.PropertyType)
+        s_SetValidationRulesForPropertyMethod.MakeGenericMethod (validatedType, propertyRuleReflector.PropertyType)
             .Invoke (this, new object[] { propertyRuleReflector, collectorInstance });
       }
       return collectorInstance;
@@ -84,16 +84,7 @@ namespace Remotion.Validation.Providers
         AttributeValidationCollector<TValidatedType> collectorInstance)
         // ReSharper restore UnusedMember.Local
     {
-      //TODO AO: property rule is based on mixin (done), propertyAccess is based on Interface, validatedType is interface
-      // if (!property.DeclaringType.IsAssignableFrom(validatedType) -> throw
-      // if validatedType.isInterface && property.DeclaringType.IsAssignableFrom (validatedType), then do nothing special
-      // else get property from validatedType and use this for propertyAccessException
-      var parameterExpression = Expression.Parameter (typeof (TValidatedType), "t");
-      var propertyExpression = Expression.Property (parameterExpression, propertyRuleReflector.ValidatedProperty);
-      var propertyAccessExpression =
-          (Expression<Func<TValidatedType, TProperty>>)
-              Expression.Lambda (typeof (Func<TValidatedType, TProperty>), propertyExpression, parameterExpression);
-
+      var propertyAccessExpression = propertyRuleReflector.GetPropertyAccessExpression<TValidatedType, TProperty>();
       AddValidationRules (collectorInstance, propertyRuleReflector, propertyAccessExpression);
       RemoveValidationRules (collectorInstance, propertyRuleReflector, propertyAccessExpression);
     }

@@ -63,7 +63,8 @@
     <Compile Include="TestableDomainObjectAttributesBasedValidationCollectorProvider.cs" />
     <Compile Include="Testdomain\Customer.cs" />
     <Compile Include="Testdomain\MixinTarget.cs" />
-    <Compile Include="Testdomain\MixinTypeWithDomainObjectAttributes.cs" />
+    <Compile Include="Testdomain\MixinTypeWithDomainObjectAttributes_AnnotatedPropertiesNotPartOfInterface.cs" />
+    <Compile Include="Testdomain\MixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface.cs" />
     <Compile Include="Testdomain\TypeWithDomainObjectAttributes.cs" />
   </ItemGroup>
   <ItemGroup>

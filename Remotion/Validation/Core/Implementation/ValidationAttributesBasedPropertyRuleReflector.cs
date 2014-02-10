@@ -14,12 +14,13 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
 using FluentValidation.Validators;
-using Remotion.TypePipe.Dlr.Ast;
 using Remotion.Utilities;
 using Remotion.Validation.Attributes.MetaValidation;
 using Remotion.Validation.Attributes.Validation;
@@ -42,16 +43,25 @@ namespace Remotion.Validation.Implementation
       _property = property;
     }
 
-    public PropertyInfo ValidatedProperty {
-      get { return _property; }
+    public Type PropertyType
+    {
+      get { return _property.PropertyType; }
+    }
+
+    public Expression<Func<TValidatedType, TProperty>> GetPropertyAccessExpression<TValidatedType, TProperty> ()
+    {
+      var parameterExpression = Expression.Parameter (typeof (TValidatedType), "t");
+      var propertyExpression = Expression.Property (parameterExpression, _property);
+      return (Expression<Func<TValidatedType, TProperty>>)
+          Expression.Lambda (typeof (Func<TValidatedType, TProperty>), propertyExpression, parameterExpression);
     }
 
     public IEnumerable<IPropertyValidator> GetAddingPropertyValidators ()
     {
       var addingValidationAttributes =
           _property.GetCustomAttributes (typeof (AddingValidationAttributeBase), false)
-                   .Cast<AddingValidationAttributeBase>()
-                   .Where (a => !a.IsHardConstraint);
+              .Cast<AddingValidationAttributeBase>()
+              .Where (a => !a.IsHardConstraint);
       return addingValidationAttributes.SelectMany (a => a.GetPropertyValidators (_property));
     }
 
@@ -59,20 +69,21 @@ namespace Remotion.Validation.Implementation
     {
       var addingValidationAttributes =
           _property.GetCustomAttributes (typeof (AddingValidationAttributeBase), false)
-                   .Cast<AddingValidationAttributeBase>()
-                   .Where (a => a.IsHardConstraint);
+              .Cast<AddingValidationAttributeBase>()
+              .Where (a => a.IsHardConstraint);
       return addingValidationAttributes.SelectMany (a => a.GetPropertyValidators (_property));
     }
 
     public IEnumerable<ValidatorRegistration> GetRemovingPropertyRegistrations ()
     {
-      var removingValidationAttributes = _property.GetCustomAttributes (typeof(RemoveValidatorAttribute), false).Cast<RemoveValidatorAttribute>();
+      var removingValidationAttributes = _property.GetCustomAttributes (typeof (RemoveValidatorAttribute), false).Cast<RemoveValidatorAttribute>();
       return removingValidationAttributes.Select (a => new ValidatorRegistration (a.ValidatorType, a.CollectorTypeToRemoveFrom));
     }
 
     public IEnumerable<IMetaValidationRule> GetMetaValidationRules ()
     {
-      var metaValidationAttributes = _property.GetCustomAttributes (typeof(AddingMetaValidationRuleAttributeBase), false).Cast<AddingMetaValidationRuleAttributeBase>();
+      var metaValidationAttributes =
+          _property.GetCustomAttributes (typeof (AddingMetaValidationRuleAttributeBase), false).Cast<AddingMetaValidationRuleAttributeBase>();
       return metaValidationAttributes.Select (mvr => mvr.GetMetaValidationRule (_property));
     }
   }

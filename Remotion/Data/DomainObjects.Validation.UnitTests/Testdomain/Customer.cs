@@ -17,7 +17,7 @@
 
 namespace Remotion.Data.DomainObjects.Validation.UnitTests.Testdomain
 {
-  public class Customer
+  public class Customer : DomainObject
   {
     public string Name { get; set; } 
   }

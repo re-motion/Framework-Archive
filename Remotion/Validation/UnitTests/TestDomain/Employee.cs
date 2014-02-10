@@ -25,6 +25,6 @@ namespace Remotion.Validation.UnitTests.TestDomain
     [Length(0, 20)]
     public virtual string Position { get; set; }
 
-    public virtual decimal Salary { get; set; }
+    public virtual string Notes { get; set; }
   }
 }

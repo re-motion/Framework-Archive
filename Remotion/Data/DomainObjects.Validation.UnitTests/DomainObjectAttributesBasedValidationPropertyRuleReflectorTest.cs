@@ -42,49 +42,61 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests
     {
       _propertyWithoutAttribute = typeof (TypeWithDomainObjectAttributes).GetProperty ("PropertyWithoutAttribute");
       _propertyWithMandatoryAttribute = typeof (TypeWithDomainObjectAttributes).GetProperty ("PropertyWithMandatoryAttribute");
-      _propertyWithNullableStringPropertyAttribute = typeof (TypeWithDomainObjectAttributes).GetProperty ("PropertyWithNullableStringPropertyAttribute");
-      _propertyWithMandatoryStringPropertyAttribute = typeof (TypeWithDomainObjectAttributes).GetProperty ("PropertyWithMandatoryStringPropertyAttribute");
+      _propertyWithNullableStringPropertyAttribute =
+          typeof (TypeWithDomainObjectAttributes).GetProperty ("PropertyWithNullableStringPropertyAttribute");
+      _propertyWithMandatoryStringPropertyAttribute =
+          typeof (TypeWithDomainObjectAttributes).GetProperty ("PropertyWithMandatoryStringPropertyAttribute");
 
-      _propertyWithoutAttributeReflector = new DomainObjectAttributesBasedValidationPropertyRuleReflector (_propertyWithoutAttribute);
-      _propertyWithMandatoryAttributeReflector = new DomainObjectAttributesBasedValidationPropertyRuleReflector (_propertyWithMandatoryAttribute);
-      _propertyWithNullableStringPropertyAttributeReflector = new DomainObjectAttributesBasedValidationPropertyRuleReflector (_propertyWithNullableStringPropertyAttribute);
-      _propertyWithMandatoryStringPropertyAttributeReflector = new DomainObjectAttributesBasedValidationPropertyRuleReflector (_propertyWithMandatoryStringPropertyAttribute);
+      _propertyWithoutAttributeReflector = new DomainObjectAttributesBasedValidationPropertyRuleReflector (
+          _propertyWithoutAttribute,
+          _propertyWithoutAttribute);
+      _propertyWithMandatoryAttributeReflector = new DomainObjectAttributesBasedValidationPropertyRuleReflector (
+          _propertyWithMandatoryAttribute,
+          _propertyWithMandatoryAttribute);
+      _propertyWithNullableStringPropertyAttributeReflector =
+          new DomainObjectAttributesBasedValidationPropertyRuleReflector (
+              _propertyWithNullableStringPropertyAttribute,
+              _propertyWithNullableStringPropertyAttribute);
+      _propertyWithMandatoryStringPropertyAttributeReflector =
+          new DomainObjectAttributesBasedValidationPropertyRuleReflector (
+              _propertyWithMandatoryStringPropertyAttribute,
+              _propertyWithMandatoryStringPropertyAttribute);
     }
 
     [Test]
     public void NoAttributes ()
     {
-      Assert.That (_propertyWithoutAttributeReflector.GetAddingPropertyValidators ().Any (), Is.False);
-      Assert.That (_propertyWithoutAttributeReflector.GetHardConstraintPropertyValidators ().Any (), Is.False);
-      Assert.That (_propertyWithoutAttributeReflector.GetRemovingPropertyRegistrations ().Any (), Is.False);
-      Assert.That (_propertyWithoutAttributeReflector.GetMetaValidationRules ().Any (), Is.False);
+      Assert.That (_propertyWithoutAttributeReflector.GetAddingPropertyValidators().Any(), Is.False);
+      Assert.That (_propertyWithoutAttributeReflector.GetHardConstraintPropertyValidators().Any(), Is.False);
+      Assert.That (_propertyWithoutAttributeReflector.GetRemovingPropertyRegistrations().Any(), Is.False);
+      Assert.That (_propertyWithoutAttributeReflector.GetMetaValidationRules().Any(), Is.False);
     }
 
     [Test]
     public void GetHardConstraintPropertyValidators_MandatoryAttribute ()
     {
-      var result = _propertyWithMandatoryAttributeReflector.GetHardConstraintPropertyValidators ().ToArray ();
+      var result = _propertyWithMandatoryAttributeReflector.GetHardConstraintPropertyValidators().ToArray();
 
-      Assert.That (result.Count(), Is.EqualTo(1));
+      Assert.That (result.Count(), Is.EqualTo (1));
       Assert.That (result[0], Is.TypeOf (typeof (NotNullValidator)));
     }
 
     [Test]
     public void GettAddingPropertyValidators_NullableStringPropertyAttribute ()
     {
-      var result = _propertyWithNullableStringPropertyAttributeReflector.GetAddingPropertyValidators ().ToArray ();
+      var result = _propertyWithNullableStringPropertyAttributeReflector.GetAddingPropertyValidators().ToArray();
 
-      Assert.That (result.Count (), Is.EqualTo (1));
+      Assert.That (result.Count(), Is.EqualTo (1));
       Assert.That (result[0], Is.TypeOf (typeof (LengthValidator)));
-      Assert.That (((LengthValidator)result[0]).Max, Is.EqualTo(10));
+      Assert.That (((LengthValidator) result[0]).Max, Is.EqualTo (10));
     }
 
     [Test]
     public void GettAddingPropertyValidators_MandatoryStringPropertyAttribute ()
     {
-      var result = _propertyWithMandatoryStringPropertyAttributeReflector.GetAddingPropertyValidators ().ToArray ();
+      var result = _propertyWithMandatoryStringPropertyAttributeReflector.GetAddingPropertyValidators().ToArray();
 
-      Assert.That (result.Count (), Is.EqualTo (1));
+      Assert.That (result.Count(), Is.EqualTo (1));
       Assert.That (result[0], Is.TypeOf (typeof (LengthValidator)));
       Assert.That (((LengthValidator) result[0]).Max, Is.EqualTo (20));
     }
@@ -92,7 +104,7 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests
     [Test]
     public void GetHardConstraintPropertyValidators_NullableStringPropertyAttribute ()
     {
-      var result = _propertyWithNullableStringPropertyAttributeReflector.GetHardConstraintPropertyValidators ().ToArray ();
+      var result = _propertyWithNullableStringPropertyAttributeReflector.GetHardConstraintPropertyValidators().ToArray();
 
       Assert.That (result.Any(), Is.False);
     }
@@ -100,9 +112,9 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests
     [Test]
     public void GetHardConstraintPropertyValidators_MandatoryStringPropertyAttribute ()
     {
-      var result = _propertyWithMandatoryStringPropertyAttributeReflector.GetHardConstraintPropertyValidators ().ToArray ();
+      var result = _propertyWithMandatoryStringPropertyAttributeReflector.GetHardConstraintPropertyValidators().ToArray();
 
-      Assert.That (result.Count (), Is.EqualTo (1));
+      Assert.That (result.Count(), Is.EqualTo (1));
       Assert.That (result[0], Is.TypeOf (typeof (NotNullValidator)));
     }
 
@@ -117,7 +129,7 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests
     [Test]
     public void GetMetaValidationRules_MandatoryAttribute ()
     {
-      var result = _propertyWithMandatoryAttributeReflector.GetMetaValidationRules ().ToArray ();
+      var result = _propertyWithMandatoryAttributeReflector.GetMetaValidationRules().ToArray();
 
       Assert.That (result.Any(), Is.False);
     }
@@ -125,12 +137,11 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests
     [Test]
     public void GetMetaValidationRules_NullableStringPropertyAttribute ()
     {
-      var result = _propertyWithNullableStringPropertyAttributeReflector.GetMetaValidationRules ().ToArray ();
+      var result = _propertyWithNullableStringPropertyAttributeReflector.GetMetaValidationRules().ToArray();
 
-      Assert.That (result.Count (), Is.EqualTo (1));
+      Assert.That (result.Count(), Is.EqualTo (1));
       Assert.That (result[0], Is.TypeOf (typeof (RemotionMaxLengthMetaValidationRule)));
-      Assert.That (((RemotionMaxLengthMetaValidationRule) result[0]).MaxLength, Is.EqualTo(10));
-
+      Assert.That (((RemotionMaxLengthMetaValidationRule) result[0]).MaxLength, Is.EqualTo (10));
     }
   }
 }

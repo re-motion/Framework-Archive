@@ -19,8 +19,14 @@ using System;
 
 namespace Remotion.Data.DomainObjects.Validation.IntegrationTests.Testdomain
 {
-  public class Order
+  [DBTable]
+  public class Order : DomainObject
   {
+    public static Order NewObject ()
+    {
+      return NewObject<Order> ();
+    }
+
     [StringProperty(IsNullable = false, MaximumLength = 10)]
     public virtual string Number { get; set; }
   }

@@ -99,7 +99,7 @@ namespace Remotion.Validation.UnitTests.Providers
 
       var result = collectorProvider.GetValidationCollectors (new[] { typeof (Employee), typeof (SpecialCustomer1) }).SelectMany (g => g).ToArray();
 
-      _validationPropertyRuleReflectorMock1.VerifyAllExpectations();
+      _validationPropertyRuleReflectorMock1.VerifyAllExpectations ();
       _validationPropertyRuleReflectorMock2.VerifyAllExpectations ();
       Assert.That (result.Count(), Is.EqualTo (2));
       Assert.That (result[0].Collector.GetType ().Name, Is.EqualTo ("AttributeValidationCollector`1"));

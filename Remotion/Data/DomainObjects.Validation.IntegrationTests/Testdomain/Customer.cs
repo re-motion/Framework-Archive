@@ -19,7 +19,8 @@ using System;
 
 namespace Remotion.Data.DomainObjects.Validation.IntegrationTests.Testdomain
 {
-  public class Customer
+  [DBTable]
+  public class Customer : DomainObject
   {
     public virtual string UserName { get; set; }
 
