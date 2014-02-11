@@ -54,8 +54,6 @@ namespace Remotion.Data.DomainObjects.Validation
 
     public Expression<Func<TValidatedType, TProperty>> GetPropertyAccessExpression<TValidatedType, TProperty> ()
     {
-      //TODO AO: check TValidatedType isAssignable DeclaringType of interface property and TProperty matches property type
-      
       var parameterExpression = Expression.Parameter (typeof(TValidatedType), "t");
       var propertyExpression = Expression.Property (parameterExpression, _interfaceProperty);
       return

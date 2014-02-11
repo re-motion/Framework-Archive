@@ -47,10 +47,6 @@ namespace Remotion.Data.DomainObjects.Validation
               interfaceTypes.Add (t);
           }).ToList();
 
-      //return allTypes.SelectMany (
-      //    t => t.GetProperties (PropertyBindingFlags | BindingFlags.DeclaredOnly).Select (p => new { Type = t, Property = p }))
-      //    .Select (r => new { r.Type, Reflector = new DomainObjectAttributesBasedValidationPropertyRuleReflector (r.Property, r.Property) })
-      //    .ToLookup (r => r.Type, c => (IAttributesBasedValidationPropertyRuleReflector) c.Reflector);
       return allTypes.SelectMany (t => CreatePropertyRuleReflectors (t, t.GetInterfaces())).ToLookup (r => r.Item1, r => r.Item2);
     }
 
