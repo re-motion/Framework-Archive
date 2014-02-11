@@ -16,24 +16,13 @@
 // 
 
 using System;
-using Remotion.Mixins.Utilities;
-using Remotion.Utilities;
-using Remotion.Validation.Implementation;
+using Remotion.ServiceLocation;
 
-namespace Remotion.Validation.Mixins.Implementation
+namespace Remotion.Validation.Implementation
 {
-  public class CheckNoMixinTypeValidator : ITypeValidator
+  //TODO AO: will be merged back into ITypeValidator as soon the re-motion service locator is able to resolve compositions
+  [ConcreteImplementation (typeof (CompoundCollectorValidator))]
+  public interface ICompoundCollectorValidator : ICollectorValidator
   {
-    public CheckNoMixinTypeValidator ()
-    {
-      
-    }
-
-    public bool IsValid (Type type)
-    {
-      ArgumentUtility.CheckNotNull ("type", type);
-      
-      return !MixinHelper.IsMixinType (type);
-    }
   }
 }

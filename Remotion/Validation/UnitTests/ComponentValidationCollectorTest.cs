@@ -95,17 +95,6 @@ namespace Remotion.Validation.UnitTests
     }
 
     [Test]
-    public void AddRule_MixinType ()
-    {
-      Assert.That (
-          () => _customerMixinValidationCollector.AddRule (_mixinTitleExpression),
-          Throws.TypeOf<NotSupportedException>().And.Message.EqualTo (
-              "Validation rules for type 'Remotion.Validation.UnitTests.TestDomain.CustomerMixin' are not supported. "
-              + "If validation rules should be defined for mixins please ensure to apply the rules to 'ITargetInterface' or 'IIntroducedInterface' instead."
-              ));
-    }
-
-    [Test]
     public void RemoveRule_OneRule ()
     {
       var result = _customerValidationCollector.RemoveRule (_firstNameExpression);
@@ -134,17 +123,6 @@ namespace Remotion.Validation.UnitTests
       Assert.That (result1, Is.TypeOf (typeof (RemovingComponentRuleBuilder<Customer, string>)));
       Assert.That (result2, Is.TypeOf (typeof (RemovingComponentRuleBuilder<Customer, Address>)));
       Assert.That (result3, Is.TypeOf (typeof (RemovingComponentRuleBuilder<Customer, string>)));
-    }
-
-    [Test]
-    public void RemoveRule_MixinType ()
-    {
-      Assert.That (
-          () => _customerMixinValidationCollector.RemoveRule (_mixinTitleExpression),
-          Throws.TypeOf<NotSupportedException>().And.Message.EqualTo (
-              "Validation rules for type 'Remotion.Validation.UnitTests.TestDomain.CustomerMixin' are not supported. "
-              + "If validation rules should be defined for mixins please ensure to apply the rules to 'ITargetInterface' or 'IIntroducedInterface' instead."
-              ));
     }
 
     [Test]

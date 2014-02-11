@@ -16,33 +16,45 @@
 // 
 
 using System;
-using System.Linq;
 using NUnit.Framework;
-using Remotion.ServiceLocation;
-using Remotion.Validation.Implementation;
 using Remotion.Validation.Mixins.Implementation;
+using Remotion.Validation.UnitTests.TestDomain;
+using Rhino.Mocks;
 
 namespace Remotion.Validation.UnitTests.Implementation
 {
   [TestFixture]
-  public class ICompoundTypeValidatorTest
+  public class CheckNoMixinCollectorValidatorTest
   {
-    private DefaultServiceLocator _serviceLocator;
+    private CheckNoMixinCollectorValidator _validator;
+    private IComponentValidationCollector _collectorStub;
 
     [SetUp]
     public void SetUp ()
     {
-      _serviceLocator = new DefaultServiceLocator();
+      _collectorStub = MockRepository.GenerateStub<IComponentValidationCollector>();
+
+      _validator = new CheckNoMixinCollectorValidator();
     }
 
     [Test]
-    public void GetInstance_Once ()
+    public void IsValid_MixinType ()
     {
-      var factory = _serviceLocator.GetInstance<ICompoundCollectorValidator>();
+      _collectorStub.Stub (stub => stub.ValidatedType).Return (typeof (CustomerMixin));
 
-      Assert.That (factory, Is.TypeOf (typeof (CompoundCollectorValidator)));
-      var compoundGlobalizationServices = ((CompoundCollectorValidator) factory).CollectorTypeValidators.ToArray();
-      Assert.That (compoundGlobalizationServices[0], Is.TypeOf<CheckNoMixinCollectorValidator>());
+      var result = _validator.IsValid (_collectorStub);
+
+      Assert.That (result, Is.False);
+    }
+
+    [Test]
+    public void IsValid_NoMixinType ()
+    {
+      _collectorStub.Stub (stub => stub.ValidatedType).Return (typeof (Customer));
+
+      var result = _validator.IsValid (_collectorStub);
+
+      Assert.That (result, Is.True);
     }
   }
 }

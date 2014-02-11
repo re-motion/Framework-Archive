@@ -16,31 +16,15 @@
 // 
 
 using System;
-using NUnit.Framework;
 using Remotion.ServiceLocation;
-using Remotion.Validation.Implementation;
-using Remotion.Validation.Mixins.Implementation;
 
-namespace Remotion.Validation.UnitTests.Implementation
+namespace Remotion.Validation.Implementation
 {
-  [TestFixture]
-  public class ITypeValidatorTest
+  [ConcreteImplementation (
+      "Remotion.Validation.Mixins.Implementation.CheckNoMixinCollectorValidator, Remotion.Validation.Mixins, Version=<version>, Culture=neutral, PublicKeyToken=<publicKeyToken>",
+      ignoreIfNotFound: true)]
+  public interface ICollectorValidator
   {
-    private DefaultServiceLocator _serviceLocator;
-
-    [SetUp]
-    public void SetUp ()
-    {
-      _serviceLocator = new DefaultServiceLocator ();
-    }
-
-    [Test]
-    public void GetInstance ()
-    {
-      var factory = _serviceLocator.GetInstance<ITypeValidator> ();
-
-      Assert.That (factory, Is.Not.Null);
-      Assert.That (factory, Is.TypeOf (typeof (CheckNoMixinTypeValidator)));
-    }
+    bool IsValid (IComponentValidationCollector collector);
   }
 }

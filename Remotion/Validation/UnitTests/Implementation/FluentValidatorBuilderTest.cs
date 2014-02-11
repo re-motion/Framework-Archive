@@ -63,6 +63,7 @@ namespace Remotion.Validation.UnitTests.Implementation
     private IAddingComponentPropertyMetaValidationRule _metaValidationRule3Stub;
     private IValidationRuleGlobalizationService _validationRuleGlobalizationServiceMock;
     private IMemberInformationNameResolver _memberInformationNameResolverMock;
+    private ICompoundCollectorValidator _collectorValidatorMock;
 
     [SetUp]
     public void SetUp ()
@@ -73,6 +74,7 @@ namespace Remotion.Validation.UnitTests.Implementation
       _metaRuleValidatorMock = MockRepository.GenerateStrictMock<IMetaRuleValidator>();
       _validationRuleGlobalizationServiceMock = MockRepository.GenerateStrictMock<IValidationRuleGlobalizationService>();
       _memberInformationNameResolverMock = MockRepository.GenerateStrictMock<IMemberInformationNameResolver>();
+      _collectorValidatorMock = MockRepository.GenerateStrictMock<ICompoundCollectorValidator> ();
 
       _metaValidationRule1Stub = MockRepository.GenerateStub<IAddingComponentPropertyMetaValidationRule>();
       _metaValidationRule2Stub = MockRepository.GenerateStub<IAddingComponentPropertyMetaValidationRule>();
@@ -109,7 +111,8 @@ namespace Remotion.Validation.UnitTests.Implementation
           _validationCollectorMergerMock,
           _metaRulesValidatorFactoryStub,
           _validationRuleGlobalizationServiceMock,
-          _memberInformationNameResolverMock);
+          _memberInformationNameResolverMock,
+          _collectorValidatorMock);
 
       _validMetaValidationResult1 = MetaValidationRuleValidationResult.CreateValidResult();
       _validMetaValidationResult2 = MetaValidationRuleValidationResult.CreateValidResult();
@@ -128,6 +131,10 @@ namespace Remotion.Validation.UnitTests.Implementation
     public void BuildValidator ()
     {
       ExpectMocks();
+
+      _collectorValidatorMock.Expect (mock => mock.IsValid (_componenValidationCollectorStub1)).Return (true).Repeat.Once ();
+      _collectorValidatorMock.Expect (mock => mock.IsValid (_componenValidationCollectorStub2)).Return (true).Repeat.Once ();
+      _collectorValidatorMock.Expect (mock => mock.IsValid (_componenValidationCollectorStub3)).Return (true).Repeat.Once ();
 
       _metaRuleValidatorMock
           .Expect (mock => mock.Validate (Arg<IValidationRule[]>.List.Equal (_fakeValidationRuleResult)))
@@ -168,6 +175,10 @@ namespace Remotion.Validation.UnitTests.Implementation
     {
       ExpectMocks();
 
+      _collectorValidatorMock.Expect (mock => mock.IsValid (_componenValidationCollectorStub1)).Return (true).Repeat.Once ();
+      _collectorValidatorMock.Expect (mock => mock.IsValid (_componenValidationCollectorStub2)).Return (true).Repeat.Once ();
+      _collectorValidatorMock.Expect (mock => mock.IsValid (_componenValidationCollectorStub3)).Return (true).Repeat.Once ();
+
       _metaRuleValidatorMock
           .Expect (mock => mock.Validate (Arg<IValidationRule[]>.List.Equal (_fakeValidationRuleResult)))
           .Return (new[] { _validMetaValidationResult1, _validMetaValidationResult2 });
@@ -207,6 +218,10 @@ namespace Remotion.Validation.UnitTests.Implementation
     {
       ExpectMocks();
 
+      _collectorValidatorMock.Expect (mock => mock.IsValid (_componenValidationCollectorStub1)).Return (true).Repeat.Once ();
+      _collectorValidatorMock.Expect (mock => mock.IsValid (_componenValidationCollectorStub2)).Return (true).Repeat.Once ();
+      _collectorValidatorMock.Expect (mock => mock.IsValid (_componenValidationCollectorStub3)).Return (true).Repeat.Once ();
+
       _metaRuleValidatorMock
           .Expect (mock => mock.Validate (_fakeValidationRuleResult))
           .Return (new[] { _validMetaValidationResult1, _invalidMetaValidationResult1, _validMetaValidationResult2, _invalidMetaValidationResult2 });
@@ -214,6 +229,22 @@ namespace Remotion.Validation.UnitTests.Implementation
       Assert.That (
           () => _fluentValidationBuilder.BuildValidator<SpecialCustomer1>(),
           Throws.TypeOf<MetaValidationException>().And.Message.EqualTo ("Error1\r\n----------\r\nError2"));
+    }
+
+    [Test]
+    public void BuildValidator_CollectorValidationFailed ()
+    {
+      ExpectMocks();
+
+      _componenValidationCollectorStub1.Stub (stub => stub.ValidatedType).Return (typeof (CustomerMixin));
+      _collectorValidatorMock.Expect (mock => mock.IsValid (_componenValidationCollectorStub1)).Return (false);
+
+      Assert.That (
+          () => _fluentValidationBuilder.BuildValidator<SpecialCustomer1> (),
+          Throws.TypeOf<NotSupportedException> ().And.Message.EqualTo (
+              "Validation rules for type 'Remotion.Validation.UnitTests.TestDomain.CustomerMixin' are not supported. "
+              + "If validation rules should be defined for mixins please ensure to apply the rules to 'ITargetInterface' or 'IIntroducedInterface' instead."
+              ));
     }
 
     private void ExpectMocks ()

@@ -70,7 +70,8 @@ namespace Remotion.Validation.IntegrationTests
                   new PropertyDisplayNameGlobalizationService (memberInformationGlobalizationService),
                   new ValidationRuleGlobalizationService (new DefaultMessageEvaluator(), GetValidatorGlobalizationService())
               }),
-          memberInfoNameResolver);
+              memberInfoNameResolver,
+              SafeServiceLocator.Current.GetInstance<ICompoundCollectorValidator>());
     }
 
     [TearDown]

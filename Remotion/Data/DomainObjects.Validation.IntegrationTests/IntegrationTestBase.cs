@@ -71,7 +71,8 @@ namespace Remotion.Data.DomainObjects.Validation.IntegrationTests
                   new PropertyDisplayNameGlobalizationService (memberInformationGlobalizationService),
                   new ValidationRuleGlobalizationService (new DefaultMessageEvaluator(), GetValidatorGlobalizationService())
               }),
-          memberInfoNameResolver);
+          memberInfoNameResolver,
+          SafeServiceLocator.Current.GetInstance<ICompoundCollectorValidator>());
     }
 
     [TearDown]

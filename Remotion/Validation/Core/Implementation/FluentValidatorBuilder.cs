@@ -42,25 +42,29 @@ namespace Remotion.Validation.Implementation
     private readonly IMetaRulesValidatorFactory _metaRulesValidatorFactory;
     private readonly IValidationRuleGlobalizationService _validationRuleGlobalizationService;
     private readonly IMemberInformationNameResolver _memberInformationNameResolver;
+    private readonly ICollectorValidator _collectorValidator;
 
     public FluentValidatorBuilder (
         IValidationCollectorProvider validationCollectorProvider,
         IValidationCollectorMerger validationCollectorMerger,
         IMetaRulesValidatorFactory metaRuleValidatorFactory,
         IValidationRuleGlobalizationService validationRuleGlobalizationService,
-        IMemberInformationNameResolver memberInformationNameResolver)
+        IMemberInformationNameResolver memberInformationNameResolver,
+        ICompoundCollectorValidator collectorValidator)
     {
       ArgumentUtility.CheckNotNull ("validationCollectorProvider", validationCollectorProvider);
       ArgumentUtility.CheckNotNull ("validationCollectorMerger", validationCollectorMerger);
       ArgumentUtility.CheckNotNull ("metaRuleValidatorFactory", metaRuleValidatorFactory);
       ArgumentUtility.CheckNotNull ("validationRuleGlobalizationService", validationRuleGlobalizationService);
       ArgumentUtility.CheckNotNull ("memberInformationNameResolver", memberInformationNameResolver);
+      ArgumentUtility.CheckNotNull ("collectorValidator", collectorValidator);
       
       _validationCollectorProvider = validationCollectorProvider;
       _validationCollectorMerger = validationCollectorMerger;
       _metaRulesValidatorFactory = metaRuleValidatorFactory;
       _validationRuleGlobalizationService = validationRuleGlobalizationService;
       _memberInformationNameResolver = memberInformationNameResolver;
+      _collectorValidator = collectorValidator;
     }
 
     public IValidationCollectorProvider ComponentValidationCollectorProvider
@@ -88,12 +92,17 @@ namespace Remotion.Validation.Implementation
       get { return _memberInformationNameResolver; }
     }
 
+    public ICollectorValidator CollectorValidator
+    {
+      get { return _collectorValidator; }
+    }
+
     public IValidator BuildValidator (Type validatedType)
     {
       ArgumentUtility.CheckNotNull ("validatedType", validatedType);
       
       var allCollectors = _validationCollectorProvider.GetValidationCollectors (new[] { validatedType }).Select (c => c.ToArray ()).ToArray ();
-      //ValidateCollectors(allcollectors);
+      ValidateCollectors (allCollectors.SelectMany(c=>c));
       var allRules = _validationCollectorMerger.Merge (allCollectors).ToArray();
       ValidateMetaRules (allCollectors, allRules);
 
@@ -101,6 +110,20 @@ namespace Remotion.Validation.Implementation
       ApplyGlobalization (validatedType, allRules);
 
       return new Validator (allRules, validatedType);
+    }
+
+    private void ValidateCollectors (IEnumerable<ValidationCollectorInfo> allCollectors)
+    {
+      foreach (var validationCollectorInfo in allCollectors)
+      {
+        if (!_collectorValidator.IsValid (validationCollectorInfo.Collector))
+        {
+          throw new NotSupportedException (
+              string.Format (
+                  "Validation rules for type '{0}' are not supported. If validation rules should be defined for mixins please ensure to apply the rules to 'ITargetInterface' or 'IIntroducedInterface' instead.",
+                  validationCollectorInfo.Collector.ValidatedType.FullName));
+        }
+      }
     }
 
     private void ValidateMetaRules (IEnumerable<IEnumerable<ValidationCollectorInfo>> allCollectors, IValidationRule[] allRules)

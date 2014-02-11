@@ -22,27 +22,30 @@ using Remotion.Utilities;
 
 namespace Remotion.Validation.Implementation
 {
-  public class CompoundTypeValidator : ICompoundTypeValidator
+  public class CompoundCollectorValidator : ICompoundCollectorValidator
   {
-    private readonly IReadOnlyCollection<ITypeValidator> _typeValidators;
+    private readonly IReadOnlyCollection<ICollectorValidator> _collectorTypeValidators;
 
-    public CompoundTypeValidator (IEnumerable<ITypeValidator> typeValidators)
+    public CompoundCollectorValidator (IEnumerable<ICollectorValidator> typeValidators)
     {
       ArgumentUtility.CheckNotNull ("typeValidators", typeValidators);
 
-      _typeValidators = typeValidators.ToList().AsReadOnly();
+      _collectorTypeValidators = typeValidators.ToList().AsReadOnly();
     }
 
-    public IReadOnlyCollection<ITypeValidator> TypeValidators
+    public IReadOnlyCollection<ICollectorValidator> CollectorTypeValidators
     {
-      get { return _typeValidators; }
+      get { return _collectorTypeValidators; }
     }
 
-    public bool IsValid (Type type)
+    public bool IsValid (IComponentValidationCollector collector)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
+      ArgumentUtility.CheckNotNull ("collector", collector);
 
-      return _typeValidators.All (v => v.IsValid (type));
+      if (!collector.AddedPropertyRules.Any () && !collector.AddedPropertyMetaValidationRules.Any () && !collector.RemovedPropertyRules.Any ())
+        return true;
+
+      return _collectorTypeValidators.All (v => v.IsValid (collector));
     }
   }
 }
