@@ -59,7 +59,7 @@ namespace Remotion.Data.DomainObjects.Validation.IntegrationTests
               {
                   new DomainObjectAttributesBasedValidationCollectorProvider(),
                   new ValidationAttributesBasedCollectorProvider(),
-                  new ApiBasedComponentValidationCollectorProvider (new DiscoveryServiceBasedTypeCollectorReflector())
+                  new ApiBasedComponentValidationCollectorProvider (new DiscoveryServiceBasedValidationCollectorReflector())
               }),
           new DiagnosticOutputRuleMergeDecorator (
               new OrderPrecedenceValidationCollectorMerger (new PropertyValidatorExtractorFactory()),

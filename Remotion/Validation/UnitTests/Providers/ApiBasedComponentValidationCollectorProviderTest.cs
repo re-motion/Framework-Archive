@@ -29,36 +29,36 @@ namespace Remotion.Validation.UnitTests.Providers
   [TestFixture]
   public class ApiBasedComponentValidationCollectorProviderTest
   {
-    private ITypeCollectorReflector _typeCollectorReflectorMock;
+    private IValidationCollectorReflector _validationCollectorReflectorMock;
     private ApiBasedComponentValidationCollectorProvider _provider;
 
     [SetUp]
     public void SetUp ()
     {
-      _typeCollectorReflectorMock = MockRepository.GenerateStrictMock<ITypeCollectorReflector>();
+      _validationCollectorReflectorMock = MockRepository.GenerateStrictMock<IValidationCollectorReflector>();
 
-      _provider = new ApiBasedComponentValidationCollectorProvider (_typeCollectorReflectorMock);
+      _provider = new ApiBasedComponentValidationCollectorProvider (_validationCollectorReflectorMock);
     }
 
     [Test]
     public void Initialization ()
     {
-      Assert.That (_provider.TypeCollectorReflector, Is.SameAs (_typeCollectorReflectorMock));
+      Assert.That (_provider.ValidationCollectorReflector, Is.SameAs (_validationCollectorReflectorMock));
     }
 
     [Test]
     public void GetValidationCollectors ()
     {
-      _typeCollectorReflectorMock.Expect (mock => mock.GetCollectorsForType (typeof (Customer)))
+      _validationCollectorReflectorMock.Expect (mock => mock.GetCollectorsForType (typeof (Customer)))
           .Return (new[] { typeof (CustomerValidationCollector1), typeof (CustomerValidationCollector2) });
-      _typeCollectorReflectorMock.Expect (mock => mock.GetCollectorsForType (typeof (CustomerMixin)))
+      _validationCollectorReflectorMock.Expect (mock => mock.GetCollectorsForType (typeof (CustomerMixin)))
           .Return (
               new[]
               { typeof (CustomerMixinIntroducedValidationCollector1), typeof (CustomerMixinIntroducedValidationCollector2) });
 
       var result = _provider.GetValidationCollectors (new[] { typeof (Customer), typeof (CustomerMixin) }).SelectMany (g => g).ToArray();
 
-      _typeCollectorReflectorMock.VerifyAllExpectations();
+      _validationCollectorReflectorMock.VerifyAllExpectations();
       Assert.That (result[0].Collector.GetType(), Is.EqualTo (typeof (CustomerValidationCollector1)));
       Assert.That (result[0].ProviderType, Is.EqualTo (typeof (ApiBasedComponentValidationCollectorProvider)));
       Assert.That (result[1].Collector.GetType(), Is.EqualTo (typeof (CustomerValidationCollector2)));

@@ -28,18 +28,18 @@ namespace Remotion.Validation.Providers
   /// </summary>
   public class ApiBasedComponentValidationCollectorProvider : IValidationCollectorProvider
   {
-    private readonly ITypeCollectorReflector _typeCollectorReflector;
+    private readonly IValidationCollectorReflector _validationCollectorReflector;
 
-    public ApiBasedComponentValidationCollectorProvider (ITypeCollectorReflector typeCollectorReflector)
+    public ApiBasedComponentValidationCollectorProvider (IValidationCollectorReflector validationCollectorReflector)
     {
-      ArgumentUtility.CheckNotNull ("typeCollectorReflector", typeCollectorReflector);
+      ArgumentUtility.CheckNotNull ("validationCollectorReflector", validationCollectorReflector);
 
-      _typeCollectorReflector = typeCollectorReflector;
+      _validationCollectorReflector = validationCollectorReflector;
     }
 
-    public ITypeCollectorReflector TypeCollectorReflector
+    public IValidationCollectorReflector ValidationCollectorReflector
     {
-      get { return _typeCollectorReflector; }
+      get { return _validationCollectorReflector; }
     }
 
     public IEnumerable<IEnumerable<ValidationCollectorInfo>> GetValidationCollectors (IEnumerable<Type> types)
@@ -48,7 +48,7 @@ namespace Remotion.Validation.Providers
       ArgumentUtility.CheckNotNull ("types", types);
 
       var result = types
-          .SelectMany (_typeCollectorReflector.GetCollectorsForType)
+          .SelectMany (_validationCollectorReflector.GetCollectorsForType)
           .Select (c => new ValidationCollectorInfo ((IComponentValidationCollector) Activator.CreateInstance (c), GetType())).ToArray();
       return result.Any() ? new[] { result } : Enumerable.Empty<IEnumerable<ValidationCollectorInfo>>();
     }

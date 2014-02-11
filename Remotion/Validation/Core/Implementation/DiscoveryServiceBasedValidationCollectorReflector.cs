@@ -27,18 +27,17 @@ using Remotion.Validation.Utilities;
 
 namespace Remotion.Validation.Implementation
 {
-  //TODO AO: rename to ...ValidationCollector....
-  public class DiscoveryServiceBasedTypeCollectorReflector : ITypeCollectorReflector
+  public class DiscoveryServiceBasedValidationCollectorReflector : IValidationCollectorReflector
   {
     private readonly ITypeDiscoveryService _typeDiscoveryService;
     private readonly Lazy<MultiDictionary<Type, Type>> _typeCollectors;
     
-    public DiscoveryServiceBasedTypeCollectorReflector ()
+    public DiscoveryServiceBasedValidationCollectorReflector ()
         : this (ContextAwareTypeDiscoveryUtility.GetTypeDiscoveryService())
     {
     }
 
-    public DiscoveryServiceBasedTypeCollectorReflector (ITypeDiscoveryService typeDiscoveryService)
+    public DiscoveryServiceBasedValidationCollectorReflector (ITypeDiscoveryService typeDiscoveryService)
     {
       ArgumentUtility.CheckNotNull ("typeDiscoveryService", typeDiscoveryService);
 

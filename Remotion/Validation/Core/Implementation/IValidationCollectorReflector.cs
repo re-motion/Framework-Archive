@@ -19,7 +19,7 @@ using System.Collections.Generic;
 
 namespace Remotion.Validation.Implementation
 {
-  public interface ITypeCollectorReflector
+  public interface IValidationCollectorReflector
   {
     IEnumerable<Type> GetCollectorsForType (Type type);
   }

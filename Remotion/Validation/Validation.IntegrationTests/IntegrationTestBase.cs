@@ -58,7 +58,7 @@ namespace Remotion.Validation.IntegrationTests
               new IValidationCollectorProvider[]
               {
                   new ValidationAttributesBasedCollectorProvider(),
-                  new ApiBasedComponentValidationCollectorProvider (new DiscoveryServiceBasedTypeCollectorReflector())
+                  new ApiBasedComponentValidationCollectorProvider (new DiscoveryServiceBasedValidationCollectorReflector())
               }),
           new DiagnosticOutputRuleMergeDecorator (
               new OrderPrecedenceValidationCollectorMerger (new PropertyValidatorExtractorFactory()),

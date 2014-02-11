@@ -126,8 +126,8 @@
     <Compile Include="MetaValidation\MetaValidationRuleValidationResult.cs" />
     <Compile Include="MetaValidation\DefaultSystemMetaValidationRulesProvider.cs" />
     <Compile Include="MetaValidation\SystemMetaValidationRuleBase.cs" />
-    <Compile Include="Implementation\DiscoveryServiceBasedTypeCollectorReflector.cs" />
-    <Compile Include="Implementation\ITypeCollectorReflector.cs" />
+    <Compile Include="Implementation\DiscoveryServiceBasedValidationCollectorReflector.cs" />
+    <Compile Include="Implementation\IValidationCollectorReflector.cs" />
     <Compile Include="Utilities\PropertyRuleExtensions.cs" />
     <Compile Include="Utilities\TopologySortExtensions.cs" />
     <Compile Include="Utilities\TopologySortMissingDependencyBehavior.cs" />

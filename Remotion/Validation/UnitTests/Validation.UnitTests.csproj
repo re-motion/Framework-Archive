@@ -131,7 +131,7 @@
     <Compile Include="Providers\AttributeBasedValidationCollectorProviderTest.cs" />
     <Compile Include="Providers\ApiBasedComponentValidationCollectorProviderTest.cs" />
     <Compile Include="Providers\AggregatingValidationCollectorProviderTest.cs" />
-    <Compile Include="Implementation\DiscoveryServiceBasedTypeCollectorReflectorTest.cs" />
+    <Compile Include="Implementation\DiscoveryServiceBasedValidationCollectorReflectorTest.cs" />
     <Compile Include="Providers\ComponentValidationAttributeBasedValidationCollectorProviderTest.cs" />
     <Compile Include="Providers\TestableAttributeBasedValidationCollectorProviderBase.cs" />
     <Compile Include="Providers\TestableValidationAttributesBasedCollectorProvider.cs" />
