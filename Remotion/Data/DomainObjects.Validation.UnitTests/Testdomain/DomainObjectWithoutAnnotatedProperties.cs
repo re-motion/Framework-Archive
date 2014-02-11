@@ -16,18 +16,11 @@
 // 
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using Remotion.Validation.Implementation;
 
-namespace Remotion.Data.DomainObjects.Validation.UnitTests
+namespace Remotion.Data.DomainObjects.Validation.UnitTests.Testdomain
 {
-  public class TestableDomainObjectAttributesBasedValidationCollectorProvider : DomainObjectAttributesBasedValidationCollectorProvider
+  public class DomainObjectWithoutAnnotatedProperties : DomainObject
   {
-    public new ILookup<Type, IAttributesBasedValidationPropertyRuleReflector> CreatePropertyRuleReflectors (IEnumerable<Type> types)
-    {
-      return base.CreatePropertyRuleReflectors (types);
-    }
+    public string Name { get; set; }
   }
 }

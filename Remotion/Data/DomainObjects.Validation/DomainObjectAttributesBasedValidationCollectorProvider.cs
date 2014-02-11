@@ -21,7 +21,6 @@ using System.Linq;
 using System.Reflection;
 using FluentValidation.Validators;
 using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
-using Remotion.FunctionalProgramming;
 using Remotion.Reflection;
 using Remotion.Utilities;
 using Remotion.Validation.Implementation;
@@ -49,6 +48,7 @@ namespace Remotion.Data.DomainObjects.Validation
       if (ReflectionUtility.IsDomainObject (annotatedType))
       {
         return annotatedType.GetProperties (PropertyBindingFlags | BindingFlags.DeclaredOnly)
+            .Where (HasValidationRulesOnMixinProperty)
             .Select (
                 p => new Tuple<Type, IAttributesBasedValidationPropertyRuleReflector> (
                     annotatedType,

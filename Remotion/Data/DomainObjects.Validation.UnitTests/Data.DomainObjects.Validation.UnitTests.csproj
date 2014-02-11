@@ -62,11 +62,11 @@
     <Compile Include="DomainObjectAttributesBasedValidationCollectorProviderTest.cs" />
     <Compile Include="DomainObjectAttributesBasedValidationPropertyRuleReflector_DomainObjectTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TestableDomainObjectAttributesBasedValidationCollectorProvider.cs" />
-    <Compile Include="Testdomain\Customer.cs" />
+    <Compile Include="Testdomain\NoDomainObject.cs" />
     <Compile Include="Testdomain\MixinTarget.cs" />
     <Compile Include="Testdomain\MixinTypeWithDomainObjectAttributes_AnnotatedPropertiesNotPartOfInterface.cs" />
     <Compile Include="Testdomain\MixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface.cs" />
+    <Compile Include="Testdomain\DomainObjectWithoutAnnotatedProperties.cs" />
     <Compile Include="Testdomain\TypeWithDomainObjectAttributes.cs" />
   </ItemGroup>
   <ItemGroup>

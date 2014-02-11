@@ -19,40 +19,69 @@ using System;
 using System.Linq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Validation.UnitTests.Testdomain;
-using Remotion.Validation.Implementation;
-using Remotion.Validation.Rules;
 
 namespace Remotion.Data.DomainObjects.Validation.UnitTests
 {
   [TestFixture]
   public class DomainObjectAttributesBasedValidationCollectorProviderTest
   {
-    [Test]
-    public void CreatePropertyRuleReflector ()
-    {
-      var provider = new TestableDomainObjectAttributesBasedValidationCollectorProvider ();
-      var result = provider.CreatePropertyRuleReflectors (new [] { typeof (Customer) });
+    private DomainObjectAttributesBasedValidationCollectorProvider _provider;
 
+    [SetUp]
+    public void SetUp ()
+    {
+      _provider = new DomainObjectAttributesBasedValidationCollectorProvider();
+    }
+
+    [Test]
+    public void CreatePropertyRuleReflector_NoDomainObject ()
+    {
+      var result = _provider.GetValidationCollectors (new[] { typeof (NoDomainObject) })
+          .SelectMany (t => t)
+          .ToArray();
+
+      Assert.That (result.Any(), Is.False);
+    }
+
+    [Test]
+    public void CreatePropertyRuleReflector_DomainObjectWithoutAnnotatedProperties ()
+    {
+      var result = _provider.GetValidationCollectors (new[] { typeof (DomainObjectWithoutAnnotatedProperties) })
+          .SelectMany (t => t)
+          .ToArray ();
+
+      Assert.That (result.Any (), Is.False);
+    }
+
+    [Test]
+    public void CreatePropertyRuleReflector_DomainObjectWithAnnotatedProperties ()
+    {
+      var result = _provider.GetValidationCollectors (new[] { typeof (TypeWithDomainObjectAttributes) })
+          .SelectMany (t => t)
+          .SingleOrDefault();
+      
       Assert.That (result, Is.Not.Null);
-      var propertyRuleReflectors = result[typeof (Customer)].ToArray();
-      Assert.That (propertyRuleReflectors.Length, Is.EqualTo (1));
-      CollectionAssert.AllItemsAreInstancesOfType (propertyRuleReflectors, typeof (DomainObjectAttributesBasedValidationPropertyRuleReflector));
+      Assert.That (result.Collector.ValidatedType, Is.EqualTo (typeof (TypeWithDomainObjectAttributes)));
+      Assert.That (result.Collector.AddedPropertyRules.Count, Is.EqualTo (6));
     }
 
     [Test]
     [ExpectedException (typeof (InvalidOperationException),
-      ExpectedMessage = "Annotated properties of mixin 'MixinTypeWithDomainObjectAttributes_AnnotatedPropertiesNotPartOfInterface' have to be part of an interface.")]
-    public void GetValidationCollectorsForMixinProperties_AnnotatedPropertiesNotPartOfAnInterface_ExceptionIsThrown ()
+        ExpectedMessage =
+            "Annotated properties of mixin 'MixinTypeWithDomainObjectAttributes_AnnotatedPropertiesNotPartOfInterface' have to be part of an interface."
+        )]
+    public void CreatePropertyRuleReflectorForDomainObjectMixin_AnnotatedPropertiesNotPartOfAnInterface_ExceptionIsThrown ()
     {
-      var provider = new DomainObjectAttributesBasedValidationCollectorProvider ();
-      provider.GetValidationCollectors (new[] { typeof (MixinTypeWithDomainObjectAttributes_AnnotatedPropertiesNotPartOfInterface) }).SelectMany (c => c).SingleOrDefault ();
+      _provider.GetValidationCollectors (new[] { typeof (MixinTypeWithDomainObjectAttributes_AnnotatedPropertiesNotPartOfInterface) });
     }
 
     [Test]
-    public void GetValidationCollectorsForMixinProperties_AnnotatedPropertiesPartOfAnInterfac ()
+    public void CreatePropertyRuleReflectorForDomainObjectMixin_AnnotatedPropertiesPartOfAnInterface ()
     {
-      var provider = new DomainObjectAttributesBasedValidationCollectorProvider ();
-      var result = provider.GetValidationCollectors (new[] { typeof (MixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface) }).SelectMany (c => c).SingleOrDefault ();
+      var result =
+          _provider.GetValidationCollectors (new[] { typeof (MixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface) })
+              .SelectMany (c => c)
+              .SingleOrDefault();
 
       Assert.That (result, Is.Not.Null);
       Assert.That (result.Collector.ValidatedType, Is.EqualTo (typeof (IMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface)));
