@@ -18,6 +18,7 @@
 using System;
 using NUnit.Framework;
 using Remotion.Mixins;
+using Remotion.TypePipe.Implementation;
 using Remotion.Validation.Mixins.Implementation;
 
 namespace Remotion.Validation.UnitTests.Implementation
@@ -38,6 +39,7 @@ namespace Remotion.Validation.UnitTests.Implementation
     {
       Assert.That (_filter.IsValid (typeof (IMixinTarget)), Is.False);
       Assert.That (_filter.IsValid (typeof (IInitializableMixin)), Is.False);
+      Assert.That (_filter.IsValid (typeof (IInitializableObject)), Is.False);
     }
 
     [Test]

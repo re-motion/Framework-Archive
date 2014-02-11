@@ -18,7 +18,6 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
-using Remotion.TypePipe.Implementation;
 using Remotion.Utilities;
 
 namespace Remotion.Validation.Implementation
@@ -45,8 +44,7 @@ namespace Remotion.Validation.Implementation
           new[]
           {
               typeof (object),
-              typeof (ISerializable),
-              typeof (IInitializableObject) //TODO AO:move to mixedinvolvedTypeProvider and comment
+              typeof (ISerializable)
           });
     }
   }

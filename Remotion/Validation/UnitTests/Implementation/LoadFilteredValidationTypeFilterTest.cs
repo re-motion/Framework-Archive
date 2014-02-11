@@ -39,7 +39,6 @@ namespace Remotion.Validation.UnitTests.Implementation
     {
       Assert.That (_filter.IsValid (typeof (object)), Is.False);
       Assert.That (_filter.IsValid (typeof (ISerializable)), Is.False);
-      Assert.That (_filter.IsValid (typeof (IInitializableObject)), Is.False);
     }
 
     [Test]

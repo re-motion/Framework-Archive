@@ -163,10 +163,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\TypePipe\Core\TypePipe.Core.csproj">
-      <Project>{98e7f7aa-12b2-4a6b-8922-52c8e53b378e}</Project>
-      <Name>TypePipe.Core</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Core\Core\Core.Core.csproj">
       <Project>{2aa369ec-a4e7-4d75-9101-efa90e902625}</Project>
       <Name>Core.Core</Name>
