@@ -175,10 +175,6 @@
       <Project>{AC6AB6EB-F6AC-45A4-88A7-877D11A65CCB}</Project>
       <Name>Globalization.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Security\UnitTests\Security.UnitTests.csproj">
-      <Project>{EF86BF16-81EF-4F51-B2B1-DB3C7C1E4CDE}</Project>
-      <Name>Security.UnitTests</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

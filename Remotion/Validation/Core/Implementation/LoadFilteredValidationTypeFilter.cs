@@ -46,7 +46,7 @@ namespace Remotion.Validation.Implementation
           {
               typeof (object),
               typeof (ISerializable),
-              typeof (IInitializableObject)
+              typeof (IInitializableObject) //TODO AO:move to mixedinvolvedTypeProvider and comment
           });
     }
   }

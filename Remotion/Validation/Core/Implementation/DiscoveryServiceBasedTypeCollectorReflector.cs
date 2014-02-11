@@ -27,6 +27,7 @@ using Remotion.Validation.Utilities;
 
 namespace Remotion.Validation.Implementation
 {
+  //TODO AO: rename to ...ValidationCollector....
   public class DiscoveryServiceBasedTypeCollectorReflector : ITypeCollectorReflector
   {
     private readonly ITypeDiscoveryService _typeDiscoveryService;
@@ -54,6 +55,7 @@ namespace Remotion.Validation.Implementation
 
     private MultiDictionary<Type, Type> Initialize ()
     {
+      //TOOD AO: add integration test for IComponentValidationCollector
       var allCollectors = _typeDiscoveryService.GetTypes (typeof (IComponentValidationCollector), true).Cast<Type> ();
       var typeCollectors = new MultiDictionary<Type, Type> ();
       foreach (var collectorType in allCollectors)
@@ -61,15 +63,18 @@ namespace Remotion.Validation.Implementation
         if (collectorType.IsAbstract || collectorType.IsInterface || collectorType.IsGenericTypeDefinition || collectorType.IsDefined (typeof (ApplyProgrammaticallyAttribute), false))
           continue;
 
-        var genericType = collectorType.GetFirstGenericTypeParameterInHierarchy ();
-        if (collectorType.IsDefined (typeof (ApplyWithClassAttribute), false))
+        // var type = IValidatedTypeResolver.GetValidatedType (collectorType) //stategy with decoration, if returns null, throw invalidoperationexception for unhandled collector 
+        // typeCollectors[type].add (collectorType)
+
+        var genericType = collectorType.GetFirstGenericTypeParameterInHierarchy (); // only in generic implementation
+        if (collectorType.IsDefined (typeof (ApplyWithClassAttribute), false))  //TODO AO: move to new class (composite)
         {
           var classType = AttributeUtility.GetCustomAttribute<ApplyWithClassAttribute> (collectorType, false).ClassType;
           CheckGenericTypeAssignableFromDefinedType (collectorType, genericType, classType, typeof (ApplyWithClassAttribute).Name);
 
           typeCollectors[classType].Add (collectorType);
         }
-        else if (collectorType.IsDefined (typeof (ApplyWithMixinAttribute), false))
+        else if (collectorType.IsDefined (typeof (ApplyWithMixinAttribute), false)) //TODO AO: move to mixin assembly
         {
           var mixinType = AttributeUtility.GetCustomAttribute<ApplyWithMixinAttribute> (collectorType, false).MixinType;
           typeCollectors[mixinType].Add (collectorType);
