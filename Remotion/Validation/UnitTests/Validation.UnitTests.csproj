@@ -71,6 +71,7 @@
     <Compile Include="Attributes\Validation\RemoveValidatorAttributeTest.cs" />
     <Compile Include="Attributes\Validation\StringPropertyAttributeTest.cs" />
     <Compile Include="Implementation\CheckNoMixinCollectorValidatorTest.cs" />
+    <Compile Include="Implementation\ClassTypeAwareValidatedTypeResolverDecoratorTest.cs" />
     <Compile Include="Implementation\CompoundCollectorValidatorTest.cs" />
     <Compile Include="Implementation\CompoundValidationTypeFilterTest.cs" />
     <Compile Include="Implementation\CompoundValidatorTest.cs" />
@@ -89,6 +90,7 @@
     <Compile Include="Implementation\IValidationTypeFilterTest.cs" />
     <Compile Include="Implementation\MixedInvolvedTypeProviderDecoratorTest.cs" />
     <Compile Include="Implementation\MixedLoadFilteredValidationTypeFilterTest.cs" />
+    <Compile Include="Implementation\MixinTypeAwareValidatedTypeResolverDecoratorTest.cs" />
     <Compile Include="Implementation\TypedValidatorDecoratorTest.cs" />
     <Compile Include="Implementation\DefaultLogContextTest.cs" />
     <Compile Include="Implementation\DefaultValidatorFormatterTest.cs" />

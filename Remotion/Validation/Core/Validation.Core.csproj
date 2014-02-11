@@ -72,6 +72,7 @@
     <Compile Include="Globalization\ErrorMessageStringSource.cs" />
     <Compile Include="Globalization\NullMessageValidatorGlobalizationService.cs" />
     <Compile Include="IComponentValidationCollector1.cs" />
+    <Compile Include="Implementation\ClassTypeAwareValidatedTypeResolverDecorator.cs" />
     <Compile Include="Implementation\CompoundCollectorValidator.cs" />
     <Compile Include="Implementation\CompoundValidationTypeFilter.cs" />
     <Compile Include="Implementation\CompoundValidatorBuilder.cs" />
@@ -79,9 +80,11 @@
     <Compile Include="Implementation\DefaultValidatorFormatter.cs" />
     <Compile Include="Implementation\FluentValidationBuilderExtensions.cs" />
     <Compile Include="Implementation\FluentValidationValidatorFormatterDecorator.cs" />
+    <Compile Include="Implementation\DefaultValidatedTypeResolver.cs" />
     <Compile Include="Implementation\ICompoundCollectorValidator.cs" />
     <Compile Include="Implementation\ICompoundValidationTypeFilter.cs" />
     <Compile Include="Implementation\ICollectorValidator.cs" />
+    <Compile Include="Implementation\IValidatedTypeResolver.cs" />
     <Compile Include="Implementation\IValidatorFormatter.cs" />
     <Compile Include="Implementation\TypedValidatorDecorator.cs" />
     <Compile Include="IValidatorBuilder.cs" />

@@ -58,7 +58,10 @@ namespace Remotion.Validation.IntegrationTests
               new IValidationCollectorProvider[]
               {
                   new ValidationAttributesBasedCollectorProvider(),
-                  new ApiBasedComponentValidationCollectorProvider (new DiscoveryServiceBasedValidationCollectorReflector())
+                  new ApiBasedComponentValidationCollectorProvider (
+                      new DiscoveryServiceBasedValidationCollectorReflector (
+                      new MixinTypeAwareValidatedTypeResolverDecorator (
+                      new ClassTypeAwareValidatedTypeResolverDecorator (new DefaultValidatedTypeResolver()))))
               }),
           new DiagnosticOutputRuleMergeDecorator (
               new OrderPrecedenceValidationCollectorMerger (new PropertyValidatorExtractorFactory()),
@@ -70,8 +73,8 @@ namespace Remotion.Validation.IntegrationTests
                   new PropertyDisplayNameGlobalizationService (memberInformationGlobalizationService),
                   new ValidationRuleGlobalizationService (new DefaultMessageEvaluator(), GetValidatorGlobalizationService())
               }),
-              memberInfoNameResolver,
-              SafeServiceLocator.Current.GetInstance<ICompoundCollectorValidator>());
+          memberInfoNameResolver,
+          SafeServiceLocator.Current.GetInstance<ICompoundCollectorValidator>());
     }
 
     [TearDown]

@@ -21,6 +21,7 @@ using System.Linq;
 using NUnit.Framework;
 using Remotion.Validation.Attributes;
 using Remotion.Validation.Implementation;
+using Remotion.Validation.Mixins.Implementation;
 using Remotion.Validation.UnitTests.TestDomain;
 using Remotion.Validation.UnitTests.TestDomain.Collectors;
 using Remotion.Validation.UnitTests.TestHelpers;
@@ -59,7 +60,9 @@ namespace Remotion.Validation.UnitTests.Implementation
                                       };
       _typeDescoveryServiceStub.Stub (stub => stub.GetTypes (typeof (IComponentValidationCollector), true)).Return (appliedWithAttributeTypes);
 
-      var typeCollectorProvider = new DiscoveryServiceBasedValidationCollectorReflector (_typeDescoveryServiceStub);
+      var typeCollectorProvider = new DiscoveryServiceBasedValidationCollectorReflector (
+          _typeDescoveryServiceStub,
+          new MixinTypeAwareValidatedTypeResolverDecorator (new ClassTypeAwareValidatedTypeResolverDecorator (new DefaultValidatedTypeResolver())));
 
       Assert.That (typeCollectorProvider.GetCollectorsForType (typeof (IPerson)), Is.EqualTo (new[] { typeof (IPersonValidationCollector1) }));
 
@@ -87,7 +90,12 @@ namespace Remotion.Validation.UnitTests.Implementation
       _typeDescoveryServiceStub.Stub (stub => stub.GetTypes (typeof (IComponentValidationCollector), true)).Return (new[] { typeof (Person) });
 
       Assert.That (
-          () => new DiscoveryServiceBasedValidationCollectorReflector (_typeDescoveryServiceStub).GetCollectorsForType(typeof(IComponentValidationCollector)),
+          () =>
+              new DiscoveryServiceBasedValidationCollectorReflector (
+                  _typeDescoveryServiceStub,
+                  new MixinTypeAwareValidatedTypeResolverDecorator (
+                      new ClassTypeAwareValidatedTypeResolverDecorator (new DefaultValidatedTypeResolver()))).GetCollectorsForType (
+                          typeof (IComponentValidationCollector)),
           Throws.InvalidOperationException.And.Message.EqualTo (
               "Type 'Remotion.Validation.UnitTests.TestDomain.Person' has no generic arguments."));
     }
@@ -112,7 +120,9 @@ namespace Remotion.Validation.UnitTests.Implementation
                   programmaticallyCollectorType
               });
 
-      var typeCollectorProvider = new DiscoveryServiceBasedValidationCollectorReflector (_typeDescoveryServiceStub);
+      var typeCollectorProvider = new DiscoveryServiceBasedValidationCollectorReflector (
+          _typeDescoveryServiceStub,
+          new MixinTypeAwareValidatedTypeResolverDecorator (new ClassTypeAwareValidatedTypeResolverDecorator (new DefaultValidatedTypeResolver())));
 
       var result =
           typeCollectorProvider.GetCollectorsForType (typeof (Person))
@@ -135,7 +145,12 @@ namespace Remotion.Validation.UnitTests.Implementation
       _typeDescoveryServiceStub.Stub (stub => stub.GetTypes (typeof (IComponentValidationCollector), true)).Return (new[] { collectorType });
 
       Assert.That (
-          () => new DiscoveryServiceBasedValidationCollectorReflector (_typeDescoveryServiceStub).GetCollectorsForType(typeof(IComponentValidationCollector)),
+          () =>
+              new DiscoveryServiceBasedValidationCollectorReflector (
+                  _typeDescoveryServiceStub,
+                  new MixinTypeAwareValidatedTypeResolverDecorator (
+                      new ClassTypeAwareValidatedTypeResolverDecorator (new DefaultValidatedTypeResolver()))).GetCollectorsForType (
+                          typeof (IComponentValidationCollector)),
           Throws.TypeOf<InvalidOperationException>().And.Message.EqualTo (
               "Invalid 'ApplyWithClassAttribute'-definition for collector 'Remotion.Validation.UnitTests.DynamicInvalidCollector2': "
               + "type 'Remotion.Validation.UnitTests.TestDomain.Address' "
@@ -145,7 +160,8 @@ namespace Remotion.Validation.UnitTests.Implementation
     [Test]
     public void GetComponentValidationCollectors_WithRemotionDiscoveryService ()
     {
-      var typeCollectorProvider = new DiscoveryServiceBasedValidationCollectorReflector();
+      var typeCollectorProvider = new DiscoveryServiceBasedValidationCollectorReflector(new MixinTypeAwareValidatedTypeResolverDecorator (
+                      new ClassTypeAwareValidatedTypeResolverDecorator (new DefaultValidatedTypeResolver())));
 
       var result = typeCollectorProvider.GetCollectorsForType (typeof (Person)).ToArray();
 
