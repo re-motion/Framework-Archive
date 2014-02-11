@@ -70,7 +70,7 @@ namespace Remotion.Validation.Implementation
 
         var type = _validatedTypeResolver.GetValidatedType (collectorType);
         if (type == null)
-          throw new InvalidOperationException ("TODO");
+          throw new InvalidOperationException (string.Format ("No validated type could be resolved for collector '{0}'.", collectorType.Name));
         typeCollectors[type].Add (collectorType);
       }
 

@@ -160,8 +160,9 @@ namespace Remotion.Validation.UnitTests.Implementation
     [Test]
     public void GetComponentValidationCollectors_WithRemotionDiscoveryService ()
     {
-      var typeCollectorProvider = new DiscoveryServiceBasedValidationCollectorReflector(new MixinTypeAwareValidatedTypeResolverDecorator (
-                      new ClassTypeAwareValidatedTypeResolverDecorator (new DefaultValidatedTypeResolver())));
+      var typeCollectorProvider = new DiscoveryServiceBasedValidationCollectorReflector (
+          new MixinTypeAwareValidatedTypeResolverDecorator (
+              new ClassTypeAwareValidatedTypeResolverDecorator (new DefaultValidatedTypeResolver())));
 
       var result = typeCollectorProvider.GetCollectorsForType (typeof (Person)).ToArray();
 
@@ -173,6 +174,22 @@ namespace Remotion.Validation.UnitTests.Implementation
               {
                   typeof (IPersonValidationCollector2), typeof (PersonValidationCollector1)
               }));
+    }
+
+    [Test]
+    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = 
+      "No validated type could be resolved for collector 'CustomerValidationCollector1'.")]
+    public void GetComponentValidationCollectors_NoValidatedTypeFound_ExceptionIsThrown ()
+    {
+      _typeDescoveryServiceStub.Stub (stub => stub.GetTypes (typeof (IComponentValidationCollector), true))
+          .Return (new[] { typeof (CustomerValidationCollector1) });
+
+      var validatedTypeResolverStub = MockRepository.GenerateStub<IValidatedTypeResolver>();
+      validatedTypeResolverStub.Stub (stub => stub.GetValidatedType (typeof (CustomerValidationCollector1))).Return (null);
+
+      var typeCollectorProvider = new DiscoveryServiceBasedValidationCollectorReflector (_typeDescoveryServiceStub, validatedTypeResolverStub);
+
+      typeCollectorProvider.GetCollectorsForType (typeof (Customer));
     }
   }
 }
