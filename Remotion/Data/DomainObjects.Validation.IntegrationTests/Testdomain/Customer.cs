@@ -22,6 +22,11 @@ namespace Remotion.Data.DomainObjects.Validation.IntegrationTests.Testdomain
   [DBTable]
   public class Customer : DomainObject
   {
+    public static Customer NewObject ()
+    {
+      return NewObject<Customer> ();
+    }
+
     public virtual string UserName { get; set; }
 
     public virtual string Email { get; set; }

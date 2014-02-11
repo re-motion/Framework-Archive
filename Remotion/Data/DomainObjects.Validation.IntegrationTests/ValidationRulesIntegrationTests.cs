@@ -33,7 +33,7 @@ namespace Remotion.Data.DomainObjects.Validation.IntegrationTests
     }
 
     [Test]
-    public void BuildProductValidator_MandatoryReStoreAttributeIsApplied ()
+    public void BuildProductValidator_MandatoryReStoreAttributeIsAppliedOnDomainObject ()
     {
       using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
@@ -54,10 +54,24 @@ namespace Remotion.Data.DomainObjects.Validation.IntegrationTests
     }
 
     [Test]
-    //TODO AO: should be work after DomainObject-Attributes are supported for mixin classes!
-    public void BuildCustomerValidator_MandatoryReStoreAttributeAppliedOnMixinClass ()
+    public void BuildCustomerValidator_MandatoryReStoreAttributeAppliedOnDomainObjectMixin ()
     {
-      ValidationBuilder.BuildValidator<Customer> ();
+      using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
+      {
+        var customer1 = Customer.NewObject();
+        var customer2 = Customer.NewObject ();
+        customer2.UserName = "test";
+
+        var validator = ValidationBuilder.BuildValidator<Customer>();
+
+        var result1 = validator.Validate (customer1);
+        Assert.That (result1.IsValid, Is.False);
+        Assert.That (result1.Errors.Count, Is.EqualTo (1));
+        Assert.That (result1.Errors[0].ErrorMessage, Is.EqualTo ("'UserName' must not be empty."));
+
+        var result2 = validator.Validate (customer2);
+        Assert.That (result2.IsValid, Is.True);
+      }
     }
 
     [Test]
