@@ -39,15 +39,7 @@ namespace Remotion.Data.DomainObjects.Validation
     {
       ArgumentUtility.CheckNotNull ("types", types);
 
-      var interfaceTypes = new List<Type>();
-      var allTypes = types.ApplySideEffect (
-          t =>
-          {
-            if (t.IsInterface)
-              interfaceTypes.Add (t);
-          }).ToList();
-
-      return allTypes.SelectMany (t => CreatePropertyRuleReflectors (t, t.GetInterfaces())).ToLookup (r => r.Item1, r => r.Item2);
+      return types.SelectMany (t => CreatePropertyRuleReflectors (t, t.GetInterfaces())).ToLookup (r => r.Item1, r => r.Item2);
     }
 
     private IEnumerable<Tuple<Type, IAttributesBasedValidationPropertyRuleReflector>> CreatePropertyRuleReflectors (
