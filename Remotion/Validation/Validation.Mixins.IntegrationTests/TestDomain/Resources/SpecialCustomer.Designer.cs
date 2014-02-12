@@ -10,7 +10,7 @@
 
 using System;
 
-namespace Remotion.Validation.IntegrationTests.TestDomain.Resources {
+namespace Remotion.Validation.Mixins.IntegrationTests.TestDomain.Resources {
   /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -21,14 +21,14 @@ namespace Remotion.Validation.IntegrationTests.TestDomain.Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class CustomerMixin {
+    internal class SpecialCustomer {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal CustomerMixin() {
+        internal SpecialCustomer() {
         }
         
         /// <summary>
@@ -38,8 +38,8 @@ namespace Remotion.Validation.IntegrationTests.TestDomain.Resources {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Remotion.Validation.IntegrationTests.TestDomain.Resources.CustomerMixin" +
-                            "", typeof(CustomerMixin).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Remotion.Validation.IntegrationTests.TestDomain.Resources.SpecialCustom" +
+                            "er", typeof(SpecialCustomer).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,11 +61,11 @@ namespace Remotion.Validation.IntegrationTests.TestDomain.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to LocalizedTitle.
+        ///   Looks up a localized string similar to LocalizedLastName.
         /// </summary>
-        internal static string property_Title {
+        internal static string property_LastName {
             get {
-                return ResourceManager.GetString("property:Title", resourceCulture);
+                return ResourceManager.GetString("property:LastName", resourceCulture);
             }
         }
     }

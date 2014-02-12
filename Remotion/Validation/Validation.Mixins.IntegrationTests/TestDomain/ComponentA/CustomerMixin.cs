@@ -16,18 +16,34 @@
 // 
 
 using System;
-using FluentValidation;
-using Remotion.Validation.Attributes;
-using Remotion.Validation.Mixins.Attributes;
+using Remotion.Globalization;
+using Remotion.Mixins;
+using Remotion.Validation.Attributes.Validation;
 
-namespace Remotion.Validation.IntegrationTests.TestDomain.ComponentA.ValidationCollectors
+namespace Remotion.Validation.Mixins.IntegrationTests.TestDomain.ComponentA
 {
-  [ApplyWithMixin(typeof(CustomerMixin))]
-  public class CustomerMixinTargetValidationCollector1 : ComponentValidationCollector<IPerson>
+  public interface ICustomerIntroduced
   {
-    public CustomerMixinTargetValidationCollector1 ()
+    [NotEqual("Chef1")]
+    string Title { get; set; }
+  }
+
+  [MultiLingualResources ("Remotion.Validation.Mixins.IntegrationTests.TestDomain.Resources.CustomerMixin")]
+  [Extends (typeof (Customer), IntroducedMemberVisibility = MemberVisibility.Public)]
+  public class CustomerMixin : Mixin<IPerson, CustomerMixin.IBaseMethods>, ICustomerIntroduced
+  {
+    public interface IBaseMethods
     {
-      AddRule (c => c.FirstName).NotEqual ("something");
+      string FirstName { get; set; }
     }
+
+    [OverrideTarget]
+    public string FirstName
+    {
+      get { return Next.FirstName; }
+      set { Next.FirstName = value; }
+    }
+
+    public string Title { get; set; }
   }
 }

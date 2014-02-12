@@ -16,16 +16,13 @@
 // 
 
 using System;
-using FluentValidation;
-using Remotion.Validation.IntegrationTests.TestDomain.ComponentA;
 
-namespace Remotion.Validation.IntegrationTests.TestDomain.ComponentB.ValidationCollectors
+namespace Remotion.Validation.Mixins.IntegrationTests.TestDomain.ComponentB
 {
-  public class CustomerMixinIntroducedValidationCollector2 : ComponentValidationCollector<ICustomerIntroduced> //gets applied before mixin!
+  public class Product
   {
-    public CustomerMixinIntroducedValidationCollector2 ()
-    {
-      AddRule (c => c.Title).NotEqual ("Chef3");
-    }
+    public virtual string Name { get; set; }
+
+    public virtual decimal Price { get; set; }
   }
 }

@@ -16,34 +16,14 @@
 // 
 
 using System;
-using Remotion.Globalization;
-using Remotion.Mixins;
-using Remotion.Validation.Attributes.Validation;
+using System.Collections.Generic;
 
-namespace Remotion.Validation.IntegrationTests.TestDomain.ComponentA
+namespace Remotion.Validation.Mixins.IntegrationTests.TestDomain.ComponentA
 {
-  public interface ICustomerIntroduced
+  public class Order
   {
-    [NotEqual("Chef1")]
-    string Title { get; set; }
-  }
+    public virtual string Number { get; set; }
 
-  [MultiLingualResources ("Remotion.Validation.IntegrationTests.TestDomain.Resources.CustomerMixin")]
-  [Extends (typeof (Customer), IntroducedMemberVisibility = MemberVisibility.Public)]
-  public class CustomerMixin : Mixin<IPerson, CustomerMixin.IBaseMethods>, ICustomerIntroduced
-  {
-    public interface IBaseMethods
-    {
-      string FirstName { get; set; }
-    }
-
-    [OverrideTarget]
-    public string FirstName
-    {
-      get { return Next.FirstName; }
-      set { Next.FirstName = value; }
-    }
-
-    public string Title { get; set; }
+    public virtual ICollection<OrderItem> Items { get; set; }
   }
 }

@@ -65,7 +65,6 @@
     <Compile Include="MetaValidationRulesIntegrationTests.cs" />
     <Compile Include="TestDomain\ComponentA\Address.cs" />
     <Compile Include="TestDomain\ComponentA\Customer.cs" />
-    <Compile Include="TestDomain\ComponentA\CustomerMixin.cs" />
     <Compile Include="TestDomain\ComponentA\Employee.cs" />
     <Compile Include="TestDomain\ComponentA\IPerson.cs" />
     <Compile Include="TestDomain\ComponentA\Order.cs" />
@@ -73,8 +72,6 @@
     <Compile Include="TestDomain\ComponentA\Person.cs" />
     <Compile Include="TestDomain\ComponentA\Product.cs" />
     <Compile Include="TestDomain\ComponentA\ValidationCollectors\AddressValidationCollector1.cs" />
-    <Compile Include="TestDomain\ComponentA\ValidationCollectors\CustomerMixinIntroducedValidationCollector1.cs" />
-    <Compile Include="TestDomain\ComponentA\ValidationCollectors\CustomerMixinTargetValidationCollector1.cs" />
     <Compile Include="TestDomain\ComponentA\ValidationCollectors\CustomerValidationCollector1.cs" />
     <Compile Include="TestDomain\ComponentA\ValidationCollectors\EmployeeValidationCollector1.cs" />
     <Compile Include="TestDomain\ComponentA\ValidationCollectors\IPersonValidationCollector1.cs" />
@@ -82,7 +79,6 @@
     <Compile Include="TestDomain\ComponentA\ValidationCollectors\PersonValidationCollector1.cs" />
     <Compile Include="TestDomain\ComponentB\SpecialCustomer1.cs" />
     <Compile Include="TestDomain\ComponentB\SpecialCustomer2.cs" />
-    <Compile Include="TestDomain\ComponentB\ValidationCollectors\CustomerMixinIntroducedValidationCollector2.cs" />
     <Compile Include="TestDomain\ComponentB\ValidationCollectors\CustomerValidationCollector2.cs" />
     <Compile Include="TestDomain\ComponentB\ValidationCollectors\IPersonValidationCollector2.cs" />
     <Compile Include="TestDomain\ComponentB\ValidationCollectors\SpecialCustomerValidationCollector1.cs" />
@@ -103,11 +99,6 @@
     <Compile Include="TestDomain\MetaValidation\MetaValidationTestClassCollector5.cs" />
     <Compile Include="TestDomain\MetaValidation\Rules\MaxLengthMetaValidationRule.cs" />
     <Compile Include="TestDomain\MetaValidation\Rules\MaxValidatorCountRule.cs" />
-    <Compile Include="TestDomain\Resources\CustomerMixin.Designer.cs">
-      <DependentUpon>CustomerMixin.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <Compile Include="TestDomain\Resources\Person.Designer.cs">
       <DependentUpon>Person.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -131,32 +122,12 @@
       <Project>{AC6AB6EB-F6AC-45A4-88A7-877D11A65CCB}</Project>
       <Name>Globalization.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Globalization\Mixins\Globalization.Mixins.csproj">
-      <Project>{e2cd7c20-2728-4f72-a6e8-fc4f7ae72ec9}</Project>
-      <Name>Globalization.Mixins</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Mixins\Core\Mixins.Core.csproj">
-      <Project>{D641E4E2-23F3-4454-8074-1327EF07BAA1}</Project>
-      <Name>Mixins.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\TypePipe\Core\TypePipe.Core.csproj">
-      <Project>{98E7F7AA-12B2-4A6B-8922-52C8E53B378E}</Project>
-      <Name>TypePipe.Core</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Core\Validation.Core.csproj">
       <Project>{d057d6f3-2015-4eb0-b6bd-77be8ed1571a}</Project>
       <Name>Validation.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Validation.Mixins\Validation.Mixins.csproj">
-      <Project>{B34D9485-39D7-4F73-805C-39A65059001E}</Project>
-      <Name>Validation.Mixins</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="TestDomain\Resources\CustomerMixin.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>CustomerMixin.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
     <EmbeddedResource Include="TestDomain\Resources\Person.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Person.Designer.cs</LastGenOutput>

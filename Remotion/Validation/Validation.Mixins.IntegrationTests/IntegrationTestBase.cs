@@ -28,9 +28,10 @@ using Remotion.Validation.Globalization;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.Merging;
 using Remotion.Validation.MetaValidation;
+using Remotion.Validation.Mixins.Implementation;
 using Remotion.Validation.Providers;
 
-namespace Remotion.Validation.IntegrationTests
+namespace Remotion.Validation.Mixins.IntegrationTests
 {
   [TestFixture]
   public abstract class IntegrationTestBase
@@ -50,16 +51,18 @@ namespace Remotion.Validation.IntegrationTests
 
       ValidationBuilder = new FluentValidatorBuilder (
           new AggregatingValidationCollectorProvider (
-              InvolvedTypeProvider.Create (
+              new MixedInvolvedTypeProviderDecorator (
+                  InvolvedTypeProvider.Create (
                       types => types.OrderBy (t => t.Name),
-                      SafeServiceLocator.Current.GetInstance<ICompoundValidationTypeFilter>()),
+                      SafeServiceLocator.Current.GetInstance<ICompoundValidationTypeFilter>())),
               new IValidationCollectorProvider[]
               {
                   new ValidationAttributesBasedCollectorProvider(),
                   new ApiBasedComponentValidationCollectorProvider (
                       new DiscoveryServiceBasedValidationCollectorReflector (
+                      new MixinTypeAwareValidatedTypeResolverDecorator (
                       new ClassTypeAwareValidatedTypeResolverDecorator (
-                      new GenericTypeAwareValidatedTypeResolverDecorator (new NullValidatedTypeResolver()))))
+                      new GenericTypeAwareValidatedTypeResolverDecorator (new NullValidatedTypeResolver())))))
               }),
           new DiagnosticOutputRuleMergeDecorator (
               new OrderPrecedenceValidationCollectorMerger (new PropertyValidatorExtractorFactory()),
