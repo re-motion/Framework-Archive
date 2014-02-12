@@ -18,7 +18,6 @@
 using System;
 using System.Runtime.Serialization;
 using NUnit.Framework;
-using Remotion.TypePipe.Implementation;
 using Remotion.Validation.Implementation;
 
 namespace Remotion.Validation.UnitTests.Implementation

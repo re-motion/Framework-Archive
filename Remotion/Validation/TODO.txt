@@ -3,8 +3,6 @@ Aufteilung:
   
 -> NotSupportedExceptions checken!
 
--> InvolvedTypes: Generated mixin type rausfiltern  (mit MixedLoadValidationTypeFilter) ??
-
 -> Build testen
 
 -> attribute reflector: wieso für hard conatraint und normale property eigene add-methoden
