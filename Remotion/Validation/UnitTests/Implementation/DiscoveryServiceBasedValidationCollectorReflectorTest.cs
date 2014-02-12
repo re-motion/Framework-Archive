@@ -64,7 +64,7 @@ namespace Remotion.Validation.UnitTests.Implementation
           _typeDescoveryServiceStub,
           new MixinTypeAwareValidatedTypeResolverDecorator (
               new ClassTypeAwareValidatedTypeResolverDecorator (
-                  new GenericTypeAwareValidatedTypeResolverDecorator (new DefaultValidatedTypeResolver()))));
+                  new GenericTypeAwareValidatedTypeResolverDecorator (new NullValidatedTypeResolver()))));
 
       Assert.That (typeCollectorProvider.GetCollectorsForType (typeof (IPerson)), Is.EqualTo (new[] { typeof (IPersonValidationCollector1) }));
 
@@ -91,16 +91,17 @@ namespace Remotion.Validation.UnitTests.Implementation
     {
       _typeDescoveryServiceStub.Stub (stub => stub.GetTypes (typeof (IComponentValidationCollector), true)).Return (new[] { typeof (Person) });
 
+      var validatedTypeResolverStub = MockRepository.GenerateStub<IValidatedTypeResolver>();
+      validatedTypeResolverStub.Stub (stub => stub.GetValidatedType (typeof (Person))).Return (null);
+
       Assert.That (
           () =>
-              new DiscoveryServiceBasedValidationCollectorReflector (
-                  _typeDescoveryServiceStub,
-                  new MixinTypeAwareValidatedTypeResolverDecorator (
-                      new ClassTypeAwareValidatedTypeResolverDecorator (
-                          new GenericTypeAwareValidatedTypeResolverDecorator (new DefaultValidatedTypeResolver())))).GetCollectorsForType (
-                              typeof (IComponentValidationCollector)),
-          Throws.InvalidOperationException.And.Message.EqualTo (
-              "No validated type could be resolved for collector 'Person'."));
+      new DiscoveryServiceBasedValidationCollectorReflector (
+          _typeDescoveryServiceStub,
+          validatedTypeResolverStub).GetCollectorsForType (
+                      typeof (IComponentValidationCollector)),
+      Throws.InvalidOperationException.And.Message.EqualTo (
+          "No validated type could be resolved for collector 'Remotion.Validation.UnitTests.TestDomain.Person'."));
     }
 
     [Test]
@@ -127,7 +128,7 @@ namespace Remotion.Validation.UnitTests.Implementation
           _typeDescoveryServiceStub,
           new MixinTypeAwareValidatedTypeResolverDecorator (
               new ClassTypeAwareValidatedTypeResolverDecorator (
-                  new GenericTypeAwareValidatedTypeResolverDecorator (new DefaultValidatedTypeResolver()))));
+                  new GenericTypeAwareValidatedTypeResolverDecorator (new NullValidatedTypeResolver()))));
 
       var result =
           typeCollectorProvider.GetCollectorsForType (typeof (Person))
@@ -155,7 +156,7 @@ namespace Remotion.Validation.UnitTests.Implementation
                   _typeDescoveryServiceStub,
                   new MixinTypeAwareValidatedTypeResolverDecorator (
                       new ClassTypeAwareValidatedTypeResolverDecorator (
-                          new GenericTypeAwareValidatedTypeResolverDecorator (new DefaultValidatedTypeResolver())))).GetCollectorsForType (
+                          new GenericTypeAwareValidatedTypeResolverDecorator (new NullValidatedTypeResolver())))).GetCollectorsForType (
                               typeof (IComponentValidationCollector)),
           Throws.TypeOf<InvalidOperationException>().And.Message.EqualTo (
               "Invalid 'ApplyWithClassAttribute'-definition for collector 'Remotion.Validation.UnitTests.DynamicInvalidCollector2': "
@@ -169,7 +170,7 @@ namespace Remotion.Validation.UnitTests.Implementation
       var typeCollectorProvider = new DiscoveryServiceBasedValidationCollectorReflector (
           new MixinTypeAwareValidatedTypeResolverDecorator (
               new ClassTypeAwareValidatedTypeResolverDecorator (
-                  new GenericTypeAwareValidatedTypeResolverDecorator (new DefaultValidatedTypeResolver()))));
+                  new GenericTypeAwareValidatedTypeResolverDecorator (new NullValidatedTypeResolver()))));
 
       var result = typeCollectorProvider.GetCollectorsForType (typeof (Person)).ToArray();
 
@@ -185,7 +186,7 @@ namespace Remotion.Validation.UnitTests.Implementation
 
     [Test]
     [ExpectedException (typeof (InvalidOperationException), ExpectedMessage =
-        "No validated type could be resolved for collector 'CustomerValidationCollector1'.")]
+        "No validated type could be resolved for collector 'Remotion.Validation.UnitTests.TestDomain.Collectors.CustomerValidationCollector1'.")]
     public void GetComponentValidationCollectors_NoValidatedTypeFound_ExceptionIsThrown ()
     {
       _typeDescoveryServiceStub.Stub (stub => stub.GetTypes (typeof (IComponentValidationCollector), true))

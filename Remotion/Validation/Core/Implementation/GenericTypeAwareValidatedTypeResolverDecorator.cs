@@ -22,6 +22,9 @@ using Remotion.Validation.Utilities;
 
 namespace Remotion.Validation.Implementation
 {
+  /// <summary>
+  /// Implements <see cref="IValidatedTypeResolver"/> and resolves the validated Type via <see cref="IComponentValidationCollector{TValidatedType}"/>.
+  /// </summary>
   public class GenericTypeAwareValidatedTypeResolverDecorator : IValidatedTypeResolver
   {
     private readonly IValidatedTypeResolver _validatedTypeResolver;
@@ -37,6 +40,10 @@ namespace Remotion.Validation.Implementation
     {
       ArgumentUtility.CheckNotNull ("collectorType", collectorType);
 
+      //TODO AO
+      //only use true-branch if 
+      //if (ReflectionUtility.CanAscribe (collectorType, typeof(IComponentValidationCollector<>)))
+      //  return ReflectionUtility.GetAscribedGenericArguments (collectorType, typeof(IComponentValidationCollector<>))).Single()
       return collectorType.GetAllGenericTypeParameterInHierarchy().FirstOrDefault()
              ?? _validatedTypeResolver.GetValidatedType (collectorType);
     }

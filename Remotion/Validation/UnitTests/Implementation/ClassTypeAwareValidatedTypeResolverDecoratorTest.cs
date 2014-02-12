@@ -42,8 +42,6 @@ namespace Remotion.Validation.UnitTests.Implementation
     {
       var collectorTypeWithApplyWithClassAttribute = typeof (IPersonValidationCollector2);
 
-      _decoratedResolverMock.Expect (mock => mock.GetValidatedType (collectorTypeWithApplyWithClassAttribute)).Return (typeof (Person));
-
       var result = _resolver.GetValidatedType (collectorTypeWithApplyWithClassAttribute);
 
       _decoratedResolverMock.VerifyAllExpectations();
@@ -51,16 +49,28 @@ namespace Remotion.Validation.UnitTests.Implementation
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = 
-      "Invalid 'ApplyWithClassAttribute'-definition for collector 'Remotion.Validation.UnitTests.TestDomain.Collectors.IPersonValidationCollector2': "
-      +"type 'Remotion.Validation.UnitTests.TestDomain.Customer' is not assignable from 'Remotion.Validation.UnitTests.TestDomain.Person'.")]
+    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage =
+      "Invalid 'ApplyWithClassAttribute'-definition for collector 'Remotion.Validation.UnitTests.TestDomain.Collectors.InvalidValidationCollector': "
+      + "type 'Remotion.Validation.UnitTests.TestDomain.Address' is not assignable from 'Remotion.Validation.UnitTests.TestDomain.Customer'.")]
     public void GetValidatedType_CollectorWitApplyWithClassAttribute_ReturnedTypeNotAssignableToGenericType ()
     {
-      var collectorTypeWithApplyWithClassAttribute = typeof (IPersonValidationCollector2);
+      var collectorTypeWithApplyWithClassAttribute = typeof (InvalidValidationCollector);
 
       _decoratedResolverMock.Expect (mock => mock.GetValidatedType (collectorTypeWithApplyWithClassAttribute)).Return (typeof (Customer));
 
       _resolver.GetValidatedType (collectorTypeWithApplyWithClassAttribute);
+    }
+
+    [Test]
+    public void GetValidatedType_CollectorWitApplyWithClassAttribute_WithoutGenericType ()
+    {
+      var collectorTypeWithApplyWithClassAttribute = typeof (InvalidValidationCollector2);
+
+      _decoratedResolverMock.Expect (mock => mock.GetValidatedType (collectorTypeWithApplyWithClassAttribute)).Return (typeof (Customer));
+
+      var result = _resolver.GetValidatedType (collectorTypeWithApplyWithClassAttribute);
+
+      Assert.That (result, Is.EqualTo(typeof(Address)));
     }
 
     [Test]

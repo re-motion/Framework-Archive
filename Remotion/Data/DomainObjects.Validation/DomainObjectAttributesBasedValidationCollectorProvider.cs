@@ -58,7 +58,11 @@ namespace Remotion.Data.DomainObjects.Validation
       if (typeof (IDomainObjectMixin).IsAssignableFrom (annotatedType) && !annotatedType.IsInterface)
       {
         var implementedInterfaces = interfaceTypes.Where (i => i.IsAssignableFrom (annotatedType)).ToList();
-        var interfaceProperties = implementedInterfaces.SelectMany (t => t.GetProperties()).Select (PropertyInfoAdapter.Create).ToList();
+        var interfaceProperties = implementedInterfaces.SelectMany (t =>
+        {
+          Assertion.IsTrue (t.IsInterface);
+          return t.GetProperties();
+        }).Select (PropertyInfoAdapter.Create).ToList();
         var annotatedProperties = annotatedType.GetProperties (PropertyBindingFlags | BindingFlags.DeclaredOnly)
             .Where (HasValidationRulesOnMixinProperty)
             .Select (PropertyInfoAdapter.Create)

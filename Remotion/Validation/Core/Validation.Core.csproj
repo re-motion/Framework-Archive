@@ -77,7 +77,7 @@
     <Compile Include="Implementation\CompoundValidationTypeFilter.cs" />
     <Compile Include="Implementation\CompoundValidatorBuilder.cs" />
     <Compile Include="Implementation\DefaultLogContext.cs" />
-    <Compile Include="Implementation\DefaultValidatedTypeResolver.cs" />
+    <Compile Include="Implementation\NullValidatedTypeResolver.cs" />
     <Compile Include="Implementation\DefaultValidatorFormatter.cs" />
     <Compile Include="Implementation\FluentValidationBuilderExtensions.cs" />
     <Compile Include="Implementation\FluentValidationValidatorFormatterDecorator.cs" />

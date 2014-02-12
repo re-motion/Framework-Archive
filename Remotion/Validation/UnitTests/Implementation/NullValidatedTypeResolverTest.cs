@@ -23,12 +23,12 @@ using Remotion.Validation.UnitTests.TestDomain.Collectors;
 namespace Remotion.Validation.UnitTests.Implementation
 {
   [TestFixture]
-  public class DefaultValidatedTypeResolverTest
+  public class NullValidatedTypeResolverTest
   {
     [Test]
     public void name ()
     {
-      var resolver = new DefaultValidatedTypeResolver();
+      var resolver = new NullValidatedTypeResolver();
 
       var result = resolver.GetValidatedType (typeof (PersonValidationCollector1));
 

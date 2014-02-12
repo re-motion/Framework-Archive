@@ -16,17 +16,13 @@
 // 
 
 using System;
-using Remotion.Utilities;
+using Remotion.Validation.Attributes;
 
-namespace Remotion.Validation.Implementation
+namespace Remotion.Validation.UnitTests.TestDomain.Collectors
 {
-  public class DefaultValidatedTypeResolver : IValidatedTypeResolver
+  [ApplyProgrammatically]
+  [ApplyWithClass (typeof (Customer))]
+  public class InvalidValidationCollector : ComponentValidationCollector<Address>
   {
-    public Type GetValidatedType (Type collectorType)
-    {
-      ArgumentUtility.CheckNotNull ("collectorType", collectorType);
-
-      return null;
-    }
   }
 }

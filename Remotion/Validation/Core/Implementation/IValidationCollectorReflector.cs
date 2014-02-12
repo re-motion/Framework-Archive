@@ -19,6 +19,10 @@ using System.Collections.Generic;
 
 namespace Remotion.Validation.Implementation
 {
+  /// <summary>
+  /// Defines an API to return all <see cref="IComponentValidationCollector"/>s for a validated type.
+  /// </summary>
+  /// <seealso cref="DiscoveryServiceBasedValidationCollectorReflector"/>
   public interface IValidationCollectorReflector
   {
     IEnumerable<Type> GetCollectorsForType (Type type);

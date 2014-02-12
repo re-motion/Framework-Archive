@@ -24,6 +24,11 @@ using Remotion.Validation.Rules;
 
 namespace Remotion.Validation.Implementation
 {
+  /// <summary>
+  /// Defines an API for retrieving the validation metadata for a property based on domain attributes.
+  /// </summary>
+  /// <seealso cref="ValidationAttributesBasedPropertyRuleReflector"/>
+  /// <seealso cref="T:Remotion.Data.DomainObjects.Validation.DomainObjectAttributesBasedValidationPropertyRuleReflector"/>
   public interface IAttributesBasedValidationPropertyRuleReflector
   {
     Type PropertyType { get; }

@@ -14,17 +14,18 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
+using System.Runtime.Serialization;
 
 namespace Remotion.Validation.Implementation
 {
+  /// <summary>
+  /// Thrown when inconsistencies are found within an application's validation specification.
+  /// </summary>
+  [Serializable]
   public class ComponentValidationException : Exception
   {
-    public ComponentValidationException ()
-        : this ("A component validation exception occurred.")
-    {
-    }
-
     public ComponentValidationException (string message)
         : base (message)
     {
@@ -32,6 +33,11 @@ namespace Remotion.Validation.Implementation
 
     public ComponentValidationException (string message, Exception inner)
         : base (message, inner)
+    {
+    }
+
+    protected ComponentValidationException (SerializationInfo info, StreamingContext context)
+        : base (info, context)
     {
     }
   }

@@ -22,6 +22,9 @@ using Remotion.Validation.Implementation;
 
 namespace Remotion.Validation.Mixins.Implementation
 {
+  /// <summary>
+  /// Implements <see cref="IValidatedTypeResolver"/> and resolves the validated Type via the <see cref="ApplyWithMixinAttribute"/>.
+  /// </summary>
   public class MixinTypeAwareValidatedTypeResolverDecorator : IValidatedTypeResolver
   {
     private readonly IValidatedTypeResolver _validatedTypeResolver;

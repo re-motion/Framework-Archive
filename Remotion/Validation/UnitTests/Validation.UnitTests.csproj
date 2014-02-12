@@ -83,7 +83,7 @@
     <Compile Include="Globalization\ValidationRuleGlobalizationServiceTest.cs" />
     <Compile Include="Globalization\ErrorMessageStringSourceTest.cs" />
     <Compile Include="Implementation\CompoundValidatorBuilderTest.cs" />
-    <Compile Include="Implementation\DefaultValidatedTypeResolverTest.cs" />
+    <Compile Include="Implementation\NullValidatedTypeResolverTest.cs" />
     <Compile Include="Implementation\GenericTypeAwareValidatedTypeResolverDecoratorTest.cs" />
     <Compile Include="Implementation\ICompoundTypeValidatorTest.cs" />
     <Compile Include="Implementation\ICompoundValidationTypeFilterTest.cs" />
@@ -141,6 +141,8 @@
     <Compile Include="Providers\TestableValidationAttributesBasedCollectorProvider.cs" />
     <Compile Include="Rules\AddingComponentPropertyMetaValidationRuleTest.cs" />
     <Compile Include="TestDomain\Address.cs" />
+    <Compile Include="TestDomain\Collectors\InvalidValidationCollector2.cs" />
+    <Compile Include="TestDomain\Collectors\InvalidValidationCollector.cs" />
     <Compile Include="TestDomain\Collectors\CustomerMixinIntroducedValidationCollector1.cs" />
     <Compile Include="TestDomain\Collectors\CustomerMixinIntroducedValidationCollector2.cs" />
     <Compile Include="TestDomain\Collectors\CustomerMixinTargetValidationCollector1.cs" />

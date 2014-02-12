@@ -16,21 +16,18 @@
 // 
 
 using System;
-using JetBrains.Annotations;
+using System.Collections.Generic;
+using Remotion.Validation.Attributes;
+using Remotion.Validation.Rules;
 
-namespace Remotion.Validation.Implementation
+namespace Remotion.Validation.UnitTests.TestDomain.Collectors
 {
-  /// <summary>
-  /// Defines an API for retrieving the validated <see cref="Type"/> associated with the <see cref="IComponentValidationCollector"/> type.
-  /// </summary>
-  public interface IValidatedTypeResolver
+  [ApplyWithClass(typeof(Address))]
+  public class InvalidValidationCollector2 : IComponentValidationCollector
   {
-    /// <summary>
-    /// Retrieves the validated <see cref="Type"/> from the <paramref name="collectorType"/>.
-    /// </summary>
-    /// <param name="collectorType">The <see cref="Type"/> of the <see cref="IComponentValidationCollector"/> to analyze. Must not be <see langword="null" />.</param>
-    /// <returns>A <see cref="Type"/> or <see langword="null" /> if no validated type could be identified.</returns>
-    [CanBeNull]
-    Type GetValidatedType ([NotNull] Type collectorType);
+    public Type ValidatedType { get; private set; }
+    public IReadOnlyCollection<IAddingComponentPropertyRule> AddedPropertyRules { get; private set; }
+    public IReadOnlyCollection<IAddingComponentPropertyMetaValidationRule> AddedPropertyMetaValidationRules { get; private set; }
+    public IReadOnlyCollection<IRemovingComponentPropertyRule> RemovedPropertyRules { get; private set; }
   }
 }

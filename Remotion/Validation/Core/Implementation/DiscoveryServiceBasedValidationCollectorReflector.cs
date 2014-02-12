@@ -26,6 +26,11 @@ using Remotion.Validation.Attributes;
 
 namespace Remotion.Validation.Implementation
 {
+  /// <summary>
+  /// Implements the <see cref="IValidationCollectorReflector"/> and uses the <see cref="ITypeDiscoveryService"/> to find all implementations
+  /// of the <see cref="IComponentValidationCollector"/> interface. The <see cref="IValidatedTypeResolver"/> is the used to associate the 
+  /// collector types to the validated type. 
+  /// </summary>
   public class DiscoveryServiceBasedValidationCollectorReflector : IValidationCollectorReflector
   {
     private readonly ITypeDiscoveryService _typeDiscoveryService;

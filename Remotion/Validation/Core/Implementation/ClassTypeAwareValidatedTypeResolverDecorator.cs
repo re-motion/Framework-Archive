@@ -21,6 +21,9 @@ using Remotion.Validation.Attributes;
 
 namespace Remotion.Validation.Implementation
 {
+  /// <summary>
+  /// Implements <see cref="IValidatedTypeResolver"/> and resolves the validated Type via the <see cref="ApplyWithClassAttribute"/>.
+  /// </summary>
   public class ClassTypeAwareValidatedTypeResolverDecorator : IValidatedTypeResolver
   {
     private readonly IValidatedTypeResolver _resolver;
@@ -30,7 +33,7 @@ namespace Remotion.Validation.Implementation
     {
       ArgumentUtility.CheckNotNull ("resolver", resolver);
 
-      _genericResolver = new GenericTypeAwareValidatedTypeResolverDecorator (new DefaultValidatedTypeResolver());
+      _genericResolver = new GenericTypeAwareValidatedTypeResolverDecorator (new NullValidatedTypeResolver());
       _resolver = resolver;
     }
 
@@ -44,7 +47,7 @@ namespace Remotion.Validation.Implementation
 
       var validatedType = atrtribute.ClassType;
       var validatedTypefromGeneric = _genericResolver.GetValidatedType (collectorType);
-      if (validatedTypefromGeneric != null) //TODO AO: check tests
+      if (validatedTypefromGeneric != null)
         CheckValidatedTypeAssignableFromDefinedType (collectorType, validatedTypefromGeneric, validatedType);
       return validatedType;
     }

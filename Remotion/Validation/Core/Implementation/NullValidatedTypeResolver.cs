@@ -16,21 +16,17 @@
 // 
 
 using System;
-using JetBrains.Annotations;
+using Remotion.Utilities;
 
 namespace Remotion.Validation.Implementation
 {
-  /// <summary>
-  /// Defines an API for retrieving the validated <see cref="Type"/> associated with the <see cref="IComponentValidationCollector"/> type.
-  /// </summary>
-  public interface IValidatedTypeResolver
+  public class NullValidatedTypeResolver : IValidatedTypeResolver
   {
-    /// <summary>
-    /// Retrieves the validated <see cref="Type"/> from the <paramref name="collectorType"/>.
-    /// </summary>
-    /// <param name="collectorType">The <see cref="Type"/> of the <see cref="IComponentValidationCollector"/> to analyze. Must not be <see langword="null" />.</param>
-    /// <returns>A <see cref="Type"/> or <see langword="null" /> if no validated type could be identified.</returns>
-    [CanBeNull]
-    Type GetValidatedType ([NotNull] Type collectorType);
+    public Type GetValidatedType (Type collectorType)
+    {
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("collectorType", collectorType, typeof (IComponentValidationCollector));
+
+      return null;
+    }
   }
 }
