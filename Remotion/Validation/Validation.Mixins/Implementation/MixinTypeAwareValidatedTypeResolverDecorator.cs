@@ -19,6 +19,7 @@ using System;
 using Remotion.Utilities;
 using Remotion.Validation.Attributes;
 using Remotion.Validation.Implementation;
+using Remotion.Validation.Mixins.Attributes;
 
 namespace Remotion.Validation.Mixins.Implementation
 {

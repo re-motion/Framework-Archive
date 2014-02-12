@@ -14,26 +14,20 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
-using Remotion.Utilities;
 
-namespace Remotion.Validation.Attributes
+namespace Remotion.Validation.Mixins.UnitTests.Implementation.TestDomain
 {
-  [AttributeUsage (AttributeTargets.Class)]
-  public class ApplyWithMixinAttribute : Attribute
+  public interface IDerivedConcreteTypeForMixin
   {
-    private readonly Type _mixinType;
+    string Property4 { get; set; }
+    string Property5 { get; set; }
+  }
 
-    public ApplyWithMixinAttribute (Type mixinType)
-    {
-      ArgumentUtility.CheckNotNull ("mixinType", mixinType);
-
-      _mixinType = mixinType;
-    }
-
-    public Type MixinType
-    {
-      get { return _mixinType; }
-    }
+  public class DerivedConcreteTypeForMixin : BaseConcreteTypeForMixin, IDerivedConcreteTypeForMixin
+  {
+    public virtual string Property4 { get; set; }
+    public virtual string Property5 { get; set; }
   }
 }

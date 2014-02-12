@@ -48,7 +48,7 @@ namespace Remotion.Data.DomainObjects.Validation
       if (ReflectionUtility.IsDomainObject (annotatedType))
       {
         return annotatedType.GetProperties (PropertyBindingFlags | BindingFlags.DeclaredOnly)
-            .Where (HasValidationRulesOnMixinProperty)
+            .Where (HasValidationRulesOnProperty)
             .Select (
                 p => new Tuple<Type, IAttributesBasedValidationPropertyRuleReflector> (
                     annotatedType,
@@ -64,7 +64,7 @@ namespace Remotion.Data.DomainObjects.Validation
           return t.GetProperties();
         }).Select (PropertyInfoAdapter.Create).ToList();
         var annotatedProperties = annotatedType.GetProperties (PropertyBindingFlags | BindingFlags.DeclaredOnly)
-            .Where (HasValidationRulesOnMixinProperty)
+            .Where (HasValidationRulesOnProperty)
             .Select (PropertyInfoAdapter.Create)
             .ToDictionary (p => (IPropertyInformation) p);
 
@@ -90,7 +90,7 @@ namespace Remotion.Data.DomainObjects.Validation
       return Enumerable.Empty<Tuple<Type, IAttributesBasedValidationPropertyRuleReflector>>();
     }
 
-    private bool HasValidationRulesOnMixinProperty (PropertyInfo property)
+    private bool HasValidationRulesOnProperty (PropertyInfo property)
     {
       var dummyInterfaceProperty = property;
       // The interface property does not matter in this particular instance, so any property could be passed into the reflector.

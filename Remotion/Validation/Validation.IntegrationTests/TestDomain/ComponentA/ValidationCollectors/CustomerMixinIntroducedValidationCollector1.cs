@@ -20,6 +20,7 @@ using FluentValidation;
 using FluentValidation.Validators;
 using Remotion.Validation.Attributes;
 using Remotion.Validation.IntegrationTests.TestDomain.ComponentB.ValidationCollectors;
+using Remotion.Validation.Mixins.Attributes;
 
 namespace Remotion.Validation.IntegrationTests.TestDomain.ComponentA.ValidationCollectors
 {

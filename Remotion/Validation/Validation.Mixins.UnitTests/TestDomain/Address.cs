@@ -16,20 +16,19 @@
 // 
 
 using System;
-using FluentValidation;
-using FluentValidation.Validators;
-using Remotion.Validation.Attributes;
+using Remotion.Validation.Attributes.MetaValidation;
 
-namespace Remotion.Validation.UnitTests.TestDomain.Collectors
+namespace Remotion.Validation.Mixins.UnitTests.TestDomain
 {
-  [ApplyWithMixin(typeof(CustomerMixin))]
-  public class CustomerMixinIntroducedValidationCollector1 : ComponentValidationCollector<ICustomerIntroduced> //gets applied with mixin
+  public class Address
   {
-    public CustomerMixinIntroducedValidationCollector1 ()
-    {
-      RemoveRule (cm => cm.Title).Validator<NotEqualValidator, CustomerMixinIntroducedValidationCollector2>();
+    public virtual string Street { get; set; }
 
-      AddRule (cm => cm.Title).Length (0, 10);
-    }
+    public virtual string City { get; set; }
+
+    public virtual string Country { get; set; }
+
+    [AnyRuleAppliedMetaValidationRule]
+    public virtual string PostalCode { get; set; }
   }
 }

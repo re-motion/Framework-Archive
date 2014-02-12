@@ -19,11 +19,11 @@ using System;
 using NUnit.Framework;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.Mixins.Implementation;
-using Remotion.Validation.UnitTests.TestDomain;
-using Remotion.Validation.UnitTests.TestDomain.Collectors;
+using Remotion.Validation.Mixins.UnitTests.TestDomain;
+using Remotion.Validation.Mixins.UnitTests.TestDomain.Collectors;
 using Rhino.Mocks;
 
-namespace Remotion.Validation.UnitTests.Implementation
+namespace Remotion.Validation.Mixins.UnitTests.Implementation
 {
   [TestFixture]
   public class MixinTypeAwareValidatedTypeResolverDecoratorTest

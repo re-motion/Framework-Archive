@@ -20,7 +20,6 @@ using System.Linq;
 using NUnit.Framework;
 using Remotion.ServiceLocation;
 using Remotion.Validation.Implementation;
-using Remotion.Validation.Mixins.Implementation;
 
 namespace Remotion.Validation.UnitTests.Implementation
 {
@@ -40,8 +39,8 @@ namespace Remotion.Validation.UnitTests.Implementation
     {
       var factory = (_serviceLocator.GetAllInstances<IValidationTypeFilter>()).ToArray();
 
+      Assert.That (factory.Count(), Is.EqualTo (1));
       Assert.That (factory[0], Is.TypeOf<LoadFilteredValidationTypeFilter>());
-      Assert.That (factory[1], Is.TypeOf<MixedLoadFilteredValidationTypeFilter>());
     }
   }
 }

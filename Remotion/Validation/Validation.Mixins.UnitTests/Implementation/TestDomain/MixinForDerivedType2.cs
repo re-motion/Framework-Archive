@@ -16,32 +16,25 @@
 // 
 
 using System;
-using System.Linq;
-using NUnit.Framework;
-using Remotion.ServiceLocation;
-using Remotion.Validation.Implementation;
+using Remotion.Mixins;
 
-namespace Remotion.Validation.UnitTests.Implementation
+namespace Remotion.Validation.Mixins.UnitTests.Implementation.TestDomain
 {
-  [TestFixture]
-  public class ICompoundValidationTypeFilterTest
+  public interface IIntroducedFromMixinForDerivedType2
   {
-    private DefaultServiceLocator _serviceLocator;
+    string IntroducedProperty3 { get; }
+  }
 
-    [SetUp]
-    public void SetUp ()
+  [AcceptsAlphabeticOrdering]
+  [Extends (typeof (DerivedConcreteTypeForMixin))]
+  public class MixinForDerivedType2 : BaseMixinForDerivedType, IIntroducedFromMixinForDerivedType2
+  {
+    [OverrideTarget]
+    public string Property4
     {
-      _serviceLocator = new DefaultServiceLocator();
+      get { return Next.Property5; }
     }
 
-    [Test]
-    public void GetInstance_Once ()
-    {
-      var factory = _serviceLocator.GetInstance<ICompoundValidationTypeFilter>();
-
-      Assert.That (factory, Is.TypeOf (typeof (CompoundValidationTypeFilter)));
-      var compoundGlobalizationServices = ((CompoundValidationTypeFilter) factory).ValidationTypeFilters.ToArray();
-      Assert.That (compoundGlobalizationServices[0], Is.TypeOf<LoadFilteredValidationTypeFilter>());
-    }
+    public string IntroducedProperty3 { get; set; }
   }
 }

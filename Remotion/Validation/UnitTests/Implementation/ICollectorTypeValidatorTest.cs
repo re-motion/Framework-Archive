@@ -19,7 +19,6 @@ using System;
 using NUnit.Framework;
 using Remotion.ServiceLocation;
 using Remotion.Validation.Implementation;
-using Remotion.Validation.Mixins.Implementation;
 
 namespace Remotion.Validation.UnitTests.Implementation
 {
@@ -37,10 +36,9 @@ namespace Remotion.Validation.UnitTests.Implementation
     [Test]
     public void GetInstance ()
     {
-      var factory = _serviceLocator.GetInstance<ICollectorValidator> ();
+      var factory = _serviceLocator.GetAllInstances<ICollectorValidator> ();
 
-      Assert.That (factory, Is.Not.Null);
-      Assert.That (factory, Is.TypeOf (typeof (CheckNoMixinCollectorValidator)));
+      Assert.That (factory, Is.Empty);
     }
   }
 }

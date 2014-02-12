@@ -18,13 +18,13 @@
 using System;
 using FluentValidation;
 
-namespace Remotion.Validation.UnitTests.TestDomain.Collectors
+namespace Remotion.Validation.Mixins.UnitTests.TestDomain.Collectors
 {
-  public class CustomerMixinIntroducedValidationCollector2 : ComponentValidationCollector<ICustomerIntroduced> //gets applied before mixin!
+  public class PersonValidationCollector1 : ComponentValidationCollector<Person>
   {
-    public CustomerMixinIntroducedValidationCollector2 ()
+    public PersonValidationCollector1 ()
     {
-      AddRule (c => c.Title).NotEqual ("Chef3");
+      AddRule (p => p.LastName).NotNull().NotEqual("Test");
     }
   }
 }

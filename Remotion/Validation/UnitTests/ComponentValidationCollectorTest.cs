@@ -34,8 +34,6 @@ namespace Remotion.Validation.UnitTests
     private Expression<Func<Customer, string>> _lastNameExpression;
     private Expression<Func<Customer, Address>> _addressExpression;
     private TestableComponentValidationCollector<Customer> _customerValidationCollector;
-    private Expression<Func<CustomerMixin, string>> _mixinTitleExpression;
-    private TestableComponentValidationCollector<CustomerMixin> _customerMixinValidationCollector;
 
     [SetUp]
     public void SetUp ()
@@ -44,9 +42,6 @@ namespace Remotion.Validation.UnitTests
       _lastNameExpression = c => c.LastName;
       _addressExpression = c => c.BillingAddress;
       _customerValidationCollector = new TestableComponentValidationCollector<Customer>();
-
-      _mixinTitleExpression = ExpressionHelper.GetTypedMemberExpression<CustomerMixin, string> (cm => cm.Title);
-      _customerMixinValidationCollector = new TestableComponentValidationCollector<CustomerMixin>();
     }
 
     [Test]

@@ -16,32 +16,21 @@
 // 
 
 using System;
-using NUnit.Framework;
-using Remotion.Mixins.Utilities;
-using Remotion.Validation.UnitTests.Implementation.TestDomain;
-using Remotion.Validation.UnitTests.TestDomain;
+using FluentValidation;
+using FluentValidation.Validators;
+using Remotion.Validation.Attributes;
+using Remotion.Validation.Mixins.Attributes;
 
-namespace Remotion.Validation.UnitTests.Utilities
+namespace Remotion.Validation.Mixins.UnitTests.TestDomain.Collectors
 {
-  [TestFixture]
-  public class MixinHelperTest
+  [ApplyWithMixin(typeof(CustomerMixin))]
+  public class CustomerMixinIntroducedValidationCollector1 : ComponentValidationCollector<ICustomerIntroduced> //gets applied with mixin
   {
-    [Test]
-    public void NoMixinType ()
+    public CustomerMixinIntroducedValidationCollector1 ()
     {
-      Assert.That (MixinHelper.IsMixinType (typeof (string)), Is.False);
-    }
+      RemoveRule (cm => cm.Title).Validator<NotEqualValidator, CustomerMixinIntroducedValidationCollector2>();
 
-    [Test]
-    public void MixinType ()
-    {
-      Assert.That (MixinHelper.IsMixinType (typeof (CustomerMixin)), Is.True);
-    }
-
-    [Test]
-    public void BaseMixinType ()
-    {
-      Assert.That (MixinHelper.IsMixinType (typeof (MixinForDerivedType1)), Is.True);
+      AddRule (cm => cm.Title).Length (0, 10);
     }
   }
 }

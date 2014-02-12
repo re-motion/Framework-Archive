@@ -15,13 +15,14 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 
+using System;
 using System.Linq;
 using NUnit.Framework;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.Mixins.Implementation;
-using Remotion.Validation.UnitTests.Implementation.TestDomain;
+using Remotion.Validation.Mixins.UnitTests.Implementation.TestDomain;
 
-namespace Remotion.Validation.UnitTests.Implementation
+namespace Remotion.Validation.Mixins.UnitTests.Implementation
 {
   [TestFixture]
   public class MixedInvolvedTypeProviderDecoratorTest

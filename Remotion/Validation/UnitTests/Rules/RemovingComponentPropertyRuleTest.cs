@@ -64,7 +64,7 @@ namespace Remotion.Validation.UnitTests.Rules
       var dummyExpression = ExpressionHelper.GetTypedMemberExpression<Customer, string> (c => c.Dummy ());
 
       Assert.Throws<InvalidOperationException> (
-          () => RemovingComponentPropertyRule.Create (dummyExpression, typeof (CustomerMixinIntroducedValidationCollector1)),
+          () => RemovingComponentPropertyRule.Create (dummyExpression, typeof (CustomerValidationCollector1)),
           "An 'RemovingComponentPropertyRule' can only created for property members.");
     }
 

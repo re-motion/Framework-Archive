@@ -16,25 +16,25 @@
 // 
 
 using System;
-using Remotion.Mixins;
+using Remotion.Utilities;
 
-namespace Remotion.Validation.UnitTests.Implementation.TestDomain
+namespace Remotion.Validation.Mixins.Attributes
 {
-  public interface IIntroducedFromMixinForDerivedType2
+  [AttributeUsage (AttributeTargets.Class)]
+  public class ApplyWithMixinAttribute : Attribute
   {
-    string IntroducedProperty3 { get; }
-  }
+    private readonly Type _mixinType;
 
-  [AcceptsAlphabeticOrdering]
-  [Extends (typeof (DerivedConcreteTypeForMixin))]
-  public class MixinForDerivedType2 : BaseMixinForDerivedType, IIntroducedFromMixinForDerivedType2
-  {
-    [OverrideTarget]
-    public string Property4
+    public ApplyWithMixinAttribute (Type mixinType)
     {
-      get { return Next.Property5; }
+      ArgumentUtility.CheckNotNull ("mixinType", mixinType);
+
+      _mixinType = mixinType;
     }
 
-    public string IntroducedProperty3 { get; set; }
+    public Type MixinType
+    {
+      get { return _mixinType; }
+    }
   }
 }

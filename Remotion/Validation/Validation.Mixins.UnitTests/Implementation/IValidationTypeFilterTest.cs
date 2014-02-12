@@ -16,36 +16,33 @@
 // 
 
 using System;
+using System.Linq;
 using NUnit.Framework;
-using Remotion.Mixins;
-using Remotion.TypePipe.Implementation;
+using Remotion.ServiceLocation;
+using Remotion.Validation.Implementation;
 using Remotion.Validation.Mixins.Implementation;
 
-namespace Remotion.Validation.UnitTests.Implementation
+namespace Remotion.Validation.Mixins.UnitTests.Implementation
 {
   [TestFixture]
-  public class MixedLoadFilteredValidationTypeFilterTest
+  public class IValidationTypeFilterTest
   {
-    private MixedLoadFilteredValidationTypeFilter _filter;
+    private DefaultServiceLocator _serviceLocator;
 
     [SetUp]
     public void SetUp ()
     {
-      _filter = new MixedLoadFilteredValidationTypeFilter();
+      _serviceLocator = new DefaultServiceLocator();
     }
 
     [Test]
-    public void IsValid_FilteredTypes_ReturnFalse ()
+    public void GetInstance_Once ()
     {
-      Assert.That (_filter.IsValid (typeof (IMixinTarget)), Is.False);
-      Assert.That (_filter.IsValid (typeof (IInitializableMixin)), Is.False);
-      Assert.That (_filter.IsValid (typeof (IInitializableObject)), Is.False);
-    }
+      var factory = (_serviceLocator.GetAllInstances<IValidationTypeFilter>()).ToArray();
 
-    [Test]
-    public void IsValid_NoneFilteredType_ReturnTrue ()
-    {
-      Assert.That (_filter.IsValid (typeof (string)), Is.True);
+      Assert.That (factory.Count(), Is.EqualTo (2));
+      Assert.That (factory[0], Is.TypeOf<LoadFilteredValidationTypeFilter>());
+      Assert.That (factory[1], Is.TypeOf<MixedLoadFilteredValidationTypeFilter>());
     }
   }
 }

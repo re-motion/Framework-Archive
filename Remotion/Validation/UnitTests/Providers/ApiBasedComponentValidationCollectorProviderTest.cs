@@ -51,21 +51,21 @@ namespace Remotion.Validation.UnitTests.Providers
     {
       _validationCollectorReflectorMock.Expect (mock => mock.GetCollectorsForType (typeof (Customer)))
           .Return (new[] { typeof (CustomerValidationCollector1), typeof (CustomerValidationCollector2) });
-      _validationCollectorReflectorMock.Expect (mock => mock.GetCollectorsForType (typeof (CustomerMixin)))
+      _validationCollectorReflectorMock.Expect (mock => mock.GetCollectorsForType (typeof (Person)))
           .Return (
               new[]
-              { typeof (CustomerMixinIntroducedValidationCollector1), typeof (CustomerMixinIntroducedValidationCollector2) });
+              { typeof (PersonValidationCollector1), typeof (IPersonValidationCollector2) });
 
-      var result = _provider.GetValidationCollectors (new[] { typeof (Customer), typeof (CustomerMixin) }).SelectMany (g => g).ToArray();
+      var result = _provider.GetValidationCollectors (new[] { typeof (Customer), typeof (Person) }).SelectMany (g => g).ToArray();
 
       _validationCollectorReflectorMock.VerifyAllExpectations();
       Assert.That (result[0].Collector.GetType(), Is.EqualTo (typeof (CustomerValidationCollector1)));
       Assert.That (result[0].ProviderType, Is.EqualTo (typeof (ApiBasedComponentValidationCollectorProvider)));
       Assert.That (result[1].Collector.GetType(), Is.EqualTo (typeof (CustomerValidationCollector2)));
       Assert.That (result[1].ProviderType, Is.EqualTo (typeof (ApiBasedComponentValidationCollectorProvider)));
-      Assert.That (result[2].Collector.GetType(), Is.EqualTo (typeof (CustomerMixinIntroducedValidationCollector1)));
+      Assert.That (result[2].Collector.GetType (), Is.EqualTo (typeof (PersonValidationCollector1)));
       Assert.That (result[2].ProviderType, Is.EqualTo (typeof (ApiBasedComponentValidationCollectorProvider)));
-      Assert.That (result[3].Collector.GetType(), Is.EqualTo (typeof (CustomerMixinIntroducedValidationCollector2)));
+      Assert.That (result[3].Collector.GetType (), Is.EqualTo (typeof (IPersonValidationCollector2)));
       Assert.That (result[3].ProviderType, Is.EqualTo (typeof (ApiBasedComponentValidationCollectorProvider)));
     }
   }

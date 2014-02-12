@@ -16,29 +16,30 @@
 // 
 
 using System;
-using Remotion.Mixins;
+using System.Collections.Generic;
+using Remotion.Validation.Attributes.Validation;
 
-namespace Remotion.Validation.UnitTests.Implementation.TestDomain
+namespace Remotion.Validation.Mixins.UnitTests.TestDomain
 {
-  public interface IMixinForBaseTypeNext
+  public class Customer : Person
   {
-    string Property1 { get; }
-  }
+    [StringProperty(MaxLength = 8, IsRequired = true)]
+    [NotEqual("Test", IsHardConstraint = true)]
+    public virtual string UserName { get; set; }
 
-  public interface IIntroducedFromMixinForBaseType
-  {
-    string IntroducedProperty1 { get; }
-  }
+    public virtual string Email { get; set; }
 
-  [Extends (typeof (BaseConcreteTypeForMixin))]
-  public class MixinForBaseType : Mixin<IBaseConcreteTypeForMixin, IMixinForBaseTypeNext>, IIntroducedFromMixinForBaseType
-  {
-    [OverrideTarget]
-    public string Property1
+    public virtual string PhoneNumber { get; set; }
+
+    public virtual string CreditcardNumber { get; set; }
+
+    public virtual Address BillingAddress { get; set; }
+
+    public virtual ICollection<Address> ShippingAddresses { get; set; }
+
+    public string Dummy ()
     {
-      get { return Next.Property1; }
+      return "Dummy";
     }
-
-    public string IntroducedProperty1 { get; set; }
   }
 }

@@ -62,7 +62,6 @@
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
     <Compile Include="Attributes\ApplyWithClassAttributeTest.cs" />
-    <Compile Include="Attributes\ApplyWithMixinAttributeTest.cs" />
     <Compile Include="Attributes\Validation\LengthAttributeTest.cs" />
     <Compile Include="Attributes\MetaValidation\AnyRuleAppliedMetaValidationRuleAttributeTest.cs" />
     <Compile Include="Attributes\Validation\NotEmptyAttributeTest.cs" />
@@ -70,7 +69,6 @@
     <Compile Include="Attributes\Validation\NotNullAttributeTest.cs" />
     <Compile Include="Attributes\Validation\RemoveValidatorAttributeTest.cs" />
     <Compile Include="Attributes\Validation\StringPropertyAttributeTest.cs" />
-    <Compile Include="Implementation\CheckNoMixinCollectorValidatorTest.cs" />
     <Compile Include="Implementation\ClassTypeAwareValidatedTypeResolverDecoratorTest.cs" />
     <Compile Include="Implementation\CompoundCollectorValidatorTest.cs" />
     <Compile Include="Implementation\CompoundValidationTypeFilterTest.cs" />
@@ -90,9 +88,6 @@
     <Compile Include="Implementation\IInvolvedTypeProviderTest.cs" />
     <Compile Include="Implementation\ICollectorTypeValidatorTest.cs" />
     <Compile Include="Implementation\IValidationTypeFilterTest.cs" />
-    <Compile Include="Implementation\MixedInvolvedTypeProviderDecoratorTest.cs" />
-    <Compile Include="Implementation\MixedLoadFilteredValidationTypeFilterTest.cs" />
-    <Compile Include="Implementation\MixinTypeAwareValidatedTypeResolverDecoratorTest.cs" />
     <Compile Include="Implementation\TypedValidatorDecoratorTest.cs" />
     <Compile Include="Implementation\DefaultLogContextTest.cs" />
     <Compile Include="Implementation\DefaultValidatorFormatterTest.cs" />
@@ -103,12 +98,6 @@
     <Compile Include="Implementation\LogContextInfoTest.cs" />
     <Compile Include="Merging\NamespaceAwareDiagnosticOutputRuleMergeDecoratorTest.cs" />
     <Compile Include="Merging\PropertyValidatorExtractorFactoryTest.cs" />
-    <Compile Include="Implementation\TestDomain\BaseConcreteTypeForMixin.cs" />
-    <Compile Include="Implementation\TestDomain\BaseMixinForDerivedType.cs" />
-    <Compile Include="Implementation\TestDomain\DerivedConcreteTypeForMixin.cs" />
-    <Compile Include="Implementation\TestDomain\MixinForBaseType.cs" />
-    <Compile Include="Implementation\TestDomain\MixinForDerivedType1.cs" />
-    <Compile Include="Implementation\TestDomain\MixinForDerivedType2.cs" />
     <Compile Include="Merging\OrderPrecedenceValidationCollectorMergerTest.cs" />
     <Compile Include="Merging\DiagnosticOutputRuleMergeDecoratorTest.cs" />
     <Compile Include="Implementation\TestDomain\TypeWithoutBaseTypeCollector1.cs" />
@@ -143,16 +132,12 @@
     <Compile Include="TestDomain\Address.cs" />
     <Compile Include="TestDomain\Collectors\InvalidValidationCollector2.cs" />
     <Compile Include="TestDomain\Collectors\InvalidValidationCollector.cs" />
-    <Compile Include="TestDomain\Collectors\CustomerMixinIntroducedValidationCollector1.cs" />
-    <Compile Include="TestDomain\Collectors\CustomerMixinIntroducedValidationCollector2.cs" />
-    <Compile Include="TestDomain\Collectors\CustomerMixinTargetValidationCollector1.cs" />
     <Compile Include="TestDomain\Collectors\CustomerValidationCollector1.cs" />
     <Compile Include="TestDomain\Collectors\CustomerValidationCollector2.cs" />
     <Compile Include="TestDomain\Collectors\IPersonValidationCollector1.cs" />
     <Compile Include="TestDomain\Collectors\IPersonValidationCollector2.cs" />
     <Compile Include="TestDomain\Collectors\PersonValidationCollector1.cs" />
     <Compile Include="TestDomain\Customer.cs" />
-    <Compile Include="TestDomain\CustomerMixin.cs" />
     <Compile Include="TestDomain\Employee.cs" />
     <Compile Include="TestDomain\IPerson.cs" />
     <Compile Include="TestDomain\Person.cs" />
@@ -172,7 +157,6 @@
     <Compile Include="TestHelpers\StubPropertyValidator.cs" />
     <Compile Include="TestHelpers\TestableComponentValidationCollector.cs" />
     <Compile Include="Implementation\FluentValidatorBuilderTest.cs" />
-    <Compile Include="Utilities\MixinHelperTest.cs" />
     <Compile Include="Utilities\TopologySortLinqExtensionsTest.cs" />
     <Compile Include="Implementation\ValidatorTest.cs" />
   </ItemGroup>
@@ -189,25 +173,13 @@
       <Project>{AC6AB6EB-F6AC-45A4-88A7-877D11A65CCB}</Project>
       <Name>Globalization.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Globalization\Mixins\Globalization.Mixins.csproj">
-      <Project>{E2CD7C20-2728-4F72-A6E8-FC4F7AE72EC9}</Project>
-      <Name>Globalization.Mixins</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\TypePipe\Core\TypePipe.Core.csproj">
       <Project>{98E7F7AA-12B2-4A6B-8922-52C8E53B378E}</Project>
       <Name>TypePipe.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Mixins\Core\Mixins.Core.csproj">
-      <Project>{D641E4E2-23F3-4454-8074-1327EF07BAA1}</Project>
-      <Name>Mixins.Core</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Core\Validation.Core.csproj">
       <Project>{d057d6f3-2015-4eb0-b6bd-77be8ed1571a}</Project>
       <Name>Validation.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Validation.Mixins\Validation.Mixins.csproj">
-      <Project>{B34D9485-39D7-4F73-805C-39A65059001E}</Project>
-      <Name>Validation.Mixins</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

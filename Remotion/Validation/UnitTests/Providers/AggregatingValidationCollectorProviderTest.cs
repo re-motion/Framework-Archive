@@ -16,6 +16,7 @@
 // 
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
@@ -96,7 +97,7 @@ namespace Remotion.Validation.UnitTests.Providers
     [Test]
     public void GetValidationCollectors ()
     {
-      var typeGroup1 = new[] { typeof (IPerson), typeof (ICustomerIntroduced) };
+      var typeGroup1 = new[] { typeof (IPerson), typeof(ICollection) };
       var typeGroup2 = new[] { typeof (Person) };
       var typeGroup3 = new[] { typeof (Customer) };
       _involvedTypeProviderStub.Stub (
@@ -113,9 +114,11 @@ namespace Remotion.Validation.UnitTests.Providers
             .Return (new[] { new[] { _validationCollectorInfo3 }, new[] { _validationCollectorInfo4 } });
 
         _validationCollectorProviderMock3
-            .Expect (mock => mock.GetValidationCollectors (typeGroup1)).Return (new[] { new[] { _validationCollectorInfo5 } });
+            .Expect (mock => mock.GetValidationCollectors (typeGroup1))
+            .Return (new[] { new[] { _validationCollectorInfo5 } });
         _validationCollectorProviderMock4
-            .Expect (mock => mock.GetValidationCollectors (typeGroup1)).Return (Enumerable.Empty<IEnumerable<ValidationCollectorInfo>>());
+            .Expect (mock => mock.GetValidationCollectors (typeGroup1))
+            .Return (Enumerable.Empty<IEnumerable<ValidationCollectorInfo>>());
 
         _validationCollectorProviderMock1
             .Expect (mock => mock.GetValidationCollectors (typeGroup2))

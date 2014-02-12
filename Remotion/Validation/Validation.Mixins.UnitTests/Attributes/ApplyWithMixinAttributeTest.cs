@@ -17,44 +17,26 @@
 
 using System;
 using NUnit.Framework;
-using Remotion.Validation.Mixins.Implementation;
-using Remotion.Validation.UnitTests.TestDomain;
-using Rhino.Mocks;
+using Remotion.Validation.Mixins.Attributes;
+using Remotion.Validation.Mixins.UnitTests.TestDomain;
 
-namespace Remotion.Validation.UnitTests.Implementation
+namespace Remotion.Validation.Mixins.UnitTests.Attributes
 {
   [TestFixture]
-  public class CheckNoMixinCollectorValidatorTest
+  public class ApplyWithMixinAttributeTest
   {
-    private CheckNoMixinCollectorValidator _validator;
-    private IComponentValidationCollector _collectorStub;
+    private ApplyWithMixinAttribute _attribute;
 
     [SetUp]
     public void SetUp ()
     {
-      _collectorStub = MockRepository.GenerateStub<IComponentValidationCollector>();
-
-      _validator = new CheckNoMixinCollectorValidator();
+      _attribute = new ApplyWithMixinAttribute (typeof (CustomerMixin));
     }
 
     [Test]
-    public void IsValid_MixinType ()
+    public void Initialization ()
     {
-      _collectorStub.Stub (stub => stub.ValidatedType).Return (typeof (CustomerMixin));
-
-      var result = _validator.IsValid (_collectorStub);
-
-      Assert.That (result, Is.False);
-    }
-
-    [Test]
-    public void IsValid_NoMixinType ()
-    {
-      _collectorStub.Stub (stub => stub.ValidatedType).Return (typeof (Customer));
-
-      var result = _validator.IsValid (_collectorStub);
-
-      Assert.That (result, Is.True);
+      Assert.That (_attribute.MixinType, Is.EqualTo (typeof (CustomerMixin)));
     }
   }
 }

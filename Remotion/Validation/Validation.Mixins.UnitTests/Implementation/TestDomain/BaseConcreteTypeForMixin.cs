@@ -16,17 +16,26 @@
 // 
 
 using System;
-using FluentValidation;
-using Remotion.Validation.Attributes;
 
-namespace Remotion.Validation.UnitTests.TestDomain.Collectors
+namespace Remotion.Validation.Mixins.UnitTests.Implementation.TestDomain
 {
-  [ApplyWithMixin(typeof(CustomerMixin))]
-  public class CustomerMixinTargetValidationCollector1 : ComponentValidationCollector<IPerson>
+  public interface IBaseConcreteTypeForMixin
   {
-    public CustomerMixinTargetValidationCollector1 ()
+    string Property1 { get; set; }
+    string Property2 { get; set; }
+    string Property3 { get; set; }
+  }
+
+  public class BaseConcreteTypeForMixin : IBaseConcreteTypeForMixin
+  {
+    public BaseConcreteTypeForMixin ()
     {
-      AddRule (c => c.FirstName).NotEqual ("something");
     }
+
+    public virtual string Property1 { get; set; }
+
+    public virtual string Property2 { get; set; }
+
+    public virtual string Property3 { get; set; }
   }
 }

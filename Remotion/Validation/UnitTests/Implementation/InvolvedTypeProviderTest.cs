@@ -19,7 +19,6 @@ using System;
 using System.Linq;
 using NUnit.Framework;
 using Remotion.Validation.Implementation;
-using Remotion.Validation.Mixins.Implementation;
 using Remotion.Validation.UnitTests.Implementation.TestDomain;
 
 namespace Remotion.Validation.UnitTests.Implementation
@@ -35,7 +34,7 @@ namespace Remotion.Validation.UnitTests.Implementation
       _involvedTypeProvider = InvolvedTypeProvider.Create (
           col => col.OrderBy (t => t.Name),
           new CompoundValidationTypeFilter (
-              new IValidationTypeFilter[] { new LoadFilteredValidationTypeFilter(), new MixedLoadFilteredValidationTypeFilter() }));
+              new IValidationTypeFilter[] { new LoadFilteredValidationTypeFilter() }));
     }
 
     [Test]

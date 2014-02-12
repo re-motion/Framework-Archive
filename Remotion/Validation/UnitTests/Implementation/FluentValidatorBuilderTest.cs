@@ -231,22 +231,6 @@ namespace Remotion.Validation.UnitTests.Implementation
           Throws.TypeOf<MetaValidationException>().And.Message.EqualTo ("Error1\r\n----------\r\nError2"));
     }
 
-    [Test]
-    public void BuildValidator_CollectorValidationFailed ()
-    {
-      ExpectMocks();
-
-      _componenValidationCollectorStub1.Stub (stub => stub.ValidatedType).Return (typeof (CustomerMixin));
-      _collectorValidatorMock.Expect (mock => mock.IsValid (_componenValidationCollectorStub1)).Return (false);
-
-      Assert.That (
-          () => _fluentValidationBuilder.BuildValidator<SpecialCustomer1> (),
-          Throws.TypeOf<NotSupportedException> ().And.Message.EqualTo (
-              "Validation rules for type 'Remotion.Validation.UnitTests.TestDomain.CustomerMixin' are not supported. "
-              + "If validation rules should be defined for mixins please ensure to apply the rules to 'ITargetInterface' or 'IIntroducedInterface' instead."
-              ));
-    }
-
     private void ExpectMocks ()
     {
       var validationCollectorInfos = new[] { new[] { _validationCollectorInfo1, _validationCollectorInfo3 }, new[] { _validationCollectorInfo2 } };

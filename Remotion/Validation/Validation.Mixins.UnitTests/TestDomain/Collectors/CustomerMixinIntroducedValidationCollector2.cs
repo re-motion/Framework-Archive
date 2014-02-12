@@ -16,32 +16,15 @@
 // 
 
 using System;
-using System.Linq;
-using NUnit.Framework;
-using Remotion.ServiceLocation;
-using Remotion.Validation.Implementation;
+using FluentValidation;
 
-namespace Remotion.Validation.UnitTests.Implementation
+namespace Remotion.Validation.Mixins.UnitTests.TestDomain.Collectors
 {
-  [TestFixture]
-  public class ICompoundValidationTypeFilterTest
+  public class CustomerMixinIntroducedValidationCollector2 : ComponentValidationCollector<ICustomerIntroduced> //gets applied before mixin!
   {
-    private DefaultServiceLocator _serviceLocator;
-
-    [SetUp]
-    public void SetUp ()
+    public CustomerMixinIntroducedValidationCollector2 ()
     {
-      _serviceLocator = new DefaultServiceLocator();
-    }
-
-    [Test]
-    public void GetInstance_Once ()
-    {
-      var factory = _serviceLocator.GetInstance<ICompoundValidationTypeFilter>();
-
-      Assert.That (factory, Is.TypeOf (typeof (CompoundValidationTypeFilter)));
-      var compoundGlobalizationServices = ((CompoundValidationTypeFilter) factory).ValidationTypeFilters.ToArray();
-      Assert.That (compoundGlobalizationServices[0], Is.TypeOf<LoadFilteredValidationTypeFilter>());
+      AddRule (c => c.Title).NotEqual ("Chef3");
     }
   }
 }

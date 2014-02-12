@@ -16,19 +16,17 @@
 // 
 
 using System;
-using Remotion.Mixins;
+using Remotion.Validation.Attributes.Validation;
 
-namespace Remotion.Validation.UnitTests.Implementation.TestDomain
+namespace Remotion.Validation.Mixins.UnitTests.TestDomain
 {
-  public interface IBaseMixinForDerivedType
+  public interface IPerson
   {
-    string Property4 { get; }
-    string Property5 { get; }
-  }
+    [NotNull]
+    string FirstName { get; set; }
 
-  [Extends (typeof (DerivedConcreteTypeForMixin))]
-  public class BaseMixinForDerivedType : Mixin<IDerivedConcreteTypeForMixin, IBaseMixinForDerivedType>
-  {
+    string LastName { get; set; }
 
+    DateTime Birthday { get; set; }
   }
 }

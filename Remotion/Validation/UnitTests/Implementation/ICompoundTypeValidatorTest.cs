@@ -20,7 +20,6 @@ using System.Linq;
 using NUnit.Framework;
 using Remotion.ServiceLocation;
 using Remotion.Validation.Implementation;
-using Remotion.Validation.Mixins.Implementation;
 
 namespace Remotion.Validation.UnitTests.Implementation
 {
@@ -42,7 +41,7 @@ namespace Remotion.Validation.UnitTests.Implementation
 
       Assert.That (factory, Is.TypeOf (typeof (CompoundCollectorValidator)));
       var compoundGlobalizationServices = ((CompoundCollectorValidator) factory).CollectorTypeValidators.ToArray();
-      Assert.That (compoundGlobalizationServices[0], Is.TypeOf<CheckNoMixinCollectorValidator>());
+      Assert.That (compoundGlobalizationServices.Any(), Is.False);
     }
   }
 }

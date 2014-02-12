@@ -16,32 +16,31 @@
 // 
 
 using System;
-using System.Linq;
 using NUnit.Framework;
 using Remotion.ServiceLocation;
 using Remotion.Validation.Implementation;
+using Remotion.Validation.Mixins.Implementation;
 
-namespace Remotion.Validation.UnitTests.Implementation
+namespace Remotion.Validation.Mixins.UnitTests.Implementation
 {
   [TestFixture]
-  public class ICompoundValidationTypeFilterTest
+  public class ICollectorTypeValidatorTest
   {
     private DefaultServiceLocator _serviceLocator;
 
     [SetUp]
     public void SetUp ()
     {
-      _serviceLocator = new DefaultServiceLocator();
+      _serviceLocator = new DefaultServiceLocator ();
     }
 
     [Test]
-    public void GetInstance_Once ()
+    public void GetInstance ()
     {
-      var factory = _serviceLocator.GetInstance<ICompoundValidationTypeFilter>();
+      var factory = _serviceLocator.GetInstance<ICollectorValidator> ();
 
-      Assert.That (factory, Is.TypeOf (typeof (CompoundValidationTypeFilter)));
-      var compoundGlobalizationServices = ((CompoundValidationTypeFilter) factory).ValidationTypeFilters.ToArray();
-      Assert.That (compoundGlobalizationServices[0], Is.TypeOf<LoadFilteredValidationTypeFilter>());
+      Assert.That (factory, Is.Not.Null);
+      Assert.That (factory, Is.TypeOf (typeof (CheckNoMixinCollectorValidator)));
     }
   }
 }

@@ -16,32 +16,17 @@
 // 
 
 using System;
-using System.Linq;
-using NUnit.Framework;
-using Remotion.ServiceLocation;
-using Remotion.Validation.Implementation;
+using FluentValidation.Validators;
+using Remotion.Validation.Attributes.Validation;
 
-namespace Remotion.Validation.UnitTests.Implementation
+namespace Remotion.Validation.Mixins.UnitTests.TestDomain
 {
-  [TestFixture]
-  public class ICompoundValidationTypeFilterTest
+  public class SpecialCustomer1 : Customer
   {
-    private DefaultServiceLocator _serviceLocator;
+    public override string LastName { get; set; }
 
-    [SetUp]
-    public void SetUp ()
-    {
-      _serviceLocator = new DefaultServiceLocator();
-    }
-
-    [Test]
-    public void GetInstance_Once ()
-    {
-      var factory = _serviceLocator.GetInstance<ICompoundValidationTypeFilter>();
-
-      Assert.That (factory, Is.TypeOf (typeof (CompoundValidationTypeFilter)));
-      var compoundGlobalizationServices = ((CompoundValidationTypeFilter) factory).ValidationTypeFilters.ToArray();
-      Assert.That (compoundGlobalizationServices[0], Is.TypeOf<LoadFilteredValidationTypeFilter>());
-    }
+    [StringProperty (MaxLength = 10, IsRequired = true)]
+    [RemoveValidator (typeof (LengthValidator))]
+    public override string UserName { get; set; }
   }
 }

@@ -61,7 +61,7 @@ namespace Remotion.Validation.UnitTests.Rules
       var dummyExpression = ExpressionHelper.GetTypedMemberExpression<Customer, string> (c => c.Dummy ());
 
       Assert.Throws<InvalidOperationException> (
-          () => AddingComponentPropertyMetaValidationRule.Create (dummyExpression, typeof (CustomerMixinIntroducedValidationCollector1)),
+          () => AddingComponentPropertyMetaValidationRule.Create (dummyExpression, typeof (CustomerValidationCollector1)),
           "An 'AddingComponentPropertyMetaValidationRule' can only created for property members.");
     }
 

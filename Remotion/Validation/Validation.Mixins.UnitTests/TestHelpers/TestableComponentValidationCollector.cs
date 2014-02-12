@@ -17,17 +17,13 @@
 
 using System;
 
-namespace Remotion.Validation.UnitTests.Implementation.TestDomain
+namespace Remotion.Validation.Mixins.UnitTests.TestHelpers
 {
-  public interface IDerivedConcreteTypeForMixin
+  public class TestableComponentValidationCollector<T> : ComponentValidationCollector<T>
   {
-    string Property4 { get; set; }
-    string Property5 { get; set; }
-  }
-
-  public class DerivedConcreteTypeForMixin : BaseConcreteTypeForMixin, IDerivedConcreteTypeForMixin
-  {
-    public virtual string Property4 { get; set; }
-    public virtual string Property5 { get; set; }
+    public TestableComponentValidationCollector ()
+    {
+      
+    }
   }
 }

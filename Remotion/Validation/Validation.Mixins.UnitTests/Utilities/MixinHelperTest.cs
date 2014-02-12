@@ -16,33 +16,32 @@
 // 
 
 using System;
-using Remotion.Globalization;
-using Remotion.Mixins;
-using Remotion.Validation.Attributes.Validation;
+using NUnit.Framework;
+using Remotion.Mixins.Utilities;
+using Remotion.Validation.Mixins.UnitTests.Implementation.TestDomain;
+using Remotion.Validation.Mixins.UnitTests.TestDomain;
 
-namespace Remotion.Validation.UnitTests.TestDomain
+namespace Remotion.Validation.Mixins.UnitTests.Utilities
 {
-  public interface ICustomerIntroduced
+  [TestFixture]
+  public class MixinHelperTest
   {
-    [NotEqual("Chef1")]
-    string Title { get; set; }
-  }
-
-  [Extends (typeof (Customer), IntroducedMemberVisibility = MemberVisibility.Public)]
-  public class CustomerMixin : Mixin<IPerson, CustomerMixin.IBaseMethods>, ICustomerIntroduced
-  {
-    public interface IBaseMethods
+    [Test]
+    public void NoMixinType ()
     {
-      string FirstName { get; set; }
+      Assert.That (MixinHelper.IsMixinType (typeof (string)), Is.False);
     }
 
-    [OverrideTarget]
-    public string FirstName
+    [Test]
+    public void MixinType ()
     {
-      get { return Next.FirstName; }
-      set { Next.FirstName = value; }
+      Assert.That (MixinHelper.IsMixinType (typeof (CustomerMixin)), Is.True);
     }
 
-    public string Title { get; set; }
+    [Test]
+    public void BaseMixinType ()
+    {
+      Assert.That (MixinHelper.IsMixinType (typeof (MixinForDerivedType1)), Is.True);
+    }
   }
 }

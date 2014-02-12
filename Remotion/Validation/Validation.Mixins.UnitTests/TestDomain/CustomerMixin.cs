@@ -16,26 +16,32 @@
 // 
 
 using System;
+using Remotion.Mixins;
+using Remotion.Validation.Attributes.Validation;
 
-namespace Remotion.Validation.UnitTests.Implementation.TestDomain
+namespace Remotion.Validation.Mixins.UnitTests.TestDomain
 {
-  public interface IBaseConcreteTypeForMixin
+  public interface ICustomerIntroduced
   {
-    string Property1 { get; set; }
-    string Property2 { get; set; }
-    string Property3 { get; set; }
+    [NotEqual("Chef1")]
+    string Title { get; set; }
   }
 
-  public class BaseConcreteTypeForMixin : IBaseConcreteTypeForMixin
+  [Extends (typeof (Customer), IntroducedMemberVisibility = MemberVisibility.Public)]
+  public class CustomerMixin : Mixin<IPerson, CustomerMixin.IBaseMethods>, ICustomerIntroduced
   {
-    public BaseConcreteTypeForMixin ()
+    public interface IBaseMethods
     {
+      string FirstName { get; set; }
     }
 
-    public virtual string Property1 { get; set; }
+    [OverrideTarget]
+    public string FirstName
+    {
+      get { return Next.FirstName; }
+      set { Next.FirstName = value; }
+    }
 
-    public virtual string Property2 { get; set; }
-
-    public virtual string Property3 { get; set; }
+    public string Title { get; set; }
   }
 }

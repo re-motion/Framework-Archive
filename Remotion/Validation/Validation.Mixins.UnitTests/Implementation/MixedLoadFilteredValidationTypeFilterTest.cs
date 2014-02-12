@@ -16,40 +16,36 @@
 // 
 
 using System;
+using NUnit.Framework;
 using Remotion.Mixins;
+using Remotion.TypePipe.Implementation;
+using Remotion.Validation.Mixins.Implementation;
 
-namespace Remotion.Validation.UnitTests.Implementation.TestDomain
+namespace Remotion.Validation.Mixins.UnitTests.Implementation
 {
-  public interface IBaseBaseIntroducedFromMixinForDerivedType1
+  [TestFixture]
+  public class MixedLoadFilteredValidationTypeFilterTest
   {
+    private MixedLoadFilteredValidationTypeFilter _filter;
 
-  }
-
-  public interface IBaseIntroducedFromMixinForDerivedTypeA1 : IBaseBaseIntroducedFromMixinForDerivedType1
-  {
-
-  }
-
-  public interface IBaseIntroducedFromMixinForDerivedTypeB1 : IBaseBaseIntroducedFromMixinForDerivedType1
-  {
-
-  }
-
-  public interface IIntroducedFromMixinForDerivedType1 : IBaseIntroducedFromMixinForDerivedTypeA1, IBaseIntroducedFromMixinForDerivedTypeB1
-  {
-    string IntroducedProperty2 { get; }
-  }
-
-  [AcceptsAlphabeticOrdering]
-  [Extends (typeof (DerivedConcreteTypeForMixin))]
-  public class MixinForDerivedType1 : BaseMixinForDerivedType, IIntroducedFromMixinForDerivedType1
-  {
-    [OverrideTarget]
-    public string Property4
+    [SetUp]
+    public void SetUp ()
     {
-      get { return Next.Property4; }
+      _filter = new MixedLoadFilteredValidationTypeFilter();
     }
 
-    public string IntroducedProperty2 { get; set; }
+    [Test]
+    public void IsValid_FilteredTypes_ReturnFalse ()
+    {
+      Assert.That (_filter.IsValid (typeof (IMixinTarget)), Is.False);
+      Assert.That (_filter.IsValid (typeof (IInitializableMixin)), Is.False);
+      Assert.That (_filter.IsValid (typeof (IInitializableObject)), Is.False);
+    }
+
+    [Test]
+    public void IsValid_NoneFilteredType_ReturnTrue ()
+    {
+      Assert.That (_filter.IsValid (typeof (string)), Is.True);
+    }
   }
 }

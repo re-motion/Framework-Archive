@@ -16,32 +16,18 @@
 // 
 
 using System;
-using System.Linq;
-using NUnit.Framework;
-using Remotion.ServiceLocation;
-using Remotion.Validation.Implementation;
+using FluentValidation;
+using Remotion.Validation.Attributes;
+using Remotion.Validation.Mixins.Attributes;
 
-namespace Remotion.Validation.UnitTests.Implementation
+namespace Remotion.Validation.Mixins.UnitTests.TestDomain.Collectors
 {
-  [TestFixture]
-  public class ICompoundValidationTypeFilterTest
+  [ApplyWithMixin(typeof(CustomerMixin))]
+  public class CustomerMixinTargetValidationCollector1 : ComponentValidationCollector<IPerson>
   {
-    private DefaultServiceLocator _serviceLocator;
-
-    [SetUp]
-    public void SetUp ()
+    public CustomerMixinTargetValidationCollector1 ()
     {
-      _serviceLocator = new DefaultServiceLocator();
-    }
-
-    [Test]
-    public void GetInstance_Once ()
-    {
-      var factory = _serviceLocator.GetInstance<ICompoundValidationTypeFilter>();
-
-      Assert.That (factory, Is.TypeOf (typeof (CompoundValidationTypeFilter)));
-      var compoundGlobalizationServices = ((CompoundValidationTypeFilter) factory).ValidationTypeFilters.ToArray();
-      Assert.That (compoundGlobalizationServices[0], Is.TypeOf<LoadFilteredValidationTypeFilter>());
+      AddRule (c => c.FirstName).NotEqual ("something");
     }
   }
 }

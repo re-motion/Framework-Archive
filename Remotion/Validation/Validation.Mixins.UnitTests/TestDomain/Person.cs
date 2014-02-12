@@ -16,32 +16,15 @@
 // 
 
 using System;
-using System.Linq;
-using NUnit.Framework;
-using Remotion.ServiceLocation;
-using Remotion.Validation.Implementation;
 
-namespace Remotion.Validation.UnitTests.Implementation
+namespace Remotion.Validation.Mixins.UnitTests.TestDomain
 {
-  [TestFixture]
-  public class ICompoundValidationTypeFilterTest
+  public class Person : IPerson
   {
-    private DefaultServiceLocator _serviceLocator;
+    public virtual string FirstName { get; set; }
 
-    [SetUp]
-    public void SetUp ()
-    {
-      _serviceLocator = new DefaultServiceLocator();
-    }
+    public virtual string LastName { get; set; }
 
-    [Test]
-    public void GetInstance_Once ()
-    {
-      var factory = _serviceLocator.GetInstance<ICompoundValidationTypeFilter>();
-
-      Assert.That (factory, Is.TypeOf (typeof (CompoundValidationTypeFilter)));
-      var compoundGlobalizationServices = ((CompoundValidationTypeFilter) factory).ValidationTypeFilters.ToArray();
-      Assert.That (compoundGlobalizationServices[0], Is.TypeOf<LoadFilteredValidationTypeFilter>());
-    }
+    public virtual DateTime Birthday { get; set; }
   }
 }
