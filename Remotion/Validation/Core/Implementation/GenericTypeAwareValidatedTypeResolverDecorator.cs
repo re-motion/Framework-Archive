@@ -16,6 +16,7 @@
 // 
 
 using System;
+using System.Linq;
 using Remotion.Utilities;
 using Remotion.Validation.Utilities;
 
@@ -28,7 +29,7 @@ namespace Remotion.Validation.Implementation
     public GenericTypeAwareValidatedTypeResolverDecorator (IValidatedTypeResolver validatedTypeResolver)
     {
       ArgumentUtility.CheckNotNull ("validatedTypeResolver", validatedTypeResolver);
-      
+
       _validatedTypeResolver = validatedTypeResolver;
     }
 
@@ -36,7 +37,8 @@ namespace Remotion.Validation.Implementation
     {
       ArgumentUtility.CheckNotNull ("collectorType", collectorType);
 
-      return collectorType.GetFirstGenericTypeParameterInHierarchy() ?? _validatedTypeResolver.GetValidatedType(collectorType);
+      return collectorType.GetAllGenericTypeParameterInHierarchy().FirstOrDefault()
+             ?? _validatedTypeResolver.GetValidatedType (collectorType);
     }
   }
 }

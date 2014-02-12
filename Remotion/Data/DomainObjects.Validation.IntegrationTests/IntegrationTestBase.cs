@@ -63,7 +63,7 @@ namespace Remotion.Data.DomainObjects.Validation.IntegrationTests
                       new DiscoveryServiceBasedValidationCollectorReflector (
                       new MixinTypeAwareValidatedTypeResolverDecorator (
                       new ClassTypeAwareValidatedTypeResolverDecorator (
-                      new GenericTypeAwareValidatedTypeResolverDecorator (new DefaultValidatedTypeResolver())))))
+                      new GenericTypeAwareValidatedTypeResolverDecorator (new DefaultValidatedTypeResolver()))))) //todo AO: rename to Null...
               }),
           new DiagnosticOutputRuleMergeDecorator (
               new OrderPrecedenceValidationCollectorMerger (new PropertyValidatorExtractorFactory()),

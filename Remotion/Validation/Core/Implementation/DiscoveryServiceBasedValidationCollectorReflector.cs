@@ -20,7 +20,6 @@ using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Linq;
 using System.Threading;
-using Remotion.Collections;
 using Remotion.Reflection.TypeDiscovery;
 using Remotion.Utilities;
 using Remotion.Validation.Attributes;
@@ -30,7 +29,7 @@ namespace Remotion.Validation.Implementation
   public class DiscoveryServiceBasedValidationCollectorReflector : IValidationCollectorReflector
   {
     private readonly ITypeDiscoveryService _typeDiscoveryService;
-    private readonly Lazy<MultiDictionary<Type, Type>> _typeCollectors;
+    private readonly Lazy<ILookup<Type, Type>> _validationCollectors;
     private readonly IValidatedTypeResolver _validatedTypeResolver;
 
     public DiscoveryServiceBasedValidationCollectorReflector (IValidatedTypeResolver validatedTypeResolver)
@@ -47,34 +46,38 @@ namespace Remotion.Validation.Implementation
 
       _typeDiscoveryService = typeDiscoveryService;
       _validatedTypeResolver = validatedTypeResolver;
-      _typeCollectors = new Lazy<MultiDictionary<Type, Type>> (Initialize, LazyThreadSafetyMode.ExecutionAndPublication);
+      _validationCollectors = new Lazy<ILookup<Type, Type>> (GetValidationCollectors, LazyThreadSafetyMode.ExecutionAndPublication);
     }
 
     public IEnumerable<Type> GetCollectorsForType (Type type)
     {
       ArgumentUtility.CheckNotNull ("type", type);
 
-      return _typeCollectors.Value[type];
+      return _validationCollectors.Value[type];
     }
 
-    private MultiDictionary<Type, Type> Initialize ()
+    private ILookup<Type, Type> GetValidationCollectors ()
     {
       //TOOD AO: add integration test for IComponentValidationCollector
-      var allCollectors = _typeDiscoveryService.GetTypes (typeof (IComponentValidationCollector), true).Cast<Type>();
-      var typeCollectors = new MultiDictionary<Type, Type>();
-      foreach (var collectorType in allCollectors)
-      {
-        if (collectorType.IsAbstract || collectorType.IsInterface || collectorType.IsGenericTypeDefinition
-            || collectorType.IsDefined (typeof (ApplyProgrammaticallyAttribute), false))
-          continue;
+      return _typeDiscoveryService.GetTypes (typeof (IComponentValidationCollector), true).Cast<Type>()
+          .Where (IsRelevant)
+          .ToLookup (GetValidatedType, collectorType => collectorType);
+    }
 
-        var type = _validatedTypeResolver.GetValidatedType (collectorType);
-        if (type == null)
-          throw new InvalidOperationException (string.Format ("No validated type could be resolved for collector '{0}'.", collectorType.Name));
-        typeCollectors[type].Add (collectorType);
-      }
+    private Type GetValidatedType (Type collectorType)
+    {
+      var type = _validatedTypeResolver.GetValidatedType (collectorType);
+      if (type == null)
+        throw new InvalidOperationException (string.Format ("No validated type could be resolved for collector '{0}'.", collectorType.FullName));
+      return type;
+    }
 
-      return typeCollectors;
+    private bool IsRelevant (Type collectorType)
+    {
+      return !(collectorType.IsAbstract
+               || collectorType.IsInterface
+               || collectorType.IsGenericTypeDefinition
+               || collectorType.IsDefined (typeof (ApplyProgrammaticallyAttribute), false));
     }
   }
 }

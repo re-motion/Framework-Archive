@@ -27,14 +27,5 @@ namespace Remotion.Validation.Utilities
     {
       return source.CreateSequence (t => t.BaseType).SelectMany (t => t.GetGenericArguments());
     }
-
-    public static Type GetFirstGenericTypeParameterInHierarchy (this Type source)
-    {
-      var allGenericTypes = source.GetAllGenericTypeParameterInHierarchy().ToArray();
-      if(allGenericTypes.Any())
-        return allGenericTypes.First ();
-
-      return null;
-    }
   }
 }

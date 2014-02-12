@@ -24,11 +24,13 @@ namespace Remotion.Validation.Implementation
   public class ClassTypeAwareValidatedTypeResolverDecorator : IValidatedTypeResolver
   {
     private readonly IValidatedTypeResolver _resolver;
+    private readonly GenericTypeAwareValidatedTypeResolverDecorator _genericResolver;
 
     public ClassTypeAwareValidatedTypeResolverDecorator (IValidatedTypeResolver resolver)
     {
       ArgumentUtility.CheckNotNull ("resolver", resolver);
-      
+
+      _genericResolver = new GenericTypeAwareValidatedTypeResolverDecorator (new DefaultValidatedTypeResolver());
       _resolver = resolver;
     }
 
@@ -36,28 +38,28 @@ namespace Remotion.Validation.Implementation
     {
       ArgumentUtility.CheckNotNull ("collectorType", collectorType);
 
-      var genericType = _resolver.GetValidatedType (collectorType);
-      if (collectorType.IsDefined (typeof (ApplyWithClassAttribute), false)) 
-      {
-        var classType = AttributeUtility.GetCustomAttribute<ApplyWithClassAttribute> (collectorType, false).ClassType;
-        CheckGenericTypeAssignableFromDefinedType (collectorType, genericType, classType, typeof (ApplyWithClassAttribute).Name);
-        return classType;
-      }
+      var atrtribute = AttributeUtility.GetCustomAttribute<ApplyWithClassAttribute> (collectorType, false);
+      if (atrtribute == null)
+        return _resolver.GetValidatedType (collectorType);
 
-      return genericType;
+      var validatedType = atrtribute.ClassType;
+      var validatedTypefromGeneric = _genericResolver.GetValidatedType (collectorType);
+      if (validatedTypefromGeneric != null) //TODO AO: check tests
+        CheckValidatedTypeAssignableFromDefinedType (collectorType, validatedTypefromGeneric, validatedType);
+      return validatedType;
     }
 
-    private void CheckGenericTypeAssignableFromDefinedType (Type collectorType, Type genericType, Type classOrMixinTypee, string attributeName)
+    private void CheckValidatedTypeAssignableFromDefinedType (Type collectorType, Type validatedType, Type classOrMixinType)
     {
-      if (!genericType.IsAssignableFrom (classOrMixinTypee))
+      if (!validatedType.IsAssignableFrom (classOrMixinType))
       {
         throw new InvalidOperationException (
             string.Format (
                 "Invalid '{0}'-definition for collector '{1}': type '{2}' is not assignable from '{3}'.",
-                attributeName,
+                typeof (ApplyWithClassAttribute).Name,
                 collectorType.FullName,
-                genericType.FullName,
-                classOrMixinTypee.FullName));
+                validatedType.FullName,
+                classOrMixinType.FullName));
       }
     }
   }
