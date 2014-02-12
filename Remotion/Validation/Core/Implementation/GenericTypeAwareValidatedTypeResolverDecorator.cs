@@ -40,12 +40,9 @@ namespace Remotion.Validation.Implementation
     {
       ArgumentUtility.CheckNotNull ("collectorType", collectorType);
 
-      //TODO AO
-      //only use true-branch if 
-      //if (ReflectionUtility.CanAscribe (collectorType, typeof(IComponentValidationCollector<>)))
-      //  return ReflectionUtility.GetAscribedGenericArguments (collectorType, typeof(IComponentValidationCollector<>))).Single()
-      return collectorType.GetAllGenericTypeParameterInHierarchy().FirstOrDefault()
-             ?? _validatedTypeResolver.GetValidatedType (collectorType);
+      if (ReflectionUtility.CanAscribe (collectorType, typeof(IComponentValidationCollector<>)))
+        return ReflectionUtility.GetAscribedGenericArguments (collectorType, typeof(IComponentValidationCollector<>)).Single();
+      return _validatedTypeResolver.GetValidatedType (collectorType);
     }
   }
 }
