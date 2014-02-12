@@ -62,7 +62,8 @@ namespace Remotion.Data.DomainObjects.Validation.IntegrationTests
                   new ApiBasedComponentValidationCollectorProvider (
                       new DiscoveryServiceBasedValidationCollectorReflector (
                       new MixinTypeAwareValidatedTypeResolverDecorator (
-                      new ClassTypeAwareValidatedTypeResolverDecorator (new DefaultValidatedTypeResolver()))))
+                      new ClassTypeAwareValidatedTypeResolverDecorator (
+                      new GenericTypeAwareValidatedTypeResolverDecorator (new DefaultValidatedTypeResolver())))))
               }),
           new DiagnosticOutputRuleMergeDecorator (
               new OrderPrecedenceValidationCollectorMerger (new PropertyValidatorExtractorFactory()),

@@ -17,7 +17,6 @@
 
 using System;
 using Remotion.Utilities;
-using Remotion.Validation.Utilities;
 
 namespace Remotion.Validation.Implementation
 {
@@ -27,7 +26,7 @@ namespace Remotion.Validation.Implementation
     {
       ArgumentUtility.CheckNotNull ("collectorType", collectorType);
 
-      return collectorType.GetFirstGenericTypeParameterInHierarchy();
+      return null;
     }
   }
 }

@@ -14,27 +14,29 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using Remotion.FunctionalProgramming;
 
-namespace Remotion.Validation.Utilities
+using System;
+using Remotion.Utilities;
+using Remotion.Validation.Utilities;
+
+namespace Remotion.Validation.Implementation
 {
-  public static class TypeExtensions
+  public class GenericTypeAwareValidatedTypeResolverDecorator : IValidatedTypeResolver
   {
-    public static IEnumerable<Type> GetAllGenericTypeParameterInHierarchy (this Type source)
+    private readonly IValidatedTypeResolver _validatedTypeResolver;
+
+    public GenericTypeAwareValidatedTypeResolverDecorator (IValidatedTypeResolver validatedTypeResolver)
     {
-      return source.CreateSequence (t => t.BaseType).SelectMany (t => t.GetGenericArguments());
+      ArgumentUtility.CheckNotNull ("validatedTypeResolver", validatedTypeResolver);
+      
+      _validatedTypeResolver = validatedTypeResolver;
     }
 
-    public static Type GetFirstGenericTypeParameterInHierarchy (this Type source)
+    public Type GetValidatedType (Type collectorType)
     {
-      var allGenericTypes = source.GetAllGenericTypeParameterInHierarchy().ToArray();
-      if(allGenericTypes.Any())
-        return allGenericTypes.First ();
+      ArgumentUtility.CheckNotNull ("collectorType", collectorType);
 
-      return null;
+      return collectorType.GetFirstGenericTypeParameterInHierarchy() ?? _validatedTypeResolver.GetValidatedType(collectorType);
     }
   }
 }

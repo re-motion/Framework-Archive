@@ -14,27 +14,25 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using Remotion.FunctionalProgramming;
+using NUnit.Framework;
+using Remotion.Validation.Implementation;
+using Remotion.Validation.UnitTests.TestDomain.Collectors;
 
-namespace Remotion.Validation.Utilities
+namespace Remotion.Validation.UnitTests.Implementation
 {
-  public static class TypeExtensions
+  [TestFixture]
+  public class DefaultValidatedTypeResolverTest
   {
-    public static IEnumerable<Type> GetAllGenericTypeParameterInHierarchy (this Type source)
+    [Test]
+    public void name ()
     {
-      return source.CreateSequence (t => t.BaseType).SelectMany (t => t.GetGenericArguments());
-    }
+      var resolver = new DefaultValidatedTypeResolver();
 
-    public static Type GetFirstGenericTypeParameterInHierarchy (this Type source)
-    {
-      var allGenericTypes = source.GetAllGenericTypeParameterInHierarchy().ToArray();
-      if(allGenericTypes.Any())
-        return allGenericTypes.First ();
+      var result = resolver.GetValidatedType (typeof (PersonValidationCollector1));
 
-      return null;
+      Assert.That (result, Is.Null);
     }
   }
 }

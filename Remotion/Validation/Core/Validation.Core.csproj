@@ -77,10 +77,11 @@
     <Compile Include="Implementation\CompoundValidationTypeFilter.cs" />
     <Compile Include="Implementation\CompoundValidatorBuilder.cs" />
     <Compile Include="Implementation\DefaultLogContext.cs" />
+    <Compile Include="Implementation\DefaultValidatedTypeResolver.cs" />
     <Compile Include="Implementation\DefaultValidatorFormatter.cs" />
     <Compile Include="Implementation\FluentValidationBuilderExtensions.cs" />
     <Compile Include="Implementation\FluentValidationValidatorFormatterDecorator.cs" />
-    <Compile Include="Implementation\DefaultValidatedTypeResolver.cs" />
+    <Compile Include="Implementation\GenericTypeAwareValidatedTypeResolverDecorator.cs" />
     <Compile Include="Implementation\ICompoundCollectorValidator.cs" />
     <Compile Include="Implementation\ICompoundValidationTypeFilter.cs" />
     <Compile Include="Implementation\ICollectorValidator.cs" />
