@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,9 +34,20 @@ namespace Remotion.Validation.Providers
     {
       ArgumentUtility.CheckNotNull ("types", types);
 
-      return types.SelectMany (t => t.GetProperties (PropertyBindingFlags | BindingFlags.DeclaredOnly).Select (p => new { Type = t, Property = p }))
+      return types.SelectMany (
+          t => t.GetProperties (PropertyBindingFlags | BindingFlags.DeclaredOnly)
+              .Where (HasValidationRulesOnProperty)
+              .Select (p => new { Type = t, Property = p }))
           .Select (r => new { r.Type, Reflector = new ValidationAttributesBasedPropertyRuleReflector (r.Property) })
           .ToLookup (r => r.Type, c => (IAttributesBasedValidationPropertyRuleReflector) c.Reflector);
+    }
+
+    private bool HasValidationRulesOnProperty (PropertyInfo property)
+    {
+      var reflector = new ValidationAttributesBasedPropertyRuleReflector (property);
+      return reflector.GetAddingPropertyValidators().Any()
+             || reflector.GetHardConstraintPropertyValidators().Any()
+             || reflector.GetRemovingPropertyRegistrations().Any();
     }
   }
 }

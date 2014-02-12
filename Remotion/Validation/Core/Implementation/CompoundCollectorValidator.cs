@@ -42,9 +42,6 @@ namespace Remotion.Validation.Implementation
     {
       ArgumentUtility.CheckNotNull ("collector", collector);
 
-      if (!collector.AddedPropertyRules.Any () && !collector.AddedPropertyMetaValidationRules.Any () && !collector.RemovedPropertyRules.Any ())
-        return true;
-
       return _collectorTypeValidators.All (v => v.IsValid (collector));
     }
   }

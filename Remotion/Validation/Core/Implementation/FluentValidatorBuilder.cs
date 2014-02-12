@@ -102,10 +102,10 @@ namespace Remotion.Validation.Implementation
       ArgumentUtility.CheckNotNull ("validatedType", validatedType);
       
       var allCollectors = _validationCollectorProvider.GetValidationCollectors (new[] { validatedType }).Select (c => c.ToArray ()).ToArray ();
-      ValidateCollectors (allCollectors.SelectMany(c=>c));
+      ValidateCollectors (allCollectors.SelectMany (c => c));
       var allRules = _validationCollectorMerger.Merge (allCollectors).ToArray();
       ValidateMetaRules (allCollectors, allRules);
-
+      
       ApplyTechnicalPropertyNames (allRules.OfType<PropertyRule>());
       ApplyGlobalization (validatedType, allRules);
 

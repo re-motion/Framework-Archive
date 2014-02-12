@@ -96,7 +96,9 @@ namespace Remotion.Data.DomainObjects.Validation
       // The interface property does not matter in this particular instance, so any property could be passed into the reflector.
       var reflector = new DomainObjectAttributesBasedValidationPropertyRuleReflector (dummyInterfaceProperty, property);
 
-      return reflector.GetAddingPropertyValidators().Any() || reflector.GetHardConstraintPropertyValidators().Any();
+      return reflector.GetAddingPropertyValidators().Any() 
+        || reflector.GetHardConstraintPropertyValidators().Any()
+        || reflector.GetRemovingPropertyRegistrations().Any();
     }
   }
 }

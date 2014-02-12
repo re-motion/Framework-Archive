@@ -16,10 +16,8 @@
 // 
 
 using System;
-using System.Collections.Generic;
 using NUnit.Framework;
 using Remotion.Validation.Implementation;
-using Remotion.Validation.Rules;
 using Rhino.Mocks;
 
 namespace Remotion.Validation.UnitTests.Implementation
@@ -44,13 +42,8 @@ namespace Remotion.Validation.UnitTests.Implementation
     }
 
     [Test]
-    public void IsValid_AllValidAndAddedRulesDefine ()
+    public void IsValid_AllValid_ReturnsTrue ()
     {
-      _collector.Stub (stub => stub.AddedPropertyRules).Return (new List<IAddingComponentPropertyRule>());
-      _collector.Stub (stub => stub.AddedPropertyMetaValidationRules).Return (new List<IAddingComponentPropertyMetaValidationRule>());
-      _collector.Stub (stub => stub.RemovedPropertyRules)
-          .Return (new List<IRemovingComponentPropertyRule> { MockRepository.GenerateStub<IRemovingComponentPropertyRule>() });
-
       _collectorValidator1.Stub (stub => stub.IsValid (_collector)).Return (true);
       _collectorValidator2.Stub (stub => stub.IsValid (_collector)).Return (true);
 
@@ -60,28 +53,8 @@ namespace Remotion.Validation.UnitTests.Implementation
     }
 
     [Test]
-    public void IsValid_NoneValidAndNoRulesDefined_ReturnsTrue ()
+    public void IsValid_NoneValid_ReturnsFalse ()
     {
-      _collector.Stub (stub => stub.AddedPropertyRules).Return (new List<IAddingComponentPropertyRule>());
-      _collector.Stub (stub => stub.AddedPropertyMetaValidationRules).Return (new List<IAddingComponentPropertyMetaValidationRule>());
-      _collector.Stub (stub => stub.RemovedPropertyRules).Return (new List<IRemovingComponentPropertyRule>());
-
-      _collectorValidator1.Stub (stub => stub.IsValid (_collector)).Return (false);
-      _collectorValidator2.Stub (stub => stub.IsValid (_collector)).Return (false);
-
-      var result = _compoundCollectorValidator.IsValid (_collector);
-
-      Assert.That (result, Is.True);
-    }
-
-    [Test]
-    public void IsValid_NoneValidAndAddedRulesDefined_ReturnsFalse ()
-    {
-      _collector.Stub (stub => stub.AddedPropertyRules)
-          .Return (new List<IAddingComponentPropertyRule> { MockRepository.GenerateStub<IAddingComponentPropertyRule>() });
-      _collector.Stub (stub => stub.AddedPropertyMetaValidationRules).Return (new List<IAddingComponentPropertyMetaValidationRule>());
-      _collector.Stub (stub => stub.RemovedPropertyRules).Return (new List<IRemovingComponentPropertyRule>());
-
       _collectorValidator1.Stub (stub => stub.IsValid (_collector)).Return (false);
       _collectorValidator2.Stub (stub => stub.IsValid (_collector)).Return (false);
 
@@ -91,14 +64,8 @@ namespace Remotion.Validation.UnitTests.Implementation
     }
 
     [Test]
-    public void IsValid_OneValidAndAddedRulesDefined_ReturnsFalse ()
+    public void IsValid_OneValid_ReturnsTrue ()
     {
-      _collector.Stub (stub => stub.AddedPropertyRules).Return (new List<IAddingComponentPropertyRule>());
-      _collector.Stub (stub => stub.AddedPropertyMetaValidationRules)
-          .Return (
-              new List<IAddingComponentPropertyMetaValidationRule>() { MockRepository.GenerateStub<IAddingComponentPropertyMetaValidationRule>() });
-      _collector.Stub (stub => stub.RemovedPropertyRules).Return (new List<IRemovingComponentPropertyRule>());
-
       _collectorValidator1.Stub (stub => stub.IsValid (_collector)).Return (false);
       _collectorValidator2.Stub (stub => stub.IsValid (_collector)).Return (true);
 
