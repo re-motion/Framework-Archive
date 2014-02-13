@@ -37,7 +37,7 @@ namespace Remotion.Validation.Implementation
     {
       ArgumentUtility.CheckNotNull ("hierarchyLevelsubSort", hierarchyLevelsubSort);
 
-      return Create (hierarchyLevelsubSort, new LoadAllValidationTypeFilter());
+      return Create (hierarchyLevelsubSort, new CompoundValidationTypeFilter (Enumerable.Empty<IValidationTypeFilter>()));
     }
 
     public static IInvolvedTypeProvider Create (
@@ -51,7 +51,7 @@ namespace Remotion.Validation.Implementation
     }
 
     public InvolvedTypeProvider ()
-        : this (c => c.OrderBy (t => t.Name), new LoadAllValidationTypeFilter())
+        : this (c => c.OrderBy (t => t.Name), new CompoundValidationTypeFilter (Enumerable.Empty<IValidationTypeFilter>()))
     {
     }
 

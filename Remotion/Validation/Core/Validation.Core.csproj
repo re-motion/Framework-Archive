@@ -110,7 +110,6 @@
     <Compile Include="MetaValidation\IMetaValidationRule.cs" />
     <Compile Include="Utilities\ExpressionExtensions.cs" />
     <Compile Include="Implementation\IValidationTypeFilter.cs" />
-    <Compile Include="Implementation\LoadAllValidationTypeFilter.cs" />
     <Compile Include="Implementation\LoadFilteredValidationTypeFilter.cs" />
     <Compile Include="Merging\OrderPrecedenceValidationCollectorMerger.cs" />
     <Compile Include="Merging\ValidationCollectorMergerBase.cs" />
