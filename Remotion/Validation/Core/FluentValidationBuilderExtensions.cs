@@ -18,13 +18,14 @@
 using System;
 using FluentValidation;
 using Remotion.Utilities;
+using Remotion.Validation.Implementation;
 
-namespace Remotion.Validation.Implementation //TO AO: Root namespace
+namespace Remotion.Validation
 {
   /// <summary>
   /// Provides extensions for the <see cref="IValidatorBuilder"/> interface.
   /// </summary>
-  public static class FluentValidatorBuilderExtensions // TODO AO: rename to VBE
+  public static class ValidatorBuilderExtensions
   {
     /// <summary>
     /// Builds an instance of the <see cref="IValidator{T}"/> interface.

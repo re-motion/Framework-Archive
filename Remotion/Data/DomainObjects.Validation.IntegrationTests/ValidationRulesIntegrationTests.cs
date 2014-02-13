@@ -18,6 +18,7 @@
 using System;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Validation.IntegrationTests.Testdomain;
+using Remotion.Validation;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.MetaValidation;
 
