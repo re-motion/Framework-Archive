@@ -23,6 +23,12 @@ using Remotion.Utilities;
 
 namespace Remotion.Validation.Implementation
 {
+  /// <summary>
+  /// Combines one or more <see cref="IValidationTypeFilter"/>-instances. When calling <see cref="IsValidatableType"/>, all combined 
+  /// <see cref="IValidationTypeFilter"/> instances must confirm that a <see cref="Type"/> can be used 
+  /// as the <see cref="IComponentValidationCollector.ValidatedType"/> of a <see cref="IComponentValidationCollector"/>.
+  /// </summary>
+  /// <threadsafety static="true" instance="true" />
   public class CompoundValidationTypeFilter : ICompoundValidationTypeFilter
   {
     private readonly ReadOnlyCollection<IValidationTypeFilter> _validationTypeFilters;
@@ -39,11 +45,11 @@ namespace Remotion.Validation.Implementation
       get { return _validationTypeFilters; }
     }
 
-    public bool IsValid (Type type)
+    public bool IsValidatableType (Type type)
     {
       ArgumentUtility.CheckNotNull ("type", type);
 
-      return _validationTypeFilters.All (f => f.IsValid (type));
+      return _validationTypeFilters.All (f => f.IsValidatableType (type));
     }
   }
 }

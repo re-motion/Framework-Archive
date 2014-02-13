@@ -44,10 +44,10 @@ namespace Remotion.Validation.UnitTests.Implementation
     [Test]
     public void IsValid_AllValid ()
     {
-      _validationTypeFilter1.Stub (stub => stub.IsValid (_type)).Return (true);
-      _validationTypeFilter2.Stub (stub => stub.IsValid (_type)).Return (true);
+      _validationTypeFilter1.Stub (stub => stub.IsValidatableType (_type)).Return (true);
+      _validationTypeFilter2.Stub (stub => stub.IsValidatableType (_type)).Return (true);
 
-      var result = _compoundValidationTypeFilter.IsValid (_type);
+      var result = _compoundValidationTypeFilter.IsValidatableType (_type);
 
       Assert.That (result, Is.True);
     }
@@ -55,10 +55,10 @@ namespace Remotion.Validation.UnitTests.Implementation
     [Test]
     public void IsValid_NoneValid ()
     {
-      _validationTypeFilter1.Stub (stub => stub.IsValid (_type)).Return (false);
-      _validationTypeFilter2.Stub (stub => stub.IsValid (_type)).Return (false);
+      _validationTypeFilter1.Stub (stub => stub.IsValidatableType (_type)).Return (false);
+      _validationTypeFilter2.Stub (stub => stub.IsValidatableType (_type)).Return (false);
 
-      var result = _compoundValidationTypeFilter.IsValid (_type);
+      var result = _compoundValidationTypeFilter.IsValidatableType (_type);
 
       Assert.That (result, Is.False);
     }
@@ -66,10 +66,10 @@ namespace Remotion.Validation.UnitTests.Implementation
     [Test]
     public void IsValid_OneValid ()
     {
-      _validationTypeFilter1.Stub (stub => stub.IsValid (_type)).Return (false);
-      _validationTypeFilter2.Stub (stub => stub.IsValid (_type)).Return (true);
+      _validationTypeFilter1.Stub (stub => stub.IsValidatableType (_type)).Return (false);
+      _validationTypeFilter2.Stub (stub => stub.IsValidatableType (_type)).Return (true);
 
-      var result = _compoundValidationTypeFilter.IsValid (_type);
+      var result = _compoundValidationTypeFilter.IsValidatableType (_type);
 
       Assert.That (result, Is.False);
     }

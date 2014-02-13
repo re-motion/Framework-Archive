@@ -16,15 +16,22 @@
 // 
 
 using System;
+using FluentValidation.Validators;
 using Remotion.ServiceLocation;
 
 namespace Remotion.Validation.Implementation
 {
+  /// <summary>
+  /// The <see cref="ICollectorValidator"/> interface defines an API for validating <see cref="IComparisonValidator"/> instances. 
+  /// </summary>
   [ConcreteImplementation (
       "Remotion.Validation.Mixins.Implementation.CheckNoMixinCollectorValidator, Remotion.Validation.Mixins, Version=<version>, Culture=neutral, PublicKeyToken=<publicKeyToken>",
       ignoreIfNotFound: true)]
   public interface ICollectorValidator
   {
+    /// <summary>
+    /// Confirms that <paramref name="collector"/> is valid.
+    /// </summary>
     bool IsValid (IComponentValidationCollector collector);
   }
 }

@@ -3,6 +3,8 @@ Aufteilung:
   
 -> NotSupportedExceptions checken!
 
+-> Filter mixin proxy type in MixedLoadFilteredValidationTypeFilter?? 
+
 -> Build testen
 
 -> attribute reflector: wieso für hard conatraint und normale property eigene add-methoden

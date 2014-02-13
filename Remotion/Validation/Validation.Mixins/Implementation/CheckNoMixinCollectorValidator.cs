@@ -22,6 +22,11 @@ using Remotion.Validation.Implementation;
 
 namespace Remotion.Validation.Mixins.Implementation
 {
+  ///<summary>
+  /// Implements the <see cref="ICollectorValidator"/> interface an verifies that the <see cref="IComponentValidationCollector.ValidatedType"/> of an
+  /// <see cref="IComponentValidationCollector"/> instance is not a mixin.
+  /// </summary>
+  /// <threadsafety static="true" instance="true" /> //TODO AO: annoate all classes
   public class CheckNoMixinCollectorValidator : ICollectorValidator
   {
     public CheckNoMixinCollectorValidator ()

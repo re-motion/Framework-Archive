@@ -23,6 +23,9 @@ using Remotion.Utilities;
 
 namespace Remotion.Validation.Implementation
 {
+  /// <summary>
+  /// Implements the <see cref="IValidatorBuilder"/> interface as a composite of one or more builders.
+  /// </summary>
   public class CompoundValidatorBuilder : IValidatorBuilder
   {
     private readonly IReadOnlyCollection<IValidatorBuilder> _builders;

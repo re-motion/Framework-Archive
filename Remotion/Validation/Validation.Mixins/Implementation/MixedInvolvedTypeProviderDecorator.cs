@@ -54,7 +54,7 @@ namespace Remotion.Validation.Mixins.Implementation
 
     private IEnumerable<IEnumerable<Type>> GetMixins (Type type)
     {
-      return MixinTypeUtility.GetMixinTypesExact (type).Where (ValidationTypeFilter.IsValid).Select (mixinType => new[] { mixinType }).ToArray();
+      return MixinTypeUtility.GetMixinTypesExact (type).Where (ValidationTypeFilter.IsValidatableType).Select (mixinType => new[] { mixinType }).ToArray();
     }
   }
 }

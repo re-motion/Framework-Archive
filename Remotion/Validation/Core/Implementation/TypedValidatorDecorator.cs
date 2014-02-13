@@ -18,14 +18,16 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using FluentValidation;
-using FluentValidation.Internal;
 using FluentValidation.Results;
 using Remotion.Utilities;
 
 namespace Remotion.Validation.Implementation
 {
+  /// <summary>
+  /// Implements the <see cref="IValidator{T}"/> interface as a typed wrapper of the <see cref="IValidator"/> interface.
+  /// </summary>
+  /// <typeparam name="T"></typeparam>
   public class TypedValidatorDecorator<T> : IValidator<T>
   {
     private readonly IValidator _validator;
@@ -33,6 +35,7 @@ namespace Remotion.Validation.Implementation
     public TypedValidatorDecorator (IValidator validator)
     {
       ArgumentUtility.CheckNotNull ("validator", validator);
+      // TODO AO: Argument check with validator.CanvalidateInstanceOftype (typeof (T))
 
       _validator = validator;
     }
@@ -42,60 +45,44 @@ namespace Remotion.Validation.Implementation
       get { return _validator; }
     }
 
-    public IReadOnlyCollection<IValidationRule> ValidationRules
-    {
-      get { return GetValidationRules (_validator.GetEnumerator()).ToList().AsReadOnly(); }
-    }
-
     public ValidationResult Validate (T instance)
     {
       ArgumentUtility.CheckNotNull ("instance", instance);
 
-      return Validate (new ValidationContext<T> (instance, new PropertyChain(), new DefaultValidatorSelector()));
+      return _validator.Validate (instance);
     }
 
     public ValidationResult Validate (ValidationContext<T> context)
     {
       ArgumentUtility.CheckNotNull ("context", context);
 
-      var failures = ValidationRules.SelectMany (r => r.Validate (context)).ToList ();
-      return new ValidationResult (failures);
+      return _validator.Validate (context);
     }
 
     public IValidatorDescriptor CreateDescriptor ()
     {
-      return new ValidatorDescriptor<T> (ValidationRules);
+      return _validator.CreateDescriptor();
     }
 
     public bool CanValidateInstancesOfType (Type type)
     {
       ArgumentUtility.CheckNotNull ("type", type);
 
-      return typeof (T).IsAssignableFrom (type);
+      return _validator.CanValidateInstancesOfType (type);
     }
 
     ValidationResult IValidator.Validate (object instance)
     {
       ArgumentUtility.CheckNotNull ("instance", instance);
 
-      if (!CanValidateInstancesOfType (instance.GetType()))
-      {
-        throw new InvalidOperationException (
-            string.Format (
-                "Cannot validate instances of type '{0}'. This validator can only validate instances of type '{1}'.",
-                instance.GetType().Name,
-                typeof (T).Name));
-      }
-
-      return Validate ((T) instance);
+      return _validator.Validate (instance);
     }
 
     ValidationResult IValidator.Validate (ValidationContext context)
     {
       ArgumentUtility.CheckNotNull ("context", context);
 
-      var newContext = new ValidationContext<T> ((T) context.InstanceToValidate, context.PropertyChain, context.Selector);
-      return Validate (newContext);
+      return _validator.Validate (context);
     }
 
     IEnumerator IEnumerable.GetEnumerator ()
@@ -106,12 +93,6 @@ namespace Remotion.Validation.Implementation
     public IEnumerator<IValidationRule> GetEnumerator ()
     {
       return _validator.GetEnumerator();
-    }
-
-    private IEnumerable<IValidationRule> GetValidationRules (IEnumerator<IValidationRule> enumerator)
-    {
-      while (enumerator.MoveNext())
-        yield return enumerator.Current;
     }
 
     CascadeMode IValidator<T>.CascadeMode

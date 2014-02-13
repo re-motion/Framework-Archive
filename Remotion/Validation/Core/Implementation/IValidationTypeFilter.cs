@@ -19,6 +19,10 @@ using Remotion.ServiceLocation;
 
 namespace Remotion.Validation.Implementation
 {
+  /// <summary>
+  /// The <see cref="IValidationTypeFilter"/> interface is used to confirm whether a <see cref="Type"/> can be used as the <see cref="IComponentValidationCollector.ValidatedType"/>
+  /// of a <see cref="IComponentValidationCollector"/>.
+  /// </summary>
   [ConcreteImplementation (
       "Remotion.Validation.Mixins.Implementation.MixedLoadFilteredValidationTypeFilter, Remotion.Validation.Mixins, Version=<version>, Culture=neutral, PublicKeyToken=<publicKeyToken>",
       ignoreIfNotFound: true,
@@ -26,6 +30,6 @@ namespace Remotion.Validation.Implementation
   [ConcreteImplementation (typeof (LoadFilteredValidationTypeFilter), Position = 0, Lifetime = LifetimeKind.Singleton)]
   public interface IValidationTypeFilter
   {
-    bool IsValid (Type type);
+    bool IsValidatableType (Type type);
   }
 }

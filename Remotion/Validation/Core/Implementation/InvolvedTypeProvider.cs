@@ -85,14 +85,14 @@ namespace Remotion.Validation.Implementation
 
     private IEnumerable<Type> GetInheritanceHierarchy (Type type)
     {
-      return type.CreateSequence (t => t.BaseType).Where (_validationTypeFilter.IsValid).Reverse();
+      return type.CreateSequence (t => t.BaseType).Where (_validationTypeFilter.IsValidatableType).Reverse();
     }
 
     private IEnumerable<IEnumerable<Type>> GetInterfaces (Type type)
     {
       Debug.Assert (type.BaseType != null);
       // ReSharper disable PossibleNullReferenceException
-      var interfaces = type.GetInterfaces().Except (type.BaseType.GetInterfaces()).Where (_validationTypeFilter.IsValid).ToList();
+      var interfaces = type.GetInterfaces().Except (type.BaseType.GetInterfaces()).Where (_validationTypeFilter.IsValidatableType).ToList();
       // ReSharper restore PossibleNullReferenceException
       if (!interfaces.Any())
         return Enumerable.Empty<IEnumerable<Type>>();

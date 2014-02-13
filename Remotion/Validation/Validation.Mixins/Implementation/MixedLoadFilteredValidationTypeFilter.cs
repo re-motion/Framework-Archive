@@ -24,6 +24,10 @@ using Remotion.Validation.Implementation;
 
 namespace Remotion.Validation.Mixins.Implementation
 {
+  /// <summary>
+  /// Implements the <see cref="IValidationTypeFilter"/> interface and filters <see cref="IMixinTarget"/>, <see cref="IInitializableMixin"/>, 
+  /// and <see cref="IInitializableObject"/>.
+  /// </summary>
   public class MixedLoadFilteredValidationTypeFilter : IValidationTypeFilter
   {
     private List<Type> _filterTypes;
@@ -33,7 +37,7 @@ namespace Remotion.Validation.Mixins.Implementation
       Initialize();
     }
 
-    public bool IsValid (Type type)
+    public bool IsValidatableType (Type type)
     {
       ArgumentUtility.CheckNotNull ("type", type);
 

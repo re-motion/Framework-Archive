@@ -23,9 +23,13 @@ using FluentValidation;
 using FluentValidation.Internal;
 using FluentValidation.Results;
 using Remotion.Utilities;
+using Remotion.Utilities.ReSharperAnnotations;
 
 namespace Remotion.Validation.Implementation
 {
+  /// <summary>
+  /// Aggregates a set of <see cref="IValidator"/> instances. When performing a validation all validators are executed.
+  /// </summary>
   public sealed class CompoundValidator : IValidator
   {
     private readonly IReadOnlyCollection<IValidator> _validators;
@@ -62,8 +66,17 @@ namespace Remotion.Validation.Implementation
 
     public IValidatorDescriptor CreateDescriptor ()
     {
+      //TODO AO: get MethodInfo and close in ctor. Invoke here. Check if delegate can me made in ctor (CreateDelegate)
+      var validationRules = GetAllValidationRules ();
       var typeToInstantiate = typeof (ValidatorDescriptor<>).MakeGenericType (_typeToValidate);
-      return (IValidatorDescriptor) Activator.CreateInstance (typeToInstantiate, GetAllValidationRules ());
+      return (IValidatorDescriptor) Activator.CreateInstance (typeToInstantiate, validationRules);
+    }
+
+    [ReflectionAPI]
+    private IValidatorDescriptor CreateDescriptor<T> ()
+    {
+      var validationRules = GetAllValidationRules ();
+      return new ValidatorDescriptor<T> (validationRules);
     }
 
     public bool CanValidateInstancesOfType (Type type)

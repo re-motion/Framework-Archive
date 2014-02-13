@@ -22,27 +22,33 @@ using Remotion.Utilities;
 
 namespace Remotion.Validation.Implementation
 {
+  /// <summary>
+  /// Combines one or more <see cref="ICollectorValidator"/>-instances. When calling <see cref="IsValid"/>, all combined 
+  /// <see cref="ICollectorValidator"/> instances must confirm that an <see cref="IComponentValidationCollector"/> instance
+  /// is valid.
+  /// </summary>
+  /// <threadsafety static="true" instance="true" />
   public class CompoundCollectorValidator : ICompoundCollectorValidator
   {
-    private readonly IReadOnlyCollection<ICollectorValidator> _collectorTypeValidators;
+    private readonly IReadOnlyCollection<ICollectorValidator> _collectorValidators;
 
-    public CompoundCollectorValidator (IEnumerable<ICollectorValidator> typeValidators)
+    public CompoundCollectorValidator (IEnumerable<ICollectorValidator> collectorValidators)
     {
-      ArgumentUtility.CheckNotNull ("typeValidators", typeValidators);
+      ArgumentUtility.CheckNotNull ("collectorValidators", collectorValidators);
 
-      _collectorTypeValidators = typeValidators.ToList().AsReadOnly();
+      _collectorValidators = collectorValidators.ToList().AsReadOnly();
     }
 
-    public IReadOnlyCollection<ICollectorValidator> CollectorTypeValidators
+    public IReadOnlyCollection<ICollectorValidator> CollectorValidators
     {
-      get { return _collectorTypeValidators; }
+      get { return _collectorValidators; }
     }
 
     public bool IsValid (IComponentValidationCollector collector)
     {
       ArgumentUtility.CheckNotNull ("collector", collector);
 
-      return _collectorTypeValidators.All (v => v.IsValid (collector));
+      return _collectorValidators.All (v => v.IsValid (collector));
     }
   }
 }

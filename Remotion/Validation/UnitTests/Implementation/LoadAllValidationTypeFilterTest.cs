@@ -35,7 +35,7 @@ namespace Remotion.Validation.UnitTests.Implementation
     [Test]
     public void IsValid ()
     {
-      Assert.That (_filter.IsValid (typeof (object)), Is.True);
+      Assert.That (_filter.IsValidatableType (typeof (object)), Is.True);
     }
   }
 }

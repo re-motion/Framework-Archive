@@ -23,6 +23,7 @@ using System.Reflection;
 using FluentValidation.Validators;
 using Remotion.FunctionalProgramming;
 using Remotion.Utilities;
+using Remotion.Utilities.ReSharperAnnotations;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.MetaValidation;
 using Remotion.Validation.RuleBuilders;
@@ -78,11 +79,10 @@ namespace Remotion.Validation.Providers
       return collectorInstance;
     }
 
-    // ReSharper disable UnusedMember.Local
+    [ReflectionAPI]
     private void SetValidationRulesForProperty<TValidatedType, TProperty> (
         IAttributesBasedValidationPropertyRuleReflector propertyRuleReflector,
         AttributeValidationCollector<TValidatedType> collectorInstance)
-        // ReSharper restore UnusedMember.Local
     {
       var propertyAccessExpression = propertyRuleReflector.GetPropertyAccessExpression<TValidatedType, TProperty>();
       AddValidationRules (collectorInstance, propertyRuleReflector, propertyAccessExpression);

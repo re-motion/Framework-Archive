@@ -18,9 +18,10 @@ using System;
 
 namespace Remotion.Validation.Implementation
 {
+  //TODO AO: remove
   public class LoadAllValidationTypeFilter : IValidationTypeFilter
   {
-    public bool IsValid (Type type)
+    public bool IsValidatableType (Type type)
     {
       return true;
     }

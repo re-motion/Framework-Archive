@@ -26,17 +26,20 @@ using Remotion.Utilities;
 
 namespace Remotion.Validation.Implementation
 {
+  /// <summary>
+  /// Default implementation of the <see cref="IValidator"/> interface. Use <see cref="Create{T}"/> to create an instance of <see cref="IValidator{T}"/>.
+  /// </summary>
   public sealed class Validator : IValidator
   {
-    private readonly Type _validatorType;
+    private readonly Type _validatedType;
     private readonly IReadOnlyCollection<IValidationRule> _validationRules;
 
-    public Validator (IEnumerable<IValidationRule> validationRules, Type validatorType)
+    public Validator (IEnumerable<IValidationRule> validationRules, Type validatedType)
     {
       ArgumentUtility.CheckNotNull ("validationRules", validationRules);
-      ArgumentUtility.CheckNotNull ("validatorType", validatorType);
+      ArgumentUtility.CheckNotNull ("validatedType", validatedType);
 
-      _validatorType = validatorType;
+      _validatedType = validatedType;
       _validationRules = validationRules.ToList().AsReadOnly();
     }
 
@@ -45,7 +48,7 @@ namespace Remotion.Validation.Implementation
       get { return _validationRules; }
     }
 
-    public TypedValidatorDecorator<T> Create<T> ()
+    public IValidator<T> Create<T> ()
     {
       return new TypedValidatorDecorator<T> (this);
     }
@@ -67,7 +70,7 @@ namespace Remotion.Validation.Implementation
 
     public IValidatorDescriptor CreateDescriptor ()
     {
-      var typeToInstantiate = typeof (ValidatorDescriptor<>).MakeGenericType (_validatorType);
+      var typeToInstantiate = typeof (ValidatorDescriptor<>).MakeGenericType (_validatedType);
       return (IValidatorDescriptor) Activator.CreateInstance (typeToInstantiate, _validationRules);
     }
 
@@ -75,7 +78,7 @@ namespace Remotion.Validation.Implementation
     {
       ArgumentUtility.CheckNotNull ("type", type);
 
-      return _validatorType.IsAssignableFrom (type);
+      return _validatedType.IsAssignableFrom (type);
     }
 
     ValidationResult IValidator.Validate (object instance)
@@ -88,7 +91,7 @@ namespace Remotion.Validation.Implementation
             string.Format (
                 "Cannot validate instances of type '{0}'. This validator can only validate instances of type '{1}'.",
                 instance.GetType().Name,
-                _validatorType.Name));
+                _validatedType.Name));
       }
 
       return Validate (instance);
@@ -98,8 +101,7 @@ namespace Remotion.Validation.Implementation
     {
       ArgumentUtility.CheckNotNull ("context", context);
 
-      var newContext = new ValidationContext (context.InstanceToValidate, context.PropertyChain, context.Selector);
-      return Validate (newContext);
+      return Validate (context);
     }
 
     IEnumerator IEnumerable.GetEnumerator ()

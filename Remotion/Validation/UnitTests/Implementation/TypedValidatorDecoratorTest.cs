@@ -51,7 +51,6 @@ namespace Remotion.Validation.UnitTests.Implementation
     public void Initialization ()
     {
       Assert.That (_validatorDecorator.Validator, Is.SameAs (_validator));
-      Assert.That (_validatorDecorator.ValidationRules, Is.EqualTo (_validator.ValidationRules));
     }
 
     [Test]

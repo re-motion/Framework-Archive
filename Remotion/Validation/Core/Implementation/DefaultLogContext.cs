@@ -22,6 +22,9 @@ using Remotion.Utilities;
 
 namespace Remotion.Validation.Implementation
 {
+  /// <summary>
+  /// Default implementation of the <see cref="ILogContext"/> interface.
+  /// </summary>
   public class DefaultLogContext : ILogContext
   {
     private readonly MultiDictionary<IValidationRule, LogContextInfo> _removingLogEntries;

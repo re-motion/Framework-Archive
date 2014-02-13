@@ -19,16 +19,23 @@ using System;
 using FluentValidation;
 using Remotion.Utilities;
 
-namespace Remotion.Validation.Implementation
+namespace Remotion.Validation.Implementation //TO AO: Root namespace
 {
-  public static class FluentValidatorBuilderExtensions
+  /// <summary>
+  /// Provides extensions for the <see cref="IValidatorBuilder"/> interface.
+  /// </summary>
+  public static class FluentValidatorBuilderExtensions // TODO AO: rename to VBE
   {
-    public static IValidator<T> BuildValidator<T> (this FluentValidatorBuilder builder)
+    /// <summary>
+    /// Builds an instance of the <see cref="IValidator{T}"/> interface.
+    /// </summary>
+    /// <typeparam name="TValidatedType">The <see cref="Type"/> that is validated by the returned <see cref="IValidator{T}"/></typeparam>.
+    public static IValidator<TValidatedType> BuildValidator<TValidatedType> (this IValidatorBuilder builder)
     {
       ArgumentUtility.CheckNotNull ("builder", builder);
 
-      var validator = builder.BuildValidator (typeof (T));
-      return new TypedValidatorDecorator<T> (validator);
+      var validator = builder.BuildValidator (typeof (TValidatedType));
+      return new TypedValidatorDecorator<TValidatedType> (validator);
     }
   }
 }

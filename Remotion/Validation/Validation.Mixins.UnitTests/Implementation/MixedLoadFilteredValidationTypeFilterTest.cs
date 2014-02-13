@@ -37,15 +37,15 @@ namespace Remotion.Validation.Mixins.UnitTests.Implementation
     [Test]
     public void IsValid_FilteredTypes_ReturnFalse ()
     {
-      Assert.That (_filter.IsValid (typeof (IMixinTarget)), Is.False);
-      Assert.That (_filter.IsValid (typeof (IInitializableMixin)), Is.False);
-      Assert.That (_filter.IsValid (typeof (IInitializableObject)), Is.False);
+      Assert.That (_filter.IsValidatableType (typeof (IMixinTarget)), Is.False);
+      Assert.That (_filter.IsValidatableType (typeof (IInitializableMixin)), Is.False);
+      Assert.That (_filter.IsValidatableType (typeof (IInitializableObject)), Is.False);
     }
 
     [Test]
     public void IsValid_NoneFilteredType_ReturnTrue ()
     {
-      Assert.That (_filter.IsValid (typeof (string)), Is.True);
+      Assert.That (_filter.IsValidatableType (typeof (string)), Is.True);
     }
   }
 }

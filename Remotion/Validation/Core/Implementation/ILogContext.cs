@@ -21,6 +21,10 @@ using FluentValidation.Validators;
 
 namespace Remotion.Validation.Implementation
 {
+  /// <summary>
+  /// Defines an API to log an applications validations specification.
+  /// </summary>
+  /// <seealso cref="DefaultLogContext"/>
   public interface ILogContext
   {
     void ValidatorRemoved (

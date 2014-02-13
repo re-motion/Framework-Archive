@@ -40,7 +40,7 @@ namespace Remotion.Validation.UnitTests.Implementation
       var factory = _serviceLocator.GetInstance<ICompoundCollectorValidator>();
 
       Assert.That (factory, Is.TypeOf (typeof (CompoundCollectorValidator)));
-      var compoundGlobalizationServices = ((CompoundCollectorValidator) factory).CollectorTypeValidators.ToArray();
+      var compoundGlobalizationServices = ((CompoundCollectorValidator) factory).CollectorValidators.ToArray();
       Assert.That (compoundGlobalizationServices.Any(), Is.False);
     }
   }
