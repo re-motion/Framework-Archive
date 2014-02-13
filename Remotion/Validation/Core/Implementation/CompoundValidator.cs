@@ -19,6 +19,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using FluentValidation;
 using FluentValidation.Internal;
 using FluentValidation.Results;
@@ -32,16 +33,23 @@ namespace Remotion.Validation.Implementation
   /// </summary>
   public sealed class CompoundValidator : IValidator
   {
+    private static readonly MethodInfo s_CreateDescriptorMethod =
+        typeof (CompoundValidator).GetMethod (
+            "CreateDescriptor",
+            BindingFlags.Instance | BindingFlags.NonPublic);
+
     private readonly IReadOnlyCollection<IValidator> _validators;
     private readonly Type _typeToValidate;
+    private readonly MethodInfo _createDescriptorMethod;
 
     public CompoundValidator (IEnumerable<IValidator> validators, Type typeToValidate)
     {
       ArgumentUtility.CheckNotNull ("validators", validators);
       ArgumentUtility.CheckNotNull ("typeToValidate", typeToValidate);
-      
+
       _validators = validators.ToList().AsReadOnly();
       _typeToValidate = typeToValidate;
+      _createDescriptorMethod = s_CreateDescriptorMethod.MakeGenericMethod (_typeToValidate);
     }
 
     public IReadOnlyCollection<IValidator> Validators
@@ -66,16 +74,13 @@ namespace Remotion.Validation.Implementation
 
     public IValidatorDescriptor CreateDescriptor ()
     {
-      //TODO AO: get MethodInfo and close in ctor. Invoke here. Check if delegate can me made in ctor (CreateDelegate)
-      var validationRules = GetAllValidationRules ();
-      var typeToInstantiate = typeof (ValidatorDescriptor<>).MakeGenericType (_typeToValidate);
-      return (IValidatorDescriptor) Activator.CreateInstance (typeToInstantiate, validationRules);
+      return (IValidatorDescriptor) _createDescriptorMethod.Invoke (this, null);
     }
 
     [ReflectionAPI]
     private IValidatorDescriptor CreateDescriptor<T> ()
     {
-      var validationRules = GetAllValidationRules ();
+      var validationRules = GetAllValidationRules();
       return new ValidatorDescriptor<T> (validationRules);
     }
 
