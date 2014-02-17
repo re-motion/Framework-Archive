@@ -32,6 +32,9 @@ using Remotion.Validation.Rules;
 
 namespace Remotion.Validation.Merging
 {
+  /// <summary>
+  /// Implements the <see cref="IValidationCollectorMerger"/> interface as a decorator which logs the merge operation via the application default logging infrastructure.
+  /// </summary>
   public class DiagnosticOutputRuleMergeDecorator : IValidationCollectorMerger
   {
     private static readonly ILog _logger = LogManager.GetLogger (typeof (DiagnosticOutputRuleMergeDecorator));

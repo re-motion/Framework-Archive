@@ -20,6 +20,10 @@ using Remotion.Validation.Implementation;
 
 namespace Remotion.Validation.Merging
 {
+  /// <summary>
+  /// Defines an API for instantiating an implementation of the <see cref="IPropertyValidatorExtractor"/> interface during the merge operation.
+  /// </summary>
+  /// <seealso cref="PropertyValidatorExtractorFactory"/>
   public interface IPropertyValidatorExtractorFactory
   {
     IPropertyValidatorExtractor Create (IEnumerable<ValidatorRegistrationWithContext> validatorRegistrationWithContexts, ILogContext logContext);

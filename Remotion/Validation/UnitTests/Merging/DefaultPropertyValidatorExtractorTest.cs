@@ -37,7 +37,7 @@ namespace Remotion.Validation.UnitTests.Merging
     private ValidatorRegistration _validatorRegistration1;
     private ValidatorRegistration _validatorRegistration2;
     private ValidatorRegistration _validatorRegistration3;
-    private DefaultPropertyValidatorExtractor _extractor;
+    private PropertyValidatorExtractor _extractor;
     private StubPropertyValidator _stubPropertyValidator1;
     private NotEmptyValidator _stubPropertyValidator2;
     private NotEqualValidator _stubPropertyValidator3;
@@ -87,7 +87,7 @@ namespace Remotion.Validation.UnitTests.Merging
 
       _logContextMock = MockRepository.GenerateStrictMock<ILogContext>();
 
-      _extractor = new DefaultPropertyValidatorExtractor (
+      _extractor = new PropertyValidatorExtractor (
           new[]
           {
               _registrationWithContext1, _registrationWithContext2, _registrationWithContext3, _registrationWithContext4,

@@ -19,6 +19,9 @@ using Remotion.Validation.Implementation;
 
 namespace Remotion.Validation.Merging
 {
+  /// <summary>
+  /// Extends the <see cref="DiagnosticOutputRuleMergeDecorator"/> to log the <see cref="Type.FullName"/>.
+  /// </summary>
   public class NamespaceAwareDiagnosticOutputRuleMergeDecorator : DiagnosticOutputRuleMergeDecorator
   {
     public NamespaceAwareDiagnosticOutputRuleMergeDecorator (IValidationCollectorMerger validationCollectorMerger, IValidatorFormatter validatorFormatter)

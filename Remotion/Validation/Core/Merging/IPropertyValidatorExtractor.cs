@@ -21,6 +21,10 @@ using Remotion.Validation.Rules;
 
 namespace Remotion.Validation.Merging
 {
+  /// <summary>
+  /// Defines an API for identifying which <see cref="IPropertyValidator"/>s to remove during the merge operation.
+  /// </summary>
+  /// <seealso cref="PropertyValidatorExtractor"/>
   public interface IPropertyValidatorExtractor
   {
     IEnumerable<IPropertyValidator> ExtractPropertyValidatorsToRemove (IAddingComponentPropertyRule addingComponentPropertyRule);

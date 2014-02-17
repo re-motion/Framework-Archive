@@ -14,15 +14,20 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Remotion.Utilities;
+using FluentValidation;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.Rules;
 
 namespace Remotion.Validation.Merging
 {
+  /// <summary>
+  /// Implements the <see cref="IValidationCollectorMerger"/> interface to merge <see cref="IValidationRule"/>s 
+  /// based on the order of precendence established during retrieval of the <see cref="IComponentValidationCollector"/>s.
+  /// </summary>
   public class OrderPrecedenceValidationCollectorMerger : ValidationCollectorMergerBase
   {
     private readonly IPropertyValidatorExtractorFactory _propertyValidatorExtractorFactory;
@@ -32,14 +37,19 @@ namespace Remotion.Validation.Merging
       _propertyValidatorExtractorFactory = propertyValidatorExtractorFactory;
     }
 
+    protected override ILogContext CreateNewLogContext ()
+    {
+      return new DefaultLogContext ();
+    }
+
     protected override void MergeRules (IEnumerable<ValidationCollectorInfo> collectorGroup, List<IAddingComponentPropertyRule> collectedRules)
     {
       var collectorInfos = collectorGroup.ToArray();
 
-      //first: remove registered validation types for all collectors in same group (provider is responsible for order of collectors!)
+      //first: remove registered validator types for all collectors in same group (provider is responsible for order of collectors!)
       if (collectedRules.Any())
       {
-        var registrationsWithContext = GetValidatorRegistrationsWithContext(collectorInfos);
+        var registrationsWithContext = GetValidatorRegistrationsWithContext (collectorInfos);
         var propertyValidatorExtractor = _propertyValidatorExtractorFactory.Create (registrationsWithContext, LogContext);
         foreach (var validationRule in collectedRules)
           validationRule.ApplyRemoveValidatorRegistrations (propertyValidatorExtractor);
@@ -49,51 +59,14 @@ namespace Remotion.Validation.Merging
       collectedRules.AddRange (collectorInfos.SelectMany (g => g.Collector.AddedPropertyRules));
     }
 
-    protected override ILogContext CreateNewLogContext ()
-    {
-      return new DefaultLogContext ();
-    }
-
     private IEnumerable<ValidatorRegistrationWithContext> GetValidatorRegistrationsWithContext (ValidationCollectorInfo[] collectorInfos)
     {
-      return collectorInfos.Select (ci => ci.Collector)
-                           .SelectMany (c => c.RemovedPropertyRules)
-                           .SelectMany (r => r.Validators, RuleWithValidatorRegistrationInfo.Create)
-                           .Select (
-                               vi =>
-                               new ValidatorRegistrationWithContext (vi.ValidatorRegistration, vi.RemovingComponentPropertyRule));
-    }
-
-    
-    private struct RuleWithValidatorRegistrationInfo
-    {
-      private readonly IRemovingComponentPropertyRule _removingComponentPropertyRule;
-      private readonly ValidatorRegistration _validatorRegistration;
-
-      public static RuleWithValidatorRegistrationInfo Create (
-          IRemovingComponentPropertyRule removingComponentPropertyRule, ValidatorRegistration validatorRegistration)
-      {
-        return new RuleWithValidatorRegistrationInfo (removingComponentPropertyRule, validatorRegistration);
-      }
-
-      private RuleWithValidatorRegistrationInfo (IRemovingComponentPropertyRule removingComponentPropertyRule, ValidatorRegistration validatorRegistration)
-      {
-        ArgumentUtility.CheckNotNull ("removingComponentPropertyRule", removingComponentPropertyRule);
-        ArgumentUtility.CheckNotNull ("validatorRegistration", validatorRegistration);
-
-        _removingComponentPropertyRule = removingComponentPropertyRule;
-        _validatorRegistration = validatorRegistration;
-      }
-
-      public IRemovingComponentPropertyRule RemovingComponentPropertyRule
-      {
-        get { return _removingComponentPropertyRule; }
-      }
-
-      public ValidatorRegistration ValidatorRegistration
-      {
-        get { return _validatorRegistration; }
-      }
+      return collectorInfos
+          .Select (ci => ci.Collector)
+          .SelectMany (c => c.RemovedPropertyRules)
+          .SelectMany (
+              r => r.Validators,
+              (propertyRule, validatorRegistration) => new ValidatorRegistrationWithContext (validatorRegistration, propertyRule));
     }
   }
 }

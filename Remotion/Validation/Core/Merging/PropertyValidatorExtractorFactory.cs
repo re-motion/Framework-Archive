@@ -17,11 +17,13 @@
 using System;
 using System.Collections.Generic;
 using Remotion.Utilities;
-using System.Linq;
 using Remotion.Validation.Implementation;
 
 namespace Remotion.Validation.Merging
 {
+  /// <summary>
+  /// Default implementation of the <see cref="IPropertyValidatorExtractorFactory"/> interface.
+  /// </summary>
   public class PropertyValidatorExtractorFactory : IPropertyValidatorExtractorFactory
   {
     public IPropertyValidatorExtractor Create (
@@ -30,7 +32,7 @@ namespace Remotion.Validation.Merging
       ArgumentUtility.CheckNotNull ("validatorRegistrationWithContexts", validatorRegistrationWithContexts);
       ArgumentUtility.CheckNotNull ("logContext", logContext);
       
-      return new DefaultPropertyValidatorExtractor (validatorRegistrationWithContexts.ToArray(), logContext);
+      return new PropertyValidatorExtractor (validatorRegistrationWithContexts, logContext);
     }
   }
 }

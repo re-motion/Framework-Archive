@@ -23,6 +23,9 @@ using Remotion.Validation.Rules;
 
 namespace Remotion.Validation.Merging
 {
+  /// <summary>
+  /// Implements the <see cref="IValidationCollectorMerger"/> interface as a base class with a template method for the merge operation.
+  /// </summary>
   public abstract class ValidationCollectorMergerBase : IValidationCollectorMerger
   {
     private ILogContext _logContext;
@@ -30,6 +33,9 @@ namespace Remotion.Validation.Merging
     protected ValidationCollectorMergerBase ()
     {
     }
+
+    protected abstract ILogContext CreateNewLogContext ();
+    protected abstract void MergeRules (IEnumerable<ValidationCollectorInfo> collectorGroup, List<IAddingComponentPropertyRule> collectedRules);
 
     public IEnumerable<IValidationRule> Merge (IEnumerable<IEnumerable<ValidationCollectorInfo>> validationCollectorInfos)
     {
@@ -47,8 +53,5 @@ namespace Remotion.Validation.Merging
     {
       get { return _logContext; }
     }
-
-    protected abstract ILogContext CreateNewLogContext ();
-    protected abstract void MergeRules (IEnumerable<ValidationCollectorInfo> collectorGroup, List<IAddingComponentPropertyRule> collectedRules);
   }
 }

@@ -24,12 +24,15 @@ using Remotion.Validation.Rules;
 
 namespace Remotion.Validation.Merging
 {
-  public class DefaultPropertyValidatorExtractor : IPropertyValidatorExtractor
+  /// <summary>
+  /// Default implementation of the <see cref="IPropertyValidatorExtractor"/> interface.
+  /// </summary>
+  public class PropertyValidatorExtractor : IPropertyValidatorExtractor
   {
     private readonly ILookup<Type, ValidatorRegistrationWithContext> _validatorTypesToRemove;
     private readonly ILogContext _logContext;
 
-    public DefaultPropertyValidatorExtractor (IEnumerable<ValidatorRegistrationWithContext> removedPropertyRuleRegistrations, ILogContext logContext)
+    public PropertyValidatorExtractor (IEnumerable<ValidatorRegistrationWithContext> removedPropertyRuleRegistrations, ILogContext logContext)
     {
       ArgumentUtility.CheckNotNull ("removedPropertyRuleRegistrations", removedPropertyRuleRegistrations);
       ArgumentUtility.CheckNotNull ("logContext", logContext);

@@ -21,6 +21,9 @@ using Remotion.Validation.Implementation;
 
 namespace Remotion.Validation.Merging
 {
+  /// <summary>
+  /// Defines an API for merging the <see cref="IValidationRule"/>s provided by all the <see cref="IComponentValidationCollector"/>s of a validated type.
+  /// </summary>
   public interface IValidationCollectorMerger
   {
     ILogContext LogContext { get; }
