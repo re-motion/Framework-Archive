@@ -52,7 +52,6 @@
     <Compile Include="Implementation\CheckNoMixinCollectorValidator.cs" />
     <Compile Include="Implementation\MixedInvolvedTypeProviderDecorator.cs" />
     <Compile Include="Implementation\MixedLoadFilteredValidationTypeFilter.cs" />
-    <Compile Include="Utilities\MixinHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\remotion.snk">

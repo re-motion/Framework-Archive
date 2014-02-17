@@ -16,10 +16,9 @@
 // 
 
 using System;
-using Remotion.Mixins.Utilities;
+using Remotion.Mixins;
 using Remotion.Utilities;
 using Remotion.Validation.Implementation;
-using Remotion.Validation.Mixins.Utilities;
 
 namespace Remotion.Validation.Mixins.Implementation
 {
@@ -32,14 +31,13 @@ namespace Remotion.Validation.Mixins.Implementation
   {
     public CheckNoMixinCollectorValidator ()
     {
-      
     }
 
     public bool IsValid (IComponentValidationCollector collector)
     {
       ArgumentUtility.CheckNotNull ("collector", collector);
 
-      return !MixinHelper.IsMixinType (collector.ValidatedType);
+      return !ReflectionUtility.CanAscribe (collector.ValidatedType, typeof (Mixin<>));
     }
   }
 }

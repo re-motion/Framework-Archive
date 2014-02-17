@@ -91,7 +91,6 @@
     <Compile Include="TestDomain\SpecialCustomer1.cs" />
     <Compile Include="TestHelpers\ExpressionHelper.cs" />
     <Compile Include="TestHelpers\TestableComponentValidationCollector.cs" />
-    <Compile Include="Utilities\MixinHelperTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core\Core.Core.csproj">
