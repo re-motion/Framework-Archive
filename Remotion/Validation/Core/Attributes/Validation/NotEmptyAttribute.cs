@@ -22,6 +22,9 @@ using Remotion.Utilities;
 
 namespace Remotion.Validation.Attributes.Validation
 {
+  /// <summary>
+  /// Apply the <see cref="NotEmptyAttribute"/> to introduce a <see cref="NotEmptyValidator"/> constraint for a property.
+  /// </summary>
   public class NotEmptyAttribute : AddingValidationAttributeBase
   {
     public NotEmptyAttribute ()

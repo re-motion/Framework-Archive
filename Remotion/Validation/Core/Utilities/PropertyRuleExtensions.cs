@@ -22,6 +22,9 @@ using Remotion.Utilities;
 
 namespace Remotion.Validation.Utilities
 {
+  /// <summary>
+  /// Extension methods for <see cref="PropertyRule"/>.
+  /// </summary>
   public static class PropertyRuleExtensions
   {
     public static PropertyInfo GetPropertyInfo (this PropertyRule source)

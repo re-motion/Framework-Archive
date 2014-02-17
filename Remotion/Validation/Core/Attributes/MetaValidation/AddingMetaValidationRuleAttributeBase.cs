@@ -20,6 +20,9 @@ using Remotion.Validation.MetaValidation;
 
 namespace Remotion.Validation.Attributes.MetaValidation
 {
+  /// <summary>
+  /// Base class for meta-validation attributes used to substitute the API-based <see cref="ComponentValidationCollector{TValidatedType}"/>.
+  /// </summary>
   [AttributeUsage (AttributeTargets.Property, AllowMultiple = true)]
   public abstract class AddingMetaValidationRuleAttributeBase : Attribute
   {

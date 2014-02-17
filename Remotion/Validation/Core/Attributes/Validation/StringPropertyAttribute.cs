@@ -22,6 +22,7 @@ using Remotion.Utilities;
 
 namespace Remotion.Validation.Attributes.Validation
 {
+  //TODO AO: remove 
   public class StringPropertyAttribute : AddingValidationAttributeBase
   {
     public StringPropertyAttribute ()

@@ -24,11 +24,20 @@ using Remotion.Utilities;
 
 namespace Remotion.Validation.Attributes.Validation
 {
+  /// <summary>
+  /// Base class for validation attributes used to substitute the API-based <see cref="ComponentValidationCollector{TValidatedType}"/>.
+  /// </summary>
   [AttributeUsage (AttributeTargets.Property)]
   public abstract class AddingValidationAttributeBase : Attribute
   {
+    /// <summary>
+    /// Gets or sets a flag whether the constraint can be removed by an other component.
+    /// </summary>
     public bool IsHardConstraint { get; set; }
 
+    /// <summary>
+    /// Gets or sets the error message displayed when the validation fails.
+    /// </summary>
     public string ErrorMessage { get; set; }
 
     protected abstract IEnumerable<IPropertyValidator> GetValidators (PropertyInfo property); 

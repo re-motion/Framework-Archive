@@ -22,6 +22,9 @@ using Remotion.Utilities;
 
 namespace Remotion.Validation.Attributes.Validation
 {
+  /// <summary>
+  /// Apply the <see cref="NotNullAttribute"/> to introduce a <see cref="NotNullValidator"/> constraint for a property.
+  /// </summary>
   public class NotNullAttribute : AddingValidationAttributeBase
   {
     public NotNullAttribute ()

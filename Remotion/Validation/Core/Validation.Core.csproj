@@ -153,7 +153,6 @@
     <Compile Include="Providers\IValidationCollectorProvider.cs" />
     <Compile Include="Providers\ApiBasedComponentValidationCollectorProvider.cs" />
     <Compile Include="Implementation\InvolvedTypeProvider.cs" />
-    <Compile Include="Utilities\TypeExtensions.cs" />
     <Compile Include="Implementation\Validator.cs" />
   </ItemGroup>
   <ItemGroup>

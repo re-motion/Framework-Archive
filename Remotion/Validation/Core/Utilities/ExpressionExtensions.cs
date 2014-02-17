@@ -24,6 +24,7 @@ namespace Remotion.Validation.Utilities
 {
   public static class ExpressionExtensions
   {
+    //TODO AO. remove
     public static IPropertyInformation ExtractDynamicMemberInfo<TValidatedType, TProperty> (this Expression<Func<TValidatedType, TProperty>> propertyExpression)
     {
       ArgumentUtility.CheckNotNull ("propertyExpression", propertyExpression);

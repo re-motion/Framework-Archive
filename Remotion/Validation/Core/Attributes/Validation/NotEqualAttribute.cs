@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -22,12 +23,21 @@ using Remotion.Utilities;
 
 namespace Remotion.Validation.Attributes.Validation
 {
+  /// <summary>
+  /// Apply the <see cref="NotEqualAttribute"/> to introduce a <see cref="NotEqualValidator"/> constraint for a string property.
+  /// </summary>
   public class NotEqualAttribute : AddingValidationAttributeBase
   {
     private readonly string _value;
 
+    /// <summary>
+    /// Instantiates a new <see cref="NotEqualValidator"/>.
+    /// </summary>
+    /// <param name="value">The value the string property must not be equal to. Must not be <see langword="null" /> or empty.</param>
     public NotEqualAttribute (string value)
     {
+      ArgumentUtility.CheckNotNullOrEmpty ("value", value);
+      
       _value = value;
     }
 
@@ -39,7 +49,7 @@ namespace Remotion.Validation.Attributes.Validation
     protected override IEnumerable<IPropertyValidator> GetValidators (PropertyInfo property)
     {
       ArgumentUtility.CheckNotNull ("property", property);
-      
+
       return new[] { new NotEqualValidator (Value) };
     }
   }

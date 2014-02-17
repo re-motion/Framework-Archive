@@ -22,11 +22,19 @@ using Remotion.Utilities;
 
 namespace Remotion.Validation.Attributes.Validation
 {
+  /// <summary>
+  /// Apply the <see cref="LengthAttribute"/> to introduce a <see cref="LengthValidator"/> constraint for a string property.
+  /// </summary>
   public class LengthAttribute : AddingValidationAttributeBase
   {
     private readonly int _maxLength;
     private readonly int _minLength;
 
+    /// <summary>
+    /// Instantiats a new <see cref="LengthAttribute"/>.
+    /// </summary>
+    /// <param name="minLength">The minimum number of characters required.</param>
+    /// <param name="maxLength">The maximum number of characters allowed.</param>
     public LengthAttribute (int minLength, int maxLength)
     {
       _minLength = minLength;
