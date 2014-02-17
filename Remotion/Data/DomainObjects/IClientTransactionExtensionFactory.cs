@@ -16,6 +16,7 @@
 // 
 using System.Collections.Generic;
 using Microsoft.Practices.ServiceLocation;
+using Remotion.ServiceLocation;
 
 namespace Remotion.Data.DomainObjects
 {
@@ -27,6 +28,9 @@ namespace Remotion.Data.DomainObjects
   /// <see cref="ClientTransaction"/> is created, the factories are iterated and the created listeners will be added to the 
   /// <see cref="ClientTransaction"/>.
   /// </remarks>
+  [ConcreteImplementation (
+      "Remotion.Data.DomainObjects.Validation.ValidationClientTransactionExtensionFactory, Remotion.Data.DomainObjects.Validation, Version=<version>, Culture=neutral, PublicKeyToken=<publicKeyToken>",
+      ignoreIfNotFound: true)]
   public interface IClientTransactionExtensionFactory
   {
     /// <summary>
