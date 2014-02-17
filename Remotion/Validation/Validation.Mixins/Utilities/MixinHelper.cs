@@ -16,19 +16,19 @@
 // 
 
 using System;
-using System.Linq;
-using Remotion.FunctionalProgramming;
+using Remotion.Mixins;
 using Remotion.Utilities;
 
-namespace Remotion.Mixins.Utilities
+namespace Remotion.Validation.Mixins.Utilities
 {
+  //TODO AO: inline
   public static class MixinHelper
   {
     public static bool IsMixinType (Type type)
     {
       ArgumentUtility.CheckNotNull ("type", type);
 
-      return type.CreateSequence (t => t.BaseType).Any (t => t.IsGenericType && t.GetGenericTypeDefinition() == typeof (Mixin<>));
+      return ReflectionUtility.CanAscribe (type, typeof (Mixin<>));
     }
   }
 }
