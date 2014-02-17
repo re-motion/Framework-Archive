@@ -54,6 +54,13 @@ namespace Remotion.Validation.UnitTests.Implementation
     }
 
     [Test]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The validated type 'Address' is not supported by the passed validator.\r\nParameter name: validator")]
+    public void Initialization_InvalidType ()
+    {
+      new TypedValidatorDecorator<Address> (_validator);
+    }
+
+    [Test]
     public void Validate ()
     {
       var customer = new Customer();

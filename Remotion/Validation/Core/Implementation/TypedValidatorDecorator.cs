@@ -35,7 +35,12 @@ namespace Remotion.Validation.Implementation
     public TypedValidatorDecorator (IValidator validator)
     {
       ArgumentUtility.CheckNotNull ("validator", validator);
-      // TODO AO: Argument check with validator.CanvalidateInstanceOftype (typeof (T))
+      if (!validator.CanValidateInstancesOfType (typeof (T)))
+      {
+        throw new ArgumentException (
+            string.Format ("The validated type '{0}' is not supported by the passed validator.", typeof (T).Name),
+            "validator");
+      }
 
       _validator = validator;
     }
