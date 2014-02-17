@@ -68,6 +68,8 @@
     <Compile Include="Testdomain\MixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface.cs" />
     <Compile Include="Testdomain\DomainObjectWithoutAnnotatedProperties.cs" />
     <Compile Include="Testdomain\TypeWithDomainObjectAttributes.cs" />
+    <Compile Include="ValidationClientTransactionExtensionFactoryTest.cs" />
+    <Compile Include="ValidationClientTransactionExtensionTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\remotion.snk">

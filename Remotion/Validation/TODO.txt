@@ -7,7 +7,13 @@ Aufteilung:
 
 -> Build testen
 
+-> IFLuentValidationBuilder in ValidatingClientTransactionExtension injecten!
+
 -> attribute reflector: wieso für hard conatraint und normale property eigene add-methoden
+
+-> IClientTransactionExtensionFactory -> ConcreteImplementation-Attribute (ValidationClientTransactionExtensionFactory)
+  TODO MK: Check for skipping some validations in sub transactions
+
 
 -> Re-motion Integration
    -> TODO MK: TypeElement.CreateInstance über IoC machen (custom service locators wieder rausnehmen)	=> JIRA-Task!  
