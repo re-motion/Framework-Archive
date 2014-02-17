@@ -23,7 +23,7 @@ namespace Remotion.Validation.Mixins.IntegrationTests.TestDomain.ComponentA
 {
   public class Customer : Person
   {
-    [StringProperty(MaxLength = 8, IsRequired = true)]
+    [Length(0, 8)]
     [NotEqual("Test", IsHardConstraint = true)]
     public virtual string UserName { get; set; }
 

@@ -68,7 +68,6 @@
     <Compile Include="Attributes\Validation\NotEqualAttributeTest.cs" />
     <Compile Include="Attributes\Validation\NotNullAttributeTest.cs" />
     <Compile Include="Attributes\Validation\RemoveValidatorAttributeTest.cs" />
-    <Compile Include="Attributes\Validation\StringPropertyAttributeTest.cs" />
     <Compile Include="Implementation\ClassTypeAwareValidatedTypeResolverDecoratorTest.cs" />
     <Compile Include="Implementation\CompoundCollectorValidatorTest.cs" />
     <Compile Include="Implementation\CompoundValidationTypeFilterTest.cs" />

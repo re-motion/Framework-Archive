@@ -58,7 +58,6 @@
     <Compile Include="Attributes\Validation\NotEqualAttribute.cs" />
     <Compile Include="Attributes\Validation\NotNullAttribute.cs" />
     <Compile Include="Attributes\Validation\RemoveValidatorAttribute.cs" />
-    <Compile Include="Attributes\Validation\StringPropertyAttribute.cs" />
     <Compile Include="Attributes\Validation\AddingValidationAttributeBase.cs" />
     <Compile Include="Globalization\CompoundValidationRuleGlobalizationService.cs" />
     <Compile Include="Globalization\DefaultMessageEvaluator.cs" />
