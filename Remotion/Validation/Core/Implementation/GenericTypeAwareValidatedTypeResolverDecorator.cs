@@ -18,7 +18,6 @@
 using System;
 using System.Linq;
 using Remotion.Utilities;
-using Remotion.Validation.Utilities;
 
 namespace Remotion.Validation.Implementation
 {

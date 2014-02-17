@@ -20,10 +20,18 @@ using Remotion.ServiceLocation;
 
 namespace Remotion.Validation.Implementation
 {
+  /// <summary>
+  /// Defines an API for resolving all types involved in a validated type's make-up, e.g. base classes, interfaces, etc.
+  /// </summary>
+  /// <seealso cref="InvolvedTypeProvider"/>
+  /// <seealso cref="T:Remotion.Validation.Mixins.Implementation.MixedInvolvedTypeProviderDecorator"/>
   [ConcreteImplementation(typeof(InvolvedTypeProvider))]
   public interface IInvolvedTypeProvider
   {
+    /// <summary>
+    /// Gets a sorted and grouped set of all types involved in the make-up of the <paramref name="type"/>.
+    /// </summary>
     IEnumerable<IEnumerable<Type>> GetTypes (Type type);
-    IValidationTypeFilter ValidationTypeFilter { get; }
+    IValidationTypeFilter ValidationTypeFilter { get; } //TOOD AO: move to ctor in decorator implmenentation
   }
 }

@@ -14,12 +14,18 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
 using Remotion.Utilities;
+using Remotion.Validation.Providers;
 
 namespace Remotion.Validation.Implementation
 {
-  public struct ValidationCollectorInfo
+  /// <summary>
+  /// Associates an <see cref="IComponentValidationCollector"/> with the type of the <see cref="IValidationCollectorProvider"/> 
+  /// that was used to resolve the collector.
+  /// </summary>
+  public sealed class ValidationCollectorInfo
   {
     private readonly IComponentValidationCollector _collector;
     private readonly Type _providerType;
@@ -28,7 +34,7 @@ namespace Remotion.Validation.Implementation
     {
       ArgumentUtility.CheckNotNull ("collector", collector);
       ArgumentUtility.CheckNotNull ("providerType", providerType);
-      
+
       _providerType = providerType;
       _collector = collector;
     }
@@ -42,6 +48,5 @@ namespace Remotion.Validation.Implementation
     {
       get { return _providerType; }
     }
-    
   }
 }

@@ -20,7 +20,10 @@ using Remotion.Utilities;
 
 namespace Remotion.Validation.Implementation
 {
-  public struct LogContextInfo
+  /// <summary>
+  /// Aggregates information about removed validators during merging of the collectors.
+  /// </summary>
+  public sealed class LogContextInfo
   {
     private readonly IPropertyValidator _remvovedValidator;
     private readonly ValidatorRegistrationWithContext[] _removingValidatorRegistrationsWithContext;
