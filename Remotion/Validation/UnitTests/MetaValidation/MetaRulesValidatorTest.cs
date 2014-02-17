@@ -18,9 +18,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using FluentValidation;
+using FluentValidation.Internal;
 using FluentValidation.Validators;
 using NUnit.Framework;
+using Remotion.Reflection;
 using Remotion.Validation.MetaValidation;
 using Remotion.Validation.Rules;
 using Remotion.Validation.UnitTests.TestDomain;
@@ -102,13 +105,13 @@ namespace Remotion.Validation.UnitTests.MetaValidation
       var metaValidationRuleMock2 = MockRepository.GenerateStrictMock<IMetaValidationRule>();
       var metaValidationRuleMock3 = MockRepository.GenerateStrictMock<IMetaValidationRule>();
 
-      _propertyMetaValidationRuleStub1.Stub (stub => stub.Property).Return (userNameExpression.ExtractDynamicMemberInfo());
+      _propertyMetaValidationRuleStub1.Stub (stub => stub.Property).Return (PropertyInfoAdapter.Create((PropertyInfo) userNameExpression.GetMember()));
       _propertyMetaValidationRuleStub1.Stub (stub => stub.MetaValidationRules).Return (new[] { metaValidationRuleMock1, metaValidationRuleMock2 });
 
-      _propertyMetaValidationRuleStub2.Stub (stub => stub.Property).Return (lastNameExpression.ExtractDynamicMemberInfo());
+      _propertyMetaValidationRuleStub2.Stub (stub => stub.Property).Return (PropertyInfoAdapter.Create ((PropertyInfo) lastNameExpression.GetMember ()));
       _propertyMetaValidationRuleStub2.Stub (stub => stub.MetaValidationRules).Return (new[] { metaValidationRuleMock3 });
 
-      _propertyMetaValidationRuleStub3.Stub (stub => stub.Property).Return (lastNameExpression.ExtractDynamicMemberInfo());
+      _propertyMetaValidationRuleStub3.Stub (stub => stub.Property).Return (PropertyInfoAdapter.Create ((PropertyInfo) lastNameExpression.GetMember ()));
       _propertyMetaValidationRuleStub3.Stub (stub => stub.MetaValidationRules).Return (new IMetaValidationRule[0]);
 
       systemMetaValidationRuleMock1
