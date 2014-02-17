@@ -16,8 +16,14 @@
 // 
 
 using System;
+using FluentValidation;
+using FluentValidation.Results;
 using NUnit.Framework;
+using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
+using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
+using Remotion.Data.DomainObjects.Validation.UnitTests.Testdomain;
 using Remotion.Validation;
+using Remotion.Validation.Implementation;
 using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.Validation.UnitTests
@@ -26,11 +32,18 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests
   public class ValidationClientTransactionExtensionTest
   {
     private IValidatorBuilder _validatorBuilderMock;
+    private ValidationClientTransactionExtension _extension;
+    private IValidator _validatorMock1;
+    private IValidator _validatorMock2;
 
     [SetUp]
     public void SetUp ()
     {
       _validatorBuilderMock = MockRepository.GenerateStrictMock<IValidatorBuilder>();
+      _validatorMock1 = MockRepository.GenerateStrictMock<IValidator> ();
+      _validatorMock2 = MockRepository.GenerateStrictMock<IValidator> ();
+
+      _extension = new ValidationClientTransactionExtension (_validatorBuilderMock);
     }
 
     [Test]
@@ -40,35 +53,107 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests
     }
 
     [Test]
-    public void Key ()
+    public void Initialization ()
     {
-      var extension = new ValidationClientTransactionExtension (_validatorBuilderMock);
-      Assert.That (extension.Key, Is.EqualTo (ValidationClientTransactionExtension.DefaultKey));
+      Assert.That (_extension.ValidatorBuilder, Is.SameAs (_validatorBuilderMock));
     }
 
-    //[Test]
-    //public void CommitValidate ()
-    //{
-    //  var data1 = PersistableDataObjectMother.Create ();
-    //  var data2 = PersistableDataObjectMother.Create ();
+    [Test]
+    public void Key ()
+    {
+      Assert.That (_extension.Key, Is.EqualTo (ValidationClientTransactionExtension.DefaultKey));
+    }
 
-    //  var transaction = ClientTransaction.CreateRootTransaction ();
+    [Test]
+    public void CommitValidate_WithoutValidationFailures ()
+    {
+      using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
+      {
+        var domainObject1 = DomainObjectWithoutAnnotatedProperties.NewObject ();
+        var domainObject2 = TestDomainObject.NewObject ();
+        var domainObject3 = DomainObjectWithoutAnnotatedProperties.NewObject ();
 
-    //  var validatorMock = MockRepository.GenerateStrictMock<IPersistableDataValidator> ();
-    //  var extension = new CommitValidationClientTransactionExtension (
-    //      tx =>
-    //      {
-    //        Assert.That (tx, Is.SameAs (transaction));
-    //        return validatorMock;
-    //      });
+        var persistableData1 = new PersistableData (
+            domainObject1,
+            StateType.New,
+            DataContainerObjectMother.Create (domainObject1),
+            new IRelationEndPoint[0]);
+        var persistableData2 = new PersistableData (
+            domainObject2,
+            StateType.Changed,
+            DataContainerObjectMother.Create (domainObject2),
+            new IRelationEndPoint[0]);
+        var persistableData3 = new PersistableData (
+            domainObject3,
+            StateType.Deleted,
+            DataContainerObjectMother.Create (domainObject3),
+            new IRelationEndPoint[0]);
 
-    //  validatorMock.Expect (mock => mock.Validate (data1));
-    //  validatorMock.Expect (mock => mock.Validate (data2));
-    //  validatorMock.Replay ();
+        _validatorBuilderMock
+            .Expect (mock => mock.BuildValidator (typeof (DomainObjectWithoutAnnotatedProperties)))
+            .Return (_validatorMock1);
+        _validatorBuilderMock
+            .Expect (mock => mock.BuildValidator (typeof (TestDomainObject)))
+            .Return (_validatorMock2);
 
-    //  extension.CommitValidate (transaction, Array.AsReadOnly (new[] { data1, data2 }));
+        _validatorMock1.Expect (mock => mock.Validate (domainObject1)).Return (new ValidationResult());
+        _validatorMock2.Expect (mock => mock.Validate (domainObject2)).Return (new ValidationResult());
 
-    //  validatorMock.VerifyAllExpectations ();
-    //}
+        _extension.CommitValidate (ClientTransaction.Current, Array.AsReadOnly (new[] { persistableData1, persistableData2, persistableData3 }));
+
+        _validatorBuilderMock.VerifyAllExpectations();
+        _validatorMock1.VerifyAllExpectations();
+        _validatorMock2.VerifyAllExpectations();
+      }
+    }
+
+    [Test]
+    [ExpectedException (typeof (ComponentValidationException), ExpectedMessage = "Component validation failed:\r\nError1\r\nError2\r\nError3")]
+    public void CommitValidate_WithValidationFailures ()
+    {
+      using (ClientTransaction.CreateRootTransaction ().EnterDiscardingScope ())
+      {
+        var domainObject1 = DomainObjectWithoutAnnotatedProperties.NewObject ();
+        var domainObject2 = TestDomainObject.NewObject ();
+        var domainObject3 = DomainObjectWithoutAnnotatedProperties.NewObject ();
+
+        var persistableData1 = new PersistableData (
+            domainObject1,
+            StateType.New,
+            DataContainerObjectMother.Create (domainObject1),
+            new IRelationEndPoint[0]);
+        var persistableData2 = new PersistableData (
+            domainObject2,
+            StateType.Changed,
+            DataContainerObjectMother.Create (domainObject2),
+            new IRelationEndPoint[0]);
+        var persistableData3 = new PersistableData (
+            domainObject3,
+            StateType.Deleted,
+            DataContainerObjectMother.Create (domainObject3),
+            new IRelationEndPoint[0]);
+
+        _validatorBuilderMock
+            .Expect (mock => mock.BuildValidator (typeof (DomainObjectWithoutAnnotatedProperties)))
+            .Return (_validatorMock1);
+        _validatorBuilderMock
+            .Expect (mock => mock.BuildValidator (typeof (TestDomainObject)))
+            .Return (_validatorMock2);
+
+        var validationFailure1 = new ValidationFailure ("Test1", "Error1");
+        var validationFailure2 = new ValidationFailure ("Test2", "Error2");
+        var validationFailure3 = new ValidationFailure ("Test3", "Error3");
+
+        _validatorMock1.Expect (mock => mock.Validate (domainObject1)).Return (new ValidationResult (new [] { validationFailure1 }));
+        _validatorMock2.Expect (mock => mock.Validate (domainObject2)).Return (new ValidationResult (new [] { validationFailure2, validationFailure3 }));
+
+        _extension.CommitValidate (ClientTransaction.Current, Array.AsReadOnly (new[] { persistableData1, persistableData2, persistableData3 }));
+
+        _validatorBuilderMock.VerifyAllExpectations ();
+        _validatorMock1.VerifyAllExpectations ();
+        _validatorMock2.VerifyAllExpectations ();
+      }
+    }
+
   }
 }

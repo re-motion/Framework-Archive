@@ -22,7 +22,7 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.Testdomain
   public interface IMixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface
   {
     [Mandatory]
-    string PropertyWithMandatoryAttribute { get; set; }
+    TestDomainObject PropertyWithMandatoryAttribute { get; set; }
 
     [StringProperty (IsNullable = true, MaximumLength = 10)]
     string PropertyWithNullableStringPropertyAttribute { get; set; }
@@ -36,7 +36,7 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.Testdomain
     public string PropertyWithoutAttribute { get; set; }
 
     [Mandatory]
-    public string PropertyWithMandatoryAttribute { get; set; }
+    public TestDomainObject PropertyWithMandatoryAttribute { get; set; }
 
     [StringProperty (IsNullable = true, MaximumLength = 10)]
     public string PropertyWithNullableStringPropertyAttribute { get; set; }

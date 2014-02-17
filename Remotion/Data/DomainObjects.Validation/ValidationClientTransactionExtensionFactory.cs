@@ -33,7 +33,7 @@ namespace Remotion.Data.DomainObjects.Validation
 {
   public class ValidationClientTransactionExtensionFactory : IClientTransactionExtensionFactory
   {
-    private FluentValidatorBuilder _validationBuilder;
+    private readonly FluentValidatorBuilder _validationBuilder;
 
     public ValidationClientTransactionExtensionFactory ()
     {

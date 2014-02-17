@@ -19,12 +19,13 @@ using System;
 
 namespace Remotion.Data.DomainObjects.Validation.UnitTests.Testdomain
 {
+  [DBTable]
   public class TypeWithDomainObjectAttributes : DomainObject
   {
     public string PropertyWithoutAttribute { get; set; }
 
     [Mandatory]
-    public string PropertyWithMandatoryAttribute { get; set; }
+    public TestDomainObject PropertyWithMandatoryAttribute { get; set; }
 
     [StringProperty(IsNullable = true, MaximumLength = 10)]
     public string PropertyWithNullableStringPropertyAttribute { get; set; }

@@ -16,10 +16,15 @@
 // 
 
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
+using System.Text;
+using FluentValidation.Results;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
 using Remotion.Utilities;
 using Remotion.Validation;
+using Remotion.Validation.Implementation;
 
 namespace Remotion.Data.DomainObjects.Validation
 {
@@ -37,6 +42,11 @@ namespace Remotion.Data.DomainObjects.Validation
     {
     }
 
+    public IValidatorBuilder ValidatorBuilder
+    {
+      get { return _validatorBuilder; }
+    }
+
     public ValidationClientTransactionExtension (string key, IValidatorBuilder validatorBuilder)
         : base (key)
     {
@@ -47,6 +57,7 @@ namespace Remotion.Data.DomainObjects.Validation
 
     public override void CommitValidate (ClientTransaction clientTransaction, ReadOnlyCollection<PersistableData> committedData)
     {
+      var invalidValidationResults = new List<ValidationResult>();
       foreach (var item in committedData)
       {
         if (item.DomainObjectState == StateType.Deleted)
@@ -57,8 +68,23 @@ namespace Remotion.Data.DomainObjects.Validation
             "No unloaded or invalid objects get this far.");
 
         var validator = _validatorBuilder.BuildValidator (item.DomainObject.GetPublicDomainObjectType());
-        var validationResult = validator.Validate (item.DomainObject); //TODO AO: throw exceptions if any validation failures exist
+        var validationResult = validator.Validate (item.DomainObject);
+        if(!validationResult.IsValid)
+          invalidValidationResults.Add(validationResult);
       }
+
+      if (invalidValidationResults.Any())
+      {
+        var sb = new StringBuilder ("Component validation failed:");
+        foreach (var validationFailure in invalidValidationResults.SelectMany(vr=>vr.Errors))
+        {
+          sb.AppendLine ();
+          sb.Append (validationFailure.ErrorMessage);
+        }
+
+        throw new ComponentValidationException (sb.ToString ());
+      }
+
     }
   }
 }

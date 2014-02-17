@@ -15,18 +15,14 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 
-using System;
-
 namespace Remotion.Data.DomainObjects.Validation.UnitTests.Testdomain
 {
   [DBTable]
-  public class DomainObjectWithoutAnnotatedProperties : DomainObject
+  public class TestDomainObject : DomainObject
   {
-    public static DomainObjectWithoutAnnotatedProperties NewObject ()
+    public static TestDomainObject NewObject ()
     {
-      return NewObject<DomainObjectWithoutAnnotatedProperties> ();
+      return NewObject<TestDomainObject> ();
     }
-
-    public virtual string Name { get; set; }
   }
 }
