@@ -1,5 +1,3 @@
-Aufteilung:
-  -> Validation.Globalization ??  
   
 -> NotSupportedExceptions checken!
 
@@ -7,14 +5,13 @@ Aufteilung:
 
 -> Build testen
 
--> Implementation Namespsace -> grouping
+-> Implementation Namespace -> grouping
 
 -> IFLuentValidationBuilder in ValidatingClientTransactionExtension injecten!
 
 -> attribute reflector: wieso für hard conatraint und normale property eigene add-methoden
 
--> IClientTransactionExtensionFactory -> ConcreteImplementation-Attribute (ValidationClientTransactionExtensionFactory)
-  TODO MK: Check for skipping some validations in sub transactions
+-> TODO MK: re-store Integration: Check for skipping some validations in sub transactions
 
 
 -> Re-motion Integration
