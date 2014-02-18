@@ -63,6 +63,7 @@
     <Compile Include="FluentValidationGlobalizationIntegrationTests.cs" />
     <Compile Include="IntegrationTestBase.cs" />
     <Compile Include="MetaValidationRulesIntegrationTests.cs" />
+    <Compile Include="ErrorMessagesGlobalizationIntegrationTest.cs" />
     <Compile Include="TestDomain\ComponentA\Address.cs" />
     <Compile Include="TestDomain\ComponentA\Customer.cs" />
     <Compile Include="TestDomain\ComponentA\Employee.cs" />
@@ -110,7 +111,7 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="TestHelpers\ExpressionHelper.cs" />
-    <Compile Include="ValidationGlobalizationIntegrationTests.cs" />
+    <Compile Include="ValidatorGlobalizationServiceIntegrationTest.cs" />
     <Compile Include="ValidationRulesIntegrationTests.cs" />
   </ItemGroup>
   <ItemGroup>

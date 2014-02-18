@@ -25,7 +25,7 @@ using Remotion.Validation.IntegrationTests.TestDomain.ComponentA;
 namespace Remotion.Validation.IntegrationTests
 {
   [TestFixture]
-  public class ValidationGlobalizationIntegrationTests : IntegrationTestBase
+  public class ValidatorGlobalizationServiceIntegrationTest : IntegrationTestBase
   {
     [Test]
     public void CustomValidatorErrorMessages ()
