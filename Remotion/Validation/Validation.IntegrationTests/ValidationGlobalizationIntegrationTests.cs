@@ -45,7 +45,7 @@ namespace Remotion.Validation.IntegrationTests
           Is.EquivalentTo (new[] { "NotNullValidator Fake Message", "NotEqualValidator Fake Message" }));
     }
     
-    protected override IValidatorGlobalizationService GetValidatorGlobalizationService ()
+    protected override IErrorMessageGlobalizationService GetValidatorGlobalizationService ()
     {
       return new FakeMessageValidatorGlobalizationService();
     }

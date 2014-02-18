@@ -16,27 +16,19 @@
 // 
 
 using System;
-using NUnit.Framework;
-using Remotion.Validation.Globalization;
-using Remotion.Validation.UnitTests.TestHelpers;
+using FluentValidation.Validators;
+using JetBrains.Annotations;
 
-namespace Remotion.Validation.UnitTests.Globalization
+namespace Remotion.Validation.Globalization
 {
-  [TestFixture]
-  public class NullMessageValidatorGlobalizationServiceTest
+  public interface IErrorMessageGlobalizationService
   {
-    private NullMessageValidatorGlobalizationService _service;
-
-    [SetUp]
-    public void SetUp ()
-    {
-      _service = new NullMessageValidatorGlobalizationService();
-    }
-
-    [Test]
-    public void GetErrorMessage ()
-    {
-      Assert.That (_service.GetErrorMessage (new StubPropertyValidator()), Is.Null);
-    }
+    /// <summary>
+    /// Returns the error message for a given <see cref="IPropertyValidator"/>.
+    /// </summary>
+    /// <param name="propertyValidator">The <see cref="IPropertyValidator"/> to get the error message for.</param>
+    /// <returns>The error message for the <see cref="IPropertyValidator"/>. Please note that the method can return null if no error message is specified.</returns>
+    [CanBeNull]
+    string GetErrorMessage (IPropertyValidator propertyValidator);
   }
 }

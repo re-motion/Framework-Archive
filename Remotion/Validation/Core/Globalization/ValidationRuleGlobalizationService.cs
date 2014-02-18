@@ -25,11 +25,11 @@ namespace Remotion.Validation.Globalization
   public class ValidationRuleGlobalizationService : IValidationRuleMetadataService
   {
     private readonly IDefaultMessageEvaluator _defaultMessageEvaluator;
-    private readonly IValidatorGlobalizationService _validatorGlobalizationService;
+    private readonly IErrorMessageGlobalizationService _validatorGlobalizationService;
     
     public ValidationRuleGlobalizationService (
         IDefaultMessageEvaluator defaultMessageEvaluator,
-        IValidatorGlobalizationService validatorGlobalizationService)
+        IErrorMessageGlobalizationService validatorGlobalizationService)
     {
       ArgumentUtility.CheckNotNull ("defaultMessageEvaluator", defaultMessageEvaluator);
       ArgumentUtility.CheckNotNull ("validatorGlobalizationService", validatorGlobalizationService);

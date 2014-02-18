@@ -36,7 +36,7 @@ namespace Remotion.Validation.UnitTests.Globalization
     private NotNullValidator _validator1;
     private NotEmptyValidator _validator2;
     private NotEqualValidator _validator3;
-    private IValidatorGlobalizationService _validatorGlobalizationServiceMock;
+    private IErrorMessageGlobalizationService _validatorGlobalizationServiceMock;
     private IStringSource _errorMessageSource1;
     private IStringSource _errorMessageSource2;
     private IStringSource _errorMessageSource3;
@@ -45,7 +45,7 @@ namespace Remotion.Validation.UnitTests.Globalization
     public void SetUp ()
     {
       _defaultMessageEvaluatorMock = MockRepository.GenerateStrictMock<IDefaultMessageEvaluator>();
-      _validatorGlobalizationServiceMock = MockRepository.GenerateStrictMock<IValidatorGlobalizationService>();
+      _validatorGlobalizationServiceMock = MockRepository.GenerateStrictMock<IErrorMessageGlobalizationService>();
 
       _validator1 = new NotNullValidator();
       _errorMessageSource1 = _validator1.ErrorMessageSource;

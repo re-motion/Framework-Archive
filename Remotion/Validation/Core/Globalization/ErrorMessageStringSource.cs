@@ -25,12 +25,12 @@ namespace Remotion.Validation.Globalization
   public class ErrorMessageStringSource : IStringSource
   {
     private readonly IPropertyValidator _propertyValidator;
-    private readonly IValidatorGlobalizationService _validatorGlobalizationService;
+    private readonly IErrorMessageGlobalizationService _validatorGlobalizationService;
     private readonly string _resourceName;
     private readonly Type _resourceType;
     private readonly string _defaultErrorMessage;
 
-    public ErrorMessageStringSource (IPropertyValidator propertyValidator, IValidatorGlobalizationService validatorGlobalizationService)
+    public ErrorMessageStringSource (IPropertyValidator propertyValidator, IErrorMessageGlobalizationService validatorGlobalizationService)
     {
       ArgumentUtility.CheckNotNull ("propertyValidator", propertyValidator);
       ArgumentUtility.CheckNotNull ("validatorGlobalizationService", validatorGlobalizationService);

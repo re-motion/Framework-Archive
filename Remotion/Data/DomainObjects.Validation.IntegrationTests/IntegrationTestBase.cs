@@ -95,9 +95,9 @@ namespace Remotion.Data.DomainObjects.Validation.IntegrationTests
       Assert.That (LogManager.GetLogger (typeof (DiagnosticOutputRuleMergeDecorator)).IsDebugEnabled, Is.False);
     }
 
-    protected virtual IValidatorGlobalizationService GetValidatorGlobalizationService ()
+    protected virtual IErrorMessageGlobalizationService GetValidatorGlobalizationService ()
     {
-      return new NullMessageValidatorGlobalizationService();
+      return new NullErrorMessageGlobalizationService();
     }
   }
 }

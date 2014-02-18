@@ -65,7 +65,7 @@ namespace Remotion.Data.DomainObjects.Validation
               new IValidationRuleMetadataService[]
               {
                   new PropertyDisplayNameGlobalizationService (memberInformationGlobalizationService),
-                  new ValidationRuleGlobalizationService (new DefaultMessageEvaluator(), new NullMessageValidatorGlobalizationService())
+                  new ValidationRuleGlobalizationService (new DefaultMessageEvaluator(), new NullErrorMessageGlobalizationService())
               }),
           memberInfoNameResolver,
           SafeServiceLocator.Current.GetInstance<ICompoundCollectorValidator> ());

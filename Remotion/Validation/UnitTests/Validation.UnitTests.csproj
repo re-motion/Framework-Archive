@@ -74,7 +74,7 @@
     <Compile Include="Implementation\CompoundValidatorTest.cs" />
     <Compile Include="Implementation\CompoundValidationRuleMetadataServiceTest.cs" />
     <Compile Include="Globalization\DefaultMessageEvaluatorTest.cs" />
-    <Compile Include="Globalization\NullMessageValidatorGlobalizationServiceTest.cs" />
+    <Compile Include="Globalization\NullErrorMessageGlobalizationServiceTest.cs" />
     <Compile Include="Globalization\PropertyDisplayNameGlobalizationServiceTest.cs" />
     <Compile Include="Globalization\PropertyRuleDisplayNameStringSourceTest.cs" />
     <Compile Include="Globalization\ValidationRuleGlobalizationServiceTest.cs" />

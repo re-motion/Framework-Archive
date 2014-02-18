@@ -16,18 +16,27 @@
 // 
 
 using System;
-using FluentValidation.Validators;
-using Remotion.Utilities;
+using NUnit.Framework;
+using Remotion.Validation.Globalization;
+using Remotion.Validation.UnitTests.TestHelpers;
 
-namespace Remotion.Validation.Globalization
+namespace Remotion.Validation.UnitTests.Globalization
 {
-  public class NullMessageValidatorGlobalizationService : IValidatorGlobalizationService
+  [TestFixture]
+  public class NullErrorMessageGlobalizationServiceTest
   {
-    public string GetErrorMessage (IPropertyValidator propertyValidator)
-    {
-      ArgumentUtility.CheckNotNull ("propertyValidator", propertyValidator);
+    private NullErrorMessageGlobalizationService _service;
 
-      return null;
+    [SetUp]
+    public void SetUp ()
+    {
+      _service = new NullErrorMessageGlobalizationService();
+    }
+
+    [Test]
+    public void GetErrorMessage ()
+    {
+      Assert.That (_service.GetErrorMessage (new StubPropertyValidator()), Is.Null);
     }
   }
 }

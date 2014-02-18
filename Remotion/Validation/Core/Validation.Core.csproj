@@ -63,12 +63,12 @@
     <Compile Include="Globalization\DefaultMessageEvaluator.cs" />
     <Compile Include="Globalization\IDefaultMessageEvaluator.cs" />
     <Compile Include="Implementation\IValidationRuleMetadataService.cs" />
-    <Compile Include="Globalization\IValidatorGlobalizationService.cs" />
+    <Compile Include="Globalization\IErrorMessageGlobalizationService.cs" />
     <Compile Include="Globalization\PropertyDisplayNameGlobalizationService.cs" />
     <Compile Include="Globalization\PropertyRuleDisplayNameStringSource.cs" />
     <Compile Include="Globalization\ValidationRuleGlobalizationService.cs" />
     <Compile Include="Globalization\ErrorMessageStringSource.cs" />
-    <Compile Include="Globalization\NullMessageValidatorGlobalizationService.cs" />
+    <Compile Include="Globalization\NullErrorMessageGlobalizationService.cs" />
     <Compile Include="IComponentValidationCollector1.cs" />
     <Compile Include="Implementation\ClassTypeAwareValidatedTypeResolverDecorator.cs" />
     <Compile Include="Implementation\CompoundCollectorValidator.cs" />

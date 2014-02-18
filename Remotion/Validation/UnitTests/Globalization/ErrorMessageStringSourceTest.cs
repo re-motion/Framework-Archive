@@ -27,14 +27,14 @@ namespace Remotion.Validation.UnitTests.Globalization
   [TestFixture]
   public class ErrorMessageStringSourceTest
   {
-    private IValidatorGlobalizationService _validatorGlobalizationServiceMock;
+    private IErrorMessageGlobalizationService _validatorGlobalizationServiceMock;
     private ErrorMessageStringSource _stringSource;
     private NotNullValidator _propertyValidator;
 
     [SetUp]
     public void SetUp ()
     {
-      _validatorGlobalizationServiceMock = MockRepository.GenerateStrictMock<IValidatorGlobalizationService>();
+      _validatorGlobalizationServiceMock = MockRepository.GenerateStrictMock<IErrorMessageGlobalizationService>();
       _propertyValidator = new NotNullValidator();
 
       _stringSource = new ErrorMessageStringSource (_propertyValidator, _validatorGlobalizationServiceMock);

@@ -17,19 +17,17 @@
 
 using System;
 using FluentValidation.Validators;
-using JetBrains.Annotations;
+using Remotion.Utilities;
 
 namespace Remotion.Validation.Globalization
 {
-  //TODO AO: rename to IErrorMessageGlobalizationService
-  public interface IValidatorGlobalizationService
+  public class NullErrorMessageGlobalizationService : IErrorMessageGlobalizationService
   {
-    /// <summary>
-    /// Returns the error message for a given <see cref="IPropertyValidator"/>.
-    /// </summary>
-    /// <param name="propertyValidator">The <see cref="IPropertyValidator"/> to get the error message for.</param>
-    /// <returns>The error message for the <see cref="IPropertyValidator"/>. Please note that the method can return null if no error message is specified.</returns>
-    [CanBeNull]
-    string GetErrorMessage (IPropertyValidator propertyValidator);
+    public string GetErrorMessage (IPropertyValidator propertyValidator)
+    {
+      ArgumentUtility.CheckNotNull ("propertyValidator", propertyValidator);
+
+      return null;
+    }
   }
 }

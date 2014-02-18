@@ -21,7 +21,7 @@ using Remotion.Validation.Globalization;
 
 namespace Remotion.Validation.IntegrationTests.CustomImplementations
 {
-  public class FakeMessageValidatorGlobalizationService : IValidatorGlobalizationService
+  public class FakeMessageValidatorGlobalizationService : IErrorMessageGlobalizationService
   {
     public string GetErrorMessage (IPropertyValidator propertyValidator)
     {
