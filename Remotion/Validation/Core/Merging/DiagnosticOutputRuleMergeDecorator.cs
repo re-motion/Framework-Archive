@@ -74,7 +74,8 @@ namespace Remotion.Validation.Merging
 
       if (_logger.IsInfoEnabled())
       {
-        //TODO AO RM-5906: Why logging first 'after', then 'before'?
+        //"after"-output provides better initial diagnostics. 
+        //"before"-output is usually only analyzed when the problem is not obvious from the "after"-output.
         _logger.Info (afterMergeLog);
         _logger.Info (beforeMergeLog);
       }
