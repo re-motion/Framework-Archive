@@ -22,7 +22,6 @@ using FluentValidation;
 using FluentValidation.Internal;
 using NUnit.Framework;
 using Remotion.Reflection;
-using Remotion.Validation.Globalization;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.Merging;
 using Remotion.Validation.MetaValidation;
