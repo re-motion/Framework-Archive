@@ -28,7 +28,7 @@ namespace Remotion.Data.DomainObjects.Validation.IntegrationTests.Testdomain.Val
     {
       RemoveRule (o => o.Number).Validator<LengthValidator>();
 
-      AddRule (o => o.Number).Length (0, 15);
+      AddRule (o => o.Number).Length (3, 8);
     }
   }
 }
