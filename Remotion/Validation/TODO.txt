@@ -7,6 +7,8 @@ Aufteilung:
 
 -> Build testen
 
+-> Implementation Namespsace -> grouping
+
 -> IFLuentValidationBuilder in ValidatingClientTransactionExtension injecten!
 
 -> attribute reflector: wieso für hard conatraint und normale property eigene add-methoden

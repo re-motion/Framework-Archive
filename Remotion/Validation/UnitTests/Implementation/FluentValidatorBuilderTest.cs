@@ -61,7 +61,7 @@ namespace Remotion.Validation.UnitTests.Implementation
     private IAddingComponentPropertyMetaValidationRule _metaValidationRule1Stub;
     private IAddingComponentPropertyMetaValidationRule _metaValidationRule2Stub;
     private IAddingComponentPropertyMetaValidationRule _metaValidationRule3Stub;
-    private IValidationRuleGlobalizationService _validationRuleGlobalizationServiceMock;
+    private IValidationRuleMetadataService _validationRuleGlobalizationServiceMock;
     private IMemberInformationNameResolver _memberInformationNameResolverMock;
     private ICompoundCollectorValidator _collectorValidatorMock;
 
@@ -72,7 +72,7 @@ namespace Remotion.Validation.UnitTests.Implementation
       _validationCollectorMergerMock = MockRepository.GenerateStrictMock<IValidationCollectorMerger>();
       _metaRulesValidatorFactoryStub = MockRepository.GenerateStub<IMetaRulesValidatorFactory>();
       _metaRuleValidatorMock = MockRepository.GenerateStrictMock<IMetaRuleValidator>();
-      _validationRuleGlobalizationServiceMock = MockRepository.GenerateStrictMock<IValidationRuleGlobalizationService>();
+      _validationRuleGlobalizationServiceMock = MockRepository.GenerateStrictMock<IValidationRuleMetadataService>();
       _memberInformationNameResolverMock = MockRepository.GenerateStrictMock<IMemberInformationNameResolver>();
       _collectorValidatorMock = MockRepository.GenerateStrictMock<ICompoundCollectorValidator> ();
 
@@ -148,13 +148,13 @@ namespace Remotion.Validation.UnitTests.Implementation
           .Return ("FakeTechnicalPropertyName2");
 
       _validationRuleGlobalizationServiceMock
-          .Expect (mock => mock.ApplyLocalization (_validationRuleStub1, typeof (SpecialCustomer1)));
+          .Expect (mock => mock.ApplyMetadata (_validationRuleStub1, typeof (SpecialCustomer1)));
       _validationRuleGlobalizationServiceMock
-          .Expect (mock => mock.ApplyLocalization (_validationRuleStub2, typeof (SpecialCustomer1)));
+          .Expect (mock => mock.ApplyMetadata (_validationRuleStub2, typeof (SpecialCustomer1)));
       _validationRuleGlobalizationServiceMock
-          .Expect (mock => mock.ApplyLocalization (_validationRuleStub3, typeof (SpecialCustomer1)));
+          .Expect (mock => mock.ApplyMetadata (_validationRuleStub3, typeof (SpecialCustomer1)));
       _validationRuleGlobalizationServiceMock
-          .Expect (mock => mock.ApplyLocalization (_validationRuleStub4, typeof (SpecialCustomer1)));
+          .Expect (mock => mock.ApplyMetadata (_validationRuleStub4, typeof (SpecialCustomer1)));
 
       var result = _fluentValidationBuilder.BuildValidator (typeof (SpecialCustomer1));
 
@@ -191,13 +191,13 @@ namespace Remotion.Validation.UnitTests.Implementation
           .Return ("FakeTechnicalPropertyName2");
 
       _validationRuleGlobalizationServiceMock
-          .Expect (mock => mock.ApplyLocalization (_validationRuleStub1, typeof (SpecialCustomer1)));
+          .Expect (mock => mock.ApplyMetadata (_validationRuleStub1, typeof (SpecialCustomer1)));
       _validationRuleGlobalizationServiceMock
-          .Expect (mock => mock.ApplyLocalization (_validationRuleStub2, typeof (SpecialCustomer1)));
+          .Expect (mock => mock.ApplyMetadata (_validationRuleStub2, typeof (SpecialCustomer1)));
       _validationRuleGlobalizationServiceMock
-          .Expect (mock => mock.ApplyLocalization (_validationRuleStub3, typeof (SpecialCustomer1)));
+          .Expect (mock => mock.ApplyMetadata (_validationRuleStub3, typeof (SpecialCustomer1)));
       _validationRuleGlobalizationServiceMock
-          .Expect (mock => mock.ApplyLocalization (_validationRuleStub4, typeof (SpecialCustomer1)));
+          .Expect (mock => mock.ApplyMetadata (_validationRuleStub4, typeof (SpecialCustomer1)));
 
       var result = _fluentValidationBuilder.BuildValidator<SpecialCustomer1>();
 

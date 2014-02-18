@@ -72,7 +72,7 @@
     <Compile Include="Implementation\CompoundCollectorValidatorTest.cs" />
     <Compile Include="Implementation\CompoundValidationTypeFilterTest.cs" />
     <Compile Include="Implementation\CompoundValidatorTest.cs" />
-    <Compile Include="Globalization\CompoundValidationRuleGlobalizationServiceTest.cs" />
+    <Compile Include="Implementation\CompoundValidationRuleMetadataServiceTest.cs" />
     <Compile Include="Globalization\DefaultMessageEvaluatorTest.cs" />
     <Compile Include="Globalization\NullMessageValidatorGlobalizationServiceTest.cs" />
     <Compile Include="Globalization\PropertyDisplayNameGlobalizationServiceTest.cs" />

@@ -69,7 +69,7 @@ namespace Remotion.Validation.UnitTests.Globalization
       _defaultMessageEvaluatorMock.Expect (mock => mock.HasDefaultMessageAssigned (_validator2)).Return (false);
       _defaultMessageEvaluatorMock.Expect (mock => mock.HasDefaultMessageAssigned (_validator3)).Return (false);
 
-      _service.ApplyLocalization (_propertyRule, typeof (Customer));
+      _service.ApplyMetadata (_propertyRule, typeof (Customer));
 
       _defaultMessageEvaluatorMock.VerifyAllExpectations();
       Assert.That (_validator1.ErrorMessageSource, Is.SameAs (_errorMessageSource1));
@@ -87,7 +87,7 @@ namespace Remotion.Validation.UnitTests.Globalization
       _validatorGlobalizationServiceMock.Expect (mock => mock.GetErrorMessage (_validator1)).Return ("FakeErrorMsg1");
       _validatorGlobalizationServiceMock.Expect (mock => mock.GetErrorMessage (_validator3)).Return ("FakeErrorMsg2");
 
-      _service.ApplyLocalization (_propertyRule, typeof (Customer));
+      _service.ApplyMetadata (_propertyRule, typeof (Customer));
 
       _defaultMessageEvaluatorMock.VerifyAllExpectations();
       Assert.That (_validator1.ErrorMessageSource, Is.Not.SameAs (_errorMessageSource1));

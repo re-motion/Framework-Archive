@@ -18,19 +18,19 @@
 using System;
 using FluentValidation;
 using NUnit.Framework;
-using Remotion.Validation.Globalization;
+using Remotion.Validation.Implementation;
 using Remotion.Validation.UnitTests.TestDomain;
 using Rhino.Mocks;
 
-namespace Remotion.Validation.UnitTests.Globalization
+namespace Remotion.Validation.UnitTests.Implementation
 {
   [TestFixture]
-  public class CompoundValidationRuleGlobalizationServiceTest
+  public class CompoundValidationRuleMetadataServiceTest
   {
-    private IValidationRuleGlobalizationService _validationRuleGlobalizationServiceMock1;
-    private IValidationRuleGlobalizationService _validationRuleGlobalizationServiceMock2;
-    private IValidationRuleGlobalizationService _validationRuleGlobalizationServiceMock3;
-    private CompoundValidationRuleGlobalizationService _service;
+    private IValidationRuleMetadataService _validationRuleGlobalizationServiceMock1;
+    private IValidationRuleMetadataService _validationRuleGlobalizationServiceMock2;
+    private IValidationRuleMetadataService _validationRuleGlobalizationServiceMock3;
+    private CompoundValidationRuleMetadataService _service;
     private IValidationRule _validationRuleStub;
     private Type _typeToValidate;
 
@@ -40,23 +40,23 @@ namespace Remotion.Validation.UnitTests.Globalization
       _validationRuleStub = MockRepository.GenerateStub<IValidationRule>();
       _typeToValidate = typeof (Customer);
 
-      _validationRuleGlobalizationServiceMock1 = MockRepository.GenerateStrictMock<IValidationRuleGlobalizationService>();
-      _validationRuleGlobalizationServiceMock2 = MockRepository.GenerateStrictMock<IValidationRuleGlobalizationService>();
-      _validationRuleGlobalizationServiceMock3 = MockRepository.GenerateStrictMock<IValidationRuleGlobalizationService>();
+      _validationRuleGlobalizationServiceMock1 = MockRepository.GenerateStrictMock<IValidationRuleMetadataService>();
+      _validationRuleGlobalizationServiceMock2 = MockRepository.GenerateStrictMock<IValidationRuleMetadataService>();
+      _validationRuleGlobalizationServiceMock3 = MockRepository.GenerateStrictMock<IValidationRuleMetadataService>();
 
       _service =
-          new CompoundValidationRuleGlobalizationService (
+          new CompoundValidationRuleMetadataService (
               new[] { _validationRuleGlobalizationServiceMock1, _validationRuleGlobalizationServiceMock2, _validationRuleGlobalizationServiceMock3 });
     }
 
     [Test]
     public void ApplyLocalization ()
     {
-      _validationRuleGlobalizationServiceMock1.Expect (mock => mock.ApplyLocalization (_validationRuleStub, _typeToValidate)).Repeat.Once();
-      _validationRuleGlobalizationServiceMock2.Expect (mock => mock.ApplyLocalization (_validationRuleStub, _typeToValidate)).Repeat.Once();
-      _validationRuleGlobalizationServiceMock3.Expect (mock => mock.ApplyLocalization (_validationRuleStub, _typeToValidate)).Repeat.Once();
+      _validationRuleGlobalizationServiceMock1.Expect (mock => mock.ApplyMetadata (_validationRuleStub, _typeToValidate)).Repeat.Once();
+      _validationRuleGlobalizationServiceMock2.Expect (mock => mock.ApplyMetadata (_validationRuleStub, _typeToValidate)).Repeat.Once();
+      _validationRuleGlobalizationServiceMock3.Expect (mock => mock.ApplyMetadata (_validationRuleStub, _typeToValidate)).Repeat.Once();
 
-      _service.ApplyLocalization (_validationRuleStub, _typeToValidate);
+      _service.ApplyMetadata (_validationRuleStub, _typeToValidate);
 
       _validationRuleGlobalizationServiceMock1.VerifyAllExpectations();
       _validationRuleGlobalizationServiceMock2.VerifyAllExpectations();

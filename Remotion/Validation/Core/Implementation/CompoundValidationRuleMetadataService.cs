@@ -16,29 +16,32 @@
 // 
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using FluentValidation;
 using Remotion.Utilities;
 
-namespace Remotion.Validation.Globalization
+namespace Remotion.Validation.Implementation
 {
-  public class CompoundValidationRuleGlobalizationService : IValidationRuleGlobalizationService
+  //TODO AO: doc
+  public class CompoundValidationRuleMetadataService : IValidationRuleMetadataService
   {
-    private readonly IValidationRuleGlobalizationService[] _validationRuleGlobalizationServices;
+    private readonly IValidationRuleMetadataService[] _validationRuleGlobalizationServices;
 
-    public CompoundValidationRuleGlobalizationService (IValidationRuleGlobalizationService[] validationRuleGlobalizationServices)
+    public CompoundValidationRuleMetadataService (IEnumerable<IValidationRuleMetadataService> validationRuleGlobalizationServices)
     {
       ArgumentUtility.CheckNotNull ("validationRuleGlobalizationServices", validationRuleGlobalizationServices);
 
-      _validationRuleGlobalizationServices = validationRuleGlobalizationServices;
+      _validationRuleGlobalizationServices = validationRuleGlobalizationServices.ToArray();
     }
     
-    public void ApplyLocalization (IValidationRule validationRule, Type typeToValidate)
+    public void ApplyMetadata (IValidationRule validationRule, Type typeToValidate)
     {
       ArgumentUtility.CheckNotNull ("validationRule", validationRule);
       ArgumentUtility.CheckNotNull ("validationRule", validationRule);
 
       foreach (var validatorGlobalizationService in _validationRuleGlobalizationServices)
-        validatorGlobalizationService.ApplyLocalization (validationRule, typeToValidate);
+        validatorGlobalizationService.ApplyMetadata (validationRule, typeToValidate);
     }
   }
 }

@@ -18,10 +18,11 @@
 using System;
 using FluentValidation;
 using Remotion.Utilities;
+using Remotion.Validation.Implementation;
 
 namespace Remotion.Validation.Globalization
 {
-  public class ValidationRuleGlobalizationService : IValidationRuleGlobalizationService
+  public class ValidationRuleGlobalizationService : IValidationRuleMetadataService
   {
     private readonly IDefaultMessageEvaluator _defaultMessageEvaluator;
     private readonly IValidatorGlobalizationService _validatorGlobalizationService;
@@ -37,7 +38,7 @@ namespace Remotion.Validation.Globalization
       _validatorGlobalizationService = validatorGlobalizationService;
     }
 
-    public void ApplyLocalization (IValidationRule validationRule, Type typeToValidate)
+    public void ApplyMetadata (IValidationRule validationRule, Type typeToValidate)
     {
       ArgumentUtility.CheckNotNull ("validationRule", validationRule);
       ArgumentUtility.CheckNotNull ("typeToValidate", typeToValidate);

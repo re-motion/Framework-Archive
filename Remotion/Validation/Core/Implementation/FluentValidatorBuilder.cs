@@ -40,7 +40,7 @@ namespace Remotion.Validation.Implementation
     private readonly IValidationCollectorProvider _validationCollectorProvider;
     private readonly IValidationCollectorMerger _validationCollectorMerger;
     private readonly IMetaRulesValidatorFactory _metaRulesValidatorFactory;
-    private readonly IValidationRuleGlobalizationService _validationRuleGlobalizationService;
+    private readonly IValidationRuleMetadataService _validationRuleGlobalizationService;
     private readonly IMemberInformationNameResolver _memberInformationNameResolver;
     private readonly ICollectorValidator _collectorValidator;
 
@@ -48,7 +48,7 @@ namespace Remotion.Validation.Implementation
         IValidationCollectorProvider validationCollectorProvider,
         IValidationCollectorMerger validationCollectorMerger,
         IMetaRulesValidatorFactory metaRuleValidatorFactory,
-        IValidationRuleGlobalizationService validationRuleGlobalizationService,
+        IValidationRuleMetadataService validationRuleGlobalizationService,
         IMemberInformationNameResolver memberInformationNameResolver,
         ICompoundCollectorValidator collectorValidator)
     {
@@ -82,7 +82,7 @@ namespace Remotion.Validation.Implementation
       get { return _metaRulesValidatorFactory; }
     }
 
-    public IValidationRuleGlobalizationService ValidationRulesGlobalizationService
+    public IValidationRuleMetadataService ValidationRulesGlobalizationService
     {
       get { return _validationRuleGlobalizationService; }
     }
@@ -107,7 +107,7 @@ namespace Remotion.Validation.Implementation
       ValidateMetaRules (allCollectors, allRules);
       
       ApplyTechnicalPropertyNames (allRules.OfType<PropertyRule>());
-      ApplyGlobalization (validatedType, allRules);
+      ApplyLocalization (allRules, validatedType);
 
       return new Validator (allRules, validatedType);
     }
@@ -143,10 +143,10 @@ namespace Remotion.Validation.Implementation
         propertyRule.PropertyName = _memberInformationNameResolver.GetPropertyName (PropertyInfoAdapter.Create (propertyRule.GetPropertyInfo ()));
     }
 
-    private void ApplyGlobalization (Type typeToValidate, IEnumerable<IValidationRule> validationRules)
+    private void ApplyLocalization (IEnumerable<IValidationRule> validationRules, Type validatedType)
     {
-      foreach (var validation in validationRules)
-        _validationRuleGlobalizationService.ApplyLocalization (validation, typeToValidate);
+      foreach (var validationRule in validationRules)
+        _validationRuleGlobalizationService.ApplyMetadata (validationRule, validatedType);
     }
 
     private MetaValidationException CreateMetaValidationException (IEnumerable<MetaValidationRuleValidationResult> metaValidationResults)

@@ -52,7 +52,7 @@ namespace Remotion.Validation.UnitTests.Globalization
     [Test]
     public void ApplyLocalization_NoPropertyRule ()
     {
-      _service.ApplyLocalization (_validationRule, typeof (Customer));
+      _service.ApplyMetadata (_validationRule, typeof (Customer));
 
       _memberInformationGlobalizationServiceMock.VerifyAllExpectations();
     }
@@ -62,7 +62,7 @@ namespace Remotion.Validation.UnitTests.Globalization
     {
       _propertyRule.DisplayName = new StaticStringSource ("Dummy");
 
-      _service.ApplyLocalization (_propertyRule, typeof (Customer));
+      _service.ApplyMetadata (_propertyRule, typeof (Customer));
 
       Assert.That (_propertyRule.DisplayName.GetString(), Is.EqualTo ("Dummy"));
       _memberInformationGlobalizationServiceMock.VerifyAllExpectations();
@@ -80,7 +80,7 @@ namespace Remotion.Validation.UnitTests.Globalization
           .Return (true);
       Assert.That (_propertyRule.DisplayName, Is.TypeOf (typeof (LazyStringSource)));
 
-      _service.ApplyLocalization (_propertyRule, typeof (Customer));
+      _service.ApplyMetadata (_propertyRule, typeof (Customer));
 
       Assert.That (_propertyRule.DisplayName, Is.Not.Null);
       Assert.That (_propertyRule.DisplayName, Is.TypeOf (typeof (PropertyRuleDisplayNameStringSource)));

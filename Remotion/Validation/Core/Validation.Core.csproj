@@ -59,10 +59,10 @@
     <Compile Include="Attributes\Validation\NotNullAttribute.cs" />
     <Compile Include="Attributes\Validation\RemoveValidatorAttribute.cs" />
     <Compile Include="Attributes\Validation\AddingValidationAttributeBase.cs" />
-    <Compile Include="Globalization\CompoundValidationRuleGlobalizationService.cs" />
+    <Compile Include="Implementation\CompoundValidationRuleMetadataService.cs" />
     <Compile Include="Globalization\DefaultMessageEvaluator.cs" />
     <Compile Include="Globalization\IDefaultMessageEvaluator.cs" />
-    <Compile Include="Globalization\IValidationRuleGlobalizationService.cs" />
+    <Compile Include="Implementation\IValidationRuleMetadataService.cs" />
     <Compile Include="Globalization\IValidatorGlobalizationService.cs" />
     <Compile Include="Globalization\PropertyDisplayNameGlobalizationService.cs" />
     <Compile Include="Globalization\PropertyRuleDisplayNameStringSource.cs" />

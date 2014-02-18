@@ -69,8 +69,8 @@ namespace Remotion.Data.DomainObjects.Validation.IntegrationTests
               new OrderPrecedenceValidationCollectorMerger (new PropertyValidatorExtractorFactory()),
               new FluentValidationValidatorFormatterDecorator (new DefaultValidatorFormatter())),
           new MetaRulesValidatorFactory (mi => new DefaultSystemMetaValidationRulesProvider (mi)),
-          new CompoundValidationRuleGlobalizationService (
-              new IValidationRuleGlobalizationService[]
+          new CompoundValidationRuleMetadataService (
+              new IValidationRuleMetadataService[]
               {
                   new PropertyDisplayNameGlobalizationService (memberInformationGlobalizationService),
                   new ValidationRuleGlobalizationService (new DefaultMessageEvaluator(), GetValidatorGlobalizationService())

@@ -18,10 +18,11 @@
 using System;
 using FluentValidation;
 
-namespace Remotion.Validation.Globalization
+namespace Remotion.Validation.Implementation
 {
-  public interface IValidationRuleGlobalizationService
+  //TODO AO: doc
+  public interface IValidationRuleMetadataService
   {
-    void ApplyLocalization (IValidationRule validationRule, Type typeToValidate);
+    void ApplyMetadata (IValidationRule validationRule, Type typeToValidate);
   }
 }

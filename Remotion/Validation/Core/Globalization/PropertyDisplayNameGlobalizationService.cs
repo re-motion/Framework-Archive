@@ -20,10 +20,12 @@ using FluentValidation;
 using FluentValidation.Internal;
 using Remotion.Globalization;
 using Remotion.Utilities;
+using Remotion.Validation.Implementation;
 
 namespace Remotion.Validation.Globalization
 {
-  public class PropertyDisplayNameGlobalizationService : IValidationRuleGlobalizationService
+  //move to remotion.validation.globaliyation.dll
+  public class PropertyDisplayNameGlobalizationService : IValidationRuleMetadataService
   {
     private readonly IMemberInformationGlobalizationService _globalizationService;
 
@@ -34,7 +36,7 @@ namespace Remotion.Validation.Globalization
       _globalizationService = globalizationService;
     }
 
-    public void ApplyLocalization (IValidationRule validationRule, Type typeToValidate)
+    public void ApplyMetadata (IValidationRule validationRule, Type typeToValidate)
     {
       ArgumentUtility.CheckNotNull ("validationRule", validationRule);
       ArgumentUtility.CheckNotNull ("typeToValidate", typeToValidate);

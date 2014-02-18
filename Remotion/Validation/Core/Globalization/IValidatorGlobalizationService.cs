@@ -21,7 +21,7 @@ using JetBrains.Annotations;
 
 namespace Remotion.Validation.Globalization
 {
-  //TODO AO: doc
+  //TODO AO: rename to IErrorMessageGlobalizationService
   public interface IValidatorGlobalizationService
   {
     /// <summary>
