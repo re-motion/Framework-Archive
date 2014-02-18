@@ -19,7 +19,6 @@ using System;
 using System.Linq;
 using NUnit.Framework;
 using Remotion.Validation.Globalization;
-using Remotion.Validation.Implementation;
 using Remotion.Validation.IntegrationTests.CustomImplementations;
 using Remotion.Validation.IntegrationTests.TestDomain.ComponentA;
 
@@ -39,12 +38,12 @@ namespace Remotion.Validation.IntegrationTests
       var result = validator.Validate (person);
 
       Assert.That (result.IsValid, Is.False);
-      Assert.That (result.Errors.Count (), Is.EqualTo (2));
+      Assert.That (result.Errors.Count(), Is.EqualTo (2));
       Assert.That (
           result.Errors.Select (e => e.ErrorMessage),
           Is.EquivalentTo (new[] { "NotNullValidator Fake Message", "NotEqualValidator Fake Message" }));
     }
-    
+
     protected override IErrorMessageGlobalizationService GetValidatorGlobalizationService ()
     {
       return new FakeMessageValidatorGlobalizationService();

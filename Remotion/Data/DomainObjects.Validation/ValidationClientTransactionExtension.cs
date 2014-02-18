@@ -20,6 +20,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using FluentValidation;
 using FluentValidation.Results;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
 using Remotion.Utilities;
@@ -42,17 +43,17 @@ namespace Remotion.Data.DomainObjects.Validation
     {
     }
 
-    public IValidatorBuilder ValidatorBuilder
-    {
-      get { return _validatorBuilder; }
-    }
-
     public ValidationClientTransactionExtension (string key, IValidatorBuilder validatorBuilder)
         : base (key)
     {
       ArgumentUtility.CheckNotNull ("validatorBuilder", validatorBuilder);
 
       _validatorBuilder = validatorBuilder;
+    }
+
+    public IValidatorBuilder ValidatorBuilder
+    {
+      get { return _validatorBuilder; }
     }
 
     public override void CommitValidate (ClientTransaction clientTransaction, ReadOnlyCollection<PersistableData> committedData)
@@ -74,17 +75,7 @@ namespace Remotion.Data.DomainObjects.Validation
       }
 
       if (invalidValidationResults.Any())
-      {
-        var sb = new StringBuilder ("Component validation failed:");
-        foreach (var validationFailure in invalidValidationResults.SelectMany(vr=>vr.Errors))
-        {
-          sb.AppendLine ();
-          sb.Append (validationFailure.ErrorMessage);
-        }
-
-        throw new ComponentValidationException (sb.ToString ());
-      }
-
+        throw new ValidationException (invalidValidationResults.SelectMany (vr => vr.Errors));
     }
   }
 }

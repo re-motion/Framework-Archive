@@ -108,7 +108,7 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests
     }
 
     [Test]
-    [ExpectedException (typeof (ComponentValidationException), ExpectedMessage = "Component validation failed:\r\nError1\r\nError2\r\nError3")]
+    [ExpectedException (typeof (ValidationException), ExpectedMessage = "Validation failed: \r\n -- Error1\r\n -- Error2\r\n -- Error3")]
     public void CommitValidate_WithValidationFailures ()
     {
       using (ClientTransaction.CreateRootTransaction ().EnterDiscardingScope ())
