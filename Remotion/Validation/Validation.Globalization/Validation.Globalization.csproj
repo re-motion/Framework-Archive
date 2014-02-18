@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{04FA07E3-B868-4846-A5E2-4D375F607C22}</ProjectGuid>
+    <ProjectGuid>{30C3AFA1-D7B3-4A2A-B314-19282A2E312D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Remotion.Data.DomainObjects.Validation</RootNamespace>
-    <AssemblyName>Remotion.Data.DomainObjects.Validation</AssemblyName>
+    <RootNamespace>Remotion.Validation.Globalization</RootNamespace>
+    <AssemblyName>Remotion.Validation.Globalization</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SignAssembly>true</SignAssembly>
@@ -38,10 +38,10 @@
     <DocumentationFile>bin\Release\Remotion.Validation.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="FluentValidation">
+    <Reference Include="FluentValidation, Version=5.0.0.1, Culture=neutral, PublicKeyToken=a82054b837897c66, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\prereq\Assemblies\FluentValidation-5.0\net-4.0\FluentValidation.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
   </ItemGroup>
@@ -49,13 +49,15 @@
     <Compile Include="..\..\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
-    <Compile Include="DataContainerObjectMother.cs" />
-    <Compile Include="EnsureValidationSupportForDomainObjectsAttribute.cs" />
+    <Compile Include="DefaultMessageEvaluator.cs" />
+    <Compile Include="ErrorMessageStringSource.cs" />
+    <Compile Include="IDefaultMessageEvaluator.cs" />
+    <Compile Include="IErrorMessageGlobalizationService.cs" />
+    <Compile Include="NullErrorMessageGlobalizationService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="DomainObjectAttributesBasedValidationCollectorProvider.cs" />
-    <Compile Include="DomainObjectAttributesBasedValidationPropertyRuleReflector.cs" />
-    <Compile Include="ValidationClientTransactionExtension.cs" />
-    <Compile Include="ValidationClientTransactionExtensionFactory.cs" />
+    <Compile Include="PropertyDisplayNameGlobalizationService.cs" />
+    <Compile Include="PropertyRuleDisplayNameStringSource.cs" />
+    <Compile Include="ValidationRuleGlobalizationService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\remotion.snk">
@@ -66,10 +68,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Relinq\Core\Linq.Core.csproj">
-      <Project>{028e7899-0d5f-49c8-9eb6-8b051e02f1e0}</Project>
-      <Name>Linq.Core</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Core\Core\Core.Core.csproj">
       <Project>{2aa369ec-a4e7-4d75-9101-efa90e902625}</Project>
       <Name>Core.Core</Name>
@@ -78,29 +76,9 @@
       <Project>{AC6AB6EB-F6AC-45A4-88A7-877D11A65CCB}</Project>
       <Name>Globalization.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Mixins\Core\Mixins.Core.csproj">
-      <Project>{d641e4e2-23f3-4454-8074-1327ef07baa1}</Project>
-      <Name>Mixins.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Validation\Core\Validation.Core.csproj">
+    <ProjectReference Include="..\Core\Validation.Core.csproj">
       <Project>{D057D6F3-2015-4EB0-B6BD-77BE8ED1571A}</Project>
       <Name>Validation.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Validation\Validation.Globalization\Validation.Globalization.csproj">
-      <Project>{30C3AFA1-D7B3-4A2A-B314-19282A2E312D}</Project>
-      <Name>Validation.Globalization</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Validation\Validation.Mixins\Validation.Mixins.csproj">
-      <Project>{B34D9485-39D7-4F73-805C-39A65059001E}</Project>
-      <Name>Validation.Mixins</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Core\Data.Core.csproj">
-      <Project>{70273934-12f1-49af-975a-303baefe1cae}</Project>
-      <Name>Data.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DomainObjects\Data.DomainObjects.csproj">
-      <Project>{C2D4102A-6DB9-4997-85BE-AFA6ECF42F1A}</Project>
-      <Name>Data.DomainObjects</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

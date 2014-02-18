@@ -19,10 +19,9 @@ using System;
 using FluentValidation.Resources;
 using FluentValidation.Validators;
 using NUnit.Framework;
-using Remotion.Validation.Globalization;
-using Remotion.Validation.UnitTests.TestHelpers;
+using Remotion.Validation.Globalization.UnitTests.TestHelpers;
 
-namespace Remotion.Validation.UnitTests.Globalization
+namespace Remotion.Validation.Globalization.UnitTests
 {
   [TestFixture]
   public class DefaultMessageEvaluatorTest

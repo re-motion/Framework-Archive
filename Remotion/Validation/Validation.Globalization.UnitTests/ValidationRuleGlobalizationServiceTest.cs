@@ -20,12 +20,11 @@ using FluentValidation.Internal;
 using FluentValidation.Resources;
 using FluentValidation.Validators;
 using NUnit.Framework;
-using Remotion.Validation.Globalization;
-using Remotion.Validation.UnitTests.TestDomain;
-using Remotion.Validation.UnitTests.TestHelpers;
+using Remotion.Validation.Globalization.UnitTests.TestDomain;
+using Remotion.Validation.Globalization.UnitTests.TestHelpers;
 using Rhino.Mocks;
 
-namespace Remotion.Validation.UnitTests.Globalization
+namespace Remotion.Validation.Globalization.UnitTests
 {
   [TestFixture]
   public class ValidationRuleGlobalizationServiceTest

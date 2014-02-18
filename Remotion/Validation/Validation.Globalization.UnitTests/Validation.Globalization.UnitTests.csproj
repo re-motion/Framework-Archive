@@ -4,14 +4,15 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{04FA07E3-B868-4846-A5E2-4D375F607C22}</ProjectGuid>
+    <ProjectGuid>{31F1296C-15A5-45E4-A238-55BB7F6362E3}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Remotion.Data.DomainObjects.Validation</RootNamespace>
-    <AssemblyName>Remotion.Data.DomainObjects.Validation</AssemblyName>
+    <RootNamespace>Remotion.Validation.Globalization.UnitTests</RootNamespace>
+    <AssemblyName>Remotion.Validation.Globalization.UnitTests</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <SignAssembly>true</SignAssembly>
+    <TargetFrameworkProfile />
+    <SignAssembly>false</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\..\remotion.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -22,26 +23,34 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <NoWarn>1591;0419</NoWarn>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <DocumentationFile>bin\Debug\Remotion.Validation.XML</DocumentationFile>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <NoWarn>1591;0419</NoWarn>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <DocumentationFile>bin\Release\Remotion.Validation.XML</DocumentationFile>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="FluentValidation">
+    <Reference Include="FluentValidation, Version=0.0.0.0, Culture=neutral, PublicKeyToken=fee00910d6e5f53b, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\prereq\Assemblies\FluentValidation-5.0\net-4.0\FluentValidation.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\prereq\Assemblies\CommonServiceLocator-1.0\net-2.0\Microsoft.Practices.ServiceLocation.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework">
+      <HintPath>..\..\..\prereq\Assemblies\NUnit-2.6\net-2.0\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="Rhino.Mocks">
+      <HintPath>..\..\..\prereq\Assemblies\Rhino.Mocks-3.6\net-3.5\Rhino.Mocks.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
   </ItemGroup>
@@ -49,13 +58,36 @@
     <Compile Include="..\..\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
-    <Compile Include="DataContainerObjectMother.cs" />
-    <Compile Include="EnsureValidationSupportForDomainObjectsAttribute.cs" />
+    <Compile Include="DefaultMessageEvaluatorTest.cs" />
+    <Compile Include="ErrorMessageStringSourceTest.cs" />
+    <Compile Include="NullErrorMessageGlobalizationServiceTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="DomainObjectAttributesBasedValidationCollectorProvider.cs" />
-    <Compile Include="DomainObjectAttributesBasedValidationPropertyRuleReflector.cs" />
-    <Compile Include="ValidationClientTransactionExtension.cs" />
-    <Compile Include="ValidationClientTransactionExtensionFactory.cs" />
+    <Compile Include="PropertyDisplayNameGlobalizationServiceTest.cs" />
+    <Compile Include="PropertyRuleDisplayNameStringSourceTest.cs" />
+    <Compile Include="TestDomain\Customer.cs" />
+    <Compile Include="TestDomain\IPerson.cs" />
+    <Compile Include="TestDomain\Person.cs" />
+    <Compile Include="TestHelpers\ExpressionHelper.cs" />
+    <Compile Include="TestHelpers\StubPropertyValidator.cs" />
+    <Compile Include="ValidationRuleGlobalizationServiceTest.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\Core\Core.Core.csproj">
+      <Project>{2AA369EC-A4E7-4D75-9101-EFA90E902625}</Project>
+      <Name>Core.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Globalization\Core\Globalization.Core.csproj">
+      <Project>{AC6AB6EB-F6AC-45A4-88A7-877D11A65CCB}</Project>
+      <Name>Globalization.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Core\Validation.Core.csproj">
+      <Project>{D057D6F3-2015-4EB0-B6BD-77BE8ED1571A}</Project>
+      <Name>Validation.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Validation.Globalization\Validation.Globalization.csproj">
+      <Project>{30C3AFA1-D7B3-4A2A-B314-19282A2E312D}</Project>
+      <Name>Validation.Globalization</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\remotion.snk">
@@ -65,44 +97,7 @@
       <Link>Remotion LGPL.licenseheader</Link>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\Relinq\Core\Linq.Core.csproj">
-      <Project>{028e7899-0d5f-49c8-9eb6-8b051e02f1e0}</Project>
-      <Name>Linq.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Core\Core\Core.Core.csproj">
-      <Project>{2aa369ec-a4e7-4d75-9101-efa90e902625}</Project>
-      <Name>Core.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Globalization\Core\Globalization.Core.csproj">
-      <Project>{AC6AB6EB-F6AC-45A4-88A7-877D11A65CCB}</Project>
-      <Name>Globalization.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Mixins\Core\Mixins.Core.csproj">
-      <Project>{d641e4e2-23f3-4454-8074-1327ef07baa1}</Project>
-      <Name>Mixins.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Validation\Core\Validation.Core.csproj">
-      <Project>{D057D6F3-2015-4EB0-B6BD-77BE8ED1571A}</Project>
-      <Name>Validation.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Validation\Validation.Globalization\Validation.Globalization.csproj">
-      <Project>{30C3AFA1-D7B3-4A2A-B314-19282A2E312D}</Project>
-      <Name>Validation.Globalization</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Validation\Validation.Mixins\Validation.Mixins.csproj">
-      <Project>{B34D9485-39D7-4F73-805C-39A65059001E}</Project>
-      <Name>Validation.Mixins</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Core\Data.Core.csproj">
-      <Project>{70273934-12f1-49af-975a-303baefe1cae}</Project>
-      <Name>Data.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DomainObjects\Data.DomainObjects.csproj">
-      <Project>{C2D4102A-6DB9-4997-85BE-AFA6ECF42F1A}</Project>
-      <Name>Data.DomainObjects</Name>
-    </ProjectReference>
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

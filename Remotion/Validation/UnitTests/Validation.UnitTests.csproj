@@ -73,12 +73,6 @@
     <Compile Include="Implementation\CompoundValidationTypeFilterTest.cs" />
     <Compile Include="Implementation\CompoundValidatorTest.cs" />
     <Compile Include="Implementation\CompoundValidationRuleMetadataServiceTest.cs" />
-    <Compile Include="Globalization\DefaultMessageEvaluatorTest.cs" />
-    <Compile Include="Globalization\NullErrorMessageGlobalizationServiceTest.cs" />
-    <Compile Include="Globalization\PropertyDisplayNameGlobalizationServiceTest.cs" />
-    <Compile Include="Globalization\PropertyRuleDisplayNameStringSourceTest.cs" />
-    <Compile Include="Globalization\ValidationRuleGlobalizationServiceTest.cs" />
-    <Compile Include="Globalization\ErrorMessageStringSourceTest.cs" />
     <Compile Include="Implementation\CompoundValidatorBuilderTest.cs" />
     <Compile Include="Implementation\NullValidatedTypeResolverTest.cs" />
     <Compile Include="Implementation\GenericTypeAwareValidatedTypeResolverDecoratorTest.cs" />
@@ -166,10 +160,6 @@
     <ProjectReference Include="..\..\Development\Core\Development.Core.csproj">
       <Project>{B719A305-0493-4C72-88FE-9A2FC6964578}</Project>
       <Name>Development.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Globalization\Core\Globalization.Core.csproj">
-      <Project>{AC6AB6EB-F6AC-45A4-88A7-877D11A65CCB}</Project>
-      <Name>Globalization.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\Core\Validation.Core.csproj">
       <Project>{d057d6f3-2015-4eb0-b6bd-77be8ed1571a}</Project>

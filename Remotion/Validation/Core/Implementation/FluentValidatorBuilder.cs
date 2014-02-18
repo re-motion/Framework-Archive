@@ -23,7 +23,6 @@ using FluentValidation;
 using FluentValidation.Internal;
 using Remotion.Reflection;
 using Remotion.Utilities;
-using Remotion.Validation.Globalization;
 using Remotion.Validation.Merging;
 using Remotion.Validation.MetaValidation;
 using Remotion.Validation.Providers;

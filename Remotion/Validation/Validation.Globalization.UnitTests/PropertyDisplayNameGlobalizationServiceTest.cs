@@ -23,12 +23,11 @@ using FluentValidation.Resources;
 using NUnit.Framework;
 using Remotion.Globalization;
 using Remotion.Reflection;
-using Remotion.Validation.Globalization;
-using Remotion.Validation.UnitTests.TestDomain;
-using Remotion.Validation.UnitTests.TestHelpers;
+using Remotion.Validation.Globalization.UnitTests.TestDomain;
+using Remotion.Validation.Globalization.UnitTests.TestHelpers;
 using Rhino.Mocks;
 
-namespace Remotion.Validation.UnitTests.Globalization
+namespace Remotion.Validation.Globalization.UnitTests
 {
   [TestFixture]
   public class PropertyDisplayNameGlobalizationServiceTest

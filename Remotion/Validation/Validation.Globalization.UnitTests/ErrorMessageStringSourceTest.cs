@@ -19,10 +19,9 @@ using System;
 using FluentValidation.Resources;
 using FluentValidation.Validators;
 using NUnit.Framework;
-using Remotion.Validation.Globalization;
 using Rhino.Mocks;
 
-namespace Remotion.Validation.UnitTests.Globalization
+namespace Remotion.Validation.Globalization.UnitTests
 {
   [TestFixture]
   public class ErrorMessageStringSourceTest
