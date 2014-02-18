@@ -16,23 +16,16 @@
 // 
 
 using System;
+using FluentValidation.Validators;
+using Remotion.Validation;
 
-namespace Remotion.Data.DomainObjects.Validation.IntegrationTests.Testdomain
+namespace Remotion.Data.DomainObjects.Validation.IntegrationTests.Testdomain.ValidationCollectors
 {
-  [DBTable]
-  public class Customer : DomainObject
+  public class CustomerValidationCollector1 : ComponentValidationCollector<Customer>
   {
-    public static Customer NewObject ()
+    public CustomerValidationCollector1 ()
     {
-      return NewObject<Customer>();
+      AddRule (c => c.Email).SetValidator (new EmailValidator());
     }
-
-    public virtual string UserName { get; set; }
-
-    public virtual string Email { get; set; }
-
-    public virtual string PhoneNumber { get; set; }
-
-    public virtual string CreditcardNumber { get; set; }
   }
 }

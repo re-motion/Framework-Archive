@@ -20,19 +20,14 @@ using System;
 namespace Remotion.Data.DomainObjects.Validation.IntegrationTests.Testdomain
 {
   [DBTable]
-  public class Customer : DomainObject
+  public class InvalidOrder : DomainObject
   {
-    public static Customer NewObject ()
+    public static InvalidOrder NewObject ()
     {
-      return NewObject<Customer>();
+      return NewObject<InvalidOrder>();
     }
 
-    public virtual string UserName { get; set; }
-
-    public virtual string Email { get; set; }
-
-    public virtual string PhoneNumber { get; set; }
-
-    public virtual string CreditcardNumber { get; set; }
+    [StringProperty (IsNullable = false, MaximumLength = 10)]
+    public virtual string Number { get; set; }
   }
 }

@@ -16,12 +16,21 @@
 // 
 
 using System;
+using Remotion.Globalization;
 using Remotion.Mixins;
+using Remotion.Validation.Attributes.Validation;
 
 namespace Remotion.Data.DomainObjects.Validation.IntegrationTests.Testdomain
 {
+  public interface ICustomerIntroduced
+  {
+    [NotEqual ("Chef1")]
+    string Title { get; set; }
+  }
+
   [Extends (typeof (Customer))]
-  public class CustomerMixin : Mixin<Customer>
+  [MultiLingualResources ("Remotion.Data.DomainObjects.Validation.IntegrationTests.Testdomain.Resources.CustomerMixin")]
+  public class CustomerMixin : Mixin<Customer>, ICustomerIntroduced
   {
     [OverrideTarget]
     [Mandatory]
@@ -31,6 +40,6 @@ namespace Remotion.Data.DomainObjects.Validation.IntegrationTests.Testdomain
       set { Target.UserName = value; }
     }
 
-  
+    public string Title { get; set; }
   }
 }

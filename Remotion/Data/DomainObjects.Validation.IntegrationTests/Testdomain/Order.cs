@@ -16,10 +16,12 @@
 // 
 
 using System;
+using Remotion.Globalization;
 
 namespace Remotion.Data.DomainObjects.Validation.IntegrationTests.Testdomain
 {
   [DBTable]
+  [MultiLingualResources ("Remotion.Data.DomainObjects.Validation.IntegrationTests.Testdomain.Resources.Order")]
   public class Order : DomainObject
   {
     public static Order NewObject ()

@@ -16,23 +16,19 @@
 // 
 
 using System;
+using FluentValidation;
+using FluentValidation.Validators;
+using Remotion.Validation;
 
-namespace Remotion.Data.DomainObjects.Validation.IntegrationTests.Testdomain
+namespace Remotion.Data.DomainObjects.Validation.IntegrationTests.Testdomain.ValidationCollectors
 {
-  [DBTable]
-  public class Customer : DomainObject
+  public class InvalidOrderValidationCollector1 : ComponentValidationCollector<InvalidOrder>
   {
-    public static Customer NewObject ()
+    public InvalidOrderValidationCollector1 ()
     {
-      return NewObject<Customer>();
+      RemoveRule (o => o.Number).Validator<LengthValidator>();
+
+      AddRule (o => o.Number).Length (3, 15);
     }
-
-    public virtual string UserName { get; set; }
-
-    public virtual string Email { get; set; }
-
-    public virtual string PhoneNumber { get; set; }
-
-    public virtual string CreditcardNumber { get; set; }
   }
 }

@@ -45,7 +45,7 @@ namespace Remotion.Data.DomainObjects.Validation.IntegrationTests
 
     [Test]
     [ExpectedException (typeof (ValidationException), ExpectedMessage = "Validation failed: \r\n "
-                                                                        + "-- 'Number' must be between 3 and 8 characters. You entered 2 characters.\r\n "
+                                                                        + "-- 'LocalizedNumber' must be between 3 and 8 characters. You entered 2 characters.\r\n "
                                                                         + "-- 'UserName' must not be empty.")]
     public void RootClientTransaction_InvalidDomainObjects_ValidationExceptionIsThrown ()
     {
@@ -65,7 +65,7 @@ namespace Remotion.Data.DomainObjects.Validation.IntegrationTests
 
     [Test]
     [ExpectedException (typeof (ValidationException), ExpectedMessage = "Validation failed: \r\n "
-                                                                        + "-- 'Number' must be between 3 and 8 characters. You entered 2 characters.\r\n "
+                                                                        + "-- 'LocalizedNumber' must be between 3 and 8 characters. You entered 2 characters.\r\n "
                                                                         + "-- 'UserName' must not be empty.")]
     public void SubClientTransaction_InvalidDomainObjects_ValidationExceptionIsThrown ()
     {
