@@ -59,7 +59,7 @@ namespace Remotion.Validation.IntegrationTests
                   new ApiBasedComponentValidationCollectorProvider (
                       new DiscoveryServiceBasedValidationCollectorReflector (
                       new ClassTypeAwareValidatedTypeResolverDecorator (
-                      new GenericTypeAwareValidatedTypeResolverDecorator (new NullValidatedTypeResolver()))))
+                      new GenericTypeAwareValidatedTypeResolverDecorator (SafeServiceLocator.Current.GetInstance<IValidatedTypeResolver>()))))
               }),
           new DiagnosticOutputRuleMergeDecorator (
               SafeServiceLocator.Current.GetInstance<IValidationCollectorMerger>(),

@@ -64,7 +64,7 @@ namespace Remotion.Validation.Mixins.IntegrationTests
                       new DiscoveryServiceBasedValidationCollectorReflector (
                       new MixinTypeAwareValidatedTypeResolverDecorator (
                       new ClassTypeAwareValidatedTypeResolverDecorator (
-                      new GenericTypeAwareValidatedTypeResolverDecorator (new NullValidatedTypeResolver())))))
+                      new GenericTypeAwareValidatedTypeResolverDecorator (SafeServiceLocator.Current.GetInstance<IValidatedTypeResolver>())))))
               }),
           new DiagnosticOutputRuleMergeDecorator (
               SafeServiceLocator.Current.GetInstance<IValidationCollectorMerger>(),

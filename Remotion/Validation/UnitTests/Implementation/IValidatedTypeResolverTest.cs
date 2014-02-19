@@ -16,23 +16,39 @@
 // 
 
 using System;
-using JetBrains.Annotations;
+using NUnit.Framework;
 using Remotion.ServiceLocation;
+using Remotion.Validation.Implementation;
 
-namespace Remotion.Validation.Implementation
+namespace Remotion.Validation.UnitTests.Implementation
 {
-  /// <summary>
-  /// Defines an API for retrieving the validated <see cref="Type"/> associated with the <see cref="IComponentValidationCollector"/> type.
-  /// </summary>
-  [ConcreteImplementation(typeof(NullValidatedTypeResolver), Lifetime = LifetimeKind.Singleton)]
-  public interface IValidatedTypeResolver
+  [TestFixture]
+  public class IValidatedTypeResolverTest
   {
-    /// <summary>
-    /// Retrieves the validated <see cref="Type"/> from the <paramref name="collectorType"/>.
-    /// </summary>
-    /// <param name="collectorType">The <see cref="Type"/> of the <see cref="IComponentValidationCollector"/> to analyze. Must not be <see langword="null" />.</param>
-    /// <returns>A <see cref="Type"/> or <see langword="null" /> if no validated type could be identified.</returns>
-    [CanBeNull]
-    Type GetValidatedType ([NotNull] Type collectorType);
+    private DefaultServiceLocator _serviceLocator;
+
+    [SetUp]
+    public void SetUp ()
+    {
+      _serviceLocator = new DefaultServiceLocator ();
+    }
+
+    [Test]
+    public void GetInstance_Once ()
+    {
+      var factory = _serviceLocator.GetInstance<IValidatedTypeResolver> ();
+
+      Assert.That (factory, Is.Not.Null);
+      Assert.That (factory, Is.TypeOf<NullValidatedTypeResolver> ());
+    }
+
+    [Test]
+    public void GetInstance_Twice_ReturnsSameInstance ()
+    {
+      var factory1 = _serviceLocator.GetInstance<IValidatedTypeResolver> ();
+      var factory2 = _serviceLocator.GetInstance<IValidatedTypeResolver> ();
+
+      Assert.That (factory1, Is.SameAs (factory2));
+    } 
   }
 }
