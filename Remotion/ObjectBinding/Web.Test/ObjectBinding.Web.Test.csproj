@@ -186,6 +186,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BocValidationTestForm.aspx.cs">
+      <DependentUpon>BocValidationTestForm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="ControlLayoutTests\Form.aspx.cs">
       <DependentUpon>Form.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -194,6 +198,7 @@
       <DependentUpon>Form.aspx</DependentUpon>
     </Compile>
     <Compile Include="ControlLayoutTests\TestFunction.cs" />
+    <Compile Include="BocValidationTestWxeFunction.cs" />
     <Compile Include="IndividualControlTests\BocAutoCompleteReferenceValueUserControl.ascx.cs">
       <DependentUpon>BocAutoCompleteReferenceValueUserControl.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -452,6 +457,7 @@
     <Compile Include="ViewPersonsWxeFunction.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Content Include="BocValidationTestForm.aspx" />
     <Content Include="ClientForm.aspx">
       <SubType>Form</SubType>
     </Content>
