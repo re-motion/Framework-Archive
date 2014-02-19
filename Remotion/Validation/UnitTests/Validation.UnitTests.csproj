@@ -88,6 +88,8 @@
     <Compile Include="Merging\DefaultPropertyValidatorExtractorTest.cs" />
     <Compile Include="Implementation\LoadFilteredValidationTypeFilterTest.cs" />
     <Compile Include="Implementation\LogContextInfoTest.cs" />
+    <Compile Include="Merging\IValidationCollectorMergerTest.cs" />
+    <Compile Include="Merging\IPropertyValidatorExtractorFactoryTest.cs" />
     <Compile Include="Merging\NamespaceAwareDiagnosticOutputRuleMergeDecoratorTest.cs" />
     <Compile Include="Merging\PropertyValidatorExtractorFactoryTest.cs" />
     <Compile Include="Merging\OrderPrecedenceValidationCollectorMergerTest.cs" />

@@ -49,14 +49,14 @@ namespace Remotion.Validation.Mixins.IntegrationTests
       var memberInfoNameResolver = SafeServiceLocator.Current.GetInstance<IMemberInformationNameResolver>();
       var memberInformationGlobalizationService = SafeServiceLocator.Current.GetInstance<IMemberInformationGlobalizationService>();
       var compoundValidationTypeFilter = SafeServiceLocator.Current.GetInstance<ICompoundValidationTypeFilter>();
-      
+
       ValidationBuilder = new FluentValidatorBuilder (
           new AggregatingValidationCollectorProvider (
               new MixedInvolvedTypeProviderDecorator (
                   InvolvedTypeProvider.Create (
                       types => types.OrderBy (t => t.Name),
                       compoundValidationTypeFilter),
-                      compoundValidationTypeFilter),
+                  compoundValidationTypeFilter),
               new IValidationCollectorProvider[]
               {
                   new ValidationAttributesBasedCollectorProvider(),
@@ -67,7 +67,7 @@ namespace Remotion.Validation.Mixins.IntegrationTests
                       new GenericTypeAwareValidatedTypeResolverDecorator (new NullValidatedTypeResolver())))))
               }),
           new DiagnosticOutputRuleMergeDecorator (
-              new OrderPrecedenceValidationCollectorMerger (new PropertyValidatorExtractorFactory()),
+              SafeServiceLocator.Current.GetInstance<IValidationCollectorMerger> (),
               new FluentValidationValidatorFormatterDecorator (new DefaultValidatorFormatter())),
           new MetaRulesValidatorFactory (mi => new DefaultSystemMetaValidationRulesProvider (mi)),
           new CompoundValidationRuleMetadataService (

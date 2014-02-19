@@ -62,7 +62,7 @@ namespace Remotion.Validation.IntegrationTests
                       new GenericTypeAwareValidatedTypeResolverDecorator (new NullValidatedTypeResolver()))))
               }),
           new DiagnosticOutputRuleMergeDecorator (
-              new OrderPrecedenceValidationCollectorMerger (new PropertyValidatorExtractorFactory()),
+              SafeServiceLocator.Current.GetInstance<IValidationCollectorMerger> (),
               new FluentValidationValidatorFormatterDecorator (new DefaultValidatorFormatter())),
           new MetaRulesValidatorFactory (mi => new DefaultSystemMetaValidationRulesProvider (mi)),
           new CompoundValidationRuleMetadataService (
