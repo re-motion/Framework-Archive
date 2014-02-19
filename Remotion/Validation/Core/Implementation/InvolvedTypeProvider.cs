@@ -55,11 +55,6 @@ namespace Remotion.Validation.Implementation
     {
     }
 
-    public IValidationTypeFilter ValidationTypeFilter
-    {
-      get { return _validationTypeFilter; }
-    }
-
     protected InvolvedTypeProvider (Func<IEnumerable<Type>, IEnumerable<Type>> hierarchyLevelsubSort, IValidationTypeFilter validationTypeFilter)
     {
       ArgumentUtility.CheckNotNull ("hierarchyLevelsubSort", hierarchyLevelsubSort);

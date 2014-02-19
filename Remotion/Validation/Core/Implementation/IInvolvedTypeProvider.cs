@@ -25,13 +25,12 @@ namespace Remotion.Validation.Implementation
   /// </summary>
   /// <seealso cref="InvolvedTypeProvider"/>
   /// <seealso cref="T:Remotion.Validation.Mixins.Implementation.MixedInvolvedTypeProviderDecorator"/>
-  [ConcreteImplementation(typeof(InvolvedTypeProvider))]
+  [ConcreteImplementation(typeof(InvolvedTypeProvider))] //TODO AO: should be decorated if mixin-assembly is referenced
   public interface IInvolvedTypeProvider
   {
     /// <summary>
     /// Gets a sorted and grouped set of all types involved in the make-up of the <paramref name="type"/>.
     /// </summary>
     IEnumerable<IEnumerable<Type>> GetTypes (Type type);
-    IValidationTypeFilter ValidationTypeFilter { get; } //TOOD AO: move to ctor in decorator implmenentation
   }
 }

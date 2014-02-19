@@ -32,10 +32,13 @@ namespace Remotion.Validation.Mixins.UnitTests.Implementation
     [SetUp]
     public void SetUp ()
     {
+      var compoundValidationTypeFilter = new CompoundValidationTypeFilter (
+
+          new IValidationTypeFilter[] { new LoadFilteredValidationTypeFilter (), new MixedLoadFilteredValidationTypeFilter () });
       _mixedInvolvedTypeProvider = new MixedInvolvedTypeProviderDecorator(InvolvedTypeProvider.Create (
           col => col.OrderBy (t => t.Name),
-          new CompoundValidationTypeFilter (
-              new IValidationTypeFilter[] { new LoadFilteredValidationTypeFilter (), new MixedLoadFilteredValidationTypeFilter () })));
+          compoundValidationTypeFilter),
+          compoundValidationTypeFilter);
     }
 
     [Test]

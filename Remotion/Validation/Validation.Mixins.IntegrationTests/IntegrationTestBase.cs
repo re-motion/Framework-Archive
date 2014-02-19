@@ -48,13 +48,15 @@ namespace Remotion.Validation.Mixins.IntegrationTests
 
       var memberInfoNameResolver = SafeServiceLocator.Current.GetInstance<IMemberInformationNameResolver>();
       var memberInformationGlobalizationService = SafeServiceLocator.Current.GetInstance<IMemberInformationGlobalizationService>();
-
+      var compoundValidationTypeFilter = SafeServiceLocator.Current.GetInstance<ICompoundValidationTypeFilter>();
+      
       ValidationBuilder = new FluentValidatorBuilder (
           new AggregatingValidationCollectorProvider (
               new MixedInvolvedTypeProviderDecorator (
                   InvolvedTypeProvider.Create (
                       types => types.OrderBy (t => t.Name),
-                      SafeServiceLocator.Current.GetInstance<ICompoundValidationTypeFilter>())),
+                      compoundValidationTypeFilter),
+                      compoundValidationTypeFilter),
               new IValidationCollectorProvider[]
               {
                   new ValidationAttributesBasedCollectorProvider(),

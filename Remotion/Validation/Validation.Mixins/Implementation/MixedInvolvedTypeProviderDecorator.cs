@@ -31,17 +31,15 @@ namespace Remotion.Validation.Mixins.Implementation
   public class MixedInvolvedTypeProviderDecorator : IInvolvedTypeProvider
   {
     private readonly IInvolvedTypeProvider _involvedTypeProvider;
+    private readonly IValidationTypeFilter _validationTypeFilter;
 
-    public MixedInvolvedTypeProviderDecorator (IInvolvedTypeProvider involvedTypeProvider)
+    public MixedInvolvedTypeProviderDecorator (IInvolvedTypeProvider involvedTypeProvider, IValidationTypeFilter validationTypeFilter)
     {
       ArgumentUtility.CheckNotNull ("involvedTypeProvider", involvedTypeProvider);
+      ArgumentUtility.CheckNotNull ("validationTypeFilter", validationTypeFilter);
 
       _involvedTypeProvider = involvedTypeProvider;
-    }
-
-    public IValidationTypeFilter ValidationTypeFilter
-    {
-      get { return _involvedTypeProvider.ValidationTypeFilter; }
+      _validationTypeFilter = validationTypeFilter;
     }
 
     public IEnumerable<IEnumerable<Type>> GetTypes (Type type)
@@ -57,7 +55,11 @@ namespace Remotion.Validation.Mixins.Implementation
 
     private IEnumerable<IEnumerable<Type>> GetMixins (Type type)
     {
-      return MixinTypeUtility.GetMixinTypesExact (type).Where (ValidationTypeFilter.IsValidatableType).Select (mixinType => new[] { mixinType }).ToArray();
+      return
+          MixinTypeUtility.GetMixinTypesExact (type)
+              .Where (_validationTypeFilter.IsValidatableType)
+              .Select (mixinType => new[] { mixinType })
+              .ToArray();
     }
   }
 }
