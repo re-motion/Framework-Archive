@@ -74,6 +74,7 @@
     <Compile Include="Implementation\CompoundValidatorTest.cs" />
     <Compile Include="Implementation\CompoundValidationRuleMetadataServiceTest.cs" />
     <Compile Include="Implementation\CompoundValidatorBuilderTest.cs" />
+    <Compile Include="Implementation\IValidatorFormatterTest.cs" />
     <Compile Include="Implementation\NullValidatedTypeResolverTest.cs" />
     <Compile Include="Implementation\GenericTypeAwareValidatedTypeResolverDecoratorTest.cs" />
     <Compile Include="Implementation\ICompoundTypeValidatorTest.cs" />

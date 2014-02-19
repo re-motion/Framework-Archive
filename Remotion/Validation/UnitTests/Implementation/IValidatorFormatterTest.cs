@@ -14,21 +14,41 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System;
-using FluentValidation;
-using FluentValidation.Validators;
-using Remotion.ServiceLocation;
 
-namespace Remotion.Validation.Implementation
+using System;
+using NUnit.Framework;
+using Remotion.ServiceLocation;
+using Remotion.Validation.Implementation;
+
+namespace Remotion.Validation.UnitTests.Implementation
 {
-  /// <summary>
-  /// Defines an API for providing a string representation for an <see cref="IValidator"/>.
-  /// </summary>
-  /// <seealso cref="DefaultValidatorFormatter"/>
-  /// <seealso cref="FluentValidationValidatorFormatterDecorator"/>
-  [ConcreteImplementation (typeof (DefaultValidatorFormatter),Lifetime = LifetimeKind.Singleton)]
-  public interface IValidatorFormatter
+  [TestFixture]
+  public class IValidatorFormatterTest
   {
-    string Format (IPropertyValidator validator, Func<Type, string> typeNameFormatter);
+    private DefaultServiceLocator _serviceLocator;
+
+    [SetUp]
+    public void SetUp ()
+    {
+      _serviceLocator = new DefaultServiceLocator ();
+    }
+
+    [Test]
+    public void GetInstance_Once ()
+    {
+      var factory = _serviceLocator.GetInstance<IValidatorFormatter> ();
+
+      Assert.That (factory, Is.Not.Null);
+      Assert.That (factory, Is.TypeOf<DefaultValidatorFormatter> ());
+    }
+
+    [Test]
+    public void GetInstance_Twice_ReturnsSameInstance ()
+    {
+      var factory1 = _serviceLocator.GetInstance<IValidatorFormatter> ();
+      var factory2 = _serviceLocator.GetInstance<IValidatorFormatter> ();
+
+      Assert.That (factory1, Is.SameAs (factory2));
+    }
   }
 }

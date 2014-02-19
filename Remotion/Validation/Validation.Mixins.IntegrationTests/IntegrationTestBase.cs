@@ -68,7 +68,7 @@ namespace Remotion.Validation.Mixins.IntegrationTests
               }),
           new DiagnosticOutputRuleMergeDecorator (
               SafeServiceLocator.Current.GetInstance<IValidationCollectorMerger> (),
-              new FluentValidationValidatorFormatterDecorator (new DefaultValidatorFormatter())),
+              new FluentValidationValidatorFormatterDecorator (SafeServiceLocator.Current.GetInstance<IValidatorFormatter> ())),
           new MetaRulesValidatorFactory (mi => new DefaultSystemMetaValidationRulesProvider (mi)),
           new CompoundValidationRuleMetadataService (
               new IValidationRuleMetadataService[]
