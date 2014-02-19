@@ -16,14 +16,38 @@
 // 
 
 using System;
-using FluentValidation.Validators;
+using NUnit.Framework;
 using Remotion.ServiceLocation;
 
-namespace Remotion.Validation.Globalization
+namespace Remotion.Validation.Globalization.UnitTests
 {
-  [ConcreteImplementation(typeof(DefaultMessageEvaluator), Lifetime = LifetimeKind.Singleton)]
-  public interface IDefaultMessageEvaluator
+  [TestFixture]
+  public class IDefaultMessageEvaluatorTest
   {
-    bool HasDefaultMessageAssigned (IPropertyValidator validator);
+    private DefaultServiceLocator _serviceLocator;
+
+    [SetUp]
+    public void SetUp ()
+    {
+      _serviceLocator = new DefaultServiceLocator();
+    }
+
+    [Test]
+    public void GetInstance_Once ()
+    {
+      var factory = _serviceLocator.GetInstance<IDefaultMessageEvaluator>();
+
+      Assert.That (factory, Is.Not.Null);
+      Assert.That (factory, Is.TypeOf<DefaultMessageEvaluator>());
+    }
+
+    [Test]
+    public void GetInstance_Twice_ReturnsSameInstance ()
+    {
+      var factory1 = _serviceLocator.GetInstance<IDefaultMessageEvaluator>();
+      var factory2 = _serviceLocator.GetInstance<IDefaultMessageEvaluator>();
+
+      Assert.That (factory1, Is.SameAs (factory2));
+    }
   }
 }

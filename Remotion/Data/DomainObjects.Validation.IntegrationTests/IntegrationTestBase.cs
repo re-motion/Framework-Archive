@@ -49,14 +49,14 @@ namespace Remotion.Data.DomainObjects.Validation.IntegrationTests
       var memberInfoNameResolver = SafeServiceLocator.Current.GetInstance<IMemberInformationNameResolver>();
       var memberInformationGlobalizationService = SafeServiceLocator.Current.GetInstance<IMemberInformationGlobalizationService>();
       var compoundValidationTypeFilter = SafeServiceLocator.Current.GetInstance<ICompoundValidationTypeFilter>();
-      
+
       ValidationBuilder = new FluentValidatorBuilder (
           new AggregatingValidationCollectorProvider (
               new MixedInvolvedTypeProviderDecorator (
                   InvolvedTypeProvider.Create (
                       types => types.OrderBy (t => t.Name),
                       compoundValidationTypeFilter),
-                      compoundValidationTypeFilter),
+                  compoundValidationTypeFilter),
               new IValidationCollectorProvider[]
               {
                   new DomainObjectAttributesBasedValidationCollectorProvider(),
@@ -68,14 +68,16 @@ namespace Remotion.Data.DomainObjects.Validation.IntegrationTests
                       new GenericTypeAwareValidatedTypeResolverDecorator (new NullValidatedTypeResolver())))))
               }),
           new DiagnosticOutputRuleMergeDecorator (
-              SafeServiceLocator.Current.GetInstance<IValidationCollectorMerger> (),
+              SafeServiceLocator.Current.GetInstance<IValidationCollectorMerger>(),
               new FluentValidationValidatorFormatterDecorator (SafeServiceLocator.Current.GetInstance<IValidatorFormatter>())),
           new MetaRulesValidatorFactory (mi => new DefaultSystemMetaValidationRulesProvider (mi)),
           new CompoundValidationRuleMetadataService (
               new IValidationRuleMetadataService[]
               {
                   new PropertyDisplayNameGlobalizationService (memberInformationGlobalizationService),
-                  new ValidationRuleGlobalizationService (new DefaultMessageEvaluator(), GetValidatorGlobalizationService())
+                  new ValidationRuleGlobalizationService (
+                      SafeServiceLocator.Current.GetInstance<IDefaultMessageEvaluator>(),
+                      GetValidatorGlobalizationService())
               }),
           memberInfoNameResolver,
           SafeServiceLocator.Current.GetInstance<ICompoundCollectorValidator>());

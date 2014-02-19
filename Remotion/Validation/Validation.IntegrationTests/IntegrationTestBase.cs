@@ -51,8 +51,8 @@ namespace Remotion.Validation.IntegrationTests
       ValidationBuilder = new FluentValidatorBuilder (
           new AggregatingValidationCollectorProvider (
               InvolvedTypeProvider.Create (
-                      types => types.OrderBy (t => t.Name),
-                      SafeServiceLocator.Current.GetInstance<ICompoundValidationTypeFilter>()),
+                  types => types.OrderBy (t => t.Name),
+                  SafeServiceLocator.Current.GetInstance<ICompoundValidationTypeFilter>()),
               new IValidationCollectorProvider[]
               {
                   new ValidationAttributesBasedCollectorProvider(),
@@ -62,14 +62,16 @@ namespace Remotion.Validation.IntegrationTests
                       new GenericTypeAwareValidatedTypeResolverDecorator (new NullValidatedTypeResolver()))))
               }),
           new DiagnosticOutputRuleMergeDecorator (
-              SafeServiceLocator.Current.GetInstance<IValidationCollectorMerger> (),
-              new FluentValidationValidatorFormatterDecorator (SafeServiceLocator.Current.GetInstance<IValidatorFormatter> ())),
+              SafeServiceLocator.Current.GetInstance<IValidationCollectorMerger>(),
+              new FluentValidationValidatorFormatterDecorator (SafeServiceLocator.Current.GetInstance<IValidatorFormatter>())),
           new MetaRulesValidatorFactory (mi => new DefaultSystemMetaValidationRulesProvider (mi)),
           new CompoundValidationRuleMetadataService (
               new IValidationRuleMetadataService[]
               {
                   new PropertyDisplayNameGlobalizationService (memberInformationGlobalizationService),
-                  new ValidationRuleGlobalizationService (new DefaultMessageEvaluator(), GetValidatorGlobalizationService())
+                  new ValidationRuleGlobalizationService (
+                      SafeServiceLocator.Current.GetInstance<IDefaultMessageEvaluator>(),
+                      GetValidatorGlobalizationService())
               }),
           memberInfoNameResolver,
           SafeServiceLocator.Current.GetInstance<ICompoundCollectorValidator>());
