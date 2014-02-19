@@ -24,6 +24,7 @@ using System.Reflection;
 //
 using Remotion.Data.DomainObjects.Validation;
 using Remotion.Globalization.Mixins;
+using Remotion.Validation.Globalization;
 using Remotion.Validation.Mixins;
 
 [assembly: AssemblyTitle ("Remotion Integration Library for Application Domains")]
@@ -33,3 +34,4 @@ using Remotion.Validation.Mixins;
 [assembly: EnsureGlobalizationSupportForMixins]
 [assembly: EnsureValidationSupportForDomainObjects]
 [assembly: EnsureValidationSupportForMixins]
+[assembly: EnsureValidationSupportForGlobalization]

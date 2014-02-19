@@ -42,6 +42,11 @@ namespace Remotion.Validation.Implementation
     {
     }
 
+    public IValidatedTypeResolver ValidatedTypeResolver
+    {
+      get { return _validatedTypeResolver; }
+    }
+
     public DiscoveryServiceBasedValidationCollectorReflector (
         ITypeDiscoveryService typeDiscoveryService,
         IValidatedTypeResolver validatedTypeResolver)

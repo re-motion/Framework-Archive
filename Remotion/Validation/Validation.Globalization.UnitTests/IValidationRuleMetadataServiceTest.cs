@@ -16,15 +16,16 @@
 // 
 
 using System;
+using System.Linq;
 using NUnit.Framework;
+using Remotion.Globalization;
 using Remotion.ServiceLocation;
 using Remotion.Validation.Implementation;
-using Remotion.Validation.Merging;
 
-namespace Remotion.Validation.UnitTests.Merging
+namespace Remotion.Validation.Globalization.UnitTests
 {
   [TestFixture]
-  public class IValidationCollectorMergerTest
+  public class IValidationRuleMetadataServiceTest
   {
     private DefaultServiceLocator _serviceLocator;
 
@@ -35,26 +36,23 @@ namespace Remotion.Validation.UnitTests.Merging
     }
 
     [Test]
-    public void GetInstance_Once ()
+    public void GetInstance ()
     {
       //TOOD AO: change after new IoC features are integrated
-      var factory = new DiagnosticOutputRuleMergeDecorator (
-          SafeServiceLocator.Current.GetInstance<IValidationCollectorMerger>(),
-          new FluentValidationValidatorFormatterDecorator (SafeServiceLocator.Current.GetInstance<IValidatorFormatter>()));
+      var factory = new CompoundValidationRuleMetadataService (new IValidationRuleMetadataService[]
+              {
+                  new PropertyDisplayNameGlobalizationService (SafeServiceLocator.Current.GetInstance<IMemberInformationGlobalizationService>()),
+                  new ValidationRuleGlobalizationService (
+                      SafeServiceLocator.Current.GetInstance<IDefaultMessageEvaluator>(),
+                      new NullErrorMessageGlobalizationService())
+              });
 
       Assert.That (factory, Is.Not.Null);
-      Assert.That (factory, Is.TypeOf<DiagnosticOutputRuleMergeDecorator> ());
-      Assert.That (((DiagnosticOutputRuleMergeDecorator) factory).ValidationCollectorMerger, Is.TypeOf<OrderPrecedenceValidationCollectorMerger> ());
-      Assert.That (((DiagnosticOutputRuleMergeDecorator) factory).ValidatorFormatter, Is.TypeOf<FluentValidationValidatorFormatterDecorator> ());
-    }
-
-    [Test]
-    public void GetInstance_Twice_ReturnsNotSameInstance ()
-    {
-      var factory1 = _serviceLocator.GetInstance<IValidationCollectorMerger> ();
-      var factory2 = _serviceLocator.GetInstance<IValidationCollectorMerger> ();
-
-      Assert.That (factory1, Is.Not.SameAs (factory2));
+      Assert.That (factory, Is.TypeOf (typeof (CompoundValidationRuleMetadataService)));
+      var validationRuleGlobalizationServices = ((CompoundValidationRuleMetadataService) factory).ValidationRuleGlobalizationServices;
+      Assert.That (validationRuleGlobalizationServices.Count(), Is.EqualTo(2));
+      Assert.That (validationRuleGlobalizationServices[0], Is.TypeOf (typeof (PropertyDisplayNameGlobalizationService)));
+      Assert.That (validationRuleGlobalizationServices[1], Is.TypeOf (typeof (ValidationRuleGlobalizationService)));
     }
   }
 }

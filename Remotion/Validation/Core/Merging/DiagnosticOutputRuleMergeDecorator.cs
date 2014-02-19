@@ -51,6 +51,16 @@ namespace Remotion.Validation.Merging
       _validatorFormatter = validatorFormatter;
     }
 
+    public IValidationCollectorMerger ValidationCollectorMerger
+    {
+      get { return _validationCollectorMerger; }
+    }
+
+    public IValidatorFormatter ValidatorFormatter
+    {
+      get { return _validatorFormatter; }
+    }
+
     public ILogContext LogContext
     {
       get { return _validationCollectorMerger.LogContext; }

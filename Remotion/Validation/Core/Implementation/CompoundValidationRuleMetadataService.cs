@@ -34,7 +34,12 @@ namespace Remotion.Validation.Implementation
 
       _validationRuleGlobalizationServices = validationRuleGlobalizationServices.ToArray();
     }
-    
+
+    public IValidationRuleMetadataService[] ValidationRuleGlobalizationServices
+    {
+      get { return _validationRuleGlobalizationServices; }
+    }
+
     public void ApplyMetadata (IValidationRule validationRule, Type typeToValidate)
     {
       ArgumentUtility.CheckNotNull ("validationRule", validationRule);

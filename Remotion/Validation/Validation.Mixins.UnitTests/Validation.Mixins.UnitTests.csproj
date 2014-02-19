@@ -68,6 +68,7 @@
     <Compile Include="Implementation\ICollectorTypeValidatorTest.cs" />
     <Compile Include="Implementation\ICompoundTypeValidatorTest.cs" />
     <Compile Include="Implementation\ICompoundValidationTypeFilterTest.cs" />
+    <Compile Include="Implementation\IInvolvedTypeProviderTest.cs" />
     <Compile Include="Implementation\IValidationTypeFilterTest.cs" />
     <Compile Include="Implementation\MixedInvolvedTypeProviderDecoratorTest.cs" />
     <Compile Include="Implementation\MixedLoadFilteredValidationTypeFilterTest.cs" />
@@ -79,6 +80,7 @@
     <Compile Include="Implementation\TestDomain\MixinForDerivedType1.cs" />
     <Compile Include="Implementation\TestDomain\MixinForDerivedType2.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Providers\IValidationCollectorProviderTest.cs" />
     <Compile Include="TestDomain\Address.cs" />
     <Compile Include="TestDomain\Collectors\CustomerMixinIntroducedValidationCollector1.cs" />
     <Compile Include="TestDomain\Collectors\CustomerMixinIntroducedValidationCollector2.cs" />

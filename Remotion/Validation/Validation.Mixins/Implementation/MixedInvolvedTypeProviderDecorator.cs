@@ -42,6 +42,11 @@ namespace Remotion.Validation.Mixins.Implementation
       _validationTypeFilter = validationTypeFilter;
     }
 
+    public IInvolvedTypeProvider InvolvedTypeProvider
+    {
+      get { return _involvedTypeProvider; }
+    }
+
     public IEnumerable<IEnumerable<Type>> GetTypes (Type type)
     {
       ArgumentUtility.CheckNotNull ("type", type);

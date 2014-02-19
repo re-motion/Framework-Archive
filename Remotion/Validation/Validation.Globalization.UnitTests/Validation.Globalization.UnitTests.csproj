@@ -61,6 +61,7 @@
     <Compile Include="DefaultMessageEvaluatorTest.cs" />
     <Compile Include="ErrorMessageStringSourceTest.cs" />
     <Compile Include="IDefaultMessageEvaluatorTest.cs" />
+    <Compile Include="IValidationRuleMetadataServiceTest.cs" />
     <Compile Include="NullErrorMessageGlobalizationServiceTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PropertyDisplayNameGlobalizationServiceTest.cs" />

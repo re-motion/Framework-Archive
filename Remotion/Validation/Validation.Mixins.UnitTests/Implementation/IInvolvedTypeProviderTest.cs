@@ -19,42 +19,32 @@ using System;
 using NUnit.Framework;
 using Remotion.ServiceLocation;
 using Remotion.Validation.Implementation;
-using Remotion.Validation.Merging;
+using Remotion.Validation.Mixins.Implementation;
 
-namespace Remotion.Validation.UnitTests.Merging
+namespace Remotion.Validation.Mixins.UnitTests.Implementation
 {
   [TestFixture]
-  public class IValidationCollectorMergerTest
+  public class IInvolvedTypeProviderTest
   {
     private DefaultServiceLocator _serviceLocator;
 
     [SetUp]
     public void SetUp ()
     {
-      _serviceLocator = new DefaultServiceLocator ();
+      _serviceLocator = new DefaultServiceLocator();
     }
 
     [Test]
-    public void GetInstance_Once ()
+    public void GetInstance ()
     {
       //TOOD AO: change after new IoC features are integrated
-      var factory = new DiagnosticOutputRuleMergeDecorator (
-          SafeServiceLocator.Current.GetInstance<IValidationCollectorMerger>(),
-          new FluentValidationValidatorFormatterDecorator (SafeServiceLocator.Current.GetInstance<IValidatorFormatter>()));
+      var factory = new MixedInvolvedTypeProviderDecorator (
+          _serviceLocator.GetInstance<IInvolvedTypeProvider>(),
+          SafeServiceLocator.Current.GetInstance<ICompoundValidationTypeFilter>());
 
       Assert.That (factory, Is.Not.Null);
-      Assert.That (factory, Is.TypeOf<DiagnosticOutputRuleMergeDecorator> ());
-      Assert.That (((DiagnosticOutputRuleMergeDecorator) factory).ValidationCollectorMerger, Is.TypeOf<OrderPrecedenceValidationCollectorMerger> ());
-      Assert.That (((DiagnosticOutputRuleMergeDecorator) factory).ValidatorFormatter, Is.TypeOf<FluentValidationValidatorFormatterDecorator> ());
-    }
-
-    [Test]
-    public void GetInstance_Twice_ReturnsNotSameInstance ()
-    {
-      var factory1 = _serviceLocator.GetInstance<IValidationCollectorMerger> ();
-      var factory2 = _serviceLocator.GetInstance<IValidationCollectorMerger> ();
-
-      Assert.That (factory1, Is.Not.SameAs (factory2));
+      Assert.That (factory, Is.TypeOf (typeof (MixedInvolvedTypeProviderDecorator)));
+      Assert.That (((MixedInvolvedTypeProviderDecorator) factory).InvolvedTypeProvider, Is.TypeOf (typeof (InvolvedTypeProvider)));
     }
   }
 }

@@ -75,6 +75,7 @@
     <Compile Include="Implementation\CompoundValidationRuleMetadataServiceTest.cs" />
     <Compile Include="Implementation\CompoundValidatorBuilderTest.cs" />
     <Compile Include="Implementation\IValidatedTypeResolverTest.cs" />
+    <Compile Include="Implementation\IValidationRuleMetadataServiceTest.cs" />
     <Compile Include="Implementation\IValidatorFormatterTest.cs" />
     <Compile Include="Implementation\NullValidatedTypeResolverTest.cs" />
     <Compile Include="Implementation\GenericTypeAwareValidatedTypeResolverDecoratorTest.cs" />
@@ -112,6 +113,7 @@
     <Compile Include="Implementation\ValidatorRegistrationWithContextTest.cs" />
     <Compile Include="MetaValidation\DefaultSystemMetaValidationRulesProviderTest.cs" />
     <Compile Include="MetaValidation\DelegateMetaValidationRuleTest.cs" />
+    <Compile Include="MetaValidation\IMetaRulesValidatorFactoryTest.cs" />
     <Compile Include="MetaValidation\MetaRulesValidatorFactoryTest.cs" />
     <Compile Include="MetaValidation\MetaRulesValidatorTest.cs" />
     <Compile Include="MetaValidation\Rules\Custom\AnyRuleAppliedMetaValidationRuleTest.cs" />
@@ -122,6 +124,7 @@
     <Compile Include="Providers\AggregatingValidationCollectorProviderTest.cs" />
     <Compile Include="Implementation\DiscoveryServiceBasedValidationCollectorReflectorTest.cs" />
     <Compile Include="Providers\ComponentValidationAttributeBasedValidationCollectorProviderTest.cs" />
+    <Compile Include="Providers\IValidationCollectorProviderTest.cs" />
     <Compile Include="Providers\TestableAttributeBasedValidationCollectorProviderBase.cs" />
     <Compile Include="Providers\TestableValidationAttributesBasedCollectorProvider.cs" />
     <Compile Include="Rules\AddingComponentPropertyMetaValidationRuleTest.cs" />

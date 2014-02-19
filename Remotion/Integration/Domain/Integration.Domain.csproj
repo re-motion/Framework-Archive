@@ -50,6 +50,10 @@
       <Project>{E2CD7C20-2728-4F72-A6E8-FC4F7AE72EC9}</Project>
       <Name>Globalization.Mixins</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Validation\Validation.Globalization\Validation.Globalization.csproj">
+      <Project>{30C3AFA1-D7B3-4A2A-B314-19282A2E312D}</Project>
+      <Name>Validation.Globalization</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Validation\Validation.Mixins\Validation.Mixins.csproj">
       <Project>{B34D9485-39D7-4F73-805C-39A65059001E}</Project>
       <Name>Validation.Mixins</Name>
