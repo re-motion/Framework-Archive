@@ -98,6 +98,9 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FluentValidation">
+      <HintPath>..\..\..\prereq\Assemblies\FluentValidation-5.0\net-4.0\FluentValidation.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\prereq\Assemblies\CommonServiceLocator-1.0\net-2.0\Microsoft.Practices.ServiceLocation.dll</HintPath>
@@ -190,6 +193,7 @@
     <Compile Include="UI\Controls\BocBooleanValueImplementation\Rendering\BocCheckBoxRenderingContext.cs" />
     <Compile Include="UI\Controls\BocBooleanValueImplementation\Rendering\IBocBooleanValueRenderer.cs" />
     <Compile Include="UI\Controls\BocBooleanValueImplementation\Rendering\IBocCheckBoxRenderer.cs" />
+    <Compile Include="UI\Controls\BocDataSourceValidator.cs" />
     <Compile Include="UI\Controls\BocDateTimeValueImplementation\IDateTimeFormatter.cs" />
     <Compile Include="UI\Controls\BocDateTimeValueImplementation\Rendering\BocDateTimeValueRenderingContext.cs" />
     <Compile Include="UI\Controls\BocDateTimeValueImplementation\Rendering\IBocDateTimeValueRenderer.cs" />
@@ -221,6 +225,7 @@
     <Compile Include="UI\Controls\BocListImplementation\Sorting\BusinessObjectPropertyPathSortExtension.cs" />
     <Compile Include="UI\Controls\BocListImplementation\UniqueIdentifierBasedRowIDProvider.cs" />
     <Compile Include="UI\Controls\BocListImplementation\SortedRow.cs" />
+    <Compile Include="UI\Controls\BocReferenceDataSourceValidator.cs" />
     <Compile Include="UI\Controls\BocReferenceValueImplementation\BocAutoCompleteReferenceValueInvalidDisplayNameValidator.cs" />
     <Compile Include="UI\Controls\BocReferenceValueImplementation\IBocReferenceValueBase.cs" />
     <Compile Include="UI\Controls\BocReferenceValueImplementation\Rendering\BocAutoCompleteReferenceValueRenderingContext.cs" />
@@ -233,6 +238,7 @@
     <Compile Include="UI\Controls\BocTextValueImplementation\Rendering\BocTextValueRenderingContext.cs" />
     <Compile Include="UI\Controls\BocTextValueImplementation\Rendering\IBocMultilineTextValueRenderer.cs" />
     <Compile Include="UI\Controls\BocTextValueImplementation\Rendering\IBocTextValueRenderer.cs" />
+    <Compile Include="UI\Controls\BocValidator.cs" />
     <Compile Include="UI\Controls\Factories\BocBooleanValueResourceSetFactory.cs" />
     <Compile Include="UI\Controls\BocBooleanValueImplementation\Rendering\IBocBooleanValueResourceSetFactory.cs" />
     <Compile Include="UI\Controls\BocCheckBox.cs">

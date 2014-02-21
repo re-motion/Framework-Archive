@@ -14,28 +14,31 @@
  % You should have received a copy of the GNU Lesser General Public License
  % along with re-motion; if not, see http://www.gnu.org/licenses.
 --%>
-<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="BocValidationTestForm.aspx.cs" Inherits="OBWTest.BocValidationTestForm" %>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
-<html>
-<head>
- <title>BocValidationTest</title>
-<meta content="Microsoft Visual Studio .NET 7.1" name=GENERATOR>
-<meta content=C# name=CODE_LANGUAGE>
-<meta content=JavaScript name=vs_defaultClientScript>
-<meta content=http://schemas.microsoft.com/intellisense/ie5 name=vs_targetSchema><remotion:htmlheadcontents id=HtmlHeadContents runat="server"></remotion:htmlheadcontents>
-  </head>
-<body>
-    <form id=Form method=post runat="server">
-        <h1>BocValidationTest</h1>
-        <p>
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="BocValidationTestForm.aspx.cs" Inherits="OBWTest.BocValidationTestForm" MasterPageFile="~/StandardMode.Master" %>
+<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
+<h1>BocValidationTest</h1>
+</asp:Content>
+<asp:Content ID="Content2" ContentPlaceHolderID="body" runat="server">
             <table id=FormGrid runat="server">
+               <tr><td colSpan=2>Person</td></tr> 
               <tr>
-                <td colSpan=2><remotion:boctextvalue id=FirstNameField runat="server" PropertyIdentifier="FirstName" datasourcecontrol="CurrentObject" ReadOnly="True"></remotion:boctextvalue>&nbsp;<remotion:boctextvalue id=LastNameField runat="server" PropertyIdentifier="LastName" datasourcecontrol="CurrentObject" ReadOnly="True"></remotion:boctextvalue></td></tr>
+                <td></td>  
+                <td>
+                    <remotion:boctextvalue id=FirstNameField runat="server" PropertyIdentifier="FirstName" datasourcecontrol="CurrentObject"></remotion:boctextvalue>
+                    <remotion:BocValidator ID="FirstNameFieldValidator" ControlToValidate="FirstNameField" runat="server"></remotion:BocValidator>
+                </td>
+              </tr>
+              <tr>
+                <td></td>  
+                <td>
+                    <remotion:boctextvalue id="LastNameField" runat="server" PropertyIdentifier="LastName" datasourcecontrol="CurrentObject"></remotion:boctextvalue>
+                    <remotion:BocValidator ID="LastNameFieldValidator" ControlToValidate="LastNameField" runat="server"></remotion:BocValidator>
+                </td>
+              </tr>
               <tr>
                 <td></td>
-                <td><remotion:boctextvalue id=TextField runat="server" datasourcecontrol="CurrentObject" propertyidentifier="FirstName" errormessage="Fehler">
-            <textboxstyle textmode="SingleLine" autopostback="True">
-            </TextBoxStyle></remotion:boctextvalue></td></tr>
+                <td><remotion:BocTextValue id="ParterFirstNameField" runat="server" DataSourceControl="PartnerDataSource" propertyidentifier="FirstName" width="100%"><textboxstyle textmode="SingleLine"></TextBoxStyle></remotion:BocTextValue></td>
+                </tr>
               <tr>
                 <td></td>
                 <td><remotion:bocmultilinetextvalue id=MultilineTextField runat="server" datasourcecontrol="CurrentObject" propertyidentifier="CV" DESIGNTIMEDRAGDROP="37" errormessage="Fehler">
@@ -50,7 +53,8 @@
                 <td style="HEIGHT: 18px"></td>
                 <td style="HEIGHT: 18px"><remotion:bocenumvalue id=EnumField runat="server" datasourcecontrol="CurrentObject" propertyidentifier="MarriageStatus" errormessage="Fehler">
             <listcontrolstyle autopostback="True">
-            </ListControlStyle></remotion:bocenumvalue></td></tr>
+            </ListControlStyle></remotion:bocenumvalue></td>
+              </tr>
               <tr>
                 <td></td>
                 <td><remotion:bocreferencevalue id=ReferenceField runat="server" datasourcecontrol="CurrentObject" propertyidentifier="Partner" NullItemErrorMessage="Fehler">
@@ -81,9 +85,11 @@
             </remotion:BocSimpleColumnDefinition>
             </FixedColumns></remotion:boclist></td></tr>
          </table>
+        <p>
+            <remotion:formgridmanager id=FormGridManager runat="server"  visible="true"></remotion:formgridmanager>
+            <remotion:BindableObjectDataSourceControl id=CurrentObject runat="server" Type="Remotion.ObjectBinding.Sample::Person" />
+            <remotion:BocDataSourceValidator ID="BocDataSourceValidator" ControlToValidate="CurrentObject" ErrorMessage="Fehler" runat="server"></remotion:BocDataSourceValidator>
+            <remotion:BusinessObjectReferenceDataSourceControl id="PartnerDataSource" runat="server" PropertyIdentifier="Partner" DataSourceControl="CurrentObject"></remotion:BusinessObjectReferenceDataSourceControl>
         </p>
-        <p><remotion:formgridmanager id=FormGridManager runat="server"  visible="true"></remotion:formgridmanager><remotion:BindableObjectDataSourceControl id=CurrentObject runat="server" Type="Remotion.ObjectBinding.Sample::Person" /></p>
         <p><asp:button id=SaveButton runat="server" Text="Save" Width="80px"></asp:button><asp:button id=PostBackButton runat="server" Text="Post Back"></asp:button></p>
-    </form>
-</body>
-</html>
+ </asp:Content>

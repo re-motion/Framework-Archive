@@ -17,13 +17,24 @@
 
 using System;
 using System.Collections.Specialized;
+using System.Linq;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using Remotion.Collections;
+using Remotion.Globalization;
 using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.Sample;
 using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.Reflection;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
+using Remotion.Validation;
+using Remotion.Validation.Globalization;
+using Remotion.Validation.Implementation;
+using Remotion.Validation.Merging;
+using Remotion.Validation.MetaValidation;
+using Remotion.Validation.Mixins.Implementation;
+using Remotion.Validation.Providers;
 using Remotion.Web.UI.Controls;
 
 namespace OBWTest
@@ -40,6 +51,7 @@ namespace OBWTest
     protected Button PostBackButton;
     protected Button SaveButton;
     protected BindableObjectDataSourceControl CurrentObject;
+    protected BocDataSourceValidator BocDataSourceValidator;
     protected FormGridManager FormGridManager;
     protected BocTextValue LastNameField;
     protected BocTextValue FirstNameField;
@@ -67,14 +79,12 @@ namespace OBWTest
         person.Height = 179;
         person.Income = 2000;
 
-        partner = person.Partner = Person.CreateObject ();
+        partner = person.Partner = Person.CreateObject();
         partner.FirstName = "Sepp";
         partner.LastName = "Forcher";
       }
       else
-      {
         partner = person.Partner;
-      }
 
       CurrentObject.BusinessObject = (IBusinessObject) person;
 
@@ -83,7 +93,8 @@ namespace OBWTest
       if (!IsPostBack)
       {
         IBusinessObjectWithIdentity[] objects = (IBusinessObjectWithIdentity[]) ArrayUtility.Convert (
-            XmlReflectionBusinessObjectStorageProvider.Current.GetObjects (typeof (Person)), typeof (IBusinessObjectWithIdentity));
+            XmlReflectionBusinessObjectStorageProvider.Current.GetObjects (typeof (Person)),
+            typeof (IBusinessObjectWithIdentity));
         ReferenceField.SetBusinessObjectList (objects);
       }
     }
@@ -93,7 +104,7 @@ namespace OBWTest
       //
       // CODEGEN: This call is required by the ASP.NET Web Form Designer.
       //
-      InitializeComponent ();
+      InitializeComponent();
       base.OnInit (e);
     }
 
@@ -107,18 +118,27 @@ namespace OBWTest
     {
       this.SaveButton.Click += new System.EventHandler (this.SaveButton_Click);
       this.Load += new System.EventHandler (this.Page_Load);
-
     }
+
     #endregion
 
     private void SaveButton_Click (object sender, EventArgs e)
     {
-      bool isValid = FormGridManager.Validate ();
+      bool isValid = FormGridManager.Validate();
       if (isValid)
       {
         CurrentObject.SaveValues (false);
-        Person person = (Person) CurrentObject.BusinessObject;
-        person.SaveObject ();
+        var person = (Person) CurrentObject.BusinessObject;
+        var validationResult = ValidationBuilder.BuildValidator (typeof (Person)).Validate (person);
+        if (validationResult.IsValid)
+        {
+          person.SaveObject ();
+        }
+        else
+        {
+          BocDataSourceValidator.ApplyValidationFailures (validationResult.Errors);
+          BocDataSourceValidator.Validate();
+        }
       }
     }
 
@@ -130,6 +150,44 @@ namespace OBWTest
     public virtual FormGridRowInfoCollection GetAdditionalRows (HtmlTable table)
     {
       return (FormGridRowInfoCollection) _listOfFormGridRowInfos[table];
+    }
+
+
+    public IValidatorBuilder ValidationBuilder
+    {
+      get
+      {
+        return new FluentValidatorBuilder (
+            new AggregatingValidationCollectorProvider (
+                new MixedInvolvedTypeProviderDecorator (
+                    InvolvedTypeProvider.Create (
+                        types => types.OrderBy (t => t.Name),
+                        SafeServiceLocator.Current.GetInstance<ICompoundValidationTypeFilter>()),
+                    SafeServiceLocator.Current.GetInstance<ICompoundValidationTypeFilter>()),
+                new IValidationCollectorProvider[]
+                {
+                    new ValidationAttributesBasedCollectorProvider(),
+                    new ApiBasedComponentValidationCollectorProvider (
+                        new DiscoveryServiceBasedValidationCollectorReflector (
+                        new MixinTypeAwareValidatedTypeResolverDecorator (
+                        new ClassTypeAwareValidatedTypeResolverDecorator (
+                        new GenericTypeAwareValidatedTypeResolverDecorator (SafeServiceLocator.Current.GetInstance<IValidatedTypeResolver>())))))
+                }),
+            new DiagnosticOutputRuleMergeDecorator (
+                SafeServiceLocator.Current.GetInstance<IValidationCollectorMerger>(),
+                new FluentValidationValidatorFormatterDecorator (SafeServiceLocator.Current.GetInstance<IValidatorFormatter>())),
+            new MetaRulesValidatorFactory (mi => new DefaultSystemMetaValidationRulesProvider (mi)),
+            new CompoundValidationRuleMetadataService (
+                new IValidationRuleMetadataService[]
+                {
+                    new PropertyDisplayNameGlobalizationService (SafeServiceLocator.Current.GetInstance<IMemberInformationGlobalizationService>()),
+                    new ValidationRuleGlobalizationService (
+                        SafeServiceLocator.Current.GetInstance<IDefaultMessageEvaluator>(),
+                        new NullErrorMessageGlobalizationService())
+                }),
+            SafeServiceLocator.Current.GetInstance<IMemberInformationNameResolver>(),
+            SafeServiceLocator.Current.GetInstance<ICompoundCollectorValidator>());
+      }
     }
   }
 }
