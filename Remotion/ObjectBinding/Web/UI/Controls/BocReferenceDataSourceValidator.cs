@@ -21,6 +21,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 {
   public class BocReferenceDataSourceValidator : BocValidator
   {
-    
+
+
+    //TODO AO: check with MK!
+    protected override bool ControlPropertiesValid ()
+    {
+      return true;
+    }
   }
 }

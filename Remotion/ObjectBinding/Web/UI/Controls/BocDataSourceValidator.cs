@@ -48,8 +48,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         }
       }
 
-      //return all failures that were not handled by inner validators
       _unhandledFailures = unhandledFailures.AsReadOnly();
+      ErrorMessage = string.Join (Environment.NewLine, _unhandledFailures.Select (f => f.ErrorMessage));
       return _unhandledFailures;
     }
 

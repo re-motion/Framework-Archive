@@ -51,7 +51,7 @@ namespace OBWTest
     protected Button PostBackButton;
     protected Button SaveButton;
     protected BindableObjectDataSourceControl CurrentObject;
-    protected BocDataSourceValidator BocDataSourceValidator;
+    protected BocDataSourceValidator DataSourceValidator;
     protected FormGridManager FormGridManager;
     protected BocTextValue LastNameField;
     protected BocTextValue FirstNameField;
@@ -68,8 +68,8 @@ namespace OBWTest
     protected void Page_Load (object sender, EventArgs e)
     {
       Guid personID = new Guid (0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1);
-      Person person = Person.GetObject (personID);
-      Person partner;
+      Person person = Person.CreateObject(); // Person.GetObject (personID);
+      //Person partner;
       if (person == null)
       {
         person = Person.CreateObject (personID);
@@ -79,12 +79,12 @@ namespace OBWTest
         person.Height = 179;
         person.Income = 2000;
 
-        partner = person.Partner = Person.CreateObject();
-        partner.FirstName = "Sepp";
-        partner.LastName = "Forcher";
+        //partner = person.Partner = Person.CreateObject();
+        //partner.FirstName = "Sepp";
+        //partner.LastName = "Forcher";
       }
-      else
-        partner = person.Partner;
+      //else
+      //  partner = person.Partner;
 
       CurrentObject.BusinessObject = (IBusinessObject) person;
 
@@ -136,8 +136,8 @@ namespace OBWTest
         }
         else
         {
-          BocDataSourceValidator.ApplyValidationFailures (validationResult.Errors);
-          BocDataSourceValidator.Validate();
+          DataSourceValidator.ApplyValidationFailures (validationResult.Errors);
+          DataSourceValidator.Validate();
         }
       }
     }

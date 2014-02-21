@@ -37,7 +37,7 @@
               </tr>
               <tr>
                 <td></td>
-                <td><remotion:BocTextValue id="ParterFirstNameField" runat="server" DataSourceControl="PartnerDataSource" propertyidentifier="FirstName" width="100%"><textboxstyle textmode="SingleLine"></TextBoxStyle></remotion:BocTextValue></td>
+                <td><remotion:BocTextValue id="ParterLastNameField" runat="server" DataSourceControl="PartnerDataSource" propertyidentifier="LastName" width="100%"><textboxstyle textmode="SingleLine"></TextBoxStyle></remotion:BocTextValue></td>
                 </tr>
               <tr>
                 <td></td>
@@ -88,8 +88,9 @@
         <p>
             <remotion:formgridmanager id=FormGridManager runat="server"  visible="true"></remotion:formgridmanager>
             <remotion:BindableObjectDataSourceControl id=CurrentObject runat="server" Type="Remotion.ObjectBinding.Sample::Person" />
-            <remotion:BocDataSourceValidator ID="BocDataSourceValidator" ControlToValidate="CurrentObject" ErrorMessage="Fehler" runat="server"></remotion:BocDataSourceValidator>
+            <remotion:BocDataSourceValidator ID="DataSourceValidator" ControlToValidate="CurrentObject" runat="server"></remotion:BocDataSourceValidator>
             <remotion:BusinessObjectReferenceDataSourceControl id="PartnerDataSource" runat="server" PropertyIdentifier="Partner" DataSourceControl="CurrentObject"></remotion:BusinessObjectReferenceDataSourceControl>
+            <remotion:BocReferenceDataSourceValidator ID="ReferenceDataSourceValidator" ControlToValidate="PartnerDataSource" runat="server"></remotion:BocReferenceDataSourceValidator>
         </p>
         <p><asp:button id=SaveButton runat="server" Text="Save" Width="80px"></asp:button><asp:button id=PostBackButton runat="server" Text="Post Back"></asp:button></p>
  </asp:Content>

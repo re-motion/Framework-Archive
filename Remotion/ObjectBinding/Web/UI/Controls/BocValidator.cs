@@ -35,6 +35,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         throw new InvalidOperationException ("BocValidator may only be applied to controls of type BusinessObjectBoundEditableWebControl");
 
       var validationFailures = failures.ToArray();
+      //var propertyIdentifier = bocControl.Binding.DataSource.BusinessObject.GetType().FullName + bocControl.PropertyIdentifier;
       ValidationFailures = validationFailures.Where (f => f.PropertyName.EndsWith (bocControl.PropertyIdentifier)).ToList ().AsReadOnly (); //TODO: check with MK -> control property path is not the full-path
       ErrorMessage = string.Join (Environment.NewLine, ValidationFailures.Select (f => f.ErrorMessage));
       
