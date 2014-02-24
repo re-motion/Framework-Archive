@@ -23,9 +23,9 @@ using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation.Rendering;
 using Remotion.Utilities;
+using Remotion.Web;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
-using Remotion.Web;
 
 namespace Remotion.ObjectBinding.Web.Legacy.UI.Controls.BocReferenceValueImplementation.Rendering
 {
@@ -258,7 +258,7 @@ namespace Remotion.ObjectBinding.Web.Legacy.UI.Controls.BocReferenceValueImpleme
       bool isCommandEnabled = renderingContext.Control.BusinessObjectUniqueIdentifier != null && renderingContext.Control.IsCommandEnabled ();
 
       string postBackEvent = GetPostBackEvent (renderingContext);
-      string objectID = StringUtility.NullToEmpty (renderingContext.Control.BusinessObjectUniqueIdentifier);
+      string objectID = renderingContext.Control.BusinessObjectUniqueIdentifier ?? string.Empty;
 
       if (isReadOnly)
         RenderReadOnlyValue (renderingContext, icon, label, isCommandEnabled, postBackEvent, string.Empty, objectID);
@@ -349,7 +349,7 @@ namespace Remotion.ObjectBinding.Web.Legacy.UI.Controls.BocReferenceValueImpleme
       bool isCommandEnabled = renderingContext.Control.BusinessObjectUniqueIdentifier != null && renderingContext.Control.IsCommandEnabled ();
 
       string postBackEvent = GetPostBackEvent (renderingContext);
-      string objectID = StringUtility.NullToEmpty (renderingContext.Control.BusinessObjectUniqueIdentifier);
+      string objectID = renderingContext.Control.BusinessObjectUniqueIdentifier ?? string.Empty;
 
       if (isReadOnly)
       {

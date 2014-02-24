@@ -22,10 +22,10 @@ using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using Remotion.Globalization;
 using Remotion.Utilities;
+using Remotion.Web.Infrastructure;
 using Remotion.Web.UI.Design;
 using Remotion.Web.UI.Globalization;
 using Remotion.Web.Utilities;
-using Remotion.Web.Infrastructure;
 
 namespace Remotion.Web.UI.Controls
 {
@@ -153,11 +153,11 @@ public class SmartLabel: WebControl, IControl
 
   public string GetText()
   {
-    if (! StringUtility.IsNullOrEmpty (_text))
+    if (! string.IsNullOrEmpty (_text))
       return _text;
 
     string forControlBackUp = ForControl;
-    ForControl = StringUtility.NullToEmpty (ForControl);
+    ForControl = ForControl ?? string.Empty;
     string text = string.Empty;
 
     if (ForControl == string.Empty)
@@ -212,7 +212,7 @@ public class SmartLabel: WebControl, IControl
       return;
 
     string key = ResourceManagerUtility.GetGlobalResourceKey (Text);
-    if (!StringUtility.IsNullOrEmpty (key))
+    if (!string.IsNullOrEmpty (key))
       Text = resourceManager.GetString (key);
   }
 

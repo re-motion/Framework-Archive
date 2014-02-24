@@ -33,8 +33,6 @@ namespace Remotion.Data.DomainObjects
   /// </summary>
   public static class ReflectionUtility
   {
-    private static readonly TypeConversionProvider s_typeConversionProvider = TypeConversionProvider.Create();
-
     private static readonly Type s_stringPropertyValueType = typeof (string);
     private static readonly Type s_binaryPropertyValueType = typeof (byte[]);
     private static readonly Type s_typePropertyValueType = typeof (Type);
@@ -261,7 +259,7 @@ namespace Remotion.Data.DomainObjects
     /// A <see cref="Type"/> if the <paramref name="type"/> is a closed <see cref="ObjectList{T}"/> or <see langword="null"/> if the generic 
     /// <see cref="ObjectList{T}"/> is open.
     /// </returns>
-    /// <exception cref="ArgumentTypeException">
+    /// <exception cref="ArgumentException">
     /// Thrown if the type is not an <see cref="ObjectList{T}"/> or derived from <see cref="ObjectList{T}"/>.
     /// </exception>
     public static Type GetObjectListTypeParameter (Type type)

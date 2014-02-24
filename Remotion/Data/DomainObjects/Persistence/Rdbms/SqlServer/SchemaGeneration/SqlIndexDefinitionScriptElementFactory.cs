@@ -20,7 +20,6 @@ using System.Linq;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration.ScriptElements;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model;
-using Remotion.Text;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGeneration
@@ -46,7 +45,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
          ownerName.EntityName,
          GetIndexedColumnNames (indexDefinition.Columns),
          indexDefinition.IncludedColumns != null
-             ? "\r\n  INCLUDE (" + SeparatedStringBuilder.Build (", ", indexDefinition.IncludedColumns.Select (c => "[" + c.Name + "]")) + ")"
+             ? "\r\n  INCLUDE (" + string.Join (", ", indexDefinition.IncludedColumns.Select (c => "[" + c.Name + "]")) + ")"
              : string.Empty,
          GetCreateIndexOptions (GetCreateIndexOptionItems (indexDefinition))));
     }

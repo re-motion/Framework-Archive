@@ -19,7 +19,6 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation;
-using System.Web;
 using Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.Rendering;
 using Remotion.Utilities;
 using Remotion.Web;
@@ -32,7 +31,7 @@ namespace Remotion.ObjectBinding.Web.Legacy.UI.Controls.BocBooleanValueImplement
   /// Responsible for rendering <see cref="BocBooleanValue"/> controls.
   /// <seealso cref="IBocBooleanValue"/>
   /// </summary>
-  /// <include file='doc\include\UI\Controls\BocBooleanValueRenderer.xml' path='BocBooleanValueRenderer/Class/*'/>
+  /// <include file='..\..\..\..\doc\include\UI\Controls\BocBooleanValueRenderer.xml' path='BocBooleanValueRenderer/Class/*'/>
   public class BocBooleanValueQuirksModeRenderer : BocBooleanValueQuirksModeRendererBase<IBocBooleanValue>, IBocBooleanValueRenderer
   {
     private const string c_nullString = "null";

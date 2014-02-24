@@ -14,6 +14,8 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
+using System;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.Utilities;
@@ -98,7 +100,7 @@ namespace Remotion.Web.Legacy.UI.Controls.Rendering
         string imageUrl = GetResolvedImageUrl ();
 
         renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Src, imageUrl);
-        renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Alt, StringUtility.NullToEmpty (renderingContext.Control.AlternateText));
+        renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Alt, renderingContext.Control.AlternateText ?? string.Empty);
         renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Img);
         renderingContext.Writer.RenderEndTag ();
       }

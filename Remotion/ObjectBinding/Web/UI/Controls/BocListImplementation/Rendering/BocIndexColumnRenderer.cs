@@ -16,9 +16,9 @@
 // 
 using System;
 using System.Web.UI;
+using Remotion.Globalization;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
-using Remotion.Globalization;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 {
@@ -73,7 +73,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Th);
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
       string indexColumnTitle = renderingContext.Control.IndexColumnTitle;
-      if (StringUtility.IsNullOrEmpty (renderingContext.Control.IndexColumnTitle))
+      if (string.IsNullOrEmpty (renderingContext.Control.IndexColumnTitle))
         indexColumnTitle = renderingContext.Control.GetResourceManager().GetString (Controls.BocList.ResourceIdentifier.IndexColumnTitle);
 
       // Do not HTML encode.

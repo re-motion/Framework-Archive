@@ -15,14 +15,15 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Linq;
 using System.Reflection;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
 using Remotion.Development.UnitTesting.IO;
 using Remotion.Mixins.CodeGeneration;
 using Remotion.Mixins.UnitTests.Core.TestDomain;
+using Remotion.ServiceLocation;
 using Remotion.TypePipe;
-using System.Linq;
 
 namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixinTypeCodeGeneration
 {
@@ -118,7 +119,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixinTy
 
     private IPipeline CreatePipeline ()
     {
-      return PipelineFactory.Create (Pipeline.ParticipantConfigurationID, Pipeline.Participants.ToArray ());
+      return SafeServiceLocator.Current.GetInstance<IPipelineFactory>().Create (Pipeline.ParticipantConfigurationID, Pipeline.Participants.ToArray());
     }
 
     private Assembly FlushAndLoadAssemblyWithoutLocking ()

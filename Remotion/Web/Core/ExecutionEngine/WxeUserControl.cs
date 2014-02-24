@@ -30,7 +30,7 @@ using Remotion.Web.Utilities;
 
 namespace Remotion.Web.ExecutionEngine
 {
-  [FileLevelControlBuilderAttribute(typeof(CodeProcessingUserControlBuilder))]
+  [FileLevelControlBuilder(typeof(CodeProcessingUserControlBuilder))]
   public class WxeUserControl : UserControl, IWxeTemplateControl, IReplaceableControl
   {
     private readonly WxeTemplateControlInfo _wxeInfo;
@@ -235,7 +235,7 @@ namespace Remotion.Web.ExecutionEngine
             throw new InvalidOperationException ("The IWxePage has no PostBackCollection even though this is a post back.");
           return false;
         }
-        return !StringUtility.IsNullOrEmpty (postBackCollection[ControlHelper.PostEventSourceID]);
+        return !string.IsNullOrEmpty (postBackCollection[ControlHelper.PostEventSourceID]);
       }
     }
 

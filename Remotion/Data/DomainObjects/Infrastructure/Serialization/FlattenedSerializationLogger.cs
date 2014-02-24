@@ -17,7 +17,6 @@
 using System;
 using System.Linq;
 using Remotion.Logging;
-using Remotion.Text;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Infrastructure.Serialization
@@ -31,7 +30,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.Serialization
       ArgumentUtility.CheckNotNull ("ints", ints);
       ArgumentUtility.CheckNotNull ("bools", bools);
 
-      if (log.IsDebugEnabled)
+      if (log.IsDebugEnabled())
       {
         log.DebugFormat (
             "Flattened serialization: {0} objects ({1} unique), {2} integers, and {3} boolean values.",
@@ -47,7 +46,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.Serialization
                                  orderby count descending
                                  select new { g.Key, Count = count };
 
-        var statisticsString = SeparatedStringBuilder.Build (Environment.NewLine, groupingsWithCount, g => g.Key + ": " + g.Count);
+        var statisticsString = string.Join (Environment.NewLine, groupingsWithCount.Select (g => g.Key + ": " + g.Count));
         log.Debug (statisticsString);
       }
       

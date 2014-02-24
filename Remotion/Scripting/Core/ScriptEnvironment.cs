@@ -15,10 +15,8 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections;
 using Microsoft.Scripting;
 using Microsoft.Scripting.Hosting;
-using Remotion.Text;
 using Remotion.Utilities;
 
 namespace Remotion.Scripting
@@ -97,7 +95,7 @@ namespace Remotion.Scripting
 import clr
 clr.AddReferenceByPartialName('" + assembly + "')" +
 @"
-from " + nameSpace + " import " + SeparatedStringBuilder.Build (",", (IEnumerable) symbols);
+from " + nameSpace + " import " + string.Join (",", symbols);
 
       const ScriptLanguageType scriptLanguageType = ScriptLanguageType.Python;
       var engine = ScriptingHost.GetScriptEngine (scriptLanguageType);

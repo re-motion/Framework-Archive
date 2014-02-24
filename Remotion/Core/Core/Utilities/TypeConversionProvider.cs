@@ -18,9 +18,9 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
+using System.Linq;
 using Remotion.Collections;
-using Remotion.ExtensibleEnums;
-using Remotion.Reflection.TypeDiscovery;
+using Remotion.ServiceLocation;
 
 namespace Remotion.Utilities
 {
@@ -28,83 +28,47 @@ namespace Remotion.Utilities
   ///   Provides functionality to get the <see cref="TypeConverter"/> for a <see cref="Type"/> and to convert a value
   ///   from a source <see cref="Type"/> into a destination <see cref="Type"/>.
   /// </summary>
-  /// <remarks>
-  ///   <para>
-  ///     Use the <see cref="Create"/> method if you need to create a new instance of the
-  ///     <see cref="TypeConversionProvider"/> type.
-  ///   </para><para>
-  ///     Conversion is possible under the following conditions:
-  ///   </para>
-  ///   <list type="bullet">
-  ///     <item>
-  ///       A type has a <see cref="TypeConverter"/> applied through the <see cref="TypeConverterAttribute"/> that
-  ///       supports the conversion. 
-  ///     </item>
-  ///     <item>
-  ///       For <see cref="Enum"/> types into the <see cref="String"/> value or the underlying numeric 
-  ///       <see cref="Type"/>.
-  ///     </item>
-  ///     <item>
-  ///       For types without a <see cref="TypeConverter"/>, the <see cref="TypeConversionProvider"/> try to use the 
-  ///       <see cref="BidirectionalStringConverter"/>. See the documentation of the string converter for details on the
-  ///       supported types.
-  ///     </item>
-  ///   </list>
-  /// </remarks>
-  public class TypeConversionProvider
+  [ImplementationFor (typeof (ITypeConversionProvider), Lifetime = LifetimeKind.Singleton)]
+  public class TypeConversionProvider : ITypeConversionProvider
   {
-    private static readonly LockingDataStoreDecorator<Type, TypeConverter> s_typeConverters = DataStoreFactory.CreateWithLocking<Type, TypeConverter>();
-
-    private static readonly DoubleCheckedLockingContainer<TypeConversionProvider> s_current =
-        new DoubleCheckedLockingContainer<TypeConversionProvider> (Create);
+    private readonly LockingDataStoreDecorator<Type, TypeConverter> _typeConverters = DataStoreFactory.CreateWithLocking<Type, TypeConverter>();
 
     /// <summary> Creates a new instace of the <see cref="TypeConversionProvider"/> type. </summary>
     /// <returns> An instance of the <see cref="TypeConversionProvider"/> type. </returns>
+    [Obsolete ("Use SafeServiceLocator.Current.GetInstance<ITypeConversionProvider>() instead if the global instance suffices, otherwise create a new instance via the constructor. (Version 1.15.8.0)", true)]
     public static TypeConversionProvider Create ()
     {
-      return new TypeConversionProvider();
+      throw new NotSupportedException (
+          "Use SafeServiceLocator.Current.GetInstance<ITypeConversionProvider>() instead if the global instance suffices, otherwise create a new instance via the constructor.");
     }
 
     /// <summary> Gets the current <see cref="TypeConversionProvider"/>. </summary>
     /// <value> An instance of the <see cref="TypeConversionProvider"/> type. </value>
-    public static TypeConversionProvider Current
+    [Obsolete ("Use SafeServiceLocator.Current.GetInstance<ITypeConversionProvider>() instead. (Version 1.15.8.0)")]
+    public static ITypeConversionProvider Current
     {
-      get { return s_current.Value; }
+      get { return SafeServiceLocator.Current.GetInstance<ITypeConversionProvider>(); }
     }
 
     /// <summary> Sets the current <see cref="TypeConversionProvider"/>. </summary>
     /// <param name="provider"> A <see cref="TypeConversionProvider"/>. Must not be <see langword="null"/>. </param>
+    [Obsolete ("Configure the current ITypeConversionProvider via the application's IoC container instead. (Version 1.15.8.0)", true)]
     public static void SetCurrent (TypeConversionProvider provider)
     {
-      ArgumentUtility.CheckNotNull ("provider", provider);
-      s_current.Value = provider;
+      throw new NotSupportedException ("Configure the current TypeConversionProvider via the application's IoC container instead.");
     }
 
+    private readonly IEnumerable<ITypeConverterFactory> _typeConverterFactories;
     private readonly Dictionary<Type, TypeConverter> _additionalTypeConverters = new Dictionary<Type, TypeConverter>();
     private readonly BidirectionalStringConverter _stringConverter = new BidirectionalStringConverter();
 
-    protected TypeConversionProvider ()
+    public TypeConversionProvider (IEnumerable<ITypeConverterFactory> typeConverterFactories)
     {
+      ArgumentUtility.CheckNotNull ("typeConverterFactories", typeConverterFactories);
+
+      _typeConverterFactories = typeConverterFactories.ToArray();
     }
 
-    /// <summary> 
-    ///   Gets the <see cref="TypeConverter"/> that is able to convert an instance of the <paramref name="sourceType"/> 
-    ///   <see cref="Type"/> into an instance of the <paramref name="destinationType"/> <see cref="Type"/>.
-    /// </summary>
-    /// <param name="sourceType"> 
-    ///   The source <see cref="Type"/> of the value. Must not be <see langword="null"/>. 
-    /// </param>
-    /// <param name="destinationType"> 
-    ///   The destination <see cref="Type"/> of the value. Must not be <see langword="null"/>. 
-    /// </param>
-    /// <returns> 
-    ///   A <see cref="TypeConverterResult"/> or or <see cref="TypeConverterResult.Empty"/>if no matching <see cref="TypeConverter"/> can be found.
-    /// </returns>
-    /// <remarks> 
-    ///   You can identify whether you must use the <see cref="TypeConverter.ConvertTo(object,Type)"/> or the 
-    ///   <see cref="TypeConverter.ConvertFrom(object)"/> method by testing the returned <see cref="TypeConverter"/>'s
-    ///   <see cref="TypeConverter.CanConvertTo(Type)"/> and <see cref="TypeConverter.CanConvertFrom(Type)"/> methods.
-    /// </remarks>
     public virtual TypeConverterResult GetTypeConverter (Type sourceType, Type destinationType)
     {
       ArgumentUtility.CheckNotNull ("sourceType", sourceType);
@@ -114,9 +78,9 @@ namespace Remotion.Utilities
       if (!additionalTypeConverterResult.Equals (TypeConverterResult.Empty))
         return additionalTypeConverterResult;
 
-      TypeConverterResult basicTypeConverterResult = GetBasicTypeConverter (sourceType, destinationType);
-      if (!basicTypeConverterResult.Equals (TypeConverterResult.Empty))
-        return basicTypeConverterResult;
+      TypeConverterResult typeConverterResult = GetTypeConverterFromFactory (sourceType, destinationType);
+      if (!typeConverterResult.Equals (TypeConverterResult.Empty))
+        return typeConverterResult;
 
       TypeConverterResult stringConverterResult = GetStringConverter (sourceType, destinationType);
       if (!stringConverterResult.Equals (TypeConverterResult.Empty))
@@ -125,15 +89,6 @@ namespace Remotion.Utilities
       return TypeConverterResult.Empty;
     }
 
-    /// <summary> 
-    ///   Gets the <see cref="TypeConverter"/> that is associated with the specified <paramref name="type"/>.
-    /// </summary>
-    /// <param name="type"> 
-    ///   The <see cref="Type"/> to get the <see cref="TypeConverter"/> for. Must not be <see langword="null"/>.
-    /// </param>
-    /// <returns>
-    ///   A <see cref="TypeConverter"/> or <see langword="null"/> of no <see cref="TypeConverter"/> can be found.
-    /// </returns>
     public virtual TypeConverter GetTypeConverter (Type type)
     {
       ArgumentUtility.CheckNotNull ("type", type);
@@ -142,7 +97,7 @@ namespace Remotion.Utilities
       if (converter != null)
         return converter;
 
-      converter = GetBasicTypeConverter (type);
+      converter = GetTypeConverterFromFactory (type);
       if (converter != null)
         return converter;
 
@@ -181,18 +136,6 @@ namespace Remotion.Utilities
       _additionalTypeConverters.Remove (type);
     }
 
-    /// <summary> 
-    ///   Test whether the <see cref="TypeConversionProvider"/> object can convert an object of <see cref="Type"/> 
-    ///   <paramref name="sourceType"/> into an object of <see cref="Type"/> <paramref name="destinationType"/>
-    ///   by using the <see cref="Convert(Type,Type,object)"/> method.
-    /// </summary>
-    /// <param name="sourceType"> 
-    ///   The source <see cref="Type"/> of the value. Must not be <see langword="null"/>. 
-    /// </param>
-    /// <param name="destinationType"> 
-    ///   The destination <see cref="Type"/> of the value. Must not be <see langword="null"/>. 
-    /// </param>
-    /// <returns> <see langword="true"/> if a conversion is possible. </returns>
     public virtual bool CanConvert (Type sourceType, Type destinationType)
     {
       ArgumentUtility.CheckNotNull ("sourceType", sourceType);
@@ -208,31 +151,11 @@ namespace Remotion.Utilities
       return !typeConverterResult.Equals (TypeConverterResult.Empty);
     }
 
-    /// <summary> Convertes the <paramref name="value"/> into the <paramref name="destinationType"/>. </summary>
-    /// <param name="sourceType"> 
-    ///   The source <see cref="Type"/> of the <paramref name="value"/>. Must not be <see langword="null"/>. 
-    /// </param>
-    /// <param name="destinationType"> 
-    ///   The destination <see cref="Type"/> of the <paramref name="value"/>. Must not be <see langword="null"/>. 
-    /// </param>
-    /// <param name="value"> The value to be converted. Must not be <see langword="null"/>. </param>
-    /// <returns> An <see cref="Object"/> that represents the converted <paramref name="value"/>. </returns>
     public object Convert (Type sourceType, Type destinationType, object value)
     {
       return Convert (null, null, sourceType, destinationType, value);
     }
 
-    /// <summary> Convertes the <paramref name="value"/> into the <paramref name="destinationType"/>. </summary>
-    /// <param name="context"> An <see cref="ITypeDescriptorContext"/> that provides a format context. </param>
-    /// <param name="culture"> The <see cref="CultureInfo"/> to use as the current culture. </param>
-    /// <param name="sourceType"> 
-    ///   The source <see cref="Type"/> of the <paramref name="value"/>. Must not be <see langword="null"/>. 
-    /// </param>
-    /// <param name="destinationType"> 
-    ///   The destination <see cref="Type"/> of the <paramref name="value"/>. Must not be <see langword="null"/>. 
-    /// </param>
-    /// <param name="value"> The <see cref="Object"/> to be converted.</param>
-    /// <returns> An <see cref="Object"/> that represents the converted <paramref name="value"/>. </returns>
     public virtual object Convert (ITypeDescriptorContext context, CultureInfo culture, Type sourceType, Type destinationType, object value)
     {
       ArgumentUtility.CheckNotNull ("sourceType", sourceType);
@@ -245,7 +168,7 @@ namespace Remotion.Utilities
       if (value == null && !isNullableDestinationType)
         throw new NotSupportedException (string.Format ("Cannot convert value 'null' to non-nullable type '{0}'.", destinationType));
       else if (value != null && !sourceType.IsInstanceOfType (value))
-        throw new ArgumentTypeException ("value", sourceType, value.GetType());
+        throw ArgumentUtility.CreateArgumentTypeException ("value", value.GetType(), sourceType);
       
       if (AreUnderlyingTypesEqual (sourceType, destinationType))
         return GetValueOrEmptyString (destinationType, value);
@@ -300,37 +223,30 @@ namespace Remotion.Utilities
       return null;
     }
 
-    protected TypeConverterResult GetBasicTypeConverter (Type sourceType, Type destinationType)
+    protected TypeConverterResult GetTypeConverterFromFactory (Type sourceType, Type destinationType)
     {
       ArgumentUtility.CheckNotNull ("sourceType", sourceType);
       ArgumentUtility.CheckNotNull ("destinationType", destinationType);
 
-      TypeConverter sourceTypeConverter = GetBasicTypeConverter (sourceType);
+      TypeConverter sourceTypeConverter = GetTypeConverterFromFactory (sourceType);
       if (sourceTypeConverter != null && sourceTypeConverter.CanConvertTo (destinationType))
         return new TypeConverterResult (TypeConverterType.SourceTypeConverter, sourceTypeConverter);
 
-      TypeConverter destinationTypeConverter = GetBasicTypeConverter (destinationType);
+      TypeConverter destinationTypeConverter = GetTypeConverterFromFactory (destinationType);
       if (destinationTypeConverter != null && destinationTypeConverter.CanConvertFrom (sourceType))
         return new TypeConverterResult (TypeConverterType.DestinationTypeConverter, destinationTypeConverter);
 
       return TypeConverterResult.Empty;
     }
 
-    protected TypeConverter GetBasicTypeConverter (Type type)
+    protected TypeConverter GetTypeConverterFromFactory (Type type)
     {
       ArgumentUtility.CheckNotNull ("type", type);
 
       TypeConverter converter = GetTypeConverterFromCache (type);
       if (converter == null && !HasTypeInCache (type))
       {
-        converter = GetTypeConverterByAttribute (type);
-
-        if (converter == null && (Nullable.GetUnderlyingType (type) ?? type).IsEnum)
-          converter = new AdvancedEnumConverter (type);
-
-        if (converter == null && ExtensibleEnumUtility.IsExtensibleEnumType (type))
-          converter = new ExtensibleEnumConverter (type);
-
+        converter = _typeConverterFactories.Select (f => f.CreateTypeConverterOrDefault (type)).FirstOrDefault (c => c != null);
         AddTypeConverterToCache (type, converter);
       }
       return converter;
@@ -350,24 +266,11 @@ namespace Remotion.Utilities
       return TypeConverterResult.Empty;
     }
 
-    protected TypeConverter GetTypeConverterByAttribute (Type type)
-    {
-      ArgumentUtility.CheckNotNull ("type", type);
-
-      TypeConverterAttribute typeConverter = AttributeUtility.GetCustomAttribute<TypeConverterAttribute> (type, true);
-      if (typeConverter != null)
-      {
-        Type typeConverterType = ContextAwareTypeDiscoveryUtility.GetType (typeConverter.ConverterTypeName, true);
-        return (TypeConverter) Activator.CreateInstance (typeConverterType);
-      }
-      return null;
-    }
-
     protected void AddTypeConverterToCache (Type type, TypeConverter converter)
     {
       ArgumentUtility.CheckNotNull ("type", type);
 
-      s_typeConverters[type] = converter;
+      _typeConverters[type] = converter;
     }
 
     protected TypeConverter GetTypeConverterFromCache (Type type)
@@ -375,7 +278,7 @@ namespace Remotion.Utilities
       ArgumentUtility.CheckNotNull ("type", type);
      
       TypeConverter typeConverter;
-      if (s_typeConverters.TryGetValue (type, out typeConverter))
+      if (_typeConverters.TryGetValue (type, out typeConverter))
         return typeConverter;
 
       return null;
@@ -384,7 +287,7 @@ namespace Remotion.Utilities
     protected bool HasTypeInCache (Type type)
     {
       ArgumentUtility.CheckNotNull ("type", type);
-      return s_typeConverters.ContainsKey (type);
+      return _typeConverters.ContainsKey (type);
     }
 
     private bool AreUnderlyingTypesEqual (Type destinationType, Type sourceType)

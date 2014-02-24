@@ -18,8 +18,8 @@ using System;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectLifetime;
 using Remotion.Data.DomainObjects.Infrastructure.TypePipe;
-using Remotion.Reflection;
 using Remotion.ServiceLocation;
+using Remotion.TypePipe;
 
 namespace Remotion.Data.DomainObjects.Infrastructure
 {
@@ -42,8 +42,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
     /// <summary>
     /// Creates a new <see cref="DomainObject"/> instance as specified by the given <paramref name="objectInitializationContext"/> by calling its 
-    /// constructor. This method <see cref="ConstructorLookupInfo"/> does not raise the events notmally raised when a <see cref="DomainObject"/> is 
-    /// constructed. 
+    /// constructor. This method does not raise the events notmally raised when a <see cref="DomainObject"/> is constructed. 
     /// Use <see cref="ClientTransaction.NewObject"/> to create a <see cref="DomainObject"/> with the right events being fired.
     /// </summary>
     /// <param name="objectInitializationContext">The <see cref="IObjectInitializationContext"/> describing the object to be created.</param>

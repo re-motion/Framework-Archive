@@ -44,7 +44,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
     public BocListRenderer (
         IResourceUrlFactory resourceUrlFactory,
-        ICompoundGlobalizationService globalizationService,
+        IGlobalizationService globalizationService,
         BocListCssClassDefinition cssClasses,
         IBocListTableBlockRenderer tableBlockRenderer,
         IBocListNavigationBlockRenderer navigationBlockRenderer,

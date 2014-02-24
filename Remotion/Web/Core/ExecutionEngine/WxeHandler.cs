@@ -31,7 +31,7 @@ namespace Remotion.Web.ExecutionEngine
   ///   The <see cref="IHttpHandler"/> implementation responsible for handling requests to the 
   ///   <b>Web Execution Engine.</b>
   /// </summary>
-  /// <include file='doc\include\ExecutionEngine\WxeHandler.xml' path='WxeHandler/Class/*' />
+  /// <include file='..\doc\include\ExecutionEngine\WxeHandler.xml' path='WxeHandler/Class/*' />
   public class WxeHandler : IHttpHandler, IRequiresSessionState
   {
     /// <summary> Contains a list of parameters supported by the <see cref="WxeHandler"/>. </summary>
@@ -130,7 +130,7 @@ namespace Remotion.Web.ExecutionEngine
       CheckTimeoutConfiguration (context);
 
       string functionToken = context.Request.Params[Parameters.WxeFunctionToken];
-      bool hasFunctionToken = ! StringUtility.IsNullOrEmpty (functionToken);
+      bool hasFunctionToken = ! string.IsNullOrEmpty (functionToken);
 
       if (! hasFunctionToken)
       {
@@ -153,7 +153,7 @@ namespace Remotion.Web.ExecutionEngine
     }
 
     /// <summary> Checks whether the timeout settings are valid. </summary>
-    /// <include file='doc\include\ExecutionEngine\WxeHandler.xml' path='WxeHandler/CheckTimeoutConfiguration/*' />
+    /// <include file='..\doc\include\ExecutionEngine\WxeHandler.xml' path='WxeHandler/CheckTimeoutConfiguration/*' />
     protected void CheckTimeoutConfiguration (HttpContext context)
     {
       ArgumentUtility.CheckNotNull ("context", context);
@@ -174,13 +174,13 @@ namespace Remotion.Web.ExecutionEngine
 
 
     /// <summary> Gets the <see cref="Type"/> from the information provided by the <paramref name="context"/>. </summary>
-    /// <include file='doc\include\ExecutionEngine\WxeHandler.xml' path='WxeHandler/GetType/*' />
+    /// <include file='..\doc\include\ExecutionEngine\WxeHandler.xml' path='WxeHandler/GetType/*' />
     protected Type GetType (HttpContext context)
     {
       ArgumentUtility.CheckNotNull ("context", context);
 
       string typeName = context.Request.Params[Parameters.WxeFunctionType];
-      bool hasTypeName = ! StringUtility.IsNullOrEmpty (typeName);
+      bool hasTypeName = ! string.IsNullOrEmpty (typeName);
       if (hasTypeName)
         return GetTypeByTypeName (typeName);
       else
@@ -188,7 +188,7 @@ namespace Remotion.Web.ExecutionEngine
     }
 
     /// <summary> Gets the <see cref="Type"/> for the specified <paramref name="absolutePath"/>. </summary>
-    /// <include file='doc\include\ExecutionEngine\WxeHandler.xml' path='WxeHandler/GetTypeByPath/*' />
+    /// <include file='..\doc\include\ExecutionEngine\WxeHandler.xml' path='WxeHandler/GetTypeByPath/*' />
     protected virtual Type GetTypeByPath (string absolutePath)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("absolutePath", absolutePath);
@@ -203,13 +203,13 @@ namespace Remotion.Web.ExecutionEngine
     }
 
     /// <summary> Gets the <see cref="Type"/> for the specified <paramref name="typeName"/>. </summary>
-    /// <include file='doc\include\ExecutionEngine\WxeHandler.xml' path='WxeHandler/GetTypeByTypeName/*' />
+    /// <include file='..\doc\include\ExecutionEngine\WxeHandler.xml' path='WxeHandler/GetTypeByTypeName/*' />
     protected Type GetTypeByTypeName (string typeName)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("typeName", typeName);
       try
       {
-        var type = WebTypeUtility.GetType (typeName, true, true);
+        var type = WebTypeUtility.GetType (typeName, true, ignoreCase : true);
         if (!typeof (WxeFunction).IsAssignableFrom (type))
         {
           throw new WxeException (
@@ -229,7 +229,7 @@ namespace Remotion.Web.ExecutionEngine
 
 
     /// <summary> Initializes a new <see cref="WxeFunction"/>, encapsulated in a <see cref="WxeFunctionState"/> object. </summary>
-    /// <include file='doc\include\ExecutionEngine\WxeHandler.xml' path='WxeHandler/CreateNewFunctionState/*' />
+    /// <include file='..\doc\include\ExecutionEngine\WxeHandler.xml' path='WxeHandler/CreateNewFunctionState/*' />
     protected WxeFunctionState CreateNewFunctionState (HttpContext context, Type type)
     {
       ArgumentUtility.CheckNotNull ("context", context);
@@ -247,11 +247,11 @@ namespace Remotion.Web.ExecutionEngine
 
       string returnUrlArg = context.Request.QueryString[Parameters.ReturnUrl];
       string returnToSelfArg = context.Request.QueryString[Parameters.WxeReturnToSelf];
-      if (! StringUtility.IsNullOrEmpty (returnUrlArg))
+      if (! string.IsNullOrEmpty (returnUrlArg))
       {
         function.ReturnUrl = returnUrlArg;
       }
-      else if (! StringUtility.IsNullOrEmpty (returnToSelfArg))
+      else if (! string.IsNullOrEmpty (returnToSelfArg))
       {
         if (bool.Parse (returnToSelfArg))
           function.ReturnUrl = context.Request.RawUrl;
@@ -261,7 +261,7 @@ namespace Remotion.Web.ExecutionEngine
     }
 
     /// <summary> Resumes an existing <see cref="WxeFunction"/>. </summary>
-    /// <include file='doc\include\ExecutionEngine\WxeHandler.xml' path='WxeHandler/ResumeExistingFunctionState/*' />
+    /// <include file='..\doc\include\ExecutionEngine\WxeHandler.xml' path='WxeHandler/ResumeExistingFunctionState/*' />
     protected WxeFunctionState ResumeExistingFunctionState (HttpContext context, string functionToken)
     {
       ArgumentUtility.CheckNotNull ("context", context);
@@ -343,7 +343,7 @@ namespace Remotion.Web.ExecutionEngine
     }
 
     /// <summary> Redirects the <see cref="HttpContext.Response"/> to an optional <see cref="WxeFunction.ReturnUrl"/>. </summary>
-    /// <include file='doc\include\ExecutionEngine\WxeHandler.xml' path='WxeHandler/ProcessFunctionState/*' />
+    /// <include file='..\doc\include\ExecutionEngine\WxeHandler.xml' path='WxeHandler/ProcessFunctionState/*' />
     protected void ProcessFunctionState (HttpContext context, WxeFunctionState functionState, bool isNewFunction)
     {
       ArgumentUtility.CheckNotNull ("context", context);
@@ -353,7 +353,7 @@ namespace Remotion.Web.ExecutionEngine
       //  This point is only reached after the WxeFunction has completed execution.
       string returnUrl = functionState.Function.ReturnUrl;
       CleanUpFunctionState (functionState);
-      if (! StringUtility.IsNullOrEmpty (returnUrl))
+      if (! string.IsNullOrEmpty (returnUrl))
         ProcessReturnUrl (context, returnUrl);
     }
 
@@ -361,7 +361,7 @@ namespace Remotion.Web.ExecutionEngine
     ///   Sets the current <see cref="WxeContext"/> and invokes <see cref="ExecuteFunction"/> on the
     ///   <paramref name="functionState"/>'s <see cref="WxeFunctionState.Function"/>.
     /// </summary>
-    /// <include file='doc\include\ExecutionEngine\WxeHandler.xml' path='WxeHandler/ExecuteFunctionState/*' />
+    /// <include file='..\doc\include\ExecutionEngine\WxeHandler.xml' path='WxeHandler/ExecuteFunctionState/*' />
     protected void ExecuteFunctionState (HttpContext context, WxeFunctionState functionState, bool isNewFunction)
     {
       ArgumentUtility.CheckNotNull ("context", context);
@@ -376,8 +376,8 @@ namespace Remotion.Web.ExecutionEngine
       ExecuteFunction (functionState.Function, wxeContext, isNewFunction);
     }
 
-    /// <summary>  Invokes <see cref="WxeFunction.Execute"/> on the <paramref name="function"/>. </summary>
-    /// <include file='doc\include\ExecutionEngine\WxeHandler.xml' path='WxeHandler/ExecuteFunction/*' />
+    /// <summary>  Invokes <see cref="WxeFunction.Execute(WxeContext)"/> on the <paramref name="function"/>. </summary>
+    /// <include file='..\doc\include\ExecutionEngine\WxeHandler.xml' path='WxeHandler/ExecuteFunction/*' />
     protected virtual void ExecuteFunction (WxeFunction function, WxeContext context, bool isNew)
     {
       ArgumentUtility.CheckNotNull ("function", function);
@@ -390,7 +390,7 @@ namespace Remotion.Web.ExecutionEngine
     }
 
     /// <summary> Aborts the <paramref name="functionState"/> after its function has executed. </summary>
-    /// <include file='doc\include\ExecutionEngine\WxeHandler.xml' path='WxeHandler/CleanUpFunctionState/*' />
+    /// <include file='..\doc\include\ExecutionEngine\WxeHandler.xml' path='WxeHandler/CleanUpFunctionState/*' />
     protected void CleanUpFunctionState (WxeFunctionState functionState)
     {
       ArgumentUtility.CheckNotNull ("functionState", functionState);
@@ -401,7 +401,7 @@ namespace Remotion.Web.ExecutionEngine
     }
 
     /// <summary> Redirects the <see cref="HttpContext.Response"/> to an optional <see cref="WxeFunction.ReturnUrl"/>. </summary>
-    /// <include file='doc\include\ExecutionEngine\WxeHandler.xml' path='WxeHandler/ProcessReturnUrl/*' />
+    /// <include file='..\doc\include\ExecutionEngine\WxeHandler.xml' path='WxeHandler/ProcessReturnUrl/*' />
     protected void ProcessReturnUrl (HttpContext context, string returnUrl)
     {
       ArgumentUtility.CheckNotNull ("context", context);

@@ -38,7 +38,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
 
     private static readonly string s_startUpScriptKey = typeof (BocCheckBoxRenderer).FullName + "_Startup";
 
-    public BocCheckBoxRenderer (IResourceUrlFactory resourceUrlFactory, ICompoundGlobalizationService globalizationService)
+    public BocCheckBoxRenderer (IResourceUrlFactory resourceUrlFactory, IGlobalizationService globalizationService)
         : base (resourceUrlFactory, globalizationService)
     {
     }
@@ -167,7 +167,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
           renderingContext.Control.Value.Value ? c_trueIcon : c_falseIcon);
 
       imageControl.ImageUrl = imageUrl.GetUrl();
-      imageControl.AlternateText = StringUtility.NullToEmpty(description);
+      imageControl.AlternateText = description ?? string.Empty;
       imageControl.GenerateEmptyAlternateText = true;
     }
 

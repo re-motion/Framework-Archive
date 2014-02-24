@@ -17,7 +17,6 @@
 using System;
 using System.ComponentModel;
 using System.Globalization;
-using Remotion.Utilities;
 
 namespace Remotion.Web.UI.Design
 {
@@ -75,7 +74,7 @@ public class StringArrayConverter : TypeConverter
   public override object ConvertTo (ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value, Type destinationType)
   {
     if (value is string[])
-      return StringUtility.ConcatWithSeparator ((string[]) value, ",");
+      return string.Join (",", (string[]) value);
     return string.Empty;
   }
 }

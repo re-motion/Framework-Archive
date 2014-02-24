@@ -181,18 +181,12 @@
     <Compile Include="Definitions\AttributeIntroductionDefinition.cs" />
     <Compile Include="Definitions\Building\AttributeDefinitionBuilder.cs" />
     <Compile Include="Definitions\Building\AttributeIntroductionDefinitionBuilder.cs" />
-    <Compile Include="Definitions\Building\DependencySorting\DependentMixinGrouper.cs" />
-    <Compile Include="Definitions\Building\DependencySorting\IDependentMixinGrouper.cs" />
     <Compile Include="Definitions\Building\DependencySorting\MixinDefinitionSorter.cs" />
     <Compile Include="Definitions\Building\DependencySorting\IMixinDefinitionSorter.cs" />
-    <Compile Include="Definitions\Building\DependencySorting\IMixinDependencyAnalyzer.cs" />
     <Compile Include="Definitions\Building\ITargetClassDefinitionBuilder.cs" />
     <Compile Include="Definitions\ComposedInterfaceDependencyDefinition.cs" />
     <Compile Include="Definitions\Building\ComposedInterfaceDependencyDefinitionBuilder.cs" />
     <Compile Include="Definitions\Building\DependencyDefinitionBuilderBase.cs" />
-    <Compile Include="Definitions\Building\DependencySorting\DependentMixinGrouperAlgorithm.cs" />
-    <Compile Include="Definitions\Building\DependencySorting\LegacyMixinDefinitionSorter.cs" />
-    <Compile Include="Definitions\Building\DependencySorting\MixinDependencyAnalyzer.cs" />
     <Compile Include="Definitions\Building\InterfaceIntroductionDefinitionBuilder.cs" />
     <Compile Include="Definitions\Building\MemberDefinitionBuilder.cs" />
     <Compile Include="Definitions\Building\MemberImplementationFinder.cs" />
@@ -247,8 +241,6 @@
     <Compile Include="Definitions\TargetDependencyDefinition.cs" />
     <Compile Include="Definitions\UniqueDefinitionCollection.cs" />
     <Compile Include="ExtendsAttribute.cs" />
-    <Compile Include="Globalization\MixedGlobalizationService .cs" />
-    <Compile Include="Globalization\MixedMultiLingualResources.cs" />
     <Compile Include="IgnoreForMixinConfigurationAttribute.cs" />
     <Compile Include="IgnoresClassAttribute.cs" />
     <Compile Include="IgnoresMixinAttribute.cs" />
@@ -279,6 +271,8 @@
     <Compile Include="MixinTypeUtility.cs" />
     <Compile Include="NonIntroducedAttribute.cs" />
     <Compile Include="ObjectFactory.cs" />
+    <Compile Include="Obsolete\Globalization\IResourceManager.cs" />
+    <Compile Include="Obsolete\Globalization\MixedMultiLingualResources.cs" />
     <Compile Include="OverrideMixinAttribute.cs" />
     <Compile Include="OverrideTargetAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -286,13 +280,6 @@
     <Compile Include="TypeFactory.cs" />
     <Compile Include="UsesAttribute.cs" />
     <Compile Include="Utilities\ConstraintBasedGenericParameterInstantiator.cs" />
-    <Compile Include="Utilities\DependencySort\CircularDependenciesException.cs" />
-    <Compile Include="Utilities\DependencySort\DependencyKind.cs" />
-    <Compile Include="Definitions\Building\DependencySorting\DependentMixinSorter.cs" />
-    <Compile Include="Utilities\DependencySort\DependentObjectSorter.cs" />
-    <Compile Include="Utilities\DependencySort\DependentObjectSorterAlgorithm.cs" />
-    <Compile Include="Utilities\DependencySort\IDependencyAnalyzer.cs" />
-    <Compile Include="Definitions\Building\DependencySorting\IDependentMixinSorter.cs" />
     <Compile Include="Utilities\MixedObjectInstantiationScope.cs" />
     <Compile Include="Utilities\MixinGenericArgumentFinder.cs" />
     <Compile Include="Utilities\MixinReflector.cs" />
@@ -304,7 +291,6 @@
     <Compile Include="Utilities\Singleton\ServiceLocatorInstanceCreator.cs" />
     <Compile Include="Utilities\Singleton\ThreadSafeSingletonBase.cs" />
     <Compile Include="Utilities\UncastableEnumerableWrapper.cs" />
-    <Compile Include="Validation\ConsoleDumper.cs" />
     <Compile Include="Validation\DefaultValidationLog.cs" />
     <Compile Include="Validation\DelegateRuleDescriptionAttribute.cs" />
     <Compile Include="Validation\DelegateValidationRule.cs" />
@@ -360,7 +346,11 @@
       <Project>{2AA369EC-A4E7-4D75-9101-EFA90E902625}</Project>
       <Name>Core.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\TypePipe\Core\TypePipe.Core.csproj">
+    <ProjectReference Include="..\..\Core\Reflection.CodeGeneration.TypePipe\Core.Reflection.CodeGeneration.TypePipe.csproj">
+      <Project>{EC62E06A-4AC6-48A0-8A81-69250ABC35B6}</Project>
+      <Name>Core.Reflection.CodeGeneration.TypePipe</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\TypePipe\Core\TypePipe.Core.csproj">
       <Project>{98e7f7aa-12b2-4a6b-8922-52c8e53b378e}</Project>
       <Name>TypePipe.Core</Name>
     </ProjectReference>

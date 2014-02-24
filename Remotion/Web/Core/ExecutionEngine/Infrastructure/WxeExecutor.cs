@@ -21,8 +21,8 @@ using System.Web;
 using System.Web.UI;
 using Remotion.Utilities;
 using Remotion.Web.ExecutionEngine.Infrastructure.WxePageStepExecutionStates;
-using Remotion.Web.Utilities;
 using Remotion.Web.UI;
+using Remotion.Web.Utilities;
 
 namespace Remotion.Web.ExecutionEngine.Infrastructure
 {
@@ -119,7 +119,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
           functionName,
           href,
           options.Target,
-          StringUtility.NullToEmpty (options.Features));
+          options.Features ?? string.Empty);
       _page.ClientScript.RegisterClientScriptBlock (_page, typeof (WxeExecutor), "WxeExecuteFunction", openScript);
       _page.RegisterClientSidePageEventHandler (SmartPageEvents.OnLoad, "WxeExecuteFunction", functionName);
 
@@ -142,7 +142,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
             throw new InvalidOperationException ("The IWxePage has no PostBackCollection even though this is a post back.");
           return false;
         }
-        return !StringUtility.IsNullOrEmpty (postBackCollection[ControlHelper.PostEventSourceID]);
+        return !string.IsNullOrEmpty (postBackCollection[ControlHelper.PostEventSourceID]);
       }
     }
 

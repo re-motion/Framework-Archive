@@ -93,7 +93,6 @@
     <Compile Include="AclTools\Expansion\Infrastructure\AclExpansionEntryCreatorTest.cs" />
     <Compile Include="AclTools\Expansion\Xrays\AclExpanderXray.cs" />
     <Compile Include="AclTools\Expansion\TextWriterFactory\TextWriterFactoryBaseTest.cs" />
-    <Compile Include="ClientTransactionTestHelper.cs" />
     <Compile Include="DatabaseConfiguration.cs" />
     <Compile Include="Domain\AccessControl\AccessControlEntryPropertiesEnumerationValueFilterTests\AccessControlEntryPropertiesEnumerationValueFilterTestBase.cs" />
     <Compile Include="Domain\AccessControl\AccessControlEntryPropertiesEnumerationValueFilterTests\NotSupportedProperty.cs" />
@@ -316,6 +315,10 @@
       <Project>{2AA369EC-A4E7-4D75-9101-EFA90E902625}</Project>
       <Name>Core.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Remotion\Core\Tools\Core.Tools.csproj">
+      <Project>{18269689-DC0F-4975-879B-A6ACBA0FA596}</Project>
+      <Name>Core.Tools</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Remotion\Data\DomainObjects.ObjectBinding\Data.DomainObjects.ObjectBinding.csproj">
       <Project>{f3935d12-39e6-4f06-8316-98cd7ed60c6b}</Project>
       <Name>Data.DomainObjects.ObjectBinding</Name>
@@ -351,6 +354,10 @@
     <ProjectReference Include="..\..\Remotion\Security\Core\Security.Core.csproj">
       <Project>{FBE0CBDD-82FF-4173-8536-47D3B5BC2E98}</Project>
       <Name>Security.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\TypePipe\Core\TypePipe.Core.csproj">
+      <Project>{98E7F7AA-12B2-4A6B-8922-52C8E53B378E}</Project>
+      <Name>TypePipe.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\Core\SecurityManager.Core.csproj">
       <Project>{990B8638-A08F-4A94-B01A-E7DAEF089F27}</Project>

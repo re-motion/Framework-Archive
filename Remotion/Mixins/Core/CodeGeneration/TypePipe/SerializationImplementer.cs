@@ -18,10 +18,10 @@
 using System;
 using System.Reflection;
 using System.Runtime.Serialization;
-using Remotion.Reflection.CodeGeneration;
 using Remotion.TypePipe.Dlr.Ast;
 using Remotion.TypePipe.MutableReflection;
 using Remotion.TypePipe.MutableReflection.BodyBuilding;
+using Remotion.TypePipe.Serialization;
 using Remotion.Utilities;
 
 namespace Remotion.Mixins.CodeGeneration.TypePipe

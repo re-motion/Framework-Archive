@@ -17,7 +17,6 @@
 using System;
 using System.Linq;
 using Remotion.Collections;
-using Remotion.Reflection;
 using Remotion.Utilities;
 using Remotion.Web.Infrastructure;
 
@@ -46,7 +45,7 @@ namespace Remotion.Web.Services
       foreach (var searchServiceMethod in GetServiceMethodsFromCache<T>())
         WebServiceUtility.CheckWebService (compiledType, searchServiceMethod.Item1);
 
-      return (T) TypesafeActivator.CreateInstance (compiledType).With();
+      return (T) Activator.CreateInstance (compiledType);
     }
 
     public T CreateScriptService<T> (string virtualPath) where T: class
@@ -56,7 +55,7 @@ namespace Remotion.Web.Services
       foreach (var serviceMethod in GetServiceMethodsFromCache<T>())
         WebServiceUtility.CheckScriptService (compiledType, serviceMethod.Item1);
 
-      return (T) TypesafeActivator.CreateInstance (compiledType).With();
+      return (T) Activator.CreateInstance (compiledType);
     }
 
     public T CreateJsonService<T> (string virtualPath) where T: class
@@ -66,12 +65,15 @@ namespace Remotion.Web.Services
       foreach (var serviceMethod in GetServiceMethodsFromCache<T>())
         WebServiceUtility.CheckJsonService (compiledType, serviceMethod.Item1, serviceMethod.Item2);
 
-      return (T) TypesafeActivator.CreateInstance (compiledType).With();
+      return (T) Activator.CreateInstance (compiledType);
     }
 
     private Type GetAndCheckCompiledType<T> (string virtualPath)
     {
       var compiledType = _buildManager.GetCompiledType (virtualPath);
+
+      if (compiledType == null)
+        throw new InvalidOperationException (string.Format ("Web service '{0}' could not be compiled.", virtualPath));
 
       if (!typeof (T).IsAssignableFrom (compiledType))
       {

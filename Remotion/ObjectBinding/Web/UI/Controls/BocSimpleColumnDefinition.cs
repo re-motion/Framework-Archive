@@ -25,7 +25,7 @@ using Remotion.Mixins;
 using Remotion.ObjectBinding.Design;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Sorting;
-using Remotion.Reflection;
+using Remotion.TypePipe;
 using Remotion.Utilities;
 using Remotion.Web.Utilities;
 
@@ -71,20 +71,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
           BusinessObjectPropertyPath.UnreachableValueBehavior.ReturnNullForUnreachableValue,
           BusinessObjectPropertyPath.ListValueBehavior.GetResultForFirstListEntry);
 
-      string formatString = _formatString;
-      if (string.IsNullOrEmpty (formatString))
-      {
-        var lastProperty = result.ResultProperty as IBusinessObjectDateTimeProperty;
-        if (lastProperty != null)
-        {
-          if (lastProperty.Type == DateTimeType.Date)
-            formatString = "d";
-          else
-            formatString = "g";
-        }
-      }
-
-      return result.GetString (formatString);
+      return result.GetString (_formatString);
     }
 
     /// <summary>
@@ -102,7 +89,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     public string FormatString
     {
       get { return _formatString; }
-      set { _formatString = StringUtility.NullToEmpty (value); }
+      set { _formatString = value ?? string.Empty; }
     }
 
     public IBusinessObjectPropertyPath GetPropertyPath ()
@@ -149,7 +136,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       if (string.IsNullOrEmpty (_editModeControlType))
         return null;
 
-      Type type = WebTypeUtility.GetType (_editModeControlType, true, false);
+      Type type = WebTypeUtility.GetType (_editModeControlType, true);
       return (IBusinessObjectBoundEditableWebControl) ObjectFactory.Create (type, ParamList.Empty);
     }
 
@@ -168,7 +155,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     public string EditModeControlType
     {
       get { return _editModeControlType; }
-      set { _editModeControlType = StringUtility.NullToEmpty (value); }
+      set { _editModeControlType = value ?? string.Empty; }
     }
 
     /// <summary>

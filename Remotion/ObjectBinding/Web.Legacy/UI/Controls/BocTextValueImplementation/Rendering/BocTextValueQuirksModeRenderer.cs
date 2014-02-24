@@ -31,7 +31,7 @@ namespace Remotion.ObjectBinding.Web.Legacy.UI.Controls.BocTextValueImplementati
   /// Provides a label for rendering a <see cref="BocTextValue"/> control in read-only mode. 
   /// Rendering is done by the parent class.
   /// </summary>
-  /// <include file='doc\include\UI\Controls\BocTextValueRenderer.xml' path='BocTextValueQuirksModeRenderer/Class/*'/>
+  /// <include file='..\..\..\..\doc\include\UI\Controls\BocTextValueRenderer.xml' path='BocTextValueQuirksModeRenderer/Class/*'/>
   public class BocTextValueQuirksModeRenderer : BocTextValueQuirksModeRendererBase<IBocTextValue>, IBocTextValueRenderer
   {
     public BocTextValueQuirksModeRenderer (IResourceUrlFactory resourceUrlFactory) 
@@ -85,19 +85,19 @@ namespace Remotion.ObjectBinding.Web.Legacy.UI.Controls.BocTextValueImplementati
 
       string text;
       if (textMode == BocTextBoxMode.MultiLine
-          && !StringUtility.IsNullOrEmpty (renderingContext.Control.Text))
+          && !string.IsNullOrEmpty (renderingContext.Control.Text))
       {
         //  Allows for an optional \r
         string temp = renderingContext.Control.Text.Replace ("\r", "");
         string[] lines = temp.Split ('\n');
         for (int i = 0; i < lines.Length; i++)
           lines[i] = HttpUtility.HtmlEncode (lines[i]);
-        text = StringUtility.ConcatWithSeparator (lines, "<br />");
+        text = string.Join ("<br />", lines);
       }
       else
         text = HttpUtility.HtmlEncode (renderingContext.Control.Text);
 
-      if (StringUtility.IsNullOrEmpty (text))
+      if (string.IsNullOrEmpty (text))
       {
         if (renderingContext.Control.IsDesignMode)
         {

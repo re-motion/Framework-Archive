@@ -15,14 +15,13 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using NUnit.Framework;
-using Remotion.Collections;
 using Remotion.Logging;
 using Remotion.Utilities;
 using Rhino.Mocks;
-using System.Collections.Generic;
 
 namespace Remotion.UnitTests.Utilities
 {
@@ -246,7 +245,14 @@ namespace Remotion.UnitTests.Utilities
           firstElapsedCP.ToString(), 
           firstElapsedCP.TotalMilliseconds.ToString() 
       };
-      logMock.AssertWasCalled (mock => mock.LogFormat (Arg.Is (LogLevel.Error), Arg.Is ("{0}#{1}#{2}#{3}#{4}"), Arg<object[]>.List.Equal (expectedFirstArgs)));
+      logMock.AssertWasCalled (
+          mock =>
+              mock.LogFormat (
+                  Arg.Is (LogLevel.Error),
+                  Arg<int>.Is.Null,
+                  Arg<Exception>.Is.Null,
+                  Arg.Is ("{0}#{1}#{2}#{3}#{4}"),
+                  Arg<object[]>.List.Equal (expectedFirstArgs)));
 
       var expectedSecondArgs = new[] { 
           "end", 
@@ -255,7 +261,13 @@ namespace Remotion.UnitTests.Utilities
           secondElapsedCP.ToString(), 
           secondElapsedCP.TotalMilliseconds.ToString() 
       };
-      logMock.AssertWasCalled (mock => mock.LogFormat (Arg.Is (LogLevel.Error), Arg.Is ("{0}#{1}#{2}#{3}#{4}"), Arg<object[]>.List.Equal (expectedSecondArgs)));
+      logMock.AssertWasCalled (
+          mock => mock.LogFormat (
+              Arg.Is (LogLevel.Error),
+              Arg<int>.Is.Null,
+              Arg<Exception>.Is.Null,
+              Arg.Is ("{0}#{1}#{2}#{3}#{4}"),
+              Arg<object[]>.List.Equal (expectedSecondArgs)));
     }
 
     [Test]

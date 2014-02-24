@@ -21,7 +21,6 @@ using Remotion.Collections;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.Mapping;
-using Remotion.Text;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
@@ -179,7 +178,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
       {
         mainMessage = string.Format (
             "While the objects {0} are being loaded, only these object can be modified.",
-            SeparatedStringBuilder.Build (", ", _currentlyLoadingObjectIDs, id => "'" + id + "'"));
+            string.Join (", ", _currentlyLoadingObjectIDs.Select (id => "'" + id + "'")));
       }
       var message = mainMessage + " " + specificErrorMessage;
       return new InvalidOperationException (message);

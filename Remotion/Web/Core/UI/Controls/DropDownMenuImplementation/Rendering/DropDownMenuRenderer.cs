@@ -33,7 +33,7 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering
   {
     private const string c_whiteSpace = "&nbsp;";
 
-    public DropDownMenuRenderer (IResourceUrlFactory resourceUrlFactory, ICompoundGlobalizationService globalizationService)
+    public DropDownMenuRenderer (IResourceUrlFactory resourceUrlFactory, IGlobalizationService globalizationService)
       : base (resourceUrlFactory, globalizationService)
     {
     }

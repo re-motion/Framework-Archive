@@ -20,7 +20,6 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
-using Remotion.Text;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders.Specifications
@@ -49,7 +48,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders.Specif
       ArgumentUtility.CheckNotNull ("stringBuilder", stringBuilder);
       ArgumentUtility.CheckNotNull ("sqlDialect", sqlDialect);
 
-      stringBuilder.Append (SeparatedStringBuilder.Build (", ", _selectedColumns, c => c == null ? "NULL" : sqlDialect.DelimitIdentifier(c.Name)));
+      stringBuilder.Append (string.Join (", ", _selectedColumns.Select (c => c == null ? "NULL" : sqlDialect.DelimitIdentifier(c.Name))));
     }
 
     public ISelectedColumnsSpecification Union (IEnumerable<ColumnDefinition> additionalColumns)

@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using Remotion.Data.DomainObjects.DataManagement.Commands;
-using Remotion.Text;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
@@ -81,7 +80,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
             + Environment.NewLine
             + "{1}",
             dataContainer.ID,
-            SeparatedStringBuilder.Build (Environment.NewLine, problems));
+            string.Join (Environment.NewLine, problems));
         return new ExceptionCommand (new InvalidOperationException (message));
       }
       else

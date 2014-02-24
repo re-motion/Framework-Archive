@@ -17,9 +17,9 @@
 
 using System;
 using System.Web.UI;
+using Remotion.Globalization;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
-using Remotion.Globalization;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 {

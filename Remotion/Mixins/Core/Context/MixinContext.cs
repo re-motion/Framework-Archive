@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Remotion.Collections;
 using Remotion.Mixins.Context.Serialization;
-using Remotion.Text;
 using Remotion.Utilities;
 
 namespace Remotion.Mixins.Context
@@ -213,7 +212,7 @@ namespace Remotion.Mixins.Context
           MixinType,
           MixinKind,
           IntroducedMemberVisibility,
-          SeparatedStringBuilder.Build (",", ExplicitDependencies, t => t.Name));
+          string.Join (",", ExplicitDependencies.Select (t => t.Name)));
     }
   }
 }

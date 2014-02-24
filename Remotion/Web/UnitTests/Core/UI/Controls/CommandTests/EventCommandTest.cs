@@ -17,15 +17,12 @@
 using System;
 using System.Web.UI;
 using NUnit.Framework;
-using Remotion.Web.ExecutionEngine;
-using Remotion.Web.UI;
-using Remotion.Web.UI.Controls;
 using Remotion.Development.Web.UnitTesting.AspNetFramework;
+using Remotion.Web.UI.Controls;
 
 namespace Remotion.Web.UnitTests.Core.UI.Controls.CommandTests
 {
   [TestFixture]
-  [Ignore("TODO RM-5569")]
   public class EventCommandTest : BaseTest
   {
     private CommandTestHelper _testHelper;
@@ -33,7 +30,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.CommandTests
     [SetUp]
     public virtual void SetUp ()
     {
-      _testHelper = new CommandTestHelper ();
+      _testHelper = new CommandTestHelper();
       HttpContextHelper.SetCurrent (_testHelper.HttpContext);
     }
 
@@ -52,32 +49,28 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.CommandTests
     [Test]
     public void HasAccess_WithAccessGranted ()
     {
-      AdapterRegistry.Instance.SetAdapter (typeof (IWebSecurityAdapter), _testHelper.WebSecurityAdapter);
-      AdapterRegistry.Instance.SetAdapter (typeof (IWxeSecurityAdapter), _testHelper.WxeSecurityAdapter);
-      Command command = _testHelper.CreateEventCommand ();
+      Command command = _testHelper.CreateEventCommand (_testHelper.WebSecurityAdapter, _testHelper.WxeSecurityAdapter);
       command.Click += TestHandler;
       _testHelper.ExpectWebSecurityProviderHasAccess (_testHelper.SecurableObject, new CommandClickEventHandler (TestHandler), true);
-      _testHelper.ReplayAll ();
+      _testHelper.ReplayAll();
 
       bool hasAccess = command.HasAccess (_testHelper.SecurableObject);
 
-      _testHelper.VerifyAll ();
+      _testHelper.VerifyAll();
       Assert.That (hasAccess, Is.True);
     }
 
     [Test]
     public void HasAccess_WithAccessDenied ()
     {
-      AdapterRegistry.Instance.SetAdapter (typeof (IWebSecurityAdapter), _testHelper.WebSecurityAdapter);
-      AdapterRegistry.Instance.SetAdapter (typeof (IWxeSecurityAdapter), _testHelper.WxeSecurityAdapter);
-      Command command = _testHelper.CreateEventCommand ();
+      Command command = _testHelper.CreateEventCommand (_testHelper.WebSecurityAdapter, _testHelper.WxeSecurityAdapter);
       command.Click += TestHandler;
       _testHelper.ExpectWebSecurityProviderHasAccess (_testHelper.SecurableObject, new CommandClickEventHandler (TestHandler), false);
-      _testHelper.ReplayAll ();
+      _testHelper.ReplayAll();
 
       bool hasAccess = command.HasAccess (_testHelper.SecurableObject);
 
-      _testHelper.VerifyAll ();
+      _testHelper.VerifyAll();
       Assert.That (hasAccess, Is.False);
     }
 

@@ -19,7 +19,6 @@
 using System;
 using System.ComponentModel.Design;
 using System.Data.SqlClient;
-using System.IO;
 using Microsoft.Practices.ServiceLocation;
 using NUnit.Framework;
 using Remotion.Configuration;
@@ -27,11 +26,9 @@ using Remotion.Data.DomainObjects.Configuration;
 using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.Data.DomainObjects.Development;
 using Remotion.Data.DomainObjects.Mapping;
-using Remotion.Data.DomainObjects.Mapping.Configuration;
 using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
-using Remotion.Data.DomainObjects.Queries.Configuration;
 using Remotion.Development.UnitTesting.Data.SqlClient;
 using Remotion.Reflection;
 using Remotion.Reflection.TypeDiscovery;
@@ -66,13 +63,12 @@ namespace Remotion.SecurityManager.UnitTests
         serviceLocator.RegisterMultiple<IGlobalAccessTypeCache> (() => new NullGlobalAccessTypeCache());
         ServiceLocator.SetLocatorProvider (() => serviceLocator);
 
-        ProviderCollection<StorageProviderDefinition> providers = new ProviderCollection<StorageProviderDefinition>();
+        var providers = new ProviderCollection<StorageProviderDefinition>();
         providers.Add (new RdbmsProviderDefinition ("SecurityManager", new SecurityManagerSqlStorageObjectFactory(), TestDomainConnectionString));
-        StorageConfiguration storageConfiguration = new StorageConfiguration (providers, providers["SecurityManager"]);
+        var storageConfiguration = new StorageConfiguration (providers, providers["SecurityManager"]);
         storageConfiguration.StorageGroups.Add (new StorageGroupElement (new SecurityManagerStorageGroupAttribute(), "SecurityManager"));
 
-        DomainObjectsConfiguration.SetCurrent (
-            new FakeDomainObjectsConfiguration (new MappingLoaderConfiguration(), storageConfiguration, new QueryConfiguration()));
+        DomainObjectsConfiguration.SetCurrent (new FakeDomainObjectsConfiguration (storage: storageConfiguration));
 
         var rootAssemblyFinder = new FixedRootAssemblyFinder (new RootAssembly (typeof (BaseSecurityManagerObject).Assembly, true));
         var assemblyLoader = new FilteringAssemblyLoader (ApplicationAssemblyLoaderFilter.Instance);
@@ -108,11 +104,6 @@ namespace Remotion.SecurityManager.UnitTests
     public void TearDown ()
     {
       SqlConnection.ClearAllPools();
-    }
-
-    private string GetFullPath (string fileName)
-    {
-      return Path.Combine (AppDomain.CurrentDomain.BaseDirectory, fileName);
     }
   }
 }

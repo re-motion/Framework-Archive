@@ -15,10 +15,9 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.ObjectBinding.BindableObject;
-using Remotion.Reflection;
-using Remotion.Utilities;
 using System.Linq;
+using Remotion.ObjectBinding.BindableObject;
+using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding
 {
@@ -39,7 +38,7 @@ namespace Remotion.ObjectBinding
     {
       ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("filterType", filterType, typeof (IEnumerationValueFilter));
 
-      _filter = (IEnumerationValueFilter) TypesafeActivator.CreateInstance (filterType).With();
+      _filter = (IEnumerationValueFilter) Activator.CreateInstance (filterType);
     }
 
     /// <summary>

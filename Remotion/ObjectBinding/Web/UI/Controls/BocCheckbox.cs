@@ -30,7 +30,7 @@ using Remotion.Web.Utilities;
 namespace Remotion.ObjectBinding.Web.UI.Controls
 {
   /// <summary> This control can be used to display or edit a boolean value (true or false). </summary>
-  /// <include file='doc\include\UI\Controls\BocCheckBox.xml' path='BocCheckBox/Class/*' />
+  /// <include file='..\..\doc\include\UI\Controls\BocCheckBox.xml' path='BocCheckBox/Class/*' />
   [ValidationProperty ("ValidationValue")]
   [DefaultEvent ("SelectionChanged")]
   [ToolboxItemFilter ("System.Web.UI")]
@@ -117,14 +117,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   Uses the <paramref name="postCollection"/> to determine whether the value of this control has been changed 
     ///   between postbacks.
     /// </summary>
-    /// <include file='doc\include\UI\Controls\BocCheckBox.xml' path='BocCheckBox/LoadPostData/*' />
+    /// <include file='..\..\doc\include\UI\Controls\BocCheckBox.xml' path='BocCheckBox/LoadPostData/*' />
     protected override bool LoadPostData (string postDataKey, NameValueCollection postCollection)
     {
       if (! _isActive)
         return false;
 
       string newValue = PageUtility.GetPostBackCollectionItem (Page, GetKeyValueName());
-      bool newBooleanValue = ! StringUtility.IsNullOrEmpty (newValue);
+      bool newBooleanValue = ! string.IsNullOrEmpty (newValue);
       bool isDataChanged = _value != newBooleanValue;
       if (isDataChanged)
       {
@@ -211,11 +211,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
       string key;
       key = ResourceManagerUtility.GetGlobalResourceKey (TrueDescription);
-      if (! StringUtility.IsNullOrEmpty (key))
+      if (! string.IsNullOrEmpty (key))
         TrueDescription = resourceManager.GetString (key);
 
       key = ResourceManagerUtility.GetGlobalResourceKey (FalseDescription);
-      if (! StringUtility.IsNullOrEmpty (key))
+      if (! string.IsNullOrEmpty (key))
         FalseDescription = resourceManager.GetString (key);
     }
 

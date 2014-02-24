@@ -16,15 +16,13 @@
 // 
 using System;
 using System.IO;
-using JetBrains.Annotations;
+using System.Linq;
 using Remotion.Logging;
 using Remotion.Mixins.CodeGeneration.TypePipe;
+using Remotion.Reflection.CodeGeneration.TypePipe;
 using Remotion.ServiceLocation;
 using Remotion.TypePipe;
-using Remotion.TypePipe.Configuration;
-using Remotion.TypePipe.Implementation.Remotion;
 using Remotion.Utilities;
-using System.Linq;
 
 namespace Remotion.Mixins.MixerTools
 {
@@ -71,7 +69,7 @@ namespace Remotion.Mixins.MixerTools
           .SetAssemblyNamePattern (_assemblyName)
           .SetDegreeOfParallelism (_degreeOfParallelism);
 
-      var pipeline = remotionPipelineFactory.CreatePipeline (
+      var pipeline = remotionPipelineFactory.Create (
           defaultPipeline.ParticipantConfigurationID,
           pipelineSettings.Build(),
           participants);

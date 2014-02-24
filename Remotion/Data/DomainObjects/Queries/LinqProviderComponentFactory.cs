@@ -31,7 +31,6 @@ using Remotion.Linq.SqlBackend.SqlPreparation;
 using Remotion.Linq.Utilities;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
-using ArgumentUtility = Remotion.Utilities.ArgumentUtility;
 
 namespace Remotion.Data.DomainObjects.Queries
 {

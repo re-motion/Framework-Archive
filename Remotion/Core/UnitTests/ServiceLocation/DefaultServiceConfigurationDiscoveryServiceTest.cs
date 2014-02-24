@@ -17,11 +17,11 @@
 using System;
 using System.Collections;
 using System.ComponentModel.Design;
+using System.Linq;
 using System.Runtime.InteropServices;
 using NUnit.Framework;
 using Remotion.FunctionalProgramming;
 using Remotion.ServiceLocation;
-using System.Linq;
 using Remotion.UnitTests.ServiceLocation.TestDomain;
 using Rhino.Mocks;
 

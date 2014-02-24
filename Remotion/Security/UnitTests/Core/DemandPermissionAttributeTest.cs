@@ -17,7 +17,6 @@
 using System;
 using NUnit.Framework;
 using Remotion.Security.UnitTests.Core.SampleDomain;
-using Remotion.Utilities;
 
 namespace Remotion.Security.UnitTests.Core
 {
@@ -41,7 +40,9 @@ namespace Remotion.Security.UnitTests.Core
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentItemTypeException))]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage =
+        "Item 0 of parameter 'accessTypes' has the type 'Remotion.Security.UnitTests.Core.SampleDomain.SimpleType' instead of 'System.Enum'."
+        + "\r\nParameter name: accessTypes")]
     public void RejectOtherObjectTypes ()
     {
       new DemandPermissionAttribute (new SimpleType());

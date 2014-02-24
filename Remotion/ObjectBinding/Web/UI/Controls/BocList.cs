@@ -27,7 +27,6 @@ using System.Reflection;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using JetBrains.Annotations;
-using Remotion.Collections;
 using Remotion.Globalization;
 using Remotion.Logging;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation;
@@ -46,7 +45,7 @@ using Remotion.Web.UI.Controls.ListMenuImplementation;
 using Remotion.Web.UI.Controls.PostBackTargets;
 using Remotion.Web.UI.Globalization;
 using Remotion.Web.Utilities;
-using StringArrayConverter=Remotion.Web.UI.Design.StringArrayConverter;
+using StringArrayConverter = Remotion.Web.UI.Design.StringArrayConverter;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls
 {
@@ -1378,6 +1377,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   The <see cref="Array"/> of objects implementing <see cref="IBusinessObject"/> to load,
     ///   or <see langword="null"/>. 
     /// </param>
+    /// <param name="interim"> Specifies whether this is the initial loading, or an interim loading. </param>
     /// <include file='..\..\doc\include\UI\Controls\BocList.xml' path='BocList/LoadUnboundValue/*' />
     public void LoadUnboundValue (IBusinessObject[] value, bool interim)
     {
@@ -1389,13 +1389,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   The <see cref="IList"/> of objects implementing <see cref="IBusinessObject"/> to load,
     ///   or <see langword="null"/>. 
     /// </param>
+    /// <param name="interim"> Specifies whether this is the initial loading, or an interim loading. </param>
     /// <include file='..\..\doc\include\UI\Controls\BocList.xml' path='BocList/LoadUnboundValue/*' />
     public void LoadUnboundValue (IList value, bool interim)
     {
       LoadValueInternal (value, interim);
     }
 
-    /// <summary> Performs the actual loading for <see cref="LoadValue"/> and <see cref="LoadUnboundValue"/>. </summary>
+    /// <summary> Performs the actual loading for <see cref="LoadValue"/> and <see cref="O:Remotion.ObjectBinding.Web.UI.Controls.BocList.LoadUnboundValue"/>. </summary>
     protected virtual void LoadValueInternal (IList value, bool interim)
     {
       if (! interim)
@@ -1977,23 +1978,23 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
       string key;
       key = ResourceManagerUtility.GetGlobalResourceKey (IndexColumnTitle);
-      if (! StringUtility.IsNullOrEmpty (key))
+      if (! string.IsNullOrEmpty (key))
         IndexColumnTitle = resourceManager.GetString (key);
 
       key = ResourceManagerUtility.GetGlobalResourceKey (EmptyListMessage);
-      if (! StringUtility.IsNullOrEmpty (key))
+      if (! string.IsNullOrEmpty (key))
         EmptyListMessage = resourceManager.GetString (key);
 
       key = ResourceManagerUtility.GetGlobalResourceKey (OptionsTitle);
-      if (! StringUtility.IsNullOrEmpty (key))
+      if (! string.IsNullOrEmpty (key))
         OptionsTitle = resourceManager.GetString (key);
 
       key = ResourceManagerUtility.GetGlobalResourceKey (AvailableViewsListTitle);
-      if (! StringUtility.IsNullOrEmpty (key))
+      if (! string.IsNullOrEmpty (key))
         AvailableViewsListTitle = resourceManager.GetString (key);
 
       key = ResourceManagerUtility.GetGlobalResourceKey (ErrorMessage);
-      if (! StringUtility.IsNullOrEmpty (key))
+      if (! string.IsNullOrEmpty (key))
         ErrorMessage = resourceManager.GetString (key);
 
       _fixedColumns.LoadResources (resourceManager, globalizationService);

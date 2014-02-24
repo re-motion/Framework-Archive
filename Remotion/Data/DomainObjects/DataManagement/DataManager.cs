@@ -16,17 +16,16 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.Serialization;
 using Remotion.Data.DomainObjects.DataManagement.Commands;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
+using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Infrastructure.InvalidObjects;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
 using Remotion.Data.DomainObjects.Infrastructure.Serialization;
 using Remotion.FunctionalProgramming;
-using Remotion.Text;
 using Remotion.Utilities;
-using Remotion.Data.DomainObjects.Infrastructure;
-using System.Linq;
 
 namespace Remotion.Data.DomainObjects.DataManagement
 {
@@ -379,7 +378,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
 
       if (problematicDataContainers.Count != 0)
       {
-        var itemList = SeparatedStringBuilder.Build (", ", problematicDataContainers.Select (dc => string.Format ("'{0}' ({1})", dc.ID, dc.State)));
+        var itemList = string.Join (", ", problematicDataContainers.Select (dc => string.Format ("'{0}' ({1})", dc.ID, dc.State)));
         var message = string.Format (
             "The state of the following DataContainers prohibits that they be unloaded; only unchanged DataContainers can be unloaded: {0}.",
             itemList);
@@ -409,7 +408,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
       if (endPointsOfNewOrDeletedObjects.Count > 0)
       {
         var message = "Cannot unload the following relation end-points because they belong to new or deleted objects: "
-            + SeparatedStringBuilder.Build (", ", endPointsOfNewOrDeletedObjects) + ".";
+            + string.Join (", ", endPointsOfNewOrDeletedObjects) + ".";
         var exception = new InvalidOperationException (message);
         return new ExceptionCommand (exception);
       }

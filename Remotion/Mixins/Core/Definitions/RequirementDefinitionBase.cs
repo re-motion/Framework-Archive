@@ -18,7 +18,6 @@ using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using Remotion.Text;
 using Remotion.Utilities;
 
 namespace Remotion.Mixins.Definitions
@@ -96,7 +95,7 @@ namespace Remotion.Mixins.Definitions
     public string GetRequiringEntityDescription ()
     {
       var distinctRequiringDependencyDescriptions = _requiringDependencies.Select (d => d.GetDependencyDescription()).Distinct();
-      return SeparatedStringBuilder.Build (", ", distinctRequiringDependencyDescriptions);
+      return string.Join (", ", distinctRequiringDependencyDescriptions);
     }
   }
 }

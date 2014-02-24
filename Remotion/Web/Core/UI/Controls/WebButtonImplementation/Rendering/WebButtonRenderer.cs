@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Web;
 using Remotion.Globalization;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
@@ -29,7 +28,7 @@ namespace Remotion.Web.UI.Controls.WebButtonImplementation.Rendering
   [ImplementationFor (typeof (IWebButtonRenderer), Lifetime = LifetimeKind.Singleton)]
   public class WebButtonRenderer : RendererBase<IWebButton>, IWebButtonRenderer
   {
-    public WebButtonRenderer (IResourceUrlFactory resourceUrlFactory, ICompoundGlobalizationService globalizationService)
+    public WebButtonRenderer (IResourceUrlFactory resourceUrlFactory, IGlobalizationService globalizationService)
         : base (resourceUrlFactory, globalizationService)
     {
     }

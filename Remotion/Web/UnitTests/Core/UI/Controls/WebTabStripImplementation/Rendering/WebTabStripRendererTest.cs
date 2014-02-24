@@ -22,9 +22,7 @@ using System.Web.UI.WebControls;
 using System.Xml;
 using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting.Resources;
-using Remotion.Globalization;
-using Remotion.Globalization.Implementation;
-using Remotion.Utilities;
+using Remotion.Development.Web.UnitTesting.UI.Controls.Rendering;
 using Remotion.Web.Infrastructure;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
@@ -47,10 +45,9 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebTabStripImplementation.Rend
     private HtmlHelper _htmlHelper;
     private WebTabStyle _style;
 
-    public override void SetUp ()
+    [SetUp]
+    public void SetUp ()
     {
-      base.SetUp();
-
       _htmlHelper = new HtmlHelper();
       _httpContextStub = MockRepository.GenerateStub<HttpContextBase>();
 
@@ -391,12 +388,12 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebTabStripImplementation.Rend
       anchorBody.AssertAttributeValueEquals ("class", _renderer.CssClassTabAnchorBody);
 
       var textWithHotkey = HotkeyParser.Parse (tab.Text);
-      string text = StringUtility.NullToEmpty (textWithHotkey.Text);
+      string text = textWithHotkey.Text ?? string.Empty;
       var hasIcon = tab.Icon != null && !string.IsNullOrEmpty (tab.Icon.Url);
       if (hasIcon)
       {
         string url = tab.Icon.Url.TrimStart ('~');
-        string alt = StringUtility.NullToEmpty (tab.Icon.AlternateText);
+        string alt = tab.Icon.AlternateText ?? string.Empty;
         text = HtmlHelper.WhiteSpace + text;
         
         var image = anchorBody.GetAssertedChildElement ("img", 0);

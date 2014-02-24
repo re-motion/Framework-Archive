@@ -17,11 +17,10 @@
 using System;
 using System.Collections.Generic;
 using NUnit.Framework;
-using Rhino.Mocks;
 using Remotion.Security.Metadata;
 using Remotion.Security.UnitTests.Core.SampleDomain;
 using Remotion.Security.UnitTests.TestDomain;
-using Remotion.Utilities;
+using Rhino.Mocks;
 
 namespace Remotion.Security.UnitTests.Core.Metadata
 {
@@ -136,10 +135,12 @@ namespace Remotion.Security.UnitTests.Core.Metadata
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentTypeException))]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage =
+        "Parameter 'type' is a 'Remotion.Security.UnitTests.TestDomain.Role', which cannot be assigned to type 'Remotion.Security.ISecurableObject'."
+        + "\r\nParameter name: type")]
     public void GetMetadataWithInvalidType ()
     {
-      new ClassReflector ().GetMetadata (typeof (Role), _cache);
+      new ClassReflector().GetMetadata (typeof (Role), _cache);
     }
 
     [Test]

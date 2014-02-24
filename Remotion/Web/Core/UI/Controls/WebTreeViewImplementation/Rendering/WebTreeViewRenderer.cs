@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Web;
 using Remotion.Globalization;
 using Remotion.ServiceLocation;
 
@@ -28,7 +27,7 @@ namespace Remotion.Web.UI.Controls.WebTreeViewImplementation.Rendering
   [ImplementationFor (typeof (IWebTreeViewRenderer), Lifetime = LifetimeKind.Singleton)]
   public class WebTreeViewRenderer : RendererBase<IWebTreeView>, IWebTreeViewRenderer
   {
-    public WebTreeViewRenderer (IResourceUrlFactory resourceUrlFactory, ICompoundGlobalizationService globalizationService)
+    public WebTreeViewRenderer (IResourceUrlFactory resourceUrlFactory, IGlobalizationService globalizationService)
         : base (resourceUrlFactory, globalizationService)
     {
     }

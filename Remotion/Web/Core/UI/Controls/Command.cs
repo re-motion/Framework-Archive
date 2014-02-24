@@ -23,8 +23,10 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using JetBrains.Annotations;
 using Remotion.Collections;
+using Remotion.FunctionalProgramming;
 using Remotion.Globalization;
 using Remotion.Security;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.ExecutionEngine.UrlMapping;
@@ -126,11 +128,7 @@ namespace Remotion.Web.UI.Controls
       public virtual string Href
       {
         get { return _href; }
-        set
-        {
-          _href = StringUtility.NullToEmpty (value);
-          _href = _href.Trim();
-        }
+        set { _href = (value ?? string.Empty).Trim(); }
       }
 
       /// <summary> 
@@ -149,11 +147,7 @@ namespace Remotion.Web.UI.Controls
       public virtual string Target
       {
         get { return _target; }
-        set
-        {
-          _target = StringUtility.NullToEmpty (value);
-          _target = _target.Trim();
-        }
+        set { _target = (value ?? string.Empty).Trim(); }
       }
     }
 
@@ -206,11 +200,7 @@ namespace Remotion.Web.UI.Controls
       public virtual string TypeName
       {
         get { return _typeName; }
-        set
-        {
-          _typeName = StringUtility.NullToEmpty (value);
-          _typeName = _typeName.Trim();
-        }
+        set { _typeName = (value ?? string.Empty).Trim(); }
       }
 
       /// <summary> 
@@ -229,11 +219,7 @@ namespace Remotion.Web.UI.Controls
       public string MappingID
       {
         get { return _mappingID; }
-        set
-        {
-          _mappingID = StringUtility.NullToEmpty (value);
-          _mappingID = _mappingID.Trim();
-        }
+        set { _mappingID = (value ?? string.Empty).Trim(); }
       }
 
       /// <summary> 
@@ -252,11 +238,7 @@ namespace Remotion.Web.UI.Controls
       public virtual string Parameters
       {
         get { return _parameters; }
-        set
-        {
-          _parameters = StringUtility.NullToEmpty (value);
-          _parameters = _parameters.Trim();
-        }
+        set { _parameters = (value ?? string.Empty).Trim(); }
       }
 
       /// <summary> 
@@ -275,11 +257,7 @@ namespace Remotion.Web.UI.Controls
       public string Target
       {
         get { return _target; }
-        set
-        {
-          _target = StringUtility.NullToEmpty (value);
-          _target = _target.Trim();
-        }
+        set { _target = (value ?? string.Empty).Trim(); }
       }
 
 
@@ -298,11 +276,11 @@ namespace Remotion.Web.UI.Controls
         UrlMappingEntry mapping = UrlMappingConfiguration.Current.Mappings.FindByID (_mappingID);
 
         bool hasMapping = mapping != null;
-        bool hasTypeName = !StringUtility.IsNullOrEmpty (_typeName);
+        bool hasTypeName = !string.IsNullOrEmpty (_typeName);
 
         Type functionType = null;
         if (hasTypeName)
-          functionType = WebTypeUtility.GetType (_typeName, true, false);
+          functionType = WebTypeUtility.GetType (_typeName, true);
 
         if (hasMapping)
         {
@@ -340,15 +318,25 @@ namespace Remotion.Web.UI.Controls
     [Browsable (false)]
     public CommandClickEventHandler Click;
 
+    private readonly IWxeSecurityAdapter _wxeSecurityAdapter;
+    private readonly IWebSecurityAdapter _webSecurityAdapter;
+
     public Command ()
-        : this (CommandType.None)
+        : this (CommandType.None, GetWebSecurityAdapter(), GetWxeSecurityAdapter())
     {
     }
 
     public Command (CommandType defaultType)
+      : this (defaultType, GetWebSecurityAdapter(), GetWxeSecurityAdapter())
+    {
+    }
+
+    public Command (CommandType defaultType, [CanBeNull] IWebSecurityAdapter webSecurityAdapter, [CanBeNull] IWxeSecurityAdapter wxeSecurityAdapter)
     {
       _defaultType = defaultType;
       _type = _defaultType;
+      _webSecurityAdapter = webSecurityAdapter;
+      _wxeSecurityAdapter = wxeSecurityAdapter;
     }
 
     /// <summary> Fires the <see cref="Click"/> event. </summary>
@@ -560,7 +548,7 @@ namespace Remotion.Web.UI.Controls
 
       return CommandInfo.CreateForPostBack (
           StringUtility.EmptyToNull (_toolTip),
-          postBackEvent + StringUtility.NullToEmpty (onClick));
+          postBackEvent + (onClick ?? string.Empty));
     }
 
     /// <summary> Creates a <see cref="CommandInfo"/> for the <see cref="WxeFunctionCommand"/>. </summary>
@@ -598,7 +586,7 @@ namespace Remotion.Web.UI.Controls
 
       return CommandInfo.CreateForPostBack (
           StringUtility.EmptyToNull (_toolTip),
-          postBackEvent + StringUtility.NullToEmpty (onClick));
+          postBackEvent + (onClick ?? string.Empty));
     }
 
     /// <summary> Renders the closing tag for the command. </summary>
@@ -682,7 +670,7 @@ namespace Remotion.Web.UI.Controls
       if (!wxePage.IsReturningPostBack)
       {
         string target = WxeFunctionCommand.Target;
-        bool hasTarget = !StringUtility.IsNullOrEmpty (target);
+        bool hasTarget = !string.IsNullOrEmpty (target);
         WxeFunction function = WxeFunctionCommand.InitializeFunction (additionalWxeParameters);
 
         IWxeCallArguments callArguments;
@@ -723,7 +711,7 @@ namespace Remotion.Web.UI.Controls
       get { return _toolTip; }
       set
       {
-        _toolTip = StringUtility.NullToEmpty (value);
+        _toolTip = value ?? string.Empty;
         _toolTip = _toolTip.Trim();
       }
     }
@@ -846,7 +834,10 @@ namespace Remotion.Web.UI.Controls
     public string ItemID
     {
       get { return _itemID; }
-      set { _itemID = StringUtility.NullToEmpty (value); }
+      set
+      {
+        _itemID = value ?? string.Empty;
+      }
     }
 
     public virtual void LoadResources (IResourceManager resourceManager, IGlobalizationService globalizationService)
@@ -855,7 +846,7 @@ namespace Remotion.Web.UI.Controls
       ArgumentUtility.CheckNotNull ("globalizationService", globalizationService);
 
       var key = ResourceManagerUtility.GetGlobalResourceKey (ToolTip);
-      if (!StringUtility.IsNullOrEmpty (key))
+      if (!string.IsNullOrEmpty (key))
         ToolTip = resourceManager.GetString (key);
     }
 
@@ -866,7 +857,7 @@ namespace Remotion.Web.UI.Controls
       ArgumentUtility.CheckNotNullOrEmpty ("commandID", commandID);
 
       bool isSynchronousEventCommand = Type == CommandType.Event && EventCommand.RequiresSynchronousPostBack;
-      bool isSynchronousWxeFunctionCommand = Type == CommandType.WxeFunction && StringUtility.IsNullOrEmpty (WxeFunctionCommand.Target);
+      bool isSynchronousWxeFunctionCommand = Type == CommandType.WxeFunction && string.IsNullOrEmpty (WxeFunctionCommand.Target);
 
       if (!isSynchronousEventCommand && !isSynchronousWxeFunctionCommand)
         return;
@@ -920,18 +911,29 @@ namespace Remotion.Web.UI.Controls
 
     private bool HasAccessForEventCommand (ISecurableObject securableObject)
     {
-      IWebSecurityAdapter webSecurityAdapter = AdapterRegistry.Instance.GetAdapter<IWebSecurityAdapter>();
-      if (webSecurityAdapter == null)
+      if (_webSecurityAdapter == null)
         return true;
-      return webSecurityAdapter.HasAccess (securableObject, Click);
+      return _webSecurityAdapter.HasAccess (securableObject, Click);
     }
 
     private bool HasAccessForWxeFunctionCommand ()
     {
-      IWxeSecurityAdapter wxeSecurityAdapter = AdapterRegistry.Instance.GetAdapter<IWxeSecurityAdapter>();
-      if (wxeSecurityAdapter == null)
+      if (_wxeSecurityAdapter == null)
         return true;
-      return wxeSecurityAdapter.HasStatelessAccess (WxeFunctionCommand.ResolveFunctionType());
+      return _wxeSecurityAdapter.HasStatelessAccess (WxeFunctionCommand.ResolveFunctionType());
+    }
+
+    [CanBeNull]
+    protected internal static IWebSecurityAdapter GetWebSecurityAdapter ()
+    {
+      return SafeServiceLocator.Current.GetAllInstances<IWebSecurityAdapter>()
+          .SingleOrDefault (() => new InvalidOperationException ("Only a single IWebSecurityAdapter can be registered."));
+    }
+
+    [CanBeNull]
+    protected static IWxeSecurityAdapter GetWxeSecurityAdapter ()
+    {
+      return WxeFunction.GetWxeSecurityAdapter();
     }
   }
 

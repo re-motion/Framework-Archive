@@ -16,11 +16,12 @@
 // 
 using System;
 using NUnit.Framework;
-using Remotion.Security;
-using Remotion.Web.Security.UI;
-using Remotion.Web.UnitTests.Core.Security.ExecutionEngine;
+using Remotion.Development.UnitTesting;
+using Remotion.ServiceLocation;
 using Remotion.Web.ExecutionEngine;
+using Remotion.Web.Security.UI;
 using Remotion.Web.UI;
+using Remotion.Web.UnitTests.Core.Security.ExecutionEngine;
 
 namespace Remotion.Web.UnitTests.Core.Security.UI.WebSecurityAdapterTests
 {
@@ -29,20 +30,24 @@ namespace Remotion.Web.UnitTests.Core.Security.UI.WebSecurityAdapterTests
   {
     private IWebSecurityAdapter _securityAdapter;
     private WebPermissionProviderTestHelper _testHelper;
-  
+    private ServiceLocatorScope _serviceLocatorScope;
+
     [SetUp]
     public void SetUp ()
     {
       _securityAdapter = new WebSecurityAdapter ();
 
       _testHelper = new WebPermissionProviderTestHelper ();
-      AdapterRegistry.Instance.SetAdapter (typeof (IWxeSecurityAdapter), _testHelper.WxeSecurityAdapter);
+      var serviceLocator = DefaultServiceLocator.Create();
+      serviceLocator.RegisterMultiple<IWebSecurityAdapter>();
+      serviceLocator.RegisterMultiple<IWxeSecurityAdapter> (() => _testHelper.WxeSecurityAdapter);
+      _serviceLocatorScope = new ServiceLocatorScope (serviceLocator);
     }
 
     [TearDown]
     public void TearDown ()
     {
-      AdapterRegistry.Instance.SetAdapter (typeof (IWxeSecurityAdapter), null);
+      _serviceLocatorScope.Dispose();
     }
 
     [Test]

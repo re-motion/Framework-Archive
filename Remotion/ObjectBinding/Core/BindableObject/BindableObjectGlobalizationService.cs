@@ -17,10 +17,9 @@
 
 using System;
 using Remotion.ExtensibleEnums;
-using Remotion.ExtensibleEnums.Globalization;
 using Remotion.FunctionalProgramming;
 using Remotion.Globalization;
-using Remotion.Globalization.Implementation;
+using Remotion.Globalization.ExtensibleEnums;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
@@ -50,24 +49,24 @@ namespace Remotion.ObjectBinding.BindableObject
     private readonly IMemberInformationGlobalizationService _memberInformationGlobalizationService;
     private readonly DoubleCheckedLockingContainer<IResourceManager> _resourceManager;
     private readonly IEnumerationGlobalizationService _enumerationGlobalizationService;
-    private readonly IExtensibleEnumerationGlobalizationService _extensibleEnumerationGlobalizationService;
+    private readonly IExtensibleEnumGlobalizationService _extensibleEnumGlobalizationService;
 
     public BindableObjectGlobalizationService (
-        ICompoundGlobalizationService globalizationServices,
+        IGlobalizationService globalizationServices,
         IMemberInformationGlobalizationService memberInformationGlobalizationService,
         IEnumerationGlobalizationService enumerationGlobalizationService,
-        IExtensibleEnumerationGlobalizationService extensibleEnumerationGlobalizationService)
+        IExtensibleEnumGlobalizationService extensibleEnumGlobalizationService)
     {
       ArgumentUtility.CheckNotNull ("globalizationServices", globalizationServices);
       ArgumentUtility.CheckNotNull ("memberInformationGlobalizationService", memberInformationGlobalizationService);
       ArgumentUtility.CheckNotNull ("enumerationGlobalizationService", enumerationGlobalizationService);
-      ArgumentUtility.CheckNotNull ("extensibleEnumerationGlobalizationService", extensibleEnumerationGlobalizationService);
+      ArgumentUtility.CheckNotNull ("extensibleEnumGlobalizationService", extensibleEnumGlobalizationService);
       
       _resourceManager =
           new DoubleCheckedLockingContainer<IResourceManager> (() => globalizationServices.GetResourceManager (typeof (ResourceIdentifier)));
       _memberInformationGlobalizationService = memberInformationGlobalizationService;
       _enumerationGlobalizationService = enumerationGlobalizationService;
-      _extensibleEnumerationGlobalizationService = extensibleEnumerationGlobalizationService;
+      _extensibleEnumGlobalizationService = extensibleEnumGlobalizationService;
     }
 
     /// <summary>
@@ -89,7 +88,7 @@ namespace Remotion.ObjectBinding.BindableObject
     public string GetExtensibleEnumerationValueDisplayName (IExtensibleEnum value) //move to member info globalization service
     {
       ArgumentUtility.CheckNotNull ("value", value);
-      return _extensibleEnumerationGlobalizationService.GetExtensibleEnumerationValueDisplayName (value);
+      return _extensibleEnumGlobalizationService.GetExtensibleEnumValueDisplayName (value);
     }
 
     /// <summary>
@@ -102,6 +101,12 @@ namespace Remotion.ObjectBinding.BindableObject
       return _resourceManager.Value.GetString (value ? ResourceIdentifier.True : ResourceIdentifier.False);
     }
 
+    /// <summary>
+    /// Gets the localized display name of a type.
+    /// </summary>
+    /// <param name="typeInformation">The <see cref="ITypeInformation"/> for which to lookup the resource.</param>
+    /// <param name="typeInformationForResourceResolution">The <see cref="ITypeInformation"/> providing the resources.</param>
+    /// <returns>The localized display name.</returns>
     public string GetTypeDisplayName (ITypeInformation typeInformation, ITypeInformation typeInformationForResourceResolution)
     {
       ArgumentUtility.CheckNotNull ("typeInformation", typeInformation);
@@ -113,8 +118,8 @@ namespace Remotion.ObjectBinding.BindableObject
     /// <summary>
     /// Gets the localized display name of a property.
     /// </summary>
-    /// <param name="propertyInformation"></param>
-    /// <param name="typeInformationForResourceResolution"></param>
+    /// <param name="propertyInformation">The <see cref="IPropertyInformation"/> for which to lookup the resource.</param>
+    /// <param name="typeInformationForResourceResolution">The <see cref="ITypeInformation"/> providing the resources.</param>
     /// <returns>The localized display name.</returns>
     public string GetPropertyDisplayName (IPropertyInformation propertyInformation, ITypeInformation typeInformationForResourceResolution)
     {

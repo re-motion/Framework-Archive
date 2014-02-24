@@ -64,8 +64,6 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>4.5</RequiredTargetFramework>
     </Reference>
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\AssemblyInfoShared.cs">
@@ -91,6 +89,10 @@
     <ProjectReference Include="..\..\Core\Core\Core.Core.csproj">
       <Project>{2AA369EC-A4E7-4D75-9101-EFA90E902625}</Project>
       <Name>Core.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Core\Tools\Core.Tools.csproj">
+      <Project>{18269689-DC0F-4975-879B-A6ACBA0FA596}</Project>
+      <Name>Core.Tools</Name>
     </ProjectReference>
     <ProjectReference Include="..\Core\Mixins.Core.csproj">
       <Project>{D641E4E2-23F3-4454-8074-1327EF07BAA1}</Project>

@@ -19,8 +19,7 @@ using System.Web;
 using System.Xml;
 using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting.Resources;
-using Remotion.Globalization;
-using Remotion.Globalization.Implementation;
+using Remotion.Development.Web.UnitTesting.UI.Controls.Rendering;
 using Remotion.Web.Infrastructure;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
@@ -40,10 +39,8 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.ListMenuImplementation.Renderi
     private HtmlHelper _htmlHelper;
 
     [SetUp]
-    public override void SetUp ()
+    public void SetUp ()
     {
-      base.SetUp();
-
       _htmlHelper = new HtmlHelper ();
       _httpContextStub = MockRepository.GenerateStub<HttpContextBase> ();
 

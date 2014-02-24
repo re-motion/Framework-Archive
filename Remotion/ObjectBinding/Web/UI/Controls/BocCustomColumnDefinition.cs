@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Drawing.Design;
@@ -66,7 +65,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       {
         if (_customCell == null)
         {
-          if (StringUtility.IsNullOrEmpty (_customCellType))
+          if (string.IsNullOrEmpty (_customCellType))
           {
             throw new InvalidOperationException (
                 string.Format (
@@ -74,7 +73,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
                     ItemID,
                     OwnerControl.ID));
           }
-          Type type = WebTypeUtility.GetType (_customCellType, true, false);
+          Type type = WebTypeUtility.GetType (_customCellType, true);
           _customCell = (BocCustomColumnDefinitionCell) Activator.CreateInstance (type);
         }
         return _customCell;
@@ -94,7 +93,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     public string CustomCellType
     {
       get { return _customCellType; }
-      set { _customCellType = StringUtility.NullToEmpty (value); }
+      set { _customCellType = value ?? string.Empty; }
     }
 
     /// <summary> 
@@ -109,7 +108,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     public string CustomCellArgument
     {
       get { return _customCellArgument; }
-      set { _customCellArgument = StringUtility.NullToEmpty (value); }
+      set { _customCellArgument = value ?? string.Empty; }
     }
 
     [NotNull]
@@ -192,7 +191,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       get
       {
-        bool isTitleEmpty = StringUtility.IsNullOrEmpty (ColumnTitle);
+        bool isTitleEmpty = string.IsNullOrEmpty (ColumnTitle);
 
         if (! isTitleEmpty)
           return ColumnTitle;
@@ -479,7 +478,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       _arguments = arguments;
 
       string propertyValuePairs = arguments.ColumnDefinition.CustomCellArgument;
-      if (! StringUtility.IsNullOrEmpty (propertyValuePairs))
+      if (! string.IsNullOrEmpty (propertyValuePairs))
       {
         NameValueCollection values = new NameValueCollection();
         StringUtility.ParsedItem[] items = StringUtility.ParseSeparatedList (propertyValuePairs, ',');
@@ -520,7 +519,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
   /// <summary>
   ///   Contains the arguments provided to the <see cref="BocCustomColumnDefinitionCell.CreateControl"/>,
   ///   <see cref="BocCustomColumnDefinitionCell.OnInit"/>, and  
-  ///   <see cref="BocCustomColumnDefinitionCell.OnPreRender"/> methods.
+  ///   <see cref="BocCustomColumnDefinitionCell.OnPreRender(BocCustomCellPreRenderArguments)"/> methods.
   /// </summary>
   public class BocCustomCellArguments
   {

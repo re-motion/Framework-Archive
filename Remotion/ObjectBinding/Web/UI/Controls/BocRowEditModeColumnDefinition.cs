@@ -14,6 +14,8 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
+using System;
 using System.ComponentModel;
 using System.Web.UI;
 using Microsoft.Practices.ServiceLocation;
@@ -69,7 +71,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     public string EditText
     {
       get { return _editText; }
-      set { _editText = StringUtility.NullToEmpty (value); }
+      set { _editText = value ?? string.Empty; }
     }
 
     /// <summary>
@@ -113,7 +115,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     public string SaveText
     {
       get { return _saveText; }
-      set { _saveText = StringUtility.NullToEmpty (value); }
+      set
+      {
+        _saveText = value ?? string.Empty;
+      }
     }
 
     /// <summary> 
@@ -156,7 +161,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     public string CancelText
     {
       get { return _cancelText; }
-      set { _cancelText = StringUtility.NullToEmpty (value); }
+      set
+      {
+        _cancelText = value ?? string.Empty;
+      }
     }
 
     /// <summary> 

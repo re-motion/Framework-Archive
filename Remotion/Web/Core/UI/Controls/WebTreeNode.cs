@@ -50,8 +50,8 @@ namespace Remotion.Web.UI.Controls
     {
       ValidateItemId (itemID);
       _itemID = itemID;
-      _text = StringUtility.NullToEmpty (text);
-      _toolTip = StringUtility.NullToEmpty (toolTip);
+      _text = text ?? string.Empty;
+      _toolTip = toolTip ?? string.Empty;
       _icon = icon;
       _children = new WebTreeNodeCollection (null);
       _children.SetParent (null, this);
@@ -168,9 +168,9 @@ namespace Remotion.Web.UI.Controls
     public override string ToString ()
     {
       string displayName = ItemID;
-      if (StringUtility.IsNullOrEmpty (displayName))
+      if (string.IsNullOrEmpty (displayName))
         displayName = Text;
-      if (StringUtility.IsNullOrEmpty (displayName))
+      if (string.IsNullOrEmpty (displayName))
         return DisplayedTypeName;
       else
         return string.Format ("{0}: {1}", displayName, DisplayedTypeName);
@@ -196,7 +196,7 @@ namespace Remotion.Web.UI.Controls
     private void ValidateItemId (string value)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("value", value);
-      if (! StringUtility.IsNullOrEmpty (value))
+      if (! string.IsNullOrEmpty (value))
       {
         WebTreeNodeCollection nodes = null;
         if (ParentNode != null)
@@ -220,7 +220,10 @@ namespace Remotion.Web.UI.Controls
     public virtual string Text
     {
       get { return _text; }
-      set { _text = StringUtility.NullToEmpty (value); }
+      set
+      {
+        _text = value ?? string.Empty;
+      }
     }
 
     /// <summary> Gets or sets the tool-tip displayed in this node. </summary>
@@ -232,7 +235,10 @@ namespace Remotion.Web.UI.Controls
     public string ToolTip
     {
       get { return _toolTip; }
-      set { _toolTip = StringUtility.NullToEmpty (value); }
+      set
+      {
+        _toolTip = value ?? string.Empty;
+      }
     }
 
     /// <summary> Gets or sets the icon displayed in this tree node. </summary>
@@ -369,7 +375,7 @@ namespace Remotion.Web.UI.Controls
       ArgumentUtility.CheckNotNull ("globalizationService", globalizationService);
 
       string key = ResourceManagerUtility.GetGlobalResourceKey (Text);
-      if (! StringUtility.IsNullOrEmpty (key))
+      if (! string.IsNullOrEmpty (key))
         Text = resourceManager.GetString (key);
 
       if (Icon != null)

@@ -21,11 +21,11 @@ using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.Rendering;
 using Remotion.Utilities;
+using Remotion.Web;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.DatePickerButtonImplementation;
 using Remotion.Web.UI.Controls.DatePickerButtonImplementation.Rendering;
-using Remotion.Web;
 using Remotion.Web.UI.Controls.Rendering;
 
 namespace Remotion.ObjectBinding.Web.Legacy.UI.Controls.BocDateTimeValueImplementation.Rendering
@@ -35,7 +35,7 @@ namespace Remotion.ObjectBinding.Web.Legacy.UI.Controls.BocDateTimeValueImplemen
   /// For that, see <see cref="DatePickerButtonRenderer"/>.
   /// <seealso cref="IBocDateTimeValue"/>
   /// </summary>
-  /// <include file='doc\include\UI\Controls\BocDateTimeValueRenderer.xml' path='BocDateTimeValueRenderer/Class/*'/>
+  /// <include file='..\..\..\..\doc\include\UI\Controls\BocDateTimeValueRenderer.xml' path='BocDateTimeValueRenderer/Class/*'/>
   public class BocDateTimeValueQuirksModeRenderer : BocQuirksModeRendererBase<IBocDateTimeValue>, IBocDateTimeValueRenderer
   {
     /// <summary> Text displayed when control is displayed in desinger and is read-only has no contents. </summary>

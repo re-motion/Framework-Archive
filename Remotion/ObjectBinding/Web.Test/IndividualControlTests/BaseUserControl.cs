@@ -17,9 +17,7 @@
 
 using System;
 using Remotion.Globalization;
-using Remotion.Globalization.Implementation;
 using Remotion.ObjectBinding.Web.UI.Controls;
-using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Web.UI.Globalization;
 
@@ -56,7 +54,7 @@ namespace OBWTest.IndividualControlTests
 
     protected IGlobalizationService GlobalizationService
     {
-      get { return SafeServiceLocator.Current.GetInstance<ICompoundGlobalizationService>(); }
+      get { return SafeServiceLocator.Current.GetInstance<IGlobalizationService>(); }
     }
 
     IResourceManager IObjectWithResources.GetResourceManager ()

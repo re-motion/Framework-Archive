@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using Remotion.Text;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Mapping.SortExpressions
@@ -36,7 +35,7 @@ namespace Remotion.Data.DomainObjects.Mapping.SortExpressions
       _sortedProperties = sortedProperties.ToList().AsReadOnly();
 
       if (_sortedProperties.Count == 0)
-        throw new ArgumentEmptyException ("sortedProperties", "A SortExpressionDefinition must contain at least one sorted property.");
+        throw new ArgumentException ("A SortExpressionDefinition must contain at least one sorted property.", "sortedProperties");
     }
 
     public ReadOnlyCollection<SortedPropertySpecification> SortedProperties
@@ -46,7 +45,7 @@ namespace Remotion.Data.DomainObjects.Mapping.SortExpressions
 
     public override string ToString ()
     {
-      return SeparatedStringBuilder.Build (", ", SortedProperties);
+      return string.Join (", ", SortedProperties);
     }
   }
 }

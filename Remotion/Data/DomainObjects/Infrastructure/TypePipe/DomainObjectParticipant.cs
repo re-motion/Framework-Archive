@@ -18,10 +18,11 @@
 using System;
 using System.Reflection;
 using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Reflection.CodeGeneration.TypePipe;
 using Remotion.ServiceLocation;
-using Remotion.TypePipe.Dlr.Ast;
 using Remotion.TypePipe;
 using Remotion.TypePipe.Caching;
+using Remotion.TypePipe.Dlr.Ast;
 using Remotion.TypePipe.MutableReflection;
 using Remotion.TypePipe.TypeAssembly;
 using Remotion.Utilities;
@@ -48,6 +49,11 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
   [ImplementationFor (typeof (IParticipant), Position = 2, RegistrationType = RegistrationType.Multiple)]
   public class DomainObjectParticipant : IParticipant
   {
+    static DomainObjectParticipant ()
+    {
+      PipelineRegistryInitializer.InitializeWithServiceLocator();
+    }
+
     private static readonly MethodInfo s_getPublicDomainObjectTypeImplementation = GetInfrastructureHook ("GetPublicDomainObjectTypeImplementation");
     private static readonly MethodInfo s_performConstructorCheck = GetInfrastructureHook ("PerformConstructorCheck");
 

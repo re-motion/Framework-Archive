@@ -31,7 +31,7 @@ using Remotion.Web.Utilities;
 namespace Remotion.ObjectBinding.Web.UI.Controls
 {
   /// <summary> This control can be used to display or edit a tri-state value (true, false, and undefined). </summary>
-  /// <include file='doc\include\UI\Controls\BocBooleanValue.xml' path='BocBooleanValue/Class/*' />
+  /// <include file='..\..\doc\include\UI\Controls\BocBooleanValue.xml' path='BocBooleanValue/Class/*' />
   [ValidationProperty ("ValidationValue")]
   [DefaultEvent ("SelectionChanged")]
   [ToolboxItemFilter ("System.Web.UI")]
@@ -115,7 +115,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Creates the list of validators required for the current binding and property settings. </summary>
-    /// <include file='doc\include\UI\Controls\BocBooleanValue.xml' path='BocBooleanValue/CreateValidators/*' />
+    /// <include file='..\..\doc\include\UI\Controls\BocBooleanValue.xml' path='BocBooleanValue/CreateValidators/*' />
     public override BaseValidator[] CreateValidators ()
     {
       if (IsReadOnly || !IsRequired)
@@ -128,7 +128,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       notNullItemValidator.ControlToValidate = ID;
       notNullItemValidator.ValueToCompare = c_nullString;
       notNullItemValidator.Operator = ValidationCompareOperator.NotEqual;
-      if (StringUtility.IsNullOrEmpty (_errorMessage))
+      if (string.IsNullOrEmpty (_errorMessage))
         notNullItemValidator.ErrorMessage = GetResourceManager ().GetString (ResourceIdentifier.NullItemValidationMessage);
       else
         notNullItemValidator.ErrorMessage = _errorMessage;
@@ -313,7 +313,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   Uses the <paramref name="postCollection"/> to determine whether the value of this control has been changed 
     ///   between postbacks.
     /// </summary>
-    /// <include file='doc\include\UI\Controls\BocBooleanValue.xml' path='BocBooleanValue/LoadPostData/*' />
+    /// <include file='..\..\doc\include\UI\Controls\BocBooleanValue.xml' path='BocBooleanValue/LoadPostData/*' />
     protected override bool LoadPostData (string postDataKey, NameValueCollection postCollection)
     {
       string newValueAsString = PageUtility.GetPostBackCollectionItem (Page, GetKeyValueName());
@@ -413,19 +413,19 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
       string key;
       key = ResourceManagerUtility.GetGlobalResourceKey (TrueDescription);
-      if (! StringUtility.IsNullOrEmpty (key))
+      if (! string.IsNullOrEmpty (key))
         TrueDescription = resourceManager.GetString (key);
 
       key = ResourceManagerUtility.GetGlobalResourceKey (FalseDescription);
-      if (! StringUtility.IsNullOrEmpty (key))
+      if (! string.IsNullOrEmpty (key))
         FalseDescription = resourceManager.GetString (key);
 
       key = ResourceManagerUtility.GetGlobalResourceKey (NullDescription);
-      if (! StringUtility.IsNullOrEmpty (key))
+      if (! string.IsNullOrEmpty (key))
         NullDescription = resourceManager.GetString (key);
 
       key = ResourceManagerUtility.GetGlobalResourceKey (ErrorMessage);
-      if (! StringUtility.IsNullOrEmpty (key))
+      if (! string.IsNullOrEmpty (key))
         ErrorMessage = resourceManager.GetString (key);
     }
 

@@ -15,26 +15,23 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.IO;
-using System.Web;
 using System.Web.UI;
 using Remotion.Utilities;
 using Remotion.Web.ExecutionEngine.Infrastructure;
 using Remotion.Web.ExecutionEngine.Infrastructure.WxePageStepExecutionStates;
+using Remotion.Web.ExecutionEngine.Infrastructure.WxePageStepExecutionStates.Execute;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls.ControlReplacing;
-using Remotion.Web.Utilities;
-using PreProcessingSubFunctionState = Remotion.Web.ExecutionEngine.Infrastructure.WxePageStepExecutionStates.Execute.PreProcessingSubFunctionState;
 using ExecuteByRedirect_PreProcessingSubFunctionState = 
   Remotion.Web.ExecutionEngine.Infrastructure.WxePageStepExecutionStates.ExecuteExternalByRedirect.PreProcessingSubFunctionState;
 
 namespace Remotion.Web.ExecutionEngine
 {
   /// <summary> This step interrupts the server side execution to display a page to the user. </summary>
-  /// <include file='doc\include\ExecutionEngine\WxePageStep.xml' path='WxePageStep/Class/*' />
+  /// <include file='..\doc\include\ExecutionEngine\WxePageStep.xml' path='WxePageStep/Class/*' />
   [Serializable]
   public class WxePageStep : WxeStep, IExecutionStateContext
   {
@@ -56,14 +53,14 @@ namespace Remotion.Web.ExecutionEngine
     private IUserControlExecutor _userControlExecutor = NullUserControlExecutor.Null;
 
     /// <summary> Initializes a new instance of the <b>WxePageStep</b> type. </summary>
-    /// <include file='doc\include\ExecutionEngine\WxePageStep.xml' path='WxePageStep/Ctor/param[@name="page"]' />
+    /// <include file='..\doc\include\ExecutionEngine\WxePageStep.xml' path='WxePageStep/Ctor/param[@name="page"]' />
     public WxePageStep (string page)
       : this (new ResourceObject (ArgumentUtility.CheckNotNullOrEmpty("page", page)))
     {
     }
 
     /// <summary> Initializes a new instance of the <b>WxePageStep</b> type. </summary>
-    /// <include file='doc\include\ExecutionEngine\WxePageStep.xml' path='WxePageStep/Ctor/param[@name="pageref"]' />
+    /// <include file='..\doc\include\ExecutionEngine\WxePageStep.xml' path='WxePageStep/Ctor/param[@name="pageref"]' />
     public WxePageStep (WxeVariableReference pageref)
         : this (new ResourceObjectWithVarRef (pageref))
     {
@@ -84,7 +81,7 @@ namespace Remotion.Web.ExecutionEngine
     }
 
     /// <summary> Gets the currently executing <see cref="WxeStep"/>. </summary>
-    /// <include file='doc\include\ExecutionEngine\WxePageStep.xml' path='WxePageStep/ExecutingStep/*' />
+    /// <include file='..\doc\include\ExecutionEngine\WxePageStep.xml' path='WxePageStep/ExecutingStep/*' />
     public override WxeStep ExecutingStep
     {
       get
@@ -98,9 +95,9 @@ namespace Remotion.Web.ExecutionEngine
 
     /// <summary> 
     ///   Displays the <see cref="WxePageStep"/>'s page or the sub-function that has been invoked by the 
-    ///   <see cref="ExecuteFunction"/> method.
+    ///   <see cref="ExecuteFunction(Infrastructure.WxePageStepExecutionStates.PreProcessingSubFunctionStateParameters,Infrastructure.WxeRepostOptions)"/> method.
     /// </summary>
-    /// <include file='doc\include\ExecutionEngine\WxePageStep.xml' path='WxePageStep/Execute/*' />
+    /// <include file='..\doc\include\ExecutionEngine\WxePageStep.xml' path='WxePageStep/Execute/*' />
     public override void Execute (WxeContext context)
     {
       ArgumentUtility.CheckNotNull ("context", context);
@@ -193,7 +190,7 @@ namespace Remotion.Web.ExecutionEngine
     }
 
     /// <summary> Gets the token for this page step. </summary>
-    /// <include file='doc\include\ExecutionEngine\WxePageStep.xml' path='WxePageStep/PageToken/*' />
+    /// <include file='..\doc\include\ExecutionEngine\WxePageStep.xml' path='WxePageStep/PageToken/*' />
     public string PageToken
     {
       get { return _pageToken; }

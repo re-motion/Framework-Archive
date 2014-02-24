@@ -187,7 +187,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     }
 
     /// <summary> Gets or sets the current value. </summary>
-    /// <include file='doc\include\UI\Controls\BocReferenceValueBase.xml' path='BocReferenceValueBase/Value/*' />
+    /// <include file='..\..\..\doc\include\UI\Controls\BocReferenceValueBase.xml' path='BocReferenceValueBase/Value/*' />
     [Browsable (false)]
     public new IBusinessObjectWithIdentity Value
     {
@@ -386,14 +386,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     [Description ("Flag that determines whether to show the icon in front of the value.")]
     [DefaultValue (true)]
     public bool EnableIcon { get; set; }
-    
+
     [Editor (typeof (UrlEditor), typeof (UITypeEditor))]
     [Category ("Appearance")]
     [DefaultValue ("")]
     public string IconServicePath
     {
       get { return _iconServicePath; }
-      set { _iconServicePath = StringUtility.NullToEmpty (value); }
+      set { _iconServicePath = value ?? string.Empty; }
     }
 
     [Category ("Appearance")]
@@ -496,7 +496,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     }
 
     /// <summary> 
-    ///   Calls the <see cref="BocMenuItemCommand.OnClick"/> method of the <paramref name="menuItem"/>'s 
+    ///   Calls the <see cref="BocMenuItemCommand.OnClick(BocMenuItem)"/> method of the <paramref name="menuItem"/>'s 
     ///   <see cref="BocMenuItem.Command"/> and raises <see cref="MenuItemClick"/> event. 
     /// </summary>
     /// <param name="menuItem"> The <see cref="BocMenuItem"/> that has been clicked. </param>
@@ -528,7 +528,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     }
 
     /// <summary> 
-    ///   Calls the <see cref="BocMenuItemCommand.ExecuteWxeFunction"/> method of the <paramref name="menuItem"/>'s 
+    ///   Calls the <see cref="BocMenuItemCommand.ExecuteWxeFunction(IWxePage,int[],IBusinessObject[])"/> method of the <paramref name="menuItem"/>'s 
     ///   <see cref="BocMenuItem.Command"/>.
     /// </summary>
     /// <param name="menuItem"> The <see cref="BocMenuItem"/> that has been clicked. </param>
@@ -881,7 +881,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
         NullItemErrorMessage = resourceManager.GetString (key);
   
       key = ResourceManagerUtility.GetGlobalResourceKey (OptionsTitle);
-      if (! StringUtility.IsNullOrEmpty (key))
+      if (! string.IsNullOrEmpty (key))
         OptionsTitle = resourceManager.GetString (key);
 
       if (Command != null)

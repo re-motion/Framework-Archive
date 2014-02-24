@@ -20,11 +20,10 @@ using System.ComponentModel;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
-using Remotion.Utilities;
-using Remotion.Web.UI;
-using Remotion.Web.Utilities;
 using Remotion.Web.Infrastructure;
+using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
+using Remotion.Web.Utilities;
 
 namespace Remotion.Web.ExecutionEngine
 {
@@ -38,15 +37,15 @@ namespace Remotion.Web.ExecutionEngine
     {
       WxeForm newForm = new WxeForm ();
 
-      if (!StringUtility.IsNullOrEmpty (htmlForm.Method))
+      if (!string.IsNullOrEmpty (htmlForm.Method))
         newForm.Method = htmlForm.Method;
-      if (!StringUtility.IsNullOrEmpty (htmlForm.Enctype))
+      if (!string.IsNullOrEmpty (htmlForm.Enctype))
         newForm.Enctype = htmlForm.Enctype;
-      if (!StringUtility.IsNullOrEmpty (htmlForm.Target))
+      if (!string.IsNullOrEmpty (htmlForm.Target))
         newForm.Target = htmlForm.Target;
-      if (!StringUtility.IsNullOrEmpty (htmlForm.DefaultButton))
+      if (!string.IsNullOrEmpty (htmlForm.DefaultButton))
         newForm.DefaultButton = htmlForm.DefaultButton;
-      if (!StringUtility.IsNullOrEmpty (htmlForm.DefaultFocus))
+      if (!string.IsNullOrEmpty (htmlForm.DefaultFocus))
         newForm.DefaultFocus = htmlForm.DefaultFocus;
 
       while (htmlForm.Controls.Count > 0)

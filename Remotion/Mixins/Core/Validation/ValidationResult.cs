@@ -16,11 +16,10 @@
 // 
 using System;
 using System.Collections.Generic;
-using Remotion.Mixins.Definitions;
-using Remotion.Text;
-using Remotion.Utilities;
-using Remotion.FunctionalProgramming;
 using System.Linq;
+using Remotion.FunctionalProgramming;
+using Remotion.Mixins.Definitions;
+using Remotion.Utilities;
 
 namespace Remotion.Mixins.Validation
 {
@@ -52,7 +51,7 @@ namespace Remotion.Mixins.Validation
 
     public string GetDefinitionContextPath()
     {
-      return SeparatedStringBuilder.Build (" -> ", ValidatedDefinition.Parent.CreateSequence (d => d.Parent).Select (d => d.FullName));
+      return string.Join (" -> ", ValidatedDefinition.Parent.CreateSequence (d => d.Parent).Select (d => d.FullName));
     }
 
     public int TotalRulesExecuted

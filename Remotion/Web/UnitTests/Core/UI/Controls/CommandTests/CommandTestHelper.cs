@@ -19,11 +19,11 @@ using System.Text;
 using System.Web;
 using Remotion.Development.Web.UnitTesting.AspNetFramework;
 using Remotion.Security;
+using Remotion.Utilities;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UnitTests.Core.ExecutionEngine.TestFunctions;
-using Remotion.Web.Utilities;
 using Rhino.Mocks;
 using Rhino.Mocks.Interfaces;
 
@@ -64,7 +64,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.CommandTests
       _httpContext.Response.ContentEncoding = Encoding.UTF8;
 
       _functionType = typeof (TestFunction);
-      _functionTypeName = WebTypeUtility.GetQualifiedName (_functionType);
+      _functionTypeName = TypeUtility.GetPartialAssemblyQualifiedName (_functionType);
 
       _mocks = new MockRepository();
       _mockWebSecurityAdapter = _mocks.StrictMock<IWebSecurityAdapter>();
@@ -162,9 +162,9 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.CommandTests
       get { return _itemID; }
     }
 
-    public Command CreateHrefCommand ()
+    public Command CreateHrefCommand (IWebSecurityAdapter webSecurityAdapter = null, IWxeSecurityAdapter wxeSecurityAdapter = null)
     {
-      Command command = new Command();
+      Command command = new Command (CommandType.Href, webSecurityAdapter, wxeSecurityAdapter);
       InitializeHrefCommand (command);
 
       return command;
@@ -172,7 +172,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.CommandTests
 
     public Command CreateHrefCommandAsPartialMock ()
     {
-      Command command = _mocks.PartialMock<Command>();
+      Command command = _mocks.PartialMock<Command> (CommandType.Href,  (IWebSecurityAdapter) null, (IWxeSecurityAdapter) null);
       SetupResult.For (command.HrefCommand).CallOriginalMethod (OriginalCallOptions.NoExpectation);
       InitializeHrefCommand (command);
 
@@ -188,9 +188,9 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.CommandTests
       command.HrefCommand.Target = _target;
     }
 
-    public Command CreateEventCommand ()
+    public Command CreateEventCommand (IWebSecurityAdapter webSecurityAdapter = null, IWxeSecurityAdapter wxeSecurityAdapter = null)
     {
-      Command command = new Command();
+      Command command = new Command (CommandType.Event, webSecurityAdapter, wxeSecurityAdapter);
       command.OwnerControl = CreateOwnerControl();
       InitializeEventCommand (command);
 
@@ -199,7 +199,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.CommandTests
 
     public Command CreateEventCommandAsPartialMock ()
     {
-      Command command = _mocks.PartialMock<Command>();
+      Command command = _mocks.PartialMock<Command> (CommandType.Event, (IWebSecurityAdapter) null, (IWxeSecurityAdapter) null);
       InitializeEventCommand (command);
 
       return command;
@@ -212,9 +212,9 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.CommandTests
       command.ToolTip = _toolTip;
     }
 
-    public Command CreateWxeFunctionCommand ()
+    public Command CreateWxeFunctionCommand (IWebSecurityAdapter webSecurityAdapter = null, IWxeSecurityAdapter wxeSecurityAdapter = null)
     {
-      Command command = new Command();
+      Command command = new Command (CommandType.WxeFunction, webSecurityAdapter, wxeSecurityAdapter);
       command.OwnerControl = CreateOwnerControl();
       InitializeWxeFunctionCommand (command);
 
@@ -223,7 +223,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.CommandTests
 
     public Command CreateWxeFunctionCommandAsPartialMock ()
     {
-      Command command = _mocks.PartialMock<Command>();
+      Command command = _mocks.PartialMock<Command> (CommandType.WxeFunction, (IWebSecurityAdapter) null, (IWxeSecurityAdapter) null);
       SetupResult.For (command.WxeFunctionCommand).CallOriginalMethod (OriginalCallOptions.NoExpectation);
       InitializeWxeFunctionCommand (command);
 
@@ -240,9 +240,9 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.CommandTests
       command.WxeFunctionCommand.Target = _target;
     }
 
-    public Command CreateNoneCommand ()
+    public Command CreateNoneCommand (IWebSecurityAdapter webSecurityAdapter = null, IWxeSecurityAdapter wxeSecurityAdapter = null)
     {
-      Command command = new Command();
+      Command command = new Command (CommandType.None, webSecurityAdapter, wxeSecurityAdapter);
       command.OwnerControl = CreateOwnerControl();
       InitializeNoneCommand (command);
 
@@ -251,7 +251,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.CommandTests
 
     public Command CreateNoneCommandAsPartialMock ()
     {
-      Command command = _mocks.PartialMock<Command>();
+      Command command = _mocks.PartialMock<Command> (CommandType.None,  (IWebSecurityAdapter) null, (IWxeSecurityAdapter) null);
       InitializeNoneCommand (command);
 
       return command;

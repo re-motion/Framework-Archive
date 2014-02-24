@@ -25,8 +25,6 @@ using System.Web.UI;
 using JetBrains.Annotations;
 using Remotion.Collections;
 using Remotion.Globalization;
-using Remotion.Globalization.Implementation;
-using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.Infrastructure;
@@ -291,7 +289,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
       string statusIsSubmittingMessage = GetStatusIsSubmittingMessage();
 
       string checkFormStateFunction = "null";
-      if (! StringUtility.IsNullOrEmpty (_checkFormStateFunction))
+      if (! string.IsNullOrEmpty (_checkFormStateFunction))
         checkFormStateFunction = "'" + _checkFormStateFunction + "'";
 
       string smartScrollingFieldID = "null";
@@ -389,7 +387,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
       if (_page.IsAbortConfirmationEnabled)
       {
         string temp;
-        if (StringUtility.IsNullOrEmpty (_page.AbortMessage))
+        if (string.IsNullOrEmpty (_page.AbortMessage))
           temp = resourceManager.GetString (ResourceIdentifier.AbortMessage);
         else
           temp = _page.AbortMessage;
@@ -407,7 +405,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
       if (_page.IsStatusIsSubmittingMessageEnabled)
       {
         string temp;
-        if (StringUtility.IsNullOrEmpty (_page.StatusIsSubmittingMessage))
+        if (string.IsNullOrEmpty (_page.StatusIsSubmittingMessage))
           temp = resourceManager.GetString (ResourceIdentifier.StatusIsSubmittingMessage);
         else
           temp = _page.StatusIsSubmittingMessage;
@@ -505,7 +503,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
         string smartFocusValue = null;
         if (postBackCollection != null && ! _isSmartNavigationDataDisacarded)
           smartFocusValue = postBackCollection[c_smartFocusID];
-        if (! StringUtility.IsNullOrEmpty (_smartFocusID))
+        if (! string.IsNullOrEmpty (_smartFocusID))
           smartFocusValue = _smartFocusID;
         _page.ClientScript.RegisterHiddenField (_page, c_smartFocusID, smartFocusValue);
       }
@@ -515,7 +513,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
     {
       get
       {
-        return SafeServiceLocator.Current.GetInstance<ICompoundGlobalizationService>();
+        return SafeServiceLocator.Current.GetInstance<IGlobalizationService>();
       }
     }
 
@@ -525,7 +523,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
     public string StatusIsSubmittingMessage
     {
       get { return _statusIsSubmittingMessage; }
-      set { _statusIsSubmittingMessage = StringUtility.NullToEmpty (value); }
+      set { _statusIsSubmittingMessage = value ?? string.Empty; }
     }
 
     /// <summary>
@@ -534,7 +532,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
     public string AbortMessage
     {
       get { return _abortMessage; }
-      set { _abortMessage = StringUtility.NullToEmpty (value); }
+      set { _abortMessage = value ?? string.Empty; }
     }
 
     /// <summary>
@@ -551,7 +549,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
     public void SetFocus (IFocusableControl control)
     {
       ArgumentUtility.CheckNotNull ("control", control);
-      if (StringUtility.IsNullOrEmpty (control.FocusID))
+      if (string.IsNullOrEmpty (control.FocusID))
         return;
       SetFocus (control.FocusID);
     }

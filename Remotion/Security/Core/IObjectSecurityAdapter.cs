@@ -15,20 +15,22 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Microsoft.Practices.ServiceLocation;
 using Remotion.Reflection;
+using Remotion.ServiceLocation;
 
 namespace Remotion.Security
 {
   /// <summary>Defines an adapter between the security layer and the business object implementation.</summary>
   /// <remarks>
-  /// It is registered in the <see cref="AdapterRegistry"/> and is used for security checks 
+  /// It is registered in the <see cref="ServiceLocator"/> and is used for security checks 
   /// in implementations of <see cref="I:Remotion.ObjectBinding.IBusinessObjectProperty"/>.
   /// <note type="inotes">
   /// A typical implementation uses a <see cref="T:Remotion.Security.SecurityClient"/> that further dispatches to an 
   /// <see cref="IObjectSecurityStrategy"/> retrieved from the <see cref="ISecurableObject"/>.
   /// </note>
   /// </remarks>
-  public interface IObjectSecurityAdapter : ISecurityAdapter
+  public interface IObjectSecurityAdapter
   {
     /// <summary>Determines whether read access to a property of <paramref name="securableObject"/> is granted.</summary>
     /// <param name="securableObject">The <see cref="ISecurableObject"/> whose permissions are checked.</param>

@@ -33,7 +33,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Rend
   [ImplementationFor (typeof (IBocMultilineTextValueRenderer), Lifetime = LifetimeKind.Singleton)]
   public class BocMultilineTextValueRenderer : BocTextValueRendererBase<IBocMultilineTextValue>, IBocMultilineTextValueRenderer
   {
-    public BocMultilineTextValueRenderer (IResourceUrlFactory resourceUrlFactory, ICompoundGlobalizationService globalizationService)
+    public BocMultilineTextValueRenderer (IResourceUrlFactory resourceUrlFactory, IGlobalizationService globalizationService)
       : base (resourceUrlFactory, globalizationService)
     {
     }
@@ -68,9 +68,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Rend
       {
         for (int i = 0; i < lines.Length; i++)
           lines[i] = HttpUtility.HtmlEncode (lines[i]);
-        text = StringUtility.ConcatWithSeparator (lines, "<br />");
+        text = string.Join ("<br />", lines);
       }
-      if (StringUtility.IsNullOrEmpty (text) && renderingContext.Control.IsDesignMode)
+      if (string.IsNullOrEmpty (text) && renderingContext.Control.IsDesignMode)
       {
         text = c_designModeEmptyLabelContents;
         //  Too long, can't resize in designer to less than the content's width

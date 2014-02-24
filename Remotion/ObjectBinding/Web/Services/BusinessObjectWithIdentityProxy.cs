@@ -14,6 +14,8 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
+using System;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.Utilities;
 
@@ -60,7 +62,7 @@ namespace Remotion.ObjectBinding.Web.Services
     public string IconUrl
     {
       get { return _iconUrl; }
-      set { _iconUrl = StringUtility.NullToEmpty (value); }
+      set { _iconUrl = value ?? string.Empty; }
     }
   }
 }

@@ -97,7 +97,7 @@ namespace Remotion.Web.ExecutionEngine
     /// </summary>
     public Control FindControl (string id, out bool callBaseMethod)
     {
-      if (_wxeForm != null && !StringUtility.IsNullOrEmpty (_wxeForm.ID) && id == _wxeForm.UniqueID)
+      if (_wxeForm != null && !string.IsNullOrEmpty (_wxeForm.ID) && id == _wxeForm.UniqueID)
       {
         callBaseMethod = false;
         return _wxeForm;
@@ -270,7 +270,7 @@ namespace Remotion.Web.ExecutionEngine
         CurrentPageStep.SetIsOutOfSequencePostBack (true);
 
       string returningToken = postBackCollection[WxePageInfo.ReturningTokenID];
-      if (!StringUtility.IsNullOrEmpty (returningToken))
+      if (!string.IsNullOrEmpty (returningToken))
       {
         WxeFunctionStateManager functionStates = WxeFunctionStateManager.Current;
         WxeFunctionState functionState = functionStates.GetItem (returningToken);
@@ -349,13 +349,13 @@ namespace Remotion.Web.ExecutionEngine
       string statusIsCachedMessage = "null";
       if (_page.AreStatusMessagesEnabled)
       {
-        if (StringUtility.IsNullOrEmpty (_page.StatusIsAbortingMessage))
+        if (string.IsNullOrEmpty (_page.StatusIsAbortingMessage))
           temp = resourceManager.GetString (ResourceIdentifier.StatusIsAbortingMessage);
         else
           temp = _page.StatusIsAbortingMessage;
         statusIsAbortingMessage = "'" + ScriptUtility.EscapeClientScript (temp) + "'";
 
-        if (StringUtility.IsNullOrEmpty (_page.StatusIsCachedMessage))
+        if (string.IsNullOrEmpty (_page.StatusIsCachedMessage))
           temp = resourceManager.GetString (ResourceIdentifier.StatusIsCachedMessage);
         else
           temp = _page.StatusIsCachedMessage;
@@ -387,14 +387,14 @@ namespace Remotion.Web.ExecutionEngine
     public string StatusIsCachedMessage
     {
       get { return _statusIsCachedMessage; }
-      set { _statusIsCachedMessage = StringUtility.NullToEmpty (value); }
+      set { _statusIsCachedMessage = value ?? string.Empty; }
     }
 
     /// <summary> Implements <see cref="IWxePage.StatusIsAbortingMessage">IWxePage.StatusIsAbortingMessage</see>. </summary>
     public string StatusIsAbortingMessage
     {
       get { return _statusIsAbortingMessage; }
-      set { _statusIsAbortingMessage = StringUtility.NullToEmpty (value); }
+      set { _statusIsAbortingMessage = value ?? string.Empty; }
     }
 
     /// <summary> Implements <see cref="IWxePage.ExecuteNextStep">IWxePage.ExecuteNextStep</see>. </summary>
@@ -420,7 +420,7 @@ namespace Remotion.Web.ExecutionEngine
     }
 
     /// <summary>
-    ///   Implements <see cref="IWxePage.GetPermanentUrl">IWxePage.GetPermanentUrl()</see>.
+    ///   Implements <see cref="IWxePage.GetPermanentUrl()">IWxePage.GetPermanentUrl()</see>.
     /// </summary>
     public string GetPermanentUrl ()
     {

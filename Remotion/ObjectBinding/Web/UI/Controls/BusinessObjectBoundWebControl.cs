@@ -17,6 +17,7 @@
 using System;
 using System.ComponentModel;
 using System.Drawing.Design;
+using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
@@ -25,11 +26,9 @@ using Remotion.Collections;
 using Remotion.Globalization;
 using Remotion.ObjectBinding.Design;
 using Remotion.ObjectBinding.Web.UI.Design;
-using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web;
-using System.Web;
 using Remotion.Web.Infrastructure;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
@@ -482,9 +481,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       get { return ServiceLocator.GetInstance<ResourceTheme>(); }
     }
 
-    protected ICompoundGlobalizationService GlobalizationService
+    protected IGlobalizationService GlobalizationService
     {
-      get { return ServiceLocator.GetInstance<ICompoundGlobalizationService> (); }
+      get { return ServiceLocator.GetInstance<IGlobalizationService> (); }
     }
 
     protected override void LoadControlState (object savedState)
@@ -504,11 +503,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
       string key;
       key = ResourceManagerUtility.GetGlobalResourceKey (AccessKey);
-      if (!StringUtility.IsNullOrEmpty (key))
+      if (!string.IsNullOrEmpty (key))
         AccessKey = resourceManager.GetString (key);
 
       key = ResourceManagerUtility.GetGlobalResourceKey (ToolTip);
-      if (!StringUtility.IsNullOrEmpty (key))
+      if (!string.IsNullOrEmpty (key))
         ToolTip = resourceManager.GetString (key);
     }
 

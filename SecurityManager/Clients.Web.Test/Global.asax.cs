@@ -19,13 +19,8 @@
 using System;
 using Microsoft.Practices.ServiceLocation;
 using Remotion.Development.Web.ResourceHosting;
-using Remotion.Security;
 using Remotion.SecurityManager.Clients.Web.Classes;
 using Remotion.ServiceLocation;
-using Remotion.Web.ExecutionEngine;
-using Remotion.Web.Security.ExecutionEngine;
-using Remotion.Web.Security.UI;
-using Remotion.Web.UI;
 
 namespace Remotion.SecurityManager.Clients.Web.Test
 {
@@ -43,10 +38,6 @@ namespace Remotion.SecurityManager.Clients.Web.Test
 
       ServiceLocator.SetLocatorProvider (() => defaultServiceLocator);
 
-      AdapterRegistry.Instance.SetAdapter (typeof (IObjectSecurityAdapter), new ObjectSecurityAdapter());
-      AdapterRegistry.Instance.SetAdapter (typeof (IWebSecurityAdapter), new WebSecurityAdapter());
-      AdapterRegistry.Instance.SetAdapter (typeof (IWxeSecurityAdapter), new WxeSecurityAdapter());
-
       _resourceVirtualPathProvider = new ResourceVirtualPathProvider (
           new[]
           {
@@ -57,7 +48,8 @@ namespace Remotion.SecurityManager.Clients.Web.Test
               new ResourcePathMapping ("Remotion.SecurityManager.Clients.Web/Html", @"..\Clients.Web\res\Html"),
               new ResourcePathMapping ("Remotion.SecurityManager.Clients.Web/Themes", @"..\Clients.Web\res\Themes"),
               new ResourcePathMapping ("Remotion.SecurityManager.Clients.Web/UI", @"..\Clients.Web\UI"),
-          });
+          },
+          FileExtensionHandlerMapping.Default);
       _resourceVirtualPathProvider.Register();
     }
 

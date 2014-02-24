@@ -21,7 +21,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting.Resources;
-using Remotion.Globalization.Implementation;
+using Remotion.Development.Web.UnitTesting.UI.Controls.Rendering;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls.TabbedMenuImplementation;
 using Remotion.Web.UI.Controls.TabbedMenuImplementation.Rendering;
@@ -37,10 +37,9 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.TabbedMenuImplementation.Rende
     private HttpContextBase _httpContext;
     private HtmlHelper _htmlHelper;
 
-    public override void SetUp ()
+    [SetUp]
+    public void SetUp ()
     {
-      base.SetUp();
-
       _htmlHelper = new HtmlHelper ();
       _httpContext = MockRepository.GenerateStub<HttpContextBase> ();
 

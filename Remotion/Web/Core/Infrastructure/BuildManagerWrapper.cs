@@ -14,25 +14,57 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
-using System.Web.Compilation;
+using System.Collections;
+using System.Web;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 
 namespace Remotion.Web.Infrastructure
 {
   /// <summary>
-  /// Implements the <see cref="IBuildManager"/> interface and delegates calls to <see cref="BuildManager"/>.
+  /// Implements the <see cref="IBuildManager"/> interface and delegates calls to <see cref="IISBuildManager"/> or <see cref="NonHostedBuildManager"/>,
+  /// depending on whether a hosted environment is detected.
   /// </summary>
+  /// <threadsafety static="true" instance="true" />
+  [ImplementationFor (typeof (IBuildManager), Lifetime = LifetimeKind.Singleton)]
   public class BuildManagerWrapper : IBuildManager
   {
+    private readonly IBuildManager _innerBuildManager;
+
     public BuildManagerWrapper ()
     {
+      if (IsUsingWebServer())
+        _innerBuildManager = new IISBuildManager();
+      else
+        _innerBuildManager = new NonHostedBuildManager();
+    }
+
+    public Type GetType (string typeName, bool throwOnError, bool ignoreCase)
+    {
+      ArgumentUtility.CheckNotNullOrEmpty ("typeName", typeName);
+      return _innerBuildManager.GetType (typeName, throwOnError, ignoreCase);
     }
 
     public Type GetCompiledType (string virtualPath)
     {
-      ArgumentUtility.CheckNotNull ("virtualPath", virtualPath);
-      return BuildManager.GetCompiledType (virtualPath);
+      ArgumentUtility.CheckNotNullOrEmpty ("virtualPath", virtualPath);
+      return _innerBuildManager.GetCompiledType (virtualPath);
+    }
+
+    public IList CodeAssemblies
+    {
+      get { return _innerBuildManager.CodeAssemblies; }
+    }
+
+    private bool IsUsingWebServer ()
+    {
+      if (HttpRuntime.IISVersion != null)
+        return true;
+      if (HttpRuntime.AppDomainId != null)
+        return true;
+      return false;
     }
   }
 }

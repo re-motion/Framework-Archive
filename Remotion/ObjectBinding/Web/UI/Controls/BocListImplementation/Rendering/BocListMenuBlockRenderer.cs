@@ -17,9 +17,9 @@
 using System;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Remotion.Globalization;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
-using Remotion.Globalization;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 {
@@ -105,7 +105,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
       string availableViewsListTitle;
-      if (StringUtility.IsNullOrEmpty (renderingContext.Control.AvailableViewsListTitle))
+      if (string.IsNullOrEmpty (renderingContext.Control.AvailableViewsListTitle))
         availableViewsListTitle = renderingContext.Control.GetResourceManager().GetString (Controls.BocList.ResourceIdentifier.AvailableViewsListTitle);
       else
         availableViewsListTitle = renderingContext.Control.AvailableViewsListTitle;

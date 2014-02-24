@@ -17,7 +17,6 @@
 using System;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
-using Remotion.Utilities;
 
 namespace Remotion.Security.UnitTests.Core
 {
@@ -56,7 +55,7 @@ namespace Remotion.Security.UnitTests.Core
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentEmptyException), ExpectedMessage =
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage =
         "Parameter 'user' cannot be empty.\r\nParameter name: user")]
     public void Initialize_WithUserEmpty ()
     {
@@ -64,7 +63,7 @@ namespace Remotion.Security.UnitTests.Core
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentEmptyException), ExpectedMessage =
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage =
         "Parameter 'substitutedUser' cannot be empty.\r\nParameter name: substitutedUser")]
     public void Initialize_WithSubstitutedUserEmpty ()
     {

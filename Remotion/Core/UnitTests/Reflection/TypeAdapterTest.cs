@@ -20,8 +20,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using NUnit.Framework;
-using Remotion.Collections;
 using Remotion.Reflection;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Rhino.Mocks;
 
@@ -151,7 +151,7 @@ namespace Remotion.UnitTests.Reflection
     [Test]
     public void IsValueType_ValueType ()
     {
-      var type = typeof (TestDomain.Struct);
+      var type = typeof (int);
       Assert.That (TypeAdapter.Create (type).IsValueType, Is.EqualTo (type.IsValueType).And.True);
     }
 
@@ -832,7 +832,9 @@ namespace Remotion.UnitTests.Reflection
       var type = typeof (List<int>);
       Assert.That (
           () => TypeAdapter.Create (type).GetAscribedGenericArgumentsFor (TypeAdapter.Create (typeof (string))),
-          Throws.TypeOf<ArgumentTypeException>());
+          Throws.ArgumentException.And.Message.EqualTo (
+              "Parameter 'type' has type 'System.Collections.Generic.List`1[System.Int32]' "
+              + "when type 'System.String' was expected.\r\nParameter name: type"));
     }
 
     [Test]
@@ -848,10 +850,12 @@ namespace Remotion.UnitTests.Reflection
     public void GetAscribedGenericArgumentsFor_DifferentITypeInformationImplementation ()
     {
       var currentType = typeof (SystemException);
-      var otherType = MockRepository.GenerateStub<ITypeInformation> ();
+      var otherType = MockRepository.GenerateStub<ITypeInformation>();
       Assert.That (
           () => TypeAdapter.Create (currentType).GetAscribedGenericArgumentsFor (otherType),
-          Throws.TypeOf<ArgumentTypeException> ());
+          Throws.ArgumentException.And.Message.EqualTo (
+              "Parameter 'c' has type '" + otherType.GetType().Name + "' when type 'Remotion.Reflection.TypeAdapter' was expected."
+              + "\r\nParameter name: c"));
     }
 
     [Test]
@@ -890,7 +894,7 @@ namespace Remotion.UnitTests.Reflection
     [Test]
     public void IsSupportedByTypeConversionProvider ()
     {
-      var typeConversionProvider = TypeConversionProvider.Create ();
+      var typeConversionProvider = SafeServiceLocator.Current.GetInstance<ITypeConversionProvider>();
 
       Assert.That (typeConversionProvider.CanConvert (typeof (TypeAdapter), typeof (Type)), Is.True);
     }

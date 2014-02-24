@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.Globalization;
@@ -31,7 +30,7 @@ namespace Remotion.Web.UI.Controls.DatePickerButtonImplementation.Rendering
   [ImplementationFor (typeof (IDatePickerButtonRenderer), Lifetime = LifetimeKind.Singleton)]
   public class DatePickerButtonRenderer : RendererBase<IDatePickerButton>, IDatePickerButtonRenderer
   {
-    public DatePickerButtonRenderer (IResourceUrlFactory resourceUrlFactory, ICompoundGlobalizationService globalizationService)
+    public DatePickerButtonRenderer (IResourceUrlFactory resourceUrlFactory, IGlobalizationService globalizationService)
       : base (resourceUrlFactory, globalizationService)
     {
     }
@@ -85,7 +84,7 @@ namespace Remotion.Web.UI.Controls.DatePickerButtonImplementation.Rendering
       var imageUrl = GetResolvedImageUrl ();
 
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Src, imageUrl.GetUrl ());
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Alt, StringUtility.NullToEmpty (renderingContext.Control.AlternateText));
+      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Alt, renderingContext.Control.AlternateText ?? string.Empty);
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Img);
       renderingContext.Writer.RenderEndTag ();
 

@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 
+using System;
 using System.IO;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting.IO;
@@ -25,7 +26,6 @@ namespace Remotion.Development.UnitTests.Web.ResourceHosting
   [TestFixture]
   public class ResourceVirtualFileTest
   {
-
     [Test]
     public void Open ()
     {
@@ -35,11 +35,19 @@ namespace Remotion.Development.UnitTests.Web.ResourceHosting
 
         var resourceVirtualFile = new ResourceVirtualFile ("~/rest/test/virtualFile", new FileInfo (tempFile.FileName));
 
-        using (var reader = new StreamReader(resourceVirtualFile.Open()))
+        using (var reader = new StreamReader (resourceVirtualFile.Open()))
         {
           Assert.That (reader.ReadToEnd(), Is.EqualTo ("expected"));
         }
       }
+    }
+
+    [Test]
+    public void Exists_FileIsNull ()
+    {
+      var resourceVirtualFile = new ResourceVirtualFile ("~/rest/test/virtualFile", null);
+
+      Assert.That (resourceVirtualFile.Exists, Is.False);
     }
   }
 }

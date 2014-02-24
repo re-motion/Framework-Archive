@@ -17,7 +17,6 @@
 using System;
 using System.Collections;
 using System.Linq;
-using Remotion.Text;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Infrastructure
@@ -147,7 +146,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       {
         var message = string.Format (
             "The following objects are incompatible with the target transaction: {0}. Objects of type '{1}' could be used instead.",
-            SeparatedStringBuilder.Build (", ", incompatibleObjects, obj => obj.ID.ToString()),
+            string.Join (", ", incompatibleObjects.Select (obj => obj.ID.ToString())),
             typeof (IDomainObjectHandle<>));
         throw new InvalidOperationException (message);
       }

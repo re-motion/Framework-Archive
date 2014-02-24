@@ -20,10 +20,10 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.Globalization;
+using Remotion.Utilities;
 using Remotion.Web.Infrastructure;
 using Remotion.Web.UI.Globalization;
 using Remotion.Web.Utilities;
-using Remotion.Utilities;
 
 namespace Remotion.Web.UI.Controls
 {
@@ -53,7 +53,7 @@ public class FormGridLabel: Label, ISmartControl
   public string HelpUrl
   {
     get { return _helpUrl; }
-    set { _helpUrl = StringUtility.NullToEmpty (value); }
+    set { _helpUrl = value ?? string.Empty; }
   }
 
   [Browsable (false)]
@@ -108,7 +108,7 @@ public class FormGridLabel: Label, ISmartControl
       return;
 
     string key = ResourceManagerUtility.GetGlobalResourceKey (Text);
-    if (!StringUtility.IsNullOrEmpty (key))
+    if (!string.IsNullOrEmpty (key))
       Text = resourceManager.GetString (key);
   }
 

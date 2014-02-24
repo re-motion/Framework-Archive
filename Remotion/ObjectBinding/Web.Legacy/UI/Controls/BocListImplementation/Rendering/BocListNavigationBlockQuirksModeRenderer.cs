@@ -23,7 +23,6 @@ using System.Web.UI;
 using Remotion.Globalization;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
-using Remotion.Reflection;
 using Remotion.Utilities;
 using Remotion.Web;
 using Remotion.Web.UI.Controls;
@@ -109,7 +108,7 @@ namespace Remotion.ObjectBinding.Web.Legacy.UI.Controls.BocListImplementation.Re
     }
 
     private readonly IResourceUrlFactory _resourceUrlFactory;
-    private readonly ICompoundGlobalizationService _globalizationService;
+    private readonly IGlobalizationService _globalizationService;
     private readonly BocListQuirksModeCssClassDefinition _cssClasses;
 
     /// <summary>
@@ -121,7 +120,7 @@ namespace Remotion.ObjectBinding.Web.Legacy.UI.Controls.BocListImplementation.Re
     /// </remarks>
     public BocListNavigationBlockQuirksModeRenderer (
         IResourceUrlFactory resourceUrlFactory,
-        ICompoundGlobalizationService globalizationService,
+        IGlobalizationService globalizationService,
         BocListQuirksModeCssClassDefinition cssClasses)
     {
       ArgumentUtility.CheckNotNull ("resourceUrlFactory", resourceUrlFactory);

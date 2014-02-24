@@ -42,7 +42,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
 
     public BocBooleanValueRenderer (
         IResourceUrlFactory resourceUrlFactory,
-        ICompoundGlobalizationService globalizationService,
+        IGlobalizationService globalizationService,
         IBocBooleanValueResourceSetFactory resourceSetFactory)
         : base (resourceUrlFactory, globalizationService)
     {

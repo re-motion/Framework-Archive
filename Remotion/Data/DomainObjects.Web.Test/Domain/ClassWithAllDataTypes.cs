@@ -21,7 +21,6 @@ using Remotion.Data.DomainObjects.Security;
 using Remotion.Globalization;
 using Remotion.ObjectBinding;
 using Remotion.Security;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Web.Test.Domain
 {
@@ -33,7 +32,7 @@ namespace Remotion.Data.DomainObjects.Web.Test.Domain
   public abstract class ClassWithAllDataTypes : BindableDomainObject, ISecurableObject, IDomainObjectSecurityContextFactory, ISupportsGetObject
   {
     // types
-    [EnumDescriptionResource ("Remotion.Data.DomainObjects.Web.Test.Globalization.ClassWithAllDataTypes")]
+    [MultiLingualResources ("Remotion.Data.DomainObjects.Web.Test.Globalization.ClassWithAllDataTypes")]
     public enum EnumType
     {
       Value1 = 1,

@@ -130,9 +130,9 @@ namespace Remotion.Web.UI.Controls
     public override string ToString ()
     {
       string displayName = ItemID;
-      if (StringUtility.IsNullOrEmpty (displayName))
+      if (string.IsNullOrEmpty (displayName))
         displayName = Text;
-      if (StringUtility.IsNullOrEmpty (displayName))
+      if (string.IsNullOrEmpty (displayName))
         return DisplayedTypeName;
       else
         return string.Format ("{0}: {1}", displayName, DisplayedTypeName);
@@ -152,7 +152,7 @@ namespace Remotion.Web.UI.Controls
     public string ItemID
     {
       get { return _itemID; }
-      set { _itemID = StringUtility.NullToEmpty (value); }
+      set { _itemID = value ?? string.Empty; }
     }
 
     [PersistenceMode (PersistenceMode.Attribute)]
@@ -163,7 +163,7 @@ namespace Remotion.Web.UI.Controls
     public string Category
     {
       get { return _category; }
-      set { _category = StringUtility.NullToEmpty (value); }
+      set { _category = value ?? string.Empty; }
     }
 
     [PersistenceMode (PersistenceMode.Attribute)]
@@ -174,7 +174,7 @@ namespace Remotion.Web.UI.Controls
     public string Text
     {
       get { return _text; }
-      set { _text = StringUtility.NullToEmpty (value); }
+      set { _text = value ?? string.Empty; }
     }
 
     [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
@@ -426,11 +426,11 @@ namespace Remotion.Web.UI.Controls
       ArgumentUtility.CheckNotNull ("globalizationService", globalizationService);
       
       string key = ResourceManagerUtility.GetGlobalResourceKey (Category);
-      if (!StringUtility.IsNullOrEmpty (key))
+      if (!string.IsNullOrEmpty (key))
         Category = resourceManager.GetString (key);
 
       key = ResourceManagerUtility.GetGlobalResourceKey (Text);
-      if (!StringUtility.IsNullOrEmpty (key))
+      if (!string.IsNullOrEmpty (key))
         Text = resourceManager.GetString (key);
 
       Icon.LoadResources (resourceManager);

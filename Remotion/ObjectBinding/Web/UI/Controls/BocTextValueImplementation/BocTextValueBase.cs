@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
-using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.Globalization;
@@ -216,7 +215,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation
     ///   Uses the <paramref name="postCollection"/> to determine whether the value of this control has been changed 
     ///   between postbacks.
     /// </summary>
-    /// <include file='doc\include\UI\Controls\BocTextValue.xml' path='BocTextValue/LoadPostData/*' />
+    /// <include file='..\..\..\doc\include\UI\Controls\BocTextValue.xml' path='BocTextValue/LoadPostData/*' />
     protected virtual bool LoadPostData (string postDataKey, NameValueCollection postCollection)
     {
       string newValue = PageUtility.GetPostBackCollectionItem (Page, GetValueName());
@@ -267,7 +266,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation
 
       //  Dispatch simple properties
       string key = ResourceManagerUtility.GetGlobalResourceKey (ErrorMessage);
-      if (! StringUtility.IsNullOrEmpty (key))
+      if (! string.IsNullOrEmpty (key))
         ErrorMessage = resourceManager.GetString (key);
     }
 

@@ -25,17 +25,17 @@ using Remotion.Globalization;
 using Remotion.Security;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
+using Remotion.Web.Infrastructure;
 using Remotion.Web.UI.Controls.Hotkey;
 using Remotion.Web.UI.Controls.WebButtonImplementation;
 using Remotion.Web.UI.Controls.WebButtonImplementation.Rendering;
 using Remotion.Web.UI.Globalization;
 using Remotion.Web.Utilities;
-using Remotion.Web.Infrastructure;
 
 namespace Remotion.Web.UI.Controls
 {
   /// <summary> A <c>Button</c> using <c>&amp;</c> as access key prefix in <see cref="Button.Text"/>. </summary>
-  /// <include file='doc\include\UI\Controls\WebButton.xml' path='WebButton/Class/*' />
+  /// <include file='..\..\doc\include\UI\Controls\WebButton.xml' path='WebButton/Class/*' />
   [ToolboxData ("<{0}:WebButton runat=server></{0}:WebButton>")]
   public class WebButton
       :
@@ -92,12 +92,12 @@ namespace Remotion.Web.UI.Controls
       ArgumentUtility.CheckNotNull ("postCollection", postCollection);
 
       string eventTarget = postCollection[ControlHelper.PostEventSourceID];
-      bool isScriptedPostBack = !StringUtility.IsNullOrEmpty (eventTarget);
+      bool isScriptedPostBack = !string.IsNullOrEmpty (eventTarget);
       if (!isScriptedPostBack && IsLegacyButtonEnabled)
       {
         // The button can only fire a click event if client script is active or the button is used in legacy mode
         // A more general fallback is not possible becasue of compatibility issues with ExecuteFunctionNoRepost
-        bool isSuccessfulControl = !StringUtility.IsNullOrEmpty (postCollection[postDataKey]);
+        bool isSuccessfulControl = !string.IsNullOrEmpty (postCollection[postDataKey]);
         if (isSuccessfulControl)
           Page.RegisterRequiresRaiseEvent (this);
       }
@@ -266,7 +266,7 @@ namespace Remotion.Web.UI.Controls
       else
       {
         bool hasIcon = _icon != null && _icon.HasRenderingInformation;
-        bool hasText = !StringUtility.IsNullOrEmpty (text);
+        bool hasText = !string.IsNullOrEmpty (text);
         if (hasIcon)
         {
           writer.AddAttribute (HtmlTextWriterAttribute.Src, _icon.Url);
@@ -311,15 +311,15 @@ namespace Remotion.Web.UI.Controls
 
       //  Dispatch simple properties
       string key = ResourceManagerUtility.GetGlobalResourceKey (Text);
-      if (!StringUtility.IsNullOrEmpty (key))
+      if (!string.IsNullOrEmpty (key))
         Text = resourceManager.GetString (key);
 
       key = ResourceManagerUtility.GetGlobalResourceKey (AccessKey);
-      if (!StringUtility.IsNullOrEmpty (key))
+      if (!string.IsNullOrEmpty (key))
         AccessKey = resourceManager.GetString (key);
 
       key = ResourceManagerUtility.GetGlobalResourceKey (ToolTip);
-      if (!StringUtility.IsNullOrEmpty (key))
+      if (!string.IsNullOrEmpty (key))
         ToolTip = resourceManager.GetString (key);
 
       if (Icon != null)
@@ -365,12 +365,12 @@ namespace Remotion.Web.UI.Controls
           value += ";";
       }
 
-      return StringUtility.NullToEmpty (value);
+      return value ?? string.Empty;
     }
 
     protected bool HasAccess ()
     {
-      IWebSecurityAdapter securityAdapter = AdapterRegistry.Instance.GetAdapter<IWebSecurityAdapter>();
+      var securityAdapter = WebSecurityAdapter;
       if (securityAdapter == null)
         return true;
 
@@ -479,6 +479,11 @@ namespace Remotion.Web.UI.Controls
     private IHotkeyFormatter HotkeyFormatter
     {
       get { return ServiceLocator.GetInstance<IHotkeyFormatter>(); }
+    }
+
+    private IWebSecurityAdapter WebSecurityAdapter
+    {
+      get { return UI.Controls.Command.GetWebSecurityAdapter(); }
     }
 
     #region protected virtual string CssClass...

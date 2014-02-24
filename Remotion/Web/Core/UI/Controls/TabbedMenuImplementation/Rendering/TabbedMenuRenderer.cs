@@ -21,7 +21,6 @@ using System.Web.UI.WebControls;
 using Remotion.Globalization;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
-using System.Web;
 
 namespace Remotion.Web.UI.Controls.TabbedMenuImplementation.Rendering
 {
@@ -32,7 +31,7 @@ namespace Remotion.Web.UI.Controls.TabbedMenuImplementation.Rendering
   [ImplementationFor (typeof (ITabbedMenuRenderer), Lifetime = LifetimeKind.Singleton)]
   public class TabbedMenuRenderer : RendererBase<ITabbedMenu>, ITabbedMenuRenderer
   {
-    public TabbedMenuRenderer (IResourceUrlFactory resourceUrlFactory, ICompoundGlobalizationService globalizationService)
+    public TabbedMenuRenderer (IResourceUrlFactory resourceUrlFactory, IGlobalizationService globalizationService)
       : base (resourceUrlFactory, globalizationService)
     {
     }
@@ -101,7 +100,7 @@ namespace Remotion.Web.UI.Controls.TabbedMenuImplementation.Rendering
 
       if (renderingContext.Control.IsDesignMode)
         renderingContext.Writer.AddStyleAttribute ("width", "100%");
-      if (StringUtility.IsNullOrEmpty (renderingContext.Control.CssClass) && StringUtility.IsNullOrEmpty (renderingContext.Control.Attributes["class"]))
+      if (string.IsNullOrEmpty (renderingContext.Control.CssClass) && string.IsNullOrEmpty (renderingContext.Control.Attributes["class"]))
         renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassBase);
     }
 

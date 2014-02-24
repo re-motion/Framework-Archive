@@ -18,7 +18,6 @@ using System;
 using System.Collections;
 using System.ComponentModel;
 using Remotion.ObjectBinding.Web.UI.Controls;
-using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.Web.UI.Design
 {
@@ -43,7 +42,7 @@ public class BusinessObjectDataSourceControlConverter : StringConverter
     {
       IComponent component = (IComponent) components[idxComponents];
       IBusinessObjectDataSourceControl dataSource = component as IBusinessObjectDataSourceControl;
-      if (dataSource != null && ! StringUtility.IsNullOrEmpty (dataSource.ID))
+      if (dataSource != null && ! string.IsNullOrEmpty (dataSource.ID))
       {
         bool hasSelfReference = false;
         foreach (IBusinessObjectBoundWebControl control in controls)

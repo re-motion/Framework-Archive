@@ -17,8 +17,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Remotion.Collections;
-using Remotion.Text;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
@@ -112,7 +110,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
           throw new RdbmsProviderException (
               string.Format (
                   "Incorrect database value encountered. The value read from '{0}' must contain null.",
-                  SeparatedStringBuilder.Build (", ", _classIDProperty.GetColumns (), c => c.Name)));
+                  string.Join (", ", _classIDProperty.GetColumns ().Select (c => c.Name))));
         }
 
         return null;
@@ -123,7 +121,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
         throw new RdbmsProviderException (
             string.Format (
                 "Incorrect database value encountered. The value read from '{0}' must not contain null.",
-                SeparatedStringBuilder.Build (", ", _classIDProperty.GetColumns (), c => c.Name)));
+                string.Join (", ", _classIDProperty.GetColumns ().Select (c => c.Name))));
       }
 
       return new ObjectID(classID, value);

@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using Remotion.Text;
 using Remotion.Utilities;
 
 namespace Remotion.Reflection.TypeDiscovery.AssemblyLoading
@@ -50,7 +49,7 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyLoading
     {
       ArgumentUtility.CheckNotNull ("assemblyMatchStrings", assemblyMatchStrings);
 
-      return "^((" + SeparatedStringBuilder.Build (")|(", assemblyMatchStrings) + "))$";
+      return "^((" + string.Join (")|(", assemblyMatchStrings) + "))$";
     }
 
     private List<string> _nonApplicationAssemblyNames;

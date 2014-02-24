@@ -20,13 +20,11 @@ using System.ComponentModel;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.Globalization;
-using Remotion.Globalization.Implementation;
-using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
+using Remotion.Web.Infrastructure;
 using Remotion.Web.UI.Globalization;
 using Remotion.Web.Utilities;
-using Remotion.Web.Infrastructure;
 
 namespace Remotion.Web.UI.Controls
 {
@@ -35,7 +33,7 @@ namespace Remotion.Web.UI.Controls
 ///   Collects the validation errors from all <see cref="FormGridManager"/> instances on the page
 ///   and displays the validation state.
 /// </summary>
-/// <include file='doc\include\UI\Controls\ValidationStateViewer.xml' path='ValidationStateViewer/Class/*' />
+/// <include file='..\..\doc\include\UI\Controls\ValidationStateViewer.xml' path='ValidationStateViewer/Class/*' />
 [ToolboxData("<{0}:ValidationStateViewer runat='server'></{0}:ValidationStateViewer>")]
 [ToolboxItemFilter("System.Web.UI")]
 public class ValidationStateViewer : WebControl, IControl
@@ -128,7 +126,7 @@ public class ValidationStateViewer : WebControl, IControl
       return;
 
     string key = ResourceManagerUtility.GetGlobalResourceKey (NoticeText);
-    if (!StringUtility.IsNullOrEmpty (key))
+    if (!string.IsNullOrEmpty (key))
       NoticeText = resourceManager.GetString (key);
   }
 
@@ -183,7 +181,7 @@ public class ValidationStateViewer : WebControl, IControl
       writer.RenderBeginTag (HtmlTextWriterTag.Div);
       
       string noticeText;
-      if (StringUtility.IsNullOrEmpty (_noticeText))
+      if (string.IsNullOrEmpty (_noticeText))
       {
         IResourceManager resourceManager = GetResourceManager();
         noticeText = resourceManager.GetString (ResourceIdentifier.NoticeText);
@@ -237,7 +235,7 @@ public class ValidationStateViewer : WebControl, IControl
             else if (control is LiteralControl)
               text = ((LiteralControl) control).Text;
 
-            text = StringUtility.NullToEmpty (text);
+            text = text ?? string.Empty;
             // Do not HTML enocde.
             writer.Write (text);
 
@@ -285,7 +283,7 @@ public class ValidationStateViewer : WebControl, IControl
   {
     get
     {
-      return SafeServiceLocator.Current.GetInstance<ICompoundGlobalizationService>();
+      return SafeServiceLocator.Current.GetInstance<IGlobalizationService>();
     }
   }
 
@@ -294,7 +292,7 @@ public class ValidationStateViewer : WebControl, IControl
   ///   <see cref="Remotion.Web.UI.Controls.ValidationErrorStyle.Notice"/>
   /// </summary>
   /// <value> A string. </value>
-  [CategoryAttribute("Appearance")]
+  [Category("Appearance")]
   [Description("Sets the Text to be displayed if ValidationErrorStyle is set to Notice.")]
   [DefaultValue("")]
   public string NoticeText
@@ -305,7 +303,7 @@ public class ValidationStateViewer : WebControl, IControl
 
   /// <summary> Gets or sets a value that defines how the validation errors are displayed on the page. </summary>
   /// <value> A symbol defined in the <see cref="ValidationErrorStyle"/>enumeration. </value>
-  [CategoryAttribute("Behavior")]
+  [Category("Behavior")]
   [Description("Defines how the validation messages are displayed.")]
   [DefaultValue(ValidationErrorStyle.Notice)]
   public ValidationErrorStyle ValidationErrorStyle

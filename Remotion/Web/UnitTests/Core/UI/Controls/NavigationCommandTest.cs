@@ -20,20 +20,19 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using NUnit.Framework;
+using Remotion.Development.Web.UnitTesting.AspNetFramework;
 using Remotion.Development.Web.UnitTesting.Configuration;
+using Remotion.Utilities;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.ExecutionEngine.UrlMapping;
 using Remotion.Web.UI.Controls;
-using Remotion.Development.Web.UnitTesting.AspNetFramework;
+using Remotion.Web.UnitTests.Core.ExecutionEngine.TestFunctions;
 using Remotion.Web.Utilities;
-using TestFunction=Remotion.Web.UnitTests.Core.ExecutionEngine.TestFunctions.TestFunction;
-using TestFunctionWithNesting=Remotion.Web.UnitTests.Core.ExecutionEngine.TestFunctions.TestFunctionWithNesting;
 
 namespace Remotion.Web.UnitTests.Core.UI.Controls
 {
 
 [TestFixture]
-[Ignore("TODO RM-5569")]
 public class NavigationCommandTest
 {
   private HttpContext _currentHttpContext;
@@ -60,7 +59,7 @@ public class NavigationCommandTest
     HttpContextHelper.SetCurrent (_currentHttpContext);
 
     _functionType = typeof (TestFunction);
-    _functionTypeName = WebTypeUtility.GetQualifiedName (_functionType);
+    _functionTypeName = TypeUtility.GetPartialAssemblyQualifiedName (_functionType);
     _wxeFunctionParameter1Value = "Value1";
     _wxeFunctionParameters = "\"Value1\"";
 

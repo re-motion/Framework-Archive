@@ -18,6 +18,7 @@
 using System;
 using System.Linq;
 using Remotion.Mixins.Context;
+using Remotion.Reflection.CodeGeneration.TypePipe;
 using Remotion.ServiceLocation;
 using Remotion.TypePipe;
 using Remotion.TypePipe.Caching;
@@ -33,6 +34,11 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
   [ImplementationFor (typeof (IParticipant), Position = 1, RegistrationType = RegistrationType.Multiple)]
   public class MixinParticipant : IParticipant
   {
+    static MixinParticipant ()
+    {
+      PipelineRegistryInitializer.InitializeWithServiceLocator();
+    }
+
     private readonly IConfigurationProvider _configurationProvider;
     private readonly IMixinTypeProvider _mixinTypeProvider;
     private readonly ITargetTypeModifier _targetTypeModifier;

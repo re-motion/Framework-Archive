@@ -15,9 +15,11 @@
 // 
 // Additional permissions are listed in the file re-motion_exceptions.txt.
 // 
+
+using System;
 using Microsoft.Practices.ServiceLocation;
 using Remotion.SecurityManager.AclTools.Expansion;
-using Remotion.Utilities.ConsoleApplication;
+using Remotion.Tools.Console.ConsoleApplication;
 
 namespace Remotion.SecurityManager.AclTools.Expander
 {

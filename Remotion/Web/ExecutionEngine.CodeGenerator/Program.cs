@@ -22,8 +22,7 @@ using System.Text;
 using log4net.Config;
 using Microsoft.CSharp;
 using Microsoft.VisualBasic;
-using Remotion.Collections;
-using Remotion.Text.CommandLine;
+using Remotion.Tools.Console.CommandLine;
 
 namespace Remotion.Web.ExecutionEngine.CodeGenerator
 {

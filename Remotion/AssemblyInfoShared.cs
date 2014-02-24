@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
 using System.Reflection;
 
@@ -27,7 +28,7 @@ using System.Reflection;
 [assembly: AssemblyProduct("re-motion core framework (www.re-motion.org)")]
 [assembly: AssemblyCopyright ("Copyright (c) rubicon IT GmbH, www.rubicon.eu - Licensed under GNU LGPL 2.1 (or later)")]
 [assembly: AssemblyTrademark ("")]
-[assembly: AssemblyInformationalVersion ("1.15.6.10000  Debug; ")]
+[assembly: AssemblyInformationalVersion ("1.15.9.10000  Debug; ")]
 
 //
 // Version information for an assembly consists of the following four values:
@@ -40,5 +41,5 @@ using System.Reflection;
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
 
-[assembly: AssemblyVersion("1.15.6.10000")]
-[assembly: AssemblyFileVersion ("1.15.6.10000")]
+[assembly: AssemblyVersion("1.15.9.10000")]
+[assembly: AssemblyFileVersion ("1.15.9.10000")]

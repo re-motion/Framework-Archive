@@ -17,10 +17,9 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Runtime.Serialization;
-using Remotion.Text;
-using Remotion.Utilities;
 using System.Linq;
+using System.Runtime.Serialization;
+using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence
 {
@@ -32,7 +31,7 @@ namespace Remotion.Data.DomainObjects.Persistence
   {
     private static string BuildMessage (IEnumerable<ObjectID> ids)
     {
-      return string.Format ("Object(s) could not be found: {0}.", SeparatedStringBuilder.Build (", ", ids, id => "'" + id + "'"));
+      return string.Format ("Object(s) could not be found: {0}.", string.Join (", ", ids.Select (id => "'" + id + "'")));
     }
     
     private readonly ObjectID[] _ids;

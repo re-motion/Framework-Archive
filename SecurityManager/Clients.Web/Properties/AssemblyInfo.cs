@@ -23,6 +23,7 @@ using System.Reflection;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 //
+
 [assembly: AssemblyTitle ("Remotion Security Manager Web Interface")]
 //[assembly: AssemblyDescription("")]
 [assembly: AssemblyCulture("")]		

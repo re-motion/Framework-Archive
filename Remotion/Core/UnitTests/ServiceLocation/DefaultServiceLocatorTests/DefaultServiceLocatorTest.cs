@@ -16,12 +16,8 @@
 // 
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.Practices.ServiceLocation;
 using NUnit.Framework;
 using Remotion.ServiceLocation;
-using Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests.TestDomain;
 using Remotion.UnitTests.ServiceLocation.TestDomain;
 
 namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
@@ -29,14 +25,6 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
   [TestFixture]
   public class DefaultServiceLocatorTest
   {
-    private DefaultServiceLocator _serviceLocator;
-
-    [SetUp]
-    public void SetUp ()
-    {
-      _serviceLocator = DefaultServiceLocator.Create();
-    }
-
     [Test]
     public void GetInstance_TypeWithGenericServiceInterface ()
     {

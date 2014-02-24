@@ -16,9 +16,12 @@
 // 
 using System;
 using NUnit.Framework;
-using Rhino.Mocks;
+using Remotion.Development.UnitTesting;
+using Remotion.ServiceLocation;
+using Remotion.Web.ExecutionEngine;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
+using Rhino.Mocks;
 
 namespace Remotion.Web.UnitTests.Core.UI.Controls.MenuTabTests
 {
@@ -28,6 +31,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.MenuTabTests
     private MockRepository _mocks;
     private IWebSecurityAdapter _mockWebSecurityAdapter;
     private NavigationCommand _mockNavigationCommand;
+    private ServiceLocatorScope _serviceLocatorScope;
 
     [SetUp]
     public void Setup ()
@@ -36,7 +40,16 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.MenuTabTests
       _mockWebSecurityAdapter = _mocks.StrictMock<IWebSecurityAdapter> ();
       _mockNavigationCommand = _mocks.StrictMock<NavigationCommand> ();
 
-      AdapterRegistry.Instance.SetAdapter (typeof (IWebSecurityAdapter), _mockWebSecurityAdapter);
+      var serviceLocator = DefaultServiceLocator.Create();
+      serviceLocator.RegisterMultiple<IWebSecurityAdapter> (() => _mockWebSecurityAdapter);
+      serviceLocator.RegisterMultiple<IWxeSecurityAdapter>();
+      _serviceLocatorScope = new ServiceLocatorScope (serviceLocator);
+    }
+
+    public override void TearDown ()
+    {
+      base.TearDown();
+      _serviceLocatorScope.Dispose();
     }
 
     [Test]

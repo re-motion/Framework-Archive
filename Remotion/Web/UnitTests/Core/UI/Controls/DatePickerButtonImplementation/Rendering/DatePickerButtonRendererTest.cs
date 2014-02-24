@@ -18,7 +18,6 @@ using System;
 using System.Web;
 using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting.Resources;
-using Remotion.Globalization.Implementation;
 using Remotion.Web.UI.Controls.DatePickerButtonImplementation;
 using Remotion.Web.UI.Controls.DatePickerButtonImplementation.Rendering;
 using Rhino.Mocks;
@@ -32,10 +31,9 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.DatePickerButtonImplementation
     private HttpContextBase _httpContext;
     private HtmlHelper _htmlHelper;
 
-    public override void SetUp ()
+    [SetUp]
+    public void SetUp ()
     {
-      base.SetUp();
-
       _htmlHelper = new HtmlHelper ();
       _httpContext = MockRepository.GenerateStub<HttpContextBase> ();
 

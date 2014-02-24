@@ -15,8 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Linq.Utilities;
-using ArgumentUtility = Remotion.Utilities.ArgumentUtility;
+using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Queries
 {
@@ -33,8 +32,8 @@ public class QueryParameter
   // member fields
 
   private readonly string _name;
-  private object _value;
-  private QueryParameterType _parameterType;
+  private readonly object _value;
+  private readonly QueryParameterType _parameterType;
 
   // construction and disposing
 
@@ -54,7 +53,7 @@ public class QueryParameter
   /// <param name="value">The value of the parameter.</param>
   /// <param name="parameterType">The <see cref="QueryParameterType"/> of the parameter.</param>
   /// <exception cref="System.ArgumentNullException"><paramref name="name"/> is <see langword="null"/>.</exception>
-  /// <exception cref="Remotion.Utilities.ArgumentEmptyException"><paramref name="name"/> is an empty string.</exception>
+  /// <exception cref="System.ArgumentException"><paramref name="name"/> is an empty string.</exception>
   /// <exception cref="System.ArgumentOutOfRangeException"><paramref name="parameterType"/> is not a valid enum value.</exception>
   public QueryParameter (string name, object value, QueryParameterType parameterType)
   {
@@ -77,21 +76,19 @@ public class QueryParameter
   }
 
   /// <summary>
-  /// Gets or sets the value of the <see cref="QueryParameter"/>.
+  /// Gets the value of the <see cref="QueryParameter"/>.
   /// </summary>
   public object Value
   {
     get { return _value; }
-    set { _value = value; }
   }
 
   /// <summary>
-  /// Gets or sets the <see cref="QueryParameterType"/> of the <see cref="QueryParameter"/>.
+  /// Gets the <see cref="QueryParameterType"/> of the <see cref="QueryParameter"/>.
   /// </summary>
   public QueryParameterType ParameterType
   {
     get { return _parameterType; }
-    set { _parameterType = value; }
   }
 
   public override bool Equals (object obj)
@@ -107,9 +104,7 @@ public class QueryParameter
 
   public override int GetHashCode ()
   {
-    return HashCodeUtility.GetHashCodeOrZero (_name) ^
-           HashCodeUtility.GetHashCodeOrZero (_value) ^
-           HashCodeUtility.GetHashCodeOrZero (_parameterType);
+    return EqualityUtility.GetRotatedHashCode (_name, _value, _parameterType);
   }
 }
 }

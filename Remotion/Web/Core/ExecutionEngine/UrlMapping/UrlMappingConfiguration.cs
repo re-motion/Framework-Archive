@@ -25,7 +25,7 @@ namespace Remotion.Web.ExecutionEngine.UrlMapping
 {
 
 /// <summary> Contains the configuration data for the URL mapping system of the execution engine. </summary>
-/// <include file='doc\include\ExecutionEngine\UrlMapping\UrlMappingConfiguration.xml' path='UrlMappingConfiguration/Class/*' />
+/// <include file='..\..\doc\include\ExecutionEngine\UrlMapping\UrlMappingConfiguration.xml' path='UrlMappingConfiguration/Class/*' />
 [XmlType (UrlMappingConfiguration.ElementName, Namespace = UrlMappingConfiguration.SchemaUri)]
 public class UrlMappingConfiguration: ConfigurationBase
 {
@@ -55,7 +55,7 @@ public class UrlMappingConfiguration: ConfigurationBase
   private static UrlMappingConfiguration CreateConfig ()
   {
     string mappingFile = WebConfiguration.Current.ExecutionEngine.UrlMappingFile;
-    if (StringUtility.IsNullOrEmpty (mappingFile))
+    if (string.IsNullOrEmpty (mappingFile))
       return new UrlMappingConfiguration();
     else
       return UrlMappingConfiguration.CreateUrlMappingConfiguration (WebConfiguration.Current.ExecutionEngine.UrlMappingFile);
@@ -151,7 +151,7 @@ public class UrlMappingEntry
     set
     {
       ArgumentUtility.CheckNotNullOrEmpty ("FunctionTypeName", value);
-      FunctionType = WebTypeUtility.GetType (value, true, true);
+      FunctionType = WebTypeUtility.GetType (value, true);
     }
   }
 
@@ -292,9 +292,9 @@ public class UrlMappingCollection: CollectionBase
   /// </returns>
   public string FindResource (string typeName)
   {
-    if (StringUtility.IsNullOrEmpty (typeName))
+    if (string.IsNullOrEmpty (typeName))
       return null;
-    Type type = WebTypeUtility.GetType (typeName, true, true);
+    Type type = WebTypeUtility.GetType (typeName, true);
     return FindResource (type);
   }
 
@@ -306,7 +306,7 @@ public class UrlMappingCollection: CollectionBase
   /// </returns>
   public UrlMappingEntry Find (string path)
   {
-    if (StringUtility.IsNullOrEmpty (path))
+    if (string.IsNullOrEmpty (path))
       return null;
     for (int i = 0; i < Count; i++)
     {
@@ -341,7 +341,7 @@ public class UrlMappingCollection: CollectionBase
   /// </returns>
   public UrlMappingEntry FindByID (string id)
   {
-    if (StringUtility.IsNullOrEmpty (id))
+    if (string.IsNullOrEmpty (id))
       return null;
     for (int i = 0; i < Count; i++)
     {

@@ -23,14 +23,13 @@ using Remotion.Globalization;
 using Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Rendering;
 using Remotion.Utilities;
-using System.Web;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls
 {
   /// <summary> This control can be used to display or edit a list of strings. </summary>
-  /// <include file='doc\include\UI\Controls\BocMultilineTextValue.xml' path='BocMultilineTextValue/Class/*' />
+  /// <include file='..\..\doc\include\UI\Controls\BocMultilineTextValue.xml' path='BocMultilineTextValue/Class/*' />
   [ValidationProperty ("Text")]
   [DefaultEvent ("TextChanged")]
   [ToolboxItemFilter ("System.Web.UI")]
@@ -78,7 +77,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Loads the <see cref="Value"/> from the bound <see cref="IBusinessObject"/>. </summary>
-    /// <include file='doc\include\UI\Controls\BocMultilineTextValue.xml' path='BocMultilineTextValue/LoadValue/*' />
+    /// <include file='..\..\doc\include\UI\Controls\BocMultilineTextValue.xml' path='BocMultilineTextValue/LoadValue/*' />
     public override void LoadValue (bool interim)
     {
       if (interim)
@@ -100,7 +99,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     /// <summary> Populates the <see cref="Value"/> with the unbound <paramref name="value"/>. </summary>
     /// <param name="value"> The <see cref="String"/> <see cref="Array"/> to load or <see langword="null"/>. </param>
-    /// <include file='doc\include\UI\Controls\BocMultilineTextValue.xml' path='BocMultilineTextValue/LoadUnboundValue/*' />
+    /// <param name="interim"> Specifies whether this is the initial loading, or an interim loading. </param>
+    /// <include file='..\..\doc\include\UI\Controls\BocMultilineTextValue.xml' path='BocMultilineTextValue/LoadUnboundValue/*' />
     public void LoadUnboundValue (string[] value, bool interim)
     {
       LoadValueInternal (value, interim);
@@ -117,7 +117,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Saves the <see cref="Value"/> into the bound <see cref="IBusinessObject"/>. </summary>
-    /// <include file='doc\include\UI\Controls\BocMultilineTextValue.xml' path='BocMultilineTextValue/SaveValue/*' />
+    /// <include file='..\..\doc\include\UI\Controls\BocMultilineTextValue.xml' path='BocMultilineTextValue/SaveValue/*' />
     public override void SaveValue (bool interim)
     {
       if (interim)
@@ -149,7 +149,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     // ReSharper disable RedundantOverridenMember
     // included for documentation
-    /// <include file='doc\include\UI\Controls\BocMultilineTextValue.xml' path='BocMultilineTextValue/CreateValidators/*' />
+    /// <include file='..\..\doc\include\UI\Controls\BocMultilineTextValue.xml' path='BocMultilineTextValue/CreateValidators/*' />
     public override BaseValidator[] CreateValidators ()
     {
       return base.CreateValidators();
@@ -232,14 +232,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       if (value == null)
         _text = null;
       else
-        _text = StringUtility.ConcatWithSeparator (value, "\r\n");
+        _text = string.Join ("\r\n", value);
     }
 
     protected override sealed string NormalizeText (string text)
     {
-      string temp = StringUtility.NullToEmpty (text);
+      string temp = text ?? string.Empty;
       temp = temp.Replace ("\r", "");
-      return StringUtility.ConcatWithSeparator (temp.Split ('\n'), "\r\n");
+      return string.Join ("\r\n", temp.Split ('\n'));
     }
 
     /// <summary> See <see cref="BusinessObjectBoundWebControl.Value"/> for details on this property. </summary>
@@ -301,7 +301,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         RequiredFieldValidator requiredValidator = new RequiredFieldValidator();
         requiredValidator.ID = ID + "_ValidatorRequired";
         requiredValidator.ControlToValidate = TargetControl.ID;
-        if (StringUtility.IsNullOrEmpty (ErrorMessage))
+        if (string.IsNullOrEmpty (ErrorMessage))
         {
           requiredValidator.ErrorMessage =
               GetResourceManager().GetString (ResourceIdentifier.RequiredValidationMessage);
@@ -317,7 +317,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         lengthValidator.ID = ID + "_ValidatorMaxLength";
         lengthValidator.ControlToValidate = TargetControl.ID;
         lengthValidator.MaximumLength = TextBoxStyle.MaxLength.Value;
-        if (StringUtility.IsNullOrEmpty (ErrorMessage))
+        if (string.IsNullOrEmpty (ErrorMessage))
         {
           string maxLengthMessage = GetResourceManager().GetString (ResourceIdentifier.MaxLengthValidationMessage);
           lengthValidator.ErrorMessage = string.Format (maxLengthMessage, TextBoxStyle.MaxLength.Value);

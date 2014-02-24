@@ -31,7 +31,7 @@ namespace Remotion.ObjectBinding.Web.Legacy.UI.Controls.BocBooleanValueImplement
   /// Responsible for rendering <see cref="BocCheckBox"/> controls.
   /// <seealso cref="IBocCheckBox"/>
   /// </summary>
-  /// <include file='doc\include\UI\Controls\BocCheckBoxRenderer.xml' path='BocCheckBoxRenderer/Class/*'/>
+  /// <include file='..\..\..\..\doc\include\UI\Controls\BocCheckBoxRenderer.xml' path='BocCheckBoxRenderer/Class/*'/>
   public class BocCheckBoxQuirksModeRenderer : BocBooleanValueQuirksModeRendererBase<IBocCheckBox>, IBocCheckBoxRenderer
   {
     private const string c_trueIcon = "CheckBoxTrue.gif";
@@ -169,7 +169,7 @@ namespace Remotion.ObjectBinding.Web.Legacy.UI.Controls.BocBooleanValueImplement
           renderingContext.Control.Value.Value ? c_trueIcon : c_falseIcon);
 
       imageControl.ImageUrl = imageUrl.GetUrl();
-      imageControl.AlternateText = StringUtility.NullToEmpty(description);
+      imageControl.AlternateText = description ?? string.Empty;
       imageControl.GenerateEmptyAlternateText = true;
       imageControl.Style["vertical-align"] = "middle";
     }

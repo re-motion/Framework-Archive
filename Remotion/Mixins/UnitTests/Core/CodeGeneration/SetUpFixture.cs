@@ -16,12 +16,10 @@
 // 
 using System;
 using NUnit.Framework;
-using Remotion.Development.TypePipe;
 using Remotion.Mixins.CodeGeneration.TypePipe;
 using Remotion.ServiceLocation;
-using Remotion.Text;
 using Remotion.TypePipe;
-using Remotion.TypePipe.Configuration;
+using Remotion.TypePipe.Development;
 using Remotion.Utilities;
 
 namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
@@ -76,7 +74,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
       var settings = PipelineSettings.New().SetEnableSerializationWithoutAssemblySaving (true).Build();
       var participants = new IParticipant[] { new MixinParticipant() };
 
-      s_pipeline = assemblyTrackingPipelineFactory.CreatePipeline ("re-mix-tests", settings, participants);
+      s_pipeline = assemblyTrackingPipelineFactory.Create ("re-mix-tests", settings, participants);
       s_assemblyTrackingCodeManager = assemblyTrackingPipelineFactory.AssemblyTrackingCodeManager;
     }
 
@@ -104,7 +102,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
       {
         Console.WriteLine (
             "Assemblies saved to: " + Environment.NewLine
-            + SeparatedStringBuilder.Build (Environment.NewLine, s_assemblyTrackingCodeManager.SavedAssemblies));
+            + string.Join (Environment.NewLine, s_assemblyTrackingCodeManager.SavedAssemblies));
       }
     }
   }

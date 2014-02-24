@@ -16,10 +16,11 @@
 // 
 using System;
 using NUnit.Framework;
-using Rhino.Mocks;
 using Remotion.Security;
+using Remotion.Web.ExecutionEngine;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
+using Rhino.Mocks;
 
 namespace Remotion.Web.UnitTests.Core.UI.Controls.WebMenuItemTests
 {
@@ -37,9 +38,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebMenuItemTests
       _mocks = new MockRepository ();
       _mockWebSecurityAdapter = _mocks.StrictMock<IWebSecurityAdapter> ();
       _mockSecurableObject = _mocks.StrictMock<ISecurableObject> ();
-      _mockCommand = _mocks.StrictMock<Command> ();
-
-      AdapterRegistry.Instance.SetAdapter (typeof (IWebSecurityAdapter), _mockWebSecurityAdapter);
+      _mockCommand = _mocks.StrictMock<Command> (CommandType.None, _mockWebSecurityAdapter, (IWxeSecurityAdapter) null);
     }
 
     [Test]

@@ -16,10 +16,10 @@
 // 
 using System;
 using System.IO;
+using System.Linq;
 using log4net.Core;
 using NUnit.Framework;
 using Remotion.Logging;
-using System.Linq;
 using Rhino.Mocks;
 
 namespace Remotion.UnitTests.Logging
@@ -158,7 +158,7 @@ namespace Remotion.UnitTests.Logging
       Assert.That (
           () => _logManager.InitializeConsole (LogLevel.Debug, new LogThreshold (logger, LogLevel.Error)),
           Throws.ArgumentException.With.Message.EqualTo (
-              "This LogManager only supports ILog implementations of type Log4NetLog.\r\nParameter name: logThresholds"));
+              "This LogManager only supports ILog implementations that also implement the log4net.Core.ILoggerWrapper interface.\r\nParameter name: logThresholds"));
     }
 
     [Test]

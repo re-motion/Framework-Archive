@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Linq;
 using System.Reflection;
-using log4net.Util;
 using Remotion.Collections;
 using Remotion.Reflection;
 using Remotion.Reflection.TypeDiscovery;

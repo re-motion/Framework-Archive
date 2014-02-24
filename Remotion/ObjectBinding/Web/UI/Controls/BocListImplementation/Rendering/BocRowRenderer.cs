@@ -16,10 +16,10 @@
 // 
 using System;
 using System.Web.UI;
+using Remotion.Globalization;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.Utilities;
-using Remotion.Globalization;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 {
@@ -105,7 +105,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Td);
 
       string emptyListMessage;
-      if (StringUtility.IsNullOrEmpty (renderingContext.Control.EmptyListMessage))
+      if (string.IsNullOrEmpty (renderingContext.Control.EmptyListMessage))
         emptyListMessage = renderingContext.Control.GetResourceManager().GetString (BocList.ResourceIdentifier.EmptyListMessage);
       else
         emptyListMessage = renderingContext.Control.EmptyListMessage;

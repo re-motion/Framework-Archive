@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using Remotion.Collections;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Utilities;
 
@@ -57,12 +56,12 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
         var unionedEntity = unionedEntitiesList[i];
         if (!(unionedEntity is TableDefinition || unionedEntity is UnionViewDefinition))
         {
-          throw new ArgumentItemTypeException (
-              "unionedEntities",
-              i,
-              null,
-              unionedEntity.GetType(),
-              "The unioned entities must either be a TableDefinitions or UnionViewDefinitions.");
+          throw new ArgumentException (
+              string.Format (
+                  "Item {0} is of type '{1}', but the unioned entities must either be a TableDefinitions or UnionViewDefinitions.",
+                  i,
+                  unionedEntity.GetType()),
+              "unionedEntities");
         }
       }
 

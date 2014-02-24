@@ -21,12 +21,10 @@ using Remotion.Data.DomainObjects.Configuration;
 using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.Data.DomainObjects.Development;
 using Remotion.Data.DomainObjects.Mapping;
-using Remotion.Data.DomainObjects.Mapping.Configuration;
 using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2005;
-using Remotion.Data.DomainObjects.Queries.Configuration;
 using Remotion.Reflection;
 using Remotion.Reflection.TypeDiscovery;
 using Remotion.Reflection.TypeDiscovery.AssemblyFinding;
@@ -44,8 +42,7 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
       providers.Add (new RdbmsProviderDefinition ("PerformanceTestDomain", new SqlStorageObjectFactory(), ConnectionString));
       StorageConfiguration storageConfiguration = new StorageConfiguration (providers, providers["PerformanceTestDomain"]);
 
-      DomainObjectsConfiguration.SetCurrent (
-          new FakeDomainObjectsConfiguration (new MappingLoaderConfiguration(), storageConfiguration, new QueryConfiguration()));
+      DomainObjectsConfiguration.SetCurrent (new FakeDomainObjectsConfiguration (storage: storageConfiguration));
 
 
       var rootAssemblyFinder = new FixedRootAssemblyFinder (new RootAssembly (typeof (StandardConfiguration).Assembly, true));

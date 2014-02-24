@@ -19,7 +19,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Xml;
-using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.AclTools.Expansion.HtmlTagWriter
 {
@@ -115,7 +114,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion.HtmlTagWriter
 
     public HtmlTagWriter Value (string s)
     {
-      _xmlWriter.WriteValue (StringUtility.NullToEmpty(s));
+      _xmlWriter.WriteValue (s ?? string.Empty);
       return this;
     }
 

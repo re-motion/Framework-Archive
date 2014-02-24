@@ -16,10 +16,11 @@
 // 
 using System;
 using NUnit.Framework;
+using Remotion.Development.UnitTesting;
+using Remotion.ServiceLocation;
+using Remotion.Web.ExecutionEngine;
 using Remotion.Web.UnitTests.Core.ExecutionEngine.TestFunctions;
 using Rhino.Mocks;
-using Remotion.Security;
-using Remotion.Web.ExecutionEngine;
 
 namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxeFunctionTests
 {
@@ -29,6 +30,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxeFunctionTests
     private MockRepository _mockRepository;
     private IWxeSecurityAdapter _mockWxeSecurityAdapter;
     private WxeContext _wxeContext;
+    private ServiceLocatorScope _serviceLocatorScope;
 
     [SetUp]
     public void SetUp ()
@@ -39,7 +41,15 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxeFunctionTests
       _mockRepository = new MockRepository ();
       _mockWxeSecurityAdapter = _mockRepository.StrictMock<IWxeSecurityAdapter> ();
 
-      AdapterRegistry.Instance.SetAdapter (typeof (IWxeSecurityAdapter), _mockWxeSecurityAdapter);
+      var serviceLocator = DefaultServiceLocator.Create();
+      serviceLocator.RegisterMultiple<IWxeSecurityAdapter> (() => _mockWxeSecurityAdapter);
+      _serviceLocatorScope = new ServiceLocatorScope (serviceLocator);
+    }
+
+    [TearDown]
+    public void TearDown ()
+    {
+      _serviceLocatorScope.Dispose();
     }
 
     [Test]
@@ -81,13 +91,17 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxeFunctionTests
     [Test]
     public void HasStatelessAccessGrantedWithoutWxeSecurityProvider ()
     {
-      AdapterRegistry.Instance.SetAdapter (typeof (IWxeSecurityAdapter), null);
-      _mockRepository.ReplayAll ();
+      var serviceLocator = DefaultServiceLocator.Create();
+      serviceLocator.RegisterMultiple<IWxeSecurityAdapter>();
+      using (new ServiceLocatorScope (serviceLocator))
+      {
+        _mockRepository.ReplayAll();
 
-      bool hasAccess = WxeFunction.HasAccess (typeof (TestFunction));
+        bool hasAccess = WxeFunction.HasAccess (typeof (TestFunction));
 
-      _mockRepository.VerifyAll ();
-      Assert.That (hasAccess, Is.True);
+        _mockRepository.VerifyAll();
+        Assert.That (hasAccess, Is.True);
+      }
     }
   }
 }

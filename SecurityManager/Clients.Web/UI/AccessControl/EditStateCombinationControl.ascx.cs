@@ -24,7 +24,6 @@ using Remotion.SecurityManager.Clients.Web.Classes;
 using Remotion.SecurityManager.Clients.Web.Globalization.UI.AccessControl;
 using Remotion.SecurityManager.Domain.AccessControl;
 using Remotion.SecurityManager.Domain.Metadata;
-using Remotion.Utilities;
 using Remotion.Web;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Globalization;
@@ -138,7 +137,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
 
     protected void RequiredStateCombinationValidator_ServerValidate (object source, ServerValidateEventArgs args)
     {
-      args.IsValid = !StringUtility.IsNullOrEmpty (StateDefinitionField.BusinessObjectUniqueIdentifier);
+      args.IsValid = !string.IsNullOrEmpty (StateDefinitionField.BusinessObjectUniqueIdentifier);
     }
   }
 }

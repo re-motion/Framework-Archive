@@ -122,7 +122,7 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
         WebMenuItem menuItem = (WebMenuItem) menuItems[idxItems];
         if (! menuItem.IsVisible)
           continue;
-        if (StringUtility.IsNullOrEmpty (menuItem.ItemID))
+        if (string.IsNullOrEmpty (menuItem.ItemID))
           continue;
         
         if (isSuffix)
@@ -184,7 +184,7 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
 
 
   /// <summary> Loads the <see cref="Value"/> from the bound <see cref="IBusinessObject"/>. </summary>
-  /// <include file='doc\include\UI\Controls\BocDropDownMenu.xml' path='BocDropDownMenu/LoadValue/*' />
+  /// <include file='..\..\doc\include\UI\Controls\BocDropDownMenu.xml' path='BocDropDownMenu/LoadValue/*' />
   public override void LoadValue (bool interim)
   {
     if (DataSource == null)
@@ -203,7 +203,7 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
   /// <param name="value"> 
   ///   The object implementing <see cref="IBusinessObject"/> to load, or <see langword="null"/>. 
   /// </param>
-  /// <include file='doc\include\UI\Controls\BocDropDownMenu.xml' path='BocDropDownMenu/LoadUnboundValue/*' />
+  /// <param name="interim"> Not used. </param>
   public void LoadUnboundValue (IBusinessObject value, bool interim)
   {
     LoadValueInternal (value, interim);
@@ -322,7 +322,7 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
   }
 
   /// <summary> 
-  ///   Calls the <see cref="BocMenuItemCommand.OnClick"/> method of the <paramref name="menuItem"/>'s 
+  ///   Calls the <see cref="BocMenuItemCommand.OnClick(BocMenuItem)"/> method of the <paramref name="menuItem"/>'s 
   ///   <see cref="BocMenuItem.Command"/> and raises <see cref="MenuItemClick"/> event. 
   /// </summary>
   /// <param name="menuItem"> The <see cref="BocMenuItem"/> that has been clicked. </param>
@@ -366,7 +366,7 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
   }
 
   /// <summary> 
-  ///   Calls the <see cref="BocMenuItemCommand.ExecuteWxeFunction"/> method of the <paramref name="menuItem"/>'s 
+  ///   Calls the <see cref="BocMenuItemCommand.ExecuteWxeFunction(IWxePage,int[],IBusinessObject[])"/> method of the <paramref name="menuItem"/>'s 
   ///   <see cref="BocMenuItem.Command"/>.
   /// </summary>
   /// <param name="menuItem"> The <see cref="BocMenuItem"/> that has been clicked. </param>

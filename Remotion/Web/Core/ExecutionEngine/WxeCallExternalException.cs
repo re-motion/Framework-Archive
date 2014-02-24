@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Runtime.Serialization;
 using System.Web;
 
 namespace Remotion.Web.ExecutionEngine
@@ -30,7 +29,7 @@ namespace Remotion.Web.ExecutionEngine
   ///   event handler should then return normally.
   ///   </para><para>
   ///   Usually, calls to <see cref="WxeFunction"/>s eventually end up with a <see cref="System.Threading.ThreadAbortException"/> 
-  ///   thrown by ASP.NET via <see cref="HttpResponse.Redirect"/> or <see cref="HttpServerUtility.Transfer"/>, so there
+  ///   thrown by ASP.NET via <see cref="HttpResponse.Redirect(string)"/> or <see cref="HttpServerUtility.Transfer(string)"/>, so there
   ///   is no need to prevent code below that call from being executed immediately after the call.
   ///   </para><para>
   ///   However, calling them externally results in the current request being completed normally, with a JavaScript 

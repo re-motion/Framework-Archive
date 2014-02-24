@@ -33,7 +33,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Rend
   [ImplementationFor (typeof (IBocTextValueRenderer), Lifetime = LifetimeKind.Singleton)]
   public class BocTextValueRenderer : BocTextValueRendererBase<IBocTextValue>, IBocTextValueRenderer
   {
-    public BocTextValueRenderer (IResourceUrlFactory resourceUrlFactory, ICompoundGlobalizationService globalizationService)
+    public BocTextValueRenderer (IResourceUrlFactory resourceUrlFactory, IGlobalizationService globalizationService)
       : base (resourceUrlFactory, globalizationService)
     {
     }
@@ -90,19 +90,19 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Rend
         return new string ((char) 9679, 5);
 
       string text;
-      if (textMode == BocTextBoxMode.MultiLine && !StringUtility.IsNullOrEmpty (renderingContext.Control.Text))
+      if (textMode == BocTextBoxMode.MultiLine && !string.IsNullOrEmpty (renderingContext.Control.Text))
       {
         //  Allows for an optional \r
         string temp = renderingContext.Control.Text.Replace ("\r", "");
         string[] lines = temp.Split ('\n');
         for (int i = 0; i < lines.Length; i++)
           lines[i] = HttpUtility.HtmlEncode (lines[i]);
-        text = StringUtility.ConcatWithSeparator (lines, "<br />");
+        text = string.Join ("<br />", lines);
       }
       else
         text = HttpUtility.HtmlEncode (renderingContext.Control.Text);
 
-      if (StringUtility.IsNullOrEmpty (text) && renderingContext.Control.IsDesignMode)
+      if (string.IsNullOrEmpty (text) && renderingContext.Control.IsDesignMode)
       {
         text = c_designModeEmptyLabelContents;
         //  Too long, can't resize in designer to less than the content's width

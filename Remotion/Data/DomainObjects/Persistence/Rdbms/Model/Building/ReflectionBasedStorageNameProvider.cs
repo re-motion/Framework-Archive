@@ -16,9 +16,9 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.Data.DomainObjects.Mapping;
-using Remotion.Text;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
@@ -106,7 +106,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
       
       var tableName = GetTableName (classDefinition).EntityName;
 
-      return String.Format ("FK_{0}_{1}", tableName, SeparatedStringBuilder.Build ("_", foreignKeyColumns, cd => cd.Name));
+      return String.Format ("FK_{0}_{1}", tableName, String.Join ((string) "_", (IEnumerable<string>) foreignKeyColumns.Select (cd => cd.Name)));
     }
 
     private string GetColumnNameFromAttribute (PropertyDefinition propertyDefinition)

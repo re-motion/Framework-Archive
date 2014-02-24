@@ -19,15 +19,13 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Design;
+using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.Globalization;
-using Remotion.Globalization.Implementation;
-using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.ExecutionEngine;
-using System.Web;
 using Remotion.Web.Infrastructure;
 using Remotion.Web.UI.Controls.TabbedMenuImplementation;
 using Remotion.Web.UI.Controls.TabbedMenuImplementation.Rendering;
@@ -62,7 +60,7 @@ namespace Remotion.Web.UI.Controls
     private bool _isPastInitialization;
     private Color _subMenuBackgroundColor;
     private ResourceManagerSet _cachedResourceManager;
-    
+
     // construction and destruction
     public TabbedMenu ()
     {
@@ -212,7 +210,7 @@ namespace Remotion.Web.UI.Controls
       base.AddAttributesToRender (writer);
       if (IsDesignMode)
         writer.AddStyleAttribute ("width", "100%");
-      if (StringUtility.IsNullOrEmpty (CssClass) && StringUtility.IsNullOrEmpty (Attributes["class"]))
+      if (string.IsNullOrEmpty (CssClass) && string.IsNullOrEmpty (Attributes["class"]))
         writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassBase);
     }
 
@@ -354,7 +352,7 @@ namespace Remotion.Web.UI.Controls
         else
           value = Context.Request.QueryString[SelectionID];
         if (value != null)
-          selection = (string[]) TypeConversionProvider.Current.Convert (typeof (string), typeof (string[]), value);
+          selection = (string[]) TypeConversionProvider.Convert (typeof (string), typeof (string[]), value);
       }
 
       if (selection == null)
@@ -434,7 +432,7 @@ namespace Remotion.Web.UI.Controls
       else
         throw new NotSupportedException (string.Format ("menuTab is of unsupported type '{0}'.", menuTab.GetType().FullName));
 
-      string value = (string) TypeConversionProvider.Current.Convert (typeof (string[]), typeof (string), tabIDs);
+      string value = (string) TypeConversionProvider.Convert (typeof (string[]), typeof (string), tabIDs);
 
       NameValueCollection urlParameters = new NameValueCollection ();
       urlParameters.Add (SelectionID, value);
@@ -567,18 +565,18 @@ namespace Remotion.Web.UI.Controls
         return;
 
       string key = ResourceManagerUtility.GetGlobalResourceKey (StatusText);
-      if (!StringUtility.IsNullOrEmpty (key))
+      if (!string.IsNullOrEmpty (key))
         StatusText = resourceManager.GetString (key);
     }
 
-    [Browsable (false)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    public IGlobalizationService GlobalizationService
+    protected IGlobalizationService GlobalizationService
     {
-      get
-      {
-        return SafeServiceLocator.Current.GetInstance<ICompoundGlobalizationService>();
-      }
+      get { return SafeServiceLocator.Current.GetInstance<IGlobalizationService>(); }
+    }
+
+    private ITypeConversionProvider TypeConversionProvider
+    {
+      get { return SafeServiceLocator.Current.GetInstance<ITypeConversionProvider>(); }
     }
     
     /// <summary> Gets the collection of <see cref="MainMenuTab"/> objects. </summary>
@@ -805,6 +803,7 @@ namespace Remotion.Web.UI.Controls
     {
       get { return "tabbedMenuStatusCell"; }
     }
+
     #endregion
   }
 }

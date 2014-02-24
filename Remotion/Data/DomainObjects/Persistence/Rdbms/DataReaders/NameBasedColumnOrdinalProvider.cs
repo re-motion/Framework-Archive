@@ -18,7 +18,6 @@ using System;
 using System.Data;
 using System.Linq;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
-using Remotion.Text;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
@@ -42,7 +41,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
         var message = string.Format (
           "The column '{0}' was not found in the query result. The included columns are: {1}.",
           columnDefinition.Name,
-          SeparatedStringBuilder.Build (", ", Enumerable.Range (0, dataReader.FieldCount).Select (dataReader.GetName)));
+          string.Join (", ", Enumerable.Range (0, dataReader.FieldCount).Select (dataReader.GetName)));
         throw new RdbmsProviderException (message, ex);
       }
       

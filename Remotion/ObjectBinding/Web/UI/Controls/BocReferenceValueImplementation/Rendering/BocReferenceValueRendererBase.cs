@@ -35,7 +35,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
   public abstract class BocReferenceValueRendererBase<TControl> : BocRendererBase<TControl>
       where TControl: IBocReferenceValueBase
   {
-    protected BocReferenceValueRendererBase (IResourceUrlFactory resourceUrlFactory, ICompoundGlobalizationService globalizationService)
+    protected BocReferenceValueRendererBase (IResourceUrlFactory resourceUrlFactory, IGlobalizationService globalizationService)
         : base(resourceUrlFactory, globalizationService)
     {
     }
@@ -201,7 +201,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
 
       string postBackEvent = GetPostBackEvent (renderingContext);
-      string objectID = StringUtility.NullToEmpty (renderingContext.Control.BusinessObjectUniqueIdentifier);
+      string objectID = renderingContext.Control.BusinessObjectUniqueIdentifier ?? string.Empty;
 
       if (renderingContext.Control.IsReadOnly)
         RenderReadOnlyValue (renderingContext, postBackEvent, string.Empty, objectID);
@@ -236,7 +236,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
 
       string postBackEvent = GetPostBackEvent (renderingContext);
-      string objectID = StringUtility.NullToEmpty (renderingContext.Control.BusinessObjectUniqueIdentifier);
+      string objectID = renderingContext.Control.BusinessObjectUniqueIdentifier ?? string.Empty;
 
       if (renderingContext.Control.IsReadOnly)
         RenderReadOnlyValue (renderingContext, postBackEvent, DropDownMenu.OnHeadTitleClickScript, objectID);

@@ -17,7 +17,6 @@
 using System;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using System.Web;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Rendering;
@@ -32,7 +31,7 @@ namespace Remotion.ObjectBinding.Web.Legacy.UI.Controls.BocEnumValueImplementati
   /// Responsible for rendering <see cref="BocEnumValue"/> controls.
   /// <seealso cref="IBocEnumValue"/>
   /// </summary>
-  /// <include file='doc\include\UI\Controls\BocEnumValueRenderer.xml' path='BocEnumValueRenderer/Class/*'/>
+  /// <include file='..\..\..\..\doc\include\UI\Controls\BocEnumValueRenderer.xml' path='BocEnumValueRenderer/Class/*'/>
   public class BocEnumValueQuirksModeRenderer : BocQuirksModeRendererBase<IBocEnumValue>, IBocEnumValueRenderer
   {
     /// <summary> The text displayed when control is displayed in desinger, is read-only, and has no contents. </summary>

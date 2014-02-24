@@ -17,7 +17,6 @@
 using System;
 using System.ComponentModel;
 using System.Web.UI.WebControls;
-using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableRowSupport
 {
@@ -48,7 +47,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
     protected override bool ControlPropertiesValid()
     {
       string controlToValidate = ControlToValidate;
-      if (StringUtility.IsNullOrEmpty (controlToValidate))
+      if (string.IsNullOrEmpty (controlToValidate))
         return base.ControlPropertiesValid();
       else
         return NamingContainer.FindControl (controlToValidate) != null;

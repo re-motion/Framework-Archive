@@ -17,9 +17,8 @@
 using System;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Remotion.Utilities;
-using Remotion.Web.Utilities;
 using Remotion.Web.Infrastructure;
+using Remotion.Web.Utilities;
 
 namespace Remotion.Web.UI.Controls
 {
@@ -41,7 +40,7 @@ public class SmartHyperLink : HyperLink, IControl
   protected override void AddAttributesToRender(HtmlTextWriter writer)
   {
     string navigateUrlBackup = NavigateUrl;
-    bool hasNavigateUrl = ! StringUtility.IsNullOrEmpty (NavigateUrl);
+    bool hasNavigateUrl = ! string.IsNullOrEmpty (NavigateUrl);
     bool isDesignMode = ControlHelper.IsDesignMode (this);
 
     if (! isDesignMode && Page is ISmartNavigablePage && hasNavigateUrl)

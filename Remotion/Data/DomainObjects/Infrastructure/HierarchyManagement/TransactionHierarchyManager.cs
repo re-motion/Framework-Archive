@@ -18,9 +18,8 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using Remotion.Text;
-using Remotion.Utilities;
 using Remotion.FunctionalProgramming;
+using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
 {
@@ -236,7 +235,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
         var message =
             string.Format (
                 "It's not possible to load objects into a subtransaction while they are being loaded into a parent transaction: {0}.",
-                SeparatedStringBuilder.Build (", ", conflictingIDs, id => "'" + id + "'"));
+                string.Join (", ", conflictingIDs.Select (id => "'" + id + "'")));
         throw new InvalidOperationException (message);
       }
     }

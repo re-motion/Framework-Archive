@@ -40,14 +40,14 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
 	public class CheckValidEnumValue
 	{
 		[Test]
-		[ExpectedExceptionAttribute (typeof (ArgumentOutOfRangeException))]
+		[ExpectedException (typeof (ArgumentOutOfRangeException))]
 		public void Fail_UndefinedValue ()
 		{
       ArgumentUtility.CheckValidEnumValue ("arg", (TestEnum) 4);
 		}
 
 		[Test]
-		[ExpectedExceptionAttribute (typeof (ArgumentOutOfRangeException))]
+		[ExpectedException (typeof (ArgumentOutOfRangeException))]
 		public void Fail_PartiallyUndefinedFlags ()
 		{
       ArgumentUtility.CheckValidEnumValue ("arg", (TestFlags) (1 | 8));
@@ -72,34 +72,36 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
 	public class CheckValidEnumValueAndTypeAndNotNull
 	{
 		[Test]
-		[ExpectedExceptionAttribute (typeof (ArgumentNullException))]
+		[ExpectedException (typeof (ArgumentNullException))]
 		public void Fail_Null ()
 		{
       ArgumentUtility.CheckValidEnumValueAndTypeAndNotNull<TestEnum> ("arg", null);
 		}
     
     [Test]
-		[ExpectedExceptionAttribute (typeof (ArgumentOutOfRangeException))]
+		[ExpectedException (typeof (ArgumentOutOfRangeException))]
 		public void Fail_UndefinedValue ()
 		{
       ArgumentUtility.CheckValidEnumValueAndTypeAndNotNull<TestEnum> ("arg", (TestEnum) 4);
 		}
 
 		[Test]
-		[ExpectedExceptionAttribute (typeof (ArgumentOutOfRangeException))]
+		[ExpectedException (typeof (ArgumentOutOfRangeException))]
 		public void Fail_PartiallyUndefinedFlags ()
 		{
       ArgumentUtility.CheckValidEnumValueAndTypeAndNotNull<TestFlags> ("arg", (TestFlags) (1 | 8));
 		}
 
-		[Test]
-		[ExpectedExceptionAttribute (typeof (ArgumentTypeException))]
-    public void Fail_WrongType ()
-    {
-      ArgumentUtility.CheckValidEnumValueAndTypeAndNotNull<TestFlags> ("arg", TestEnum.Value1);
-    }
+	  [Test]
+	  [ExpectedException (typeof (ArgumentException), ExpectedMessage =
+	      "Parameter 'arg' has type 'Remotion.UnitTests.Utilities.ArgumentUtilityTests.TestEnum' "
+	      + "when type 'Remotion.UnitTests.Utilities.ArgumentUtilityTests.TestFlags' was expected.\r\nParameter name: arg")]
+	  public void Fail_WrongType ()
+	  {
+	    ArgumentUtility.CheckValidEnumValueAndTypeAndNotNull<TestFlags> ("arg", TestEnum.Value1);
+	  }
 
-    [Test]
+	  [Test]
 		public void Succeed_SingleValue ()
 		{
       TestEnum result = ArgumentUtility.CheckValidEnumValueAndTypeAndNotNull<TestEnum> ("arg", TestEnum.Value1);
@@ -124,27 +126,29 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
 		}
     
     [Test]
-		[ExpectedExceptionAttribute (typeof (ArgumentOutOfRangeException))]
+		[ExpectedException (typeof (ArgumentOutOfRangeException))]
 		public void Fail_UndefinedValue ()
 		{
       ArgumentUtility.CheckValidEnumValueAndType<TestEnum> ("arg", (TestEnum) 4);
 		}
 
 		[Test]
-		[ExpectedExceptionAttribute (typeof (ArgumentOutOfRangeException))]
+		[ExpectedException (typeof (ArgumentOutOfRangeException))]
 		public void Fail_PartiallyUndefinedFlags ()
 		{
       ArgumentUtility.CheckValidEnumValueAndType<TestFlags> ("arg", (TestFlags) (1 | 8));
 		}
 
-		[Test]
-		[ExpectedExceptionAttribute (typeof (ArgumentTypeException))]
-    public void Fail_WrongType ()
-    {
-      ArgumentUtility.CheckValidEnumValueAndType<TestFlags> ("arg", TestEnum.Value1);
-    }
+	  [Test]
+	  [ExpectedException (typeof (ArgumentException), ExpectedMessage =
+	      "Parameter 'arg' has type 'Remotion.UnitTests.Utilities.ArgumentUtilityTests.TestEnum' "
+	      + "when type 'Remotion.UnitTests.Utilities.ArgumentUtilityTests.TestFlags' was expected.\r\nParameter name: arg")]
+	  public void Fail_WrongType ()
+	  {
+	    ArgumentUtility.CheckValidEnumValueAndType<TestFlags> ("arg", TestEnum.Value1);
+	  }
 
-    [Test]
+	  [Test]
 		public void Succeed_SingleValue ()
 		{
       TestEnum? result = ArgumentUtility.CheckValidEnumValueAndType<TestEnum> ("arg", TestEnum.Value1);

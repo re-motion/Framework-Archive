@@ -20,11 +20,6 @@ using System.Diagnostics;
 using System.Web;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Development.Web.ResourceHosting;
-using Remotion.Security;
-using Remotion.Web.ExecutionEngine;
-using Remotion.Web.Security.ExecutionEngine;
-using Remotion.Web.Security.UI;
-using Remotion.Web.UI;
 
 namespace Remotion.Data.DomainObjects.Web.Test
 {
@@ -50,10 +45,6 @@ namespace Remotion.Data.DomainObjects.Web.Test
       MappingConfiguration mappingConfiguration = MappingConfiguration.Current;
       Trace.WriteLine (mappingConfiguration.GetTypeDefinitions().Length);
 
-      AdapterRegistry.Instance.SetAdapter (typeof (IObjectSecurityAdapter), new ObjectSecurityAdapter());
-      AdapterRegistry.Instance.SetAdapter (typeof (IWebSecurityAdapter), new WebSecurityAdapter());
-      AdapterRegistry.Instance.SetAdapter (typeof (IWxeSecurityAdapter), new WxeSecurityAdapter());
-
       _resourceVirtualPathProvider = new ResourceVirtualPathProvider (
           new[]
           {
@@ -61,7 +52,8 @@ namespace Remotion.Data.DomainObjects.Web.Test
               new ResourcePathMapping ("Remotion.Web.Legacy", @"..\..\Web\Legacy\Res"),
               new ResourcePathMapping ("Remotion.ObjectBinding.Web", @"..\..\ObjectBinding\Web\res"),
               new ResourcePathMapping ("Remotion.ObjectBinding.Web.Legacy", @"..\..\ObjectBinding\Web.Legacy\Res")
-          });
+          },
+          FileExtensionHandlerMapping.Default);
       _resourceVirtualPathProvider.Register();
     }
 

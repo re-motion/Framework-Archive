@@ -20,14 +20,13 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Reflection;
+using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.Globalization;
-using Remotion.Globalization.Implementation;
 using Remotion.Logging;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
-using System.Web;
 using Remotion.Web.Infrastructure;
 using Remotion.Web.UI.Controls.WebTabStripImplementation;
 using Remotion.Web.UI.Controls.WebTabStripImplementation.Rendering;
@@ -37,7 +36,7 @@ using Remotion.Web.Utilities;
 
 namespace Remotion.Web.UI.Controls
 {
-  /// <include file='doc\include\UI\Controls\WebTabStrip.xml' path='WebTabStrip/Class/*' />
+  /// <include file='..\..\doc\include\UI\Controls\WebTabStrip.xml' path='WebTabStrip/Class/*' />
   [ToolboxData ("<{0}:WebTabStrip runat=server></{0}:WebTabStrip>")]
   [Designer (typeof (WebControlDesigner))]
   public class WebTabStrip
@@ -231,7 +230,7 @@ namespace Remotion.Web.UI.Controls
       base.OnPreRender (e);
 
       var resourceManager = ResourceManagerUtility.GetResourceManager (this, true);
-      var globalizationService = SafeServiceLocator.Current.GetInstance<ICompoundGlobalizationService>();
+      var globalizationService = SafeServiceLocator.Current.GetInstance<IGlobalizationService>();
 
       LoadResources (resourceManager, globalizationService);
     }
@@ -460,7 +459,7 @@ namespace Remotion.Web.UI.Controls
         if (Tabs.Count > 0)
         {
           EnsureTabsRestored();
-          if (! StringUtility.IsNullOrEmpty (_tabToBeSelected))
+          if (! string.IsNullOrEmpty (_tabToBeSelected))
             SetSelectedTab (_tabToBeSelected);
         }
         return _selectedTab;

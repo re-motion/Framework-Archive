@@ -17,13 +17,13 @@
 using System;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Remotion.Globalization;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
 using Remotion.Utilities;
 using Remotion.Web;
 using Remotion.Web.UI.Controls;
-using Remotion.Globalization;
 
 namespace Remotion.ObjectBinding.Web.Legacy.UI.Controls.BocListImplementation.Rendering
 {
@@ -92,7 +92,7 @@ namespace Remotion.ObjectBinding.Web.Legacy.UI.Controls.BocListImplementation.Re
       ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
 
       string cssClassTitleCell = CssClasses.TitleCell;
-      if (!StringUtility.IsNullOrEmpty (renderingContext.ColumnDefinition.CssClass))
+      if (!string.IsNullOrEmpty (renderingContext.ColumnDefinition.CssClass))
         cssClassTitleCell += " " + renderingContext.ColumnDefinition.CssClass;
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, cssClassTitleCell);
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Th);
@@ -254,7 +254,7 @@ namespace Remotion.ObjectBinding.Web.Legacy.UI.Controls.BocListImplementation.Re
 
       string cssClassTableCell = CssClasses.GetDataCell (dataRowRenderEventArgs.IsOddRow);
 
-      if (!StringUtility.IsNullOrEmpty (renderingContext.ColumnDefinition.CssClass))
+      if (!string.IsNullOrEmpty (renderingContext.ColumnDefinition.CssClass))
         cssClassTableCell += " " + renderingContext.ColumnDefinition.CssClass;
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, cssClassTableCell);
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Td);

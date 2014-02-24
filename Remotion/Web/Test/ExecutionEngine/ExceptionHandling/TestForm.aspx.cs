@@ -19,7 +19,6 @@ using System;
 using System.Linq;
 using System.Web;
 using Remotion.FunctionalProgramming;
-using Remotion.Text;
 using Remotion.Web.ExecutionEngine;
 
 namespace Remotion.Web.Test.ExecutionEngine.ExceptionHandling
@@ -29,9 +28,7 @@ namespace Remotion.Web.Test.ExecutionEngine.ExceptionHandling
     protected override void OnPreRender (EventArgs e)
     {
       base.OnPreRender (e);
-      Stack.Text = SeparatedStringBuilder.Build (
-          "</br>",
-          CurrentFunction.CreateSequence (f => f.ParentFunction).Select (f => f.GetType().Name));
+      Stack.Text = string.Join ("</br>", CurrentFunction.CreateSequence (f => f.ParentFunction).Select (f => f.GetType().Name));
     }
 
     protected void OpenSubFunctionButton_Click (object sender, EventArgs e)

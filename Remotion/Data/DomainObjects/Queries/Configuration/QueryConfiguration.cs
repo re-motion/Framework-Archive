@@ -22,7 +22,6 @@ using Remotion.Configuration;
 using Remotion.Data.DomainObjects.Configuration;
 using Remotion.Data.DomainObjects.ConfigurationLoader.XmlBasedConfigurationLoader;
 using Remotion.Data.DomainObjects.Persistence;
-using Remotion.Text;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Queries.Configuration
@@ -114,7 +113,7 @@ namespace Remotion.Data.DomainObjects.Queries.Configuration
       if (path == null)
       {
         string message = string.Format ("No default query file found. Searched for one of the following files:\n{0}",
-            SeparatedStringBuilder.Build ("\n", potentialPaths));
+            string.Join ("\n", potentialPaths));
         throw new ConfigurationException (message);
       }
       return path;

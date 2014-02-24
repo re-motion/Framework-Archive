@@ -22,7 +22,6 @@ using System.Web.UI.WebControls;
 using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.Sample;
 using Remotion.ObjectBinding.Web.UI.Controls;
-using Remotion.Utilities;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
 
@@ -114,8 +113,10 @@ public class BocMultilineTextValueUserControl : BaseUserControl
   private void SetDebugLabel (BocMultilineTextValue control, Label label)
   {
    if (control.Value != null)
-      label.Text = StringUtility.ConcatWithSeparator (control.Value.Select (HttpUtility.HtmlEncode).ToList(), "<br />");
-    else
+   {
+     label.Text = string.Join ("<br />", control.Value.Select (HttpUtility.HtmlEncode));
+   }
+   else
       label.Text = "not set";
   }
 
@@ -142,7 +143,7 @@ public class BocMultilineTextValueUserControl : BaseUserControl
   private void CVField_TextChanged(object sender, EventArgs e)
   {
     if (CVField.Value != null)
-      CVFieldTextChangedLabel.Text = StringUtility.ConcatWithSeparator (CVField.Value, "<br />");
+      CVFieldTextChangedLabel.Text = string.Join ("<br />", CVField.Value);
     else
       CVFieldTextChangedLabel.Text = "not set";
   }

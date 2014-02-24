@@ -15,12 +15,11 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Security;
 
 namespace Remotion.Web.ExecutionEngine
 {
   //verwendet in wxe um security abfragen zu tun.
-  public interface IWxeSecurityAdapter : ISecurityAdapter
+  public interface IWxeSecurityAdapter
   {
     // verwendet wenn function läuft. 
     bool HasAccess (WxeFunction function);

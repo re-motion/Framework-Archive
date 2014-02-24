@@ -20,7 +20,6 @@ using System.Linq;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration.ScriptElements;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model;
-using Remotion.Text;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGeneration
@@ -51,10 +50,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
 
     protected string GetIndexedColumnNames (IEnumerable<SqlIndexedColumnDefinition> indexedColumnDefinitions)
     {
-      return SeparatedStringBuilder.Build (
-          ", ",
-          indexedColumnDefinitions.Select (
-              cd => "[" + cd.Columnn.Name + "]" + (cd.IndexOrder.HasValue ? " " + cd.IndexOrder.ToString().ToUpper() : string.Empty)));
+      return string.Join (", ", indexedColumnDefinitions.Select (
+          cd => "[" + cd.Columnn.Name + "]" + (cd.IndexOrder.HasValue ? " " + cd.IndexOrder.ToString().ToUpper() : string.Empty)));
     }
 
     protected virtual string GetCreateIndexOptions (IEnumerable<string> optionItems)
@@ -63,7 +60,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
 
       var filteredItems = optionItems.Except (new[] { string.Empty, null }).ToList ();
       if (filteredItems.Any())
-        return "\r\n  WITH (" + SeparatedStringBuilder.Build (", ", filteredItems) + ")";
+        return "\r\n  WITH (" + string.Join (", ", filteredItems) + ")";
       else
         return string.Empty;
     }

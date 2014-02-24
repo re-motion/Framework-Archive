@@ -19,7 +19,6 @@ using System.ComponentModel;
 using System.Drawing.Design;
 using System.Web.UI;
 using Remotion.ObjectBinding.Web.UI.Design;
-using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls
 {
@@ -70,9 +69,9 @@ public class BocListView: BusinessObjectControlItem
   public override string ToString()
   {
     string displayName = ItemID;
-    if (StringUtility.IsNullOrEmpty (displayName))
+    if (string.IsNullOrEmpty (displayName))
       displayName = Title;
-    if (StringUtility.IsNullOrEmpty (displayName))
+    if (string.IsNullOrEmpty (displayName))
       return DisplayedTypeName;
     else
       return string.Format ("{0}: {1}", displayName, DisplayedTypeName);

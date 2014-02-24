@@ -21,7 +21,6 @@ using System.Linq;
 using System.Text;
 using Remotion.Data.DomainObjects.Mapping.SortExpressions;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
-using Remotion.Text;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders.Specifications
@@ -61,11 +60,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders.Specif
       ArgumentUtility.CheckNotNull ("sqlDialect", sqlDialect);
 
       stringBuilder.Append (
-          SeparatedStringBuilder.Build (
-              ", ",
-              _columns,
-              orderedColumn =>
-              sqlDialect.DelimitIdentifier (orderedColumn.ColumnDefinition.Name) + (orderedColumn.SortOrder == SortOrder.Ascending ? " ASC" : " DESC")));
+          string.Join (", ", _columns.Select (orderedColumn =>
+              sqlDialect.DelimitIdentifier (orderedColumn.ColumnDefinition.Name) + (orderedColumn.SortOrder == SortOrder.Ascending ? " ASC" : " DESC"))));
     }
 
     public ISelectedColumnsSpecification UnionWithSelectedColumns (ISelectedColumnsSpecification selectedColumns)

@@ -20,12 +20,9 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Xml;
 using NUnit.Framework;
-using Remotion.Development.Web.UnitTesting;
 using Remotion.Development.Web.UnitTesting.Resources;
-using Remotion.Globalization;
-using Remotion.Globalization.Implementation;
+using Remotion.Development.Web.UnitTesting.UI.Controls.Rendering;
 using Remotion.Web.Infrastructure;
-using Remotion.Web.Resources;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.DropDownMenuImplementation;
@@ -51,10 +48,9 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.DropDownMenuImplementation.Ren
     private HtmlHelper _htmlHelper;
     private FakeResourceUrlFactory _resourceUrlFactory;
 
-    public override void SetUp ()
+    [SetUp]
+    public void SetUp ()
     {
-      base.SetUp();
-
       _htmlHelper = new HtmlHelper();
       _httpContextStub = MockRepository.GenerateStub<HttpContextBase>();
 

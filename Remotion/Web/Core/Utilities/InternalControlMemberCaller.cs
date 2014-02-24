@@ -39,16 +39,51 @@ namespace Remotion.Web.Utilities
     //  private System.Web.UI.UpdatePanel._rendered
     private static readonly FieldInfo s_updatePanelRenderedFieldInfo = typeof (UpdatePanel).GetField ("_rendered", c_bindingFlags);
 
+    private static readonly Lazy<Action<Control, object>> s_set_ControlState = new Lazy<Action<Control, object>> (
+        () =>
+        {
+          var methodInfo = typeof (Control).GetMethod (
+              "set_ControlState",
+              c_bindingFlags,
+              null,
+              new[] { InternalControlStateType },
+              new ParameterModifier[0]);
+          return MethodInfoAdapter.Create (methodInfo).GetFastInvoker<Action<Control, object>>();
+        });
+
+    private static readonly Lazy<Func<Control, int>> s_get_ControlState = GetLazyMethod<Func<Control, int>> ("get_ControlState");
+
+    private static readonly Lazy<Action<Control, Control>> s_InitRecursive = GetLazyMethod<Action<Control, Control>> ("InitRecursive");
+
+    private static readonly Lazy<Action<Control, object>> s_LoadViewStateRecursive = GetLazyMethod<Action<Control, object>> ("LoadViewStateRecursive");
+
+    private static readonly Lazy<Func<Control, ViewStateMode, object>> s_SaveViewStateRecursive = 
+        GetLazyMethod<Func<Control, ViewStateMode, object>> ("SaveViewStateRecursive");
+
+    private static readonly Lazy<Action<Page>> s_SaveAllState = GetLazyMethod<Action<Page>> ("SaveAllState");
+
+    private static readonly Lazy<Func<Control, object>> s_SaveControlStateInternal = GetLazyMethod<Func<Control, object>> ("SaveControlStateInternal");
+
+    private static readonly Lazy<Action<Control>> s_ClearChildControlState = GetLazyMethod<Action<Control>> ("ClearChildControlState");
+
+    private static readonly Lazy<Func<Page, PageStatePersister>> s_get_PageStatePersister =
+        GetLazyMethod<Func<Page, PageStatePersister>> ("get_PageStatePersister");
+
+    private static readonly Lazy<Func<ControlCollection, string, string>> s_SetCollectionReadOnly =
+        GetLazyMethod<Func<ControlCollection, string, string>> ("SetCollectionReadOnly");
+
+    private static readonly Lazy<Action<Control, HtmlTextWriter, ICollection>> s_RenderChildrenInternal =
+        GetLazyMethod<Action<Control, HtmlTextWriter, ICollection>> ("RenderChildrenInternal");
+
     public void SetControlState (Control control, ControlState value)
     {
       object internalValue = Enum.ToObject (InternalControlStateType, value);
-      MethodCaller.CallAction ("set_ControlState", c_bindingFlags)
-        .Invoke (new[] { typeof (Control), InternalControlStateType }, new[] { control, internalValue });
+      s_set_ControlState.Value (control, internalValue);
     }
 
     public ControlState GetControlState (Control control)
     {
-      int internalValue = MethodCaller.CallFunc<int> ("get_ControlState", c_bindingFlags).With (control);
+      int internalValue = s_get_ControlState.Value (control);
       return (ControlState) internalValue;
     }
 
@@ -56,7 +91,9 @@ namespace Remotion.Web.Utilities
     {
       ArgumentUtility.CheckNotNull ("control", control);
       ArgumentUtility.CheckNotNull ("namingContainer", namingContainer);
-      MethodCaller.CallAction ("InitRecursive", c_bindingFlags).With (control, namingContainer);
+
+      //  internal void System.Web.UI.Control.InitRecursive (Control)
+      s_InitRecursive.Value (control, namingContainer);
     }
 
     /// <summary> Encapsulates the invocation of <see cref="Control"/>'s LoadViewStateRecursive method. </summary>
@@ -67,7 +104,7 @@ namespace Remotion.Web.Utilities
       ArgumentUtility.CheckNotNull ("target", target);
 
       //  internal void System.Web.UI.Control.LoadViewStateRecursive (object)
-      MethodCaller.CallAction ("LoadViewStateRecursive", c_bindingFlags).With (target, viewState);
+      s_LoadViewStateRecursive.Value (target, viewState);
     }
 
     /// <summary> Encapsulates the invocation of <see cref="Control"/>'s SaveViewStateRecursive method. </summary>
@@ -81,8 +118,8 @@ namespace Remotion.Web.Utilities
                                      .Select (c => (ViewStateMode?) c.ViewStateMode)
                                      .FirstOrDefault (m => m != ViewStateMode.Inherit) ?? ViewStateMode.Enabled;
 
-      //  internal object System.Web.UI.Control.LoadViewStateRecursive()
-      return MethodCaller.CallFunc<object> ("SaveViewStateRecursive", c_bindingFlags).With (target, inheritedViewState);
+      //  internal object System.Web.UI.Control.SaveViewStateRecursive(ViewStateMode)
+      return s_SaveViewStateRecursive.Value (target, inheritedViewState);
     }
 
     /// <summary>Encapsulates the invocation of <see cref="Page"/>'s SaveAllState method.</summary>
@@ -92,7 +129,7 @@ namespace Remotion.Web.Utilities
       ArgumentUtility.CheckNotNull ("page", page);
 
       //  private void System.Web.UI.Page.SaveAllState()
-      MethodCaller.CallAction ("SaveAllState", c_bindingFlags).With (page);
+      s_SaveAllState.Value (page);
     }
 
     /// <summary>Encapsulates the invocation of <see cref="Control"/>'s SaveChildControlState method.</summary>
@@ -131,7 +168,7 @@ namespace Remotion.Web.Utilities
     public object SaveControlStateInternal (Control control)
     {
       //  protected object System.Web.UI.Page.SaveControlStateInternal
-      return MethodCaller.CallFunc<object> ("SaveControlStateInternal", c_bindingFlags).With (control);
+      return s_SaveControlStateInternal.Value (control);
     }
 
     /// <summary>Returns the control states for all controls that are child-controls of the passed <see cref="Control"/>.</summary>
@@ -181,7 +218,7 @@ namespace Remotion.Web.Utilities
       ArgumentUtility.CheckNotNull ("control", control);
 
       //  protected void System.Web.UI.Control.ClearChildControlState
-      MethodCaller.CallAction ("ClearChildControlState", c_bindingFlags).With (control);
+      s_ClearChildControlState.Value (control);
     }
 
     /// <summary>Encapsulates the get-access the the <see cref="Page"/>'s PageStatePersister property.</summary>
@@ -190,7 +227,7 @@ namespace Remotion.Web.Utilities
       ArgumentUtility.CheckNotNull ("page", page);
 
       //  protected PageStatePersister System.Web.UI.Page.PageStatePersister
-      return MethodCaller.CallFunc<PageStatePersister> ("get_PageStatePersister", c_bindingFlags).With (page);
+      return s_get_PageStatePersister.Value (page);
     }
 
     public string SetCollectionReadOnly (ControlCollection collection, string exceptionMessage)
@@ -198,7 +235,7 @@ namespace Remotion.Web.Utilities
       ArgumentUtility.CheckNotNull ("collection", collection);
 
       //  internal void System.Web.UI.ControlCollection.SetCollectionReadOnly
-      return MethodCaller.CallFunc<string> ("SetCollectionReadOnly", c_bindingFlags).With (collection, exceptionMessage);
+      return s_SetCollectionReadOnly.Value (collection, exceptionMessage);
     }
 
     /// <summary>Calls the <b>RenderChildrenInternal</b> method of the <see cref="Control"/>.</summary>
@@ -209,7 +246,7 @@ namespace Remotion.Web.Utilities
       ArgumentUtility.CheckNotNull ("controls", controls);
 
       //  internal void System.Web.UI.Control.RenderChildrenInternal
-      MethodCaller.CallAction ("RenderChildrenInternal", c_bindingFlags).With (control, writer, controls);
+      s_RenderChildrenInternal.Value (control, writer, controls);
     }
 
     /// <summary>Sets the <b>_rendered</b> flag of the <see cref="UpdatePanel"/>.</summary>
@@ -218,6 +255,27 @@ namespace Remotion.Web.Utilities
       ArgumentUtility.CheckNotNull ("updatePanel", updatePanel);
 
       s_updatePanelRenderedFieldInfo.SetValue (updatePanel, value);
+    }
+
+    private static Lazy<T> GetLazyMethod<T> (string name)
+    {
+      return new Lazy<T> (
+          () =>
+          {
+            var invokeMethod = typeof (T).GetMethod ("Invoke");
+            var targetType = invokeMethod.GetParameters().First().ParameterType;
+            var parameterTypes = invokeMethod.GetParameters().Skip (1).Select (p => p.ParameterType).ToArray();
+
+            var methodInfo = targetType.GetMethod (name, c_bindingFlags, null, parameterTypes, new ParameterModifier[0]);
+            Assertion.IsNotNull (
+                methodInfo,
+                "Type '{0}' does not contain method {1} ({2}).",
+                targetType,
+                name,
+                string.Join<Type> (",", parameterTypes));
+
+            return (T) (object) methodInfo.CreateDelegate (typeof (T));
+          });
     }
   }
 }

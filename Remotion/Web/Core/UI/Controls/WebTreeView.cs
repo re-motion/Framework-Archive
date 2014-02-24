@@ -23,14 +23,13 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.FunctionalProgramming;
 using Remotion.Globalization;
-using Remotion.Globalization.Implementation;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
+using Remotion.Web.Infrastructure;
 using Remotion.Web.UI.Controls.WebTreeViewImplementation;
 using Remotion.Web.UI.Controls.WebTreeViewImplementation.Rendering;
 using Remotion.Web.UI.Globalization;
 using Remotion.Web.Utilities;
-using Remotion.Web.Infrastructure;
 
 namespace Remotion.Web.UI.Controls
 {
@@ -434,11 +433,11 @@ namespace Remotion.Web.UI.Controls
         return;
 
       string key = ResourceManagerUtility.GetGlobalResourceKey (AccessKey);
-      if (!StringUtility.IsNullOrEmpty (key))
+      if (!string.IsNullOrEmpty (key))
         AccessKey = resourceManager.GetString (key);
 
       key = ResourceManagerUtility.GetGlobalResourceKey (ToolTip);
-      if (!StringUtility.IsNullOrEmpty (key))
+      if (!string.IsNullOrEmpty (key))
         ToolTip = resourceManager.GetString (key);
 
       Nodes.LoadResources (resourceManager, globalizationService);
@@ -473,7 +472,7 @@ namespace Remotion.Web.UI.Controls
       base.OnPreRender (e);
 
       var resourceManager = ResourceManagerUtility.GetResourceManager (this, true);
-      var globalizationService = SafeServiceLocator.Current.GetInstance<ICompoundGlobalizationService>();
+      var globalizationService = SafeServiceLocator.Current.GetInstance<IGlobalizationService>();
 
       LoadResources (resourceManager, globalizationService);
 
@@ -649,7 +648,7 @@ namespace Remotion.Web.UI.Controls
         writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassNodeHeadSelected);
       else
         writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassNodeHead);
-      if (!StringUtility.IsNullOrEmpty (node.ToolTip))
+      if (!string.IsNullOrEmpty (node.ToolTip))
         writer.AddAttribute (HtmlTextWriterAttribute.Title, node.ToolTip);
 
       writer.RenderBeginTag (HtmlTextWriterTag.Span);
@@ -666,7 +665,7 @@ namespace Remotion.Web.UI.Controls
           node.Icon.Render (writer, this);
           writer.Write ("&nbsp;");
         }
-        if (!StringUtility.IsNullOrEmpty (node.Text))
+        if (!string.IsNullOrEmpty (node.Text))
           writer.WriteEncodedText (node.Text);
       }
       else

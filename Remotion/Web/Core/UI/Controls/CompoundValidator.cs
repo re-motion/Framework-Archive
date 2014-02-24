@@ -19,7 +19,6 @@ using System.Collections;
 using System.ComponentModel;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Remotion.Utilities;
 
 namespace Remotion.Web.UI.Controls
 {
@@ -201,7 +200,7 @@ public abstract class CompoundValidator: WebControl, IBaseValidator
     get 
     { 
       string[] messages = GetErrorMessages();
-      return StringUtility.ConcatWithSeparator (messages, "<b>");
+      return string.Join ("<b>", messages);
     }
     set { throw new NotSupportedException ("CompoundValidator.ErrorMessage is not supported."); }
   }

@@ -75,7 +75,7 @@ namespace Remotion.Web.Utilities
     /// <param name="javascript"> 
     ///   The client script that will be registered. Must not be <see langword="null"/> or empty. 
     /// </param>
-    /// <seealso cref="ScriptManager.RegisterStartupScript"/>
+    /// <seealso cref="ScriptManager.RegisterStartupScript(System.Web.UI.Control,System.Type,string,string,bool)"/>
     [Obsolete ("Use IPage.ClientScript.RegisterStartupScriptBlock (IControl, Type, string, string) instead.")]
     public static void RegisterStartupScriptBlock (Control control, string key, string javascript)
     {
@@ -132,7 +132,7 @@ namespace Remotion.Web.Utilities
     /// <returns> The string with special characters escaped. </returns>
     /// <remarks>
     ///   This is required when adding client script to the page containing special characters. ASP.NET automatically 
-    ///   escapes client scripts created by <see cref="Page.GetPostBackEventReference">Page.GetPostBackEventReference</see>.
+    ///   escapes client scripts created by <see cref="O:System.Web.UI.ClientScriptManager.GetPostBackEventReference">ClientScript.GetPostBackEventReference</see>.
     /// </remarks>
     public static string EscapeClientScript (string input)
     {

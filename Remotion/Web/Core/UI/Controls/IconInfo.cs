@@ -47,9 +47,9 @@ namespace Remotion.Web.UI.Controls
     {
       if (icon == null)
         return false;
-      else if (StringUtility.IsNullOrEmpty (icon.Url)
-               && StringUtility.IsNullOrEmpty (icon.AlternateText)
-               && StringUtility.IsNullOrEmpty (icon.ToolTip)
+      else if (string.IsNullOrEmpty (icon.Url)
+               && string.IsNullOrEmpty (icon.AlternateText)
+               && string.IsNullOrEmpty (icon.ToolTip)
                && icon.Height.IsEmpty
                && icon.Width.IsEmpty)
         return false;
@@ -104,7 +104,7 @@ namespace Remotion.Web.UI.Controls
     public string Url
     {
       get { return _url; }
-      set { _url = StringUtility.NullToEmpty (value); }
+      set { _url = value ?? string.Empty; }
     }
 
     [PersistenceMode (PersistenceMode.Attribute)]
@@ -113,7 +113,7 @@ namespace Remotion.Web.UI.Controls
     public string AlternateText
     {
       get { return _alternateText; }
-      set { _alternateText = StringUtility.NullToEmpty (value); }
+      set { _alternateText = value ?? string.Empty; }
     }
 
     [PersistenceMode (PersistenceMode.Attribute)]
@@ -122,7 +122,7 @@ namespace Remotion.Web.UI.Controls
     public string ToolTip
     {
       get { return _toolTip; }
-      set { _toolTip = StringUtility.NullToEmpty (value); }
+      set { _toolTip = value ?? string.Empty; }
     }
 
     [PersistenceMode (PersistenceMode.Attribute)]
@@ -164,9 +164,9 @@ namespace Remotion.Web.UI.Controls
 
       writer.AddAttribute ("class", "Icon");
 
-      writer.AddAttribute (HtmlTextWriterAttribute.Alt, StringUtility.NullToEmpty (_alternateText));
+      writer.AddAttribute (HtmlTextWriterAttribute.Alt, _alternateText ?? string.Empty);
 
-      if (! StringUtility.IsNullOrEmpty (_toolTip))
+      if (! string.IsNullOrEmpty (_toolTip))
         writer.AddAttribute (HtmlTextWriterAttribute.Title, _toolTip);
 
       writer.RenderBeginTag (HtmlTextWriterTag.Img);
@@ -177,7 +177,7 @@ namespace Remotion.Web.UI.Controls
     [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
     public bool HasRenderingInformation
     {
-      get { return ! StringUtility.IsNullOrEmpty (_url); }
+      get { return ! string.IsNullOrEmpty (_url); }
     }
 
     public void Reset ()
@@ -196,15 +196,15 @@ namespace Remotion.Web.UI.Controls
 
       string key;
       key = ResourceManagerUtility.GetGlobalResourceKey (Url);
-      if (! StringUtility.IsNullOrEmpty (key))
+      if (! string.IsNullOrEmpty (key))
         Url = resourceManager.GetString (key);
 
       key = ResourceManagerUtility.GetGlobalResourceKey (AlternateText);
-      if (! StringUtility.IsNullOrEmpty (key))
+      if (! string.IsNullOrEmpty (key))
         AlternateText = resourceManager.GetString (key);
 
       key = ResourceManagerUtility.GetGlobalResourceKey (ToolTip);
-      if (! StringUtility.IsNullOrEmpty (key))
+      if (! string.IsNullOrEmpty (key))
         ToolTip = resourceManager.GetString (key);
     }
 
