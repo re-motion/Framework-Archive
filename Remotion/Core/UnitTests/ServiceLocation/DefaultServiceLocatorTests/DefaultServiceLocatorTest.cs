@@ -14,24 +14,28 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
+using NUnit.Framework;
 using Remotion.ServiceLocation;
+using Remotion.UnitTests.ServiceLocation.TestDomain;
 
-namespace Remotion.UnitTests.ServiceLocation.TestDomain
+namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
 {
-  [ConcreteImplementation (typeof (TestTypeWithTooManyPublicConstructors))]
-  public interface ITestTypeWithTooManyPublicConstructors
+  [TestFixture]
+  public class DefaultServiceLocatorTest
   {
-  }
-
-  public class TestTypeWithTooManyPublicConstructors : ITestTypeWithTooManyPublicConstructors
-  {
-    public TestTypeWithTooManyPublicConstructors ()
+    [Test]
+    public void GetInstance_TypeWithGenericServiceInterface ()
     {
-    }
 
-    public TestTypeWithTooManyPublicConstructors (ITestSingletonConcreteImplementationAttributeType param)
-    {
+      var serviceLocator = DefaultServiceLocator.Create();
+
+      Assert.That (serviceLocator.GetInstance (typeof (ITestOpenGenericService<int>)), Is.TypeOf (typeof (TestOpenGenericIntImplementation)));
+      Assert.That (serviceLocator.GetInstance (typeof (ITestOpenGenericService<string>)), Is.TypeOf (typeof (TestOpenGenericStringImplementation)));
+      Assert.That (
+          SafeServiceLocator.Current.GetInstance<ITestOpenGenericService<int>>(),
+          Is.InstanceOf (typeof (TestOpenGenericIntImplementation)));
     }
   }
 }

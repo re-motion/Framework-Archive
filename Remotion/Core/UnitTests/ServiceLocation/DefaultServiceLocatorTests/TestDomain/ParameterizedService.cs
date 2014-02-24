@@ -1,4 +1,4 @@
-// This file is part of the re-motion Core Framework (www.re-motion.org)
+﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -15,20 +15,16 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.ServiceLocation;
 
-namespace Remotion.UnitTests.ServiceLocation.TestDomain
+namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests.TestDomain
 {
-  [ConcreteImplementation (typeof (TestConcreteImplementationAttributeTypeThrowingExceptionInCtor), Lifetime = LifetimeKind.Instance)]
-  public interface ITestConcreteImplementationAttributeTypeThrowingExceptionInCtor
+  public class ParameterizedService
   {
-  }
+    public SingleService SingleService { get; private set; }
 
-  public class TestConcreteImplementationAttributeTypeThrowingExceptionInCtor : ITestConcreteImplementationAttributeTypeThrowingExceptionInCtor
-  {
-    public TestConcreteImplementationAttributeTypeThrowingExceptionInCtor ()
+    public ParameterizedService (SingleService singleService)
     {
-      throw new InvalidOperationException ("This exception comes from the ctor.");
+      SingleService = singleService;
     }
   }
 }

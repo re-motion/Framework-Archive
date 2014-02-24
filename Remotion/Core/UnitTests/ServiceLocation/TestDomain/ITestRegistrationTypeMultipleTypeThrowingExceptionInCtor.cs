@@ -1,4 +1,4 @@
-﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
+// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -16,18 +16,20 @@
 // 
 
 using System;
-using Remotion.Globalization.Implementation;
 using Remotion.ServiceLocation;
 
-namespace Remotion.Globalization
+namespace Remotion.UnitTests.ServiceLocation.TestDomain
 {
-  /// <summary>
-  /// Temporary interface for dependency resolution.
-  /// </summary>
-  /// <threadsafety static="true" instance="true" />
-  //TODO AO: will be merged back into IGlobaliazationService as soon the re-motion service locator is able to resolve compositions
-  [ConcreteImplementation (typeof (CompoundGlobalizationService), Lifetime = LifetimeKind.Singleton)]
-  public interface ICompoundGlobalizationService : IGlobalizationService
+  public interface ITestRegistrationTypeMultipleTypeThrowingExceptionInCtor
   {
+  }
+
+  [ImplementationFor (typeof (ITestRegistrationTypeMultipleTypeThrowingExceptionInCtor), Lifetime = LifetimeKind.Instance, RegistrationType = RegistrationType.Multiple)]
+  public class TestRegistrationTypeMultipleTypeThrowingExceptionInCtor : ITestRegistrationTypeMultipleTypeThrowingExceptionInCtor
+  {
+    public TestRegistrationTypeMultipleTypeThrowingExceptionInCtor ()
+    {
+      throw new InvalidOperationException ("This exception comes from the ctor.");
+    }
   }
 }
