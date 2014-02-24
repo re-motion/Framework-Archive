@@ -359,6 +359,7 @@
     <Compile Include="UI\Controls\IBocSortableColumnDefinition.cs" />
     <Compile Include="UI\Controls\BocTextValueImplementation\IBocTextValue.cs" />
     <Compile Include="UI\Controls\BocTextValueImplementation\IBocTextValueBase.cs" />
+    <Compile Include="UI\Controls\IBocValidator.cs" />
     <Compile Include="UI\Controls\IBusinessObjectBoundEditableWebControl.cs" />
     <Compile Include="UI\Controls\IBusinessObjectBoundWebControl.cs" />
     <Compile Include="UI\Controls\IBusinessObjectDataSourceControl.cs">

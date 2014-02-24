@@ -25,9 +25,9 @@ using Remotion.FunctionalProgramming;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls
 {
-  public class BocDataSourceValidator : BaseValidator
+  public class BocDataSourceValidator : BaseValidator, IBocValidator
   {
-    private IReadOnlyCollection<ValidationFailure> _unhandledFailures = new List<ValidationFailure>();
+    private List<ValidationFailure> _unhandledFailures = new List<ValidationFailure>();
     
     public IEnumerable<ValidationFailure> ApplyValidationFailures (IEnumerable<ValidationFailure> failures)
     {
@@ -36,20 +36,40 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       if (dataSourceControl == null)
         throw new InvalidOperationException ("BocDataSourceValidator may only be applied to controls of type BindableObjectDataSourceControl.");
 
-      var namingContainers = dataSourceControl.GetBoundControlsWithValidBinding().OfType<IBusinessObjectBoundEditableWebControl>().Select (c=>c.NamingContainer).Distinct();
-      var unhandledFailures = new List<ValidationFailure>(failures);
-      foreach (var namingContainer in namingContainers)
+      // Can only find Validation errors for controls located within the same NamingContainer as the DataSource.
+      // This applies also to ReferenceDataSources. 
+      var namingContainer = dataSourceControl.NamingContainer;
+      var validators =
+          EnumerableUtility.SelectRecursiveDepthFirst (
+              namingContainer,
+              child => child.Controls.Cast<Control>().Where (item => !(item is INamingContainer)))
+              .OfType<IBocValidator>();
+
+      var unhandledFailures = failures;
+      var referenceDataSourceValidators = new List<BocReferenceDataSourceValidator>();
+
+      // ReSharper disable LoopCanBeConvertedToQuery
+      foreach (var validator in validators)
+      // ReSharper restore LoopCanBeConvertedToQuery
       {
-        var validators = EnumerableUtility.SelectRecursiveDepthFirst (namingContainer, c => c.Controls.Cast<Control>()).OfType<BocValidator>();
-        foreach (var validator in validators)
-        {
-          unhandledFailures = validator.ApplyValidationFailures (unhandledFailures).ToList();
-          validator.Validate();
-        }
+        if (validator is BocReferenceDataSourceValidator)
+          referenceDataSourceValidators.Add ((BocReferenceDataSourceValidator) validator);
+        else
+          unhandledFailures = validator.ApplyValidationFailures (unhandledFailures);
       }
 
-      _unhandledFailures = unhandledFailures.AsReadOnly();
-      ErrorMessage = string.Join (Environment.NewLine, _unhandledFailures.Select (f => f.ErrorMessage));
+      // ReSharper disable LoopCanBeConvertedToQuery
+      foreach (var validator in referenceDataSourceValidators)
+          // ReSharper restore LoopCanBeConvertedToQuery
+      {
+        unhandledFailures = validator.ApplyValidationFailures (unhandledFailures);
+      }
+
+      _unhandledFailures = unhandledFailures.ToList();
+      ErrorMessage = string.Join ("\r\n", _unhandledFailures.Select (f => f.ErrorMessage));
+
+      if (_unhandledFailures.Any())
+        Validate();
       return _unhandledFailures;
     }
 
@@ -58,7 +78,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       return !_unhandledFailures.Any();
     }
 
-    //TODO AO: check with MK!
     protected override bool ControlPropertiesValid ()
     {
       return true;

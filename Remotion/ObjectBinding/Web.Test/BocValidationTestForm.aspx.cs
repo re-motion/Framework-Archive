@@ -129,6 +129,7 @@ namespace OBWTest
       {
         CurrentObject.SaveValues (false);
         var person = (Person) CurrentObject.BusinessObject;
+
         var validationResult = ValidationBuilder.BuildValidator (typeof (Person)).Validate (person);
         if (validationResult.IsValid)
         {

@@ -16,14 +16,53 @@
 // 
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web.UI.WebControls;
+using FluentValidation.Results;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls
 {
-  public class BocReferenceDataSourceValidator : BocValidator
+  public class BocReferenceDataSourceValidator : BaseValidator, IBocValidator
   {
+    private List<ValidationFailure> _validationFailures = new List<ValidationFailure> ();
 
+    public IEnumerable<ValidationFailure> ApplyValidationFailures (IEnumerable<ValidationFailure> failures)
+    {
+      var control = NamingContainer.FindControl (ControlToValidate);
+      var bocControl = control as BusinessObjectReferenceDataSourceControl;
+      if (bocControl == null)
+        throw new InvalidOperationException ("BocReferenceDataSourceValidator may only be applied to controls of type BusinessObjectReferenceDataSourceControl");
 
-    //TODO AO: check with MK!
+      _validationFailures = new List<ValidationFailure> ();
+      foreach (var failure in failures)
+      {
+        if (IsMatchingControl (failure, bocControl))
+          _validationFailures.Add (failure);
+        else
+          yield return failure;
+      }
+
+      if (_validationFailures.Any ())
+        Validate ();
+
+      ErrorMessage = string.Join ("\r\n", _validationFailures.Select (f => f.ErrorMessage));
+    }
+
+    private bool IsMatchingControl (ValidationFailure failure, BusinessObjectBoundEditableWebControl bocControl)
+    {
+      if (!bocControl.HasValidBinding)
+        return false;
+      //if (failure.GetValidatedInstance != bocControl.DataSource.BusinessObject)
+      // return false;
+      return false;
+    }
+
+    protected override bool EvaluateIsValid ()
+    {
+      return !_validationFailures.Any ();
+    }
+
     protected override bool ControlPropertiesValid ()
     {
       return true;

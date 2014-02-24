@@ -90,7 +90,7 @@
             <remotion:BindableObjectDataSourceControl id=CurrentObject runat="server" Type="Remotion.ObjectBinding.Sample::Person" />
             <remotion:BocDataSourceValidator ID="DataSourceValidator" ControlToValidate="CurrentObject" runat="server"></remotion:BocDataSourceValidator>
             <remotion:BusinessObjectReferenceDataSourceControl id="PartnerDataSource" runat="server" PropertyIdentifier="Partner" DataSourceControl="CurrentObject"></remotion:BusinessObjectReferenceDataSourceControl>
-            <remotion:BocReferenceDataSourceValidator ID="ReferenceDataSourceValidator" ControlToValidate="PartnerDataSource" runat="server"></remotion:BocReferenceDataSourceValidator>
+            <remotion:BocReferenceDataSourceValidator ID="ReferenceDataSourceValidatorForDataSourceBehavior" ControlToValidate="PartnerDataSource" runat="server"></remotion:BocReferenceDataSourceValidator>
         </p>
         <p><asp:button id=SaveButton runat="server" Text="Save" Width="80px"></asp:button><asp:button id=PostBackButton runat="server" Text="Post Back"></asp:button></p>
  </asp:Content>

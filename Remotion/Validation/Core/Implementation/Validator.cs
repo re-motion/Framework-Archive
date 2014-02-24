@@ -65,6 +65,11 @@ namespace Remotion.Validation.Implementation
       ArgumentUtility.CheckNotNull ("context", context);
 
       var failures = _validationRules.SelectMany (r => r.Validate (context)).ToList();
+      foreach (var failure in failures)
+      {
+        //failure.SetValidatedInstance (context.InstanceToValidate); // Extension method, uses CustomState
+        //failaure.GetValidatedInstance (), extension method. Can return null if key not found
+      }
       return new ValidationResult (failures);
     }
 

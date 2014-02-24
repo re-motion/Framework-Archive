@@ -23,9 +23,9 @@ using FluentValidation.Results;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls
 {
-  public class BocValidator : BaseValidator
+  public class BocValidator : BaseValidator, IBocValidator
   {
-    protected IReadOnlyCollection<ValidationFailure> ValidationFailures = new List<ValidationFailure>();
+    private List<ValidationFailure> _validationFailures = new List<ValidationFailure> ();
 
     public IEnumerable<ValidationFailure> ApplyValidationFailures (IEnumerable<ValidationFailure> failures)
     {
@@ -34,22 +34,42 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       if (bocControl == null)
         throw new InvalidOperationException ("BocValidator may only be applied to controls of type BusinessObjectBoundEditableWebControl");
 
-      var validationFailures = failures.ToArray();
-      //var propertyIdentifier = bocControl.Binding.DataSource.BusinessObject.GetType().FullName + bocControl.PropertyIdentifier;
-      ValidationFailures = validationFailures.Where (f => f.PropertyName.EndsWith (bocControl.PropertyIdentifier)).ToList ().AsReadOnly (); //TODO: check with MK -> control property path is not the full-path
-      ErrorMessage = string.Join (Environment.NewLine, ValidationFailures.Select (f => f.ErrorMessage));
-      
-      return validationFailures.Except (ValidationFailures);
+      _validationFailures = new List<ValidationFailure>();
+      foreach (var failure in failures)
+      {
+        if (IsMatchingControl (failure, bocControl))
+          _validationFailures.Add (failure);
+        else
+          yield return failure;
+      }
+
+      if (_validationFailures.Any())
+        Validate();
+
+      ErrorMessage = string.Join ("\r\n", _validationFailures.Select (f => f.ErrorMessage));
     }
 
-    public override string ToolTip
+    private bool IsMatchingControl (ValidationFailure failure, BusinessObjectBoundEditableWebControl bocControl)
     {
-      get { return string.Join (Environment.NewLine, ValidationFailures.Select (f => f.ErrorMessage)); } //TODO AO: check weith MK
+      if (!bocControl.HasValidBinding)
+        return false;
+      //if (failure.GetValidatedInstance != bocControl.DataSource.BusinessObject)
+      // return false;
+      if (failure.PropertyName == bocControl.PropertyIdentifier)
+        return true;
+      if (GetShortPropertyName (failure) == bocControl.PropertyIdentifier)
+        return true;
+      return false;
+    }
+
+    private string GetShortPropertyName (ValidationFailure failure)
+    {
+      return failure.PropertyName.Split ('c').Last();
     }
 
     protected override bool EvaluateIsValid ()
     {
-      return !ValidationFailures.Any();
+      return !_validationFailures.Any ();
     }
   }
 }
