@@ -18,6 +18,7 @@ using System;
 using System.Reflection;
 using System.Text;
 using FluentValidation.Validators;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 
 namespace Remotion.Validation.Implementation
@@ -26,6 +27,7 @@ namespace Remotion.Validation.Implementation
   /// Implements the <see cref="IValidatorFormatter"/> as a decorator 
   /// and adds additional available metadata for <see cref="IPropertyValidator"/> implementations from the <b>FluentValidation</b> library.
   /// </summary>
+  [ImplementationFor (typeof (IValidatorFormatter), RegistrationType = RegistrationType.Decorator)]
   public class FluentValidationValidatorFormatterDecorator : IValidatorFormatter
   {
     private readonly IValidatorFormatter _fallBackValidatorFormatter;

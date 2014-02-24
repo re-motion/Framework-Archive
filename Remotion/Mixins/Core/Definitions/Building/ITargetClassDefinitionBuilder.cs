@@ -14,6 +14,8 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
+using System;
 using Remotion.Mixins.Context;
 using Remotion.ServiceLocation;
 
@@ -23,8 +25,7 @@ namespace Remotion.Mixins.Definitions.Building
   /// Defines an interface for classes building <see cref="TargetClassDefinition"/> objects containing all metadata required for code generation 
   /// from a <see cref="ClassContext"/>.
   /// </summary>
-  [ConcreteImplementation (typeof (TargetClassDefinitionBuilder), Lifetime = LifetimeKind.Singleton)]
-  public interface ITargetClassDefinitionBuilder
+ public interface ITargetClassDefinitionBuilder
   {
     TargetClassDefinition Build (ClassContext classContext);
   }

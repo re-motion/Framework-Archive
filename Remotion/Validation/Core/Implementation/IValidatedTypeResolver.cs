@@ -17,14 +17,12 @@
 
 using System;
 using JetBrains.Annotations;
-using Remotion.ServiceLocation;
 
 namespace Remotion.Validation.Implementation
 {
   /// <summary>
   /// Defines an API for retrieving the validated <see cref="Type"/> associated with the <see cref="IComponentValidationCollector"/> type.
   /// </summary>
-  [ConcreteImplementation(typeof(NullValidatedTypeResolver), Lifetime = LifetimeKind.Singleton)]
   public interface IValidatedTypeResolver
   {
     /// <summary>

@@ -19,8 +19,8 @@ using System;
 // ReSharper disable once CheckNamespace
 namespace Remotion
 {
-  [Obsolete ("Dummy declaration for DependDB.", true)]
-  public abstract class DisposableBase
+  [Obsolete ("Dummy declaration for DependDB. Moved to Remotion.Extensions.dll", true)]
+  internal abstract class DisposableBase
   {
     public DisposableBase ()
     {

@@ -18,6 +18,7 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 
 namespace Remotion.Validation.Implementation
@@ -25,6 +26,7 @@ namespace Remotion.Validation.Implementation
   /// <summary>
   /// Implements the <see cref="IValidationTypeFilter"/> interface and filters <see cref="object"/> and <see cref="ISerializable"/>.
   /// </summary>
+  [ImplementationFor (typeof (IValidationTypeFilter), Lifetime = LifetimeKind.Singleton, Position = 0, RegistrationType = RegistrationType.Multiple)]
   public class LoadFilteredValidationTypeFilter : IValidationTypeFilter
   {
     private List<Type> _filterTypes;

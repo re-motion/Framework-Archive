@@ -17,7 +17,6 @@
 using System;
 using FluentValidation;
 using FluentValidation.Validators;
-using Remotion.ServiceLocation;
 
 namespace Remotion.Validation.Implementation
 {
@@ -26,7 +25,6 @@ namespace Remotion.Validation.Implementation
   /// </summary>
   /// <seealso cref="DefaultValidatorFormatter"/>
   /// <seealso cref="FluentValidationValidatorFormatterDecorator"/>
-  [ConcreteImplementation (typeof (DefaultValidatorFormatter),Lifetime = LifetimeKind.Singleton)]
   public interface IValidatorFormatter
   {
     string Format (IPropertyValidator validator, Func<Type, string> typeNameFormatter);

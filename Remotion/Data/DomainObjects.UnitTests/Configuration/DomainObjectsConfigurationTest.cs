@@ -26,9 +26,9 @@ using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2005;
 using Remotion.Data.DomainObjects.Queries.Configuration;
+using Remotion.Data.DomainObjects.UnitTests.Factories;
 using Remotion.Data.DomainObjects.UnitTests.Mapping;
 using Remotion.Data.DomainObjects.UnitTests.Resources;
-using Remotion.Data.DomainObjects.UnitTests.Factories;
 using Remotion.Development.UnitTesting.IO;
 using Remotion.Mixins;
 using Remotion.ServiceLocation;
@@ -202,11 +202,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Configuration
       ConfigurationWrapper.SetCurrent (ConfigurationWrapper.CreateFromConfigurationObject (configuration));
     }
 
-    [ConcreteImplementation(typeof (CustomStorageObjectFactory))]
     public interface ICustomStorageObjectFactory : IStorageObjectFactory
     {
     }
 
+    [ImplementationFor (typeof (ICustomStorageObjectFactory), RegistrationType = RegistrationType.Multiple)]
     public class CustomStorageObjectFactory : SqlStorageObjectFactory, ICustomStorageObjectFactory
     {
     }

@@ -16,13 +16,13 @@
 // 
 using System;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
 using Remotion.Reflection.TypeDiscovery.AssemblyFinding;
 using Remotion.Reflection.TypeDiscovery.AssemblyLoading;
 using Rhino.Mocks;
-using System.Linq;
 
 namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
 {
@@ -193,7 +193,7 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
       rootAssemblyFinderStub.Replay ();
 
       var finder = new AssemblyFinder (rootAssemblyFinderStub, loaderMock);
-      var result = finder.FindAssemblies ();
+      var result = finder.FindAssemblies ().ToArray();
 
       loaderMock.VerifyAllExpectations ();
       Assert.That (result, Is.EquivalentTo (new[] { _assembly2, _assembly3 }));

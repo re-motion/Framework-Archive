@@ -20,9 +20,7 @@ using System.Web.UI;
 using Microsoft.Practices.ServiceLocation;
 using Remotion.Data.DomainObjects;
 using Remotion.Globalization;
-using Remotion.Globalization.Implementation;
 using Remotion.ObjectBinding.Web.UI.Controls;
-using Remotion.Reflection;
 using Remotion.SecurityManager.Clients.Web.WxeFunctions;
 using Remotion.SecurityManager.Domain.OrganizationalStructure;
 using Remotion.ServiceLocation;
@@ -123,7 +121,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes
 
     protected IGlobalizationService GlobalizationService 
     {
-      get { return SafeServiceLocator.Current.GetInstance<ICompoundGlobalizationService>(); }
+      get { return SafeServiceLocator.Current.GetInstance<IGlobalizationService>(); }
     }
 
     protected TControl GetControl<TControl> (string controlID, string propertyIdentifier)

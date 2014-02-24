@@ -20,14 +20,13 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Reflection;
+using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.Globalization;
-using Remotion.Globalization.Implementation;
 using Remotion.Logging;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
-using System.Web;
 using Remotion.Web.Infrastructure;
 using Remotion.Web.UI.Controls.WebTabStripImplementation;
 using Remotion.Web.UI.Controls.WebTabStripImplementation.Rendering;
@@ -231,7 +230,7 @@ namespace Remotion.Web.UI.Controls
       base.OnPreRender (e);
 
       var resourceManager = ResourceManagerUtility.GetResourceManager (this, true);
-      var globalizationService = SafeServiceLocator.Current.GetInstance<ICompoundGlobalizationService>();
+      var globalizationService = SafeServiceLocator.Current.GetInstance<IGlobalizationService>();
 
       LoadResources (resourceManager, globalizationService);
     }

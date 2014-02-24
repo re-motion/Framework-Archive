@@ -16,13 +16,13 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.DomainObjects.Tracing;
 using Remotion.Development.UnitTesting;
 using Remotion.ServiceLocation;
 using Rhino.Mocks;
-using System.Linq;
 
 namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Queries
 {
@@ -43,8 +43,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Queries
           .Stub (stub => stub.CreatePersistenceExtensions (TestableClientTransaction.ID))
           .Return (new[] { _persistenceExtensionMock });
 
-      var locator = new DefaultServiceLocator();
-      locator.Register (typeof (IPersistenceExtensionFactory), () => persistenceExtensionFactoryStub);
+      var locator = DefaultServiceLocator.Create();
+      locator.RegisterMultiple<IPersistenceExtensionFactory> (() => persistenceExtensionFactoryStub);
       _serviceLocatorScope = new ServiceLocatorScope (locator);
     }
 

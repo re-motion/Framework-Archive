@@ -32,7 +32,7 @@ namespace Remotion.Validation.UnitTests.Providers
     [SetUp]
     public void SetUp ()
     {
-      _serviceLocator = new DefaultServiceLocator();
+      _serviceLocator = DefaultServiceLocator.Create();
     }
 
     [Test]

@@ -18,10 +18,9 @@ using System;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
 using Remotion.ServiceLocation;
-using Remotion.Web.UI;
+using Remotion.Web.ExecutionEngine;
 using Remotion.Web.UnitTests.Core.ExecutionEngine.TestFunctions;
 using Rhino.Mocks;
-using Remotion.Web.ExecutionEngine;
 
 namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxeFunctionTests
 {
@@ -42,8 +41,8 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxeFunctionTests
       _mockRepository = new MockRepository ();
       _mockWxeSecurityAdapter = _mockRepository.StrictMock<IWxeSecurityAdapter> ();
 
-      var serviceLocator = new DefaultServiceLocator();
-      serviceLocator.Register (typeof (IWxeSecurityAdapter), () => _mockWxeSecurityAdapter);
+      var serviceLocator = DefaultServiceLocator.Create();
+      serviceLocator.RegisterMultiple<IWxeSecurityAdapter> (() => _mockWxeSecurityAdapter);
       _serviceLocatorScope = new ServiceLocatorScope (serviceLocator);
     }
 
@@ -92,8 +91,8 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxeFunctionTests
     [Test]
     public void HasStatelessAccessGrantedWithoutWxeSecurityProvider ()
     {
-      var serviceLocator = new DefaultServiceLocator();
-      serviceLocator.Register (typeof (IWxeSecurityAdapter));
+      var serviceLocator = DefaultServiceLocator.Create();
+      serviceLocator.RegisterMultiple<IWxeSecurityAdapter>();
       using (new ServiceLocatorScope (serviceLocator))
       {
         _mockRepository.ReplayAll();

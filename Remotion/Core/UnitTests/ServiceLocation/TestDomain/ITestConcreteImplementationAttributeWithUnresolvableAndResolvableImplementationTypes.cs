@@ -14,19 +14,17 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
+using System;
 using Remotion.ServiceLocation;
 
 namespace Remotion.UnitTests.ServiceLocation.TestDomain
 {
-  [ConcreteImplementation ("Remotion.UnitTests.ServiceLocation.TestDomain.IDoNotExist, Remotion.UnitTests, Version = <version>",
-    ignoreIfNotFound: true, Position = 1)]
-  [ConcreteImplementation (
-    "Remotion.UnitTests.ServiceLocation.TestDomain.TestConcreteImplementationAttributeWithUnresolvableAndResolvableImplementationTypesExisting, "
-    + "Remotion.UnitTests, Version = <version>", Position = 2)]
   public interface ITestConcreteImplementationAttributeWithUnresolvableAndResolvableImplementationTypes
   {
   }
 
+  [ImplementationFor (typeof(ITestConcreteImplementationAttributeWithUnresolvableAndResolvableImplementationTypes), Position = 2)]
   public class TestConcreteImplementationAttributeWithUnresolvableAndResolvableImplementationTypesExisting
     : ITestConcreteImplementationAttributeWithUnresolvableAndResolvableImplementationTypes
   {

@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Validation.Implementation;
 
@@ -24,6 +25,7 @@ namespace Remotion.Validation.Merging
   /// <summary>
   /// Default implementation of the <see cref="IPropertyValidatorExtractorFactory"/> interface.
   /// </summary>
+  [ImplementationFor (typeof (IPropertyValidatorExtractorFactory), Lifetime = LifetimeKind.Singleton)]
   public class PropertyValidatorExtractorFactory : IPropertyValidatorExtractorFactory
   {
     public IPropertyValidatorExtractor Create (

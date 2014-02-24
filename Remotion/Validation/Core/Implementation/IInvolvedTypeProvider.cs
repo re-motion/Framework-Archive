@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Collections.Generic;
-using Remotion.ServiceLocation;
 
 namespace Remotion.Validation.Implementation
 {
@@ -25,7 +24,6 @@ namespace Remotion.Validation.Implementation
   /// </summary>
   /// <seealso cref="InvolvedTypeProvider"/>
   /// <seealso cref="T:Remotion.Validation.Mixins.Implementation.MixedInvolvedTypeProviderDecorator"/>
-  [ConcreteImplementation(typeof(InvolvedTypeProvider))] //TODO AO: should be decorated if mixin-assembly is referenced
   public interface IInvolvedTypeProvider
   {
     /// <summary>

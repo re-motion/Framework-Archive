@@ -17,12 +17,12 @@
 using System;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
+using Remotion.Security;
 using Remotion.ServiceLocation;
 using Remotion.Web.ExecutionEngine;
-using Rhino.Mocks;
-using Remotion.Security;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
+using Rhino.Mocks;
 
 namespace Remotion.Web.UnitTests.Core.UI.Controls.WebButtonTests
 {
@@ -41,9 +41,9 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebButtonTests
       _mockWebSecurityAdapter = _mocks.StrictMock<IWebSecurityAdapter> ();
       _mockSecurableObject = _mocks.StrictMock<ISecurableObject> ();
 
-      var serviceLocator = new DefaultServiceLocator();
-      serviceLocator.Register (typeof (IWebSecurityAdapter), () => _mockWebSecurityAdapter);
-      serviceLocator.Register (typeof (IWxeSecurityAdapter));
+      var serviceLocator = DefaultServiceLocator.Create();
+      serviceLocator.RegisterMultiple<IWebSecurityAdapter> (() => _mockWebSecurityAdapter);
+      serviceLocator.RegisterMultiple<IWxeSecurityAdapter>();
       _serviceLocatorScope = new ServiceLocatorScope (serviceLocator);
     }
 
@@ -84,9 +84,9 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebButtonTests
     [Test]
     public void EvaluateTrue_FromTrueAndWithoutWebSeucrityProvider ()
     {
-      var serviceLocator = new DefaultServiceLocator();
-      serviceLocator.Register (typeof (IWebSecurityAdapter));
-      serviceLocator.Register (typeof (IWxeSecurityAdapter));
+      var serviceLocator = DefaultServiceLocator.Create();
+      serviceLocator.RegisterMultiple<IWebSecurityAdapter>();
+      serviceLocator.RegisterMultiple<IWxeSecurityAdapter>();
       using (new ServiceLocatorScope (serviceLocator))
       {
         WebButton button = CreateButtonWithClickEventHandler();
@@ -103,9 +103,9 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebButtonTests
     [Test]
     public void EvaluateFalse_FromFalseAndWithoutWebSeucrityProvider ()
     {
-      var serviceLocator = new DefaultServiceLocator();
-      serviceLocator.Register (typeof (IWebSecurityAdapter));
-      serviceLocator.Register (typeof (IWxeSecurityAdapter));
+      var serviceLocator = DefaultServiceLocator.Create();
+      serviceLocator.RegisterMultiple<IWebSecurityAdapter>();
+      serviceLocator.RegisterMultiple<IWxeSecurityAdapter>();
       using (new ServiceLocatorScope (serviceLocator))
       {
         WebButton button = CreateButtonWithClickEventHandler();

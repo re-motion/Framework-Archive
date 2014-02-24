@@ -16,6 +16,7 @@
 // 
 using System;
 using FluentValidation.Validators;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 
 namespace Remotion.Validation.Implementation
@@ -23,6 +24,7 @@ namespace Remotion.Validation.Implementation
   /// <summary>
   /// Implements <see cref="IValidatorFormatter"/> interface by calling <see cref="Object.ToString()"/> on the <see cref="IPropertyValidator"/> instance.
   /// </summary>
+  [ImplementationFor (typeof (IValidatorFormatter), Lifetime = LifetimeKind.Singleton)]
   public class DefaultValidatorFormatter : IValidatorFormatter
   {
     public string Format (IPropertyValidator validator, Func<Type, string> typeNameFormatter)

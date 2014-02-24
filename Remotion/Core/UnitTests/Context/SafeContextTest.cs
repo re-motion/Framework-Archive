@@ -14,6 +14,8 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
+using System;
 using Microsoft.Practices.ServiceLocation;
 using NUnit.Framework;
 using Remotion.Context;
@@ -49,11 +51,10 @@ namespace Remotion.UnitTests.Context
     public void Instance_AutoInitialization_UsesFirstInstance_FromServiceLocator ()
     {
       var fakeProvider1 = MockRepository.GenerateStub<ISafeContextStorageProvider> ();
-      var fakeProvider2 = MockRepository.GenerateStub<ISafeContextStorageProvider> ();
       var serviceLocatorStub = MockRepository.GenerateStub<IServiceLocator> ();
       serviceLocatorStub
-          .Stub (stub => stub.GetAllInstances<ISafeContextStorageProvider>())
-          .Return (new[] { fakeProvider1, fakeProvider2 });
+          .Stub (stub => stub.GetInstance<ISafeContextStorageProvider>())
+          .Return (fakeProvider1);
 
       using (new ServiceLocatorScope (serviceLocatorStub))
       {

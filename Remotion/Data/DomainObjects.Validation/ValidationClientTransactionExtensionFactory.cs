@@ -31,6 +31,7 @@ using Remotion.Validation.Providers;
 
 namespace Remotion.Data.DomainObjects.Validation
 {
+  [ImplementationFor (typeof(IClientTransactionExtensionFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple)]
   public class ValidationClientTransactionExtensionFactory : IClientTransactionExtensionFactory
   {
     private readonly FluentValidatorBuilder _validationBuilder;

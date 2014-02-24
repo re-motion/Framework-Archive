@@ -17,6 +17,7 @@
 
 using System;
 using NUnit.Framework;
+using Remotion.Globalization.ExtensibleEnums.Implementation;
 using Remotion.ServiceLocation;
 
 namespace Remotion.Globalization.ExtensibleEnums.UnitTests
@@ -29,7 +30,7 @@ namespace Remotion.Globalization.ExtensibleEnums.UnitTests
     [SetUp]
     public void SetUp ()
     {
-      _serviceLocator = new DefaultServiceLocator ();
+      _serviceLocator = DefaultServiceLocator.Create();
     }
 
     [Test]

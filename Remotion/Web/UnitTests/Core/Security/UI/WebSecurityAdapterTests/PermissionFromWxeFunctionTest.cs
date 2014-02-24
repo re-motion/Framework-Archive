@@ -18,10 +18,10 @@ using System;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
 using Remotion.ServiceLocation;
-using Remotion.Web.Security.UI;
-using Remotion.Web.UnitTests.Core.Security.ExecutionEngine;
 using Remotion.Web.ExecutionEngine;
+using Remotion.Web.Security.UI;
 using Remotion.Web.UI;
+using Remotion.Web.UnitTests.Core.Security.ExecutionEngine;
 
 namespace Remotion.Web.UnitTests.Core.Security.UI.WebSecurityAdapterTests
 {
@@ -38,9 +38,9 @@ namespace Remotion.Web.UnitTests.Core.Security.UI.WebSecurityAdapterTests
       _securityAdapter = new WebSecurityAdapter ();
 
       _testHelper = new WebPermissionProviderTestHelper ();
-      var serviceLocator = new DefaultServiceLocator();
-      serviceLocator.Register (typeof (IWebSecurityAdapter));
-      serviceLocator.Register (typeof (IWxeSecurityAdapter), () => _testHelper.WxeSecurityAdapter);
+      var serviceLocator = DefaultServiceLocator.Create();
+      serviceLocator.RegisterMultiple<IWebSecurityAdapter>();
+      serviceLocator.RegisterMultiple<IWxeSecurityAdapter> (() => _testHelper.WxeSecurityAdapter);
       _serviceLocatorScope = new ServiceLocatorScope (serviceLocator);
     }
 

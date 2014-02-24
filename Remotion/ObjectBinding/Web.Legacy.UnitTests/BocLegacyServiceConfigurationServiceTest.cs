@@ -14,6 +14,8 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
+using System;
 using System.Linq;
 using NUnit.Framework;
 using Remotion.FunctionalProgramming;
@@ -33,7 +35,8 @@ namespace Remotion.ObjectBinding.UnitTests.Web.Legacy
     [Test]
     public void GetConfiguration ()
     {
-      var allServiceTypes = DefaultServiceConfigurationDiscoveryService.GetDefaultConfiguration (new[] { typeof (IBocList).Assembly })
+      var discoveryService = DefaultServiceConfigurationDiscoveryService.Create();
+      var allServiceTypes = discoveryService.GetDefaultConfiguration (new[] { typeof (IBocList).Assembly })
           .Where (e => e.ServiceType.Assembly != typeof (IParticipant).Assembly) //TODO RM-5506: This condition can be removed once the ImplementationForAttribute is implemented.
           .Select (e => e.ServiceType).ToList();
       var nonLegacyServices = new[] { typeof (BocListCssClassDefinition), typeof (IDateTimeFormatter) };
@@ -58,7 +61,7 @@ namespace Remotion.ObjectBinding.UnitTests.Web.Legacy
     {
       var legacyServiceTypes = BocLegacyServiceConfigurationService.GetConfiguration();
 
-      var locator = new DefaultServiceLocator();
+      var locator = DefaultServiceLocator.Create();
       foreach (var serviceConfigurationEntry in legacyServiceTypes)
         locator.Register (serviceConfigurationEntry);
 

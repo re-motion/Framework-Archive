@@ -16,6 +16,7 @@
 // 
 using System;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
@@ -24,7 +25,6 @@ using Remotion.Reflection.TypeDiscovery.AssemblyLoading;
 using Remotion.Utilities;
 using Rhino.Mocks;
 using Rhino_Is = Rhino.Mocks.Constraints.Is;
-using System.Linq;
 
 namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
 {
@@ -175,7 +175,7 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
 
         var assemblyFinder = new AssemblyFinder (rootAssemblyFinderStub, loader);
 
-        Assembly[] assemblies = assemblyFinder.FindAssemblies ();
+        Assembly[] assemblies = assemblyFinder.FindAssemblies().ToArray();
         Assert.That (assemblies, Is.EquivalentTo (new[] { markedAssembly, Load (_markedReferencedAssemblyPath) }));
       });
     }
@@ -194,8 +194,8 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
         var assemblyLoader = new FilteringAssemblyLoader (filterMock);
         var rootAssemblyFinder = SearchPathRootAssemblyFinder.CreateForCurrentAppDomain (true, assemblyLoader);
         var assemblyFinder = new AssemblyFinder (rootAssemblyFinder, assemblyLoader);
-        
-        Assembly[] assemblies = assemblyFinder.FindAssemblies ();
+
+        Assembly[] assemblies = assemblyFinder.FindAssemblies().ToArray();
 
         filterMock.VerifyAllExpectations ();
         Assert.That (assemblies, Is.Empty);
@@ -218,7 +218,7 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
         var rootAssemblyFinder = SearchPathRootAssemblyFinder.CreateForCurrentAppDomain (true, assemblyLoader);
         var assemblyFinder = new AssemblyFinder (rootAssemblyFinder, assemblyLoader);
 
-        Assembly[] assemblies = assemblyFinder.FindAssemblies ();
+        Assembly[] assemblies = assemblyFinder.FindAssemblies().ToArray();
 
         filterMock.VerifyAllExpectations();
         Assert.That (assemblies, Is.Empty);

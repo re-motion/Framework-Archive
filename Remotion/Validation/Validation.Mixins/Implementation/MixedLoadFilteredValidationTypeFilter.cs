@@ -18,6 +18,7 @@
 using System;
 using System.Collections.Generic;
 using Remotion.Mixins;
+using Remotion.ServiceLocation;
 using Remotion.TypePipe.Implementation;
 using Remotion.Utilities;
 using Remotion.Validation.Implementation;
@@ -28,6 +29,7 @@ namespace Remotion.Validation.Mixins.Implementation
   /// Implements the <see cref="IValidationTypeFilter"/> interface and filters <see cref="IMixinTarget"/>, <see cref="IInitializableMixin"/>, 
   /// and <see cref="IInitializableObject"/>.
   /// </summary>
+  [ImplementationFor (typeof (IValidationTypeFilter), Lifetime = LifetimeKind.Singleton, Position = 1, RegistrationType = RegistrationType.Multiple)]
   public class MixedLoadFilteredValidationTypeFilter : IValidationTypeFilter
   {
     private List<Type> _filterTypes;

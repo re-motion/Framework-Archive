@@ -18,6 +18,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 
 namespace Remotion.Validation.Implementation
@@ -28,6 +29,7 @@ namespace Remotion.Validation.Implementation
   /// is valid.
   /// </summary>
   /// <threadsafety static="true" instance="true" />
+  [ImplementationFor (typeof (ICompoundCollectorValidator), Lifetime = LifetimeKind.Singleton)]
   public class CompoundCollectorValidator : ICompoundCollectorValidator
   {
     private readonly IReadOnlyCollection<ICollectorValidator> _collectorValidators;

@@ -24,6 +24,8 @@ namespace Remotion.Validation.Implementation
   /// <summary>
   /// Implements <see cref="IValidatedTypeResolver"/> and resolves the validated Type via <see cref="IComponentValidationCollector{TValidatedType}"/>.
   /// </summary>
+  //TODO AO
+  //[ImplementationFor (typeof (IValidatedTypeResolver), Lifetime = LifetimeKind.Singleton, Position = , RegistrationType = RegistrationType.Decorator)]
   public class GenericTypeAwareValidatedTypeResolverDecorator : IValidatedTypeResolver
   {
     private readonly IValidatedTypeResolver _validatedTypeResolver;

@@ -19,6 +19,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using FluentValidation;
+using Remotion.ServiceLocation;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.Rules;
 
@@ -28,6 +29,8 @@ namespace Remotion.Validation.Merging
   /// Implements the <see cref="IValidationCollectorMerger"/> interface to merge <see cref="IValidationRule"/>s 
   /// based on the order of precendence established during retrieval of the <see cref="IComponentValidationCollector"/>s.
   /// </summary>
+  /// <threadsafety static="true" instance="false"/>
+  [ImplementationFor (typeof (IValidationCollectorMerger), Lifetime = LifetimeKind.Instance)]
   public class OrderPrecedenceValidationCollectorMerger : ValidationCollectorMergerBase
   {
     private readonly IPropertyValidatorExtractorFactory _propertyValidatorExtractorFactory;

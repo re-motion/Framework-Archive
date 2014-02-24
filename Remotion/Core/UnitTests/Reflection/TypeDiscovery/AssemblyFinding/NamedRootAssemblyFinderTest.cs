@@ -15,12 +15,12 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Linq;
+using System.Reflection;
 using NUnit.Framework;
 using Remotion.Reflection.TypeDiscovery.AssemblyFinding;
 using Remotion.Reflection.TypeDiscovery.AssemblyLoading;
 using Rhino.Mocks;
-using System.Reflection;
-using System.Linq;
 
 namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
 {
@@ -70,7 +70,7 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
       _loaderMock.Replay ();
 
       var finder = CreateRootAssemblyFinder (_specification1, _specification2, _specification3);
-      var assemblies = finder.FindRootAssemblies ();
+      var assemblies = finder.FindRootAssemblies ().ToArray();
 
       _loaderMock.VerifyAllExpectations ();
       Assert.That (assemblies.Select (a => a.Assembly).ToArray(), Is.EquivalentTo (new[] { _assembly1, _assembly2, _assembly3 }));
@@ -85,7 +85,7 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
       _loaderMock.Replay ();
 
       var finder = CreateRootAssemblyFinder (_specification1, _specification2, _specification3);
-      var assemblies = finder.FindRootAssemblies ();
+      var assemblies = finder.FindRootAssemblies ().ToArray();
 
       _loaderMock.VerifyAllExpectations ();
       Assert.That (assemblies.Length, Is.EqualTo (2));
@@ -100,7 +100,7 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
       _loaderMock.Replay ();
 
       var finder = CreateRootAssemblyFinder (_specification1, _specification2);
-      var assemblies = finder.FindRootAssemblies ();
+      var assemblies = finder.FindRootAssemblies ().ToArray();
 
       _loaderMock.VerifyAllExpectations ();
       Assert.That (assemblies.Length, Is.EqualTo (1));

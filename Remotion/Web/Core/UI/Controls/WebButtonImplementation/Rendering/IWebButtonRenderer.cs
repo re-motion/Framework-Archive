@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Web;
 using Remotion.ServiceLocation;
 
 namespace Remotion.Web.UI.Controls.WebButtonImplementation.Rendering
@@ -23,8 +22,7 @@ namespace Remotion.Web.UI.Controls.WebButtonImplementation.Rendering
   /// <summary>
   /// Defines the API for rendering a <see cref="WebButton"/>.
   /// </summary>
-  [ConcreteImplementation (typeof (WebButtonRenderer), Lifetime = LifetimeKind.Singleton)]
-  public interface IWebButtonRenderer
+ public interface IWebButtonRenderer
   {
     void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender);
     

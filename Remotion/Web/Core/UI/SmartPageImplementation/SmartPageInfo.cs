@@ -25,8 +25,6 @@ using System.Web.UI;
 using JetBrains.Annotations;
 using Remotion.Collections;
 using Remotion.Globalization;
-using Remotion.Globalization.Implementation;
-using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.Infrastructure;
@@ -515,7 +513,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
     {
       get
       {
-        return SafeServiceLocator.Current.GetInstance<ICompoundGlobalizationService>();
+        return SafeServiceLocator.Current.GetInstance<IGlobalizationService>();
       }
     }
 

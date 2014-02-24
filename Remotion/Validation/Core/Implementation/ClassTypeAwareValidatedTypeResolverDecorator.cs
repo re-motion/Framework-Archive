@@ -16,6 +16,7 @@
 // 
 
 using System;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Validation.Attributes;
 
@@ -24,6 +25,8 @@ namespace Remotion.Validation.Implementation
   /// <summary>
   /// Implements <see cref="IValidatedTypeResolver"/> and resolves the validated Type via the <see cref="ApplyWithClassAttribute"/>.
   /// </summary>
+  //TODO AO
+  //[ImplementationFor (typeof (IValidatedTypeResolver), Lifetime = LifetimeKind.Singleton, Position = , RegistrationType = RegistrationType.Decorator)]
   public class ClassTypeAwareValidatedTypeResolverDecorator : IValidatedTypeResolver
   {
     private readonly IValidatedTypeResolver _resolver;

@@ -19,9 +19,10 @@ using System;
 using System.Reflection;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Reflection.CodeGeneration.TypePipe;
-using Remotion.TypePipe.Dlr.Ast;
+using Remotion.ServiceLocation;
 using Remotion.TypePipe;
 using Remotion.TypePipe.Caching;
+using Remotion.TypePipe.Dlr.Ast;
 using Remotion.TypePipe.MutableReflection;
 using Remotion.TypePipe.TypeAssembly;
 using Remotion.Utilities;
@@ -45,6 +46,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
   /// </list>
   /// </remarks>
   /// <threadsafety static="true" instance="true"/>
+  [ImplementationFor (typeof (IParticipant), Position = 2, RegistrationType = RegistrationType.Multiple)]
   public class DomainObjectParticipant : IParticipant
   {
     static DomainObjectParticipant ()

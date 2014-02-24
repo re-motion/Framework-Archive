@@ -21,7 +21,6 @@ using Remotion.ServiceLocation;
 namespace Remotion.Validation.Implementation
 {
   //TODO AO: will be merged back into ITypeValidator as soon the re-motion service locator is able to resolve compositions
-  [ConcreteImplementation (typeof (CompoundCollectorValidator))]
   public interface ICompoundCollectorValidator : ICollectorValidator
   {
   }

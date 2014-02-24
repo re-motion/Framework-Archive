@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.ServiceLocation;
 
 namespace Remotion.Validation.Implementation
 {
@@ -23,11 +22,6 @@ namespace Remotion.Validation.Implementation
   /// The <see cref="IValidationTypeFilter"/> interface is used to confirm whether a <see cref="Type"/> can be used as the <see cref="IComponentValidationCollector.ValidatedType"/>
   /// of a <see cref="IComponentValidationCollector"/>.
   /// </summary>
-  [ConcreteImplementation (
-      "Remotion.Validation.Mixins.Implementation.MixedLoadFilteredValidationTypeFilter, Remotion.Validation.Mixins, Version=<version>, Culture=neutral, PublicKeyToken=<publicKeyToken>",
-      ignoreIfNotFound: true,
-      Position = 1, Lifetime = LifetimeKind.Singleton)]
-  [ConcreteImplementation (typeof (LoadFilteredValidationTypeFilter), Position = 0, Lifetime = LifetimeKind.Singleton)]
   public interface IValidationTypeFilter
   {
     bool IsValidatableType (Type type);

@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Web;
 using Remotion.ServiceLocation;
 using Remotion.Web.UI;
 
@@ -24,8 +23,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Rend
   /// <summary>
   /// Defines the API for rendering a <see cref="BocEnumValue"/>.
   /// </summary>
-  [ConcreteImplementation (typeof (BocEnumValueRenderer), Lifetime = LifetimeKind.Singleton)]
-  public interface IBocEnumValueRenderer
+ public interface IBocEnumValueRenderer
   {
     void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender);
     void Render (BocEnumValueRenderingContext renderingContext);

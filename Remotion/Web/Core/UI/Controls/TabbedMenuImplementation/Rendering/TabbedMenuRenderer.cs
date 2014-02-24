@@ -19,8 +19,8 @@ using System.Drawing;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.Globalization;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
-using System.Web;
 
 namespace Remotion.Web.UI.Controls.TabbedMenuImplementation.Rendering
 {
@@ -28,9 +28,10 @@ namespace Remotion.Web.UI.Controls.TabbedMenuImplementation.Rendering
   /// Implements <see cref="ITabbedMenuRenderer"/> for standard mode rendering of <see cref="TabbedMenu"/> controls.
   /// <seealso cref="ITabbedMenu"/>
   /// </summary>
+  [ImplementationFor (typeof (ITabbedMenuRenderer), Lifetime = LifetimeKind.Singleton)]
   public class TabbedMenuRenderer : RendererBase<ITabbedMenu>, ITabbedMenuRenderer
   {
-    public TabbedMenuRenderer (IResourceUrlFactory resourceUrlFactory, ICompoundGlobalizationService globalizationService)
+    public TabbedMenuRenderer (IResourceUrlFactory resourceUrlFactory, IGlobalizationService globalizationService)
       : base (resourceUrlFactory, globalizationService)
     {
     }

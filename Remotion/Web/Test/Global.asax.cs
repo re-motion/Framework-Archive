@@ -33,7 +33,7 @@ namespace Remotion.Web.Test
 
     protected void Application_Start (Object sender, EventArgs e)
     {
-      var defaultServiceLocator = new DefaultServiceLocator();
+      var defaultServiceLocator = DefaultServiceLocator.Create();
       ServiceLocator.SetLocatorProvider (() => defaultServiceLocator);
       LogManager.Initialize();
 
@@ -41,7 +41,8 @@ namespace Remotion.Web.Test
           new[]
           {
               new ResourcePathMapping ("Remotion.Web", @"..\Core\res"),
-          });
+          },
+          FileExtensionHandlerMapping.Default);
       _resourceVirtualPathProvider.Register ();
     }
 

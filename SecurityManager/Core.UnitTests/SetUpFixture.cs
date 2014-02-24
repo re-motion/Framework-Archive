@@ -19,7 +19,6 @@
 using System;
 using System.ComponentModel.Design;
 using System.Data.SqlClient;
-using System.IO;
 using Microsoft.Practices.ServiceLocation;
 using NUnit.Framework;
 using Remotion.Configuration;
@@ -27,11 +26,9 @@ using Remotion.Data.DomainObjects.Configuration;
 using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.Data.DomainObjects.Development;
 using Remotion.Data.DomainObjects.Mapping;
-using Remotion.Data.DomainObjects.Mapping.Configuration;
 using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
-using Remotion.Data.DomainObjects.Queries.Configuration;
 using Remotion.Development.UnitTesting.Data.SqlClient;
 using Remotion.Reflection;
 using Remotion.Reflection.TypeDiscovery;
@@ -62,8 +59,8 @@ namespace Remotion.SecurityManager.UnitTests
     {
       try
       {
-        var serviceLocator = new DefaultServiceLocator();
-        serviceLocator.Register (typeof (IGlobalAccessTypeCache), () => new NullGlobalAccessTypeCache());
+        var serviceLocator = DefaultServiceLocator.Create();
+        serviceLocator.RegisterMultiple<IGlobalAccessTypeCache> (() => new NullGlobalAccessTypeCache());
         ServiceLocator.SetLocatorProvider (() => serviceLocator);
 
         var providers = new ProviderCollection<StorageProviderDefinition>();

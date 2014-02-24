@@ -18,10 +18,12 @@
 using System;
 using FluentValidation.Resources;
 using FluentValidation.Validators;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 
 namespace Remotion.Validation.Globalization
 {
+  [ImplementationFor (typeof(IDefaultMessageEvaluator), Lifetime = LifetimeKind.Singleton)]
   public class DefaultMessageEvaluator : IDefaultMessageEvaluator
   {
     public bool HasDefaultMessageAssigned (IPropertyValidator validator)

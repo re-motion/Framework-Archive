@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Linq;
-using Remotion.Data.DomainObjects.Linq;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Linq;
 using Remotion.Linq.Parsing.Structure;
@@ -27,8 +26,7 @@ namespace Remotion.Data.DomainObjects.Queries
   /// <summary>
   /// Provides an interface for classes creating the components required to initialize the LINQ provider.
   /// </summary>
-  [ConcreteImplementation (typeof (LinqProviderComponentFactory))]
-  public interface ILinqProviderComponentFactory
+ public interface ILinqProviderComponentFactory
   {
     IQueryable<T> CreateQueryable<T> (IQueryParser queryParser, IQueryExecutor executor);
     IQueryParser CreateQueryParser ();

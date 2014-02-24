@@ -20,7 +20,6 @@ using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using Remotion.Collections;
-using Remotion.Reflection.TypeDiscovery;
 using Remotion.ServiceLocation;
 
 namespace Remotion.Utilities
@@ -29,6 +28,7 @@ namespace Remotion.Utilities
   ///   Provides functionality to get the <see cref="TypeConverter"/> for a <see cref="Type"/> and to convert a value
   ///   from a source <see cref="Type"/> into a destination <see cref="Type"/>.
   /// </summary>
+  [ImplementationFor (typeof (ITypeConversionProvider), Lifetime = LifetimeKind.Singleton)]
   public class TypeConversionProvider : ITypeConversionProvider
   {
     private readonly LockingDataStoreDecorator<Type, TypeConverter> _typeConverters = DataStoreFactory.CreateWithLocking<Type, TypeConverter>();

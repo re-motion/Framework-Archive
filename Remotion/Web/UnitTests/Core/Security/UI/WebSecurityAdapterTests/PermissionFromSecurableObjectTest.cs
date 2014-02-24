@@ -21,9 +21,9 @@ using Remotion.Security;
 using Remotion.Security.Configuration;
 using Remotion.ServiceLocation;
 using Remotion.Web.Security.UI;
+using Remotion.Web.UI;
 using Remotion.Web.UnitTests.Core.Security.Configuration;
 using Remotion.Web.UnitTests.Core.Security.Domain;
-using Remotion.Web.UI;
 
 namespace Remotion.Web.UnitTests.Core.Security.UI.WebSecurityAdapterTests
 {
@@ -44,8 +44,8 @@ namespace Remotion.Web.UnitTests.Core.Security.UI.WebSecurityAdapterTests
       SecurityConfiguration.Current.SecurityProvider = _testHelper.SecurityProvider;
       SecurityConfiguration.Current.PrincipalProvider = _testHelper.PrincipalProvider;
 
-      var serviceLocator = new DefaultServiceLocator();
-      serviceLocator.Register (typeof (IFunctionalSecurityStrategy), () => _testHelper.FunctionalSecurityStrategy);
+      var serviceLocator = DefaultServiceLocator.Create();
+      serviceLocator.RegisterSingle (() => _testHelper.FunctionalSecurityStrategy);
       _serviceLocatorScope = new ServiceLocatorScope (serviceLocator);
     }
 

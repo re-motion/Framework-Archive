@@ -16,16 +16,18 @@
 // 
 using System;
 using System.Web.UI;
+using Remotion.ServiceLocation;
+using Remotion.Globalization;
 using Remotion.Utilities;
 using Remotion.Web;
 using Remotion.Web.UI.Controls;
-using Remotion.Globalization;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 {
   /// <summary>
   /// Responsible for rendering cells of <see cref="BocRowEditModeColumnDefinition"/> columns.
   /// </summary>
+  [ImplementationFor (typeof (IBocRowEditModeColumnRenderer), Lifetime = LifetimeKind.Singleton)]
   public class BocRowEditModeColumnRenderer : BocColumnRendererBase<BocRowEditModeColumnDefinition>, IBocRowEditModeColumnRenderer
   {
     /// <summary>

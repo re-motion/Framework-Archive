@@ -17,10 +17,10 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using Remotion.Logging;
 using Remotion.Utilities;
-using System.Linq;
 
 namespace Remotion.Mixins.Context.FluentBuilders
 {
@@ -189,7 +189,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
         var allContexts = builder.BuildAllAndCombineWithParentContexts();
         var classContextCollection = new ClassContextCollection (allContexts);
         return new MixinConfiguration (classContextCollection)
-            .LogAndReturn (
+            .LogAndReturnValue (
                 s_log, 
                 LogLevel.Info, 
                 conf => string.Format ("Built mixin configuration from fluent builders with {0} class contexts.", conf.ClassContexts.Count));

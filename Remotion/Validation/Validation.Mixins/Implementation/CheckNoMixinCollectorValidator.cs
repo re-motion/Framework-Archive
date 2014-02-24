@@ -17,6 +17,7 @@
 
 using System;
 using Remotion.Mixins;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Validation.Implementation;
 
@@ -27,6 +28,7 @@ namespace Remotion.Validation.Mixins.Implementation
   /// <see cref="IComponentValidationCollector"/> instance is not a mixin.
   /// </summary>
   /// <threadsafety static="true" instance="true" /> //TODO AO: annoate all classes
+  [ImplementationFor (typeof (ICollectorValidator), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple)]
   public class CheckNoMixinCollectorValidator : ICollectorValidator
   {
     public CheckNoMixinCollectorValidator ()

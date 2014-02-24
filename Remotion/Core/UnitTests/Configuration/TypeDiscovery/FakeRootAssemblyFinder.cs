@@ -15,14 +15,14 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using Remotion.Reflection.TypeDiscovery.AssemblyFinding;
-using Remotion.Reflection.TypeDiscovery.AssemblyLoading;
 
 namespace Remotion.UnitTests.Configuration.TypeDiscovery
 {
   public class FakeRootAssemblyFinder : IRootAssemblyFinder
   {
-    public RootAssembly[] FindRootAssemblies ()
+    public IEnumerable<RootAssembly> FindRootAssemblies ()
     {
       throw new NotImplementedException();
     }

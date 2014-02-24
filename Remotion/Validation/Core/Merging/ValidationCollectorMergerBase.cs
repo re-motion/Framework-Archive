@@ -26,6 +26,7 @@ namespace Remotion.Validation.Merging
   /// <summary>
   /// Implements the <see cref="IValidationCollectorMerger"/> interface as a base class with a template method for the merge operation.
   /// </summary>
+  /// <threadsafety static="true" instance="false"/>
   public abstract class ValidationCollectorMergerBase : IValidationCollectorMerger
   {
     private ILogContext _logContext;

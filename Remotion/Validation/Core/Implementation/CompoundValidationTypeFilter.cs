@@ -19,6 +19,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 
 namespace Remotion.Validation.Implementation
@@ -29,6 +30,7 @@ namespace Remotion.Validation.Implementation
   /// as the <see cref="IComponentValidationCollector.ValidatedType"/> of a <see cref="IComponentValidationCollector"/>.
   /// </summary>
   /// <threadsafety static="true" instance="true" />
+  [ImplementationFor (typeof (ICompoundValidationTypeFilter), Lifetime = LifetimeKind.Singleton)]
   public class CompoundValidationTypeFilter : ICompoundValidationTypeFilter
   {
     private readonly ReadOnlyCollection<IValidationTypeFilter> _validationTypeFilters;

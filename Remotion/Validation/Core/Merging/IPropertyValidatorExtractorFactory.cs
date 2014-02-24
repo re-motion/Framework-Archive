@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Collections.Generic;
-using Remotion.ServiceLocation;
 using Remotion.Validation.Implementation;
 
 namespace Remotion.Validation.Merging
@@ -25,7 +24,6 @@ namespace Remotion.Validation.Merging
   /// Defines an API for instantiating an implementation of the <see cref="IPropertyValidatorExtractor"/> interface during the merge operation.
   /// </summary>
   /// <seealso cref="PropertyValidatorExtractorFactory"/>
-  [ConcreteImplementation (typeof (PropertyValidatorExtractorFactory), Lifetime = LifetimeKind.Singleton)]
   public interface IPropertyValidatorExtractorFactory
   {
     IPropertyValidatorExtractor Create (IEnumerable<ValidatorRegistrationWithContext> validatorRegistrationWithContexts, ILogContext logContext);
