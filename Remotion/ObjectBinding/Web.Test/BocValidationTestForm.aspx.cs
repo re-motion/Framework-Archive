@@ -22,9 +22,11 @@ using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using Remotion.Collections;
 using Remotion.Globalization;
+using Remotion.Logging;
 using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.Sample;
 using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.ObjectBinding.Web.Validation.UI.Controls;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
@@ -175,8 +177,9 @@ namespace OBWTest
                         new GenericTypeAwareValidatedTypeResolverDecorator (SafeServiceLocator.Current.GetInstance<IValidatedTypeResolver>())))))
                 }),
             new DiagnosticOutputRuleMergeDecorator (
-                SafeServiceLocator.Current.GetInstance<IValidationCollectorMerger>(),
-                new FluentValidationValidatorFormatterDecorator (SafeServiceLocator.Current.GetInstance<IValidatorFormatter>())),
+              SafeServiceLocator.Current.GetInstance<IValidationCollectorMerger>(),
+              new FluentValidationValidatorFormatterDecorator (SafeServiceLocator.Current.GetInstance<IValidatorFormatter>()),
+              SafeServiceLocator.Current.GetInstance<ILogManager>()),
             new MetaRulesValidatorFactory (mi => new DefaultSystemMetaValidationRulesProvider (mi)),
             new CompoundValidationRuleMetadataService (
                 new IValidationRuleMetadataService[]

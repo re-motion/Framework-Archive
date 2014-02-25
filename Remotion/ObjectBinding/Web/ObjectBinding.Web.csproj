@@ -193,7 +193,6 @@
     <Compile Include="UI\Controls\BocBooleanValueImplementation\Rendering\BocCheckBoxRenderingContext.cs" />
     <Compile Include="UI\Controls\BocBooleanValueImplementation\Rendering\IBocBooleanValueRenderer.cs" />
     <Compile Include="UI\Controls\BocBooleanValueImplementation\Rendering\IBocCheckBoxRenderer.cs" />
-    <Compile Include="UI\Controls\BocDataSourceValidator.cs" />
     <Compile Include="UI\Controls\BocDateTimeValueImplementation\IDateTimeFormatter.cs" />
     <Compile Include="UI\Controls\BocDateTimeValueImplementation\Rendering\BocDateTimeValueRenderingContext.cs" />
     <Compile Include="UI\Controls\BocDateTimeValueImplementation\Rendering\IBocDateTimeValueRenderer.cs" />
@@ -225,7 +224,6 @@
     <Compile Include="UI\Controls\BocListImplementation\Sorting\BusinessObjectPropertyPathSortExtension.cs" />
     <Compile Include="UI\Controls\BocListImplementation\UniqueIdentifierBasedRowIDProvider.cs" />
     <Compile Include="UI\Controls\BocListImplementation\SortedRow.cs" />
-    <Compile Include="UI\Controls\BocReferenceDataSourceValidator.cs" />
     <Compile Include="UI\Controls\BocReferenceValueImplementation\BocAutoCompleteReferenceValueInvalidDisplayNameValidator.cs" />
     <Compile Include="UI\Controls\BocReferenceValueImplementation\IBocReferenceValueBase.cs" />
     <Compile Include="UI\Controls\BocReferenceValueImplementation\Rendering\BocAutoCompleteReferenceValueRenderingContext.cs" />
@@ -238,7 +236,6 @@
     <Compile Include="UI\Controls\BocTextValueImplementation\Rendering\BocTextValueRenderingContext.cs" />
     <Compile Include="UI\Controls\BocTextValueImplementation\Rendering\IBocMultilineTextValueRenderer.cs" />
     <Compile Include="UI\Controls\BocTextValueImplementation\Rendering\IBocTextValueRenderer.cs" />
-    <Compile Include="UI\Controls\BocValidator.cs" />
     <Compile Include="UI\Controls\Factories\BocBooleanValueResourceSetFactory.cs" />
     <Compile Include="UI\Controls\BocBooleanValueImplementation\Rendering\IBocBooleanValueResourceSetFactory.cs" />
     <Compile Include="UI\Controls\BocCheckBox.cs">
@@ -359,7 +356,6 @@
     <Compile Include="UI\Controls\IBocSortableColumnDefinition.cs" />
     <Compile Include="UI\Controls\BocTextValueImplementation\IBocTextValue.cs" />
     <Compile Include="UI\Controls\BocTextValueImplementation\IBocTextValueBase.cs" />
-    <Compile Include="UI\Controls\IBocValidator.cs" />
     <Compile Include="UI\Controls\IBusinessObjectBoundEditableWebControl.cs" />
     <Compile Include="UI\Controls\IBusinessObjectBoundWebControl.cs" />
     <Compile Include="UI\Controls\IBusinessObjectDataSourceControl.cs">

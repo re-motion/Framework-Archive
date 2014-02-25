@@ -20,8 +20,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.UI.WebControls;
 using FluentValidation.Results;
+using Remotion.ObjectBinding.Web.UI.Controls;
 
-namespace Remotion.ObjectBinding.Web.UI.Controls
+namespace Remotion.ObjectBinding.Web.Validation.UI.Controls
 {
   public class BocReferenceDataSourceValidator : BaseValidator, IBocValidator
   {

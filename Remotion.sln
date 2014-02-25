@@ -1,7 +1,5 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.30110.0
-MinimumVisualStudioVersion = 10.0.40219.1
+# Visual Studio 2012
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{5B3CB3F6-DE69-41D6-8BBC-EFF4932F0F7E}"
 	ProjectSection(FolderStartupServices) = postProject
 		{B4F97281-0DBD-4835-9ED8-7DFB966E87FF} = {B4F97281-0DBD-4835-9ED8-7DFB966E87FF}
@@ -339,6 +337,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Validation.Globalization", "Remotion\Validation\Globalization\Validation.Globalization.csproj", "{30C3AFA1-D7B3-4A2A-B314-19282A2E312D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Validation.Globalization.UnitTests", "Remotion\Validation\Globalization.UnitTests\Validation.Globalization.UnitTests.csproj", "{31F1296C-15A5-45E4-A238-55BB7F6362E3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectBinding.Web.Validation", "Remotion\ObjectBinding\Web.Validation\ObjectBinding.Web.Validation.csproj", "{1ABECBFF-E3BC-4D02-AF23-52094CEE41DE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -1250,6 +1250,14 @@ Global
 		{31F1296C-15A5-45E4-A238-55BB7F6362E3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{31F1296C-15A5-45E4-A238-55BB7F6362E3}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{31F1296C-15A5-45E4-A238-55BB7F6362E3}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{1ABECBFF-E3BC-4D02-AF23-52094CEE41DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1ABECBFF-E3BC-4D02-AF23-52094CEE41DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1ABECBFF-E3BC-4D02-AF23-52094CEE41DE}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{1ABECBFF-E3BC-4D02-AF23-52094CEE41DE}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{1ABECBFF-E3BC-4D02-AF23-52094CEE41DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1ABECBFF-E3BC-4D02-AF23-52094CEE41DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1ABECBFF-E3BC-4D02-AF23-52094CEE41DE}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{1ABECBFF-E3BC-4D02-AF23-52094CEE41DE}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -1301,6 +1309,7 @@ Global
 		{FE98ED8D-E645-4E11-9431-FA5EE8ED7C86} = {72195525-BF6C-43D6-AC96-39E34D02EA34}
 		{17FF6CEF-899D-4FF3-B077-7623A568763A} = {72195525-BF6C-43D6-AC96-39E34D02EA34}
 		{AB09FD88-9422-4BE7-8605-8A0EB8F9051B} = {72195525-BF6C-43D6-AC96-39E34D02EA34}
+		{1ABECBFF-E3BC-4D02-AF23-52094CEE41DE} = {72195525-BF6C-43D6-AC96-39E34D02EA34}
 		{FBE0CBDD-82FF-4173-8536-47D3B5BC2E98} = {C0D62499-EEFC-43D4-9A08-659096A10886}
 		{E294058B-D4F0-4124-BD22-15E44F57749B} = {C0D62499-EEFC-43D4-9A08-659096A10886}
 		{7CA0F5EF-CDEA-4B5D-9954-1CC50973C7D0} = {C0D62499-EEFC-43D4-9A08-659096A10886}
