@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Collections.Generic;
-using FluentValidation;
 using Remotion.Utilities;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.Rules;
@@ -29,31 +28,23 @@ namespace Remotion.Validation.Merging
   /// <threadsafety static="true" instance="false"/>
   public abstract class ValidationCollectorMergerBase : IValidationCollectorMerger
   {
-    private ILogContext _logContext;
-
     protected ValidationCollectorMergerBase ()
     {
     }
 
     protected abstract ILogContext CreateNewLogContext ();
-    protected abstract void MergeRules (IEnumerable<ValidationCollectorInfo> collectorGroup, List<IAddingComponentPropertyRule> collectedRules);
+    protected abstract void MergeRules (IEnumerable<ValidationCollectorInfo> collectorGroup, List<IAddingComponentPropertyRule> collectedRules, ILogContext logContext);
 
-    //VCMergeResult
-    public IEnumerable<IValidationRule> Merge (IEnumerable<IEnumerable<ValidationCollectorInfo>> validationCollectorInfos)
+    public ValidationCollectorMergeResult Merge (IEnumerable<IEnumerable<ValidationCollectorInfo>> validationCollectorInfos)
     {
       ArgumentUtility.CheckNotNull ("validationCollectorInfos", validationCollectorInfos);
 
-      _logContext = CreateNewLogContext();
+      var logContext = CreateNewLogContext();
       var collectedRules = new List<IAddingComponentPropertyRule>();
       foreach (var validationCollectorGroup in validationCollectorInfos)
-        MergeRules (validationCollectorGroup, collectedRules);
+        MergeRules (validationCollectorGroup, collectedRules, logContext);
 
-      return collectedRules.ToArray();
-    }
-
-    public ILogContext LogContext
-    {
-      get { return _logContext; }
+      return new ValidationCollectorMergeResult(collectedRules, logContext);
     }
   }
 }

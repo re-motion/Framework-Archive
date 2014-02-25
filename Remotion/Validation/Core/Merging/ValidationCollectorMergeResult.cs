@@ -14,20 +14,44 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using FluentValidation;
+using Remotion.Utilities;
 using Remotion.Validation.Implementation;
 
 namespace Remotion.Validation.Merging
 {
-  /// <summary>
-  /// Defines an API for merging the <see cref="IValidationRule"/>s provided by all the <see cref="IComponentValidationCollector"/>s of a validated type.
-  /// </summary>
-  /// <threadsafety static="true" instance="false"/>
-  //TODO AO: Make IValidationCollectorMerger threadsafe, then update annotations
-  public interface IValidationCollectorMerger
+  public class ValidationCollectorMergeResult
   {
-    ValidationCollectorMergeResult Merge (IEnumerable<IEnumerable<ValidationCollectorInfo>> validationCollectorInfos);
+    private readonly IReadOnlyCollection<IValidationRule> _collectedRules;
+    private readonly ILogContext _logContext;
+
+    public ValidationCollectorMergeResult (IEnumerable<IValidationRule> collectedRules, ILogContext logContext)
+    {
+      ArgumentUtility.CheckNotNull ("collectedRules", collectedRules);
+      ArgumentUtility.CheckNotNull ("logContext", logContext);
+
+      _collectedRules = collectedRules.ToList().AsReadOnly();
+      _logContext = logContext;
+    }
+
+    public IReadOnlyCollection<IValidationRule> CollectedRules
+    {
+      get
+      {
+        return _collectedRules;
+      }
+    }
+
+    public ILogContext LogContext
+    {
+      get
+      {
+        return _logContext;
+      }
+    }
   }
 }

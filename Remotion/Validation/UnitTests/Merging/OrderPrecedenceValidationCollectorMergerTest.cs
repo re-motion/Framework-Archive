@@ -106,18 +106,6 @@ namespace Remotion.Validation.UnitTests.Merging
     }
 
     [Test]
-    public void MergeCalledTwice_LogContextIsReset ()
-    {
-      Assert.That (_merger.LogContext, Is.Null);
-      _merger.Merge (new[] { new ValidationCollectorInfo[0] });
-      Assert.That (_merger.LogContext, Is.Not.Null);
-      var logContext = _merger.LogContext;
-      _merger.Merge (new[] { new ValidationCollectorInfo[0] });
-      Assert.That (_merger.LogContext, Is.Not.Null);
-      Assert.That (_merger.LogContext, Is.Not.SameAs (logContext));
-    }
-
-    [Test]
     public void Merge_RemoveValidatorWithNoCollectorTypeDefinied_ValidatorIsRemoved ()
     {
       _componenValidationCollectorStub1.Stub (stub => stub.AddedPropertyRules).Return (new[] { _addingPropertyRule1 });
@@ -145,7 +133,7 @@ namespace Remotion.Validation.UnitTests.Merging
               {
                   new[] { new ValidationCollectorInfo (_componenValidationCollectorStub1, typeof (ApiBasedComponentValidationCollectorProvider)) },
                   new[] { new ValidationCollectorInfo (_componenValidationCollectorStub2, typeof (ApiBasedComponentValidationCollectorProvider)) }
-              }).ToArray();
+              }).CollectedRules.ToArray();
 
       _propertyValidatorExtractorFactoryMock.VerifyAllExpectations();
       _propertyValidatorExtractorMock.VerifyAllExpectations();
@@ -183,7 +171,7 @@ namespace Remotion.Validation.UnitTests.Merging
               {
                   new[] { new ValidationCollectorInfo (_componenValidationCollectorStub1, typeof (ApiBasedComponentValidationCollectorProvider)) },
                   new[] { new ValidationCollectorInfo (_componenValidationCollectorStub2, typeof (ApiBasedComponentValidationCollectorProvider)) }
-              }).ToArray();
+              }).CollectedRules.ToArray();
 
       _propertyValidatorExtractorFactoryMock.VerifyAllExpectations();
       _propertyValidatorExtractorMock.VerifyAllExpectations();
@@ -223,7 +211,7 @@ namespace Remotion.Validation.UnitTests.Merging
                       new ValidationCollectorInfo (_componenValidationCollectorStub2, typeof (ApiBasedComponentValidationCollectorProvider)),
                       new ValidationCollectorInfo (_componenValidationCollectorStub3, typeof (ApiBasedComponentValidationCollectorProvider))
                   }
-              }).ToArray();
+              }).CollectedRules.ToArray();
 
       _propertyValidatorExtractorFactoryMock.VerifyAllExpectations();
       _propertyValidatorExtractorMock.VerifyAllExpectations();
@@ -257,7 +245,7 @@ namespace Remotion.Validation.UnitTests.Merging
               {
                   new[] { new ValidationCollectorInfo (_componenValidationCollectorStub1, typeof (ApiBasedComponentValidationCollectorProvider)) },
                   new[] { new ValidationCollectorInfo (_componenValidationCollectorStub2, typeof (ApiBasedComponentValidationCollectorProvider)) }
-              }).ToArray();
+              }).CollectedRules.ToArray();
 
       _propertyValidatorExtractorFactoryMock.VerifyAllExpectations();
       _propertyValidatorExtractorMock.VerifyAllExpectations();

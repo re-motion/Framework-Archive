@@ -88,6 +88,7 @@
     <Compile Include="Merging\NamespaceAwareDiagnosticOutputRuleMergeDecorator.cs" />
     <Compile Include="Merging\PropertyValidatorExtractorFactory.cs" />
     <Compile Include="Implementation\ValidatorRegistrationWithContext.cs" />
+    <Compile Include="Merging\ValidationCollectorMergeResult.cs" />
     <Compile Include="MetaValidation\Rules\Custom\AnyRuleAppliedMetaValidationRule.cs" />
     <Compile Include="Providers\ValidationAttributesBasedCollectorProvider.cs" />
     <Compile Include="Rules\AddingComponentPropertyMetaValidationRule.cs" />

@@ -45,7 +45,7 @@ namespace Remotion.Validation.Merging
       return new DefaultLogContext ();
     }
 
-    protected override void MergeRules (IEnumerable<ValidationCollectorInfo> collectorGroup, List<IAddingComponentPropertyRule> collectedRules)
+    protected override void MergeRules (IEnumerable<ValidationCollectorInfo> collectorGroup, List<IAddingComponentPropertyRule> collectedRules, ILogContext logContext)
     {
       var collectorInfos = collectorGroup.ToArray();
 
@@ -53,7 +53,7 @@ namespace Remotion.Validation.Merging
       if (collectedRules.Any())
       {
         var registrationsWithContext = GetValidatorRegistrationsWithContext (collectorInfos);
-        var propertyValidatorExtractor = _propertyValidatorExtractorFactory.Create (registrationsWithContext, LogContext);
+        var propertyValidatorExtractor = _propertyValidatorExtractorFactory.Create (registrationsWithContext, logContext);
         foreach (var validationRule in collectedRules)
           validationRule.ApplyRemoveValidatorRegistrations (propertyValidatorExtractor);
       }

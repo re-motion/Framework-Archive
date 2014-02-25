@@ -63,6 +63,7 @@ namespace Remotion.Validation.UnitTests.Implementation
     private IValidationRuleMetadataService _validationRuleGlobalizationServiceMock;
     private IMemberInformationNameResolver _memberInformationNameResolverMock;
     private ICompoundCollectorValidator _collectorValidatorMock;
+    private ValidationCollectorMergeResult _fakeValidationCollectorMergeResult;
 
     [SetUp]
     public void SetUp ()
@@ -104,6 +105,7 @@ namespace Remotion.Validation.UnitTests.Implementation
       _validationRuleStub4 = PropertyRule.Create (ExpressionHelper.GetTypedMemberExpression<Customer, string> (c => c.LastName));
 
       _fakeValidationRuleResult = new[] { _validationRuleStub1, _validationRuleStub2, _validationRuleStub3, _validationRuleStub4 };
+      _fakeValidationCollectorMergeResult = new ValidationCollectorMergeResult (_fakeValidationRuleResult, MockRepository.GenerateStub<ILogContext>());
 
       _fluentValidationBuilder = new FluentValidatorBuilder (
           _validationCollectorProviderMock,
@@ -244,7 +246,7 @@ namespace Remotion.Validation.UnitTests.Implementation
                           c.SelectMany (g => g).ElementAt (0).Equals (_validationCollectorInfo1) &&
                           c.SelectMany (g => g).ElementAt (1).Equals (_validationCollectorInfo3) &&
                           c.SelectMany (g => g).ElementAt (2).Equals (_validationCollectorInfo2))))
-          .Return (_fakeValidationRuleResult);
+          .Return (_fakeValidationCollectorMergeResult);
 
       _metaRulesValidatorFactoryStub
           .Stub (

@@ -103,13 +103,13 @@ namespace Remotion.Validation.Implementation
       
       var allCollectors = _validationCollectorProvider.GetValidationCollectors (new[] { validatedType }).Select (c => c.ToArray ()).ToArray ();
       ValidateCollectors (allCollectors.SelectMany (c => c));
-      var allRules = _validationCollectorMerger.Merge (allCollectors).ToArray();
-      ValidateMetaRules (allCollectors, allRules);
+      var validationCollectorMergeResult = _validationCollectorMerger.Merge (allCollectors);
+      ValidateMetaRules (allCollectors, validationCollectorMergeResult.CollectedRules);
       
-      ApplyTechnicalPropertyNames (allRules.OfType<PropertyRule>());
-      ApplyLocalization (allRules, validatedType);
+      ApplyTechnicalPropertyNames (validationCollectorMergeResult.CollectedRules.OfType<PropertyRule>());
+      ApplyLocalization (validationCollectorMergeResult.CollectedRules, validatedType);
 
-      return new Validator (allRules, validatedType);
+      return new Validator (validationCollectorMergeResult.CollectedRules, validatedType);
     }
 
     private void ValidateCollectors (IEnumerable<ValidationCollectorInfo> allCollectors)
@@ -126,13 +126,13 @@ namespace Remotion.Validation.Implementation
       }
     }
 
-    private void ValidateMetaRules (IEnumerable<IEnumerable<ValidationCollectorInfo>> allCollectors, IValidationRule[] allRules)
+    private void ValidateMetaRules (IEnumerable<IEnumerable<ValidationCollectorInfo>> allCollectors, IEnumerable<IValidationRule> allRules)
     {
       var addingComponentPropertyMetaValidationRules =
           allCollectors.SelectMany (cg => cg).Select (ci => ci.Collector).SelectMany (c => c.AddedPropertyMetaValidationRules);
       var metaRulesValidator = _metaRulesValidatorFactory.CreateMetaRuleValidator (addingComponentPropertyMetaValidationRules);
       
-      var metaValidationResults = metaRulesValidator.Validate (allRules).Where (r => !r.IsValid).ToArray();
+      var metaValidationResults = metaRulesValidator.Validate (allRules.ToArray()).Where (r => !r.IsValid).ToArray();
       if (metaValidationResults.Any())
         throw CreateMetaValidationException (metaValidationResults);
     }

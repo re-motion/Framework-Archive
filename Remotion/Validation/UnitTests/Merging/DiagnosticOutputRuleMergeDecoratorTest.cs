@@ -65,7 +65,6 @@ namespace Remotion.Validation.UnitTests.Merging
 
       _logContextStub = MockRepository.GenerateStub<ILogContext>();
       _wrappedMergerStub = MockRepository.GenerateStub<IValidationCollectorMerger>();
-      _wrappedMergerStub.Stub (stub => stub.LogContext).Return (_logContextStub);
       _validatorFormatterStub = MockRepository.GenerateStub<IValidatorFormatter>();
 
       _diagnosticOutputRuleMergeDecorator = new DiagnosticOutputRuleMergeDecorator (_wrappedMergerStub, _validatorFormatterStub, logManagerStub);
@@ -75,7 +74,7 @@ namespace Remotion.Validation.UnitTests.Merging
     public void Merge_NoValidationCollectors ()
     {
       var collectors = Enumerable.Empty<IEnumerable<ValidationCollectorInfo>>();
-      _wrappedMergerStub.Stub (stub => stub.Merge (collectors)).Return (new IValidationRule[0]);
+      _wrappedMergerStub.Stub (stub => stub.Merge (collectors)).Return (new ValidationCollectorMergeResult(new IValidationRule[0], _logContextStub));
 
       CheckLoggingMethod (() => _diagnosticOutputRuleMergeDecorator.Merge (collectors), "\r\nAFTER MERGE:", 0);
       CheckLoggingMethod (() => _diagnosticOutputRuleMergeDecorator.Merge (collectors), "\r\nBEFORE MERGE:", 1);
@@ -158,10 +157,11 @@ namespace Remotion.Validation.UnitTests.Merging
       _logContextStub.Stub (stub => stub.GetLogContextInfos (lastNamePropertyRule)).Return (new[] { logContextInfo3 });
       _logContextStub.Stub (stub => stub.GetLogContextInfos (noPropertyRuleStub)).Return (new LogContextInfo[0]);
 
+      var fakeValidationRules = new IValidationRule[] { userNamePropertyRule, lastNamePropertyRule, noPropertyRuleStub };
       _wrappedMergerStub.Stub (
           stub =>
               stub.Merge (
-                  validationCollectorInfos)).Return (new IValidationRule[] { userNamePropertyRule, lastNamePropertyRule, noPropertyRuleStub });
+                  validationCollectorInfos)).Return (new ValidationCollectorMergeResult(fakeValidationRules, _logContextStub));
 
       var expectedAfterMerge =
           "\r\nAFTER MERGE:"
