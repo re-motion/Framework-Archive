@@ -22,6 +22,7 @@ using System.Reflection;
 using FluentValidation.Validators;
 using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.Reflection;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.Providers;
@@ -32,6 +33,7 @@ namespace Remotion.Data.DomainObjects.Validation
   /// Uses the <see cref="ILengthConstrainedPropertyAttribute"/> and the <see cref="INullablePropertyAttribute"/> to build <see cref="LengthValidator"/> 
   /// and <see cref="NotNullValidator"/> for properties.
   /// </summary>
+  [ImplementationFor (typeof (IValidationCollectorProvider), Lifetime = LifetimeKind.Singleton, Position = 0, RegistrationType = RegistrationType.Multiple)]
   public class DomainObjectAttributesBasedValidationCollectorProvider : AttributeBasedValidationCollectorProviderBase
   {
     protected override ILookup<Type, IAttributesBasedValidationPropertyRuleReflector> CreatePropertyRuleReflectors (IEnumerable<Type> types)

@@ -24,7 +24,6 @@ namespace Remotion.Validation
   /// The <see cref="IValidatorBuilder"/> interface provides an API for creating an <see cref="IValidator"/> for a <see cref="Type"/>.
   /// Use the application's IoC container to retrieve an instance of <see cref="IValidatorBuilder"/>.
   /// </summary>
-  //TODO AO: use IoC
   public interface IValidatorBuilder
   {
     /// <summary>

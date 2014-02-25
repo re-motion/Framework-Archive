@@ -39,24 +39,11 @@ namespace Remotion.Validation.Mixins.UnitTests.Providers
     [Test]
     public void GetInstance ()
     {
-      //TOOD AO: change after new IoC features are integrated
-      var factory = new AggregatingValidationCollectorProvider (
-          InvolvedTypeProvider.Create (
-              types => types.OrderBy (t => t.Name),
-              SafeServiceLocator.Current.GetInstance<IValidationTypeFilter> ()),
-          new IValidationCollectorProvider[]
-          {
-              new ValidationAttributesBasedCollectorProvider(),
-              new ApiBasedComponentValidationCollectorProvider (
-                  new DiscoveryServiceBasedValidationCollectorReflector (
-                    new MixinTypeAwareValidatedTypeResolverDecorator (
-                  new ClassTypeAwareValidatedTypeResolverDecorator (
-                  new GenericTypeAwareValidatedTypeResolverDecorator (SafeServiceLocator.Current.GetInstance<IValidatedTypeResolver>())))))
-          });
+      var factory = _serviceLocator.GetInstance<IValidationCollectorProvider>();
 
       Assert.That (factory, Is.Not.Null);
       Assert.That (factory, Is.TypeOf (typeof (AggregatingValidationCollectorProvider)));
-      Assert.That (((AggregatingValidationCollectorProvider) factory).InvolvedTypeProvider, Is.TypeOf (typeof (InvolvedTypeProvider)));
+      Assert.That (((AggregatingValidationCollectorProvider) factory).InvolvedTypeProvider, Is.TypeOf (typeof (MixedInvolvedTypeProviderDecorator)));
       var validationCollectorProviders = ((AggregatingValidationCollectorProvider) factory).ValidationCollectorProviders;
       Assert.That (validationCollectorProviders[0], Is.TypeOf (typeof (ValidationAttributesBasedCollectorProvider)));
       Assert.That (validationCollectorProviders[1], Is.TypeOf (typeof (ApiBasedComponentValidationCollectorProvider)));
@@ -66,5 +53,14 @@ namespace Remotion.Validation.Mixins.UnitTests.Providers
           ((DiscoveryServiceBasedValidationCollectorReflector) validationCollectorReflector).ValidatedTypeResolver,
           Is.TypeOf (typeof (MixinTypeAwareValidatedTypeResolverDecorator)));
     }
+
+    [Test]
+    public void GetInstance_Twice_ReturnsSameInstance ()
+    {
+      var factory1 = _serviceLocator.GetInstance<IValidationCollectorProvider> ();
+      var factory2 = _serviceLocator.GetInstance<IValidationCollectorProvider> ();
+
+      Assert.That (factory1, Is.SameAs (factory2));
+    } 
   }
 }

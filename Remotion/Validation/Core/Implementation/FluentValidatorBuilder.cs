@@ -22,6 +22,7 @@ using System.Text;
 using FluentValidation;
 using FluentValidation.Internal;
 using Remotion.Reflection;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Validation.Merging;
 using Remotion.Validation.MetaValidation;
@@ -33,8 +34,7 @@ namespace Remotion.Validation.Implementation
   /// <summary>
   /// Collector-based validator builder.  
   /// </summary>
-  //TODO AO: IoC
-  //TODO AO: Make IValidationCollectorMerger threadsafe 
+  [ImplementationFor (typeof (IValidatorBuilder), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Single)]
   public class FluentValidatorBuilder : IValidatorBuilder
   {
     private readonly IValidationCollectorProvider _validationCollectorProvider;

@@ -18,6 +18,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Validation.Implementation;
 
@@ -26,6 +27,7 @@ namespace Remotion.Validation.Providers
   /// <summary>
   /// Use this class to retrieve the <see cref="IComponentValidationCollector"/>s for a <see cref="Type"/> based on reflection metadata.
   /// </summary>
+  [ImplementationFor (typeof (IValidationCollectorProvider), Lifetime = LifetimeKind.Singleton, Position = 2, RegistrationType = RegistrationType.Multiple)]
   public class ApiBasedComponentValidationCollectorProvider : IValidationCollectorProvider
   {
     private readonly IValidationCollectorReflector _validationCollectorReflector;

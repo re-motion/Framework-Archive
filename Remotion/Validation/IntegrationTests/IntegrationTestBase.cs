@@ -21,15 +21,9 @@ using log4net.Appender;
 using log4net.Config;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
-using Remotion.Globalization;
-using Remotion.Logging;
-using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Validation.Globalization;
-using Remotion.Validation.Implementation;
 using Remotion.Validation.Merging;
-using Remotion.Validation.MetaValidation;
-using Remotion.Validation.Providers;
 using LogManager = log4net.LogManager;
 
 namespace Remotion.Validation.IntegrationTests
@@ -37,7 +31,7 @@ namespace Remotion.Validation.IntegrationTests
   [TestFixture]
   public abstract class IntegrationTestBase
   {
-    protected FluentValidatorBuilder ValidationBuilder;
+    protected IValidatorBuilder ValidationBuilder;
     protected MemoryAppender MemoryAppender;
     protected bool ShowLogOutput;
     private ServiceLocatorScope _serviceLocatorScope;
@@ -51,20 +45,8 @@ namespace Remotion.Validation.IntegrationTests
 
       MemoryAppender = new MemoryAppender();
       BasicConfigurator.Configure (MemoryAppender);
-      
-      ValidationBuilder = new FluentValidatorBuilder (
-          new AggregatingValidationCollectorProvider (
-              serviceLocator.GetInstance<IInvolvedTypeProvider>(),
-              new IValidationCollectorProvider[]
-              {
-                  new ValidationAttributesBasedCollectorProvider(),
-                  new ApiBasedComponentValidationCollectorProvider ((serviceLocator.GetInstance<IValidationCollectorReflector>()))
-              }),
-          serviceLocator.GetInstance<IValidationCollectorMerger> (),
-          serviceLocator.GetInstance<IMetaRulesValidatorFactory>(),
-          serviceLocator.GetInstance<IValidationRuleMetadataService> (),
-          serviceLocator.GetInstance<IMemberInformationNameResolver> (),
-          serviceLocator.GetInstance<ICollectorValidator> ());
+
+      ValidationBuilder = serviceLocator.GetInstance<IValidatorBuilder>();
     }
 
     [TearDown]

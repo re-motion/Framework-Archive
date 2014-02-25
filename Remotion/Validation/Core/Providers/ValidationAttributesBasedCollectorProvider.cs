@@ -19,6 +19,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Validation.Attributes.Validation;
 using Remotion.Validation.Implementation;
@@ -28,6 +29,7 @@ namespace Remotion.Validation.Providers
   /// <summary>
   /// Uses attributes derived from the <see cref="AddingValidationAttributeBase"/> type to build constraints for the properties.
   /// </summary>
+  [ImplementationFor (typeof (IValidationCollectorProvider), Lifetime = LifetimeKind.Singleton, Position = 1, RegistrationType = RegistrationType.Multiple)]
   public class ValidationAttributesBasedCollectorProvider : AttributeBasedValidationCollectorProviderBase
   {
     protected override ILookup<Type, IAttributesBasedValidationPropertyRuleReflector> CreatePropertyRuleReflectors (IEnumerable<Type> types)

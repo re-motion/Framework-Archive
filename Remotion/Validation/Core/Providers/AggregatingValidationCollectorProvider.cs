@@ -18,6 +18,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Validation.Implementation;
 
@@ -27,8 +28,7 @@ namespace Remotion.Validation.Providers
   /// Use this class to retrieve the combined <see cref="IComponentValidationCollector"/>s for a <see cref="Type"/> 
   /// provided by the individual <see cref="IValidationCollectorProvider"/>s registered with the application's IoC container.
   /// </summary>
-  //TODO AO: IoC
-  //[ImplementationFor (typeof (IValidationCollectorProvider), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Compound)]
+  [ImplementationFor (typeof (IValidationCollectorProvider), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Compound)]
   public class AggregatingValidationCollectorProvider : IValidationCollectorProvider
   {
     private readonly IInvolvedTypeProvider _involvedTypeProvider;
@@ -36,7 +36,7 @@ namespace Remotion.Validation.Providers
 
     public AggregatingValidationCollectorProvider (
         IInvolvedTypeProvider involvedTypeProvider,
-        IValidationCollectorProvider[] validationCollectorProviders)
+        IEnumerable<IValidationCollectorProvider> validationCollectorProviders)
     {
       ArgumentUtility.CheckNotNull ("involvedTypeProvider", involvedTypeProvider);
       ArgumentUtility.CheckNotNull ("validationCollectorProviders", validationCollectorProviders);

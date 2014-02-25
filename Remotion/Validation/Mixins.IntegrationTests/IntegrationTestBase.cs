@@ -20,16 +20,10 @@ using System.Linq;
 using log4net.Appender;
 using log4net.Config;
 using NUnit.Framework;
-using Remotion.Globalization;
-using Remotion.Logging;
-using Remotion.Reflection;
+using Remotion.Development.UnitTesting;
 using Remotion.ServiceLocation;
 using Remotion.Validation.Globalization;
-using Remotion.Validation.Implementation;
 using Remotion.Validation.Merging;
-using Remotion.Validation.MetaValidation;
-using Remotion.Validation.Mixins.Implementation;
-using Remotion.Validation.Providers;
 using LogManager = log4net.LogManager;
 
 namespace Remotion.Validation.Mixins.IntegrationTests
@@ -37,51 +31,22 @@ namespace Remotion.Validation.Mixins.IntegrationTests
   [TestFixture]
   public abstract class IntegrationTestBase
   {
-    protected FluentValidatorBuilder ValidationBuilder;
+    protected IValidatorBuilder ValidationBuilder;
     protected MemoryAppender MemoryAppender;
     protected bool ShowLogOutput;
+    private ServiceLocatorScope _serviceLocatorScope;
 
     [SetUp]
     public virtual void SetUp ()
     {
+      var serviceLocator = DefaultServiceLocator.Create ();
+      serviceLocator.RegisterSingle<IErrorMessageGlobalizationService> (GetValidatorGlobalizationService);
+      _serviceLocatorScope = new ServiceLocatorScope (serviceLocator);
+      
       MemoryAppender = new MemoryAppender();
       BasicConfigurator.Configure (MemoryAppender);
 
-      var memberInfoNameResolver = SafeServiceLocator.Current.GetInstance<IMemberInformationNameResolver>();
-      var memberInformationGlobalizationService = SafeServiceLocator.Current.GetInstance<IMemberInformationGlobalizationService>();
-      var compoundValidationTypeFilter = SafeServiceLocator.Current.GetInstance<IValidationTypeFilter>();
-
-      ValidationBuilder = new FluentValidatorBuilder (
-          new AggregatingValidationCollectorProvider (
-              new MixedInvolvedTypeProviderDecorator (
-                  InvolvedTypeProvider.Create (
-                      types => types.OrderBy (t => t.Name),
-                      compoundValidationTypeFilter),
-                  compoundValidationTypeFilter),
-              new IValidationCollectorProvider[]
-              {
-                  new ValidationAttributesBasedCollectorProvider(),
-                  new ApiBasedComponentValidationCollectorProvider (
-                      new DiscoveryServiceBasedValidationCollectorReflector (
-                      new MixinTypeAwareValidatedTypeResolverDecorator (
-                      new ClassTypeAwareValidatedTypeResolverDecorator (
-                      new GenericTypeAwareValidatedTypeResolverDecorator (SafeServiceLocator.Current.GetInstance<IValidatedTypeResolver>())))))
-              }),
-          new DiagnosticOutputRuleMergeDecorator (
-              SafeServiceLocator.Current.GetInstance<IValidationCollectorMerger>(),
-              new FluentValidationValidatorFormatterDecorator (SafeServiceLocator.Current.GetInstance<IValidatorFormatter>()),
-              SafeServiceLocator.Current.GetInstance<ILogManager>()),
-          SafeServiceLocator.Current.GetInstance<IMetaRulesValidatorFactory>(),
-          new CompoundValidationRuleMetadataService (
-              new IValidationRuleMetadataService[]
-              {
-                  new PropertyDisplayNameGlobalizationService (memberInformationGlobalizationService),
-                  new ValidationRuleGlobalizationService (
-                      SafeServiceLocator.Current.GetInstance<IDefaultMessageEvaluator>(),
-                      GetValidatorGlobalizationService())
-              }),
-          memberInfoNameResolver,
-          SafeServiceLocator.Current.GetInstance<ICollectorValidator>());
+      ValidationBuilder = serviceLocator.GetInstance<IValidatorBuilder> ();
     }
 
     [TearDown]
@@ -96,6 +61,7 @@ namespace Remotion.Validation.Mixins.IntegrationTests
 
       MemoryAppender.Clear();
       LogManager.ResetConfiguration();
+      _serviceLocatorScope.Dispose ();
 
       Assert.That (LogManager.GetLogger (typeof (DiagnosticOutputRuleMergeDecorator)).IsDebugEnabled, Is.False);
     }
