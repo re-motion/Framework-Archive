@@ -16,6 +16,7 @@
 // 
 
 using System;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.Mixins.Attributes;
@@ -25,8 +26,7 @@ namespace Remotion.Validation.Mixins.Implementation
   /// <summary>
   /// Implements <see cref="IValidatedTypeResolver"/> and resolves the validated Type via the <see cref="ApplyWithMixinAttribute"/>.
   /// </summary>
-  //TODO AO
-  //[ImplementationFor (typeof (IValidatedTypeResolver), Lifetime = LifetimeKind.Singleton, Position = , RegistrationType = RegistrationType.Decorator)]
+  [ImplementationFor (typeof (IValidatedTypeResolver), Position = 2, RegistrationType = RegistrationType.Decorator)]
   public class MixinTypeAwareValidatedTypeResolverDecorator : IValidatedTypeResolver
   {
     private readonly IValidatedTypeResolver _validatedTypeResolver;
@@ -36,6 +36,11 @@ namespace Remotion.Validation.Mixins.Implementation
       ArgumentUtility.CheckNotNull ("validatedTypeResolver", validatedTypeResolver);
 
       _validatedTypeResolver = validatedTypeResolver;
+    }
+
+    public IValidatedTypeResolver InnerResolver
+    {
+      get { return _validatedTypeResolver; }
     }
 
     public Type GetValidatedType (Type collectorType)

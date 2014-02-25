@@ -17,6 +17,7 @@
 
 using System;
 using System.Linq;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 
 namespace Remotion.Validation.Implementation
@@ -24,8 +25,7 @@ namespace Remotion.Validation.Implementation
   /// <summary>
   /// Implements <see cref="IValidatedTypeResolver"/> and resolves the validated Type via <see cref="IComponentValidationCollector{TValidatedType}"/>.
   /// </summary>
-  //TODO AO
-  //[ImplementationFor (typeof (IValidatedTypeResolver), Position = , RegistrationType = RegistrationType.Decorator)]
+  [ImplementationFor (typeof (IValidatedTypeResolver), Position = 0, RegistrationType = RegistrationType.Decorator)]
   public class GenericTypeAwareValidatedTypeResolverDecorator : IValidatedTypeResolver
   {
     private readonly IValidatedTypeResolver _validatedTypeResolver;
@@ -35,6 +35,11 @@ namespace Remotion.Validation.Implementation
       ArgumentUtility.CheckNotNull ("validatedTypeResolver", validatedTypeResolver);
 
       _validatedTypeResolver = validatedTypeResolver;
+    }
+
+    public IValidatedTypeResolver InnerResolver
+    {
+      get { return _validatedTypeResolver; }
     }
 
     public Type GetValidatedType (Type collectorType)

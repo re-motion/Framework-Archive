@@ -66,6 +66,7 @@
     <Compile Include="Implementation\DiscoveryServiceBasedValidationCollectorReflectorTest.cs" />
     <Compile Include="Implementation\FluentValidationBuilderTest.cs" />
     <Compile Include="Implementation\ICollectorValidatorTest.cs" />
+    <Compile Include="Implementation\IValidatedTypeResolverTest.cs" />
     <Compile Include="Implementation\IValidationTypeFilterTest.cs" />
     <Compile Include="Implementation\IInvolvedTypeProviderTest.cs" />
     <Compile Include="Implementation\MixedInvolvedTypeProviderDecoratorTest.cs" />
