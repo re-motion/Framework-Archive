@@ -17,26 +17,16 @@
 
 using System;
 using System.Collections.Specialized;
-using System.Linq;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using Remotion.Collections;
-using Remotion.Globalization;
-using Remotion.Logging;
 using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.Sample;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.Validation.UI.Controls;
-using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Validation;
-using Remotion.Validation.Globalization;
-using Remotion.Validation.Implementation;
-using Remotion.Validation.Merging;
-using Remotion.Validation.MetaValidation;
-using Remotion.Validation.Mixins.Implementation;
-using Remotion.Validation.Providers;
 using Remotion.Web.UI.Controls;
 
 namespace OBWTest
@@ -160,37 +150,7 @@ namespace OBWTest
     {
       get
       {
-        return new FluentValidatorBuilder (
-            new AggregatingValidationCollectorProvider (
-                new MixedInvolvedTypeProviderDecorator (
-                    InvolvedTypeProvider.Create (
-                        types => types.OrderBy (t => t.Name),
-                        SafeServiceLocator.Current.GetInstance<IValidationTypeFilter>()),
-                    SafeServiceLocator.Current.GetInstance<IValidationTypeFilter>()),
-                new IValidationCollectorProvider[]
-                {
-                    new ValidationAttributesBasedCollectorProvider(),
-                    new ApiBasedComponentValidationCollectorProvider (
-                        new DiscoveryServiceBasedValidationCollectorReflector (
-                        new MixinTypeAwareValidatedTypeResolverDecorator (
-                        new ClassTypeAwareValidatedTypeResolverDecorator (
-                        new GenericTypeAwareValidatedTypeResolverDecorator (SafeServiceLocator.Current.GetInstance<IValidatedTypeResolver>())))))
-                }),
-            new DiagnosticOutputRuleMergeDecorator (
-              SafeServiceLocator.Current.GetInstance<IValidationCollectorMerger>(),
-              new FluentValidationValidatorFormatterDecorator (SafeServiceLocator.Current.GetInstance<IValidatorFormatter>()),
-              SafeServiceLocator.Current.GetInstance<ILogManager>()),
-            SafeServiceLocator.Current.GetInstance<IMetaRulesValidatorFactory>(),
-            new CompoundValidationRuleMetadataService (
-                new IValidationRuleMetadataService[]
-                {
-                    new PropertyDisplayNameGlobalizationService (SafeServiceLocator.Current.GetInstance<IMemberInformationGlobalizationService>()),
-                    new ValidationRuleGlobalizationService (
-                        SafeServiceLocator.Current.GetInstance<IDefaultMessageEvaluator>(),
-                        new NullErrorMessageGlobalizationService())
-                }),
-            SafeServiceLocator.Current.GetInstance<IMemberInformationNameResolver>(),
-            SafeServiceLocator.Current.GetInstance<ICollectorValidator>());
+        return SafeServiceLocator.Current.GetInstance<IValidatorBuilder>();
       }
     }
   }

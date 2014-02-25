@@ -17,64 +17,20 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using Remotion.Globalization;
-using Remotion.Logging;
-using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
-using Remotion.Validation.Globalization;
-using Remotion.Validation.Implementation;
-using Remotion.Validation.Merging;
-using Remotion.Validation.MetaValidation;
-using Remotion.Validation.Mixins.Implementation;
-using Remotion.Validation.Providers;
+using Remotion.Validation;
 
 namespace Remotion.Data.DomainObjects.Validation
 {
   [ImplementationFor (typeof(IClientTransactionExtensionFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple)]
   public class ValidationClientTransactionExtensionFactory : IClientTransactionExtensionFactory
   {
-    private readonly FluentValidatorBuilder _validationBuilder;
+    private readonly IValidatorBuilder _validationBuilder;
 
     public ValidationClientTransactionExtensionFactory ()
     {
-      //TOOD AO: use IoC
-      // TODO AO: Drop Validation.Globalization dependency after IoC
-      var memberInfoNameResolver = SafeServiceLocator.Current.GetInstance<IMemberInformationNameResolver> ();
-      var memberInformationGlobalizationService = SafeServiceLocator.Current.GetInstance<IMemberInformationGlobalizationService> ();
-      var compoundValidationTypeFilter = SafeServiceLocator.Current.GetInstance<IValidationTypeFilter> ();
-      
-      _validationBuilder = new FluentValidatorBuilder (
-          new AggregatingValidationCollectorProvider (
-              new MixedInvolvedTypeProviderDecorator (
-                  InvolvedTypeProvider.Create (
-                      types => types.OrderBy (t => t.Name),
-                      compoundValidationTypeFilter),
-                      compoundValidationTypeFilter),
-              new IValidationCollectorProvider[]
-              {
-                  new DomainObjectAttributesBasedValidationCollectorProvider(),
-                  new ValidationAttributesBasedCollectorProvider(),
-                  new ApiBasedComponentValidationCollectorProvider (
-                      new DiscoveryServiceBasedValidationCollectorReflector (
-                      new MixinTypeAwareValidatedTypeResolverDecorator (
-                      new ClassTypeAwareValidatedTypeResolverDecorator (
-                      new GenericTypeAwareValidatedTypeResolverDecorator (new NullValidatedTypeResolver())))))
-              }),
-          new DiagnosticOutputRuleMergeDecorator (
-              new OrderPrecedenceValidationCollectorMerger (new PropertyValidatorExtractorFactory ()),
-              new FluentValidationValidatorFormatterDecorator (new DefaultValidatorFormatter ()),
-              SafeServiceLocator.Current.GetInstance<ILogManager>()),
-          SafeServiceLocator.Current.GetInstance<IMetaRulesValidatorFactory>(),
-          new CompoundValidationRuleMetadataService (
-              new IValidationRuleMetadataService[]
-              {
-                  new PropertyDisplayNameGlobalizationService (memberInformationGlobalizationService),
-                  new ValidationRuleGlobalizationService (new DefaultMessageEvaluator(), new NullErrorMessageGlobalizationService())
-              }),
-          memberInfoNameResolver,
-          SafeServiceLocator.Current.GetInstance<ICollectorValidator> ());
+      _validationBuilder = SafeServiceLocator.Current.GetInstance<IValidatorBuilder>();
     }
 
     public IEnumerable<IClientTransactionExtension> CreateClientTransactionExtensions (ClientTransaction clientTransaction)
