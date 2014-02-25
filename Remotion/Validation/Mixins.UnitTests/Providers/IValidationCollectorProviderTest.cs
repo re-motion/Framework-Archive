@@ -43,7 +43,7 @@ namespace Remotion.Validation.Mixins.UnitTests.Providers
       var factory = new AggregatingValidationCollectorProvider (
           InvolvedTypeProvider.Create (
               types => types.OrderBy (t => t.Name),
-              SafeServiceLocator.Current.GetInstance<ICompoundValidationTypeFilter> ()),
+              SafeServiceLocator.Current.GetInstance<IValidationTypeFilter> ()),
           new IValidationCollectorProvider[]
           {
               new ValidationAttributesBasedCollectorProvider(),

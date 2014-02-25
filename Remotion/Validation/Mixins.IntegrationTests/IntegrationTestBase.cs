@@ -49,7 +49,7 @@ namespace Remotion.Validation.Mixins.IntegrationTests
 
       var memberInfoNameResolver = SafeServiceLocator.Current.GetInstance<IMemberInformationNameResolver>();
       var memberInformationGlobalizationService = SafeServiceLocator.Current.GetInstance<IMemberInformationGlobalizationService>();
-      var compoundValidationTypeFilter = SafeServiceLocator.Current.GetInstance<ICompoundValidationTypeFilter>();
+      var compoundValidationTypeFilter = SafeServiceLocator.Current.GetInstance<IValidationTypeFilter>();
 
       ValidationBuilder = new FluentValidatorBuilder (
           new AggregatingValidationCollectorProvider (
@@ -81,7 +81,7 @@ namespace Remotion.Validation.Mixins.IntegrationTests
                       GetValidatorGlobalizationService())
               }),
           memberInfoNameResolver,
-          SafeServiceLocator.Current.GetInstance<ICompoundCollectorValidator>());
+          SafeServiceLocator.Current.GetInstance<ICollectorValidator>());
     }
 
     [TearDown]

@@ -43,7 +43,7 @@ namespace Remotion.Data.DomainObjects.Validation
       // TODO AO: Drop Validation.Globalization dependency after IoC
       var memberInfoNameResolver = SafeServiceLocator.Current.GetInstance<IMemberInformationNameResolver> ();
       var memberInformationGlobalizationService = SafeServiceLocator.Current.GetInstance<IMemberInformationGlobalizationService> ();
-      var compoundValidationTypeFilter = SafeServiceLocator.Current.GetInstance<ICompoundValidationTypeFilter> ();
+      var compoundValidationTypeFilter = SafeServiceLocator.Current.GetInstance<IValidationTypeFilter> ();
       
       _validationBuilder = new FluentValidatorBuilder (
           new AggregatingValidationCollectorProvider (

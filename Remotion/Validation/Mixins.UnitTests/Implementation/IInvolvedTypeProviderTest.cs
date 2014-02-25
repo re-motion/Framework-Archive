@@ -40,7 +40,7 @@ namespace Remotion.Validation.Mixins.UnitTests.Implementation
       //TOOD AO: change after new IoC features are integrated
       var factory = new MixedInvolvedTypeProviderDecorator (
           _serviceLocator.GetInstance<IInvolvedTypeProvider>(),
-          SafeServiceLocator.Current.GetInstance<ICompoundValidationTypeFilter>());
+          SafeServiceLocator.Current.GetInstance<IValidationTypeFilter>());
 
       Assert.That (factory, Is.Not.Null);
       Assert.That (factory, Is.TypeOf (typeof (MixedInvolvedTypeProviderDecorator)));

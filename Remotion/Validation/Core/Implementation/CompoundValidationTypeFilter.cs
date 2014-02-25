@@ -30,8 +30,8 @@ namespace Remotion.Validation.Implementation
   /// as the <see cref="IComponentValidationCollector.ValidatedType"/> of a <see cref="IComponentValidationCollector"/>.
   /// </summary>
   /// <threadsafety static="true" instance="true" />
-  [ImplementationFor (typeof (ICompoundValidationTypeFilter), Lifetime = LifetimeKind.Singleton)]
-  public class CompoundValidationTypeFilter : ICompoundValidationTypeFilter
+  [ImplementationFor (typeof (IValidationTypeFilter), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Compound)]
+  public class CompoundValidationTypeFilter : IValidationTypeFilter
   {
     private readonly ReadOnlyCollection<IValidationTypeFilter> _validationTypeFilters;
 

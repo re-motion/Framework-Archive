@@ -165,8 +165,8 @@ namespace OBWTest
                 new MixedInvolvedTypeProviderDecorator (
                     InvolvedTypeProvider.Create (
                         types => types.OrderBy (t => t.Name),
-                        SafeServiceLocator.Current.GetInstance<ICompoundValidationTypeFilter>()),
-                    SafeServiceLocator.Current.GetInstance<ICompoundValidationTypeFilter>()),
+                        SafeServiceLocator.Current.GetInstance<IValidationTypeFilter>()),
+                    SafeServiceLocator.Current.GetInstance<IValidationTypeFilter>()),
                 new IValidationCollectorProvider[]
                 {
                     new ValidationAttributesBasedCollectorProvider(),
@@ -190,7 +190,7 @@ namespace OBWTest
                         new NullErrorMessageGlobalizationService())
                 }),
             SafeServiceLocator.Current.GetInstance<IMemberInformationNameResolver>(),
-            SafeServiceLocator.Current.GetInstance<ICompoundCollectorValidator>());
+            SafeServiceLocator.Current.GetInstance<ICollectorValidator>());
       }
     }
   }

@@ -32,17 +32,27 @@ namespace Remotion.Validation.Mixins.UnitTests.Implementation
     [SetUp]
     public void SetUp ()
     {
-      _serviceLocator = DefaultServiceLocator.Create();
+      _serviceLocator = DefaultServiceLocator.Create ();
     }
 
     [Test]
     public void GetInstance_Once ()
     {
-      var factory = (_serviceLocator.GetAllInstances<IValidationTypeFilter>()).ToArray();
+      var factory = _serviceLocator.GetInstance<IValidationTypeFilter> ();
 
-      Assert.That (factory.Count(), Is.EqualTo (2));
-      Assert.That (factory[0], Is.TypeOf<LoadFilteredValidationTypeFilter>());
-      Assert.That (factory[1], Is.TypeOf<MixedLoadFilteredValidationTypeFilter>());
+      Assert.That (factory, Is.TypeOf (typeof (CompoundValidationTypeFilter)));
+      var compoundGlobalizationServices = ((CompoundValidationTypeFilter) factory).ValidationTypeFilters.ToArray ();
+      Assert.That (compoundGlobalizationServices[0], Is.TypeOf<LoadFilteredValidationTypeFilter> ());
+      Assert.That (compoundGlobalizationServices[1], Is.TypeOf<MixedLoadFilteredValidationTypeFilter> ());
+    }
+
+    [Test]
+    public void GetInstance_Twice_ReturnsSameInstance ()
+    {
+      var factory1 = _serviceLocator.GetInstance<ICollectorValidator> ();
+      var factory2 = _serviceLocator.GetInstance<ICollectorValidator> ();
+
+      Assert.That (factory1, Is.SameAs (factory2));
     }
   }
 }

@@ -72,7 +72,6 @@
     <Compile Include="FluentValidationBuilderExtensions.cs" />
     <Compile Include="Implementation\FluentValidationValidatorFormatterDecorator.cs" />
     <Compile Include="Implementation\GenericTypeAwareValidatedTypeResolverDecorator.cs" />
-    <Compile Include="Implementation\ICompoundValidationTypeFilter.cs" />
     <Compile Include="Implementation\ICollectorValidator.cs" />
     <Compile Include="Implementation\IValidatedTypeResolver.cs" />
     <Compile Include="Implementation\IValidatorFormatter.cs" />

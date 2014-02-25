@@ -49,7 +49,7 @@ namespace Remotion.Data.DomainObjects.Validation.IntegrationTests
 
       var memberInfoNameResolver = SafeServiceLocator.Current.GetInstance<IMemberInformationNameResolver>();
       var memberInformationGlobalizationService = SafeServiceLocator.Current.GetInstance<IMemberInformationGlobalizationService>();
-      var compoundValidationTypeFilter = SafeServiceLocator.Current.GetInstance<ICompoundValidationTypeFilter>();
+      var compoundValidationTypeFilter = SafeServiceLocator.Current.GetInstance<IValidationTypeFilter>();
 
       ValidationBuilder = new FluentValidatorBuilder (
           new AggregatingValidationCollectorProvider (
