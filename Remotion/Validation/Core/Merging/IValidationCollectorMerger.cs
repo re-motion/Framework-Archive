@@ -24,8 +24,7 @@ namespace Remotion.Validation.Merging
   /// <summary>
   /// Defines an API for merging the <see cref="IValidationRule"/>s provided by all the <see cref="IComponentValidationCollector"/>s of a validated type.
   /// </summary>
-  /// <threadsafety static="true" instance="false"/>
-  //TODO AO: Make IValidationCollectorMerger threadsafe, then update annotations
+  /// <threadsafety static="true" instance="true"/>
   public interface IValidationCollectorMerger
   {
     ValidationCollectorMergeResult Merge (IEnumerable<IEnumerable<ValidationCollectorInfo>> validationCollectorInfos);
