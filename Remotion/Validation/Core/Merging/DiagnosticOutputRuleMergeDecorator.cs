@@ -37,18 +37,22 @@ namespace Remotion.Validation.Merging
   /// </summary>
   public class DiagnosticOutputRuleMergeDecorator : IValidationCollectorMerger
   {
-    private static readonly ILog _logger = LogManager.GetLogger (typeof (DiagnosticOutputRuleMergeDecorator));
-
+    private readonly ILog _logger;
     private readonly IValidationCollectorMerger _validationCollectorMerger;
     private readonly IValidatorFormatter _validatorFormatter;
 
-    public DiagnosticOutputRuleMergeDecorator (IValidationCollectorMerger validationCollectorMerger, IValidatorFormatter validatorFormatter)
+    public DiagnosticOutputRuleMergeDecorator (
+        IValidationCollectorMerger validationCollectorMerger,
+        IValidatorFormatter validatorFormatter,
+        ILogManager logManager)
     {
       ArgumentUtility.CheckNotNull ("validationCollectorMerger", validationCollectorMerger);
       ArgumentUtility.CheckNotNull ("validatorFormatter", validatorFormatter);
+      ArgumentUtility.CheckNotNull ("logManager", logManager);
 
       _validationCollectorMerger = validationCollectorMerger;
       _validatorFormatter = validatorFormatter;
+      _logger = logManager.GetLogger (typeof (DiagnosticOutputRuleMergeDecorator));
     }
 
     public IValidationCollectorMerger ValidationCollectorMerger

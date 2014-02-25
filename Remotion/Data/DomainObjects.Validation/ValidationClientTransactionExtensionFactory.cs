@@ -19,6 +19,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Remotion.Globalization;
+using Remotion.Logging;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
@@ -62,7 +63,8 @@ namespace Remotion.Data.DomainObjects.Validation
               }),
           new DiagnosticOutputRuleMergeDecorator (
               new OrderPrecedenceValidationCollectorMerger (new PropertyValidatorExtractorFactory ()),
-              new FluentValidationValidatorFormatterDecorator (new DefaultValidatorFormatter ())),
+              new FluentValidationValidatorFormatterDecorator (new DefaultValidatorFormatter ()),
+              SafeServiceLocator.Current.GetInstance<ILogManager>()),
           new MetaRulesValidatorFactory (mi => new DefaultSystemMetaValidationRulesProvider (mi)),
           new CompoundValidationRuleMetadataService (
               new IValidationRuleMetadataService[]

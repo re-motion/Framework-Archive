@@ -14,7 +14,9 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
+using Remotion.Logging;
 using Remotion.Validation.Implementation;
 
 namespace Remotion.Validation.Merging
@@ -24,8 +26,11 @@ namespace Remotion.Validation.Merging
   /// </summary>
   public class NamespaceAwareDiagnosticOutputRuleMergeDecorator : DiagnosticOutputRuleMergeDecorator
   {
-    public NamespaceAwareDiagnosticOutputRuleMergeDecorator (IValidationCollectorMerger validationCollectorMerger, IValidatorFormatter validatorFormatter)
-        : base(validationCollectorMerger, validatorFormatter)
+    public NamespaceAwareDiagnosticOutputRuleMergeDecorator (
+        IValidationCollectorMerger validationCollectorMerger,
+        IValidatorFormatter validatorFormatter,
+        ILogManager logManager)
+        : base (validationCollectorMerger, validatorFormatter, logManager)
     {
     }
 

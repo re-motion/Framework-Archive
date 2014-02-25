@@ -17,6 +17,7 @@
 
 using System;
 using NUnit.Framework;
+using Remotion.Logging;
 using Remotion.ServiceLocation;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.Merging;
@@ -40,7 +41,8 @@ namespace Remotion.Validation.UnitTests.Merging
       //TOOD AO: change after new IoC features are integrated
       var factory = new DiagnosticOutputRuleMergeDecorator (
           SafeServiceLocator.Current.GetInstance<IValidationCollectorMerger>(),
-          new FluentValidationValidatorFormatterDecorator (SafeServiceLocator.Current.GetInstance<IValidatorFormatter>()));
+          new FluentValidationValidatorFormatterDecorator (SafeServiceLocator.Current.GetInstance<IValidatorFormatter>()),
+          SafeServiceLocator.Current.GetInstance<ILogManager>());
 
       Assert.That (factory, Is.Not.Null);
       Assert.That (factory, Is.TypeOf<DiagnosticOutputRuleMergeDecorator> ());

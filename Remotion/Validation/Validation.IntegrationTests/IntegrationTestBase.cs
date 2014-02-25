@@ -17,11 +17,11 @@
 
 using System;
 using System.Linq;
-using log4net;
 using log4net.Appender;
 using log4net.Config;
 using NUnit.Framework;
 using Remotion.Globalization;
+using Remotion.Logging;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Validation.Globalization;
@@ -29,6 +29,7 @@ using Remotion.Validation.Implementation;
 using Remotion.Validation.Merging;
 using Remotion.Validation.MetaValidation;
 using Remotion.Validation.Providers;
+using LogManager = log4net.LogManager;
 
 namespace Remotion.Validation.IntegrationTests
 {
@@ -63,7 +64,8 @@ namespace Remotion.Validation.IntegrationTests
               }),
           new DiagnosticOutputRuleMergeDecorator (
               SafeServiceLocator.Current.GetInstance<IValidationCollectorMerger>(),
-              new FluentValidationValidatorFormatterDecorator (SafeServiceLocator.Current.GetInstance<IValidatorFormatter>())),
+              new FluentValidationValidatorFormatterDecorator (SafeServiceLocator.Current.GetInstance<IValidatorFormatter>()),
+              SafeServiceLocator.Current.GetInstance<ILogManager>()),
           new MetaRulesValidatorFactory (mi => new DefaultSystemMetaValidationRulesProvider (mi)),
           new CompoundValidationRuleMetadataService (
               new IValidationRuleMetadataService[]

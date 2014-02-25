@@ -21,11 +21,13 @@ using System.Linq;
 using FluentValidation;
 using FluentValidation.Internal;
 using FluentValidation.Validators;
-using log4net;
 using log4net.Appender;
 using log4net.Config;
 using log4net.Core;
+using log4net.Repository;
+using log4net.Repository.Hierarchy;
 using NUnit.Framework;
+using Remotion.Logging;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.Merging;
 using Remotion.Validation.Providers;
@@ -36,6 +38,7 @@ using Remotion.Validation.UnitTests.TestDomain;
 using Remotion.Validation.UnitTests.TestDomain.Collectors;
 using Remotion.Validation.UnitTests.TestHelpers;
 using Rhino.Mocks;
+using LogManager = log4net.LogManager;
 
 namespace Remotion.Validation.UnitTests.Merging
 {
@@ -52,23 +55,20 @@ namespace Remotion.Validation.UnitTests.Merging
     public void SetUp ()
     {
       _memoryAppender = new MemoryAppender();
-      BasicConfigurator.Configure (_memoryAppender);
+      var hierarchy = new Hierarchy();
+      ((IBasicRepositoryConfigurator) hierarchy).Configure (_memoryAppender);
+      var logger = hierarchy.GetLogger ("The Name");
+      var log = new Log4NetLog (logger);
+      var logManagerStub = MockRepository.GenerateStub<ILogManager>();
+      logManagerStub.Stub (stub => stub.GetLogger (typeof (DiagnosticOutputRuleMergeDecorator))).Return (log);
+
 
       _logContextStub = MockRepository.GenerateStub<ILogContext>();
       _wrappedMergerStub = MockRepository.GenerateStub<IValidationCollectorMerger>();
       _wrappedMergerStub.Stub (stub => stub.LogContext).Return (_logContextStub);
       _validatorFormatterStub = MockRepository.GenerateStub<IValidatorFormatter>();
 
-      _diagnosticOutputRuleMergeDecorator = new DiagnosticOutputRuleMergeDecorator (_wrappedMergerStub, _validatorFormatterStub);
-    }
-
-    [TearDown]
-    public void TearDown ()
-    {
-      _memoryAppender.Clear();
-      LogManager.ResetConfiguration();
-
-      Assert.That (LogManager.GetLogger (typeof (DiagnosticOutputRuleMergeDecorator)).IsDebugEnabled, Is.False);
+      _diagnosticOutputRuleMergeDecorator = new DiagnosticOutputRuleMergeDecorator (_wrappedMergerStub, _validatorFormatterStub, logManagerStub);
     }
 
     [Test]
