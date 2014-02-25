@@ -52,9 +52,8 @@ namespace Remotion.Validation.Implementation
       return new InvolvedTypeProvider (hierarchyLevelsubSort, validationTypeFilter);
     }
 
-    //TODO AO: add IValidationTypeFilter as ctor argument
-    public InvolvedTypeProvider ()
-        : this (c => c.OrderBy (t => t.Name), new CompoundValidationTypeFilter (Enumerable.Empty<IValidationTypeFilter>()))
+    public InvolvedTypeProvider (IValidationTypeFilter validationTypeFilter)
+        : this (c => c.OrderBy (t => t.Name), validationTypeFilter)
     {
     }
 

@@ -49,6 +49,7 @@ namespace Remotion.Validation.IntegrationTests
       var memberInfoNameResolver = SafeServiceLocator.Current.GetInstance<IMemberInformationNameResolver>();
       var memberInformationGlobalizationService = SafeServiceLocator.Current.GetInstance<IMemberInformationGlobalizationService>();
 
+      //TODO AO: create InvolvedType Provider via IoC (new CompoundValidationTypeFilter (Enumerable.Empty<IValidationTypeFilter>())
       ValidationBuilder = new FluentValidatorBuilder (
           new AggregatingValidationCollectorProvider (
               InvolvedTypeProvider.Create (

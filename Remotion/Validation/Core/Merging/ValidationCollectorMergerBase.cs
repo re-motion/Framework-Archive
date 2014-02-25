@@ -38,6 +38,7 @@ namespace Remotion.Validation.Merging
     protected abstract ILogContext CreateNewLogContext ();
     protected abstract void MergeRules (IEnumerable<ValidationCollectorInfo> collectorGroup, List<IAddingComponentPropertyRule> collectedRules);
 
+    //VCMergeResult
     public IEnumerable<IValidationRule> Merge (IEnumerable<IEnumerable<ValidationCollectorInfo>> validationCollectorInfos)
     {
       ArgumentUtility.CheckNotNull ("validationCollectorInfos", validationCollectorInfos);
