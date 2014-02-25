@@ -29,7 +29,7 @@ namespace Remotion.Validation.Merging
   /// Implements the <see cref="IValidationCollectorMerger"/> interface to merge <see cref="IValidationRule"/>s 
   /// based on the order of precendence established during retrieval of the <see cref="IComponentValidationCollector"/>s.
   /// </summary>
-  /// <threadsafety static="true" instance="false"/>
+  /// <threadsafety static="true" instance="true"/>
   [ImplementationFor (typeof (IValidationCollectorMerger), Lifetime = LifetimeKind.Instance)]
   public class OrderPrecedenceValidationCollectorMerger : ValidationCollectorMergerBase
   {

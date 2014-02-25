@@ -25,24 +25,33 @@ using Remotion.Validation.Mixins.Implementation;
 namespace Remotion.Validation.Mixins.UnitTests.Implementation
 {
   [TestFixture]
-  public class ICompoundTypeValidatorTest
+  public class ICollectorValidatorTest
   {
     private DefaultServiceLocator _serviceLocator;
 
     [SetUp]
     public void SetUp ()
     {
-      _serviceLocator = DefaultServiceLocator.Create();
+      _serviceLocator = DefaultServiceLocator.Create ();
     }
 
     [Test]
     public void GetInstance_Once ()
     {
-      var factory = _serviceLocator.GetInstance<ICompoundCollectorValidator>();
+      var factory = _serviceLocator.GetInstance<ICollectorValidator> ();
 
       Assert.That (factory, Is.TypeOf (typeof (CompoundCollectorValidator)));
-      var compoundGlobalizationServices = ((CompoundCollectorValidator) factory).CollectorValidators.ToArray();
-      Assert.That (compoundGlobalizationServices[0], Is.TypeOf<CheckNoMixinCollectorValidator>());
+      var compoundFactories = ((CompoundCollectorValidator) factory).CollectorValidators.ToArray ();
+      Assert.That (compoundFactories[0], Is.TypeOf<CheckNoMixinCollectorValidator> ());
+    }
+
+    [Test]
+    public void GetInstance_Twice_ReturnsSameInstance ()
+    {
+      var factory1 = _serviceLocator.GetInstance<ICollectorValidator> ();
+      var factory2 = _serviceLocator.GetInstance<ICollectorValidator> ();
+
+      Assert.That (factory1, Is.SameAs (factory2));
     }
   }
 }

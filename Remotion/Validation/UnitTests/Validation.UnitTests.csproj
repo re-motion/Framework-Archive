@@ -74,15 +74,14 @@
     <Compile Include="Implementation\CompoundValidatorTest.cs" />
     <Compile Include="Implementation\CompoundValidationRuleMetadataServiceTest.cs" />
     <Compile Include="Implementation\CompoundValidatorBuilderTest.cs" />
+    <Compile Include="Implementation\ICollectorValidatorTest.cs" />
     <Compile Include="Implementation\IValidatedTypeResolverTest.cs" />
     <Compile Include="Implementation\IValidationRuleMetadataServiceTest.cs" />
     <Compile Include="Implementation\IValidatorFormatterTest.cs" />
     <Compile Include="Implementation\NullValidatedTypeResolverTest.cs" />
     <Compile Include="Implementation\GenericTypeAwareValidatedTypeResolverDecoratorTest.cs" />
-    <Compile Include="Implementation\ICompoundTypeValidatorTest.cs" />
     <Compile Include="Implementation\ICompoundValidationTypeFilterTest.cs" />
     <Compile Include="Implementation\IInvolvedTypeProviderTest.cs" />
-    <Compile Include="Implementation\ICollectorTypeValidatorTest.cs" />
     <Compile Include="Implementation\IValidationTypeFilterTest.cs" />
     <Compile Include="Implementation\TypedValidatorDecoratorTest.cs" />
     <Compile Include="Implementation\DefaultLogContextTest.cs" />

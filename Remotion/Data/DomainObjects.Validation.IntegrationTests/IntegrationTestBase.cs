@@ -82,7 +82,7 @@ namespace Remotion.Data.DomainObjects.Validation.IntegrationTests
                       GetValidatorGlobalizationService())
               }),
           memberInfoNameResolver,
-          SafeServiceLocator.Current.GetInstance<ICompoundCollectorValidator>());
+          SafeServiceLocator.Current.GetInstance<ICollectorValidator>());
     }
 
     [TearDown]

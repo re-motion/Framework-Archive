@@ -39,7 +39,8 @@ namespace Remotion.Validation.UnitTests.Implementation
       var factory = _serviceLocator.GetInstance<IValidatorFormatter> ();
 
       Assert.That (factory, Is.Not.Null);
-      Assert.That (factory, Is.TypeOf<DefaultValidatorFormatter> ());
+      Assert.That (factory, Is.TypeOf<FluentValidationValidatorFormatterDecorator> ());
+      Assert.That (((FluentValidationValidatorFormatterDecorator) factory).FallBackValidatorFormatter, Is.TypeOf<DefaultValidatorFormatter>());
     }
 
     [Test]

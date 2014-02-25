@@ -42,7 +42,7 @@ namespace Remotion.Validation.Mixins.UnitTests.Implementation
     private IMetaRuleValidator _metaRuleValidatorMock;
     private IValidationRuleMetadataService _validationRuleGlobalizationServiceMock;
     private IMemberInformationNameResolver _memberInformationNameResolverMock;
-    private ICompoundCollectorValidator _collectorValidatorMock;
+    private ICollectorValidator _collectorValidatorMock;
     private IAddingComponentPropertyMetaValidationRule _metaValidationRule1Stub;
     private IAddingComponentPropertyMetaValidationRule _metaValidationRule2Stub;
     private IAddingComponentPropertyMetaValidationRule _metaValidationRule3Stub;
@@ -69,7 +69,7 @@ namespace Remotion.Validation.Mixins.UnitTests.Implementation
       _metaRuleValidatorMock = MockRepository.GenerateStrictMock<IMetaRuleValidator> ();
       _validationRuleGlobalizationServiceMock = MockRepository.GenerateStrictMock<IValidationRuleMetadataService> ();
       _memberInformationNameResolverMock = MockRepository.GenerateStrictMock<IMemberInformationNameResolver> ();
-      _collectorValidatorMock = MockRepository.GenerateStrictMock<ICompoundCollectorValidator> ();
+      _collectorValidatorMock = MockRepository.GenerateStrictMock<ICollectorValidator> ();
 
       _metaValidationRule1Stub = MockRepository.GenerateStub<IAddingComponentPropertyMetaValidationRule> ();
       _metaValidationRule2Stub = MockRepository.GenerateStub<IAddingComponentPropertyMetaValidationRule> ();

@@ -27,7 +27,7 @@ namespace Remotion.Validation.Mixins.Implementation
   /// Implements the <see cref="ICollectorValidator"/> interface an verifies that the <see cref="IComponentValidationCollector.ValidatedType"/> of an
   /// <see cref="IComponentValidationCollector"/> instance is not a mixin.
   /// </summary>
-  /// <threadsafety static="true" instance="true" /> //TODO AO: annoate all classes
+  /// <threadsafety static="true" instance="true" />
   [ImplementationFor (typeof (ICollectorValidator), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple)]
   public class CheckNoMixinCollectorValidator : ICollectorValidator
   {

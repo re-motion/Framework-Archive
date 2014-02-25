@@ -50,7 +50,7 @@ namespace Remotion.Validation.Implementation
         IMetaRulesValidatorFactory metaRuleValidatorFactory,
         IValidationRuleMetadataService validationRuleGlobalizationService,
         IMemberInformationNameResolver memberInformationNameResolver,
-        ICompoundCollectorValidator collectorValidator)
+        ICollectorValidator collectorValidator)
     {
       ArgumentUtility.CheckNotNull ("validationCollectorProvider", validationCollectorProvider);
       ArgumentUtility.CheckNotNull ("validationCollectorMerger", validationCollectorMerger);

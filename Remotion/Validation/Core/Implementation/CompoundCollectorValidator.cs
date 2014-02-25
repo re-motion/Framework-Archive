@@ -29,8 +29,8 @@ namespace Remotion.Validation.Implementation
   /// is valid.
   /// </summary>
   /// <threadsafety static="true" instance="true" />
-  [ImplementationFor (typeof (ICompoundCollectorValidator), Lifetime = LifetimeKind.Singleton)]
-  public class CompoundCollectorValidator : ICompoundCollectorValidator
+  [ImplementationFor (typeof (ICollectorValidator), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Compound)]
+  public class CompoundCollectorValidator : ICollectorValidator
   {
     private readonly IReadOnlyCollection<ICollectorValidator> _collectorValidators;
 

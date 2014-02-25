@@ -74,7 +74,7 @@ namespace Remotion.Data.DomainObjects.Validation
                   new ValidationRuleGlobalizationService (new DefaultMessageEvaluator(), new NullErrorMessageGlobalizationService())
               }),
           memberInfoNameResolver,
-          SafeServiceLocator.Current.GetInstance<ICompoundCollectorValidator> ());
+          SafeServiceLocator.Current.GetInstance<ICollectorValidator> ());
     }
 
     public IEnumerable<IClientTransactionExtension> CreateClientTransactionExtensions (ClientTransaction clientTransaction)

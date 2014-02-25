@@ -16,6 +16,7 @@
 // 
 
 using System;
+using System.Linq;
 using NUnit.Framework;
 using Remotion.ServiceLocation;
 using Remotion.Validation.Implementation;
@@ -23,22 +24,33 @@ using Remotion.Validation.Implementation;
 namespace Remotion.Validation.UnitTests.Implementation
 {
   [TestFixture]
-  public class ICollectorTypeValidatorTest
+  public class ICollectorValidatorTest
   {
     private DefaultServiceLocator _serviceLocator;
 
     [SetUp]
     public void SetUp ()
     {
-      _serviceLocator = DefaultServiceLocator.Create();
+      _serviceLocator = DefaultServiceLocator.Create ();
     }
 
     [Test]
-    public void GetInstance ()
+    public void GetInstance_Once ()
     {
-      var factory = _serviceLocator.GetAllInstances<ICollectorValidator> ();
+      var factory = _serviceLocator.GetInstance<ICollectorValidator> ();
 
-      Assert.That (factory, Is.Empty);
+      Assert.That (factory, Is.TypeOf (typeof (CompoundCollectorValidator)));
+      var compoundFactories = ((CompoundCollectorValidator) factory).CollectorValidators.ToArray ();
+      Assert.That (compoundFactories, Is.Empty);
+    }
+
+    [Test]
+    public void GetInstance_Twice_ReturnsSameInstance ()
+    {
+      var factory1 = _serviceLocator.GetInstance<ICollectorValidator> ();
+      var factory2 = _serviceLocator.GetInstance<ICollectorValidator> ();
+
+      Assert.That (factory1, Is.SameAs (factory2));
     }
   }
 }
