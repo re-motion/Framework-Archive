@@ -19,29 +19,36 @@ using System;
 using NUnit.Framework;
 using Remotion.ServiceLocation;
 using Remotion.Validation.Implementation;
-using Remotion.Validation.Mixins.Implementation;
 
-namespace Remotion.Validation.Mixins.UnitTests.Implementation
+namespace Remotion.Validation.UnitTests.Implementation
 {
   [TestFixture]
-  public class IInvolvedTypeProviderTest
+  public class IValidationCollectorReflectorTest
   {
     private DefaultServiceLocator _serviceLocator;
 
     [SetUp]
     public void SetUp ()
     {
-      _serviceLocator = DefaultServiceLocator.Create();
+      _serviceLocator = DefaultServiceLocator.Create ();
     }
 
     [Test]
     public void GetInstance ()
     {
-      var factory = _serviceLocator.GetInstance<IInvolvedTypeProvider>();
+      var factory = _serviceLocator.GetInstance<IValidationCollectorReflector> ();
 
       Assert.That (factory, Is.Not.Null);
-      Assert.That (factory, Is.TypeOf (typeof (MixedInvolvedTypeProviderDecorator)));
-      Assert.That (((MixedInvolvedTypeProviderDecorator) factory).InvolvedTypeProvider, Is.TypeOf (typeof (InvolvedTypeProvider)));
+      Assert.That (factory, Is.TypeOf (typeof (DiscoveryServiceBasedValidationCollectorReflector)));
+    }
+
+    [Test]
+    public void GetInstance_Twice_ReturnsSameInstance ()
+    {
+      var factory1 = _serviceLocator.GetInstance<IValidationRuleMetadataService> ();
+      var factory2 = _serviceLocator.GetInstance<IValidationRuleMetadataService> ();
+
+      Assert.That (factory1, Is.SameAs (factory2));
     }
   }
 }

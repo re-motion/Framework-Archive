@@ -17,10 +17,12 @@
 
 using System;
 using FluentValidation.Validators;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 
 namespace Remotion.Validation.Globalization
 {
+  [ImplementationFor (typeof (IErrorMessageGlobalizationService), Lifetime = LifetimeKind.Singleton)]
   public class NullErrorMessageGlobalizationService : IErrorMessageGlobalizationService
   {
     public string GetErrorMessage (IPropertyValidator propertyValidator)

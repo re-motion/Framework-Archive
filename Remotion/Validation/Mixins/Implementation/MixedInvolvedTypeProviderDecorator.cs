@@ -22,7 +22,6 @@ using Remotion.Mixins;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Validation.Implementation;
-using Remotion.Validation.Merging;
 
 namespace Remotion.Validation.Mixins.Implementation
 {
@@ -30,7 +29,7 @@ namespace Remotion.Validation.Mixins.Implementation
   /// <summary>
   /// Implements the <see cref="IInvolvedTypeProvider"/> interface for mixins.
   /// </summary>
-  [ImplementationFor (typeof (IValidationCollectorMerger), RegistrationType = RegistrationType.Decorator)]
+  [ImplementationFor (typeof (IInvolvedTypeProvider), RegistrationType = RegistrationType.Decorator)]
   public class MixedInvolvedTypeProviderDecorator : IInvolvedTypeProvider
   {
     private readonly IInvolvedTypeProvider _involvedTypeProvider;

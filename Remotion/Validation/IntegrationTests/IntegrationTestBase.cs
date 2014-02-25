@@ -20,6 +20,7 @@ using System.Linq;
 using log4net.Appender;
 using log4net.Config;
 using NUnit.Framework;
+using Remotion.Development.UnitTesting;
 using Remotion.Globalization;
 using Remotion.Logging;
 using Remotion.Reflection;
@@ -39,45 +40,31 @@ namespace Remotion.Validation.IntegrationTests
     protected FluentValidatorBuilder ValidationBuilder;
     protected MemoryAppender MemoryAppender;
     protected bool ShowLogOutput;
+    private ServiceLocatorScope _serviceLocatorScope;
 
     [SetUp]
     public virtual void SetUp ()
     {
+      var serviceLocator = DefaultServiceLocator.Create ();
+      serviceLocator.RegisterSingle<IErrorMessageGlobalizationService> (GetValidatorGlobalizationService);
+      _serviceLocatorScope = new ServiceLocatorScope (serviceLocator);
+
       MemoryAppender = new MemoryAppender();
       BasicConfigurator.Configure (MemoryAppender);
-
-      var memberInfoNameResolver = SafeServiceLocator.Current.GetInstance<IMemberInformationNameResolver>();
-      var memberInformationGlobalizationService = SafeServiceLocator.Current.GetInstance<IMemberInformationGlobalizationService>();
-
-      //TODO AO: create InvolvedType Provider via IoC (new CompoundValidationTypeFilter (Enumerable.Empty<IValidationTypeFilter>())
+      
       ValidationBuilder = new FluentValidatorBuilder (
           new AggregatingValidationCollectorProvider (
-              InvolvedTypeProvider.Create (
-                  types => types.OrderBy (t => t.Name),
-                  SafeServiceLocator.Current.GetInstance<IValidationTypeFilter>()),
+              serviceLocator.GetInstance<IInvolvedTypeProvider>(),
               new IValidationCollectorProvider[]
               {
                   new ValidationAttributesBasedCollectorProvider(),
-                  new ApiBasedComponentValidationCollectorProvider (
-                      new DiscoveryServiceBasedValidationCollectorReflector (
-                      new ClassTypeAwareValidatedTypeResolverDecorator (
-                      new GenericTypeAwareValidatedTypeResolverDecorator (SafeServiceLocator.Current.GetInstance<IValidatedTypeResolver>()))))
+                  new ApiBasedComponentValidationCollectorProvider ((serviceLocator.GetInstance<IValidationCollectorReflector>()))
               }),
-          new DiagnosticOutputRuleMergeDecorator (
-              SafeServiceLocator.Current.GetInstance<IValidationCollectorMerger>(),
-              new FluentValidationValidatorFormatterDecorator (SafeServiceLocator.Current.GetInstance<IValidatorFormatter>()),
-              SafeServiceLocator.Current.GetInstance<ILogManager>()),
+          serviceLocator.GetInstance<IValidationCollectorMerger> (),
           new MetaRulesValidatorFactory (mi => new DefaultSystemMetaValidationRulesProvider (mi)),
-          new CompoundValidationRuleMetadataService (
-              new IValidationRuleMetadataService[]
-              {
-                  new PropertyDisplayNameGlobalizationService (memberInformationGlobalizationService),
-                  new ValidationRuleGlobalizationService (
-                      SafeServiceLocator.Current.GetInstance<IDefaultMessageEvaluator>(),
-                      GetValidatorGlobalizationService())
-              }),
-          memberInfoNameResolver,
-          SafeServiceLocator.Current.GetInstance<ICollectorValidator>());
+          serviceLocator.GetInstance<IValidationRuleMetadataService> (),
+          serviceLocator.GetInstance<IMemberInformationNameResolver> (),
+          serviceLocator.GetInstance<ICollectorValidator> ());
     }
 
     [TearDown]
@@ -94,6 +81,7 @@ namespace Remotion.Validation.IntegrationTests
       LogManager.ResetConfiguration();
 
       Assert.That (LogManager.GetLogger (typeof (DiagnosticOutputRuleMergeDecorator)).IsDebugEnabled, Is.False);
+      _serviceLocatorScope.Dispose();
     }
 
     protected virtual IErrorMessageGlobalizationService GetValidatorGlobalizationService ()

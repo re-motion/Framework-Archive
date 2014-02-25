@@ -38,14 +38,7 @@ namespace Remotion.Validation.Globalization.UnitTests
     [Test]
     public void GetInstance ()
     {
-      //TOOD AO: change after new IoC features are integrated
-      var factory = new CompoundValidationRuleMetadataService (new IValidationRuleMetadataService[]
-              {
-                  new PropertyDisplayNameGlobalizationService (SafeServiceLocator.Current.GetInstance<IMemberInformationGlobalizationService>()),
-                  new ValidationRuleGlobalizationService (
-                      SafeServiceLocator.Current.GetInstance<IDefaultMessageEvaluator>(),
-                      new NullErrorMessageGlobalizationService())
-              });
+      var factory = _serviceLocator.GetInstance<IValidationRuleMetadataService>();
 
       Assert.That (factory, Is.Not.Null);
       Assert.That (factory, Is.TypeOf (typeof (CompoundValidationRuleMetadataService)));
@@ -53,6 +46,15 @@ namespace Remotion.Validation.Globalization.UnitTests
       Assert.That (validationRuleGlobalizationServices.Count(), Is.EqualTo(2));
       Assert.That (validationRuleGlobalizationServices[0], Is.TypeOf (typeof (PropertyDisplayNameGlobalizationService)));
       Assert.That (validationRuleGlobalizationServices[1], Is.TypeOf (typeof (ValidationRuleGlobalizationService)));
+    }
+
+    [Test]
+    public void GetInstance_Twice_ReturnsSameInstance ()
+    {
+      var factory1 = _serviceLocator.GetInstance<IValidationRuleMetadataService> ();
+      var factory2 = _serviceLocator.GetInstance<IValidationRuleMetadataService> ();
+
+      Assert.That (factory1, Is.SameAs (factory2));
     }
   }
 }

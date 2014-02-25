@@ -25,6 +25,7 @@ using FluentValidation.Internal;
 using FluentValidation.Validators;
 using Remotion.Logging;
 using Remotion.Reflection;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.MetaValidation;
@@ -35,6 +36,7 @@ namespace Remotion.Validation.Merging
   /// <summary>
   /// Implements the <see cref="IValidationCollectorMerger"/> interface as a decorator which logs the merge operation via the application default logging infrastructure.
   /// </summary>
+  [ImplementationFor (typeof (IValidationCollectorMerger), Position = 0, RegistrationType = RegistrationType.Decorator)]
   public class DiagnosticOutputRuleMergeDecorator : IValidationCollectorMerger
   {
     private readonly ILog _logger;

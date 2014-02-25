@@ -21,6 +21,7 @@ using System.ComponentModel.Design;
 using System.Linq;
 using System.Threading;
 using Remotion.Reflection.TypeDiscovery;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Validation.Attributes;
 
@@ -31,11 +32,20 @@ namespace Remotion.Validation.Implementation
   /// of the <see cref="IComponentValidationCollector"/> interface. The <see cref="IValidatedTypeResolver"/> is the used to associate the 
   /// collector types to the validated type. 
   /// </summary>
+  [ImplementationFor (typeof (IValidationCollectorReflector), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Single)]
   public class DiscoveryServiceBasedValidationCollectorReflector : IValidationCollectorReflector
   {
     private readonly ITypeDiscoveryService _typeDiscoveryService;
     private readonly Lazy<ILookup<Type, Type>> _validationCollectors;
     private readonly IValidatedTypeResolver _validatedTypeResolver;
+
+    public static IValidationCollectorReflector Create (ITypeDiscoveryService typeDiscoveryService, IValidatedTypeResolver validatedTypeResolver)
+    {
+      ArgumentUtility.CheckNotNull ("typeDiscoveryService", typeDiscoveryService);
+      ArgumentUtility.CheckNotNull ("validatedTypeResolver", validatedTypeResolver);
+
+      return new DiscoveryServiceBasedValidationCollectorReflector (typeDiscoveryService, validatedTypeResolver);
+    }
 
     public DiscoveryServiceBasedValidationCollectorReflector (IValidatedTypeResolver validatedTypeResolver)
         : this (ContextAwareTypeDiscoveryUtility.GetTypeDiscoveryService(), validatedTypeResolver)
@@ -47,7 +57,7 @@ namespace Remotion.Validation.Implementation
       get { return _validatedTypeResolver; }
     }
 
-    public DiscoveryServiceBasedValidationCollectorReflector (
+    protected DiscoveryServiceBasedValidationCollectorReflector (
         ITypeDiscoveryService typeDiscoveryService,
         IValidatedTypeResolver validatedTypeResolver)
     {

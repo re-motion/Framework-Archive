@@ -19,11 +19,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using FluentValidation;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 
 namespace Remotion.Validation.Implementation
 {
-  //TODO AO: doc
+  //TODO MK: doc
+  [ImplementationFor (typeof (IValidationRuleMetadataService), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Compound)]
   public class CompoundValidationRuleMetadataService : IValidationRuleMetadataService
   {
     private readonly IValidationRuleMetadataService[] _validationRuleGlobalizationServices;

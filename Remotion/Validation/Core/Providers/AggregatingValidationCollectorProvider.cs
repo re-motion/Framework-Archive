@@ -27,7 +27,8 @@ namespace Remotion.Validation.Providers
   /// Use this class to retrieve the combined <see cref="IComponentValidationCollector"/>s for a <see cref="Type"/> 
   /// provided by the individual <see cref="IValidationCollectorProvider"/>s registered with the application's IoC container.
   /// </summary>
-  // TODO AO: IoC registrationKind = Compound
+  //TODO AO: IoC
+  //[ImplementationFor (typeof (IValidationCollectorProvider), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Compound)]
   public class AggregatingValidationCollectorProvider : IValidationCollectorProvider
   {
     private readonly IInvolvedTypeProvider _involvedTypeProvider;

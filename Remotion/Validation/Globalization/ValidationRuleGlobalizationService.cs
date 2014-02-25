@@ -17,11 +17,13 @@
 
 using System;
 using FluentValidation;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Validation.Implementation;
 
 namespace Remotion.Validation.Globalization
 {
+  [ImplementationFor (typeof (IValidationRuleMetadataService), Lifetime = LifetimeKind.Singleton, Position = 1, RegistrationType = RegistrationType.Multiple)]
   public class ValidationRuleGlobalizationService : IValidationRuleMetadataService
   {
     private readonly IDefaultMessageEvaluator _defaultMessageEvaluator;

@@ -37,12 +37,20 @@ namespace Remotion.Validation.UnitTests.Implementation
     [Test]
     public void GetInstance ()
     {
-      //TOOD AO: change after new IoC features are integrated
-      var factory = new CompoundValidationRuleMetadataService (new IValidationRuleMetadataService[0]);
+      var factory = _serviceLocator.GetInstance<IValidationRuleMetadataService>();
 
       Assert.That (factory, Is.Not.Null);
       Assert.That (factory, Is.TypeOf (typeof (CompoundValidationRuleMetadataService)));
       Assert.That (((CompoundValidationRuleMetadataService) factory).ValidationRuleGlobalizationServices.Any(), Is.False);
+    }
+
+    [Test]
+    public void GetInstance_Twice_ReturnsSameInstance ()
+    {
+      var factory1 = _serviceLocator.GetInstance<IValidationRuleMetadataService> ();
+      var factory2 = _serviceLocator.GetInstance<IValidationRuleMetadataService> ();
+
+      Assert.That (factory1, Is.SameAs (factory2));
     }
   }
 }

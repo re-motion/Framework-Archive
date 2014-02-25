@@ -19,12 +19,13 @@ using System;
 using FluentValidation;
 using FluentValidation.Internal;
 using Remotion.Globalization;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Validation.Implementation;
 
 namespace Remotion.Validation.Globalization
 {
-  //move to remotion.validation.globaliyation.dll
+  [ImplementationFor (typeof (IValidationRuleMetadataService), Lifetime = LifetimeKind.Singleton, Position = 0, RegistrationType = RegistrationType.Multiple)]
   public class PropertyDisplayNameGlobalizationService : IValidationRuleMetadataService
   {
     private readonly IMemberInformationGlobalizationService _globalizationService;

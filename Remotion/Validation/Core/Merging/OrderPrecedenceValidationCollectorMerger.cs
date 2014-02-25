@@ -30,7 +30,7 @@ namespace Remotion.Validation.Merging
   /// based on the order of precendence established during retrieval of the <see cref="IComponentValidationCollector"/>s.
   /// </summary>
   /// <threadsafety static="true" instance="true"/>
-  [ImplementationFor (typeof (IValidationCollectorMerger), Lifetime = LifetimeKind.Instance)]
+  [ImplementationFor (typeof (IValidationCollectorMerger), Lifetime = LifetimeKind.Singleton)]
   public class OrderPrecedenceValidationCollectorMerger : ValidationCollectorMergerBase
   {
     private readonly IPropertyValidatorExtractorFactory _propertyValidatorExtractorFactory;

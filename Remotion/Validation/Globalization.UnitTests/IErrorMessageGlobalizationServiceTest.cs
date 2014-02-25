@@ -18,30 +18,36 @@
 using System;
 using NUnit.Framework;
 using Remotion.ServiceLocation;
-using Remotion.Validation.Implementation;
-using Remotion.Validation.Mixins.Implementation;
 
-namespace Remotion.Validation.Mixins.UnitTests.Implementation
+namespace Remotion.Validation.Globalization.UnitTests
 {
   [TestFixture]
-  public class IInvolvedTypeProviderTest
+  public class IErrorMessageGlobalizationServiceTest
   {
     private DefaultServiceLocator _serviceLocator;
 
     [SetUp]
     public void SetUp ()
     {
-      _serviceLocator = DefaultServiceLocator.Create();
+      _serviceLocator = DefaultServiceLocator.Create ();
     }
 
     [Test]
-    public void GetInstance ()
+    public void GetInstance_Once ()
     {
-      var factory = _serviceLocator.GetInstance<IInvolvedTypeProvider>();
+      var factory = _serviceLocator.GetInstance<IErrorMessageGlobalizationService> ();
 
       Assert.That (factory, Is.Not.Null);
-      Assert.That (factory, Is.TypeOf (typeof (MixedInvolvedTypeProviderDecorator)));
-      Assert.That (((MixedInvolvedTypeProviderDecorator) factory).InvolvedTypeProvider, Is.TypeOf (typeof (InvolvedTypeProvider)));
+      Assert.That (factory, Is.TypeOf<NullErrorMessageGlobalizationService> ());
+    }
+
+    [Test]
+    public void GetInstance_Twice_ReturnsSameInstance ()
+    {
+      var factory1 = _serviceLocator.GetInstance<IErrorMessageGlobalizationService> ();
+      var factory2 = _serviceLocator.GetInstance<IErrorMessageGlobalizationService> ();
+
+      Assert.That (factory1, Is.SameAs (factory2));
     }
   }
 }

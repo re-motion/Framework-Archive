@@ -17,7 +17,6 @@
 
 using System;
 using NUnit.Framework;
-using Remotion.Logging;
 using Remotion.ServiceLocation;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.Merging;
@@ -38,11 +37,7 @@ namespace Remotion.Validation.UnitTests.Merging
     [Test]
     public void GetInstance_Once ()
     {
-      //TOOD AO: change after new IoC features are integrated
-      var factory = new DiagnosticOutputRuleMergeDecorator (
-          SafeServiceLocator.Current.GetInstance<IValidationCollectorMerger>(),
-          new FluentValidationValidatorFormatterDecorator (SafeServiceLocator.Current.GetInstance<IValidatorFormatter>()),
-          SafeServiceLocator.Current.GetInstance<ILogManager>());
+      var factory = _serviceLocator.GetInstance<IValidationCollectorMerger>();
 
       Assert.That (factory, Is.Not.Null);
       Assert.That (factory, Is.TypeOf<DiagnosticOutputRuleMergeDecorator> ());
@@ -51,12 +46,12 @@ namespace Remotion.Validation.UnitTests.Merging
     }
 
     [Test]
-    public void GetInstance_Twice_ReturnsNotSameInstance ()
+    public void GetInstance_Twice_ReturnsSameInstance ()
     {
       var factory1 = _serviceLocator.GetInstance<IValidationCollectorMerger> ();
       var factory2 = _serviceLocator.GetInstance<IValidationCollectorMerger> ();
 
-      Assert.That (factory1, Is.Not.SameAs (factory2));
+      Assert.That (factory1, Is.SameAs (factory2));
     }
   }
 }
