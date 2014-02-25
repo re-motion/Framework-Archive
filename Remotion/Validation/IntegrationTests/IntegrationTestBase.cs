@@ -61,7 +61,7 @@ namespace Remotion.Validation.IntegrationTests
                   new ApiBasedComponentValidationCollectorProvider ((serviceLocator.GetInstance<IValidationCollectorReflector>()))
               }),
           serviceLocator.GetInstance<IValidationCollectorMerger> (),
-          new MetaRulesValidatorFactory (mi => new DefaultSystemMetaValidationRulesProvider (mi)),
+          serviceLocator.GetInstance<IMetaRulesValidatorFactory>(),
           serviceLocator.GetInstance<IValidationRuleMetadataService> (),
           serviceLocator.GetInstance<IMemberInformationNameResolver> (),
           serviceLocator.GetInstance<ICollectorValidator> ());

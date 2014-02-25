@@ -110,9 +110,11 @@
     <Compile Include="Implementation\ValidationCollectorInfoTest.cs" />
     <Compile Include="Implementation\ValidationRuleStub.cs" />
     <Compile Include="Implementation\ValidatorRegistrationWithContextTest.cs" />
+    <Compile Include="MetaValidation\DefaultSystemMetaValidationRulesProviderFactoryTest.cs" />
     <Compile Include="MetaValidation\DefaultSystemMetaValidationRulesProviderTest.cs" />
     <Compile Include="MetaValidation\DelegateMetaValidationRuleTest.cs" />
     <Compile Include="MetaValidation\IMetaRulesValidatorFactoryTest.cs" />
+    <Compile Include="MetaValidation\ISystemMetaValidationRulesProviderFactoryTest.cs" />
     <Compile Include="MetaValidation\MetaRulesValidatorFactoryTest.cs" />
     <Compile Include="MetaValidation\MetaRulesValidatorTest.cs" />
     <Compile Include="MetaValidation\Rules\Custom\AnyRuleAppliedMetaValidationRuleTest.cs" />

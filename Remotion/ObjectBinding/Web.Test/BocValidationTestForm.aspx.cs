@@ -180,7 +180,7 @@ namespace OBWTest
               SafeServiceLocator.Current.GetInstance<IValidationCollectorMerger>(),
               new FluentValidationValidatorFormatterDecorator (SafeServiceLocator.Current.GetInstance<IValidatorFormatter>()),
               SafeServiceLocator.Current.GetInstance<ILogManager>()),
-            new MetaRulesValidatorFactory (mi => new DefaultSystemMetaValidationRulesProvider (mi)),
+            SafeServiceLocator.Current.GetInstance<IMetaRulesValidatorFactory>(),
             new CompoundValidationRuleMetadataService (
                 new IValidationRuleMetadataService[]
                 {

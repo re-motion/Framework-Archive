@@ -30,11 +30,11 @@ namespace Remotion.Validation.MetaValidation
   public class MetaRulesValidator : IMetaRuleValidator
   {
     private readonly IAddingComponentPropertyMetaValidationRule[] _addedPropertyMetaValidationRules;
-    private readonly Func<IPropertyInformation, ISystemMetaValidationRulesProvider> _systemMetaValidationRulesProviderFactory;
+    private readonly ISystemMetaValidationRulesProviderFactory _systemMetaValidationRulesProviderFactory;
 
     public MetaRulesValidator (
         IAddingComponentPropertyMetaValidationRule[] addingComponentPropertyMetaValidationRules,
-        Func<IPropertyInformation, ISystemMetaValidationRulesProvider> systemMetaValidationRulesProviderFactory)
+        ISystemMetaValidationRulesProviderFactory systemMetaValidationRulesProviderFactory)
     {
       ArgumentUtility.CheckNotNull ("addingComponentPropertyMetaValidationRules", addingComponentPropertyMetaValidationRules);
       ArgumentUtility.CheckNotNull ("systemMetaValidationRulesProviderFactory", systemMetaValidationRulesProviderFactory);
@@ -60,7 +60,7 @@ namespace Remotion.Validation.MetaValidation
     private IEnumerable<IMetaValidationRule> GetAllMetaValidationRules (IGrouping<IPropertyInformation, IAddingComponentPropertyMetaValidationRule> propertyRuleGroup)
     {
       return
-          _systemMetaValidationRulesProviderFactory (propertyRuleGroup.Key)
+          _systemMetaValidationRulesProviderFactory.Create (propertyRuleGroup.Key)
               .GetSystemMetaValidationRules()
               .Concat (propertyRuleGroup.SelectMany (pr => pr.MetaValidationRules));
     }

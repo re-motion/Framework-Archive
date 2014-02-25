@@ -57,7 +57,7 @@ namespace Remotion.Validation.Mixins.UnitTests.Implementation
                                       };
       _typeDescoveryServiceStub.Stub (stub => stub.GetTypes (typeof (IComponentValidationCollector), true)).Return (appliedWithAttributeTypes);
 
-      var typeCollectorProvider = new DiscoveryServiceBasedValidationCollectorReflector (
+      var typeCollectorProvider = DiscoveryServiceBasedValidationCollectorReflector.Create (
           _typeDescoveryServiceStub,
           new MixinTypeAwareValidatedTypeResolverDecorator (
               new ClassTypeAwareValidatedTypeResolverDecorator (

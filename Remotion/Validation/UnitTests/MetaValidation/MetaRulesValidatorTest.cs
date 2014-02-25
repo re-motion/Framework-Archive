@@ -29,7 +29,6 @@ using Remotion.Validation.Rules;
 using Remotion.Validation.UnitTests.TestDomain;
 using Remotion.Validation.UnitTests.TestDomain.Collectors;
 using Remotion.Validation.UnitTests.TestHelpers;
-using Remotion.Validation.Utilities;
 using Rhino.Mocks;
 
 namespace Remotion.Validation.UnitTests.MetaValidation
@@ -49,6 +48,7 @@ namespace Remotion.Validation.UnitTests.MetaValidation
     private IPropertyValidator _propertyValidatorStub4;
     private IPropertyValidator _propertyValidatorStub5;
     private ISystemMetaValidationRulesProvider _systemMetaRulesProviderStub;
+    private ISystemMetaValidationRulesProviderFactory _systemMetaRulesProviderFactoryStub;
 
     [SetUp]
     public void SetUp ()
@@ -70,12 +70,13 @@ namespace Remotion.Validation.UnitTests.MetaValidation
       _propertyValidatorStub4 = MockRepository.GenerateStub<IPropertyValidator>();
       _propertyValidatorStub5 = MockRepository.GenerateStub<IPropertyValidator>();
 
+      _systemMetaRulesProviderFactoryStub = MockRepository.GenerateStub<ISystemMetaValidationRulesProviderFactory> ();
       _systemMetaRulesProviderStub = MockRepository.GenerateStub<ISystemMetaValidationRulesProvider>();
 
       _validator =
           new MetaRulesValidator (
               new[] { _propertyMetaValidationRuleStub1, _propertyMetaValidationRuleStub2, _propertyMetaValidationRuleStub3 },
-              mi => _systemMetaRulesProviderStub);
+              _systemMetaRulesProviderFactoryStub);
     }
 
     [Test]
@@ -98,6 +99,7 @@ namespace Remotion.Validation.UnitTests.MetaValidation
       var systemMetaValidationRuleMock1 = MockRepository.GenerateStrictMock<IMetaValidationRule>();
       var systemMetaValidationRuleMock2 = MockRepository.GenerateStrictMock<IMetaValidationRule>();
 
+      _systemMetaRulesProviderFactoryStub.Stub (stub => stub.Create (Arg<IPropertyInformation>.Is.Anything)).Return (_systemMetaRulesProviderStub);
       _systemMetaRulesProviderStub.Stub (stub => stub.GetSystemMetaValidationRules())
           .Return (new[] { systemMetaValidationRuleMock1, systemMetaValidationRuleMock2 });
 

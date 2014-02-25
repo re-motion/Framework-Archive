@@ -17,7 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Remotion.Reflection;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Validation.Rules;
 
@@ -26,11 +26,12 @@ namespace Remotion.Validation.MetaValidation
   /// <summary>
   /// Default implementation of the <see cref="IMetaRulesValidatorFactory"/> interface.
   /// </summary>
+  [ImplementationFor (typeof (IMetaRulesValidatorFactory), Lifetime = LifetimeKind.Singleton)]
   public class MetaRulesValidatorFactory : IMetaRulesValidatorFactory
   {
-    private readonly Func<IPropertyInformation, ISystemMetaValidationRulesProvider> _systemMetaValidationRulesProviderFactory;
+    private readonly ISystemMetaValidationRulesProviderFactory _systemMetaValidationRulesProviderFactory;
 
-    public MetaRulesValidatorFactory (Func<IPropertyInformation, ISystemMetaValidationRulesProvider> systemMetaValidationRulesProviderFactory)
+    public MetaRulesValidatorFactory (ISystemMetaValidationRulesProviderFactory systemMetaValidationRulesProviderFactory)
     {
       ArgumentUtility.CheckNotNull ("systemMetaValidationRulesProviderFactory", systemMetaValidationRulesProviderFactory);
 

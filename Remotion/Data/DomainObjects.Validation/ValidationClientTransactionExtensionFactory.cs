@@ -66,7 +66,7 @@ namespace Remotion.Data.DomainObjects.Validation
               new OrderPrecedenceValidationCollectorMerger (new PropertyValidatorExtractorFactory ()),
               new FluentValidationValidatorFormatterDecorator (new DefaultValidatorFormatter ()),
               SafeServiceLocator.Current.GetInstance<ILogManager>()),
-          new MetaRulesValidatorFactory (mi => new DefaultSystemMetaValidationRulesProvider (mi)),
+          SafeServiceLocator.Current.GetInstance<IMetaRulesValidatorFactory>(),
           new CompoundValidationRuleMetadataService (
               new IValidationRuleMetadataService[]
               {

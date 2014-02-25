@@ -23,30 +23,30 @@ using Remotion.Validation.MetaValidation;
 namespace Remotion.Validation.UnitTests.MetaValidation
 {
   [TestFixture]
-  public class IMetaRulesValidatorFactoryTest
+  public class ISystemMetaValidationRulesProviderFactoryTest
   {
     private DefaultServiceLocator _serviceLocator;
 
     [SetUp]
     public void SetUp ()
     {
-      _serviceLocator = DefaultServiceLocator.Create();
+      _serviceLocator = DefaultServiceLocator.Create ();
     }
 
     [Test]
     public void GetInstance ()
     {
-      var factory = _serviceLocator.GetInstance<IMetaRulesValidatorFactory>();
+      var factory = _serviceLocator.GetInstance<ISystemMetaValidationRulesProviderFactory>();
 
       Assert.That (factory, Is.Not.Null);
-      Assert.That (factory, Is.TypeOf (typeof (MetaRulesValidatorFactory)));
+      Assert.That (factory, Is.TypeOf (typeof (DefaultSystemMetaValidationRulesProviderFactory)));
     }
 
     [Test]
     public void GetInstance_Twice_ReturnsSameInstance ()
     {
-      var factory1 = _serviceLocator.GetInstance<IMetaRulesValidatorFactory> ();
-      var factory2 = _serviceLocator.GetInstance<IMetaRulesValidatorFactory> ();
+      var factory1 = _serviceLocator.GetInstance<ISystemMetaValidationRulesProviderFactory> ();
+      var factory2 = _serviceLocator.GetInstance<ISystemMetaValidationRulesProviderFactory> ();
       
       Assert.That (factory1, Is.SameAs(factory2));
     } 

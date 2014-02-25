@@ -17,38 +17,32 @@
 
 using System;
 using NUnit.Framework;
-using Remotion.ServiceLocation;
+using Remotion.Reflection;
 using Remotion.Validation.MetaValidation;
+using Rhino.Mocks;
 
 namespace Remotion.Validation.UnitTests.MetaValidation
 {
   [TestFixture]
-  public class IMetaRulesValidatorFactoryTest
+  public class DefaultSystemMetaValidationRulesProviderFactoryTest
   {
-    private DefaultServiceLocator _serviceLocator;
+    private DefaultSystemMetaValidationRulesProviderFactory _factory;
 
     [SetUp]
     public void SetUp ()
     {
-      _serviceLocator = DefaultServiceLocator.Create();
+      _factory = new DefaultSystemMetaValidationRulesProviderFactory();
     }
 
     [Test]
-    public void GetInstance ()
+    public void Create ()
     {
-      var factory = _serviceLocator.GetInstance<IMetaRulesValidatorFactory>();
+      var fakePropertyInformation = MockRepository.GenerateStub<IPropertyInformation>();
 
-      Assert.That (factory, Is.Not.Null);
-      Assert.That (factory, Is.TypeOf (typeof (MetaRulesValidatorFactory)));
+      var result = _factory.Create (fakePropertyInformation);
+
+      Assert.That (result, Is.TypeOf<DefaultSystemMetaValidationRulesProvider>());
+      Assert.That (((DefaultSystemMetaValidationRulesProvider) result).PropertyInformation, Is.SameAs (fakePropertyInformation));
     }
-
-    [Test]
-    public void GetInstance_Twice_ReturnsSameInstance ()
-    {
-      var factory1 = _serviceLocator.GetInstance<IMetaRulesValidatorFactory> ();
-      var factory2 = _serviceLocator.GetInstance<IMetaRulesValidatorFactory> ();
-      
-      Assert.That (factory1, Is.SameAs(factory2));
-    } 
   }
 }
