@@ -40,6 +40,7 @@ namespace Remotion.Data.DomainObjects.Validation
     public ValidationClientTransactionExtensionFactory ()
     {
       //TOOD AO: use IoC
+      // TODO AO: Drop Validation.Globalization dependency after IoC
       var memberInfoNameResolver = SafeServiceLocator.Current.GetInstance<IMemberInformationNameResolver> ();
       var memberInformationGlobalizationService = SafeServiceLocator.Current.GetInstance<IMemberInformationGlobalizationService> ();
       var compoundValidationTypeFilter = SafeServiceLocator.Current.GetInstance<ICompoundValidationTypeFilter> ();

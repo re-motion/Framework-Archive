@@ -322,9 +322,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Validation.Core", "Remotion
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Validation.UnitTests", "Remotion\Validation\UnitTests\Validation.UnitTests.csproj", "{3CAFF072-4461-4F1A-A07F-4DEA68D0FA7F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Validation.Mixins", "Remotion\Validation\Validation.Mixins\Validation.Mixins.csproj", "{B34D9485-39D7-4F73-805C-39A65059001E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Validation.Mixins", "Remotion\Validation\Mixins\Validation.Mixins.csproj", "{B34D9485-39D7-4F73-805C-39A65059001E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Validation.IntegrationTests", "Remotion\Validation\Validation.IntegrationTests\Validation.IntegrationTests.csproj", "{039B28BB-042E-4CF8-A59E-6F717F9251C0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Validation.IntegrationTests", "Remotion\Validation\IntegrationTests\Validation.IntegrationTests.csproj", "{039B28BB-042E-4CF8-A59E-6F717F9251C0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.DomainObjects.Validation", "Remotion\Data\DomainObjects.Validation\Data.DomainObjects.Validation.csproj", "{04FA07E3-B868-4846-A5E2-4D375F607C22}"
 EndProject
@@ -332,13 +332,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.DomainObjects.Validati
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.DomainObjects.Validation.IntegrationTests", "Remotion\Data\DomainObjects.Validation.IntegrationTests\Data.DomainObjects.Validation.IntegrationTests.csproj", "{4DBB4365-35D6-4B7E-B329-767623029FF3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Validation.Mixins.IntegrationTests", "Remotion\Validation\Validation.Mixins.IntegrationTests\Validation.Mixins.IntegrationTests.csproj", "{A51D86EA-38D3-4D1D-A623-82C01C9296DA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Validation.Mixins.IntegrationTests", "Remotion\Validation\Mixins.IntegrationTests\Validation.Mixins.IntegrationTests.csproj", "{A51D86EA-38D3-4D1D-A623-82C01C9296DA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Validation.Mixins.UnitTests", "Remotion\Validation\Validation.Mixins.UnitTests\Validation.Mixins.UnitTests.csproj", "{94B2CB16-1706-4D38-B25F-5DB51E521BD2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Validation.Mixins.UnitTests", "Remotion\Validation\Mixins.UnitTests\Validation.Mixins.UnitTests.csproj", "{94B2CB16-1706-4D38-B25F-5DB51E521BD2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Validation.Globalization", "Remotion\Validation\Validation.Globalization\Validation.Globalization.csproj", "{30C3AFA1-D7B3-4A2A-B314-19282A2E312D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Validation.Globalization", "Remotion\Validation\Globalization\Validation.Globalization.csproj", "{30C3AFA1-D7B3-4A2A-B314-19282A2E312D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Validation.Globalization.UnitTests", "Remotion\Validation\Validation.Globalization.UnitTests\Validation.Globalization.UnitTests.csproj", "{31F1296C-15A5-45E4-A238-55BB7F6362E3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Validation.Globalization.UnitTests", "Remotion\Validation\Globalization.UnitTests\Validation.Globalization.UnitTests.csproj", "{31F1296C-15A5-45E4-A238-55BB7F6362E3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
