@@ -18,7 +18,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Remotion.Collections;
 using Remotion.Utilities;
 
 namespace Remotion.Validation.Utilities
@@ -30,13 +29,13 @@ namespace Remotion.Validation.Utilities
   /// Topology sorting can be used to sort assemblies according to their references, 
   /// or types according to their inheritance structure.
   /// </remarks>
-  //TODO MK: Review
+  //TODO RM-5906: Review
   public static class TopologySortExtensions
   {
     private class Node<T>
     {
       private readonly Func<T, IEnumerable<T>> _getDependencies;
-      private Set<Node<T>> _dependencies;
+      private HashSet<Node<T>> _dependencies;
 
       public Node (T content, Func<T, IEnumerable<T>> getDependencies, bool included)
       {
@@ -64,7 +63,7 @@ namespace Remotion.Validation.Utilities
 
       public void CalculateDependencies (Dictionary<object, Node<T>> nodes, TopologySortMissingDependencyBehavior missingDependencies)
       {
-        _dependencies = new Set<Node<T>>();
+        _dependencies = new HashSet<Node<T>>();
         foreach (T dependency in _getDependencies (Content))
         {
           Node<T> node;
