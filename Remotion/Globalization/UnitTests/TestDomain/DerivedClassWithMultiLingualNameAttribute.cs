@@ -16,7 +16,7 @@
 // 
 using System;
 
-namespace Remotion.Globalization.UnitTests.TestDomain.MultiLingualNameBased
+namespace Remotion.Globalization.UnitTests.TestDomain
 {
   [MultiLingualName ("Invariant Derived Type Name", "")]
   [MultiLingualName ("de-AT Derived Type Name", "de-AT")]

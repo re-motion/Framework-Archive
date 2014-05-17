@@ -19,7 +19,7 @@ using System;
 
 namespace Remotion.Globalization.UnitTests.TestDomain
 {
-  public class InheritedClassWithoutMultiLingualResourcesAttributes : InheritedClassWithMultiLingualResourcesAttributes
+  public class DerivedClassWithoutMultiLingualResourcesAttributes : DerivedClassWithMultiLingualResourcesAttributes
   {
   }
 }
