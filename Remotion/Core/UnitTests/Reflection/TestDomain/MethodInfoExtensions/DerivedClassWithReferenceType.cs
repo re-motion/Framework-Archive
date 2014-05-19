@@ -19,20 +19,19 @@ using System;
 
 namespace Remotion.UnitTests.Reflection.TestDomain.MethodInfoExtensions
 {
-  public abstract class DerivedOfDerivedClassWithDifferentProperties : DerivedClassWithDifferentProperties
+  public class DerivedClassWithReferenceType<T> : ClassWithReferenceType<T>
+      where T: class
   {
-    public new static int GetStaticInt32()
+    public override T ImplicitInterfaceScalar
     {
-      return 0;
-    }
-    public override int GetInt32()
-    {
-      return 0;
-    }
-
-    protected override int GetProtectedInt32()
-    {
-      return 0;
+      get
+      {
+        return base.ImplicitInterfaceScalar;
+      }
+      set
+      {
+        base.ImplicitInterfaceScalar = value;
+      }
     }
   }
 }

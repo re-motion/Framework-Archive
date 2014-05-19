@@ -19,25 +19,14 @@ using System;
 
 namespace Remotion.UnitTests.Reflection.TestDomain.MethodInfoExtensions
 {
-  public abstract class ClassWithDifferentProperties
+  public abstract class DerivedClassWithDifferentMethods : ClassWithDifferentMethods
   {
-    public static int GetStaticInt32 ()
+    public override int GetInt32()
     {
       return 0;
     }
 
-    private static int GetPrivateStaticInt32()
-    {
-      return 0;
-    }
-
-    public abstract int GetInt32 ();
-
-    protected abstract int GetProtectedInt32();
-
-    public virtual string GetString()
-    {
-      return "";
-    }
+    public abstract string GetOtherString ();
+    public new abstract string GetString ();
   }
 }
