@@ -16,25 +16,18 @@
 // 
 
 using System;
-using Remotion.Development.UnitTesting;
 
-namespace Remotion.UnitTests.Utilities.ReflectionUtilityTests.TestDomain
+namespace Remotion.UnitTests.Reflection.TestDomain.PropertyInfoExtensions
 {
-  public abstract class ClassWithDifferentProperties
+  public abstract class DerivedOpenGenericClassWithDifferentProperties<T> : GenericClassWithDifferentProperties<T>
   {
-    public static int StaticInt32 { get; set; }
-    private static int PrivateStaticInt32 { get; set; }
-
-    public abstract int Int32 { get; set; }
-    protected abstract int ProtectedInt32 { get; set; }
-
-    public abstract int this [int p] { get; set; }
-    public abstract int this [string p] { get; set; }
-
-    public virtual string String
+    public override T AbstractT
     {
-      get { return ""; }
-      set { Dev.Null = value; }
+      get { return default(T); }
+      set { }
     }
+
+    public abstract T OtherVirtualT { get; set; }
+    public new abstract T VirtualT { get; set; }
   }
 }

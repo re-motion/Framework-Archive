@@ -17,7 +17,7 @@
 
 using System;
 
-namespace Remotion.UnitTests.Utilities.ReflectionUtilityTests.TestDomain
+namespace Remotion.UnitTests.Reflection.TestDomain.PropertyInfoExtensions
 {
   public abstract class DerivedOfDerivedClassWithDifferentProperties : DerivedClassWithDifferentProperties
   {
