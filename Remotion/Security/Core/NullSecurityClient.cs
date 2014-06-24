@@ -34,7 +34,7 @@ namespace Remotion.Security
             new PermissionReflector(),
             new NullPrincipalProvider(),
             FunctionalSecurityStrategy.CreateWithCustomSecurityStrategy (
-                new SecurityStrategy (new NullCache<ISecurityPrincipal, AccessType[]>(), new NullGlobalAccessTypeCache())),
+                new SecurityStrategy (new NullCache<ISecurityPrincipal, AccessType[]>())),
             new NullMemberResolver())
     {
     }

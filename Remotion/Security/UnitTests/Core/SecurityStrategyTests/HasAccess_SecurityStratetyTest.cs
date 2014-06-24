@@ -20,7 +20,6 @@ using NUnit.Framework;
 using Remotion.Collections;
 using Remotion.Development.UnitTesting;
 using Remotion.Security.UnitTests.Core.SampleDomain;
-using Remotion.ServiceLocation;
 using Rhino.Mocks;
 
 namespace Remotion.Security.UnitTests.Core.SecurityStrategyTests
@@ -47,7 +46,7 @@ namespace Remotion.Security.UnitTests.Core.SecurityStrategyTests
       _context = SecurityContext.Create (typeof (SecurableObject), "owner", "group", "tenant", new Dictionary<string, Enum>(), new Enum[0]);
       SetupResult.For (_stubContextFactory.CreateSecurityContext()).Return (_context);
 
-      _strategy = new SecurityStrategy (new NullCache<ISecurityPrincipal, AccessType[]>(), new NullGlobalAccessTypeCache());
+      _strategy = new SecurityStrategy (new NullCache<ISecurityPrincipal, AccessType[]>());
     }
 
     [Test]
@@ -165,16 +164,15 @@ namespace Remotion.Security.UnitTests.Core.SecurityStrategyTests
       Expect.Call (_mockSecurityProvider.GetAccess (_context, _userStub)).Return (null);
       _mocks.ReplayAll();
 
-      bool hasAccess = _strategy.HasAccess (
-          _stubContextFactory,
-          _mockSecurityProvider,
-          _userStub,
-          AccessType.Get (GeneralAccessTypes.Find),
-          AccessType.Get (GeneralAccessTypes.Edit),
-          AccessType.Get (GeneralAccessTypes.Read));
+      Assert.That (
+          () => _strategy.HasAccess (
+              _stubContextFactory,
+              _mockSecurityProvider,
+              _userStub,
+              AccessType.Get (GeneralAccessTypes.Find)),
+          Throws.InvalidOperationException.With.Message.EqualTo ("GetAccess evaluated and returned null."));
 
       _mocks.VerifyAll();
-      Assert.That (hasAccess, Is.EqualTo (false));
     }
 
     [Test]
@@ -200,16 +198,12 @@ namespace Remotion.Security.UnitTests.Core.SecurityStrategyTests
     public void Serialization ()
     {
       SecurityStrategy strategy = new SecurityStrategy (
-          new Cache<ISecurityPrincipal, AccessType[]>(),
-          SafeServiceLocator.Current.GetInstance<IGlobalAccessTypeCache>());
+          new Cache<ISecurityPrincipal, AccessType[]>());
       AccessType[] accessTypes = new[] { AccessType.Get (GeneralAccessTypes.Find) };
       strategy.LocalCache.GetOrCreateValue (new SecurityPrincipal ("foo", null, null, null), delegate { return accessTypes; });
 
       SecurityStrategy deserializedStrategy = Serializer.SerializeAndDeserialize (strategy);
       Assert.That (deserializedStrategy, Is.Not.SameAs (strategy));
-
-      //TODO RM-5521: test
-      Assert.That (deserializedStrategy.GlobalCache, Is.InstanceOf (typeof (NullGlobalAccessTypeCache)));
 
       AccessType[] newAccessTypes;
       bool result = deserializedStrategy.LocalCache.TryGetValue (new SecurityPrincipal ("foo", null, null, null), out newAccessTypes);

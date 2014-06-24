@@ -89,7 +89,7 @@ namespace Remotion.Security.UnitTests.Core.SecurityStrategyTests
     [Test]
     public void ReentrancyInGlobalCache_WithEqualSecurityContext_ThrowsInvalidOperationException ()
     {
-      var securityStrategy = new SecurityStrategy (_localAccessTypeCache, _globalAccessTypeCache);
+      var securityStrategy = new SecurityStrategy (_localAccessTypeCache);
       _securityProviderStub.Stub (_ => _.GetAccess (_context, _principalStub)).Return (new[] { AccessType.Get (GeneralAccessTypes.Read) });
 
       var secondContextFactoryStub = MockRepository.GenerateStub<ISecurityContextFactory>();
@@ -119,8 +119,8 @@ namespace Remotion.Security.UnitTests.Core.SecurityStrategyTests
     [Test]
     public void ReentrancyInGlobalCache_AccrossMultipleSecurityStrategyInstances_ThrowsInvalidOperationException ()
     {
-      var firstSecurityStrategy = new SecurityStrategy (_localAccessTypeCache, _globalAccessTypeCache);
-      var secondSecurityStrategy = new SecurityStrategy (_localAccessTypeCache, _globalAccessTypeCache);
+      var firstSecurityStrategy = new SecurityStrategy (_localAccessTypeCache);
+      var secondSecurityStrategy = new SecurityStrategy (_localAccessTypeCache);
       _securityProviderStub.Stub (_ => _.GetAccess (_context, _principalStub)).Return (new[] { AccessType.Get (GeneralAccessTypes.Read) });
 
       var secondContextFactoryStub = MockRepository.GenerateStub<ISecurityContextFactory>();
@@ -149,7 +149,7 @@ namespace Remotion.Security.UnitTests.Core.SecurityStrategyTests
     [Test]
     public void ExceptionDuringAccessTypeRetrieval_ResetsReentrancyForSubsequentCalls ()
     {
-      var securityStrategy = new SecurityStrategy (_localAccessTypeCache, _globalAccessTypeCache);
+      var securityStrategy = new SecurityStrategy (_localAccessTypeCache);
       _securityProviderStub.Stub (_ => _.GetAccess (_context, _principalStub)).Return (new[] { AccessType.Get (GeneralAccessTypes.Read) });
 
       var exception = new Exception();
@@ -175,7 +175,7 @@ namespace Remotion.Security.UnitTests.Core.SecurityStrategyTests
     [Test]
     public void ReentrancyCheckIsScopedToThread_MultipleThreadsCanPerformSecurityEvaluationConcurrently ()
     {
-      var securityStrategy = new SecurityStrategy (_localAccessTypeCache, _globalAccessTypeCache);
+      var securityStrategy = new SecurityStrategy (_localAccessTypeCache);
       _securityProviderStub.Stub (_ => _.GetAccess (_context, _principalStub)).Return (new[] { AccessType.Get (GeneralAccessTypes.Read) });
 
       var secondContextFactoryStub = MockRepository.GenerateStub<ISecurityContextFactory>();
@@ -191,7 +191,7 @@ namespace Remotion.Security.UnitTests.Core.SecurityStrategyTests
                 () =>
                 {
                   var securityStrategyOnOtherThread =
-                      new SecurityStrategy (CacheFactory.Create<ISecurityPrincipal, AccessType[]>(), _globalAccessTypeCache);
+                      new SecurityStrategy (CacheFactory.Create<ISecurityPrincipal, AccessType[]>());
                   var hasAccess = securityStrategyOnOtherThread.HasAccess (
                       secondContextFactoryStub, _securityProviderStub, _principalStub, AccessType.Get (GeneralAccessTypes.Read));
                   Assert.That (hasAccess, Is.True);
@@ -202,7 +202,7 @@ namespace Remotion.Security.UnitTests.Core.SecurityStrategyTests
       var result = securityStrategy.HasAccess (firstContextFactoryStub, _securityProviderStub, _principalStub, AccessType.Get (GeneralAccessTypes.Read));
 
       Assert.That (isFirstContextCreated, Is.True);
-      _securityProviderStub.AssertWasCalled (_ => _.GetAccess (_context, _principalStub), mo => mo.Repeat.Once());
+      _securityProviderStub.AssertWasCalled (_ => _.GetAccess (_context, _principalStub), mo => mo.Repeat.Twice());
       Assert.That (result, Is.True);
     }
   }

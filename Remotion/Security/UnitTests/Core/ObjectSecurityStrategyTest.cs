@@ -116,7 +116,7 @@ namespace Remotion.Security.UnitTests.Core
     [Test]
     public void Serialization ()
     {
-      SecurityStrategy securityStrategy = new SecurityStrategy(new NullCache<ISecurityPrincipal, AccessType[]>(), new NullGlobalAccessTypeCache());
+      SecurityStrategy securityStrategy = new SecurityStrategy(new NullCache<ISecurityPrincipal, AccessType[]>());
       ISecurityContextFactory factory = new FunctionalSecurityContextFactory (typeof (SecurableObject));
 
       ObjectSecurityStrategy strategy = new ObjectSecurityStrategy (factory, securityStrategy);

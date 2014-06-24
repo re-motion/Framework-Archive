@@ -218,7 +218,11 @@ namespace Remotion.Security.UnitTests.Core
     private void ExpectExpectObjectSecurityStrategyHasAccess (bool accessAllowed)
     {
       AccessType[] accessTypes = new[] { AccessType.Get (TestAccessTypes.First) };
-      Expect.Call (_mockObjectSecurityStrategy.HasAccess (_mockSecurityProvider, _userStub, accessTypes)).Return (accessAllowed);
+      Expect.Call (
+          _mockObjectSecurityStrategy.HasAccess (
+              Arg<ISecurityProvider>.Matches (p => ((CachingSecurityProviderDecorator) p).InnerSecurityProvider == _mockSecurityProvider),
+              Arg.Is (_userStub),
+              Arg.Is (accessTypes))).Return (accessAllowed);
     }
 
     private void ExpectGetRequiredMethodPermissions (IMethodInformation methodInformation)

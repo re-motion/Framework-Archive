@@ -17,8 +17,6 @@
 // 
 
 using System;
-using System.Runtime.Serialization;
-using Remotion.FunctionalProgramming;
 using Remotion.Security;
 using Remotion.SecurityManager.Domain;
 using Remotion.SecurityManager.GlobalAccessTypeCache.Implementation;
@@ -27,9 +25,8 @@ using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.GlobalAccessTypeCache
 {
-  [Serializable]
   [ImplementationFor (typeof(IGlobalAccessTypeCache), Position = 0, Lifetime = LifetimeKind.Singleton)]
-  public sealed class RevisionBasedGlobalAccessTypeCache : IGlobalAccessTypeCache, ISerializable, IObjectReference
+  public sealed class RevisionBasedGlobalAccessTypeCache : IGlobalAccessTypeCache
   {
     //TODO RM-5521: test
 
@@ -43,20 +40,6 @@ namespace Remotion.SecurityManager.GlobalAccessTypeCache
       
       _securityContextCache = new SecurityContextCache (revisionProvider);
       _userRevisionProvider = userRevisionProvider;
-    }
-
-    private RevisionBasedGlobalAccessTypeCache (SerializationInfo info, StreamingContext context)
-    {
-    }
-
-    void ISerializable.GetObjectData (SerializationInfo info, StreamingContext context)
-    {
-    }
-
-    object IObjectReference.GetRealObject (StreamingContext context)
-    {
-      return (RevisionBasedGlobalAccessTypeCache) SafeServiceLocator.Current.GetAllInstances<IGlobalAccessTypeCache>()
-          .First (() => new InvalidOperationException ("No instance of IGlobalAccessTypeCache has been registered with the ServiceLocator."));
     }
 
     public AccessType[] GetOrCreateValue (

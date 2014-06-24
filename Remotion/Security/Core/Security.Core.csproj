@@ -90,6 +90,7 @@
     <Compile Include="AbstractRoleAttribute.cs" />
     <Compile Include="AccessType.cs" />
     <Compile Include="AccessTypeAttribute.cs" />
+    <Compile Include="CachingSecurityProviderDecorator.cs" />
     <Compile Include="DemandPermissionAttribute.cs" />
     <Compile Include="Configuration\SecurityProviderHelper.cs" />
     <Compile Include="EnumWrapper.cs" />

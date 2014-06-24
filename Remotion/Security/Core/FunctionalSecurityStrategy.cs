@@ -49,7 +49,7 @@ namespace Remotion.Security
     }
 
     public FunctionalSecurityStrategy ()
-        : this (new SecurityStrategy (new NullCache<ISecurityPrincipal, AccessType[]>(), GetGlobalAccessTypeCache()))
+        : this (new SecurityStrategy (new NullCache<ISecurityPrincipal, AccessType[]>()))
     {
     }
 

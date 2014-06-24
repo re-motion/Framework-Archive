@@ -43,7 +43,8 @@ namespace Remotion.Security
       var serviceLocator = SafeServiceLocator.Current;
 
       return new SecurityClient (
-          securityProvider,
+          //TODO RM-6183: Test
+          new CachingSecurityProviderDecorator (securityProvider, serviceLocator.GetInstance<IGlobalAccessTypeCache>()),
           serviceLocator.GetInstance<IPermissionProvider>(),
           SecurityConfiguration.Current.PrincipalProvider,
           serviceLocator.GetInstance<IFunctionalSecurityStrategy>(),
