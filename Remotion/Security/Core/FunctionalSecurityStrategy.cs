@@ -30,7 +30,6 @@ namespace Remotion.Security
 
     public bool HasAccess (Type type, ISecurityProvider securityProvider, ISecurityPrincipal principal, params AccessType[] requiredAccessTypes)
     {
-      //TODO RM-6183: Test
       ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("type", type, typeof (ISecurableObject));
       ArgumentUtility.CheckNotNull ("securityProvider", securityProvider);
       ArgumentUtility.CheckNotNull ("principal", principal);

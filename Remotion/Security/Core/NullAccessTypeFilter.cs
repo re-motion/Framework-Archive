@@ -1,4 +1,4 @@
-// This file is part of the re-motion Core Framework (www.re-motion.org)
+﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -17,16 +17,32 @@
 
 using System;
 using System.Collections.Generic;
-using JetBrains.Annotations;
+using Remotion.Utilities;
 
 namespace Remotion.Security
 {
-  public interface IAccessTypeFilter : INullObject
+  public class NullAccessTypeFilter : IAccessTypeFilter
   {
-    [NotNull]
-    IEnumerable<AccessType> Filter (
-        [NotNull] IEnumerable<AccessType> accessTypes,
-        [NotNull] ISecurityContext context,
-        [NotNull] ISecurityPrincipal principal);
+    //TODO RM-6183: Test, serialization, ObjectReference
+
+    public static readonly NullAccessTypeFilter Instance = new NullAccessTypeFilter();
+
+    public NullAccessTypeFilter ()
+    {
+    }
+
+    public IEnumerable<AccessType> Filter (IEnumerable<AccessType> accessTypes, ISecurityContext context, ISecurityPrincipal principal)
+    {
+      ArgumentUtility.CheckNotNull ("accessTypes", accessTypes);
+      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull ("principal", principal);
+
+      return accessTypes;
+    }
+
+    bool INullObject.IsNull
+    {
+      get { return true; }
+    }
   }
 }

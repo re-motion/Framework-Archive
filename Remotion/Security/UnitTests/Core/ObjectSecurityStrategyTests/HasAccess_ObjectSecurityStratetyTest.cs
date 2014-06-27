@@ -16,38 +16,43 @@
 // 
 
 using System;
+using System.Collections.Generic;
 using NUnit.Framework;
+using Remotion.Collections;
+using Remotion.Development.UnitTesting;
 using Remotion.Security.UnitTests.Core.SampleDomain;
 using Rhino.Mocks;
 
-namespace Remotion.Security.UnitTests.Core
+namespace Remotion.Security.UnitTests.Core.ObjectSecurityStrategyTests
 {
   [TestFixture]
-  public class FunctionalSecurityStrategyTest
+  public class HasAccess_ObjectSecurityStratetyTest
   {
     private ISecurityProvider _securityProviderMock;
+    private ISecurityContextFactory _securityContextFactoryStub;
     private ISecurityPrincipal _principalStub;
-    private FunctionalSecurityStrategy _strategy;
-    private Type _securableType;
+    private SecurityContext _context;
+    private IObjectSecurityStrategy _strategy;
 
     [SetUp]
     public void SetUp ()
     {
       _securityProviderMock = MockRepository.GenerateStrictMock<ISecurityProvider>();
+      _securityContextFactoryStub = MockRepository.GenerateStub<ISecurityContextFactory>();
 
       _principalStub = MockRepository.GenerateStub<ISecurityPrincipal>();
       _principalStub.Stub (_ => _.User).Return ("user");
+      _context = SecurityContext.Create (typeof (SecurableObject), "owner", "group", "tenant", new Dictionary<string, Enum>(), new Enum[0]);
+      _securityContextFactoryStub.Stub (_ => _.CreateSecurityContext()).Return (_context);
 
-      _securableType = typeof (SecurableObject);
-
-      _strategy = new FunctionalSecurityStrategy();
+      _strategy = new ObjectSecurityStrategy2 (_securityContextFactoryStub, NullAccessTypeFilter.Instance);
     }
 
     [Test]
-    public void HasAccess_WithRequiredAccessTypesMatchingAllowedAccessTypes_ReturnsTrue ()
+    public void HasAccess_WithRequiredAccessTypesMatchingAllowedAccessTypes_ReturnsTrue()
     {
       _securityProviderMock
-          .Expect (_ => _.GetAccess (SecurityContext.CreateStateless (_securableType), _principalStub))
+          .Expect (_ => _.GetAccess (_context, _principalStub))
           .Return (
               new[]
               {
@@ -57,7 +62,6 @@ namespace Remotion.Security.UnitTests.Core
               });
 
       bool hasAccess = _strategy.HasAccess (
-          _securableType,
           _securityProviderMock,
           _principalStub,
           AccessType.Get (GeneralAccessTypes.Delete),
@@ -71,17 +75,15 @@ namespace Remotion.Security.UnitTests.Core
     public void HasAccess_WithoutRequiredAccessTypesMatchingAllowedAccessTypes_ReturnsFalse ()
     {
       _securityProviderMock
-          .Expect (_ => _.GetAccess (SecurityContext.CreateStateless (_securableType), _principalStub))
+          .Expect (_ => _.GetAccess (_context, _principalStub))
           .Return (
               new[]
               {
-                  AccessType.Get (GeneralAccessTypes.Create),
+                  AccessType.Get (GeneralAccessTypes.Create), 
                   AccessType.Get (GeneralAccessTypes.Delete),
                   AccessType.Get (GeneralAccessTypes.Read)
               });
-
       bool hasAccess = _strategy.HasAccess (
-          _securableType,
           _securityProviderMock,
           _principalStub,
           AccessType.Get (GeneralAccessTypes.Delete),
@@ -94,13 +96,10 @@ namespace Remotion.Security.UnitTests.Core
     [Test]
     public void HasAccess_WithAllowedAccessTypesAreNull_ThrowsInvalidOperationException ()
     {
-      _securityProviderMock
-          .Expect (_ => _.GetAccess (SecurityContext.CreateStateless (_securableType), _principalStub))
-          .Return (null);
+      _securityProviderMock.Expect (_ => _.GetAccess (_context, _principalStub)).Return (null);
 
       Assert.That (
           () => _strategy.HasAccess (
-              _securableType,
               _securityProviderMock,
               _principalStub,
               AccessType.Get (GeneralAccessTypes.Find)),
@@ -108,5 +107,44 @@ namespace Remotion.Security.UnitTests.Core
 
       _securityProviderMock.VerifyAllExpectations();
     }
+
+    [Test]
+    public void HasAccess_UsesSecurityFreeSectionWhileWhenCreatingSecurityContext ()
+    {
+      _securityContextFactoryStub.BackToRecord();
+      _securityContextFactoryStub
+          .Stub (_ => _.CreateSecurityContext())
+          .Return (_context)
+          .WhenCalled (
+              mi =>
+              {
+                Assert.That (SecurityFreeSection.IsActive);
+                mi.ReturnValue = _context;
+              });
+      _securityContextFactoryStub.Replay();
+
+      _securityProviderMock.Expect (_ => _.GetAccess (_context, _principalStub)).Return (new[] { AccessType.Get (GeneralAccessTypes.Edit) });
+
+      bool hasAccess = _strategy.HasAccess (_securityProviderMock, _principalStub, AccessType.Get (GeneralAccessTypes.Edit));
+
+      Assert.That (hasAccess, Is.EqualTo (true));
+    }
+
+    //[Test]
+    //public void Serialization ()
+    //{
+    //  IObjectSecurityStrategy strategy = new ObjectSecurityStrategy2 (
+    //      new Cache<ISecurityPrincipal, AccessType[]>());
+    //  AccessType[] accessTypes = new[] { AccessType.Get (GeneralAccessTypes.Find) };
+    //  strategy.LocalCache.GetOrCreateValue (new SecurityPrincipal ("foo", null, null, null), delegate { return accessTypes; });
+
+    //  SecurityStrategy deserializedStrategy = Serializer.SerializeAndDeserialize (strategy);
+    //  Assert.That (deserializedStrategy, Is.Not.SameAs (strategy));
+
+    //  AccessType[] newAccessTypes;
+    //  bool result = deserializedStrategy.LocalCache.TryGetValue (new SecurityPrincipal ("foo", null, null, null), out newAccessTypes);
+    //  Assert.That (result, Is.True);
+    //  Assert.That (newAccessTypes, Is.EquivalentTo (accessTypes));
+    //}
   }
 }

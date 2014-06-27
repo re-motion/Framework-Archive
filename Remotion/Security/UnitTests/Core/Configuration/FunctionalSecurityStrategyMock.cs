@@ -24,5 +24,10 @@ namespace Remotion.Security.UnitTests.Core.Configuration
     {
       throw new NotImplementedException ();
     }
+
+    public bool IsNull
+    {
+      get { return false; }
+    }
   }
 }

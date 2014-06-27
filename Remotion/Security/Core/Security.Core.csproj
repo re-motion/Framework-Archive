@@ -113,6 +113,7 @@
     <Compile Include="Metadata\IMemberResolver.cs" />
     <Compile Include="Metadata\NullMemberResolver.cs" />
     <Compile Include="Metadata\ReflectionBasedMemberResolver.cs" />
+    <Compile Include="NullAccessTypeFilter.cs" />
     <Compile Include="NullFunctionalSecurityStrategy.cs" />
     <Compile Include="NullGlobalAccessTypeCache.cs" />
     <Compile Include="NullSecurityPrincipal.cs" />

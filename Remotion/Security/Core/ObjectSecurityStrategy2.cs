@@ -25,11 +25,12 @@ namespace Remotion.Security
   [Serializable]
   public sealed class ObjectSecurityStrategy2 : IObjectSecurityStrategy
   {
-    //TODO RM-6183: Test, replace argument checks with Debug-Checks
+    //TODO RM-6183: Test cache, test filter, test serialization, replace argument checks with Debug-Checks
+    //TODO RM-6183: Refactor AccessType[] to IReadOnlyList<AccessType> and implement a Singleton-Version to allow for non-allocating checks
     // Implement CacheInvalidationToken, that can return and check a Revision (struct, holds Int64) and exposes an Invalidate() method.
     // The CacheInvalidationToken is passed via ctor. The ICachingObjectSecurityStrategy will be dropped. 
 
-    private readonly ICache<ISecurityPrincipal, AccessType[]> _cache = new Cache<ISecurityPrincipal, AccessType[]>();
+    private readonly ICache<ISecurityPrincipal, AccessType[]> _cache = CacheFactory.Create<ISecurityPrincipal, AccessType[]>();
     private readonly ISecurityContextFactory _securityContextFactory;
     private readonly IAccessTypeFilter _accessTypeFilter;
 
