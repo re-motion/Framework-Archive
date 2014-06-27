@@ -14,7 +14,9 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
+using JetBrains.Annotations;
 
 namespace Remotion.Security
 {
@@ -39,6 +41,9 @@ namespace Remotion.Security
     /// The <paramref name="requiredAccessTypes"/> are determined by the <see cref="T:Remotion.Security.SecurityClient"/>, 
     /// taking the business object instance and the member name (property or method) into account.
     /// </remarks>
-    bool HasAccess (ISecurityProvider securityProvider, ISecurityPrincipal principal, params AccessType[] requiredAccessTypes);
+    bool HasAccess (
+        [NotNull] ISecurityProvider securityProvider,
+        [NotNull] ISecurityPrincipal principal,
+        [NotNull] params AccessType[] requiredAccessTypes);
   }
 }

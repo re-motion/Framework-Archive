@@ -69,28 +69,16 @@ namespace Remotion.Security
             + "Use SecurityFreeSection.IsActive to guard the computation of the SecurityContext returned by ISecurityContextFactory.CreateSecurityContext().");
       }
 
-      AccessType[] actualAccessTypes;
       try
       {
         s_isEvaluatingAccess = true;
-        actualAccessTypes = GetAccessFromLocalCache (factory, securityProvider, principal);
+        var actualAccessTypes = GetAccessFromLocalCache (factory, securityProvider, principal);
+        return actualAccessTypes.HasAccess (requiredAccessTypes);
       }
       finally
       {
         s_isEvaluatingAccess = false;
       }
-
-      // This section is performance critical. No closure should be created, therefor converting this code to Linq is not possible.
-      // requiredAccessTypes.All (requiredAccessType => actualAccessTypes.Contains (requiredAccessType));
-      // ReSharper disable LoopCanBeConvertedToQuery
-      foreach (var requiredAccessType in requiredAccessTypes)
-      {
-        if (Array.IndexOf (actualAccessTypes, requiredAccessType) < 0)
-          return false;
-      }
-
-      return true;
-      // ReSharper restore LoopCanBeConvertedToQuery
     }
 
     private AccessType[] GetAccessFromLocalCache (ISecurityContextFactory factory, ISecurityProvider securityProvider, ISecurityPrincipal principal)

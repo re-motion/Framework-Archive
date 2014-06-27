@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Collections;
 using Remotion.Reflection;
 using Remotion.Security.Metadata;
 using Remotion.Utilities;
@@ -33,17 +32,16 @@ namespace Remotion.Security
             new NullSecurityProvider(),
             new PermissionReflector(),
             new NullPrincipalProvider(),
-            FunctionalSecurityStrategy.CreateWithCustomSecurityStrategy (
-                new SecurityStrategy (new NullCache<ISecurityPrincipal, AccessType[]>())),
+            new NullFunctionalSecurityStrategy(),
             new NullMemberResolver())
     {
     }
 
-    public override bool HasAccess (ISecurableObject securableObject, ISecurityPrincipal user, params AccessType[] requiredAccessTypes)
+    public override bool HasAccess (ISecurableObject securableObject, ISecurityPrincipal principal, params AccessType[] requiredAccessTypes)
     {
       ArgumentUtility.CheckNotNull ("securableObject", securableObject);
-      ArgumentUtility.CheckNotNull ("user", user);
-      ArgumentUtility.CheckNotNullOrEmptyOrItemsNull ("requiredAccessTypes", requiredAccessTypes);
+      ArgumentUtility.CheckNotNull ("principal", principal);
+      ArgumentUtility.CheckNotNullOrEmpty ("requiredAccessTypes", requiredAccessTypes);
 
       return true;
     }
@@ -51,8 +49,8 @@ namespace Remotion.Security
     public override bool HasStatelessAccess (Type securableClass, ISecurityPrincipal principal, params AccessType[] requiredAccessTypes)
     {
       ArgumentUtility.CheckNotNull ("securableClass", securableClass);
-      ArgumentUtility.CheckNotNull ("user", principal);
-      ArgumentUtility.CheckNotNullOrEmptyOrItemsNull ("requiredAccessTypes", requiredAccessTypes);
+      ArgumentUtility.CheckNotNull ("principal", principal);
+      ArgumentUtility.CheckNotNullOrEmpty ("requiredAccessTypes", requiredAccessTypes);
 
       return true;
     }

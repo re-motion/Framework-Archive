@@ -92,9 +92,8 @@ namespace Remotion.Security
       if (SecurityFreeSection.IsActive)
         return true;
 
-      IObjectSecurityStrategy objectSecurityStrategy = securableObject.GetSecurityStrategy();
-      if (objectSecurityStrategy == null)
-        throw new InvalidOperationException ("The securableObject did not return an IObjectSecurityStrategy.");
+      var objectSecurityStrategy = securableObject.GetSecurityStrategy();
+      Assertion.IsNotNull (objectSecurityStrategy, "The securableObject did not return an IObjectSecurityStrategy.");
 
       return objectSecurityStrategy.HasAccess (_securityProvider, principal, requiredAccessTypes);
     }

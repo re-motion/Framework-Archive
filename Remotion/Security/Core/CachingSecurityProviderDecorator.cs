@@ -19,15 +19,18 @@ using Remotion.Utilities;
 
 namespace Remotion.Security
 {
-  //TODO RM-6183: Test, change to IoC
+  /// <summary>
+  /// 2nd-level cache
+  /// </summary>
   public class CachingSecurityProviderDecorator : ISecurityProvider
   {
+    //TODO RM-6183: Test, change to IoC
+
     private readonly ISecurityProvider _innerSecurityProvider;
     private readonly IGlobalAccessTypeCache _accessTypeCache;
 
     public CachingSecurityProviderDecorator (ISecurityProvider innerSecurityProvider, IGlobalAccessTypeCache accessTypeCache)
     {
-
       ArgumentUtility.CheckNotNull ("innerSecurityProvider", innerSecurityProvider);
       ArgumentUtility.CheckNotNull ("accessTypeCache", accessTypeCache);
       

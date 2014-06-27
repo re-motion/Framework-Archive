@@ -14,39 +14,27 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-
 using System;
-using Remotion.ServiceLocation;
 using Remotion.Utilities;
 
 namespace Remotion.Security
 {
-  [ImplementationFor (typeof (IFunctionalSecurityStrategy), Lifetime = LifetimeKind.Singleton)]
-  public sealed class FunctionalSecurityStrategy : IFunctionalSecurityStrategy
+  //TODO RM-6183: Test
+  public class NullFunctionalSecurityStrategy : IFunctionalSecurityStrategy
   {
-    public FunctionalSecurityStrategy ()
-    {
-    }
-
     public bool HasAccess (Type type, ISecurityProvider securityProvider, ISecurityPrincipal principal, params AccessType[] requiredAccessTypes)
     {
-      //TODO RM-6183: Test
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("type", type, typeof (ISecurableObject));
+      ArgumentUtility.CheckNotNull ("type", type);
       ArgumentUtility.CheckNotNull ("securityProvider", securityProvider);
       ArgumentUtility.CheckNotNull ("principal", principal);
       ArgumentUtility.CheckNotNullOrEmpty ("requiredAccessTypes", requiredAccessTypes);
 
-      var context = SecurityContext.CreateStateless (type);
-
-      var actualAccessTypes = securityProvider.GetAccess (context, principal);
-      Assertion.IsNotNull (actualAccessTypes, "GetAccess evaluated and returned null.");
-
-      return actualAccessTypes.HasAccess (requiredAccessTypes);
+      return true;
     }
 
     public bool IsNull
     {
-      get { return false; }
+      get { return true; }
     }
   }
 }
