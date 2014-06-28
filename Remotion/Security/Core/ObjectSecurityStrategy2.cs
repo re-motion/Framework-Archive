@@ -62,10 +62,13 @@ namespace Remotion.Security
     {
       ArgumentUtility.DebugCheckNotNull ("securityProvider", securityProvider);
       ArgumentUtility.DebugCheckNotNull ("principal", principal);
-      ArgumentUtility.DebugCheckNotNullOrEmpty ("requiredAccessTypes", requiredAccessTypes);
+      ArgumentUtility.CheckNotNull ("requiredAccessTypes", requiredAccessTypes);
+      // Performance critical argument check. Can be refactored to ArgumentUtility.CheckNotNullOrEmpty once typed collection checks are supported.
+      if (requiredAccessTypes.Length == 0)
+        throw ArgumentUtility.CreateArgumentEmptyException ("requiredAccessTypes");
 
       var actualAccessTypes = GetAccessTypes (securityProvider, principal);
-      return actualAccessTypes.HasAccess (requiredAccessTypes);
+      return requiredAccessTypes.IsSubsetOf (actualAccessTypes);
     }
 
     private AccessType[] GetAccessTypesFromCache (ISecurityProvider securityProvider, ISecurityPrincipal principal)

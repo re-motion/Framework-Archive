@@ -72,8 +72,8 @@ namespace Remotion.Security
       try
       {
         s_isEvaluatingAccess = true;
-        var actualAccessTypes = GetAccessFromLocalCache (factory, securityProvider, principal);
-        return actualAccessTypes.HasAccess (requiredAccessTypes);
+        var allowedAccessTypes = GetAccessFromLocalCache (factory, securityProvider, principal);
+        return requiredAccessTypes.IsSubsetOf (allowedAccessTypes);
       }
       finally
       {

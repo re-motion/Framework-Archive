@@ -19,6 +19,7 @@ using System;
 using System.Collections.Generic;
 using NUnit.Framework;
 using Remotion.Security.UnitTests.Core.SampleDomain;
+using Remotion.Utilities;
 using Rhino.Mocks;
 
 namespace Remotion.Security.UnitTests.Core.ObjectSecurityStrategyTests
@@ -62,8 +63,11 @@ namespace Remotion.Security.UnitTests.Core.ObjectSecurityStrategyTests
       bool hasAccess = _strategy.HasAccess (
           _securityProviderMock,
           _principalStub,
-          AccessType.Get (GeneralAccessTypes.Delete),
-          AccessType.Get (GeneralAccessTypes.Create));
+          new[]
+          {
+              AccessType.Get (GeneralAccessTypes.Delete),
+              AccessType.Get (GeneralAccessTypes.Create)
+          });
 
       Assert.That (hasAccess, Is.EqualTo (true));
       _securityProviderMock.VerifyAllExpectations();
@@ -83,9 +87,12 @@ namespace Remotion.Security.UnitTests.Core.ObjectSecurityStrategyTests
       bool hasAccess = _strategy.HasAccess (
           _securityProviderMock,
           _principalStub,
-          AccessType.Get (GeneralAccessTypes.Create),
-          AccessType.Get (GeneralAccessTypes.Delete),
-          AccessType.Get (GeneralAccessTypes.Read));
+          new[]
+          {
+              AccessType.Get (GeneralAccessTypes.Create),
+              AccessType.Get (GeneralAccessTypes.Delete),
+              AccessType.Get (GeneralAccessTypes.Read)
+          });
 
       Assert.That (hasAccess, Is.EqualTo (false));
       _securityProviderMock.VerifyAllExpectations();
@@ -100,7 +107,10 @@ namespace Remotion.Security.UnitTests.Core.ObjectSecurityStrategyTests
           () => _strategy.HasAccess (
               _securityProviderMock,
               _principalStub,
-              AccessType.Get (GeneralAccessTypes.Find)),
+              new[]
+              {
+                  AccessType.Get (GeneralAccessTypes.Find)
+              }),
           Throws.InvalidOperationException.With.Message.EqualTo ("GetAccess evaluated and returned null."));
 
       _securityProviderMock.VerifyAllExpectations();
@@ -123,9 +133,25 @@ namespace Remotion.Security.UnitTests.Core.ObjectSecurityStrategyTests
 
       _securityProviderMock.Expect (_ => _.GetAccess (_context, _principalStub)).Return (new[] { AccessType.Get (GeneralAccessTypes.Edit) });
 
-      bool hasAccess = _strategy.HasAccess (_securityProviderMock, _principalStub, AccessType.Get (GeneralAccessTypes.Edit));
+      bool hasAccess = _strategy.HasAccess (_securityProviderMock, _principalStub, new[] { AccessType.Get (GeneralAccessTypes.Edit) });
 
       Assert.That (hasAccess, Is.EqualTo (true));
+    }
+
+    [Test]
+    public void HasAccess_WithRequiredAccessTypesEmpty_ThrowsArgumentException ()
+    {
+      _securityProviderMock
+          .Expect (_ => _.GetAccess (_context, _principalStub))
+          .Return (
+              new[]
+              {
+                  AccessType.Get (GeneralAccessTypes.Read)
+              });
+
+      Assert.That (
+          () => _strategy.HasAccess (_securityProviderMock, _principalStub, new AccessType[0]),
+          Throws.ArgumentException.With.Message.EqualTo ("Parameter 'requiredAccessTypes' cannot be empty.\r\nParameter name: requiredAccessTypes"));
     }
 
     //[Test]

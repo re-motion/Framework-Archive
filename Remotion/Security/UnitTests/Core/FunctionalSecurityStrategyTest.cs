@@ -110,6 +110,22 @@ namespace Remotion.Security.UnitTests.Core
     }
 
     [Test]
+    public void HasAccess_WithRequiredAccessTypesEmpty_ThrowsArgumentException ()
+    {
+      _securityProviderMock
+          .Expect (_ => _.GetAccess (SecurityContext.CreateStateless (_securableType), _principalStub))
+          .Return (
+              new[]
+              {
+                  AccessType.Get (GeneralAccessTypes.Read)
+              });
+
+      Assert.That (
+          () => _strategy.HasAccess (_securableType, _securityProviderMock, _principalStub, new AccessType[0]),
+          Throws.ArgumentException.With.Message.EqualTo ("Parameter 'requiredAccessTypes' cannot be empty.\r\nParameter name: requiredAccessTypes"));
+    }
+
+    [Test]
     public void IsNull_ReturnsFalse ()
     {
       Assert.That (_strategy.IsNull, Is.False);

@@ -23,17 +23,17 @@ namespace Remotion.Security
   public static class AccessTypeExtensions
   {
     //TODO RM-6183: refactor to nested for loops, performance test, compare with using IEnumerable<> vs. IReadOnlyList<>
-    public static bool HasAccess ([NotNull]this AccessType[] allowedAccessTypes, [NotNull]AccessType[] requiredAccessTypes)
+    public static bool IsSubsetOf ([NotNull] this AccessType[] referenceSet, [NotNull] AccessType[] otherSet)
     {
-      ArgumentUtility.CheckNotNull ("allowedAccessTypes", allowedAccessTypes);
-      ArgumentUtility.CheckNotNullOrEmpty ("requiredAccessTypes", requiredAccessTypes);
+      ArgumentUtility.CheckNotNull ("otherSet", otherSet);
+      ArgumentUtility.CheckNotNull ("referenceSet", referenceSet);
 
       // This section is performance critical. No closure should be created, therefor converting this code to Linq is not possible.
       // requiredAccessTypes.All (requiredAccessType => actualAccessTypes.Contains (requiredAccessType));
       // ReSharper disable LoopCanBeConvertedToQuery
-      foreach (var requiredAccessType in requiredAccessTypes)
+      foreach (var requiredAccessType in referenceSet)
       {
-        if (Array.IndexOf (allowedAccessTypes, requiredAccessType) < 0)
+        if (Array.IndexOf (otherSet, requiredAccessType) < 0)
           return false;
       }
 

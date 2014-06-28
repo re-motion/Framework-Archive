@@ -37,14 +37,17 @@ namespace Remotion.Security
       ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("type", type, typeof (ISecurableObject));
       ArgumentUtility.CheckNotNull ("securityProvider", securityProvider);
       ArgumentUtility.CheckNotNull ("principal", principal);
-      ArgumentUtility.CheckNotNullOrEmpty ("requiredAccessTypes", requiredAccessTypes);
+      ArgumentUtility.CheckNotNull ("requiredAccessTypes", requiredAccessTypes);
+      // Performance critical argument check. Can be refactored to ArgumentUtility.CheckNotNullOrEmpty once typed collection checks are supported.
+      if (requiredAccessTypes.Length == 0)
+        throw ArgumentUtility.CreateArgumentEmptyException ("requiredAccessTypes");
 
       var context = SecurityContext.CreateStateless (type);
 
-      var actualAccessTypes = securityProvider.GetAccess (context, principal);
-      Assertion.IsNotNull (actualAccessTypes, "GetAccess evaluated and returned null.");
+      var allowedAccessTypes = securityProvider.GetAccess (context, principal);
+      Assertion.IsNotNull (allowedAccessTypes, "GetAccess evaluated and returned null.");
 
-      return actualAccessTypes.HasAccess (requiredAccessTypes);
+      return requiredAccessTypes.IsSubsetOf (allowedAccessTypes);
     }
 
     bool INullObject.IsNull
