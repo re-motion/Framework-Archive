@@ -35,27 +35,32 @@ namespace Remotion.Security
   [Serializable]
   public sealed class ObjectSecurityStrategy2 : IObjectSecurityStrategy
   {
-    //TODO RM-6183: Test cache, test filter, test serialization
+    //TODO RM-6183: Test filter, test serialization
     //TODO RM-6183: Refactor AccessType[] to IReadOnlyList<AccessType> and implement a Singleton-Version to allow for non-allocating checks
-    // Implement CacheInvalidationToken, that can return and check a Revision (struct, holds Int64) and exposes an Invalidate() method.
-    // The CacheInvalidationToken is passed via ctor. The ICachingObjectSecurityStrategy will be dropped. 
 
-    private readonly ICache<ISecurityPrincipal, AccessType[]> _cache = CacheFactory.Create<ISecurityPrincipal, AccessType[]>();
+    private readonly InvalidationTokenBasedCacheDecorator<ISecurityPrincipal, AccessType[]> _cache;
     private readonly ISecurityContextFactory _securityContextFactory;
     private readonly IAccessTypeFilter _accessTypeFilter;
 
-    public ObjectSecurityStrategy2 (ISecurityContextFactory securityContextFactory, IAccessTypeFilter accessTypeFilter)
+    public ObjectSecurityStrategy2 (ISecurityContextFactory securityContextFactory, IAccessTypeFilter accessTypeFilter, CacheInvalidationToken cacheInvalidationToken)
     {
       ArgumentUtility.CheckNotNull ("securityContextFactory", securityContextFactory);
       ArgumentUtility.CheckNotNull ("accessTypeFilter", accessTypeFilter);
+      ArgumentUtility.CheckNotNull ("cacheInvalidationToken", cacheInvalidationToken);
 
       _securityContextFactory = securityContextFactory;
       _accessTypeFilter = accessTypeFilter;
+      _cache = CacheFactory.Create<ISecurityPrincipal, AccessType[]> (cacheInvalidationToken);
     }
 
     public ISecurityContextFactory SecurityContextFactory
     {
       get { return _securityContextFactory; }
+    }
+
+    public CacheInvalidationToken CacheInvalidationToken
+    {
+      get { return _cache.CacheInvalidationToken; }
     }
 
     public bool HasAccess (ISecurityProvider securityProvider, ISecurityPrincipal principal, params AccessType[] requiredAccessTypes)
@@ -67,7 +72,7 @@ namespace Remotion.Security
       if (requiredAccessTypes.Length == 0)
         throw ArgumentUtility.CreateArgumentEmptyException ("requiredAccessTypes");
 
-      var actualAccessTypes = GetAccessTypes (securityProvider, principal);
+      var actualAccessTypes = GetAccessTypesFromCache (securityProvider, principal);
       return requiredAccessTypes.IsSubsetOf (actualAccessTypes);
     }
 

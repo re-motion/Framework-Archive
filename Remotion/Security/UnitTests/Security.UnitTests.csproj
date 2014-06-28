@@ -146,6 +146,7 @@
     <Compile Include="Core\NullSecurityClientTests\NullSecurityClientTestHelper.cs" />
     <Compile Include="Core\NullSecurityProviderTest.cs" />
     <Compile Include="Core\NullPrincipalProviderTest.cs" />
+    <Compile Include="Core\ObjectSecurityStrategyTests\HasAccessWithCaching_ObjectSecurityStrategyTest.cs" />
     <Compile Include="Core\ObjectSecurityStrategyTests\HasAccess_ObjectSecurityStratetyTest.cs" />
     <Compile Include="Core\SampleDomain\IInterfaceWithProperty.cs" />
     <Compile Include="Core\SecurityClientTests\CheckMethodAccessTest_WithMethodInfo.cs" />

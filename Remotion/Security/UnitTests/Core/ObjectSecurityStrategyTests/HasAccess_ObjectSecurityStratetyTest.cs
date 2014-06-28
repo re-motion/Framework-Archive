@@ -18,8 +18,8 @@
 using System;
 using System.Collections.Generic;
 using NUnit.Framework;
+using Remotion.Collections;
 using Remotion.Security.UnitTests.Core.SampleDomain;
-using Remotion.Utilities;
 using Rhino.Mocks;
 
 namespace Remotion.Security.UnitTests.Core.ObjectSecurityStrategyTests
@@ -31,6 +31,7 @@ namespace Remotion.Security.UnitTests.Core.ObjectSecurityStrategyTests
     private ISecurityContextFactory _securityContextFactoryStub;
     private ISecurityPrincipal _principalStub;
     private SecurityContext _context;
+    private CacheInvalidationToken _cacheInvalidationToken;
     private IObjectSecurityStrategy _strategy;
 
     [SetUp]
@@ -44,7 +45,8 @@ namespace Remotion.Security.UnitTests.Core.ObjectSecurityStrategyTests
       _context = SecurityContext.Create (typeof (SecurableObject), "owner", "group", "tenant", new Dictionary<string, Enum>(), new Enum[0]);
       _securityContextFactoryStub.Stub (_ => _.CreateSecurityContext()).Return (_context);
 
-      _strategy = new ObjectSecurityStrategy2 (_securityContextFactoryStub, NullAccessTypeFilter.Instance);
+      _cacheInvalidationToken = new CacheInvalidationToken();
+      _strategy = new ObjectSecurityStrategy2 (_securityContextFactoryStub, NullAccessTypeFilter.Instance, _cacheInvalidationToken);
     }
 
     [Test]
