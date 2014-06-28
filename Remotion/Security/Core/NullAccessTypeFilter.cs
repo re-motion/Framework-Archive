@@ -25,6 +25,7 @@ namespace Remotion.Security
   /// <summary>
   /// <see cref="INullObject"/>-implementation of the <see cref="IAccessTypeFilter"/> interface.
   /// </summary>
+  /// <threadsafety static="true" instance="true" />
   [Serializable]
   public sealed class NullAccessTypeFilter : IAccessTypeFilter, IObjectReference
   {

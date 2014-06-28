@@ -125,6 +125,7 @@
     <Compile Include="Core\Metadata\MetadataExtractorTest.cs" />
     <Compile Include="Core\Metadata\StatePropertyReflectorTest.cs" />
     <Compile Include="Core\NullAccessTypeFilterTest.cs" />
+    <Compile Include="Core\NullFunctionalSecurityStrategyTest.cs" />
     <Compile Include="Core\NullMemberResolverTest.cs" />
     <Compile Include="Core\NullPrincipalTest.cs" />
     <Compile Include="Core\NullSecurityClientTests\CheckAccessTest.cs" />

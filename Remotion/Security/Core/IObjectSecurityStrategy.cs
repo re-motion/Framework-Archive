@@ -27,6 +27,7 @@ namespace Remotion.Security
   /// parameter when evaluating the required permissions.
   /// <note type="inotes">Implementations are free to decide whether they provide caching.</note>
   /// </remarks>
+  /// <seealso cref="ObjectSecurityStrategy2"/>
   public interface IObjectSecurityStrategy
   {
     /// <summary>Determines whether the requested access is granted.</summary>
@@ -35,10 +36,9 @@ namespace Remotion.Security
     /// <param name="requiredAccessTypes">The access rights required for the access to be granted.</param>
     /// <returns><see langword="true"/> if the <paramref name="requiredAccessTypes"/> are granted.</returns>
     /// <remarks>
-    /// Typically called via <see cref="M:Remotion.Security.SecurityClient.HasAccess(ISecurableObject, AccessType[])"/> of 
-    /// <see cref="T:Remotion.Security.SecurityClient"/>.
+    /// Typically called via <see cref="SecurityClient.HasAccess(ISecurableObject, AccessType[])"/> of <see cref="SecurityClient"/>.
     /// The strategy incorporates <see cref="ISecurityContext"/> in the permission query.
-    /// The <paramref name="requiredAccessTypes"/> are determined by the <see cref="T:Remotion.Security.SecurityClient"/>, 
+    /// The <paramref name="requiredAccessTypes"/> are determined by the <see cref="SecurityClient"/>, 
     /// taking the business object instance and the member name (property or method) into account.
     /// </remarks>
     bool HasAccess (

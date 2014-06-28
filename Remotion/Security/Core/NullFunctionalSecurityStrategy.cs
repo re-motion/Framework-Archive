@@ -19,7 +19,10 @@ using Remotion.Utilities;
 
 namespace Remotion.Security
 {
-  //TODO RM-6183: Test
+  /// <summary>
+  /// <see cref="INullObject"/>-implementation of the <see cref="IFunctionalSecurityStrategy"/> interface.
+  /// </summary>
+  /// <threadsafety static="true" instance="true" />
   public class NullFunctionalSecurityStrategy : IFunctionalSecurityStrategy
   {
     public bool HasAccess (Type type, ISecurityProvider securityProvider, ISecurityPrincipal principal, params AccessType[] requiredAccessTypes)
