@@ -82,7 +82,6 @@
     </Compile>
     <Compile Include="Core\AccessTypeExtensionsTest.cs" />
     <Compile Include="Core\AccessTypeTest.cs" />
-    <Compile Include="Core\Configuration\FunctionalSecurityStrategyMock.cs" />
     <Compile Include="Core\Configuration\MemberResolverMock.cs" />
     <Compile Include="Core\Configuration\PermissionProviderMock.cs" />
     <Compile Include="Core\Configuration\SecurityConfigurationMock.cs" />

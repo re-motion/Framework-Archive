@@ -27,7 +27,7 @@ namespace Remotion.Security.UnitTests.Core
   {
     private ISecurityProvider _securityProviderMock;
     private ISecurityPrincipal _principalStub;
-    private FunctionalSecurityStrategy _strategy;
+    private IFunctionalSecurityStrategy _strategy;
     private Type _securableType;
 
     [SetUp]
@@ -107,6 +107,12 @@ namespace Remotion.Security.UnitTests.Core
           Throws.InvalidOperationException.With.Message.EqualTo ("GetAccess evaluated and returned null."));
 
       _securityProviderMock.VerifyAllExpectations();
+    }
+
+    [Test]
+    public void IsNull_ReturnsFalse ()
+    {
+      Assert.That (_strategy.IsNull, Is.False);
     }
   }
 }

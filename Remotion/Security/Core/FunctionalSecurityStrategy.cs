@@ -21,6 +21,10 @@ using Remotion.Utilities;
 
 namespace Remotion.Security
 {
+  /// <summary>
+  /// Default implementation of the <see cref="IFunctionalSecurityStrategy"/> interface.
+  /// </summary>
+  /// <threadsafety static="true" instance="true" />
   [ImplementationFor (typeof (IFunctionalSecurityStrategy), Lifetime = LifetimeKind.Singleton)]
   public sealed class FunctionalSecurityStrategy : IFunctionalSecurityStrategy
   {
@@ -43,7 +47,7 @@ namespace Remotion.Security
       return actualAccessTypes.HasAccess (requiredAccessTypes);
     }
 
-    public bool IsNull
+    bool INullObject.IsNull
     {
       get { return false; }
     }
