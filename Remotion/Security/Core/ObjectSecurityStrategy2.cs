@@ -22,6 +22,16 @@ using Remotion.Utilities;
 
 namespace Remotion.Security
 {
+  /// <summary>
+  /// Default implementation of the <see cref="IObjectSecurityStrategy"/> interface. A new instance of the <see cref="ObjectSecurityStrategy2"/> type
+  /// is typically created and held for each <see cref="ISecurableObject"/> implementation.
+  /// </summary>
+  /// <remarks>
+  /// The <see cref="ObjectSecurityStrategy2"/> supports the use of an <see cref="ISecurityContextFactory"/> for creating the relevant <see cref="ISecurityContext"/>, 
+  /// an <see cref="IAccessTypeFilter"/> for filtering the allowed access types returned by the <see cref="ISecurityProvider"/>, 
+  /// and caches the result.
+  /// </remarks>
+  /// <threadsafety static="true" instance="false" />
   [Serializable]
   public sealed class ObjectSecurityStrategy2 : IObjectSecurityStrategy
   {

@@ -17,17 +17,20 @@
 
 using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using Remotion.Utilities;
 
 namespace Remotion.Security
 {
-  public class NullAccessTypeFilter : IAccessTypeFilter
+  /// <summary>
+  /// <see cref="INullObject"/>-implementation of the <see cref="IAccessTypeFilter"/> interface.
+  /// </summary>
+  [Serializable]
+  public sealed class NullAccessTypeFilter : IAccessTypeFilter, IObjectReference
   {
-    //TODO RM-6183: Test, serialization, ObjectReference
-
     public static readonly NullAccessTypeFilter Instance = new NullAccessTypeFilter();
 
-    public NullAccessTypeFilter ()
+    private NullAccessTypeFilter ()
     {
     }
 
@@ -43,6 +46,11 @@ namespace Remotion.Security
     bool INullObject.IsNull
     {
       get { return true; }
+    }
+
+    object IObjectReference.GetRealObject (StreamingContext context)
+    {
+      return Instance;
     }
   }
 }

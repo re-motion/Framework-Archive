@@ -21,8 +21,26 @@ using JetBrains.Annotations;
 
 namespace Remotion.Security
 {
+  /// <summary>
+  /// Allows the filtering of a sequence of access types during the permission evaluation.
+  /// </summary>
+  /// <remarks>
+  /// <para>Implementators can decide whether to provide a shareable or a non-shared filter implementation.</para>
+  /// <para>The filter rules can be based on the <see cref="ISecurityContext"/> and the <see cref="ISecurityPrincipal"/>.</para>
+  /// <note type="inotes">
+  /// The <see cref="Filter"/> method may only remove (i.e. filter) the access types but not introduce new access types into the result.
+  /// </note>
+  /// </remarks>
+  /// <seealso cref="NullAccessTypeFilter"/>
   public interface IAccessTypeFilter : INullObject
   {
+    /// <summary>
+    /// Streams the <paramref name="accessTypes"/> to the return value and optionally removes items from the sequence.
+    /// </summary>
+    /// <param name="accessTypes">The sequence of <see cref="AccessType"/>s to filter.</param>
+    /// <param name="context">The <see cref="ISecurityContext"/> for which the permissions are evaluated.</param>
+    /// <param name="principal">The <see cref="ISecurityPrincipal"/> on whose behalf the permissions are evaluated.</param>
+    /// <returns></returns>
     [NotNull]
     IEnumerable<AccessType> Filter (
         [NotNull] IEnumerable<AccessType> accessTypes,
