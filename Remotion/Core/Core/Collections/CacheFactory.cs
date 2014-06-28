@@ -19,6 +19,8 @@
 using System;
 using System.Collections.Generic;
 using System.Threading;
+using JetBrains.Annotations;
+using Remotion.Utilities;
 
 namespace Remotion.Collections
 {
@@ -42,6 +44,23 @@ namespace Remotion.Collections
     }
 
     /// <summary>
+    /// Creates a <see cref="Cache{TKey,TValue}"/> instance that is not thread-safe and uses the <see cref="EqualityComparer{T}.Default"/> 
+    /// <see cref="IEqualityComparer{T}"/>.
+    /// </summary>
+    /// <typeparam name="TKey">The type of the keys.</typeparam>
+    /// <typeparam name="TValue">The type of the values.</typeparam>
+    /// <param name="cacheInvalidationToken">The <see cref="CacheInvalidationToken"/> that can be used to signal a cache invalidation. Must not be <see langword="null" />.</param>
+    /// <returns>
+    /// A <see cref="Cache{TKey,TValue}"/> instance for storing keys and values.
+    /// </returns>
+    public static InvalidationTokenBasedCacheDecorator<TKey, TValue> Create<TKey, TValue> ([NotNull] CacheInvalidationToken cacheInvalidationToken)
+    {
+      ArgumentUtility.CheckNotNull ("cacheInvalidationToken", cacheInvalidationToken);
+
+      return new InvalidationTokenBasedCacheDecorator<TKey, TValue> (new Cache<TKey, TValue>(), cacheInvalidationToken);
+    }
+
+    /// <summary>
     /// Creates a <see cref="Cache{TKey,TValue}"/> instance that is not thread-safe and uses the specified
     /// <see cref="IEqualityComparer{T}"/>.
     /// </summary>
@@ -54,6 +73,26 @@ namespace Remotion.Collections
     public static Cache<TKey, TValue> Create<TKey, TValue> (IEqualityComparer<TKey> comparer)
     {
       return new Cache<TKey, TValue> (comparer);
+    }
+
+    /// <summary>
+    /// Creates a <see cref="Cache{TKey,TValue}"/> instance that is not thread-safe and uses the specified
+    /// <see cref="IEqualityComparer{T}"/>.
+    /// </summary>
+    /// <typeparam name="TKey">The type of the keys.</typeparam>
+    /// <typeparam name="TValue">The type of the values.</typeparam>
+    /// <param name="cacheInvalidationToken">The <see cref="CacheInvalidationToken"/> that can be used to signal a cache invalidation. Must not be <see langword="null" />.</param>
+    /// <param name="comparer">The comparer to use for comparing keys. Can be <see langword="null" />.</param>
+    /// <returns>
+    /// A <see cref="Cache{TKey,TValue}"/> instances for storing keys and values.
+    /// </returns>
+    public static InvalidationTokenBasedCacheDecorator<TKey, TValue> Create<TKey, TValue> (
+        [NotNull] CacheInvalidationToken cacheInvalidationToken,
+        [CanBeNull] IEqualityComparer<TKey> comparer)
+    {
+      ArgumentUtility.CheckNotNull ("cacheInvalidationToken", cacheInvalidationToken);
+
+      return new InvalidationTokenBasedCacheDecorator<TKey, TValue> (new Cache<TKey, TValue> (comparer), cacheInvalidationToken);
     }
 
     /// <summary>

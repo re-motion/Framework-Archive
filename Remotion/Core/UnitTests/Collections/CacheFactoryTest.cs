@@ -43,6 +43,18 @@ namespace Remotion.UnitTests.Collections
     }
 
     [Test]
+    public void Create_CacheInvalidationTokenOverload ()
+    {
+      var cacheInvalidationToken = new CacheInvalidationToken();
+      var result = CacheFactory.Create<string, int> (cacheInvalidationToken);
+
+      Assert.That (result, Is.TypeOf (typeof (InvalidationTokenBasedCacheDecorator<string, int>)));
+      Assert.That (result.CacheInvalidationToken, Is.SameAs (cacheInvalidationToken));
+      var innerCache = PrivateInvoke.GetNonPublicField (result, "_innerCache");
+      Assert.That (innerCache, Is.TypeOf (typeof (Cache<string, int>)));
+    }
+
+    [Test]
     public void Create_IEqualityComparerOverload ()
     {
       var result = CacheFactory.Create<string, int> (_comparer);
@@ -51,6 +63,20 @@ namespace Remotion.UnitTests.Collections
       var innerCache = PrivateInvoke.GetNonPublicField (result, "_dataStore");
       Assert.That (innerCache, Is.TypeOf (typeof (SimpleDataStore<string, int>)));
       Assert.That (((SimpleDataStore<string, int>) innerCache).Comparer, Is.SameAs (_comparer));
+    }
+
+    [Test]
+    public void Create_CacheInvalidationTokenOverload_IEqualityComparerOverload ()
+    {
+      var cacheInvalidationToken = new CacheInvalidationToken();
+      var result = CacheFactory.Create<string, int> (cacheInvalidationToken, _comparer);
+
+      Assert.That (result, Is.TypeOf (typeof (InvalidationTokenBasedCacheDecorator<string, int>)));
+      Assert.That (result.CacheInvalidationToken, Is.SameAs (cacheInvalidationToken));
+      var innerCache = PrivateInvoke.GetNonPublicField (result, "_innerCache");
+      Assert.That (innerCache, Is.TypeOf (typeof (Cache<string, int>)));
+      var innerDataStore = PrivateInvoke.GetNonPublicField (innerCache, "_dataStore");
+      Assert.That (((SimpleDataStore<string, int>) innerDataStore).Comparer, Is.SameAs (_comparer));
     }
 
     [Test]

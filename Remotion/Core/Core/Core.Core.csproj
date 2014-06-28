@@ -231,6 +231,7 @@
     <Compile Include="Collections\ICache.cs" />
     <Compile Include="Collections\IDataStore.cs" />
     <Compile Include="Collections\IExpirationPolicy.cs" />
+    <Compile Include="Collections\InvalidationTokenBasedCacheDecorator.cs" />
     <Compile Include="Collections\LazyLockingCachingAdapter.cs" />
     <Compile Include="Collections\LazyLockingDataStoreAdapter.cs" />
     <Compile Include="Collections\ReadOnlyCollectionDecorator.cs" />
