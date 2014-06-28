@@ -29,6 +29,7 @@ namespace Remotion.Security
   /// </remarks>
   /// <seealso cref="ObjectSecurityStrategy2"/>
   /// <seealso cref="ThreadLocalReEntrancyGuaredObjectSecurityDecorator"/>
+  /// <seealso cref="InstanceBasedReEntrancyGuaredObjectSecurityDecorator"/>
   public interface IObjectSecurityStrategy
   {
     /// <summary>Determines whether the requested access is granted.</summary>

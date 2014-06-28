@@ -17,14 +17,13 @@
 
 using System;
 using NUnit.Framework;
-using Remotion.Development.UnitTesting;
 using Remotion.Development.UnitTesting.ObjectMothers;
 using Rhino.Mocks;
 
 namespace Remotion.Security.UnitTests.Core
 {
   [TestFixture]
-  public class ThreadLocalReEntrancyGuaredObjectSecurityDecoratorTest
+  public class InstanceBasedReEntrancyGuaredObjectSecurityDecoratorTest
   {
     private ISecurityProvider _securityProviderStub;
     private ISecurityPrincipal _principalStub;
@@ -42,7 +41,7 @@ namespace Remotion.Security.UnitTests.Core
     public void HasAccess_DelegatesToDecoratedStrategy_ReturnsResult ()
     {
       var objectSecurityStrategyStub = MockRepository.GenerateStub<IObjectSecurityStrategy>();
-      var guard = new ThreadLocalReEntrancyGuaredObjectSecurityDecorator (objectSecurityStrategyStub);
+      var guard = new InstanceBasedReEntrancyGuaredObjectSecurityDecorator (objectSecurityStrategyStub);
       var accessTypes = new[] { AccessType.Get (GeneralAccessTypes.Find) };
 
       bool expectedResult = BooleanObjectMother.GetRandomBoolean();
@@ -62,7 +61,7 @@ namespace Remotion.Security.UnitTests.Core
     public void HasAccess_WithReEntrancyOnSameGuard_ThrowsInvalidOperationException ()
     {
       var objectSecurityStrategyStub = MockRepository.GenerateStub<IObjectSecurityStrategy>();
-      var guard = new ThreadLocalReEntrancyGuaredObjectSecurityDecorator (objectSecurityStrategyStub);
+      var guard = new InstanceBasedReEntrancyGuaredObjectSecurityDecorator (objectSecurityStrategyStub);
       var accessTypesOnFirstCall = new[] { AccessType.Get (GeneralAccessTypes.Find) };
 
       bool isExceptionThrownBySecondHasAccess = false;
@@ -82,46 +81,54 @@ namespace Remotion.Security.UnitTests.Core
           () => guard.HasAccess (_securityProviderStub, _principalStub, accessTypesOnFirstCall),
           Throws.InvalidOperationException
               .With.Message.StartsWith (
-                  "Multiple reentrancies on ThreadLocalReEntrancyGuaredObjectSecurityDecorator.HasAccess(...) are not allowed as they can indicate a possible infinite recursion."));
+                  "Multiple reentrancies on InstanceBasedReEntrancyGuaredObjectSecurityDecorator.HasAccess(...) are not allowed as they can indicate a possible infinite recursion."));
 
       Assert.That (isExceptionThrownBySecondHasAccess, Is.True);
     }
 
     [Test]
-    public void HasAccess_WithReEntrancyOnDifferentGuardOnSameThread_ThrowsInvalidOperationException ()
+    public void HasAccess_WithReEntrancyOnDifferentGuard_ReturnsResult ()
     {
-      var objectSecurityStrategyStub = MockRepository.GenerateStub<IObjectSecurityStrategy>();
-      var firstGuard = new ThreadLocalReEntrancyGuaredObjectSecurityDecorator (objectSecurityStrategyStub);
+      var firstObjectSecurityStrategyStub = MockRepository.GenerateStub<IObjectSecurityStrategy>();
+      var firstGuard = new InstanceBasedReEntrancyGuaredObjectSecurityDecorator (firstObjectSecurityStrategyStub);
       var accessTypesOnFirstCall = new[] { AccessType.Get (GeneralAccessTypes.Find) };
+      bool expectedResultOnFirstCall = BooleanObjectMother.GetRandomBoolean();
 
-      bool isExceptionThrownBySecondHasAccess = false;
-      objectSecurityStrategyStub
+      bool secondCallWasPerformed = false;
+      firstObjectSecurityStrategyStub
           .Stub (_ => _.HasAccess (_securityProviderStub, _principalStub, accessTypesOnFirstCall))
-          .Return (false)
+          .Return (expectedResultOnFirstCall)
           .WhenCalled (
               mi =>
               {
-                var secondGuard = new ThreadLocalReEntrancyGuaredObjectSecurityDecorator (MockRepository.GenerateStub<IObjectSecurityStrategy>());
-                var exception = Assert.Throws<InvalidOperationException> (
-                    () => secondGuard.HasAccess (_securityProviderStub, _principalStub, new[] { AccessType.Get (GeneralAccessTypes.Read) }));
-                isExceptionThrownBySecondHasAccess = true;
-                throw exception;
+                var secondObjectSecurityStrategyStub = MockRepository.GenerateStub<IObjectSecurityStrategy>();
+                var secondGuard = new InstanceBasedReEntrancyGuaredObjectSecurityDecorator (secondObjectSecurityStrategyStub);
+                var accessTypesOnSecondCall = new[] { AccessType.Get (GeneralAccessTypes.Read) };
+                bool expectedResultOnSecondCall = BooleanObjectMother.GetRandomBoolean();
+
+                secondObjectSecurityStrategyStub
+                    .Stub (_ => _.HasAccess (_securityProviderStub, _principalStub, accessTypesOnSecondCall))
+                    .Return (expectedResultOnSecondCall);
+
+                Assert.That (
+                    secondGuard.HasAccess (_securityProviderStub, _principalStub, accessTypesOnSecondCall),
+                    Is.EqualTo (expectedResultOnSecondCall));
+
+                secondCallWasPerformed = true;
               });
 
       Assert.That (
-          () => firstGuard.HasAccess (_securityProviderStub, _principalStub, accessTypesOnFirstCall),
-          Throws.InvalidOperationException
-              .With.Message.StartsWith (
-                  "Multiple reentrancies on ThreadLocalReEntrancyGuaredObjectSecurityDecorator.HasAccess(...) are not allowed as they can indicate a possible infinite recursion."));
+          firstGuard.HasAccess (_securityProviderStub, _principalStub, accessTypesOnFirstCall),
+          Is.EqualTo (expectedResultOnFirstCall));
 
-      Assert.That (isExceptionThrownBySecondHasAccess, Is.True);
+      Assert.That (secondCallWasPerformed, Is.True);
     }
 
     [Test]
     public void HasAccess_WithExceptionDuringDecoratedCall_ResetsReentrancyForSubsequentCalls ()
     {
       var objectSecurityStrategyStub = MockRepository.GenerateStub<IObjectSecurityStrategy>();
-      var guard = new ThreadLocalReEntrancyGuaredObjectSecurityDecorator (objectSecurityStrategyStub);
+      var guard = new InstanceBasedReEntrancyGuaredObjectSecurityDecorator (objectSecurityStrategyStub);
 
       var accessTypesOnFirstCall = new[] { AccessType.Get (GeneralAccessTypes.Find) };
       var exception = new Exception();
@@ -133,43 +140,6 @@ namespace Remotion.Security.UnitTests.Core
 
       Assert.That (() => guard.HasAccess (_securityProviderStub, _principalStub, accessTypesOnFirstCall), Throws.Exception.SameAs (exception));
       Assert.That (guard.HasAccess (_securityProviderStub, _principalStub, accessTypesOnSecondCall), Is.EqualTo (expectedResult));
-    }
-
-    [Test]
-    public void HasAccess_ReentrancyCheckIsScopedToThread_MultipleThreadsCanPerformSecurityEvaluationConcurrently ()
-    {
-      var firstObjectSecurityStrategyStub = MockRepository.GenerateStub<IObjectSecurityStrategy>();
-      var firstGuard = new ThreadLocalReEntrancyGuaredObjectSecurityDecorator (firstObjectSecurityStrategyStub);
-
-      var accessTypesOnFirstCall = new[] { AccessType.Get (GeneralAccessTypes.Find) };
-      bool expectedResultOnFirstCall = BooleanObjectMother.GetRandomBoolean();
-      bool isSecondCallPerformed = false;
-      firstObjectSecurityStrategyStub
-          .Stub (_ => _.HasAccess (_securityProviderStub, _principalStub, accessTypesOnFirstCall))
-          .Return (expectedResultOnFirstCall)
-          .WhenCalled (
-              mi =>
-              {
-                isSecondCallPerformed = true;
-                ThreadRunner.Run (
-                    () =>
-                    {
-                      var secondObjectSecurityStrategyStub = MockRepository.GenerateStub<IObjectSecurityStrategy>();
-                      var secondGuard = new ThreadLocalReEntrancyGuaredObjectSecurityDecorator (secondObjectSecurityStrategyStub);
-                      var accessTypesOnSecondCall = new[] { AccessType.Get (GeneralAccessTypes.Find) };
-                      bool expectedResultOnSecondCall = BooleanObjectMother.GetRandomBoolean();
-                      secondObjectSecurityStrategyStub
-                          .Stub (_ => _.HasAccess (_securityProviderStub, _principalStub, accessTypesOnSecondCall))
-                          .Return (expectedResultOnSecondCall);
-
-                      Assert.That (
-                          secondGuard.HasAccess (_securityProviderStub, _principalStub, accessTypesOnSecondCall),
-                          Is.EqualTo (expectedResultOnSecondCall));
-                    });
-              });
-
-      Assert.That (firstGuard.HasAccess (_securityProviderStub, _principalStub, accessTypesOnFirstCall), Is.EqualTo (expectedResultOnFirstCall));
-      Assert.That (isSecondCallPerformed, Is.True);
     }
   }
 }
