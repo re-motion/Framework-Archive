@@ -19,10 +19,18 @@ using Remotion.Utilities;
 
 namespace Remotion.Security
 {
+  /// <summary>
+  /// The <see cref="ThreadLocalReEntrancyGuaredObjectSecurityDecorator"/> can be used to guard against nested security checks on the same thread.
+  /// </summary>
+  /// <remarks>
+  /// This guard is intended to discover missing dependencies on <see cref="SecurityFreeSection"/>.<see cref="SecurityFreeSection.IsActive"/> when
+  /// performing additional secured operations as part of a security check.
+  /// </remarks>
+  /// <threadsafety static="true" instance="false" />
   [Serializable]
   public class ThreadLocalReEntrancyGuaredObjectSecurityDecorator : IObjectSecurityStrategy
   {
-    //TODO RM-6183: Test, replace argument checks with Debug-Checks
+    //TODO RM-6183: replace argument checks with Debug-Checks
 
     [ThreadStatic]
     private static bool s_isEvaluatingAccess;
@@ -48,7 +56,7 @@ namespace Remotion.Security
       if (s_isEvaluatingAccess)
       {
         throw new InvalidOperationException (
-            "Multiple reentrancies on SecurityStrategy.HasAccess(...) are not allowed as they can indicate a possible infinite recursion. "
+            "Multiple reentrancies on ThreadLocalReEntrancyGuaredObjectSecurityDecorator.HasAccess(...) are not allowed as they can indicate a possible infinite recursion. "
             + "Use SecurityFreeSection.IsActive to guard the computation of the SecurityContext returned by ISecurityContextFactory.CreateSecurityContext().");
       }
 
