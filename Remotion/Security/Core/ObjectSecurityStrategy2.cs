@@ -35,7 +35,7 @@ namespace Remotion.Security
   [Serializable]
   public sealed class ObjectSecurityStrategy2 : IObjectSecurityStrategy
   {
-    //TODO RM-6183: Test cache, test filter, test serialization, replace argument checks with Debug-Checks
+    //TODO RM-6183: Test cache, test filter, test serialization
     //TODO RM-6183: Refactor AccessType[] to IReadOnlyList<AccessType> and implement a Singleton-Version to allow for non-allocating checks
     // Implement CacheInvalidationToken, that can return and check a Revision (struct, holds Int64) and exposes an Invalidate() method.
     // The CacheInvalidationToken is passed via ctor. The ICachingObjectSecurityStrategy will be dropped. 
@@ -60,9 +60,9 @@ namespace Remotion.Security
 
     public bool HasAccess (ISecurityProvider securityProvider, ISecurityPrincipal principal, params AccessType[] requiredAccessTypes)
     {
-      ArgumentUtility.CheckNotNull ("securityProvider", securityProvider);
-      ArgumentUtility.CheckNotNull ("principal", principal);
-      ArgumentUtility.CheckNotNull ("requiredAccessTypes", requiredAccessTypes);
+      ArgumentUtility.DebugCheckNotNull ("securityProvider", securityProvider);
+      ArgumentUtility.DebugCheckNotNull ("principal", principal);
+      ArgumentUtility.DebugCheckNotNullOrEmpty ("requiredAccessTypes", requiredAccessTypes);
 
       var actualAccessTypes = GetAccessTypes (securityProvider, principal);
       return actualAccessTypes.HasAccess (requiredAccessTypes);
@@ -80,6 +80,9 @@ namespace Remotion.Security
 
     private AccessType[] GetAccessTypes (ISecurityProvider securityProvider, ISecurityPrincipal principal)
     {
+      // Explicit null-check since the public method does not perform this check in release-code
+      ArgumentUtility.CheckNotNull ("securityProvider", securityProvider);
+
       var context = CreateSecurityContext();
 
       var accessTypes = securityProvider.GetAccess (context, principal);

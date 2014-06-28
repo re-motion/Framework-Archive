@@ -30,8 +30,6 @@ namespace Remotion.Security
   [Serializable]
   public class ThreadLocalReEntrancyGuaredObjectSecurityDecorator : IObjectSecurityStrategy
   {
-    //TODO RM-6183: replace argument checks with Debug-Checks
-
     [ThreadStatic]
     private static bool s_isEvaluatingAccess;
 
@@ -49,9 +47,9 @@ namespace Remotion.Security
         ISecurityPrincipal principal,
         params AccessType[] requiredAccessTypes)
     {
-      ArgumentUtility.CheckNotNull ("securityProvider", securityProvider);
-      ArgumentUtility.CheckNotNull ("principal", principal);
-      ArgumentUtility.CheckNotNull ("requiredAccessTypes", requiredAccessTypes);
+      ArgumentUtility.DebugCheckNotNull ("securityProvider", securityProvider);
+      ArgumentUtility.DebugCheckNotNull ("principal", principal);
+      ArgumentUtility.DebugCheckNotNullOrEmpty ("requiredAccessTypes", requiredAccessTypes);
 
       if (s_isEvaluatingAccess)
       {
