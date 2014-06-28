@@ -33,15 +33,15 @@ namespace Remotion.Security
   public interface IObjectSecurityStrategy
   {
     /// <summary>Determines whether the requested access is granted.</summary>
-    /// <param name="securityProvider">The <see cref="ISecurityProvider"/> used to determine the permissions.</param>
-    /// <param name="principal">The <see cref="ISecurityPrincipal"/> on whose behalf the permissions are evaluated.</param>
-    /// <param name="requiredAccessTypes">The access rights required for the access to be granted.</param>
-    /// <returns><see langword="true"/> if the <paramref name="requiredAccessTypes"/> are granted.</returns>
+    /// <param name="securityProvider">The <see cref="ISecurityProvider"/> used to determine the permissions. Must not be <see langword="null" />. </param>
+    /// <param name="principal">The <see cref="ISecurityPrincipal"/> on whose behalf the permissions are evaluated. Must not be <see langword="null" />.</param>
+    /// <param name="requiredAccessTypes">The access rights required for the access to be granted. Must not be <see langword="null" />.</param>
+    /// <returns><see langword="true"/> if the <paramref name="requiredAccessTypes"/> are granted. Must not be <see langword="null" /> or empty.</returns>
     /// <remarks>
     /// Typically called via <see cref="SecurityClient.HasAccess(ISecurableObject, AccessType[])"/> of <see cref="SecurityClient"/>.
     /// The strategy incorporates <see cref="ISecurityContext"/> in the permission query.
     /// The <paramref name="requiredAccessTypes"/> are determined by the <see cref="SecurityClient"/>, 
-    /// taking the business object instance and the member name (property or method) into account.
+    /// taking the business object instance and the member (property or method) into account.
     /// </remarks>
     bool HasAccess (
         [NotNull] ISecurityProvider securityProvider,
