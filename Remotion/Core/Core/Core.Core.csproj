@@ -223,6 +223,7 @@
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
     <Compile Include="Collections\CacheFactory.cs" />
+    <Compile Include="Collections\CacheInvalidationToken.cs" />
     <Compile Include="Collections\CollectionExtensions.cs" />
     <Compile Include="Collections\DataStoreFactory.cs" />
     <Compile Include="Collections\ExpiringDataStore.cs" />
