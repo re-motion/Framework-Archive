@@ -75,7 +75,6 @@ namespace Remotion.Security.UnitTests.Core
           .Return (
               new[]
               {
-                  AccessType.Get (GeneralAccessTypes.Create),
                   AccessType.Get (GeneralAccessTypes.Delete),
                   AccessType.Get (GeneralAccessTypes.Read)
               });
@@ -84,8 +83,9 @@ namespace Remotion.Security.UnitTests.Core
           _securableType,
           _securityProviderMock,
           _principalStub,
+          AccessType.Get (GeneralAccessTypes.Create),
           AccessType.Get (GeneralAccessTypes.Delete),
-          AccessType.Get (GeneralAccessTypes.Find));
+          AccessType.Get (GeneralAccessTypes.Read));
 
       Assert.That (hasAccess, Is.EqualTo (false));
       _securityProviderMock.VerifyAllExpectations();

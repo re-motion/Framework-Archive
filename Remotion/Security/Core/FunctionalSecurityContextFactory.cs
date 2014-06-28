@@ -21,6 +21,7 @@ namespace Remotion.Security
   [Serializable]
   public class FunctionalSecurityContextFactory : ISecurityContextFactory
   {
+    //TODO RM-6183: Delete
     // types
 
     // static members

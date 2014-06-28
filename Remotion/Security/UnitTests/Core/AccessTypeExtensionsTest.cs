@@ -23,7 +23,7 @@ namespace Remotion.Security.UnitTests.Core
   public class AccessTypeExtensionsTest
   {
     [Test]
-    public void HasAccess_WithSingleRequiredAccessType_IsMatchingSingleAllowedAccessType_ReturnsTrue ()
+    public void HasAccess_WithSingleRequiredAccessType_MatchingSingleAllowedAccessType_ReturnsTrue ()
     {
       bool hasAccess = AccessTypeExtensions.HasAccess (
           new[] { AccessType.Get (GeneralAccessTypes.Edit) },
@@ -33,7 +33,7 @@ namespace Remotion.Security.UnitTests.Core
     }
 
     [Test]
-    public void HasAccess_WithSingleRequiredAccessType_IsNotMatchingSingleAllowedAccessType_ReturnsFalse ()
+    public void HasAccess_WithSingleRequiredAccessType_NotMatchingSingleAllowedAccessType_ReturnsFalse ()
     {
       bool hasAccess = AccessTypeExtensions.HasAccess (
           new[] { AccessType.Get (GeneralAccessTypes.Create) },
@@ -43,7 +43,7 @@ namespace Remotion.Security.UnitTests.Core
     }
 
     [Test]
-    public void HasAccess_WithSingleRequiredAccessType_AreNotPartOfAllowedAccessTypes_ReturnsTrue ()
+    public void HasAccess_WithSingleRequiredAccessType_NotPartOfAllowedAccessTypes_ReturnsTrue ()
     {
       bool hasAccess = AccessTypeExtensions.HasAccess (
           new[]
@@ -58,7 +58,7 @@ namespace Remotion.Security.UnitTests.Core
     }
 
     [Test]
-    public void HasAccess_WithAllRequiredAccessTypes_ArePartOfAllowedAccessTypes_ReturnsFalse ()
+    public void HasAccess_WithAllRequiredAccessTypes_PartOfAllowedAccessTypes_ReturnsTrue ()
     {
       bool hasAccess = AccessTypeExtensions.HasAccess (
           new[]
@@ -77,19 +77,19 @@ namespace Remotion.Security.UnitTests.Core
     }
 
     [Test]
-    public void HasAccess_WithoutAllRequiredAccessTypes_ArePartOfAllowedAccessTypes_ReturnsFalse ()
+    public void HasAccess_WithoutAllRequiredAccessTypes_PartOfAllowedAccessTypes_ReturnsFalse ()
     {
       bool hasAccess = AccessTypeExtensions.HasAccess (
           new[]
           {
-              AccessType.Get (GeneralAccessTypes.Create),
               AccessType.Get (GeneralAccessTypes.Delete),
               AccessType.Get (GeneralAccessTypes.Read)
           },
           new[]
           {
+              AccessType.Get (GeneralAccessTypes.Create),
               AccessType.Get (GeneralAccessTypes.Delete),
-              AccessType.Get (GeneralAccessTypes.Find)
+              AccessType.Get (GeneralAccessTypes.Read)
           });
 
       Assert.That (hasAccess, Is.EqualTo (false));

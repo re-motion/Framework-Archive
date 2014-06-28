@@ -18,8 +18,6 @@
 using System;
 using System.Collections.Generic;
 using NUnit.Framework;
-using Remotion.Collections;
-using Remotion.Development.UnitTesting;
 using Remotion.Security.UnitTests.Core.SampleDomain;
 using Rhino.Mocks;
 
@@ -49,7 +47,7 @@ namespace Remotion.Security.UnitTests.Core.ObjectSecurityStrategyTests
     }
 
     [Test]
-    public void HasAccess_WithRequiredAccessTypesMatchingAllowedAccessTypes_ReturnsTrue()
+    public void HasAccess_WithRequiredAccessTypesMatchingAllowedAccessTypes_ReturnsTrue ()
     {
       _securityProviderMock
           .Expect (_ => _.GetAccess (_context, _principalStub))
@@ -79,15 +77,15 @@ namespace Remotion.Security.UnitTests.Core.ObjectSecurityStrategyTests
           .Return (
               new[]
               {
-                  AccessType.Get (GeneralAccessTypes.Create), 
+                  AccessType.Get (GeneralAccessTypes.Create),
                   AccessType.Get (GeneralAccessTypes.Delete),
-                  AccessType.Get (GeneralAccessTypes.Read)
               });
       bool hasAccess = _strategy.HasAccess (
           _securityProviderMock,
           _principalStub,
+          AccessType.Get (GeneralAccessTypes.Create),
           AccessType.Get (GeneralAccessTypes.Delete),
-          AccessType.Get (GeneralAccessTypes.Find));
+          AccessType.Get (GeneralAccessTypes.Read));
 
       Assert.That (hasAccess, Is.EqualTo (false));
       _securityProviderMock.VerifyAllExpectations();
