@@ -14,16 +14,17 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-
 using System;
 
-namespace Remotion.Globalization.UnitTests.TestDomain
+namespace Remotion.Globalization.Mixins.UnitTests.TestDomain
 {
-  [MultiLingualResources (NamedResources.One)]
-  [MultiLingualResources (NamedResources.Two)]
-  [MultiLingualResources (NamedResources.Three)]
-  public class ClassWithMultiLingualResourcesAttributes
+  public static class NamedResources
   {
-    
+    public const string OnTarget = "Remotion.Globalization.Mixins.UnitTests.TestDomain.Resources.OnTarget";
+    public const string OnInherited = "Remotion.Globalization.Mixins.UnitTests.TestDomain.Resources.OnInherited";
+    public const string OnMixin1 = "Remotion.Globalization.Mixins.UnitTests.TestDomain.Resources.OnMixin1";
+    public const string OnMixin2a = "Remotion.Globalization.Mixins.UnitTests.TestDomain.Resources.OnMixin2a";
+    public const string OnMixin2b = "Remotion.Globalization.Mixins.UnitTests.TestDomain.Resources.OnMixin2b";
+    public const string MixinOfMixinWithResources = "Remotion.Globalization.Mixins.UnitTests.TestDomain.Resources.MixinOfMixinWithResources";
   }
 }
