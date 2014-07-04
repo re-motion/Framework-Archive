@@ -19,12 +19,18 @@ using Remotion.Globalization;
 
 namespace Remotion.ObjectBinding.UnitTests.BindableObject.IntergrationTests.Globalization.TestDomain
 {
-  [MultiLingualResources ("Remotion.ObjectBinding.UnitTests.BindableObject.IntergrationTests.Globalization.Resources.MixinAddingResources")]
-  public class MixinAddingResources : IMixinAddingResources
+  [BindableObject]
+  [Serializable]
+  public class DerivedTargetClassWithOverrideMixinForGlobalizationViaAttributes : TargetClassWithOverrideMixinForGlobalizationViaAttributes
   {
-    public string MixedProperty1 { get; set; }
-    public string MixedProperty2 { get; set; }
+    public DerivedTargetClassWithOverrideMixinForGlobalizationViaAttributes ()
+    {
+    }
 
-    string IMixinAddingResources.MixedExplicitProperty { get; set; }
+    [MultiLingualName ("Property3 display name from DerivedTargetClassWithOverrideMixinForGlobalizationViaAttributes", "")]
+    public string Property3 { get; set; }
+
+    [MultiLingualName ("Property4 display name from DerivedTargetClassWithOverrideMixinForGlobalizationViaAttributes", "")]
+    public string Property4 { get; set; }
   }
 }

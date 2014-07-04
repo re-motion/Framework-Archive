@@ -15,16 +15,19 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Globalization;
+using Remotion.Mixins;
 
 namespace Remotion.ObjectBinding.UnitTests.BindableObject.IntergrationTests.Globalization.TestDomain
 {
-  [MultiLingualResources ("Remotion.ObjectBinding.UnitTests.BindableObject.IntergrationTests.Globalization.Resources.MixinAddingResources")]
-  public class MixinAddingResources : IMixinAddingResources
+  [BindableObject]
+  [Serializable]
+  public class TargetClassWithOverrideMixinForGlobalizationViaAttributes : TargetClassForGlobalizationViaAttributes
   {
-    public string MixedProperty1 { get; set; }
-    public string MixedProperty2 { get; set; }
+    public TargetClassWithOverrideMixinForGlobalizationViaAttributes ()
+    {
+    }
 
-    string IMixinAddingResources.MixedExplicitProperty { get; set; }
+    [OverrideMixin]
+    protected string PropertyForOverrideMixin { get; set; }
   }
 }

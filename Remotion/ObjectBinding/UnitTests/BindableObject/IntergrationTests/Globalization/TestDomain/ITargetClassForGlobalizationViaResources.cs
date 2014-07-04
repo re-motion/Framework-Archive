@@ -19,7 +19,7 @@ using System;
 
 namespace Remotion.ObjectBinding.UnitTests.BindableObject.IntergrationTests.Globalization.TestDomain
 {
-  public interface ITargetClassForGlobalization
+  public interface ITargetClassForGlobalizationViaResources
   {
     string ImplicitImplementedProperty { get; set; }
     string ExplicitImplementedProperty { get; set; }
