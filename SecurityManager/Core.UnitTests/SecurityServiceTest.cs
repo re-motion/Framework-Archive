@@ -27,13 +27,14 @@ using log4net.Filter;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects;
 using Remotion.Data.DomainObjects.Security;
+using Remotion.Development.UnitTesting;
 using Remotion.Security;
-using Remotion.Security.Configuration;
 using Remotion.SecurityManager.Domain.AccessControl;
 using Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation;
 using Remotion.SecurityManager.Domain.Metadata;
 using Remotion.SecurityManager.Domain.OrganizationalStructure;
 using Remotion.SecurityManager.UnitTests.TestDomain;
+using Remotion.ServiceLocation;
 using Rhino.Mocks;
 using Mocks_Is = Rhino.Mocks.Constraints.Is;
 using Mocks_List = Rhino.Mocks.Constraints.List;
@@ -104,7 +105,6 @@ namespace Remotion.SecurityManager.UnitTests
     {
       base.TearDown();
       LogManager.ResetConfiguration();
-      SecurityConfiguration.Current.SecurityProvider = null;
     }
 
     [Test]
@@ -209,7 +209,7 @@ namespace Remotion.SecurityManager.UnitTests
     public void GetAccess_UsesSecurityFreeSection ()
     {
       ClientTransaction subTransaction;
-      using (_clientTransaction.EnterNonDiscardingScope ())
+      using (_clientTransaction.EnterNonDiscardingScope())
       {
         var abstractRoles = new List<IDomainObjectHandle<AbstractRoleDefinition>>();
         //abstractRoles.Add (_ace.SpecificAbstractRole.GetHandle());
@@ -222,28 +222,33 @@ namespace Remotion.SecurityManager.UnitTests
         role.Group.Tenant = _tenant;
         role.Position = organizationalStructureFactory.CreatePosition();
 
-        var token = SecurityToken.Create(PrincipalTestHelper.Create (_tenant, null, new[] { role }), null, null, null, abstractRoles);
+        var token = SecurityToken.Create (PrincipalTestHelper.Create (_tenant, null, new[] { role }), null, null, null, abstractRoles);
 
-        subTransaction = _clientTransaction.CreateSubTransaction ();
+        subTransaction = _clientTransaction.CreateSubTransaction();
         using (subTransaction.EnterNonDiscardingScope())
         {
           var aclHandle = CreateAccessControlListHandle();
           Expect.Call (_mockAclFinder.Find (_context))
-                .WhenCalled (invocation => Assert.That (SecurityFreeSection.IsActive, Is.True))
-                .Return (aclHandle);
+              .WhenCalled (invocation => Assert.That (SecurityFreeSection.IsActive, Is.True))
+              .Return (aclHandle);
           Expect.Call (_mockTokenBuilder.CreateToken (_principalStub, _context))
               .WhenCalled (invocation => Assert.That (SecurityFreeSection.IsActive, Is.True))
               .Return (token);
         }
       }
-      SecurityConfiguration.Current.SecurityProvider = MockRepository.GenerateStub<ISecurityProvider> ();
-      _clientTransaction.Extensions.Add (new SecurityClientTransactionExtension ());
 
-      _mocks.ReplayAll ();
+      var serviceLocator = DefaultServiceLocator.Create();
+      serviceLocator.RegisterSingle (() => MockRepository.GenerateStub<ISecurityProvider>());
+      using (new ServiceLocatorScope (serviceLocator))
+      {
+        _clientTransaction.Extensions.Add (new SecurityClientTransactionExtension());
 
-      _service.GetAccess (_context, _principalStub);
+        _mocks.ReplayAll();
 
-      _mocks.VerifyAll();
+        _service.GetAccess (_context, _principalStub);
+
+        _mocks.VerifyAll();
+      }
     }
 
     [Test]

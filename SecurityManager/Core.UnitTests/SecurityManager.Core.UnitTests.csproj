@@ -121,7 +121,6 @@
     <Compile Include="AclTools\Expansion\TextWriterFactory\StreamWriterFactoryTest.cs" />
     <Compile Include="AclTools\Expansion\UserRoleAclAceCombinationsTest.cs" />
     <Compile Include="AclTools\SetUpFixture.cs" />
-    <Compile Include="Configuration\SecurityConfigurationMock.cs" />
     <Compile Include="Configuration\SecurityManagerConfigurationTest.cs" />
     <Compile Include="Configuration\TestOrganizationalStructureFactory.cs" />
     <Compile Include="Configuration\TestSecurityManagerConfiguration.cs" />
@@ -200,6 +199,7 @@
     <Compile Include="Domain\SearchInfrastructure\OrganizationalStructure\PositionPropertyTypeSearchServiceTests\SearchOtherPropertyType.cs" />
     <Compile Include="Domain\SearchInfrastructure\OrganizationalStructure\PositionPropertyTypeSearchServiceTests\SearchPosition.cs" />
     <Compile Include="Domain\SearchInfrastructure\OrganizationalStructure\RolePropertiesSearchServiceTests\SearchOtherPropertyType.cs" />
+    <Compile Include="Domain\SearchInfrastructure\OrganizationalStructure\RolePropertiesSearchServiceTests\SearchPositionWithSecurityChecks.cs" />
     <Compile Include="Domain\SearchInfrastructure\OrganizationalStructure\RolePropertiesSearchServiceTests\SearchPosition.cs" />
     <Compile Include="Domain\SearchInfrastructure\OrganizationalStructure\SubstitutionPropertiesSearchServiceTests\SearchOtherPropertyType.cs" />
     <Compile Include="Domain\SearchInfrastructure\OrganizationalStructure\TenantPropertyTypeSearchServiceTests\SearchTenant.cs" />

@@ -40,8 +40,12 @@ namespace Remotion.Security
 
       var serviceLocator = SafeServiceLocator.Current;
 
+      var securityProvider = serviceLocator.GetInstance<ISecurityProvider>();
+      if (securityProvider.IsNull)
+        return SecurityClient.Null;
+
       return new SecurityClient (
-          serviceLocator.GetInstance<ISecurityProvider>(),
+          securityProvider,
           serviceLocator.GetInstance<IPermissionProvider>(),
           serviceLocator.GetInstance<IPrincipalProvider>(),
           serviceLocator.GetInstance<IFunctionalSecurityStrategy>(),

@@ -91,5 +91,16 @@ namespace Remotion.Security.UnitTests.Core.SecurityClientTests
         SecurityConfiguration.Current.DisableAccessChecks = backupValue;
       }
     }
+
+    [Test]
+    public void Create_WithNullSecurityProvider_ReturnsNullObject ()
+    {
+      Assert.That (SecurityConfiguration.Current.DisableAccessChecks, Is.False);
+      _stubSecurityProvider.Stub (_ => _.IsNull).Return (true);
+
+      SecurityClient securityClient = SecurityClient.CreateSecurityClientFromConfiguration();
+
+      Assert.That (securityClient, Is.SameAs (SecurityClient.Null));
+    }
   }
 }
