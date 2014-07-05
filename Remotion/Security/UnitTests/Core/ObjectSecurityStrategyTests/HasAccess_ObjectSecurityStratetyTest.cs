@@ -71,7 +71,7 @@ namespace Remotion.Security.UnitTests.Core.ObjectSecurityStrategyTests
               AccessType.Get (GeneralAccessTypes.Create)
           });
 
-      Assert.That (hasAccess, Is.EqualTo (true));
+      Assert.That (hasAccess, Is.True);
       _securityProviderMock.VerifyAllExpectations();
     }
 
@@ -96,7 +96,7 @@ namespace Remotion.Security.UnitTests.Core.ObjectSecurityStrategyTests
               AccessType.Get (GeneralAccessTypes.Read)
           });
 
-      Assert.That (hasAccess, Is.EqualTo (false));
+      Assert.That (hasAccess, Is.False);
       _securityProviderMock.VerifyAllExpectations();
     }
 
@@ -137,7 +137,7 @@ namespace Remotion.Security.UnitTests.Core.ObjectSecurityStrategyTests
 
       bool hasAccess = _strategy.HasAccess (_securityProviderMock, _principalStub, new[] { AccessType.Get (GeneralAccessTypes.Edit) });
 
-      Assert.That (hasAccess, Is.EqualTo (true));
+      Assert.That (hasAccess, Is.True);
     }
 
     [Test]
@@ -155,22 +155,5 @@ namespace Remotion.Security.UnitTests.Core.ObjectSecurityStrategyTests
           () => _strategy.HasAccess (_securityProviderMock, _principalStub, new AccessType[0]),
           Throws.ArgumentException.With.Message.EqualTo ("Parameter 'requiredAccessTypes' cannot be empty.\r\nParameter name: requiredAccessTypes"));
     }
-
-    //[Test]
-    //public void Serialization ()
-    //{
-    //  IObjectSecurityStrategy strategy = new ObjectSecurityStrategy2 (
-    //      new Cache<ISecurityPrincipal, AccessType[]>());
-    //  AccessType[] accessTypes = new[] { AccessType.Get (GeneralAccessTypes.Find) };
-    //  strategy.LocalCache.GetOrCreateValue (new SecurityPrincipal ("foo", null, null, null), delegate { return accessTypes; });
-
-    //  SecurityStrategy deserializedStrategy = Serializer.SerializeAndDeserialize (strategy);
-    //  Assert.That (deserializedStrategy, Is.Not.SameAs (strategy));
-
-    //  AccessType[] newAccessTypes;
-    //  bool result = deserializedStrategy.LocalCache.TryGetValue (new SecurityPrincipal ("foo", null, null, null), out newAccessTypes);
-    //  Assert.That (result, Is.True);
-    //  Assert.That (newAccessTypes, Is.EquivalentTo (accessTypes));
-    //}
   }
 }

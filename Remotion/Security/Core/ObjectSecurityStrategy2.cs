@@ -35,14 +35,16 @@ namespace Remotion.Security
   [Serializable]
   public sealed class ObjectSecurityStrategy2 : IObjectSecurityStrategy
   {
-    //TODO RM-6183: Test filter, test serialization
     //TODO RM-6183: Refactor AccessType[] to IReadOnlyList<AccessType> and implement a Singleton-Version to allow for non-allocating checks
 
     private readonly InvalidationTokenBasedCacheDecorator<ISecurityPrincipal, AccessType[]> _cache;
     private readonly ISecurityContextFactory _securityContextFactory;
     private readonly IAccessTypeFilter _accessTypeFilter;
 
-    public ObjectSecurityStrategy2 (ISecurityContextFactory securityContextFactory, IAccessTypeFilter accessTypeFilter, CacheInvalidationToken cacheInvalidationToken)
+    public ObjectSecurityStrategy2 (
+        ISecurityContextFactory securityContextFactory,
+        IAccessTypeFilter accessTypeFilter,
+        CacheInvalidationToken cacheInvalidationToken)
     {
       ArgumentUtility.CheckNotNull ("securityContextFactory", securityContextFactory);
       ArgumentUtility.CheckNotNull ("accessTypeFilter", accessTypeFilter);
@@ -96,8 +98,7 @@ namespace Remotion.Security
       var accessTypes = securityProvider.GetAccess (context, principal);
       Assertion.IsNotNull (accessTypes, "GetAccess evaluated and returned null.");
 
-      return _accessTypeFilter.Filter (accessTypes, context, principal).ToArray();
-      //TODO RM-6183: check, that no new access types have been introduced.
+      return FilterAccessTypes (accessTypes, principal, context);
     }
 
     private ISecurityContext CreateSecurityContext ()
@@ -109,6 +110,22 @@ namespace Remotion.Security
 
         return context;
       }
+    }
+
+    private AccessType[] FilterAccessTypes (AccessType[] accessTypes, ISecurityPrincipal principal, ISecurityContext context)
+    {
+      var filteredAccessTypes = _accessTypeFilter.Filter (accessTypes, context, principal).ToArray();
+
+      if (!filteredAccessTypes.IsSubsetOf (accessTypes))
+      {
+        throw new InvalidOperationException (
+            string.Format (
+                "The access type filter injected additional access types ('{0}') into the filter result. "
+                + "An access type filter may only remove (i.e. filter) the list of access types returned from the security provider.",
+                string.Join ("', '", filteredAccessTypes.Except (accessTypes))));
+      }
+
+      return filteredAccessTypes;
     }
   }
 }

@@ -62,14 +62,14 @@ namespace Remotion.Security.UnitTests.Core.ObjectSecurityStrategyTests
           _principalStub,
           new[] { AccessType.Get (GeneralAccessTypes.Read) });
 
-      Assert.That (hasAccessOnFirstCall, Is.EqualTo (true));
+      Assert.That (hasAccessOnFirstCall, Is.True);
 
       bool hasAccessOnSecondCall = _strategy.HasAccess (
           _securityProviderMock,
           _principalStub,
           new[] { AccessType.Get (GeneralAccessTypes.Read) });
 
-      Assert.That (hasAccessOnSecondCall, Is.EqualTo (true));
+      Assert.That (hasAccessOnSecondCall, Is.True);
 
       _securityProviderMock.VerifyAllExpectations();
     }
@@ -87,14 +87,14 @@ namespace Remotion.Security.UnitTests.Core.ObjectSecurityStrategyTests
           _principalStub,
           new[] { AccessType.Get (GeneralAccessTypes.Read) });
 
-      Assert.That (hasAccessOnFirstCall, Is.EqualTo (false));
+      Assert.That (hasAccessOnFirstCall, Is.False);
 
       bool hasAccessOnSecondCall = _strategy.HasAccess (
           _securityProviderMock,
           _principalStub,
           new[] { AccessType.Get (GeneralAccessTypes.Read) });
 
-      Assert.That (hasAccessOnSecondCall, Is.EqualTo (false));
+      Assert.That (hasAccessOnSecondCall, Is.False);
 
       _securityProviderMock.VerifyAllExpectations();
     }
@@ -112,14 +112,14 @@ namespace Remotion.Security.UnitTests.Core.ObjectSecurityStrategyTests
           _principalStub,
           new[] { AccessType.Get (GeneralAccessTypes.Read) });
 
-      Assert.That (hasAccessOnFirstCall, Is.EqualTo (false));
+      Assert.That (hasAccessOnFirstCall, Is.False);
 
       bool hasAccessOnSecondCall = _strategy.HasAccess (
           _securityProviderMock,
           _principalStub,
           new[] { AccessType.Get (GeneralAccessTypes.Create) });
 
-      Assert.That (hasAccessOnSecondCall, Is.EqualTo (true));
+      Assert.That (hasAccessOnSecondCall, Is.True);
 
       _securityProviderMock.VerifyAllExpectations();
     }
@@ -137,7 +137,7 @@ namespace Remotion.Security.UnitTests.Core.ObjectSecurityStrategyTests
           _principalStub,
           new[] { AccessType.Get (GeneralAccessTypes.Read) });
 
-      Assert.That (hasAccessOnFirstCall, Is.EqualTo (true));
+      Assert.That (hasAccessOnFirstCall, Is.True);
       _securityProviderMock.VerifyAllExpectations();
 
       _strategy.CacheInvalidationToken.Invalidate();
@@ -154,7 +154,7 @@ namespace Remotion.Security.UnitTests.Core.ObjectSecurityStrategyTests
           _principalStub,
           new[] { AccessType.Get (GeneralAccessTypes.Create) });
 
-      Assert.That (hasAccessOnSecondCall, Is.EqualTo (true));
+      Assert.That (hasAccessOnSecondCall, Is.True);
       _securityProviderMock.VerifyAllExpectations();
     }
   }
