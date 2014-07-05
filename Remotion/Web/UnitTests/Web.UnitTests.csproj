@@ -388,8 +388,6 @@
     <Compile Include="Core\ExecutionEngine\WxeTest.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Core\Security\Configuration\SecurityConfigurationMock.cs" />
-    <Compile Include="Core\Security\DeserializeSecurityConfigurationForUserProviderTest.cs" />
     <Compile Include="Core\Security\Domain\DerivedSecurableObject.cs" />
     <Compile Include="Core\Security\Domain\MethodNameEnum.cs" />
     <Compile Include="Core\Security\Domain\NestedMethodNameEnum.cs" />
