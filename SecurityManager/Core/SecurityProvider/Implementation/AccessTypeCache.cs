@@ -21,36 +21,40 @@ using Remotion.Collections;
 using Remotion.Security;
 using Remotion.SecurityManager.Domain;
 using Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation;
+using Remotion.Utilities;
 
-namespace Remotion.SecurityManager.GlobalAccessTypeCache.Implementation
+namespace Remotion.SecurityManager.SecurityProvider.Implementation
 {
-  public sealed class SecurityContextCache : RepositoryBase<SecurityContextCache.Data, RevisionKey, GuidRevisionValue>
+  public sealed class AccessTypeCache : RepositoryBase<AccessTypeCache.Data, UserRevisionKey, GuidRevisionValue>
   {
     public sealed class Data : RevisionBasedData
     {
-      private readonly ICache<ISecurityPrincipal, AccessTypeCache> _items;
+      private readonly ICache<ISecurityContext, AccessType[]> _items;
 
       internal Data (GuidRevisionValue revision)
           : base (revision)
       {
-        _items = CacheFactory.CreateWithLocking<ISecurityPrincipal, AccessTypeCache>();
+        _items = CacheFactory.CreateWithLazyLocking<ISecurityContext, AccessType[]>();
       }
 
-      public ICache<ISecurityPrincipal, AccessTypeCache> Items
+      public ICache<ISecurityContext, AccessType[]> Items
       {
         get { return _items; }
       }
     }
 
     //TODO RM-5521: test, implement ICache-interface with delegating members to "Items", generalize as RevisionBasedCache<TKey, TRevisionProvider>
-    private readonly RevisionKey _revisionKey = new RevisionKey();
+    private readonly UserRevisionKey _revisionKey;
 
-    public SecurityContextCache (IRevisionProvider<RevisionKey, GuidRevisionValue> revisionProvider)
+    public AccessTypeCache (IRevisionProvider<UserRevisionKey, GuidRevisionValue> revisionProvider, string userName)
         : base (revisionProvider)
     {
+      ArgumentUtility.CheckNotNullOrEmpty ("userName", userName);
+        
+      _revisionKey = new UserRevisionKey (userName);
     }
 
-    public ICache<ISecurityPrincipal, AccessTypeCache> Items
+    public ICache<ISecurityContext, AccessType[]> Items
     {
       get { return GetCachedData (_revisionKey).Items; }
     }

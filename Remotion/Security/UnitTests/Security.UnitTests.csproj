@@ -84,7 +84,6 @@
     <Compile Include="Core\AccessTypeTest.cs" />
     <Compile Include="Core\Configuration\SecurityConfigurationTest.cs" />
     <Compile Include="Core\Configuration\SecurityConfigurationTests\TestBase.cs" />
-    <Compile Include="Core\IGlobalAccessTypeCacheTest.cs" />
     <Compile Include="Core\EnumWrapperTest.cs" />
     <Compile Include="Core\IFunctionalSecurityStrategyTest.cs" />
     <Compile Include="Core\IObjectSecurityAdapterTest.cs" />

@@ -20,8 +20,6 @@ using System.Collections.Generic;
 using NUnit.Framework;
 using Remotion.Collections;
 using Remotion.Development.UnitTesting;
-using Remotion.Security.Configuration;
-using Remotion.Security.UnitTests.Core.Configuration;
 using Remotion.Security.UnitTests.Core.SampleDomain;
 using Rhino.Mocks;
 
@@ -30,38 +28,8 @@ namespace Remotion.Security.UnitTests.Core.SecurityStrategyTests
   [TestFixture]
   public class HasAccessWithReentrancy_SecurityStrategyTest
   {
-    private class GlobalAccessTypeCache : IGlobalAccessTypeCache
-    {
-      private readonly LazyLockingCachingAdapter<GlobalAccessTypeCacheKey, AccessType[]> _innerCache;
-
-      public GlobalAccessTypeCache ()
-      {
-        _innerCache = CacheFactory.CreateWithLazyLocking<GlobalAccessTypeCacheKey, AccessType[]>();
-      }
-
-      public bool IsNull
-      {
-        get { return false; }
-      }
-
-      public AccessType[] GetOrCreateValue (GlobalAccessTypeCacheKey key, Func<GlobalAccessTypeCacheKey, AccessType[]> valueFactory)
-      {
-        return _innerCache.GetOrCreateValue (key, valueFactory);
-      }
-
-      public bool TryGetValue (GlobalAccessTypeCacheKey key, out AccessType[] value)
-      {
-        return _innerCache.TryGetValue (key, out value);
-      }
-
-      public void Clear ()
-      {
-        _innerCache.Clear();
-      }
-    }
 
     private ISecurityProvider _securityProviderStub;
-    private IGlobalAccessTypeCache _globalAccessTypeCache;
     private ICache<ISecurityPrincipal, AccessType[]> _localAccessTypeCache;
     private ISecurityPrincipal _principalStub;
     private SecurityContext _context;
@@ -70,7 +38,6 @@ namespace Remotion.Security.UnitTests.Core.SecurityStrategyTests
     public void SetUp ()
     {
       _securityProviderStub = MockRepository.GenerateStub<ISecurityProvider>();
-      _globalAccessTypeCache = new GlobalAccessTypeCache ();
       _localAccessTypeCache = CacheFactory.Create<ISecurityPrincipal, AccessType[]>();
 
       _principalStub = MockRepository.GenerateStub<ISecurityPrincipal>();

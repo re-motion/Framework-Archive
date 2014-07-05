@@ -91,13 +91,10 @@
     <Compile Include="AccessType.cs" />
     <Compile Include="AccessTypeAttribute.cs" />
     <Compile Include="AccessTypeExtensions.cs" />
-    <Compile Include="CachingSecurityProviderDecorator.cs" />
     <Compile Include="DemandPermissionAttribute.cs" />
     <Compile Include="EnumWrapper.cs" />
-    <Compile Include="GlobalAccessTypeCacheKey.cs" />
     <Compile Include="IAccessTypeFilter.cs" />
     <Compile Include="IFunctionalSecurityStrategy.cs" />
-    <Compile Include="IGlobalAccessTypeCache.cs" />
     <Compile Include="IObjectSecurityAdapter.cs" />
     <Compile Include="IObjectSecurityStrategy.cs" />
     <Compile Include="IPrincipalProvider.cs" />
@@ -114,7 +111,6 @@
     <Compile Include="Metadata\ReflectionBasedMemberResolver.cs" />
     <Compile Include="NullAccessTypeFilter.cs" />
     <Compile Include="NullFunctionalSecurityStrategy.cs" />
-    <Compile Include="NullGlobalAccessTypeCache.cs" />
     <Compile Include="NullSecurityPrincipal.cs" />
     <Compile Include="NullSecurityClient.cs" />
     <Compile Include="NullSecurityProvider.cs" />

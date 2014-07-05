@@ -19,9 +19,10 @@
 using System;
 using NUnit.Framework;
 using Remotion.Security;
+using Remotion.SecurityManager.SecurityProvider;
 using Remotion.ServiceLocation;
 
-namespace Remotion.SecurityManager.UnitTests
+namespace Remotion.SecurityManager.UnitTests.SecurityProvider
 {
   [TestFixture]
   public class ISecurityProviderTest
@@ -40,7 +41,8 @@ namespace Remotion.SecurityManager.UnitTests
       var obj = _serviceLocator.GetInstance<ISecurityProvider>();
 
       Assert.That (obj, Is.Not.Null);
-      Assert.That (obj, Is.TypeOf (typeof (SecurityService)));
+      Assert.That (obj, Is.TypeOf<RevisionBasedCachingSecurityProviderDecorator>());
+      Assert.That (((RevisionBasedCachingSecurityProviderDecorator) obj).InnerSecurityProvider, Is.TypeOf<SecurityService>());
     }
 
     [Test]
