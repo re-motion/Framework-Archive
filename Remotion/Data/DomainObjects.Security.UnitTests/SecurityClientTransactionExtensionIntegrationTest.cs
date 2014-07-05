@@ -115,6 +115,8 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests
         "Access to method 'get_PropertyWithDefaultPermission' on type 'Remotion.Data.DomainObjects.Security.UnitTests.TestDomain.SecurableObject' has been denied.")]
     public void AccessDenied_PropertyWithDefaultPermission ()
     {
+      _securityProviderStub.Stub (mock => mock.GetAccess (_securityContextStub, _securityPrincipalStub)).Return (new AccessType[0]);
+
       SecurableObject securableObject;
       using (new SecurityFreeSection())
       {
@@ -129,6 +131,8 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests
         "Access to method 'get_PropertyWithCustomPermission' on type 'Remotion.Data.DomainObjects.Security.UnitTests.TestDomain.SecurableObject' has been denied.")]
     public void AccessDenied_PropertyWithCustomPermission ()
     {
+      _securityProviderStub.Stub (mock => mock.GetAccess (_securityContextStub, _securityPrincipalStub)).Return (new AccessType[0]);
+
       SecurableObject securableObject;
       using (new SecurityFreeSection())
       {
@@ -175,6 +179,8 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests
         "Access to method 'get_MixedPropertyWithDefaultPermission' on type 'Remotion.Data.DomainObjects.Security.UnitTests.TestDomain.SecurableObject' has been denied.")]
     public void AccessDenied_MixedPropertyWithDefaultPermission ()
     {
+      _securityProviderStub.Stub (mock => mock.GetAccess (_securityContextStub, _securityPrincipalStub)).Return (new AccessType[0]);
+
       SecurableObject securableObject;
       using (new SecurityFreeSection())
       {
@@ -189,6 +195,8 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests
         "Access to method 'get_MixedPropertyWithCustomPermission' on type 'Remotion.Data.DomainObjects.Security.UnitTests.TestDomain.SecurableObject' has been denied.")]
     public void AccessDenied_MixedPropertyWithCustomPermission ()
     {
+      _securityProviderStub.Stub (mock => mock.GetAccess (_securityContextStub, _securityPrincipalStub)).Return (new AccessType[0]);
+
       SecurableObject securableObject;
       using (new SecurityFreeSection())
       {
@@ -203,6 +211,8 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests
         "Access to method 'get_PropertyWithDefaultPermission' on type 'Remotion.Data.DomainObjects.Security.UnitTests.TestDomain.SecurableObject' has been denied.")]
     public void AccessDenied_SubTransaction ()
     {
+      _securityProviderStub.Stub (mock => mock.GetAccess (_securityContextStub, _securityPrincipalStub)).Return (new AccessType[0]);
+
       Assert.That (_clientTransaction.Extensions[SecurityClientTransactionExtension.DefaultKey], Is.Not.Null);
 
       var subTransaction = _clientTransaction.CreateSubTransaction();
@@ -223,6 +233,8 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests
     [Test]
     public void AutomaticCleanup_WhenDomainObjectCtorThrows_DoesNotRequireDeletePermissions ()
     {
+      _securityProviderStub.Stub (mock => mock.GetAccess (_securityContextStub, _securityPrincipalStub)).Return (new AccessType[0]);
+
       _functionalSecurityStrategyStub
           .Stub (
               mock => mock.HasAccess (
