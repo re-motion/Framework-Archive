@@ -20,6 +20,7 @@ using Remotion.Utilities;
 
 namespace Remotion.Collections
 {
+  [Serializable]
   public class InvalidationTokenBasedCacheDecorator<TKey, TValue> : ICache<TKey, TValue>
   {
     private readonly ICache<TKey, TValue> _innerCache;
