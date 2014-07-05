@@ -20,7 +20,6 @@ using NUnit.Framework;
 using Remotion.Data.DomainObjects.Security.UnitTests.TestDomain;
 using Remotion.Development.UnitTesting;
 using Remotion.Security;
-using Remotion.Security.Configuration;
 using Remotion.ServiceLocation;
 using Rhino.Mocks;
 
@@ -58,11 +57,10 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests
       _clientTransaction = ClientTransaction.CreateRootTransaction();
       _clientTransaction.Extensions.Add (new SecurityClientTransactionExtension());
 
-      SecurityConfiguration.Current.SecurityProvider = _securityProviderStub;
-      SecurityConfiguration.Current.PrincipalProvider = _principalProviderStub;
-
       var serviceLocator = DefaultServiceLocator.Create();
-      serviceLocator.RegisterSingle<IFunctionalSecurityStrategy> (() => _functionalSecurityStrategyStub);
+      serviceLocator.RegisterSingle (() => _securityProviderStub);
+      serviceLocator.RegisterSingle (() => _principalProviderStub);
+      serviceLocator.RegisterSingle (() => _functionalSecurityStrategyStub);
       _serviceLocatorScope = new ServiceLocatorScope (serviceLocator);
 
       _clientTransaction.EnterNonDiscardingScope();
@@ -72,8 +70,6 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests
     public void TearDown ()
     {
       ClientTransactionScope.ResetActiveScope();
-      SecurityConfiguration.Current.SecurityProvider = null;
-      SecurityConfiguration.Current.PrincipalProvider = null;
 
       _serviceLocatorScope.Dispose();
     }

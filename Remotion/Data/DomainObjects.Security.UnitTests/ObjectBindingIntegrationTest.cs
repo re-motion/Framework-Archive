@@ -21,7 +21,6 @@ using Remotion.Data.DomainObjects.Security.UnitTests.TestDomain;
 using Remotion.Development.UnitTesting;
 using Remotion.ObjectBinding;
 using Remotion.Security;
-using Remotion.Security.Configuration;
 using Remotion.ServiceLocation;
 using Rhino.Mocks;
 
@@ -36,43 +35,31 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests
     private ISecurityPrincipal _securityPrincipalStub;
     private ServiceLocatorScope _serviceLocatorScope;
 
-    [TestFixtureSetUp]
-    public virtual void TestFixtureSetUp ()
-    {
-      var serviceLocator = DefaultServiceLocator.Create();
-      serviceLocator.RegisterMultiple<IObjectSecurityAdapter> (() => new ObjectSecurityAdapter());
-      _serviceLocatorScope = new ServiceLocatorScope (serviceLocator);
-    }
-
     [SetUp]
     public void SetUp ()
     {
-      _securityProviderStub = MockRepository.GenerateStub<ISecurityProvider> ();
-      _principalProviderStub = MockRepository.GenerateStub<IPrincipalProvider> ();
-      _securityPrincipalStub = MockRepository.GenerateStub<ISecurityPrincipal> ();
+      _securityProviderStub = MockRepository.GenerateStub<ISecurityProvider>();
+      _principalProviderStub = MockRepository.GenerateStub<IPrincipalProvider>();
+      _securityPrincipalStub = MockRepository.GenerateStub<ISecurityPrincipal>();
 
-      _principalProviderStub.Stub (stub => stub.GetPrincipal ()).Return (_securityPrincipalStub);
+      _principalProviderStub.Stub (stub => stub.GetPrincipal()).Return (_securityPrincipalStub);
 
-      _clientTransaction = ClientTransaction.CreateRootTransaction ();
-      _clientTransaction.Extensions.Add (new SecurityClientTransactionExtension ());
+      _clientTransaction = ClientTransaction.CreateRootTransaction();
+      _clientTransaction.Extensions.Add (new SecurityClientTransactionExtension());
 
-      SecurityConfiguration.Current.SecurityProvider = _securityProviderStub;
-      SecurityConfiguration.Current.PrincipalProvider = _principalProviderStub;
+      _clientTransaction.EnterNonDiscardingScope();
 
-      _clientTransaction.EnterNonDiscardingScope ();
+      var serviceLocator = DefaultServiceLocator.Create();
+      serviceLocator.RegisterMultiple<IObjectSecurityAdapter> (() => new ObjectSecurityAdapter());
+      serviceLocator.RegisterSingle (() => _securityProviderStub);
+      serviceLocator.RegisterSingle (() => _principalProviderStub);
+      _serviceLocatorScope = new ServiceLocatorScope (serviceLocator);
     }
 
     [TearDown]
     public void TearDown ()
     {
       ClientTransactionScope.ResetActiveScope ();
-      SecurityConfiguration.Current.SecurityProvider = null;
-      SecurityConfiguration.Current.PrincipalProvider = null;
-    }
-
-    [TestFixtureTearDown]
-    public virtual void TestFixtureTearDown ()
-    {
       _serviceLocatorScope.Dispose();
     }
 
