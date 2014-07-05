@@ -120,7 +120,7 @@
     <Compile Include="Core\NullFunctionalSecurityStrategyTest.cs" />
     <Compile Include="Core\NullMemberResolverTest.cs" />
     <Compile Include="Core\NullPrincipalTest.cs" />
-    <Compile Include="Core\NullSecurityClientTest.cs" />
+    <Compile Include="Core\NullSecurityClientTests\Common.cs" />
     <Compile Include="Core\NullSecurityClientTests\CheckAccessTest.cs" />
     <Compile Include="Core\NullSecurityClientTests\CheckConstructorAccessTest.cs" />
     <Compile Include="Core\NullSecurityClientTests\CheckMethodAccessTest.cs" />

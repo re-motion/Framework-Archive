@@ -19,10 +19,10 @@ using System;
 using NUnit.Framework;
 using Remotion.Security.Metadata;
 
-namespace Remotion.Security.UnitTests.Core
+namespace Remotion.Security.UnitTests.Core.NullSecurityClientTests
 {
   [TestFixture]
-  public class NullSecurityClientTest
+  public class Common
   {
     [Test]
     public void GetNullInstance ()
