@@ -14,40 +14,23 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
-using System.Collections.Specialized;
 using System.Security.Principal;
 using System.Threading;
 using NUnit.Framework;
-using Remotion.Configuration;
 
 namespace Remotion.Security.UnitTests.Core
 {
   [TestFixture]
-  public class ThreadUserProviderTest
+  public class ThreadPrincipalProviderTest
   {
     private IPrincipalProvider _principalProvider;
-
-    public ThreadUserProviderTest ()
-    {
-    }
 
     [SetUp]
     public void SetUp ()
     {
       _principalProvider = new ThreadPrincipalProvider();
-    }
-
-    [Test]
-    public void Initialize ()
-    {
-      NameValueCollection config = new NameValueCollection();
-      config.Add ("description", "The Description");
-
-      ExtendedProviderBase provider = new ThreadPrincipalProvider ("Provider", config);
-
-      Assert.That (provider.Name, Is.EqualTo ("Provider"));
-      Assert.That (provider.Description, Is.EqualTo ("The Description"));
     }
 
     [Test]
@@ -62,7 +45,7 @@ namespace Remotion.Security.UnitTests.Core
     {
       Thread.CurrentPrincipal = new GenericPrincipal (new GenericIdentity (string.Empty), new string[0]);
       Assert.That (Thread.CurrentPrincipal.Identity.IsAuthenticated, Is.False);
-      Assert.That (_principalProvider.GetPrincipal ().IsNull, Is.True);
+      Assert.That (_principalProvider.GetPrincipal().IsNull, Is.True);
     }
 
     [Test]

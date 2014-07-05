@@ -15,40 +15,42 @@
 // 
 // Additional permissions are listed in the file re-motion_exceptions.txt.
 // 
+
 using System;
 using NUnit.Framework;
 using Remotion.Security;
 using Remotion.SecurityManager.Domain;
-using Rhino.Mocks;
+using Remotion.ServiceLocation;
 
 namespace Remotion.SecurityManager.UnitTests.Domain
 {
   [TestFixture]
-  public class SecurityManagerPrincipalProviderTest : DomainTest
+  public class IPrincipalProviderTest
   {
-    public override void SetUp ()
-    {
-      base.SetUp();
-      SecurityManagerPrincipal.Current = SecurityManagerPrincipal.Null;
-    }
+    private DefaultServiceLocator _serviceLocator;
 
-    public override void TearDown ()
+    [SetUp]
+    public void SetUp ()
     {
-      base.TearDown();
-      SecurityManagerPrincipal.Current = SecurityManagerPrincipal.Null;
+      _serviceLocator = DefaultServiceLocator.Create();
     }
 
     [Test]
-    public void GetPrincipal ()
+    public void GetInstance_Once ()
     {
-      ISecurityPrincipal securityPrincipalStub = MockRepository.GenerateStub<ISecurityPrincipal>();
-      ISecurityManagerPrincipal securityManagerPrincipalStub = MockRepository.GenerateStub<ISecurityManagerPrincipal>();
-      securityManagerPrincipalStub.Stub (stub => stub.GetSecurityPrincipal()).Return (securityPrincipalStub);
-      SecurityManagerPrincipal.Current = securityManagerPrincipalStub;
+      var obj = _serviceLocator.GetInstance<IPrincipalProvider>();
 
-      SecurityManagerPrincipalProvider provider = new SecurityManagerPrincipalProvider ();
+      Assert.That (obj, Is.Not.Null);
+      Assert.That (obj, Is.TypeOf (typeof (SecurityManagerPrincipalProvider)));
+    }
 
-      Assert.That (provider.GetPrincipal(), Is.SameAs (securityPrincipalStub));
+    [Test]
+    public void GetInstance_Twice_ReturnsSameInstance ()
+    {
+      var obj1 = _serviceLocator.GetInstance<IPrincipalProvider>();
+      var obj2 = _serviceLocator.GetInstance<IPrincipalProvider>();
+
+      Assert.That (obj1, Is.SameAs (obj2));
     }
   }
 }

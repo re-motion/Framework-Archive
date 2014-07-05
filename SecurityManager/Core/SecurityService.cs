@@ -16,8 +16,6 @@
 // Additional permissions are listed in the file re-motion_exceptions.txt.
 // 
 using System;
-using System.Collections.Specialized;
-using Remotion.Configuration;
 using Remotion.Data.DomainObjects;
 using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Logging;
@@ -29,30 +27,21 @@ using Remotion.Utilities;
 
 namespace Remotion.SecurityManager
 {
-  public class SecurityService : ExtendedProviderBase, ISecurityProvider
+  [ImplementationFor (typeof (ISecurityProvider), Lifetime = LifetimeKind.Singleton, Position = Position, RegistrationType = RegistrationType.Single)]
+  public class SecurityService : ISecurityProvider
   {
+    public const int Position = NullSecurityProvider.Position - 1;
+
     private static readonly ILog s_log = LogManager.GetLogger (typeof (SecurityService));
 
     private readonly IAccessControlListFinder _accessControlListFinder;
     private readonly ISecurityTokenBuilder _securityTokenBuilder;
     private readonly IAccessResolver _accessResolver;
 
-    public SecurityService (string name, NameValueCollection config)
-        : this (name,
-                config,
-                SafeServiceLocator.Current.GetInstance<IAccessControlListFinder>(),
-                SafeServiceLocator.Current.GetInstance<ISecurityTokenBuilder>(),
-                SafeServiceLocator.Current.GetInstance<IAccessResolver>())
-    {
-    }
-
     public SecurityService (
-        string name,
-        NameValueCollection config,
         IAccessControlListFinder accessControlListFinder,
         ISecurityTokenBuilder securityTokenBuilder,
         IAccessResolver accessResolver)
-        : base (name, config)
     {
       ArgumentUtility.CheckNotNull ("accessControlListFinder", accessControlListFinder);
       ArgumentUtility.CheckNotNull ("securityTokenBuilder", securityTokenBuilder);

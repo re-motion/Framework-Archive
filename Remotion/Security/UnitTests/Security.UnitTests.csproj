@@ -88,6 +88,8 @@
     <Compile Include="Core\EnumWrapperTest.cs" />
     <Compile Include="Core\IFunctionalSecurityStrategyTest.cs" />
     <Compile Include="Core\IObjectSecurityAdapterTest.cs" />
+    <Compile Include="Core\IPrincipalProviderTest.cs" />
+    <Compile Include="Core\ISecurityProviderTest.cs" />
     <Compile Include="Core\Metadata\IMemberResolverTest.cs" />
     <Compile Include="Core\Metadata\IPermissionProviderTest.cs" />
     <Compile Include="Core\Metadata\EnumValueInfoListContentsConstraint.cs" />
@@ -212,7 +214,7 @@
     <Compile Include="Core\SecurityFreeSectionTest.cs" />
     <Compile Include="Core\SecurityStrategyTests\HasAccessWithCaching_SecurityStrategyTest.cs" />
     <Compile Include="Core\SecurityStrategyTests\HasAccess_SecurityStratetyTest.cs" />
-    <Compile Include="Core\ThreadUserProviderTest.cs" />
+    <Compile Include="Core\ThreadPrincipalProviderTest.cs" />
     <Compile Include="Core\XmlAsserter\NodeStackToXPathConverter.cs" />
     <Compile Include="Core\XmlAsserter\NodeStackToXPathConverterTest.cs" />
     <Compile Include="Core\XmlAsserter\XmlAssert.cs" />

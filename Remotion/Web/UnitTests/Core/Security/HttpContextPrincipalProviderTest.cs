@@ -16,29 +16,20 @@
 // 
 
 using System;
+using NUnit.Framework;
+using Remotion.Security;
+using Remotion.Web.Security;
 
-namespace Remotion.Security
+namespace Remotion.Web.UnitTests.Core.Security
 {
-  /// <summary>
-  /// Represents a nullable <see cref="IPrincipalProvider"/> according to the "Null Object Pattern".
-  /// </summary>
-  /// <threadsafety static="true" instance="true" />
-  public class NullPrincipalProvider : IPrincipalProvider
+  [TestFixture]
+  public class HttpContextPrincipalProviderTest
   {
-    private readonly NullSecurityPrincipal _securityPrincipal = new NullSecurityPrincipal();
-
-    public NullPrincipalProvider ()
+    [Test]
+    public void GetIsNull ()
     {
-    }
-
-    public ISecurityPrincipal GetPrincipal ()
-    {
-      return _securityPrincipal;
-    }
-
-    bool INullObject.IsNull
-    {
-      get { return true; }
+      IPrincipalProvider _principalProvider = new HttpContextPrincipalProvider();
+      Assert.That (_principalProvider.IsNull, Is.False);
     }
   }
 }

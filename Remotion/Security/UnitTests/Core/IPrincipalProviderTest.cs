@@ -15,35 +15,38 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using NUnit.Framework;
 using Remotion.ServiceLocation;
 
-namespace Remotion.Security
+namespace Remotion.Security.UnitTests.Core
 {
-  /// <summary>
-  /// Represents a nullable <see cref="ISecurityProvider"/> according to the "Null Object Pattern".
-  /// </summary>
-  /// <threadsafety static="true" instance="true" />
-  [ImplementationFor (typeof (ISecurityProvider), Lifetime = LifetimeKind.Singleton, Position = Position, RegistrationType = RegistrationType.Single)]
-  public class NullSecurityProvider : ISecurityProvider
+  [TestFixture]
+  public class IPrincipalProviderTest
   {
-    public const int Position = Int32.MaxValue;
+    private DefaultServiceLocator _serviceLocator;
 
-    public NullSecurityProvider ()
+    [SetUp]
+    public void SetUp ()
     {
+      _serviceLocator = DefaultServiceLocator.Create();
     }
 
-    /// <summary>
-    /// The "Null Object" implementation always returns an empty array.
-    /// </summary>
-    /// <returns>Always returns an empty array.</returns>
-    public AccessType[] GetAccess (ISecurityContext context, ISecurityPrincipal principal)
+    [Test]
+    public void GetInstance_Once ()
     {
-      return new AccessType[0];
+      var obj = _serviceLocator.GetInstance<IPrincipalProvider>();
+
+      Assert.That (obj, Is.Not.Null);
+      Assert.That (obj, Is.TypeOf (typeof (ThreadPrincipalProvider)));
     }
 
-    bool INullObject.IsNull
+    [Test]
+    public void GetInstance_Twice_ReturnsSameInstance ()
     {
-      get { return true; }
+      var obj1 = _serviceLocator.GetInstance<IPrincipalProvider>();
+      var obj2 = _serviceLocator.GetInstance<IPrincipalProvider>();
+
+      Assert.That (obj1, Is.SameAs (obj2));
     }
   }
 }

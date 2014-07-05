@@ -70,12 +70,7 @@ namespace Remotion.SecurityManager.UnitTests
       _mockTokenBuilder = _mocks.StrictMock<ISecurityTokenBuilder>();
       _mockAccessResolver = _mocks.StrictMock<IAccessResolver>();
 
-      _service = new SecurityService (
-          "name",
-          new NameValueCollection(),
-          _mockAclFinder,
-          _mockTokenBuilder,
-          _mockAccessResolver);
+      _service = new SecurityService (_mockAclFinder, _mockTokenBuilder, _mockAccessResolver);
       _context = SecurityContext.Create (typeof (Order), "Owner", "UID: OwnerGroup", "OwnerTenant", new Dictionary<string, Enum>(), new Enum[0]);
 
       _clientTransaction = ClientTransaction.CreateRootTransaction();
@@ -105,18 +100,6 @@ namespace Remotion.SecurityManager.UnitTests
     {
       base.TearDown();
       LogManager.ResetConfiguration();
-    }
-
-    [Test]
-    public void Initialize ()
-    {
-      NameValueCollection config = new NameValueCollection ();
-      config.Add ("description", "The Description");
-
-      SecurityService provider = new SecurityService ("Provider", config);
-
-      Assert.That (provider.Name, Is.EqualTo ("Provider"));
-      Assert.That (provider.Description, Is.EqualTo ("The Description"));
     }
 
     [Test]

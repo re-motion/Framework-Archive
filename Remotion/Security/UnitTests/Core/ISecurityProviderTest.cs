@@ -15,33 +15,38 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections.Specialized;
 using NUnit.Framework;
-using Remotion.Security;
-using Remotion.Web.Security;
+using Remotion.ServiceLocation;
 
-namespace Remotion.Web.UnitTests.Core.Security
+namespace Remotion.Security.UnitTests.Core
 {
   [TestFixture]
-  public class HttpContextUserProviderTest
+  public class ISecurityProviderTest
   {
-    [Test]
-    public void Initialize ()
+    private DefaultServiceLocator _serviceLocator;
+
+    [SetUp]
+    public void SetUp ()
     {
-      NameValueCollection config = new NameValueCollection ();
-      config.Add ("description", "The Description");
-
-      HttpContextPrincipalProvider provider = new HttpContextPrincipalProvider ("Provider", config);
-
-      Assert.That (provider.Name, Is.EqualTo ("Provider"));
-      Assert.That (provider.Description, Is.EqualTo ("The Description"));
+      _serviceLocator = DefaultServiceLocator.Create();
     }
-    
+
     [Test]
-    public void GetIsNull()
+    public void GetInstance_Once ()
     {
-      IPrincipalProvider _principalProvider = new HttpContextPrincipalProvider();
-      Assert.That (_principalProvider.IsNull, Is.False);
+      var obj = _serviceLocator.GetInstance<ISecurityProvider>();
+
+      Assert.That (obj, Is.Not.Null);
+      Assert.That (obj, Is.TypeOf (typeof (NullSecurityProvider)));
+    }
+
+    [Test]
+    public void GetInstance_Twice_ReturnsSameInstance ()
+    {
+      var obj1 = _serviceLocator.GetInstance<ISecurityProvider>();
+      var obj2 = _serviceLocator.GetInstance<ISecurityProvider>();
+
+      Assert.That (obj1, Is.SameAs (obj2));
     }
   }
 }

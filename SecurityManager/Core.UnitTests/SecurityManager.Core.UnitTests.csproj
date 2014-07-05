@@ -176,6 +176,7 @@
     <Compile Include="Domain\DomainObjectDeleteHandlerTest.cs" />
     <Compile Include="Domain\IDomainRevisionProviderTest.cs" />
     <Compile Include="Domain\IGlobalAccessTypeCacheTest.cs" />
+    <Compile Include="Domain\IPrincipalProviderTest.cs" />
     <Compile Include="Domain\ISecurityManagerPrincipalFactoryTest.cs" />
     <Compile Include="Domain\IUserRevisionProviderTest.cs" />
     <Compile Include="Domain\Metadata\AccessTypeDefinitionTest.cs" />
@@ -286,6 +287,7 @@
     <Compile Include="Domain\SecurityManagerPrincipalProviderTest.cs" />
     <Compile Include="Domain\SecurityManagerPrincipalTests\Common.cs" />
     <Compile Include="Domain\SerializationTest.cs" />
+    <Compile Include="ISecurityProviderTest.cs" />
     <Compile Include="Persistence\RevisionStorageProviderExtensionTest.cs" />
     <Compile Include="Persistence\SecurityManagerSqlStorageObjectFactoryTest.cs" />
     <Compile Include="Persistence\SecurityManagerRdbmsProviderTestMixin.cs" />

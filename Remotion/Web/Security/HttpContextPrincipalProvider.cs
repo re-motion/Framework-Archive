@@ -14,24 +14,22 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
-using System.Collections.Specialized;
 using System.Security.Principal;
 using System.Web;
-using Remotion.Configuration;
 using Remotion.Security;
+using Remotion.ServiceLocation;
 
 namespace Remotion.Web.Security
 {
-  public class HttpContextPrincipalProvider : ExtendedProviderBase, IPrincipalProvider
+  [ImplementationFor (typeof (IPrincipalProvider),
+      Lifetime = LifetimeKind.Singleton, Position = Position, RegistrationType = RegistrationType.Single)]
+  public class HttpContextPrincipalProvider : IPrincipalProvider
   {
-    public HttpContextPrincipalProvider ()
-        : this ("HttpContext", new NameValueCollection())
-    {
-    }
+    public const int Position = ThreadPrincipalProvider.Position - 1;
 
-    public HttpContextPrincipalProvider (string name, NameValueCollection config)
-        : base (name, config)
+    public HttpContextPrincipalProvider ()
     {
     }
 
@@ -42,7 +40,7 @@ namespace Remotion.Web.Security
 
       IIdentity identity = HttpContext.Current.User.Identity;
       if (!identity.IsAuthenticated)
-        return new NullSecurityPrincipal ();
+        return new NullSecurityPrincipal();
 
       return new SecurityPrincipal (identity.Name, null, null, null);
     }

@@ -23,7 +23,7 @@ using Remotion.Utilities;
 namespace Remotion.Security
 {
   /// <summary>
-  /// <see cref="INullObject"/>-implementation of the <see cref="IAccessTypeFilter"/> interface.
+  /// Represents a nullable <see cref="IAccessTypeFilter"/> according to the "Null Object Pattern".
   /// </summary>
   /// <threadsafety static="true" instance="true" />
   [Serializable]

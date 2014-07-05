@@ -17,29 +17,39 @@
 // 
 
 using System;
+using NUnit.Framework;
 using Remotion.Security;
 using Remotion.ServiceLocation;
 
-namespace Remotion.SecurityManager.Domain
+namespace Remotion.SecurityManager.UnitTests
 {
-  [ImplementationFor (typeof (IPrincipalProvider),
-      Lifetime = LifetimeKind.Singleton, Position = Position, RegistrationType = RegistrationType.Single)]
-  public class SecurityManagerPrincipalProvider : IPrincipalProvider
+  [TestFixture]
+  public class ISecurityProviderTest
   {
-    public const int Position = ThreadPrincipalProvider.Position - 113;
+    private DefaultServiceLocator _serviceLocator;
 
-    public SecurityManagerPrincipalProvider ()
+    [SetUp]
+    public void SetUp ()
     {
+      _serviceLocator = DefaultServiceLocator.Create();
     }
 
-    public ISecurityPrincipal GetPrincipal ()
+    [Test]
+    public void GetInstance_Once ()
     {
-      return SecurityManagerPrincipal.Current.GetSecurityPrincipal();
+      var obj = _serviceLocator.GetInstance<ISecurityProvider>();
+
+      Assert.That (obj, Is.Not.Null);
+      Assert.That (obj, Is.TypeOf (typeof (SecurityService)));
     }
 
-    bool INullObject.IsNull
+    [Test]
+    public void GetInstance_Twice_ReturnsSameInstance ()
     {
-      get { return false; }
+      var obj1 = _serviceLocator.GetInstance<ISecurityProvider>();
+      var obj2 = _serviceLocator.GetInstance<ISecurityProvider>();
+
+      Assert.That (obj1, Is.SameAs (obj2));
     }
   }
 }
