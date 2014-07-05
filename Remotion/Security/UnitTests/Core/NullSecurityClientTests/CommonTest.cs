@@ -22,7 +22,7 @@ using Remotion.Security.Metadata;
 namespace Remotion.Security.UnitTests.Core.NullSecurityClientTests
 {
   [TestFixture]
-  public class Common
+  public class CommonTest
   {
     [Test]
     public void GetNullInstance ()
