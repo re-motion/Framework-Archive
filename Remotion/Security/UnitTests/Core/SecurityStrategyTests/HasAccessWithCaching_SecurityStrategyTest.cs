@@ -18,9 +18,9 @@ using System;
 using System.Collections.Generic;
 using NUnit.Framework;
 using Remotion.Collections;
-using Remotion.Security.Configuration;
-using Remotion.Security.UnitTests.Core.Configuration;
+using Remotion.Development.UnitTesting;
 using Remotion.Security.UnitTests.Core.SampleDomain;
+using Remotion.ServiceLocation;
 using Rhino.Mocks;
 using Mocks_Is = Rhino.Mocks.Constraints.Is;
 using Mocks_List = Rhino.Mocks.Constraints.List;
@@ -38,28 +38,30 @@ namespace Remotion.Security.UnitTests.Core.SecurityStrategyTests
     private ISecurityPrincipal _stubUser;
     private SecurityContext _context;
     private SecurityStrategy _strategy;
+    private ServiceLocatorScope _serviceLocatorScope;
 
     [SetUp]
-    public void SetUp()
+    public void SetUp ()
     {
       _mocks = new MockRepository();
       _mockSecurityProvider = _mocks.StrictMock<ISecurityProvider>();
       _mockLocalAccessTypeCache = _mocks.StrictMock<ICache<ISecurityPrincipal, AccessType[]>>();
       _mockContextFactory = _mocks.StrictMock<ISecurityContextFactory>();
 
-        _stubUser = _mocks.Stub<ISecurityPrincipal> ();
-        SetupResult.For (_stubUser.User).Return ("user");
-      _context = SecurityContext.Create (typeof (SecurableObject), "owner", "group", "tenant", new Dictionary<string, Enum> (), new Enum[0]);
+      _stubUser = _mocks.Stub<ISecurityPrincipal>();
+      SetupResult.For (_stubUser.User).Return ("user");
+      _context = SecurityContext.Create (typeof (SecurableObject), "owner", "group", "tenant", new Dictionary<string, Enum>(), new Enum[0]);
 
       _strategy = new SecurityStrategy (_mockLocalAccessTypeCache);
-
-      SecurityConfigurationMock.SetCurrent (new SecurityConfiguration());
+      var serviceLocator = DefaultServiceLocator.Create();
+      serviceLocator.RegisterSingle (() => _mockSecurityProvider);
+      _serviceLocatorScope = new ServiceLocatorScope (serviceLocator);
     }
 
     [TearDown]
-    public void TearDown()
+    public void TearDown ()
     {
-      SecurityConfigurationMock.SetCurrent (new SecurityConfiguration());
+      _serviceLocatorScope.Dispose();
     }
 
     [Test]

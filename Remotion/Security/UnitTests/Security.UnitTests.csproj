@@ -82,15 +82,8 @@
     </Compile>
     <Compile Include="Core\AccessTypeExtensionsTest.cs" />
     <Compile Include="Core\AccessTypeTest.cs" />
-    <Compile Include="Core\Configuration\MemberResolverMock.cs" />
-    <Compile Include="Core\Configuration\PermissionProviderMock.cs" />
-    <Compile Include="Core\Configuration\SecurityConfigurationMock.cs" />
-    <Compile Include="Core\Configuration\SecurityConfigurationTests\DeserializeSecurityConfigurationForSecurityProviderTest.cs" />
-    <Compile Include="Core\Configuration\SecurityConfigurationTests\DeserializeSecurityConfigurationForPrincipalProviderTest.cs" />
-    <Compile Include="Core\Configuration\SecurityConfigurationTests\SecurityConfigurationTest.cs" />
+    <Compile Include="Core\Configuration\SecurityConfigurationTest.cs" />
     <Compile Include="Core\Configuration\SecurityConfigurationTests\TestBase.cs" />
-    <Compile Include="Core\Configuration\PrincipalProviderMock.cs" />
-    <Compile Include="Core\Configuration\SecurityProviderMock.cs" />
     <Compile Include="Core\IGlobalAccessTypeCacheTest.cs" />
     <Compile Include="Core\EnumWrapperTest.cs" />
     <Compile Include="Core\IFunctionalSecurityStrategyTest.cs" />
@@ -127,6 +120,7 @@
     <Compile Include="Core\NullFunctionalSecurityStrategyTest.cs" />
     <Compile Include="Core\NullMemberResolverTest.cs" />
     <Compile Include="Core\NullPrincipalTest.cs" />
+    <Compile Include="Core\NullSecurityClientTest.cs" />
     <Compile Include="Core\NullSecurityClientTests\CheckAccessTest.cs" />
     <Compile Include="Core\NullSecurityClientTests\CheckConstructorAccessTest.cs" />
     <Compile Include="Core\NullSecurityClientTests\CheckMethodAccessTest.cs" />

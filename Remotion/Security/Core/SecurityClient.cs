@@ -35,18 +35,17 @@ namespace Remotion.Security
 
     public static SecurityClient CreateSecurityClientFromConfiguration ()
     {
-      ISecurityProvider securityProvider = SecurityConfiguration.Current.SecurityProvider;
+      //TODO RM-6183: Test.
 
-      if (securityProvider.IsNull)
+      if (SecurityConfiguration.Current.DisableAccessChecks)
         return SecurityClient.Null;
 
       var serviceLocator = SafeServiceLocator.Current;
 
       return new SecurityClient (
-          //TODO RM-6183: Test
-          new CachingSecurityProviderDecorator (securityProvider, serviceLocator.GetInstance<IGlobalAccessTypeCache>()),
+          serviceLocator.GetInstance<ISecurityProvider>(),
           serviceLocator.GetInstance<IPermissionProvider>(),
-          SecurityConfiguration.Current.PrincipalProvider,
+          serviceLocator.GetInstance<IPrincipalProvider>(),
           serviceLocator.GetInstance<IFunctionalSecurityStrategy>(),
           serviceLocator.GetInstance<IMemberResolver>());
     }
@@ -77,6 +76,30 @@ namespace Remotion.Security
       _memberResolver = memberResolver;
     }
 
+    public IPermissionProvider PermissionProvider
+    {
+      get { return _permissionProvider; }
+    }
+
+    public IPrincipalProvider PrincipalProvider
+    {
+      get { return _principalProvider; }
+    }
+
+    public IFunctionalSecurityStrategy FunctionalSecurityStrategy
+    {
+      get { return _functionalSecurityStrategy; }
+    }
+
+    public IMemberResolver MemberResolver
+    {
+      get { return _memberResolver; }
+    }
+
+    public ISecurityProvider SecurityProvider
+    {
+      get { return _securityProvider; }
+    }
 
     public bool HasAccess (ISecurableObject securableObject, params AccessType[] requiredAccessTypes)
     {

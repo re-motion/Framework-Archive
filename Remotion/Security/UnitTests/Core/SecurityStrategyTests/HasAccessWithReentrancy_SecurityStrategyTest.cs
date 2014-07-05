@@ -76,14 +76,11 @@ namespace Remotion.Security.UnitTests.Core.SecurityStrategyTests
       _principalStub = MockRepository.GenerateStub<ISecurityPrincipal>();
       _principalStub.Stub (_ => _.User).Return ("user");
       _context = SecurityContext.Create (typeof (SecurableObject), "owner", "group", "tenant", new Dictionary<string, Enum>(), new Enum[0]);
-
-      SecurityConfigurationMock.SetCurrent (new SecurityConfiguration());
     }
 
     [TearDown]
     public void TearDown ()
     {
-      SecurityConfigurationMock.SetCurrent (new SecurityConfiguration());
     }
 
     [Test]

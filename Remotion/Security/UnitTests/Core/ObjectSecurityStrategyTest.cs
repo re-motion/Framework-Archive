@@ -65,14 +65,11 @@ namespace Remotion.Security.UnitTests.Core
       _accessTypeResult = new[] { AccessType.Get (GeneralAccessTypes.Read), AccessType.Get (GeneralAccessTypes.Edit) };
 
       _strategy = new ObjectSecurityStrategy (_stubContextFactory, _mockSecurityStrategy);
-
-      SecurityConfigurationMock.SetCurrent (new SecurityConfiguration());
     }
 
     [TearDown]
     public void TearDown ()
     {
-      SecurityConfigurationMock.SetCurrent (new SecurityConfiguration());
     }
 
     [Test]

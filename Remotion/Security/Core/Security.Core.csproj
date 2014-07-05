@@ -93,7 +93,6 @@
     <Compile Include="AccessTypeExtensions.cs" />
     <Compile Include="CachingSecurityProviderDecorator.cs" />
     <Compile Include="DemandPermissionAttribute.cs" />
-    <Compile Include="Configuration\SecurityProviderHelper.cs" />
     <Compile Include="EnumWrapper.cs" />
     <Compile Include="GlobalAccessTypeCacheKey.cs" />
     <Compile Include="IAccessTypeFilter.cs" />
@@ -119,7 +118,6 @@
     <Compile Include="NullSecurityPrincipal.cs" />
     <Compile Include="NullSecurityClient.cs" />
     <Compile Include="NullSecurityProvider.cs" />
-    <Compile Include="Configuration\PrincipalProviderHelper.cs" />
     <Compile Include="GeneralAccessTypes.cs" />
     <Compile Include="DemandMethodPermissionAttribute.cs" />
     <Compile Include="Configuration\SecurityConfiguration.cs" />
