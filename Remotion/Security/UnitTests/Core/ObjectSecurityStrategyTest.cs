@@ -28,6 +28,22 @@ namespace Remotion.Security.UnitTests.Core
   [TestFixture]
   public class ObjectSecurityStrategyTest
   {
+    [Serializable]
+    private class SerializableSecurityContextFactory : ISecurityContextFactory
+    {
+      private readonly SecurityContext _context;
+
+      public SerializableSecurityContextFactory (Type classType)
+      {
+        _context = SecurityContext.CreateStateless (classType);
+      }
+
+      public ISecurityContext CreateSecurityContext ()
+      {
+        return _context;
+      }
+    }
+
     private MockRepository _mocks;
     private ISecurityStrategy _mockSecurityStrategy;
     private ISecurityProvider _stubSecurityProvider;
@@ -39,24 +55,24 @@ namespace Remotion.Security.UnitTests.Core
     [SetUp]
     public void SetUp ()
     {
-      _mocks = new MockRepository ();
-      _mockSecurityStrategy = _mocks.StrictMock<ISecurityStrategy> ();
-      _stubSecurityProvider = _mocks.StrictMock<ISecurityProvider> ();
-      _stubContextFactory = _mocks.StrictMock<ISecurityContextFactory> ();
+      _mocks = new MockRepository();
+      _mockSecurityStrategy = _mocks.StrictMock<ISecurityStrategy>();
+      _stubSecurityProvider = _mocks.StrictMock<ISecurityProvider>();
+      _stubContextFactory = _mocks.StrictMock<ISecurityContextFactory>();
 
-      _stubUser = _mocks.Stub<ISecurityPrincipal> ();
+      _stubUser = _mocks.Stub<ISecurityPrincipal>();
       SetupResult.For (_stubUser.User).Return ("user");
       _accessTypeResult = new[] { AccessType.Get (GeneralAccessTypes.Read), AccessType.Get (GeneralAccessTypes.Edit) };
 
       _strategy = new ObjectSecurityStrategy (_stubContextFactory, _mockSecurityStrategy);
 
-      SecurityConfigurationMock.SetCurrent (new SecurityConfiguration ());
+      SecurityConfigurationMock.SetCurrent (new SecurityConfiguration());
     }
 
     [TearDown]
     public void TearDown ()
     {
-      SecurityConfigurationMock.SetCurrent (new SecurityConfiguration ());
+      SecurityConfigurationMock.SetCurrent (new SecurityConfiguration());
     }
 
     [Test]
@@ -82,11 +98,11 @@ namespace Remotion.Security.UnitTests.Core
     public void HasAccess_WithAccessGranted ()
     {
       Expect.Call (_mockSecurityStrategy.HasAccess (_stubContextFactory, _stubSecurityProvider, _stubUser, _accessTypeResult)).Return (true);
-      _mocks.ReplayAll ();
+      _mocks.ReplayAll();
 
       bool hasAccess = _strategy.HasAccess (_stubSecurityProvider, _stubUser, _accessTypeResult);
 
-      _mocks.VerifyAll ();
+      _mocks.VerifyAll();
       Assert.That (hasAccess, Is.EqualTo (true));
     }
 
@@ -94,30 +110,30 @@ namespace Remotion.Security.UnitTests.Core
     public void HasAccess_WithAccessDenied ()
     {
       Expect.Call (_mockSecurityStrategy.HasAccess (_stubContextFactory, _stubSecurityProvider, _stubUser, _accessTypeResult)).Return (false);
-      _mocks.ReplayAll ();
+      _mocks.ReplayAll();
 
       bool hasAccess = _strategy.HasAccess (_stubSecurityProvider, _stubUser, _accessTypeResult);
 
-      _mocks.VerifyAll ();
+      _mocks.VerifyAll();
       Assert.That (hasAccess, Is.EqualTo (false));
     }
 
     [Test]
     public void InvalidateLocalCache ()
     {
-      _mockSecurityStrategy.InvalidateLocalCache ();
-      _mocks.ReplayAll ();
+      _mockSecurityStrategy.InvalidateLocalCache();
+      _mocks.ReplayAll();
 
-      _strategy.InvalidateLocalCache ();
+      _strategy.InvalidateLocalCache();
 
-      _mocks.VerifyAll ();
+      _mocks.VerifyAll();
     }
 
     [Test]
     public void Serialization ()
     {
-      SecurityStrategy securityStrategy = new SecurityStrategy(new NullCache<ISecurityPrincipal, AccessType[]>());
-      ISecurityContextFactory factory = new FunctionalSecurityContextFactory (typeof (SecurableObject));
+      SecurityStrategy securityStrategy = new SecurityStrategy (new NullCache<ISecurityPrincipal, AccessType[]>());
+      ISecurityContextFactory factory = new SerializableSecurityContextFactory (typeof (SecurableObject));
 
       ObjectSecurityStrategy strategy = new ObjectSecurityStrategy (factory, securityStrategy);
 

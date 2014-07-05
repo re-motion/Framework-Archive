@@ -93,7 +93,6 @@
     <Compile Include="Core\Configuration\SecurityProviderMock.cs" />
     <Compile Include="Core\IGlobalAccessTypeCacheTest.cs" />
     <Compile Include="Core\EnumWrapperTest.cs" />
-    <Compile Include="Core\FunctionalSecurityContextFactoryTest.cs" />
     <Compile Include="Core\IFunctionalSecurityStrategyTest.cs" />
     <Compile Include="Core\IObjectSecurityAdapterTest.cs" />
     <Compile Include="Core\Metadata\IMemberResolverTest.cs" />
