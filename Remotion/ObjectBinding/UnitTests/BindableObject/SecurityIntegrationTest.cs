@@ -21,7 +21,6 @@ using Remotion.Development.UnitTesting;
 using Remotion.Mixins;
 using Remotion.ObjectBinding.UnitTests.TestDomain;
 using Remotion.Security;
-using Remotion.Security.Configuration;
 using Remotion.ServiceLocation;
 using Remotion.TypePipe;
 using Rhino.Mocks;
@@ -44,12 +43,11 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
       _securityPrincipalStub = MockRepository.GenerateStub<ISecurityPrincipal> ();
 
       _principalProviderStub.Stub (stub => stub.GetPrincipal ()).Return (_securityPrincipalStub);
-      
-      SecurityConfiguration.Current.SecurityProvider = _securityProviderStub;
-      SecurityConfiguration.Current.PrincipalProvider = _principalProviderStub;
 
       var serviceLocator = DefaultServiceLocator.Create();
       serviceLocator.RegisterMultiple<IObjectSecurityAdapter> (() => new ObjectSecurityAdapter());
+      serviceLocator.RegisterSingle (() => _securityProviderStub);
+      serviceLocator.RegisterSingle (() => _principalProviderStub);
       _serviceLocatorScope = new ServiceLocatorScope (serviceLocator);
     }
 
