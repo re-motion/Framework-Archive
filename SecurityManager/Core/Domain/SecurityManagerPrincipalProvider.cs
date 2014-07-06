@@ -24,7 +24,7 @@ namespace Remotion.SecurityManager.Domain
 {
   [ImplementationFor (typeof (IPrincipalProvider),
       Lifetime = LifetimeKind.Singleton, Position = Position, RegistrationType = RegistrationType.Single)]
-  public class SecurityManagerPrincipalProvider : IPrincipalProvider
+  public sealed class SecurityManagerPrincipalProvider : IPrincipalProvider
   {
     public const int Position = ThreadPrincipalProvider.Position - 113;
 

@@ -23,7 +23,7 @@ using Remotion.ServiceLocation;
 namespace Remotion.Security
 {
   [ImplementationFor (typeof (IPrincipalProvider), Lifetime = LifetimeKind.Singleton, Position = Position, RegistrationType = RegistrationType.Single)]
-  public class ThreadPrincipalProvider : IPrincipalProvider
+  public sealed class ThreadPrincipalProvider : IPrincipalProvider
   {
     public const int Position = Int32.MaxValue;
 

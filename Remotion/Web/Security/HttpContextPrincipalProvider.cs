@@ -25,7 +25,7 @@ namespace Remotion.Web.Security
 {
   [ImplementationFor (typeof (IPrincipalProvider),
       Lifetime = LifetimeKind.Singleton, Position = Position, RegistrationType = RegistrationType.Single)]
-  public class HttpContextPrincipalProvider : IPrincipalProvider
+  public sealed class HttpContextPrincipalProvider : IPrincipalProvider
   {
     public const int Position = ThreadPrincipalProvider.Position - 1;
 

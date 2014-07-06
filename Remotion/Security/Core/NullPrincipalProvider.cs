@@ -23,7 +23,7 @@ namespace Remotion.Security
   /// Represents a nullable <see cref="IPrincipalProvider"/> according to the "Null Object Pattern".
   /// </summary>
   /// <threadsafety static="true" instance="true" />
-  public class NullPrincipalProvider : IPrincipalProvider
+  public sealed class NullPrincipalProvider : IPrincipalProvider
   {
     private readonly NullSecurityPrincipal _securityPrincipal = new NullSecurityPrincipal();
 
