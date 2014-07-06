@@ -84,26 +84,26 @@ namespace Remotion.Security
 
     public override bool HasConstructorAccess (Type securableClass, ISecurityPrincipal principal)
     {
-      ArgumentUtility.CheckNotNull ("securableClass", securableClass);
-      ArgumentUtility.CheckNotNull ("principal", principal);
+      ArgumentUtility.DebugCheckNotNull ("securableClass", securableClass);
+      ArgumentUtility.DebugCheckNotNull ("principal", principal);
 
       return true;
     }
 
     public override bool HasStaticMethodAccess (Type securableClass, IMethodInformation methodInformation, ISecurityPrincipal principal)
     {
-      ArgumentUtility.CheckNotNull ("securableClass", securableClass);
-      ArgumentUtility.CheckNotNull ("methodInformation", methodInformation);
-      ArgumentUtility.CheckNotNull ("principal", principal);
+      ArgumentUtility.DebugCheckNotNull ("securableClass", securableClass);
+      ArgumentUtility.DebugCheckNotNull ("methodInformation", methodInformation);
+      ArgumentUtility.DebugCheckNotNull ("principal", principal);
 
       return true;
     }
 
     public override bool HasStatelessMethodAccess (Type securableClass, IMethodInformation methodInformation, ISecurityPrincipal principal)
     {
-      ArgumentUtility.CheckNotNull ("securableClass", securableClass);
-      ArgumentUtility.CheckNotNull ("methodInformation", methodInformation);
-      ArgumentUtility.CheckNotNull ("principal", principal);
+      ArgumentUtility.DebugCheckNotNull ("securableClass", securableClass);
+      ArgumentUtility.DebugCheckNotNull ("methodInformation", methodInformation);
+      ArgumentUtility.DebugCheckNotNull ("principal", principal);
 
       return true;
     }
