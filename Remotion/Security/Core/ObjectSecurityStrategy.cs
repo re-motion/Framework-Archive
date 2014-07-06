@@ -35,6 +35,25 @@ namespace Remotion.Security
   [Serializable]
   public sealed class ObjectSecurityStrategy : IObjectSecurityStrategy
   {
+    #region Obsolete
+
+    [Obsolete ("Use CacheInvalidationToken.Invalidate() instead. (Version 1.15.20.0)", true)]
+    public void InvalidateLocalCache ()
+    {
+      throw new NotImplementedException ("Use CacheInvalidationToken.Invalidate() instead. (Version 1.15.20.0)");
+    }
+
+    [Obsolete (
+        "Use new ObjectSecurityStrategy (securityContextFactory, NullAccessTypeFilter.Null, new CacheInvalidationToken()) instead. (Version 1.15.20.0)",
+        true)]
+    private ObjectSecurityStrategy (ISecurityContextFactory securityContextFactory)
+    {
+      throw new NotImplementedException (
+          "Use new ObjectSecurityStrategy (securityContextFactory, NullAccessTypeFilter.Null, new CacheInvalidationToken()) instead. (Version 1.15.20.0)");
+    }
+
+    #endregion
+
     //TODO RM-6183: Refactor AccessType[] to IReadOnlyList<AccessType> and implement a Singleton-Version to allow for non-allocating checks
 
     private readonly InvalidationTokenBasedCacheDecorator<ISecurityPrincipal, AccessType[]> _cache;
