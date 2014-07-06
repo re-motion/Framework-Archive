@@ -17,6 +17,7 @@
 
 using System;
 using NUnit.Framework;
+using Remotion.Collections;
 using Remotion.Development.UnitTesting;
 using Remotion.Mixins;
 using Remotion.ObjectBinding.UnitTests.TestDomain;
@@ -70,8 +71,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
       IBusinessObject bindableSecurableObject;
       using (new SecurityFreeSection ())
       {
-        bindableSecurableObject = (IBusinessObject) ObjectFactory.Create (
-            false, typeof (SecurableClassWithProperties), ParamList.Create (new ObjectSecurityStrategy (securityContextFactoryStub)));
+        bindableSecurableObject = CreateSecurableClassWithProperties(securityContextFactoryStub);
       }
       var property = bindableSecurableObject.BusinessObjectClass.GetPropertyDefinition ("PropertyWithDefaultPermission");
 
@@ -91,8 +91,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
       IBusinessObject bindableSecurableObject;
       using (new SecurityFreeSection ())
       {
-        bindableSecurableObject = (IBusinessObject) ObjectFactory.Create (
-            false, typeof (SecurableClassWithProperties), ParamList.Create (new ObjectSecurityStrategy (securityContextFactoryStub)));
+        bindableSecurableObject = CreateSecurableClassWithProperties (securityContextFactoryStub);
       }
       var property = bindableSecurableObject.BusinessObjectClass.GetPropertyDefinition ("PropertyWithDefaultPermission");
 
@@ -112,8 +111,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
       IBusinessObject bindableSecurableObject;
       using (new SecurityFreeSection ())
       {
-        bindableSecurableObject = (IBusinessObject) ObjectFactory.Create (
-            false, typeof (SecurableClassWithProperties), ParamList.Create (new ObjectSecurityStrategy (securityContextFactoryStub)));
+        bindableSecurableObject = CreateSecurableClassWithProperties (securityContextFactoryStub);
       }
       var property = bindableSecurableObject.BusinessObjectClass.GetPropertyDefinition ("PropertyWithReadPermission");
 
@@ -133,8 +131,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
       IBusinessObject bindableSecurableObject;
       using (new SecurityFreeSection ())
       {
-        bindableSecurableObject = (IBusinessObject) ObjectFactory.Create (
-            false, typeof (SecurableClassWithProperties), ParamList.Create (new ObjectSecurityStrategy (securityContextFactoryStub)));
+        bindableSecurableObject = CreateSecurableClassWithProperties (securityContextFactoryStub);
       }
       var property = bindableSecurableObject.BusinessObjectClass.GetPropertyDefinition ("PropertyWithReadPermission");
 
@@ -154,8 +151,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
       IBusinessObject bindableSecurableObject;
       using (new SecurityFreeSection ())
       {
-        bindableSecurableObject = (IBusinessObject) ObjectFactory.Create (
-            false, typeof (SecurableClassWithProperties), ParamList.Create (new ObjectSecurityStrategy (securityContextFactoryStub)));
+        bindableSecurableObject = CreateSecurableClassWithProperties (securityContextFactoryStub);
       }
       var property = bindableSecurableObject.BusinessObjectClass.GetPropertyDefinition ("PropertyWithWritePermission");
 
@@ -175,8 +171,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
       IBusinessObject bindableSecurableObject;
       using (new SecurityFreeSection ())
       {
-        bindableSecurableObject = (IBusinessObject) ObjectFactory.Create (
-            false, typeof (SecurableClassWithProperties), ParamList.Create (new ObjectSecurityStrategy (securityContextFactoryStub)));
+        bindableSecurableObject = CreateSecurableClassWithProperties (securityContextFactoryStub);
       }
       var property = bindableSecurableObject.BusinessObjectClass.GetPropertyDefinition ("PropertyWithWritePermission");
 
@@ -196,8 +191,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
       IBusinessObject bindableSecurableObject;
       using (new SecurityFreeSection ())
       {
-        bindableSecurableObject = (IBusinessObject) ObjectFactory.Create (
-            false, typeof (SecurableClassWithProperties), ParamList.Create (new ObjectSecurityStrategy (securityContextFactoryStub)));
+        bindableSecurableObject = CreateSecurableClassWithProperties (securityContextFactoryStub);
       }
       var property = bindableSecurableObject.BusinessObjectClass.GetPropertyDefinition ("MixedPropertyWithDefaultPermission");
 
@@ -217,8 +211,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
       IBusinessObject bindableSecurableObject;
       using (new SecurityFreeSection ())
       {
-        bindableSecurableObject = (IBusinessObject) ObjectFactory.Create (
-            false, typeof (SecurableClassWithProperties), ParamList.Create (new ObjectSecurityStrategy (securityContextFactoryStub)));
+        bindableSecurableObject = CreateSecurableClassWithProperties (securityContextFactoryStub);
       }
       var property = bindableSecurableObject.BusinessObjectClass.GetPropertyDefinition ("MixedPropertyWithDefaultPermission");
 
@@ -238,8 +231,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
       IBusinessObject bindableSecurableObject;
       using (new SecurityFreeSection ())
       {
-        bindableSecurableObject = (IBusinessObject) ObjectFactory.Create (
-            false, typeof (SecurableClassWithProperties), ParamList.Create (new ObjectSecurityStrategy (securityContextFactoryStub)));
+        bindableSecurableObject = CreateSecurableClassWithProperties (securityContextFactoryStub);
       }
       var property = bindableSecurableObject.BusinessObjectClass.GetPropertyDefinition ("MixedPropertyWithReadPermission");
 
@@ -259,8 +251,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
       IBusinessObject bindableSecurableObject;
       using (new SecurityFreeSection ())
       {
-        bindableSecurableObject = (IBusinessObject) ObjectFactory.Create (
-            false, typeof (SecurableClassWithProperties), ParamList.Create (new ObjectSecurityStrategy (securityContextFactoryStub)));
+        bindableSecurableObject = CreateSecurableClassWithProperties (securityContextFactoryStub);
       }
       var property = bindableSecurableObject.BusinessObjectClass.GetPropertyDefinition ("MixedPropertyWithReadPermission");
 
@@ -280,8 +271,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
       IBusinessObject bindableSecurableObject;
       using (new SecurityFreeSection ())
       {
-        bindableSecurableObject = (IBusinessObject) ObjectFactory.Create (
-            false, typeof (SecurableClassWithProperties), ParamList.Create (new ObjectSecurityStrategy (securityContextFactoryStub)));
+        bindableSecurableObject = CreateSecurableClassWithProperties (securityContextFactoryStub);
       }
       var property = bindableSecurableObject.BusinessObjectClass.GetPropertyDefinition ("MixedPropertyWithWritePermission");
 
@@ -301,8 +291,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
       IBusinessObject bindableSecurableObject;
       using (new SecurityFreeSection ())
       {
-        bindableSecurableObject = (IBusinessObject) ObjectFactory.Create (
-            false, typeof (SecurableClassWithProperties), ParamList.Create (new ObjectSecurityStrategy (securityContextFactoryStub)));
+        bindableSecurableObject = CreateSecurableClassWithProperties (securityContextFactoryStub);
       }
       var property = bindableSecurableObject.BusinessObjectClass.GetPropertyDefinition ("MixedPropertyWithWritePermission");
 
@@ -324,8 +313,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
       IBusinessObject bindableSecurableObject;
       using (new SecurityFreeSection ())
       {
-        bindableSecurableObject = (IBusinessObject) ObjectFactory.Create (
-            false, typeof (DerivedSecurableClassWithProperties), ParamList.Create (new ObjectSecurityStrategy (securityContextFactoryStub)));
+        bindableSecurableObject = CreateDerivedSecurableClassWithProperties (securityContextFactoryStub);
       }
       var property = bindableSecurableObject.BusinessObjectClass.GetPropertyDefinition ("PropertyToOverrideWithWritePermission");
 
@@ -345,8 +333,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
       IBusinessObject bindableSecurableObject;
       using (new SecurityFreeSection ())
       {
-        bindableSecurableObject = (IBusinessObject) ObjectFactory.Create (
-            false, typeof (DerivedSecurableClassWithProperties), ParamList.Create (new ObjectSecurityStrategy (securityContextFactoryStub)));
+        bindableSecurableObject = CreateDerivedSecurableClassWithProperties (securityContextFactoryStub);
       }
       var property = bindableSecurableObject.BusinessObjectClass.GetPropertyDefinition ("PropertyToOverrideWithWritePermission");
 
@@ -366,8 +353,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
       IBusinessObject bindableSecurableObject;
       using (new SecurityFreeSection ())
       {
-        bindableSecurableObject = (IBusinessObject) ObjectFactory.Create (
-            false, typeof (DerivedSecurableClassWithProperties), ParamList.Create (new ObjectSecurityStrategy (securityContextFactoryStub)));
+        bindableSecurableObject = CreateDerivedSecurableClassWithProperties (securityContextFactoryStub);
       }
       var property = bindableSecurableObject.BusinessObjectClass.GetPropertyDefinition ("PropertyToOverrideWithReadPermission");
 
@@ -387,12 +373,27 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
       IBusinessObject bindableSecurableObject;
       using (new SecurityFreeSection ())
       {
-        bindableSecurableObject = (IBusinessObject) ObjectFactory.Create (
-            false, typeof (DerivedSecurableClassWithProperties), ParamList.Create (new ObjectSecurityStrategy (securityContextFactoryStub)));
+        bindableSecurableObject = CreateDerivedSecurableClassWithProperties (securityContextFactoryStub);
       }
       var property = bindableSecurableObject.BusinessObjectClass.GetPropertyDefinition ("PropertyToOverrideWithReadPermission");
 
       Assert.That (property.IsAccessible (null, bindableSecurableObject), Is.False);
+    }
+
+    private IBusinessObject CreateSecurableClassWithProperties (ISecurityContextFactory securityContextFactoryStub)
+    {
+      return (IBusinessObject) ObjectFactory.Create (
+          false,
+          typeof (SecurableClassWithProperties),
+          ParamList.Create (new ObjectSecurityStrategy (securityContextFactoryStub, NullAccessTypeFilter.Instance, new CacheInvalidationToken())));
+    }
+
+    private IBusinessObject CreateDerivedSecurableClassWithProperties (ISecurityContextFactory securityContextFactoryStub)
+    {
+      return (IBusinessObject) ObjectFactory.Create (
+          false,
+          typeof (DerivedSecurableClassWithProperties),
+          ParamList.Create (new ObjectSecurityStrategy (securityContextFactoryStub, NullAccessTypeFilter.Instance, new CacheInvalidationToken())));
     }
   }
 }

@@ -17,6 +17,7 @@
 
 using System;
 using NUnit.Framework;
+using Remotion.Collections;
 using Remotion.Data.DomainObjects.Security.UnitTests.TestDomain;
 using Remotion.Development.UnitTesting;
 using Remotion.Security;
@@ -84,7 +85,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests
       SecurableObject securableObject;
       using (new SecurityFreeSection())
       {
-        securableObject = SecurableObject.NewObject (_clientTransaction, new ObjectSecurityStrategy (_securityContextFactoryStub));
+        securableObject = CreateSecurableObject (_securityContextFactoryStub);
       }
 
       Dev.Null = securableObject.PropertyWithDefaultPermission;
@@ -100,7 +101,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests
       SecurableObject securableObject;
       using (new SecurityFreeSection())
       {
-        securableObject = SecurableObject.NewObject (_clientTransaction, new ObjectSecurityStrategy (_securityContextFactoryStub));
+        securableObject = CreateSecurableObject (_securityContextFactoryStub);
       }
 
       Dev.Null = securableObject.PropertyWithCustomPermission;
@@ -116,7 +117,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests
       SecurableObject securableObject;
       using (new SecurityFreeSection())
       {
-        securableObject = SecurableObject.NewObject (_clientTransaction, new ObjectSecurityStrategy (_securityContextFactoryStub));
+        securableObject = CreateSecurableObject (_securityContextFactoryStub);
       }
 
       Dev.Null = securableObject.PropertyWithDefaultPermission;
@@ -132,7 +133,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests
       SecurableObject securableObject;
       using (new SecurityFreeSection())
       {
-        securableObject = SecurableObject.NewObject (_clientTransaction, new ObjectSecurityStrategy (_securityContextFactoryStub));
+        securableObject = CreateSecurableObject (_securityContextFactoryStub);
       }
 
       Dev.Null = securableObject.PropertyWithCustomPermission;
@@ -148,7 +149,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests
       SecurableObject securableObject;
       using (new SecurityFreeSection())
       {
-        securableObject = SecurableObject.NewObject (_clientTransaction, new ObjectSecurityStrategy (_securityContextFactoryStub));
+        securableObject = CreateSecurableObject (_securityContextFactoryStub);
       }
 
       Dev.Null = ((ISecurableObjectMixin) securableObject).MixedPropertyWithDefaultPermission;
@@ -164,7 +165,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests
       SecurableObject securableObject;
       using (new SecurityFreeSection())
       {
-        securableObject = SecurableObject.NewObject (_clientTransaction, new ObjectSecurityStrategy (_securityContextFactoryStub));
+        securableObject = CreateSecurableObject (_securityContextFactoryStub);
       }
 
       Dev.Null = ((ISecurableObjectMixin) securableObject).MixedPropertyWithCustomPermission;
@@ -180,7 +181,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests
       SecurableObject securableObject;
       using (new SecurityFreeSection())
       {
-        securableObject = SecurableObject.NewObject (_clientTransaction, new ObjectSecurityStrategy (_securityContextFactoryStub));
+        securableObject = CreateSecurableObject (_securityContextFactoryStub);
       }
 
       Dev.Null = ((ISecurableObjectMixin) securableObject).MixedPropertyWithDefaultPermission;
@@ -196,7 +197,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests
       SecurableObject securableObject;
       using (new SecurityFreeSection())
       {
-        securableObject = SecurableObject.NewObject (_clientTransaction, new ObjectSecurityStrategy (_securityContextFactoryStub));
+        securableObject = CreateSecurableObject (_securityContextFactoryStub);
       }
 
       Dev.Null = ((ISecurableObjectMixin) securableObject).MixedPropertyWithCustomPermission;
@@ -219,7 +220,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests
         SecurableObject securableObject;
         using (new SecurityFreeSection())
         {
-          securableObject = SecurableObject.NewObject (subTransaction, new ObjectSecurityStrategy (_securityContextFactoryStub));
+          securableObject = CreateSecurableObject (_securityContextFactoryStub);
         }
 
         Dev.Null = securableObject.PropertyWithDefaultPermission;
@@ -244,7 +245,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests
       SecurableObject throwingObject = null;
 
       Assert.That (
-          () => SecurableObject.NewObject (_clientTransaction, new ObjectSecurityStrategy (_securityContextFactoryStub), obj =>
+          () => CreateSecurableObject (_securityContextFactoryStub, obj =>
           {
             throwingObject = obj;
             throw exception;
@@ -252,6 +253,13 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests
           Throws.Exception.SameAs (exception));
 
       Assert.That (_clientTransaction.IsEnlisted (throwingObject), Is.False);
+    }
+
+    private SecurableObject CreateSecurableObject (ISecurityContextFactory securityContextFactory, Action<SecurableObject> action = null)
+    {
+      return SecurableObject.NewObject (
+          _clientTransaction,
+          new ObjectSecurityStrategy (securityContextFactory, NullAccessTypeFilter.Instance, new CacheInvalidationToken()));
     }
   }
 }

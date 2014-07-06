@@ -17,6 +17,7 @@
 
 using System;
 using NUnit.Framework;
+using Remotion.Collections;
 using Remotion.Data.DomainObjects.Security.UnitTests.TestDomain;
 using Remotion.Development.UnitTesting;
 using Remotion.ObjectBinding;
@@ -75,8 +76,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests
       IBusinessObject bindableSecurableObject;
       using (new SecurityFreeSection ())
       {
-        bindableSecurableObject =
-            (IBusinessObject) BindableSecurableObject.NewObject (_clientTransaction, new ObjectSecurityStrategy (securityContextFactoryStub));
+        bindableSecurableObject = CreateBindableSecurableObject (securityContextFactoryStub);
       }
       var property = bindableSecurableObject.BusinessObjectClass.GetPropertyDefinition ("PropertyWithDefaultPermission");
       
@@ -95,8 +95,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests
       IBusinessObject bindableSecurableObject;
       using (new SecurityFreeSection ())
       {
-        bindableSecurableObject =
-            (IBusinessObject) BindableSecurableObject.NewObject (_clientTransaction, new ObjectSecurityStrategy (securityContextFactoryStub));
+        bindableSecurableObject = CreateBindableSecurableObject (securityContextFactoryStub);
       }
       var property = bindableSecurableObject.BusinessObjectClass.GetPropertyDefinition ("PropertyWithDefaultPermission");
 
@@ -115,8 +114,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests
       IBusinessObject bindableSecurableObject;
       using (new SecurityFreeSection ())
       {
-        bindableSecurableObject =
-            (IBusinessObject) BindableSecurableObject.NewObject (_clientTransaction, new ObjectSecurityStrategy (securityContextFactoryStub));
+        bindableSecurableObject = CreateBindableSecurableObject (securityContextFactoryStub);
       }
       var property = bindableSecurableObject.BusinessObjectClass.GetPropertyDefinition ("PropertyWithDefaultPermission");
 
@@ -135,8 +133,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests
       IBusinessObject bindableSecurableObject;
       using (new SecurityFreeSection ())
       {
-        bindableSecurableObject =
-            (IBusinessObject) BindableSecurableObject.NewObject (_clientTransaction, new ObjectSecurityStrategy (securityContextFactoryStub));
+        bindableSecurableObject = CreateBindableSecurableObject (securityContextFactoryStub);
       }
       var property = bindableSecurableObject.BusinessObjectClass.GetPropertyDefinition ("PropertyWithDefaultPermission");
 
@@ -155,8 +152,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests
       IBusinessObject bindableSecurableObject;
       using (new SecurityFreeSection ())
       {
-        bindableSecurableObject =
-            (IBusinessObject) BindableSecurableObject.NewObject (_clientTransaction, new ObjectSecurityStrategy (securityContextFactoryStub));
+        bindableSecurableObject = CreateBindableSecurableObject (securityContextFactoryStub);
       }
       var property = bindableSecurableObject.BusinessObjectClass.GetPropertyDefinition ("PropertyWithCustomPermission");
 
@@ -175,8 +171,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests
       IBusinessObject bindableSecurableObject;
       using (new SecurityFreeSection ())
       {
-        bindableSecurableObject =
-            (IBusinessObject) BindableSecurableObject.NewObject (_clientTransaction, new ObjectSecurityStrategy (securityContextFactoryStub));
+        bindableSecurableObject = CreateBindableSecurableObject (securityContextFactoryStub);
       }
       var property = bindableSecurableObject.BusinessObjectClass.GetPropertyDefinition ("PropertyWithCustomPermission");
 
@@ -195,8 +190,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests
       IBusinessObject bindableSecurableObject;
       using (new SecurityFreeSection ())
       {
-        bindableSecurableObject =
-            (IBusinessObject) BindableSecurableObject.NewObject (_clientTransaction, new ObjectSecurityStrategy (securityContextFactoryStub));
+        bindableSecurableObject = CreateBindableSecurableObject (securityContextFactoryStub);
       }
       var property = bindableSecurableObject.BusinessObjectClass.GetPropertyDefinition ("PropertyWithCustomPermission");
 
@@ -215,8 +209,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests
       IBusinessObject bindableSecurableObject;
       using (new SecurityFreeSection ())
       {
-        bindableSecurableObject =
-            (IBusinessObject) BindableSecurableObject.NewObject (_clientTransaction, new ObjectSecurityStrategy (securityContextFactoryStub));
+        bindableSecurableObject = CreateBindableSecurableObject (securityContextFactoryStub);
       }
       var property = bindableSecurableObject.BusinessObjectClass.GetPropertyDefinition ("PropertyWithCustomPermission");
 
@@ -235,8 +228,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests
       IBusinessObject bindableSecurableObject;
       using (new SecurityFreeSection())
       {
-        bindableSecurableObject =
-            (IBusinessObject) BindableSecurableObject.NewObject (_clientTransaction, new ObjectSecurityStrategy (securityContextFactoryStub));
+        bindableSecurableObject = CreateBindableSecurableObject (securityContextFactoryStub);
       }
       var property = bindableSecurableObject.BusinessObjectClass.GetPropertyDefinition ("ReadOnlyProperty");
 
@@ -255,8 +247,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests
       IBusinessObject bindableSecurableObject;
       using (new SecurityFreeSection ())
       {
-        bindableSecurableObject =
-            (IBusinessObject) BindableSecurableObject.NewObject (_clientTransaction, new ObjectSecurityStrategy (securityContextFactoryStub));
+        bindableSecurableObject = CreateBindableSecurableObject (securityContextFactoryStub);
       }
       var property = bindableSecurableObject.BusinessObjectClass.GetPropertyDefinition ("Children");
 
@@ -275,8 +266,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests
       IBusinessObject bindableSecurableObject;
       using (new SecurityFreeSection ())
       {
-        bindableSecurableObject =
-            (IBusinessObject) BindableSecurableObject.NewObject (_clientTransaction, new ObjectSecurityStrategy (securityContextFactoryStub));
+        bindableSecurableObject = CreateBindableSecurableObject (securityContextFactoryStub);
       }
       var property = bindableSecurableObject.BusinessObjectClass.GetPropertyDefinition ("Children");
 
@@ -295,8 +285,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests
       IBusinessObject bindableSecurableObject;
       using (new SecurityFreeSection ())
       {
-        bindableSecurableObject =
-            (IBusinessObject) BindableSecurableObject.NewObject (_clientTransaction, new ObjectSecurityStrategy (securityContextFactoryStub));
+        bindableSecurableObject = CreateBindableSecurableObject (securityContextFactoryStub);
       }
 
       var property = bindableSecurableObject.BusinessObjectClass.GetPropertyDefinition ("MixedPropertyWithDefaultPermission");
@@ -315,8 +304,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests
       IBusinessObject bindableSecurableObject;
       using (new SecurityFreeSection ())
       {
-        bindableSecurableObject =
-            (IBusinessObject) BindableSecurableObject.NewObject (_clientTransaction, new ObjectSecurityStrategy (securityContextFactoryStub));
+        bindableSecurableObject = CreateBindableSecurableObject (securityContextFactoryStub);
       }
 
       var property = bindableSecurableObject.BusinessObjectClass.GetPropertyDefinition ("MixedPropertyWithDefaultPermission");
@@ -335,8 +323,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests
       IBusinessObject bindableSecurableObject;
       using (new SecurityFreeSection ())
       {
-        bindableSecurableObject =
-            (IBusinessObject) BindableSecurableObject.NewObject (_clientTransaction, new ObjectSecurityStrategy (securityContextFactoryStub));
+        bindableSecurableObject = CreateBindableSecurableObject (securityContextFactoryStub);
       }
 
       var property = bindableSecurableObject.BusinessObjectClass.GetPropertyDefinition ("MixedPropertyWithReadPermission");
@@ -355,8 +342,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests
       IBusinessObject bindableSecurableObject;
       using (new SecurityFreeSection ())
       {
-        bindableSecurableObject =
-            (IBusinessObject) BindableSecurableObject.NewObject (_clientTransaction, new ObjectSecurityStrategy (securityContextFactoryStub));
+        bindableSecurableObject = CreateBindableSecurableObject (securityContextFactoryStub);
       }
 
       var property = bindableSecurableObject.BusinessObjectClass.GetPropertyDefinition ("MixedPropertyWithReadPermission");
@@ -375,8 +361,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests
       IBusinessObject bindableSecurableObject;
       using (new SecurityFreeSection ())
       {
-        bindableSecurableObject =
-            (IBusinessObject) BindableSecurableObject.NewObject (_clientTransaction, new ObjectSecurityStrategy (securityContextFactoryStub));
+        bindableSecurableObject = CreateBindableSecurableObject (securityContextFactoryStub);
       }
 
       var property = bindableSecurableObject.BusinessObjectClass.GetPropertyDefinition ("MixedPropertyWithWritePermission");
@@ -395,8 +380,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests
       IBusinessObject bindableSecurableObject;
       using (new SecurityFreeSection ())
       {
-        bindableSecurableObject =
-            (IBusinessObject) BindableSecurableObject.NewObject (_clientTransaction, new ObjectSecurityStrategy (securityContextFactoryStub));
+        bindableSecurableObject = CreateBindableSecurableObject (securityContextFactoryStub);
       }
 
       var property = bindableSecurableObject.BusinessObjectClass.GetPropertyDefinition ("MixedPropertyWithWritePermission");
@@ -415,8 +399,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests
       IBusinessObject bindableSecurableObject;
       using (new SecurityFreeSection ())
       {
-        bindableSecurableObject =
-            (IBusinessObject) DerivedBindableSecurableObject.NewObject (_clientTransaction, new ObjectSecurityStrategy (securityContextFactoryStub));
+        bindableSecurableObject = CreateDerivedBindableSecurableObject (securityContextFactoryStub);
       }
       var property = bindableSecurableObject.BusinessObjectClass.GetPropertyDefinition ("PropertyToOverride");
 
@@ -435,8 +418,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests
       IBusinessObject bindableSecurableObject;
       using (new SecurityFreeSection ())
       {
-        bindableSecurableObject =
-            (IBusinessObject) DerivedBindableSecurableObject.NewObject (_clientTransaction, new ObjectSecurityStrategy (securityContextFactoryStub));
+        bindableSecurableObject = CreateDerivedBindableSecurableObject (securityContextFactoryStub);
       }
       var property = bindableSecurableObject.BusinessObjectClass.GetPropertyDefinition ("PropertyToOverride");
 
@@ -457,8 +439,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests
       IBusinessObject bindableSecurableObject;
       using (new SecurityFreeSection ())
       {
-        bindableSecurableObject =
-            (IBusinessObject) BindableSecurableObject.NewObject (_clientTransaction, new ObjectSecurityStrategy (securityContextFactoryStub));
+        bindableSecurableObject = CreateBindableSecurableObject(securityContextFactoryStub);
       }
       var property = bindableSecurableObject.BusinessObjectClass.GetPropertyDefinition ("DefaultPermissionMixedProperty");
 
@@ -477,8 +458,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests
       IBusinessObject bindableSecurableObject;
       using (new SecurityFreeSection ())
       {
-        bindableSecurableObject =
-            (IBusinessObject) BindableSecurableObject.NewObject (_clientTransaction, new ObjectSecurityStrategy (securityContextFactoryStub));
+        bindableSecurableObject = CreateBindableSecurableObject (securityContextFactoryStub);
       }
       var property = bindableSecurableObject.BusinessObjectClass.GetPropertyDefinition ("DefaultPermissionMixedProperty");
 
@@ -497,8 +477,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests
       IBusinessObject bindableSecurableObject;
       using (new SecurityFreeSection ())
       {
-        bindableSecurableObject =
-            (IBusinessObject) BindableSecurableObject.NewObject (_clientTransaction, new ObjectSecurityStrategy (securityContextFactoryStub));
+        bindableSecurableObject = CreateBindableSecurableObject (securityContextFactoryStub);
       }
       var property = bindableSecurableObject.BusinessObjectClass.GetPropertyDefinition ("DefaultPermissionMixedProperty");
 
@@ -517,8 +496,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests
       IBusinessObject bindableSecurableObject;
       using (new SecurityFreeSection ())
       {
-        bindableSecurableObject =
-            (IBusinessObject) BindableSecurableObject.NewObject (_clientTransaction, new ObjectSecurityStrategy (securityContextFactoryStub));
+        bindableSecurableObject = CreateBindableSecurableObject (securityContextFactoryStub);
       }
       var property = bindableSecurableObject.BusinessObjectClass.GetPropertyDefinition ("DefaultPermissionMixedProperty");
 
@@ -537,8 +515,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests
       IBusinessObject bindableSecurableObject;
       using (new SecurityFreeSection ())
       {
-        bindableSecurableObject =
-            (IBusinessObject) BindableSecurableObject.NewObject (_clientTransaction, new ObjectSecurityStrategy (securityContextFactoryStub));
+        bindableSecurableObject = CreateBindableSecurableObject (securityContextFactoryStub);
       }
       var property = bindableSecurableObject.BusinessObjectClass.GetPropertyDefinition ("CustomPermissionMixedProperty");
 
@@ -557,8 +534,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests
       IBusinessObject bindableSecurableObject;
       using (new SecurityFreeSection ())
       {
-        bindableSecurableObject =
-            (IBusinessObject) BindableSecurableObject.NewObject (_clientTransaction, new ObjectSecurityStrategy (securityContextFactoryStub));
+        bindableSecurableObject = CreateBindableSecurableObject (securityContextFactoryStub);
       }
       var property = bindableSecurableObject.BusinessObjectClass.GetPropertyDefinition ("CustomPermissionMixedProperty");
 
@@ -577,8 +553,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests
       IBusinessObject bindableSecurableObject;
       using (new SecurityFreeSection ())
       {
-        bindableSecurableObject =
-            (IBusinessObject) BindableSecurableObject.NewObject (_clientTransaction, new ObjectSecurityStrategy (securityContextFactoryStub));
+        bindableSecurableObject = CreateBindableSecurableObject (securityContextFactoryStub);
       }
       var property = bindableSecurableObject.BusinessObjectClass.GetPropertyDefinition ("CustomPermissionMixedProperty");
 
@@ -597,8 +572,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests
       IBusinessObject bindableSecurableObject;
       using (new SecurityFreeSection ())
       {
-        bindableSecurableObject =
-            (IBusinessObject) BindableSecurableObject.NewObject (_clientTransaction, new ObjectSecurityStrategy (securityContextFactoryStub));
+        bindableSecurableObject = CreateBindableSecurableObject (securityContextFactoryStub);
       }
       var property = bindableSecurableObject.BusinessObjectClass.GetPropertyDefinition ("CustomPermissionMixedProperty");
 
@@ -607,5 +581,20 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests
 
     #endregion
 
+    private IBusinessObject CreateBindableSecurableObject (ISecurityContextFactory securityContextFactoryStub)
+    {
+      return (IBusinessObject)
+          BindableSecurableObject.NewObject (
+              _clientTransaction,
+              new ObjectSecurityStrategy (securityContextFactoryStub, NullAccessTypeFilter.Instance, new CacheInvalidationToken()));
+    }
+
+    private IBusinessObject CreateDerivedBindableSecurableObject (ISecurityContextFactory securityContextFactoryStub)
+    {
+      return (IBusinessObject)
+          DerivedBindableSecurableObject.NewObject (
+              _clientTransaction,
+              new ObjectSecurityStrategy (securityContextFactoryStub, NullAccessTypeFilter.Instance, new CacheInvalidationToken()));
+    }
   }
 }
