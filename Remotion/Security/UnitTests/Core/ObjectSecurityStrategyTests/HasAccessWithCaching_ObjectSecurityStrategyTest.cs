@@ -32,7 +32,7 @@ namespace Remotion.Security.UnitTests.Core.ObjectSecurityStrategyTests
     private ISecurityPrincipal _principalStub;
     private SecurityContext _context;
     private CacheInvalidationToken _cacheInvalidationToken;
-    private ObjectSecurityStrategy2 _strategy;
+    private ObjectSecurityStrategy _strategy;
 
     [SetUp]
     public void SetUp ()
@@ -46,7 +46,7 @@ namespace Remotion.Security.UnitTests.Core.ObjectSecurityStrategyTests
       _securityContextFactoryStub.Stub (_ => _.CreateSecurityContext()).Return (_context);
 
       _cacheInvalidationToken = new CacheInvalidationToken();
-      _strategy = new ObjectSecurityStrategy2 (_securityContextFactoryStub, NullAccessTypeFilter.Instance, _cacheInvalidationToken);
+      _strategy = new ObjectSecurityStrategy (_securityContextFactoryStub, NullAccessTypeFilter.Instance, _cacheInvalidationToken);
     }
 
     [Test]

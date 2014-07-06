@@ -27,7 +27,7 @@ namespace Remotion.Security
   /// parameter when evaluating the required permissions.
   /// <note type="inotes">Implementations are free to decide whether they provide caching.</note>
   /// </remarks>
-  /// <seealso cref="ObjectSecurityStrategy2"/>
+  /// <seealso cref="ObjectSecurityStrategy"/>
   /// <seealso cref="ThreadLocalReEntrancyGuaredObjectSecurityDecorator"/>
   /// <seealso cref="InstanceBasedReEntrancyGuaredObjectSecurityDecorator"/>
   public interface IObjectSecurityStrategy

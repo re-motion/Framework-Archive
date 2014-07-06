@@ -148,7 +148,7 @@ namespace Remotion.Data.DomainObjects.PerformanceTests.TestDomain
       if (_domainObjectSecurityStrategy == null)
       {
         _domainObjectSecurityStrategy = new DomainObjectSecurityStrategyDecorator (
-            new ObjectSecurityStrategy2 (this, NullAccessTypeFilter.Instance, new CacheInvalidationToken()),
+            new ObjectSecurityStrategy (this, NullAccessTypeFilter.Instance, new CacheInvalidationToken()),
             this,
             RequiredSecurityForStates.NewAndDeleted);
       }
