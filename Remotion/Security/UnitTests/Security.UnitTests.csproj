@@ -168,7 +168,6 @@
     <Compile Include="Core\SecurityPrincipalTest.cs" />
     <Compile Include="Core\InstanceBasedReEntrancyGuaredObjectSecurityDecoratorTest.cs" />
     <Compile Include="Core\ThreadLocalReEntrancyGuaredObjectSecurityDecoratorTest.cs" />
-    <Compile Include="Core\SecurityStrategyTests\HasAccessWithReentrancy_SecurityStrategyTest.cs" />
     <Compile Include="Core\XmlAsserter\XmlDocumentBaseConstraint.cs" />
     <Compile Include="Core\XmlAsserter\XmlDocumentEqualConstraint.cs" />
     <Compile Include="Core\XmlAsserter\XmlDocumentEqualConstraintTest.cs" />
@@ -190,7 +189,6 @@
     <Compile Include="Core\SampleDomain\TestFlags.cs" />
     <Compile Include="Core\SampleDomain\TestSecurityState.cs" />
     <Compile Include="Core\SampleDomain\TestValueType.cs" />
-    <Compile Include="Core\ObjectSecurityStrategyTest.cs" />
     <Compile Include="Core\SecurityClientTests\CheckConstructorAccessTest.cs" />
     <Compile Include="Core\SecurityClientTests\CheckMethodAccessTest_WithMethodName.cs" />
     <Compile Include="Core\SecurityClientTests\CheckPropertyReadAccessTest_WithPropertyName.cs" />
@@ -211,8 +209,6 @@
     <Compile Include="Core\SecurityContextTest.cs" />
     <Compile Include="Core\ObjectSecurityAdapterTest.cs" />
     <Compile Include="Core\SecurityFreeSectionTest.cs" />
-    <Compile Include="Core\SecurityStrategyTests\HasAccessWithCaching_SecurityStrategyTest.cs" />
-    <Compile Include="Core\SecurityStrategyTests\HasAccess_SecurityStratetyTest.cs" />
     <Compile Include="Core\ThreadPrincipalProviderTest.cs" />
     <Compile Include="Core\XmlAsserter\NodeStackToXPathConverter.cs" />
     <Compile Include="Core\XmlAsserter\NodeStackToXPathConverterTest.cs" />

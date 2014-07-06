@@ -160,12 +160,10 @@
     <Compile Include="SecurityContext.cs" />
     <Compile Include="SecurityException.cs" />
     <Compile Include="ObjectSecurityAdapter.cs" />
-    <Compile Include="ObjectSecurityStrategy.cs" />
     <Compile Include="SecurityFreeSection.cs" />
     <Compile Include="SecurityPrincipal.cs" />
     <Compile Include="SecurityPrincipalRole.cs" />
     <Compile Include="SecurityStateAttribute.cs" />
-    <Compile Include="SecurityStrategy.cs" />
     <Compile Include="ThreadPrincipalProvider.cs" />
     <EmbeddedResource Include="Configuration\SecurityConfiguration.xsd">
       <SubType>
