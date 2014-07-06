@@ -56,7 +56,7 @@ namespace Remotion.Security
 
     //TODO RM-6183: Refactor AccessType[] to IReadOnlyList<AccessType> and implement a Singleton-Version to allow for non-allocating checks
 
-    private readonly InvalidationTokenBasedCacheDecorator<ISecurityPrincipal, AccessType[]> _cache;
+    private readonly ICache<ISecurityPrincipal, AccessType[]> _cache;
     private readonly ISecurityContextFactory _securityContextFactory;
     private readonly IAccessTypeFilter _accessTypeFilter;
 

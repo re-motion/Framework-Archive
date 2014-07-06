@@ -16,6 +16,7 @@
 // 
 
 //
+
 using System;
 using NUnit.Framework;
 using Remotion.Collections;
@@ -37,7 +38,7 @@ namespace Remotion.UnitTests.Collections
     [Test]
     public void Create ()
     {
-      var result = CacheFactory.Create<string, int> ();
+      var result = CacheFactory.Create<string, int>();
 
       Assert.That (result, Is.TypeOf (typeof (Cache<string, int>)));
     }
@@ -49,7 +50,7 @@ namespace Remotion.UnitTests.Collections
       var result = CacheFactory.Create<string, int> (cacheInvalidationToken);
 
       Assert.That (result, Is.TypeOf (typeof (InvalidationTokenBasedCacheDecorator<string, int>)));
-      Assert.That (result.CacheInvalidationToken, Is.SameAs (cacheInvalidationToken));
+      Assert.That (((InvalidationTokenBasedCacheDecorator<string, int>) result).CacheInvalidationToken, Is.SameAs (cacheInvalidationToken));
       var innerCache = PrivateInvoke.GetNonPublicField (result, "_innerCache");
       Assert.That (innerCache, Is.TypeOf (typeof (Cache<string, int>)));
     }
@@ -72,7 +73,7 @@ namespace Remotion.UnitTests.Collections
       var result = CacheFactory.Create<string, int> (cacheInvalidationToken, _comparer);
 
       Assert.That (result, Is.TypeOf (typeof (InvalidationTokenBasedCacheDecorator<string, int>)));
-      Assert.That (result.CacheInvalidationToken, Is.SameAs (cacheInvalidationToken));
+      Assert.That (((InvalidationTokenBasedCacheDecorator<string, int>) result).CacheInvalidationToken, Is.SameAs (cacheInvalidationToken));
       var innerCache = PrivateInvoke.GetNonPublicField (result, "_innerCache");
       Assert.That (innerCache, Is.TypeOf (typeof (Cache<string, int>)));
       var innerDataStore = PrivateInvoke.GetNonPublicField (innerCache, "_dataStore");
@@ -82,11 +83,25 @@ namespace Remotion.UnitTests.Collections
     [Test]
     public void CreateWithLocking ()
     {
-      var result = CacheFactory.CreateWithLocking<string, int> ();
+      var result = CacheFactory.CreateWithLocking<string, int>();
 
       Assert.That (result, Is.TypeOf (typeof (LockingCacheDecorator<string, int>)));
       var innerCache = PrivateInvoke.GetNonPublicField (result, "_innerCache");
       Assert.That (innerCache, Is.TypeOf (typeof (Cache<string, int>)));
+    }
+
+    [Test]
+    public void CreateWithLocking_CacheInvalidationTokenOverload ()
+    {
+      var cacheInvalidationToken = new CacheInvalidationToken();
+      var result = CacheFactory.CreateWithLocking<string, int> (cacheInvalidationToken);
+
+      Assert.That (result, Is.TypeOf (typeof (LockingCacheDecorator<string, int>)));
+      var innerCache1 = PrivateInvoke.GetNonPublicField (result, "_innerCache");
+      Assert.That (innerCache1, Is.TypeOf (typeof (InvalidationTokenBasedCacheDecorator<string, int>)));
+      Assert.That (((InvalidationTokenBasedCacheDecorator<string, int>) innerCache1).CacheInvalidationToken, Is.SameAs (cacheInvalidationToken));
+      var innerCache2 = PrivateInvoke.GetNonPublicField (innerCache1, "_innerCache");
+      Assert.That (innerCache2, Is.TypeOf (typeof (Cache<string, int>)));
     }
 
     [Test]
@@ -102,17 +117,61 @@ namespace Remotion.UnitTests.Collections
     }
 
     [Test]
+    public void CreateWithLocking_CacheInvalidationTokenOverload_IEqualityComparerOverload ()
+    {
+      var cacheInvalidationToken = new CacheInvalidationToken();
+      var result = CacheFactory.CreateWithLocking<string, int> (cacheInvalidationToken, _comparer);
+
+      Assert.That (result, Is.TypeOf (typeof (LockingCacheDecorator<string, int>)));
+      var innerCache1 = PrivateInvoke.GetNonPublicField (result, "_innerCache");
+      Assert.That (innerCache1, Is.TypeOf (typeof (InvalidationTokenBasedCacheDecorator<string, int>)));
+      Assert.That (((InvalidationTokenBasedCacheDecorator<string, int>) innerCache1).CacheInvalidationToken, Is.SameAs (cacheInvalidationToken));
+      var innerCache2 = PrivateInvoke.GetNonPublicField (innerCache1, "_innerCache");
+      Assert.That (innerCache2, Is.TypeOf (typeof (Cache<string, int>)));
+      var innerDataStore = PrivateInvoke.GetNonPublicField (innerCache2, "_dataStore");
+      Assert.That (((SimpleDataStore<string, int>) innerDataStore).Comparer, Is.SameAs (_comparer));
+    }
+
+    [Test]
     public void CreateWithLazyLocking ()
     {
-      var result = CacheFactory.CreateWithLazyLocking<string, object> ();
+      var result = CacheFactory.CreateWithLazyLocking<string, object>();
 
       Assert.That (result, Is.TypeOf (typeof (LazyLockingCachingAdapter<string, object>)));
-      var innerCache = PrivateInvoke.GetNonPublicField (result, "_innerCache");
+      var innerCache1 = PrivateInvoke.GetNonPublicField (result, "_innerCache");
       Assert.That (
-          innerCache, 
+          innerCache1,
           Is.TypeOf (typeof (LockingCacheDecorator<string, DoubleCheckedLockingContainer<LazyLockingCachingAdapter<string, object>.Wrapper>>)));
-      var innerInnerCache = PrivateInvoke.GetNonPublicField (innerCache, "_innerCache");
-      Assert.That (innerInnerCache, Is.TypeOf (typeof (Cache<string, DoubleCheckedLockingContainer<LazyLockingCachingAdapter<string, object>.Wrapper>>)));
+      var innerCache2 = PrivateInvoke.GetNonPublicField (innerCache1, "_innerCache");
+      Assert.That (
+          innerCache2,
+          Is.TypeOf (typeof (Cache<string, DoubleCheckedLockingContainer<LazyLockingCachingAdapter<string, object>.Wrapper>>)));
+    }
+
+    [Test]
+    public void CreateWithLazyLocking_CacheInvalidationTokenOverload ()
+    {
+      var cacheInvalidationToken = new CacheInvalidationToken();
+      var result = CacheFactory.CreateWithLazyLocking<string, object> (cacheInvalidationToken);
+
+      Assert.That (result, Is.TypeOf (typeof (LazyLockingCachingAdapter<string, object>)));
+      var innerCache1 = PrivateInvoke.GetNonPublicField (result, "_innerCache");
+      Assert.That (
+          innerCache1,
+          Is.TypeOf (typeof (LockingCacheDecorator<string, DoubleCheckedLockingContainer<LazyLockingCachingAdapter<string, object>.Wrapper>>)));
+      var innerCache2 = PrivateInvoke.GetNonPublicField (innerCache1, "_innerCache");
+      Assert.That (
+          innerCache2,
+          Is.TypeOf (
+              typeof (InvalidationTokenBasedCacheDecorator<string, DoubleCheckedLockingContainer<LazyLockingCachingAdapter<string, object>.Wrapper>>)));
+      Assert.That (
+          ((InvalidationTokenBasedCacheDecorator<string, DoubleCheckedLockingContainer<LazyLockingCachingAdapter<string, object>.Wrapper>>)
+              innerCache2).CacheInvalidationToken,
+          Is.SameAs (cacheInvalidationToken));
+      var innerCache3 = PrivateInvoke.GetNonPublicField (innerCache2, "_innerCache");
+      Assert.That (
+          innerCache3,
+          Is.TypeOf (typeof (Cache<string, DoubleCheckedLockingContainer<LazyLockingCachingAdapter<string, object>.Wrapper>>)));
     }
 
     [Test]
@@ -121,13 +180,54 @@ namespace Remotion.UnitTests.Collections
       var result = CacheFactory.CreateWithLazyLocking<string, object> (_comparer);
 
       Assert.That (result, Is.TypeOf (typeof (LazyLockingCachingAdapter<string, object>)));
-      var innerCache = PrivateInvoke.GetNonPublicField (result, "_innerCache");
-      Assert.That (innerCache, Is.TypeOf (typeof (LockingCacheDecorator<string, DoubleCheckedLockingContainer<LazyLockingCachingAdapter<string, object>.Wrapper>>)));
-      var innerInnerCache = PrivateInvoke.GetNonPublicField (innerCache, "_innerCache");
-      Assert.That (innerInnerCache, Is.TypeOf (typeof (Cache<string, DoubleCheckedLockingContainer<LazyLockingCachingAdapter<string, object>.Wrapper>>)));
-      var underlyingDataStore = PrivateInvoke.GetNonPublicField (innerInnerCache, "_dataStore");
-      Assert.That (underlyingDataStore, Is.TypeOf (typeof (SimpleDataStore<string, DoubleCheckedLockingContainer<LazyLockingCachingAdapter<string, object>.Wrapper>>)));
-      Assert.That (((SimpleDataStore<string, DoubleCheckedLockingContainer<LazyLockingCachingAdapter<string, object>.Wrapper>>) underlyingDataStore).Comparer, Is.SameAs (_comparer));
+      var innerCache1 = PrivateInvoke.GetNonPublicField (result, "_innerCache");
+      Assert.That (
+          innerCache1,
+          Is.TypeOf (typeof (LockingCacheDecorator<string, DoubleCheckedLockingContainer<LazyLockingCachingAdapter<string, object>.Wrapper>>)));
+      var innerCache2 = PrivateInvoke.GetNonPublicField (innerCache1, "_innerCache");
+      Assert.That (
+          innerCache2,
+          Is.TypeOf (typeof (Cache<string, DoubleCheckedLockingContainer<LazyLockingCachingAdapter<string, object>.Wrapper>>)));
+      var underlyingDataStore = PrivateInvoke.GetNonPublicField (innerCache2, "_dataStore");
+      Assert.That (
+          underlyingDataStore,
+          Is.TypeOf (typeof (SimpleDataStore<string, DoubleCheckedLockingContainer<LazyLockingCachingAdapter<string, object>.Wrapper>>)));
+      Assert.That (
+          ((SimpleDataStore<string, DoubleCheckedLockingContainer<LazyLockingCachingAdapter<string, object>.Wrapper>>) underlyingDataStore).Comparer,
+          Is.SameAs (_comparer));
+    }
+
+    [Test]
+    public void CreateWithLazyLocking_CacheInvalidationTokenOverload_IEqualityComparerOverload ()
+    {
+      var cacheInvalidationToken = new CacheInvalidationToken();
+      var result = CacheFactory.CreateWithLazyLocking<string, object> (cacheInvalidationToken, _comparer);
+
+      Assert.That (result, Is.TypeOf (typeof (LazyLockingCachingAdapter<string, object>)));
+      var innerCache1 = PrivateInvoke.GetNonPublicField (result, "_innerCache");
+      Assert.That (
+          innerCache1,
+          Is.TypeOf (typeof (LockingCacheDecorator<string, DoubleCheckedLockingContainer<LazyLockingCachingAdapter<string, object>.Wrapper>>)));
+      var innerCache2 = PrivateInvoke.GetNonPublicField (innerCache1, "_innerCache");
+      Assert.That (
+          innerCache2,
+          Is.TypeOf (
+              typeof (InvalidationTokenBasedCacheDecorator<string, DoubleCheckedLockingContainer<LazyLockingCachingAdapter<string, object>.Wrapper>>)));
+      Assert.That (
+          ((InvalidationTokenBasedCacheDecorator<string, DoubleCheckedLockingContainer<LazyLockingCachingAdapter<string, object>.Wrapper>>)
+              innerCache2).CacheInvalidationToken,
+          Is.SameAs (cacheInvalidationToken));
+      var innerCache3 = PrivateInvoke.GetNonPublicField (innerCache2, "_innerCache");
+      Assert.That (
+          innerCache3,
+          Is.TypeOf (typeof (Cache<string, DoubleCheckedLockingContainer<LazyLockingCachingAdapter<string, object>.Wrapper>>)));
+      var underlyingDataStore = PrivateInvoke.GetNonPublicField (innerCache3, "_dataStore");
+      Assert.That (
+          underlyingDataStore,
+          Is.TypeOf (typeof (SimpleDataStore<string, DoubleCheckedLockingContainer<LazyLockingCachingAdapter<string, object>.Wrapper>>)));
+      Assert.That (
+          ((SimpleDataStore<string, DoubleCheckedLockingContainer<LazyLockingCachingAdapter<string, object>.Wrapper>>) underlyingDataStore).Comparer,
+          Is.SameAs (_comparer));
     }
   }
 }
