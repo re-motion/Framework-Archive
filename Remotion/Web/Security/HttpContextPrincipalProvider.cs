@@ -16,10 +16,10 @@
 // 
 
 using System;
-using System.Security.Principal;
-using System.Web;
 using Remotion.Security;
 using Remotion.ServiceLocation;
+using Remotion.Utilities;
+using Remotion.Web.Infrastructure;
 
 namespace Remotion.Web.Security
 {
@@ -29,16 +29,21 @@ namespace Remotion.Web.Security
   {
     public const int Position = ThreadPrincipalProvider.Position - 1;
 
-    public HttpContextPrincipalProvider ()
+        private readonly IHttpContextProvider _httpContextProvider;
+
+    public HttpContextPrincipalProvider (IHttpContextProvider httpContextProvider)
     {
+      ArgumentUtility.CheckNotNull ("httpContextProvider", httpContextProvider);
+      
+      _httpContextProvider = httpContextProvider;
     }
 
     public ISecurityPrincipal GetPrincipal ()
     {
-      if (HttpContext.Current == null)
-        return new NullSecurityPrincipal();
+      var httpContext = _httpContextProvider.GetCurrentHttpContext();
+      Assertion.IsNotNull (httpContext, "IHttpContextProvider.GetCurrentHttpContext() evaludated and returned null.");
 
-      IIdentity identity = HttpContext.Current.User.Identity;
+      var identity = httpContext.User.Identity;
       if (!identity.IsAuthenticated)
         return new NullSecurityPrincipal();
 
