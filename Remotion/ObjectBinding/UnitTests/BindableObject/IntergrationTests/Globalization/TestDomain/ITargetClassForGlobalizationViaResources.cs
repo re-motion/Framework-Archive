@@ -1,4 +1,4 @@
-// This file is part of the re-motion Core Framework (www.re-motion.org)
+﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -17,13 +17,11 @@
 
 using System;
 
-namespace Remotion.Globalization.UnitTests.TestDomain
+namespace Remotion.ObjectBinding.UnitTests.BindableObject.IntergrationTests.Globalization.TestDomain
 {
-  [MultiLingualResources (NamedResources.One)]
-  [MultiLingualResources (NamedResources.Two)]
-  [MultiLingualResources (NamedResources.Three)]
-  public class ClassWithMultiLingualResourcesAttributes
+  public interface ITargetClassForGlobalizationViaResources
   {
-    
+    string ImplicitImplementedProperty { get; set; }
+    string ExplicitImplementedProperty { get; set; }
   }
 }

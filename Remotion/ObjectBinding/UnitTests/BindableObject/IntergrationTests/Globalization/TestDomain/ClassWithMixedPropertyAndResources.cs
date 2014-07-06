@@ -27,12 +27,6 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.IntergrationTests.Glob
   [Uses (typeof (MixinAddingProperty))]
   public class ClassWithMixedPropertyAndResources
   {
-    private string _value1;
-
-    public string Value1
-    {
-      get { return _value1; }
-      set { _value1 = value; }
-    }
+    public string Value1 { get; set; }
   }
 }

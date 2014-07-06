@@ -14,16 +14,23 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-
 using System;
+using Remotion.Globalization;
 
-namespace Remotion.Globalization.UnitTests.TestDomain
+namespace Remotion.ObjectBinding.UnitTests.BindableObject.IntergrationTests.Globalization.TestDomain
 {
-  [MultiLingualResources (NamedResources.One)]
-  [MultiLingualResources (NamedResources.Two)]
-  [MultiLingualResources (NamedResources.Three)]
-  public class ClassWithMultiLingualResourcesAttributes
+  [BindableObject]
+  [Serializable]
+  public class DerivedTargetClassWithOverrideMixinForGlobalizationViaAttributes : TargetClassWithOverrideMixinForGlobalizationViaAttributes
   {
-    
+    public DerivedTargetClassWithOverrideMixinForGlobalizationViaAttributes ()
+    {
+    }
+
+    [MultiLingualName ("Property3 display name from DerivedTargetClassWithOverrideMixinForGlobalizationViaAttributes", "")]
+    public string Property3 { get; set; }
+
+    [MultiLingualName ("Property4 display name from DerivedTargetClassWithOverrideMixinForGlobalizationViaAttributes", "")]
+    public string Property4 { get; set; }
   }
 }

@@ -16,14 +16,21 @@
 // 
 
 using System;
+using Remotion.Globalization;
 
-namespace Remotion.Globalization.UnitTests.TestDomain
+namespace Remotion.ObjectBinding.UnitTests.BindableObject.IntergrationTests.Globalization.TestDomain
 {
-  [MultiLingualResources (NamedResources.One)]
-  [MultiLingualResources (NamedResources.Two)]
-  [MultiLingualResources (NamedResources.Three)]
-  public class ClassWithMultiLingualResourcesAttributes
+  [BindableObject]
+  [Serializable]
+  [MultiLingualResources ("Remotion.ObjectBinding.UnitTests.BindableObject.IntergrationTests.Globalization.Resources.DerivedTargetClassForGlobalizationViaResources")]
+  public class DerivedTargetClassForGlobalizationViaResources : TargetClassForGlobalizationViaResources
   {
-    
+    public DerivedTargetClassForGlobalizationViaResources ()
+    {
+    }
+
+    public string Property3 { get; set; }
+
+    public string Property4 { get; set; }
   }
 }

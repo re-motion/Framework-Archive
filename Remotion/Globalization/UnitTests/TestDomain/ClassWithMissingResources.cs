@@ -14,14 +14,13 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-
 using System;
 
-namespace Remotion.ObjectBinding.UnitTests.BindableObject.IntergrationTests.Globalization.TestDomain
+namespace Remotion.Globalization.UnitTests.TestDomain
 {
-  public interface ITargetClassForGlobalization
+  [MultiLingualResources ("MissingResources")]
+  public class ClassWithMissingResources
   {
-    string ImplicitImplementedProperty { get; set; }
-    string ExplicitImplementedProperty { get; set; }
+    public string Value1 { get; set; }
   }
 }

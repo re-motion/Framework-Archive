@@ -16,14 +16,16 @@
 // 
 
 using System;
+using Remotion.Globalization;
 
-namespace Remotion.Globalization.UnitTests.TestDomain
+namespace Remotion.ObjectBinding.UnitTests.BindableObject.IntergrationTests.Globalization.TestDomain
 {
-  [MultiLingualResources (NamedResources.One)]
-  [MultiLingualResources (NamedResources.Two)]
-  [MultiLingualResources (NamedResources.Three)]
-  public class ClassWithMultiLingualResourcesAttributes
+  public class DerivedMixinForGlobalizationViaAttributes : MixinForGlobalizationViaAttributes, IDerivedMixinForGlobalizationViaAttributes
   {
-    
+    [MultiLingualName ("MixedProperty3 display name from DerivedMixinForGlobalizationViaAttributes", "")]
+    public string MixedProperty3 { get; set; }
+
+    [MultiLingualName ("MixedProperty4 display name from DerivedMixinForGlobalizationViaAttributes", "")]
+    public string MixedProperty4 { get; set; }
   }
 }

@@ -14,16 +14,13 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-
 using System;
 
-namespace Remotion.Globalization.UnitTests.TestDomain
+namespace Remotion.ObjectBinding.UnitTests.BindableObject.IntergrationTests.Globalization.TestDomain
 {
-  [MultiLingualResources (NamedResources.One)]
-  [MultiLingualResources (NamedResources.Two)]
-  [MultiLingualResources (NamedResources.Three)]
-  public class ClassWithMultiLingualResourcesAttributes
+  public interface IDerivedMixinForGlobalizationViaAttributes
   {
-    
+    string MixedProperty3 { get; set; }
+    string MixedProperty4 { get; set; }
   }
 }

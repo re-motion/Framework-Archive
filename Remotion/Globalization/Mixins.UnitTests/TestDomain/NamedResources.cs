@@ -14,33 +14,17 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-
 using System;
-using Remotion.Globalization;
 
-namespace Remotion.ObjectBinding.UnitTests.BindableObject.IntergrationTests.Globalization.TestDomain
+namespace Remotion.Globalization.Mixins.UnitTests.TestDomain
 {
-  [BindableObject]
-  [Serializable]
-  [MultiLingualResources ("Remotion.ObjectBinding.UnitTests.BindableObject.IntergrationTests.Globalization.Resources.TargetClassForGlobalization")]
-  public class TargetClassForGlobalization : ITargetClassForGlobalization
+  public static class NamedResources
   {
-    public TargetClassForGlobalization ()
-    {
-    }
-
-    public string Property1 { get; set; }
-   
-    public string Property2 { get; set; }
-    
-    public string PropertyForMixinOverrideTest
-    {
-      get { return Property1; }
-      set { Property1 = value; }
-    }
-
-    public string ImplicitImplementedProperty { get; set; }
-
-    string ITargetClassForGlobalization.ExplicitImplementedProperty { get; set; }
+    public const string OnTarget = "Remotion.Globalization.Mixins.UnitTests.TestDomain.Resources.OnTarget";
+    public const string OnInherited = "Remotion.Globalization.Mixins.UnitTests.TestDomain.Resources.OnInherited";
+    public const string OnMixin1 = "Remotion.Globalization.Mixins.UnitTests.TestDomain.Resources.OnMixin1";
+    public const string OnMixin2a = "Remotion.Globalization.Mixins.UnitTests.TestDomain.Resources.OnMixin2a";
+    public const string OnMixin2b = "Remotion.Globalization.Mixins.UnitTests.TestDomain.Resources.OnMixin2b";
+    public const string MixinOfMixinWithResources = "Remotion.Globalization.Mixins.UnitTests.TestDomain.Resources.MixinOfMixinWithResources";
   }
 }
