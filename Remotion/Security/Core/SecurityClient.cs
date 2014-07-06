@@ -534,9 +534,6 @@ namespace Remotion.Security
       ArgumentUtility.DebugCheckNotNull ("securableClass", securableClass);
       ArgumentUtility.DebugCheckNotNull ("principal", principal);
 
-      if (SecurityFreeSection.IsActive)
-        return true;
-
       return HasStatelessAccess (securableClass, principal, s_createAccessType);
     }
 
