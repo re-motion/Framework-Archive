@@ -29,12 +29,12 @@ namespace Remotion.Web.Security
   {
     public const int Position = ThreadPrincipalProvider.Position - 1;
 
-        private readonly IHttpContextProvider _httpContextProvider;
+    private readonly IHttpContextProvider _httpContextProvider;
 
     public HttpContextPrincipalProvider (IHttpContextProvider httpContextProvider)
     {
       ArgumentUtility.CheckNotNull ("httpContextProvider", httpContextProvider);
-      
+
       _httpContextProvider = httpContextProvider;
     }
 
