@@ -22,7 +22,7 @@ using Remotion.ServiceLocation;
 namespace Remotion.ObjectBinding.UnitTests.BindableObject
 {
   [TestFixture]
-  public class IPropertyWriteAccessStrategyTest
+  public class IBindablePropertyWriteAccessStrategyTest
   {
     private DefaultServiceLocator _serviceLocator;
 
