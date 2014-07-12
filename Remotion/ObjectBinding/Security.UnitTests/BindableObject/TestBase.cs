@@ -15,17 +15,25 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Reflection;
+using NUnit.Framework;
+using Remotion.ObjectBinding.BindableObject;
 
-//
-// General Information about an assembly is controlled through the following 
-// set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
-//
-using Remotion.ObjectBinding.Security;
+namespace Remotion.ObjectBinding.Security.UnitTests.BindableObject
+{
+  public class TestBase
+  {
+    [SetUp]
+    public virtual void SetUp ()
+    {
+      BusinessObjectProvider.SetProvider (typeof (BindableObjectProviderAttribute), null);
+      BusinessObjectProvider.SetProvider (typeof (BindableObjectWithIdentityProviderAttribute), null);
+    }
 
-[assembly: AssemblyTitle("Unit Tests for Remotion DomainObjects Security Library")]
-[assembly: AssemblyCulture("")]		
-[assembly: CLSCompliant(true)]
-
-[assembly: EnsureSecuritySupportForObjectBinding]
+    [TearDown]
+    public virtual void TearDown ()
+    {
+      BusinessObjectProvider.SetProvider (typeof (BindableObjectProviderAttribute), null);
+      BusinessObjectProvider.SetProvider (typeof (BindableObjectWithIdentityProviderAttribute), null);
+    }
+  }
+}

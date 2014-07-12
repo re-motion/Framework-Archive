@@ -14,18 +14,31 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
-using System.Reflection;
+using Remotion.Security;
 
-//
-// General Information about an assembly is controlled through the following 
-// set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
-//
-using Remotion.ObjectBinding.Security;
+namespace Remotion.ObjectBinding.Security.UnitTests.TestDomain
+{
+  public class DerivedSecurableClassWithProperties : SecurableClassWithProperties
+  {
+    private string _accessibleProperty = string.Empty;
 
-[assembly: AssemblyTitle("Unit Tests for Remotion DomainObjects Security Library")]
-[assembly: AssemblyCulture("")]		
-[assembly: CLSCompliant(true)]
+    public DerivedSecurableClassWithProperties (IObjectSecurityStrategy securityStrategy)
+        : base (securityStrategy)
+    {
+    }
 
-[assembly: EnsureSecuritySupportForObjectBinding]
+    public override string PropertyToOverrideWithReadPermission
+    {
+      get { return _accessibleProperty; }
+      set { _accessibleProperty = value; }
+    }
+
+    public override string PropertyToOverrideWithWritePermission
+    {
+      get { return _accessibleProperty; }
+      set { _accessibleProperty = value; }
+    }
+  }
+}

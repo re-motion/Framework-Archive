@@ -14,18 +14,15 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
-using System.Reflection;
 
-//
-// General Information about an assembly is controlled through the following 
-// set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
-//
-using Remotion.ObjectBinding.Security;
-
-[assembly: AssemblyTitle("Unit Tests for Remotion DomainObjects Security Library")]
-[assembly: AssemblyCulture("")]		
-[assembly: CLSCompliant(true)]
-
-[assembly: EnsureSecuritySupportForObjectBinding]
+namespace Remotion.ObjectBinding.Security.UnitTests.TestDomain
+{
+  public interface IMixinSecurableClass
+  {
+    string MixedPropertyWithDefaultPermission { get; set; }
+    string MixedPropertyWithReadPermission { get; set; }
+    string MixedPropertyWithWritePermission { get; set; }
+  }
+}
