@@ -16,33 +16,21 @@
 // 
 
 using System;
-using Remotion.Security;
+using System.Runtime.Serialization;
 
-namespace Remotion.ObjectBinding.UnitTests.TestDomain
+namespace Remotion.ObjectBinding
 {
-  [BindableObject]
-  public class MixinSecurableClassWithProperties : IMixinSecurableClass
+  [Serializable]
+  public class BusinessObjectPropertyAccessException : Exception
   {
-    private string _mixedProperty;
-
-    public string MixedPropertyWithDefaultPermission
+    public BusinessObjectPropertyAccessException (string message, Exception innerException)
+        : base (message, innerException)
     {
-      get { return _mixedProperty; }
-      set { _mixedProperty = value; }
     }
 
-    public string MixedPropertyWithReadPermission
+    protected BusinessObjectPropertyAccessException (SerializationInfo info, StreamingContext context)
+        : base(info, context)
     {
-      [DemandPermission (TestAccessTypes.First)]
-      get { return _mixedProperty; }
-      set { _mixedProperty = value; }
-    }
-
-    public string MixedPropertyWithWritePermission
-    {
-      get { return _mixedProperty; }
-      [DemandPermission (TestAccessTypes.First)]
-      set { _mixedProperty = value; }
     }
   }
 }
