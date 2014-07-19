@@ -17,10 +17,14 @@
 
 using System;
 
-namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.IntegrationTests.TestDomain
+namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests.TestDomain
 {
-  public interface IMixinAddingProperty
+  public class MixinAddingPropertyBase : DomainObjectMixin<DomainObject>, IMixinAddingProperty
   {
-    int Property { get; set; }
+    public virtual int Property
+    {
+      get { return Properties[typeof (MixinAddingPropertyBase), "Property"].GetValue<int>(); }
+      set { Properties[typeof (MixinAddingPropertyBase), "Property"].SetValue (value); }
+    }
   }
 }

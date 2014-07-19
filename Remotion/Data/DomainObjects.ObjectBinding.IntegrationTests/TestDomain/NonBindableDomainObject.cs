@@ -16,16 +16,11 @@
 // 
 
 using System;
-using Remotion.Mixins;
 
-namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.IntegrationTests.TestDomain
+namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests.TestDomain
 {
-  [Uses (typeof (MixinAddingProperty))]
-  public class DerivedClassWithMixinWithDuplicateInterface : BaseClassWithMixinWithInterface
+  [DBTable]
+  public class NonBindableDomainObject : DomainObject
   {
-    public new static DerivedClassWithMixinWithDuplicateInterface NewObject ()
-    {
-      return NewObject<DerivedClassWithMixinWithDuplicateInterface> ();
-    }
   }
 }

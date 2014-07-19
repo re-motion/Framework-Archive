@@ -14,17 +14,15 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-
 using System;
+using System.Reflection;
 
-namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.IntegrationTests.TestDomain
-{
-  public class MixinAddingPropertyBase : DomainObjectMixin<DomainObject>, IMixinAddingProperty
-  {
-    public virtual int Property
-    {
-      get { return Properties[typeof (MixinAddingPropertyBase), "Property"].GetValue<int>(); }
-      set { Properties[typeof (MixinAddingPropertyBase), "Property"].SetValue (value); }
-    }
-  }
-}
+//
+// General Information about an assembly is controlled through the following 
+// set of attributes. Change these attribute values to modify the information
+// associated with an assembly.
+//
+
+[assembly: AssemblyTitle("Integration Tests for Remotion DomainObjects ObjectBinding Library")]
+[assembly: AssemblyCulture("")]		
+[assembly: CLSCompliant(true)]
