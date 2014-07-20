@@ -17,11 +17,23 @@
 
 using System;
 
-namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests.TestDomain
+namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests.TestDomain.Search
 {
   [Instantiable]
   [DBTable]
-  public abstract class OppositeAnonymousBindableDomainObject : BindableDomainObject
+  public abstract class OppositeBidirectionalBindableDomainObject : BindableDomainObject
   {
+    public static OppositeBidirectionalBindableDomainObject NewObject ()
+    {
+      return NewObject<OppositeBidirectionalBindableDomainObject> ();
+    }
+
+    [DBBidirectionalRelation ("RelatedObjectProperty1", ContainsForeignKey = true)]
+    public abstract SampleBindableDomainObject OppositeSampleObject { get; set; }
+    [DBBidirectionalRelation ("RelatedObjectProperty2")]
+    public abstract ObjectList<SampleBindableDomainObject> OppositeSampleObjects { get; set; }
+
+    [DBBidirectionalRelation ("RequiredBidirectionalRelatedObjectsProperty")]
+    public abstract BindableDomainObjectWithProperties OppositeRequiredRelatedObject { get; set; }
   }
 }

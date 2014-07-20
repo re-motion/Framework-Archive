@@ -17,10 +17,14 @@
 
 using System;
 
-namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests.TestDomain
+namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests.TestDomain.Security
 {
-  [DBTable]
-  public class NonBindableDomainObject : DomainObject
+  public interface IBindableSecurableObjectMixin
   {
+    string MixedPropertyWithDefaultPermission { get; set; }
+    string MixedPropertyWithReadPermission { get; set; }
+    string MixedPropertyWithWritePermission { get; set; }
+    string DefaultPermissionMixedProperty { get; set; }
+    string CustomPermissionMixedProperty { get; set; }
   }
 }

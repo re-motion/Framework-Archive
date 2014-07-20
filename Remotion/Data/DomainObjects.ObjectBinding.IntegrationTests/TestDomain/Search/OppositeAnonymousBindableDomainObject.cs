@@ -16,27 +16,12 @@
 // 
 
 using System;
-using Remotion.ObjectBinding;
 
-namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests.TestDomain
+namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests.TestDomain.Search
 {
   [Instantiable]
   [DBTable]
-  public abstract class BindableDomainObjectWithProperties : BindableDomainObject
+  public abstract class OppositeAnonymousBindableDomainObject : BindableDomainObject
   {
-    public static BindableDomainObjectWithProperties NewObject ()
-    {
-      return NewObject<BindableDomainObjectWithProperties>();
-    }
-
-    [Mandatory]
-    public abstract OppositeAnonymousBindableDomainObject RequiredRelatedObjectProperty { get; set; }
-
-    [Mandatory]
-    [DBBidirectionalRelation ("OppositeRequiredRelatedObject")]
-    public abstract ObjectList<OppositeBidirectionalBindableDomainObject> RequiredBidirectionalRelatedObjectsProperty { get; set; }
-
-    [StorageClassNone]
-    public IBusinessObject ReferencePropertyNotInMapping { get; set; }
   }
 }

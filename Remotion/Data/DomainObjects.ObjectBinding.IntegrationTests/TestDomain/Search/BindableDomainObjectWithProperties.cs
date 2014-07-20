@@ -16,24 +16,27 @@
 // 
 
 using System;
+using Remotion.ObjectBinding;
 
-namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests.TestDomain
+namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests.TestDomain.Search
 {
   [Instantiable]
   [DBTable]
-  public abstract class OppositeBidirectionalBindableDomainObject : BindableDomainObject
+  public abstract class BindableDomainObjectWithProperties : BindableDomainObject
   {
-    public static OppositeBidirectionalBindableDomainObject NewObject ()
+    public static BindableDomainObjectWithProperties NewObject ()
     {
-      return NewObject<OppositeBidirectionalBindableDomainObject> ();
+      return NewObject<BindableDomainObjectWithProperties>();
     }
 
-    [DBBidirectionalRelation ("RelatedObjectProperty1", ContainsForeignKey = true)]
-    public abstract SampleBindableDomainObject OppositeSampleObject { get; set; }
-    [DBBidirectionalRelation ("RelatedObjectProperty2")]
-    public abstract ObjectList<SampleBindableDomainObject> OppositeSampleObjects { get; set; }
+    [Mandatory]
+    public abstract OppositeAnonymousBindableDomainObject RequiredRelatedObjectProperty { get; set; }
 
-    [DBBidirectionalRelation ("RequiredBidirectionalRelatedObjectsProperty")]
-    public abstract BindableDomainObjectWithProperties OppositeRequiredRelatedObject { get; set; }
+    [Mandatory]
+    [DBBidirectionalRelation ("OppositeRequiredRelatedObject")]
+    public abstract ObjectList<OppositeBidirectionalBindableDomainObject> RequiredBidirectionalRelatedObjectsProperty { get; set; }
+
+    [StorageClassNone]
+    public IBusinessObject ReferencePropertyNotInMapping { get; set; }
   }
 }

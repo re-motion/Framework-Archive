@@ -16,12 +16,11 @@
 // 
 
 using System;
-using Remotion.ObjectBinding;
 
-namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests.TestDomain
+namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests.TestDomain.Search
 {
-  public class BindableNonDomainObjectReferencingDomainObject : BindableObjectBase
+  [DBTable]
+  public class NonBindableDomainObject : DomainObject
   {
-    public SampleBindableDomainObject OppositeSampleObject { get; set; }
   }
 }
