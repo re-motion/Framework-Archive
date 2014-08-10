@@ -34,7 +34,7 @@ namespace Remotion.Data.DomainObjects.Validation
       if (data.DomainObjectState == StateType.Deleted)
         return;
 
-      foreach (var propertyDefinition in data.DomainObject.ID.ClassDefinition.GetPropertyDefinitions())
+      foreach (var propertyDefinition in data.DataContainer.ID.ClassDefinition.GetPropertyDefinitions())
         ValidatePropertyDefinition (data, propertyDefinition);
     }
 
@@ -57,7 +57,7 @@ namespace Remotion.Data.DomainObjects.Validation
         string message = string.Format (
             "Value for property '{0}' of domain object '{1}' is too long. Maximum number of characters: {2}.",
             propertyDefinition.PropertyName,
-            data.DomainObject.ID,
+            data.DataContainer.ID,
             maxLength.Value);
 
         throw new PropertyValueTooLongException (data.DomainObject, propertyDefinition.PropertyName, maxLength.Value, message);
