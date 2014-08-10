@@ -28,25 +28,46 @@ using Rhino.Mocks;
 namespace Remotion.Data.DomainObjects.UnitTests.Validation
 {
   [TestFixture]
-  public class NotNullablePropertyValidatorTest : StandardMappingTest
+  public class StringPropertyMaxLengthValidatorTest : StandardMappingTest
   {
-     private NotNullablePropertyValidator _validator;
+    private StringPropertyMaxLengthValidator _validator;
 
     public override void SetUp ()
     {
       base.SetUp ();
       
-      _validator = new NotNullablePropertyValidator();
+      _validator = new StringPropertyMaxLengthValidator();
     }
 
     [Test]
-    public void Validate_PropertyIsNullable_AndPropertyValueIsNull_DoesNotThrow ()
+    public void Validate_PropertyWithoutMaxLength_DoesNotThrow ()
+    {
+      var domainObject = DomainObjectMother.CreateFakeObject<ClassWithAllDataTypes> (DomainObjectIDs.ClassWithAllDataTypes1);
+
+      var dataItem = CreatePersistableData (StateType.New, domainObject);
+      dataItem.DataContainer.SetValue (GetPropertyDefinition (typeof (ClassWithAllDataTypes), "StringPropertyWithoutMaxLength"), "value");
+
+      Assert.That (() => _validator.Validate (dataItem), Throws.Nothing);
+    }
+
+    [Test]
+    public void Validate_PropertyHasMaxLength_AndPropertyValueIsNotTooLong_DoesNotThrow ()
     {
       var domainObject = DomainObjectMother.CreateFakeObject<Person> (DomainObjectIDs.Person1);
 
       var dataItem = CreatePersistableData (StateType.New, domainObject);
-      dataItem.DataContainer.SetValue (GetPropertyDefinition (typeof (Person), "Name"), "Not Null");
-      dataItem.DataContainer.SetValue (GetPropertyDefinition (typeof (Person), "AssociatedCustomerCompany"), null);
+      dataItem.DataContainer.SetValue (GetPropertyDefinition (typeof (Person), "Name"), new string ('x', 100));
+
+      Assert.That (() => _validator.Validate (dataItem), Throws.Nothing);
+    }
+
+    [Test]
+    public void Validate_PropertyHasMaxLength_AndPropertyValueIsNull_DoesNotThrow ()
+    {
+      var domainObject = DomainObjectMother.CreateFakeObject<Person> (DomainObjectIDs.Person1);
+
+      var dataItem = CreatePersistableData (StateType.New, domainObject);
+      dataItem.DataContainer.SetValue (GetPropertyDefinition (typeof (Person), "Name"), null);
 
       Assert.That (() => _validator.Validate (dataItem), Throws.Nothing);
     }
@@ -57,8 +78,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
       var domainObject = DomainObjectMother.CreateFakeObject<Person> (DomainObjectIDs.Person1);
 
       var dataItem = CreatePersistableData (StateType.New, domainObject);
-      dataItem.DataContainer.SetValue (GetPropertyDefinition (typeof (Person), "Name"), "Not Null");
-      dataItem.DataContainer.SetValue (GetPropertyDefinition (typeof (Person), "AssociatedCustomerCompany"), null);
+      dataItem.DataContainer.SetValue (GetPropertyDefinition (typeof (Person), "Name"), new string ('x', 100));
       var eventListenerStub = MockRepository.GenerateStub<IDataContainerEventListener>();
       dataItem.DataContainer.SetEventListener (eventListenerStub);
 
@@ -68,19 +88,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
     }
 
     [Test]
-    public void Validate_PropertyIsNotNullable_AndPropertyValueIsNull_ThrowsException ()
+    public void Validate_PropertyHasMaxLength_AndPropertyValueIsTooLong_ThrowsException ()
     {
       var domainObject = DomainObjectMother.CreateFakeObject<Person> (DomainObjectIDs.Person1);
 
       var dataItem = CreatePersistableData (StateType.New, domainObject);
-      dataItem.DataContainer.SetValue (GetPropertyDefinition (typeof (Person), "Name"), null);
-      dataItem.DataContainer.SetValue (GetPropertyDefinition (typeof (Person), "AssociatedCustomerCompany"), DomainObjectIDs.Customer1);
+      dataItem.DataContainer.SetValue (GetPropertyDefinition (typeof (Person), "Name"), new string ('x', 101));
 
       Assert.That (
           () => _validator.Validate (dataItem),
-          Throws.TypeOf<PropertyValueNotSetException>().With.Message.Matches (
-              @"Not-nullable property 'Remotion\.Data\.DomainObjects\.UnitTests\.TestDomain\.Person\.Name' of domain object "
-              + @"'Person|.*|System\.Guid' cannot be null."));
+          Throws.TypeOf<PropertyValueTooLongException>().With.Message.Matches (
+              @"Value for property 'Remotion\.Data\.DomainObjects\.UnitTests\.TestDomain\.Person\.Name' "
+              + @"of domain object ''Person|.*|System\.Guid'' is too long. Maximum number of characters: 100."));
     }
 
     [Test]
@@ -89,13 +108,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
       var domainObject = DomainObjectMother.CreateFakeObject<Person> (DomainObjectIDs.Person1);
 
       var dataItem = CreatePersistableData (StateType.Deleted, domainObject);
-      dataItem.DataContainer.SetValue (GetPropertyDefinition (typeof (Person), "Name"), null);
+      dataItem.DataContainer.SetValue (GetPropertyDefinition (typeof (Person), "Name"), new string ('x', 101));
 
       Assert.That (() => _validator.Validate (dataItem), Throws.Nothing);
     }
 
     [Test]
-    public void Validate_IntegrationTest_PropertyOk ()
+    public void Validate_IntegrationTest_PropertyWithValueOk ()
     {
       using (ClientTransaction.CreateRootTransaction ().EnterDiscardingScope ())
       {
@@ -110,17 +129,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
     [Test]
     public void Validate_IntegrationTest_PropertyNotOk ()
     {
-      using (ClientTransaction.CreateRootTransaction ().EnterDiscardingScope())
+      using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
-        var person = Person.NewObject ();
-        person.Name = null;
+        var person = Person.NewObject();
+        person.Name = new string ('c', 101);
 
         var persistableData = PersistableDataObjectMother.Create (ClientTransaction.Current, person);
         Assert.That (
             () => _validator.Validate (persistableData),
-            Throws.TypeOf<PropertyValueNotSetException>().With.Message.Matches (
-              @"Not-nullable property 'Remotion\.Data\.DomainObjects\.UnitTests\.TestDomain\.Person\.Name' of domain object "
-              + @"'Person|.*|System\.Guid' cannot be null."));
+            Throws.TypeOf<PropertyValueTooLongException>().With.Message.Matches (
+                @"Value for property 'Remotion\.Data\.DomainObjects\.UnitTests\.TestDomain\.Person\.Name' "
+                + @"of domain object ''Person|.*|System\.Guid'' is too long. Maximum number of characters: 100."));
       }
     }
 
@@ -129,6 +148,5 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
       var dataContainer = DataContainer.CreateNew (domainObject.ID);
       return new PersistableData (domainObject, domainObjectState, dataContainer, Enumerable.Empty<IRelationEndPoint>());
     }
-    
   }
 }

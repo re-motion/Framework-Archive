@@ -14,7 +14,6 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-
 using System;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
@@ -24,9 +23,9 @@ using Remotion.Utilities;
 namespace Remotion.Data.DomainObjects.Validation
 {
   /// <summary>
-  /// Validates that not-nullable properties are not assigned a <see langword="null" /> value.
+  /// Validates that a binary property's value does not exceed the maximum length defined for this property.
   /// </summary>
-  public class NotNullablePropertyValidator : IPersistableDataValidator
+  public class BinaryPropertyMaxLengthValidator : IPersistableDataValidator
   {
     public void Validate (PersistableData data)
     {
@@ -41,19 +40,27 @@ namespace Remotion.Data.DomainObjects.Validation
 
     private static void ValidatePropertyDefinition (PersistableData data, PropertyDefinition propertyDefinition)
     {
-      if (propertyDefinition.IsNullable)
+      var maxLength = propertyDefinition.MaxLength;
+      if (maxLength == null)
+        return;
+
+      Type propertyType = propertyDefinition.PropertyType;
+      if (propertyType != typeof (byte[]))
         return;
 
       object propertyValue = data.DataContainer.GetValueWithoutEvents (propertyDefinition, ValueAccess.Current);
       if (propertyValue == null)
+        return;
+
+      if (propertyType == typeof (byte[]) && ((byte[]) propertyValue).Length > maxLength.Value)
       {
-        throw new PropertyValueNotSetException (
-            data.DomainObject,
+        string message = string.Format (
+            "Value for property '{0}' of domain object '{1}' is too large. Maximum size: {2}.",
             propertyDefinition.PropertyName,
-            string.Format (
-                "Not-nullable property '{0}' of domain object '{1}' cannot be null.",
-                propertyDefinition.PropertyName,
-                data.DomainObject.ID));
+            data.DomainObject.ID,
+            maxLength.Value);
+
+        throw new PropertyValueTooLongException (data.DomainObject, propertyDefinition.PropertyName, maxLength.Value, message);
       }
     }
   }

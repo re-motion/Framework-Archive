@@ -329,8 +329,11 @@
     <Compile Include="Tracing\IPersistenceExtensionFactoryTest.cs" />
     <Compile Include="Validation\CommitValidationClientTransactionExtensionFactoryTest.cs" />
     <Compile Include="Validation\IClientTransactionExtensionFactoryTest.cs" />
+    <Compile Include="Validation\BinaryPropertyMaxLengthValidatorTest.cs" />
+    <Compile Include="Validation\StringPropertyMaxLengthValidatorTest.cs" />
     <Compile Include="Validation\NotNullablePropertyValidatorTest.cs" />
     <Compile Include="Validation\NotNullablePropertyValueNotSetExceptionTest.cs" />
+    <Compile Include="Validation\PropertyValueTooLongExceptionTest.cs" />
     <Compile Include="VariableTypeInferrer.cs" />
     <Compile Include="Queries\QueryObjectMother.cs" />
     <Compile Include="Queries\QueryResultObjectMother.cs" />

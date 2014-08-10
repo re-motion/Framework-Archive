@@ -329,6 +329,7 @@
     <Compile Include="Queries\LinqProviderComponentFactory.cs" />
     <Compile Include="Queries\QueryExtensions.cs" />
     <Compile Include="Tracing\CompoundPersistenceExtensionFactory.cs" />
+    <Compile Include="Validation\BinaryPropertyMaxLengthValidator.cs" />
     <Compile Include="Validation\CommitValidationClientTransactionExtensionFactory.cs" />
     <Compile Include="Validation\DomainObjectValidationException.cs" />
     <Compile Include="IClientTransactionExtensionFactory.cs" />
@@ -1053,7 +1054,9 @@
     <Compile Include="DataManagement\ValueAccess.cs" />
     <Compile Include="Validation\MandatoryRelationValidator.cs" />
     <Compile Include="Validation\NotNullablePropertyValidator.cs" />
-    <Compile Include="Validation\ValueTooLongException.cs" />
+    <Compile Include="Validation\PropertyValueNotSetException.cs" />
+    <Compile Include="Validation\PropertyValueTooLongException.cs" />
+    <Compile Include="Validation\StringPropertyMaxLengthValidator.cs" />
     <Compile Include="ValueChangeEventArgs.cs" />
     <Compile Include="ValueTooLongException.cs">
       <SubType>Code</SubType>

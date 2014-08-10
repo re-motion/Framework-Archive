@@ -193,13 +193,13 @@ namespace Remotion.Data.DomainObjects.DataManagement
         if (!definition.PropertyType.IsInstanceOfType (value))
           throw new InvalidTypeException (definition.PropertyName, definition.PropertyType, value.GetType ());
 
-        var valueAsString = value as string;
-        if (valueAsString != null)
-          CheckStringValue (valueAsString, definition);
+        //var valueAsString = value as string;
+        //if (valueAsString != null)
+        //  CheckStringValue (valueAsString, definition);
 
-        var valueAsBinary = value as byte[];
-        if (valueAsBinary != null)
-          CheckByteArrayValue (valueAsBinary, definition);
+        //var valueAsBinary = value as byte[];
+        //if (valueAsBinary != null)
+        //  CheckByteArrayValue (valueAsBinary, definition);
 
         if (value is Enum)
           CheckEnumValue (value, definition);
