@@ -219,26 +219,22 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     }
 
     [Test]
-    public void MaxLengthCheck ()
+    public void DoesNotPerformMaxLengthCheck ()
     {
       PropertyDefinition definition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo_MaxLength ("test", typeof (string), 10);
 
       var propertyValue = new PropertyValue (definition, "12345");
-      Assert.That (
-          () =>  propertyValue.Value = "12345678901",
-          Throws.TypeOf<ValueTooLongException>()
-              .With.Message.EqualTo("Value for property 'test' is too long. Maximum number of characters: 10."));
+      propertyValue.Value = "12345678901";
+      Assert.That (propertyValue.Value, Is.EqualTo ("12345678901"));
     }
 
     [Test]
-    public void MaxLengthCheckInConstructor ()
+    public void DoesNotPerformMaxLengthCheckInConstructor ()
     {
       PropertyDefinition definition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo_MaxLength ("test", typeof (string), 10);
 
-      Assert.That (
-          () =>  new PropertyValue (definition, "12345678901"),
-          Throws.TypeOf<ValueTooLongException>()
-              .With.Message.EqualTo("Value for property 'test' is too long. Maximum number of characters: 10."));
+      var propertyValue = new PropertyValue (definition, "12345678901");
+      Assert.That (propertyValue.Value, Is.EqualTo ("12345678901"));
     }
 
     [Test]
@@ -379,10 +375,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       PropertyDefinition definition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo_MaxLength ("test", typeof (byte[]), 1000000);
       var propertyValue = new PropertyValue (definition, new byte[0]);
 
-      Assert.That (
-          () => propertyValue.Value = ResourceManager.GetImageLarger1MB(),
-          Throws.TypeOf<ValueTooLongException>()
-              .With.Message.EqualTo("Value for property 'test' is too large. Maximum size: 1000000."));
+      byte[] value = ResourceManager.GetImageLarger1MB();
+      propertyValue.Value = value;
+
+      Assert.That (propertyValue.Value, Is.SameAs (value));
     }
 
     [Test]

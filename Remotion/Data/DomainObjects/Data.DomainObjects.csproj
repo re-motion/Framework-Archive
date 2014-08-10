@@ -1058,7 +1058,7 @@
     <Compile Include="Validation\PropertyValueTooLongException.cs" />
     <Compile Include="Validation\StringPropertyMaxLengthValidator.cs" />
     <Compile Include="ValueChangeEventArgs.cs" />
-    <Compile Include="ValueTooLongException.cs">
+    <Compile Include="Obsolete\ValueTooLongException.cs">
       <SubType>Code</SubType>
     </Compile>
     <None Include="..\..\Remotion LGPL.licenseheader">
