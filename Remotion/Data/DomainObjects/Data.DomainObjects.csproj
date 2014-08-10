@@ -1052,6 +1052,8 @@
     <Compile Include="DomainImplementation\Transport\XmlImportStrategy.cs" />
     <Compile Include="DataManagement\ValueAccess.cs" />
     <Compile Include="Validation\MandatoryRelationValidator.cs" />
+    <Compile Include="Validation\NotNullablePropertyValidator.cs" />
+    <Compile Include="Validation\ValueTooLongException.cs" />
     <Compile Include="ValueChangeEventArgs.cs" />
     <Compile Include="ValueTooLongException.cs">
       <SubType>Code</SubType>

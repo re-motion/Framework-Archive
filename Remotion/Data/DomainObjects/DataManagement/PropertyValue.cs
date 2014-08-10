@@ -206,10 +206,15 @@ namespace Remotion.Data.DomainObjects.DataManagement
       }
       else
       {
-        if (!definition.IsNullable)
+        if (!definition.IsNullablePropertyType)
         {
           throw new InvalidOperationException (string.Format ("Property '{0}' does not allow null values.", definition.PropertyName));
         }
+
+        //if (!definition.IsNullable)
+        //{
+        //  throw new InvalidOperationException (string.Format ("Property '{0}' does not allow null values.", definition.PropertyName));
+        //}
       }
     }
 
