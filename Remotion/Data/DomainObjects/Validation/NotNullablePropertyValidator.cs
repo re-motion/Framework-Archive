@@ -26,7 +26,7 @@ namespace Remotion.Data.DomainObjects.Validation
   /// <summary>
   /// Validates that not-nullable properties are not assigned a <see langword="null" /> value.
   /// </summary>
-  public class NotNullablePropertyValidator : IPersistableDataValidator
+  public class NotNullablePropertyValidator : IPersistableDataValidator, IDataContainerValidator
   {
     public void Validate (PersistableData data)
     {
@@ -36,24 +36,32 @@ namespace Remotion.Data.DomainObjects.Validation
         return;
 
       foreach (var propertyDefinition in data.DomainObject.ID.ClassDefinition.GetPropertyDefinitions())
-        ValidatePropertyDefinition (data, propertyDefinition);
+        ValidatePropertyDefinition (data.DomainObject, data.DataContainer, propertyDefinition);
     }
 
-    private static void ValidatePropertyDefinition (PersistableData data, PropertyDefinition propertyDefinition)
+    public void Validate (DataContainer dataContainer)
+    {
+      ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
+
+      foreach (var propertyDefinition in dataContainer.ID.ClassDefinition.GetPropertyDefinitions())
+        ValidatePropertyDefinition (null, dataContainer, propertyDefinition);
+    }
+
+    private static void ValidatePropertyDefinition (DomainObject domainObject, DataContainer dataContainer, PropertyDefinition propertyDefinition)
     {
       if (propertyDefinition.IsNullable)
         return;
 
-      object propertyValue = data.DataContainer.GetValueWithoutEvents (propertyDefinition, ValueAccess.Current);
+      object propertyValue = dataContainer.GetValueWithoutEvents (propertyDefinition, ValueAccess.Current);
       if (propertyValue == null)
       {
         throw new PropertyValueNotSetException (
-            data.DomainObject,
+            domainObject,
             propertyDefinition.PropertyName,
             string.Format (
                 "Not-nullable property '{0}' of domain object '{1}' cannot be null.",
                 propertyDefinition.PropertyName,
-                data.DomainObject.ID));
+                dataContainer.ID));
       }
     }
   }

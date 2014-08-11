@@ -44,11 +44,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
     {
       var domainObject = DomainObjectMother.CreateFakeObject<Person> (DomainObjectIDs.Person1);
 
-      var dataItem = CreatePersistableData (StateType.New, domainObject);
-      dataItem.DataContainer.SetValue (GetPropertyDefinition (typeof (Person), "Name"), "Not Null");
-      dataItem.DataContainer.SetValue (GetPropertyDefinition (typeof (Person), "AssociatedCustomerCompany"), null);
+      var dataContainer = CreatePersistableData (StateType.New, domainObject).DataContainer;
+      dataContainer.SetValue (GetPropertyDefinition (typeof (Person), "Name"), "Not Null");
+      dataContainer.SetValue (GetPropertyDefinition (typeof (Person), "AssociatedCustomerCompany"), null);
 
-      Assert.That (() => _validator.Validate (dataItem), Throws.Nothing);
+      Assert.That (() => _validator.Validate (dataContainer), Throws.Nothing);
     }
 
     [Test]
@@ -56,13 +56,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
     {
       var domainObject = DomainObjectMother.CreateFakeObject<Person> (DomainObjectIDs.Person1);
 
-      var dataItem = CreatePersistableData (StateType.New, domainObject);
-      dataItem.DataContainer.SetValue (GetPropertyDefinition (typeof (Person), "Name"), "Not Null");
-      dataItem.DataContainer.SetValue (GetPropertyDefinition (typeof (Person), "AssociatedCustomerCompany"), null);
+      var dataContainer = CreatePersistableData (StateType.New, domainObject).DataContainer;
+      dataContainer.SetValue (GetPropertyDefinition (typeof (Person), "Name"), "Not Null");
+      dataContainer.SetValue (GetPropertyDefinition (typeof (Person), "AssociatedCustomerCompany"), null);
       var eventListenerStub = MockRepository.GenerateStub<IDataContainerEventListener>();
-      dataItem.DataContainer.SetEventListener (eventListenerStub);
+      dataContainer.SetEventListener (eventListenerStub);
 
-      _validator.Validate (dataItem);
+      _validator.Validate (dataContainer);
 
       eventListenerStub.AssertWasNotCalled (_ => _.PropertyValueReading (null, null, ValueAccess.Current), mo => mo.IgnoreArguments());
     }
@@ -72,12 +72,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
     {
       var domainObject = DomainObjectMother.CreateFakeObject<Person> (DomainObjectIDs.Person1);
 
-      var dataItem = CreatePersistableData (StateType.New, domainObject);
-      dataItem.DataContainer.SetValue (GetPropertyDefinition (typeof (Person), "Name"), null);
-      dataItem.DataContainer.SetValue (GetPropertyDefinition (typeof (Person), "AssociatedCustomerCompany"), DomainObjectIDs.Customer1);
+      var dataContainer = CreatePersistableData (StateType.New, domainObject).DataContainer;
+      dataContainer.SetValue (GetPropertyDefinition (typeof (Person), "Name"), null);
+      dataContainer.SetValue (GetPropertyDefinition (typeof (Person), "AssociatedCustomerCompany"), DomainObjectIDs.Customer1);
 
       Assert.That (
-          () => _validator.Validate (dataItem),
+          () => _validator.Validate (dataContainer),
           Throws.TypeOf<PropertyValueNotSetException>().With.Message.Matches (
               @"Not-nullable property 'Remotion\.Data\.DomainObjects\.UnitTests\.TestDomain\.Person\.Name' of domain object "
               + @"'Person|.*|System\.Guid' cannot be null."));
@@ -92,6 +92,36 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
       dataItem.DataContainer.SetValue (GetPropertyDefinition (typeof (Person), "Name"), null);
 
       Assert.That (() => _validator.Validate (dataItem), Throws.Nothing);
+    }
+
+    [Test]
+    public void ValidateDataContainer_IntegrationTest_PropertyOk ()
+    {
+      using (ClientTransaction.CreateRootTransaction ().EnterDiscardingScope ())
+      {
+        var person = Person.NewObject ();
+        person.Name = "Not Null";
+
+        var dataContainer = person.InternalDataContainer;
+        Assert.That (() => _validator.Validate (dataContainer), Throws.Nothing);
+      }
+    }
+
+    [Test]
+    public void ValidateDataContainer_IntegrationTest_PropertyNotOk ()
+    {
+      using (ClientTransaction.CreateRootTransaction ().EnterDiscardingScope())
+      {
+        var person = Person.NewObject ();
+        person.Name = null;
+
+        var dataContainer = person.InternalDataContainer;
+        Assert.That (
+            () => _validator.Validate (dataContainer),
+            Throws.TypeOf<PropertyValueNotSetException>().With.Message.Matches (
+              @"Not-nullable property 'Remotion\.Data\.DomainObjects\.UnitTests\.TestDomain\.Person\.Name' of domain object "
+              + @"'Person|.*|System\.Guid' cannot be null."));
+      }
     }
 
     [Test]
