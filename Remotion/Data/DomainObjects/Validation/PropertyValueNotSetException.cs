@@ -69,7 +69,7 @@ namespace Remotion.Data.DomainObjects.Validation
 
     public override DomainObject[] AffectedObjects
     {
-      get { return new[] { DomainObject }; }
+      get { return _domainObject == null ? new DomainObject[0] : new[] { _domainObject }; }
     }
   }
 }

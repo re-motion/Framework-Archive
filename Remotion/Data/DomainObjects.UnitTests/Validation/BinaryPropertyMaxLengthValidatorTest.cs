@@ -40,70 +40,70 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
     }
 
     [Test]
-    public void Validate_PropertyWithoutMaxLength_DoesNotThrow ()
+    public void ValidateDataContainer_PropertyWithoutMaxLength_DoesNotThrow ()
     {
       var domainObject = DomainObjectMother.CreateFakeObject<ClassWithAllDataTypes> (DomainObjectIDs.ClassWithAllDataTypes1);
 
-      var dataItem = CreatePersistableData (StateType.New, domainObject);
-      dataItem.DataContainer.SetValue (GetPropertyDefinition (typeof (ClassWithAllDataTypes), "BinaryProperty"), new byte[10]);
+      var dataContainer = CreatePersistableData (StateType.New, domainObject).DataContainer;
+      dataContainer.SetValue (GetPropertyDefinition (typeof (ClassWithAllDataTypes), "BinaryProperty"), new byte[10]);
 
-      Assert.That (() => _validator.Validate (dataItem), Throws.Nothing);
+      Assert.That (() => _validator.Validate (dataContainer), Throws.Nothing);
     }
 
     [Test]
-    public void Validate_PropertyHasMaxLength_AndPropertyValueIsNotTooLong_DoesNotThrow ()
+    public void ValidateDataContainer_PropertyHasMaxLength_AndPropertyValueIsNotTooLong_DoesNotThrow ()
     {
       var domainObject = DomainObjectMother.CreateFakeObject<ClassWithAllDataTypes> (DomainObjectIDs.ClassWithAllDataTypes1);
 
-      var dataItem = CreatePersistableData (StateType.New, domainObject);
-      dataItem.DataContainer.SetValue (GetPropertyDefinition (typeof (ClassWithAllDataTypes), "NullableBinaryProperty"), new byte[1000000]);
+      var dataContainer = CreatePersistableData (StateType.New, domainObject).DataContainer;
+      dataContainer.SetValue (GetPropertyDefinition (typeof (ClassWithAllDataTypes), "NullableBinaryProperty"), new byte[1000000]);
 
-      Assert.That (() => _validator.Validate (dataItem), Throws.Nothing);
+      Assert.That (() => _validator.Validate (dataContainer), Throws.Nothing);
     }
 
     [Test]
-    public void Validate_PropertyHasMaxLength_AndPropertyValueIsNull_DoesNotThrow ()
+    public void ValidateDataContainer_PropertyHasMaxLength_AndPropertyValueIsNull_DoesNotThrow ()
     {
       var domainObject = DomainObjectMother.CreateFakeObject<ClassWithAllDataTypes> (DomainObjectIDs.ClassWithAllDataTypes1);
 
-      var dataItem = CreatePersistableData (StateType.New, domainObject);
-      dataItem.DataContainer.SetValue (GetPropertyDefinition (typeof (ClassWithAllDataTypes), "NullableBinaryProperty"), null);
+      var dataContainer = CreatePersistableData (StateType.New, domainObject).DataContainer;
+      dataContainer.SetValue (GetPropertyDefinition (typeof (ClassWithAllDataTypes), "NullableBinaryProperty"), null);
 
-      Assert.That (() => _validator.Validate (dataItem), Throws.Nothing);
+      Assert.That (() => _validator.Validate (dataContainer), Throws.Nothing);
     }
 
     [Test]
-    public void Validate_DoesNotRaisePropertyValueReadEvents ()
+    public void ValidateDataContainer_DoesNotRaisePropertyValueReadEvents ()
     {
       var domainObject = DomainObjectMother.CreateFakeObject<ClassWithAllDataTypes> (DomainObjectIDs.ClassWithAllDataTypes1);
 
-      var dataItem = CreatePersistableData (StateType.New, domainObject);
-      dataItem.DataContainer.SetValue (GetPropertyDefinition (typeof (ClassWithAllDataTypes), "NullableBinaryProperty"), new byte [10]);
+      var dataContainer = CreatePersistableData (StateType.New, domainObject).DataContainer;
+      dataContainer.SetValue (GetPropertyDefinition (typeof (ClassWithAllDataTypes), "NullableBinaryProperty"), new byte [10]);
       var eventListenerStub = MockRepository.GenerateStub<IDataContainerEventListener>();
-      dataItem.DataContainer.SetEventListener (eventListenerStub);
+      dataContainer.SetEventListener (eventListenerStub);
 
-      _validator.Validate (dataItem);
+      _validator.Validate (dataContainer);
 
       eventListenerStub.AssertWasNotCalled (_ => _.PropertyValueReading (null, null, ValueAccess.Current), mo => mo.IgnoreArguments());
     }
 
     [Test]
-    public void Validate_PropertyHasMaxLength_AndPropertyValueIsTooLong_ThrowsException ()
+    public void ValidateDataContainer_PropertyHasMaxLength_AndPropertyValueIsTooLong_ThrowsException ()
     {
       var domainObject = DomainObjectMother.CreateFakeObject<ClassWithAllDataTypes> (DomainObjectIDs.ClassWithAllDataTypes1);
 
-      var dataItem = CreatePersistableData (StateType.New, domainObject);
-      dataItem.DataContainer.SetValue (GetPropertyDefinition (typeof (ClassWithAllDataTypes), "NullableBinaryProperty"), new byte [1000001]);
+      var dataContainer = CreatePersistableData (StateType.New, domainObject).DataContainer;
+      dataContainer.SetValue (GetPropertyDefinition (typeof (ClassWithAllDataTypes), "NullableBinaryProperty"), new byte [1000001]);
 
       Assert.That (
-          () => _validator.Validate (dataItem),
+          () => _validator.Validate (dataContainer),
           Throws.TypeOf<PropertyValueTooLongException>().With.Message.Matches (
               @"Value for property 'Remotion\.Data\.DomainObjects\.UnitTests\.TestDomain\.ClassWithAllDataTypes\.NullableBinaryProperty' "
               + @"of domain object ''ClassWithAllDataTypes|.*|System\.Guid'' is too long. Maximum size: 1000001."));
     }
 
     [Test]
-    public void Validate_IgnoresDeletedObjects ()
+    public void ValidatePersistableData_IgnoresDeletedObjects ()
     {
       var domainObject = DomainObjectMother.CreateFakeObject<ClassWithAllDataTypes> (DomainObjectIDs.ClassWithAllDataTypes1);
 
@@ -114,7 +114,43 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
     }
 
     [Test]
-    public void Validate_IntegrationTest_PropertyWithValueOk ()
+    public void ValidateDataContainer_IntegrationTest_PropertyWithValueOk ()
+    {
+      using (ClientTransaction.CreateRootTransaction ().EnterDiscardingScope ())
+      {
+        var person = ClassWithAllDataTypes.NewObject ();
+        person.BinaryProperty = new byte[10];
+        person.NullableBinaryProperty = new byte[1000000];
+        person.StringProperty = "value";
+        person.StringPropertyWithoutMaxLength = "value";
+
+        var dataContainer = person.InternalDataContainer;
+        Assert.That (() => _validator.Validate (dataContainer), Throws.Nothing);
+      }
+    }
+
+    [Test]
+    public void ValidateDataContainer_IntegrationTest_PropertyNotOk ()
+    {
+      using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
+      {
+        var person = ClassWithAllDataTypes.NewObject();
+        person.BinaryProperty = new byte[10];
+        person.NullableBinaryProperty = new byte[1000001];
+        person.StringProperty = "value";
+        person.StringPropertyWithoutMaxLength = "value";
+
+        var dataContainer = person.InternalDataContainer;
+        Assert.That (
+            () => _validator.Validate (dataContainer),
+            Throws.TypeOf<PropertyValueTooLongException>().With.Message.Matches (
+                @"Value for property 'Remotion\.Data\.DomainObjects\.UnitTests\.TestDomain\.ClassWithAllDataTypes\.NullableBinaryProperty' "
+                + @"of domain object ''ClassWithAllDataTypes|.*|System\.Guid'' is too long. Maximum size: 1000001."));
+      }
+    }
+
+    [Test]
+    public void ValidatePersistableData_IntegrationTest_PropertyWithValueOk ()
     {
       using (ClientTransaction.CreateRootTransaction ().EnterDiscardingScope ())
       {
@@ -130,7 +166,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
     }
 
     [Test]
-    public void Validate_IntegrationTest_PropertyNotOk ()
+    public void ValidatePersistableData_IntegrationTest_PropertyNotOk ()
     {
       using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {

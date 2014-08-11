@@ -40,7 +40,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
     }
 
     [Test]
-    public void Validate_PropertyIsNullable_AndPropertyValueIsNull_DoesNotThrow ()
+    public void ValidateDataContainer_PropertyIsNullable_AndPropertyValueIsNull_DoesNotThrow ()
     {
       var domainObject = DomainObjectMother.CreateFakeObject<Person> (DomainObjectIDs.Person1);
 
@@ -52,7 +52,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
     }
 
     [Test]
-    public void Validate_DoesNotRaisePropertyValueReadEvents ()
+    public void ValidateDataContainer_DoesNotRaisePropertyValueReadEvents ()
     {
       var domainObject = DomainObjectMother.CreateFakeObject<Person> (DomainObjectIDs.Person1);
 
@@ -68,7 +68,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
     }
 
     [Test]
-    public void Validate_PropertyIsNotNullable_AndPropertyValueIsNull_ThrowsException ()
+    public void ValidateDataContainer_PropertyIsNotNullable_AndPropertyValueIsNull_ThrowsException ()
     {
       var domainObject = DomainObjectMother.CreateFakeObject<Person> (DomainObjectIDs.Person1);
 
@@ -84,7 +84,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
     }
 
     [Test]
-    public void Validate_IgnoresDeletedObjects ()
+    public void ValidatePersistableData_IgnoresDeletedObjects ()
     {
       var domainObject = DomainObjectMother.CreateFakeObject<Person> (DomainObjectIDs.Person1);
 
@@ -95,7 +95,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
     }
 
     [Test]
-    public void Validate_IntegrationTest_PropertyOk ()
+    public void ValidatePersistableData_IntegrationTest_PropertyOk ()
     {
       using (ClientTransaction.CreateRootTransaction ().EnterDiscardingScope ())
       {
@@ -108,7 +108,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
     }
 
     [Test]
-    public void Validate_IntegrationTest_PropertyNotOk ()
+    public void ValidatePersistableData_IntegrationTest_PropertyNotOk ()
     {
       using (ClientTransaction.CreateRootTransaction ().EnterDiscardingScope())
       {

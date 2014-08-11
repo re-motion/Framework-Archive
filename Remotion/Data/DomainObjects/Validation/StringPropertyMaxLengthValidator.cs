@@ -25,8 +25,12 @@ namespace Remotion.Data.DomainObjects.Validation
   /// <summary>
   /// Validates that a string property's value does not exceed the maximum length defined for this property.
   /// </summary>
-  public class StringPropertyMaxLengthValidator : IPersistableDataValidator
+  public class StringPropertyMaxLengthValidator : IPersistableDataValidator, IDataContainerValidator
   {
+    public StringPropertyMaxLengthValidator ()
+    {
+    }
+
     public void Validate (PersistableData data)
     {
       ArgumentUtility.CheckNotNull ("data", data);
@@ -35,10 +39,18 @@ namespace Remotion.Data.DomainObjects.Validation
         return;
 
       foreach (var propertyDefinition in data.DataContainer.ID.ClassDefinition.GetPropertyDefinitions())
-        ValidatePropertyDefinition (data, propertyDefinition);
+        ValidatePropertyDefinition (data.DomainObject, data.DataContainer, propertyDefinition);
     }
 
-    private void ValidatePropertyDefinition (PersistableData data, PropertyDefinition propertyDefinition)
+    public void Validate (DataContainer dataContainer)
+    {
+      ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
+
+      foreach (var propertyDefinition in dataContainer.ID.ClassDefinition.GetPropertyDefinitions())
+        ValidatePropertyDefinition (null, dataContainer, propertyDefinition);
+    }
+
+    private void ValidatePropertyDefinition (DomainObject domainObject, DataContainer dataContainer, PropertyDefinition propertyDefinition)
     {
       var maxLength = propertyDefinition.MaxLength;
       if (maxLength == null)
@@ -48,7 +60,7 @@ namespace Remotion.Data.DomainObjects.Validation
       if (propertyType != typeof (string))
         return;
 
-      object propertyValue = data.DataContainer.GetValueWithoutEvents (propertyDefinition, ValueAccess.Current);
+      object propertyValue = dataContainer.GetValueWithoutEvents (propertyDefinition, ValueAccess.Current);
       if (propertyValue == null)
         return;
 
@@ -57,10 +69,10 @@ namespace Remotion.Data.DomainObjects.Validation
         string message = string.Format (
             "Value for property '{0}' of domain object '{1}' is too long. Maximum number of characters: {2}.",
             propertyDefinition.PropertyName,
-            data.DataContainer.ID,
+            dataContainer.ID,
             maxLength.Value);
 
-        throw new PropertyValueTooLongException (data.DomainObject, propertyDefinition.PropertyName, maxLength.Value, message);
+        throw new PropertyValueTooLongException (domainObject, propertyDefinition.PropertyName, maxLength.Value, message);
       }
     }
   }
