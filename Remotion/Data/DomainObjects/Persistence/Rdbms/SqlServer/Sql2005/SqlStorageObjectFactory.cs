@@ -17,6 +17,7 @@
 using System;
 using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
 using Remotion.Data.DomainObjects.Linq;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
@@ -48,10 +49,12 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2005
   public class SqlStorageObjectFactory : IRdbmsStorageObjectFactory
   {
     private readonly ITypeConversionProvider _typeConversionProvider;
+    private readonly IDataContainerValidator _dataContainerValidator;
 
     public SqlStorageObjectFactory ()
     {
       _typeConversionProvider = SafeServiceLocator.Current.GetInstance<ITypeConversionProvider>();
+      _dataContainerValidator = new CompoundDataContainerValidator (Enumerable.Empty<IDataContainerValidator>());
     }
 
     public StorageProvider CreateStorageProvider (StorageProviderDefinition storageProviderDefinition, IPersistenceExtension persistenceExtension)
@@ -462,7 +465,9 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2005
 
     protected virtual IDataContainerValidator CreateDataContainerValidator (RdbmsProviderDefinition storageProviderDefinition)
     {
-      return new CompoundDataContainerValidator();
+      ArgumentUtility.CheckNotNull ("storageProviderDefinition", storageProviderDefinition);
+      
+      return _dataContainerValidator;
     }
 
     protected virtual ISqlQueryGenerator CreateSqlQueryGenerator (

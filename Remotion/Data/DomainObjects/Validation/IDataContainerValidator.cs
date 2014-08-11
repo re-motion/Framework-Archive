@@ -19,6 +19,10 @@ using Remotion.Data.DomainObjects.DataManagement;
 
 namespace Remotion.Data.DomainObjects.Validation
 {
+  /// <summary>
+  /// Provides an interface for validation of <see cref="DataContainer"/> instances.
+  /// </summary>
+  /// <threadsafety static="true" instance="true" />
   public interface IDataContainerValidator
   {
     void Validate (DataContainer dataContainer);

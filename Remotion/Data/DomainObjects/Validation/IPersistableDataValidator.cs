@@ -22,6 +22,7 @@ namespace Remotion.Data.DomainObjects.Validation
   /// <summary>
   /// Provides an interface for validation of <see cref="PersistableData"/> instances.
   /// </summary>
+  /// <threadsafety static="true" instance="true" />
   public interface IPersistableDataValidator
   {
     void Validate (PersistableData data);

@@ -16,21 +16,33 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Remotion.Data.DomainObjects.DataManagement;
+using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Validation
 {
+  /// <summary>
+  /// Combines one or more <see cref="IDataContainerValidator"/>-instances and 
+  /// delegates the validation to them.
+  /// </summary>
+  /// <threadsafety static="true" instance="true" />
   public class CompoundDataContainerValidator : IDataContainerValidator
   {
     private readonly IReadOnlyList<IDataContainerValidator> _validators;
 
-    public CompoundDataContainerValidator ()
+    public CompoundDataContainerValidator (IEnumerable<IDataContainerValidator> validators)
     {
-      _validators = new IDataContainerValidator[0];
+      ArgumentUtility.CheckNotNull ("validators", validators);
+      _validators = validators.ToList().AsReadOnly();
     }
 
     public void Validate (DataContainer dataContainer)
     {
+      ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
+
+      foreach (var validator in _validators)
+        validator.Validate (dataContainer);
     }
 
     public IReadOnlyList<IDataContainerValidator> Validators

@@ -26,8 +26,13 @@ namespace Remotion.Data.DomainObjects.Validation
   /// <summary>
   /// Validates that not-nullable properties are not assigned a <see langword="null" /> value.
   /// </summary>
+  /// <threadsafety static="true" instance="true" />
   public class NotNullablePropertyValidator : IPersistableDataValidator, IDataContainerValidator
   {
+    public NotNullablePropertyValidator ()
+    {
+    }
+
     public void Validate (PersistableData data)
     {
       ArgumentUtility.CheckNotNull ("data", data);

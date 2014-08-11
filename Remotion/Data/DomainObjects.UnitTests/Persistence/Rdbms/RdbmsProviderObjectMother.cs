@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Data.SqlClient;
+using System.Linq;
 using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders;
@@ -49,7 +50,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
               storageNameProvider,
               storageTypeInformationProvider,
               new StorageEntityBasedStorageProviderDefinitionFinder()));
-      var dataContainerValidator = new CompoundDataContainerValidator();
+      var dataContainerValidator = new CompoundDataContainerValidator (Enumerable.Empty<IDataContainerValidator>());
       var objectReaderFactory = new ObjectReaderFactory (
           rdbmsPersistenceModelProvider,
           infrastructureStoragePropertyDefinitionProvider,

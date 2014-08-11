@@ -16,6 +16,7 @@
 // 
 
 using System;
+using System.Linq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Configuration;
 using Remotion.Data.DomainObjects.DataManagement;
@@ -50,7 +51,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
 
       var rdbmsPersistenceModelProvider = new RdbmsPersistenceModelProvider();
       var storageTypeInformationProvider = new SqlStorageTypeInformationProvider ();
-      var dataContainerValidator = new CompoundDataContainerValidator();
+      var dataContainerValidator = new CompoundDataContainerValidator (Enumerable.Empty<IDataContainerValidator>());
       
       var storageNameProvider = new ReflectionBasedStorageNameProvider();
       var infrastructureStoragePropertyDefinitionProvider = 

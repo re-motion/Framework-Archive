@@ -24,8 +24,13 @@ namespace Remotion.Data.DomainObjects.Validation
   /// Validates the mandatory relations of a <see cref="DomainObject"/>, throwing a <see cref="MandatoryRelationNotSetException"/> when a mandatory
   /// relation is not set. Only complete relations are validated, no data is loaded by the validation.
   /// </summary>
+  /// <threadsafety static="true" instance="true" />
   public class MandatoryRelationValidator : IPersistableDataValidator
   {
+    public MandatoryRelationValidator ()
+    {
+    }
+
     public void Validate (PersistableData data)
     {
       ArgumentUtility.CheckNotNull ("data", data);
