@@ -53,7 +53,11 @@ namespace Remotion.Data.DomainObjects.Validation
       ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
 
       foreach (var propertyDefinition in dataContainer.ID.ClassDefinition.GetPropertyDefinitions())
-        ValidatePropertyDefinition (null, dataContainer, propertyDefinition);
+      {
+        // Skip validation when loading StorageClass.Transaction properties to allow initialization with default value
+        if (propertyDefinition.StorageClass == StorageClass.Persistent)
+          ValidatePropertyDefinition (null, dataContainer, propertyDefinition);
+      }
     }
 
     private static void ValidatePropertyDefinition (DomainObject domainObject, DataContainer dataContainer, PropertyDefinition propertyDefinition)

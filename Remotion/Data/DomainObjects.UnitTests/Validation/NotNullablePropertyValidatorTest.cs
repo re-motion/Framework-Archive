@@ -84,6 +84,32 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
     }
 
     [Test]
+    public void ValidateDataContainer_PropertyHasMaxLength_AndPropertyValueIsTooLong_AndPropertyIsTransactionProperty_DoesNotThrow ()
+    {
+      var domainObject = DomainObjectMother.CreateFakeObject<ClassWithAllDataTypes> (DomainObjectIDs.ClassWithAllDataTypes1);
+
+      var dataContainer = CreatePersistableData (StateType.New, domainObject).DataContainer;
+      dataContainer.SetValue (GetPropertyDefinition (typeof (ClassWithAllDataTypes), "TransactionOnlyStringProperty"), null);
+
+      Assert.That (() => _validator.Validate (dataContainer), Throws.Nothing);
+    }
+
+    [Test]
+    public void ValidatePersistableData_PropertyHasMaxLength_AndPropertyValueIsTooLong_AndPropertyIsTransactionProperty_ThrowsException ()
+    {
+      var domainObject = DomainObjectMother.CreateFakeObject<ClassWithAllDataTypes> (DomainObjectIDs.ClassWithAllDataTypes1);
+
+      var dataItem = CreatePersistableData (StateType.New, domainObject);
+      dataItem.DataContainer.SetValue (GetPropertyDefinition (typeof (ClassWithAllDataTypes), "TransactionOnlyStringProperty"), null);
+
+      Assert.That (
+          () => _validator.Validate (dataItem),
+          Throws.TypeOf<PropertyValueNotSetException>().With.Message.Matches (
+              @"Value for property 'Remotion\.Data\.DomainObjects\.UnitTests\.TestDomain\.ClassWithAllDataTypes\.TransactionOnlyStringProperty' "
+              + @"of domain object ''ClassWithAllDataTypes|.*|System\.Guid'' cannot be null."));
+    }
+
+    [Test]
     public void ValidatePersistableData_IgnoresDeletedObjects ()
     {
       var domainObject = DomainObjectMother.CreateFakeObject<Person> (DomainObjectIDs.Person1);

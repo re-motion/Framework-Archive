@@ -101,6 +101,31 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
               @"Value for property 'Remotion\.Data\.DomainObjects\.UnitTests\.TestDomain\.ClassWithAllDataTypes\.NullableBinaryProperty' "
               + @"of domain object ''ClassWithAllDataTypes|.*|System\.Guid'' is too long. Maximum size: 1000001."));
     }
+    [Test]
+    public void ValidateDataContainer_PropertyHasMaxLength_AndPropertyValueIsTooLong_AndPropertyIsTransactionProperty_DoesNotThrow ()
+    {
+      var domainObject = DomainObjectMother.CreateFakeObject<ClassWithAllDataTypes> (DomainObjectIDs.ClassWithAllDataTypes1);
+
+      var dataContainer = CreatePersistableData (StateType.New, domainObject).DataContainer;
+      dataContainer.SetValue (GetPropertyDefinition (typeof (ClassWithAllDataTypes), "TransactionOnlyBinaryProperty"), new byte[1000001]);
+
+      Assert.That (() => _validator.Validate (dataContainer), Throws.Nothing);
+    }
+
+    [Test]
+    public void ValidatePersistableData_PropertyHasMaxLength_AndPropertyValueIsTooLong_AndPropertyIsTransactionProperty_ThrowsException ()
+    {
+      var domainObject = DomainObjectMother.CreateFakeObject<ClassWithAllDataTypes> (DomainObjectIDs.ClassWithAllDataTypes1);
+
+      var dataItem = CreatePersistableData (StateType.New, domainObject);
+      dataItem.DataContainer.SetValue (GetPropertyDefinition (typeof (ClassWithAllDataTypes), "TransactionOnlyBinaryProperty"), new byte[1000001]);
+
+      Assert.That (
+          () => _validator.Validate (dataItem),
+          Throws.TypeOf<PropertyValueTooLongException>().With.Message.Matches (
+              @"Value for property 'Remotion\.Data\.DomainObjects\.UnitTests\.TestDomain\.ClassWithAllDataTypes\.TransactionOnlyBinaryProperty' "
+              + @"of domain object ''ClassWithAllDataTypes|.*|System\.Guid'' is too long. Maximum number of characters: 100."));
+    }
 
     [Test]
     public void ValidatePersistableData_IgnoresDeletedObjects ()
