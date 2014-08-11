@@ -25,6 +25,6 @@ namespace Remotion.Data.DomainObjects.Validation
   /// <threadsafety static="true" instance="true" />
   public interface IPersistableDataValidator
   {
-    void Validate (PersistableData data);
+    void Validate (ClientTransaction clientTransaction, PersistableData data);
   }
 }

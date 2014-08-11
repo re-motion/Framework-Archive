@@ -121,7 +121,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
       dataItem.DataContainer.SetValue (GetPropertyDefinition (typeof (ClassWithAllDataTypes), "TransactionOnlyBinaryProperty"), new byte[1000001]);
 
       Assert.That (
-          () => _validator.Validate (dataItem),
+          () => _validator.Validate (ClientTransaction.CreateRootTransaction(), dataItem),
           Throws.TypeOf<PropertyValueTooLongException>().With.Message.Matches (
               @"Value for property 'Remotion\.Data\.DomainObjects\.UnitTests\.TestDomain\.ClassWithAllDataTypes\.TransactionOnlyBinaryProperty' "
               + @"of domain object ''ClassWithAllDataTypes|.*|System\.Guid'' is too long. Maximum number of characters: 100."));
@@ -135,7 +135,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
       var dataItem = CreatePersistableData (StateType.Deleted, domainObject);
       dataItem.DataContainer.SetValue (GetPropertyDefinition (typeof (ClassWithAllDataTypes), "NullableBinaryProperty"), new byte [1000001]);
 
-      Assert.That (() => _validator.Validate (dataItem), Throws.Nothing);
+      Assert.That (() => _validator.Validate (ClientTransaction.CreateRootTransaction(), dataItem), Throws.Nothing);
     }
 
     [Test]
@@ -186,7 +186,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
         person.StringPropertyWithoutMaxLength = "value";
 
         var persistableData = PersistableDataObjectMother.Create (ClientTransaction.Current, person);
-        Assert.That (() => _validator.Validate (persistableData), Throws.Nothing);
+        Assert.That (() => _validator.Validate (ClientTransaction.Current, persistableData), Throws.Nothing);
       }
     }
 
@@ -203,7 +203,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
 
         var persistableData = PersistableDataObjectMother.Create (ClientTransaction.Current, person);
         Assert.That (
-            () => _validator.Validate (persistableData),
+            () => _validator.Validate (ClientTransaction.Current, persistableData),
             Throws.TypeOf<PropertyValueTooLongException>().With.Message.Matches (
                 @"Value for property 'Remotion\.Data\.DomainObjects\.UnitTests\.TestDomain\.ClassWithAllDataTypes\.NullableBinaryProperty' "
                 + @"of domain object ''ClassWithAllDataTypes|.*|System\.Guid'' is too long. Maximum size: 1000001."));

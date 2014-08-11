@@ -58,9 +58,12 @@ namespace Remotion.Data.DomainObjects.Validation
 
     public override void CommitValidate (ClientTransaction clientTransaction, ReadOnlyCollection<PersistableData> committedData)
     {
+      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
+      ArgumentUtility.CheckNotNull ("committedData", committedData);
+
       var validator = _validatorFactory (clientTransaction);
       foreach (var item in committedData)
-        validator.Validate (item);
+        validator.Validate (clientTransaction, item);
     }
   }
 }

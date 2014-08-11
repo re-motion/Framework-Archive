@@ -103,7 +103,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
       dataItem.DataContainer.SetValue (GetPropertyDefinition (typeof (ClassWithAllDataTypes), "TransactionOnlyStringProperty"), null);
 
       Assert.That (
-          () => _validator.Validate (dataItem),
+          () => _validator.Validate (ClientTransaction.CreateRootTransaction(), dataItem),
           Throws.TypeOf<PropertyValueNotSetException>().With.Message.Matches (
               @"Value for property 'Remotion\.Data\.DomainObjects\.UnitTests\.TestDomain\.ClassWithAllDataTypes\.TransactionOnlyStringProperty' "
               + @"of domain object ''ClassWithAllDataTypes|.*|System\.Guid'' cannot be null."));
@@ -117,7 +117,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
       var dataItem = CreatePersistableData (StateType.Deleted, domainObject);
       dataItem.DataContainer.SetValue (GetPropertyDefinition (typeof (Person), "Name"), null);
 
-      Assert.That (() => _validator.Validate (dataItem), Throws.Nothing);
+      Assert.That (() => _validator.Validate (ClientTransaction.CreateRootTransaction(), dataItem), Throws.Nothing);
     }
 
     [Test]
@@ -159,7 +159,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
         person.Name = "Not Null";
 
         var persistableData = PersistableDataObjectMother.Create (ClientTransaction.Current, person);
-        Assert.That (() => _validator.Validate (persistableData), Throws.Nothing);
+        Assert.That (() => _validator.Validate (ClientTransaction.Current, persistableData), Throws.Nothing);
       }
     }
 
@@ -173,7 +173,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
 
         var persistableData = PersistableDataObjectMother.Create (ClientTransaction.Current, person);
         Assert.That (
-            () => _validator.Validate (persistableData),
+            () => _validator.Validate (ClientTransaction.Current, persistableData),
             Throws.TypeOf<PropertyValueNotSetException>().With.Message.Matches (
               @"Not-nullable property 'Remotion\.Data\.DomainObjects\.UnitTests\.TestDomain\.Person\.Name' of domain object "
               + @"'Person|.*|System\.Guid' cannot be null."));

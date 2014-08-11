@@ -55,8 +55,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
             return validatorMock;
           });
 
-      validatorMock.Expect (mock => mock.Validate (data1));
-      validatorMock.Expect (mock => mock.Validate (data2));
+      validatorMock.Expect (mock => mock.Validate (transaction, data1));
+      validatorMock.Expect (mock => mock.Validate (transaction, data2));
       validatorMock.Replay();
 
       extension.CommitValidate (transaction, Array.AsReadOnly (new[] { data1, data2 }));

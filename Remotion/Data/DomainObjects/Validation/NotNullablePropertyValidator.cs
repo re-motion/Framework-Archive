@@ -37,8 +37,9 @@ namespace Remotion.Data.DomainObjects.Validation
     {
     }
 
-    public void Validate (PersistableData data)
+    public void Validate (ClientTransaction clientTransaction, PersistableData data)
     {
+      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
       ArgumentUtility.CheckNotNull ("data", data);
 
       if (data.DomainObjectState == StateType.Deleted)
