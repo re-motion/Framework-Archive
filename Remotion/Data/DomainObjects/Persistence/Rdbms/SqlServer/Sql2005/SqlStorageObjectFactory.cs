@@ -54,7 +54,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2005
     public SqlStorageObjectFactory ()
     {
       _typeConversionProvider = SafeServiceLocator.Current.GetInstance<ITypeConversionProvider>();
-      _dataContainerValidator = new CompoundDataContainerValidator (Enumerable.Empty<IDataContainerValidator>());
+      _dataContainerValidator = SafeServiceLocator.Current.GetInstance<IDataContainerValidator>();
     }
 
     public StorageProvider CreateStorageProvider (StorageProviderDefinition storageProviderDefinition, IPersistenceExtension persistenceExtension)

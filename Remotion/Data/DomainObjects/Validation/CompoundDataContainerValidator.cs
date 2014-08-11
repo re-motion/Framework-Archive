@@ -14,10 +14,12 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using Remotion.Data.DomainObjects.DataManagement;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Validation
@@ -27,6 +29,7 @@ namespace Remotion.Data.DomainObjects.Validation
   /// delegates the validation to them.
   /// </summary>
   /// <threadsafety static="true" instance="true" />
+  [ImplementationFor (typeof (IDataContainerValidator), RegistrationType = RegistrationType.Compound, Lifetime = LifetimeKind.Singleton)]
   public class CompoundDataContainerValidator : IDataContainerValidator
   {
     private readonly IReadOnlyList<IDataContainerValidator> _validators;

@@ -19,6 +19,7 @@ using System;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
 using Remotion.Data.DomainObjects.Mapping;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Validation
@@ -27,8 +28,11 @@ namespace Remotion.Data.DomainObjects.Validation
   /// Validates that not-nullable properties are not assigned a <see langword="null" /> value.
   /// </summary>
   /// <threadsafety static="true" instance="true" />
+  [ImplementationFor (typeof (IDataContainerValidator), RegistrationType = RegistrationType.Multiple, Position = Position)]
   public class NotNullablePropertyValidator : IPersistableDataValidator, IDataContainerValidator
   {
+    public const int Position = 0;
+
     public NotNullablePropertyValidator ()
     {
     }

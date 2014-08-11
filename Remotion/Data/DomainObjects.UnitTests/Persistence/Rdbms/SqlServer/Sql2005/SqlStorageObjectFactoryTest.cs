@@ -41,6 +41,7 @@ using Remotion.Linq;
 using Remotion.Linq.SqlBackend.MappingResolution;
 using Remotion.Linq.SqlBackend.SqlPreparation;
 using Remotion.Mixins;
+using Remotion.ServiceLocation;
 using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2005
@@ -311,10 +312,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2
       Assert.That (resultAsRdbmsProviderCommandFactory.DataStoragePropertyDefinitionFactory, Is.SameAs (_dataStoragePropertyDefinitionFactoryStub));
       var objectReader = resultAsRdbmsProviderCommandFactory.ObjectReaderFactory.CreateDataContainerReader();
       Assert.That (objectReader, Is.TypeOf (typeof (DataContainerReader)));
-      var dataContainerValidator = ((DataContainerReader)objectReader).DataContainerValidator;
-      Assert.That (dataContainerValidator, Is.TypeOf (typeof (CompoundDataContainerValidator)));
-      var dataContainerValidators = ((CompoundDataContainerValidator) dataContainerValidator).Validators;
-      Assert.That (dataContainerValidators.Select (v => v.GetType()), Is.EqualTo (new TypeAccessException[0]));
+      var expectedDataContainerValidator = SafeServiceLocator.Current.GetInstance<IDataContainerValidator>();
+      Assert.That (((DataContainerReader)objectReader).DataContainerValidator, Is.SameAs (expectedDataContainerValidator));
     }
 
     [Test]

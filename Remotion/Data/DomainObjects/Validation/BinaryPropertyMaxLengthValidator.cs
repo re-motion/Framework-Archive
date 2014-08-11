@@ -18,6 +18,7 @@ using System;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
 using Remotion.Data.DomainObjects.Mapping;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Validation
@@ -26,8 +27,11 @@ namespace Remotion.Data.DomainObjects.Validation
   /// Validates that a binary property's value does not exceed the maximum length defined for this property.
   /// </summary>
   /// <threadsafety static="true" instance="true" />
+  [ImplementationFor (typeof (IDataContainerValidator), RegistrationType = RegistrationType.Multiple, Position = Position)]
   public class BinaryPropertyMaxLengthValidator : IPersistableDataValidator, IDataContainerValidator
   {
+    public const int Position = StringPropertyMaxLengthValidator.Position + 1;
+
     public BinaryPropertyMaxLengthValidator ()
     {
     }
