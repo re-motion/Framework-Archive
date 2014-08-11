@@ -331,6 +331,7 @@
     <Compile Include="Tracing\CompoundPersistenceExtensionFactory.cs" />
     <Compile Include="Validation\BinaryPropertyMaxLengthValidator.cs" />
     <Compile Include="Validation\CommitValidationClientTransactionExtensionFactory.cs" />
+    <Compile Include="Validation\CompoundDataContainerValidator.cs" />
     <Compile Include="Validation\DomainObjectValidationException.cs" />
     <Compile Include="IClientTransactionExtensionFactory.cs" />
     <Compile Include="Infrastructure\ObjectPersistence\PersistableData.cs" />
@@ -861,6 +862,7 @@
     <Compile Include="DataManagement\RelationEndPoints\IRelationEndPoint.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Validation\IDataContainerValidator.cs" />
     <Compile Include="Validation\IPersistableDataValidator.cs" />
     <Compile Include="Validation\MandatoryRelationNotSetException.cs">
       <SubType>Code</SubType>

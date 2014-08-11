@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Linq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Configuration;
 using Remotion.Data.DomainObjects.Linq;
@@ -34,6 +35,7 @@ using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model.Building;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGeneration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2005;
 using Remotion.Data.DomainObjects.Tracing;
+using Remotion.Data.DomainObjects.Validation;
 using Remotion.Development.UnitTesting;
 using Remotion.Linq;
 using Remotion.Linq.SqlBackend.MappingResolution;
@@ -307,6 +309,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2
       Assert.That (resultAsRdbmsProviderCommandFactory.DbCommandBuilderFactory, Is.SameAs (_dbCommandBuilderFactoryStub));
       Assert.That (resultAsRdbmsProviderCommandFactory.RdbmsPersistenceModelProvider, Is.SameAs (_rdbmsPersistenceModelProviderStub));
       Assert.That (resultAsRdbmsProviderCommandFactory.DataStoragePropertyDefinitionFactory, Is.SameAs (_dataStoragePropertyDefinitionFactoryStub));
+      var objectReader = resultAsRdbmsProviderCommandFactory.ObjectReaderFactory.CreateDataContainerReader();
+      Assert.That (objectReader, Is.TypeOf (typeof (DataContainerReader)));
+      var dataContainerValidator = ((DataContainerReader)objectReader).DataContainerValidator;
+      Assert.That (dataContainerValidator, Is.TypeOf (typeof (CompoundDataContainerValidator)));
+      var dataContainerValidators = ((CompoundDataContainerValidator) dataContainerValidator).Validators;
+      Assert.That (dataContainerValidators.Select (v => v.GetType()), Is.EqualTo (new TypeAccessException[0]));
     }
 
     [Test]

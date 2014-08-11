@@ -25,6 +25,7 @@ using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.DbCommandBuilders;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model.Building;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.Factories;
 using Remotion.Data.DomainObjects.Tracing;
+using Remotion.Data.DomainObjects.Validation;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
 {
@@ -48,11 +49,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
               storageNameProvider,
               storageTypeInformationProvider,
               new StorageEntityBasedStorageProviderDefinitionFinder()));
+      var dataContainerValidator = new CompoundDataContainerValidator();
+      var objectReaderFactory = new ObjectReaderFactory (
+          rdbmsPersistenceModelProvider,
+          infrastructureStoragePropertyDefinitionProvider,
+          storageTypeInformationProvider,
+          dataContainerValidator);
       var commandFactory = new RdbmsProviderCommandFactory (
           storageProviderDefinition,
           dbCommandBuilderFactory,
           rdbmsPersistenceModelProvider,
-          new ObjectReaderFactory (rdbmsPersistenceModelProvider, infrastructureStoragePropertyDefinitionProvider, storageTypeInformationProvider),
+          objectReaderFactory,
           new TableDefinitionFinder (rdbmsPersistenceModelProvider),
           dataStoragePropertyDefinitionFactory);
 
