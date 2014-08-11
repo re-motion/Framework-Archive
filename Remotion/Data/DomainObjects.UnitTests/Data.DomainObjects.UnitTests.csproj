@@ -329,6 +329,7 @@
     <Compile Include="Tracing\IPersistenceExtensionFactoryTest.cs" />
     <Compile Include="Validation\CommitValidationClientTransactionExtensionFactoryTest.cs" />
     <Compile Include="Validation\CompoundDataContainerValidatorTest.cs" />
+    <Compile Include="Validation\CompoundPersistableDataValidatorTest.cs" />
     <Compile Include="Validation\IClientTransactionExtensionFactoryTest.cs" />
     <Compile Include="Validation\BinaryPropertyMaxLengthValidatorTest.cs" />
     <Compile Include="Validation\IDataContainerValidatorTest.cs" />

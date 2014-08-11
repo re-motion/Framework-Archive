@@ -332,6 +332,7 @@
     <Compile Include="Validation\BinaryPropertyMaxLengthValidator.cs" />
     <Compile Include="Validation\CommitValidationClientTransactionExtensionFactory.cs" />
     <Compile Include="Validation\CompoundDataContainerValidator.cs" />
+    <Compile Include="Validation\CompoundPersistableDataValidator.cs" />
     <Compile Include="Validation\DomainObjectValidationException.cs" />
     <Compile Include="IClientTransactionExtensionFactory.cs" />
     <Compile Include="Infrastructure\ObjectPersistence\PersistableData.cs" />
