@@ -28,10 +28,12 @@ namespace Remotion.Data.DomainObjects.Validation
   /// Validates that not-nullable properties are not assigned a <see langword="null" /> value.
   /// </summary>
   /// <threadsafety static="true" instance="true" />
-  [ImplementationFor (typeof (IDataContainerValidator), RegistrationType = RegistrationType.Multiple, Position = Position)]
+  [ImplementationFor (typeof (IDataContainerValidator), RegistrationType = RegistrationType.Multiple, Position = DataContainerValidatorPosition)]
+  [ImplementationFor (typeof (IPersistableDataValidator), RegistrationType = RegistrationType.Multiple, Position = PersistableDataValidatorPosition)]
   public class NotNullablePropertyValidator : IPersistableDataValidator, IDataContainerValidator
   {
-    public const int Position = 0;
+    public const int DataContainerValidatorPosition = 0;
+    public const int PersistableDataValidatorPosition = 0;
 
     public NotNullablePropertyValidator ()
     {

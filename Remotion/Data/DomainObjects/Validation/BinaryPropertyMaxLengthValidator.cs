@@ -27,10 +27,12 @@ namespace Remotion.Data.DomainObjects.Validation
   /// Validates that a binary property's value does not exceed the maximum length defined for this property.
   /// </summary>
   /// <threadsafety static="true" instance="true" />
-  [ImplementationFor (typeof (IDataContainerValidator), RegistrationType = RegistrationType.Multiple, Position = Position)]
+  [ImplementationFor (typeof (IDataContainerValidator), RegistrationType = RegistrationType.Multiple, Position = DataContainerValidatorPosition)]
+  [ImplementationFor (typeof (IPersistableDataValidator), RegistrationType = RegistrationType.Multiple, Position = PersistableDataValidatorPosition)]
   public class BinaryPropertyMaxLengthValidator : IPersistableDataValidator, IDataContainerValidator
   {
-    public const int Position = StringPropertyMaxLengthValidator.Position + 1;
+    public const int DataContainerValidatorPosition = StringPropertyMaxLengthValidator.DataContainerValidatorPosition + 1;
+    public const int PersistableDataValidatorPosition = StringPropertyMaxLengthValidator.PersistableDataValidatorPosition + 1;
 
     public BinaryPropertyMaxLengthValidator ()
     {

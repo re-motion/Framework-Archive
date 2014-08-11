@@ -333,6 +333,7 @@
     <Compile Include="Validation\IClientTransactionExtensionFactoryTest.cs" />
     <Compile Include="Validation\BinaryPropertyMaxLengthValidatorTest.cs" />
     <Compile Include="Validation\IDataContainerValidatorTest.cs" />
+    <Compile Include="Validation\IPersistableDataValidatorTest.cs" />
     <Compile Include="Validation\StringPropertyMaxLengthValidatorTest.cs" />
     <Compile Include="Validation\NotNullablePropertyValidatorTest.cs" />
     <Compile Include="Validation\NotNullablePropertyValueNotSetExceptionTest.cs" />

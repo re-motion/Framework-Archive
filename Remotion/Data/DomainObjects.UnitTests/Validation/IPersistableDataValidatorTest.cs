@@ -1,4 +1,4 @@
-﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
+// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -14,7 +14,6 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-
 using System;
 using System.Linq;
 using NUnit.Framework;
@@ -24,7 +23,7 @@ using Remotion.ServiceLocation;
 namespace Remotion.Data.DomainObjects.UnitTests.Validation
 {
   [TestFixture]
-  public class IDataContainerValidatorTest
+  public class IPersistableDataValidatorTest
   {
     private DefaultServiceLocator _serviceLocator;
 
@@ -37,10 +36,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
     [Test]
     public void GetInstance_Once ()
     {
-      var validator = _serviceLocator.GetInstance<IDataContainerValidator>();
+      var validator = _serviceLocator.GetInstance<IPersistableDataValidator>();
 
-      Assert.That (validator, Is.TypeOf (typeof (CompoundDataContainerValidator)));
-      var compoundValidators = ((CompoundDataContainerValidator) validator).Validators;
+      Assert.That (validator, Is.TypeOf (typeof (CompoundPersistableDataValidator)));
+      var compoundValidators = ((CompoundPersistableDataValidator) validator).Validators;
       Assert.That (
           compoundValidators.Select (v => v.GetType()),
           Is.EqualTo (
@@ -48,15 +47,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
               {
                   typeof (NotNullablePropertyValidator),
                   typeof (StringPropertyMaxLengthValidator),
-                  typeof (BinaryPropertyMaxLengthValidator)
+                  typeof (BinaryPropertyMaxLengthValidator),
+                  typeof (MandatoryRelationValidator),
               }));
     }
 
     [Test]
     public void GetInstance_Twice_ReturnsSameInstance ()
     {
-      var validator1 = _serviceLocator.GetInstance<IDataContainerValidator>();
-      var validator2 = _serviceLocator.GetInstance<IDataContainerValidator>();
+      var validator1 = _serviceLocator.GetInstance<IPersistableDataValidator>();
+      var validator2 = _serviceLocator.GetInstance<IPersistableDataValidator>();
 
       Assert.That (validator1, Is.SameAs (validator2));
     } 
