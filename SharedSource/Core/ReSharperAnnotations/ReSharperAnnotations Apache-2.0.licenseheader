@@ -1,3 +1,4 @@
+﻿extensions: .cs
 // NOTE: This file was originally generated via JetBrains ReSharper
 // and is part of the JetBrains.Annoations for ReSharper. 
 // It has since been modified for use in the re-motion framework development.
@@ -34,15 +35,3 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // 
-
-using System;
-
-namespace JetBrains.Annotations
-{
-  /// <summary>
-  /// Indicates that method doesn't contain observable side effects.
-  /// </summary>
-  // The same as <see cref="System.Diagnostics.Contracts.PureAttribute"/>
-  [AttributeUsage (AttributeTargets.Method, Inherited = true)]
-  sealed partial class PureAttribute : Attribute { }
-}
