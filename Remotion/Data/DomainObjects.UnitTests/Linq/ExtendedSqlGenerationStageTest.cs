@@ -52,7 +52,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
           Expression.Convert (new SqlColumnDefinitionExpression (typeof (Guid), "t0", "CustomerID", false), typeof (object)));
       var compoundExpression = NamedExpression.CreateNewExpressionWithNamedArguments (newObjectIDExpression);
 
-      _stage.GenerateTextForOuterSelectExpression (_commandBuilder, compoundExpression);
+      //TODO RM-6353: Assert SetOperationsMode
+      var setOperationsMode = SetOperationsMode.StatementIsSetCombined;
+      _stage.GenerateTextForOuterSelectExpression (_commandBuilder, compoundExpression, setOperationsMode);
 
       Assert.That (_commandBuilder.GetInMemoryProjectionBody().NodeType, Is.EqualTo (ExpressionType.Call));
       var getObjectIDOrNullMethod =
