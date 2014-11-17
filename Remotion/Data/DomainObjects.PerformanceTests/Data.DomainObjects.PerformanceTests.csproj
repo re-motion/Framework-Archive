@@ -111,7 +111,7 @@
       <HintPath>..\..\..\packages\Remotion.Linq.2.0.0-alpha-001\lib\portable-net45+win+wpa81+wp80\Remotion.Linq.dll</HintPath>
     </Reference>
     <Reference Include="Remotion.Linq.SqlBackend">
-      <HintPath>..\..\..\packages\Remotion.Linq.SqlBackend.2.0.0-x-009-141116-122952\lib\net45\Remotion.Linq.SqlBackend.dll</HintPath>
+      <HintPath>..\..\..\packages\Remotion.Linq.SqlBackend.2.0.0-alpha-001\lib\net45\Remotion.Linq.SqlBackend.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System">

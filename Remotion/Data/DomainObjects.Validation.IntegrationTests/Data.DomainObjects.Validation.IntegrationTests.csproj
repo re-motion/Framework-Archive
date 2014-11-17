@@ -57,7 +57,7 @@
       <HintPath>..\..\..\packages\Remotion.Linq.2.0.0-alpha-001\lib\portable-net45+win+wpa81+wp80\Remotion.Linq.dll</HintPath>
     </Reference>
     <Reference Include="Remotion.Linq.SqlBackend">
-      <HintPath>..\..\..\packages\Remotion.Linq.SqlBackend.2.0.0-x-009-141116-122952\lib\net45\Remotion.Linq.SqlBackend.dll</HintPath>
+      <HintPath>..\..\..\packages\Remotion.Linq.SqlBackend.2.0.0-alpha-001\lib\net45\Remotion.Linq.SqlBackend.dll</HintPath>
     </Reference>
     <Reference Include="Rhino.Mocks">
       <HintPath>..\..\..\prereq\Assemblies\Rhino.Mocks-3.6\net-3.5\Rhino.Mocks.dll</HintPath>

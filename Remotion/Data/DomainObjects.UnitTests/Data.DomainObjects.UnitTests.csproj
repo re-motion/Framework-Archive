@@ -122,10 +122,10 @@
       <HintPath>..\..\..\packages\Remotion.Linq.EagerFetching.2.0.0-alpha-002\lib\portable-net45+win+wpa81+wp80\Remotion.Linq.EagerFetching.dll</HintPath>
     </Reference>
     <Reference Include="Remotion.Linq.SqlBackend">
-      <HintPath>..\..\..\packages\Remotion.Linq.SqlBackend.2.0.0-x-009-141116-122952\lib\net45\Remotion.Linq.SqlBackend.dll</HintPath>
+      <HintPath>..\..\..\packages\Remotion.Linq.SqlBackend.2.0.0-alpha-001\lib\net45\Remotion.Linq.SqlBackend.dll</HintPath>
     </Reference>
     <Reference Include="Remotion.Linq.SqlBackend.Development">
-      <HintPath>..\..\..\packages\Remotion.Linq.SqlBackend.Development.2.0.0-x-009-141116-122952\lib\net45\Remotion.Linq.SqlBackend.Development.dll</HintPath>
+      <HintPath>..\..\..\packages\Remotion.Linq.SqlBackend.Development.2.0.0-alpha-001\lib\net45\Remotion.Linq.SqlBackend.Development.dll</HintPath>
     </Reference>
     <Reference Include="Rhino.Mocks, Version=2.8.7.11026, Culture=neutral, PublicKeyToken=0b3305902db7183f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
