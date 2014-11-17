@@ -43,12 +43,6 @@
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
     <Reference Include="WebDriver, Version=2.43.1.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Selenium.WebDriver.2.43.1\lib\net40\WebDriver.dll</HintPath>
@@ -72,14 +66,17 @@
     <Compile Include="ControlObjects\ActaNovaBreadCrumbControlObject.cs" />
     <Compile Include="ControlObjects\ActaNovaEditObjectPanelControlObject.cs" />
     <Compile Include="ControlObjects\ActaNovaListControlObjectExtensions.cs" />
+    <Compile Include="ControlObjects\ActaNovaTreePopupListControlObject.cs" />
     <Compile Include="ControlObjects\ActaNovaTreePopupTableControlObject.cs" />
     <Compile Include="ControlObjects\ActaNovaTreePopupTableNodeControlObject.cs" />
     <Compile Include="ControlObjects\ActaNovaListControlObject.cs" />
     <Compile Include="ControlObjects\ActaNovaTreeViewAutoCompleteReferenceValueControlObject.cs" />
     <Compile Include="ControlObjects\ActaNovaDownLevelDmsControlObject.cs" />
+    <Compile Include="ControlObjects\IControlObjectWithBreadCrumbs.cs" />
     <Compile Include="ControlObjects\Selectors\ActaNovaAutoCompleteReferenceValueSelector.cs" />
     <Compile Include="ControlObjects\Selectors\ActaNovaDownLevelDmsSelector.cs" />
     <Compile Include="ControlObjects\Selectors\ActaNovaEditObjectPanelSelector.cs" />
+    <Compile Include="ControlObjects\Selectors\ActaNovaTreePopupListSelector.cs" />
     <Compile Include="ControlObjects\Selectors\ActaNovaTreePopupTableSelector.cs" />
     <Compile Include="ControlObjects\Selectors\ActaNovaListSelector.cs" />
     <Compile Include="ControlObjects\Selectors\ActaNovaTreeViewAutoCompleteReferenceValueSelector.cs" />
@@ -87,6 +84,7 @@
     <Compile Include="IntegrationTests\ActaNovaAdministrationTest.cs" />
     <Compile Include="IntegrationTests\ActaNovaAutoCompleteReferenceValueControlObjectTest.cs" />
     <Compile Include="IntegrationTests\ActaNovaBreadCrumbControlObjectTest.cs" />
+    <Compile Include="IntegrationTests\ActaNovaFormPageObjectTest.cs" />
     <Compile Include="IntegrationTests\ActaNovaListTest.cs" />
     <Compile Include="IntegrationTests\ActaNovaMainMenuControlObjectTest.cs" />
     <Compile Include="IntegrationTests\ActaNovaMainPageObjectTest.cs" />
@@ -94,6 +92,7 @@
     <Compile Include="IntegrationTests\ActaNovaTreeControlObjectTest.cs" />
     <Compile Include="IntegrationTests\ActaNovaTreeViewAutoCompleteReferenceValueControlObject.cs" />
     <Compile Include="IntegrationTests\ActaNovaDownLevelDmsControlObjectTest.cs" />
+    <Compile Include="IntegrationTests\ActaNovaWorkListPageObjectTest.cs" />
     <Compile Include="IntegrationTests\FluentControlSelectorExtensionsForActaNovaWebTests.cs" />
     <Compile Include="IntegrationTests\ActaNovaEditObjectPanelControlObjectTest.cs" />
     <Compile Include="PageObjects\ActaNovaFormPageObject.cs" />

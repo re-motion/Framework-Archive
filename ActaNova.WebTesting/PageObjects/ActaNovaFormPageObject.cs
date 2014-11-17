@@ -1,4 +1,6 @@
 ﻿using System;
+using ActaNova.WebTesting.ControlObjects;
+using ActaNova.WebTesting.ControlObjects.Selectors;
 using JetBrains.Annotations;
 using Remotion.Web.Development.WebTesting;
 using Remotion.Web.Development.WebTesting.ControlObjects;
@@ -52,6 +54,15 @@ namespace ActaNova.WebTesting.PageObjects
       return gotoNextButton.Click (Continue.When (Wxe.PostBackCompletedInParent (this)));
     }
 
+    public ActaNovaTreePopupListControlObject HoverWorkStepsControl ()
+    {
+      var workStepsControlScope = GetControl (new PerHtmlIDControlSelectionCommand<ScopeControlObject> (new ScopeSelector(), "WorkStepsControl"));
+      workStepsControlScope.Scope.Hover();
+
+      return workStepsControlScope.GetControl (
+          new SingleControlSelectionCommand<ActaNovaTreePopupListControlObject> (new ActaNovaTreePopupListSelector()));
+    }
+
     public UnspecifiedPageObject PressPinButton ()
     {
       var pinButton = GetControl (new PerHtmlIDControlSelectionCommand<ImageButtonControlObject> (new ImageButtonSelector(), "PinButton"));
@@ -61,20 +72,16 @@ namespace ActaNova.WebTesting.PageObjects
     public string GetPermalink ()
     {
       var permalinkButton = GetControl (new PerHtmlIDControlSelectionCommand<AnchorControlObject> (new AnchorSelector(), "PermalinkButton"));
-      permalinkButton.Click (Continue.Immediately().AndModalDialogHasBeenAccepted());
+      permalinkButton.Click (Continue.Immediately(), HandleModalDialog.Accept());
 
-      var permalink = permalinkButton.Scope["href"].Replace ("Default.aspx", "Main.wxe");
+      var permalink = permalinkButton.Scope["href"].Replace ("/?", "/Main.wxe?");
       return permalink;
     }
 
     public /*ActaNovaPrintPageObject*/ ActaNovaPageObject Print ()
     {
-      throw new NotSupportedException ("Print cannot be implemented at the moment due to technical reasons: the new window does not have a title.");
-
-#pragma warning disable 162 // unreachable code, can be dropped as soon as NotSupportedException has been removed.
       var printButton = GetControl (new PerHtmlIDControlSelectionCommand<ImageButtonControlObject> (new ImageButtonSelector(), "PrintButton"));
-      return printButton.Click().ExpectNewWindow< /*ActaNovaPrintPageObject*/ ActaNovaPageObject> ("");
-#pragma warning restore 162
+      return printButton.Click().ExpectNewWindow< /*ActaNovaPrintPageObject*/ ActaNovaPageObject> ("Untitled Page");
     }
 
     public HtmlPageObject OpenHelp ()

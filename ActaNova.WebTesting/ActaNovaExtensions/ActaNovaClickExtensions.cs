@@ -43,20 +43,28 @@ namespace ActaNova.WebTesting.ActaNovaExtensions
       return confirmPage.Cancel();
     }
 
-    public static UnspecifiedPageObject PerformAndConfirmDataLoss ([NotNull] this ActaNovaFormPageObject formPage, string itemID)
+    public static UnspecifiedPageObject PerformAndConfirmDataLoss ([NotNull] this ActaNovaFormPageObject page, [NotNull] string itemID)
     {
-      ArgumentUtility.CheckNotNull ("formPage", formPage);
+      ArgumentUtility.CheckNotNull ("page", page);
+      ArgumentUtility.CheckNotNullOrEmpty ("itemID", itemID);
 
-      return formPage.Perform (
-          itemID,
-          Continue.When (Wxe.PostBackCompletedInContext (formPage.Context.ParentContext)).AndModalDialogHasBeenAccepted());
+      return page.Perform (itemID, Continue.When (Wxe.PostBackCompletedInContext (page.Context.ParentContext)), HandleModalDialog.Accept());
     }
 
-    public static UnspecifiedPageObject PerformAndPreventDataLoss ([NotNull] this ActaNovaFormPageObject formPage, string itemID)
+    public static UnspecifiedPageObject PerformAndPreventDataLoss ([NotNull] this ActaNovaFormPageObject page, [NotNull] string itemID)
     {
-      ArgumentUtility.CheckNotNull ("formPage", formPage);
+      ArgumentUtility.CheckNotNull ("page", page);
+      ArgumentUtility.CheckNotNullOrEmpty ("itemID", itemID);
 
-      return formPage.Perform (itemID, Continue.Immediately().AndModalDialogHasBeenCanceled());
+      return page.Perform (itemID, Continue.Immediately(), HandleModalDialog.Cancel());
+    }
+
+    public static UnspecifiedPageObject PerformAndCloseWindow ([NotNull] this ActaNovaPageObject page, [NotNull] string itemID)
+    {
+      ArgumentUtility.CheckNotNull ("page", page);
+      ArgumentUtility.CheckNotNullOrEmpty ("itemID", itemID);
+
+      return page.Perform (itemID, Continue.When (Wxe.PostBackCompletedInContext(page.Context.ParentContext)));
     }
   }
 }

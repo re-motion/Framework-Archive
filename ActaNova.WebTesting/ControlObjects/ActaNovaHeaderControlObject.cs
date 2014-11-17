@@ -16,7 +16,7 @@ namespace ActaNova.WebTesting.ControlObjects
   /// <summary>
   /// Control object representing the ActaNova header area.
   /// </summary>
-  public class ActaNovaHeaderControlObject : ActaNovaMainFrameControlObject, IControlHost
+  public class ActaNovaHeaderControlObject : ActaNovaMainFrameControlObject, IControlHost, IControlObjectWithBreadCrumbs
   {
     public ActaNovaHeaderControlObject ([NotNull] ControlObjectContext context)
         : base (context)
@@ -110,7 +110,7 @@ namespace ActaNova.WebTesting.ControlObjects
         openButtonScope.Now();
 
         // Do not use ClickAndWait() here, it uses FocusClick() internally, which fails (at least using Chrome) for unknown reasons.
-        openButtonScope.PerformAction (s => s.Click(), Context, Continue.When (Wxe.PostBackCompleted).Build());
+        openButtonScope.PerformAction (s => s.Click(), Context, Continue.When (Wxe.PostBackCompleted).Build(), null);
       }
 
       return GetControl (
@@ -137,15 +137,31 @@ namespace ActaNova.WebTesting.ControlObjects
     }
 
     /// <summary>
-    /// Returns the list of currently displayed ActaNova bread crumbs.
+    /// Returns the number of displayed bread crumbs.
     /// </summary>
-    public IReadOnlyList<ActaNovaBreadCrumbControlObject> GetBreadCrumbs ()
+    public int GetNumberOfBreadCrumbs ()
+    {
+      return GetBreadCrumbs().Count;
+    }
+
+    /// <summary>
+    /// Returns the nth bread crumb, given by a one-based <paramref name="index"/>.
+    /// </summary>
+    public ActaNovaBreadCrumbControlObject GetBreadCrumb (int index)
+    {
+      var zeroBasedIndex = index - 1;
+      return GetBreadCrumbs()[zeroBasedIndex];
+    }
+
+    private IReadOnlyList<ActaNovaBreadCrumbControlObject> GetBreadCrumbs ()
     {
       var breadCrumbsScope = Scope.FindId ("BreadCrumbsLabel");
-      return RetryUntilTimeout.Run (
+      var breadCrumbs = RetryUntilTimeout.Run (
           () => breadCrumbsScope.FindAllCss (".breadCrumbLink")
               .Select (s => new ActaNovaBreadCrumbControlObject (Context.CloneForControl (s)))
               .ToList());
+
+      return breadCrumbs;
     }
 
     public TControlObject GetControl<TControlObject> (IControlSelectionCommand<TControlObject> controlSelectionCommand)
