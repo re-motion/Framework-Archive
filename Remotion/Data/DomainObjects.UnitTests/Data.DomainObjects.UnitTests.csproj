@@ -264,6 +264,7 @@
     <Compile Include="Linq\IntegrationTests\UpcastIntegrationTest.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Linq\IntegrationTests\UnionConcatIntegrationTest.cs" />
     <Compile Include="Linq\TestDomain\Success\EagerFetching\BaseClass.cs" />
     <Compile Include="Linq\TestDomain\Success\EagerFetching\DerivedClass1.cs" />
     <Compile Include="Linq\TestDomain\Success\EagerFetching\DerivedClass2.cs" />
