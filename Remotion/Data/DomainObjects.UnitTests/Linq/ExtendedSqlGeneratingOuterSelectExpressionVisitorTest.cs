@@ -34,6 +34,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
   {
     private ISqlGenerationStage _stageMock;
     private SqlCommandBuilder _commandBuilder;
+    private SetOperationsMode _someSetOperationsMode;
 
     public override void SetUp ()
     {
@@ -41,6 +42,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
 
       _stageMock = MockRepository.GenerateStrictMock<ISqlGenerationStage> ();
       _commandBuilder = new SqlCommandBuilder ();
+
+      _someSetOperationsMode = SetOperationsMode.StatementIsSetCombined;
     }
 
     [Test]
@@ -50,9 +53,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
     public void GenerateSql_Collection ()
     {
       var expression = Expression.Constant (new Order[] { });
-      //TODO RM-6353: Is value of SetOperationsMode relevant?
-      var setOperationsMode = SetOperationsMode.StatementIsSetCombined;
-      ExtendedSqlGeneratingOuterSelectExpressionVisitor.GenerateSql (expression, _commandBuilder, _stageMock, setOperationsMode);
+      ExtendedSqlGeneratingOuterSelectExpressionVisitor.GenerateSql (expression, _commandBuilder, _stageMock, _someSetOperationsMode);
     }
 
     [Test]
@@ -82,9 +83,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
           Expression.Convert (new SqlColumnDefinitionExpression (typeof (Guid), "t0", "CustomerID", false), typeof (object)));
       var compoundExpression = NamedExpression.CreateNewExpressionWithNamedArguments (newObjectIDExpression);
 
-      //TODO RM-6353: Is value of SetOperationsMode relevant?
-      var setOperationsMode = SetOperationsMode.StatementIsSetCombined;
-      ExtendedSqlGeneratingOuterSelectExpressionVisitor.GenerateSql (compoundExpression, _commandBuilder, _stageMock, setOperationsMode);
+      ExtendedSqlGeneratingOuterSelectExpressionVisitor.GenerateSql (compoundExpression, _commandBuilder, _stageMock, _someSetOperationsMode);
 
       Assert.That (_commandBuilder.GetCommandText(), Is.EqualTo ("[t0].[CustomerClassID] AS [m0],[t0].[CustomerID] AS [m1]"));
 

@@ -202,7 +202,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
 
     private SqlStatement CreateSqlStatement (Expression selectProjection = null)
     {
-      //TODO RM-6353: Review changed ctor
       return new SqlStatement (
           new StreamedSequenceInfo (typeof (IQueryable<Order>), Expression.Constant (null, typeof (Order))),
           selectProjection ?? Expression.Constant (null, typeof (Order)),
