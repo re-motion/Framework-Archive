@@ -22,30 +22,28 @@ using Remotion.Utilities;
 namespace Remotion.Web.Development.WebTesting.ControlSelection
 {
   /// <summary>
-  /// Represents a control selection, selecting the control of the given <typeparamref name="TControlObject"/> type bearing the given command name
-  /// within the given scope.
+  /// Represents a control selection, selecting the control of the given <typeparamref name="TControlObject"/> type bearing the given ID within the
+  /// given scope.
   /// </summary>
   /// <typeparam name="TControlObject">The specific <see cref="ControlObject"/> type to select.</typeparam>
-  public class PerCommandNameControlSelectionCommand<TControlObject> : IControlSelectionCommand<TControlObject>
+  public class HtmlIDControlSelectionCommand<TControlObject> : IControlSelectionCommand<TControlObject>
       where TControlObject : ControlObject
   {
-    private readonly IPerCommandNameControlSelector<TControlObject> _controlSelector;
-    private readonly string _commandName;
+    private readonly IHtmlIDControlSelector<TControlObject> _controlSelector;
+    private readonly string _htmlID;
 
-    public PerCommandNameControlSelectionCommand (
-        [NotNull] IPerCommandNameControlSelector<TControlObject> controlSelector,
-        [NotNull] string commandName)
+    public HtmlIDControlSelectionCommand ([NotNull] IHtmlIDControlSelector<TControlObject> controlSelector, [NotNull] string htmlID)
     {
       ArgumentUtility.CheckNotNull ("controlSelector", controlSelector);
-      ArgumentUtility.CheckNotNullOrEmpty ("commandName", commandName);
+      ArgumentUtility.CheckNotNullOrEmpty ("htmlID", htmlID);
 
       _controlSelector = controlSelector;
-      _commandName = commandName;
+      _htmlID = htmlID;
     }
 
     public TControlObject Select (ControlSelectionContext context)
     {
-      return _controlSelector.SelectPerCommandName (context, _commandName);
+      return _controlSelector.SelectPerHtmlID (context, _htmlID);
     }
   }
 }

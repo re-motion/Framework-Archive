@@ -17,35 +17,38 @@
 
 using System;
 using JetBrains.Annotations;
+using Remotion.ObjectBinding.Web.Development.WebTesting.ControlSelection;
 using Remotion.Utilities;
+using Remotion.Web.Development.WebTesting;
 using Remotion.Web.Development.WebTesting.ControlSelection;
+using Remotion.Web.Development.WebTesting.FluentControlSelection;
 
-namespace Remotion.Web.Development.WebTesting.FluentControlSelection
+namespace Remotion.ObjectBinding.Web.Development.WebTesting.FluentControlSelection
 {
   /// <summary>
-  /// Selection command builder, preparing a <see cref="PerItemIDControlSelectionCommand{TControlObject}"/>.
+  /// Selection command builder, preparing a <see cref="DisplayNameControlSelectionCommand{TControlObject}"/>.
   /// </summary>
-  /// <typeparam name="TControlSelector">The <see cref="IPerItemIDControlSelector{TControlObject}"/> to use.</typeparam>
+  /// <typeparam name="TControlSelector">The <see cref="IDisplayNameControlSelector{TControlObject}"/> to use.</typeparam>
   /// <typeparam name="TControlObject">The specific <see cref="ControlObject"/> type to select.</typeparam>
-  public class PerItemIDControlSelectionCommandBuilder<TControlSelector, TControlObject>
+  public class DisplayNameControlSelectionCommandBuilder<TControlSelector, TControlObject>
       : IControlSelectionCommandBuilder<TControlSelector, TControlObject>
-      where TControlSelector : IPerItemIDControlSelector<TControlObject>
+      where TControlSelector : IDisplayNameControlSelector<TControlObject>
       where TControlObject : ControlObject
   {
-    private readonly string _itemID;
+    private readonly string _displayName;
 
-    public PerItemIDControlSelectionCommandBuilder ([NotNull] string itemID)
+    public DisplayNameControlSelectionCommandBuilder ([NotNull] string displayName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("itemID", itemID);
+      ArgumentUtility.CheckNotNullOrEmpty ("displayName", displayName);
 
-      _itemID = itemID;
+      _displayName = displayName;
     }
 
     public IControlSelectionCommand<TControlObject> Using (TControlSelector controlSelector)
     {
       ArgumentUtility.CheckNotNull ("controlSelector", controlSelector);
 
-      return new PerItemIDControlSelectionCommand<TControlObject> (controlSelector, _itemID);
+      return new DisplayNameControlSelectionCommand<TControlObject> (controlSelector, _displayName);
     }
   }
 }

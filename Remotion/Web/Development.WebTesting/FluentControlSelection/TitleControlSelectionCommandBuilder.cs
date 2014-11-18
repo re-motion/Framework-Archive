@@ -23,29 +23,29 @@ using Remotion.Web.Development.WebTesting.ControlSelection;
 namespace Remotion.Web.Development.WebTesting.FluentControlSelection
 {
   /// <summary>
-  /// Selection command builder, preparing a <see cref="PerHtmlIDControlSelectionCommand{TControlObject}"/>.
+  /// Selection command builder, preparing a <see cref="TitleControlSelectionCommand{TControlObject}"/>.
   /// </summary>
-  /// <typeparam name="TControlSelector">The <see cref="IPerHtmlIDControlSelector{TControlObject}"/> to use.</typeparam>
+  /// <typeparam name="TControlSelector">The <see cref="ITitleControlSelector{TControlObject}"/> to use.</typeparam>
   /// <typeparam name="TControlObject">The specific <see cref="ControlObject"/> type to select.</typeparam>
-  public class PerHtmlIDControlSelectionCommandBuilder<TControlSelector, TControlObject>
+  public class TitleControlSelectionCommandBuilder<TControlSelector, TControlObject>
       : IControlSelectionCommandBuilder<TControlSelector, TControlObject>
-      where TControlSelector : IPerHtmlIDControlSelector<TControlObject>
+      where TControlSelector : ITitleControlSelector<TControlObject>
       where TControlObject : ControlObject
   {
-    private readonly string _htmlID;
+    private readonly string _title;
 
-    public PerHtmlIDControlSelectionCommandBuilder ([NotNull] string htmlID)
+    public TitleControlSelectionCommandBuilder ([NotNull] string title)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("htmlID", htmlID);
+      ArgumentUtility.CheckNotNullOrEmpty ("title", title);
 
-      _htmlID = htmlID;
+      _title = title;
     }
 
     public IControlSelectionCommand<TControlObject> Using (TControlSelector controlSelector)
     {
       ArgumentUtility.CheckNotNull ("controlSelector", controlSelector);
 
-      return new PerHtmlIDControlSelectionCommand<TControlObject> (controlSelector, _htmlID);
+      return new TitleControlSelectionCommand<TControlObject> (controlSelector, _title);
     }
   }
 }

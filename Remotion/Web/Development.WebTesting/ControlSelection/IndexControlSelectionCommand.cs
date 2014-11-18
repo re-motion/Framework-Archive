@@ -18,40 +18,30 @@
 using System;
 using JetBrains.Annotations;
 using Remotion.Utilities;
-using Remotion.Web.Development.WebTesting;
-using Remotion.Web.Development.WebTesting.ControlSelection;
 
-namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlSelection
+namespace Remotion.Web.Development.WebTesting.ControlSelection
 {
   /// <summary>
-  /// Represents a control selection, selecting the control of the given <typeparamref name="TControlObject"/> type representing the specified
-  /// domain object within the given scope.
+  /// Represents a control selection, selecting the nth control of the given <typeparamref name="TControlObject"/> type within the given scope.
   /// </summary>
   /// <typeparam name="TControlObject">The specific <see cref="ControlObject"/> type to select.</typeparam>
-  public class PerDomainPropertyControlSelectionCommand<TControlObject> : IControlSelectionCommand<TControlObject>
+  public class IndexControlSelectionCommand<TControlObject> : IControlSelectionCommand<TControlObject>
       where TControlObject : ControlObject
   {
-    private readonly IPerDomainPropertyControlSelector<TControlObject> _controlSelector;
-    private readonly string _domainProperty;
-    private readonly string _domainClass;
+    private readonly IIndexControlSelector<TControlObject> _controlSelector;
+    private readonly int _index;
 
-    public PerDomainPropertyControlSelectionCommand (
-        [NotNull] IPerDomainPropertyControlSelector<TControlObject> controlSelector,
-        [NotNull] string domainProperty,
-        [CanBeNull] string domainClass = null)
+    public IndexControlSelectionCommand ([NotNull] IIndexControlSelector<TControlObject> controlSelector, int index)
     {
       ArgumentUtility.CheckNotNull ("controlSelector", controlSelector);
-      ArgumentUtility.CheckNotNullOrEmpty ("domainProperty", domainProperty);
-      ArgumentUtility.CheckNotEmpty ("domainClass", domainClass);
 
       _controlSelector = controlSelector;
-      _domainProperty = domainProperty;
-      _domainClass = domainClass;
+      _index = index;
     }
 
     public TControlObject Select (ControlSelectionContext context)
     {
-      return _controlSelector.SelectPerDomainProperty (context, _domainProperty, _domainClass);
+      return _controlSelector.SelectPerIndex (context, _index);
     }
   }
 }

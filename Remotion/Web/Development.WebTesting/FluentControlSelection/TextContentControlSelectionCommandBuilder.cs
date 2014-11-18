@@ -23,29 +23,29 @@ using Remotion.Web.Development.WebTesting.ControlSelection;
 namespace Remotion.Web.Development.WebTesting.FluentControlSelection
 {
   /// <summary>
-  /// Selection command builder, preparing a <see cref="PerTextControlSelectionCommand{TControlObject}"/>.
+  /// Selection command builder, preparing a <see cref="TextContentControlSelectionCommand{TControlObject}"/>.
   /// </summary>
-  /// <typeparam name="TControlSelector">The <see cref="IPerTextControlSelector{TControlObject}"/> to use.</typeparam>
+  /// <typeparam name="TControlSelector">The <see cref="ITextContentControlSelector{TControlObject}"/> to use.</typeparam>
   /// <typeparam name="TControlObject">The specific <see cref="ControlObject"/> type to select.</typeparam>
-  public class PerTextControlSelectionCommandBuilder<TControlSelector, TControlObject>
+  public class TextContentControlSelectionCommandBuilder<TControlSelector, TControlObject>
       : IControlSelectionCommandBuilder<TControlSelector, TControlObject>
-      where TControlSelector : IPerTextControlSelector<TControlObject>
+      where TControlSelector : ITextContentControlSelector<TControlObject>
       where TControlObject : ControlObject
   {
-    private readonly string _text;
+    private readonly string _textContent;
 
-    public PerTextControlSelectionCommandBuilder ([NotNull] string text)
+    public TextContentControlSelectionCommandBuilder ([NotNull] string textContent)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("text", text);
+      ArgumentUtility.CheckNotNullOrEmpty ("textContent", textContent);
 
-      _text = text;
+      _textContent = textContent;
     }
 
     public IControlSelectionCommand<TControlObject> Using (TControlSelector controlSelector)
     {
       ArgumentUtility.CheckNotNull ("controlSelector", controlSelector);
 
-      return new PerTextControlSelectionCommand<TControlObject> (controlSelector, _text);
+      return new TextContentControlSelectionCommand<TControlObject> (controlSelector, _textContent);
     }
   }
 }

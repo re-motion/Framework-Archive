@@ -15,26 +15,33 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 
-using System;
-using Coypu;
-using JetBrains.Annotations;
+using Remotion.Utilities;
+using Remotion.Web.Development.WebTesting.ControlSelection;
 
-namespace Remotion.Web.Development.WebTesting.ControlSelection
+namespace Remotion.Web.Development.WebTesting.FluentControlSelection
 {
   /// <summary>
-  /// Interface for <see cref="IControlSelector"/> implementations which provide the possibility to select their supported
-  /// type of <typeparamref name="TControlObject"/> via their local ID within the naming container.
+  /// Selection command builder, preparing a <see cref="IndexControlSelectionCommand{TControlObject}"/>.
   /// </summary>
+  /// <typeparam name="TControlSelector">The <see cref="IIndexControlSelector{TControlObject}"/> to use.</typeparam>
   /// <typeparam name="TControlObject">The specific <see cref="ControlObject"/> type to select.</typeparam>
-  public interface IPerLocalIDControlSelector<out TControlObject> : IControlSelector
+  public class IndexControlSelectionCommandBuilder<TControlSelector, TControlObject>
+      : IControlSelectionCommandBuilder<TControlSelector, TControlObject>
+      where TControlSelector : IIndexControlSelector<TControlObject>
       where TControlObject : ControlObject
   {
-    /// <summary>
-    /// Selects the control within the given <paramref name="context"/> using the given <paramref name="localID"/>.
-    /// </summary>
-    /// <returns>The control object.</returns>
-    /// <exception cref="AmbiguousException">If multiple controls with the given <paramref name="localID"/> are found.</exception>
-    /// <exception cref="MissingHtmlException">If the control cannot be found.</exception>
-    TControlObject SelectPerLocalID ([NotNull] ControlSelectionContext context, [NotNull] string localID);
+    private readonly int _index;
+
+    public IndexControlSelectionCommandBuilder (int index)
+    {
+      _index = index;
+    }
+
+    public IControlSelectionCommand<TControlObject> Using (TControlSelector controlSelector)
+    {
+      ArgumentUtility.CheckNotNull ("controlSelector", controlSelector);
+
+      return new IndexControlSelectionCommand<TControlObject> (controlSelector, _index);
+    }
   }
 }

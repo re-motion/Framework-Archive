@@ -15,33 +15,37 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 
+using System;
+using JetBrains.Annotations;
 using Remotion.Utilities;
-using Remotion.Web.Development.WebTesting.ControlSelection;
 
-namespace Remotion.Web.Development.WebTesting.FluentControlSelection
+namespace Remotion.Web.Development.WebTesting.ControlSelection
 {
   /// <summary>
-  /// Selection command builder, preparing a <see cref="PerIndexControlSelectionCommand{TControlObject}"/>.
+  /// Represents a control selection, selecting the control of the given <typeparamref name="TControlObject"/> type bearing the given command name
+  /// within the given scope.
   /// </summary>
-  /// <typeparam name="TControlSelector">The <see cref="IPerIndexControlSelector{TControlObject}"/> to use.</typeparam>
   /// <typeparam name="TControlObject">The specific <see cref="ControlObject"/> type to select.</typeparam>
-  public class PerIndexControlSelectionCommandBuilder<TControlSelector, TControlObject>
-      : IControlSelectionCommandBuilder<TControlSelector, TControlObject>
-      where TControlSelector : IPerIndexControlSelector<TControlObject>
+  public class CommandNameControlSelectionCommand<TControlObject> : IControlSelectionCommand<TControlObject>
       where TControlObject : ControlObject
   {
-    private readonly int _index;
+    private readonly ICommandNameControlSelector<TControlObject> _controlSelector;
+    private readonly string _commandName;
 
-    public PerIndexControlSelectionCommandBuilder (int index)
-    {
-      _index = index;
-    }
-
-    public IControlSelectionCommand<TControlObject> Using (TControlSelector controlSelector)
+    public CommandNameControlSelectionCommand (
+        [NotNull] ICommandNameControlSelector<TControlObject> controlSelector,
+        [NotNull] string commandName)
     {
       ArgumentUtility.CheckNotNull ("controlSelector", controlSelector);
+      ArgumentUtility.CheckNotNullOrEmpty ("commandName", commandName);
 
-      return new PerIndexControlSelectionCommand<TControlObject> (controlSelector, _index);
+      _controlSelector = controlSelector;
+      _commandName = commandName;
+    }
+
+    public TControlObject Select (ControlSelectionContext context)
+    {
+      return _controlSelector.SelectPerCommandName (context, _commandName);
     }
   }
 }

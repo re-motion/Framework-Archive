@@ -22,28 +22,28 @@ using Remotion.Utilities;
 namespace Remotion.Web.Development.WebTesting.ControlSelection
 {
   /// <summary>
-  /// Represents a control selection, selecting the control of the given <typeparamref name="TControlObject"/> type bearing the given local ID within
-  /// the given scope.
+  /// Represents a control selection, selecting the control of the given <typeparamref name="TControlObject"/> type bearing the given title within the
+  /// given scope.
   /// </summary>
   /// <typeparam name="TControlObject">The specific <see cref="ControlObject"/> type to select.</typeparam>
-  public class PerLocalIDControlSelectionCommand<TControlObject> : IControlSelectionCommand<TControlObject>
+  public class TitleControlSelectionCommand<TControlObject> : IControlSelectionCommand<TControlObject>
       where TControlObject : ControlObject
   {
-    private readonly IPerLocalIDControlSelector<TControlObject> _controlSelector;
-    private readonly string _localID;
+    private readonly ITitleControlSelector<TControlObject> _controlSelector;
+    private readonly string _title;
 
-    public PerLocalIDControlSelectionCommand ([NotNull] IPerLocalIDControlSelector<TControlObject> controlSelector, [NotNull] string localID)
+    public TitleControlSelectionCommand ([NotNull] ITitleControlSelector<TControlObject> controlSelector, [NotNull] string title)
     {
       ArgumentUtility.CheckNotNull ("controlSelector", controlSelector);
-      ArgumentUtility.CheckNotNullOrEmpty ("localID", localID);
+      ArgumentUtility.CheckNotNullOrEmpty ("title", title);
 
       _controlSelector = controlSelector;
-      _localID = localID;
+      _title = title;
     }
 
     public TControlObject Select (ControlSelectionContext context)
     {
-      return _controlSelector.SelectPerLocalID (context, _localID);
+      return _controlSelector.SelectPerTitle (context, _title);
     }
   }
 }

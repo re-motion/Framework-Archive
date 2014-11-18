@@ -18,34 +18,32 @@
 using System;
 using JetBrains.Annotations;
 using Remotion.Utilities;
-using Remotion.Web.Development.WebTesting.ControlSelection;
 
-namespace Remotion.Web.Development.WebTesting.FluentControlSelection
+namespace Remotion.Web.Development.WebTesting.ControlSelection
 {
   /// <summary>
-  /// Selection command builder, preparing a <see cref="PerTitleControlSelectionCommand{TControlObject}"/>.
+  /// Represents a control selection, selecting the control of the given <typeparamref name="TControlObject"/> type bearing the given local ID within
+  /// the given scope.
   /// </summary>
-  /// <typeparam name="TControlSelector">The <see cref="IPerTitleControlSelector{TControlObject}"/> to use.</typeparam>
   /// <typeparam name="TControlObject">The specific <see cref="ControlObject"/> type to select.</typeparam>
-  public class PerTitleControlSelectionCommandBuilder<TControlSelector, TControlObject>
-      : IControlSelectionCommandBuilder<TControlSelector, TControlObject>
-      where TControlSelector : IPerTitleControlSelector<TControlObject>
+  public class LocalIDControlSelectionCommand<TControlObject> : IControlSelectionCommand<TControlObject>
       where TControlObject : ControlObject
   {
-    private readonly string _title;
+    private readonly ILocalIDControlSelector<TControlObject> _controlSelector;
+    private readonly string _localID;
 
-    public PerTitleControlSelectionCommandBuilder ([NotNull] string title)
-    {
-      ArgumentUtility.CheckNotNullOrEmpty ("title", title);
-
-      _title = title;
-    }
-
-    public IControlSelectionCommand<TControlObject> Using (TControlSelector controlSelector)
+    public LocalIDControlSelectionCommand ([NotNull] ILocalIDControlSelector<TControlObject> controlSelector, [NotNull] string localID)
     {
       ArgumentUtility.CheckNotNull ("controlSelector", controlSelector);
+      ArgumentUtility.CheckNotNullOrEmpty ("localID", localID);
 
-      return new PerTitleControlSelectionCommand<TControlObject> (controlSelector, _title);
+      _controlSelector = controlSelector;
+      _localID = localID;
+    }
+
+    public TControlObject Select (ControlSelectionContext context)
+    {
+      return _controlSelector.SelectPerLocalID (context, _localID);
     }
   }
 }

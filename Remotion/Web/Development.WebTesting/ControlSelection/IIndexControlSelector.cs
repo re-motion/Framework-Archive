@@ -23,18 +23,17 @@ namespace Remotion.Web.Development.WebTesting.ControlSelection
 {
   /// <summary>
   /// Interface for <see cref="IControlSelector"/> implementations which provide the possibility to select their supported
-  /// type of <typeparamref name="TControlObject"/> via a title.
+  /// type of <typeparamref name="TControlObject"/> via an index.
   /// </summary>
   /// <typeparam name="TControlObject">The specific <see cref="ControlObject"/> type to select.</typeparam>
-  public interface IPerTitleControlSelector<out TControlObject> : IControlSelector
+  public interface IIndexControlSelector<out TControlObject> : IControlSelector
       where TControlObject : ControlObject
   {
     /// <summary>
-    /// Selects the control within the given <paramref name="context"/> using the given <paramref name="title"/>.
+    /// Selects the control within the given <paramref name="context"/> using the given <paramref name="index"/>.
     /// </summary>
     /// <returns>The control object.</returns>
-    /// <exception cref="AmbiguousException">If multiple controls with the given <paramref name="title"/> are found.</exception>
     /// <exception cref="MissingHtmlException">If the control cannot be found.</exception>
-    TControlObject SelectPerTitle ([NotNull] ControlSelectionContext context, [NotNull] string title);
+    TControlObject SelectPerIndex ([NotNull] ControlSelectionContext context, int index);
   }
 }
