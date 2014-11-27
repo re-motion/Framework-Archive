@@ -16,27 +16,21 @@
 // 
 
 using System;
-using JetBrains.Annotations;
-using Remotion.Web.Development.WebTesting.WebTestActions;
+using Remotion.Utilities;
 
-namespace Remotion.Web.Development.WebTesting.ControlObjects
+namespace Remotion.Web.Development.WebTesting.ModalDialogHandlers
 {
   /// <summary>
-  /// Control object for <see cref="T:Remotion.Web.UI.Controls.WebButton"/>.
+  /// Accepts the modal browser dialog.
   /// </summary>
-  public class WebButtonControlObject : WebFormsControlObjectWithDiagnosticMetadata, IClickableControlObject
+  internal class AcceptModalDialogHandler : IModalDialogHandler
   {
-    public WebButtonControlObject ([NotNull] ControlObjectContext context)
-        : base (context)
-    {
-    }
-
     /// <inheritdoc/>
-    public UnspecifiedPageObject Click (IWebTestActionOptions actionOptions = null)
+    public void HandleModalDialog (PageObjectContext context)
     {
-      var actualActionOptions = MergeWithDefaultActionOptions (Scope, actionOptions);
-      new ClickAction (this, Scope).Execute (actualActionOptions);
-      return UnspecifiedPage();
+      ArgumentUtility.CheckNotNull ("context", context);
+
+      context.Window.AcceptModalDialogFixed (context.Browser);
     }
   }
 }

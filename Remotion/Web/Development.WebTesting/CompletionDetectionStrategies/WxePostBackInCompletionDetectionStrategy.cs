@@ -16,21 +16,26 @@
 // 
 
 using System;
+using JetBrains.Annotations;
 using log4net;
 using Remotion.Utilities;
 
-namespace Remotion.Web.Development.WebTesting.CompletionDetectionImplementation
+namespace Remotion.Web.Development.WebTesting.CompletionDetectionStrategies
 {
   /// <summary>
-  /// Blocks until the WXE postback sequence number (for the current <see cref="PageObjectContext"/>) has increased by the given amount.
+  /// Blocks until the WXE post back sequence number (for the given <see cref="PageObjectContext"/>) has increased by the given amount.
   /// </summary>
-  public class WxePostBackCompletionDetectionStrategy : ICompletionDetectionStrategy
+  public class WxePostBackInCompletionDetectionStrategy : ICompletionDetectionStrategy
   {
-    private static readonly ILog s_log = LogManager.GetLogger (typeof (WxePostBackCompletionDetectionStrategy));
+    private static readonly ILog s_log = LogManager.GetLogger (typeof (WxePostBackInCompletionDetectionStrategy));
+    private readonly PageObjectContext _context;
     private readonly int _expectedWxePostBackSequenceNumberIncrease;
 
-    public WxePostBackCompletionDetectionStrategy (int expectedWxePostBackSequenceNumberIncrease)
+    public WxePostBackInCompletionDetectionStrategy ([NotNull] PageObjectContext context, int expectedWxePostBackSequenceNumberIncrease)
     {
+      ArgumentUtility.CheckNotNull ("context", context);
+
+      _context = context;
       _expectedWxePostBackSequenceNumberIncrease = expectedWxePostBackSequenceNumberIncrease;
     }
 
@@ -39,7 +44,7 @@ namespace Remotion.Web.Development.WebTesting.CompletionDetectionImplementation
     {
       ArgumentUtility.CheckNotNull ("context", context);
 
-      return WxeCompletionDetectionHelpers.GetWxePostBackSequenceNumber (context);
+      return WxeCompletionDetectionHelpers.GetWxePostBackSequenceNumber (_context);
     }
 
     /// <inheritdoc/>
@@ -52,7 +57,7 @@ namespace Remotion.Web.Development.WebTesting.CompletionDetectionImplementation
 
       WxeCompletionDetectionHelpers.WaitForExpectedWxePostBackSequenceNumber (
           s_log,
-          context,
+          _context,
           oldWxePostBackSequenceNumber,
           _expectedWxePostBackSequenceNumberIncrease);
     }

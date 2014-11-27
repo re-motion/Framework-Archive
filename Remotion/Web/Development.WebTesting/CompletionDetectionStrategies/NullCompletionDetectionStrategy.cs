@@ -15,31 +15,24 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 
-using Remotion.Utilities;
+using System;
 
-namespace Remotion.Web.Development.WebTesting.CompletionDetectionImplementation
+namespace Remotion.Web.Development.WebTesting.CompletionDetectionStrategies
 {
   /// <summary>
-  /// Default implementation for <see cref="IModalDialogHandler"/>.
+  /// Null implementation of <see cref="ICompletionDetectionStrategy"/> which does not wait at all.
   /// </summary>
-  internal class ModalDialogHandler : IModalDialogHandler
+  public class NullCompletionDetectionStrategy : ICompletionDetectionStrategy
   {
-    private readonly bool _acceptModalDialog;
-
-    public ModalDialogHandler (bool acceptModalDialog)
+    /// <inheritdoc/>
+    public object PrepareWaitForCompletion (PageObjectContext context)
     {
-      _acceptModalDialog = acceptModalDialog;
+      return null;
     }
 
     /// <inheritdoc/>
-    public void HandleModalDialog (PageObjectContext context)
+    public void WaitForCompletion (PageObjectContext context, object state)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
-
-      if (_acceptModalDialog)
-        context.Window.AcceptModalDialogFixed(context.Browser);
-      else
-        context.Window.CancelModalDialogFixed(context.Browser);
     }
   }
 }

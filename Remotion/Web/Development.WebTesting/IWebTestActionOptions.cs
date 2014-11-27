@@ -16,27 +16,22 @@
 // 
 
 using System;
-using JetBrains.Annotations;
-using Remotion.Web.Development.WebTesting.WebTestActions;
 
-namespace Remotion.Web.Development.WebTesting.ControlObjects
+namespace Remotion.Web.Development.WebTesting
 {
   /// <summary>
-  /// Control object for <see cref="T:Remotion.Web.UI.Controls.WebButton"/>.
+  /// Encapsulates options for a <see cref="WebTestAction"/>.
   /// </summary>
-  public class WebButtonControlObject : WebFormsControlObjectWithDiagnosticMetadata, IClickableControlObject
+  public interface IWebTestActionOptions
   {
-    public WebButtonControlObject ([NotNull] ControlObjectContext context)
-        : base (context)
-    {
-    }
+    /// <summary>
+    /// The <see cref="ICompletionDetectionStrategy"/> to use.
+    /// </summary>
+    ICompletionDetectionStrategy CompletionDetectionStrategy { get; set; }
 
-    /// <inheritdoc/>
-    public UnspecifiedPageObject Click (IWebTestActionOptions actionOptions = null)
-    {
-      var actualActionOptions = MergeWithDefaultActionOptions (Scope, actionOptions);
-      new ClickAction (this, Scope).Execute (actualActionOptions);
-      return UnspecifiedPage();
-    }
+    /// <summary>
+    /// The <see cref="IModalDialogHandler"/> to use.
+    /// </summary>
+    IModalDialogHandler ModalDialogHandler { get; set; }
   }
 }

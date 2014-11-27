@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 
+using System;
 using JetBrains.Annotations;
 
 namespace Remotion.Web.Development.WebTesting.ControlObjects
@@ -33,8 +34,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     /// Shortcut, directly executes the command retrieved by <see cref="GetCommand"/>. See <see cref="CommandControlObject.Click"/> for more
     /// information.
     /// </summary>
-    UnspecifiedPageObject ExecuteCommand (
-        [CanBeNull] ICompletionDetection completionDetection = null,
-        [CanBeNull] IModalDialogHandler modalDialogHandler = null);
+    /// <param name="actionOptions">See <see cref="IWebTestActionOptions"/> for more information.</param>
+    UnspecifiedPageObject ExecuteCommand ([CanBeNull] IWebTestActionOptions actionOptions = null);
   }
 }

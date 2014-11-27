@@ -16,23 +16,38 @@
 // 
 
 using System;
+using log4net;
+using Remotion.Utilities;
 
-namespace Remotion.Web.Development.WebTesting.CompletionDetectionImplementation
+namespace Remotion.Web.Development.WebTesting.CompletionDetectionStrategies
 {
   /// <summary>
-  /// Null implementation of <see cref="ICompletionDetectionStrategy"/>, which does not block.
+  /// Blocks until the WXE function token is different and the WXE post back sequence number (for the current <see cref="PageObjectContext"/>) has
+  /// been reset.
   /// </summary>
-  public class NullCompletionDetectionStrategy : ICompletionDetectionStrategy
+  public class WxeResetCompletionDetectionStrategy : ICompletionDetectionStrategy
   {
+    private static readonly ILog s_log = LogManager.GetLogger (typeof (WxeResetCompletionDetectionStrategy));
+
     /// <inheritdoc/>
     public object PrepareWaitForCompletion (PageObjectContext context)
     {
-      return null;
+      ArgumentUtility.CheckNotNull ("context", context);
+
+      return WxeCompletionDetectionHelpers.GetWxeFunctionToken (context);
     }
 
     /// <inheritdoc/>
     public void WaitForCompletion (PageObjectContext context, object state)
     {
+      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull ("state", state);
+
+      var oldWxeFunctionToken = (string) state;
+      WxeCompletionDetectionHelpers.WaitForNewWxeFunctionToken (s_log, context, oldWxeFunctionToken);
+
+      const int expectedWxePostBackSequenceNumber = 2;
+      WxeCompletionDetectionHelpers.WaitForExpectedWxePostBackSequenceNumber (s_log, context, expectedWxePostBackSequenceNumber);
     }
   }
 }

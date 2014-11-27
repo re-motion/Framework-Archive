@@ -17,21 +17,21 @@
 
 using System;
 
-namespace Remotion.Web.Development.WebTesting.HostingStrategyImplementation
+namespace Remotion.Web.Development.WebTesting
 {
   /// <summary>
-  /// Does not host any web application. E.g. used for web tests on already deployed and running web applications.
+  /// Default implementation of <see cref="IWebTestActionOptions"/>.
   /// </summary>
-  public class NullHostingStrategy : IHostingStrategy
+  public class WebTestActionOptions : IWebTestActionOptions
   {
-    /// <inheritdoc/>
-    public void DeployAndStartWebApplication ()
-    {
-    }
+    /// <summary>
+    /// The <see cref="ICompletionDetectionStrategy"/> to use.
+    /// </summary>
+    public ICompletionDetectionStrategy CompletionDetectionStrategy { get; set; }
 
-    /// <inheritdoc/>
-    public void StopAndUndeployWebApplication ()
-    {
-    }
+    /// <summary>
+    /// The <see cref="IModalDialogHandler"/> to use.
+    /// </summary>
+    public IModalDialogHandler ModalDialogHandler { get; set; }
   }
 }

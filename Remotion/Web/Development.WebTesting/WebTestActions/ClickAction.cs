@@ -16,27 +16,34 @@
 // 
 
 using System;
+using Coypu;
 using JetBrains.Annotations;
-using Remotion.Web.Development.WebTesting.WebTestActions;
+using Remotion.Utilities;
 
-namespace Remotion.Web.Development.WebTesting.ControlObjects
+namespace Remotion.Web.Development.WebTesting.WebTestActions
 {
   /// <summary>
-  /// Control object for <see cref="T:Remotion.Web.UI.Controls.WebButton"/>.
+  /// Represents a click.
   /// </summary>
-  public class WebButtonControlObject : WebFormsControlObjectWithDiagnosticMetadata, IClickableControlObject
+  public class ClickAction : WebTestAction
   {
-    public WebButtonControlObject ([NotNull] ControlObjectContext context)
-        : base (context)
+    public ClickAction ([NotNull] ControlObject control, [NotNull] ElementScope scope)
+        : base (control, scope)
     {
     }
 
     /// <inheritdoc/>
-    public UnspecifiedPageObject Click (IWebTestActionOptions actionOptions = null)
+    protected override string ActionName
     {
-      var actualActionOptions = MergeWithDefaultActionOptions (Scope, actionOptions);
-      new ClickAction (this, Scope).Execute (actualActionOptions);
-      return UnspecifiedPage();
+      get { return "Click"; }
+    }
+
+    /// <inheritdoc/>
+    protected override void ExecuteInteraction (ElementScope scope)
+    {
+      ArgumentUtility.CheckNotNull ("scope", scope);
+
+      scope.FocusClick();
     }
   }
 }
