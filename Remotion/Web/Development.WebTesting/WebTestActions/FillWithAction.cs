@@ -23,7 +23,7 @@ using Remotion.Utilities;
 namespace Remotion.Web.Development.WebTesting.WebTestActions
 {
   /// <summary>
-  /// Represents a click.
+  /// Fills a text box with a value.
   /// </summary>
   public class FillWithAction : WebTestAction
   {

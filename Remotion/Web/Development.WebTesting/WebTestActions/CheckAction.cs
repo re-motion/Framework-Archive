@@ -23,11 +23,11 @@ using Remotion.Utilities;
 namespace Remotion.Web.Development.WebTesting.WebTestActions
 {
   /// <summary>
-  /// Represents a click without focusing the scope beforehand.
+  /// Checks a check box.
   /// </summary>
-  public class SimpleClickAction : WebTestAction
+  public class CheckAction : WebTestAction
   {
-    public SimpleClickAction ([NotNull] ControlObject control, [NotNull] ElementScope scope)
+    public CheckAction ([NotNull] ControlObject control, [NotNull] ElementScope scope)
         : base (control, scope)
     {
     }
@@ -35,7 +35,7 @@ namespace Remotion.Web.Development.WebTesting.WebTestActions
     /// <inheritdoc/>
     protected override string ActionName
     {
-      get { return "ClickWithoutFocus"; }
+      get { return "Check"; }
     }
 
     /// <inheritdoc/>
@@ -43,7 +43,7 @@ namespace Remotion.Web.Development.WebTesting.WebTestActions
     {
       ArgumentUtility.CheckNotNull ("scope", scope);
 
-      scope.Click();
+      scope.Check();
     }
   }
 }
