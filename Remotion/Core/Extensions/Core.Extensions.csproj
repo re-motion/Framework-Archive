@@ -179,10 +179,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="doc\include\Diagnostics\OuterProduct.xml" />
-    <Content Include="doc\include\Logging\LogExtensions.xml" />
-    <Content Include="doc\include\Reflection\TypesafeInvoker.xml" />
-    <Content Include="doc\include\Utilities\WorkContext.xml" />
+    <None Include="doc\include\Diagnostics\OuterProduct.xml" />
+    <None Include="doc\include\Logging\LogExtensions.xml" />
+    <None Include="doc\include\Reflection\TypesafeInvoker.xml" />
+    <None Include="doc\include\Utilities\WorkContext.xml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

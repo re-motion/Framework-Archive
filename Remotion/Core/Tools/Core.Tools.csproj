@@ -91,7 +91,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="doc\include\Console\CommandLine\CommandLineParser.xml" />
+    <None Include="doc\include\Console\CommandLine\CommandLineParser.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
