@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30723.0
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{5B3CB3F6-DE69-41D6-8BBC-EFF4932F0F7E}"
 	ProjectSection(FolderStartupServices) = postProject
@@ -369,6 +369,11 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SecurityManager.Build", "SecurityManager\Build\SecurityManager.Build.csproj", "{AE475361-8DD6-4DAF-8691-5BB8850093FD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dms.Build", "Dms\Build\Dms.Build.csproj", "{5952119C-365A-4614-BD29-58EAB1139438}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{8C1706D0-5034-4C35-9F3B-3FBF0C552EE6}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\packages.config = .nuget\packages.config
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
