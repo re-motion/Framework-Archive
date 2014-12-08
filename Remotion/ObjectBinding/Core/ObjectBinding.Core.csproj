@@ -342,6 +342,9 @@
     <Compile Include="BusinessObjectPropertyPaths\Results\NullBusinessObjectPropertyPathResult.cs" />
     <Compile Include="BusinessObjectPropertyPaths\StaticBusinessObjectPropertyPath.cs" />
     <Compile Include="UndefinedEnumValueAttribute.cs" />
+    <None Include="..\..\Build\TemplateShared.nuspec">
+      <Link>TemplateShared.nuspec</Link>
+    </None>
     <None Include="..\..\Remotion LGPL.licenseheader">
       <Link>Remotion LGPL.licenseheader</Link>
     </None>
@@ -377,7 +380,7 @@
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Doc\include\Remotion.ObjectBinding.NamespaceDoc.xml" />
+    <None Include="Doc\include\Remotion.ObjectBinding.NamespaceDoc.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

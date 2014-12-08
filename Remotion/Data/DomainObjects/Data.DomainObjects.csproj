@@ -1070,6 +1070,9 @@
     <Compile Include="Obsolete\ValueTooLongException.cs">
       <SubType>Code</SubType>
     </Compile>
+    <None Include="..\..\Build\TemplateShared.nuspec">
+      <Link>TemplateShared.nuspec</Link>
+    </None>
     <None Include="..\..\Remotion LGPL.licenseheader">
       <Link>Remotion LGPL.licenseheader</Link>
     </None>
@@ -1090,7 +1093,7 @@
       </SubType>
     </EmbeddedResource>
     <Content Include="Doc\How to add a new property type.txt" />
-    <Content Include="Doc\include\Remotion.Data.DomainObjects.NamespaceDoc.xml" />
+    <None Include="Doc\include\Remotion.Data.DomainObjects.NamespaceDoc.xml" />
     <None Include="packages.config" />
     <None Include="Persistence\Rdbms\MappingExport\RdbmsMapping.xsd">
       <SubType>Designer</SubType>

@@ -786,37 +786,37 @@
     <EmbeddedResource Include="Globalization\WxePageInfo.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <Content Include="Doc\include\Configuration\ExecutionEngineConfiguration.xml" />
-    <Content Include="Doc\include\Configuration\ResourceConfiguration.xml" />
-    <Content Include="Doc\include\Configuration\SmartNavigationConfiguration.xml" />
-    <Content Include="Doc\include\Configuration\WcagConfiguration.xml" />
-    <Content Include="Doc\include\Configuration\WebConfiguration.xml" />
-    <Content Include="Doc\include\ExecutionEngine\WxePageExtensions.xml" />
-    <Content Include="Doc\include\ExecutionEngine\IWxePage.xml" />
-    <Content Include="Doc\include\ExecutionEngine\UrlMapping\UrlMappingConfiguration.xml" />
-    <Content Include="Doc\include\ExecutionEngine\WxeContext.xml" />
-    <Content Include="Doc\include\ExecutionEngine\WxeHandler.xml" />
-    <Content Include="Doc\include\ExecutionEngine\WxeMethodStep.xml" />
-    <Content Include="Doc\include\ExecutionEngine\WxePage.xml" />
-    <Content Include="Doc\include\ExecutionEngine\WxePageStep.xml" />
-    <Content Include="Doc\include\ExecutionEngine\WxeStep.xml" />
-    <Content Include="Doc\include\Remotion.Web.NamespaceDoc.xml" />
-    <Content Include="Doc\include\ResourceDispatcher.xml" />
-    <Content Include="Doc\include\UI\Controls\DropDownMenu.xml" />
-    <Content Include="Doc\include\UI\Controls\FormGridManager.xml">
+    <None Include="Doc\include\Configuration\ExecutionEngineConfiguration.xml" />
+    <None Include="Doc\include\Configuration\ResourceConfiguration.xml" />
+    <None Include="Doc\include\Configuration\SmartNavigationConfiguration.xml" />
+    <None Include="Doc\include\Configuration\WcagConfiguration.xml" />
+    <None Include="Doc\include\Configuration\WebConfiguration.xml" />
+    <None Include="Doc\include\ExecutionEngine\WxePageExtensions.xml" />
+    <None Include="Doc\include\ExecutionEngine\IWxePage.xml" />
+    <None Include="Doc\include\ExecutionEngine\UrlMapping\UrlMappingConfiguration.xml" />
+    <None Include="Doc\include\ExecutionEngine\WxeContext.xml" />
+    <None Include="Doc\include\ExecutionEngine\WxeHandler.xml" />
+    <None Include="Doc\include\ExecutionEngine\WxeMethodStep.xml" />
+    <None Include="Doc\include\ExecutionEngine\WxePage.xml" />
+    <None Include="Doc\include\ExecutionEngine\WxePageStep.xml" />
+    <None Include="Doc\include\ExecutionEngine\WxeStep.xml" />
+    <None Include="Doc\include\Remotion.Web.NamespaceDoc.xml" />
+    <None Include="Doc\include\ResourceDispatcher.xml" />
+    <None Include="Doc\include\UI\Controls\DropDownMenu.xml" />
+    <None Include="Doc\include\UI\Controls\FormGridManager.xml">
       <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Doc\include\UI\Controls\TabbedMultiView.xml" />
-    <Content Include="Doc\include\UI\Controls\ValidationStateViewer.xml" />
-    <Content Include="Doc\include\UI\Controls\WebButton.xml" />
-    <Content Include="Doc\include\UI\Controls\WebLinkButton.xml" />
-    <Content Include="Doc\include\UI\Controls\WebTabStrip.xml" />
-    <Content Include="Doc\include\UI\Controls\WebTreeView.xml" />
-    <Content Include="Doc\include\UI\ISmartPage.xml" />
-    <Content Include="Doc\include\UI\SmartPage.xml" />
-    <Content Include="Doc\include\Utilities\UrlUtility.xml">
+    </None>
+    <None Include="Doc\include\UI\Controls\TabbedMultiView.xml" />
+    <None Include="Doc\include\UI\Controls\ValidationStateViewer.xml" />
+    <None Include="Doc\include\UI\Controls\WebButton.xml" />
+    <None Include="Doc\include\UI\Controls\WebLinkButton.xml" />
+    <None Include="Doc\include\UI\Controls\WebTabStrip.xml" />
+    <None Include="Doc\include\UI\Controls\WebTreeView.xml" />
+    <None Include="Doc\include\UI\ISmartPage.xml" />
+    <None Include="Doc\include\UI\SmartPage.xml" />
+    <None Include="Doc\include\Utilities\UrlUtility.xml">
       <SubType>Designer</SubType>
-    </Content>
+    </None>
     <Content Include="Res\HTML\jquery-1.6.4.js" />
     <Content Include="Res\HTML\jquery.iFrameShim.js" />
     <Content Include="Res\Themes\ClassicBlue\HTML\DatePicker.css" />

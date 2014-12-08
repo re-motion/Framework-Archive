@@ -501,28 +501,28 @@
     <None Include="..\..\..\remotion.snk">
       <Link>remotion.snk</Link>
     </None>
-    <Content Include="Doc\include\Remotion.ObjectBinding.Web.NamespaceDoc.xml" />
-    <Content Include="Doc\include\UI\Controls\BocBooleanValue.xml" />
-    <Content Include="Doc\include\UI\Controls\BocCheckBox.xml" />
-    <Content Include="Doc\include\UI\Controls\BocDateTimeValue.xml" />
-    <Content Include="Doc\include\UI\Controls\BocDateTimeValueValidator.xml" />
-    <Content Include="Doc\include\UI\Controls\BocDropDownMenu.xml" />
-    <Content Include="Doc\include\UI\Controls\BocEnumValue.xml" />
-    <Content Include="Doc\include\UI\Controls\BocList.xml" />
-    <Content Include="Doc\include\UI\Controls\BocMultilineTextValue.xml" />
-    <Content Include="Doc\include\UI\Controls\BocReferenceValue.xml">
+    <None Include="Doc\include\Remotion.ObjectBinding.Web.NamespaceDoc.xml" />
+    <None Include="Doc\include\UI\Controls\BocBooleanValue.xml" />
+    <None Include="Doc\include\UI\Controls\BocCheckBox.xml" />
+    <None Include="Doc\include\UI\Controls\BocDateTimeValue.xml" />
+    <None Include="Doc\include\UI\Controls\BocDateTimeValueValidator.xml" />
+    <None Include="Doc\include\UI\Controls\BocDropDownMenu.xml" />
+    <None Include="Doc\include\UI\Controls\BocEnumValue.xml" />
+    <None Include="Doc\include\UI\Controls\BocList.xml" />
+    <None Include="Doc\include\UI\Controls\BocMultilineTextValue.xml" />
+    <None Include="Doc\include\UI\Controls\BocReferenceValue.xml">
       <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Doc\include\UI\Controls\BocReferenceValueBase.xml">
+    </None>
+    <None Include="Doc\include\UI\Controls\BocReferenceValueBase.xml">
       <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Doc\include\UI\Controls\BocTextValue.xml" />
-    <Content Include="Doc\include\UI\Controls\BocTreeView.xml" />
-    <Content Include="Doc\include\UI\Controls\BocLiteral.xml" />
-    <Content Include="Doc\include\UI\Controls\BocAutoCompleteReferenceValue.xml">
+    </None>
+    <None Include="Doc\include\UI\Controls\BocTextValue.xml" />
+    <None Include="Doc\include\UI\Controls\BocTreeView.xml" />
+    <None Include="Doc\include\UI\Controls\BocLiteral.xml" />
+    <None Include="Doc\include\UI\Controls\BocAutoCompleteReferenceValue.xml">
       <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Doc\include\UI\Controls\IBusinessObjectDataSourceControl.xml" />
+    </None>
+    <None Include="Doc\include\UI\Controls\IBusinessObjectDataSourceControl.xml" />
     <Content Include="Res\HTML\BocReferenceValueBase.js" />
     <Content Include="Res\Themes\ClassicBlue\HTML\BocBooleanValue.css" />
     <Content Include="Res\HTML\BocBooleanValue.js" />

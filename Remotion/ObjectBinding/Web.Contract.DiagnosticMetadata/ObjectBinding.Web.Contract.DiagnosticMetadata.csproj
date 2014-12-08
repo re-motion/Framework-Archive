@@ -55,11 +55,14 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\..\..\remotion.snk">
+    <None Include="..\..\..\remotion.snk">
       <Link>remotion.snk</Link>
-    </Content>
+    </None>
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\Build\TemplateShared.nuspec">
+      <Link>TemplateShared.nuspec</Link>
+    </None>
     <None Include="..\..\Remotion LGPL.licenseheader">
       <Link>Remotion LGPL.licenseheader</Link>
     </None>

@@ -442,6 +442,9 @@
     <None Include="..\..\..\SharedSource\SharedSource Apache-2.0.licenseheader">
       <Link>SharedSource\SharedSource Apache-2.0.licenseheader</Link>
     </None>
+    <None Include="..\..\Build\TemplateShared.nuspec">
+      <Link>TemplateShared.nuspec</Link>
+    </None>
     <None Include="..\..\Remotion LGPL.licenseheader">
       <Link>Remotion LGPL.licenseheader</Link>
     </None>
@@ -453,9 +456,9 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="doc\include\GettingStartedWithRemotion.aml" />
-    <Content Include="doc\include\Logging\LogExtensions.xml" />
-    <Content Include="doc\include\Logging\Log4NetTraceListener.xml" />
-    <Content Include="doc\include\Remotion.NamespaceDoc.xml" />
+    <None Include="doc\include\Logging\LogExtensions.xml" />
+    <None Include="doc\include\Logging\Log4NetTraceListener.xml" />
+    <None Include="doc\include\Remotion.NamespaceDoc.xml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

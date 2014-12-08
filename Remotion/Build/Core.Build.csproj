@@ -31,6 +31,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <None Include="Customizations\Overrides.targets" />
     <None Include="Customizations\Projects.targets">
       <SubType>Designer</SubType>
     </None>
@@ -40,6 +41,7 @@
     <None Include="Remotion.build" />
     <None Include="Remotion.Local.build" />
     <None Include="Remotion.Server.build" />
+    <None Include="TemplateShared.nuspec" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />

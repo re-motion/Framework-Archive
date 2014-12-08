@@ -74,6 +74,9 @@
     <None Include="..\..\..\remotion.snk">
       <Link>remotion.snk</Link>
     </None>
+    <None Include="..\..\Build\TemplateShared.nuspec">
+      <Link>TemplateShared.nuspec</Link>
+    </None>
     <None Include="..\..\Remotion LGPL.licenseheader">
       <Link>Remotion LGPL.licenseheader</Link>
     </None>

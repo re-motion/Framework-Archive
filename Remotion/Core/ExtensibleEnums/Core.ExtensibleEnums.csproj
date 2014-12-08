@@ -75,6 +75,9 @@
     <None Include="..\..\..\remotion.snk">
       <Link>remotion.snk</Link>
     </None>
+    <None Include="..\..\Build\TemplateShared.nuspec">
+      <Link>TemplateShared.nuspec</Link>
+    </None>
     <None Include="..\..\Remotion LGPL.licenseheader">
       <Link>Remotion LGPL.licenseheader</Link>
     </None>
@@ -90,7 +93,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="doc\include\Remotion.ExtensibleEnums.NamespaceDoc.xml" />
+    <None Include="doc\include\Remotion.ExtensibleEnums.NamespaceDoc.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

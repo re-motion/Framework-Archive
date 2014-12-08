@@ -59,9 +59,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\..\..\remotion.snk">
+    <None Include="..\..\..\remotion.snk">
       <Link>remotion.snk</Link>
-    </Content>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Remotion LGPL.licenseheader">
