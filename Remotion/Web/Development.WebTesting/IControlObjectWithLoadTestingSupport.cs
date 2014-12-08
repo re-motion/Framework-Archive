@@ -1,4 +1,4 @@
-// This file is part of the re-motion Core Framework (www.re-motion.org)
+﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -16,28 +16,20 @@
 // 
 
 using System;
-using Coypu;
+using System.Collections.Generic;
 
-namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
+namespace Remotion.Web.Development.WebTesting
 {
   /// <summary>
-  /// Accessor methods for <see cref="BocListRowControlObject"/> and <see cref="BocListEditableRowControlObject"/>.
+  /// Gives access to a control object's &lt;input&gt; and &lt;select&gt; HTML element names. This is required for POST request duplication in
+  /// load/performance testing.
+  /// frameworks.
   /// </summary>
-  public interface IBocListRowControlObjectHostAccessor
+  public interface IControlObjectWithLoadTestingSupport
   {
     /// <summary>
-    /// Returns the scope of the parent control.
+    /// Returns a collection of the control object's form element names (= value of the name attribute).
     /// </summary>
-    ElementScope ParentScope { get; }
-
-    /// <summary>
-    /// Returns the one-based column index of the given <paramref name="columnItemID"/> within the parent control.
-    /// </summary>
-    int GetColumnIndex (string columnItemID);
-
-    /// <summary>
-    /// Returns the zero-based absolute row index of the first row on the current page.
-    /// </summary>
-    int GetZeroBasedAbsoluteRowIndexOfFirstRow ();
+    ICollection<string> GetFormElementNames ();
   }
 }

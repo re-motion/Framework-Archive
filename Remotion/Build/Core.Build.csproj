@@ -31,7 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <None Include="Customizations\Projects.targets" />
+    <None Include="Customizations\Projects.targets">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Customizations\Properties.targets" />
     <None Include="Customizations\Version.targets" />
     <None Include="packages.config" />

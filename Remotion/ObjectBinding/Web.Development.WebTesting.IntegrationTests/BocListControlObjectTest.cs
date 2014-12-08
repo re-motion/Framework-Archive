@@ -189,7 +189,10 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       row = bocList.GetRowWhere().ColumnWithIndexContains (6, "CEO");
       Assert.That (row.GetCell (6).GetText(), Is.EqualTo ("CEO"));
 
-      row = bocList.GetRowWhere().ColumnWithTitleContains ("Title", "CEO");
+      row = bocList.GetRowWhere().ColumnWithTitleContainsExactly ("Title", "CEO");
+      Assert.That (row.GetCell (6).GetText(), Is.EqualTo ("CEO"));
+
+      row = bocList.GetRowWhere().ColumnWithTitleContains ("Title", "EO");
       Assert.That (row.GetCell (6).GetText(), Is.EqualTo ("CEO"));
     }
 
@@ -206,7 +209,10 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       cell = bocList.GetCellWhere().ColumnWithIndexContains (6, "CEO");
       Assert.That (cell.GetText(), Is.EqualTo ("CEO"));
 
-      cell = bocList.GetCellWhere().ColumnWithTitleContains ("Title", "CEO");
+      cell = bocList.GetCellWhere().ColumnWithTitleContainsExactly ("Title", "CEO");
+      Assert.That (cell.GetText(), Is.EqualTo ("CEO"));
+
+      cell = bocList.GetCellWhere().ColumnWithTitleContains ("Title", "EO");
       Assert.That (cell.GetText(), Is.EqualTo ("CEO"));
     }
 
@@ -338,6 +344,19 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       row.GetCell (4).ExecuteCommand();
 
       Assert.That (home.Scope.FindIdEndingWith ("SelectedIndicesLabel").Text, Is.EqualTo ("1"));
+    }
+
+    [Test]
+    public void TestRowClickSelectCheckboxOnSpecificPage ()
+    {
+      var home = Start();
+
+      var bocList = home.GetList().ByLocalID ("JobList_Normal");
+      bocList.GoToSpecificPage (3);
+      bocList.GetRow (1).ClickSelectCheckbox();
+      bocList.GetRow (1).GetCell (4).ExecuteCommand(); // trigger postback
+
+      Assert.That (home.Scope.FindIdEndingWith ("SelectedIndicesLabel").Text, Is.EqualTo ("4"));
     }
 
     [Test]
