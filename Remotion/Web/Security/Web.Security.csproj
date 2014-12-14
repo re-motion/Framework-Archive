@@ -88,6 +88,9 @@
     <Compile Include="UI\DemandTargetPermissionAttribute.cs" />
     <Compile Include="UI\DemandTargetWxeFunctionPermissionAttribute.cs" />
     <Compile Include="UI\WebSecurityAdapter.cs" />
+    <None Include="..\..\Build\NuSpec\TemplateSharedForWeb.nuspec">
+      <Link>TemplateSharedForWeb.nuspec</Link>
+    </None>
     <None Include="..\..\Remotion LGPL.licenseheader">
       <Link>Remotion LGPL.licenseheader</Link>
     </None>

@@ -19,6 +19,5 @@
     <file src="bin*\$configuration$\$id$.pdb" target="lib\net45" />
     <!-- By using a wildcard, the file-inclusion does not fail if no documentation file was found. -->
     <file src="$documentationFolder$*\$id$.chm" target="doc" />
-    <file src="Schemas*\*.xsd" target="schema" />
   </files>
 </package>

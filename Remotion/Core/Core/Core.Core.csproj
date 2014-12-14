@@ -451,8 +451,8 @@
     <None Include="..\..\..\remotion.snk">
       <Link>remotion.snk</Link>
     </None>
-    <EmbeddedResource Include="Configuration\TypeDiscovery\TypeDiscoveryConfiguration.xsd" />
-    <EmbeddedResource Include="Configuration\ServiceLocation\ServiceLocationConfiguration.xsd">
+    <EmbeddedResource Include="Schemas\TypeDiscoveryConfiguration.xsd" />
+    <EmbeddedResource Include="Schemas\ServiceLocationConfiguration.xsd">
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="doc\include\GettingStartedWithRemotion.aml" />

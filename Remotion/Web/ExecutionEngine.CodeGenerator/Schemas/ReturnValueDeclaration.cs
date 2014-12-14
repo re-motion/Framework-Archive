@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Xml.Serialization;
+using Remotion.Web.ExecutionEngine.CodeGenerator.Schemas;
 
 namespace Remotion.Web.ExecutionEngine.CodeGenerator.Schema
 {

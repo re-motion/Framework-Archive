@@ -15,40 +15,23 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.ComponentModel;
 using System.Xml.Serialization;
+using Remotion.Web.ExecutionEngine.CodeGenerator.Schemas;
 
 namespace Remotion.Web.ExecutionEngine.CodeGenerator.Schema
 {
   [XmlType (Namespace = FunctionDeclaration.SchemaUri)]
-  public class ParameterDeclaration : VariableDeclaration
+  public class VariableDeclaration
   {
-    // private bool _isReturnValue;
+    [XmlAttribute ("name")]
+    public string Name { get; set; }
 
-    /// <summary> Used internally. </summary>
-    [XmlAttribute ("required")]
-    [EditorBrowsable (EditorBrowsableState.Never)]
-    public bool xml_isRequired
+    [XmlAttribute ("type")]
+    public string TypeName { get; set; }
+
+    public virtual bool IsReturnValue
     {
-      get
-      {
-        throw new NotSupportedException (
-            "Get accessor is only defined because set accessor is ignored by XML deserialization otherwise. Do not call.");
-      }
-      set { IsRequired = value; }
+      get { return false; }
     }
-
-    [XmlIgnore]
-    public bool? IsRequired { get; set; }
-
-    [XmlAttribute ("direction")]
-    public WxeParameterDirection Direction { get; set; }
-
-    //[XmlAttribute("returnValue")]
-    //public bool IsReturnValue
-    //{
-    //  get { return _isReturnValue; }
-    //  set { _isReturnValue = value; }
-    //}
   }
 }

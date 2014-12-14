@@ -37,6 +37,9 @@
     </None>
     <None Include="Customizations\Properties.targets" />
     <None Include="Customizations\Version.targets" />
+    <None Include="NuSpec\TemplateSharedForMSBuildTask.nuspec" />
+    <None Include="NuSpec\TemplateSharedForTool.nuspec" />
+    <None Include="NuSpec\TemplateSharedForWeb.nuspec" />
     <None Include="packages.config" />
     <None Include="Remotion.build" />
     <None Include="Remotion.Local.build" />

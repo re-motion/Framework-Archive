@@ -20,8 +20,9 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Xml;
 using System.Xml.Serialization;
+using Remotion.Web.ExecutionEngine.CodeGenerator.Schema;
 
-namespace Remotion.Web.ExecutionEngine.CodeGenerator.Schema
+namespace Remotion.Web.ExecutionEngine.CodeGenerator.Schemas
 {
   [XmlRoot (ElementName, Namespace = SchemaUri)]
   public class FunctionDeclaration

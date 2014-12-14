@@ -20,5 +20,6 @@
     <!-- By using a wildcard, the file-inclusion does not fail if no documentation file was found. -->
     <file src="$documentationFolder$*\$id$.chm" target="doc" />
     <file src="Schemas*\*.xsd" target="schema" />
+    <file src="Res*\**\*" target="res" />
   </files>
 </package>

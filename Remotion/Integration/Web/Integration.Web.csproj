@@ -52,6 +52,9 @@
     <None Include="..\..\..\remotion.snk">
       <Link>remotion.snk</Link>
     </None>
+    <None Include="..\..\Build\NuSpec\TemplateSharedForWeb.nuspec">
+      <Link>TemplateSharedForWeb.nuspec</Link>
+    </None>
     <None Include="..\..\Remotion LGPL.licenseheader">
       <Link>Remotion LGPL.licenseheader</Link>
     </None>

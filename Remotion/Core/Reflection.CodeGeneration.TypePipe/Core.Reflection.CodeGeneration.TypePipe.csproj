@@ -75,7 +75,7 @@
     <None Include="..\..\Remotion LGPL.licenseheader">
       <Link>Remotion LGPL.licenseheader</Link>
     </None>
-    <EmbeddedResource Include="Configuration\TypePipeConfigurationSchema.xsd">
+    <EmbeddedResource Include="Schemas\TypePipeConfigurationSchema.xsd">
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>

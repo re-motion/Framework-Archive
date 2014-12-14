@@ -166,7 +166,7 @@
     <Compile Include="SecurityPrincipalRole.cs" />
     <Compile Include="SecurityStateAttribute.cs" />
     <Compile Include="ThreadPrincipalProvider.cs" />
-    <EmbeddedResource Include="Configuration\SecurityConfiguration.xsd">
+    <EmbeddedResource Include="Schemas\SecurityConfiguration.xsd">
       <SubType>
       </SubType>
     </EmbeddedResource>

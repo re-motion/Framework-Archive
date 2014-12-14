@@ -1076,7 +1076,7 @@
     <None Include="..\..\Remotion LGPL.licenseheader">
       <Link>Remotion LGPL.licenseheader</Link>
     </None>
-    <None Include="Configuration\DomainObjectsConfiguration.xsd">
+    <None Include="Schemas\DomainObjectsConfiguration.xsd">
       <SubType>
       </SubType>
     </None>
