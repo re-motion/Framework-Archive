@@ -1,5 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <PropertyGroup>
+    <TestingSetupBuildFileForDatabase>$(SolutionDirectory)Build\TestingSetupForDatabase.targets</TestingSetupBuildFileForDatabase>
+    <TestingSetupBuildFileForBrowser>$(SolutionDirectory)Build\stingSetupForBrowser.targets</TestingSetupBuildFileForBrowser>
+  </PropertyGroup>
+
   <ItemGroup>
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Core\Core\Core.Core.csproj">
       <!--<CreateNuGetPackageWithSymbolServerSupport>True</CreateNuGetPackageWithSymbolServerSupport>-->
@@ -59,18 +65,22 @@
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Data\DomainObjects.Validation\Data.DomainObjects.Validation.csproj" />
     <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Data\DomainObjects.UnitTests\Data.DomainObjects.UnitTests.csproj">
       <IsDatabaseTest>True</IsDatabaseTest>
+      <TestingSetupBuildFile>$(TestingSetupBuildFileForDatabase)</TestingSetupBuildFile>
     </UnitTestProjectFiles>
     <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Data\DomainObjects.ObjectBinding.UnitTests\Data.DomainObjects.ObjectBinding.UnitTests.csproj" />
     <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Data\DomainObjects.ObjectBinding.IntegrationTests\Data.DomainObjects.ObjectBinding.IntegrationTests.csproj">
       <IsDatabaseTest>True</IsDatabaseTest>
+      <TestingSetupBuildFile>$(TestingSetupBuildFileForDatabase)</TestingSetupBuildFile>
     </UnitTestProjectFiles>
     <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Data\DomainObjects.RdbmsTools.UnitTests\Data.DomainObjects.RdbmsTools.UnitTests.csproj" />
     <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Data\DomainObjects.Security.UnitTests\Data.DomainObjects.Security.UnitTests.csproj" />
     <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Data\DomainObjects.UberProfIntegration.UnitTests\Data.DomainObjects.UberProfIntegration.UnitTests.csproj">
       <IsDatabaseTest>True</IsDatabaseTest>
+      <TestingSetupBuildFile>$(TestingSetupBuildFileForDatabase)</TestingSetupBuildFile>
     </UnitTestProjectFiles>
     <IntegrationTestProjectFiles Include="$(SolutionDirectory)\Remotion\Data\DomainObjects.Web.IntegrationTests\Data.DomainObjects.Web.IntegrationTests.csproj">
       <IsDatabaseTest>True</IsDatabaseTest>
+      <TestingSetupBuildFile>$(TestingSetupBuildFileForDatabase)</TestingSetupBuildFile>
     </IntegrationTestProjectFiles>
     <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Data\DomainObjects.Validation.UnitTests\Data.DomainObjects.Validation.UnitTests.csproj" />
     <IntegrationTestProjectFiles Include="$(SolutionDirectory)\Remotion\Data\DomainObjects.Validation.IntegrationTests\Data.DomainObjects.Validation.IntegrationTests.csproj" />
@@ -87,6 +97,7 @@
     <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\ObjectBinding\Web.Legacy.UnitTests\ObjectBinding.Web.Legacy.UnitTests.csproj" />
     <IntegrationTestProjectFiles Include="$(SolutionDirectory)\Remotion\ObjectBinding\Web.Development.WebTesting.IntegrationTests\ObjectBinding.Web.Development.WebTesting.IntegrationTests.csproj" >
       <IsWebTest>True</IsWebTest>
+      <TestingSetupBuildFile>$(TestingSetupBuildFileForBrowser)</TestingSetupBuildFile>
     </IntegrationTestProjectFiles>
 
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Security\Core\Security.Core.csproj" />
@@ -103,6 +114,7 @@
     <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Web\Legacy.UnitTests\Web.Legacy.UnitTests.csproj" />
     <IntegrationTestProjectFiles Include="$(SolutionDirectory)\Remotion\Web\Development.WebTesting.IntegrationTests\Web.Development.WebTesting.IntegrationTests.csproj" >
       <IsWebTest>True</IsWebTest>
+      <TestingSetupBuildFile>$(TestingSetupBuildFileForBrowser)</TestingSetupBuildFile>
     </IntegrationTestProjectFiles>
 
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Scripting\Core\Scripting.Core.csproj" />
