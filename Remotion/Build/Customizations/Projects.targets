@@ -91,10 +91,10 @@
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\ObjectBinding\Security\ObjectBinding.Security.csproj" />
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\ObjectBinding\Web\ObjectBinding.Web.csproj" />
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\ObjectBinding\Web.Contract.DiagnosticMetadata\ObjectBinding.Web.Contract.DiagnosticMetadata.csproj" />
+    <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\ObjectBinding\Web.Development.WebTesting\ObjectBinding.Web.Development.WebTesting.csproj" />
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\ObjectBinding\Web.Legacy\ObjectBinding.Web.Legacy.csproj" />
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\ObjectBinding\Web.Preview\ObjectBinding.Web.Preview.csproj" />
     <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\ObjectBinding\UnitTests\ObjectBinding.UnitTests.csproj" />
-    <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\ObjectBinding\Web.Development.WebTesting\ObjectBinding.Web.Development.WebTesting.csproj" />
     <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\ObjectBinding\Security.UnitTests\ObjectBinding.Security.UnitTests.csproj" />
     <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\ObjectBinding\Web.UnitTests\ObjectBinding.Web.UnitTests.csproj" />
     <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\ObjectBinding\Web.Legacy.UnitTests\ObjectBinding.Web.Legacy.UnitTests.csproj" />
@@ -110,10 +110,10 @@
 
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Web\Contract.DiagnosticMetadata\Web.Contract.DiagnosticMetadata.csproj" />
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Web\Core\Web.Core.csproj" />
+    <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Web\Development.WebTesting\Web.Development.WebTesting.csproj" />
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Web\ExecutionEngine.CodeGenerator\Web.ExecutionEngine.CodeGenerator.csproj" />
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Web\Legacy\Web.Legacy.csproj" />
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Web\Security\Web.Security.csproj" />
-    <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Web\Development.WebTesting\Web.Development.WebTesting.csproj" />
     <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Web\UnitTests\Web.UnitTests.csproj" />
     <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Web\Legacy.UnitTests\Web.Legacy.UnitTests.csproj" />
     <IntegrationTestProjectFiles Include="$(SolutionDirectory)\Remotion\Web\Development.WebTesting.IntegrationTests\Web.Development.WebTesting.IntegrationTests.csproj" >
