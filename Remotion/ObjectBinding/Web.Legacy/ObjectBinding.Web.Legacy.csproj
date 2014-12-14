@@ -163,13 +163,13 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Doc\include\UI\Controls\BocBooleanValueRenderer.xml" />
-    <Content Include="Doc\include\UI\Controls\BocCheckBoxRenderer.xml" />
-    <Content Include="Doc\include\UI\Controls\BocDateTimeValueRenderer.xml" />
-    <Content Include="Doc\include\UI\Controls\BocEnumValueRenderer.xml" />
-    <Content Include="Doc\include\UI\Controls\BocListRenderer.xml" />
-    <Content Include="Doc\include\UI\Controls\BocMultilineTextValueRenderer.xml" />
-    <Content Include="Doc\include\UI\Controls\BocTextValueRenderer.xml" />
+    <None Include="Doc\include\UI\Controls\BocBooleanValueRenderer.xml" />
+    <None Include="Doc\include\UI\Controls\BocCheckBoxRenderer.xml" />
+    <None Include="Doc\include\UI\Controls\BocDateTimeValueRenderer.xml" />
+    <None Include="Doc\include\UI\Controls\BocEnumValueRenderer.xml" />
+    <None Include="Doc\include\UI\Controls\BocListRenderer.xml" />
+    <None Include="Doc\include\UI\Controls\BocMultilineTextValueRenderer.xml" />
+    <None Include="Doc\include\UI\Controls\BocTextValueRenderer.xml" />
     <None Include="Res\HTML\BocAutoCompleteReferenceValue.css" />
     <None Include="Res\HTML\BocAutoCompleteReferenceValue.jquery.css" />
     <None Include="Res\HTML\BocAutoCompleteReferenceValue.jquery.js" />
