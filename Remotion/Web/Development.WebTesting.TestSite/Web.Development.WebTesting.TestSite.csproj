@@ -118,6 +118,7 @@
     <Compile Include="ImageButtonTestFunction.cs" />
     <Compile Include="FileDownloadTest.aspx.cs">
       <DependentUpon>FileDownloadTest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="FileDownloadTest.aspx.designer.cs">
       <DependentUpon>FileDownloadTest.aspx</DependentUpon>

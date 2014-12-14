@@ -43,7 +43,7 @@
     <None Include="Remotion.Local.WithOverrides.build" />
     <None Include="Remotion.Server.build" />
     <None Include="Remotion.Server.WithOverrides.build" />
-    <None Include="TemplateShared.nuspec" />
+    <None Include="NuSpec\TemplateShared.nuspec" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />

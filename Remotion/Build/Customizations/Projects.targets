@@ -34,7 +34,7 @@
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Mixins\MixerTools\Mixins.MixerTools.csproj" />
     <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Mixins\UnitTests\Mixins.UnitTests.csproj" />
 
-    <!--<ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Globalization\Core\Globalization.Core.csproj" />
+    <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Globalization\Core\Globalization.Core.csproj" />
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Globalization\ExtensibleEnums\Globalization.ExtensibleEnums.csproj" />
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Globalization\Mixins\Globalization.Mixins.csproj" />
     <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Globalization\UnitTests\Globalization.UnitTests.csproj" />
@@ -106,6 +106,6 @@
     </IntegrationTestProjectFiles>
 
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Scripting\Core\Scripting.Core.csproj" />
-    <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Scripting\UnitTests\Scripting.UnitTests.csproj" />-->
+    <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Scripting\UnitTests\Scripting.UnitTests.csproj" />
   </ItemGroup>
 </Project>
