@@ -154,6 +154,7 @@
     <Compile Include="Resources\IResourcePathBuilder.cs" />
     <Compile Include="Resources\ResourcePathBuilder.cs" />
     <Compile Include="Resources\ResourcePathBuilderBase.cs" />
+    <Compile Include="Schemas\WebConfigurationSchema.cs" />
     <Compile Include="Services\IconProxy.cs" />
     <Compile Include="Services\IWebServiceFactory.cs" />
     <Compile Include="Services\WebServiceFactory.cs" />
@@ -391,7 +392,7 @@
     <Compile Include="ExecutionEngine\UrlMapping\UrlMappingLoader.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ExecutionEngine\UrlMapping\UrlMappingSchema.cs">
+    <Compile Include="Schemas\UrlMappingSchema.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ExecutionEngine\WxeContext.cs">
@@ -749,16 +750,13 @@
     <None Include="..\..\..\remotion.snk">
       <Link>remotion.snk</Link>
     </None>
-    <None Include="ExecutionEngine\UrlMapping\UrlMapping.xsx">
-      <DependentUpon>UrlMapping.xsd</DependentUpon>
-    </None>
     <None Include="Res\UI\WxeHandler.ashx" />
     <None Include="Res\UI\WxeLauncher.ashx" />
     <EmbeddedResource Include="Schemas\WebConfiguration.xsd">
       <SubType>
       </SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="ExecutionEngine\UrlMapping\UrlMapping.xsd">
+    <EmbeddedResource Include="Schemas\UrlMapping.xsd">
       <SubType>
       </SubType>
     </EmbeddedResource>

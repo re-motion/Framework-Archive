@@ -14,21 +14,22 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
 using Remotion.Xml;
 
-namespace Remotion.Security.Metadata
+namespace Remotion.Security.Schemas
 {
-  public class SecurityMetadataLocalizationSchema : SchemaLoaderBase
+  public class SecurityMetadataSchema : SchemaLoaderBase
   {
     protected override string SchemaFile
     {
-      get { return "SecurityMetadataLocalization.xsd"; }
+      get { return "SecurityMetadata.xsd"; }
     }
 
     public override string SchemaUri
     {
-      get { return "http://www.re-motion.org/Security/Metadata/Localization/1.0"; }
+      get { return "http://www.re-motion.org/Security/Metadata/1.0"; }
     }
   }
 }

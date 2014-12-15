@@ -74,7 +74,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Metadata\SecurityMetadataLocalization.xsd">
+    <EmbeddedResource Include="Schemas\SecurityMetadataLocalization.xsd">
       <SubType>
       </SubType>
     </EmbeddedResource>
@@ -146,8 +146,8 @@
     <Compile Include="Metadata\MetadataToXmlConverter.cs" />
     <Compile Include="Metadata\PermissionReflector.cs" />
     <Compile Include="Metadata\SecurableClassInfo.cs" />
-    <Compile Include="Metadata\SecurityMetadataLocalizationSchema.cs" />
-    <Compile Include="Metadata\SecurityMetadataSchema.cs" />
+    <Compile Include="Schemas\SecurityMetadataLocalizationSchema.cs" />
+    <Compile Include="Schemas\SecurityMetadataSchema.cs" />
     <Compile Include="Metadata\StatePropertyInfo.cs" />
     <Compile Include="Metadata\StatePropertyReflector.cs" />
     <Compile Include="NullPrincipalProvider.cs" />
@@ -170,7 +170,7 @@
       <SubType>
       </SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Metadata\SecurityMetadata.xsd">
+    <EmbeddedResource Include="Schemas\SecurityMetadata.xsd">
       <SubType>
       </SubType>
     </EmbeddedResource>

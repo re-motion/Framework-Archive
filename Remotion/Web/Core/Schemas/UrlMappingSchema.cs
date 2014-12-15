@@ -14,10 +14,12 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
+using Remotion.Web.ExecutionEngine.UrlMapping;
 using Remotion.Xml;
 
-namespace Remotion.Web.ExecutionEngine.UrlMapping
+namespace Remotion.Web.Schemas
 {
 
 public class UrlMappingSchema: SchemaLoaderBase
