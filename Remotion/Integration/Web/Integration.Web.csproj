@@ -79,6 +79,10 @@
       <Project>{9b6f6d1a-a7ea-4ee8-b36e-e31cf7e518e3}</Project>
       <Name>Web.Security</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Domain\Integration.Domain.csproj">
+      <Project>{98969947-cafa-4dc3-8c9c-c5d8fea6ce17}</Project>
+      <Name>Integration.Domain</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
