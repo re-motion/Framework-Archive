@@ -63,10 +63,6 @@
     <None Include="FacetManifest.xml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\ObjectBinding\Web.Validation\ObjectBinding.Web.Validation.csproj">
-      <Project>{1abecbff-e3bc-4d02-af23-52094cee41de}</Project>
-      <Name>ObjectBinding.Web.Validation</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\ObjectBinding\Web\ObjectBinding.Web.csproj">
       <Project>{390fbb93-a757-47a7-b769-a64a7465ff84}</Project>
       <Name>ObjectBinding.Web</Name>
