@@ -84,6 +84,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="FacetManifest.xml" />
     <Content Include="Test HTML\AclExpansionTest.css" />
     <Content Include="Test HTML\AclExpansionTest.htm" />
   </ItemGroup>

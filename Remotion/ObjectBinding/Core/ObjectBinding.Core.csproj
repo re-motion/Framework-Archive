@@ -382,6 +382,9 @@
   <ItemGroup>
     <None Include="Doc\include\Remotion.ObjectBinding.NamespaceDoc.xml" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="FacetManifest.xml" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>

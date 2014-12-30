@@ -184,7 +184,9 @@
     <None Include="doc\include\Reflection\TypesafeInvoker.xml" />
     <None Include="doc\include\Utilities\WorkContext.xml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="FacetManifest.xml" />
+  </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>

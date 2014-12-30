@@ -162,6 +162,9 @@
       <Link>Remotion LGPL.licenseheader</Link>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="FacetManifest.xml" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>

@@ -71,6 +71,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Default.aspx" />
+    <Content Include="FacetManifest.xml" />
     <Content Include="res\Themes\ClassicBlue\Image\ApplyButton.gif" />
     <Content Include="res\Themes\Legacy\Image\ApplyButton.gif" />
     <Content Include="res\Themes\NovaBlue\Image\ApplyButton.gif" />
