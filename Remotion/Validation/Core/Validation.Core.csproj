@@ -39,7 +39,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="FluentValidation">
-      <HintPath>..\..\..\prereq\Assemblies\FluentValidation-5.0\net-4.0\FluentValidation.dll</HintPath>
+      <HintPath>..\..\..\packages\FluentValidation-Signed.5.0.0.1\lib\Net40\FluentValidation.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System" />
@@ -157,6 +158,7 @@
     <None Include="..\..\Remotion LGPL.licenseheader">
       <Link>Remotion LGPL.licenseheader</Link>
     </None>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core\Core.Core.csproj">

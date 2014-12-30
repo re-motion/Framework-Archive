@@ -37,9 +37,9 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="FluentValidation, Version=0.0.0.0, Culture=neutral, PublicKeyToken=fee00910d6e5f53b, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\prereq\Assemblies\FluentValidation-5.0\net-4.0\FluentValidation.dll</HintPath>
+    <Reference Include="FluentValidation">
+      <HintPath>..\..\..\packages\FluentValidation-Signed.5.0.0.1\lib\Net40\FluentValidation.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="log4net">
       <HintPath>..\..\..\prereq\Assemblies\log4net-1.2\net-4.0 (Client Profile)\log4net.dll</HintPath>
@@ -145,6 +145,7 @@
     <None Include="..\..\Remotion LGPL.licenseheader">
       <Link>Remotion LGPL.licenseheader</Link>
     </None>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="TestDomain\Resources\CustomerMixin.resx">
