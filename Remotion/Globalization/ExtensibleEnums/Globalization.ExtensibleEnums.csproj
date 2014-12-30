@@ -53,6 +53,7 @@
     <Compile Include="..\..\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
+    <Compile Include="EnsureGlobalizationSupportForExtensibleEnumsAttribute.cs" />
     <Compile Include="Implementation\CompoundEnumerationGlobalizationService.cs" />
     <Compile Include="Implementation\ResourceManagerBasedExtensibleEnumGlobalizationService.cs" />
     <Compile Include="ExtensibleEnumGlobalizationServiceExtensions.cs" />
@@ -90,7 +91,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="FacetManifest.xml" />
+    <None Include="FacetManifest.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

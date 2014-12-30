@@ -96,7 +96,7 @@
     <None Include="doc\include\Remotion.ExtensibleEnums.NamespaceDoc.xml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="FacetManifest.xml" />
+    <None Include="FacetManifest.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

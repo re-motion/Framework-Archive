@@ -52,15 +52,21 @@
     <None Include="..\..\..\remotion.snk">
       <Link>remotion.snk</Link>
     </None>
-    <None Include="..\..\Build\NuSpec\TemplateSharedForWeb.nuspec">
-      <Link>TemplateSharedForWeb.nuspec</Link>
+    <None Include="..\..\Build\NuSpec\TemplateShared.nuspec">
+      <Link>TemplateShared.nuspec</Link>
     </None>
     <None Include="..\..\Remotion LGPL.licenseheader">
       <Link>Remotion LGPL.licenseheader</Link>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="FacetManifest.xml" />
+    <None Include="FacetManifest.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Web\Core\Web.Core.csproj">
+      <Project>{df8ba786-9679-4879-8757-16ae2709d83a}</Project>
+      <Name>Web.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

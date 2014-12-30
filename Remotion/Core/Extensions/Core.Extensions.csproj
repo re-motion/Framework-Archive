@@ -185,7 +185,7 @@
     <None Include="doc\include\Utilities\WorkContext.xml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="FacetManifest.xml" />
+    <None Include="FacetManifest.xml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
