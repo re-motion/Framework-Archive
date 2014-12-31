@@ -381,6 +381,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{8C1706
 		.nuget\packages.config = .nuget\packages.config
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.Development.WebTesting.WebDriver", "Remotion\Web\Development.WebTesting.WebDriver\Web.Development.WebTesting.WebDriver.csproj", "{8E332462-ED27-4D67-A9B4-36DB4CAD844D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -1393,6 +1395,14 @@ Global
 		{5952119C-365A-4614-BD29-58EAB1139438}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5952119C-365A-4614-BD29-58EAB1139438}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{5952119C-365A-4614-BD29-58EAB1139438}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{8E332462-ED27-4D67-A9B4-36DB4CAD844D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8E332462-ED27-4D67-A9B4-36DB4CAD844D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8E332462-ED27-4D67-A9B4-36DB4CAD844D}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{8E332462-ED27-4D67-A9B4-36DB4CAD844D}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{8E332462-ED27-4D67-A9B4-36DB4CAD844D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8E332462-ED27-4D67-A9B4-36DB4CAD844D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8E332462-ED27-4D67-A9B4-36DB4CAD844D}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{8E332462-ED27-4D67-A9B4-36DB4CAD844D}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -1524,6 +1534,7 @@ Global
 		{6A1A04E3-5411-4F8C-BCB8-0FE00884DC5A} = {2E38AD70-ECDF-4722-981C-7388C446A514}
 		{AE475361-8DD6-4DAF-8691-5BB8850093FD} = {E1B271E4-22E6-4936-80A5-F0340AAB20A8}
 		{5952119C-365A-4614-BD29-58EAB1139438} = {41F62020-3A67-4A33-B82A-9442510269E3}
+		{8E332462-ED27-4D67-A9B4-36DB4CAD844D} = {2E32EB1E-B3AA-4ACF-BA20-EC6FD44CC05B}
 	EndGlobalSection
 	GlobalSection(TextTemplating) = postSolution
 		TextTemplating = 1
