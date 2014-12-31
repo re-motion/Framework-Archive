@@ -101,7 +101,10 @@
       <Project>{98E7F7AA-12B2-4A6B-8922-52C8E53B378E}</Project>
       <Name>TypePipe.Core</Name>
     </ProjectReference>
-    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\CommonServiceLocator.1.0\lib\NET35\Microsoft.Practices.ServiceLocation.dll</HintPath>
+    </Reference>
     <Reference Include="System">
       <Name>System</Name>
     </Reference>
@@ -375,6 +378,7 @@
     <EmbeddedResource Include="Design\BindableObject\VSObject_Class.bmp" />
     <EmbeddedResource Include="Design\BindableObject\VSObject_Namespace.bmp" />
     <EmbeddedResource Include="Design\BindableObject\VS_Search.bmp" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
