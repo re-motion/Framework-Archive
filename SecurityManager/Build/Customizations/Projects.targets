@@ -6,12 +6,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ReleaseProjectFiles Include="$(SolutionDirectory)\SecurityManager\AclTools.Expander\SecurityManager.AclTools.Expander.csproj" />
-    <ReleaseProjectFiles Include="$(SolutionDirectory)\SecurityManager\Clients.Web\SecurityManager.Clients.Web.csproj" />
+    <ReleaseProjectFiles Include="$(SolutionDirectory)\SecurityManager\AclTools.Expander\SecurityManager.AclTools.Expander.csproj"/>
+    <ReleaseProjectFiles Include="$(SolutionDirectory)\SecurityManager\Clients.Web\SecurityManager.Clients.Web.csproj"/>
     <ReleaseProjectFiles Include="$(SolutionDirectory)\SecurityManager\Core\SecurityManager.Core.csproj">
       <CreateDocumentationFile>True</CreateDocumentationFile>
     </ReleaseProjectFiles>
-    <ReleaseProjectFiles Include="$(SolutionDirectory)\SecurityManager\Metadata.Importer\SecurityManager.Metadata.Importer.csproj" />
+    <ReleaseProjectFiles Include="$(SolutionDirectory)\SecurityManager\Metadata.Importer\SecurityManager.Metadata.Importer.csproj"/>
     <UnitTestProjectFiles Include="$(SolutionDirectory)\SecurityManager\Core.UnitTests\SecurityManager.Core.UnitTests.csproj">
       <IsDatabaseTest>True</IsDatabaseTest>
       <TestingSetupBuildFile>$(TestingSetupBuildFile)</TestingSetupBuildFile>
