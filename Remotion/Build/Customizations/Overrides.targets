@@ -5,6 +5,7 @@
   <Target Name="BeforePrepareBuildProperties" BeforeTargets="PrepareBuildProperties">
     <PropertyGroup>
       <TempDirectory>$(TempDirectory)Remotion\</TempDirectory>
+      <OutputDirectory>$(OutputDirectory)Remotion\</OutputDirectory>
     </PropertyGroup>
   </Target>
 </Project>

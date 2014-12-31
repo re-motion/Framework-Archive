@@ -5,6 +5,7 @@
   <Target Name="BeforePrepareBuildProperties" BeforeTargets="PrepareBuildProperties">
     <PropertyGroup>
       <TempDirectory>$(TempDirectory)SecurityManager\</TempDirectory>
+      <OutputDirectory>$(OutputDirectory)SecurityManager\</OutputDirectory>
     </PropertyGroup>
   </Target>
 </Project>
