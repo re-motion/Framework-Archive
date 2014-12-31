@@ -31,6 +31,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <None Include="Customizations\Local\Overrides.Local.targets" />
     <None Include="Customizations\Local\Configuration.targets" />
     <None Include="Customizations\Overrides.targets" />
     <None Include="Customizations\Projects.targets">
@@ -38,6 +39,7 @@
     </None>
     <None Include="Customizations\Properties.targets" />
     <None Include="Customizations\Server\Configuration.targets" />
+    <None Include="Customizations\Server\Overrides.Server.targets" />
     <None Include="Customizations\Version.targets" />
     <None Include="NuSpec\TemplateSharedForMSBuildTask.nuspec" />
     <None Include="NuSpec\TemplateSharedForTool.nuspec" />
