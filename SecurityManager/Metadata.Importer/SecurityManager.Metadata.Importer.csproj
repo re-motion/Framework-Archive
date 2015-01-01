@@ -71,6 +71,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\Build\NuSpec\TemplateSharedForTool.nuspec">
+      <Link>TemplateSharedForTool.nuspec</Link>
+    </None>
     <None Include="..\SecurityManager AGPL.licenseheader">
       <Link>SecurityManager AGPL.licenseheader</Link>
     </None>
