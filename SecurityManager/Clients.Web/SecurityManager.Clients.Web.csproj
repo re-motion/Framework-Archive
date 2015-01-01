@@ -71,9 +71,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Default.aspx" />
-    <Content Include="..\Build\NuSpec\TemplateSharedForWebClient.nuspec">
+    <None Include="..\Build\NuSpec\TemplateSharedForWebClient.nuspec">
       <Link>TemplateSharedForWebClient.nuspec</Link>
-    </Content>
+    </None>
     <None Include="FacetManifest.xml" />
     <None Include="res\Themes\ClassicBlue\Image\ApplyButton.gif" />
     <None Include="res\Themes\Legacy\Image\ApplyButton.gif" />
