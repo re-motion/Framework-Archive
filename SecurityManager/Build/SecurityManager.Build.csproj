@@ -40,6 +40,7 @@
     <None Include="Customizations\Server\Overrides.Server.targets" />
     <None Include="Customizations\Version.targets" />
     <None Include="NuSpec\TemplateShared.nuspec" />
+    <None Include="NuSpec\TemplateSharedForWebClient.nuspec" />
     <None Include="packages.config" />
     <None Include="Remotion.build" />
     <None Include="Remotion.Local.build" />
