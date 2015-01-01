@@ -77,7 +77,7 @@
           Platforms=$(Platforms);
           DatabaseSystems=$(DatabaseSystems);
           Browsers=$(Browsers);
-          TestCategoriesToExclude=$(TestCategoriesToExclude)";
+          TestCategoriesToExclude=$(TestCategoriesToExclude);
       </BuildProperties>
     </PropertyGroup>
 
