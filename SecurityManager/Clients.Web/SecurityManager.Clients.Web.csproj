@@ -144,7 +144,7 @@
     <None Include="UI\SecurityManagerCurrentTenantControl.ascx" />
     <None Include="UI\SecurityManagerMasterPage.Master" />
     <None Include="UI\ErrorMessageControl.ascx" />
-    <None Include="SecurityManagerUrlMapping.xml">
+    <None Include="UrlMapping.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="res\Themes\ClassicBlue\Html\Style.css" />
