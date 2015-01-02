@@ -26,5 +26,7 @@
     <file src="Schemas*\*.xsd" target="schema" />
     <file src="Res\**\*" target="res" />
     <file src="$NuSpecFolder$Web.targets" target="build\$id$.targets" />
+    <file src="$NuSpecFolder$Install.ps1" target="tools" />
+    <file src="$NuSpecFolder$Uninstall.ps1" target="tools" />
   </files>
 </package>

@@ -1,31 +1,5 @@
 param($installPath, $toolsPath, $package, $project)
 
-function AddChildItem ($fileSystemItem, $projectItem)
-{
-  if ($fileSystemItem -eq $null)
-  {
-    return
-  }
-
-  if ($projectItem -eq $null)
-  {
-    return
-  }
-
-  if ($fileSystemItem -is [System.IO.DirectoryInfo])
-  {
-    $childProjectItem = $projectItem.ProjectItems.AddFolder($fileSystemItem.Name)
-    foreach ($childItem in Get-ChildItem $fileSystemItem.FullName)
-    {
-      AddChildItem $childItem $childProjectItem
-    }
-  }
-  else
-  {
-    $projectItem.ProjectItems.AddFromFile($fileSystemItem.FullName) > $null
-  }
-}
-
 function GetProjectTypeGuids($project)
 {
   $solutionComObject = [Microsoft.VisualStudio.Shell.Package]::GetGlobalService([Microsoft.VisualStudio.Shell.Interop.IVsSolution])
@@ -57,31 +31,28 @@ if ($projectTypeGuids -notcontains $webApplicationProjectTypeGuid)
   return
 }
 
-write-host Installing resource files...
-
 $projectFolder = [System.IO.Path]::GetDirectoryName($project.FullName)
 $resProjectFolder = [System.IO.Path]::Combine($projectFolder, 'res')
 $packageID = $package.Id
 $resPackageFolder =  [System.IO.Path]::Combine($installPath, 'res')
 
-New-Item -Force -ItemType directory -Path $resProjectFolder > $null
-$resProjectItem = $project.ProjectItems.AddFromDirectory($resProjectFolder)
+$resProjectItem = $project.ProjectItems| Where-Object { $_.Name -eq 'res' }
+if ($resProjectItem -ne $null)
+{
+  $resPackageProjectItem = $resProjectItem.ProjectItems | Where-Object { $_.Name -eq $packageID }
+  if ($resPackageProjectItem -ne $null)
+  {
+    $resPackageProjectItem.Delete()
+  }
 
-$existingResPackageProjectItem = $resProjectItem.ProjectItems | Where-Object { $_.Name -eq $packageID }
-if ($existingResPackageProjectItem -ne $null)
-{
-  $existingResPackageProjectItem.Delete()
-}
-$existingResPackageFolderInProject = [System.IO.Path]::Combine($resProjectFolder, $packageID)
-if (Test-Path -Path $existingResPackageFolderInProject)
-{
-  Remove-Item -Recurse -Path $existingResPackageFolderInProject
-}
-
-$packageProjectItem = $resProjectItem.ProjectItems.AddFolder($packageID)
-foreach ($childItem in Get-ChildItem $resPackageFolder)
-{
-  AddChildItem $childItem $packageProjectItem
+  if ($resProjectItem.ProjectItems.Count -eq 0)
+  {
+    $resProjectItem.Delete()
+  }
 }
 
-write-host Resource files have been installed.
+$resPackageFolderInProject = [System.IO.Path]::Combine($resProjectFolder, $packageID)
+if (Test-Path -Path $resPackageFolderInProject)
+{
+  Remove-Item -Recurse -Path $resPackageFolderInProject
+}
