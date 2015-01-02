@@ -58,6 +58,7 @@
     <Folder Include="NuSpec\bin\Release\" />
     <Folder Include="NuSpec\res\" />
     <Folder Include="NuSpec\schemas\" />
+    <Folder Include="NuSpec\UI\" />
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
