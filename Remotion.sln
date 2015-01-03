@@ -55,11 +55,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_BuildFiles", "_BuildFiles"
 		Build\Remotion.ReleaseNotes.include.build = Build\Remotion.ReleaseNotes.include.build
 		build\Remotion.Server.build = build\Remotion.Server.build
 		Build\Remotion.Server.Extensions.targets = Build\Remotion.Server.Extensions.targets
-		Build\Remotion.Server.Jira.targets = Build\Remotion.Server.Jira.targets
 		Build\Remotion.Server.Overrides.targets = Build\Remotion.Server.Overrides.targets
-		Build\Remotion.Server.Subversion.targets = Build\Remotion.Server.Subversion.targets
-		Build\Remotion.Server.VersionNumber.targets = Build\Remotion.Server.VersionNumber.targets
 		build\SecureFileLoggerRules.rules = build\SecureFileLoggerRules.rules
+		Build\Server.Jira.targets = Build\Server.Jira.targets
+		Build\Server.Subversion.targets = Build\Server.Subversion.targets
+		Build\Server.UpdateAssemblyInfos.targets = Build\Server.UpdateAssemblyInfos.targets
+		Build\Server.VersionNumbers.targets = Build\Server.VersionNumbers.targets
 		Build\TestingSetupForBrowser.targets = Build\TestingSetupForBrowser.targets
 		Build\TestingSetupForDatabase.targets = Build\TestingSetupForDatabase.targets
 	EndProjectSection
