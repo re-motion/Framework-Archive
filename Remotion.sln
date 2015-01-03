@@ -45,6 +45,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_BuildFiles", "_BuildFiles"
 		Generate-Snk.cmd = Generate-Snk.cmd
 		Build\GlobalFacetManifest.xml = Build\GlobalFacetManifest.xml
 		How to build.txt = How to build.txt
+		Build\Local.Version.props = Build\Local.Version.props
 		NuGet.config = NuGet.config
 		build\Remotion.build = build\Remotion.build
 		build\Remotion.DependDB.include.build = build\Remotion.DependDB.include.build
