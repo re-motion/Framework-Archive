@@ -16,29 +16,48 @@
 // 
 
 using System;
-using JetBrains.Annotations;
-using Remotion.Web.Contract.DiagnosticMetadata;
 using Remotion.Web.Development.WebTesting;
-using Remotion.Web.Development.WebTesting.ControlObjects;
 
 namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
 {
   /// <summary>
-  /// Control object representing an arbitrary re-motion-based business object control.
+  /// Defines a list's column.
   /// </summary>
-  public abstract class BocControlObject : WebFormsControlObjectWithDiagnosticMetadata
+  public class BocListColumnDefinition<TRowControlObject, TCellControlObject>
+      where TRowControlObject : ControlObject
+      where TCellControlObject : ControlObject
   {
-    protected BocControlObject ([NotNull] ControlObjectContext context)
-        : base (context)
+    private readonly string _itemID;
+    private readonly int _index;
+    private readonly string _title;
+    private readonly bool _hasDiagnosticMetadata;
+
+    public BocListColumnDefinition (string itemID, int index, string title, bool hasDiagnosticMetadata)
     {
+      _itemID = itemID;
+      _index = index;
+      _title = title;
+      _hasDiagnosticMetadata = hasDiagnosticMetadata;
     }
 
-    /// <summary>
-    /// Returns whether the control is read-only.
-    /// </summary>
-    public bool IsReadOnly ()
+    public string ItemID
     {
-      return Scope[DiagnosticMetadataAttributes.IsReadOnly] == "true";
+      get { return _itemID; }
+    }
+
+    public int Index
+    {
+      get { return _index; }
+    }
+
+    public string Title
+    {
+      get { return _title; }
+    }
+
+    public bool HasDiagnosticMetadata
+    {
+      get { return _hasDiagnosticMetadata; }
     }
   }
 }

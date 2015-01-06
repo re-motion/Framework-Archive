@@ -17,16 +17,17 @@
 
 using System;
 using System.Collections.Generic;
-using System.Web.UI.WebControls;
+using System.Linq;
 using Coypu;
 using JetBrains.Annotations;
 using Remotion.Utilities;
+using Remotion.Web.Development.WebTesting.Utilities;
 using Remotion.Web.Development.WebTesting.WebTestActions;
 
 namespace Remotion.Web.Development.WebTesting.ControlObjects
 {
   /// <summary>
-  /// Control object for <see cref="DropDownList"/>.
+  /// Control object for <see cref="T:System.Web.UI.WebControls.DropDownList"/>.
   /// </summary>
   public class DropDownListControlObject
       : WebFormsControlObject,
@@ -40,10 +41,28 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     {
     }
 
+    /// <summary>
+    /// Returns the currently selected option. Note that the <see cref="OptionDefinition.Index"/> is set to -1.
+    /// </summary>
+    public OptionDefinition GetSelectedOption ()
+    {
+      return Scope.GetSelectedOption();
+    }
+
+    /// <summary>
+    /// Returns all available options. 
+    /// Warning: this method does not wait until "the element" is available but detects all available options at the moment of calling.
+    /// </summary>
+    public IReadOnlyList<OptionDefinition> GetOptionDefinitions ()
+    {
+      return RetryUntilTimeout.Run (
+          () => Scope.FindAllCss ("option").Select ((optionScope, i) => new OptionDefinition (optionScope.Value, i + 1, optionScope.Text)).ToList());
+    }
+
     /// <inheritdoc/>
     public string GetText ()
     {
-      return Scope.GetSelectedOptionText();
+      return Scope.GetSelectedOption().Text;
     }
 
     /// <inheritdoc/>

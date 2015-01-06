@@ -1,4 +1,4 @@
-﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
+// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -16,32 +16,43 @@
 // 
 
 using System;
-using Coypu;
 using JetBrains.Annotations;
+using Remotion.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.ControlObjects
 {
   /// <summary>
-  /// Control object for <see cref="T:System.Web.UI.WebControls.Label"/> and all its derivatives (e.g.
-  /// <see cref="T:Remotion.Web.UI.Controls.SmartLabel"/>).
+  /// Defines a tab strip's tab.
   /// </summary>
-  public class LabelControlObject : WebFormsControlObject, IControlObjectWithText
+  public class WebTabStripTabDefinition
   {
-    public LabelControlObject ([NotNull] ControlObjectContext context)
-        : base (context)
+    private readonly string _itemID;
+    private readonly int _index;
+    private readonly string _title;
+
+    public WebTabStripTabDefinition ([NotNull] string itemID, int index, [NotNull] string title)
     {
+      ArgumentUtility.CheckNotNullOrEmpty ("itemID", itemID);
+      ArgumentUtility.CheckNotNullOrEmpty ("title", title);
+
+      _itemID = itemID;
+      _index = index;
+      _title = title;
     }
 
-    /// <inheritdoc/>
-    public string GetText ()
+    public string ItemID
     {
-      return Scope.Text.Trim();
+      get { return _itemID; }
     }
 
-    /// <inheritdoc/>
-    protected override ICompletionDetectionStrategy GetDefaultCompletionDetectionStrategy (ElementScope scope)
+    public int Index
     {
-      throw new NotSupportedException ("The LabelControlObject does not support any interaction.");
+      get { return _index; }
+    }
+
+    public string Title
+    {
+      get { return _title; }
     }
   }
 }

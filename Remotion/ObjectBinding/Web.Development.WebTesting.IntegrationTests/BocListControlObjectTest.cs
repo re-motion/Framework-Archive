@@ -16,6 +16,7 @@
 // 
 
 using System;
+using System.Linq;
 using Coypu;
 using NUnit.Framework;
 using Remotion.ObjectBinding.Web.Development.WebTesting.FluentControlSelection;
@@ -107,14 +108,37 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     }
 
     [Test]
-    public void TestGetColumnTitles ()
+    public void TestIsReadOnly ()
+    {
+      var home = Start();
+
+      var bocList = home.GetList().ByLocalID ("JobList_Normal");
+      Assert.That (bocList.IsReadOnly(), Is.False);
+
+      bocList = home.GetList().ByLocalID ("JobList_ReadOnly");
+      Assert.That (bocList.IsReadOnly(), Is.True);
+    }
+
+    [Test]
+    public void TestGetColumnDefinitions ()
     {
       var home = Start();
 
       var bocList = home.GetList().ByLocalID ("JobList_Normal");
       Assert.That (
-          bocList.GetColumnTitles(),
+          bocList.GetColumnDefinitions().Select(cd => cd.Title),
           Is.EquivalentTo (new[] { "I_ndex", null, null, "Command", "Menu", "Title", "StartDate", "EndDate", "DisplayName", "TitleWithCmd" }));
+    }
+
+    [Test]
+    public void TestGetDisplayedRows ()
+    {
+      var home = Start();
+
+      var bocList = home.GetList().ByLocalID ("JobList_Normal");
+      var rows = bocList.GetDisplayedRows();
+      Assert.That (rows.Count, Is.EqualTo (2));
+      Assert.That (rows[1].GetCell ("Title").GetText(), Is.EqualTo ("CEO"));
     }
 
     [Test]
@@ -247,7 +271,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var row = bocList.GetRowWhere ("Title", "Developer");
       Assert.That (row.GetCell ("DisplayName").GetText(), Is.EqualTo ("Developer"));
 
-      var columnTitles = bocList.GetColumnTitles();
+      var columnTitles = bocList.GetColumnDefinitions().Select(cd => cd.Title);
       Assert.That (columnTitles, Is.EquivalentTo (new[] { "Title", "StartDate", "EndDate", "DisplayName" }));
     }
 

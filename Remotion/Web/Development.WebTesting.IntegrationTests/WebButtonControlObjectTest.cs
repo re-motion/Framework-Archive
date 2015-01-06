@@ -110,10 +110,19 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     }
 
     [Test]
+    public void TestGetText ()
+    {
+      var home = Start();
+
+      var webButton = home.GetWebButton().ByLocalID ("MyWebButton1Sync");
+      Assert.That (webButton.GetText(), Is.EqualTo ("SyncButton"));
+    }
+
+    [Test]
     public void TestIsEnabled ()
     {
       var home = Start();
-      
+
       var webButton = home.GetWebButton().ByLocalID ("MyWebButton1Sync");
       Assert.That (webButton.IsEnabled(), Is.True);
 

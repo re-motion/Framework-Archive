@@ -18,6 +18,7 @@
 using System;
 using Coypu;
 using NUnit.Framework;
+using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects;
 using Remotion.ObjectBinding.Web.Development.WebTesting.FluentControlSelection;
 using Remotion.Web.Development.WebTesting;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
@@ -105,6 +106,18 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
       var bocAutoComplete = home.GetAutoComplete().ByDomainProperty ("Partner", "Remotion.ObjectBinding.Sample.Person, Remotion.ObjectBinding.Sample");
       Assert.That (bocAutoComplete.Scope.Id, Is.EqualTo ("body_DataEditControl_PartnerField_Normal"));
+    }
+
+    [Test]
+    public void TestIsReadOnly ()
+    {
+      var home = Start();
+
+      var bocAutoComplete = home.GetAutoComplete().ByLocalID ("PartnerField_Normal");
+      Assert.That (bocAutoComplete.IsReadOnly(), Is.False);
+
+      bocAutoComplete = home.GetAutoComplete().ByLocalID ("PartnerField_ReadOnly");
+      Assert.That (bocAutoComplete.IsReadOnly(), Is.True);
     }
 
     [Test]
@@ -226,6 +239,54 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       Assert.That (home.Scope.FindIdEndingWith ("ActionPerformedSenderLabel").Text, Is.EqualTo ("PartnerField_ReadOnly_AlternativeRendering"));
       Assert.That (home.Scope.FindIdEndingWith ("ActionPerformedLabel").Text, Is.EqualTo ("MenuItemClick"));
       Assert.That (home.Scope.FindIdEndingWith ("ActionPerformedParameterLabel").Text, Is.EqualTo ("OptCmd2|My menu command 2"));
+    }
+
+    [Test]
+    public void TestGetSearchServiceResults ()
+    {
+      var home = Start();
+
+      var bocAutoComplete = home.GetAutoComplete().ByLocalID ("PartnerField_Normal");
+
+      var searchResults = bocAutoComplete.GetSearchServiceResults ("D", 1);
+      Assert.That (searchResults.Count, Is.EqualTo (1));
+      Assert.That (searchResults[0].UniqueIdentifier, Is.EqualTo ("a2752869-e46b-4cfa-b89f-0b824e42b250"));
+      Assert.That (searchResults[0].DisplayName, Is.EqualTo ("D, "));
+      Assert.That (searchResults[0].IconUrl, Is.EqualTo ("/Images/Remotion.ObjectBinding.Sample.Person.gif"));
+
+      searchResults = bocAutoComplete.GetSearchServiceResults ("D", 5);
+      Assert.That (searchResults.Count, Is.EqualTo (3));
+      Assert.That (searchResults[0].DisplayName, Is.EqualTo ("D, "));
+
+      searchResults = bocAutoComplete.GetSearchServiceResults ("unexistentValue", 5);
+      Assert.That (searchResults.Count, Is.EqualTo (0));
+    }
+
+    [Test]
+    public void TestGetExactSearchServiceResult ()
+    {
+      var home = Start();
+
+      var bocAutoComplete = home.GetAutoComplete().ByLocalID ("PartnerField_Normal");
+
+      var searchResult = bocAutoComplete.GetExactSearchServiceResult ("D, ");
+      Assert.That (searchResult.UniqueIdentifier, Is.EqualTo ("a2752869-e46b-4cfa-b89f-0b824e42b250"));
+      Assert.That (searchResult.DisplayName, Is.EqualTo ("D, "));
+      Assert.That (searchResult.IconUrl, Is.EqualTo ("/Images/Remotion.ObjectBinding.Sample.Person.gif"));
+
+      searchResult = bocAutoComplete.GetExactSearchServiceResult ("D");
+      Assert.That (searchResult, Is.Null);
+    }
+
+    [Test]
+    [ExpectedException (typeof (WebServiceExceutionException))]
+    public void TestGetSearchServiceResultsException ()
+    {
+      var home = Start();
+
+      var bocAutoComplete = home.GetAutoComplete().ByLocalID ("PartnerField_Normal");
+
+      bocAutoComplete.GetSearchServiceResults ("throw", 1);
     }
 
     private RemotionPageObject Start ()

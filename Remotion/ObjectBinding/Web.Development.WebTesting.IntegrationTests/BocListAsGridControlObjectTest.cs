@@ -16,6 +16,7 @@
 // 
 
 using System;
+using System.Linq;
 using Coypu;
 using NUnit.Framework;
 using Remotion.ObjectBinding.Web.Development.WebTesting.FluentControlSelection;
@@ -107,14 +108,34 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     }
 
     [Test]
-    public void TestGetColumnTitles ()
+    public void TestIsReadOnly ()
+    {
+      var home = Start();
+
+      var bocList = home.GetListAsGrid().ByLocalID ("JobList_Normal");
+      Assert.That (bocList.IsReadOnly(), Is.False);
+    }
+
+    [Test]
+    public void TestGetColumnDefinitions ()
     {
       var home = Start();
 
       var bocList = home.GetListAsGrid().ByLocalID ("JobList_Normal");
       Assert.That (
-          bocList.GetColumnTitles(),
+          bocList.GetColumnDefinitions().Select(cd => cd.Title),
           Is.EquivalentTo (new[] { "I_ndex", null, "Command", "Menu", "Title", "StartDate", "EndDate", "DisplayName", "TitleWithCmd" }));
+    }
+
+    [Test]
+    public void TestGetDisplayedRows ()
+    {
+      var home = Start();
+
+      var bocList = home.GetListAsGrid().ByLocalID ("JobList_Normal");
+      var rows = bocList.GetDisplayedRows();
+      Assert.That (rows.Count, Is.EqualTo (5));
+      Assert.That (rows[1].GetCell ("DisplayName").GetText(), Is.EqualTo ("CEO"));
     }
 
     [Test]

@@ -44,9 +44,9 @@
     <AssemblyOriginatorKeyFile>..\..\..\remotion.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Coypu, Version=2.6.0.1, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Coypu, Version=2.7.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\Coypu.2.6.1\lib\net40\Coypu.dll</HintPath>
+      <HintPath>..\..\..\packages\Coypu.2.7.0\lib\net40\Coypu.dll</HintPath>
     </Reference>
     <Reference Include="log4net, Version=1.2.11.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -56,7 +56,6 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.Web" />
     <Reference Include="WebDriver, Version=2.44.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\packages\Selenium.WebDriver.2.44.0\lib\net40\WebDriver.dll</HintPath>
@@ -103,6 +102,7 @@
     <Compile Include="ControlObjects\BocListAsGridControlObject.cs" />
     <Compile Include="ControlObjects\BocListAsGridRowControlObject.cs" />
     <Compile Include="ControlObjects\BocListCellFunctionality.cs" />
+    <Compile Include="ControlObjects\BocListColumnDefinition.cs" />
     <Compile Include="ControlObjects\BocListControlObjectBase.cs" />
     <Compile Include="ControlObjects\BocListRowFunctionality.cs" />
     <Compile Include="ControlObjects\BocReferenceValueControlObject.cs" />
@@ -118,6 +118,7 @@
     <Compile Include="ControlObjects\BocListControlObject.cs" />
     <Compile Include="ControlObjects\BocTreeViewNodeControlObject.cs" />
     <Compile Include="ControlObjects\IBocListRowControlObjectHostAccessor.cs" />
+    <Compile Include="ControlObjects\SearchServiceResultItem.cs" />
     <Compile Include="ControlObjects\Selectors\BocDateTimeValueSelector.cs" />
     <Compile Include="ControlObjects\Selectors\BocEnumValueSelector.cs" />
     <Compile Include="ControlObjects\Selectors\BocCheckBoxSelector.cs" />
@@ -131,6 +132,7 @@
     <Compile Include="ControlObjects\Selectors\BocAutoCompleteReferenceValueSelector.cs" />
     <Compile Include="ControlObjects\BocControlObject.cs" />
     <Compile Include="ControlObjects\Selectors\BocControlSelectorBase.cs" />
+    <Compile Include="ControlObjects\WebServiceExceutionException.cs" />
     <Compile Include="ControlSelection\IDisplayNameControlSelector.cs" />
     <Compile Include="ControlSelection\IDomainPropertyControlSelector.cs" />
     <Compile Include="ControlSelection\DisplayNameControlSelectionCommand.cs" />
