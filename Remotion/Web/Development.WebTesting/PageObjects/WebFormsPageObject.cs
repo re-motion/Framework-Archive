@@ -21,26 +21,33 @@ using JetBrains.Annotations;
 namespace Remotion.Web.Development.WebTesting.PageObjects
 {
   /// <summary>
-  /// Page object representing an arbitrary re-motion-based page.
+  /// Page object representing an arbitrary ASP.NET WebForms page.
   /// </summary>
-  public class RemotionPageObject : PageObject
+  public class WebFormsPageObject : PageObject
   {
     // ReSharper disable once MemberCanBeProtected.Global
-    public RemotionPageObject ([NotNull] PageObjectContext context)
+    public WebFormsPageObject ([NotNull] PageObjectContext context)
         : base (context)
     {
     }
 
-    /// <inheritdoc/>
-    public override ICompletionDetectionStrategy PostBackCompletionDetectionStrategy
+    /// <summary>
+    /// Returns the completion detection strategy when a control object's action is navigating to another page.
+    /// </summary>
+    public virtual ICompletionDetectionStrategy NavigationCompletionDetectionStrategy
     {
-      get { return Wxe.PostBackCompleted; }
+      get { throw new NotSupportedException ("WebFormsPageObject does not support deterministic waiting for navigation completion yet."); }
     }
 
-    /// <inheritdoc/>
-    public override ICompletionDetectionStrategy NavigationCompletionDetectionStrategy
+    /// <summary>
+    /// Returns the completion detection strategy when a control object's action is triggering a post back.
+    /// </summary>
+    public virtual ICompletionDetectionStrategy PostBackCompletionDetectionStrategy
     {
-      get { return Wxe.Reset; }
+      get
+      {
+        throw new NotSupportedException ("WebFormsPageObject does not support deterministic waiting for asynchronous post back completion yet.");
+      }
     }
   }
 }
