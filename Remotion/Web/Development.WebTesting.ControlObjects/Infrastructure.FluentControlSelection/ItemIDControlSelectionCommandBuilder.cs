@@ -18,35 +18,36 @@
 using System;
 using JetBrains.Annotations;
 using Remotion.Utilities;
+using Remotion.Web.Development.WebTesting.ControlSelection;
 
-namespace Remotion.Web.Development.WebTesting.ControlSelection
+// ReSharper disable once CheckNamespace (assembly should have a more general name like ".Remotion", however, we have not found a good name yet)
+namespace Remotion.Web.Development.WebTesting.FluentControlSelection
 {
   /// <summary>
-  /// Represents a control selection, selecting the control of the given <typeparamref name="TControlObject"/> type bearing the given item ID
-  /// within the given scope.
+  /// Selection command builder, preparing a <see cref="ItemIDControlSelectionCommand{TControlObject}"/>.
   /// </summary>
+  /// <typeparam name="TControlSelector">The <see cref="IItemIDControlSelector{TControlObject}"/> to use.</typeparam>
   /// <typeparam name="TControlObject">The specific <see cref="ControlObject"/> type to select.</typeparam>
-  public class ItemIDControlSelectionCommand<TControlObject> : IControlSelectionCommand<TControlObject>
+  public class ItemIDControlSelectionCommandBuilder<TControlSelector, TControlObject>
+      : IControlSelectionCommandBuilder<TControlSelector, TControlObject>
+      where TControlSelector : IItemIDControlSelector<TControlObject>
       where TControlObject : ControlObject
   {
-    private readonly IItemIDControlSelector<TControlObject> _controlSelector;
     private readonly string _itemID;
 
-    public ItemIDControlSelectionCommand (
-        [NotNull] IItemIDControlSelector<TControlObject> controlSelector,
-        [NotNull] string itemID)
+    public ItemIDControlSelectionCommandBuilder ([NotNull] string itemID)
     {
-      ArgumentUtility.CheckNotNull ("controlSelector", controlSelector);
       ArgumentUtility.CheckNotNullOrEmpty ("itemID", itemID);
 
-      _controlSelector = controlSelector;
       _itemID = itemID;
     }
 
     /// <inheritdoc/>
-    public TControlObject Select (ControlSelectionContext context)
+    public IControlSelectionCommand<TControlObject> Using (TControlSelector controlSelector)
     {
-      return _controlSelector.SelectPerItemID (context, _itemID);
+      ArgumentUtility.CheckNotNull ("controlSelector", controlSelector);
+
+      return new ItemIDControlSelectionCommand<TControlObject> (controlSelector, _itemID);
     }
   }
 }
