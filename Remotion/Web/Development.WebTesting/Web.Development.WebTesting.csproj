@@ -219,7 +219,7 @@
       <Link>remotion.snk</Link>
     </None>
     <None Include="Web.Development.WebTesting.nuspec" />
-    <Content Include="_WebTestDeveloperTools\WebTestingFramework-WebTestDeveloperTools-TampermonkeyScript.js" />
+    <None Include="_WebTestDeveloperTools\WebTestingFramework-WebTestDeveloperTools-TampermonkeyScript.js" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Remotion LGPL.licenseheader">
