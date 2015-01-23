@@ -21,6 +21,7 @@ using NUnit.Framework;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects;
 using Remotion.ObjectBinding.Web.Development.WebTesting.FluentControlSelection;
 using Remotion.Web.Development.WebTesting;
+using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
 using Remotion.Web.Development.WebTesting.PageObjects;
 
@@ -289,7 +290,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       bocAutoComplete.GetSearchServiceResults ("throw", 1);
     }
 
-    private RemotionPageObject Start ()
+    private WxePageObject Start ()
     {
       return Start ("BocAutoCompleteReferenceValue");
     }

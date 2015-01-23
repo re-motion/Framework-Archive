@@ -17,9 +17,12 @@
 
 using System;
 using NUnit.Framework;
-using Remotion.Web.Development.WebTesting.ControlObjects;
+using Remotion.Web.Development.WebTesting.CompletionDetectionStrategies;
+using Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectionStrategies;
+using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
 using Remotion.Web.Development.WebTesting.PageObjects;
+using Remotion.Web.Development.WebTesting.WebFormsControlObjects;
 
 namespace Remotion.Web.Development.WebTesting.IntegrationTests
 {
@@ -84,7 +87,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       AssertPostBackSequenceNumber (frameLabel, 1);
 
       var loadWindowFunctionInNewWindowButton = home.GetWebButton().ByID ("LoadWindowFunctionInNewWindow");
-      var window = loadWindowFunctionInNewWindowButton.Click().ExpectNewPopupWindow<RemotionPageObject> ("MyWindow");
+      var window = loadWindowFunctionInNewWindowButton.Click().ExpectNewPopupWindow<WxePageObject> ("MyWindow");
       var windowLabel = window.GetLabel().ByID ("WindowLabel");
       AssertPostBackSequenceNumber (windowLabel, 1);
       AssertPostBackSequenceNumber (frameLabel, 1);
@@ -102,7 +105,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       AssertPostBackSequenceNumber (mainLabel, 3);
 
       var loadWindowFunctionInNewWindowInFrameButton = home.Frame.GetWebButton().ByID ("LoadWindowFunctionInNewWindow");
-      loadWindowFunctionInNewWindowInFrameButton.Click().ExpectNewPopupWindow<RemotionPageObject> ("MyWindow");
+      loadWindowFunctionInNewWindowInFrameButton.Click().ExpectNewPopupWindow<WxePageObject> ("MyWindow");
       AssertPostBackSequenceNumber (windowLabel, 1);
       AssertPostBackSequenceNumber (frameLabel, 2);
       AssertPostBackSequenceNumber (mainLabel, 3);
@@ -134,7 +137,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
 
       // Ensure that page can still be used
       var navigatieAwayButton = home.GetWebButton().ByID ("NavigateAway");
-      var defaultPage = navigatieAwayButton.Click().Expect<RemotionPageObject>();
+      var defaultPage = navigatieAwayButton.Click().Expect<WxePageObject>();
       Assert.That (defaultPage.GetTitle(), Is.EqualTo ("Web.Development.WebTesting.TestSite"));
     }
 
@@ -158,7 +161,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
 
       // Ensure that page can still be used
       var navigatieAwayButton = home.GetWebButton().ByID ("NavigateAway");
-      var defaultPage = navigatieAwayButton.Click (Opt.ContinueImmediately().AcceptModalDialog()).Expect<RemotionPageObject>();
+      var defaultPage = navigatieAwayButton.Click (Opt.ContinueImmediately().AcceptModalDialog()).Expect<WxePageObject>();
       Assert.That (defaultPage.GetTitle(), Is.EqualTo ("Web.Development.WebTesting.TestSite"));
     }
 
@@ -169,8 +172,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
 
     private MultiWindowTestPageObject Start ()
     {
-      var home = Start ("MultiWindowTest/Main.wxe");
-      return new MultiWindowTestPageObject (home.Context);
+      return Start<MultiWindowTestPageObject> ("MultiWindowTest/Main.wxe");
     }
   }
 }

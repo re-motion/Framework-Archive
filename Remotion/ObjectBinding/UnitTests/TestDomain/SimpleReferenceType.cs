@@ -16,11 +16,9 @@
 // 
 
 using System;
-using Remotion.ObjectBinding.BindableObject;
 
 namespace Remotion.ObjectBinding.UnitTests.TestDomain
 {
-  [BindableObjectProvider]
   public sealed class SimpleReferenceType
   {
   }

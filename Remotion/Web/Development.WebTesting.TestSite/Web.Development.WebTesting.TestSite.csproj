@@ -61,9 +61,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\..\..\remotion.snk">
+    <None Include="..\..\..\remotion.snk">
       <Link>remotion.snk</Link>
-    </Content>
+    </None>
     <Content Include="ImageButtonTest.aspx" />
     <Content Include="CommandTest.aspx" />
     <Content Include="Default.aspx" />
@@ -71,9 +71,11 @@
     <Content Include="Images\SampleIcon.gif" />
     <Content Include="DropDownMenuTest.aspx" />
     <Content Include="FileDownloadTest.aspx" />
+    <Content Include="ImageTest.aspx" />
     <Content Include="SampleFile.txt" />
     <Content Include="ScopeTest.aspx" />
     <Content Include="DropDownListTest.aspx" />
+    <Content Include="TreeViewTest.aspx" />
     <Content Include="WebTreeViewTest.aspx" />
     <Content Include="TabbedMenuTest.aspx" />
     <Content Include="TextBoxTest.aspx" />
@@ -124,6 +126,13 @@
     <Compile Include="FileDownloadTest.aspx.designer.cs">
       <DependentUpon>FileDownloadTest.aspx</DependentUpon>
     </Compile>
+    <Compile Include="ImageTest.aspx.cs">
+      <DependentUpon>ImageTest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ImageTest.aspx.designer.cs">
+      <DependentUpon>ImageTest.aspx</DependentUpon>
+    </Compile>
     <Compile Include="ScopeTest.aspx.cs">
       <DependentUpon>ScopeTest.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -139,6 +148,13 @@
       <DependentUpon>DropDownListTest.aspx</DependentUpon>
     </Compile>
     <Compile Include="DropDownListTestFunction.cs" />
+    <Compile Include="TreeViewTestFunction.cs" />
+    <Compile Include="TreeViewTest.aspx.cs">
+      <DependentUpon>TreeViewTest.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="TreeViewTest.aspx.designer.cs">
+      <DependentUpon>TreeViewTest.aspx</DependentUpon>
+    </Compile>
     <Compile Include="WebTreeViewTest.aspx.cs">
       <DependentUpon>WebTreeViewTest.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

@@ -17,7 +17,7 @@
 
 using System;
 
-namespace Remotion.ObjectBinding.Web.Contract.DiagnosticMetadata
+namespace Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata
 {
   /// <summary>
   /// Diagnostic metadata attribute names used by various renderers.
@@ -49,5 +49,6 @@ namespace Remotion.ObjectBinding.Web.Contract.DiagnosticMetadata
     public static readonly string BocListRowIndex = "data-boclist-row-index";
     public static readonly string BocListWellKnownEditCell = "data-boclist-wellknown-cell-edit";
     public static readonly string BocListWellKnownRowDropDownMenuCell = "data-boclist-wellknown-cell-dropdownmenu";
+    public static readonly string BocListWellKnownSelectAllControl = "data-boclist-wellknown-selectall-control";
   }
 }

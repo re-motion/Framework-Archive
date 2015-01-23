@@ -16,6 +16,7 @@
 // 
 
 using System;
+using System.Collections.Generic;
 using JetBrains.Annotations;
 
 namespace Remotion.Web.Development.WebTesting.ControlObjects
@@ -24,10 +25,16 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
   /// Interface for all <see cref="ControlObject"/> implementations representing a collection of selectable items, e.g. all kinds of menus like a
   /// list menu or a tabbed menu.
   /// </summary>
-  /// <seealso cref="ListMenuControlObject"/>
-  /// <seealso cref="TabbedMenuControlObject"/>
+  /// <seealso cref="T:Remotion.Web.Development.WebTesting.ControlObjects.ListMenuControlObject"/>
+  /// <seealso cref="T:Remotion.Web.Development.WebTesting.ControlObjects.TabbedMenuControlObject"/>
   public interface IControlObjectWithSelectableItems
   {
+    /// <summary>
+    /// Returns all selectable items. 
+    /// Warning: this method does not wait until "the element" is available but detects all available items at the moment of calling.
+    /// </summary>
+    IReadOnlyList<ItemDefinition> GetItemDefinitions ();
+
     /// <summary>
     /// Start of the fluent interface for selecting an item.
     /// </summary>
@@ -63,5 +70,10 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     /// Selects item row using the given <paramref name="displayText"/>.
     /// </summary>
     UnspecifiedPageObject WithDisplayText ([NotNull] string displayText, [CanBeNull] IWebTestActionOptions actionOptions = null);
+
+    /// <summary>
+    /// Selects item row using the given <paramref name="containsDisplayText"/>.
+    /// </summary>
+    UnspecifiedPageObject WithDisplayTextContains ([NotNull] string containsDisplayText, [CanBeNull] IWebTestActionOptions actionOptions = null);
   }
 }

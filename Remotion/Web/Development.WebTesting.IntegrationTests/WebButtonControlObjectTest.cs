@@ -18,8 +18,8 @@
 using System;
 using Coypu;
 using NUnit.Framework;
+using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
-using Remotion.Web.Development.WebTesting.PageObjects;
 
 namespace Remotion.Web.Development.WebTesting.IntegrationTests
 {
@@ -92,15 +92,6 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     }
 
     [Test]
-    public void TestSelection_CommandName ()
-    {
-      var home = Start();
-
-      var webButton = home.GetWebButton().ByCommandName ("Sync");
-      Assert.That (webButton.Scope.Id, Is.EqualTo ("body_MyWebButton1Sync"));
-    }
-
-    [Test]
     public void TestSelection_ItemID ()
     {
       var home = Start();
@@ -135,22 +126,50 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var syncWebButton = home.GetWebButton().ByCommandName ("Sync");
-      home = syncWebButton.Click().Expect<RemotionPageObject>();
+      var syncWebButton = home.GetWebButton().ByLocalID ("MyWebButton1Sync");
+      home = syncWebButton.Click().Expect<WxePageObject>();
       Assert.That (home.Scope.FindId ("TestOutputLabel").Text, Is.EqualTo ("Sync"));
 
-      var asyncWebButton = home.GetWebButton().ByCommandName ("Async");
-      home = asyncWebButton.Click().Expect<RemotionPageObject>();
+      var asyncWebButton = home.GetWebButton().ByLocalID ("MyWebButton2Async");
+      home = asyncWebButton.Click().Expect<WxePageObject>();
       Assert.That (home.Scope.FindId ("TestOutputLabel").Text, Is.EqualTo ("Async"));
 
       var hrefWebButton = home.GetWebButton().ByTextContent ("HrefButton");
-      home = hrefWebButton.Click().Expect<RemotionPageObject>();
+      home = hrefWebButton.Click().Expect<WxePageObject>();
       Assert.That (home.Scope.FindId ("TestOutputLabel").Text, Is.Empty);
     }
 
-    private RemotionPageObject Start ()
+    [Test]
+    public void TestHasClass ()
     {
-      return Start ("WebButtonTest.wxe");
+      var home = Start();
+
+      var webButton = home.GetWebButton().ByID ("body_MyWebButton1Sync");
+      Assert.That (webButton.StyleInfo.HasCssClass ("buttonBody"), Is.True);
+      Assert.That (webButton.StyleInfo.HasCssClass ("doesNotHaveThisClass"), Is.False);
+    }
+
+    [Test]
+    public void TestGetBackgroundColor ()
+    {
+      var home = Start();
+
+      var webButton = home.GetWebButton().ByID ("body_MyWebButton1Sync");
+      Assert.That (webButton.StyleInfo.GetBackgroundColor(), Is.EqualTo (WebColor.FromRgb (221, 221, 221)));
+    }
+
+    [Test]
+    public void TestGetTextColor ()
+    {
+      var home = Start();
+
+      var webButton = home.GetWebButton().ByID ("body_MyWebButton1Sync");
+      Assert.That (webButton.StyleInfo.GetTextColor(), Is.EqualTo (WebColor.Black));
+    }
+
+    private WxePageObject Start ()
+    {
+      return Start<WxePageObject> ("WebButtonTest.wxe");
     }
   }
 }

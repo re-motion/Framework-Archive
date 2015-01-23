@@ -18,6 +18,7 @@
 using System;
 using Coypu;
 using NUnit.Framework;
+using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
 using Remotion.Web.Development.WebTesting.PageObjects;
 
@@ -135,9 +136,9 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       Assert.That (htmlTextBox.GetText(), Is.EqualTo ("Blubba3"));
     }
 
-    private RemotionPageObject Start ()
+    private WxePageObject Start ()
     {
-      return Start ("TextBoxTest.wxe");
+      return Start<WxePageObject> ("TextBoxTest.wxe");
     }
   }
 }

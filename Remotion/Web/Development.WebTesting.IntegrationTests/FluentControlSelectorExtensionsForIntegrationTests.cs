@@ -19,6 +19,8 @@ using System;
 using Remotion.Web.Development.WebTesting.ControlObjects;
 using Remotion.Web.Development.WebTesting.ControlObjects.Selectors;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
+using Remotion.Web.Development.WebTesting.WebFormsControlObjects;
+using Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors;
 
 namespace Remotion.Web.Development.WebTesting.IntegrationTests
 {
@@ -50,6 +52,11 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     public static FluentControlSelector<FormGridSelector, FormGridControlObject> GetFormGrid (this IControlHost host)
     {
       return new FluentControlSelector<FormGridSelector, FormGridControlObject> (host, new FormGridSelector());
+    }
+
+    public static FluentControlSelector<ImageSelector, ImageControlObject> GetImage (this IControlHost host)
+    {
+      return new FluentControlSelector<ImageSelector, ImageControlObject> (host, new ImageSelector());
     }
 
     public static FluentControlSelector<ImageButtonSelector, ImageButtonControlObject> GetImageButton (this IControlHost host)
@@ -90,6 +97,11 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     public static FluentControlSelector<TextBoxSelector, TextBoxControlObject> GetTextBox (this IControlHost host)
     {
       return new FluentControlSelector<TextBoxSelector, TextBoxControlObject> (host, new TextBoxSelector());
+    }
+
+    public static FluentControlSelector<TreeViewSelector, TreeViewControlObject> GetTreeView (this IControlHost host)
+    {
+      return new FluentControlSelector<TreeViewSelector, TreeViewControlObject> (host, new TreeViewSelector());
     }
 
     public static FluentControlSelector<WebButtonSelector, WebButtonControlObject> GetWebButton (this IControlHost host)

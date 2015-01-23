@@ -17,6 +17,7 @@
 
 using System;
 using NUnit.Framework;
+using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
 using Remotion.Web.Development.WebTesting.PageObjects;
 
@@ -158,35 +159,35 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
 
       var tabbedMultiView = home.GetTabbedMultiView().Single();
 
-      home = tabbedMultiView.SwitchTo ("Tab2").Expect<RemotionPageObject>();
+      home = tabbedMultiView.SwitchTo ("Tab2").Expect<WxePageObject>();
       tabbedMultiView = home.GetTabbedMultiView().Single();
       Assert.That (tabbedMultiView.Scope.Text, Is.StringContaining ("Content2"));
       Assert.That (tabbedMultiView.Scope.Text, Is.Not.StringContaining ("Content1"));
 
-      home = tabbedMultiView.SwitchTo().WithDisplayText ("Tab1Title").Expect<RemotionPageObject>();
+      home = tabbedMultiView.SwitchTo().WithDisplayText ("Tab1Title").Expect<WxePageObject>();
       tabbedMultiView = home.GetTabbedMultiView().Single();
       Assert.That (tabbedMultiView.Scope.Text, Is.StringContaining ("Content1"));
       Assert.That (tabbedMultiView.Scope.Text, Is.Not.StringContaining ("Content2"));
 
-      home = tabbedMultiView.SwitchTo().WithDisplayTextContains ("b2T").Expect<RemotionPageObject>();
+      home = tabbedMultiView.SwitchTo().WithDisplayTextContains ("b2T").Expect<WxePageObject>();
       tabbedMultiView = home.GetTabbedMultiView().Single();
       Assert.That (tabbedMultiView.Scope.Text, Is.StringContaining ("Content2"));
       Assert.That (tabbedMultiView.Scope.Text, Is.Not.StringContaining ("Content1"));
 
-      home = tabbedMultiView.SwitchTo().WithIndex (1).Expect<RemotionPageObject>();
+      home = tabbedMultiView.SwitchTo().WithIndex (1).Expect<WxePageObject>();
       tabbedMultiView = home.GetTabbedMultiView().Single();
       Assert.That (tabbedMultiView.Scope.Text, Is.StringContaining ("Content1"));
       Assert.That (tabbedMultiView.Scope.Text, Is.Not.StringContaining ("Content2"));
 
-      home = tabbedMultiView.SwitchTo().WithHtmlID ("body_MyTabbedMultiView_TabStrip_Tab2_Tab").Expect<RemotionPageObject>();
+      home = tabbedMultiView.SwitchTo().WithHtmlID ("body_MyTabbedMultiView_TabStrip_Tab2_Tab").Expect<WxePageObject>();
       tabbedMultiView = home.GetTabbedMultiView().Single();
       Assert.That (tabbedMultiView.Scope.Text, Is.StringContaining ("Content2"));
       Assert.That (tabbedMultiView.Scope.Text, Is.Not.StringContaining ("Content1"));
     }
 
-    private RemotionPageObject Start ()
+    private WxePageObject Start ()
     {
-      return Start ("TabbedMultiViewTest.wxe");
+      return Start<WxePageObject> ("TabbedMultiViewTest.wxe");
     }
   }
 }

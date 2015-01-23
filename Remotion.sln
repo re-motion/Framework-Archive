@@ -345,9 +345,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_SolutionItems", "_Solution
 		NuGet.config = NuGet.config
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.Contract.DiagnosticMetadata", "Remotion\Web\Contract.DiagnosticMetadata\Web.Contract.DiagnosticMetadata.csproj", "{B119DB72-9073-401B-8EC9-C8885A2D4800}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.Contracts.DiagnosticMetadata", "Remotion\Web\Contract.DiagnosticMetadata\Web.Contracts.DiagnosticMetadata.csproj", "{B119DB72-9073-401B-8EC9-C8885A2D4800}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectBinding.Web.Contract.DiagnosticMetadata", "Remotion\ObjectBinding\Web.Contract.DiagnosticMetadata\ObjectBinding.Web.Contract.DiagnosticMetadata.csproj", "{AD7D0683-130E-4064-8EB7-D9981DCB22BC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectBinding.Web.Contracts.DiagnosticMetadata", "Remotion\ObjectBinding\Web.Contract.DiagnosticMetadata\ObjectBinding.Web.Contracts.DiagnosticMetadata.csproj", "{AD7D0683-130E-4064-8EB7-D9981DCB22BC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Build", "Remotion\Build\Core.Build.csproj", "{6CBB099A-DE58-48A4-ADC7-D37725B0181C}"
 EndProject
@@ -360,9 +360,16 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{8C1706D0-5034-4C35-9F3B-3FBF0C552EE6}"
 	ProjectSection(SolutionItems) = preProject
 		.nuget\packages.config = .nuget\packages.config
+		packages\repositories.config = packages\repositories.config
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.Development.WebTesting.WebDriver", "Remotion\Web\Development.WebTesting.WebDriver\Web.Development.WebTesting.WebDriver.csproj", "{8E332462-ED27-4D67-A9B4-36DB4CAD844D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.Development.WebTesting.WebFormsControlObjects", "Remotion\Web\Development.WebTesting.WebFormsControlObjects\Web.Development.WebTesting.WebFormsControlObjects.csproj", "{D2835D55-18C5-427B-A574-3D348A2C1DCC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.Development.WebTesting.ExecutionEngine", "Remotion\Web\Development.WebTesting.ExecutionEngine\Web.Development.WebTesting.ExecutionEngine.csproj", "{FEBE7C1A-2CD5-4543-B0F1-DE224D340F51}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.Development.WebTesting.ControlObjects", "Remotion\Web\Development.WebTesting.ControlObjects\Web.Development.WebTesting.ControlObjects.csproj", "{712E5631-9BC0-44DE-BF20-FB3BFECAD9B2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -1384,6 +1391,30 @@ Global
 		{8E332462-ED27-4D67-A9B4-36DB4CAD844D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8E332462-ED27-4D67-A9B4-36DB4CAD844D}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{8E332462-ED27-4D67-A9B4-36DB4CAD844D}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{D2835D55-18C5-427B-A574-3D348A2C1DCC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D2835D55-18C5-427B-A574-3D348A2C1DCC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D2835D55-18C5-427B-A574-3D348A2C1DCC}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{D2835D55-18C5-427B-A574-3D348A2C1DCC}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{D2835D55-18C5-427B-A574-3D348A2C1DCC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D2835D55-18C5-427B-A574-3D348A2C1DCC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D2835D55-18C5-427B-A574-3D348A2C1DCC}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{D2835D55-18C5-427B-A574-3D348A2C1DCC}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{FEBE7C1A-2CD5-4543-B0F1-DE224D340F51}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FEBE7C1A-2CD5-4543-B0F1-DE224D340F51}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FEBE7C1A-2CD5-4543-B0F1-DE224D340F51}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{FEBE7C1A-2CD5-4543-B0F1-DE224D340F51}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{FEBE7C1A-2CD5-4543-B0F1-DE224D340F51}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FEBE7C1A-2CD5-4543-B0F1-DE224D340F51}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FEBE7C1A-2CD5-4543-B0F1-DE224D340F51}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{FEBE7C1A-2CD5-4543-B0F1-DE224D340F51}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{712E5631-9BC0-44DE-BF20-FB3BFECAD9B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{712E5631-9BC0-44DE-BF20-FB3BFECAD9B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{712E5631-9BC0-44DE-BF20-FB3BFECAD9B2}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{712E5631-9BC0-44DE-BF20-FB3BFECAD9B2}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{712E5631-9BC0-44DE-BF20-FB3BFECAD9B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{712E5631-9BC0-44DE-BF20-FB3BFECAD9B2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{712E5631-9BC0-44DE-BF20-FB3BFECAD9B2}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{712E5631-9BC0-44DE-BF20-FB3BFECAD9B2}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -1516,6 +1547,9 @@ Global
 		{AE475361-8DD6-4DAF-8691-5BB8850093FD} = {E1B271E4-22E6-4936-80A5-F0340AAB20A8}
 		{5952119C-365A-4614-BD29-58EAB1139438} = {41F62020-3A67-4A33-B82A-9442510269E3}
 		{8E332462-ED27-4D67-A9B4-36DB4CAD844D} = {2E32EB1E-B3AA-4ACF-BA20-EC6FD44CC05B}
+		{D2835D55-18C5-427B-A574-3D348A2C1DCC} = {2E32EB1E-B3AA-4ACF-BA20-EC6FD44CC05B}
+		{FEBE7C1A-2CD5-4543-B0F1-DE224D340F51} = {2E32EB1E-B3AA-4ACF-BA20-EC6FD44CC05B}
+		{712E5631-9BC0-44DE-BF20-FB3BFECAD9B2} = {2E32EB1E-B3AA-4ACF-BA20-EC6FD44CC05B}
 	EndGlobalSection
 	GlobalSection(TextTemplating) = postSolution
 		TextTemplating = 1

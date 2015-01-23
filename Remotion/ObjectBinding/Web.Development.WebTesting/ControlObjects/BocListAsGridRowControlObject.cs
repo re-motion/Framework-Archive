@@ -41,11 +41,27 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     }
 
     /// <summary>
-    /// Clicks the row's select checkbox (either selecting or deselecting the row).
+    /// Selects all rows by checking the table's select all checkbox.
     /// </summary>
-    public void ClickSelectCheckbox ()
+    public void Select ()
     {
-      _impl.ClickSelectCheckbox();
+      _impl.Select();
+    }
+
+    /// <summary>
+    /// Unselect all rows by checking the table's select all checkbox.
+    /// </summary>
+    public void Deselect ()
+    {
+      _impl.Deselect();
+    }
+
+    /// <summary>
+    /// Returns whether the row is currently selected.
+    /// </summary>
+    public bool IsSelected
+    {
+      get { return _impl.IsSelected; }
     }
 
     /// <inheritdoc/>
@@ -73,13 +89,29 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     {
       ArgumentUtility.CheckNotNullOrEmpty ("columnItemID", columnItemID);
 
-      return _impl.GetCell<BocListAsGridCellControlObject> (columnItemID);
+      return _impl.GetCellWithColumnItemID<BocListAsGridCellControlObject> (columnItemID);
     }
 
     /// <inheritdoc/>
     BocListAsGridCellControlObject IFluentControlObjectWithCells<BocListAsGridCellControlObject>.WithIndex (int index)
     {
-      return _impl.GetCell<BocListAsGridCellControlObject> (index);
+      return _impl.GetCellWithColumnIndex<BocListAsGridCellControlObject> (index);
+    }
+
+    /// <inheritdoc/>
+    BocListAsGridCellControlObject IFluentControlObjectWithCells<BocListAsGridCellControlObject>.WithColumnTitle (string columnTitle)
+    {
+      ArgumentUtility.CheckNotNullOrEmpty ("columnTitle", columnTitle);
+
+      return _impl.GetCellWithColumnTitle<BocListAsGridCellControlObject> (columnTitle);
+    }
+
+    /// <inheritdoc/>
+    BocListAsGridCellControlObject IFluentControlObjectWithCells<BocListAsGridCellControlObject>.WithColumnTitleContains (string columnTitleContains)
+    {
+      ArgumentUtility.CheckNotNullOrEmpty ("columnTitleContains", columnTitleContains);
+
+      return _impl.GetCellWithColumnTitleContains<BocListAsGridCellControlObject> (columnTitleContains);
     }
 
     /// <inheritdoc/>

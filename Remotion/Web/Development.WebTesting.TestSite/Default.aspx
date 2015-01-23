@@ -30,6 +30,7 @@
           <tr><td><a href="DropDownMenuTest.wxe">DropDownMenuTest</a></td></tr>
           <tr><td><a href="FileDownloadTest.aspx">FileDownloadTest</a></td></tr>
           <tr><td><a href="FormGridTest.aspx">FormGridTest</a></td></tr>
+          <tr><td><a href="ImageTest.aspx">ImageTest</a></td></tr>
           <tr><td><a href="ImageButtonTest.wxe">ImageButtonTest</a></td></tr>
           <tr><td><a href="InfrastructureTests.wxe">InfrastructureTests</a></td></tr>
           <tr><td><a href="LabelTest.aspx">LabelTest</a></td></tr>
@@ -39,6 +40,7 @@
           <tr><td><a href="TabbedMenuTest.wxe">TabbedMenuTest</a></td></tr>
           <tr><td><a href="TabbedMultiViewTest.wxe">TabbedMultiViewTest</a></td></tr>
           <tr><td><a href="TextBoxTest.wxe">TextBoxTest</a></td></tr>
+          <tr><td><a href="TreeViewTest.wxe">TreeViewTest</a></td></tr>
           <tr><td><a href="WebButtonTest.wxe">WebButtonTest</a></td></tr>
           <tr><td><a href="WebTabStripTest.wxe">WebTabStripTest</a></td></tr>
           <tr><td><a href="WebTreeViewTest.aspx">WebTreeViewTest</a></td></tr>

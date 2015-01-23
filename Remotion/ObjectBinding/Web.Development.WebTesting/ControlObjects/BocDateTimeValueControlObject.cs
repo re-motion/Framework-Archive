@@ -19,7 +19,7 @@ using System;
 using System.Collections.Generic;
 using Coypu;
 using JetBrains.Annotations;
-using Remotion.ObjectBinding.Web.Contract.DiagnosticMetadata;
+using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting;
 using Remotion.Web.Development.WebTesting.WebTestActions;
@@ -50,9 +50,17 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// <summary>
     /// Returns the current <see cref="DateTime"/> respresented by the control or null if an invalid <see cref="DateTime"/> is displayed.
     /// </summary>
-    public DateTime? GetDateTime ()
+    public DateTime GetDateTime ()
     {
-      DateTime result;
+      var dateTimeString = GetDateTimeAsString();
+      return DateTime.Parse (dateTimeString);
+    }
+
+    /// <summary>
+    /// Returns the current date and time (string) values separated by space.
+    /// </summary>
+    public string GetDateTimeAsString ()
+    {
       string dateTimeString;
 
       if (IsReadOnly())
@@ -68,10 +76,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
           dateTimeString += " " + GetTimeScope().Value;
       }
 
-      if (DateTime.TryParse (dateTimeString, out result))
-        return result;
-
-      return null;
+      return dateTimeString;
     }
 
     /// <summary>

@@ -61,9 +61,9 @@
     <Reference Include="System.Web.Services" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\..\..\remotion.snk">
+    <None Include="..\..\..\remotion.snk">
       <Link>remotion.snk</Link>
-    </Content>
+    </None>
     <Content Include="Controls\AutoCompleteService.asmx" />
     <Content Include="Controls\BocEnumValueUserControl.ascx" />
     <Content Include="Controls\BocCheckBoxUserControl.ascx" />

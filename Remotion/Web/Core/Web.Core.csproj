@@ -234,6 +234,7 @@
     <Compile Include="UI\Controls\TabbedMenuImplementation\Rendering\TabbedMenuRenderingContext.cs" />
     <Compile Include="UI\Controls\TabbedMultiViewImplementation\Rendering\ITabbedMultiViewRenderer.cs" />
     <Compile Include="UI\Controls\TabbedMultiViewImplementation\Rendering\TabbedMultiViewRenderingContext.cs" />
+    <Compile Include="UI\Controls\Rendering\ViewLayoutExtensions.cs" />
     <Compile Include="UI\Controls\WebButtonImplementation\Rendering\IWebButtonRenderer.cs" />
     <Compile Include="UI\Controls\WebButtonImplementation\Rendering\WebButtonRenderingContext.cs" />
     <Compile Include="UI\Controls\WebTabStripImplementation\Rendering\IWebTabStripRenderer.cs" />
@@ -949,9 +950,9 @@
       <Project>{FBE0CBDD-82FF-4173-8536-47D3B5BC2E98}</Project>
       <Name>Security.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Contract.DiagnosticMetadata\Web.Contract.DiagnosticMetadata.csproj">
+    <ProjectReference Include="..\Contract.DiagnosticMetadata\Web.Contracts.DiagnosticMetadata.csproj">
       <Project>{B119DB72-9073-401B-8EC9-C8885A2D4800}</Project>
-      <Name>Web.Contract.DiagnosticMetadata</Name>
+      <Name>Web.Contracts.DiagnosticMetadata</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

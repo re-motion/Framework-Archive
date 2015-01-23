@@ -20,6 +20,7 @@ using System.Diagnostics;
 using NUnit.Framework;
 using Remotion.Web.Development.WebTesting;
 using Remotion.Web.Development.WebTesting.Configuration;
+using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.PageObjects;
 using Remotion.Web.Development.WebTesting.Utilities;
 
@@ -61,7 +62,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       _webTestHelper.OnFixtureTearDown();
     }
 
-    protected RemotionPageObject Start (string userControl)
+    protected WxePageObject Start (string userControl)
     {
       var userControlUrl = string.Format ("Controls/{0}UserControl.ascx", userControl);
 
@@ -69,7 +70,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       _webTestHelper.MainBrowserSession.Visit (url);
       _webTestHelper.AcceptPossibleModalDialog();
 
-      return _webTestHelper.CreateInitialPageObject<RemotionPageObject> (_webTestHelper.MainBrowserSession);
+      return _webTestHelper.CreateInitialPageObject<WxePageObject> (_webTestHelper.MainBrowserSession);
     }
 
     private static void KillAnyExistingWindowsErrorReportingProcesses ()

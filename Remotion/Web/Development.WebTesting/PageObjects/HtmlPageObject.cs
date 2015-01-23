@@ -29,13 +29,5 @@ namespace Remotion.Web.Development.WebTesting.PageObjects
         : base (context)
     {
     }
-
-    /// <summary>
-    /// Closes the window.
-    /// </summary>
-    public void Close ()
-    {
-      Context.CloseWindow();
-    }
   }
 }

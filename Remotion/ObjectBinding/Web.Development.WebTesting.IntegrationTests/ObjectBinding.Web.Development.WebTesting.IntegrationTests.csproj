@@ -53,7 +53,6 @@
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
     <Reference Include="WebDriver, Version=2.44.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\packages\Selenium.WebDriver.2.44.0\lib\net40\WebDriver.dll</HintPath>
@@ -84,11 +83,19 @@
     <Compile Include="SetUpFixture.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\..\..\remotion.snk">
+    <None Include="..\..\..\remotion.snk">
       <Link>remotion.snk</Link>
-    </Content>
+    </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Web\Development.WebTesting.ControlObjects\Web.Development.WebTesting.ControlObjects.csproj">
+      <Project>{712e5631-9bc0-44de-bf20-fb3bfecad9b2}</Project>
+      <Name>Web.Development.WebTesting.ControlObjects</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Web\Development.WebTesting.ExecutionEngine\Web.Development.WebTesting.ExecutionEngine.csproj">
+      <Project>{febe7c1a-2cd5-4543-b0f1-de224d340f51}</Project>
+      <Name>Web.Development.WebTesting.ExecutionEngine</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Web\Development.WebTesting\Web.Development.WebTesting.csproj">
       <Project>{5B5EC73A-B796-4D2D-A781-E889EE9EC4DF}</Project>
       <Name>Web.Development.WebTesting</Name>

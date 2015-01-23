@@ -30,7 +30,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       : WebFormsControlObjectWithDiagnosticMetadata,
           IDropDownMenuHost,
           IControlObjectWithCells<BocListCellControlObject>,
-          IFluentControlObjectWithCells<BocListCellControlObject>
+          IFluentControlObjectWithCells<BocListCellControlObject>,
+          IStyledControlObject
   {
     private readonly BocListRowFunctionality _impl;
 
@@ -40,12 +41,34 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       _impl = new BocListRowFunctionality (accessor, context);
     }
 
-    /// <summary>
-    /// Clicks the row's select checkbox (either selecting or deselecting the row).
-    /// </summary>
-    public void ClickSelectCheckbox ()
+    /// <inheritdoc/>
+    public IStyleInformation StyleInfo
     {
-      _impl.ClickSelectCheckbox();
+      get { return new DefaultStyleInformation (this, Scope); }
+    }
+
+    /// <summary>
+    /// Selects all rows by checking the table's select all checkbox.
+    /// </summary>
+    public void Select ()
+    {
+      _impl.Select();
+    }
+
+    /// <summary>
+    /// Unselect all rows by checking the table's select all checkbox.
+    /// </summary>
+    public void Deselect ()
+    {
+      _impl.Deselect();
+    }
+
+    /// <summary>
+    /// Returns whether the row is currently selected.
+    /// </summary>
+    public bool IsSelected
+    {
+      get { return _impl.IsSelected; }
     }
 
     /// <summary>
@@ -81,13 +104,29 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     {
       ArgumentUtility.CheckNotNullOrEmpty ("columnItemID", columnItemID);
 
-      return _impl.GetCell<BocListCellControlObject> (columnItemID);
+      return _impl.GetCellWithColumnItemID<BocListCellControlObject> (columnItemID);
     }
 
     /// <inheritdoc/>
     BocListCellControlObject IFluentControlObjectWithCells<BocListCellControlObject>.WithIndex (int index)
     {
-      return _impl.GetCell<BocListCellControlObject> (index);
+      return _impl.GetCellWithColumnIndex<BocListCellControlObject> (index);
+    }
+
+    /// <inheritdoc/>
+    BocListCellControlObject IFluentControlObjectWithCells<BocListCellControlObject>.WithColumnTitle (string columnTitle)
+    {
+      ArgumentUtility.CheckNotNullOrEmpty ("columnTitle", columnTitle);
+
+      return _impl.GetCellWithColumnTitle<BocListCellControlObject> (columnTitle);
+    }
+
+    /// <inheritdoc/>
+    BocListCellControlObject IFluentControlObjectWithCells<BocListCellControlObject>.WithColumnTitleContains (string columnTitleContains)
+    {
+      ArgumentUtility.CheckNotNullOrEmpty ("columnTitleContains", columnTitleContains);
+
+      return _impl.GetCellWithColumnTitleContains<BocListCellControlObject> (columnTitleContains);
     }
 
     /// <inheritdoc/>

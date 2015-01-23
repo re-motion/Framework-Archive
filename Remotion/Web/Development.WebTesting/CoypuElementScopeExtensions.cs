@@ -17,12 +17,13 @@
 
 using System;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 using Coypu;
 using JetBrains.Annotations;
 using OpenQA.Selenium;
 using Remotion.Utilities;
-using Remotion.Web.Development.WebTesting.Configuration;
+using Remotion.Web.Development.WebTesting.Utilities;
 
 namespace Remotion.Web.Development.WebTesting
 {
@@ -51,14 +52,96 @@ namespace Remotion.Web.Development.WebTesting
     /// Ensures that the given <see cref="Scope"/> exists, much like <see cref="EnsureExistence"/>. However, it ensures that Coypu uses the
     /// <see cref="Match.Single"/> matching strategy.
     /// </summary>
-    /// <param name="scope"></param>
+    /// <param name="scope">The <see cref="ElementScope"/> which is asserted to match only a single DOM element.</param>
     public static void EnsureSingle ([NotNull] this ElementScope scope)
     {
       ArgumentUtility.CheckNotNull ("scope", scope);
 
+      var matchBackup = scope.ElementFinder.Options.Match;
+
       scope.ElementFinder.Options.Match = Match.Single;
       scope.Now();
-      scope.ElementFinder.Options.Match = WebTestingConstants.DefaultMatchStrategy;
+      scope.ElementFinder.Options.Match = matchBackup;
+    }
+
+    /// <summary>
+    /// Returns the computed background color of the control. This method ignores background images as well as transparencies - the first
+    /// non-transparent color set in the node's hierarchy is returned. The returned color's alpha value is always 255 (opaque).
+    /// </summary>
+    /// <returns>The background color or <see cref="WebColor.Transparent"/> if no background color is set (not even on any parent node).</returns>
+    public static WebColor GetComputedBackgroundColor ([NotNull] this ElementScope scope, [NotNull] ControlObjectContext context)
+    {
+      ArgumentUtility.CheckNotNull ("scope", scope);
+      ArgumentUtility.CheckNotNull ("context", context);
+
+      // Todo RM-6337: Coypu does not support JavaScript executions with arguments by now, simplify as soon as https://github.com/featurist/coypu/issues/128 has been implemented.
+      var javaScriptExecutor = (IJavaScriptExecutor) context.Browser.Driver.Native;
+      var computedBackgroundColor =
+          RetryUntilTimeout.Run (() => (string) javaScriptExecutor.ExecuteScript (CommonJavaScripts.GetComputedBackgroundColor, scope.Native));
+
+      if (IsTransparent (computedBackgroundColor))
+        return WebColor.Transparent;
+
+      return ParseColorFromBrowserReturnedString (computedBackgroundColor);
+    }
+
+    /// <summary>
+    /// Returns the computed text color of the control. This method ignores transparencies - the first non-transparent color set in the node's
+    /// DOM hierarchy is returned. The returned color's alpha value is always 255 (opaque).
+    /// </summary>
+    /// <returns>The text color or <see cref="WebColor.Transparent"/> if no text color is set (not even on any parent node).</returns>
+    public static WebColor GetComputedTextColor ([NotNull] this ElementScope scope, [NotNull] ControlObjectContext context)
+    {
+      ArgumentUtility.CheckNotNull ("scope", scope);
+      ArgumentUtility.CheckNotNull ("context", context);
+
+      // Todo RM-6337: Coypu does not support JavaScript executions with arguments by now, simplify as soon as https://github.com/featurist/coypu/issues/128 has been implemented.
+      var javaScriptExecutor = (IJavaScriptExecutor) context.Browser.Driver.Native;
+      var computedTextColor =
+          RetryUntilTimeout.Run (() => (string) javaScriptExecutor.ExecuteScript (CommonJavaScripts.GetComputedTextColor, scope.Native));
+
+      if (IsTransparent (computedTextColor))
+        return WebColor.Transparent;
+
+      return ParseColorFromBrowserReturnedString (computedTextColor);
+    }
+
+    private static bool IsTransparent ([NotNull] string color)
+    {
+      ArgumentUtility.CheckNotNullOrEmpty ("color", color);
+
+      // Chrome
+      if (color == "rgba(0, 0, 0, 0)")
+        return true;
+
+      // IE11
+      if (color == "transparent")
+        return true;
+
+      return false;
+    }
+
+    private static WebColor ParseColorFromBrowserReturnedString ([NotNull] string color)
+    {
+      var rgbArgs = color.Split (new[] { '(', ',', ')' });
+      var rgb = rgbArgs.Skip (1).Take (3).Select (byte.Parse).ToArray();
+      return WebColor.FromRgb (rgb[0], rgb[1], rgb[2]);
+    }
+
+    /// <summary>
+    /// Returns whether the given <paramref name="scope"/>, which must represent a suitable HTML element (e.g. a checkbox), is currently selected.
+    /// </summary>
+    /// <returns>True if the HTML element is selected, otherwise false.</returns>
+    public static bool IsSelected ([NotNull] this ElementScope scope)
+    {
+      ArgumentUtility.CheckNotNull ("scope", scope);
+
+      return RetryUntilTimeout.Run (
+          () =>
+          {
+            var webElement = (IWebElement) scope.Native;
+            return webElement.Selected;
+          });
     }
 
     /// <summary>
@@ -70,8 +153,12 @@ namespace Remotion.Web.Development.WebTesting
     {
       ArgumentUtility.CheckNotNull ("scope", scope);
 
-      var webElement = (IWebElement) scope.Native;
-      return webElement.Displayed;
+      return RetryUntilTimeout.Run (
+          () =>
+          {
+            var webElement = (IWebElement) scope.Native;
+            return webElement.Displayed;
+          });
     }
 
     /// <summary>

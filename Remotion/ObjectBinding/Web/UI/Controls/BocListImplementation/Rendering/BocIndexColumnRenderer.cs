@@ -18,9 +18,10 @@
 using System;
 using System.Web.UI;
 using Remotion.Globalization;
+using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
-using Remotion.Web.Contract.DiagnosticMetadata;
+using Remotion.Web.Contracts.DiagnosticMetadata;
 using Remotion.Web.UI.Controls.Rendering;
 using Remotion.Web.Utilities;
 
@@ -37,6 +38,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
     public BocIndexColumnRenderer (IRenderingFeatures renderingFeatures, BocListCssClassDefinition cssClasses)
     {
+      ArgumentUtility.CheckNotNull ("renderingFeatures", renderingFeatures);
       ArgumentUtility.CheckNotNull ("cssClasses", cssClasses);
 
       _renderingFeatures = renderingFeatures;
@@ -59,12 +61,20 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       string selectorControlID = renderingContext.Control.GetSelectorControlName().Replace ('$', '_') + "_" + originalRowIndex;
       string cssClass = cssClassTableCell + " " + CssClasses.DataCellIndex;
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, cssClass);
+      if (_renderingFeatures.EnableDiagnosticMetadata)
+        AddDiagnosticMetadataListCellIndex (renderingContext);
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Td);
       if (renderingContext.Control.Index == RowIndex.InitialOrder)
         RenderRowIndex (renderingContext, originalRowIndex, selectorControlID);
       else if (renderingContext.Control.Index == RowIndex.SortedOrder)
         RenderRowIndex (renderingContext, absoluteRowIndex, selectorControlID);
       renderingContext.Writer.RenderEndTag();
+    }
+
+    private static void AddDiagnosticMetadataListCellIndex (BocListRenderingContext renderingContext)
+    {
+      const int oneBasedCellIndex = 1;
+      renderingContext.Writer.AddAttribute (DiagnosticMetadataAttributesForObjectBinding.BocListCellIndex, oneBasedCellIndex.ToString());
     }
 
     public void RenderTitleCell (BocListRenderingContext renderingContext)
@@ -81,6 +91,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         var columnTitle = renderingContext.Control.IndexColumnTitle;
         if (!string.IsNullOrEmpty (columnTitle))
           renderingContext.Writer.AddAttribute (DiagnosticMetadataAttributes.Content, HtmlUtility.StripHtmlTags (columnTitle));
+
+        AddDiagnosticMetadataListCellIndex (renderingContext);
       }
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Th);
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);

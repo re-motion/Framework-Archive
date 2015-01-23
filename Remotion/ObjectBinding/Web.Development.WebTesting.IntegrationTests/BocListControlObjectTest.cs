@@ -20,6 +20,8 @@ using System.Linq;
 using Coypu;
 using NUnit.Framework;
 using Remotion.ObjectBinding.Web.Development.WebTesting.FluentControlSelection;
+using Remotion.Web.Development.WebTesting;
+using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
 using Remotion.Web.Development.WebTesting.PageObjects;
 
@@ -184,6 +186,34 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
       bocList.GoToSpecificPage (3);
       Assert.That (bocList.GetCurrentPage(), Is.EqualTo (3));
+    }
+
+    [Test]
+    public void TestSelectAllAndDeselectAll ()
+    {
+      var home = Start();
+
+      var bocList = home.GetList().ByLocalID ("JobList_Normal");
+      
+      var firstRow = bocList.GetRow (1);
+      var lastRow = bocList.GetRow (bocList.GetNumberOfRows());
+      Assert.That (firstRow.IsSelected, Is.False);
+      Assert.That (lastRow.IsSelected, Is.False);
+
+      bocList.SelectAll();
+
+      Assert.That (firstRow.IsSelected, Is.True);
+      Assert.That (lastRow.IsSelected, Is.True);
+
+      bocList.SelectAll();
+
+      Assert.That (firstRow.IsSelected, Is.True);
+      Assert.That (lastRow.IsSelected, Is.True);
+
+      bocList.DeselectAll();
+
+      Assert.That (firstRow.IsSelected, Is.False);
+      Assert.That (lastRow.IsSelected, Is.False);
     }
 
     [Test]
@@ -354,20 +384,33 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
       cell = row.GetCell (6);
       Assert.That (cell.GetText(), Is.EqualTo ("CEO"));
+
+      cell = row.GetCell().WithColumnTitle ("Title");
+      Assert.That (cell.GetText(), Is.EqualTo ("CEO"));
+
+      cell = row.GetCell().WithColumnTitleContains ("ithCm");
+      Assert.That (cell.GetText(), Is.EqualTo ("CEO"));
     }
 
     [Test]
-    public void TestRowClickSelectCheckbox ()
+    public void TestRowSelectAndDeselect ()
     {
       var home = Start();
 
       var bocList = home.GetList().ByLocalID ("JobList_Normal");
       var row = bocList.GetRow (2);
 
-      row.ClickSelectCheckbox();
+      row.Select();
       row.GetCell (4).ExecuteCommand();
-
       Assert.That (home.Scope.FindIdEndingWith ("SelectedIndicesLabel").Text, Is.EqualTo ("1"));
+
+      row.Select();
+      row.GetCell (4).ExecuteCommand();
+      Assert.That (home.Scope.FindIdEndingWith ("SelectedIndicesLabel").Text, Is.EqualTo ("1"));
+
+      row.Deselect();
+      row.GetCell (4).ExecuteCommand();
+      Assert.That (home.Scope.FindIdEndingWith ("SelectedIndicesLabel").Text, Is.EqualTo ("NoneSelected"));
     }
 
     [Test]
@@ -377,7 +420,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
       var bocList = home.GetList().ByLocalID ("JobList_Normal");
       bocList.GoToSpecificPage (3);
-      bocList.GetRow (1).ClickSelectCheckbox();
+      bocList.GetRow (1).Select();
       bocList.GetRow (1).GetCell (4).ExecuteCommand(); // trigger postback
 
       Assert.That (home.Scope.FindIdEndingWith ("SelectedIndicesLabel").Text, Is.EqualTo ("4"));
@@ -411,6 +454,45 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
       row.Edit();
       Assert.That (home.Scope.FindIdEndingWith ("EditModeLabel").Text, Is.EqualTo ("True"));
+    }
+
+    [Test]
+    public void TestRowHasClass ()
+    {
+      var home = Start();
+
+      var bocList = home.GetList().ByLocalID ("JobList_Normal");
+      
+      var row1 = bocList.GetRow (1);
+      Assert.That (row1.StyleInfo.HasCssClass ("bocListDataRow"), Is.True);
+      Assert.That (row1.StyleInfo.HasCssClass ("odd"), Is.True);
+      Assert.That (row1.StyleInfo.HasCssClass ("oddDoesNotHaveThisClass"), Is.False);
+
+      var row2 = bocList.GetRow (2);
+      Assert.That (row2.StyleInfo.HasCssClass ("bocListDataRow"), Is.True);
+      Assert.That (row2.StyleInfo.HasCssClass ("even"), Is.True);
+      Assert.That (row2.StyleInfo.HasCssClass ("evenDoesNotHaveThisClass"), Is.False);
+    }
+
+    [Test]
+    public void TestRowGetBackgroundColor ()
+    {
+      var home = Start();
+
+      var bocList = home.GetList().ByLocalID ("JobList_Normal");
+
+      var row1 = bocList.GetRow (1);
+      Assert.That (row1.StyleInfo.GetBackgroundColor(), Is.EqualTo (WebColor.Transparent)); // yep, style information is on the cells only!
+    }
+
+    [Test]
+    public void TestRowGetTextColor ()
+    {
+      var home = Start();
+
+      var bocList = home.GetList().ByLocalID ("JobList_Normal");
+      var row = bocList.GetRow (1);
+      Assert.That (row.StyleInfo.GetTextColor(), Is.EqualTo (WebColor.Black));
     }
 
     [Test]
@@ -486,6 +568,42 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     }
 
     [Test]
+    public void TestCellHasClass ()
+    {
+      var home = Start();
+
+      var bocList = home.GetList().ByLocalID ("JobList_Normal");
+      var cell = bocList.GetRow (1).GetCell (1);
+
+      Assert.That (cell.StyleInfo.HasCssClass ("bocListDataCell"), Is.True);
+      Assert.That (cell.StyleInfo.HasCssClass ("doesNotHaveThisClass"), Is.False);
+    }
+
+    [Test]
+    public void TestCellGetBackgroundColor ()
+    {
+      var home = Start();
+
+      var bocList = home.GetList().ByLocalID ("JobList_Normal");
+
+      var cell1 = bocList.GetRow (1).GetCell (1);
+      Assert.That (cell1.StyleInfo.GetBackgroundColor(), Is.EqualTo (WebColor.White));
+
+      var cell2 = bocList.GetRow (2).GetCell (1);
+      Assert.That (cell2.StyleInfo.GetBackgroundColor(), Is.EqualTo (WebColor.FromRgb(244, 244, 244)));
+    }
+
+    [Test]
+    public void TestCellGetTextColor ()
+    {
+      var home = Start();
+
+      var bocList = home.GetList().ByLocalID ("JobList_Normal");
+      var cell = bocList.GetRow (1).GetCell (1);
+      Assert.That (cell.StyleInfo.GetTextColor(), Is.EqualTo (WebColor.Black));
+    }
+
+    [Test]
     public void TestEditableCellGetControl ()
     {
       var home = Start();
@@ -501,7 +619,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       Assert.That (bocList.GetCellWhere ("Title", "NewTitle").GetText(), Is.EqualTo ("NewTitle"));
     }
 
-    private RemotionPageObject Start ()
+    private WxePageObject Start ()
     {
       return Start ("BocList");
     }

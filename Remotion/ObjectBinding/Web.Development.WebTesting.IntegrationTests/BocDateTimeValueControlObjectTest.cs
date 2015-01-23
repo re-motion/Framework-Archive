@@ -20,6 +20,7 @@ using Coypu;
 using NUnit.Framework;
 using Remotion.ObjectBinding.Web.Development.WebTesting.FluentControlSelection;
 using Remotion.Web.Development.WebTesting;
+using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
 using Remotion.Web.Development.WebTesting.PageObjects;
 
@@ -161,6 +162,34 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     }
 
     [Test]
+    public void TestGetDateTimeAsString ()
+    {
+      var home = Start();
+
+      var bocDateTimeValue = home.GetDateTimeValue().ByLocalID ("DateOfBirthField_Normal");
+      Assert.That (bocDateTimeValue.GetDateTimeAsString(), Is.EqualTo ("04.04.2008 12:00"));
+
+      bocDateTimeValue = home.GetDateTimeValue().ByLocalID ("DateOfBirthField_ReadOnly");
+      Assert.That (bocDateTimeValue.GetDateTimeAsString(), Is.EqualTo ("04.04.2008 12:00"));
+
+      bocDateTimeValue = home.GetDateTimeValue().ByLocalID ("DateOfBirthField_Disabled");
+      Assert.That (bocDateTimeValue.GetDateTimeAsString(), Is.EqualTo ("04.04.2008 12:00"));
+
+      bocDateTimeValue = home.GetDateTimeValue().ByLocalID ("DateOfBirthField_NoAutoPostBack");
+      Assert.That (bocDateTimeValue.GetDateTimeAsString(), Is.EqualTo ("04.04.2008 12:00"));
+
+      bocDateTimeValue = home.GetDateTimeValue().ByLocalID ("DateOfBirthField_DateOnly");
+      Assert.That (bocDateTimeValue.GetDateTimeAsString(), Is.EqualTo ("04.04.2008"));
+
+      bocDateTimeValue = home.GetDateTimeValue().ByLocalID ("DateOfBirthField_ReadOnlyDateOnly");
+      Assert.That (bocDateTimeValue.GetDateTimeAsString(), Is.EqualTo ("04.04.2008"));
+
+      bocDateTimeValue = home.GetDateTimeValue().ByLocalID ("DateOfBirthField_WithSeconds");
+      bocDateTimeValue.SetTime (new TimeSpan (13, 37, 42));
+      Assert.That (bocDateTimeValue.GetDateTimeAsString(), Is.EqualTo ("04.04.2008 13:37:42"));
+    }
+
+    [Test]
     public void TestSetDateTime ()
     {
       var home = Start();
@@ -266,7 +295,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       Assert.That (DateTime.Parse (home.Scope.FindIdEndingWith ("WithSecondsCurrentValueLabel").Text), Is.EqualTo (setWithSeconds));
     }
 
-    private RemotionPageObject Start ()
+    private WxePageObject Start ()
     {
       return Start ("BocDateTimeValue");
     }

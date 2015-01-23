@@ -23,7 +23,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
   /// <summary>
   /// Interface for all <see cref="ControlObject"/> implementations representing a collection of nodes, e.g. a web tree view.
   /// </summary>
-  /// <seealso cref="WebTreeViewControlObject"/>
+  /// <seealso cref="T:Remotion.Web.Development.WebTesting.ControlObjects.WebTreeViewControlObject"/>
   public interface IControlObjectWithNodes<TNodeControlObject>
       where TNodeControlObject : ControlObject
   {
@@ -36,6 +36,11 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     /// Short for explicitly implemented <see cref="IFluentControlObjectWithNodes{TCellControlObject}.WithItemID"/>.
     /// </summary>
     TNodeControlObject GetNode ([NotNull] string itemID);
+
+    /// <summary>
+    /// Short for explicitly implemented <see cref="IFluentControlObjectWithNodes{TNodeControlObject}.WithIndex"/>.
+    /// </summary>
+    TNodeControlObject GetNode (int index);
   }
 
   /// <summary>

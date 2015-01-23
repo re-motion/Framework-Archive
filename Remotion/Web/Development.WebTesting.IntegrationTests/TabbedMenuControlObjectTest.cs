@@ -17,6 +17,7 @@
 
 using System;
 using NUnit.Framework;
+using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
 using Remotion.Web.Development.WebTesting.PageObjects;
 
@@ -95,6 +96,29 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     }
 
     [Test]
+    public void TestGetItemDefinitions ()
+    {
+      var home = Start();
+
+      var tabbedMenu = home.GetTabbedMenu().ByLocalID ("MyTabbedMenu");
+      
+      var items = tabbedMenu.GetItemDefinitions();
+      Assert.That (items.Count, Is.EqualTo (5));
+      
+      Assert.That (items[0].ItemID, Is.EqualTo ("EventCommandTab"));
+      Assert.That (items[0].Index, Is.EqualTo (1));
+      Assert.That (items[0].Text, Is.EqualTo ("EventCommandTabTitle"));
+      Assert.That (items[0].IsEnabled, Is.True);
+
+      Assert.That (items[2].IsEnabled, Is.True); // yep, currently we have no way to determine if a menu item is really enabled or not
+
+      Assert.That (items[4].ItemID, Is.EqualTo ("TabWithSubMenu"));
+      Assert.That (items[4].Index, Is.EqualTo (5));
+      Assert.That (items[4].Text, Is.EqualTo ("TabWithSubMenuTitle"));
+      Assert.That (items[4].IsEnabled, Is.True);
+    }
+
+    [Test]
     public void TestSelectMenuItem ()
     {
       var home = Start();
@@ -111,6 +135,9 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       Assert.That (home.Scope.FindId ("TestOutputLabel").Text, Is.EqualTo ("EventCommandTab|Event"));
 
       tabbedMenu.SelectItem().WithDisplayText ("EventCommandTabTitle");
+      Assert.That (home.Scope.FindId ("TestOutputLabel").Text, Is.EqualTo ("EventCommandTab|Event"));
+
+      tabbedMenu.SelectItem().WithDisplayTextContains ("ntCom");
       Assert.That (home.Scope.FindId ("TestOutputLabel").Text, Is.EqualTo ("EventCommandTab|Event"));
     }
 
@@ -135,6 +162,32 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     }
 
     [Test]
+    public void TestGetSubItemDefinitions ()
+    {
+      var home = Start();
+
+      var tabbedMenu = home.GetTabbedMenu().ByLocalID ("MyTabbedMenu");
+
+      var subMenuItems = tabbedMenu.SubMenu.GetItemDefinitions();
+      Assert.That (subMenuItems, Is.Empty);
+
+      tabbedMenu.SelectItem ("TabWithSubMenu");
+      subMenuItems = tabbedMenu.SubMenu.GetItemDefinitions();
+
+      Assert.That (subMenuItems.Count, Is.EqualTo (3));
+      
+      Assert.That (subMenuItems[0].ItemID, Is.EqualTo ("SubMenuTab1"));
+      Assert.That (subMenuItems[0].Index, Is.EqualTo (1));
+      Assert.That (subMenuItems[0].Text, Is.EqualTo ("SubMenuTab1Title"));
+      Assert.That (subMenuItems[0].IsEnabled, Is.True);
+
+      Assert.That (subMenuItems[2].ItemID, Is.EqualTo ("SubMenuTab3"));
+      Assert.That (subMenuItems[2].Index, Is.EqualTo (3));
+      Assert.That (subMenuItems[2].Text, Is.EqualTo ("SubMenuTab3Title"));
+      Assert.That (subMenuItems[2].IsEnabled, Is.True);
+    }
+
+    [Test]
     public void TestSelectSubMenuItem ()
     {
       var home = Start();
@@ -153,11 +206,14 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
 
       tabbedMenu.SubMenu.SelectItem().WithDisplayText ("SubMenuTab2Title");
       Assert.That (home.Scope.FindId ("TestOutputLabel").Text, Is.EqualTo ("SubMenuTab2|Event"));
+
+      tabbedMenu.SubMenu.SelectItem().WithDisplayTextContains ("nuTab1");
+      Assert.That (home.Scope.FindId ("TestOutputLabel").Text, Is.EqualTo ("SubMenuTab1|Event"));
     }
 
-    private RemotionPageObject Start ()
+    private WxePageObject Start ()
     {
-      return Start ("TabbedMenuTest.wxe");
+      return Start<WxePageObject> ("TabbedMenuTest.wxe");
     }
   }
 }

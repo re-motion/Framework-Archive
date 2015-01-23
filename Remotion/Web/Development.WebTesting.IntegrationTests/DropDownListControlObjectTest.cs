@@ -18,6 +18,7 @@
 using System;
 using Coypu;
 using NUnit.Framework;
+using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
 using Remotion.Web.Development.WebTesting.PageObjects;
 
@@ -139,9 +140,9 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       Assert.That (home.Scope.FindId ("TestOutputLabel").Text, Is.EqualTo ("Item1|Item1Value"));
     }
 
-    private RemotionPageObject Start ()
+    private WxePageObject Start ()
     {
-      return Start ("DropDownListTest.wxe");
+      return Start<WxePageObject> ("DropDownListTest.wxe");
     }
   }
 }

@@ -53,9 +53,7 @@
       <HintPath>..\..\..\packages\log4net.2.0.0\lib\net40-full\log4net.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
     <Reference Include="WebDriver, Version=2.44.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\packages\Selenium.WebDriver.2.44.0\lib\net40\WebDriver.dll</HintPath>
@@ -148,17 +146,21 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Web\Contract.DiagnosticMetadata\Web.Contract.DiagnosticMetadata.csproj">
+    <ProjectReference Include="..\..\Web\Contract.DiagnosticMetadata\Web.Contracts.DiagnosticMetadata.csproj">
       <Project>{B119DB72-9073-401B-8EC9-C8885A2D4800}</Project>
-      <Name>Web.Contract.DiagnosticMetadata</Name>
+      <Name>Web.Contracts.DiagnosticMetadata</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Web\Development.WebTesting.ControlObjects\Web.Development.WebTesting.ControlObjects.csproj">
+      <Project>{712e5631-9bc0-44de-bf20-fb3bfecad9b2}</Project>
+      <Name>Web.Development.WebTesting.ControlObjects</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Web\Development.WebTesting\Web.Development.WebTesting.csproj">
       <Project>{5B5EC73A-B796-4D2D-A781-E889EE9EC4DF}</Project>
       <Name>Web.Development.WebTesting</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Web.Contract.DiagnosticMetadata\ObjectBinding.Web.Contract.DiagnosticMetadata.csproj">
+    <ProjectReference Include="..\Web.Contract.DiagnosticMetadata\ObjectBinding.Web.Contracts.DiagnosticMetadata.csproj">
       <Project>{AD7D0683-130E-4064-8EB7-D9981DCB22BC}</Project>
-      <Name>ObjectBinding.Web.Contract.DiagnosticMetadata</Name>
+      <Name>ObjectBinding.Web.Contracts.DiagnosticMetadata</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

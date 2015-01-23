@@ -20,6 +20,7 @@ using System.Linq;
 using Coypu;
 using NUnit.Framework;
 using Remotion.ObjectBinding.Web.Development.WebTesting.FluentControlSelection;
+using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
 using Remotion.Web.Development.WebTesting.PageObjects;
 
@@ -159,6 +160,34 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     }
 
     [Test]
+    public void TestSelectAllAndDeselectAll ()
+    {
+      var home = Start();
+
+      var bocList = home.GetListAsGrid().ByLocalID ("JobList_Normal");
+      
+      var firstRow = bocList.GetRow (1);
+      var lastRow = bocList.GetRow (bocList.GetNumberOfRows());
+      Assert.That (firstRow.IsSelected, Is.False);
+      Assert.That (lastRow.IsSelected, Is.False);
+
+      bocList.SelectAll();
+
+      Assert.That (firstRow.IsSelected, Is.True);
+      Assert.That (lastRow.IsSelected, Is.True);
+
+      bocList.SelectAll();
+
+      Assert.That (firstRow.IsSelected, Is.True);
+      Assert.That (lastRow.IsSelected, Is.True);
+
+      bocList.DeselectAll();
+
+      Assert.That (firstRow.IsSelected, Is.False);
+      Assert.That (lastRow.IsSelected, Is.False);
+    }
+
+    [Test]
     public void TestGetRow ()
     {
       var home = Start();
@@ -215,20 +244,33 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
       cell = row.GetCell (8);
       Assert.That (cell.GetText(), Is.EqualTo ("CEO"));
+
+      cell = row.GetCell().WithColumnTitle ("DisplayName");
+      Assert.That (cell.GetText(), Is.EqualTo ("CEO"));
+
+      cell = row.GetCell().WithColumnTitleContains ("layNam");
+      Assert.That (cell.GetText(), Is.EqualTo ("CEO"));
     }
 
     [Test]
-    public void TestRowClickSelectCheckbox ()
+    public void TestRowSelectAndDeselect ()
     {
       var home = Start();
 
       var bocList = home.GetListAsGrid().ByLocalID ("JobList_Normal");
       var row = bocList.GetRow (2);
 
-      row.ClickSelectCheckbox();
+      row.Select();
       row.GetCell (3).ExecuteCommand();
-
       Assert.That (home.Scope.FindIdEndingWith ("SelectedIndicesLabel").Text, Is.EqualTo ("1"));
+
+      row.Select();
+      row.GetCell (3).ExecuteCommand();
+      Assert.That (home.Scope.FindIdEndingWith ("SelectedIndicesLabel").Text, Is.EqualTo ("1"));
+
+      row.Deselect();
+      row.GetCell (3).ExecuteCommand();
+      Assert.That (home.Scope.FindIdEndingWith ("SelectedIndicesLabel").Text, Is.EqualTo ("NoneSelected"));
     }
 
     [Test]
@@ -289,7 +331,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       Assert.That (bocText.GetText(), Is.EqualTo ("NewTitle"));
     }
 
-    private RemotionPageObject Start ()
+    private WxePageObject Start ()
     {
       return Start ("BocListAsGrid");
     }

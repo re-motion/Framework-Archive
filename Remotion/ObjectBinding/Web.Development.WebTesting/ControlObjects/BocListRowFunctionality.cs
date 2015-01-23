@@ -17,13 +17,15 @@
 
 using System;
 using System.Linq;
+using Coypu;
 using JetBrains.Annotations;
-using Remotion.ObjectBinding.Web.Contract.DiagnosticMetadata;
+using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting;
 using Remotion.Web.Development.WebTesting.ControlObjects;
 using Remotion.Web.Development.WebTesting.ControlObjects.Selectors;
 using Remotion.Web.Development.WebTesting.ControlSelection;
+using Remotion.Web.Development.WebTesting.WebTestActions;
 
 namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
 {
@@ -45,31 +47,75 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     }
 
     /// <summary>
-    /// Clicks the row's select checkbox (either selecting or deselecting the row).
+    /// Selects the row.
     /// </summary>
-    public void ClickSelectCheckbox ()
+    public void Select ()
     {
-      var _zeroBasedAbsoluteRowIndexOfFirstRow = _accessor.GetZeroBasedAbsoluteRowIndexOfFirstRow();
+      var scope = GetRowSelectorCheckboxScope();
+      new CheckAction (this, scope).Execute (Opt.ContinueImmediately());
+    }
 
-      var zeroBasedAbsoluteRowIndex = _zeroBasedAbsoluteRowIndexOfFirstRow + _rowIndexOnPage - 1;
-      var rowSelectorCheckboxScope = _accessor.ParentScope.FindChild (string.Format ("RowSelector_{0}", zeroBasedAbsoluteRowIndex));
-      rowSelectorCheckboxScope.Click();
+    /// <summary>
+    /// Deselects the row.
+    /// </summary>
+    public void Deselect ()
+    {
+      var scope = GetRowSelectorCheckboxScope();
+      new UncheckAction (this, scope).Execute (Opt.ContinueImmediately());
+    }
+
+    /// <summary>
+    /// Returns whether the row is currently selected.
+    /// </summary>
+    public bool IsSelected
+    {
+      get
+      {
+        var rowSelectorCheckboxScope = GetRowSelectorCheckboxScope();
+        return rowSelectorCheckboxScope.IsSelected();
+      }
+    }
+
+    private ElementScope GetRowSelectorCheckboxScope ()
+    {
+      var zeroBasedAbsoluteRowIndexOfFirstRow = _accessor.GetZeroBasedAbsoluteRowIndexOfFirstRow();
+
+      var zeroBasedAbsoluteRowIndex = zeroBasedAbsoluteRowIndexOfFirstRow + _rowIndexOnPage - 1;
+      return _accessor.ParentScope.FindChild (string.Format ("RowSelector_{0}", zeroBasedAbsoluteRowIndex));
     }
 
     /// <inheritdoc/>
-    public TCellControlObject GetCell<TCellControlObject> ([NotNull] string columnItemID)
+    public TCellControlObject GetCellWithColumnItemID<TCellControlObject> ([NotNull] string columnItemID)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("columnItemID", columnItemID);
 
-      var index = _accessor.GetColumnIndex (columnItemID);
-      return GetCell<TCellControlObject> (index);
+      var index = _accessor.GetColumnIndexForItemID (columnItemID);
+      return GetCellWithColumnIndex<TCellControlObject> (index);
     }
 
     /// <inheritdoc/>
-    public TCellControlObject GetCell<TCellControlObject> (int index)
+    public TCellControlObject GetCellWithColumnIndex<TCellControlObject> (int index)
     {
       var cellScope = Scope.FindTagWithAttribute ("td", DiagnosticMetadataAttributesForObjectBinding.BocListCellIndex, index.ToString());
       return (TCellControlObject) Activator.CreateInstance (typeof (TCellControlObject), new object[] { Context.CloneForControl (cellScope) });
+    }
+
+    /// <inheritdoc/>
+    public TCellControlObject GetCellWithColumnTitle<TCellControlObject> ([NotNull] string columnTitle)
+    {
+      ArgumentUtility.CheckNotNullOrEmpty ("columnTitle", columnTitle);
+
+      var index = _accessor.GetColumnIndexForTitle (columnTitle);
+      return GetCellWithColumnIndex<TCellControlObject> (index);
+    }
+
+    /// <inheritdoc/>
+    public TCellControlObject GetCellWithColumnTitleContains<TCellControlObject> ([NotNull] string columnTitleContains)
+    {
+      ArgumentUtility.CheckNotNullOrEmpty ("columnTitleContains", columnTitleContains);
+
+      var index = _accessor.GetColumnIndexForTitleContains (columnTitleContains);
+      return GetCellWithColumnIndex<TCellControlObject> (index);
     }
 
     /// <inheritdoc/>

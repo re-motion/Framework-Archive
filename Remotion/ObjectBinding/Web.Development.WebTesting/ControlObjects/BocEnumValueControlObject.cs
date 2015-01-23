@@ -20,9 +20,9 @@ using System.Collections.Generic;
 using System.Linq;
 using Coypu;
 using JetBrains.Annotations;
-using Remotion.ObjectBinding.Web.Contract.DiagnosticMetadata;
+using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
 using Remotion.Utilities;
-using Remotion.Web.Contract.DiagnosticMetadata;
+using Remotion.Web.Contracts.DiagnosticMetadata;
 using Remotion.Web.Development.WebTesting;
 using Remotion.Web.Development.WebTesting.ControlObjects;
 using Remotion.Web.Development.WebTesting.Utilities;
@@ -45,18 +45,13 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       _variantImpl = CreateVariant (style);
     }
 
-    /// <summary>
-    /// Returns the currently selected option. Note that the <see cref="OptionDefinition.Index"/> is set to -1.
-    /// </summary>
+    /// <inheritdoc/>
     public OptionDefinition GetSelectedOption ()
     {
       return _variantImpl.GetSelectedOption();
     }
 
-    /// <summary>
-    /// Returns all available options. 
-    /// Warning: this method does not wait until "the element" is available but detects all available options at the moment of calling.
-    /// </summary>
+    /// <inheritdoc/>
     public IReadOnlyList<OptionDefinition> GetOptionDefinitions ()
     {
       if (IsReadOnly())

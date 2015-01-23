@@ -18,7 +18,6 @@
 using System;
 using NUnit.Framework;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
-using Remotion.Web.Development.WebTesting.PageObjects;
 
 namespace Remotion.Web.Development.WebTesting.IntegrationTests
 {
@@ -51,9 +50,9 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       Assert.That (scope.Scope.Text, Is.Not.StringContaining ("DoNotFindMe"));
     }
 
-    private RemotionPageObject Start ()
+    private WebFormsTestPageObject Start ()
     {
-      return Start ("ScopeTest.aspx");
+      return Start<WebFormsTestPageObject> ("ScopeTest.aspx");
     }
   }
 }
