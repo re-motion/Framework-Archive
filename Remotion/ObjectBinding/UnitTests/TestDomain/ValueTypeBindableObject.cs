@@ -14,19 +14,33 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-
 using System;
+using Remotion.ObjectBinding.BindableObject;
+using Remotion.ObjectBinding.UnitTests.BindableObject;
 
 namespace Remotion.ObjectBinding.UnitTests.TestDomain
 {
-  public interface IInterfaceWithReferenceType<T>
+  [BindableObjectBaseClass]
+  [BindableObjectProvider]
+  public class ValueTypeBindableObject : IBusinessObject
   {
-    T ExplicitInterfaceScalar { get; set; }
-    T ExplicitInterfaceReadOnlyScalar { get; }
-    T ImplicitInterfaceScalar { get; set; }
-    T ImplicitInterfaceReadOnlyScalar { get; }
-    T this[int i] { get; set; }
-    T this[int i, DateTime j] { get; set; }
-    T this[int i, DateTime j, string k] { get; set; }
+    public object GetProperty (IBusinessObjectProperty property)
+    {
+      return null;
+    }
+
+    public void SetProperty (IBusinessObjectProperty property, object value)
+    {
+    }
+
+    public string GetPropertyString (IBusinessObjectProperty property, string format)
+    {
+      return null;
+    }
+
+    public IBusinessObjectClass BusinessObjectClass
+    {
+      get { return BindableObjectProviderTestHelper.GetBindableObjectClass (typeof (ValueTypeBindableObject)); }
+    }
   }
 }

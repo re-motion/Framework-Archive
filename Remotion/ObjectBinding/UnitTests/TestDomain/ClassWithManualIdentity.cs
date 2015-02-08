@@ -29,6 +29,11 @@ namespace Remotion.ObjectBinding.UnitTests.TestDomain
       _uniqueIdentifier = uniqueIdentifier;
     }
 
+    public string DisplayName
+    {
+      get { return "Manual business object"; }
+    }
+
     public string UniqueIdentifier
     {
       get { return _uniqueIdentifier; }

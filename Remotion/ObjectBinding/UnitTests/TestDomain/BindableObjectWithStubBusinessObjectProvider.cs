@@ -19,14 +19,8 @@ using System;
 
 namespace Remotion.ObjectBinding.UnitTests.TestDomain
 {
-  public interface IInterfaceWithReferenceType<T>
+  [StubBusinessObjectProvider]
+  public class BindableObjectWithStubBusinessObjectProvider : ManualBusinessObject
   {
-    T ExplicitInterfaceScalar { get; set; }
-    T ExplicitInterfaceReadOnlyScalar { get; }
-    T ImplicitInterfaceScalar { get; set; }
-    T ImplicitInterfaceReadOnlyScalar { get; }
-    T this[int i] { get; set; }
-    T this[int i, DateTime j] { get; set; }
-    T this[int i, DateTime j, string k] { get; set; }
   }
 }
