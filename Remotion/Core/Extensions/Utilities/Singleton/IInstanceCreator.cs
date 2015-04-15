@@ -14,29 +14,13 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
 
-namespace Remotion.Mixins.Utilities.Singleton
+namespace Remotion.Utilities.Singleton
 {
-  public class ThreadSafeSingletonBase<TSelf, TCreator>
-      where TSelf : class
-      where TCreator : IInstanceCreator<TSelf>, new()
+  public interface IInstanceCreator<T>
   {
-    private static readonly DoubleCheckedLockingContainer<TSelf> s_instance = new DoubleCheckedLockingContainer<TSelf> (new TCreator().CreateInstance);
-
-    public static TSelf Current
-    {
-      get { return s_instance.Value; }
-    }
-
-    public static bool HasCurrent
-    {
-      get { return s_instance.HasValue; }
-    }
-
-    public static void SetCurrent (TSelf value)
-    {
-      s_instance.Value = value;
-    }
+    T CreateInstance();
   }
 }

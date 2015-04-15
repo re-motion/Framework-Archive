@@ -17,10 +17,10 @@
 
 using System;
 
-namespace Remotion.Mixins.Utilities.Singleton
+namespace Remotion.Extensions.UnitTests.Utilities.Singleton.TestDomain
 {
-  public interface IInstanceCreator<T>
+  public class SecondaryImplementationOfInterface : IInterfaceWithConcreteImplementation
   {
-    T CreateInstance();
+    
   }
 }

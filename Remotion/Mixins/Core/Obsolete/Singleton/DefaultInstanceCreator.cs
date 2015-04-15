@@ -17,11 +17,15 @@
 
 using System;
 
+// ReSharper disable once CheckNamespace
+
 namespace Remotion.Mixins.Utilities.Singleton
 {
-  public class DefaultInstanceCreator<T> : IInstanceCreator<T> where T : new()
+  [Obsolete ("Dummy declaration for DependDB. Moved to Remotion.Extensions.dll", true)]
+  internal class DefaultInstanceCreator<T> : IInstanceCreator<T>
+      where T : new()
   {
-    public T CreateInstance()
+    public T CreateInstance ()
     {
       return new T();
     }

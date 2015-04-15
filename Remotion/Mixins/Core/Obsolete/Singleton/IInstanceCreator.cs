@@ -16,25 +16,14 @@
 // 
 
 using System;
-using Microsoft.Practices.ServiceLocation;
-using Remotion.ServiceLocation;
+
+// ReSharper disable once CheckNamespace
 
 namespace Remotion.Mixins.Utilities.Singleton
 {
-  /// <summary>
-  /// Implements <see cref="IInstanceCreator{T}"/> by delegating to <see cref="ServiceLocator"/> to resolve an instance implementing
-  /// <typeparamref name="T"/>.
-  /// </summary>
-  /// <typeparam name="T">The type to resolve from the <see cref="ServiceLocator"/>.</typeparam>
-  /// <remarks>
-  /// This class uses the <see cref="SafeServiceLocator"/>, so it will use an instance of <see cref="DefaultServiceLocator"/> if no other
-  /// <see cref="IServiceLocator"/> was installed.
-  /// </remarks>
-  public class ServiceLocatorInstanceCreator<T> : IInstanceCreator<T>
+  [Obsolete ("Dummy declaration for DependDB. Moved to Remotion.Extensions.dll", true)]
+  internal interface IInstanceCreator<T>
   {
-    public T CreateInstance()
-    {
-      return SafeServiceLocator.Current.GetInstance<T>();
-    }
+    T CreateInstance ();
   }
 }

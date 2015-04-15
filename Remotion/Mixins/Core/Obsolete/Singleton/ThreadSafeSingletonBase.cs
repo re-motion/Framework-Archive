@@ -17,10 +17,34 @@
 
 using System;
 
-namespace Remotion.Mixins.UnitTests.Core.Utilities.Singleton.TestDomain
+// ReSharper disable once CheckNamespace
+
+namespace Remotion.Mixins.Utilities.Singleton
 {
-  public class SecondaryImplementationOfInterface : IInterfaceWithConcreteImplementation
+  [Obsolete ("Dummy declaration for DependDB. Moved to Remotion.Extensions.dll", true)]
+  internal class ThreadSafeSingletonBase<TSelf, TCreator>
+      where TSelf : class
+      where TCreator : IInstanceCreator<TSelf>, new()
   {
-    
+    private static readonly DoubleCheckedLockingContainer<TSelf> s_instance = new DoubleCheckedLockingContainer<TSelf> (new TCreator().CreateInstance);
+
+    public ThreadSafeSingletonBase ()
+    {
+    }
+
+    public static TSelf Current
+    {
+      get { return s_instance.Value; }
+    }
+
+    public static bool HasCurrent
+    {
+      get { return s_instance.HasValue; }
+    }
+
+    public static void SetCurrent (TSelf value)
+    {
+      s_instance.Value = value;
+    }
   }
 }
